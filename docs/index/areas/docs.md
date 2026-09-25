@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-392 files · 60,482 lines
+392 files · 60,607 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 8 | 6,655 | doc, file |
+| `docs/implementation` | 8 | 6,758 | doc, file |
 | `docs/implementation/access-control-identity` | 6 | 1,028 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -94,7 +94,7 @@ has a bug.
 | `docs/implementation/b2b-wholesale-multientity` | 4 | 540 | doc |
 | `docs/implementation/catalog-variants-pricing` | 3 | 904 | doc |
 | `docs/implementation/commercial-licensing-agency` | 14 | 2,339 | doc |
-| `docs/implementation/content-marketing-search` | 1 | 138 | doc |
+| `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
 | `docs/implementation/finance-accounting` | 8 | 1,642 | doc |
 | `docs/implementation/hr-people-org` | 18 | 3,331 | doc |
@@ -116,7 +116,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 2,938 | doc |  |
+| `docs/implementation/DECISIONS.md` | 3,041 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |

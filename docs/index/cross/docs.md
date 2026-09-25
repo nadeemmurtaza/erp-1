@@ -2657,17 +2657,17 @@ _no second-level headings_
 - Acceptance  <sub>:54</sub>
 - Out of scope  <sub>:62</sub>
 
-### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>138 lines</sub>
+### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>160 lines</sub>
 
-- Why  <sub>:5</sub>
-- Work orders  <sub>:13</sub>
-- WO-8.1 — CMS  <sub>:26</sub>
-- WO-8.2 — Collections and merchandising  <sub>:46</sub>
-- WO-8.3 — Search  <sub>:61</sub>
-- WO-8.4 — Campaigns and broadcasts  <sub>:85</sub>
-- WO-8.5 — Abandoned cart recovery  <sub>:104</sub>
-- WO-8.6 — On-site messaging  <sub>:120</sub>
-- Phase 8 exit criteria  <sub>:129</sub>
+- Why  <sub>:27</sub>
+- Work orders  <sub>:35</sub>
+- WO-8.1 — CMS  <sub>:48</sub>
+- WO-8.2 — Collections and merchandising  <sub>:68</sub>
+- WO-8.3 — Search  <sub>:83</sub>
+- WO-8.4 — Campaigns and broadcasts  <sub>:107</sub>
+- WO-8.5 — Abandoned cart recovery  <sub>:126</sub>
+- WO-8.6 — On-site messaging  <sub>:142</sub>
+- Phase 8 exit criteria  <sub>:151</sub>
 
 ### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>233 lines</sub>
 
@@ -2684,7 +2684,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>2,938 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>3,041 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2723,6 +2723,7 @@ _no second-level headings_
 - ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time  <sub>:2420</sub>
 - ADR-032 — Phase 10 Track A built end-to-end (WO-A.1–A.5), superseding ADR-019/ADR-025; Tracks D and B wired into the registry; WO-E.2 executed  <sub>:2559</sub>
 - ADR-033 — `admin-platform` docs 02/44/72/75 completed; doc 75's own claims corrected after they were found false against the running code  <sub>:2762</sub>
+- ADR-034 — Phase 8 (content, marketing and search) audited and confirmed built; the ranking rule's missing availability tier fixed; the phantom "Phase 8 status note" several files already cited now exists  <sub>:2938</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

@@ -3,7 +3,7 @@
 
 # Tests
 
-**189** spec files, **1,751** cases. What is already pinned down — and what is not.
+**189** spec files, **1,752** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -185,7 +185,7 @@ regression or an N+1.
 | `apps/api/src/modules/reviews/reviews.service.spec.ts` | reviews | 3 | ReviewsService — moderate |
 | `apps/api/src/modules/search/search-embedding.cron.spec.ts` | search | 2 | SearchEmbeddingCron |
 | `apps/api/src/modules/search/search-reindex.listener.spec.ts` | search | 2 | SearchReindexListener |
-| `apps/api/src/modules/search/search.service.spec.ts` | search | 14 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
+| `apps/api/src/modules/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
 | `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 4 | InvoiceService · issue · findOne |
 | `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |

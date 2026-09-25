@@ -33,7 +33,7 @@ describe('SearchService', () => {
     return `search-test-${Date.now()}-${seq}`;
   }
 
-  async function makeProduct(name: string, description: string, basePrice = 1000) {
+  async function makeProduct(name: string, description: string, basePrice = 1000, stock?: number) {
     const slug = tag();
     const product = await prisma.product.create({
       data: {
@@ -43,6 +43,9 @@ describe('SearchService', () => {
         categoryId,
         basePrice,
         translations: { create: [{ locale: 'en', name, description }] },
+        ...(stock !== undefined
+          ? { variants: { create: [{ sku: tag(), stock, isActive: true }] } }
+          : {}),
       },
     });
     await service.reindexProduct(product.id);
@@ -109,6 +112,19 @@ describe('SearchService', () => {
 
     const log = await prisma.searchQueryLog.findFirst({ where: { term: `nonexistent-${marker}` } });
     expect(log?.resultCount).toBe(0);
+  });
+
+  it('boosts an in-stock product above an equally-ranked out-of-stock one (WO-8.3 ranking rule)', async () => {
+    const marker = tag();
+    const outOfStock = await makeProduct(`Style match ${marker}`, 'identical description');
+    const inStock = await makeProduct(`Style match ${marker}`, 'identical description', 1000, 5);
+
+    const result = await service.search({ q: `Style match ${marker}`, locale: 'en' }, null);
+    const outIndex = result.data.findIndex((hit) => hit.id === outOfStock.id);
+    const inIndex = result.data.findIndex((hit) => hit.id === inStock.id);
+    expect(inIndex).toBeGreaterThanOrEqual(0);
+    expect(outIndex).toBeGreaterThanOrEqual(0);
+    expect(inIndex).toBeLessThan(outIndex);
   });
 
   it('a price facet excludes its own filter but respects others', async () => {

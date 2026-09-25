@@ -583,7 +583,12 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     key: 'finance',
     label: 'Finance',
     description: 'Record and edit operational expenses.',
-    permissions: ['finance.manage'],
+    permissions: [
+      'finance.manage',
+      'finance.wallets.adjust',
+      'finance.wallets.adjust.approve',
+      'finance.merchant-payables.dispute',
+    ],
   },
   {
     key: 'bom',

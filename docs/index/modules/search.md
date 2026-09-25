@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 Source: `apps/api/src/modules/search/`
 
-## Files (9 · 1,011 lines)
+## Files (9 · 1,066 lines)
 
 All paths relative to `apps/api/src/modules/search/dto`.
 
@@ -22,8 +22,8 @@ All paths relative to `apps/api/src/modules/search/dto`.
 | `search-reindex.listener.ts` | event subscriber | 33 | 1 | Lives in `search` (the reacting module), subscribing to an event `catalog` publishes — catalog never imports SearchServ… |
 | `search.controller.ts` | controller | 73 | 2 |  |
 | `search.module.ts` | nest module | 13 | 1 |  |
-| `search.service.spec.ts` | unit test | 294 | — |  |
-| `search.service.ts` | service | 401 | 1 | WO-8.3. |
+| `search.service.spec.ts` | unit test | 331 | — |  |
+| `search.service.ts` | service | 419 | 1 | WO-8.3. |
 
 
 ## HTTP routes (6)
@@ -100,7 +100,7 @@ check there before adding another.
 |---|---|---|
 | `search-embedding.cron.spec.ts` | 2 | SearchEmbeddingCron |
 | `search-reindex.listener.spec.ts` | 2 | SearchReindexListener |
-| `search.service.spec.ts` | 14 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · searchByImage |
+| `search.service.spec.ts` | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · searchByImage |
 
 
 ## Every export in this unit
@@ -114,7 +114,7 @@ check there before adding another.
 | `SearchController` | class | `search.controller.ts:20` |  |
 | `SearchAdminController` | class | `search.controller.ts:46` |  |
 | `SearchModule` | class | `search.module.ts:12` |  |
-| `SearchService` | class | `search.service.ts:55` | WO-8.3. |
+| `SearchService` | class | `search.service.ts:64` | WO-8.3. |
 
 
 ---

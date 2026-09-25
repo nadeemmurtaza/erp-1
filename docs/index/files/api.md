@@ -1537,8 +1537,8 @@ All 769 tracked files in `apps/api`, by directory.
 | `search-reindex.listener.ts` | event subscriber | 33 |  |
 | `search.controller.ts` | controller | 73 |  |
 | `search.module.ts` | nest module | 13 |  |
-| `search.service.spec.ts` | unit test | 294 |  |
-| `search.service.ts` | service | 401 |  |
+| `search.service.spec.ts` | unit test | 331 |  |
+| `search.service.ts` | service | 419 |  |
 
 ### `apps/api/src/modules/search/dto` (1)
 

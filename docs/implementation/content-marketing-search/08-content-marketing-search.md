@@ -2,6 +2,28 @@
 
 **Read `00-HOUSE-RULES.md` first.** Depends on Phase 3.
 
+> **Status (2026-09-25): Built end-to-end — this is the "Phase 8 status
+> note" several files already cite by that name.** All six work orders are
+> implemented and tested: `content` (CMS: pages, posts, banners, menus,
+> block sanitisation, SEO/JSON-LD, sitemap inclusion), `collections`
+> (rule engine + manual/best-selling/newest/price/margin sort),
+> `search` (Postgres FTS — `tsvector`/GIN/`pg_trgm`, per-locale, synonym
+> expansion, zero-result report, facets — plus WO-9.5's hybrid
+> keyword+vector ranking, built ahead of Phase 9 landing), `marketing`
+> (campaigns/broadcasts with send-time opt-out and per-minute rate
+> limiting, abandoned-cart recovery at 1h/24h/72h with a single-use
+> recovery code on the last step only, a recovered-revenue report broken
+> down by stage), and `onsitemessages` (announcement bars, popups with
+> immediate/timed/exit-intent triggers, newsletter capture, cookie
+> consent — restrained to one of each kind at a time, dismissal
+> remembered client-side). All five exit criteria below are met. See
+> `DECISIONS.md` ADR-035 for the one gap found and fixed this session
+> (the ranking rule's missing availability tier) and the small, named
+> follow-ons intentionally left for later: size/colour facets, nightly
+> collection-rule materialisation for a very large catalogue, campaign
+> link click-tracking auto-rewrite, and facet-count badges in the
+> storefront's `FilterPanel`.
+
 ## Why
 
 The storefront has no editable content. Every page is hard-coded, there is no

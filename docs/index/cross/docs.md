@@ -2801,14 +2801,14 @@ _no second-level headings_
 - Acceptance  <sub>:91</sub>
 - Out of scope  <sub>:102</sub>
 
-### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>178 lines</sub>
+### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>191 lines</sub>
 
-- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:26</sub>
-- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:48</sub>
-- Scope lenses  <sub>:70</sub>
-- Work orders  <sub>:135</sub>
-- Acceptance  <sub>:156</sub>
-- Out of scope  <sub>:169</sub>
+- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:39</sub>
+- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:61</sub>
+- Scope lenses  <sub>:83</sub>
+- Work orders  <sub>:148</sub>
+- Acceptance  <sub>:169</sub>
+- Out of scope  <sub>:182</sub>
 
 ### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>250 lines</sub>
 

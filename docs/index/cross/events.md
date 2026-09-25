@@ -113,7 +113,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:836` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:675` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:855` | `orders` |
 
 
 **Subscribed by**
@@ -133,7 +134,7 @@ order" is a new file, not an edit to checkout.
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:836` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:855` | `orders` |
 
 
 **Subscribed by**

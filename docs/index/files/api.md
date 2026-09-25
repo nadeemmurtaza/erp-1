@@ -1224,10 +1224,10 @@ All 724 tracked files in `apps/api`, by directory.
 | `notification.subscriber.ts` | event subscriber | 259 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 249 |  |
+| `orders-pos.service.spec.ts` | unit test | 275 |  |
 | `orders.controller.ts` | controller | 143 |  |
 | `orders.module.ts` | nest module | 50 |  |
-| `orders.service.ts` | service | 1207 |  |
+| `orders.service.ts` | service | 1226 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (1)

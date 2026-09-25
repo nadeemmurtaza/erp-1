@@ -134,6 +134,32 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
     expect(movement.reason).toBe('POS_SALE');
   });
 
+  // 68-realtime-gross-profit.md: a POS sale is created straight at DELIVERED
+  // and used to never publish order.status_changed at all — FinanceListener's
+  // OrderEconomics, loyalty's earn-on-DELIVERED and the delivery notification
+  // all silently never fired for a till sale. This is the direct test of the
+  // fix, not an assumption.
+  it('publishes order.status_changed(toStatus: DELIVERED) — FinanceListener/loyalty/notifications depend on this firing for POS too', async () => {
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 5, reason: 'ADJUSTMENT' });
+
+    const order = await orders.placeFromPos({
+      locationId: defaultLocationId,
+      terminalId: 'terminal-1',
+      shiftId: 'shift-1',
+      cashierUserId,
+      lines: [{ variantId: variant.id, quantity: 1 }],
+    });
+    createdOrderIds.push(order.id);
+
+    const outboxRow = await prisma.outboxEvent.findFirstOrThrow({
+      where: { name: 'order.status_changed', payload: { path: ['orderId'], equals: order.id } },
+    });
+    expect(outboxRow.payload).toEqual(
+      expect.objectContaining({ orderId: order.id, fromStatus: null, toStatus: 'DELIVERED', actorId: cashierUserId }),
+    );
+  });
+
   it('never rejects an oversell — postUnconditional() lets it through and opens a StockVariance', async () => {
     const variant = await freshVariant();
     await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 2, reason: 'ADJUSTMENT' });

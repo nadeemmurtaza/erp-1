@@ -1,5 +1,55 @@
 # 39 — A shared, cross-tenant hosting tier
 
+> **Status: shipped (2026-09-25), WO-39.x.** WO-39.1/39.2 (schema,
+> provisioning) shipped earlier; this pass built the rest, all in
+> `apps/platform`, none of it touching `apps/api`:
+> **WO-39.3 — hostname routing**: `modules/routing/hostname-resolver.service.ts`
+> (in-process cache, TTL'd, invalidated on every tenant status/domain
+> change), `modules/routing/routing.controller.ts` (`GET /routing/resolve`,
+> deliberately outside `OpsAuthGuard` — the "principal with no permission
+> key" this document itself names — plus an ops-gated
+> `PATCH /routing/tenants/:id/verify-domain`). Real DNS TXT-record
+> verification automation is **not** built — `customDomainVerifiedAt` is
+> set manually by an ops principal today; the resolution/caching logic
+> this WO scopes itself to is complete and real DNS proof is named, not
+> invented, as a separate follow-on.
+> **WO-39.5 — support access**: `modules/support-access/` — issuance,
+> approval (the toxic-pair self-approval refusal is structural: an
+> `IssueGrantDto` has no `approvedByUserId` field at all), revoke,
+> `recordAccess()` (the actual audit-trail write, re-deriving liveness
+> from `expiresAt`/`revokedAt` rather than trusting the cron), and
+> `SupportAccessExpiryCron` (`markedInertAt`, display-only).
+> **WO-39.6 — resource quotas + alerting**: `modules/resource-quotas/` —
+> `ResourceTierQuota`/`ResourceQuotaAlert` (new tables, reusing
+> `PlatformUsageRecord` for the underlying metering, never a duplicate
+> ingestion path), `ResourceQuotaAlertCron` (one query for "latest usage
+> per tenant/metric," `createMany({skipDuplicates:true})` for
+> idempotency, one digest to `PLATFORM_OPS_ALERT_EMAIL` per run). No
+> orchestrator enforcement, per this document's own "Out of scope."
+> **WO-39.7 — data export + deprovisioning**: `modules/tenant-data/` — a
+> real `pg_dump --format=custom` export (`PgDumpExportRunner`, behind a
+> `TenantExportRunner` extension point so an object-storage
+> implementation is a class swap later), `TenantRetentionCron` (tears
+> down only past `retentionExpiresAt` **and** only once a `COMPLETE`
+> export exists — `listOverdueWithoutExport()` is the failure path's own
+> listable surface), and `ProvisioningService.deprovisionTenant()` now
+> sets `retentionExpiresAt` (shorter for a lapsed `TRIAL`, doc 51) and
+> fires the automatic export synchronously, logging rather than
+> reverting the status transition if it fails. "Self-serve" is issued
+> today through an ops-authenticated endpoint on a tenant's behalf — this
+> control plane has no tenant-login principal yet, only
+> `PlatformOpsClient`; a true tenant self-service portal is named, not
+> invented.
+> **WO-39.8 — permissions**: `core/security/ops-permissions.ts` already
+> had the first four; this pass added `platform.trials.extend` (doc
+> 51). No role/seed system exists for `PlatformOpsClient` in this app —
+> scopes are assigned directly on the row — matching WO-39.1/39.2's own
+> shape; bootstrapping the first ops client has no endpoint (pre-existing
+> gap, not opened by this work).
+> Every service above is real, DB-integration-tested against a live
+> Postgres instance in this pass (see the session report), not only
+> unit-tested against a mocked Prisma client.
+
 **This document exercises a trigger `ENTERPRISE-SCALE.md` already named and
 deliberately deferred.** Br1 states: "one deployment serves exactly one
 brand... **do not build toward this speculatively**," and then names the

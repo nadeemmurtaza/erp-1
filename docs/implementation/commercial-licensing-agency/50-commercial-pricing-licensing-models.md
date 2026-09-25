@@ -1,5 +1,46 @@
 # 50 — Commercial pricing and licensing models
 
+> **Status: shipped (2026-09-25), WO-50.x.** All in `apps/platform/src/modules/billing/`.
+> **WO-50.1 — schema**: `PricingModel`, `perSeatPriceMinor`,
+> `oneTimeLicenseMinor`, `licenseDeploymentMode` on `PlatformPlan`
+> (`licenseDeploymentMode` kept as `String?` per this doc's own schema,
+> validated at the DTO layer against `OFFLINE`/`ONLINE` rather than
+> promoted to a DB enum); new `PlatformInvoice`/`PlatformInvoiceCreditNote`/
+> `PlatformCustomQuote` tables.
+> **WO-50.2 — `countBillableSeats()`**: `seat-counter.service.ts`. Opens
+> one `pg.Client` connection to the tenant's own already-resolved
+> connection string, runs exactly one read-only `COUNT(DISTINCT u.id)`
+> against that tenant's `User`/`UserRoleAssignment` tables (never a
+> second query), closes the connection, and returns a plain number the
+> caller uses once and discards — nothing is cached in the control
+> plane. Counts an `isActive` `User` holding at least one
+> `UserRoleAssignment` (the schema's own current RBAC grant, not the
+> legacy `role` enum apps/api's own comments call superseded) — verified
+> end to end in this pass against a real provisioned tenant database: a
+> role-assigned staff `User` counted, a plain `CUSTOMER` `User` did not.
+> **WO-50.3 — billing job**: `billing.service.ts` + `billing.cron.ts`.
+> One invoice per `(tenantId, periodStart, periodEnd)`
+> (`@@unique`-enforced), every price snapshotted onto the row at issue
+> time, a `ONE_TIME_LICENSE` tenant billed exactly once ever (checked
+> against its whole invoice history, its subscription closed out after),
+> a seat-count failure deferring only that tenant's invoice, never the
+> whole run — proven against a real tenant database in this pass (a
+> retried run issued zero new invoices).
+> **WO-50.4 — custom-quote flow**: `custom-quote.service.ts` +
+> `PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT`; the requester identity
+> comes from `OpsAuthGuard`'s own resolved principal
+> (`CurrentOpsClient()`), never a body field, which is what makes the
+> self-approval refusal structural.
+> **WO-50.5 — UI**: `plans.controller.ts`/`plans.service.ts` (plan CRUD —
+> genuinely new this pass, not previously exposed) plus
+> `modules/ui/pages/admin.html`'s "Plans" and tenant-invoice-history-
+> adjacent tabs (invoice history itself is reachable via
+> `GET /billing/tenant/:id/invoices`, not yet its own admin tab — a
+> deliberate minimal-UI scope call, see the session report).
+> Out of scope, honestly: no payment-gateway integration (doc 50 itself
+> never builds one either — "through whatever payment processor invoices
+> the tenant," named, not built).
+
 `PlatformPlan` (doc 39) already exists as the control plane's pricing
 primitive, but its one field — `monthlyPriceMinor: Int` — can express
 exactly one commercial model: a flat monthly fee. The promotional list

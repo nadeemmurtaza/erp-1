@@ -1,10 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { HostnameResolverService } from '../routing/hostname-resolver.service';
 import type { PlatformTenant } from '../../core/prisma/client';
 
 @Injectable()
 export class TenantsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly hostnameResolver: HostnameResolverService,
+  ) {}
+
+  /** Every hostname a tenant is reachable at — WO-39.3's own
+   *  cache-invalidation-on-tenant-change obligation. */
+  private hostnamesFor(tenant: Pick<PlatformTenant, 'slug' | 'customDomain'>): string[] {
+    return [this.hostnameResolver.subdomainFor(tenant.slug), tenant.customDomain].filter((h): h is string => !!h);
+  }
 
   async list(): Promise<PlatformTenant[]> {
     return this.prisma.platformTenant.findMany({ orderBy: { createdAt: 'desc' } });
@@ -27,16 +37,20 @@ export class TenantsService {
    * (WO-39.6/39.7's own territory) is a status flip back, not a rebuild.
    */
   async suspend(id: string, reason: string): Promise<PlatformTenant> {
-    return this.prisma.platformTenant.update({
+    const tenant = await this.prisma.platformTenant.update({
       where: { id },
       data: { status: 'SUSPENDED', suspendedAt: new Date(), suspendedReason: reason },
     });
+    this.hostnameResolver.invalidate(...this.hostnamesFor(tenant));
+    return tenant;
   }
 
   async reactivate(id: string): Promise<PlatformTenant> {
-    return this.prisma.platformTenant.update({
+    const tenant = await this.prisma.platformTenant.update({
       where: { id },
       data: { status: 'ACTIVE', suspendedAt: null, suspendedReason: null },
     });
+    this.hostnameResolver.invalidate(...this.hostnamesFor(tenant));
+    return tenant;
   }
 }

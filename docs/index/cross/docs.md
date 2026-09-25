@@ -2584,37 +2584,37 @@ _no second-level headings_
 - Acceptance  <sub>:331</sub>
 - Out of scope  <sub>:346</sub>
 
-### `docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md`  <sub>367 lines</sub>
+### `docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md`  <sub>417 lines</sub>
 
-- The one design decision that makes this safe: shared compute, never shared data  <sub>:14</sub>
-- 1. A tenant is a provisioned instance, not a row in a shared table  <sub>:45</sub>
-- 2. `brand.ts` becomes the default, exactly as `ENTERPRISE-SCALE.md` already specified  <sub>:120</sub>
-- 3. Support access is a grant with a clock, never standing access  <sub>:147</sub>
-- Scope lenses  <sub>:178</sub>
-- 4. What this tier owes every tenant it hosts, stated as commitments  <sub>:299</sub>
-- Work orders  <sub>:314</sub>
-- Acceptance  <sub>:338</sub>
-- Out of scope  <sub>:355</sub>
+- The one design decision that makes this safe: shared compute, never shared data  <sub>:64</sub>
+- 1. A tenant is a provisioned instance, not a row in a shared table  <sub>:95</sub>
+- 2. `brand.ts` becomes the default, exactly as `ENTERPRISE-SCALE.md` already specified  <sub>:170</sub>
+- 3. Support access is a grant with a clock, never standing access  <sub>:197</sub>
+- Scope lenses  <sub>:228</sub>
+- 4. What this tier owes every tenant it hosts, stated as commitments  <sub>:349</sub>
+- Work orders  <sub>:364</sub>
+- Acceptance  <sub>:388</sub>
+- Out of scope  <sub>:405</sub>
 
-### `docs/implementation/commercial-licensing-agency/50-commercial-pricing-licensing-models.md`  <sub>202 lines</sub>
+### `docs/implementation/commercial-licensing-agency/50-commercial-pricing-licensing-models.md`  <sub>243 lines</sub>
 
-- 1. A pricing model is a shape, not a bigger integer  <sub>:12</sub>
-- 2. A seat is counted, not assumed  <sub>:45</sub>
-- 3. `ONE_TIME_LICENSE` still goes through provisioning — a capital sale is not a different product  <sub>:68</sub>
-- Scope lenses  <sub>:78</sub>
-- Work orders  <sub>:166</sub>
-- Acceptance  <sub>:180</sub>
-- Out of scope  <sub>:193</sub>
+- 1. A pricing model is a shape, not a bigger integer  <sub>:53</sub>
+- 2. A seat is counted, not assumed  <sub>:86</sub>
+- 3. `ONE_TIME_LICENSE` still goes through provisioning — a capital sale is not a different product  <sub>:109</sub>
+- Scope lenses  <sub>:119</sub>
+- Work orders  <sub>:207</sub>
+- Acceptance  <sub>:221</sub>
+- Out of scope  <sub>:234</sub>
 
-### `docs/implementation/commercial-licensing-agency/51-free-demo-sandbox-onboarding.md`  <sub>176 lines</sub>
+### `docs/implementation/commercial-licensing-agency/51-free-demo-sandbox-onboarding.md`  <sub>225 lines</sub>
 
-- 1. A trial is a tenant with an expiry, not a different kind of tenant  <sub>:12</sub>
-- 2. Conversion and expiry are both status transitions, never silent  <sub>:41</sub>
-- 3. Self-service signup is doc 34's own pattern, aimed outward for once  <sub>:55</sub>
-- Scope lenses  <sub>:66</sub>
-- Work orders  <sub>:136</sub>
-- Acceptance  <sub>:153</sub>
-- Out of scope  <sub>:168</sub>
+- 1. A trial is a tenant with an expiry, not a different kind of tenant  <sub>:61</sub>
+- 2. Conversion and expiry are both status transitions, never silent  <sub>:90</sub>
+- 3. Self-service signup is doc 34's own pattern, aimed outward for once  <sub>:104</sub>
+- Scope lenses  <sub>:115</sub>
+- Work orders  <sub>:185</sub>
+- Acceptance  <sub>:202</sub>
+- Out of scope  <sub>:217</sub>
 
 ### `docs/implementation/commercial-licensing-agency/81-transparent-flat-rate-pricing.md`  <sub>55 lines</sub>
 

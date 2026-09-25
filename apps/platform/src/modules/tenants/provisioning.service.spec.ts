@@ -3,6 +3,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ProvisioningService } from './provisioning.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AppConfigService } from '../../core/config/app-config.service';
+import { TenantCredentialResolverService } from '../../core/tenant-credentials/tenant-credential-resolver.service';
+import { TenantExportService } from '../tenant-data/tenant-export.service';
+import { HostnameResolverService } from '../routing/hostname-resolver.service';
 import { DEPLOYMENT_PROVISIONER } from './deployment-provisioner.token';
 import { ProvisioningError, type DeploymentProvisioner } from './deployment-provisioner';
 
@@ -11,6 +14,7 @@ const ENCRYPTION_KEY = 'test-platform-encryption-key-32b';
 describe('ProvisioningService', () => {
   let prisma: any;
   let provisioner: jest.Mocked<DeploymentProvisioner>;
+  let exportsService: any;
   let service: ProvisioningService;
 
   const dto = { slug: 'acme', legalName: 'Acme Retail', planKey: 'solo-shared' };
@@ -18,7 +22,7 @@ describe('ProvisioningService', () => {
 
   beforeEach(async () => {
     prisma = {
-      platformTenant: { findUnique: jest.fn(), create: jest.fn(), update: jest.fn() },
+      platformTenant: { findUnique: jest.fn(), findUniqueOrThrow: jest.fn(), create: jest.fn(), update: jest.fn() },
       platformPlan: { findUnique: jest.fn() },
       platformSubscription: { findFirst: jest.fn(), create: jest.fn() },
       tenantDeploymentCredential: { findUnique: jest.fn(), create: jest.fn() },
@@ -28,13 +32,25 @@ describe('ProvisioningService', () => {
       provision: jest.fn(),
       deprovision: jest.fn(),
     };
-    const config = { get: (key: string) => (key === 'PLATFORM_ENCRYPTION_KEY' ? ENCRYPTION_KEY : undefined) };
+    exportsService = { requestExport: jest.fn().mockResolvedValue({ id: 'exp-1' }) };
+    const hostnameResolver = { invalidate: jest.fn(), subdomainFor: (slug: string) => `${slug}.platform.test` };
+    const config = {
+      get: (key: string) => {
+        if (key === 'PLATFORM_ENCRYPTION_KEY') return ENCRYPTION_KEY;
+        if (key === 'PLATFORM_RETENTION_DAYS_DEFAULT') return 30;
+        if (key === 'PLATFORM_RETENTION_DAYS_TRIAL') return 7;
+        return undefined;
+      },
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProvisioningService,
         { provide: PrismaService, useValue: prisma },
         { provide: AppConfigService, useValue: config },
+        { provide: TenantCredentialResolverService, useValue: { resolveConnectionString: jest.fn() } },
+        { provide: TenantExportService, useValue: exportsService },
+        { provide: HostnameResolverService, useValue: hostnameResolver },
         { provide: DEPLOYMENT_PROVISIONER, useValue: provisioner },
       ],
     }).compile();
@@ -120,12 +136,42 @@ describe('ProvisioningService', () => {
     expect(prisma.tenantDeploymentCredential.create).not.toHaveBeenCalled();
   });
 
-  it('deprovisionTenant marks the tenant DEPROVISIONED without touching the database provisioner', async () => {
-    prisma.platformTenant.update.mockResolvedValue({ id: 't1', status: 'DEPROVISIONED' });
+  describe('deprovisionTenant', () => {
+    it('marks the tenant DEPROVISIONED without touching the database provisioner, sets retentionExpiresAt, and fires an automatic export', async () => {
+      prisma.platformTenant.findUniqueOrThrow.mockResolvedValue({ id: 't1', status: 'ACTIVE' });
+      prisma.platformTenant.update.mockResolvedValue({ id: 't1', status: 'DEPROVISIONED' });
 
-    const result = await service.deprovisionTenant('t1');
+      const result = await service.deprovisionTenant('t1');
 
-    expect(result.status).toBe('DEPROVISIONED');
-    expect(provisioner.deprovision).not.toHaveBeenCalled();
+      expect(result.status).toBe('DEPROVISIONED');
+      expect(provisioner.deprovision).not.toHaveBeenCalled();
+      expect(prisma.platformTenant.update).toHaveBeenCalledWith({
+        where: { id: 't1' },
+        data: expect.objectContaining({ status: 'DEPROVISIONED', retentionExpiresAt: expect.any(Date) }),
+      });
+      expect(exportsService.requestExport).toHaveBeenCalledWith('t1', 'DEPROVISION');
+    });
+
+    it('gives a TRIAL tenant the shorter retention window', async () => {
+      prisma.platformTenant.findUniqueOrThrow.mockResolvedValue({ id: 't1', status: 'TRIAL' });
+      prisma.platformTenant.update.mockResolvedValue({ id: 't1', status: 'DEPROVISIONED' });
+
+      await service.deprovisionTenant('t1');
+
+      const data = prisma.platformTenant.update.mock.calls[0][0].data;
+      const daysOut = (data.retentionExpiresAt.getTime() - Date.now()) / (24 * 60 * 60 * 1000);
+      expect(daysOut).toBeLessThan(8);
+      expect(daysOut).toBeGreaterThan(6);
+    });
+
+    it('does not let a failed automatic export undo the DEPROVISIONED transition', async () => {
+      prisma.platformTenant.findUniqueOrThrow.mockResolvedValue({ id: 't1', status: 'ACTIVE' });
+      prisma.platformTenant.update.mockResolvedValue({ id: 't1', status: 'DEPROVISIONED' });
+      exportsService.requestExport.mockRejectedValue(new Error('pg_dump unavailable'));
+
+      const result = await service.deprovisionTenant('t1');
+
+      expect(result.status).toBe('DEPROVISIONED');
+    });
   });
 });

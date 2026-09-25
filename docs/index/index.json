@@ -3,32 +3,32 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1796,
-    "lines": 274533,
+    "files": 1860,
+    "lines": 278955,
     "routes": 589,
     "controllers": 106,
-    "models": 211,
-    "enums": 93,
-    "migrations": 71,
+    "models": 219,
+    "enums": 98,
+    "migrations": 74,
     "events": 48,
     "permissions": 68,
     "screens": 211,
     "crons": 17,
-    "specs": 196,
+    "specs": 207,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 88,
-      "lines": 11043,
-      "bytes": 736968,
+      "files": 152,
+      "lines": 15308,
+      "bytes": 943434,
       "label": "repository root files"
     },
     "infra": {
       "files": 57,
-      "lines": 29592,
-      "bytes": 1165130,
+      "lines": 29609,
+      "bytes": 1165944,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 392,
-      "lines": 60599,
-      "bytes": 3592657,
+      "lines": 60739,
+      "bytes": 3601692,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -22103,9 +22103,331 @@
       "indexes": []
     },
     {
+      "name": "PlatformCustomQuote",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 412,
+      "doc": "WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "listPriceMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quotedPriceMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "discountPct",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requiresApproval",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "QuoteStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestedByOpsClientId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedByOpsClientId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rejectedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rejectionReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "plan",
+          "type": "PlatformPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([tenantId])",
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "PlatformInvoice",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 345,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subscriptionId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "pricingModel",
+          "type": "PricingModel",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "seatCount",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "seatPriceMinorSnapshot",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "flatPriceMinorSnapshot",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "oneTimePriceMinorSnapshot",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "InvoiceStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "computedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "plan",
+          "type": "PlatformPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "creditNotes",
+          "type": "PlatformInvoiceCreditNote[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, periodStart, periodEnd])",
+        "@@index([tenantId, issuedAt])"
+      ]
+    },
+    {
+      "name": "PlatformInvoiceCreditNote",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 388,
+      "doc": "A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own \"the reversal document\" lens).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "invoiceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedByOpsClientId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "invoice",
+          "type": "PlatformInvoice",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([invoiceId])"
+      ]
+    },
+    {
       "name": "PlatformOpsClient",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 136,
+      "line": 213,
       "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
       "fields": [
         {
@@ -22172,7 +22494,7 @@
     {
       "name": "PlatformPlan",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 46,
+      "line": 99,
       "doc": "",
       "fields": [
         {
@@ -22218,6 +22540,34 @@
           "relation": false
         },
         {
+          "name": "pricingModel",
+          "type": "PricingModel",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "perSeatPriceMinor",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "oneTimeLicenseMinor",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "licenseDeploymentMode",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tenants",
           "type": "PlatformTenant[]",
           "id": false,
@@ -22230,6 +22580,20 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "invoices",
+          "type": "PlatformInvoice[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customQuotes",
+          "type": "PlatformCustomQuote[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": []
@@ -22237,7 +22601,7 @@
     {
       "name": "PlatformSubscription",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 64,
+      "line": 134,
       "doc": "",
       "fields": [
         {
@@ -22304,7 +22668,7 @@
     {
       "name": "PlatformTenant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 23,
+      "line": 27,
       "doc": "One row per hosted client.",
       "fields": [
         {
@@ -22326,6 +22690,13 @@
           "type": "String?",
           "id": false,
           "unique": true,
+          "relation": false
+        },
+        {
+          "name": "customDomainVerifiedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
           "relation": false
         },
         {
@@ -22392,6 +22763,41 @@
           "relation": false
         },
         {
+          "name": "trialExpiresAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "billingContactEmail",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "signupEmailVerifiedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "retentionExpiresAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "dataDeletedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "plan",
           "type": "PlatformPlan",
           "id": false,
@@ -22425,16 +22831,53 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "resourceQuotaAlerts",
+          "type": "ResourceQuotaAlert[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "dataExports",
+          "type": "TenantDataExport[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "invoices",
+          "type": "PlatformInvoice[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customQuotes",
+          "type": "PlatformCustomQuote[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "trialExtensions",
+          "type": "TrialExtension[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
-        "@@index([status])"
+        "@@index([status])",
+        "@@index([status, trialExpiresAt])",
+        "@@index([status, retentionExpiresAt])"
       ]
     },
     {
       "name": "PlatformUsageRecord",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 80,
+      "line": 150,
       "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
       "fields": [
         {
@@ -25603,6 +26046,148 @@
       ]
     },
     {
+      "name": "ResourceQuotaAlert",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 259,
+      "doc": "One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metric",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "windowStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "observedValue",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "limitValue",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "thresholdPct",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "acknowledgedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, metric, windowStart])",
+        "@@index([tenantId, createdAt])"
+      ]
+    },
+    {
+      "name": "ResourceTierQuota",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 234,
+      "doc": "--------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resourceTier",
+          "type": "ResourceTier",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metric",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "limitValue",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "warnThresholdPct",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([resourceTier, metric])"
+      ]
+    },
+    {
       "name": "RetailBrand",
       "file": "apps/api/prisma/schema/organization.prisma",
       "line": 40,
@@ -27352,6 +27937,87 @@
       ],
       "indexes": [
         "@@unique([zoneId, locale])"
+      ]
+    },
+    {
+      "name": "SignupVerification",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 447,
+      "doc": "A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "email",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "slug",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "legalName",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tokenHash",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "consumedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ipAddress",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([email, createdAt])"
       ]
     },
     {
@@ -29431,7 +30097,7 @@
     {
       "name": "SupportAccessGrant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 95,
+      "line": 165,
       "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
       "fields": [
         {
@@ -29493,6 +30159,13 @@
         {
           "name": "accessedAt",
           "type": "DateTime[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "markedInertAt",
+          "type": "DateTime?",
           "id": false,
           "unique": false,
           "relation": false
@@ -29753,9 +30426,111 @@
       ]
     },
     {
+      "name": "TenantDataExport",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 303,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "TenantExportStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "triggeredBy",
+          "type": "TenantExportTrigger",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "completedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "failedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "failureReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "storageKey",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sizeBytes",
+          "type": "BigInt?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([tenantId, requestedAt])"
+      ]
+    },
+    {
       "name": "TenantDeploymentCredential",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 116,
+      "line": 193,
       "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
       "fields": [
         {
@@ -29941,6 +30716,73 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "TrialExtension",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 465,
+      "doc": "WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so \"extended more than once\" is a query, not a memory.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "previousExpiresAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "newExpiresAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "extendedByOpsClientId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([tenantId, createdAt])"
+      ]
     },
     {
       "name": "User",
@@ -31524,6 +32366,15 @@
       ]
     },
     {
+      "name": "InvoiceStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 340,
+      "values": [
+        "ISSUED",
+        "CREDITED"
+      ]
+    },
+    {
       "name": "JournalEntryStatus",
       "file": "apps/api/prisma/schema/accounting.prisma",
       "line": 110,
@@ -31679,7 +32530,7 @@
     {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 126,
+      "line": 203,
       "values": [
         "ACTIVE",
         "REVOKED"
@@ -31814,6 +32665,16 @@
       ]
     },
     {
+      "name": "PricingModel",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 93,
+      "values": [
+        "PER_SEAT",
+        "FLAT_MONTHLY",
+        "ONE_TIME_LICENSE"
+      ]
+    },
+    {
       "name": "ProductCrossSellKind",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 673,
@@ -31867,6 +32728,16 @@
         "ACCEPTED",
         "REJECTED",
         "EXPIRED"
+      ]
+    },
+    {
+      "name": "QuoteStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 401,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
       ]
     },
     {
@@ -31932,7 +32803,7 @@
     {
       "name": "ResourceTier",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 14,
+      "line": 18,
       "values": [
         "STANDARD",
         "PLUS",
@@ -32121,7 +32992,7 @@
     {
       "name": "SubscriptionStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 58,
+      "line": 128,
       "values": [
         "ACTIVE",
         "PAST_DUE",
@@ -32139,11 +33010,32 @@
       ]
     },
     {
+      "name": "TenantExportStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 283,
+      "values": [
+        "PENDING",
+        "RUNNING",
+        "COMPLETE",
+        "FAILED"
+      ]
+    },
+    {
+      "name": "TenantExportTrigger",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 290,
+      "values": [
+        "MANUAL",
+        "DEPROVISION"
+      ]
+    },
+    {
       "name": "TenantStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
       "line": 7,
       "values": [
         "PROVISIONING",
+        "TRIAL",
         "ACTIVE",
         "SUSPENDED",
         "DEPROVISIONED"
@@ -33485,6 +34377,66 @@
       ]
     },
     {
+      "folder": "20260925090000_wo39_quotas_export_routing",
+      "file": "apps/platform/prisma/schema/migrations/20260925090000_wo39_quotas_export_routing/migration.sql",
+      "date": "2026-09-25",
+      "slug": "wo39_quotas_export_routing",
+      "statements": 18,
+      "kinds": [
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE TYPE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "PlatformTenant",
+        "ResourceQuotaAlert",
+        "ResourceTierQuota",
+        "SupportAccessGrant",
+        "TenantDataExport"
+      ]
+    },
+    {
+      "folder": "20260925090100_wo50_pricing_billing",
+      "file": "apps/platform/prisma/schema/migrations/20260925090100_wo50_pricing_billing/migration.sql",
+      "date": "2026-09-25",
+      "slug": "wo50_pricing_billing",
+      "statements": 20,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "PlatformCustomQuote",
+        "PlatformInvoice",
+        "PlatformInvoiceCreditNote",
+        "PlatformPlan"
+      ]
+    },
+    {
+      "folder": "20260925090200_wo51_trials",
+      "file": "apps/platform/prisma/schema/migrations/20260925090200_wo51_trials/migration.sql",
+      "date": "2026-09-25",
+      "slug": "wo51_trials",
+      "statements": 11,
+      "kinds": [
+        "ALTER TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "PlatformTenant",
+        "SignupVerification",
+        "TrialExtension"
+      ]
+    },
+    {
       "folder": "20260925150000_add_cod_risk_reason_and_city_stats",
       "file": "apps/api/prisma/schema/migrations/20260925150000_add_cod_risk_reason_and_city_stats/migration.sql",
       "date": "2026-09-25",
@@ -33555,7 +34507,38 @@
     "missingTables": [],
     "missingColumns": [],
     "missingEnums": [],
-    "missingEnumValues": []
+    "missingEnumValues": [
+      {
+        "enum": "InvoiceStatus",
+        "value": "PAID",
+        "file": "apps/api/prisma/schema/invoicing.prisma",
+        "line": 49
+      },
+      {
+        "enum": "InvoiceStatus",
+        "value": "VOID",
+        "file": "apps/api/prisma/schema/invoicing.prisma",
+        "line": 49
+      },
+      {
+        "enum": "QuoteStatus",
+        "value": "SENT",
+        "file": "apps/api/prisma/schema/invoicing.prisma",
+        "line": 15
+      },
+      {
+        "enum": "QuoteStatus",
+        "value": "ACCEPTED",
+        "file": "apps/api/prisma/schema/invoicing.prisma",
+        "line": 15
+      },
+      {
+        "enum": "QuoteStatus",
+        "value": "EXPIRED",
+        "file": "apps/api/prisma/schema/invoicing.prisma",
+        "line": 15
+      }
+    ]
   },
   "screens": [
     {
@@ -37933,6 +38916,99 @@
       ]
     },
     {
+      "file": "apps/platform/src/modules/billing/billing.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "BillingService",
+        "issueInvoiceForPeriod",
+        "runBillingForPeriod",
+        "issueCreditNote",
+        "previewInvoice"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/billing/custom-quote.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "CustomQuoteService",
+        "requestQuote",
+        "approve"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/billing/plans.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "PlansService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/billing/seat-counter.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "SeatCounterService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "ResourceQuotasService",
+        "upsertQuota"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/routing/hostname-resolver.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "HostnameResolverService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/support-access/support-access.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "SupportAccessService",
+        "issue",
+        "approve",
+        "recordAccess",
+        "markExpiredInert",
+        "findByTicketReference"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/tenant-data/tenant-export.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "TenantExportService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/tenant-data/tenant-retention.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "TenantRetentionService"
+      ]
+    },
+    {
       "file": "apps/platform/src/modules/tenants/postgres-database.provisioner.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -37945,9 +39021,10 @@
       "file": "apps/platform/src/modules/tenants/provisioning.service.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 9,
       "describes": [
-        "ProvisioningService"
+        "ProvisioningService",
+        "deprovisionTenant"
       ]
     },
     {
@@ -37957,6 +39034,30 @@
       "cases": 3,
       "describes": [
         "TenantsService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/trials/signup.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "SignupService",
+        "requestSignup",
+        "verifyAndProvision"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/trials/trials.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "TrialsService",
+        "extend",
+        "convert",
+        "expireToSuspended",
+        "listExtendedMoreThanOnce"
       ]
     },
     {
@@ -38536,8 +39637,8 @@
       "path": ".gitignore",
       "area": "infra",
       "kind": "file",
-      "lines": 63,
-      "bytes": 1451,
+      "lines": 68,
+      "bytes": 1693,
       "doc": "",
       "symbols": []
     },
@@ -52306,8 +53407,8 @@
       "path": "apps/platform/nest-cli.json",
       "area": "root",
       "kind": "json",
-      "lines": 18,
-      "bytes": 369,
+      "lines": 23,
+      "bytes": 484,
       "doc": "",
       "symbols": []
     },
@@ -52315,8 +53416,8 @@
       "path": "apps/platform/package.json",
       "area": "root",
       "kind": "json",
-      "lines": 51,
-      "bytes": 1371,
+      "lines": 55,
+      "bytes": 1499,
       "doc": "",
       "symbols": []
     },
@@ -52339,6 +53440,33 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/migrations/20260925090000_wo39_quotas_export_routing/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 96,
+      "bytes": 4259,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/prisma/schema/migrations/20260925090100_wo50_pricing_billing/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 107,
+      "bytes": 4522,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/prisma/schema/migrations/20260925090200_wo51_trials/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 60,
+      "bytes": 2530,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
       "area": "root",
       "kind": "toml",
@@ -52351,8 +53479,8 @@
       "path": "apps/platform/prisma/schema/platform.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 148,
-      "bytes": 4717,
+      "lines": 478,
+      "bytes": 19309,
       "doc": "WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the",
       "symbols": []
     },
@@ -52369,14 +53497,14 @@
       "path": "apps/platform/src/app.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 10,
-      "bytes": 329,
+      "lines": 44,
+      "bytes": 1946,
       "doc": "",
       "symbols": [
         {
           "name": "AppModule",
           "kind": "class",
-          "line": 9
+          "line": 43
         }
       ]
     },
@@ -52414,8 +53542,8 @@
       "path": "apps/platform/src/core/config/env.validation.ts",
       "area": "root",
       "kind": "config",
-      "lines": 59,
-      "bytes": 2588,
+      "lines": 130,
+      "bytes": 6606,
       "doc": "",
       "symbols": [
         {
@@ -52426,12 +53554,12 @@
         {
           "name": "PlatformEnv",
           "kind": "type",
-          "line": 50
+          "line": 121
         },
         {
           "name": "validatePlatformEnv",
           "kind": "function",
-          "line": 52
+          "line": 123
         }
       ]
     },
@@ -52443,6 +53571,36 @@
       "bytes": 525,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/platform/src/core/notifications/notifications.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 10,
+      "bytes": 277,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PlatformNotificationsModule",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/notifications/notifications.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 60,
+      "bytes": 2391,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PlatformNotificationsService",
+          "kind": "class",
+          "line": 20
+        }
+      ]
     },
     {
       "path": "apps/platform/src/core/prisma/client.ts",
@@ -52487,19 +53645,24 @@
       "path": "apps/platform/src/core/security/decorators.ts",
       "area": "root",
       "kind": "module",
-      "lines": 12,
-      "bytes": 460,
+      "lines": 24,
+      "bytes": 1077,
       "doc": "",
       "symbols": [
         {
           "name": "OPS_PERMISSIONS_KEY",
           "kind": "const",
-          "line": 4
+          "line": 5
         },
         {
           "name": "RequireOpsPermission",
           "kind": "const",
-          "line": 10
+          "line": 11
+        },
+        {
+          "name": "CurrentOpsClient",
+          "kind": "const",
+          "line": 20
         }
       ]
     },
@@ -52565,19 +53728,49 @@
       "path": "apps/platform/src/core/security/ops-permissions.ts",
       "area": "root",
       "kind": "module",
-      "lines": 21,
-      "bytes": 869,
+      "lines": 26,
+      "bytes": 1153,
       "doc": "The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps/api's tenant-facing PBAC catalog, seeded against that app's own User/Role/RolePermission tables.",
       "symbols": [
         {
           "name": "PLATFORM_PERMISSIONS",
           "kind": "const",
-          "line": 12
+          "line": 16
         },
         {
           "name": "PlatformPermission",
           "kind": "type",
-          "line": 20
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/tenant-credentials/tenant-credential-resolver.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 10,
+      "bytes": 302,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantCredentialResolverModule",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/core/tenant-credentials/tenant-credential-resolver.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 30,
+      "bytes": 1445,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantCredentialResolverService",
+          "kind": "class",
+          "line": 18
         }
       ]
     },
@@ -52585,10 +53778,621 @@
       "path": "apps/platform/src/main.ts",
       "area": "root",
       "kind": "module",
-      "lines": 34,
-      "bytes": 1040,
+      "lines": 48,
+      "bytes": 1701,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/billing.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 34,
+      "bytes": 1402,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BillingController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/billing.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 26,
+      "bytes": 1235,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BillingCron",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/billing.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 789,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BillingModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/billing.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 189,
+      "bytes": 8835,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/billing.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 196,
+      "bytes": 8168,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InvoicePreview",
+          "kind": "interface",
+          "line": 7
+        },
+        {
+          "name": "BillingService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/custom-quote.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 39,
+      "bytes": 1365,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomQuoteController",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/custom-quote.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 86,
+      "bytes": 3983,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/custom-quote.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 94,
+      "bytes": 3973,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestQuoteInput",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "CustomQuoteService",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/dto/create-plan.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 50,
+      "bytes": 1287,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreatePlanDto",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/dto/credit-note.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 20,
+      "bytes": 310,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IssueCreditNoteDto",
+          "kind": "class",
+          "line": 3
+        },
+        {
+          "name": "PreviewInvoiceDto",
+          "kind": "class",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/dto/request-quote.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 26,
+      "bytes": 384,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestQuoteDto",
+          "kind": "class",
+          "line": 3
+        },
+        {
+          "name": "RejectQuoteDto",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/plans.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 23,
+      "bytes": 642,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PlansController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/plans.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 61,
+      "bytes": 2765,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/plans.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 42,
+      "bytes": 1998,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PlansService",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/seat-counter.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 60,
+      "bytes": 2198,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/seat-counter.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 62,
+      "bytes": 2999,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SeatCounterService",
+          "kind": "class",
+          "line": 37
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/resource-quotas/dto/upsert-quota.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 22,
+      "bytes": 446,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UpsertQuotaDto",
+          "kind": "class",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/resource-quotas/resource-quota-alert.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 21,
+      "bytes": 844,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResourceQuotaAlertCron",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/resource-quotas/resource-quotas.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 30,
+      "bytes": 967,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResourceQuotasController",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/resource-quotas/resource-quotas.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 12,
+      "bytes": 443,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResourceQuotasModule",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 109,
+      "bytes": 4997,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/resource-quotas/resource-quotas.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 143,
+      "bytes": 6664,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResourceQuotasService",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/routing/hostname-resolver.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 78,
+      "bytes": 3668,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/routing/hostname-resolver.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 103,
+      "bytes": 3868,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RoutingInfo",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "HostnameResolverService",
+          "kind": "class",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/routing/routing.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 54,
+      "bytes": 2415,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RoutingController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/routing/routing.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 11,
+      "bytes": 328,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RoutingModule",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/support-access/dto/issue-grant.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 32,
+      "bytes": 754,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IssueGrantDto",
+          "kind": "class",
+          "line": 7
+        },
+        {
+          "name": "ApproveGrantDto",
+          "kind": "class",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/support-access/support-access-expiry.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 20,
+      "bytes": 830,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportAccessExpiryCron",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/support-access/support-access.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 54,
+      "bytes": 1826,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportAccessController",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/support-access/support-access.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 12,
+      "bytes": 438,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportAccessModule",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/support-access/support-access.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 202,
+      "bytes": 7948,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/support-access/support-access.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 128,
+      "bytes": 5454,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportAccessService",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/export-runner.token.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 2,
+      "bytes": 68,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TENANT_EXPORT_RUNNER",
+          "kind": "const",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/export-runner.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 31,
+      "bytes": 1145,
+      "doc": "WO-39.7's own extension point, the same `DeploymentProvisioner`-shaped seam `modules/tenants/deployment-provisioner.ts` already establishes: `TenantExportService` calls this interface and never a concrete implementation…",
+      "symbols": [
+        {
+          "name": "TenantExportRunner",
+          "kind": "interface",
+          "line": 9
+        },
+        {
+          "name": "TenantExportError",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/pg-dump-export.runner.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 47,
+      "bytes": 2217,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PgDumpExportRunner",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/tenant-data.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 31,
+      "bytes": 1433,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantDataModule",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/tenant-export.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 45,
+      "bytes": 1681,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantExportController",
+          "kind": "class",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/tenant-export.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 95,
+      "bytes": 4737,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/tenant-export.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 103,
+      "bytes": 4698,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantExportService",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/tenant-retention.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 21,
+      "bytes": 823,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantRetentionCron",
+          "kind": "class",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/tenant-retention.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 84,
+      "bytes": 3840,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/tenant-data/tenant-retention.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 86,
+      "bytes": 4034,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TenantRetentionService",
+          "kind": "class",
+          "line": 29
+        }
+      ]
     },
     {
       "path": "apps/platform/src/modules/tenants/deployment-provisioner.token.ts",
@@ -52629,8 +54433,8 @@
       "path": "apps/platform/src/modules/tenants/dto/provision-tenant.dto.ts",
       "area": "root",
       "kind": "dto",
-      "lines": 34,
-      "bytes": 865,
+      "lines": 48,
+      "bytes": 1305,
       "doc": "",
       "symbols": [
         {
@@ -52683,8 +54487,8 @@
       "path": "apps/platform/src/modules/tenants/provisioning.service.spec.ts",
       "area": "root",
       "kind": "unit test",
-      "lines": 132,
-      "bytes": 6372,
+      "lines": 178,
+      "bytes": 8881,
       "doc": "",
       "symbols": []
     },
@@ -52692,14 +54496,14 @@
       "path": "apps/platform/src/modules/tenants/provisioning.service.ts",
       "area": "root",
       "kind": "service",
-      "lines": 124,
-      "bytes": 5349,
+      "lines": 165,
+      "bytes": 7249,
       "doc": "",
       "symbols": [
         {
           "name": "ProvisioningService",
           "kind": "class",
-          "line": 21
+          "line": 24
         }
       ]
     },
@@ -52737,14 +54541,14 @@
       "path": "apps/platform/src/modules/tenants/tenants.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 18,
-      "bytes": 640,
+      "lines": 25,
+      "bytes": 1105,
       "doc": "",
       "symbols": [
         {
           "name": "TenantsModule",
           "kind": "class",
-          "line": 17
+          "line": 24
         }
       ]
     },
@@ -52752,8 +54556,8 @@
       "path": "apps/platform/src/modules/tenants/tenants.service.spec.ts",
       "area": "root",
       "kind": "unit test",
-      "lines": 49,
-      "bytes": 1675,
+      "lines": 58,
+      "bytes": 2331,
       "doc": "",
       "symbols": []
     },
@@ -52761,14 +54565,214 @@
       "path": "apps/platform/src/modules/tenants/tenants.service.ts",
       "area": "root",
       "kind": "service",
-      "lines": 43,
-      "bytes": 1565,
+      "lines": 57,
+      "bytes": 2251,
       "doc": "",
       "symbols": [
         {
           "name": "TenantsService",
           "kind": "class",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/trials/dto/extend-trial.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 12,
+      "bytes": 219,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ExtendTrialDto",
+          "kind": "class",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/trials/dto/signup.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 32,
+      "bytes": 746,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestSignupDto",
+          "kind": "class",
           "line": 6
+        },
+        {
+          "name": "VerifySignupDto",
+          "kind": "class",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/trials/signup.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 33,
+      "bytes": 1227,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SignupController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/trials/signup.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 126,
+      "bytes": 5997,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/trials/signup.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 106,
+      "bytes": 4761,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SignupService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/trials/trial-expiry.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 93,
+      "bytes": 3744,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TrialExpiryCron",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/trials/trials.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 43,
+      "bytes": 1580,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TrialsController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/trials/trials.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 16,
+      "bytes": 581,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TrialsModule",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/trials/trials.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 94,
+      "bytes": 4038,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/trials/trials.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 77,
+      "bytes": 3798,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TrialsService",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/ui/pages/admin.html",
+      "area": "root",
+      "kind": "html",
+      "lines": 0,
+      "bytes": 17427,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/ui/pages/signup.html",
+      "area": "root",
+      "kind": "html",
+      "lines": 0,
+      "bytes": 4662,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/ui/pages/verify.html",
+      "area": "root",
+      "kind": "html",
+      "lines": 0,
+      "bytes": 2384,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/ui/ui.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 44,
+      "bytes": 1767,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UiController",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/ui/ui.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 8,
+      "bytes": 159,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UiModule",
+          "kind": "class",
+          "line": 7
         }
       ]
     },
@@ -52776,8 +54780,8 @@
       "path": "apps/platform/test/setup-env.ts",
       "area": "root",
       "kind": "module",
-      "lines": 8,
-      "bytes": 296,
+      "lines": 9,
+      "bytes": 359,
       "doc": "",
       "symbols": []
     },
@@ -63056,8 +65060,8 @@
       "path": "docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 367,
-      "bytes": 19331,
+      "lines": 417,
+      "bytes": 22583,
       "doc": "",
       "symbols": []
     },
@@ -63065,8 +65069,8 @@
       "path": "docs/implementation/commercial-licensing-agency/50-commercial-pricing-licensing-models.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 202,
-      "bytes": 10781,
+      "lines": 243,
+      "bytes": 13414,
       "doc": "",
       "symbols": []
     },
@@ -63074,8 +65078,8 @@
       "path": "docs/implementation/commercial-licensing-agency/51-free-demo-sandbox-onboarding.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 176,
-      "bytes": 8791,
+      "lines": 225,
+      "bytes": 11941,
       "doc": "",
       "symbols": []
     },
@@ -65755,8 +67759,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18501,
-      "bytes": 678061,
+      "lines": 18513,
+      "bytes": 678633,
       "doc": "",
       "symbols": []
     },

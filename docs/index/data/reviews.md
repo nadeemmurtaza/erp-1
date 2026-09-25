@@ -3,7 +3,7 @@
 
 # Schema: `reviews.prisma`
 
-1 models · 1 enums. Owned by module [`reviews`](../modules/reviews.md).
+2 models · 1 enums. Owned by module [`reviews`](../modules/reviews.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -19,6 +19,21 @@ Migrations are **hand-written and forward-only** — never `prisma migrate diff`
 against a real database.
 
 ## Models
+
+### `ProductReviewSummary`  <sub>`apps/api/prisma/schema/reviews.prisma:62`</sub>
+
+> WO-9.9 (09-ai-layer.md).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `productId` | `String` | id | @id |
+| `summaryText` | `String` |  |  |
+| `fitSignal` | `String?` | optional |  |
+| `qualitySignal` | `String?` | optional |  |
+| `commonComplaints` | `Json?` | optional |  |
+| `reviewCountAtGeneration` | `Int` |  |  |
+| `generatedAt` | `DateTime` |  | @default(now()) |
+| `product` | `Product` | relation | @relation(fields: [productId], references: [id], onDelete: Cascade) |
 
 ### `Review`  <sub>`apps/api/prisma/schema/reviews.prisma:20`</sub>
 

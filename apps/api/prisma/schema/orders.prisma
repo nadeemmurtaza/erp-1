@@ -21,6 +21,17 @@ enum OrderChannel {
   POS
 }
 
+/// WO-9.4 (09-ai-layer.md). The recommended action a rule-based COD-risk
+/// score sorts an order into — never an instruction the system carries out
+/// itself. "A person decides; the score sorts a queue" (the doc's own
+/// words): nothing in this codebase auto-cancels or auto-requires payment
+/// off this field alone.
+enum CodRiskAction {
+  AUTO_CONFIRM
+  CONFIRMATION_CALL
+  REQUIRE_ADVANCE_PAYMENT
+}
+
 model Order {
   id        String      @id @default(cuid())
   number    String      @unique // "YSN-2026-0001"
@@ -86,6 +97,13 @@ model Order {
   /// every DELIVERED order past the threshold on every run.
   reviewRequestSentAt DateTime?
 
+  /// WO-9.4 — computed synchronously at place(), COD orders only (a paid
+  /// order has already cleared, RTO risk does not apply). Null for every
+  /// non-COD order, and for a COD order placed before this existed.
+  codRiskScore       Int?
+  codRiskAction      CodRiskAction?
+  codRiskComputedAt  DateTime?
+
   user                    User?                    @relation(fields: [userId], references: [id], onDelete: SetNull)
   contact                 Contact?                 @relation(fields: [contactId], references: [id], onDelete: SetNull)
   sourceCart              Cart?                    @relation(fields: [sourceCartId], references: [id], onDelete: SetNull)
@@ -116,6 +134,7 @@ model Order {
   @@index([channel])
   @@index([shiftId])
   @@index([sourceCartId])
+  @@index([codRiskAction, placedAt])
 }
 
 enum OrderItemFulfillmentStatus {

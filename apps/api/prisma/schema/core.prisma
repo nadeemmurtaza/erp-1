@@ -476,3 +476,50 @@ model AnalyticsEvent {
   @@index([type, createdAt])
   @@index([sessionId, createdAt])
 }
+
+/// Phase 9 (docs/implementation/ai-layer/09-ai-layer.md). Every AiProvider
+/// call, whichever feature triggered it — the doc's own non-negotiable
+/// ("Log tokens and cost per call, per feature") plus what AiService reads
+/// to enforce the monthly budget cap. Never deleted by a feature; only
+/// AiService writes here.
+enum AiFeature {
+  ALT_TEXT
+  SEO_COPY
+  SIZE_RECOMMENDATION
+  DEMAND_FORECAST
+  COD_RISK
+  SEMANTIC_SEARCH
+  VISUAL_SEARCH
+  RECOMMENDATIONS
+  WHATSAPP_ASSISTANT
+  MARKDOWN_SUGGESTION
+  REVIEW_SUMMARY
+  IMPORT_CLEANUP
+}
+
+enum AiCallKind {
+  COMPLETION
+  EMBEDDING
+  VISION
+}
+
+model AiUsageLog {
+  id           String     @id @default(cuid())
+  feature      AiFeature
+  kind         AiCallKind
+  /// Matches the calling AiProvider's own `key` — "anthropic" | "openai".
+  provider     String
+  model        String
+  inputTokens  Int        @default(0)
+  outputTokens Int        @default(0)
+  /// Estimated from the provider's published per-token rate at call time —
+  /// see ai.service.ts's own PRICING table. Paisa, so it sums cleanly with
+  /// every other money figure in this codebase.
+  costPaisa    Int        @default(0)
+  succeeded    Boolean    @default(true)
+  errorMessage String?
+  createdAt    DateTime   @default(now())
+
+  @@index([feature, createdAt])
+  @@index([createdAt])
+}

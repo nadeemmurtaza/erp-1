@@ -52,6 +52,7 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
+| `ProductReviewSummary` | 8 | :62 | WO-9.9 (09-ai-layer.md). |
 | `Review` | 17 | :20 |  |
 
 

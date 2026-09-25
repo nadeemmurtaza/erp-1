@@ -78,6 +78,8 @@ model Contact {
   inboundEmails    InboundEmail[]
   /// marketing.prisma (WO-8.4).
   campaignReceipts CampaignRecipient[]
+  /// whatsapp-assistant.prisma (WO-9.7).
+  whatsAppConversations WhatsAppConversation[]
 
   @@index([status])
   @@index([ownerId])

@@ -59,10 +59,11 @@ against a real database.
 | `tags` | `ContactTag[]` |  |  |
 | `inboundEmails` | `InboundEmail[]` |  |  |
 | `campaignReceipts` | `CampaignRecipient[]` |  |  |
+| `whatsAppConversations` | `WhatsAppConversation[]` |  |  |
 
 Indexes: `@@index([status])` · `@@index([ownerId])` · `@@index([lastOrderAt])` · `@@index([lifetimeValue])` · `@@index([rfmRecencyScore, rfmFrequencyScore, rfmMonetaryScore])`
 
-### `ContactTag`  <sub>`apps/api/prisma/schema/crm.prisma:240`</sub>
+### `ContactTag`  <sub>`apps/api/prisma/schema/crm.prisma:242`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -73,7 +74,7 @@ Indexes: `@@index([status])` · `@@index([ownerId])` · `@@index([lastOrderAt])`
 
 Indexes: `@@id([contactId, tagId])`
 
-### `FollowUpTask`  <sub>`apps/api/prisma/schema/crm.prisma:211`</sub>
+### `FollowUpTask`  <sub>`apps/api/prisma/schema/crm.prisma:213`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -93,7 +94,7 @@ Indexes: `@@id([contactId, tagId])`
 
 Indexes: `@@index([isDone, dueAt])` · `@@index([assigneeId, isDone])`
 
-### `InboundEmail`  <sub>`apps/api/prisma/schema/crm.prisma:166`</sub>
+### `InboundEmail`  <sub>`apps/api/prisma/schema/crm.prisma:168`</sub>
 
 > A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's reply to an order or support email.
 
@@ -119,7 +120,7 @@ Indexes: `@@index([isDone, dueAt])` · `@@index([assigneeId, isDone])`
 
 Indexes: `@@unique([emailAccountId, messageId])` · `@@index([contactId])` · `@@index([receivedAt])`
 
-### `InboundEmailReply`  <sub>`apps/api/prisma/schema/crm.prisma:198`</sub>
+### `InboundEmailReply`  <sub>`apps/api/prisma/schema/crm.prisma:200`</sub>
 
 > A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (not resolved by purpose — a reply has to leave from the mailbox the customer is already tal…
 
@@ -135,7 +136,7 @@ Indexes: `@@unique([emailAccountId, messageId])` · `@@index([contactId])` · `@
 
 Indexes: `@@index([inboundEmailId, sentAt])`
 
-### `Interaction`  <sub>`apps/api/prisma/schema/crm.prisma:140`</sub>
+### `Interaction`  <sub>`apps/api/prisma/schema/crm.prisma:142`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -153,7 +154,7 @@ Indexes: `@@index([inboundEmailId, sentAt])`
 
 Indexes: `@@index([contactId, occurredAt])` · `@@index([leadId, occurredAt])`
 
-### `Lead`  <sub>`apps/api/prisma/schema/crm.prisma:99`</sub>
+### `Lead`  <sub>`apps/api/prisma/schema/crm.prisma:101`</sub>
 
 > An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact-form submission.
 
@@ -183,7 +184,7 @@ Indexes: `@@index([contactId, occurredAt])` · `@@index([leadId, occurredAt])`
 
 Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([contactId])`
 
-### `Segment`  <sub>`apps/api/prisma/schema/crm.prisma:252`</sub>
+### `Segment`  <sub>`apps/api/prisma/schema/crm.prisma:254`</sub>
 
 > A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filter definition and exportable to CSV for WhatsApp broadcasts.
 
@@ -200,7 +201,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 | `campaigns` | `Campaign[]` |  |  |
 | `onsiteMessages` | `OnsiteMessage[]` |  |  |
 
-### `Tag`  <sub>`apps/api/prisma/schema/crm.prisma:231`</sub>
+### `Tag`  <sub>`apps/api/prisma/schema/crm.prisma:233`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -225,7 +226,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 | `DORMANT` |  |
 | `BLOCKED` |  |
 
-### `InteractionKind`  <sub>`apps/api/prisma/schema/crm.prisma:130`</sub>
+### `InteractionKind`  <sub>`apps/api/prisma/schema/crm.prisma:132`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -237,7 +238,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 | `NOTE` |  |
 | `COMPLAINT` |  |
 
-### `LeadStatus`  <sub>`apps/api/prisma/schema/crm.prisma:89`</sub>
+### `LeadStatus`  <sub>`apps/api/prisma/schema/crm.prisma:91`</sub>
 
 | Value | Meaning |
 |---|---|

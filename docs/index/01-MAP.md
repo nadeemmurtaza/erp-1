@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 657 | 90,110 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 665 | 91,536 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 59,940 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 315 | 49,810 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 27,374 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,579 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 51 | 5,387 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 51 | 5,409 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,615 |  |
 | `.claude` | 22 | 1,017 |  |
@@ -64,7 +64,7 @@ Each is independent: no module imports another except through a named
 | [`analytics`](modules/analytics.md) | core | MODULES allowlist | 19 | — |
 | [`bom`](modules/bom.md) | core | MODULES allowlist | 20 | 5 |
 | [`cart`](modules/cart.md) | core | MODULES allowlist | 8 | 3 |
-| [`catalog`](modules/catalog.md) | core | MODULES allowlist | 43 | 24 |
+| [`catalog`](modules/catalog.md) | core | MODULES allowlist | 43 | 27 |
 | [`collections`](modules/collections.md) | core | MODULES allowlist | 10 | — |
 | [`content`](modules/content.md) | core | MODULES allowlist | 24 | 8 |
 | [`crm`](modules/crm.md) | core | MODULES allowlist | 26 | 9 |
@@ -72,7 +72,7 @@ Each is independent: no module imports another except through a named
 | [`fulfilment`](modules/fulfilment.md) | core | MODULES allowlist | 39 | 16 |
 | [`giftcards`](modules/giftcards.md) | core | MODULES allowlist | 10 | 3 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
-| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 7 |
+| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 9 |
 | [`loyalty`](modules/loyalty.md) | core | MODULES allowlist | 11 | 3 |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 11 | 3 |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 12 | 4 |
@@ -88,7 +88,7 @@ Each is independent: no module imports another except through a named
 | [`promotions`](modules/promotions.md) | core | MODULES allowlist | 12 | 3 |
 | [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 17 | 7 |
 | [`reports`](modules/reports.md) | core | MODULES allowlist | 12 | — |
-| [`reviews`](modules/reviews.md) | core | MODULES allowlist | 6 | 1 |
+| [`reviews`](modules/reviews.md) | core | MODULES allowlist | 6 | 2 |
 | [`search`](modules/search.md) | core | MODULES allowlist | 5 | 2 |
 | [`settings`](modules/settings.md) | core | always on | 6 | — |
 | [`stitching`](modules/stitching.md) | apparel | MODULES allowlist | 21 | 8 |
@@ -107,6 +107,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 
 | Subsystem | Files | What it owns |
 |---|---|---|
+| [`ai`](core/ai.md) | 6 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and Stor… |
 | [`audit`](core/audit.md) | 2 |  |
 | [`auth`](core/auth.md) | 21 |  |
 | [`checkout`](core/checkout.md) | 1 |  |

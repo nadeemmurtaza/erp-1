@@ -79,15 +79,17 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
 | `Location` | 15 | :81 | A place stock physically lives. |
-| `StockCount` | 14 | :196 |  |
-| `StockCountLine` | 10 | :219 |  |
+| `MarkdownSuggestion` | 12 | :225 |  |
+| `StockCount` | 14 | :251 |  |
+| `StockCountLine` | 10 | :274 |  |
 | `StockMovement` | 15 | :22 |  |
 | `StockVariance` | 14 | :132 | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened i… |
+| `VariantForecast` | 7 | :197 | WO-9.3 (09-ai-layer.md). |
 | `VariantLocationStock` | 6 | :161 | Stock, per variant, per location. |
 | `VariantSalesStat` | 11 | :174 | CACHE: variantId as primary key. |
 
 
-Enums: `LocationType` (4) · `StockCountStatus` (4) · `StockMovementReason` (14) · `StockVarianceStatus` (2)
+Enums: `LocationType` (4) · `MarkdownSuggestionStatus` (3) · `StockCountStatus` (4) · `StockMovementReason` (14) · `StockVarianceStatus` (2)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 

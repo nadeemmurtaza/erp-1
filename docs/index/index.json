@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1656,
-    "lines": 254004,
+    "files": 1664,
+    "lines": 255452,
     "routes": 536,
     "controllers": 94,
-    "models": 194,
-    "enums": 80,
-    "migrations": 66,
+    "models": 203,
+    "enums": 88,
+    "migrations": 67,
     "events": 45,
-    "permissions": 63,
+    "permissions": 65,
     "screens": 206,
     "crons": 13,
-    "specs": 155,
+    "specs": 156,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 657,
-      "lines": 90110,
-      "bytes": 3305778,
+      "files": 665,
+      "lines": 91536,
+      "bytes": 3361358,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -63,8 +63,8 @@
     },
     "packages": {
       "files": 68,
-      "lines": 5969,
-      "bytes": 201501,
+      "lines": 5991,
+      "bytes": 202184,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -858,6 +858,18 @@
     }
   ],
   "apiCore": [
+    {
+      "name": "ai",
+      "files": [
+        "apps/api/src/core/ai/ai-provider.ts",
+        "apps/api/src/core/ai/ai.module.ts",
+        "apps/api/src/core/ai/ai.service.spec.ts",
+        "apps/api/src/core/ai/ai.service.ts",
+        "apps/api/src/core/ai/providers/anthropic.provider.ts",
+        "apps/api/src/core/ai/providers/openai.provider.ts"
+      ],
+      "page": "docs/index/core/ai.md"
+    },
     {
       "name": "audit",
       "files": [
@@ -10790,6 +10802,32 @@
         "ADMIN"
       ],
       "inSeed": true
+    },
+    {
+      "key": "ai.view",
+      "label": "View AI usage, cost and the review queue for AI-generated drafts",
+      "category": "Administration",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "ai.manage",
+      "label": "Configure AI providers and the monthly budget, and approve or reject AI-generated drafts",
+      "category": "Administration",
+      "sensitivity": "medium",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     }
   ],
   "events": [
@@ -11601,6 +11639,95 @@
       "indexes": [
         "@@unique([userId, level, retailBrandId, branchNodeId])",
         "@@index([userId])"
+      ]
+    },
+    {
+      "name": "AiUsageLog",
+      "file": "apps/api/prisma/schema/core.prisma",
+      "line": 506,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "feature",
+          "type": "AiFeature",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "AiCallKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "provider",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "model",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "inputTokens",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "outputTokens",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "costPaisa",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "succeeded",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "errorMessage",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([feature, createdAt])",
+        "@@index([createdAt])"
       ]
     },
     {
@@ -13626,7 +13753,7 @@
     {
       "name": "Collection",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 530,
+      "line": 550,
       "doc": "",
       "fields": [
         {
@@ -13707,7 +13834,7 @@
     {
       "name": "CollectionProduct",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 570,
+      "line": 590,
       "doc": "Manual membership and manual sort order.",
       "fields": [
         {
@@ -13754,7 +13881,7 @@
     {
       "name": "CollectionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 553,
+      "line": 573,
       "doc": "",
       "fields": [
         {
@@ -14156,6 +14283,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "whatsAppConversations",
+          "type": "WhatsAppConversation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -14169,7 +14303,7 @@
     {
       "name": "ContactTag",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 240,
+      "line": 242,
       "doc": "",
       "fields": [
         {
@@ -15130,7 +15264,7 @@
     {
       "name": "FollowUpTask",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 211,
+      "line": 213,
       "doc": "",
       "fields": [
         {
@@ -15950,7 +16084,7 @@
     {
       "name": "InboundEmail",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 166,
+      "line": 168,
       "doc": "A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's reply to an order or support email.",
       "fields": [
         {
@@ -16082,7 +16216,7 @@
     {
       "name": "InboundEmailReply",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 198,
+      "line": 200,
       "doc": "A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (not resolved by purpose — a reply has to leave from the mailbox the customer is already tal…",
       "fields": [
         {
@@ -16142,7 +16276,7 @@
     {
       "name": "Interaction",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 140,
+      "line": 142,
       "doc": "",
       "fields": [
         {
@@ -16775,7 +16909,7 @@
     {
       "name": "Lead",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 99,
+      "line": 101,
       "doc": "An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact-form submission.",
       "fields": [
         {
@@ -17569,6 +17703,102 @@
       "indexes": []
     },
     {
+      "name": "MarkdownSuggestion",
+      "file": "apps/api/prisma/schema/inventory.prisma",
+      "line": 225,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "discountId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "suggestedBps",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "estimatedClearancePct",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "estimatedClearanceDays",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "marginBeforePaisa",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "marginAfterPaisa",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "MarkdownSuggestionStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variant",
+          "type": "ProductVariant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([variantId, status])",
+        "@@index([status, createdAt])"
+      ]
+    },
+    {
       "name": "MeasurementField",
       "file": "apps/api/prisma/schema/measurements.prisma",
       "line": 50,
@@ -18351,7 +18581,7 @@
     {
       "name": "OptionTemplate",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 441,
+      "line": 461,
       "doc": "Store-level, reusable option axis — \"Size: XS/S/M/L/XL/XXL\" typed once under Catalogue -> Options & attributes instead of on every product.",
       "fields": [
         {
@@ -18411,7 +18641,7 @@
     {
       "name": "OptionTemplateTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 454,
+      "line": 474,
       "doc": "",
       "fields": [
         {
@@ -18457,7 +18687,7 @@
     {
       "name": "OptionTemplateValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 465,
+      "line": 485,
       "doc": "",
       "fields": [
         {
@@ -18525,7 +18755,7 @@
     {
       "name": "OptionTemplateValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 480,
+      "line": 500,
       "doc": "",
       "fields": [
         {
@@ -18571,7 +18801,7 @@
     {
       "name": "Order",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 24,
+      "line": 35,
       "doc": "",
       "fields": [
         {
@@ -18827,6 +19057,27 @@
           "relation": false
         },
         {
+          "name": "codRiskScore",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "codRiskAction",
+          "type": "CodRiskAction?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "codRiskComputedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "user",
           "type": "User?",
           "id": false,
@@ -18939,7 +19190,8 @@
         "@@index([guestPhone])",
         "@@index([channel])",
         "@@index([shiftId])",
-        "@@index([sourceCartId])"
+        "@@index([sourceCartId])",
+        "@@index([codRiskAction, placedAt])"
       ]
     },
     {
@@ -19119,7 +19371,7 @@
     {
       "name": "OrderItem",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 132,
+      "line": 151,
       "doc": "",
       "fields": [
         {
@@ -19397,7 +19649,7 @@
     {
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 312,
+      "line": 331,
       "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
@@ -19420,7 +19672,7 @@
     {
       "name": "OrderStatusEvent",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 219,
+      "line": 238,
       "doc": "",
       "fields": [
         {
@@ -21547,6 +21799,41 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "aiSuggestions",
+          "type": "ProductAiSuggestion[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sizeBias",
+          "type": "ProductSizeBias?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reviewSummary",
+          "type": "ProductReviewSummary?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "crossSellsFrom",
+          "type": "ProductCrossSell[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "crossSellsTo",
+          "type": "ProductCrossSell[]",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
@@ -21557,9 +21844,173 @@
       ]
     },
     {
+      "name": "ProductAiSuggestion",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 626,
+      "doc": "WO-9.1.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "imageId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "AiSuggestionKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "suggestedText",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "AiSuggestionStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reviewedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reviewedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "product",
+          "type": "Product",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "image",
+          "type": "ProductImage?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([productId, status])",
+        "@@index([status, createdAt])"
+      ]
+    },
+    {
+      "name": "ProductCrossSell",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 677,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "relatedProductId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "ProductCrossSellKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "product",
+          "type": "Product",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "relatedProduct",
+          "type": "Product",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([productId, relatedProductId])",
+        "@@index([relatedProductId])"
+      ]
+    },
+    {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 342,
+      "line": 362,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -21591,7 +22042,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 308,
+      "line": 327,
       "doc": "",
       "fields": [
         {
@@ -21670,6 +22121,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "aiSuggestions",
+          "type": "ProductAiSuggestion[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -21679,7 +22137,7 @@
     {
       "name": "ProductImageTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 330,
+      "line": 350,
       "doc": "Alt text per locale.",
       "fields": [
         {
@@ -21725,7 +22183,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 363,
+      "line": 383,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -21800,7 +22258,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 380,
+      "line": 400,
       "doc": "",
       "fields": [
         {
@@ -21846,7 +22304,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 392,
+      "line": 412,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -21921,7 +22379,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 410,
+      "line": 430,
       "doc": "",
       "fields": [
         {
@@ -21965,9 +22423,139 @@
       ]
     },
     {
+      "name": "ProductReviewSummary",
+      "file": "apps/api/prisma/schema/reviews.prisma",
+      "line": 62,
+      "doc": "WO-9.9 (09-ai-layer.md).",
+      "fields": [
+        {
+          "name": "productId",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "summaryText",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "fitSignal",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "qualitySignal",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "commonComplaints",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reviewCountAtGeneration",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "generatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "product",
+          "type": "Product",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "ProductSizeBias",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 649,
+      "doc": "WO-9.2.",
+      "fields": [
+        {
+          "name": "productId",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tooSmallPct",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "trueToSizePct",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tooLargePct",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sampleSize",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shift",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "computedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "product",
+          "type": "Product",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "ProductTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 176,
+      "line": 184,
       "doc": "",
       "fields": [
         {
@@ -22041,6 +22629,13 @@
           "relation": false
         },
         {
+          "name": "embedding",
+          "type": "Unsupported(\"vector(1536)\")?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "product",
           "type": "Product",
           "id": false,
@@ -22056,7 +22651,7 @@
     {
       "name": "ProductVariant",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 206,
+      "line": 222,
       "doc": "",
       "fields": [
         {
@@ -22387,6 +22982,20 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "forecast",
+          "type": "VariantForecast?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "markdownSuggestions",
+          "type": "MarkdownSuggestion[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -22397,7 +23006,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 424,
+      "line": 444,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -23055,7 +23664,7 @@
     {
       "name": "Redirect",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 494,
+      "line": 514,
       "doc": "A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).",
       "fields": [
         {
@@ -24360,7 +24969,7 @@
     {
       "name": "Segment",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 252,
+      "line": 254,
       "doc": "A saved contact filter — \"repeat buyers in Lahore\", \"bridal enquiries\" — stored as a filter definition and exportable to CSV for WhatsApp broadcasts.",
       "fields": [
         {
@@ -24476,7 +25085,7 @@
     {
       "name": "Shipment",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 243,
+      "line": 262,
       "doc": "",
       "fields": [
         {
@@ -25888,7 +26497,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 290,
+      "line": 309,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -25969,7 +26578,7 @@
     {
       "name": "StockCount",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 196,
+      "line": 251,
       "doc": "",
       "fields": [
         {
@@ -26078,7 +26687,7 @@
     {
       "name": "StockCountLine",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 219,
+      "line": 274,
       "doc": "",
       "fields": [
         {
@@ -27173,7 +27782,7 @@
     {
       "name": "Tag",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 231,
+      "line": 233,
       "doc": "",
       "fields": [
         {
@@ -28250,6 +28859,64 @@
       ]
     },
     {
+      "name": "VariantForecast",
+      "file": "apps/api/prisma/schema/inventory.prisma",
+      "line": 197,
+      "doc": "WO-9.3 (09-ai-layer.md).",
+      "fields": [
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "forecastedDailyDemand",
+          "type": "Float",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "seasonalFactor",
+          "type": "Float?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "projectedStockoutAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reasonEn",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "computedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variant",
+          "type": "ProductVariant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "VariantLocationStock",
       "file": "apps/api/prisma/schema/inventory.prisma",
       "line": 161,
@@ -28387,6 +29054,148 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "WhatsAppConversation",
+      "file": "apps/api/prisma/schema/whatsapp-assistant.prisma",
+      "line": 19,
+      "doc": "Set once identity is verified (the inbound phone number matches this Contact's own phoneE164 — WhatsAppAssistantService's own non-negotiable, never relaxed) and cleared to true the moment any message…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "contactId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "phoneE164",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lastMessageAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "handedOffToHuman",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "handoffReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "handedOffAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "contact",
+          "type": "Contact",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "messages",
+          "type": "WhatsAppMessage[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([contactId, lastMessageAt])",
+        "@@index([phoneE164])"
+      ]
+    },
+    {
+      "name": "WhatsAppMessage",
+      "file": "apps/api/prisma/schema/whatsapp-assistant.prisma",
+      "line": 41,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "conversationId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "direction",
+          "type": "WhatsAppMessageDirection",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "body",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "aiGenerated",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "conversation",
+          "type": "WhatsAppConversation",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([conversationId, createdAt])"
+      ]
     },
     {
       "name": "WishlistItem",
@@ -28658,6 +29467,57 @@
       ]
     },
     {
+      "name": "AiCallKind",
+      "file": "apps/api/prisma/schema/core.prisma",
+      "line": 500,
+      "values": [
+        "COMPLETION",
+        "EMBEDDING",
+        "VISION"
+      ]
+    },
+    {
+      "name": "AiFeature",
+      "file": "apps/api/prisma/schema/core.prisma",
+      "line": 485,
+      "values": [
+        "ALT_TEXT",
+        "SEO_COPY",
+        "SIZE_RECOMMENDATION",
+        "DEMAND_FORECAST",
+        "COD_RISK",
+        "SEMANTIC_SEARCH",
+        "VISUAL_SEARCH",
+        "RECOMMENDATIONS",
+        "WHATSAPP_ASSISTANT",
+        "MARKDOWN_SUGGESTION",
+        "REVIEW_SUMMARY",
+        "IMPORT_CLEANUP"
+      ]
+    },
+    {
+      "name": "AiSuggestionKind",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 608,
+      "values": [
+        "ALT_TEXT",
+        "META_TITLE",
+        "META_DESCRIPTION",
+        "DESCRIPTION",
+        "CARE_INSTRUCTIONS"
+      ]
+    },
+    {
+      "name": "AiSuggestionStatus",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 616,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
+      ]
+    },
+    {
       "name": "BomStatus",
       "file": "apps/api/prisma/schema/bom.prisma",
       "line": 69,
@@ -28716,9 +29576,19 @@
       ]
     },
     {
+      "name": "CodRiskAction",
+      "file": "apps/api/prisma/schema/orders.prisma",
+      "line": 29,
+      "values": [
+        "AUTO_CONFIRM",
+        "CONFIRMATION_CALL",
+        "REQUIRE_ADVANCE_PAYMENT"
+      ]
+    },
+    {
       "name": "CollectionSortStrategy",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 519,
+      "line": 539,
       "values": [
         "MANUAL",
         "BEST_SELLING",
@@ -28852,7 +29722,7 @@
     {
       "name": "InteractionKind",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 130,
+      "line": 132,
       "values": [
         "CALL",
         "WHATSAPP",
@@ -28885,7 +29755,7 @@
     {
       "name": "LeadStatus",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 89,
+      "line": 91,
       "values": [
         "NEW",
         "CONTACTED",
@@ -28945,6 +29815,16 @@
       "values": [
         "OPEN",
         "DISPATCHED"
+      ]
+    },
+    {
+      "name": "MarkdownSuggestionStatus",
+      "file": "apps/api/prisma/schema/inventory.prisma",
+      "line": 219,
+      "values": [
+        "PENDING",
+        "CREATED",
+        "DISMISSED"
       ]
     },
     {
@@ -29028,7 +29908,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 351,
+      "line": 371,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -29048,7 +29928,7 @@
     {
       "name": "OrderItemFulfillmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 121,
+      "line": 140,
       "values": [
         "READY",
         "AWAITING_STOCK",
@@ -29151,6 +30031,16 @@
         "PENDING",
         "ACTIVE",
         "SUSPENDED"
+      ]
+    },
+    {
+      "name": "ProductCrossSellKind",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 671,
+      "values": [
+        "MANUAL",
+        "CO_OCCURRENCE",
+        "EMBEDDING"
       ]
     },
     {
@@ -29318,7 +30208,7 @@
     {
       "name": "ShipmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 234,
+      "line": 253,
       "values": [
         "PENDING",
         "DISPATCHED",
@@ -29378,7 +30268,7 @@
     {
       "name": "StockCountStatus",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 189,
+      "line": 244,
       "values": [
         "DRAFT",
         "IN_PROGRESS",
@@ -29486,6 +30376,15 @@
         "STAFF",
         "TAILOR",
         "ADMIN"
+      ]
+    },
+    {
+      "name": "WhatsAppMessageDirection",
+      "file": "apps/api/prisma/schema/whatsapp-assistant.prisma",
+      "line": 36,
+      "values": [
+        "INBOUND",
+        "OUTBOUND"
       ]
     },
     {
@@ -30754,6 +31653,33 @@
         "ProductTranslation",
         "SearchQueryLog",
         "SearchSynonym"
+      ]
+    },
+    {
+      "folder": "20260925050000_add_ai_layer",
+      "file": "apps/api/prisma/schema/migrations/20260925050000_add_ai_layer/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_ai_layer",
+      "statements": 43,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "AiUsageLog",
+        "MarkdownSuggestion",
+        "Order",
+        "ProductAiSuggestion",
+        "ProductCrossSell",
+        "ProductReviewSummary",
+        "ProductSizeBias",
+        "ProductTranslation",
+        "VariantForecast",
+        "WhatsAppConversation",
+        "WhatsAppMessage"
       ]
     }
   ],
@@ -33209,6 +34135,21 @@
   ],
   "tests": [
     {
+      "file": "apps/api/src/core/ai/ai.service.spec.ts",
+      "module": "core/ai",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "AiService",
+        "isAvailable",
+        "no provider configured",
+        "complete",
+        "embed",
+        "underBudget",
+        "monthToDateSpendPaisa"
+      ]
+    },
+    {
       "file": "apps/api/src/core/auth/auth.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
@@ -35480,8 +36421,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 581,
-      "bytes": 21431,
+      "lines": 691,
+      "bytes": 26198,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -35498,8 +36439,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 479,
-      "bytes": 18760,
+      "lines": 526,
+      "bytes": 20082,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -35507,8 +36448,8 @@
       "path": "apps/api/prisma/schema/crm.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 267,
-      "bytes": 9721,
+      "lines": 269,
+      "bytes": 9810,
       "doc": "CRM: one customer record, whatever door the customer came in through.",
       "symbols": []
     },
@@ -35552,8 +36493,8 @@
       "path": "apps/api/prisma/schema/inventory.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 236,
-      "bytes": 9364,
+      "lines": 291,
+      "bytes": 11764,
       "doc": "Inventory: the stock ledger. Every change to ProductVariant.stock has",
       "symbols": []
     },
@@ -36179,6 +37120,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925050000_add_ai_layer/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 242,
+      "bytes": 9584,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -36209,8 +37159,8 @@
       "path": "apps/api/prisma/schema/orders.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 316,
-      "bytes": 13339,
+      "lines": 335,
+      "bytes": 14098,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -36299,8 +37249,8 @@
       "path": "apps/api/prisma/schema/reviews.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 56,
-      "bytes": 1979,
+      "lines": 73,
+      "bytes": 2712,
       "doc": "Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).",
       "symbols": []
     },
@@ -36308,8 +37258,8 @@
       "path": "apps/api/prisma/schema/schema.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 20,
-      "bytes": 713,
+      "lines": 32,
+      "bytes": 1433,
       "doc": "Datasource and generator only. Models live in one file per module —",
       "symbols": []
     },
@@ -36359,6 +37309,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/whatsapp-assistant.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 56,
+      "bytes": 2323,
+      "doc": "WO-9.7, docs/implementation/ai-layer/09-ai-layer.md.",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/wishlist.prisma",
       "area": "api",
       "kind": "prisma schema",
@@ -36397,6 +37356,115 @@
           "name": "AppModule",
           "kind": "class",
           "line": 29
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/ai/ai-provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 67,
+      "bytes": 2653,
+      "doc": "Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and StorageDriver).",
+      "symbols": [
+        {
+          "name": "CompletionInput",
+          "kind": "interface",
+          "line": 19
+        },
+        {
+          "name": "CompletionResult",
+          "kind": "interface",
+          "line": 34
+        },
+        {
+          "name": "EmbeddingResult",
+          "kind": "interface",
+          "line": 41
+        },
+        {
+          "name": "DescribeImageResult",
+          "kind": "interface",
+          "line": 47
+        },
+        {
+          "name": "AiProvider",
+          "kind": "interface",
+          "line": 54
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/ai/ai.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 13,
+      "bytes": 474,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AiModule",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/ai/ai.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 278,
+      "bytes": 10595,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/ai/ai.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 206,
+      "bytes": 8222,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AiCapability",
+          "kind": "type",
+          "line": 37
+        },
+        {
+          "name": "AiService",
+          "kind": "class",
+          "line": 58
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/ai/providers/anthropic.provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 143,
+      "bytes": 4756,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AnthropicProvider",
+          "kind": "class",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/ai/providers/openai.provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 115,
+      "bytes": 4189,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OpenAiProvider",
+          "kind": "class",
+          "line": 35
         }
       ]
     },
@@ -37078,8 +38146,8 @@
       "path": "apps/api/src/core/config/app-config.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 68,
-      "bytes": 1887,
+      "lines": 72,
+      "bytes": 1991,
       "doc": "",
       "symbols": [
         {
@@ -37117,8 +38185,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 302,
-      "bytes": 13161,
+      "lines": 322,
+      "bytes": 14173,
       "doc": "",
       "symbols": [
         {
@@ -37129,12 +38197,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 175
+          "line": 188
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 201
+          "line": 214
         }
       ]
     },
@@ -37166,14 +38234,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 39,
-      "bytes": 1332,
+      "lines": 41,
+      "bytes": 1389,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 38
+          "line": 40
         }
       ]
     },
@@ -38645,8 +39713,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 319,
-      "bytes": 15596,
+      "lines": 337,
+      "bytes": 16417,
       "doc": "",
       "symbols": [
         {
@@ -38682,12 +39750,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 191
+          "line": 206
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 193
+          "line": 208
         }
       ]
     },
@@ -59513,8 +60581,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 705,
-      "bytes": 20870,
+      "lines": 727,
+      "bytes": 21553,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -59535,47 +60603,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 398
+          "line": 410
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 400
+          "line": 412
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 410
+          "line": 422
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 417
+          "line": 429
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 566
+          "line": 584
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 692
+          "line": 714
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 697
+          "line": 719
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 698
+          "line": 720
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 701
+          "line": 723
         }
       ]
     },

@@ -393,6 +393,18 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Marketing',
     sensitivity: 'high',
   },
+  {
+    key: 'ai.view',
+    label: 'View AI usage, cost and the review queue for AI-generated drafts',
+    category: 'Administration',
+    sensitivity: 'low',
+  },
+  {
+    key: 'ai.manage',
+    label: 'Configure AI providers and the monthly budget, and approve or reject AI-generated drafts',
+    category: 'Administration',
+    sensitivity: 'medium',
+  },
 ] as const;
 
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]['key'];
@@ -555,6 +567,12 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'accounting.manage_periods',
     ],
   },
+  {
+    key: 'ai',
+    label: 'AI layer',
+    description: 'Which AI providers are on, the monthly budget, and the review queue every AI-generated draft passes through before it reaches a customer or a supplier.',
+    permissions: ['ai.view', 'ai.manage'],
+  },
 ] as const;
 
 /**
@@ -617,6 +635,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'onsitemessages.manage',
     'reviews.moderate',
     'loyalty.view',
+    'ai.view',
+    'ai.manage',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -681,6 +701,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'reviews.moderate',
     'loyalty.view',
     'loyalty.manage',
+    'ai.view',
+    'ai.manage',
   ],
 };
 

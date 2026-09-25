@@ -3,7 +3,7 @@
 
 # Schema: `inventory.prisma`
 
-7 models · 4 enums. Owned by module [`inventory`](../modules/inventory.md).
+9 models · 5 enums. Owned by module [`inventory`](../modules/inventory.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -44,7 +44,26 @@ against a real database.
 
 Indexes: `@@index([isActive])` · `@@index([retailBrandId])`
 
-### `StockCount`  <sub>`apps/api/prisma/schema/inventory.prisma:196`</sub>
+### `MarkdownSuggestion`  <sub>`apps/api/prisma/schema/inventory.prisma:225`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `variantId` | `String` |  |  |
+| `discountId` | `String?` | optional |  |
+| `suggestedBps` | `Int` |  |  |
+| `estimatedClearancePct` | `Float` |  |  |
+| `estimatedClearanceDays` | `Int` |  |  |
+| `marginBeforePaisa` | `Int` |  |  |
+| `marginAfterPaisa` | `Int` |  |  |
+| `status` | `MarkdownSuggestionStatus` |  | @default(PENDING) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `resolvedAt` | `DateTime?` | optional |  |
+| `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@index([variantId, status])` · `@@index([status, createdAt])`
+
+### `StockCount`  <sub>`apps/api/prisma/schema/inventory.prisma:251`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -65,7 +84,7 @@ Indexes: `@@index([isActive])` · `@@index([retailBrandId])`
 
 Indexes: `@@index([status])`
 
-### `StockCountLine`  <sub>`apps/api/prisma/schema/inventory.prisma:219`</sub>
+### `StockCountLine`  <sub>`apps/api/prisma/schema/inventory.prisma:274`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -127,6 +146,20 @@ Indexes: `@@index([variantId, createdAt])` · `@@index([reason, createdAt])` · 
 
 Indexes: `@@index([status])` · `@@index([variantId])` · `@@index([locationId])`
 
+### `VariantForecast`  <sub>`apps/api/prisma/schema/inventory.prisma:197`</sub>
+
+> WO-9.3 (09-ai-layer.md).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `variantId` | `String` | id | @id |
+| `forecastedDailyDemand` | `Float` |  | @default(0) |
+| `seasonalFactor` | `Float?` | optional |  |
+| `projectedStockoutAt` | `DateTime?` | optional |  |
+| `reasonEn` | `String?` | optional |  |
+| `computedAt` | `DateTime` |  | @default(now()) |
+| `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id], onDelete: Cascade) |
+
 ### `VariantLocationStock`  <sub>`apps/api/prisma/schema/inventory.prisma:161`</sub>
 
 > Stock, per variant, per location.
@@ -174,7 +207,17 @@ Indexes: `@@id([variantId, locationId])`
 | `IN_TRANSIT` |  |
 | `PRODUCTION` |  |
 
-### `StockCountStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:189`</sub>
+### `MarkdownSuggestionStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:219`</sub>
+
+> WO-9.8.
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `CREATED` |  |
+| `DISMISSED` |  |
+
+### `StockCountStatus`  <sub>`apps/api/prisma/schema/inventory.prisma:244`</sub>
 
 | Value | Meaning |
 |---|---|

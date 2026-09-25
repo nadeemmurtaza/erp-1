@@ -3,7 +3,7 @@
 
 # Schema: `core.prisma`
 
-17 models · 6 enums. Foundational — owned by no single module.
+18 models · 8 enums. Foundational — owned by no single module.
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -41,6 +41,24 @@ against a real database.
 | `user` | `User?` | relation, optional | @relation(fields: [userId], references: [id], onDelete: Cascade) |
 
 Indexes: `@@index([userId])`
+
+### `AiUsageLog`  <sub>`apps/api/prisma/schema/core.prisma:506`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `feature` | `AiFeature` |  |  |
+| `kind` | `AiCallKind` |  |  |
+| `provider` | `String` |  |  |
+| `model` | `String` |  |  |
+| `inputTokens` | `Int` |  | @default(0) |
+| `outputTokens` | `Int` |  | @default(0) |
+| `costPaisa` | `Int` |  | @default(0) |
+| `succeeded` | `Boolean` |  | @default(true) |
+| `errorMessage` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+
+Indexes: `@@index([feature, createdAt])` · `@@index([createdAt])`
 
 ### `AnalyticsEvent`  <sub>`apps/api/prisma/schema/core.prisma:467`</sub>
 
@@ -375,6 +393,33 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 
 
 ## Enums
+
+### `AiCallKind`  <sub>`apps/api/prisma/schema/core.prisma:500`</sub>
+
+| Value | Meaning |
+|---|---|
+| `COMPLETION` |  |
+| `EMBEDDING` |  |
+| `VISION` |  |
+
+### `AiFeature`  <sub>`apps/api/prisma/schema/core.prisma:485`</sub>
+
+> Phase 9 (docs/implementation/ai-layer/09-ai-layer.md).
+
+| Value | Meaning |
+|---|---|
+| `ALT_TEXT` |  |
+| `SEO_COPY` |  |
+| `SIZE_RECOMMENDATION` |  |
+| `DEMAND_FORECAST` |  |
+| `COD_RISK` |  |
+| `SEMANTIC_SEARCH` |  |
+| `VISUAL_SEARCH` |  |
+| `RECOMMENDATIONS` |  |
+| `WHATSAPP_ASSISTANT` |  |
+| `MARKDOWN_SUGGESTION` |  |
+| `REVIEW_SUMMARY` |  |
+| `IMPORT_CLEANUP` |  |
 
 ### `DevicePlatform`  <sub>`apps/api/prisma/schema/core.prisma:435`</sub>
 

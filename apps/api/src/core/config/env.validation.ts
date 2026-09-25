@@ -142,6 +142,19 @@ export const envSchema = z.object({
   /** Where replies land. Customers do reply to order mail — send it somewhere staffed. */
   MAIL_REPLY_TO: z.string().optional(),
 
+  // AI layer (Phase 9, 09-ai-layer.md, House Rule 8). Empty by default —
+  // every AI feature degrades to its pre-AI behaviour, invisibly, until a
+  // deployment opts in. Anthropic serves complete()/describeImage()
+  // (vision); OpenAI serves complete()/embed() — see ai.service.ts's own
+  // comment on why both can be enabled at once and how the first one that
+  // supports a given capability wins.
+  AI_PROVIDERS: csv(''),
+  ANTHROPIC_API_KEY: z.string().optional(),
+  ANTHROPIC_MODEL: z.string().optional(),
+  OPENAI_API_KEY: z.string().optional(),
+  OPENAI_MODEL: z.string().optional(),
+  OPENAI_EMBEDDING_MODEL: z.string().optional(),
+
   // WhatsApp/SMS (WO-8.4). A generic gateway contract deliberately — this
   // codebase has no confirmed provider reference for either yet (same
   // honesty as giftkarta.provider.ts's own header comment): whichever
@@ -257,6 +270,13 @@ export function validateEnv(raw: Record<string, unknown>): Env {
         `NOTIFICATION_CHANNELS includes "whatsapp" but missing: ${missing.join(', ')}`,
       );
     }
+  }
+
+  if (result.data.AI_PROVIDERS.includes('anthropic') && !result.data.ANTHROPIC_API_KEY) {
+    throw new Error('AI_PROVIDERS includes "anthropic" but ANTHROPIC_API_KEY is not set.');
+  }
+  if (result.data.AI_PROVIDERS.includes('openai') && !result.data.OPENAI_API_KEY) {
+    throw new Error('AI_PROVIDERS includes "openai" but OPENAI_API_KEY is not set.');
   }
 
   if (result.data.NOTIFICATION_CHANNELS.includes('sms')) {

@@ -3,7 +3,7 @@
 
 # Migrations
 
-**66** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**67** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -99,6 +99,7 @@ nothing here fails a build.
 | 2026-09-24 | `add_customer_portal_reviews_wishlist_loyalty` | 43 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, INSERT | BackInStockRequest, LoyaltyTier, LoyaltyTransaction, NotificationPreference, Referral, Review, User, Wishlist… |
 | 2026-09-24 | `add_fulfilment_shipping_returns` | 67 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE, INSERT | Contact, Manifest, ManifestNumberCounter, Product, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest,… |
 | 2026-09-25 | `add_content_collections_search_marketing_onsite` | 82 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, UPDATE | Banner, BannerTranslation, BlogPost, BlogPostTranslation, Campaign, CampaignRecipient, Cart, Collection, Coll… |
+| 2026-09-25 | `add_ai_layer` | 43 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | AiUsageLog, MarkdownSuggestion, Order, ProductAiSuggestion, ProductCrossSell, ProductReviewSummary, ProductSi… |
 
 
 ---

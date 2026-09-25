@@ -3,7 +3,7 @@
 
 # Tests
 
-**155** spec files, **1,443** cases. What is already pinned down — and what is not.
+**156** spec files, **1,459** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,10 +57,11 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (137)
+## Unit and integration (138)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
+| `apps/api/src/core/ai/ai.service.spec.ts` | core/ai | 16 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpen… |
 | `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 2 | parseDuration |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
 | `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 6 | PermissionsResolverService.resolveForUser |

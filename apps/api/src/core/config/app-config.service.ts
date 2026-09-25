@@ -64,4 +64,8 @@ export class AppConfigService {
   isNotificationChannelEnabled(name: string): boolean {
     return this.get('NOTIFICATION_CHANNELS').includes(name);
   }
+
+  isAiProviderEnabled(name: string): boolean {
+    return this.get('AI_PROVIDERS').includes(name);
+  }
 }

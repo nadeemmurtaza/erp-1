@@ -186,6 +186,21 @@ export const SettingKey = {
   LoyaltyRedemptionPointsPerRupee: 'loyalty.redemption_points_per_rupee',
   /** Store credit, in paisa, both sides of a referral receive once the referee's first order is DELIVERED (WO-7.7). */
   LoyaltyReferralRewardAmount: 'loyalty.referral_reward_amount',
+  /**
+   * Phase 9 (09-ai-layer.md) — "add a monthly budget setting and stop
+   * calling when it is hit". Null means uncapped, same idiom as
+   * MarketingAbandonedCartDiscountMaxOff above. Paisa, so it compares
+   * directly against AiUsageLog.costPaisa's own running sum for the current
+   * shop month (AiService.underBudget()).
+   */
+  AiMonthlyBudgetPaisa: 'ai.monthly_budget_paisa',
+  /**
+   * Every provider bills in USD; every other money figure in this codebase
+   * is paisa. An approximation for budget alerting, not an invoice
+   * reconciliation tool — see ai.service.ts's own PRICING table comment.
+   * Editable without a deploy because the real rate moves.
+   */
+  AiUsdToPkrRate: 'ai.usd_to_pkr_rate',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -309,6 +324,9 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.LoyaltyPointsPerRupeeBps]: 100,
   [SettingKey.LoyaltyRedemptionPointsPerRupee]: 10,
   [SettingKey.LoyaltyReferralRewardAmount]: toMinor(200),
+
+  [SettingKey.AiMonthlyBudgetPaisa]: null as number | null,
+  [SettingKey.AiUsdToPkrRate]: 280,
 
   [SettingKey.BomRawMaterialCategorySlug]: 'raw-materials',
   [SettingKey.BomDefaultWastageBps]: 0,

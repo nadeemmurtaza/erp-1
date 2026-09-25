@@ -119,29 +119,32 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `BrandTranslation` | 6 | :68 | House Rule 6: a customer-facing name is a translation row, not a column. |
 | `Category` | 13 | :23 |  |
 | `CategoryTranslation` | 6 | :80 |  |
-| `Collection` | 10 | :530 |  |
-| `CollectionProduct` | 5 | :570 | Manual membership and manual sort order. |
-| `CollectionTranslation` | 8 | :553 |  |
-| `OptionTemplate` | 7 | :441 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
-| `OptionTemplateTranslation` | 5 | :454 |  |
-| `OptionTemplateValue` | 8 | :465 |  |
-| `OptionTemplateValueTranslation` | 5 | :480 |  |
-| `Product` | 39 | :92 |  |
-| `ProductGarmentType` | 3 | :342 | Which garments a given unstitched fabric can be made into. |
-| `ProductImage` | 11 | :308 |  |
-| `ProductImageTranslation` | 5 | :330 | Alt text per locale. |
-| `ProductOption` | 9 | :363 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
-| `ProductOptionTranslation` | 5 | :380 |  |
-| `ProductOptionValue` | 9 | :392 | A specific value on an option axis: "M", "Ferozi", "128GB". |
-| `ProductOptionValueTranslation` | 5 | :410 |  |
-| `ProductTranslation` | 11 | :176 |  |
-| `ProductVariant` | 47 | :206 |  |
-| `ProductVariantOptionValue` | 5 | :424 | The join that DEFINES a variant: one row per option axis per variant. |
-| `Redirect` | 7 | :494 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
-| `StockAdjustment` | 10 | :290 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
+| `Collection` | 10 | :550 |  |
+| `CollectionProduct` | 5 | :590 | Manual membership and manual sort order. |
+| `CollectionTranslation` | 8 | :573 |  |
+| `OptionTemplate` | 7 | :461 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
+| `OptionTemplateTranslation` | 5 | :474 |  |
+| `OptionTemplateValue` | 8 | :485 |  |
+| `OptionTemplateValueTranslation` | 5 | :500 |  |
+| `Product` | 44 | :92 |  |
+| `ProductAiSuggestion` | 12 | :626 | WO-9.1. |
+| `ProductCrossSell` | 8 | :677 |  |
+| `ProductGarmentType` | 3 | :362 | Which garments a given unstitched fabric can be made into. |
+| `ProductImage` | 12 | :327 |  |
+| `ProductImageTranslation` | 5 | :350 | Alt text per locale. |
+| `ProductOption` | 9 | :383 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
+| `ProductOptionTranslation` | 5 | :400 |  |
+| `ProductOptionValue` | 9 | :412 | A specific value on an option axis: "M", "Ferozi", "128GB". |
+| `ProductOptionValueTranslation` | 5 | :430 |  |
+| `ProductSizeBias` | 8 | :649 | WO-9.2. |
+| `ProductTranslation` | 12 | :184 |  |
+| `ProductVariant` | 49 | :222 |  |
+| `ProductVariantOptionValue` | 5 | :444 | The join that DEFINES a variant: one row per option axis per variant. |
+| `Redirect` | 7 | :514 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
+| `StockAdjustment` | 10 | :309 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
 
 
-Enums: `CollectionSortStrategy` (6) · `OptionDisplay` (4) · `ProductKind` (6) · `ProductStatus` (3)
+Enums: `AiSuggestionKind` (5) · `AiSuggestionStatus` (3) · `CollectionSortStrategy` (6) · `OptionDisplay` (4) · `ProductCrossSellKind` (3) · `ProductKind` (6) · `ProductStatus` (3)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 

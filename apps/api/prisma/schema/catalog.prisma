@@ -166,6 +166,14 @@ model Product {
   /// Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
   reviews               Review[]
   wishlistItems         WishlistItem[]
+  /// Phase 9 (09-ai-layer.md) — this product's own pending AI-generated copy.
+  aiSuggestions         ProductAiSuggestion[]
+  sizeBias              ProductSizeBias?
+  reviewSummary         ProductReviewSummary?
+  /// The "also/complete the look" side of a cross-sell pair — see
+  /// ProductCrossSell's own doc comment for why this is two relations.
+  crossSellsFrom        ProductCrossSell[]    @relation("CrossSellSource")
+  crossSellsTo          ProductCrossSell[]    @relation("CrossSellTarget")
 
   @@index([status, kind])
   @@index([categoryId])
@@ -196,6 +204,14 @@ model ProductTranslation {
   /// stemmer, and 'simple' (token match, no stemming) is the honest choice
   /// over silently running Urdu text through the English one.
   searchVector Unsupported("tsvector")?
+
+  /// WO-9.5 (09-ai-layer.md). OpenAI text-embedding-3-small's own dimension
+  /// (1536) — re-embedded by SearchReindexListener alongside searchVector, on
+  /// the SAME DomainEvent.ProductChanged, so the two never drift out of sync.
+  /// Null whenever no embedding-capable AiProvider is configured; hybrid
+  /// search falls back to ts_rank/trigram alone in that case (builds on
+  /// Phase 8, never replaces it).
+  embedding Unsupported("vector(1536)")?
 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
@@ -280,6 +296,9 @@ model ProductVariant {
   /// Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
   wishlistItems       WishlistItem[]
   backInStockRequests BackInStockRequest[]
+  /// Phase 9 (09-ai-layer.md) — inventory.prisma's own cache/advisory rows.
+  forecast              VariantForecast?
+  markdownSuggestions   MarkdownSuggestion[]
 
   @@index([productId])
   @@index([stock])
@@ -318,9 +337,10 @@ model ProductImage {
   isPrimary Boolean  @default(false)
   createdAt DateTime @default(now())
 
-  product      Product                   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  variant      ProductVariant?           @relation(fields: [variantId], references: [id], onDelete: SetNull)
-  translations ProductImageTranslation[]
+  product       Product                   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant       ProductVariant?           @relation(fields: [variantId], references: [id], onDelete: SetNull)
+  translations  ProductImageTranslation[]
+  aiSuggestions ProductAiSuggestion[]
 
   @@index([productId, order])
 }
@@ -577,4 +597,94 @@ model CollectionProduct {
 
   @@id([collectionId, productId])
   @@index([productId])
+}
+
+// ─── Phase 9 — AI layer (09-ai-layer.md) ────────────────────────────────────
+// The two rules that govern every model below: everything AI-generated is a
+// DRAFT a human confirms (never written to the real Product/ProductImage
+// columns until APPROVED), and every row here traces back to an AiUsageLog
+// entry for cost accounting — see core.prisma's own comment on that model.
+
+enum AiSuggestionKind {
+  ALT_TEXT
+  META_TITLE
+  META_DESCRIPTION
+  DESCRIPTION
+  CARE_INSTRUCTIONS
+}
+
+enum AiSuggestionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+/// WO-9.1. One row per (product or image, kind, locale) draft. ALT_TEXT sets
+/// `imageId`; every other kind is product-level and leaves it null.
+/// Approving a suggestion is what writes the real ProductTranslation/
+/// ProductImageTranslation column — see ProductAiService.approve().
+model ProductAiSuggestion {
+  id             String             @id @default(cuid())
+  productId      String
+  imageId        String?
+  kind           AiSuggestionKind
+  locale         String
+  suggestedText  String
+  status         AiSuggestionStatus @default(PENDING)
+  createdAt      DateTime           @default(now())
+  reviewedAt     DateTime?
+  reviewedById   String?
+
+  product Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  image   ProductImage? @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  @@index([productId, status])
+  @@index([status, createdAt])
+}
+
+/// WO-9.2. One row per product, refreshed nightly from Review.fitFeedback —
+/// "a garment where 40% say too small gets its recommendation shifted up a
+/// size" (the doc's own words). `shift` is what SizeRecommendationService
+/// adds to the arithmetic size match; it is never itself the recommendation.
+model ProductSizeBias {
+  productId     String   @id
+  tooSmallPct   Float    @default(0)
+  trueToSizePct Float    @default(0)
+  tooLargePct   Float    @default(0)
+  sampleSize    Int      @default(0)
+  /// -1 = recommend one size down, 0 = no adjustment, +1 = one size up.
+  shift         Int      @default(0)
+  computedAt    DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+/// WO-9.6. A directed edge, product -> relatedProduct — "customers who
+/// bought this kameez also bought this dupatta". Two relations on Product
+/// (crossSellsFrom/crossSellsTo) because the edge is directional: a manual
+/// "complete the look" pairing set from the kameez's own admin screen does
+/// not imply the reverse is equally relevant from the dupatta's page.
+/// MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read time
+/// (RecommendationsService's own rule, not encoded here) — "a merchandiser's
+/// curated pairing beats the algorithm often enough that removing the
+/// control is a mistake" (the doc's own words).
+enum ProductCrossSellKind {
+  MANUAL
+  CO_OCCURRENCE
+  EMBEDDING
+}
+
+model ProductCrossSell {
+  id              String               @id @default(cuid())
+  productId       String
+  relatedProductId String
+  kind            ProductCrossSellKind
+  order           Int                  @default(0)
+  createdAt       DateTime             @default(now())
+
+  product        Product @relation("CrossSellSource", fields: [productId], references: [id], onDelete: Cascade)
+  relatedProduct Product @relation("CrossSellTarget", fields: [relatedProductId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, relatedProductId])
+  @@index([relatedProductId])
 }

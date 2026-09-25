@@ -69,14 +69,14 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Order` | 51 | :24 |  |
-| `OrderItem` | 38 | :132 |  |
-| `OrderNumberCounter` | 2 | :312 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
-| `OrderStatusEvent` | 9 | :219 |  |
-| `Shipment` | 26 | :243 |  |
+| `Order` | 54 | :35 |  |
+| `OrderItem` | 38 | :151 |  |
+| `OrderNumberCounter` | 2 | :331 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
+| `OrderStatusEvent` | 9 | :238 |  |
+| `Shipment` | 26 | :262 |  |
 
 
-Enums: `OrderChannel` (2) · `OrderItemFulfillmentStatus` (3) · `OrderStatus` (8) · `ShipmentStatus` (6)
+Enums: `CodRiskAction` (3) · `OrderChannel` (2) · `OrderItemFulfillmentStatus` (3) · `OrderStatus` (8) · `ShipmentStatus` (6)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 

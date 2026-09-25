@@ -186,6 +186,61 @@ model VariantSalesStat {
   variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 }
 
+/// WO-9.3 (09-ai-layer.md). No model, deliberately — "for a boutique with a
+/// year of history, a well-chosen average beats an over-fitted model" (the
+/// doc's own words). `seasonalFactor` is this same period last year's units
+/// divided by the trailing-30 baseline (1.0 = no seasonal effect); a null
+/// means there isn't a year of history yet to compare against, and the
+/// forecast falls back to the trailing average alone. CACHE, same idiom as
+/// VariantSalesStat: safe to delete and recompute, written by the same
+/// nightly InventoryCron pass that already computes units30/units90.
+model VariantForecast {
+  variantId             String    @id
+  forecastedDailyDemand Float     @default(0)
+  seasonalFactor        Float?
+  /// Null until preferredSupplier/leadTimeDays and the forecast together
+  /// place a stockout inside that lead time — see InventoryCron's own
+  /// comment on how this is computed, not derived at read time.
+  projectedStockoutAt   DateTime?
+  reasonEn              String?
+  computedAt            DateTime  @default(now())
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+}
+
+/// WO-9.8. One row per slow-mover/dead-stock variant InventoryCron has
+/// already flagged (VariantSalesStat.isSlowMover/isDeadStock) that a person
+/// has not yet acted on. `discountId` is null until CREATED — the Discount
+/// itself (promotions.prisma) is what a person actually activates
+/// (`isActive: false` on creation); this row is only the reasoning trail
+/// ("20% off clears an estimated 60% in 30 days; margin falls from Rs 900 to
+/// Rs 210 a unit", the doc's own example) that a bare Discount row cannot
+/// carry on its own.
+enum MarkdownSuggestionStatus {
+  PENDING
+  CREATED
+  DISMISSED
+}
+
+model MarkdownSuggestion {
+  id                    String                   @id @default(cuid())
+  variantId             String
+  discountId            String?
+  suggestedBps          Int
+  estimatedClearancePct Float
+  estimatedClearanceDays Int
+  marginBeforePaisa     Int
+  marginAfterPaisa      Int
+  status                MarkdownSuggestionStatus @default(PENDING)
+  createdAt             DateTime                 @default(now())
+  resolvedAt            DateTime?
+
+  variant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([variantId, status])
+  @@index([status, createdAt])
+}
+
 enum StockCountStatus {
   DRAFT
   IN_PROGRESS

@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **40** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **44** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -69,6 +69,10 @@ order" is a new file, not an edit to checkout.
 | `finance.order_economics_computed` | `OrderEconomicsComputed` | `finance` | _none_ |
 | `payroll.run_posted` | `PayrollRunPosted` | `accounting`, `payroll` | `accounting` |
 | `payroll.adjustment_posted` | `PayrollAdjustmentPosted` | `accounting`, `payroll` | `accounting` |
+| `fulfilment.shipment_status_changed` | `ShipmentStatusChanged` | `fulfilment` | `orders` |
+| `fulfilment.shipment_rto` | `ShipmentReturnedToOrigin` | `fulfilment` | `crm`, `finance` |
+| `fulfilment.return_status_changed` | `ReturnRequestStatusChanged` | `fulfilment` | `fulfilment` |
+| `fulfilment.return_fully_refunded` | `ReturnRequestFullyRefunded` | `fulfilment` | `orders` |
 | `promotions.discount_redeemed` | `DiscountRedeemed` | `promotions` | _none_ |
 
 
@@ -83,8 +87,8 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:50` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:157` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:423` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:626` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:424` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:627` | `orders` |
 
 
 **Subscribed by**
@@ -105,7 +109,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:800` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:809` | `orders` |
 
 
 **Subscribed by**
@@ -125,7 +129,7 @@ order" is a new file, not an edit to checkout.
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:800` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:809` | `orders` |
 
 
 **Subscribed by**
@@ -144,7 +148,7 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:117` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:154` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:614` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:615` | `orders` |
 | `apps/api/src/modules/payments/payments.service.ts:191` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:293` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:341` | `payments` |
@@ -718,6 +722,78 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onPayrollAdjustmentPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:488` | `accounting` |
+
+### `fulfilment.shipment_status_changed`
+
+> FulfilmentService's one writer for a shipment status transition (WO-6.5) — fires whether the change came from a courier poll or a manual status update.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/fulfilment/fulfilment.service.ts:153` | `fulfilment` |
+| `apps/api/src/modules/fulfilment/fulfilment.service.ts:246` | `fulfilment` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onShipmentStatusChanged()` | `apps/api/src/modules/orders/shipment-status.listener.ts:33` | `orders` |
+
+### `fulfilment.shipment_rto`
+
+> A courier-initiated RETURNED with no matching customer ReturnRequest (WO-6.7) — never fired for a return raised through the RMA flow.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/fulfilment/fulfilment.service.ts:261` | `fulfilment` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onShipmentReturnedToOrigin()` | `apps/api/src/modules/crm/rto-contact.listener.ts:19` | `crm` |
+| `onShipmentReturnedToOrigin()` | `apps/api/src/modules/finance/rto-expense.listener.ts:25` | `finance` |
+
+### `fulfilment.return_status_changed`
+
+> ReturnsService's own status-machine writes (WO-6.6) — the customer notification subscriber (fulfilment/return-notification.subscriber.ts) is the only one today.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/fulfilment/returns.service.ts:145` | `fulfilment` |
+| `apps/api/src/modules/fulfilment/returns.service.ts:194` | `fulfilment` |
+| `apps/api/src/modules/fulfilment/returns.service.ts:284` | `fulfilment` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onStatusChanged()` | `apps/api/src/modules/fulfilment/return-notification.subscriber.ts:24` | `fulfilment` |
+
+### `fulfilment.return_fully_refunded`
+
+> A ReturnRequest resolved REFUND and covers the order's full returnable quantity (WO-6.6) — orders/shipment-status.listener.ts is the only subscriber, calling changeStatus(..., {skipStockRelease: true…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/fulfilment/returns.service.ts:370` | `fulfilment` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onReturnFullyRefunded()` | `apps/api/src/modules/orders/shipment-status.listener.ts:61` | `orders` |
 
 ### `promotions.discount_redeemed`
 

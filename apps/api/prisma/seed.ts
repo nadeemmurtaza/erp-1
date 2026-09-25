@@ -50,6 +50,7 @@ async function main(): Promise<void> {
   await seedRoles();
   await seedChartOfAccounts();
   await seedExpenseCategories();
+  await seedReturnReasons();
   const garments = await seedGarmentTypes();
   await seedGarmentCatalogExpansion(garments);
   await seedStitchingOptions(garments);
@@ -219,6 +220,43 @@ async function seedExpenseCategories(): Promise<void> {
       update: { name: category.name, isDirect: category.isDirect, order: category.order },
       create: category,
     });
+  }
+}
+
+/**
+ * WO-6.6 — "reason codes are a seeded, editable list, not free text: they
+ * are the input to the fit-feedback loop in Phase 9." Upsert on `key` keeps
+ * ids stable across re-runs, same idiom as seedExpenseCategories() above.
+ */
+async function seedReturnReasons(): Promise<void> {
+  const reasons: Array<{ key: string; order: number; labelEn: string; labelUr: string }> = [
+    { key: 'too_small', order: 0, labelEn: 'Too small', labelUr: 'زیادہ چھوٹا' },
+    { key: 'too_big', order: 1, labelEn: 'Too big', labelUr: 'زیادہ بڑا' },
+    { key: 'damaged', order: 2, labelEn: 'Arrived damaged', labelUr: 'خراب حالت میں پہنچا' },
+    { key: 'not_as_described', order: 3, labelEn: 'Not as described', labelUr: 'تفصیل سے مطابقت نہیں رکھتا' },
+    { key: 'wrong_item', order: 4, labelEn: 'Wrong item received', labelUr: 'غلط آئٹم موصول ہوا' },
+    { key: 'quality_issue', order: 5, labelEn: 'Quality issue', labelUr: 'معیار کا مسئلہ' },
+    { key: 'changed_mind', order: 6, labelEn: 'Changed my mind', labelUr: 'ارادہ بدل گیا' },
+    { key: 'late_delivery', order: 7, labelEn: 'Arrived too late', labelUr: 'دیر سے پہنچا' },
+    { key: 'other', order: 8, labelEn: 'Other', labelUr: 'دیگر' },
+  ];
+
+  for (const reason of reasons) {
+    const record = await prisma.returnReasonCode.upsert({
+      where: { key: reason.key },
+      update: { order: reason.order },
+      create: { key: reason.key, order: reason.order },
+    });
+    for (const [locale, label] of [
+      ['en', reason.labelEn],
+      ['ur', reason.labelUr],
+    ] as const) {
+      await prisma.returnReasonTranslation.upsert({
+        where: { reasonId_locale: { reasonId: record.id, locale } },
+        update: { label },
+        create: { reasonId: record.id, locale, label },
+      });
+    }
   }
 }
 

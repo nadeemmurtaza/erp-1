@@ -79,7 +79,8 @@ function Navigation() {
       <Stack.Screen name="workshop/[id]" options={{ title: '' }} />
       <Stack.Screen name="wishlist" options={{ title: t('wishlist.title') }} />
       <Stack.Screen name="reviews" options={{ title: t('reviews.myTitle') }} />
-      <Stack.Screen name="returns" options={{ title: t('returns.title') }} />
+      <Stack.Screen name="returns/index" options={{ title: t('returns.title') }} />
+      <Stack.Screen name="returns/new" options={{ title: t('returns.newRequest') }} />
       <Stack.Screen name="loyalty" options={{ title: t('loyalty.title') }} />
       <Stack.Screen name="credit" options={{ title: t('credit.title') }} />
       <Stack.Screen name="notifications" options={{ title: t('notifications.title') }} />

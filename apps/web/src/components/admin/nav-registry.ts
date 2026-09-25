@@ -13,6 +13,7 @@ import {
   Factory,
   Wallet,
   Landmark,
+  Truck,
 } from 'lucide-react';
 
 export const ICON_MAP = {
@@ -27,6 +28,7 @@ export const ICON_MAP = {
   Factory,
   Wallet,
   Landmark,
+  Truck,
 } as const;
 
 export interface AdminNavGroup {
@@ -62,6 +64,11 @@ export const NAV_GROUPS: readonly AdminNavGroup[] = [
   // now has six: P&L, expenses (+ its own two children), margins, cash flow,
   // unit economics — a real destination again, not an empty heading.
   { key: 'finance', label: 'Finance', icon: 'Landmark' },
+  // Reinstated (WO-6.8, 06-shipping-fulfilment-returns.md) — one of the same
+  // three zero-item groups the eleven-to-eight cut removed (its own comment
+  // above names it alongside marketing and finance). Now has four: shipments,
+  // manifests, tracking, RTO.
+  { key: 'fulfilment', label: 'Fulfilment', icon: 'Truck' },
   { key: 'insights',  label: 'Insights',  icon: 'BarChart3' },
   { key: 'settings',  label: 'Settings',  icon: 'Settings' },
 ] as const;
@@ -83,6 +90,7 @@ export interface AdminNavItem {
     | 'manufacturing'
     | 'payroll'
     | 'finance'
+    | 'fulfilment'
     | 'insights'
     | 'settings';
   /** lucide-react icon name. */
@@ -169,14 +177,6 @@ export const ADMIN_NAV: AdminNavItem[] = [
         group: 'orders',
         module: 'analytics',
       },
-      {
-        key: 'orders-returns',
-        label: 'Returns',
-        href: '/admin/returns',
-        permissions: ['returns.view'],
-        group: 'orders',
-        module: 'returns',
-      },
     ],
   },
   {
@@ -186,6 +186,48 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['payments.approve'],
     group: 'orders',
     module: 'payments',
+  },
+  {
+    key: 'returns',
+    label: 'Returns',
+    href: '/admin/fulfilment/returns',
+    permissions: ['fulfilment.view', 'fulfilment.manage'],
+    group: 'orders',
+    module: 'fulfilment',
+  },
+
+  // Group: Fulfilment (WO-6.8)
+  {
+    key: 'shipments',
+    label: 'Shipments',
+    href: '/admin/fulfilment/shipments',
+    permissions: ['fulfilment.view', 'fulfilment.manage'],
+    group: 'fulfilment',
+    module: 'fulfilment',
+  },
+  {
+    key: 'manifests',
+    label: 'Manifests',
+    href: '/admin/fulfilment/manifests',
+    permissions: ['fulfilment.view', 'fulfilment.manage'],
+    group: 'fulfilment',
+    module: 'fulfilment',
+  },
+  {
+    key: 'tracking',
+    label: 'Tracking',
+    href: '/admin/fulfilment/tracking',
+    permissions: ['fulfilment.view', 'fulfilment.manage'],
+    group: 'fulfilment',
+    module: 'fulfilment',
+  },
+  {
+    key: 'rto',
+    label: 'RTO rate',
+    href: '/admin/fulfilment/rto',
+    permissions: ['fulfilment.view', 'fulfilment.manage'],
+    group: 'fulfilment',
+    module: 'fulfilment',
   },
 
   // Group: Overview — the three-level admin shell (R19, WO-18.5). Invisible
@@ -559,6 +601,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['tax.manage'],
     group: 'settings',
     module: 'tax',
+  },
+  {
+    key: 'shipping-settings',
+    label: 'Shipping',
+    href: '/admin/settings/shipping',
+    permissions: ['fulfilment.manage'],
+    group: 'settings',
+    module: 'fulfilment',
   },
   {
     key: 'email-templates',

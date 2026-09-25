@@ -40,7 +40,7 @@ export default function AccountOverviewPage() {
       customerFetch<PaginatedResult<CustomerOrderSummary>>('/orders/mine', { query: { page: 1, pageSize: 1 } }).catch(() => null),
       customerFetch<{ balance: number }>('/store-credit').catch(() => null),
       customerFetch<LoyaltyBalance>('/loyalty').catch(() => null),
-      customerFetch<ReturnRequestSummary[]>('/returns').catch(() => []),
+      customerFetch<ReturnRequestSummary[]>('/returns/mine').catch(() => []),
     ]).then(([orders, credit, loyaltyBalance, returns]) => {
       if (cancelled) return;
       setRecentOrder(orders?.data[0] ?? null);

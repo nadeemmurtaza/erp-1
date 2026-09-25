@@ -19,7 +19,6 @@ Every top-level export in `mobile`, with the line to open.
 | `loyalty.tsx` | `LoyaltyScreen` | default | :11 | WO-7.7 — points, tiers, redemption, and referrals. |
 | `notifications.tsx` | `NotificationPreferencesScreen` | default | :13 | WO-7.8 — per-channel, per-category. |
 | `payment.tsx` | `PaymentScreen` | default | :20 | Hands the customer to JazzCash/Easypaisa's hosted checkout inside a WebView — the same auto-submitt… |
-| `returns.tsx` | `ReturnsScreen` | default | :49 | WO-7.3 — a return end to end without contacting the shop. |
 | `reviews.tsx` | `MyReviewsScreen` | default | :16 | WO-7.5 — what this customer has said about what they bought. |
 | `wishlist.tsx` | `WishlistScreen` | default | :21 | WO-7.6 — the server-side wishlist, and asking to be told when something comes back in stock. |
 
@@ -52,6 +51,13 @@ Every top-level export in `mobile`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `[slug].tsx` | `ProductScreen` | default | :40 | One product, and the decision that goes with it. |
+
+### `apps/mobile/app/returns`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `index.tsx` | `ReturnsScreen` | default | :22 | WO-6.6 — the customer's own returns, mirroring orders/index.tsx's shape. |
+| `new.tsx` | `NewReturnRequestScreen` | default | :27 | WO-6.6 — the customer's own side of the return-item portal, reached from the order screen. |
 
 ### `apps/mobile/app/stitching`
 
@@ -130,25 +136,26 @@ Every top-level export in `mobile`, with the line to open.
 | `resources.ts` | `myReviews` | function | :268 |  |
 | `resources.ts` | `submitReview` | function | :272 |  |
 | `resources.ts` | `markReviewHelpful` | function | :281 |  |
-| `resources.ts` | `returnEligibility` | function | :287 | --- Returns (WO-7.3) --------------------------------------------------------- |
+| `resources.ts` | `listReturnReasons` | function | :287 | --- Returns / RMA (WO-6.6) --------------------------------------------------- |
 | `resources.ts` | `myReturns` | function | :291 |  |
-| `resources.ts` | `createReturn` | function | :295 |  |
-| `resources.ts` | `loyaltyTiers` | function | :306 | --- Loyalty and referrals (WO-7.7) ------------------------------------------ |
-| `resources.ts` | `loyaltyBalance` | function | :310 |  |
-| `resources.ts` | `loyaltyLedger` | function | :314 |  |
-| `resources.ts` | `redeemLoyaltyPoints` | function | :318 |  |
-| `resources.ts` | `myReferralCode` | function | :322 |  |
-| `resources.ts` | `myReferrals` | function | :326 |  |
-| `resources.ts` | `applyReferralCode` | function | :330 |  |
-| `resources.ts` | `storeCreditBalance` | function | :336 | --- Store credit and gift cards (WO-7.4) ------------------------------------- |
-| `resources.ts` | `storeCreditLedger` | function | :340 |  |
-| `resources.ts` | `redeemGiftCardIntoAccount` | function | :344 |  |
-| `resources.ts` | `getNotificationPreferences` | function | :350 | --- Notification preferences (WO-7.8) --------------------------------------- |
-| `resources.ts` | `updateNotificationPreferences` | function | :354 |  |
-| `resources.ts` | `ReorderResult` | interface | :362 | --- Reorder (WO-7.2) ---------------------------------------------------------- |
-| `resources.ts` | `reorder` | function | :368 |  |
-| `resources.ts` | `registerDevice` | function | :376 | --- Push notifications ----------------------------------------------------- |
-| `resources.ts` | `unregisterDevice` | function | :385 |  |
+| `resources.ts` | `getReturn` | function | :295 |  |
+| `resources.ts` | `createReturn` | function | :299 |  |
+| `resources.ts` | `loyaltyTiers` | function | :309 | --- Loyalty and referrals (WO-7.7) ------------------------------------------ |
+| `resources.ts` | `loyaltyBalance` | function | :313 |  |
+| `resources.ts` | `loyaltyLedger` | function | :317 |  |
+| `resources.ts` | `redeemLoyaltyPoints` | function | :321 |  |
+| `resources.ts` | `myReferralCode` | function | :325 |  |
+| `resources.ts` | `myReferrals` | function | :329 |  |
+| `resources.ts` | `applyReferralCode` | function | :333 |  |
+| `resources.ts` | `storeCreditBalance` | function | :339 | --- Store credit and gift cards (WO-7.4) ------------------------------------- |
+| `resources.ts` | `storeCreditLedger` | function | :343 |  |
+| `resources.ts` | `redeemGiftCardIntoAccount` | function | :347 |  |
+| `resources.ts` | `getNotificationPreferences` | function | :353 | --- Notification preferences (WO-7.8) --------------------------------------- |
+| `resources.ts` | `updateNotificationPreferences` | function | :357 |  |
+| `resources.ts` | `ReorderResult` | interface | :365 | --- Reorder (WO-7.2) ---------------------------------------------------------- |
+| `resources.ts` | `reorder` | function | :371 |  |
+| `resources.ts` | `registerDevice` | function | :379 | --- Push notifications ----------------------------------------------------- |
+| `resources.ts` | `unregisterDevice` | function | :388 |  |
 | `types.ts` | `Paginated` | interface | :5 | Shapes the API returns. |
 | `types.ts` | `ProductVariant` | interface | :17 |  |
 | `types.ts` | `Product` | interface | :29 | Already flattened into one locale by the API. |
@@ -171,17 +178,17 @@ Every top-level export in `mobile`, with the line to open.
 | `types.ts` | `WishlistItem` | interface | :265 | --- Phase 7: customer portal ------------------------------------------------ |
 | `types.ts` | `ReviewStatus` | type | :278 |  |
 | `types.ts` | `Review` | interface | :280 |  |
-| `types.ts` | `ReturnReasonCode` | type | :293 |  |
-| `types.ts` | `ReturnStatus` | type | :301 |  |
-| `types.ts` | `ReturnRequest` | interface | :303 |  |
-| `types.ts` | `LoyaltyTier` | interface | :314 |  |
-| `types.ts` | `LoyaltyBalance` | interface | :322 |  |
-| `types.ts` | `LoyaltyLedgerEntry` | interface | :328 |  |
-| `types.ts` | `Referral` | interface | :336 |  |
-| `types.ts` | `StoreCreditLedgerEntry` | interface | :342 |  |
-| `types.ts` | `NotificationChannel` | type | :351 |  |
-| `types.ts` | `NotificationCategory` | type | :352 |  |
-| `types.ts` | `NotificationPreferenceCell` | interface | :354 |  |
+| `types.ts` | `ReturnReason` | interface | :294 | WO-6.6's seeded, editable reason list — never free text. |
+| `types.ts` | `ReturnStatus` | type | :300 |  |
+| `types.ts` | `ReturnRequest` | interface | :310 |  |
+| `types.ts` | `LoyaltyTier` | interface | :328 |  |
+| `types.ts` | `LoyaltyBalance` | interface | :336 |  |
+| `types.ts` | `LoyaltyLedgerEntry` | interface | :342 |  |
+| `types.ts` | `Referral` | interface | :350 |  |
+| `types.ts` | `StoreCreditLedgerEntry` | interface | :356 |  |
+| `types.ts` | `NotificationChannel` | type | :365 |  |
+| `types.ts` | `NotificationCategory` | type | :366 |  |
+| `types.ts` | `NotificationPreferenceCell` | interface | :368 |  |
 
 ### `apps/mobile/src/components`
 
@@ -217,7 +224,7 @@ Every top-level export in `mobile`, with the line to open.
 | `index.tsx` | `I18nProvider` | function | :29 |  |
 | `index.tsx` | `useI18n` | function | :71 |  |
 | `messages.ts` | `MESSAGES` | const | :10 | The app's copy, in both languages. |
-| `messages.ts` | `MessageKey` | type | :586 |  |
+| `messages.ts` | `MessageKey` | type | :572 |  |
 
 ### `apps/mobile/src/state`
 

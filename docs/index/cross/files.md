@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **1,570** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,595** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 598 | 81,142 | [files/api.md](../files/api.md) |
-| apps/web | 293 | 46,032 | [files/web.md](../files/web.md) |
+| apps/api | 614 | 84,289 | [files/api.md](../files/api.md) |
+| apps/web | 301 | 47,032 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
-| apps/mobile | 48 | 6,918 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 64 | 5,727 | [files/packages.md](../files/packages.md) |
-| docs/* | 392 | 59,741 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 56 | 28,223 | [files/infra.md](../files/infra.md) |
+| apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
+| packages/* | 64 | 5,733 | [files/packages.md](../files/packages.md) |
+| docs/* | 392 | 59,940 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 56 | 28,239 | [files/infra.md](../files/infra.md) |
 | repository root files | 88 | 11,033 | [files/root.md](../files/root.md) |
 
 
@@ -29,28 +29,28 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 417 |
-| page | 138 |
-| unit test | 126 |
-| module | 107 |
-| service | 95 |
+| page | 146 |
+| unit test | 129 |
+| module | 109 |
+| service | 97 |
 | component | 80 |
-| dto | 74 |
-| controller | 71 |
-| migration | 64 |
+| dto | 76 |
+| controller | 72 |
+| migration | 65 |
 | nest module | 52 |
 | script | 38 |
 | prisma schema | 34 |
 | json | 29 |
-| react | 28 |
+| react | 29 |
+| event subscriber | 27 |
 | asset | 26 |
-| event subscriber | 23 |
 | utility | 21 |
 | e2e test | 18 |
 | file | 13 |
 | yaml | 12 |
 | config | 11 |
 | loading | 11 |
-| scheduled job | 8 |
+| scheduled job | 9 |
 | registry | 7 |
 | constants | 7 |
 | layout | 6 |

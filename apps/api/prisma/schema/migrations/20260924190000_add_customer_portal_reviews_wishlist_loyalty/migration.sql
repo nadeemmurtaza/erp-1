@@ -8,12 +8,6 @@ CREATE TYPE "NotificationPreferenceChannel" AS ENUM ('EMAIL', 'SMS', 'WHATSAPP',
 CREATE TYPE "NotificationPreferenceCategory" AS ENUM ('STITCHING_PROGRESS', 'MARKETING', 'BACK_IN_STOCK');
 
 -- CreateEnum
-CREATE TYPE "ReturnReasonCode" AS ENUM ('DEFECTIVE', 'WRONG_ITEM', 'DAMAGED_IN_TRANSIT', 'SIZE_FIT_ISSUE', 'CHANGED_MIND', 'OTHER');
-
--- CreateEnum
-CREATE TYPE "ReturnRequestStatus" AS ENUM ('REQUESTED', 'APPROVED', 'REJECTED', 'REFUNDED');
-
--- CreateEnum
 CREATE TYPE "ReviewStatus" AS ENUM ('PENDING', 'PUBLISHED', 'REJECTED');
 
 -- AlterTable
@@ -68,34 +62,6 @@ CREATE TABLE "NotificationPreference" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "NotificationPreference_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "ReturnRequest" (
-    "id" TEXT NOT NULL,
-    "orderId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "reasonCode" "ReturnReasonCode" NOT NULL,
-    "note" TEXT,
-    "photoUrls" TEXT[] DEFAULT ARRAY[]::TEXT[],
-    "status" "ReturnRequestStatus" NOT NULL DEFAULT 'REQUESTED',
-    "decidedAt" TIMESTAMP(3),
-    "decidedByUserId" TEXT,
-    "decisionNote" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "ReturnRequest_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "ReturnRequestLine" (
-    "id" TEXT NOT NULL,
-    "returnRequestId" TEXT NOT NULL,
-    "orderItemId" TEXT NOT NULL,
-    "quantity" INTEGER NOT NULL,
-
-    CONSTRAINT "ReturnRequestLine_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -161,18 +127,6 @@ CREATE INDEX "NotificationPreference_userId_idx" ON "NotificationPreference"("us
 CREATE UNIQUE INDEX "NotificationPreference_userId_channel_category_key" ON "NotificationPreference"("userId", "channel", "category");
 
 -- CreateIndex
-CREATE INDEX "ReturnRequest_orderId_idx" ON "ReturnRequest"("orderId");
-
--- CreateIndex
-CREATE INDEX "ReturnRequest_userId_createdAt_idx" ON "ReturnRequest"("userId", "createdAt");
-
--- CreateIndex
-CREATE INDEX "ReturnRequest_status_idx" ON "ReturnRequest"("status");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ReturnRequestLine_returnRequestId_orderItemId_key" ON "ReturnRequestLine"("returnRequestId", "orderItemId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Review_orderItemId_key" ON "Review"("orderItemId");
 
 -- CreateIndex
@@ -216,21 +170,6 @@ ALTER TABLE "Referral" ADD CONSTRAINT "Referral_refereeId_fkey" FOREIGN KEY ("re
 
 -- AddForeignKey
 ALTER TABLE "NotificationPreference" ADD CONSTRAINT "NotificationPreference_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ReturnRequest" ADD CONSTRAINT "ReturnRequest_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ReturnRequest" ADD CONSTRAINT "ReturnRequest_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ReturnRequest" ADD CONSTRAINT "ReturnRequest_decidedByUserId_fkey" FOREIGN KEY ("decidedByUserId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ReturnRequestLine" ADD CONSTRAINT "ReturnRequestLine_returnRequestId_fkey" FOREIGN KEY ("returnRequestId") REFERENCES "ReturnRequest"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ReturnRequestLine" ADD CONSTRAINT "ReturnRequestLine_orderItemId_fkey" FOREIGN KEY ("orderItemId") REFERENCES "OrderItem"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Review" ADD CONSTRAINT "Review_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;

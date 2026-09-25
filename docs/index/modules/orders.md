@@ -3,13 +3,13 @@
 
 # Module: `orders`
 
-Pack **core** · enabled by the `MODULES` allowlist · 10 files
+Pack **core** · enabled by the `MODULES` allowlist · 11 files
 
 
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (10 · 2,309 lines)
+## Files (11 · 2,351 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -17,28 +17,28 @@ All paths relative to `apps/api/src/modules/orders`.
 |---|---|---|---|---|
 | `backorder.listener.spec.ts` | unit test | 84 | — |  |
 | `backorder.listener.ts` | event subscriber | 70 | 1 | Closes the backorder loop: whenever ANY stock arrives for a variant — a PO receipt, a completed WorkOrder, a manual adj… |
-| `order.dto.ts` | dto | 167 | 7 |  |
+| `order.dto.ts` | dto | 147 | 6 |  |
 | `notification.subscriber.ts` | event subscriber | 259 | 1 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `orders-pos.service.spec.ts` | unit test | 242 | — |  |
-| `orders.controller.ts` | controller | 148 | 2 |  |
-| `orders.module.ts` | nest module | 34 | 1 |  |
-| `orders.service.ts` | service | 1198 | 3 |  |
+| `orders-pos.service.spec.ts` | unit test | 244 | — |  |
+| `orders.controller.ts` | controller | 134 | 2 |  |
+| `orders.module.ts` | nest module | 46 | 1 |  |
+| `orders.service.ts` | service | 1180 | 3 |  |
+| `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
-## HTTP routes (8)
+## HTTP routes (7)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` :93 | All orders, filterable by status |
-| GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` :108 |  |
-| POST | `/admin/orders/:id/shipments` | `orders.manage` | `OrdersAdminController.addShipment` :124 | Record a dispatch and its tracking number |
-| POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` :114 | Move the order along; cancelling restores stock |
-| POST | `/orders` | **PUBLIC** | `OrdersController.place` :39 | Place the order in the current cart |
-| GET | `/orders/:number` | signed-in | `OrdersController.get` :67 | One order, for its owner |
-| POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` :76 |  |
-| GET | `/orders/mine` | signed-in | `OrdersController.mine` :56 | The signed-in customer's orders |
+| GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` :92 | All orders, filterable by status |
+| GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` :107 |  |
+| POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` :113 | Move the order along; cancelling restores stock |
+| POST | `/orders` | **PUBLIC** | `OrdersController.place` :38 | Place the order in the current cart |
+| GET | `/orders/:number` | signed-in | `OrdersController.get` :66 | One order, for its owner |
+| POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` :75 |  |
+| GET | `/orders/mine` | signed-in | `OrdersController.mine` :55 | The signed-in customer's orders |
 
 
 ## Domain events
@@ -47,10 +47,10 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `orders.service.ts:423`, `orders.service.ts:626` |
-| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:800` |
-| `OrderCancelled` | `order.cancelled` | `orders.service.ts:800` |
-| `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:614` |
+| `OrderPlaced` | `order.placed` | `orders.service.ts:424`, `orders.service.ts:627` |
+| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:809` |
+| `OrderCancelled` | `order.cancelled` | `orders.service.ts:809` |
+| `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:615` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -61,6 +61,8 @@ All paths relative to `apps/api/src/modules/orders`.
 | `OrderStatusChanged` | `order.status_changed` | `notification.subscriber.ts:166` → `onStatusChanged()` |
 | `OrderCancelled` | `order.cancelled` | `notification.subscriber.ts:161` → `onCancelled()` |
 | `StockReplenished` | `inventory.stock_replenished` | `backorder.listener.ts:29` → `onStockReplenished()` |
+| `ShipmentStatusChanged` | `fulfilment.shipment_status_changed` | `shipment-status.listener.ts:33` → `onShipmentStatusChanged()` |
+| `ReturnRequestFullyRefunded` | `fulfilment.return_fully_refunded` | `shipment-status.listener.ts:61` → `onReturnFullyRefunded()` |
 
 
 ## Tables it owns (`orders.prisma`)
@@ -68,10 +70,10 @@ All paths relative to `apps/api/src/modules/orders`.
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
 | `Order` | 49 | :24 |  |
-| `OrderItem` | 37 | :119 |  |
-| `OrderNumberCounter` | 2 | :267 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
-| `OrderStatusEvent` | 9 | :204 |  |
-| `Shipment` | 12 | :228 |  |
+| `OrderItem` | 38 | :122 |  |
+| `OrderNumberCounter` | 2 | :302 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
+| `OrderStatusEvent` | 9 | :209 |  |
+| `Shipment` | 26 | :233 |  |
 
 
 Enums: `OrderChannel` (2) · `OrderItemFulfillmentStatus` (3) · `OrderStatus` (8) · `ShipmentStatus` (6)
@@ -84,14 +86,15 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 ## Nest wiring
 
 **`OrdersModule`** (`orders.module.ts`)
-- imports: `PaymentsModule`, `InventoryModule`, `TaxModule`, `PromotionsModule`, `GiftCardsModule`
+- imports: `PaymentsModule`, `InventoryModule`, `TaxModule`, `FulfilmentModule`, `PromotionsModule`, `GiftCardsModule`
 - controllers: `OrdersController`, `OrdersAdminController`
-- providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`
+- providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`, `ShipmentStatusListener`
 - exports: `OrdersService`
 
 
 ## Reaches out to
 
+- **module `fulfilment`** ⚠ direct import
 - **module `giftcards`** ⚠ direct import
 - **module `inventory`** ⚠ direct import
 - **module `payments`** ⚠ direct import
@@ -133,17 +136,17 @@ check there before adding another.
 | `PlaceOrderDto` | class | `order.dto.ts:61` |  |
 | `TrackOrderDto` | class | `order.dto.ts:106` |  |
 | `ChangeOrderStatusDto` | class | `order.dto.ts:113` |  |
-| `AddShipmentDto` | class | `order.dto.ts:125` |  |
-| `AdminOrderQueryDto` | class | `order.dto.ts:145` |  |
-| `OrderHistoryQueryDto` | class | `order.dto.ts:152` |  |
+| `AdminOrderQueryDto` | class | `order.dto.ts:125` |  |
+| `OrderHistoryQueryDto` | class | `order.dto.ts:132` |  |
 | `OrderNotificationSubscriber` | class | `notification.subscriber.ts:53` |  |
 | `OrderReplicationListener` | class | `order-replication.listener.ts:30` | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `OrdersController` | class | `orders.controller.ts:33` |  |
-| `OrdersAdminController` | class | `orders.controller.ts:88` |  |
-| `OrdersModule` | class | `orders.module.ts:33` |  |
+| `OrdersController` | class | `orders.controller.ts:32` |  |
+| `OrdersAdminController` | class | `orders.controller.ts:87` |  |
+| `OrdersModule` | class | `orders.module.ts:45` |  |
 | `PosSaleLineInput` | interface | `orders.service.ts:41` |  |
 | `PlaceFromPosInput` | interface | `orders.service.ts:46` |  |
 | `OrdersService` | class | `orders.service.ts:91` |  |
+| `ShipmentStatusListener` | class | `shipment-status.listener.ts:28` | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
 ---

@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1570,
-    "lines": 240690,
-    "routes": 439,
-    "controllers": 80,
-    "models": 161,
-    "enums": 71,
-    "migrations": 64,
-    "events": 40,
+    "files": 1595,
+    "lines": 245040,
+    "routes": 470,
+    "controllers": 83,
+    "models": 175,
+    "enums": 73,
+    "migrations": 65,
+    "events": 44,
     "permissions": 53,
-    "screens": 186,
-    "crons": 10,
-    "specs": 144,
+    "screens": 195,
+    "crons": 11,
+    "specs": 147,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,20 +27,20 @@
     },
     "infra": {
       "files": 56,
-      "lines": 28223,
-      "bytes": 1107492,
+      "lines": 28239,
+      "bytes": 1108384,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 598,
-      "lines": 81142,
-      "bytes": 2991427,
+      "files": 614,
+      "lines": 84289,
+      "bytes": 3097964,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
-      "files": 48,
-      "lines": 6918,
-      "bytes": 320816,
+      "files": 49,
+      "lines": 6900,
+      "bytes": 319713,
       "label": "apps/mobile — Expo/React Native customer app"
     },
     "pos": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 293,
-      "lines": 46032,
-      "bytes": 1680994,
+      "files": 301,
+      "lines": 47032,
+      "bytes": 1714491,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 59741,
-      "bytes": 3537772,
+      "lines": 59940,
+      "bytes": 3550873,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 64,
-      "lines": 5727,
-      "bytes": 193318,
+      "lines": 5733,
+      "bytes": 193566,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -229,7 +229,8 @@
         "apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts",
         "apps/api/src/modules/crm/email-inbox/email-inbox.service.ts",
         "apps/api/src/modules/crm/email-inbox/mailbox-poller.cron.ts",
-        "apps/api/src/modules/crm/order.subscriber.ts"
+        "apps/api/src/modules/crm/order.subscriber.ts",
+        "apps/api/src/modules/crm/rto-contact.listener.ts"
       ],
       "routes": 19,
       "page": "docs/index/modules/crm.md"
@@ -254,10 +255,38 @@
         "apps/api/src/modules/finance/finance.service.ts",
         "apps/api/src/modules/finance/finance.spec.ts",
         "apps/api/src/modules/finance/order-economics.service.spec.ts",
-        "apps/api/src/modules/finance/order-economics.service.ts"
+        "apps/api/src/modules/finance/order-economics.service.ts",
+        "apps/api/src/modules/finance/rto-expense.listener.ts"
       ],
       "routes": 14,
       "page": "docs/index/modules/finance.md"
+    },
+    {
+      "name": "fulfilment",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/fulfilment/courier-provider.ts",
+        "apps/api/src/modules/fulfilment/dto/fulfilment.dto.ts",
+        "apps/api/src/modules/fulfilment/dto/returns.dto.ts",
+        "apps/api/src/modules/fulfilment/dto/shipping.dto.ts",
+        "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+        "apps/api/src/modules/fulfilment/fulfilment.cron.ts",
+        "apps/api/src/modules/fulfilment/fulfilment.module.ts",
+        "apps/api/src/modules/fulfilment/fulfilment.service.ts",
+        "apps/api/src/modules/fulfilment/fulfilment.spec.ts",
+        "apps/api/src/modules/fulfilment/providers/manual.provider.ts",
+        "apps/api/src/modules/fulfilment/return-notification.subscriber.ts",
+        "apps/api/src/modules/fulfilment/returns.controller.ts",
+        "apps/api/src/modules/fulfilment/returns.service.ts",
+        "apps/api/src/modules/fulfilment/returns.spec.ts",
+        "apps/api/src/modules/fulfilment/shipping-migration.spec.ts",
+        "apps/api/src/modules/fulfilment/shipping.controller.ts",
+        "apps/api/src/modules/fulfilment/shipping.service.ts"
+      ],
+      "routes": 39,
+      "page": "docs/index/modules/fulfilment.md"
     },
     {
       "name": "giftcards",
@@ -397,9 +426,10 @@
         "apps/api/src/modules/orders/orders-pos.service.spec.ts",
         "apps/api/src/modules/orders/orders.controller.ts",
         "apps/api/src/modules/orders/orders.module.ts",
-        "apps/api/src/modules/orders/orders.service.ts"
+        "apps/api/src/modules/orders/orders.service.ts",
+        "apps/api/src/modules/orders/shipment-status.listener.ts"
       ],
-      "routes": 8,
+      "routes": 7,
       "page": "docs/index/modules/orders.md"
     },
     {
@@ -594,21 +624,6 @@
       ],
       "routes": 12,
       "page": "docs/index/modules/reports.md"
-    },
-    {
-      "name": "returns",
-      "pack": "core",
-      "alwaysOn": false,
-      "inRegistry": true,
-      "files": [
-        "apps/api/src/modules/returns/dto/return-request.dto.ts",
-        "apps/api/src/modules/returns/returns-account.controller.ts",
-        "apps/api/src/modules/returns/returns.controller.ts",
-        "apps/api/src/modules/returns/returns.module.ts",
-        "apps/api/src/modules/returns/returns.service.ts"
-      ],
-      "routes": 7,
-      "page": "docs/index/modules/returns.md"
     },
     {
       "name": "reviews",
@@ -3227,6 +3242,334 @@
     },
     {
       "method": "GET",
+      "path": "/admin/fulfilment/couriers",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "listCouriers",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 29,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/fulfilment/manifests",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "listManifests",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 61,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/manifests",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "createManifest",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 66,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/manifests/:id/dispatch",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "dispatchManifest",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 80,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/manifests/:id/shipments",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "addToManifest",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 71,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/fulfilment/returns",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 53,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/fulfilment/returns/:id",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "get",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 59,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/returns/:id/approve",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "approve",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 64,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/returns/:id/in-transit",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "markInTransit",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 74,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/returns/:id/inspect",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "inspect",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 84,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/returns/:id/received",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "markReceived",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 79,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/returns/:id/reject",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "reject",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 69,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/returns/:id/resolve",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "resolve",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 93,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/fulfilment/returns/reasons",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "listReasons",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 42,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/returns/reasons",
+      "module": "fulfilment",
+      "controller": "ReturnsAdminController",
+      "handler": "createReason",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 47,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/fulfilment/rto",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "rtoStats",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 86,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/fulfilment/shipments",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "listShipments",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 35,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/shipments",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "createShipment",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 46,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/fulfilment/shipments/:id",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "getShipment",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 41,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fulfilment/shipments/:id/status",
+      "module": "fulfilment",
+      "controller": "FulfilmentAdminController",
+      "handler": "recordStatus",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "line": 51,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
       "path": "/admin/gift-cards",
       "module": "giftcards",
       "controller": "GiftCardsController",
@@ -3808,7 +4151,7 @@
       "controller": "OrdersAdminController",
       "handler": "list",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 93,
+      "line": 92,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -3824,7 +4167,7 @@
       "controller": "OrdersAdminController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 108,
+      "line": 107,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -3835,28 +4178,12 @@
     },
     {
       "method": "POST",
-      "path": "/admin/orders/:id/shipments",
-      "module": "orders",
-      "controller": "OrdersAdminController",
-      "handler": "addShipment",
-      "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 124,
-      "access": "orders.manage",
-      "permissions": [
-        "orders.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Record a dispatch and its tracking number"
-    },
-    {
-      "method": "POST",
       "path": "/admin/orders/:id/status",
       "module": "orders",
       "controller": "OrdersAdminController",
       "handler": "changeStatus",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 114,
+      "line": 113,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -5147,54 +5474,6 @@
     },
     {
       "method": "GET",
-      "path": "/admin/returns",
-      "module": "returns",
-      "controller": "ReturnsController",
-      "handler": "list",
-      "file": "apps/api/src/modules/returns/returns.controller.ts",
-      "line": 15,
-      "access": "returns.view",
-      "permissions": [
-        "returns.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "List self-service return requests"
-    },
-    {
-      "method": "PATCH",
-      "path": "/admin/returns/:id/decide",
-      "module": "returns",
-      "controller": "ReturnsController",
-      "handler": "decide",
-      "file": "apps/api/src/modules/returns/returns.controller.ts",
-      "line": 22,
-      "access": "returns.manage",
-      "permissions": [
-        "returns.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Approve or reject a return request"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/returns/:id/mark-refunded",
-      "module": "returns",
-      "controller": "ReturnsController",
-      "handler": "markRefunded",
-      "file": "apps/api/src/modules/returns/returns.controller.ts",
-      "line": 29,
-      "access": "returns.manage",
-      "permissions": [
-        "returns.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Close out an approved return once the refund is actually done"
-    },
-    {
-      "method": "GET",
       "path": "/admin/reviews",
       "module": "reviews",
       "controller": "ReviewsController",
@@ -5384,6 +5663,218 @@
       "public": false,
       "authOnly": false,
       "summary": "The full permission catalog, grouped by category"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/settings/shipping/classes",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "listClasses",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 84,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/settings/shipping/classes",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "createClass",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 89,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/settings/shipping/classes/:id",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "updateClass",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 94,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/settings/shipping/methods",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "listMethods",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 47,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/settings/shipping/methods",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "createMethod",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 52,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/settings/shipping/methods/:id",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "updateMethod",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 57,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/settings/shipping/rates",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "listRates",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 63,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/settings/shipping/rates",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "createRate",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 68,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/settings/shipping/rates/:id",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "deleteRate",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 78,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/settings/shipping/rates/:id",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "updateRate",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 73,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/settings/shipping/zones",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "listZones",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 31,
+      "access": "fulfilment.view | fulfilment.manage",
+      "permissions": [
+        "fulfilment.view",
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/settings/shipping/zones",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "createZone",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 36,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/settings/shipping/zones/:id",
+      "module": "fulfilment",
+      "controller": "ShippingAdminController",
+      "handler": "updateZone",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 41,
+      "access": "fulfilment.manage",
+      "permissions": [
+        "fulfilment.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
     },
     {
       "method": "GET",
@@ -7136,7 +7627,7 @@
       "controller": "OrdersController",
       "handler": "place",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 39,
+      "line": 38,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -7150,7 +7641,7 @@
       "controller": "OrdersController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 67,
+      "line": 66,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -7164,7 +7655,7 @@
       "controller": "OrdersController",
       "handler": "track",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 76,
+      "line": 75,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -7178,7 +7669,7 @@
       "controller": "OrdersController",
       "handler": "mine",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 56,
+      "line": 55,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -7538,60 +8029,74 @@
       "summary": "A child's own FACT records, pushed up"
     },
     {
-      "method": "GET",
-      "path": "/returns",
-      "module": "returns",
-      "controller": "ReturnsAccountController",
-      "handler": "mine",
-      "file": "apps/api/src/modules/returns/returns-account.controller.ts",
-      "line": 22,
-      "access": "any signed-in user",
-      "permissions": [],
-      "public": false,
-      "authOnly": true,
-      "summary": "My return requests"
-    },
-    {
       "method": "POST",
       "path": "/returns",
-      "module": "returns",
-      "controller": "ReturnsAccountController",
+      "module": "fulfilment",
+      "controller": "ReturnsController",
       "handler": "create",
-      "file": "apps/api/src/modules/returns/returns-account.controller.ts",
-      "line": 34,
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 128,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
       "authOnly": true,
-      "summary": "Open a self-service return"
+      "summary": ""
     },
     {
       "method": "GET",
       "path": "/returns/:id",
-      "module": "returns",
-      "controller": "ReturnsAccountController",
-      "handler": "getOne",
-      "file": "apps/api/src/modules/returns/returns-account.controller.ts",
-      "line": 28,
+      "module": "fulfilment",
+      "controller": "ReturnsController",
+      "handler": "get",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 122,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
       "authOnly": true,
-      "summary": "One of my return requests"
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/returns/:id/photos",
+      "module": "fulfilment",
+      "controller": "ReturnsController",
+      "handler": "uploadPhoto",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 137,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": ""
     },
     {
       "method": "GET",
-      "path": "/returns/eligibility/:orderNumber",
-      "module": "returns",
-      "controller": "ReturnsAccountController",
-      "handler": "eligibility",
-      "file": "apps/api/src/modules/returns/returns-account.controller.ts",
-      "line": 16,
+      "path": "/returns/mine",
+      "module": "fulfilment",
+      "controller": "ReturnsController",
+      "handler": "mine",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 116,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
       "authOnly": true,
-      "summary": "Can this order still be returned?"
+      "summary": "The signed-in customer's own return requests"
+    },
+    {
+      "method": "GET",
+      "path": "/returns/reasons",
+      "module": "fulfilment",
+      "controller": "ReturnsController",
+      "handler": "listReasons",
+      "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "line": 109,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": ""
     },
     {
       "method": "POST",
@@ -7634,6 +8139,20 @@
       "public": false,
       "authOnly": true,
       "summary": "My own reviews, any status"
+    },
+    {
+      "method": "GET",
+      "path": "/shipping/quote",
+      "module": "fulfilment",
+      "controller": "ShippingController",
+      "handler": "quote",
+      "file": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "line": 106,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": ""
     },
     {
       "method": "POST",
@@ -7988,7 +8507,6 @@
         "POST /admin/offers",
         "GET /admin/orders",
         "GET /admin/orders/:id",
-        "POST /admin/orders/:id/shipments",
         "POST /admin/orders/:id/status",
         "GET /admin/quotes",
         "POST /admin/quotes",
@@ -8540,6 +9058,79 @@
       "inSeed": true
     },
     {
+      "key": "fulfilment.view",
+      "label": "View shipments, manifests, RTO and returns",
+      "category": "Fulfilment",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/fulfilment/couriers",
+        "GET /admin/fulfilment/manifests",
+        "GET /admin/fulfilment/returns",
+        "GET /admin/fulfilment/returns/:id",
+        "GET /admin/fulfilment/returns/reasons",
+        "GET /admin/fulfilment/rto",
+        "GET /admin/fulfilment/shipments",
+        "GET /admin/fulfilment/shipments/:id",
+        "GET /admin/settings/shipping/classes",
+        "GET /admin/settings/shipping/methods",
+        "GET /admin/settings/shipping/rates",
+        "GET /admin/settings/shipping/zones"
+      ],
+      "uiSites": 5,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "fulfilment.manage",
+      "label": "Book, track and manifest shipments; decide returns",
+      "category": "Fulfilment",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/fulfilment/couriers",
+        "GET /admin/fulfilment/manifests",
+        "POST /admin/fulfilment/manifests",
+        "POST /admin/fulfilment/manifests/:id/dispatch",
+        "POST /admin/fulfilment/manifests/:id/shipments",
+        "GET /admin/fulfilment/returns",
+        "GET /admin/fulfilment/returns/:id",
+        "POST /admin/fulfilment/returns/:id/approve",
+        "POST /admin/fulfilment/returns/:id/in-transit",
+        "POST /admin/fulfilment/returns/:id/inspect",
+        "POST /admin/fulfilment/returns/:id/received",
+        "POST /admin/fulfilment/returns/:id/reject",
+        "POST /admin/fulfilment/returns/:id/resolve",
+        "GET /admin/fulfilment/returns/reasons",
+        "POST /admin/fulfilment/returns/reasons",
+        "GET /admin/fulfilment/rto",
+        "GET /admin/fulfilment/shipments",
+        "POST /admin/fulfilment/shipments",
+        "GET /admin/fulfilment/shipments/:id",
+        "POST /admin/fulfilment/shipments/:id/status",
+        "GET /admin/settings/shipping/classes",
+        "POST /admin/settings/shipping/classes",
+        "PATCH /admin/settings/shipping/classes/:id",
+        "GET /admin/settings/shipping/methods",
+        "POST /admin/settings/shipping/methods",
+        "PATCH /admin/settings/shipping/methods/:id",
+        "GET /admin/settings/shipping/rates",
+        "POST /admin/settings/shipping/rates",
+        "DELETE /admin/settings/shipping/rates/:id",
+        "PATCH /admin/settings/shipping/rates/:id",
+        "GET /admin/settings/shipping/zones",
+        "POST /admin/settings/shipping/zones",
+        "PATCH /admin/settings/shipping/zones/:id"
+      ],
+      "uiSites": 6,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "bom.view",
       "label": "View bills of materials and raw stock",
       "category": "Manufacturing",
@@ -8835,37 +9426,6 @@
       "inSeed": true
     },
     {
-      "key": "returns.view",
-      "label": "View customer self-service return requests",
-      "category": "Sales",
-      "sensitivity": "medium",
-      "routes": [
-        "GET /admin/returns"
-      ],
-      "uiSites": 1,
-      "roles": [
-        "STAFF",
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
-      "key": "returns.manage",
-      "label": "Approve or reject a customer return request",
-      "category": "Sales",
-      "sensitivity": "medium",
-      "routes": [
-        "PATCH /admin/returns/:id/decide",
-        "POST /admin/returns/:id/mark-refunded"
-      ],
-      "uiSites": 0,
-      "roles": [
-        "STAFF",
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
       "key": "loyalty.view",
       "label": "View loyalty point balances, tiers and referrals",
       "category": "Marketing",
@@ -8905,8 +9465,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:50",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:157",
-        "apps/api/src/modules/orders/orders.service.ts:423",
-        "apps/api/src/modules/orders/orders.service.ts:626"
+        "apps/api/src/modules/orders/orders.service.ts:424",
+        "apps/api/src/modules/orders/orders.service.ts:627"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
@@ -8922,7 +9482,7 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:800"
+        "apps/api/src/modules/orders/orders.service.ts:809"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -8937,7 +9497,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:800"
+        "apps/api/src/modules/orders/orders.service.ts:809"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -8951,7 +9511,7 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:117",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:154",
-        "apps/api/src/modules/orders/orders.service.ts:614",
+        "apps/api/src/modules/orders/orders.service.ts:615",
         "apps/api/src/modules/payments/payments.service.ts:191",
         "apps/api/src/modules/payments/payments.service.ts:293",
         "apps/api/src/modules/payments/payments.service.ts:341"
@@ -9337,6 +9897,54 @@
       ]
     },
     {
+      "symbol": "ShipmentStatusChanged",
+      "name": "fulfilment.shipment_status_changed",
+      "doc": "FulfilmentService's one writer for a shipment status transition (WO-6.5) — fires whether the change came from a courier poll or a manual status update.",
+      "publishers": [
+        "apps/api/src/modules/fulfilment/fulfilment.service.ts:153",
+        "apps/api/src/modules/fulfilment/fulfilment.service.ts:246"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/orders/shipment-status.listener.ts:33 onShipmentStatusChanged()"
+      ]
+    },
+    {
+      "symbol": "ShipmentReturnedToOrigin",
+      "name": "fulfilment.shipment_rto",
+      "doc": "A courier-initiated RETURNED with no matching customer ReturnRequest (WO-6.7) — never fired for a return raised through the RMA flow.",
+      "publishers": [
+        "apps/api/src/modules/fulfilment/fulfilment.service.ts:261"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/crm/rto-contact.listener.ts:19 onShipmentReturnedToOrigin()",
+        "apps/api/src/modules/finance/rto-expense.listener.ts:25 onShipmentReturnedToOrigin()"
+      ]
+    },
+    {
+      "symbol": "ReturnRequestStatusChanged",
+      "name": "fulfilment.return_status_changed",
+      "doc": "ReturnsService's own status-machine writes (WO-6.6) — the customer notification subscriber (fulfilment/return-notification.subscriber.ts) is the only one today.",
+      "publishers": [
+        "apps/api/src/modules/fulfilment/returns.service.ts:145",
+        "apps/api/src/modules/fulfilment/returns.service.ts:194",
+        "apps/api/src/modules/fulfilment/returns.service.ts:284"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/fulfilment/return-notification.subscriber.ts:24 onStatusChanged()"
+      ]
+    },
+    {
+      "symbol": "ReturnRequestFullyRefunded",
+      "name": "fulfilment.return_fully_refunded",
+      "doc": "A ReturnRequest resolved REFUND and covers the order's full returnable quantity (WO-6.6) — orders/shipment-status.listener.ts is the only subscriber, calling changeStatus(..., {skipStockRelease: true…",
+      "publishers": [
+        "apps/api/src/modules/fulfilment/returns.service.ts:370"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/orders/shipment-status.listener.ts:61 onReturnFullyRefunded()"
+      ]
+    },
+    {
       "symbol": "DiscountRedeemed",
       "name": "promotions.discount_redeemed",
       "doc": "OrdersService.place() (WO-5.3) — fires once a discount/promo code was actually applied to a placed order, for analytics.",
@@ -9460,7 +10068,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 184,
+      "line": 185,
       "doc": "",
       "fields": [
         {
@@ -9651,7 +10259,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 462,
+      "line": 463,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -9712,7 +10320,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 274,
+      "line": 275,
       "doc": "",
       "fields": [
         {
@@ -11323,6 +11931,13 @@
           "relation": false
         },
         {
+          "name": "rtoCount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "createdAt",
           "type": "DateTime",
           "id": false,
@@ -11403,7 +12018,7 @@
     {
       "name": "ContactTag",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 216,
+      "line": 220,
       "doc": "",
       "fields": [
         {
@@ -11442,7 +12057,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 442,
+      "line": 443,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -11716,7 +12331,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 229,
+      "line": 230,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -11902,7 +12517,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 170,
+      "line": 171,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -12364,7 +12979,7 @@
     {
       "name": "FollowUpTask",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 187,
+      "line": 191,
       "doc": "",
       "fields": [
         {
@@ -13184,7 +13799,7 @@
     {
       "name": "InboundEmail",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 142,
+      "line": 146,
       "doc": "A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's reply to an order or support email.",
       "fields": [
         {
@@ -13316,7 +13931,7 @@
     {
       "name": "InboundEmailReply",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 174,
+      "line": 178,
       "doc": "A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (not resolved by purpose — a reply has to leave from the mailbox the customer is already tal…",
       "fields": [
         {
@@ -13376,7 +13991,7 @@
     {
       "name": "Interaction",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 116,
+      "line": 120,
       "doc": "",
       "fields": [
         {
@@ -14009,7 +14624,7 @@
     {
       "name": "Lead",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 75,
+      "line": 79,
       "doc": "An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact-form submission.",
       "fields": [
         {
@@ -14706,6 +15321,103 @@
       ]
     },
     {
+      "name": "Manifest",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 132,
+      "doc": "A day's pickup, grouped by courier — WO-6.4's printable handover sheet.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "number",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "courierKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ManifestStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "dispatchedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "shipments",
+          "type": "Shipment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([courierKey, status])"
+      ]
+    },
+    {
+      "name": "ManifestNumberCounter",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 272,
+      "doc": "",
+      "fields": [
+        {
+          "name": "year",
+          "type": "Int",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "counter",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "MeasurementField",
       "file": "apps/api/prisma/schema/measurements.prisma",
       "line": 50,
@@ -15132,7 +15844,7 @@
     {
       "name": "OptionTemplate",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 421,
+      "line": 428,
       "doc": "Store-level, reusable option axis — \"Size: XS/S/M/L/XL/XXL\" typed once under Catalogue -> Options & attributes instead of on every product.",
       "fields": [
         {
@@ -15192,7 +15904,7 @@
     {
       "name": "OptionTemplateTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 434,
+      "line": 441,
       "doc": "",
       "fields": [
         {
@@ -15238,7 +15950,7 @@
     {
       "name": "OptionTemplateValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 445,
+      "line": 452,
       "doc": "",
       "fields": [
         {
@@ -15306,7 +16018,7 @@
     {
       "name": "OptionTemplateValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 460,
+      "line": 467,
       "doc": "",
       "fields": [
         {
@@ -15657,6 +16369,13 @@
           "relation": false
         },
         {
+          "name": "returnRequests",
+          "type": "ReturnRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "orderDiscounts",
           "type": "OrderDiscount[]",
           "id": false,
@@ -15683,13 +16402,6 @@
           "id": false,
           "unique": false,
           "relation": true
-        },
-        {
-          "name": "returnRequests",
-          "type": "ReturnRequest[]",
-          "id": false,
-          "unique": false,
-          "relation": false
         },
         {
           "name": "loyaltyTransactions",
@@ -15885,7 +16597,7 @@
     {
       "name": "OrderItem",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 119,
+      "line": 122,
       "doc": "",
       "fields": [
         {
@@ -16134,15 +16846,22 @@
           "relation": true
         },
         {
-          "name": "review",
-          "type": "Review?",
+          "name": "shipmentItems",
+          "type": "ShipmentItem[]",
           "id": false,
           "unique": false,
           "relation": false
         },
         {
-          "name": "returnRequestLines",
-          "type": "ReturnRequestLine[]",
+          "name": "returnRequestItems",
+          "type": "ReturnRequestItem[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "review",
+          "type": "Review?",
           "id": false,
           "unique": false,
           "relation": false
@@ -16156,7 +16875,7 @@
     {
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 267,
+      "line": 302,
       "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
@@ -16179,7 +16898,7 @@
     {
       "name": "OrderStatusEvent",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 204,
+      "line": 209,
       "doc": "",
       "fields": [
         {
@@ -16304,7 +17023,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 415,
+      "line": 416,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -16542,7 +17261,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 153,
+      "line": 154,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -17083,7 +17802,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 295,
+      "line": 296,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -17996,6 +18715,13 @@
           "relation": false
         },
         {
+          "name": "shippingClassId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "featuredRank",
           "type": "Int",
           "id": false,
@@ -18033,6 +18759,13 @@
         {
           "name": "brand",
           "type": "Brand?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "shippingClass",
+          "type": "ShippingClass?",
           "id": false,
           "unique": false,
           "relation": true
@@ -18125,7 +18858,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 322,
+      "line": 329,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -18157,7 +18890,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 288,
+      "line": 295,
       "doc": "",
       "fields": [
         {
@@ -18245,7 +18978,7 @@
     {
       "name": "ProductImageTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 310,
+      "line": 317,
       "doc": "Alt text per locale.",
       "fields": [
         {
@@ -18291,7 +19024,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 343,
+      "line": 350,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -18366,7 +19099,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 360,
+      "line": 367,
       "doc": "",
       "fields": [
         {
@@ -18412,7 +19145,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 372,
+      "line": 379,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -18487,7 +19220,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 390,
+      "line": 397,
       "doc": "",
       "fields": [
         {
@@ -18533,7 +19266,7 @@
     {
       "name": "ProductTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 167,
+      "line": 174,
       "doc": "",
       "fields": [
         {
@@ -18615,7 +19348,7 @@
     {
       "name": "ProductVariant",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 186,
+      "line": 193,
       "doc": "",
       "fields": [
         {
@@ -18956,7 +19689,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 404,
+      "line": 411,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -19607,7 +20340,7 @@
     {
       "name": "Redirect",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 474,
+      "line": 481,
       "doc": "A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).",
       "fields": [
         {
@@ -19735,7 +20468,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 132,
+      "line": 133,
       "doc": "",
       "fields": [
         {
@@ -20178,9 +20911,60 @@
       ]
     },
     {
-      "name": "ReturnRequest",
-      "file": "apps/api/prisma/schema/returns.prisma",
-      "line": 39,
+      "name": "ReturnReasonCode",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 180,
+      "doc": "Seeded, editable — WO-6.6's own rule: reason codes are the fit-feedback input for Phase 9, never free text.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "translations",
+          "type": "ReturnReasonTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "items",
+          "type": "ReturnRequestItem[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "ReturnReasonTranslation",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 190,
       "doc": "",
       "fields": [
         {
@@ -20188,6 +20972,59 @@
           "type": "String",
           "id": true,
           "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reasonId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "ReturnReasonCode",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([reasonId, locale])"
+      ]
+    },
+    {
+      "name": "ReturnRequest",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 220,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "number",
+          "type": "String",
+          "id": false,
+          "unique": true,
           "relation": false
         },
         {
@@ -20199,20 +21036,34 @@
         },
         {
           "name": "userId",
-          "type": "String",
+          "type": "String?",
           "id": false,
           "unique": false,
           "relation": false
         },
         {
-          "name": "reasonCode",
-          "type": "ReturnReasonCode",
+          "name": "status",
+          "type": "ReturnStatus",
           "id": false,
           "unique": false,
           "relation": false
         },
         {
-          "name": "note",
+          "name": "resolution",
+          "type": "ReturnResolution?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customerNote",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "staffNote",
           "type": "String?",
           "id": false,
           "unique": false,
@@ -20226,43 +21077,43 @@
           "relation": false
         },
         {
-          "name": "status",
-          "type": "ReturnRequestStatus",
+          "name": "requestedAt",
+          "type": "DateTime",
           "id": false,
           "unique": false,
           "relation": false
         },
         {
-          "name": "decidedAt",
+          "name": "approvedAt",
           "type": "DateTime?",
           "id": false,
           "unique": false,
           "relation": false
         },
         {
-          "name": "decidedByUserId",
-          "type": "String?",
+          "name": "receivedAt",
+          "type": "DateTime?",
           "id": false,
           "unique": false,
           "relation": false
         },
         {
-          "name": "decisionNote",
-          "type": "String?",
+          "name": "inspectedAt",
+          "type": "DateTime?",
           "id": false,
           "unique": false,
           "relation": false
         },
         {
-          "name": "createdAt",
-          "type": "DateTime",
+          "name": "refundedAt",
+          "type": "DateTime?",
           "id": false,
           "unique": false,
           "relation": false
         },
         {
-          "name": "updatedAt",
-          "type": "DateTime",
+          "name": "refundAmount",
+          "type": "Int?",
           "id": false,
           "unique": false,
           "relation": false
@@ -20276,36 +21127,28 @@
         },
         {
           "name": "user",
-          "type": "User",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "decidedBy",
           "type": "User?",
           "id": false,
           "unique": false,
           "relation": true
         },
         {
-          "name": "lines",
-          "type": "ReturnRequestLine[]",
+          "name": "items",
+          "type": "ReturnRequestItem[]",
           "id": false,
           "unique": false,
           "relation": false
         }
       ],
       "indexes": [
-        "@@index([orderId])",
-        "@@index([userId, createdAt])",
-        "@@index([status])"
+        "@@index([status, requestedAt])",
+        "@@index([orderId])"
       ]
     },
     {
-      "name": "ReturnRequestLine",
-      "file": "apps/api/prisma/schema/returns.prisma",
-      "line": 69,
+      "name": "ReturnRequestItem",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 247,
       "doc": "",
       "fields": [
         {
@@ -20316,7 +21159,7 @@
           "relation": false
         },
         {
-          "name": "returnRequestId",
+          "name": "returnId",
           "type": "String",
           "id": false,
           "unique": false,
@@ -20330,8 +21173,29 @@
           "relation": false
         },
         {
+          "name": "reasonId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "quantity",
           "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "restockable",
+          "type": "Boolean?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "restocked",
+          "type": "Boolean",
           "id": false,
           "unique": false,
           "relation": false
@@ -20349,11 +21213,42 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "reason",
+          "type": "ReturnReasonCode",
+          "id": false,
+          "unique": false,
+          "relation": true
         }
       ],
       "indexes": [
-        "@@unique([returnRequestId, orderItemId])"
+        "@@index([returnId])",
+        "@@index([orderItemId])"
       ]
+    },
+    {
+      "name": "ReturnRequestNumberCounter",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 267,
+      "doc": "Same INSERT ...",
+      "fields": [
+        {
+          "name": "year",
+          "type": "Int",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "counter",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "Review",
@@ -20490,7 +21385,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 361,
+      "line": 362,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -20548,7 +21443,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 375,
+      "line": 376,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -20602,7 +21497,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 311,
+      "line": 312,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -20649,7 +21544,7 @@
     {
       "name": "Segment",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 228,
+      "line": 232,
       "doc": "A saved contact filter — \"repeat buyers in Lahore\", \"bridal enquiries\" — stored as a filter definition and exportable to CSV for WhatsApp broadcasts.",
       "fields": [
         {
@@ -20714,7 +21609,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 207,
+      "line": 208,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -20751,7 +21646,7 @@
     {
       "name": "Shipment",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 228,
+      "line": 233,
       "doc": "",
       "fields": [
         {
@@ -20832,16 +21727,707 @@
           "relation": false
         },
         {
+          "name": "methodId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "weightGrams",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "packageCount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "labelUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "manifestId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "meta",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isRto",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rtoAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "failedAttempts",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lastPolledAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "order",
           "type": "Order",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "method",
+          "type": "ShippingMethod?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "manifest",
+          "type": "Manifest?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "items",
+          "type": "ShipmentItem[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "events",
+          "type": "ShipmentEvent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([orderId])",
+        "@@index([trackingNumber])",
+        "@@index([status])",
+        "@@index([manifestId])"
+      ]
+    },
+    {
+      "name": "ShipmentEvent",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 165,
+      "doc": "The tracking timeline — one row per status change, courier's raw string kept in `meta` for support, never trusted for logic (WO-6.2's own rule).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shipmentId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "ShipmentStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rawStatus",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "meta",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "occurredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shipment",
+          "type": "Shipment",
           "id": false,
           "unique": false,
           "relation": true
         }
       ],
       "indexes": [
-        "@@index([orderId])",
-        "@@index([trackingNumber])"
+        "@@index([shipmentId, occurredAt])"
+      ]
+    },
+    {
+      "name": "ShipmentItem",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 150,
+      "doc": "A shipment may cover only part of an order (WO-6.4's partial-shipment note) — the shipment holds these rather than implicitly covering every OrderItem on the order.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shipmentId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderItemId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shipment",
+          "type": "Shipment",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orderItem",
+          "type": "OrderItem",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([shipmentId])",
+        "@@index([orderItemId])"
+      ]
+    },
+    {
+      "name": "ShippingClass",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 101,
+      "doc": "WO-6.1's own closing line: \"Add per-product shipping classes and a handling fee.\" A product with no class costs nothing extra to pack — the FK is nullable and every read treats null as a zero handlin…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "handlingFee",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "translations",
+          "type": "ShippingClassTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "products",
+          "type": "Product[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "ShippingClassTranslation",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 115,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "classId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shippingClass",
+          "type": "ShippingClass",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([classId, locale])"
+      ]
+    },
+    {
+      "name": "ShippingMethod",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 44,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "courierKey",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "etaMinDays",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "etaMaxDays",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "translations",
+          "type": "ShippingMethodTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rates",
+          "type": "ShippingRate[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shipments",
+          "type": "Shipment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "ShippingMethodTranslation",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 63,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "methodId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "method",
+          "type": "ShippingMethod",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([methodId, locale])"
+      ]
+    },
+    {
+      "name": "ShippingRate",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 74,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "zoneId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "methodId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "ShippingRateType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "fee",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "baseFee",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "includedUnits",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "freeAbove",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "minValue",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "maxValue",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "zone",
+          "type": "ShippingZone",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "method",
+          "type": "ShippingMethod",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([zoneId, methodId])"
+      ]
+    },
+    {
+      "name": "ShippingZone",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 15,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "cities",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isCatchAll",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "translations",
+          "type": "ShippingZoneTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rates",
+          "type": "ShippingRate[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "ShippingZoneTranslation",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 33,
+      "doc": "House Rule 6: labelEn/labelUr, not columns on ShippingZone itself.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "zoneId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "zone",
+          "type": "ShippingZone",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([zoneId, locale])"
       ]
     },
     {
@@ -21472,7 +23058,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 270,
+      "line": 277,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -22757,7 +24343,7 @@
     {
       "name": "Tag",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 207,
+      "line": 211,
       "doc": "",
       "fields": [
         {
@@ -23600,6 +25186,20 @@
           "relation": true
         },
         {
+          "name": "manifestsCreated",
+          "type": "Manifest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnRequests",
+          "type": "ReturnRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "storeCreditBalance",
           "type": "Int",
           "id": false,
@@ -23640,20 +25240,6 @@
           "id": false,
           "unique": false,
           "relation": false
-        },
-        {
-          "name": "returnRequests",
-          "type": "ReturnRequest[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "returnRequestsDecided",
-          "type": "ReturnRequest[]",
-          "id": false,
-          "unique": false,
-          "relation": true
         },
         {
           "name": "loyaltyPoints",
@@ -23706,7 +25292,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 332,
+      "line": 333,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -23767,7 +25353,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 390,
+      "line": 391,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -24274,7 +25860,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 430,
+      "line": 431,
       "values": [
         "IOS",
         "ANDROID",
@@ -24308,7 +25894,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 218,
+      "line": 219,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -24363,7 +25949,7 @@
     {
       "name": "InteractionKind",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 106,
+      "line": 110,
       "values": [
         "CALL",
         "WHATSAPP",
@@ -24396,7 +25982,7 @@
     {
       "name": "LeadStatus",
       "file": "apps/api/prisma/schema/crm.prisma",
-      "line": 65,
+      "line": 69,
       "values": [
         "NEW",
         "CONTACTED",
@@ -24447,6 +26033,15 @@
         "REDEEMED",
         "REVERSED",
         "ADJUSTED"
+      ]
+    },
+    {
+      "name": "ManifestStatus",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 126,
+      "values": [
+        "OPEN",
+        "DISPATCHED"
       ]
     },
     {
@@ -24509,7 +26104,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 331,
+      "line": 338,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -24529,7 +26124,7 @@
     {
       "name": "OrderItemFulfillmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 108,
+      "line": 111,
       "values": [
         "READY",
         "AWAITING_STOCK",
@@ -24554,7 +26149,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 404,
+      "line": 405,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -24609,7 +26204,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 323,
+      "line": 324,
       "values": [
         "GRANT",
         "REVOKE"
@@ -24740,27 +26335,30 @@
       ]
     },
     {
-      "name": "ReturnReasonCode",
-      "file": "apps/api/prisma/schema/returns.prisma",
-      "line": 21,
+      "name": "ReturnResolution",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 212,
       "values": [
-        "DEFECTIVE",
-        "WRONG_ITEM",
-        "DAMAGED_IN_TRANSIT",
-        "SIZE_FIT_ISSUE",
-        "CHANGED_MIND",
-        "OTHER"
+        "REFUND",
+        "EXCHANGE",
+        "STORE_CREDIT",
+        "REPAIR",
+        "REJECTED"
       ]
     },
     {
-      "name": "ReturnRequestStatus",
-      "file": "apps/api/prisma/schema/returns.prisma",
-      "line": 30,
+      "name": "ReturnStatus",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 201,
       "values": [
         "REQUESTED",
         "APPROVED",
         "REJECTED",
-        "REFUNDED"
+        "IN_TRANSIT",
+        "RECEIVED",
+        "INSPECTED",
+        "REFUNDED",
+        "CLOSED"
       ]
     },
     {
@@ -24796,7 +26394,7 @@
     {
       "name": "ShipmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 219,
+      "line": 224,
       "values": [
         "PENDING",
         "DISPATCHED",
@@ -24804,6 +26402,17 @@
         "DELIVERED",
         "RETURNED",
         "LOST"
+      ]
+    },
+    {
+      "name": "ShippingRateType",
+      "file": "apps/api/prisma/schema/fulfilment.prisma",
+      "line": 8,
+      "values": [
+        "FLAT",
+        "BY_WEIGHT",
+        "BY_PRICE",
+        "BY_ITEM"
       ]
     },
     {
@@ -26123,11 +27732,11 @@
       ]
     },
     {
-      "folder": "20260924190000_add_customer_portal_reviews_wishlist_returns_loyalty",
-      "file": "apps/api/prisma/schema/migrations/20260924190000_add_customer_portal_reviews_wishlist_returns_loyalty/migration.sql",
+      "folder": "20260924190000_add_customer_portal_reviews_wishlist_loyalty",
+      "file": "apps/api/prisma/schema/migrations/20260924190000_add_customer_portal_reviews_wishlist_loyalty/migration.sql",
       "date": "2026-09-24",
-      "slug": "add_customer_portal_reviews_wishlist_returns_loyalty",
-      "statements": 56,
+      "slug": "add_customer_portal_reviews_wishlist_loyalty",
+      "statements": 43,
       "kinds": [
         "CREATE TYPE",
         "ALTER TABLE",
@@ -26142,11 +27751,45 @@
         "LoyaltyTransaction",
         "NotificationPreference",
         "Referral",
-        "ReturnRequest",
-        "ReturnRequestLine",
         "Review",
         "User",
         "WishlistItem"
+      ]
+    },
+    {
+      "folder": "20260924220000_add_fulfilment_shipping_returns",
+      "file": "apps/api/prisma/schema/migrations/20260924220000_add_fulfilment_shipping_returns/migration.sql",
+      "date": "2026-09-24",
+      "slug": "add_fulfilment_shipping_returns",
+      "statements": 67,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE",
+        "INSERT"
+      ],
+      "tables": [
+        "Contact",
+        "Manifest",
+        "ManifestNumberCounter",
+        "Product",
+        "ReturnReasonCode",
+        "ReturnReasonTranslation",
+        "ReturnRequest",
+        "ReturnRequestItem",
+        "ReturnRequestNumberCounter",
+        "Shipment",
+        "ShipmentEvent",
+        "ShipmentItem",
+        "ShippingClass",
+        "ShippingClassTranslation",
+        "ShippingMethod",
+        "ShippingMethodTranslation",
+        "ShippingRate",
+        "ShippingZone",
+        "ShippingZoneTranslation"
       ]
     }
   ],
@@ -26286,8 +27929,17 @@
     {
       "app": "mobile",
       "kind": "screen",
-      "url": "/returns",
-      "file": "apps/mobile/app/returns.tsx",
+      "url": "/returns/index",
+      "file": "apps/mobile/app/returns/index.tsx",
+      "client": true,
+      "surface": "mobile",
+      "doc": ""
+    },
+    {
+      "app": "mobile",
+      "kind": "screen",
+      "url": "/returns/new",
+      "file": "apps/mobile/app/returns/new.tsx",
       "client": true,
       "surface": "mobile",
       "doc": ""
@@ -26603,6 +28255,24 @@
       "kind": "page",
       "url": "/[locale]/account/returns",
       "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/returns/[id]",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/[id]/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/returns/new",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new/page.tsx",
       "client": true,
       "surface": "storefront",
       "doc": ""
@@ -27204,6 +28874,60 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/fulfilment/manifests",
+      "file": "apps/web/src/app/(admin)/admin/(app)/fulfilment/manifests/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/fulfilment/returns",
+      "file": "apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/fulfilment/returns/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/fulfilment/rto",
+      "file": "apps/web/src/app/(admin)/admin/(app)/fulfilment/rto/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/fulfilment/shipments",
+      "file": "apps/web/src/app/(admin)/admin/(app)/fulfilment/shipments/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/fulfilment/tracking",
+      "file": "apps/web/src/app/(admin)/admin/(app)/fulfilment/tracking/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/garments",
       "file": "apps/web/src/app/(admin)/admin/(app)/garments/page.tsx",
       "client": true,
@@ -27636,15 +29360,6 @@
     {
       "app": "web",
       "kind": "page",
-      "url": "/admin/returns",
-      "file": "apps/web/src/app/(admin)/admin/(app)/returns/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
       "url": "/admin/reviews",
       "file": "apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx",
       "client": true,
@@ -27665,6 +29380,15 @@
       "kind": "page",
       "url": "/admin/settings",
       "file": "apps/web/src/app/(admin)/admin/(app)/settings/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/settings/shipping",
+      "file": "apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -27867,6 +29591,13 @@
       "file": "apps/api/src/modules/finance/finance.cron.ts",
       "line": 27,
       "handler": "generateRecurringExpenses",
+      "doc": ""
+    },
+    {
+      "schedule": "EVERY_",
+      "file": "apps/api/src/modules/fulfilment/fulfilment.cron.ts",
+      "line": 30,
+      "handler": "pollActiveShipments",
       "doc": ""
     },
     {
@@ -28996,6 +30727,34 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/fulfilment/fulfilment.spec.ts",
+      "module": "fulfilment",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "FulfilmentService.applyStatusChange"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/fulfilment/returns.spec.ts",
+      "module": "fulfilment",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "ReturnsService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/fulfilment/shipping-migration.spec.ts",
+      "module": "fulfilment",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "ShippingService — migrated zones produce the old fees",
+        "computeRateFee — pure logic"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts",
       "module": "identity-verification",
       "kind": "unit test",
@@ -29552,11 +31311,10 @@
       "file": "apps/api/test/customer-portal.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
-      "cases": 8,
+      "cases": 6,
       "describes": [
         "Customer portal (e2e)",
         "reviews",
-        "returns",
         "loyalty",
         "wishlist and back-in-stock"
       ]
@@ -30230,8 +31988,8 @@
       "path": ".env.branch.example",
       "area": "infra",
       "kind": "example",
-      "lines": 100,
-      "bytes": 5190,
+      "lines": 101,
+      "bytes": 5231,
       "doc": "",
       "symbols": []
     },
@@ -30239,8 +31997,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 146,
-      "bytes": 7222,
+      "lines": 147,
+      "bytes": 7252,
       "doc": "",
       "symbols": []
     },
@@ -30248,8 +32006,8 @@
       "path": ".env.production.example",
       "area": "infra",
       "kind": "example",
-      "lines": 118,
-      "bytes": 5347,
+      "lines": 119,
+      "bytes": 5377,
       "doc": "",
       "symbols": []
     },
@@ -30569,8 +32327,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 490,
-      "bytes": 17674,
+      "lines": 497,
+      "bytes": 18076,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -30578,8 +32336,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 474,
-      "bytes": 18496,
+      "lines": 475,
+      "bytes": 18535,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -30587,8 +32345,8 @@
       "path": "apps/api/prisma/schema/crm.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 239,
-      "bytes": 8238,
+      "lines": 243,
+      "bytes": 8484,
       "doc": "CRM: one customer record, whatever door the customer came in through.",
       "symbols": []
     },
@@ -30599,6 +32357,15 @@
       "lines": 133,
       "bytes": 5692,
       "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/fulfilment.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 276,
+      "bytes": 8249,
+      "doc": "Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping",
       "symbols": []
     },
     {
@@ -31214,11 +32981,20 @@
       "symbols": []
     },
     {
-      "path": "apps/api/prisma/schema/migrations/20260924190000_add_customer_portal_reviews_wishlist_returns_loyalty/migration.sql",
+      "path": "apps/api/prisma/schema/migrations/20260924190000_add_customer_portal_reviews_wishlist_loyalty/migration.sql",
       "area": "api",
       "kind": "migration",
-      "lines": 267,
-      "bytes": 10461,
+      "lines": 206,
+      "bytes": 8040,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260924220000_add_fulfilment_shipping_returns/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 390,
+      "bytes": 14869,
       "doc": "",
       "symbols": []
     },
@@ -31244,8 +33020,8 @@
       "path": "apps/api/prisma/schema/orders.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 271,
-      "bytes": 10841,
+      "lines": 306,
+      "bytes": 12699,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -31331,15 +33107,6 @@
       "symbols": []
     },
     {
-      "path": "apps/api/prisma/schema/returns.prisma",
-      "area": "api",
-      "kind": "prisma schema",
-      "lines": 80,
-      "bytes": 2985,
-      "doc": "Phase 7 WO-7.3 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).",
-      "symbols": []
-    },
-    {
       "path": "apps/api/prisma/schema/reviews.prisma",
       "area": "api",
       "kind": "prisma schema",
@@ -31406,8 +33173,8 @@
       "path": "apps/api/prisma/seed.ts",
       "area": "api",
       "kind": "module",
-      "lines": 3030,
-      "bytes": 103762,
+      "lines": 3068,
+      "bytes": 105667,
       "doc": "",
       "symbols": []
     },
@@ -32113,8 +33880,8 @@
       "path": "apps/api/src/core/config/app-config.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 64,
-      "bytes": 1773,
+      "lines": 68,
+      "bytes": 1887,
       "doc": "",
       "symbols": [
         {
@@ -32152,8 +33919,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 254,
-      "bytes": 10978,
+      "lines": 256,
+      "bytes": 11151,
       "doc": "",
       "symbols": [
         {
@@ -32164,12 +33931,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 149
+          "line": 151
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 175
+          "line": 177
         }
       ]
     },
@@ -32216,8 +33983,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 416,
-      "bytes": 15213,
+      "lines": 465,
+      "bytes": 17715,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -32228,167 +33995,187 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 78
+          "line": 87
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 80
+          "line": 89
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 93
+          "line": 102
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 101
+          "line": 110
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 109
+          "line": 118
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 129
+          "line": 138
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 135
+          "line": 144
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 142
+          "line": 151
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 149
+          "line": 158
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 153
+          "line": 162
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 159
+          "line": 168
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 165
+          "line": 174
         },
         {
-          "name": "ProductLowStockPayload",
+          "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 172
+          "line": 181
         },
         {
-          "name": "ProductReorderPointReachedPayload",
-          "kind": "interface",
-          "line": 180
-        },
-        {
-          "name": "StockReplenishedPayload",
+          "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
           "line": 191
         },
         {
+          "name": "ReturnRequestStatusChangedPayload",
+          "kind": "interface",
+          "line": 200
+        },
+        {
+          "name": "ReturnRequestFullyRefundedPayload",
+          "kind": "interface",
+          "line": 209
+        },
+        {
+          "name": "ProductLowStockPayload",
+          "kind": "interface",
+          "line": 217
+        },
+        {
+          "name": "ProductReorderPointReachedPayload",
+          "kind": "interface",
+          "line": 225
+        },
+        {
+          "name": "StockReplenishedPayload",
+          "kind": "interface",
+          "line": 236
+        },
+        {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 198
+          "line": 243
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 207
+          "line": 252
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 215
+          "line": 260
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 223
+          "line": 268
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 228
+          "line": 273
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 240
+          "line": 285
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 255
+          "line": 300
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 263
+          "line": 308
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 277
+          "line": 322
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 290
+          "line": 335
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 303
+          "line": 348
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 319
+          "line": 364
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 327
+          "line": 372
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 339
+          "line": 384
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 350
+          "line": 395
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 361
+          "line": 406
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 368
+          "line": 413
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 374
+          "line": 419
         }
       ]
     },
@@ -33595,8 +35382,8 @@
       "path": "apps/api/src/core/settings/document-prefix.ts",
       "area": "api",
       "kind": "module",
-      "lines": 46,
-      "bytes": 1689,
+      "lines": 48,
+      "bytes": 1732,
       "doc": "",
       "symbols": [
         {
@@ -33610,54 +35397,49 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 335,
-      "bytes": 14926,
+      "lines": 296,
+      "bytes": 13950,
       "doc": "",
       "symbols": [
         {
-          "name": "ShippingZone",
+          "name": "StoreSettings",
           "kind": "interface",
           "line": 12
         },
         {
-          "name": "StoreSettings",
-          "kind": "interface",
-          "line": 23
-        },
-        {
           "name": "DocumentLogoSource",
           "kind": "type",
-          "line": 32
+          "line": 21
         },
         {
           "name": "DocumentPrefixes",
           "kind": "interface",
-          "line": 35
+          "line": 24
         },
         {
           "name": "DocumentSettings",
           "kind": "interface",
-          "line": 57
+          "line": 50
         },
         {
           "name": "FinanceGatewayFeeBpsSettings",
           "kind": "interface",
-          "line": 71
+          "line": 64
         },
         {
           "name": "SettingKey",
           "kind": "const",
-          "line": 78
+          "line": 71
         },
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 184
+          "line": 174
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 186
+          "line": 176
         }
       ]
     },
@@ -33680,8 +35462,8 @@
       "path": "apps/api/src/core/settings/settings.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 112,
-      "bytes": 3893,
+      "lines": 85,
+      "bytes": 3016,
       "doc": "",
       "symbols": [
         {
@@ -35555,14 +37337,14 @@
       "path": "apps/api/src/modules/crm/crm.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 15,
-      "bytes": 683,
+      "lines": 16,
+      "bytes": 764,
       "doc": "",
       "symbols": [
         {
           "name": "CrmModule",
           "kind": "class",
-          "line": 14
+          "line": 15
         }
       ]
     },
@@ -35731,6 +37513,21 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/crm/rto-contact.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 33,
+      "bytes": 1253,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RtoContactListener",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/finance/dto/expense-category.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -35890,14 +37687,14 @@
       "path": "apps/api/src/modules/finance/finance.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 14,
-      "bytes": 587,
+      "lines": 22,
+      "bytes": 697,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceModule",
           "kind": "class",
-          "line": 13
+          "line": 21
         }
       ]
     },
@@ -35971,6 +37768,373 @@
           "name": "OrderEconomicsService",
           "kind": "class",
           "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/finance/rto-expense.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 47,
+      "bytes": 1834,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RtoExpenseListener",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/courier-provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 59,
+      "bytes": 2546,
+      "doc": "Extension point: courier providers.",
+      "symbols": [
+        {
+          "name": "CreateShipmentInput",
+          "kind": "interface",
+          "line": 19
+        },
+        {
+          "name": "CourierShipment",
+          "kind": "interface",
+          "line": 28
+        },
+        {
+          "name": "CourierTrackingResult",
+          "kind": "interface",
+          "line": 37
+        },
+        {
+          "name": "CourierProvider",
+          "kind": "interface",
+          "line": 45
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/dto/fulfilment.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 93,
+      "bytes": 2199,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateShipmentDto",
+          "kind": "class",
+          "line": 7
+        },
+        {
+          "name": "RecordShipmentStatusDto",
+          "kind": "class",
+          "line": 61
+        },
+        {
+          "name": "CreateManifestDto",
+          "kind": "class",
+          "line": 73
+        },
+        {
+          "name": "AddToManifestDto",
+          "kind": "class",
+          "line": 86
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/dto/returns.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 124,
+      "bytes": 2539,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateReturnReasonDto",
+          "kind": "class",
+          "line": 17
+        },
+        {
+          "name": "CreateReturnRequestDto",
+          "kind": "class",
+          "line": 51
+        },
+        {
+          "name": "DecideReturnRequestDto",
+          "kind": "class",
+          "line": 71
+        },
+        {
+          "name": "InspectReturnRequestDto",
+          "kind": "class",
+          "line": 90
+        },
+        {
+          "name": "ResolveReturnRequestDto",
+          "kind": "class",
+          "line": 107
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/dto/shipping.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 331,
+      "bytes": 6363,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LabelTranslationDto",
+          "kind": "class",
+          "line": 18
+        },
+        {
+          "name": "CreateShippingZoneDto",
+          "kind": "class",
+          "line": 30
+        },
+        {
+          "name": "UpdateShippingZoneDto",
+          "kind": "class",
+          "line": 60
+        },
+        {
+          "name": "CreateShippingMethodDto",
+          "kind": "class",
+          "line": 90
+        },
+        {
+          "name": "UpdateShippingMethodDto",
+          "kind": "class",
+          "line": 127
+        },
+        {
+          "name": "CreateShippingRateDto",
+          "kind": "class",
+          "line": 166
+        },
+        {
+          "name": "UpdateShippingRateDto",
+          "kind": "class",
+          "line": 218
+        },
+        {
+          "name": "CreateShippingClassDto",
+          "kind": "class",
+          "line": 266
+        },
+        {
+          "name": "UpdateShippingClassDto",
+          "kind": "class",
+          "line": 286
+        },
+        {
+          "name": "ShippingQuoteQueryDto",
+          "kind": "class",
+          "line": 299
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 92,
+      "bytes": 3050,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FulfilmentAdminController",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/fulfilment.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 80,
+      "bytes": 3087,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FulfilmentCron",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/fulfilment.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 44,
+      "bytes": 1792,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FulfilmentModule",
+          "kind": "class",
+          "line": 43
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/fulfilment.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 470,
+      "bytes": 16906,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FulfilmentService",
+          "kind": "class",
+          "line": 45
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/fulfilment.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 125,
+      "bytes": 4953,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/providers/manual.provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 49,
+      "bytes": 1819,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManualCourierProvider",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/return-notification.subscriber.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 69,
+      "bytes": 2891,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnNotificationSubscriber",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/returns.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 155,
+      "bytes": 4795,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsAdminController",
+          "kind": "class",
+          "line": 37
+        },
+        {
+          "name": "ReturnsController",
+          "kind": "class",
+          "line": 101
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/returns.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 382,
+      "bytes": 14048,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsService",
+          "kind": "class",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/returns.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 178,
+      "bytes": 6639,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/shipping-migration.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 90,
+      "bytes": 3743,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/shipping.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 114,
+      "bytes": 3223,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ShippingAdminController",
+          "kind": "class",
+          "line": 26
+        },
+        {
+          "name": "ShippingController",
+          "kind": "class",
+          "line": 101
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fulfilment/shipping.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 328,
+      "bytes": 11286,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ShippingQuote",
+          "kind": "interface",
+          "line": 15
+        },
+        {
+          "name": "ShippingService",
+          "kind": "class",
+          "line": 38
+        },
+        {
+          "name": "computeRateFee",
+          "kind": "function",
+          "line": 304
         }
       ]
     },
@@ -36801,7 +38965,7 @@
       "area": "api",
       "kind": "module",
       "lines": 91,
-      "bytes": 2873,
+      "bytes": 2876,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -36820,8 +38984,8 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 171,
-      "bytes": 8775,
+      "lines": 175,
+      "bytes": 9032,
       "doc": "",
       "symbols": [
         {
@@ -36837,7 +39001,7 @@
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 147
+          "line": 151
         }
       ]
     },
@@ -36919,8 +39083,8 @@
       "path": "apps/api/src/modules/orders/dto/order.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 167,
-      "bytes": 4022,
+      "lines": 147,
+      "bytes": 3637,
       "doc": "",
       "symbols": [
         {
@@ -36944,19 +39108,14 @@
           "line": 113
         },
         {
-          "name": "AddShipmentDto",
+          "name": "AdminOrderQueryDto",
           "kind": "class",
           "line": 125
         },
         {
-          "name": "AdminOrderQueryDto",
-          "kind": "class",
-          "line": 145
-        },
-        {
           "name": "OrderHistoryQueryDto",
           "kind": "class",
-          "line": 152
+          "line": 132
         }
       ]
     },
@@ -37003,8 +39162,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 242,
-      "bytes": 10016,
+      "lines": 244,
+      "bytes": 10134,
       "doc": "",
       "symbols": []
     },
@@ -37012,19 +39171,19 @@
       "path": "apps/api/src/modules/orders/orders.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 148,
-      "bytes": 4321,
+      "lines": 134,
+      "bytes": 3897,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersController",
           "kind": "class",
-          "line": 33
+          "line": 32
         },
         {
           "name": "OrdersAdminController",
           "kind": "class",
-          "line": 88
+          "line": 87
         }
       ]
     },
@@ -37032,14 +39191,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 34,
-      "bytes": 1962,
+      "lines": 46,
+      "bytes": 2412,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 33
+          "line": 45
         }
       ]
     },
@@ -37047,8 +39206,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1198,
-      "bytes": 46220,
+      "lines": 1180,
+      "bytes": 46062,
       "doc": "",
       "symbols": [
         {
@@ -37065,6 +39224,21 @@
           "name": "OrdersService",
           "kind": "class",
           "line": 91
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orders/shipment-status.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 80,
+      "bytes": 2818,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ShipmentStatusListener",
+          "kind": "class",
+          "line": 28
         }
       ]
     },
@@ -38721,96 +40895,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/returns/dto/return-request.dto.ts",
-      "area": "api",
-      "kind": "dto",
-      "lines": 81,
-      "bytes": 1929,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ReturnRequestLineDto",
-          "kind": "class",
-          "line": 21
-        },
-        {
-          "name": "CreateReturnRequestDto",
-          "kind": "class",
-          "line": 32
-        },
-        {
-          "name": "DecideReturnRequestDto",
-          "kind": "class",
-          "line": 64
-        },
-        {
-          "name": "ReturnRequestQueryDto",
-          "kind": "class",
-          "line": 75
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/returns/returns-account.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 38,
-      "bytes": 1390,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ReturnsAccountController",
-          "kind": "class",
-          "line": 11
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/returns/returns.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 33,
-      "bytes": 1275,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ReturnsController",
-          "kind": "class",
-          "line": 9
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/returns/returns.module.ts",
-      "area": "api",
-      "kind": "nest module",
-      "lines": 12,
-      "bytes": 390,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ReturnsModule",
-          "kind": "class",
-          "line": 11
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/returns/returns.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 150,
-      "bytes": 6619,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ReturnsService",
-          "kind": "class",
-          "line": 22
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/reviews/dto/review.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -40084,8 +42168,8 @@
       "path": "apps/api/test/customer-portal.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 301,
-      "bytes": 13074,
+      "lines": 243,
+      "bytes": 10237,
       "doc": "",
       "symbols": []
     },
@@ -40359,8 +42443,8 @@
       "path": "apps/mobile/app/_layout.tsx",
       "area": "mobile",
       "kind": "react",
-      "lines": 89,
-      "bytes": 3500,
+      "lines": 90,
+      "bytes": 3593,
       "doc": "",
       "symbols": [
         {
@@ -40480,7 +42564,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 223,
-      "bytes": 7764,
+      "bytes": 7769,
       "doc": "",
       "symbols": [
         {
@@ -40536,17 +42620,32 @@
       ]
     },
     {
-      "path": "apps/mobile/app/returns.tsx",
+      "path": "apps/mobile/app/returns/index.tsx",
       "area": "mobile",
       "kind": "react",
-      "lines": 265,
-      "bytes": 9070,
+      "lines": 80,
+      "bytes": 2668,
       "doc": "",
       "symbols": [
         {
           "name": "ReturnsScreen",
           "kind": "default",
-          "line": 49
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/mobile/app/returns/new.tsx",
+      "area": "mobile",
+      "kind": "react",
+      "lines": 163,
+      "bytes": 5727,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewReturnRequestScreen",
+          "kind": "default",
+          "line": 27
         }
       ]
     },
@@ -40776,8 +42875,8 @@
       "path": "apps/mobile/src/api/resources.ts",
       "area": "mobile",
       "kind": "module",
-      "lines": 390,
-      "bytes": 11891,
+      "lines": 393,
+      "bytes": 11923,
       "doc": "",
       "symbols": [
         {
@@ -40966,7 +43065,7 @@
           "line": 281
         },
         {
-          "name": "returnEligibility",
+          "name": "listReturnReasons",
           "kind": "function",
           "line": 287
         },
@@ -40976,89 +43075,94 @@
           "line": 291
         },
         {
-          "name": "createReturn",
+          "name": "getReturn",
           "kind": "function",
           "line": 295
         },
         {
+          "name": "createReturn",
+          "kind": "function",
+          "line": 299
+        },
+        {
           "name": "loyaltyTiers",
           "kind": "function",
-          "line": 306
+          "line": 309
         },
         {
           "name": "loyaltyBalance",
           "kind": "function",
-          "line": 310
+          "line": 313
         },
         {
           "name": "loyaltyLedger",
           "kind": "function",
-          "line": 314
+          "line": 317
         },
         {
           "name": "redeemLoyaltyPoints",
           "kind": "function",
-          "line": 318
+          "line": 321
         },
         {
           "name": "myReferralCode",
           "kind": "function",
-          "line": 322
+          "line": 325
         },
         {
           "name": "myReferrals",
           "kind": "function",
-          "line": 326
+          "line": 329
         },
         {
           "name": "applyReferralCode",
           "kind": "function",
-          "line": 330
+          "line": 333
         },
         {
           "name": "storeCreditBalance",
           "kind": "function",
-          "line": 336
+          "line": 339
         },
         {
           "name": "storeCreditLedger",
           "kind": "function",
-          "line": 340
+          "line": 343
         },
         {
           "name": "redeemGiftCardIntoAccount",
           "kind": "function",
-          "line": 344
+          "line": 347
         },
         {
           "name": "getNotificationPreferences",
           "kind": "function",
-          "line": 350
+          "line": 353
         },
         {
           "name": "updateNotificationPreferences",
           "kind": "function",
-          "line": 354
+          "line": 357
         },
         {
           "name": "ReorderResult",
           "kind": "interface",
-          "line": 362
+          "line": 365
         },
         {
           "name": "reorder",
           "kind": "function",
-          "line": 368
+          "line": 371
         },
         {
           "name": "registerDevice",
           "kind": "function",
-          "line": 376
+          "line": 379
         },
         {
           "name": "unregisterDevice",
           "kind": "function",
-          "line": 385
+          "line": 388
         }
       ]
     },
@@ -41066,8 +43170,8 @@
       "path": "apps/mobile/src/api/types.ts",
       "area": "mobile",
       "kind": "module",
-      "lines": 361,
-      "bytes": 8511,
+      "lines": 375,
+      "bytes": 8731,
       "doc": "",
       "symbols": [
         {
@@ -41181,59 +43285,59 @@
           "line": 280
         },
         {
-          "name": "ReturnReasonCode",
-          "kind": "type",
-          "line": 293
+          "name": "ReturnReason",
+          "kind": "interface",
+          "line": 294
         },
         {
           "name": "ReturnStatus",
           "kind": "type",
-          "line": 301
+          "line": 300
         },
         {
           "name": "ReturnRequest",
           "kind": "interface",
-          "line": 303
+          "line": 310
         },
         {
           "name": "LoyaltyTier",
           "kind": "interface",
-          "line": 314
+          "line": 328
         },
         {
           "name": "LoyaltyBalance",
           "kind": "interface",
-          "line": 322
+          "line": 336
         },
         {
           "name": "LoyaltyLedgerEntry",
           "kind": "interface",
-          "line": 328
+          "line": 342
         },
         {
           "name": "Referral",
           "kind": "interface",
-          "line": 336
+          "line": 350
         },
         {
           "name": "StoreCreditLedgerEntry",
           "kind": "interface",
-          "line": 342
+          "line": 356
         },
         {
           "name": "NotificationChannel",
           "kind": "type",
-          "line": 351
+          "line": 365
         },
         {
           "name": "NotificationCategory",
           "kind": "type",
-          "line": 352
+          "line": 366
         },
         {
           "name": "NotificationPreferenceCell",
           "kind": "interface",
-          "line": 354
+          "line": 368
         }
       ]
     },
@@ -41429,8 +43533,8 @@
       "path": "apps/mobile/src/i18n/messages.ts",
       "area": "mobile",
       "kind": "module",
-      "lines": 587,
-      "bytes": 28625,
+      "lines": 573,
+      "bytes": 27847,
       "doc": "",
       "symbols": [
         {
@@ -41441,7 +43545,7 @@
         {
           "name": "MessageKey",
           "kind": "type",
-          "line": 586
+          "line": 572
         }
       ]
     },
@@ -42696,8 +44800,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 590,
-      "bytes": 23133,
+      "lines": 581,
+      "bytes": 22611,
       "doc": "",
       "symbols": []
     },
@@ -42705,8 +44809,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 590,
-      "bytes": 31331,
+      "lines": 581,
+      "bytes": 30709,
       "doc": "",
       "symbols": []
     },
@@ -43362,6 +45466,96 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/fulfilment/manifests/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 105,
+      "bytes": 3461,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManifestsPage",
+          "kind": "default",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 196,
+      "bytes": 7383,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnDetailPage",
+          "kind": "default",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 76,
+      "bytes": 2667,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsPage",
+          "kind": "default",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/fulfilment/rto/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 124,
+      "bytes": 4072,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RtoRatePage",
+          "kind": "default",
+          "line": 36
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/fulfilment/shipments/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 136,
+      "bytes": 4500,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ShipmentsPage",
+          "kind": "default",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/fulfilment/tracking/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 89,
+      "bytes": 3345,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TrackingPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -43785,8 +45979,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 553,
-      "bytes": 20360,
+      "lines": 556,
+      "bytes": 20551,
       "doc": "",
       "symbols": [
         {
@@ -44112,21 +46306,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/returns/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 138,
-      "bytes": 5118,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ReturnsAdminPage",
-          "kind": "default",
-          "line": 25
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx",
       "area": "web",
       "kind": "page",
@@ -44168,6 +46347,21 @@
           "name": "AdminSettingsPage",
           "kind": "default",
           "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 244,
+      "bytes": 8470,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ShippingSettingsPage",
+          "kind": "default",
+          "line": 40
         }
       ]
     },
@@ -44556,7 +46750,7 @@
       "area": "web",
       "kind": "page",
       "lines": 123,
-      "bytes": 4434,
+      "bytes": 4439,
       "doc": "",
       "symbols": [
         {
@@ -44582,17 +46776,47 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/page.tsx",
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 240,
-      "bytes": 8757,
+      "lines": 78,
+      "bytes": 2737,
       "doc": "",
       "symbols": [
         {
-          "name": "ReturnsPage",
+          "name": "MyReturnDetailPage",
           "kind": "default",
-          "line": 46
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 166,
+      "bytes": 5726,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewReturnRequestPage",
+          "kind": "default",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 68,
+      "bytes": 2391,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyReturnsPage",
+          "kind": "default",
+          "line": 15
         }
       ]
     },
@@ -44645,8 +46869,8 @@
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 406,
-      "bytes": 15238,
+      "lines": 410,
+      "bytes": 15273,
       "doc": "",
       "symbols": [
         {
@@ -45543,44 +47767,44 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 668,
-      "bytes": 17280,
+      "lines": 718,
+      "bytes": 18674,
       "doc": "",
       "symbols": [
         {
           "name": "ICON_MAP",
           "kind": "const",
-          "line": 18
+          "line": 19
         },
         {
           "name": "AdminNavGroup",
           "kind": "interface",
-          "line": 32
+          "line": 34
         },
         {
           "name": "NAV_GROUPS",
           "kind": "const",
-          "line": 51
+          "line": 53
         },
         {
           "name": "AdminNavItem",
           "kind": "interface",
-          "line": 69
+          "line": 76
         },
         {
           "name": "ADMIN_NAV",
           "kind": "const",
-          "line": 108
+          "line": 116
         },
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 638
+          "line": 688
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 653
+          "line": 703
         }
       ]
     },
@@ -46761,8 +48985,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 151,
-      "bytes": 5946,
+      "lines": 162,
+      "bytes": 6549,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -47038,8 +49262,8 @@
       "path": "apps/web/src/lib/customer-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 196,
-      "bytes": 5889,
+      "lines": 217,
+      "bytes": 6739,
       "doc": "",
       "symbols": [
         {
@@ -47103,9 +49327,29 @@
           "line": 132
         },
         {
+          "name": "listReturnReasons",
+          "kind": "function",
+          "line": 142
+        },
+        {
+          "name": "listMyReturns",
+          "kind": "function",
+          "line": 146
+        },
+        {
+          "name": "getMyReturn",
+          "kind": "function",
+          "line": 150
+        },
+        {
+          "name": "createReturnRequest",
+          "kind": "function",
+          "line": 154
+        },
+        {
           "name": "customerFetch",
           "kind": "function",
-          "line": 173
+          "line": 194
         }
       ]
     },
@@ -47203,8 +49447,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1186,
-      "bytes": 30631,
+      "lines": 1211,
+      "bytes": 31317,
       "doc": "",
       "symbols": [
         {
@@ -47763,29 +50007,39 @@
           "line": 1101
         },
         {
+          "name": "CustomerReturnReason",
+          "kind": "interface",
+          "line": 1134
+        },
+        {
+          "name": "CustomerReturnRequest",
+          "kind": "interface",
+          "line": 1140
+        },
+        {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1133
+          "line": 1158
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1148
+          "line": 1173
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1157
+          "line": 1182
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1166
+          "line": 1191
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1182
+          "line": 1207
         }
       ]
     },
@@ -50311,8 +52565,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 2413,
-      "bytes": 132668,
+      "lines": 2556,
+      "bytes": 142007,
       "doc": "",
       "symbols": []
     },
@@ -51175,8 +53429,8 @@
       "path": "docs/implementation/customer-portal-loyalty/07-customer-portal.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 224,
-      "bytes": 9826,
+      "lines": 233,
+      "bytes": 10515,
       "doc": "",
       "symbols": []
     },
@@ -51760,8 +54014,8 @@
       "path": "docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 288,
-      "bytes": 10313,
+      "lines": 335,
+      "bytes": 13386,
       "doc": "",
       "symbols": []
     },
@@ -52979,8 +55233,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 609,
-      "bytes": 18340,
+      "lines": 615,
+      "bytes": 18588,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -53021,27 +55275,27 @@
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 489
+          "line": 495
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 596
+          "line": 602
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 601
+          "line": 607
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 602
+          "line": 608
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 605
+          "line": 611
         }
       ]
     },
@@ -53599,8 +55853,8 @@
       "path": "scripts/check-module-boundaries.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 559,
-      "bytes": 23953,
+      "lines": 572,
+      "bytes": 24744,
       "doc": "",
       "symbols": []
     },

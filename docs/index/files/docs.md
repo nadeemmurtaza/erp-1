@@ -563,7 +563,7 @@ All 392 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 2413 |  |
+| `DECISIONS.md` | doc | 2556 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -714,7 +714,7 @@ All 392 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `07-customer-portal.md` | doc | 224 |  |
+| `07-customer-portal.md` | doc | 233 |  |
 
 ### `docs/implementation/finance-accounting` (8)
 
@@ -829,7 +829,7 @@ All 392 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `06-shipping-fulfilment-returns.md` | doc | 288 |  |
+| `06-shipping-fulfilment-returns.md` | doc | 335 |  |
 
 ### `docs/implementation/tasks-notifications-support` (5)
 

@@ -39,6 +39,10 @@ model Contact {
   avgOrderValue Int       @default(0) // paisa
   lastOrderAt   DateTime?
   firstOrderAt  DateTime?
+  /// WO-6.7 — rolled up by rto-contact.listener.ts on
+  /// DomainEvent.ShipmentReturnedToOrigin, same idiom as orderCount above.
+  /// What tells the shop which customers to require advance payment from.
+  rtoCount      Int       @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

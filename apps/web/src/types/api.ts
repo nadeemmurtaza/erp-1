@@ -1130,6 +1130,31 @@ export interface CustomerOrder {
   statusEvents: Array<{ toStatus: string; createdAt: string; note: string | null }>;
 }
 
+/** WO-6.6's seeded, editable reason list — never free text. */
+export interface CustomerReturnReason {
+  id: string;
+  key: string;
+  translations: Array<{ locale: string; label: string }>;
+}
+
+export interface CustomerReturnRequest {
+  id: string;
+  number: string;
+  status: string;
+  resolution: string | null;
+  customerNote: string | null;
+  refundAmount: number | null;
+  requestedAt: string;
+  order: { number: string };
+  items: Array<{
+    id: string;
+    quantity: number;
+    restockable: boolean | null;
+    reason: { translations: Array<{ locale: string; label: string }> };
+    orderItem: { nameEn: string; nameUr: string | null; variantLabel: string | null };
+  }>;
+}
+
 export interface PaginatedResult<T> {
   data: T[];
   meta: {

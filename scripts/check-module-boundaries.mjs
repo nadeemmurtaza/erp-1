@@ -169,6 +169,19 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // same-transaction-write reasoning as production -> inventory above, for
   // the bom module's own production step.
   'bom -> inventory',
+  // orders.service.ts's checkout path needs a shipping fee before it can
+  // finalise the order total — the same synchronous-pricing reason
+  // orders -> tax already exists for above. ShippingService.quote() is a
+  // pure read (no write of its own), so there is no transaction to share;
+  // the coupling is the same "checkout cannot commit without this number"
+  // dependency, not a stock/ledger write.
+  'orders -> fulfilment',
+  // returns.service.ts's inspect() (WO-6.6) restocks a saleable item or
+  // writes off a damaged one (InventoryService.move()) inside the same
+  // transaction as the ReturnRequestItem.restockable/restocked write it
+  // belongs to — same same-transaction reasoning as purchasing/production/
+  // bom -> inventory above.
+  'fulfilment -> inventory',
   // orders.service.ts's place() validates a promo code and applies its
   // discount, then — inside the SAME transaction as the order write —
   // conditionally increments Discount/PromoCode.usageCount and writes the

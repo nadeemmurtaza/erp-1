@@ -101,6 +101,9 @@ model User {
   payRunLines               PayRunLine[]
   payRunAdjustments         PayRunAdjustment[]
   payRunAdjustmentsCreated  PayRunAdjustment[]       @relation("PayRunAdjustmentCreator")
+  /// fulfilment.prisma (WO-6.4/6.6) — both core, same idiom as auditLogs above.
+  manifestsCreated          Manifest[]
+  returnRequests            ReturnRequest[]
   /// giftcards.prisma (WO-5.5). SUM(StoreCreditTransaction.delta) — a cache,
   /// never written outside StoreCreditService's own conditional update; the
   /// ledger is the source of truth (see StoreCreditTransaction's own note).
@@ -112,8 +115,6 @@ model User {
   reviews                 Review[]
   wishlistItems           WishlistItem[]
   backInStockRequests     BackInStockRequest[]
-  returnRequests          ReturnRequest[]
-  returnRequestsDecided   ReturnRequest[]          @relation("ReturnRequestDecider")
   /// WO-5.5's own cache pattern, reused: SUM(LoyaltyTransaction.points) — a
   /// cache, never written outside LoyaltyService's own conditional update.
   loyaltyPoints           Int                      @default(0)

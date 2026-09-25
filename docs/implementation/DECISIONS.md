@@ -2298,7 +2298,9 @@ either blocking on it or silently inventing Phase 6 inside this work order.
    backfill logic scoped to just these five keys, so ADMIN/STAFF actually
    hold the grant a real login checks, matching this file's own
    "reachable... every permission seeded through to a real grant" rule
-   rather than repeating the exact gap it names as a trap.
+   rather than repeating the exact gap it names as a trap. (`returns.view`/
+   `.manage` were later removed outright, not just re-backfilled, when
+   WO-7.3's own module was retired in favour of WO-6.6's — see §9.)
 
 3. **The order invoice is a browser `window.print()` page with Tailwind
    `print:` variants, not a server-rendered PDF.** There is no PDF-
@@ -2398,15 +2400,156 @@ either blocking on it or silently inventing Phase 6 inside this work order.
   and is not fixed at the seed-script level by this ADR (that would be a
   separate, larger change to `seedRoles()`'s own one-time-ness, out of
   scope here).
-- When Phase 6 ships, WO-7.2's tracking timeline and WO-7.3's return
-  approval both have a named, single integration point to pick up real
-  shipment events and real refund/restock automation, rather than needing
-  a rewrite.
+- Phase 6 shipped independently, on a different branch, before this branch
+  merged — WO-7.3's own return module was retired outright rather than
+  extended in place, since the two turned out to be duplicate
+  implementations of the same capability once merged (§9). WO-7.2's
+  tracking timeline was NOT revisited to consume Phase 6's real
+  `ShipmentEvent` data (a named follow-up, not done here — see the Phase 7
+  status blockquote's own §1 note).
 - WO-7.9 is built and verified (`apps/mobile` typecheck, its own Jest suite,
   and the repository's full `pnpm typecheck`/`pnpm test` all pass with it
   included) — Phase 7's exit criterion #6 ("every web portal feature exists
   in the Expo app with identical wording") is met for every screen named in
-  the work order, with the two narrow, named exceptions in §8 above.
+  the work order, with the two narrow, named exceptions in §8 above, and
+  its own returns screen was subsequently rewired to WO-6.6's API (§9).
+
+### Status
+**Accepted.**
+
+## ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time
+
+### Context
+WO-7.1 through WO-7.9 (this ADR, §1–§8) were built and merged to a local
+branch before Phase 6 (`docs/implementation/shipping-fulfilment-returns/
+06-shipping-fulfilment-returns.md`) existed anywhere in this codebase —
+§1's own reasoning explains why WO-7.2 and WO-7.3 were scoped narrowly
+around that absence. Independently, and without visibility into this
+branch, another session built the whole of Phase 6 (WO-6.1 through WO-6.8:
+shipping zones/rates/methods as real tables, the shipment lifecycle,
+courier providers, and — critically — WO-6.6, a complete returns/RMA
+module) and merged it to `main` first. Merging this branch into `main`
+afterward surfaced a genuine collision, not a textual one: both branches
+had independently built a full "customer requests a return on a delivered
+order" capability, each with its own Prisma model named `ReturnRequest`,
+each with its own API module, and each with storefront pages at the
+identical route (`account/returns`, `account/returns/new`,
+`account/returns/[id]`). Two Prisma models sharing one name cannot coexist
+in a single schema; keeping both implementations was never an option project
+architecture allows either way (`CLAUDE.md`'s "a duplicate implementation is
+a defect unless a documented boundary requires the separation" — no such
+boundary applies here, since both are the same actor performing the same
+job on the same entity).
+
+### Options Considered and Decision
+Two live implementations existed at merge time:
+- **This phase's own** (`returns.prisma`'s `ReturnRequest`/`ReturnRequestLine`,
+  the `returns` module, `/returns` and `/admin/returns`): customer
+  request → staff approve/reject only, explicitly scoped narrow because
+  Phase 6 did not exist yet (§1, §4 above). No restock or refund automation.
+- **WO-6.6's** (`fulfilment.prisma`'s `ReturnRequest`/`ReturnRequestItem`/
+  `ReturnReasonCode`, the `fulfilment` module's `ReturnsController`/
+  `ReturnsAdminController`, `/returns` and `/admin/fulfilment/returns`):
+  the full request → approve/reject → in-transit → received → inspect →
+  resolve lifecycle, with real inspection-driven restock/write-off and a
+  documented refund-issuance hook (`PaymentsService.refund()` first, then
+  `resolve()` records the outcome) — exactly the automation this phase's
+  own module named as Phase 6's future job.
+
+**Decision: retire this phase's own returns module entirely and keep
+WO-6.6's**, rather than keep both, merge them into one hybrid, or keep
+this phase's as a "simple" alternative. WO-6.6 is not a rough draft of the
+same idea — it is the complete version this phase's own doc comments
+(`returns.prisma`'s file header, ADR-031 §1/§4 above) explicitly deferred
+to "Phase 6" by name. Keeping the narrower module after the complete one
+exists would not be "flexibility" (`CLAUDE.md`'s own "flexibility first"
+framing) — it would be two disagreeing sources of truth for the same fact
+("has this order been returned, and what happened to the money and the
+stock"), which is exactly the kind of drift the "click the number" and
+"authoritative source" lenses in `CLAUDE.md`'s feature-scope section exist
+to prevent. Because this constituted deleting a chunk of code built earlier
+in this same session, the owner was asked explicitly before proceeding
+(per this repository's own "No deletion of any kind without the owner's
+explicit confirmation" rule) and confirmed retiring the narrower module.
+
+### What changed to retire it
+- Deleted `apps/api/prisma/schema/returns.prisma` (the `ReturnReasonCode`/
+  `ReturnRequestStatus` enums and `ReturnRequest`/`ReturnRequestLine`
+  models), the `returns` field relations it added to `Order`/`OrderItem`/
+  `User` in `core.prisma`/`orders.prisma` (WO-6.6 already added its own,
+  differently-named equivalents), the `apps/api/src/modules/returns/`
+  module (controller, service, DTOs), its `modules.registry.ts`/
+  `module-packs.ts` registrations, its `SettingKey.ReturnsWindowDays`
+  setting (unused once its only reader was deleted), and the returns-only
+  keys from `PERMISSION_CATALOG`/`PERMISSION_GROUPS`/`ROLE_PERMISSION_SEED`
+  (`returns.view`/`.manage` — `fulfilment.view`/`.manage` already covers
+  the same access, seeded independently by WO-6).
+- Stripped the `ReturnRequest`/`ReturnRequestLine` `CREATE TABLE` statements
+  out of this phase's own migration (`.../20260924190000_add_customer_
+  portal_reviews_wishlist_loyalty/migration.sql`, renamed from its original
+  `..._returns_loyalty` to match) rather than leaving a migration that
+  creates a table WO-6.6's own later migration also creates — verified by
+  running `prisma migrate deploy` against a fresh scratch database, which
+  applies both migrations in order with no naming collision.
+  `test/customer-portal.e2e-spec.ts`'s own `returns` describe block
+  (testing the now-deleted module's endpoints) was removed; return/RMA
+  behavior is `fulfilment/returns.spec.ts`'s job now.
+- On the web: took WO-6.6's `account/returns` pages as-is, deleted this
+  phase's own `apps/web/src/app/(admin)/admin/(app)/returns/page.tsx` and
+  its `nav-registry.ts` entry (WO-6.6's `/admin/fulfilment/returns` already
+  covers it), removed the duplicate "Request a return" link this phase
+  added to the order page (WO-6.6 already added its own, correctly pointed
+  at its own `new` sub-route), and repointed `account/overview/page.tsx`'s
+  `/returns` fetch to WO-6.6's actual `/returns/mine` route. This phase's
+  own orphaned `account.returns.*`, `account.orders.requestReturn` and
+  `order.requestReturn` translation keys (built for the now-deleted pages
+  and buttons, confirmed unreferenced anywhere in `apps/web/src`) were
+  removed from both `messages/en.json` and `messages/ur.json` — WO-6.6 uses
+  its own top-level `returns.*` namespace and never reads them.
+- On mobile (`apps/mobile`, WO-7.9): rewrote `app/returns.tsx` into
+  `app/returns/index.tsx` (list only, mirroring WO-6.6's own
+  `MyReturnsPage`) plus a new `app/returns/new.tsx` (the request form,
+  mirroring WO-6.6's own `NewReturnRequestPage` — reasons fetched live from
+  `GET /returns/reasons` rather than a fixed local enum, since WO-6.6's
+  reasons are seeded, editable, and translated server-side), against
+  WO-6.6's real API contract (`POST /returns` takes `items:
+  [{orderItemId, reasonId, quantity}]`, not this phase's original `lines`/
+  `reasonCode` shape). The order screen's "Request a return" button now
+  opens `/returns/new?number=...` instead of the deleted list-with-picker
+  flow. Mobile's own `returns.*` message keys were updated to match the
+  web catalogue's wording exactly (`returns.statusRequested` = "Requested",
+  not this phase's original "Awaiting review") — including WO-6.6's four
+  additional lifecycle statuses (`IN_TRANSIT`, `RECEIVED`, `INSPECTED`,
+  `CLOSED`) this phase's own enum never had.
+
+### Consequences
+- One returns system exists, not two — `fulfilment.prisma`'s
+  `ReturnRequest` is the only model by that name, `fulfilment`'s
+  `ReturnsService` is the only implementation, and every surface (admin
+  web, customer web, customer mobile) now points at it.
+- The full API/database verification for this consolidation is a single
+  paragraph, not a claim: `prisma migrate deploy` against a dropped-and-
+  recreated scratch database applies all 65 migrations including both this
+  phase's (stripped of returns) and WO-6.6's own, in order, with no
+  collision; `prisma generate` succeeds; the full `apps/api` Jest suite
+  (120 suites / 1198 tests) passes; `apps/mobile`'s own typecheck and Jest
+  suite (including its en/ur parity test) pass; the repository's full
+  `pnpm typecheck` (9/9 packages) and `pnpm lint` pass.
+- Running the full `pnpm test` surfaced one pre-existing gap in WO-6.6's own
+  work, unrelated to the returns consolidation itself:
+  `PERMISSION_CATALOG`'s `fulfilment.view`/`.manage` (added by WO-6, both
+  branches untouched by each other on this file) were never added to any
+  `PERMISSION_GROUPS` entry, which `packages/shared/src/permissions.spec.ts`'s
+  own "every catalog key appears in a group" test already existed to catch
+  — a test that would have failed on `origin/main` by itself, independent
+  of this merge. Fixed here with a new `fulfilment` group (`Shipping &
+  returns`), rather than left for a separate PR, since it blocks
+  `pnpm test` for anyone building on `main` from this point on.
+- WO-7.2's own tracking timeline was not revisited to consume Phase 6's
+  real `ShipmentEvent` data even though that data now exists — it still
+  renders `OrderStatusEvent` history, same as when it was built under the
+  assumption Phase 6 did not exist. This is a real, named follow-up, not
+  silently declared done.
 
 ### Status
 **Accepted.**

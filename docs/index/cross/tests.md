@@ -3,7 +3,7 @@
 
 # Tests
 
-**144** spec files, **1,380** cases. What is already pinned down — and what is not.
+**147** spec files, **1,395** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -24,7 +24,6 @@ such exemption.
 - [`loyalty`](../modules/loyalty.md)
 - [`notification-preferences`](../modules/notification-preferences.md)
 - [`promotions`](../modules/promotions.md)
-- [`returns`](../modules/returns.md)
 - [`reviews`](../modules/reviews.md)
 - [`settings`](../modules/settings.md)
 - [`stitching`](../modules/stitching.md)
@@ -44,7 +43,7 @@ regression or an N+1.
 | `apps/api/test/cart.e2e-spec.ts` | 28 | Cart (e2e) · guest cart · stitching add-on · inline measurements · pricing without a service product · custom design te… |
 | `apps/api/test/catalog.e2e-spec.ts` | 26 | Catalog (e2e) · health · authentication · storefront · admin access control · creating a product · measurement profiles… |
 | `apps/api/test/crm.e2e-spec.ts` | 19 | CRM (e2e) · contacts from orders · contact records · leads · dashboard · backfill |
-| `apps/api/test/customer-portal.e2e-spec.ts` | 8 | Customer portal (e2e) · reviews · returns · loyalty · wishlist and back-in-stock |
+| `apps/api/test/customer-portal.e2e-spec.ts` | 6 | Customer portal (e2e) · reviews · loyalty · wishlist and back-in-stock |
 | `apps/api/test/devices.e2e-spec.ts` | 8 | Device registration (e2e) |
 | `apps/api/test/email-accounts-admin.e2e-spec.ts` | 13 | Admin email accounts (e2e) · connection tests (failure path — no live mailbox in this suite) |
 | `apps/api/test/email-inbox.e2e-spec.ts` | 7 | Email inbox (e2e) · ingestMessage · admin API |
@@ -59,7 +58,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (126)
+## Unit and integration (129)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -116,6 +115,9 @@ regression or an N+1.
 | `apps/api/src/modules/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
 | `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
 | `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 8 | OrderEconomicsService |
+| `apps/api/src/modules/fulfilment/fulfilment.spec.ts` | fulfilment | 4 | FulfilmentService.applyStatusChange |
+| `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
+| `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
 | `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 2 | InventoryCron |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |

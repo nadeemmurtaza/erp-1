@@ -71,6 +71,15 @@ export const DomainEvent = {
   /** PayRunService.postAdjustment() (docs/implementation/payroll/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects. */
   PayrollAdjustmentPosted: 'payroll.adjustment_posted',
 
+  /** FulfilmentService's one writer for a shipment status transition (WO-6.5) — fires whether the change came from a courier poll or a manual status update. orders/shipment-status.listener.ts is the only subscriber, and it is how a shipment change ever reaches Order.status: fulfilment never imports OrdersService. */
+  ShipmentStatusChanged: 'fulfilment.shipment_status_changed',
+  /** A courier-initiated RETURNED with no matching customer ReturnRequest (WO-6.7) — never fired for a return raised through the RMA flow. finance's rto-expense.listener.ts and crm's rto-contact.listener.ts both subscribe. */
+  ShipmentReturnedToOrigin: 'fulfilment.shipment_rto',
+  /** ReturnsService's own status-machine writes (WO-6.6) — the customer notification subscriber (fulfilment/return-notification.subscriber.ts) is the only one today. */
+  ReturnRequestStatusChanged: 'fulfilment.return_status_changed',
+  /** A ReturnRequest resolved REFUND and covers the order's full returnable quantity (WO-6.6) — orders/shipment-status.listener.ts is the only subscriber, calling changeStatus(..., {skipStockRelease: true}) since returns.service.ts already moved the stock itself at inspection. Never fired for a partial return or any other resolution — see ReturnsService.resolve()'s own doc comment for why. */
+  ReturnRequestFullyRefunded: 'fulfilment.return_fully_refunded',
+
   /** OrdersService.place() (WO-5.3) — fires once a discount/promo code was actually applied to a placed order, for analytics. Never fires for a zero-discount order. */
   DiscountRedeemed: 'promotions.discount_redeemed',
 } as const;
@@ -167,6 +176,42 @@ export interface PaymentRefundedPayload {
   orderId: string;
   provider: string;
   amount: number;
+}
+
+export interface ShipmentStatusChangedPayload {
+  shipmentId: string;
+  orderId: string;
+  orderNumber: string;
+  fromStatus: string;
+  toStatus: string;
+  rawStatus: string | null;
+  isRto: boolean;
+}
+
+export interface ShipmentReturnedToOriginPayload {
+  shipmentId: string;
+  orderId: string;
+  orderNumber: string;
+  /** Paisa — both legs of the courier charge, 0 when the shipment carries no cost figure. */
+  courierChargeMinor: number;
+  rtoAt: string;
+}
+
+export interface ReturnRequestStatusChangedPayload {
+  returnId: string;
+  returnNumber: string;
+  orderId: string;
+  fromStatus: string | null;
+  toStatus: string;
+  actorId: string | null;
+}
+
+export interface ReturnRequestFullyRefundedPayload {
+  returnId: string;
+  returnNumber: string;
+  orderId: string;
+  orderNumber: string;
+  actorId: string | null;
 }
 
 export interface ProductLowStockPayload {
@@ -411,5 +456,9 @@ export interface DomainEventPayloads {
   [DomainEvent.OrderEconomicsComputed]: OrderEconomicsComputedPayload;
   [DomainEvent.PayrollRunPosted]: PayrollRunPostedPayload;
   [DomainEvent.PayrollAdjustmentPosted]: PayrollAdjustmentPostedPayload;
+  [DomainEvent.ShipmentStatusChanged]: ShipmentStatusChangedPayload;
+  [DomainEvent.ShipmentReturnedToOrigin]: ShipmentReturnedToOriginPayload;
+  [DomainEvent.ReturnRequestStatusChanged]: ReturnRequestStatusChangedPayload;
+  [DomainEvent.ReturnRequestFullyRefunded]: ReturnRequestFullyRefundedPayload;
   [DomainEvent.DiscountRedeemed]: DiscountRedeemedPayload;
 }

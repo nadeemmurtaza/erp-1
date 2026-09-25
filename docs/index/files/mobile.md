@@ -3,7 +3,7 @@
 
 # Files — mobile
 
-All 48 tracked files in `apps/mobile`, by directory.
+All 49 tracked files in `apps/mobile`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -19,18 +19,17 @@ All 48 tracked files in `apps/mobile`, by directory.
 | `package.json` | json | 53 |  |
 | `tsconfig.json` | json | 21 |  |
 
-### `apps/mobile/app` (10)
+### `apps/mobile/app` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `_layout.tsx` | react | 89 |  |
+| `_layout.tsx` | react | 90 |  |
 | `checkout.tsx` | react | 332 |  |
 | `credit.tsx` | react | 117 |  |
 | `login.tsx` | react | 74 |  |
 | `loyalty.tsx` | react | 179 |  |
 | `notifications.tsx` | react | 102 |  |
 | `payment.tsx` | react | 103 |  |
-| `returns.tsx` | react | 265 |  |
 | `reviews.tsx` | react | 67 |  |
 | `wishlist.tsx` | react | 137 |  |
 
@@ -63,6 +62,13 @@ All 48 tracked files in `apps/mobile`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `[slug].tsx` | react | 528 |  |
+
+### `apps/mobile/app/returns` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `index.tsx` | react | 80 |  |
+| `new.tsx` | react | 163 |  |
 
 ### `apps/mobile/app/stitching` (1)
 
@@ -97,8 +103,8 @@ All 48 tracked files in `apps/mobile`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `client.ts` | module | 206 |  |
-| `resources.ts` | module | 390 |  |
-| `types.ts` | module | 361 |  |
+| `resources.ts` | module | 393 |  |
+| `types.ts` | module | 375 |  |
 
 ### `apps/mobile/src/api/__tests__` (1)
 
@@ -126,7 +132,7 @@ All 48 tracked files in `apps/mobile`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index.tsx` | react | 95 |  |
-| `messages.ts` | module | 587 |  |
+| `messages.ts` | module | 573 |  |
 
 ### `apps/mobile/src/i18n/__tests__` (1)
 

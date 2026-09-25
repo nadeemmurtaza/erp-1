@@ -290,25 +290,39 @@ export interface Review {
   createdAt: string;
 }
 
-export type ReturnReasonCode =
-  | 'DEFECTIVE'
-  | 'WRONG_ITEM'
-  | 'DAMAGED_IN_TRANSIT'
-  | 'SIZE_FIT_ISSUE'
-  | 'CHANGED_MIND'
-  | 'OTHER';
+/** WO-6.6's seeded, editable reason list — never free text. */
+export interface ReturnReason {
+  id: string;
+  key: string;
+  translations: Array<{ locale: string; label: string }>;
+}
 
-export type ReturnStatus = 'REQUESTED' | 'APPROVED' | 'REJECTED' | 'REFUNDED';
+export type ReturnStatus =
+  | 'REQUESTED'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'IN_TRANSIT'
+  | 'RECEIVED'
+  | 'INSPECTED'
+  | 'REFUNDED'
+  | 'CLOSED';
 
 export interface ReturnRequest {
   id: string;
+  number: string;
   status: ReturnStatus;
-  reasonCode: ReturnReasonCode;
-  note: string | null;
-  decisionNote: string | null;
-  createdAt: string;
-  order: { number: string; status: string; deliveredAt: string | null };
-  lines: Array<{ id: string; quantity: number; orderItem: { id: string; nameEn: string; quantity: number; lineTotal: number } }>;
+  resolution: string | null;
+  customerNote: string | null;
+  refundAmount: number | null;
+  requestedAt: string;
+  order: { number: string };
+  items: Array<{
+    id: string;
+    quantity: number;
+    restockable: boolean | null;
+    reason: { translations: Array<{ locale: string; label: string }> };
+    orderItem: { nameEn: string; nameUr: string | null; variantLabel: string | null };
+  }>;
 }
 
 export interface LoyaltyTier {

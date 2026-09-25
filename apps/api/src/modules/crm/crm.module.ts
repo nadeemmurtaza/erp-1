@@ -5,10 +5,11 @@ import { CrmOrderSubscriber } from './order.subscriber';
 import { EmailInboxAdminController } from './email-inbox/email-inbox.admin.controller';
 import { EmailInboxService } from './email-inbox/email-inbox.service';
 import { MailboxPollerCron } from './email-inbox/mailbox-poller.cron';
+import { RtoContactListener } from './rto-contact.listener';
 
 @Module({
   controllers: [CrmPublicController, CrmAdminController, EmailInboxAdminController],
-  providers: [CrmService, CrmOrderSubscriber, EmailInboxService, MailboxPollerCron],
+  providers: [CrmService, CrmOrderSubscriber, EmailInboxService, MailboxPollerCron, RtoContactListener],
   exports: [CrmService],
 })
 export class CrmModule {}

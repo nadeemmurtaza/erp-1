@@ -78,6 +78,8 @@ export const envSchema = z.object({
   PARENT_API_KEY: z.string().optional(),
 
   PAYMENT_PROVIDERS: csv('cod,bank_transfer'),
+  /** WO-6.2's own allowlist — same idiom as PAYMENT_PROVIDERS. `manual` is the only driver built; see courier-provider.ts for why. */
+  COURIER_PROVIDERS: csv('manual'),
   NOTIFICATION_CHANNELS: csv('log'),
 
   STORAGE_DRIVER: z.enum(['local', 's3']).default('local'),

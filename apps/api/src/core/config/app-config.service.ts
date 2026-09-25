@@ -57,6 +57,10 @@ export class AppConfigService {
     return this.get('PAYMENT_PROVIDERS').includes(name);
   }
 
+  isCourierProviderEnabled(name: string): boolean {
+    return this.get('COURIER_PROVIDERS').includes(name);
+  }
+
   isNotificationChannelEnabled(name: string): boolean {
     return this.get('NOTIFICATION_CHANNELS').includes(name);
   }

@@ -3,7 +3,7 @@
 
 # Data model
 
-All **161** Prisma models and **71** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **175** Prisma models and **73** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -32,6 +32,7 @@ against a real database.
 | [`core.prisma`](../data/core.md) | 17 | 6 | foundational | Address, AnalyticsEvent, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordResetToken, Permission… |
 | [`crm.prisma`](../data/crm.md) | 9 | 3 | [`crm`](../modules/crm.md) | Contact, ContactTag, FollowUpTask, InboundEmail, InboundEmailReply, Interaction, Lead, Segment, Tag |
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
+| [`fulfilment.prisma`](../data/fulfilment.md) | 16 | 4 | [`fulfilment`](../modules/fulfilment.md) | Manifest, ManifestNumberCounter, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest, ReturnRequestItem, ReturnRequestNumber… |
 | [`giftcards.prisma`](../data/giftcards.md) | 3 | 1 | [`giftcards`](../modules/giftcards.md) | GiftCard, GiftCardTransaction, StoreCreditTransaction |
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
 | [`inventory.prisma`](../data/inventory.md) | 7 | 4 | [`inventory`](../modules/inventory.md) | Location, StockCount, StockCountLine, StockMovement, StockVariance, VariantLocationStock, VariantSalesStat |
@@ -50,7 +51,6 @@ against a real database.
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
 | [`purchasing.prisma`](../data/purchasing.md) | 7 | 2 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, Supplier, SupplierBill, SupplierProduct |
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
-| [`returns.prisma`](../data/returns.md) | 2 | 2 | [`returns`](../modules/returns.md) | ReturnRequest, ReturnRequestLine |
 | [`reviews.prisma`](../data/reviews.md) | 1 | 1 | [`reviews`](../modules/reviews.md) | Review |
 | [`stitching.prisma`](../data/stitching.md) | 8 | 3 | [`stitching`](../modules/stitching.md) | StitchingJob, StitchingJobEvent, StitchingJobNumberCounter, StitchingOption, StitchingOptionGroup, StitchingOrder, StitchingOrder… |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
@@ -85,7 +85,7 @@ against a real database.
 | [`Category`](../data/catalog.md#category) | `catalog` | 13 | 2 | id |  |
 | [`CategoryTranslation`](../data/catalog.md#categorytranslation) | `catalog` | 6 | 1 | id |  |
 | [`CompensationRate`](../data/payroll.md#compensationrate) | `payroll` | 11 | 2 | id | One row per rate change, never updated in place — effectiveFrom is what lets a pay-run bu… |
-| [`Contact`](../data/crm.md#contact) | `crm` | 28 | 2 | id |  |
+| [`Contact`](../data/crm.md#contact) | `crm` | 29 | 2 | id |  |
 | [`ContactTag`](../data/crm.md#contacttag) | `crm` | 4 | 2 | — |  |
 | [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
 | [`Discount`](../data/promotions.md#discount) | `promotions` | 27 | 0 | id |  |
@@ -121,6 +121,8 @@ against a real database.
 | [`Location`](../data/inventory.md#location) | `inventory` | 15 | 1 | id | A place stock physically lives. |
 | [`LoyaltyTier`](../data/loyalty.md#loyaltytier) | `loyalty` | 6 | 0 | id | Trailing-12-month spend bands. |
 | [`LoyaltyTransaction`](../data/loyalty.md#loyaltytransaction) | `loyalty` | 9 | 2 | id |  |
+| [`Manifest`](../data/fulfilment.md#manifest) | `fulfilment` | 9 | 1 | id | A day's pickup, grouped by courier — WO-6.4's printable handover sheet. |
+| [`ManifestNumberCounter`](../data/fulfilment.md#manifestnumbercounter) | `fulfilment` | 2 | 0 | year |  |
 | [`MeasurementField`](../data/measurements.md#measurementfield) | `measurements` | 14 | 1 | id |  |
 | [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
 | [`Node`](../data/organization.md#node) | `organization` | 13 | 1 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
@@ -133,7 +135,7 @@ against a real database.
 | [`Order`](../data/orders.md#order) | `orders` | 49 | 4 | id |  |
 | [`OrderDiscount`](../data/promotions.md#orderdiscount) | `promotions` | 10 | 2 | id | Which discounts an order actually received, so it can explain itself. |
 | [`OrderEconomics`](../data/finance.md#ordereconomics) | `finance` | 12 | 1 | orderId | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURN… |
-| [`OrderItem`](../data/orders.md#orderitem) | `orders` | 37 | 4 | id |  |
+| [`OrderItem`](../data/orders.md#orderitem) | `orders` | 38 | 4 | id |  |
 | [`OrderNumberCounter`](../data/orders.md#ordernumbercounter) | `orders` | 2 | 0 | year | Backing store for sequential per-year order numbers (YSN-2026-0001). |
 | [`OrderStatusEvent`](../data/orders.md#orderstatusevent) | `orders` | 9 | 2 | id |  |
 | [`Organization`](../data/organization.md#organization) | `organization` | 6 | 0 | id | The top tier — the owner's group, run by a super admin from one dashboard (Part 1). |
@@ -156,7 +158,7 @@ against a real database.
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
 | [`PosShift`](../data/pos.md#posshift) | `pos` | 11 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
 | [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | A physical till. |
-| [`Product`](../data/catalog.md#product) | `catalog` | 36 | 4 | id |  |
+| [`Product`](../data/catalog.md#product) | `catalog` | 38 | 5 | id |  |
 | [`ProductGarmentType`](../data/catalog.md#productgarmenttype) | `catalog` | 3 | 1 | — | Which garments a given unstitched fabric can be made into. |
 | [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 11 | 2 | id |  |
 | [`ProductImageTranslation`](../data/catalog.md#productimagetranslation) | `catalog` | 5 | 1 | id | Alt text per locale. |
@@ -181,15 +183,27 @@ against a real database.
 | [`ReplicationRecord`](../data/replication.md#replicationrecord) | `replication` | 12 | 0 | id | The log. |
 | [`ReplicationSequenceCounter`](../data/replication.md#replicationsequencecounter) | `replication` | 2 | 0 | nodeId | This node's own per-origin sequence counter — `originNodeId` is always this node's own `N… |
 | [`RetailBrand`](../data/organization.md#retailbrand) | `organization` | 15 | 3 | id | A retail brand — the business entity a branch belongs to. |
-| [`ReturnRequest`](../data/returns.md#returnrequest) | `returns` | 16 | 3 | id |  |
-| [`ReturnRequestLine`](../data/returns.md#returnrequestline) | `returns` | 6 | 2 | id |  |
+| [`ReturnReasonCode`](../data/fulfilment.md#returnreasoncode) | `fulfilment` | 6 | 0 | id | Seeded, editable — WO-6.6's own rule: reason codes are the fit-feedback input for Phase 9… |
+| [`ReturnReasonTranslation`](../data/fulfilment.md#returnreasontranslation) | `fulfilment` | 5 | 1 | id |  |
+| [`ReturnRequest`](../data/fulfilment.md#returnrequest) | `fulfilment` | 18 | 2 | id |  |
+| [`ReturnRequestItem`](../data/fulfilment.md#returnrequestitem) | `fulfilment` | 10 | 3 | id |  |
+| [`ReturnRequestNumberCounter`](../data/fulfilment.md#returnrequestnumbercounter) | `fulfilment` | 2 | 0 | year | Same INSERT ... |
 | [`Review`](../data/reviews.md#review) | `reviews` | 17 | 3 | id |  |
 | [`Role`](../data/core.md#role) | `core` | 7 | 0 | id | A named, reusable bundle of permissions a super admin defines — "roles are data, not code… |
 | [`RoleGrant`](../data/core.md#rolegrant) | `core` | 6 | 2 | id | Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermis… |
 | [`RolePermission`](../data/core.md#rolepermission) | `core` | 5 | 1 | id | Which roles currently hold a given permission. |
 | [`Segment`](../data/crm.md#segment) | `crm` | 8 | 1 | id | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filt… |
 | [`Setting`](../data/core.md#setting) | `core` | 4 | 0 | key | Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fe… |
-| [`Shipment`](../data/orders.md#shipment) | `orders` | 12 | 1 | id |  |
+| [`Shipment`](../data/orders.md#shipment) | `orders` | 26 | 3 | id |  |
+| [`ShipmentEvent`](../data/fulfilment.md#shipmentevent) | `fulfilment` | 7 | 1 | id | The tracking timeline — one row per status change, courier's raw string kept in `meta` fo… |
+| [`ShipmentItem`](../data/fulfilment.md#shipmentitem) | `fulfilment` | 6 | 2 | id | A shipment may cover only part of an order (WO-6.4's partial-shipment note) — the shipmen… |
+| [`ShippingClass`](../data/fulfilment.md#shippingclass) | `fulfilment` | 8 | 0 | id | WO-6.1's own closing line: "Add per-product shipping classes and a handling fee." A produ… |
+| [`ShippingClassTranslation`](../data/fulfilment.md#shippingclasstranslation) | `fulfilment` | 5 | 1 | id |  |
+| [`ShippingMethod`](../data/fulfilment.md#shippingmethod) | `fulfilment` | 12 | 0 | id |  |
+| [`ShippingMethodTranslation`](../data/fulfilment.md#shippingmethodtranslation) | `fulfilment` | 5 | 1 | id |  |
+| [`ShippingRate`](../data/fulfilment.md#shippingrate) | `fulfilment` | 13 | 2 | id |  |
+| [`ShippingZone`](../data/fulfilment.md#shippingzone) | `fulfilment` | 10 | 0 | id |  |
+| [`ShippingZoneTranslation`](../data/fulfilment.md#shippingzonetranslation) | `fulfilment` | 5 | 1 | id | House Rule 6: labelEn/labelUr, not columns on ShippingZone itself. |
 | [`StitchingJob`](../data/stitching.md#stitchingjob) | `stitching` | 19 | 2 | id |  |
 | [`StitchingJobEvent`](../data/stitching.md#stitchingjobevent) | `stitching` | 9 | 1 | id | Every stage transition, appended and never updated. |
 | [`StitchingJobNumberCounter`](../data/stitching.md#stitchingjobnumbercounter) | `stitching` | 2 | 0 | year | Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers. |
@@ -216,7 +230,7 @@ against a real database.
 | [`TenantDeploymentCredential`](../data/platform.md#tenantdeploymentcredential) | `platform` | 6 | 1 | id | The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GC… |
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
-| [`User`](../data/core.md#user) | `core` | 72 | 25 | id |  |
+| [`User`](../data/core.md#user) | `core` | 72 | 24 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantLocationStock`](../data/inventory.md#variantlocationstock) | `inventory` | 6 | 2 | — | Stock, per variant, per location. |
@@ -252,6 +266,7 @@ against a real database.
 | [`LeaveRequestStatus`](../data/payroll.md#leaverequeststatus) | `payroll` | `PENDING` `APPROVED` `REJECTED` `CANCELLED` |
 | [`LocationType`](../data/inventory.md#locationtype) | `inventory` | `STORE` `WAREHOUSE` `IN_TRANSIT` `PRODUCTION` |
 | [`LoyaltyTransactionType`](../data/loyalty.md#loyaltytransactiontype) | `loyalty` | `EARNED` `REDEEMED` `REVERSED` `ADJUSTED` |
+| [`ManifestStatus`](../data/fulfilment.md#manifeststatus) | `fulfilment` | `OPEN` `DISPATCHED` |
 | [`MeasurementUnit`](../data/measurements.md#measurementunit) | `measurements` | `INCH` `CM` |
 | [`NodeRole`](../data/organization.md#noderole) | `organization` | `BRANCH` `BRAND` |
 | [`NodeStatus`](../data/organization.md#nodestatus) | `organization` | `ACTIVE` `SUSPENDED` |
@@ -280,12 +295,13 @@ against a real database.
 | [`ReplicationOp`](../data/replication.md#replicationop) | `replication` | `UPSERT` `DELETE` |
 | [`ReplicationQuarantineStatus`](../data/replication.md#replicationquarantinestatus) | `replication` | `OPEN` `RESOLVED` |
 | [`ResourceTier`](../data/platform.md#resourcetier) | `platform` | `STANDARD` `PLUS` `DEDICATED` |
-| [`ReturnReasonCode`](../data/returns.md#returnreasoncode) | `returns` | `DEFECTIVE` `WRONG_ITEM` `DAMAGED_IN_TRANSIT` `SIZE_FIT_ISSUE` `CHANGED_MIND` `OTHER` |
-| [`ReturnRequestStatus`](../data/returns.md#returnrequeststatus) | `returns` | `REQUESTED` `APPROVED` `REJECTED` `REFUNDED` |
+| [`ReturnResolution`](../data/fulfilment.md#returnresolution) | `fulfilment` | `REFUND` `EXCHANGE` `STORE_CREDIT` `REPAIR` `REJECTED` |
+| [`ReturnStatus`](../data/fulfilment.md#returnstatus) | `fulfilment` | `REQUESTED` `APPROVED` `REJECTED` `IN_TRANSIT` `RECEIVED` `INSPECTED` `REFUNDED` `CLOSED` |
 | [`ReviewStatus`](../data/reviews.md#reviewstatus) | `reviews` | `PENDING` `PUBLISHED` `REJECTED` |
 | [`ScopeLevel`](../data/core.md#scopelevel) | `core` | `ORG` `BRAND` `BRANCH` |
 | [`SettlementMode`](../data/transfers.md#settlementmode) | `transfers` | `NONE` `INTERNAL_PL` `INVOICED` |
 | [`ShipmentStatus`](../data/orders.md#shipmentstatus) | `orders` | `PENDING` `DISPATCHED` `IN_TRANSIT` `DELIVERED` `RETURNED` `LOST` |
+| [`ShippingRateType`](../data/fulfilment.md#shippingratetype) | `fulfilment` | `FLAT` `BY_WEIGHT` `BY_PRICE` `BY_ITEM` |
 | [`StitchingOrderStatus`](../data/stitching.md#stitchingorderstatus) | `stitching` | `DRAFT` `AWAITING_FABRIC` `FABRIC_RECEIVED` `IN_PRODUCTION` `READY` `COMPLETED` `CANCELLED` |
 | [`StitchingSelectionType`](../data/stitching.md#stitchingselectiontype) | `stitching` | `SINGLE` `MULTI` |
 | [`StitchingStage`](../data/stitching.md#stitchingstage) | `stitching` | `RECEIVED` `CUTTING` `STITCHING` `QC` `READY` `DISPATCHED` |

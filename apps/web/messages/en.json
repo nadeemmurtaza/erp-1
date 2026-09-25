@@ -63,8 +63,7 @@
       "tracking": "Tracking",
       "trackingCourier": "Courier",
       "trackingNumber": "Tracking number",
-      "trackNow": "Track shipment",
-      "requestReturn": "Request a return"
+      "trackNow": "Track shipment"
     },
     "overview": {
       "title": "Overview",
@@ -82,36 +81,6 @@
       "noActionNeeded": "Nothing needs your attention right now.",
       "pendingReturn": "Return request awaiting your action",
       "failed": "Could not load your overview."
-    },
-    "returns": {
-      "title": "Returns",
-      "body": "Open a return on an eligible order.",
-      "empty": "No return requests yet.",
-      "newRequest": "Request a return",
-      "selectOrder": "Which order?",
-      "eligible": "This order can be returned.",
-      "notEligible": "This order cannot be returned: {reason}",
-      "selectLines": "What are you returning?",
-      "quantity": "Quantity",
-      "reason": "Reason",
-      "reasonDefective": "Defective",
-      "reasonWrongItem": "Wrong item",
-      "reasonDamagedInTransit": "Damaged in transit",
-      "reasonSizeFitIssue": "Size / fit issue",
-      "reasonChangedMind": "Changed my mind",
-      "reasonOther": "Other",
-      "note": "Anything else we should know?",
-      "submit": "Submit return request",
-      "submitting": "Submitting…",
-      "submitted": "Return request submitted.",
-      "failed": "Could not submit your return request.",
-      "statusRequested": "Awaiting review",
-      "statusApproved": "Approved",
-      "statusRejected": "Rejected",
-      "statusRefunded": "Refunded",
-      "decisionNote": "Note from our team",
-      "requestedOn": "Requested {date}",
-      "cancel": "Cancel"
     },
     "reviews": {
       "title": "Reviews",
@@ -560,7 +529,6 @@
     "reorderPartial": "Some items are no longer available: {names}",
     "reorderFailed": "Could not reorder.",
     "downloadInvoice": "Download invoice",
-    "requestReturn": "Request a return",
     "invoice": {
       "title": "Invoice — {number}",
       "print": "Print / Save as PDF",
@@ -585,5 +553,28 @@
     "intro": "We are a premium clothing brand dedicated to blending high-quality fabrics with seamless, personalized custom tailoring.",
     "problem": "Finding a reliable tailor can often be a frustrating experience filled with delays, sizing errors, and multiple trips to the shop. We started {brand} to take the hassle entirely out of the equation. We source the finest unstitched fabrics and offer a bespoke, in-house tailoring service right on our website.",
     "how": "Simply choose your favorite fabric, input your exact measurements online, and let our master tailors craft a beautiful, ready-to-wear outfit perfectly fitted to you, delivered straight to your doorstep."
+  },
+  "returns": {
+    "title": "Returns",
+    "requestAction": "Request a return",
+    "myReturns": "My returns",
+    "noReturns": "You have no return requests yet.",
+    "selectItems": "Select the items you'd like to return",
+    "quantity": "Quantity",
+    "reason": "Reason",
+    "note": "Anything else we should know? (optional)",
+    "submit": "Submit return request",
+    "submitted": "Your return request has been submitted.",
+    "backToOrder": "Back to order",
+    "status": {
+      "REQUESTED": "Requested",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected",
+      "IN_TRANSIT": "On its way to us",
+      "RECEIVED": "Received",
+      "INSPECTED": "Being reviewed",
+      "REFUNDED": "Refunded",
+      "CLOSED": "Closed"
+    }
   }
 }

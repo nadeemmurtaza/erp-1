@@ -122,26 +122,6 @@ export class ChangeOrderStatusDto {
   note?: string;
 }
 
-export class AddShipmentDto {
-  @ApiPropertyOptional({ default: 'manual', description: 'manual, tcs, leopards…' })
-  @IsOptional()
-  @IsString()
-  @MaxLength(40)
-  courier?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  @MaxLength(80)
-  trackingNumber?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  @MaxLength(400)
-  trackingUrl?: string;
-}
-
 export class AdminOrderQueryDto extends PaginationQueryDto {
   @ApiPropertyOptional({ enum: ORDER_STATUSES })
   @IsOptional()

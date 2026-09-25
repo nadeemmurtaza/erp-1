@@ -74,8 +74,6 @@ describe('Customer portal (e2e)', () => {
   });
 
   afterAll(async () => {
-    await prisma.returnRequestLine.deleteMany({ where: { returnRequest: { orderId: { in: createdOrderIds } } } });
-    await prisma.returnRequest.deleteMany({ where: { orderId: { in: createdOrderIds } } });
     await prisma.loyaltyTransaction.deleteMany({ where: { orderId: { in: createdOrderIds } } });
     await prisma.review.deleteMany({ where: { orderItem: { orderId: { in: createdOrderIds } } } }).catch(() => undefined);
     for (const id of createdOrderIds) {
@@ -133,65 +131,9 @@ describe('Customer portal (e2e)', () => {
     });
   });
 
-  describe('returns', () => {
-    it('is not eligible before delivery, eligible after', async () => {
-      const agent = request.agent(app.getHttpServer());
-      agent.set('Authorization', `Bearer ${customerToken}`);
-      await agent.post('/api/v1/cart/items').send({ variantId: readyVariantId, quantity: 1 }).expect(201);
-      const placed = await agent.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }).expect(201);
-      createdOrderIds.push(placed.body.id);
-
-      const before = await api()
-        .get(`/api/v1/returns/eligibility/${placed.body.number}`)
-        .set('Authorization', `Bearer ${customerToken}`)
-        .expect(200);
-      expect(before.body.eligible).toBe(false);
-
-      for (const status of ['CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED', 'DELIVERED']) {
-        await api()
-          .post(`/api/v1/admin/orders/${placed.body.id}/status`)
-          .set('Authorization', `Bearer ${adminToken}`)
-          .send({ status })
-          .expect(201);
-      }
-
-      const after = await api()
-        .get(`/api/v1/returns/eligibility/${placed.body.number}`)
-        .set('Authorization', `Bearer ${customerToken}`)
-        .expect(200);
-      expect(after.body.eligible).toBe(true);
-    });
-
-    it('refuses a return quantity exceeding what was purchased, and end-to-end approves a valid one', async () => {
-      const order = await placeAndDeliverOrder();
-      const orderItem = await prisma.orderItem.findFirstOrThrow({ where: { orderId: order.id } });
-
-      await api()
-        .post('/api/v1/returns')
-        .set('Authorization', `Bearer ${customerToken}`)
-        .send({ orderNumber: order.number, lines: [{ orderItemId: orderItem.id, quantity: orderItem.quantity + 1 }], reasonCode: 'DEFECTIVE' })
-        .expect(400);
-
-      const created = await api()
-        .post('/api/v1/returns')
-        .set('Authorization', `Bearer ${customerToken}`)
-        .send({ orderNumber: order.number, lines: [{ orderItemId: orderItem.id, quantity: orderItem.quantity }], reasonCode: 'DEFECTIVE' })
-        .expect(201);
-      expect(created.body.status).toBe('REQUESTED');
-
-      const decided = await api()
-        .patch(`/api/v1/admin/returns/${created.body.id}/decide`)
-        .set('Authorization', `Bearer ${adminToken}`)
-        .send({ decision: 'APPROVED', decisionNote: 'Confirmed defective, refund issued.' })
-        .expect(200);
-      expect(decided.body.status).toBe('APPROVED');
-
-      // A customer completes this without contacting the shop — status is
-      // visible on their own return list the whole time (exit criterion #1).
-      const mine = await api().get('/api/v1/returns').set('Authorization', `Bearer ${customerToken}`).expect(200);
-      expect(mine.body.find((r: { id: string }) => r.id === created.body.id).status).toBe('APPROVED');
-    });
-  });
+  // Returns/RMA is WO-6.6's own fulfilment module now (fulfilment/returns.spec.ts)
+  // — this phase's original narrow self-service return module was retired
+  // in favour of it once Phase 6 shipped; see ADR-031.
 
   describe('loyalty', () => {
     it('credits points once on DELIVERED and reverses them on RETURNED', async () => {

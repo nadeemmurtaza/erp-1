@@ -2668,22 +2668,22 @@ _no second-level headings_
 - WO-8.6 — On-site messaging  <sub>:120</sub>
 - Phase 8 exit criteria  <sub>:129</sub>
 
-### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>224 lines</sub>
+### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>233 lines</sub>
 
 - Why  <sub>:43</sub>
 - Work orders  <sub>:59</sub>
 - WO-7.1 — Portal shell  <sub>:75</sub>
 - WO-7.2 — Orders  <sub>:90</sub>
 - WO-7.3 — Self-service returns  <sub>:104</sub>
-- WO-7.4 — Credit and gift cards  <sub>:116</sub>
-- WO-7.5 — Reviews and Q&A  <sub>:127</sub>
-- WO-7.6 — Wishlist and back-in-stock  <sub>:166</sub>
-- WO-7.7 — Loyalty and referrals  <sub>:183</sub>
-- WO-7.8 — Notification preferences  <sub>:198</sub>
-- WO-7.9 — Mobile parity  <sub>:207</sub>
-- Phase 7 exit criteria  <sub>:216</sub>
+- WO-7.4 — Credit and gift cards  <sub>:125</sub>
+- WO-7.5 — Reviews and Q&A  <sub>:136</sub>
+- WO-7.6 — Wishlist and back-in-stock  <sub>:175</sub>
+- WO-7.7 — Loyalty and referrals  <sub>:192</sub>
+- WO-7.8 — Notification preferences  <sub>:207</sub>
+- WO-7.9 — Mobile parity  <sub>:216</sub>
+- Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>2,413 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,556 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2719,6 +2719,7 @@ _no second-level headings_
 - ADR-029 — Third-party gift-card redemption at checkout (Giftkarta): a `PaymentProvider`, not a WO-5 tender field; code collected post-order; API contract unverified  <sub>:2095</sub>
 - ADR-030 — `docs/implementation/`, `docs/erp-lenses/` and `docs/design/` reorganized into domain subfolders, filenames unchanged  <sub>:2182</sub>
 - ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty, mobile parity) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 mobile parity  <sub>:2255</sub>
+- ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time  <sub>:2420</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3409,19 +3410,19 @@ _no second-level headings_
 - Part 8 — The briefs this spawns  <sub>:946</sub>
 - Acceptance  <sub>:1006</sub>
 
-### `docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md`  <sub>288 lines</sub>
+### `docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md`  <sub>335 lines</sub>
 
-- Why  <sub>:5</sub>
-- Work orders  <sub>:25</sub>
-- WO-6.1 — Shipping as a module  <sub>:40</sub>
-- WO-6.2 — The `CourierProvider` interface  <sub>:104</sub>
-- WO-6.3 — Real couriers  <sub>:135</sub>
-- WO-6.4 — Shipment lifecycle  <sub>:151</sub>
-- WO-6.5 — Tracking automation  <sub>:167</sub>
-- WO-6.6 — Returns and RMA  <sub>:184</sub>
-- WO-6.7 — RTO  <sub>:253</sub>
-- WO-6.8 — Screens  <sub>:268</sub>
-- Phase 6 exit criteria  <sub>:278</sub>
+- Why  <sub>:52</sub>
+- Work orders  <sub>:72</sub>
+- WO-6.1 — Shipping as a module  <sub>:87</sub>
+- WO-6.2 — The `CourierProvider` interface  <sub>:151</sub>
+- WO-6.3 — Real couriers  <sub>:182</sub>
+- WO-6.4 — Shipment lifecycle  <sub>:198</sub>
+- WO-6.5 — Tracking automation  <sub>:214</sub>
+- WO-6.6 — Returns and RMA  <sub>:231</sub>
+- WO-6.7 — RTO  <sub>:300</sub>
+- WO-6.8 — Screens  <sub>:315</sub>
+- Phase 6 exit criteria  <sub>:325</sub>
 
 ### `docs/implementation/tasks-notifications-support/148-external-customer-support-portal.md`  <sub>176 lines</sub>
 

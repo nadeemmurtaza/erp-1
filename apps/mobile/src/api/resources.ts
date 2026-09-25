@@ -15,7 +15,7 @@ import type {
   Product,
   Referral,
   Review,
-  ReturnReasonCode,
+  ReturnReason,
   ReturnRequest,
   StitchingOptionGroup,
   StoreCreditLedgerEntry,
@@ -282,21 +282,24 @@ export function markReviewHelpful(id: string): Promise<Review> {
   return api(`/reviews/${id}/helpful`, { method: 'POST', anonymous: true });
 }
 
-// --- Returns (WO-7.3) ---------------------------------------------------------
+// --- Returns / RMA (WO-6.6) ---------------------------------------------------
 
-export function returnEligibility(orderNumber: string): Promise<{ eligible: boolean; reason?: string }> {
-  return api(`/returns/eligibility/${orderNumber}`);
+export function listReturnReasons(): Promise<ReturnReason[]> {
+  return api('/returns/reasons');
 }
 
 export function myReturns(): Promise<ReturnRequest[]> {
-  return api('/returns');
+  return api('/returns/mine');
+}
+
+export function getReturn(id: string): Promise<ReturnRequest> {
+  return api(`/returns/${id}`);
 }
 
 export function createReturn(body: {
   orderNumber: string;
-  lines: Array<{ orderItemId: string; quantity: number }>;
-  reasonCode: ReturnReasonCode;
-  note?: string;
+  customerNote?: string;
+  items: Array<{ orderItemId: string; reasonId: string; quantity: number }>;
 }): Promise<ReturnRequest> {
   return api('/returns', { method: 'POST', body });
 }

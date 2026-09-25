@@ -18,7 +18,6 @@ import {
 } from '../../core/auth/auth.constants';
 import { AuthenticatedOnly, CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
 import {
-  AddShipmentDto,
   AdminOrderQueryDto,
   ChangeOrderStatusDto,
   OrderHistoryQueryDto,
@@ -119,19 +118,6 @@ export class OrdersAdminController {
     return stripOrderCost(await this.orders.changeStatus(user.id, id, dto.status, dto.note), user);
   }
 
-  @Post(':id/shipments')
-  @ApiOperation({ summary: 'Record a dispatch and its tracking number' })
-  addShipment(
-    @CurrentUser() user: AuthenticatedUser,
-    @Param('id') id: string,
-    @Body() dto: AddShipmentDto,
-  ) {
-    return this.orders.addShipment(user.id, id, {
-      courier: dto.courier ?? 'manual',
-      trackingNumber: dto.trackingNumber,
-      trackingUrl: dto.trackingUrl,
-    });
-  }
 }
 
 function cartToken(request: Request): string | undefined {

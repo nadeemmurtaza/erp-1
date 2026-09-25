@@ -34,6 +34,7 @@ import { STORAGE_KEYS } from '@/constants/storage';
 export default function OrderPage({ params }: { params: Promise<{ number: string }> }) {
   const { number } = use(params);
   const t = useTranslations('order');
+  const tReturns = useTranslations('returns');
   const locale = useLocale() as Locale;
   const statusLabel = useOrderStatusLabel();
   const router = useRouter();
@@ -190,11 +191,6 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
                 {t('downloadInvoice')}
               </Link>
             ) : null}
-            {getCustomerToken() && order.status === 'DELIVERED' ? (
-              <Link href={`${ROUTES.storefront.accountReturns}?order=${order.number}`} className="btn-secondary">
-                {t('requestReturn')}
-              </Link>
-            ) : null}
             <Link href={ROUTES.storefront.shop} className="btn-secondary">
               {t('continueShopping')}
             </Link>
@@ -205,6 +201,14 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
       {reorderMessage ? (
         <p role="alert" className="mb-4 text-sm text-neutral-900/70">
           {reorderMessage}
+        </p>
+      ) : null}
+
+      {order.status === 'DELIVERED' ? (
+        <p className="mb-6">
+          <Link href={ROUTES.storefront.accountReturnNew(order.number)} className="btn-text">
+            {tReturns('requestAction')}
+          </Link>
         </p>
       ) : null}
 

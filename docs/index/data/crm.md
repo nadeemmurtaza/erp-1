@@ -42,6 +42,7 @@ against a real database.
 | `avgOrderValue` | `Int` |  | paisa |
 | `lastOrderAt` | `DateTime?` | optional |  |
 | `firstOrderAt` | `DateTime?` | optional |  |
+| `rtoCount` | `Int` |  | @default(0) |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `owner` | `User?` | relation, optional | @relation("ContactOwner", fields: [ownerId], references: [id], onDelete: SetNull) |
@@ -55,7 +56,7 @@ against a real database.
 
 Indexes: `@@index([status])` · `@@index([ownerId])` · `@@index([lastOrderAt])` · `@@index([lifetimeValue])`
 
-### `ContactTag`  <sub>`apps/api/prisma/schema/crm.prisma:216`</sub>
+### `ContactTag`  <sub>`apps/api/prisma/schema/crm.prisma:220`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -66,7 +67,7 @@ Indexes: `@@index([status])` · `@@index([ownerId])` · `@@index([lastOrderAt])`
 
 Indexes: `@@id([contactId, tagId])`
 
-### `FollowUpTask`  <sub>`apps/api/prisma/schema/crm.prisma:187`</sub>
+### `FollowUpTask`  <sub>`apps/api/prisma/schema/crm.prisma:191`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -86,7 +87,7 @@ Indexes: `@@id([contactId, tagId])`
 
 Indexes: `@@index([isDone, dueAt])` · `@@index([assigneeId, isDone])`
 
-### `InboundEmail`  <sub>`apps/api/prisma/schema/crm.prisma:142`</sub>
+### `InboundEmail`  <sub>`apps/api/prisma/schema/crm.prisma:146`</sub>
 
 > A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's reply to an order or support email.
 
@@ -112,7 +113,7 @@ Indexes: `@@index([isDone, dueAt])` · `@@index([assigneeId, isDone])`
 
 Indexes: `@@unique([emailAccountId, messageId])` · `@@index([contactId])` · `@@index([receivedAt])`
 
-### `InboundEmailReply`  <sub>`apps/api/prisma/schema/crm.prisma:174`</sub>
+### `InboundEmailReply`  <sub>`apps/api/prisma/schema/crm.prisma:178`</sub>
 
 > A staff reply sent from the Support Inbox, over the SAME connected mailbox the original message arrived at (not resolved by purpose — a reply has to leave from the mailbox the customer is already tal…
 
@@ -128,7 +129,7 @@ Indexes: `@@unique([emailAccountId, messageId])` · `@@index([contactId])` · `@
 
 Indexes: `@@index([inboundEmailId, sentAt])`
 
-### `Interaction`  <sub>`apps/api/prisma/schema/crm.prisma:116`</sub>
+### `Interaction`  <sub>`apps/api/prisma/schema/crm.prisma:120`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -146,7 +147,7 @@ Indexes: `@@index([inboundEmailId, sentAt])`
 
 Indexes: `@@index([contactId, occurredAt])` · `@@index([leadId, occurredAt])`
 
-### `Lead`  <sub>`apps/api/prisma/schema/crm.prisma:75`</sub>
+### `Lead`  <sub>`apps/api/prisma/schema/crm.prisma:79`</sub>
 
 > An enquiry that is not yet an order: a stitching quote request, a WhatsApp message logged by staff, a contact-form submission.
 
@@ -176,7 +177,7 @@ Indexes: `@@index([contactId, occurredAt])` · `@@index([leadId, occurredAt])`
 
 Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([contactId])`
 
-### `Segment`  <sub>`apps/api/prisma/schema/crm.prisma:228`</sub>
+### `Segment`  <sub>`apps/api/prisma/schema/crm.prisma:232`</sub>
 
 > A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filter definition and exportable to CSV for WhatsApp broadcasts.
 
@@ -191,7 +192,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `createdBy` | `User?` | relation, optional | @relation(fields: [createdById], references: [id], onDelete: SetNull) |
 
-### `Tag`  <sub>`apps/api/prisma/schema/crm.prisma:207`</sub>
+### `Tag`  <sub>`apps/api/prisma/schema/crm.prisma:211`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -216,7 +217,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 | `DORMANT` |  |
 | `BLOCKED` |  |
 
-### `InteractionKind`  <sub>`apps/api/prisma/schema/crm.prisma:106`</sub>
+### `InteractionKind`  <sub>`apps/api/prisma/schema/crm.prisma:110`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -228,7 +229,7 @@ Indexes: `@@index([status, createdAt])` · `@@index([ownerId])` · `@@index([con
 | `NOTE` |  |
 | `COMPLAINT` |  |
 
-### `LeadStatus`  <sub>`apps/api/prisma/schema/crm.prisma:65`</sub>
+### `LeadStatus`  <sub>`apps/api/prisma/schema/crm.prisma:69`</sub>
 
 | Value | Meaning |
 |---|---|

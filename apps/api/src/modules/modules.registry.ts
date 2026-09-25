@@ -7,6 +7,7 @@ import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CrmModule } from './crm/crm.module';
 import { FinanceModule } from './finance/finance.module';
+import { FulfilmentModule } from './fulfilment/fulfilment.module';
 import { GiftCardsModule } from './giftcards/giftcards.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
@@ -24,7 +25,6 @@ import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReportsModule } from './reports/reports.module';
-import { ReturnsModule } from './returns/returns.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { SettingsAdminModule } from './settings/settings-admin.module';
 import { StitchingModule } from './stitching/stitching.module';
@@ -85,6 +85,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'reports', module: ReportsModule },
   { name: 'tax', module: TaxModule },
   { name: 'finance', module: FinanceModule },
+  // Hard-imported by orders.module.ts directly (same reasoning as tax
+  // above — checkout always needs ShippingService.quote()), but still
+  // listed here so its own admin routes/nav follow the allowlist like
+  // every other module's.
+  { name: 'fulfilment', module: FulfilmentModule },
   { name: 'payroll', module: PayrollModule },
   // Same allowlist tier as payments/finance (not offByDefault): checkout
   // couples to both directly, in the same transaction as order creation
@@ -100,7 +105,6 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // (KNOWN_MODULE_COUPLINGS, the points-redemption same-transaction write).
   { name: 'reviews', module: ReviewsModule },
   { name: 'wishlist', module: WishlistModule },
-  { name: 'returns', module: ReturnsModule },
   { name: 'loyalty', module: LoyaltyModule },
   { name: 'notification-preferences', module: NotificationPreferencesModule },
   { name: 'tracking', module: TrackingModule },

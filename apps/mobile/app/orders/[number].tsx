@@ -105,7 +105,7 @@ export default function OrderScreen() {
             <Button
               label={t('order.requestReturn')}
               variant="secondary"
-              onPress={() => router.push(`/returns?order=${order.number}`)}
+              onPress={() => router.push(`/returns/new?number=${order.number}`)}
             />
           ) : null}
         </View>

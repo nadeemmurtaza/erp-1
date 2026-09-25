@@ -12,7 +12,7 @@ Every top-level export in `root`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `app.module.ts` | `AppModule` | class | :9 |  |
+| `app.module.ts` | `AppModule` | class | :43 |  |
 
 ### `apps/platform/src/core/config`
 
@@ -21,8 +21,15 @@ Every top-level export in `root`, with the line to open.
 | `app-config.service.ts` | `AppConfigService` | class | :10 | Typed accessor over ConfigService — one place an env var name is spelled out, mirroring apps/api's… |
 | `config.module.ts` | `AppConfigModule` | class | :19 |  |
 | `env.validation.ts` | `envSchema` | const | :14 |  |
-| `env.validation.ts` | `PlatformEnv` | type | :50 |  |
-| `env.validation.ts` | `validatePlatformEnv` | function | :52 |  |
+| `env.validation.ts` | `PlatformEnv` | type | :121 |  |
+| `env.validation.ts` | `validatePlatformEnv` | function | :123 |  |
+
+### `apps/platform/src/core/notifications`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `notifications.module.ts` | `PlatformNotificationsModule` | class | :9 |  |
+| `notifications.service.ts` | `PlatformNotificationsService` | class | :20 | The one place every module in this app resolves "who do we tell" through — doc 39/50/51's own repea… |
 
 ### `apps/platform/src/core/prisma`
 
@@ -36,14 +43,102 @@ Every top-level export in `root`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `decorators.ts` | `OPS_PERMISSIONS_KEY` | const | :4 |  |
-| `decorators.ts` | `RequireOpsPermission` | const | :10 | Restricts a route to an ops key holding at least one of the given scopes — the platform equivalent… |
+| `decorators.ts` | `OPS_PERMISSIONS_KEY` | const | :5 |  |
+| `decorators.ts` | `RequireOpsPermission` | const | :11 | Restricts a route to an ops key holding at least one of the given scopes — the platform equivalent… |
+| `decorators.ts` | `CurrentOpsClient` | const | :20 | The calling `PlatformOpsClient`, as `OpsAuthGuard` resolved it — used wherever "who is making this… |
 | `ops-auth.guard.ts` | `RequestWithOpsClient` | interface | :11 |  |
 | `ops-auth.guard.ts` | `OpsAuthGuard` | class | :24 | The control plane's own auth boundary. |
 | `ops-key.ts` | `generateOpsKey` | function | :14 | A bearer credential for internal hosting-ops tooling calling the control plane — same shape as apps… |
 | `ops-key.ts` | `hashOpsKey` | function | :18 |  |
-| `ops-permissions.ts` | `PLATFORM_PERMISSIONS` | const | :12 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permission… |
-| `ops-permissions.ts` | `PlatformPermission` | type | :20 |  |
+| `ops-permissions.ts` | `PLATFORM_PERMISSIONS` | const | :16 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permission… |
+| `ops-permissions.ts` | `PlatformPermission` | type | :25 |  |
+
+### `apps/platform/src/core/tenant-credentials`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `tenant-credential-resolver.module.ts` | `TenantCredentialResolverModule` | class | :9 |  |
+| `tenant-credential-resolver.service.ts` | `TenantCredentialResolverService` | class | :18 | The one place a tenant's own connection string is decrypted — shared by `ProvisioningService` (supp… |
+
+### `apps/platform/src/modules/billing`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `billing.controller.ts` | `BillingController` | class | :10 |  |
+| `billing.cron.ts` | `BillingCron` | class | :11 | WO-50.3's own scheduled run — calendar-month billing periods. |
+| `billing.module.ts` | `BillingModule` | class | :16 |  |
+| `billing.service.ts` | `InvoicePreview` | interface | :7 |  |
+| `billing.service.ts` | `BillingService` | class | :26 | WO-50.3 — the billing job. |
+| `custom-quote.controller.ts` | `CustomQuoteController` | class | :11 |  |
+| `custom-quote.service.ts` | `RequestQuoteInput` | interface | :6 |  |
+| `custom-quote.service.ts` | `CustomQuoteService` | class | :21 | WO-50.4 — the custom-quote/discount-approval flow. |
+| `plans.controller.ts` | `PlansController` | class | :10 |  |
+| `plans.service.ts` | `PlansService` | class | :9 | WO-50.1/50.5 — the plan catalogue itself: create and list, each of the three pricing shapes validat… |
+| `seat-counter.service.ts` | `SeatCounterService` | class | :37 | WO-50.2 — `countBillableSeats()`. |
+
+### `apps/platform/src/modules/billing/dto`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `create-plan.dto.ts` | `CreatePlanDto` | class | :12 | WO-50.1/50.5 — doc 50 §1's own three shapes, one set of fields each meaningful only for its own `pr… |
+| `credit-note.dto.ts` | `IssueCreditNoteDto` | class | :3 |  |
+| `credit-note.dto.ts` | `PreviewInvoiceDto` | class | :13 |  |
+| `request-quote.dto.ts` | `RequestQuoteDto` | class | :3 |  |
+| `request-quote.dto.ts` | `RejectQuoteDto` | class | :21 |  |
+
+### `apps/platform/src/modules/resource-quotas`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `resource-quota-alert.cron.ts` | `ResourceQuotaAlertCron` | class | :10 | WO-39.6 — runs frequently enough to alert meaningfully "before a hard cap" without hammering the us… |
+| `resource-quotas.controller.ts` | `ResourceQuotasController` | class | :9 |  |
+| `resource-quotas.module.ts` | `ResourceQuotasModule` | class | :11 |  |
+| `resource-quotas.service.ts` | `ResourceQuotasService` | class | :18 | WO-39.6 — resource quotas + alerting, application layer only. |
+
+### `apps/platform/src/modules/resource-quotas/dto`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `upsert-quota.dto.ts` | `UpsertQuotaDto` | class | :4 |  |
+
+### `apps/platform/src/modules/routing`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `hostname-resolver.service.ts` | `RoutingInfo` | interface | :5 |  |
+| `hostname-resolver.service.ts` | `HostnameResolverService` | class | :40 | WO-39.3 — the application-layer half only: resolves an incoming hostname (subdomain or verified cus… |
+| `routing.controller.ts` | `RoutingController` | class | :17 | `resolve` is the one endpoint in this whole app doc 39's own "the principal with no permission key"… |
+| `routing.module.ts` | `RoutingModule` | class | :10 |  |
+
+### `apps/platform/src/modules/support-access`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `support-access-expiry.cron.ts` | `SupportAccessExpiryCron` | class | :9 | WO-39.5 — marks every grant whose `expiresAt` has passed as inert for display, on a short interval… |
+| `support-access.controller.ts` | `SupportAccessController` | class | :9 |  |
+| `support-access.module.ts` | `SupportAccessModule` | class | :11 |  |
+| `support-access.service.ts` | `SupportAccessService` | class | :15 | WO-39.5 — the one genuinely new trust boundary doc 39 §3 names: a Newax support engineer reaching i… |
+
+### `apps/platform/src/modules/support-access/dto`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `issue-grant.dto.ts` | `IssueGrantDto` | class | :7 | WO-39.5 — issuing a grant never accepts `approvedByUserId`: approval is always a separate action (s… |
+| `issue-grant.dto.ts` | `ApproveGrantDto` | class | :27 |  |
+
+### `apps/platform/src/modules/tenant-data`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `export-runner.token.ts` | `TENANT_EXPORT_RUNNER` | const | :1 |  |
+| `export-runner.ts` | `TenantExportRunner` | interface | :9 | WO-39.7's own extension point, the same `DeploymentProvisioner`-shaped seam `modules/tenants/deploy… |
+| `export-runner.ts` | `TenantExportError` | class | :22 |  |
+| `pg-dump-export.runner.ts` | `PgDumpExportRunner` | class | :24 | The real, working default `TenantExportRunner` — WO-39.7's own "real, buildable application code, n… |
+| `tenant-data.module.ts` | `TenantDataModule` | class | :30 |  |
+| `tenant-export.controller.ts` | `TenantExportController` | class | :9 |  |
+| `tenant-export.service.ts` | `TenantExportService` | class | :25 | WO-39.7 — doc 39 §4's own "data portability" commitment: any tenant may be exported on demand, and… |
+| `tenant-retention.cron.ts` | `TenantRetentionCron` | class | :8 | WO-39.7 — once a day is enough: retention windows are measured in days (PLATFORM_RETENTION_DAYS_DEF… |
+| `tenant-retention.service.ts` | `TenantRetentionService` | class | :29 | WO-39.7's own retention-window-then-delete sequence. |
 
 ### `apps/platform/src/modules/tenants`
 
@@ -53,11 +148,11 @@ Every top-level export in `root`, with the line to open.
 | `deployment-provisioner.ts` | `DeploymentProvisioner` | interface | :11 | Extension point: how a tenant's isolated deployment actually gets created — doc 39 §"What this tier… |
 | `deployment-provisioner.ts` | `ProvisioningError` | class | :30 |  |
 | `postgres-database.provisioner.ts` | `PostgresDatabaseProvisioner` | class | :28 | The real, working default implementation of `DeploymentProvisioner` — doc 39 §"shared compute, neve… |
-| `provisioning.service.ts` | `ProvisioningService` | class | :21 | WO-39.2 — provisioning automation. |
+| `provisioning.service.ts` | `ProvisioningService` | class | :24 | WO-39.2 — provisioning automation. |
 | `resource-tier.ts` | `RESOURCE_TIERS` | const | :1 |  |
 | `tenants.controller.ts` | `TenantsController` | class | :11 |  |
-| `tenants.module.ts` | `TenantsModule` | class | :17 |  |
-| `tenants.service.ts` | `TenantsService` | class | :6 |  |
+| `tenants.module.ts` | `TenantsModule` | class | :24 |  |
+| `tenants.service.ts` | `TenantsService` | class | :7 |  |
 
 ### `apps/platform/src/modules/tenants/dto`
 
@@ -65,6 +160,32 @@ Every top-level export in `root`, with the line to open.
 |---|---|---|---|---|
 | `provision-tenant.dto.ts` | `ProvisionTenantDto` | class | :9 | WO-39.2's provisioning request. |
 | `suspend-tenant.dto.ts` | `SuspendTenantDto` | class | :3 |  |
+
+### `apps/platform/src/modules/trials`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `signup.controller.ts` | `SignupController` | class | :18 | The ONLY unauthenticated controller in this app — doc 51 §"the principal with no permission key": n… |
+| `signup.service.ts` | `SignupService` | class | :26 | WO-51.2 — self-service signup. |
+| `trial-expiry.cron.ts` | `TrialExpiryCron` | class | :17 | WO-51.3 — TRIAL -> SUSPENDED on `trialExpiresAt`, plus an advance warning. |
+| `trials.controller.ts` | `TrialsController` | class | :10 |  |
+| `trials.module.ts` | `TrialsModule` | class | :15 |  |
+| `trials.service.ts` | `TrialsService` | class | :20 | WO-51.4 / WO-51.5 — the ops-authenticated half of trial management: extending a trial (`platform.tr… |
+
+### `apps/platform/src/modules/trials/dto`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `extend-trial.dto.ts` | `ExtendTrialDto` | class | :3 |  |
+| `signup.dto.ts` | `RequestSignupDto` | class | :6 | WO-51.2 — the public self-service signup request. |
+| `signup.dto.ts` | `VerifySignupDto` | class | :27 |  |
+
+### `apps/platform/src/modules/ui`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `ui.controller.ts` | `UiController` | class | :26 | The minimum UI these three documents actually require — CLAUDE.md's own "a feature ships whole, not… |
+| `ui.module.ts` | `UiModule` | class | :7 |  |
 
 
 ---

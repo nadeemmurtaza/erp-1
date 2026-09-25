@@ -45,6 +45,77 @@ export const envSchema = z.object({
 
   PLATFORM_API_PORT: port(3100),
   PLATFORM_API_PREFIX: z.string().default('platform'),
+
+  /**
+   * WO-39.3 — the base domain a tenant's own subdomain is resolved
+   * against ("acme" + this value = "acme.<this>"). Never hardcoded in
+   * HostnameResolverService, exactly as Law 1 requires of every other
+   * brand/deployment literal in this repository.
+   */
+  PLATFORM_HOSTNAME_BASE_DOMAIN: z.string().min(1, 'PLATFORM_HOSTNAME_BASE_DOMAIN is required'),
+
+  /** Used to build a self-service signup's own email-verification link. */
+  PLATFORM_PUBLIC_BASE_URL: z.string().default('http://localhost:3100'),
+
+  /** WO-51.2 — how long a signup's email-verification link stays valid. */
+  PLATFORM_SIGNUP_VERIFICATION_TTL_MINUTES: z.coerce.number().int().min(1).default(30),
+  /** WO-51.1/51.3 — a trial's default length, and how many days before
+   *  `trialExpiresAt` a warning notification fires. */
+  PLATFORM_TRIAL_DEFAULT_DAYS: z.coerce.number().int().min(1).default(14),
+  PLATFORM_TRIAL_EXPIRY_WARNING_DAYS: z.coerce.number().int().min(0).default(3),
+  /** WO-51.3's own "digest, never one ping per trial" threshold — past
+   *  this many trials expiring/warned in one run, hosting-ops gets one
+   *  digest email instead of one per trial. */
+  PLATFORM_TRIAL_DIGEST_THRESHOLD: z.coerce.number().int().min(1).default(10),
+
+  /** WO-39.7 — how long a DEPROVISIONED tenant's data survives before
+   *  actual teardown becomes eligible; TRIAL's own (shorter) policy is
+   *  named explicitly by doc 51 rather than sharing the paying-tenant one. */
+  PLATFORM_RETENTION_DAYS_DEFAULT: z.coerce.number().int().min(1).default(30),
+  PLATFORM_RETENTION_DAYS_TRIAL: z.coerce.number().int().min(1).default(7),
+  /** WO-39.7 — where TenantExportStorage's local-filesystem implementation
+   *  writes an export archive. A future object-storage implementation is a
+   *  class swap behind the same DEPLOYMENT_PROVISIONER-shaped token, never
+   *  a rewrite of the export job itself. */
+  PLATFORM_EXPORT_STORAGE_DIR: z.string().default('./exports'),
+  /** How long a completed export's own downloadable artifact stays
+   *  retrievable — independent of, and always <= a sane bound under, the
+   *  source tenant's own retention window. */
+  PLATFORM_EXPORT_DOWNLOAD_TTL_DAYS: z.coerce.number().int().min(1).default(14),
+
+  /** WO-50.4 — the discount-from-list-price percentage above which a
+   *  custom quote needs a second approver. A business policy number,
+   *  resolved through config exactly as `.claude/rules/configuration.md`
+   *  requires, never a literal in `CustomQuoteService`. */
+  PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT: z.coerce.number().min(0).max(100).default(20),
+
+  /**
+   * Audience for the "hosting-ops" / "sales-pipeline" digest doc 39's and
+   * doc 51's own "audience is a capability, not an address" lens name —
+   * resolved from config, never a literal address in a listener. Optional:
+   * a deployment that hasn't configured it yet gets a logged, skipped
+   * digest rather than a boot failure, since alerting is additive to the
+   * per-tenant notifications this app already sends.
+   */
+  PLATFORM_OPS_ALERT_EMAIL: z.string().email().optional(),
+
+  /**
+   * Outbound mail — optional. When unset, PlatformNotificationsService logs
+   * the message it would have sent instead of throwing, so a deployment
+   * without SMTP configured yet degrades honestly (CLAUDE.md's resilience
+   * pillar) rather than failing every trial/quota/export flow that wants
+   * to notify someone.
+   */
+  PLATFORM_SMTP_HOST: z.string().optional(),
+  PLATFORM_SMTP_PORT: z.coerce.number().int().min(1).max(65535).default(587),
+  PLATFORM_SMTP_USER: z.string().optional(),
+  PLATFORM_SMTP_PASS: z.string().optional(),
+  PLATFORM_SMTP_FROM: z.string().default('no-reply@platform.local'),
+
+  /** WO-39.5 — "never indefinite" enforced, not merely required-but-
+   *  unbounded: a caller cannot set `expiresAt` further out than this many
+   *  hours from issuance, whatever value they request. */
+  PLATFORM_SUPPORT_GRANT_MAX_HOURS: z.coerce.number().int().min(1).default(72),
 });
 
 export type PlatformEnv = z.infer<typeof envSchema>;

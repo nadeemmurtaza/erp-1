@@ -3,7 +3,7 @@
 
 # Schema: `platform.prisma`
 
-7 models · 4 enums. Owned by the core platform.
+15 models · 9 enums. Owned by the core platform.
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,73 @@ against a real database.
 
 ## Models
 
-### `PlatformOpsClient`  <sub>`apps/platform/prisma/schema/platform.prisma:136`</sub>
+### `PlatformCustomQuote`  <sub>`apps/platform/prisma/schema/platform.prisma:412`</sub>
+
+> WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `tenantId` | `String` |  |  |
+| `planId` | `String` |  |  |
+| `listPriceMinor` | `Int` |  |  |
+| `quotedPriceMinor` | `Int` |  |  |
+| `discountPct` | `Float` |  |  |
+| `requiresApproval` | `Boolean` |  |  |
+| `status` | `QuoteStatus` |  | @default(PENDING) |
+| `requestedByOpsClientId` | `String` |  |  |
+| `approvedByOpsClientId` | `String?` | optional |  |
+| `approvedAt` | `DateTime?` | optional |  |
+| `rejectedAt` | `DateTime?` | optional |  |
+| `rejectionReason` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
+| `plan` | `PlatformPlan` | relation | @relation(fields: [planId], references: [id]) |
+
+Indexes: `@@index([tenantId])` · `@@index([status])`
+
+### `PlatformInvoice`  <sub>`apps/platform/prisma/schema/platform.prisma:345`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `tenantId` | `String` |  |  |
+| `subscriptionId` | `String?` | optional |  |
+| `planId` | `String` |  |  |
+| `pricingModel` | `PricingModel` |  |  |
+| `periodStart` | `DateTime` |  |  |
+| `periodEnd` | `DateTime` |  |  |
+| `seatCount` | `Int?` | optional |  |
+| `seatPriceMinorSnapshot` | `Int?` | optional |  |
+| `flatPriceMinorSnapshot` | `Int?` | optional |  |
+| `oneTimePriceMinorSnapshot` | `Int?` | optional |  |
+| `amountMinor` | `Int` |  |  |
+| `status` | `InvoiceStatus` |  | @default(ISSUED) |
+| `issuedAt` | `DateTime` |  | @default(now()) |
+| `computedAt` | `DateTime` |  |  |
+| `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
+| `plan` | `PlatformPlan` | relation | @relation(fields: [planId], references: [id]) |
+| `creditNotes` | `PlatformInvoiceCreditNote[]` |  |  |
+
+Indexes: `@@unique([tenantId, periodStart, periodEnd])` · `@@index([tenantId, issuedAt])`
+
+### `PlatformInvoiceCreditNote`  <sub>`apps/platform/prisma/schema/platform.prisma:388`</sub>
+
+> A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own "the reversal document" lens).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `invoiceId` | `String` |  |  |
+| `amountMinor` | `Int` |  |  |
+| `reason` | `String` |  |  |
+| `issuedAt` | `DateTime` |  | @default(now()) |
+| `issuedByOpsClientId` | `String?` | optional |  |
+| `invoice` | `PlatformInvoice` | relation | @relation(fields: [invoiceId], references: [id]) |
+
+Indexes: `@@index([invoiceId])`
+
+### `PlatformOpsClient`  <sub>`apps/platform/prisma/schema/platform.prisma:213`</sub>
 
 > A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.
 
@@ -37,7 +103,7 @@ against a real database.
 
 Indexes: `@@index([status])`
 
-### `PlatformPlan`  <sub>`apps/platform/prisma/schema/platform.prisma:46`</sub>
+### `PlatformPlan`  <sub>`apps/platform/prisma/schema/platform.prisma:99`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -47,10 +113,16 @@ Indexes: `@@index([status])`
 | `monthlyPriceMinor` | `Int` |  |  |
 | `includedResourceTier` | `ResourceTier` |  |  |
 | `isActive` | `Boolean` |  | @default(true) |
+| `pricingModel` | `PricingModel` |  | @default(FLAT_MONTHLY) |
+| `perSeatPriceMinor` | `Int?` | optional |  |
+| `oneTimeLicenseMinor` | `Int?` | optional |  |
+| `licenseDeploymentMode` | `String?` | optional |  |
 | `tenants` | `PlatformTenant[]` |  |  |
 | `subscriptions` | `PlatformSubscription[]` |  |  |
+| `invoices` | `PlatformInvoice[]` |  |  |
+| `customQuotes` | `PlatformCustomQuote[]` |  |  |
 
-### `PlatformSubscription`  <sub>`apps/platform/prisma/schema/platform.prisma:64`</sub>
+### `PlatformSubscription`  <sub>`apps/platform/prisma/schema/platform.prisma:134`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -65,7 +137,7 @@ Indexes: `@@index([status])`
 
 Indexes: `@@index([tenantId, status])`
 
-### `PlatformTenant`  <sub>`apps/platform/prisma/schema/platform.prisma:23`</sub>
+### `PlatformTenant`  <sub>`apps/platform/prisma/schema/platform.prisma:27`</sub>
 
 > One row per hosted client.
 
@@ -74,6 +146,7 @@ Indexes: `@@index([tenantId, status])`
 | `id` | `String` | id | @id @default(cuid()) |
 | `slug` | `String` | unique | @unique |
 | `customDomain` | `String?` | unique, optional | @unique |
+| `customDomainVerifiedAt` | `DateTime?` | optional |  |
 | `legalName` | `String` |  |  |
 | `status` | `TenantStatus` |  | @default(PROVISIONING) |
 | `planId` | `String` |  |  |
@@ -83,15 +156,25 @@ Indexes: `@@index([tenantId, status])`
 | `suspendedAt` | `DateTime?` | optional |  |
 | `suspendedReason` | `String?` | optional |  |
 | `deprovisionedAt` | `DateTime?` | optional |  |
+| `trialExpiresAt` | `DateTime?` | optional |  |
+| `billingContactEmail` | `String?` | optional |  |
+| `signupEmailVerifiedAt` | `DateTime?` | optional |  |
+| `retentionExpiresAt` | `DateTime?` | optional |  |
+| `dataDeletedAt` | `DateTime?` | optional |  |
 | `plan` | `PlatformPlan` | relation | @relation(fields: [planId], references: [id]) |
 | `subscriptions` | `PlatformSubscription[]` |  |  |
 | `usageRecords` | `PlatformUsageRecord[]` |  |  |
 | `supportAccessGrants` | `SupportAccessGrant[]` |  |  |
 | `deploymentCredential` | `TenantDeploymentCredential?` | optional |  |
+| `resourceQuotaAlerts` | `ResourceQuotaAlert[]` |  |  |
+| `dataExports` | `TenantDataExport[]` |  |  |
+| `invoices` | `PlatformInvoice[]` |  |  |
+| `customQuotes` | `PlatformCustomQuote[]` |  |  |
+| `trialExtensions` | `TrialExtension[]` |  |  |
 
-Indexes: `@@index([status])`
+Indexes: `@@index([status])` · `@@index([status, trialExpiresAt])` · `@@index([status, retentionExpiresAt])`
 
-### `PlatformUsageRecord`  <sub>`apps/platform/prisma/schema/platform.prisma:80`</sub>
+### `PlatformUsageRecord`  <sub>`apps/platform/prisma/schema/platform.prisma:150`</sub>
 
 > Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.
 
@@ -106,7 +189,61 @@ Indexes: `@@index([status])`
 
 Indexes: `@@unique([tenantId, metric, windowStart])` · `@@index([tenantId, windowStart])`
 
-### `SupportAccessGrant`  <sub>`apps/platform/prisma/schema/platform.prisma:95`</sub>
+### `ResourceQuotaAlert`  <sub>`apps/platform/prisma/schema/platform.prisma:259`</sub>
+
+> One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `tenantId` | `String` |  |  |
+| `metric` | `String` |  |  |
+| `windowStart` | `DateTime` |  |  |
+| `observedValue` | `Float` |  |  |
+| `limitValue` | `Float` |  |  |
+| `thresholdPct` | `Int` |  |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `acknowledgedAt` | `DateTime?` | optional |  |
+| `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
+
+Indexes: `@@unique([tenantId, metric, windowStart])` · `@@index([tenantId, createdAt])`
+
+### `ResourceTierQuota`  <sub>`apps/platform/prisma/schema/platform.prisma:234`</sub>
+
+> --------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `resourceTier` | `ResourceTier` |  |  |
+| `metric` | `String` |  |  |
+| `limitValue` | `Float` |  |  |
+| `warnThresholdPct` | `Int` |  | @default(80) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+
+Indexes: `@@unique([resourceTier, metric])`
+
+### `SignupVerification`  <sub>`apps/platform/prisma/schema/platform.prisma:447`</sub>
+
+> A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `email` | `String` |  |  |
+| `slug` | `String` |  |  |
+| `legalName` | `String` |  |  |
+| `planKey` | `String` |  |  |
+| `tokenHash` | `String` | unique | @unique |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `expiresAt` | `DateTime` |  |  |
+| `consumedAt` | `DateTime?` | optional |  |
+| `ipAddress` | `String?` | optional |  |
+
+Indexes: `@@index([email, createdAt])`
+
+### `SupportAccessGrant`  <sub>`apps/platform/prisma/schema/platform.prisma:165`</sub>
 
 > The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.
 
@@ -121,11 +258,32 @@ Indexes: `@@unique([tenantId, metric, windowStart])` · `@@index([tenantId, wind
 | `expiresAt` | `DateTime` |  |  |
 | `revokedAt` | `DateTime?` | optional |  |
 | `accessedAt` | `DateTime[]` |  |  |
+| `markedInertAt` | `DateTime?` | optional |  |
 | `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
 
 Indexes: `@@index([tenantId, expiresAt])`
 
-### `TenantDeploymentCredential`  <sub>`apps/platform/prisma/schema/platform.prisma:116`</sub>
+### `TenantDataExport`  <sub>`apps/platform/prisma/schema/platform.prisma:303`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `tenantId` | `String` |  |  |
+| `status` | `TenantExportStatus` |  | @default(PENDING) |
+| `triggeredBy` | `TenantExportTrigger` |  | @default(MANUAL) |
+| `requestedAt` | `DateTime` |  | @default(now()) |
+| `startedAt` | `DateTime?` | optional |  |
+| `completedAt` | `DateTime?` | optional |  |
+| `failedAt` | `DateTime?` | optional |  |
+| `failureReason` | `String?` | optional |  |
+| `storageKey` | `String?` | optional |  |
+| `sizeBytes` | `BigInt?` | optional |  |
+| `expiresAt` | `DateTime?` | optional |  |
+| `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
+
+Indexes: `@@index([tenantId, requestedAt])`
+
+### `TenantDeploymentCredential`  <sub>`apps/platform/prisma/schema/platform.prisma:193`</sub>
 
 > The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…
 
@@ -138,17 +296,59 @@ Indexes: `@@index([tenantId, expiresAt])`
 | `rotatedAt` | `DateTime?` | optional |  |
 | `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
 
+### `TrialExtension`  <sub>`apps/platform/prisma/schema/platform.prisma:465`</sub>
+
+> WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so "extended more than once" is a query, not a memory.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `tenantId` | `String` |  |  |
+| `previousExpiresAt` | `DateTime` |  |  |
+| `newExpiresAt` | `DateTime` |  |  |
+| `reason` | `String` |  |  |
+| `extendedByOpsClientId` | `String` |  |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
+
+Indexes: `@@index([tenantId, createdAt])`
+
 
 ## Enums
 
-### `OpsClientStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:126`</sub>
+### `InvoiceStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:340`</sub>
+
+> --------------------------------------------------------------------------- WO-50.1 / WO-50.3 / WO-50.4 — billing: an issued invoice per tenant per billing period, a credit note for a wrongly-compute…
+
+| Value | Meaning |
+|---|---|
+| `ISSUED` |  |
+| `CREDITED` |  |
+
+### `OpsClientStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:203`</sub>
 
 | Value | Meaning |
 |---|---|
 | `ACTIVE` |  |
 | `REVOKED` |  |
 
-### `ResourceTier`  <sub>`apps/platform/prisma/schema/platform.prisma:14`</sub>
+### `PricingModel`  <sub>`apps/platform/prisma/schema/platform.prisma:93`</sub>
+
+| Value | Meaning |
+|---|---|
+| `PER_SEAT` |  |
+| `FLAT_MONTHLY` |  |
+| `ONE_TIME_LICENSE` |  |
+
+### `QuoteStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:401`</sub>
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `APPROVED` |  |
+| `REJECTED` |  |
+
+### `ResourceTier`  <sub>`apps/platform/prisma/schema/platform.prisma:18`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -156,13 +356,31 @@ Indexes: `@@index([tenantId, expiresAt])`
 | `PLUS` |  |
 | `DEDICATED` |  |
 
-### `SubscriptionStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:58`</sub>
+### `SubscriptionStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:128`</sub>
 
 | Value | Meaning |
 |---|---|
 | `ACTIVE` |  |
 | `PAST_DUE` |  |
 | `CANCELLED` |  |
+
+### `TenantExportStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:283`</sub>
+
+> --------------------------------------------------------------------------- WO-39.7 — data export + deprovisioning.
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `RUNNING` |  |
+| `COMPLETE` |  |
+| `FAILED` |  |
+
+### `TenantExportTrigger`  <sub>`apps/platform/prisma/schema/platform.prisma:290`</sub>
+
+| Value | Meaning |
+|---|---|
+| `MANUAL` |  |
+| `DEPROVISION` |  |
 
 ### `TenantStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:7`</sub>
 
@@ -171,6 +389,7 @@ Indexes: `@@index([tenantId, expiresAt])`
 | Value | Meaning |
 |---|---|
 | `PROVISIONING` |  |
+| `TRIAL` |  |
 | `ACTIVE` |  |
 | `SUSPENDED` |  |
 | `DEPROVISIONED` |  |

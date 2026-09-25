@@ -33,6 +33,11 @@ packages/shared/src/api/generated/
 .data/
 uploads/
 
+# WO-39.7 — TenantExportRunner's local-filesystem export archives
+# (PLATFORM_EXPORT_STORAGE_DIR's own default). Never committed: these are
+# pg_dump output of a tenant's own isolated database, generated at runtime.
+apps/platform/exports/
+
 # Playwright
 test-results/
 playwright-report/

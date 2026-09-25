@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 88 tracked files in `repository root files`, by directory.
+All 152 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -102,8 +102,8 @@ All 88 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `eslint.config.mjs` | script | 22 | Nest resolves constructor parameter types at runtime through decorator |
 | `jest.config.js` | script | 17 | @type {import('jest').Config} |
-| `nest-cli.json` | json | 18 |  |
-| `package.json` | json | 51 |  |
+| `nest-cli.json` | json | 23 |  |
+| `package.json` | json | 55 |  |
 | `prisma.config.ts` | module | 10 |  |
 | `tsconfig.build.json` | json | 5 |  |
 | `tsconfig.json` | json | 22 |  |
@@ -112,7 +112,7 @@ All 88 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `platform.prisma` | prisma schema | 148 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
+| `platform.prisma` | prisma schema | 478 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
 | `schema.prisma` | prisma schema | 19 | Datasource and generator only — the control plane's OWN database, never a |
 
 ### `apps/platform/prisma/schema/migrations` (1)
@@ -127,12 +127,30 @@ All 88 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 166 |  |
 
+### `apps/platform/prisma/schema/migrations/20260925090000_wo39_quotas_export_routing` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 96 |  |
+
+### `apps/platform/prisma/schema/migrations/20260925090100_wo50_pricing_billing` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 107 |  |
+
+### `apps/platform/prisma/schema/migrations/20260925090200_wo51_trials` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 60 |  |
+
 ### `apps/platform/src` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app.module.ts` | nest module | 10 |  |
-| `main.ts` | module | 34 |  |
+| `app.module.ts` | nest module | 44 |  |
+| `main.ts` | module | 48 |  |
 
 ### `apps/platform/src/core/config` (4)
 
@@ -140,8 +158,15 @@ All 88 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `app-config.service.ts` | service | 25 |  |
 | `config.module.ts` | nest module | 20 |  |
-| `env.validation.ts` | config | 59 |  |
+| `env.validation.ts` | config | 130 |  |
 | `load-env.ts` | config | 13 |  |
+
+### `apps/platform/src/core/notifications` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `notifications.module.ts` | nest module | 10 |  |
+| `notifications.service.ts` | service | 60 |  |
 
 ### `apps/platform/src/core/prisma` (3)
 
@@ -155,12 +180,101 @@ All 88 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `decorators.ts` | module | 12 |  |
+| `decorators.ts` | module | 24 |  |
 | `ops-auth.guard.spec.ts` | unit test | 86 |  |
 | `ops-auth.guard.ts` | guard | 61 |  |
 | `ops-key.spec.ts` | unit test | 25 |  |
 | `ops-key.ts` | module | 21 |  |
-| `ops-permissions.ts` | module | 21 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
+| `ops-permissions.ts` | module | 26 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
+
+### `apps/platform/src/core/tenant-credentials` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `tenant-credential-resolver.module.ts` | nest module | 10 |  |
+| `tenant-credential-resolver.service.ts` | service | 30 |  |
+
+### `apps/platform/src/modules/billing` (13)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `billing.controller.ts` | controller | 34 |  |
+| `billing.cron.ts` | scheduled job | 26 |  |
+| `billing.module.ts` | nest module | 17 |  |
+| `billing.service.spec.ts` | unit test | 189 |  |
+| `billing.service.ts` | service | 196 |  |
+| `custom-quote.controller.ts` | controller | 39 |  |
+| `custom-quote.service.spec.ts` | unit test | 86 |  |
+| `custom-quote.service.ts` | service | 94 |  |
+| `plans.controller.ts` | controller | 23 |  |
+| `plans.service.spec.ts` | unit test | 61 |  |
+| `plans.service.ts` | service | 42 |  |
+| `seat-counter.service.spec.ts` | unit test | 60 |  |
+| `seat-counter.service.ts` | service | 62 |  |
+
+### `apps/platform/src/modules/billing/dto` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `create-plan.dto.ts` | dto | 50 |  |
+| `credit-note.dto.ts` | dto | 20 |  |
+| `request-quote.dto.ts` | dto | 26 |  |
+
+### `apps/platform/src/modules/resource-quotas` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `resource-quota-alert.cron.ts` | scheduled job | 21 |  |
+| `resource-quotas.controller.ts` | controller | 30 |  |
+| `resource-quotas.module.ts` | nest module | 12 |  |
+| `resource-quotas.service.spec.ts` | unit test | 109 |  |
+| `resource-quotas.service.ts` | service | 143 |  |
+
+### `apps/platform/src/modules/resource-quotas/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `upsert-quota.dto.ts` | dto | 22 |  |
+
+### `apps/platform/src/modules/routing` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `hostname-resolver.service.spec.ts` | unit test | 78 |  |
+| `hostname-resolver.service.ts` | service | 103 |  |
+| `routing.controller.ts` | controller | 54 |  |
+| `routing.module.ts` | nest module | 11 |  |
+
+### `apps/platform/src/modules/support-access` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `support-access-expiry.cron.ts` | scheduled job | 20 |  |
+| `support-access.controller.ts` | controller | 54 |  |
+| `support-access.module.ts` | nest module | 12 |  |
+| `support-access.service.spec.ts` | unit test | 202 |  |
+| `support-access.service.ts` | service | 128 |  |
+
+### `apps/platform/src/modules/support-access/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `issue-grant.dto.ts` | dto | 32 |  |
+
+### `apps/platform/src/modules/tenant-data` (10)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `export-runner.token.ts` | module | 2 |  |
+| `export-runner.ts` | module | 31 | WO-39.7's own extension point, the same `DeploymentProvisioner`-shaped seam `modules/tenants/deployment-provisioner.ts`… |
+| `pg-dump-export.runner.ts` | module | 47 |  |
+| `tenant-data.module.ts` | nest module | 31 |  |
+| `tenant-export.controller.ts` | controller | 45 |  |
+| `tenant-export.service.spec.ts` | unit test | 95 |  |
+| `tenant-export.service.ts` | service | 103 |  |
+| `tenant-retention.cron.ts` | scheduled job | 21 |  |
+| `tenant-retention.service.spec.ts` | unit test | 84 |  |
+| `tenant-retention.service.ts` | service | 86 |  |
 
 ### `apps/platform/src/modules/tenants` (11)
 
@@ -170,26 +284,61 @@ All 88 tracked files in `repository root files`, by directory.
 | `deployment-provisioner.ts` | module | 39 | Extension point: how a tenant's isolated deployment actually gets created — doc 39 §"What this tier owes every tenant",… |
 | `postgres-database.provisioner.spec.ts` | unit test | 74 |  |
 | `postgres-database.provisioner.ts` | module | 117 |  |
-| `provisioning.service.spec.ts` | unit test | 132 |  |
-| `provisioning.service.ts` | service | 124 |  |
+| `provisioning.service.spec.ts` | unit test | 178 |  |
+| `provisioning.service.ts` | service | 165 |  |
 | `resource-tier.ts` | module | 2 |  |
 | `tenants.controller.ts` | controller | 56 |  |
-| `tenants.module.ts` | nest module | 18 |  |
-| `tenants.service.spec.ts` | unit test | 49 |  |
-| `tenants.service.ts` | service | 43 |  |
+| `tenants.module.ts` | nest module | 25 |  |
+| `tenants.service.spec.ts` | unit test | 58 |  |
+| `tenants.service.ts` | service | 57 |  |
 
 ### `apps/platform/src/modules/tenants/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `provision-tenant.dto.ts` | dto | 34 |  |
+| `provision-tenant.dto.ts` | dto | 48 |  |
 | `suspend-tenant.dto.ts` | dto | 8 |  |
+
+### `apps/platform/src/modules/trials` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `signup.controller.ts` | controller | 33 |  |
+| `signup.service.spec.ts` | unit test | 126 |  |
+| `signup.service.ts` | service | 106 |  |
+| `trial-expiry.cron.ts` | scheduled job | 93 |  |
+| `trials.controller.ts` | controller | 43 |  |
+| `trials.module.ts` | nest module | 16 |  |
+| `trials.service.spec.ts` | unit test | 94 |  |
+| `trials.service.ts` | service | 77 |  |
+
+### `apps/platform/src/modules/trials/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `extend-trial.dto.ts` | dto | 12 |  |
+| `signup.dto.ts` | dto | 32 |  |
+
+### `apps/platform/src/modules/ui` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `ui.controller.ts` | controller | 44 |  |
+| `ui.module.ts` | nest module | 8 |  |
+
+### `apps/platform/src/modules/ui/pages` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `admin.html` | html | — |  |
+| `signup.html` | html | — |  |
+| `verify.html` | html | — |  |
 
 ### `apps/platform/test` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `setup-env.ts` | module | 8 |  |
+| `setup-env.ts` | module | 9 |  |
 
 
 ---

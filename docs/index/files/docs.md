@@ -695,9 +695,9 @@ All 392 tracked files in `docs/*`, by directory.
 | `153-usage-based-pricing-model.md` | doc | 290 |  |
 | `154-three-headline-commercial-plans.md` | doc | 182 |  |
 | `155-wallet-stored-value-merchant-escrow.md` | doc | 355 |  |
-| `39-shared-cross-tenant-hosting-tier.md` | doc | 367 |  |
-| `50-commercial-pricing-licensing-models.md` | doc | 202 |  |
-| `51-free-demo-sandbox-onboarding.md` | doc | 176 |  |
+| `39-shared-cross-tenant-hosting-tier.md` | doc | 417 |  |
+| `50-commercial-pricing-licensing-models.md` | doc | 243 |  |
+| `51-free-demo-sandbox-onboarding.md` | doc | 225 |  |
 | `81-transparent-flat-rate-pricing.md` | doc | 55 |  |
 | `82-tiered-capex-licensing.md` | doc | 86 |  |
 | `83-entry-level-pos-deployment.md` | doc | 60 |  |

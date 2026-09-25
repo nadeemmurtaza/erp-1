@@ -1,5 +1,54 @@
 # 51 — Free demo, sandbox trials, and self-service onboarding
 
+> **Status: shipped (2026-09-25), WO-51.1–51.5; WO-51.6 blocked on doc 28.**
+> **WO-51.1 — schema**: `TenantStatus.TRIAL`, `PlatformTenant.trialExpiresAt`
+> (plus `billingContactEmail`/`signupEmailVerifiedAt`, needed by WO-51.2
+> and by doc 39's own "audience is a capability" lens for every tenant-
+> facing notification this pass added).
+> **WO-51.2 — self-service signup**: `modules/trials/signup.service.ts` +
+> `signup.controller.ts` (public, no `OpsAuthGuard` — the one deliberate
+> exception, per this document's own scope lens), rate-limited via
+> `@nestjs/throttler` (5/min/IP, the same shape apps/api's own
+> `auth.controller.ts` uses), calling the *existing*
+> `ProvisioningService.provisionTenant()` with `trialDays` set — no
+> second provisioning path. Email ownership is verified by a real,
+> single-use, expiring token (`SignupVerification`) before anything
+> provisions; CAPTCHA is a named, not-built "at the edge" concern (this
+> document's own words), consistent with doc 51 §3 scoping it there.
+> Verified end to end in this pass: a real public signup → email-link
+> click → a real, isolated tenant database provisioned, and a
+> double-clicked verification link converges on the same one tenant
+> (proven live, not only unit-tested).
+> **WO-51.3 — expiry job**: `trial-expiry.cron.ts` — `TRIAL -> SUSPENDED`
+> via the existing `TenantsService.suspend()` (so it gets the identical
+> hostname-cache invalidation every other suspension already has), a
+> day-wide warning window needing no extra "already warned" column, and
+> a digest to `PLATFORM_OPS_ALERT_EMAIL` past
+> `PLATFORM_TRIAL_DIGEST_THRESHOLD` instead of one ping per trial.
+> **WO-51.4 — conversion flow**: `trials.service.ts#convert()`, the
+> sales-assisted path only. A self-service checkout needs a real payment
+> gateway doc 50 itself never builds either (named there as "through
+> whatever payment processor invoices the tenant") — not silently
+> invented here as a payment flow.
+> **WO-51.5 — permissions**: `platform.trials.extend`, seeded into the
+> catalogue (`core/security/ops-permissions.ts`); `TrialsController`
+> requires it for `extend` specifically, `platform.tenants.manage` for
+> `convert`. `TrialExtension` is the audit trail behind
+> `listExtendedMoreThanOnce()`, doc 51's own named report.
+> **WO-51.6 — onboarding checklist**: **not built.** `apps/api` has no
+> `OnboardingChecklistTemplate` — doc 28 itself is unimplemented (no
+> `shipped` header, no such Prisma model in `apps/api/prisma/schema/`).
+> Building a parallel checklist/template engine here would be exactly
+> the "invent a new one" this document's own instruction warns against,
+> and a generic checklist-template system is itself a separable,
+> larger capability — named and left sequenced behind doc 28, not
+> silently stubbed.
+> UI: `modules/ui/pages/signup.html` (the public form) +
+> `modules/ui/pages/verify.html` (the emailed link's own landing page,
+> GET-safe — it POSTs the token itself, so an email-scanning bot
+> prefetching the raw link can never consume it) + the "Trials" tab in
+> `modules/ui/pages/admin.html` (list, extend, convert).
+
 Doc 39's `ProvisioningService.provisionTenant()` already creates a real,
 isolated tenant idempotently — the mechanism this document needs already
 exists. What is missing is the one `TenantStatus` a demo/trial actually

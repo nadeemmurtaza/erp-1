@@ -37,12 +37,18 @@ export const ROUTES = {
     unsubscribe: '/unsubscribe',
 
     account: '/account',
+    accountOverview: '/account/overview',
     accountAddresses: '/account/addresses',
     accountMeasurements: '/account/measurements',
+    accountReturns: '/account/returns',
+    accountReviews: '/account/reviews',
+    accountCredit: '/account/credit',
+    accountLoyalty: '/account/loyalty',
+    accountNotifications: '/account/notifications',
     orders: '/orders',
     order: (number: string) => `/orders/${number}`,
+    orderInvoice: (number: string) => `/orders/${number}/invoice`,
     /** The customer's own return requests — distinct from the static /returns policy page below. */
-    accountReturns: '/account/returns',
     accountReturnNew: (orderNumber: string) => `/account/returns/new?number=${encodeURIComponent(orderNumber)}`,
     accountReturn: (id: string) => `/account/returns/${id}`,
 

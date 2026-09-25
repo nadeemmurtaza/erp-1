@@ -53,3 +53,9 @@ export class RedeemGiftCardDto {
   @Min(1)
   amount!: number;
 }
+
+export class RedeemGiftCardIntoAccountDto {
+  @ApiPropertyOptional()
+  @IsString()
+  code!: string;
+}

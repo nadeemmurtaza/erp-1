@@ -163,6 +163,9 @@ model Product {
   orderItemsAsService   OrderItem[]          @relation("OrderItemStitchingService")
   /// collections.prisma section below (WO-8.2).
   collectionMemberships CollectionProduct[]
+  /// Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  reviews               Review[]
+  wishlistItems         WishlistItem[]
 
   @@index([status, kind])
   @@index([categoryId])
@@ -258,22 +261,25 @@ model ProductVariant {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  product            Product                     @relation(fields: [productId], references: [id], onDelete: Cascade)
-  images             ProductImage[]
-  cartItems          CartItem[]
-  optionValues       ProductVariantOptionValue[]
-  orderItems         OrderItem[]
-  supplierProducts   SupplierProduct[]
-  stockAdjustments   StockAdjustment[]
-  stockMovements     StockMovement[]
-  locationStocks     VariantLocationStock[]
-  stockVariances     StockVariance[]
-  purchaseOrderItems PurchaseOrderItem[]
-  goodsReceiptItems  GoodsReceiptItem[]
-  stockCountLines    StockCountLine[]
-  billOfMaterial     BillOfMaterial?
-  bomComponentOf     BillOfMaterialLine[]        @relation("BomComponent")
-  workOrders         WorkOrder[]
+  product             Product                     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  images              ProductImage[]
+  cartItems           CartItem[]
+  optionValues        ProductVariantOptionValue[]
+  orderItems          OrderItem[]
+  supplierProducts    SupplierProduct[]
+  stockAdjustments    StockAdjustment[]
+  stockMovements      StockMovement[]
+  locationStocks      VariantLocationStock[]
+  stockVariances      StockVariance[]
+  purchaseOrderItems  PurchaseOrderItem[]
+  goodsReceiptItems   GoodsReceiptItem[]
+  stockCountLines     StockCountLine[]
+  billOfMaterial      BillOfMaterial?
+  bomComponentOf      BillOfMaterialLine[]        @relation("BomComponent")
+  workOrders          WorkOrder[]
+  /// Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  wishlistItems       WishlistItem[]
+  backInStockRequests BackInStockRequest[]
 
   @@index([productId])
   @@index([stock])

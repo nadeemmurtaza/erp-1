@@ -56,6 +56,35 @@ export class StoreCreditService {
   }
 
   /**
+   * The general form `issueForOrder` below specialises: credits store
+   * credit inside a CALLER'S OWN transaction, with no order attached.
+   * `loyalty -> giftcards` (KNOWN_MODULE_COUPLINGS,
+   * scripts/check-module-boundaries.mjs) uses this for point-redemption
+   * (WO-7.7) — a lost race between debiting points and crediting store
+   * credit must roll back both, the same reasoning `redeemInTransaction`
+   * already documents for a checkout tender.
+   */
+  async creditInTransaction(
+    tx: PrismaLike,
+    input: { userId: string; amount: number; reason: string; actorId: string | null; note?: string },
+  ): Promise<void> {
+    const user = await tx.user.update({
+      where: { id: input.userId },
+      data: { storeCreditBalance: { increment: input.amount } },
+    });
+    await tx.storeCreditTransaction.create({
+      data: {
+        userId: input.userId,
+        delta: input.amount,
+        balanceAfter: user.storeCreditBalance,
+        reason: input.reason,
+        actorId: input.actorId,
+        note: input.note ?? null,
+      },
+    });
+  }
+
+  /**
    * Issues store credit as a refund/RTO-goodwill result — same write as
    * issue() above but with an orderId, called from a return/refund flow
    * (Phase 6) or directly by staff against a specific order.

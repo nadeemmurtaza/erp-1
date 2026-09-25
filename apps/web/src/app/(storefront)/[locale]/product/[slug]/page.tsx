@@ -5,6 +5,7 @@ import { computeFabricEstimate, type Locale } from '@newax/shared';
 import { JsonLd } from '@/components/storefront/json-ld';
 import { ProductGallery } from '@/components/storefront/product-gallery';
 import { ProductPurchase, type FabricNeedRow } from '@/components/storefront/product-purchase';
+import { ProductReviews } from '@/components/storefront/product-reviews';
 import { businessProfile } from '@/config/business-profile';
 import { Link } from '@/i18n/navigation';
 import { ApiError, getProduct, getStitchingServices } from '@/lib/api';
@@ -76,6 +77,17 @@ function productJsonLd(product: StorefrontProduct, locale: string) {
     image: product.images.map((image) => absoluteUrl(image.url)),
     sku: variantOffers?.[0]?.sku,
     brand: product.brand ? { '@type': 'Brand', name: product.brand } : undefined,
+    // WO-7.5: only published reviews feed this, and only when at least one
+    // exists — an AggregateRating with reviewCount 0 is worse than omitting
+    // it, since some validators flag a zero-count rating as invalid.
+    aggregateRating:
+      product.reviewCount && product.reviewCount > 0 && product.averageRating
+        ? {
+            '@type': 'AggregateRating',
+            ratingValue: product.averageRating.toFixed(1),
+            reviewCount: product.reviewCount,
+          }
+        : undefined,
     offers: variantOffers
       ? variantOffers.map((variant) => ({
           '@type': 'Offer',
@@ -262,6 +274,8 @@ export default async function ProductPage({ params }: PageProps) {
           ) : null}
         </div>
       </div>
+
+      <ProductReviews productId={product.id} />
     </div>
   );
 }

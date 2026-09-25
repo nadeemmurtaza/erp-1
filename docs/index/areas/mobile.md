@@ -3,7 +3,7 @@
 
 # apps/mobile — Expo/React Native customer app
 
-42 files · 5,292 lines
+49 files · 6,900 lines
 
 
 Expo / React Native customer app, file-routed under `app/`. Talks to the same
@@ -21,9 +21,9 @@ API as the web storefront through `src/api/`.
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `apps/mobile` | 6 | 230 | json, script |
-| `apps/mobile/app` | 17 | 2,802 | react |
+| `apps/mobile/app` | 24 | 3,911 | react |
 | `apps/mobile/assets` | 3 | 0 | asset |
-| `apps/mobile/src` | 16 | 2,260 | unit test, module, component, react |
+| `apps/mobile/src` | 16 | 2,759 | unit test, module, component, react |
 
 
 ## Entry points
@@ -33,6 +33,7 @@ API as the web storefront through `src/api/`.
 | `apps/mobile/app/(tabs)/index.tsx` | react |  |
 | `apps/mobile/app/measurements/index.tsx` | react |  |
 | `apps/mobile/app/orders/index.tsx` | react |  |
+| `apps/mobile/app/returns/index.tsx` | react |  |
 | `apps/mobile/app/workshop/index.tsx` | react |  |
 | `apps/mobile/package.json` | json |  |
 | `apps/mobile/src/i18n/index.tsx` | react |  |
@@ -42,21 +43,21 @@ API as the web storefront through `src/api/`.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `apps/mobile/app/product/[slug].tsx` | 355 | react |  |
-| `apps/mobile/src/i18n/messages.ts` | 343 | module |  |
+| `apps/mobile/src/i18n/messages.ts` | 573 | module |  |
+| `apps/mobile/app/product/[slug].tsx` | 528 | react |  |
+| `apps/mobile/src/api/resources.ts` | 393 | module |  |
+| `apps/mobile/src/api/types.ts` | 375 | module |  |
 | `apps/mobile/app/checkout.tsx` | 332 | react |  |
 | `apps/mobile/src/components/ui.tsx` | 301 | component |  |
-| `apps/mobile/src/api/types.ts` | 264 | module |  |
 | `apps/mobile/app/(tabs)/stitching.tsx` | 256 | react |  |
-| `apps/mobile/src/api/resources.ts` | 244 | module |  |
+| `apps/mobile/app/orders/[number].tsx` | 223 | react |  |
 | `apps/mobile/app/measurements/edit.tsx` | 216 | react |  |
-| `apps/mobile/src/api/client.ts` | 197 | module |  |
+| `apps/mobile/src/api/client.ts` | 206 | module |  |
+| `apps/mobile/app/(tabs)/account.tsx` | 195 | react |  |
 | `apps/mobile/app/(tabs)/cart.tsx` | 183 | react |  |
 | `apps/mobile/app/workshop/[id].tsx` | 183 | react |  |
-| `apps/mobile/app/orders/[number].tsx` | 179 | react |  |
+| `apps/mobile/app/loyalty.tsx` | 179 | react |  |
 | `apps/mobile/app/(tabs)/index.tsx` | 170 | react |  |
-| `apps/mobile/app/(tabs)/account.tsx` | 155 | react |  |
-| `apps/mobile/app/workshop/index.tsx` | 146 | react |  |
 
 
 ---

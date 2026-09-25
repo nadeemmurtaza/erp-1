@@ -2,6 +2,44 @@
 
 **Read `00-HOUSE-RULES.md` first.** Depends on Phases 5 and 6.
 
+> **Status (2026-09-25): WO-7.1, 7.2, 7.4–7.9 built and verified against a
+> real database; WO-7.3 (self-service returns) is superseded by Phase 6's
+> own WO-6.6, built independently and merged in afterward — see ADR-031 §9.**
+> Four new core modules — `reviews`, `wishlist`, `loyalty`,
+> `notification-preferences` (the last's service lives in
+> `core/notifications/` since every other module needs to read it) — plus
+> store-credit/gift-card redemption added to the existing `giftcards`
+> module. `test/customer-portal.e2e-spec.ts` covers verified-purchase
+> reviews, loyalty earn/reverse/redeem, wishlist migration idempotency, and
+> back-in-stock fire-once, all against a real Postgres database with the
+> outbox drained; returns/RMA is covered by `fulfilment/returns.spec.ts`
+> instead (WO-6.6's own module). Storefront: `/account` grew a shared shell
+> and several new pages (`orders/[number]` grew reorder/invoice actions and
+> WO-6.6's own return-request link), a real product-reviews section with
+> JSON-LD, and a server-side wishlist replacing the old `localStorage`-only
+> one (migrates on first sign-in). Admin: `/admin/reviews`, `/admin/loyalty`,
+> `/admin/inventory/wishlisted` (returns moderation lives at
+> `/admin/fulfilment/returns`, WO-6.6's own screen). Permissions:
+> `reviews.moderate`, `loyalty.view`/`.manage` — seeded to
+> `ROLE_PERMISSION_SEED` **and** backfilled as real `RoleGrant` rows on the
+> dev DB, not left as the `seedPermissions()`-vs-`seedRoles()` gap this file
+> warns about elsewhere (see ADR-031 §2). **Mobile parity (WO-7.9)** is
+> built in `apps/mobile`: every screen above — wishlist, reviews, loyalty,
+> credit/gift cards, notification preferences, and returns (against WO-6.6's
+> API once that consolidation landed) — has an Expo screen with matching
+> English/Urdu wording (see ADR-031 §7–§9).
+>
+> **Two things this phase narrowed on purpose, each because a dependency
+> genuinely wasn't there yet at the time — see ADR-031:** WO-7.2's
+> order-tracking timeline reuses the existing `OrderStatusEvent` history
+> instead of a dedicated shipment-event model — Phase 6 has since shipped
+> `ShipmentEvent`, but the customer timeline was not revisited to switch to
+> it in this pass, so this remains a named follow-up (§1). The order invoice
+> is a browser `window.print()` page with `print:` Tailwind variants, not a
+> server-generated PDF — there is no PDF-generation dependency anywhere in
+> this codebase to build on, and adding one needs its own justification
+> under `.claude/rules/dependencies.md` (§3).
+
 ## Why
 
 Everything built in Phases 1-6 lives in the back office. If the customer never
@@ -64,6 +102,15 @@ and anything needing action.
 ---
 
 ## WO-7.3 — Self-service returns
+
+**Superseded by Phase 6's own WO-6.6** (`docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md`),
+built independently while this phase's own narrow version (customer
+request + staff decision only, no restock/refund automation) was in
+progress, and merged in afterward in place of it — see ADR-031 §9 for the
+full account. The description below is kept for the historical record of
+what this phase originally asked for; WO-6.6's own module is what actually
+ships, at `/returns` (API) and `/account/returns` (web), with the fuller
+request → approve/reject → receive → inspect → resolve lifecycle.
 
 Customer opens an eligible order → picks lines and quantities → picks a reason
 from the seeded list → optional photos → submits. Eligibility comes from a

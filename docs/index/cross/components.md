@@ -3,7 +3,7 @@
 
 # Components
 
-All **80** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **81** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 140 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 157 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -60,9 +60,9 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
 | `sales-chart.tsx` | `SalesChart` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
-| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 36 |  |
+| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 38 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
-| `toast-stack.tsx` | `ToastStack` | client | 12 |  |
+| `toast-stack.tsx` | `ToastStack` | client | 14 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
 
@@ -81,7 +81,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 25 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 26 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -91,7 +91,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/storefront` (33)
+### `apps/web/src/components/storefront` (34)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -103,7 +103,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `cart-badge.tsx` | `CartBadge` | client | 1 |  |
 | `cart-provider.tsx` | `CartProvider` `useCart` | client | 7 |  |
 | `customer-nav.tsx` | `CustomerNav` | client | 1 |  |
-| `customer-session.tsx` | `CustomerSessionProvider` `useCustomerSession` | client | 9 |  |
+| `customer-session.tsx` | `CustomerSessionProvider` `useCustomerSession` | client | 11 |  |
 | `filter-panel.tsx` | `FilterPanel` | client | 1 |  |
 | `footer.tsx` | `Footer` | server | 1 |  |
 | `grid-toggle-wrapper.tsx` | `GridToggleWrapper` | client | 1 |  |
@@ -119,6 +119,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `product-card.tsx` | `ProductCard` | client | 5 |  |
 | `product-gallery.tsx` | `ProductGallery` | client | 1 |  |
 | `product-purchase.tsx` | `FabricNeedRow` `ProductPurchase` | client | 1 |  |
+| `product-reviews.tsx` | `ProductReviews` | client | 1 |  |
 | `products-grid.tsx` | `ProductsGrid` | client | 1 |  |
 | `quick-view-modal.tsx` | `QuickViewModal` | client | 1 |  |
 | `search-box.tsx` | `SearchBox` | client | 1 |  |
@@ -133,7 +134,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 30 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 31 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 2 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 1 |  |

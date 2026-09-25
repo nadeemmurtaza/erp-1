@@ -7,6 +7,7 @@ import type {
   MeasurementProfile,
   Product,
   ProductVariant,
+  Review,
   StitchingOptionGroup,
 } from '../../src/api/types';
 import {
@@ -14,6 +15,7 @@ import {
   Button,
   Card,
   Chip,
+  Empty,
   ErrorNote,
   Field,
   Heading,
@@ -56,6 +58,17 @@ export default function ProductScreen() {
   const [profileId, setProfileId] = useState('');
   const [notes, setNotes] = useState('');
 
+  const [savedId, setSavedId] = useState<string | null>(null);
+  const [wishlistBusy, setWishlistBusy] = useState(false);
+  const [notifyRequested, setNotifyRequested] = useState(false);
+
+  const [reviews, setReviews] = useState<Review[] | null>(null);
+  const [rating, setRating] = useState(5);
+  const [reviewTitle, setReviewTitle] = useState('');
+  const [reviewBody, setReviewBody] = useState('');
+  const [reviewBusy, setReviewBusy] = useState(false);
+  const [reviewMessage, setReviewMessage] = useState<string | null>(null);
+
   useEffect(() => {
     if (!slug) return;
 
@@ -68,6 +81,79 @@ export default function ProductScreen() {
       })
       .catch(() => setError(t('common.offline')));
   }, [slug, locale, t]);
+
+  useEffect(() => {
+    if (!product) return;
+    void resources
+      .productReviews(product.id)
+      .then((page) => setReviews(page.data))
+      .catch(() => setReviews([]));
+  }, [product]);
+
+  useEffect(() => {
+    if (!product || !user) {
+      setSavedId(null);
+      return;
+    }
+    let cancelled = false;
+    void resources.listWishlist().then((items) => {
+      if (cancelled) return;
+      setSavedId(items.find((item) => item.productId === product.id)?.id ?? null);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [product, user]);
+
+  async function toggleWishlist() {
+    if (!product || !user) {
+      router.push('/login');
+      return;
+    }
+    setWishlistBusy(true);
+    try {
+      if (savedId) {
+        await resources.removeFromWishlist(savedId);
+        setSavedId(null);
+      } else {
+        const created = await resources.addToWishlist(product.id);
+        setSavedId(created.id);
+      }
+    } finally {
+      setWishlistBusy(false);
+    }
+  }
+
+  async function notifyBackInStock() {
+    if (!variant) return;
+    try {
+      await resources.requestBackInStockAlert(variant.id);
+      setNotifyRequested(true);
+    } catch {
+      // Not worth an error screen — the button simply stays available to try again.
+    }
+  }
+
+  async function submitReview() {
+    if (!product) return;
+    setReviewBusy(true);
+    setReviewMessage(null);
+    try {
+      await resources.submitReview({
+        productId: product.id,
+        rating,
+        title: reviewTitle || undefined,
+        body: reviewBody || undefined,
+      });
+      setReviewMessage(t('product.reviewSubmitted'));
+      setReviewTitle('');
+      setReviewBody('');
+    } catch (cause) {
+      setReviewMessage(cause instanceof Error ? cause.message : t('product.reviewFailed'));
+    } finally {
+      setReviewBusy(false);
+    }
+  }
 
   // The garment drives everything else: which services apply, which style
   // options exist, and which saved measurements can be used.
@@ -184,8 +270,18 @@ export default function ProductScreen() {
           <Image source={{ uri: image.url }} style={styles.hero} resizeMode="cover" />
         ) : null}
 
-        <Title>{product.name}</Title>
-        <Price amount={variant?.price ?? product.fromPrice} />
+        <View style={styles.titleRow}>
+          <View style={styles.titleColumn}>
+            <Title>{product.name}</Title>
+            <Price amount={variant?.price ?? product.fromPrice} />
+          </View>
+          <Button
+            label={savedId ? t('product.saved') : t('product.save')}
+            variant={savedId ? 'primary' : 'secondary'}
+            busy={wishlistBusy}
+            onPress={() => void toggleWishlist()}
+          />
+        </View>
         {product.description ? <Body muted>{product.description}</Body> : null}
 
         {product.variants.length > 1 ? (
@@ -204,7 +300,15 @@ export default function ProductScreen() {
               ))}
             </View>
             {variant && !variant.inStock ? (
-              <Small muted>{t('product.outOfStock')}</Small>
+              <View style={styles.notifyRow}>
+                <Small muted>{t('product.outOfStock')}</Small>
+                <Button
+                  label={notifyRequested ? t('product.notifyRequested') : t('product.notifyWhenBack')}
+                  variant="quiet"
+                  disabled={notifyRequested}
+                  onPress={() => void notifyBackInStock()}
+                />
+              </View>
             ) : null}
           </Card>
         ) : null}
@@ -326,6 +430,58 @@ export default function ProductScreen() {
           busy={busy}
           disabled={!variant?.inStock}
         />
+
+        <Card>
+          <Heading>{t('product.reviewsTitle')}</Heading>
+
+          {reviews === null ? (
+            <Loading />
+          ) : reviews.length === 0 ? (
+            <Empty message={t('product.reviewsEmpty')} />
+          ) : (
+            <View style={styles.reviewList}>
+              {reviews.map((review) => (
+                <View key={review.id} style={styles.review}>
+                  <Body>{'★'.repeat(review.rating)}</Body>
+                  {review.title ? <Body>{review.title}</Body> : null}
+                  {review.body ? <Body muted>{review.body}</Body> : null}
+                </View>
+              ))}
+            </View>
+          )}
+
+          {user ? (
+            <View style={styles.reviewForm}>
+              <Small muted>{t('product.reviewRating')}</Small>
+              <View style={styles.chips}>
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <Chip
+                    key={value}
+                    label={'★'.repeat(value)}
+                    selected={rating === value}
+                    onPress={() => setRating(value)}
+                  />
+                ))}
+              </View>
+              <Field label={t('product.reviewTitleField')} value={reviewTitle} onChangeText={setReviewTitle} />
+              <Field
+                label={t('product.reviewBody')}
+                value={reviewBody}
+                onChangeText={setReviewBody}
+                multiline
+              />
+              {reviewMessage ? <Small muted>{reviewMessage}</Small> : null}
+              <Button
+                label={t('product.reviewSubmit')}
+                variant="secondary"
+                busy={reviewBusy}
+                onPress={() => void submitReview()}
+              />
+            </View>
+          ) : (
+            <Small muted>{t('product.signInToReview')}</Small>
+          )}
+        </Card>
       </ScrollView>
     </Screen>
   );
@@ -334,6 +490,23 @@ export default function ProductScreen() {
 const styles = StyleSheet.create({
   content: { padding: theme.space(4), gap: theme.space(4), paddingBottom: theme.space(10) },
   hero: { width: '100%', aspectRatio: 3 / 4, borderRadius: theme.radius.md },
+  titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: theme.space(3) },
+  titleColumn: { flex: 1, gap: theme.space(1) },
+  notifyRow: {
+    marginTop: theme.space(2),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: theme.space(2),
+  },
+  reviewList: { gap: theme.space(3), marginTop: theme.space(2) },
+  review: {
+    paddingBottom: theme.space(3),
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: theme.color.line,
+    gap: theme.space(1),
+  },
+  reviewForm: { marginTop: theme.space(4), gap: theme.space(1) },
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',

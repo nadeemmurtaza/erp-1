@@ -77,7 +77,7 @@ model StoreCreditTransaction {
   userId       String
   delta        Int
   balanceAfter Int
-  reason       String // "refund" | "goodwill" | "redeem" | "expire" | "adjust"
+  reason       String // "refund" | "goodwill" | "redeem" | "expire" | "adjust" | "referral" (WO-7.7)
   orderId      String?
   actorId      String?
   note         String?

@@ -115,6 +115,21 @@ model User {
   storeCreditTransactions   StoreCreditTransaction[]
   giftCardsPurchased        GiftCard[]               @relation("GiftCardPurchaser")
 
+  /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  reviews                 Review[]
+  wishlistItems           WishlistItem[]
+  backInStockRequests     BackInStockRequest[]
+  /// WO-5.5's own cache pattern, reused: SUM(LoyaltyTransaction.points) — a
+  /// cache, never written outside LoyaltyService's own conditional update.
+  loyaltyPoints           Int                      @default(0)
+  loyaltyTransactions     LoyaltyTransaction[]
+  /// Generated lazily on first request (human-code.ts, WO-5's own helper) —
+  /// most customers never ask for a referral code, so most rows stay null.
+  referralCode            String?                  @unique
+  referralsMade           Referral[]               @relation("ReferralReferrer")
+  referredBy              Referral?                @relation("ReferralReferee")
+  notificationPreferences NotificationPreference[]
+
   @@index([role])
   @@index([createdAt])
 }

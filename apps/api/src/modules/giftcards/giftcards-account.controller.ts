@@ -1,8 +1,9 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
-import { AuthenticatedOnly } from '../../core/auth/decorators';
+import { AuthenticatedOnly, CurrentUser } from '../../core/auth/decorators';
 import { GiftCardsService } from './giftcards.service';
+import { RedeemGiftCardIntoAccountDto } from './dto/gift-card.dto';
 
 /**
  * WO-5.4's own security note: "The lookup endpoint is rate-limited and
@@ -22,5 +23,13 @@ export class GiftCardsAccountController {
   @Throttle({ default: { limit: 10, ttl: 60_000 } })
   async balance(@Param('code') code: string) {
     return this.giftCards.lookupBalance(code);
+  }
+
+  /** WO-7.4: converts a gift card's balance into this account's store credit. */
+  @Post('redeem-into-account')
+  @ApiOperation({ summary: "Redeem a gift card's full balance into my store credit" })
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  async redeemIntoAccount(@CurrentUser('id') userId: string, @Body() dto: RedeemGiftCardIntoAccountDto) {
+    return this.giftCards.redeemIntoAccount(userId, dto.code);
   }
 }

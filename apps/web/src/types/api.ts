@@ -68,6 +68,9 @@ export interface StorefrontProduct {
   serviceGarment: { id: string; key: string; label: string } | null;
   inStock: boolean;
   fromPrice: number;
+  /** Phase 7 WO-7.5 — populated on the product detail fetch only. */
+  reviewCount: number | null;
+  averageRating: number | null;
 }
 
 export interface CategoryNode {
@@ -1074,6 +1077,8 @@ export interface CustomerOrderItem {
   unitPrice: number;
   stitchingFeeUnit: number;
   lineTotal: number;
+  /** Zero for every order while `tax.enabled` is off (15-tax-module.md's ship-safe default). */
+  taxAmount: number;
   stitchingServiceName: string | null;
   garmentTypeKey: string | null;
   measurementSnapshot: { label: string; values: Record<string, number> } | null;

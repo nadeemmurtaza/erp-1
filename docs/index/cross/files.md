@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **1,610** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,656** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 628 | 87,875 | [files/api.md](../files/api.md) |
-| apps/web | 305 | 48,119 | [files/web.md](../files/web.md) |
+| apps/api | 657 | 90,110 | [files/api.md](../files/api.md) |
+| apps/web | 315 | 49,810 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
-| apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 68 | 5,943 | [files/packages.md](../files/packages.md) |
-| docs/* | 392 | 59,591 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 56 | 28,353 | [files/infra.md](../files/infra.md) |
+| apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
+| packages/* | 68 | 5,969 | [files/packages.md](../files/packages.md) |
+| docs/* | 392 | 59,940 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 56 | 28,358 | [files/infra.md](../files/infra.md) |
 | repository root files | 88 | 11,043 | [files/root.md](../files/root.md) |
 
 
@@ -29,23 +29,23 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 417 |
-| page | 148 |
+| page | 157 |
 | unit test | 137 |
 | module | 116 |
-| service | 98 |
-| component | 81 |
-| dto | 78 |
-| controller | 70 |
-| migration | 65 |
-| nest module | 52 |
+| service | 103 |
+| dto | 82 |
+| component | 82 |
+| controller | 78 |
+| migration | 66 |
+| nest module | 56 |
 | script | 38 |
-| prisma schema | 34 |
+| prisma schema | 38 |
 | json | 29 |
-| event subscriber | 26 |
+| react | 29 |
+| event subscriber | 28 |
 | asset | 26 |
-| react | 22 |
 | utility | 22 |
-| e2e test | 17 |
+| e2e test | 18 |
 | file | 13 |
 | yaml | 12 |
 | config | 11 |

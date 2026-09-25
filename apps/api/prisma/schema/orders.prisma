@@ -106,6 +106,8 @@ model Order {
   giftCardTransactions    GiftCardTransaction[]
   storeCreditTransactions StoreCreditTransaction[]
   giftCardsSold           GiftCard[]               @relation("GiftCardSourceOrder")
+  /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  loyaltyTransactions     LoyaltyTransaction[]
 
   @@index([status, placedAt])
   @@index([userId])
@@ -206,6 +208,9 @@ model OrderItem {
   // plain `orderItemId` scalar column pointing here instead of a Prisma
   // relation; the join happens in application code
   // (EntityEnrichmentRegistry, or StitchingJobsService.attachOrderContext).
+
+  /// Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).
+  review Review?
 
   @@index([orderId])
   @@index([productId])

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 628 tracked files in `apps/api`, by directory.
+All 657 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,16 +31,16 @@ All 628 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (32)
+### `apps/api/prisma/schema` (36)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 222 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 575 | Catalog: categories, products, variants, images. |
+| `catalog.prisma` | prisma schema | 581 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 464 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 479 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 267 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
@@ -48,10 +48,12 @@ All 628 tracked files in `apps/api`, by directory.
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `inventory.prisma` | prisma schema | 236 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
+| `loyalty.prisma` | prisma schema | 85 | Phase 7 WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `marketing.prisma` | prisma schema | 87 | Campaigns and broadcasts. WO-8.4, |
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
+| `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
-| `orders.prisma` | prisma schema | 311 | Orders and shipments. |
+| `orders.prisma` | prisma schema | 316 | Orders and shipments. |
 | `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
@@ -61,12 +63,14 @@ All 628 tracked files in `apps/api`, by directory.
 | `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `purchasing.prisma` | prisma schema | 248 |  |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
+| `reviews.prisma` | prisma schema | 56 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `schema.prisma` | prisma schema | 20 | Datasource and generator only. Models live in one file per module — |
 | `search.prisma` | prisma schema | 40 | Search. WO-8.3, |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
 | `transfers.prisma` | prisma schema | 167 | Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default |
+| `wishlist.prisma` | prisma schema | 44 | Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 
 ### `apps/api/prisma/schema/migrations` (1)
 
@@ -446,6 +450,12 @@ All 628 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 194 |  |
 
+### `apps/api/prisma/schema/migrations/20260924190000_add_customer_portal_reviews_wishlist_loyalty` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 206 |  |
+
 ### `apps/api/prisma/schema/migrations/20260924220000_add_fulfilment_shipping_returns` (1)
 
 | File | Kind | Lines | Purpose |
@@ -581,7 +591,7 @@ All 628 tracked files in `apps/api`, by directory.
 | `health.controller.ts` | controller | 52 |  |
 | `health.module.ts` | nest module | 6 |  |
 
-### `apps/api/src/core/notifications` (12)
+### `apps/api/src/core/notifications` (13)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -591,7 +601,8 @@ All 628 tracked files in `apps/api`, by directory.
 | `expo-push.channel.ts` | channel | 89 |  |
 | `log.channel.ts` | channel | 26 |  |
 | `notification-channel.ts` | module | 38 | Extension point: outbound customer messaging. |
-| `notifications.module.ts` | nest module | 34 |  |
+| `notification-preferences.service.ts` | service | 71 |  |
+| `notifications.module.ts` | nest module | 36 |  |
 | `notifications.service.ts` | service | 63 |  |
 | `sms.channel.ts` | channel | 48 |  |
 | `unsubscribe.controller.ts` | controller | 41 |  |
@@ -672,7 +683,7 @@ All 628 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 305 |  |
+| `settings.defaults.ts` | module | 319 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -701,8 +712,8 @@ All 628 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 91 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 171 |  |
+| `module-packs.ts` | module | 95 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 183 |  |
 
 ### `apps/api/src/modules/accounting` (15)
 
@@ -798,14 +809,15 @@ All 628 tracked files in `apps/api`, by directory.
 | `raw-usage.dto.ts` | dto | 30 |  |
 | `recipe.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/cart` (4)
+### `apps/api/src/modules/cart` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `cart.controller.ts` | controller | 198 |  |
+| `cart.controller.ts` | controller | 217 |  |
 | `cart.guest-contact.spec.ts` | unit test | 77 |  |
-| `cart.module.ts` | nest module | 17 | Measurements typed straight into the stitching panel are validated |
+| `cart.module.ts` | nest module | 18 |  |
 | `cart.service.ts` | service | 704 |  |
+| `reorder.service.ts` | service | 69 |  |
 
 ### `apps/api/src/modules/cart/dto` (1)
 
@@ -822,7 +834,7 @@ All 628 tracked files in `apps/api`, by directory.
 | `catalog-options-admin.controller.ts` | controller | 105 |  |
 | `catalog.controller.ts` | controller | 51 |  |
 | `catalog.module.ts` | nest module | 51 |  |
-| `catalog.service.ts` | service | 365 |  |
+| `catalog.service.ts` | service | 379 |  |
 | `category-admin.service.ts` | service | 192 |  |
 | `option-template-admin.service.ts` | service | 125 |  |
 | `product-admin.service.spec.ts` | unit test | 109 |  |
@@ -971,22 +983,23 @@ All 628 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `manual.provider.ts` | module | 49 |  |
 
-### `apps/api/src/modules/giftcards` (6)
+### `apps/api/src/modules/giftcards` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `giftcards-account.controller.ts` | controller | 27 |  |
+| `giftcards-account.controller.ts` | controller | 36 |  |
 | `giftcards.controller.ts` | controller | 67 |  |
-| `giftcards.module.ts` | nest module | 14 |  |
-| `giftcards.service.ts` | service | 158 |  |
+| `giftcards.module.ts` | nest module | 15 |  |
+| `giftcards.service.ts` | service | 202 |  |
+| `store-credit-account.controller.ts` | controller | 26 |  |
 | `store-credit-reconcile.cron.ts` | scheduled job | 26 |  |
-| `store-credit.service.ts` | service | 133 |  |
+| `store-credit.service.ts` | service | 162 |  |
 
 ### `apps/api/src/modules/giftcards/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `gift-card.dto.ts` | dto | 56 |  |
+| `gift-card.dto.ts` | dto | 62 |  |
 | `store-credit.dto.ts` | dto | 21 |  |
 
 ### `apps/api/src/modules/identity-verification` (4)
@@ -1037,6 +1050,22 @@ All 628 tracked files in `apps/api`, by directory.
 | `inventory.dto.ts` | dto | 31 |  |
 | `stock-variance.dto.ts` | dto | 9 |  |
 
+### `apps/api/src/modules/loyalty` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `loyalty-admin.controller.ts` | controller | 46 |  |
+| `loyalty-order.listener.ts` | event subscriber | 45 |  |
+| `loyalty.controller.ts` | controller | 63 |  |
+| `loyalty.module.ts` | nest module | 15 |  |
+| `loyalty.service.ts` | service | 255 |  |
+
+### `apps/api/src/modules/loyalty/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `loyalty.dto.ts` | dto | 52 |  |
+
 ### `apps/api/src/modules/marketing` (9)
 
 | File | Kind | Lines | Purpose |
@@ -1073,6 +1102,19 @@ All 628 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `measurements.dto.ts` | dto | 236 |  |
+
+### `apps/api/src/modules/notification-preferences` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `notification-preferences.controller.ts` | controller | 29 |  |
+| `notification-preferences.module.ts` | nest module | 18 |  |
+
+### `apps/api/src/modules/notification-preferences/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `notification-preference.dto.ts` | dto | 31 |  |
 
 ### `apps/api/src/modules/onsitemessages` (4)
 
@@ -1303,6 +1345,21 @@ All 628 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `reports.dto.ts` | dto | 33 |  |
 
+### `apps/api/src/modules/reviews` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `reviews-public.controller.ts` | controller | 44 |  |
+| `reviews.controller.ts` | controller | 26 |  |
+| `reviews.module.ts` | nest module | 12 |  |
+| `reviews.service.ts` | service | 125 |  |
+
+### `apps/api/src/modules/reviews/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `review.dto.ts` | dto | 67 |  |
+
 ### `apps/api/src/modules/search` (5)
 
 | File | Kind | Lines | Purpose |
@@ -1444,7 +1501,23 @@ All 628 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `user.dto.ts` | dto | 122 |  |
 
-### `apps/api/test` (21)
+### `apps/api/src/modules/wishlist` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `back-in-stock.listener.ts` | event subscriber | 76 |  |
+| `wishlist-admin.controller.ts` | controller | 19 |  |
+| `wishlist.controller.ts` | controller | 58 |  |
+| `wishlist.module.ts` | nest module | 13 |  |
+| `wishlist.service.ts` | service | 179 |  |
+
+### `apps/api/src/modules/wishlist/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `wishlist.dto.ts` | dto | 30 |  |
+
+### `apps/api/test` (22)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1454,6 +1527,7 @@ All 628 tracked files in `apps/api`, by directory.
 | `cart.e2e-spec.ts` | e2e test | 800 |  |
 | `catalog.e2e-spec.ts` | e2e test | 411 |  |
 | `crm.e2e-spec.ts` | e2e test | 489 |  |
+| `customer-portal.e2e-spec.ts` | e2e test | 243 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |
 | `email-accounts-admin.e2e-spec.ts` | e2e test | 342 |  |
 | `email-channel.behavior.spec.ts` | unit test | 580 | Behavior tests for the email notification channel. |

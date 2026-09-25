@@ -375,6 +375,24 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Marketing',
     sensitivity: 'low',
   },
+  {
+    key: 'reviews.moderate',
+    label: 'Approve, reject and reply to customer product reviews',
+    category: 'Marketing',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'loyalty.view',
+    label: 'View loyalty point balances, tiers and referrals',
+    category: 'Marketing',
+    sensitivity: 'low',
+  },
+  {
+    key: 'loyalty.manage',
+    label: 'Adjust a customer\'s loyalty points and configure tiers — real money once redeemed',
+    category: 'Marketing',
+    sensitivity: 'high',
+  },
 ] as const;
 
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]['key'];
@@ -428,6 +446,12 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     permissions: ['orders.manage', 'payments.approve', 'pos.manage', 'pos.operate'],
   },
   {
+    key: 'fulfilment',
+    label: 'Shipping & returns',
+    description: 'Shipping zones and rates, booking and tracking shipments, manifests, RTO, and deciding a customer return.',
+    permissions: ['fulfilment.view', 'fulfilment.manage'],
+  },
+  {
     key: 'tailor-queue',
     label: 'Tailor queue',
     description: 'The stitching workshop floor — view, assign and move jobs along.',
@@ -470,16 +494,10 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     permissions: ['production.manage', 'production.view_chain'],
   },
   {
-    key: 'fulfilment',
-    label: 'Fulfilment',
-    description: 'Shipments, manifests, RTO and returns — after an order is placed, before it is closed.',
-    permissions: ['fulfilment.view', 'fulfilment.manage'],
-  },
-  {
     key: 'marketing',
     label: 'Marketing',
     description:
-      'Automated marketing email, discounts, promo codes, gift cards, store credit, content, collections, search tuning, campaigns and on-site messaging.',
+      'Automated marketing email, discounts, promo codes, gift cards, store credit, content, collections, search tuning, campaigns, on-site messaging, reviews and loyalty.',
     permissions: [
       'marketing.manage',
       'promotions.view',
@@ -496,6 +514,9 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'campaigns.manage',
       'onsitemessages.view',
       'onsitemessages.manage',
+      'reviews.moderate',
+      'loyalty.view',
+      'loyalty.manage',
     ],
   },
   {
@@ -594,6 +615,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'campaigns.view',
     'onsitemessages.view',
     'onsitemessages.manage',
+    'reviews.moderate',
+    'loyalty.view',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -655,6 +678,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'campaigns.manage',
     'onsitemessages.view',
     'onsitemessages.manage',
+    'reviews.moderate',
+    'loyalty.view',
+    'loyalty.manage',
   ],
 };
 

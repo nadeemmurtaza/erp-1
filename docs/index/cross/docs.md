@@ -2668,22 +2668,22 @@ _no second-level headings_
 - WO-8.6 — On-site messaging  <sub>:120</sub>
 - Phase 8 exit criteria  <sub>:129</sub>
 
-### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>186 lines</sub>
+### `docs/implementation/customer-portal-loyalty/07-customer-portal.md`  <sub>233 lines</sub>
 
-- Why  <sub>:5</sub>
-- Work orders  <sub>:21</sub>
-- WO-7.1 — Portal shell  <sub>:37</sub>
-- WO-7.2 — Orders  <sub>:52</sub>
-- WO-7.3 — Self-service returns  <sub>:66</sub>
-- WO-7.4 — Credit and gift cards  <sub>:78</sub>
-- WO-7.5 — Reviews and Q&A  <sub>:89</sub>
-- WO-7.6 — Wishlist and back-in-stock  <sub>:128</sub>
-- WO-7.7 — Loyalty and referrals  <sub>:145</sub>
-- WO-7.8 — Notification preferences  <sub>:160</sub>
-- WO-7.9 — Mobile parity  <sub>:169</sub>
-- Phase 7 exit criteria  <sub>:178</sub>
+- Why  <sub>:43</sub>
+- Work orders  <sub>:59</sub>
+- WO-7.1 — Portal shell  <sub>:75</sub>
+- WO-7.2 — Orders  <sub>:90</sub>
+- WO-7.3 — Self-service returns  <sub>:104</sub>
+- WO-7.4 — Credit and gift cards  <sub>:125</sub>
+- WO-7.5 — Reviews and Q&A  <sub>:136</sub>
+- WO-7.6 — Wishlist and back-in-stock  <sub>:175</sub>
+- WO-7.7 — Loyalty and referrals  <sub>:192</sub>
+- WO-7.8 — Notification preferences  <sub>:207</sub>
+- WO-7.9 — Mobile parity  <sub>:216</sub>
+- Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>2,254 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,556 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2718,6 +2718,8 @@ _no second-level headings_
 - ADR-028 — WO-5 (Phase 5: discounts, promo codes, gift cards, store credit) built from zero — permission split, checkout coupling, tender-as-Payment-rows, and the evaluator's own rounding/scope choices  <sub>:1963</sub>
 - ADR-029 — Third-party gift-card redemption at checkout (Giftkarta): a `PaymentProvider`, not a WO-5 tender field; code collected post-order; API contract unverified  <sub>:2095</sub>
 - ADR-030 — `docs/implementation/`, `docs/erp-lenses/` and `docs/design/` reorganized into domain subfolders, filenames unchanged  <sub>:2182</sub>
+- ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty, mobile parity) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 mobile parity  <sub>:2255</sub>
+- ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time  <sub>:2420</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

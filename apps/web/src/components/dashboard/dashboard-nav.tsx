@@ -30,12 +30,17 @@ interface Tab {
 }
 
 const TABS: Tab[] = [
-  { href: ROUTES.storefront.account, key: 'profile', exact: true },
-  { href: ROUTES.storefront.accountAddresses, key: 'addresses' },
-  { href: ROUTES.storefront.accountMeasurements, key: 'measurements' },
+  { href: ROUTES.storefront.accountOverview, key: 'overview' },
   { href: ROUTES.storefront.orders, key: 'orders' },
   { href: ROUTES.storefront.accountReturns, key: 'returns' },
+  { href: ROUTES.storefront.accountMeasurements, key: 'measurements' },
+  { href: ROUTES.storefront.accountAddresses, key: 'addresses' },
   { href: ROUTES.storefront.wishlist, key: 'wishlist' },
+  { href: ROUTES.storefront.accountReviews, key: 'reviews' },
+  { href: ROUTES.storefront.accountCredit, key: 'credit' },
+  { href: ROUTES.storefront.accountLoyalty, key: 'loyalty' },
+  { href: ROUTES.storefront.accountNotifications, key: 'notifications' },
+  { href: ROUTES.storefront.account, key: 'profile', exact: true },
 ];
 
 export function DashboardNav() {

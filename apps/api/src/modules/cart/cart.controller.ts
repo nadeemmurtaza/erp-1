@@ -21,8 +21,9 @@ import {
   readCookie,
   type AuthenticatedUser,
 } from '../../core/auth/auth.constants';
-import { CurrentUser, Public } from '../../core/auth/decorators';
+import { AuthenticatedOnly, CurrentUser, Public } from '../../core/auth/decorators';
 import { CartService, type CartView } from './cart.service';
+import { ReorderService } from './reorder.service';
 import { AddCartItemDto, MergeCartDto, UpdateCartItemDto, UpdateGuestContactDto } from './dto/cart.dto';
 
 const CART_COOKIE_MAX_AGE_MS = 30 * 86_400_000;
@@ -39,7 +40,25 @@ const CART_COOKIE_MAX_AGE_MS = 30 * 86_400_000;
 @Controller('cart')
 @Public()
 export class CartController {
-  constructor(private readonly cart: CartService) {}
+  constructor(
+    private readonly cart: CartService,
+    private readonly reorder: ReorderService,
+  ) {}
+
+  /** WO-7.2 — one tap adds every still-available line from a past order back to the cart. */
+  @Post('reorder/:orderNumber')
+  @AuthenticatedOnly()
+  @ApiOperation({ summary: 'Add every still-available line from a past order to the cart' })
+  async reorderFromOrder(
+    @Res({ passthrough: true }) response: Response,
+    @CurrentUser('id') userId: string,
+    @Param('orderNumber') orderNumber: string,
+    @Query('locale') locale?: string,
+  ) {
+    const result = await this.reorder.reorder(userId, orderNumber, toLocale(locale));
+    this.setCookie(response, result.cart.token);
+    return result;
+  }
 
   @Get()
   @ApiOperation({ summary: 'The current cart, priced fresh from the database' })

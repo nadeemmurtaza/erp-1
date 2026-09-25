@@ -3,7 +3,7 @@
 
 # Migrations
 
-**65** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**66** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -96,6 +96,7 @@ nothing here fails a build.
 | 2026-09-24 | `init` | 29 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | PlatformOpsClient, PlatformPlan, PlatformSubscription, PlatformTenant, PlatformUsageRecord, SupportAccessGran… |
 | 2026-09-24 | `add_option_templates_redirects_sku_seo` | 24 | ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, INSERT, CREATE INDEX | Category, OptionTemplate, OptionTemplateTranslation, OptionTemplateValue, OptionTemplateValueTranslation, Pro… |
 | 2026-09-24 | `add_promotions_giftcards_store_credit` | 31 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | Discount, GiftCard, GiftCardTransaction, OrderDiscount, PromoCode, StoreCreditTransaction, User |
+| 2026-09-24 | `add_customer_portal_reviews_wishlist_loyalty` | 43 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, INSERT | BackInStockRequest, LoyaltyTier, LoyaltyTransaction, NotificationPreference, Referral, Review, User, Wishlist… |
 | 2026-09-24 | `add_fulfilment_shipping_returns` | 67 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE, INSERT | Contact, Manifest, ManifestNumberCounter, Product, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest,… |
 | 2026-09-25 | `add_content_collections_search_marketing_onsite` | 82 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, UPDATE | Banner, BannerTranslation, BlogPost, BlogPostTranslation, Campaign, CampaignRecipient, Cart, Collection, Coll… |
 

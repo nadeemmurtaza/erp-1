@@ -5,6 +5,7 @@ import { SettingKey } from '../../core/settings/settings.defaults';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { shopDayKey } from '../../core/time/shop-time';
 import { AnalyticsService } from './analytics.service';
+import { MetricRegistryService } from '../../core/metrics/metric-registry.service';
 
 /**
  * WO-23.1's WO-B.5 — covers only the new `comparison()` method. The rest of
@@ -31,6 +32,7 @@ describe('AnalyticsService.comparison', () => {
     const module = await Test.createTestingModule({
       providers: [
         AnalyticsService,
+        MetricRegistryService,
         PrismaService,
         SettingsService,
         { provide: AppConfigService, useValue: config },

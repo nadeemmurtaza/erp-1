@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-320 files · 51,045 lines
+338 files · 51,608 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -25,21 +25,21 @@ through `@newax/shared`'s `BRAND`.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `apps/web` | 8 | 387 | file, script, json, module |
+| `apps/web` | 9 | 410 | file, script, json, module |
 | `apps/web/messages` | 2 | 1,214 | json |
 | `apps/web/public` | 1 | 0 | asset |
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 177 | 32,196 | page, loading, layout, error |
-| `apps/web/src/components` | 81 | 13,463 | component, loading |
+| `apps/web/src/app` | 171 | 30,318 | page, loading, layout, error |
+| `apps/web/src/components` | 104 | 15,847 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
-| `apps/web/src/constants` | 5 | 308 | constants |
+| `apps/web/src/constants` | 5 | 328 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
 | `apps/web/src/lib` | 9 | 1,043 | utility |
 | `apps/web/src/providers` | 2 | 82 | react |
-| `apps/web/src/types` | 5 | 1,624 | types |
+| `apps/web/src/types` | 5 | 1,638 | types |
 | `apps/web/src/utils` | 5 | 306 | utility |
 
 
@@ -54,6 +54,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/app/(storefront)/[locale]/(static)/layout.tsx` | layout |  |
 | `apps/web/src/app/(storefront)/[locale]/layout.tsx` | layout |  |
 | `apps/web/src/app/globals.css` | stylesheet |  |
+| `apps/web/src/components/admin/charts/index.ts` | component | The whole charting vocabulary for the back office (10-admin-dashboard.md D9). |
 | `apps/web/src/components/ui/index.ts` | component | Design-system primitives. |
 | `apps/web/src/middleware.ts` | module |  |
 | `apps/web/src/types/index.ts` | types | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three… |
@@ -64,10 +65,12 @@ through `@newax/shared`'s `BRAND`.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `apps/web/src/components/admin/product-form.tsx` | 1,434 | component |  |
-| `apps/web/src/types/api.ts` | 1,300 | types |  |
+| `apps/web/src/types/api.ts` | 1,314 | types |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
-| `apps/web/src/components/admin/nav-registry.ts` | 773 | component |  |
+| `apps/web/src/components/admin/nav-registry.ts` | 775 | component |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 743 | page |  |
+| `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
+| `apps/web/src/components/admin/analytics/report-registry.ts` | 660 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 658 | page |  |
 | `apps/web/messages/en.json` | 607 | json |  |
 | `apps/web/messages/ur.json` | 607 | json |  |
@@ -76,8 +79,6 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 565 | page |  |
 | `apps/web/src/components/admin/image-manager.tsx` | 543 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/content/page.tsx` | 523 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/page.tsx` | 523 | page |  |
-| `apps/web/src/components/storefront/product-purchase.tsx` | 509 | component |  |
 
 
 ---

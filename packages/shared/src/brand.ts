@@ -212,6 +212,17 @@ const colors = {
     positive: '#0F7A4D',
     negative: '#B42318',
   },
+  /**
+   * The categorical ramp for a multi-series chart (10-admin-dashboard.md
+   * D9, WO-A.2). Six hues, index 0 is the existing single-series accent
+   * teal so a report that grows from one series to several keeps its
+   * primary colour. Each clears 3:1 against white (the graphical-object
+   * floor, not the 4.5:1 text floor) and stays separable in the common
+   * dichromacies without relying on red-green alone — chart wrappers pair
+   * every hue with a dash pattern and a marker shape for exactly that
+   * reason (see chart-theme.ts).
+   */
+  chart: ['#0e8294', '#b8860b', '#4a6fa5', '#8a5a44', '#5f7a4f', '#7d5ba6'],
 } as const;
 
 /**

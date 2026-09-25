@@ -3,6 +3,17 @@
 **Read `00-HOUSE-RULES.md` first.** Everything there applies. Where this brief
 and the house rules disagree, **the house rules win** — say so in the PR.
 
+> **Status (2026-09-25): Track A (WO-A.1–A.5) built end-to-end, Tracks D
+> and B wired into the registry, WO-E.2 executed.** See `DECISIONS.md`
+> ADR-032 for the full account and every deviation — it supersedes
+> ADR-019 and ADR-025, both of which found Track A unbuilt. Tracks B and C
+> were already built (against the pre-registry "live idiom," ADR-019) and
+> are wired in, not rebuilt. Not yet done: `WO-C.4`'s `bom/raw-usage`
+> report has no registry entry (ADR-032 Deviation #7), and the sidebar's
+> own breadcrumb does not reach into the report tree's deeper slugs
+> (Deviation #10) — both named, both left for later, neither silently
+> skipped.
+
 Programme code **MD**. Work orders are numbered `WO-A.n` … `WO-E.n` so they
 never collide with the `WO-1.x` / `WO-2.x` / `WO-4.x` in the other briefs.
 

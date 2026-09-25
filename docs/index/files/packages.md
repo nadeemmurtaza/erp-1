@@ -53,7 +53,7 @@ All 74 tracked files in `packages/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `brand.ts` | module | 334 | THE BRAND FILE. |
+| `brand.ts` | module | 345 | THE BRAND FILE. |
 | `cod-risk.spec.ts` | unit test | 199 |  |
 | `cod-risk.ts` | module | 167 |  |
 | `collection-rules.ts` | module | 16 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually cu… |

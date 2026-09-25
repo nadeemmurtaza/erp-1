@@ -225,6 +225,16 @@ export const SettingKey = {
    * applied — two disappointed customers should not move a recommendation.
    */
   SizeBiasMinSampleSize: 'measurements.size_bias_min_sample_size',
+  /**
+   * WO-A.3 (10-admin-dashboard.md D2) — how long `MetricRegistryService`
+   * caches a computed metric batch, keyed on (from, to, bucket, sorted
+   * permission fingerprint, sorted wanted keys). Zero disables the cache.
+   */
+  AnalyticsDashboardCacheSeconds: 'analytics.dashboard_cache_seconds',
+  /** The `?days=` the dashboard and every analytics report open with, before a range picker changes it. */
+  AnalyticsDefaultRangeDays: 'analytics.default_range_days',
+  /** The bucket WO-B.5's sales/purchases/expenses comparison chart opens in. */
+  AnalyticsComparisonBucket: 'analytics.comparison_bucket',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -366,4 +376,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
 
   [SettingKey.CatalogSkuTemplate]: '{CAT}-{PRODUCT}-{OPT}-{SEQ}',
   [SettingKey.CatalogUseOptionModelReads]: false,
+
+  [SettingKey.AnalyticsDashboardCacheSeconds]: 60,
+  [SettingKey.AnalyticsDefaultRangeDays]: 30,
+  [SettingKey.AnalyticsComparisonBucket]: 'day',
 };

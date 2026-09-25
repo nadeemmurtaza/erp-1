@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 692 tracked files in `apps/api`, by directory.
+All 708 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -492,7 +492,7 @@ All 692 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 41 |  |
+| `core.module.ts` | nest module | 43 |  |
 
 ### `apps/api/src/core/ai` (4)
 
@@ -621,6 +621,15 @@ All 692 tracked files in `apps/api`, by directory.
 | `health.controller.ts` | controller | 52 |  |
 | `health.module.ts` | nest module | 6 |  |
 
+### `apps/api/src/core/metrics` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `metric-provider.ts` | module | 59 |  |
+| `metric-registry.service.spec.ts` | unit test | 267 |  |
+| `metric-registry.service.ts` | service | 137 |  |
+| `metrics.module.ts` | nest module | 18 |  |
+
 ### `apps/api/src/core/notifications` (13)
 
 | File | Kind | Lines | Purpose |
@@ -713,7 +722,7 @@ All 692 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 370 |  |
+| `settings.defaults.ts` | module | 384 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -733,8 +742,8 @@ All 692 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `metric-window.spec.ts` | unit test | 85 |  |
-| `metric-window.ts` | module | 73 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the… |
+| `metric-window.spec.ts` | unit test | 192 |  |
+| `metric-window.ts` | module | 105 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the… |
 | `shop-time.spec.ts` | unit test | 175 |  |
 | `shop-time.ts` | module | 235 | Calendar days in the shop's timezone. |
 
@@ -786,33 +795,39 @@ All 692 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `address.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/analytics` (12)
+### `apps/api/src/modules/analytics` (15)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `analytics.comparison.spec.ts` | unit test | 309 |  |
-| `analytics.controller.ts` | controller | 203 |  |
-| `analytics.customers.spec.ts` | unit test | 166 |  |
-| `analytics.inventory.spec.ts` | unit test | 194 |  |
-| `analytics.module.ts` | nest module | 11 |  |
-| `analytics.orders.spec.ts` | unit test | 199 |  |
-| `analytics.products.spec.ts` | unit test | 260 |  |
-| `analytics.purchasing.spec.ts` | unit test | 329 |  |
-| `analytics.service.ts` | service | 2018 |  |
-| `analytics.workshop.spec.ts` | unit test | 180 |  |
+| `analytics.comparison.spec.ts` | unit test | 311 |  |
+| `analytics.controller.ts` | controller | 241 |  |
+| `analytics.customers.spec.ts` | unit test | 168 |  |
+| `analytics.inventory.spec.ts` | unit test | 196 |  |
+| `analytics.metrics.spec.ts` | unit test | 210 |  |
+| `analytics.metrics.ts` | module | 454 |  |
+| `analytics.module.ts` | nest module | 30 |  |
+| `analytics.orders.spec.ts` | unit test | 201 |  |
+| `analytics.products.spec.ts` | unit test | 262 |  |
+| `analytics.purchasing.spec.ts` | unit test | 331 |  |
+| `analytics.sales.spec.ts` | unit test | 151 |  |
+| `analytics.service.ts` | service | 2375 |  |
+| `analytics.workshop.spec.ts` | unit test | 182 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
 
-### `apps/api/src/modules/analytics/dto` (1)
+### `apps/api/src/modules/analytics/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `analytics.dto.ts` | dto | 10 |  |
+| `cards.dto.ts` | dto | 44 |  |
 
-### `apps/api/src/modules/bom` (16)
+### `apps/api/src/modules/bom` (18)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `bom-cards.metrics.spec.ts` | unit test | 61 |  |
+| `bom-cards.metrics.ts` | module | 126 |  |
 | `bom-production-replication.listener.spec.ts` | unit test | 62 |  |
 | `bom-production-replication.listener.ts` | event subscriber | 50 |  |
 | `bom.controller.ts` | controller | 228 |  |
@@ -820,7 +835,7 @@ All 692 tracked files in `apps/api`, by directory.
 | `bom.listener.ts` | event subscriber | 49 |  |
 | `bom.metrics.spec.ts` | unit test | 202 |  |
 | `bom.metrics.ts` | module | 131 |  |
-| `bom.module.ts` | nest module | 26 |  |
+| `bom.module.ts` | nest module | 29 |  |
 | `bom.service.ts` | service | 47 |  |
 | `bom.spec.ts` | unit test | 527 |  |
 | `cost-rollup.spec.ts` | unit test | 124 | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
@@ -958,7 +973,7 @@ All 692 tracked files in `apps/api`, by directory.
 | `email-inbox.service.ts` | service | 234 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 |  |
 
-### `apps/api/src/modules/finance` (14)
+### `apps/api/src/modules/finance` (16)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -970,7 +985,9 @@ All 692 tracked files in `apps/api`, by directory.
 | `finance.cron.ts` | scheduled job | 36 |  |
 | `finance.listener.spec.ts` | unit test | 48 |  |
 | `finance.listener.ts` | event subscriber | 27 |  |
-| `finance.module.ts` | nest module | 22 |  |
+| `finance.metrics.spec.ts` | unit test | 63 |  |
+| `finance.metrics.ts` | module | 125 |  |
+| `finance.module.ts` | nest module | 24 |  |
 | `finance.service.ts` | service | 675 |  |
 | `finance.spec.ts` | unit test | 522 |  |
 | `order-economics.service.spec.ts` | unit test | 216 |  |
@@ -1057,7 +1074,7 @@ All 692 tracked files in `apps/api`, by directory.
 | `nid-callback-verification.spec.ts` | unit test | 123 |  |
 | `nid.provider.ts` | module | 176 |  |
 
-### `apps/api/src/modules/inventory` (14)
+### `apps/api/src/modules/inventory` (16)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1066,7 +1083,9 @@ All 692 tracked files in `apps/api`, by directory.
 | `inventory.cron.ts` | scheduled job | 170 |  |
 | `inventory.listener.spec.ts` | unit test | 70 |  |
 | `inventory.listener.ts` | event subscriber | 61 |  |
-| `inventory.module.ts` | nest module | 18 |  |
+| `inventory.metrics.spec.ts` | unit test | 70 |  |
+| `inventory.metrics.ts` | module | 135 |  |
+| `inventory.module.ts` | nest module | 27 |  |
 | `inventory.service.spec.ts` | unit test | 442 |  |
 | `inventory.service.ts` | service | 590 |  |
 | `stock-count.controller.ts` | controller | 62 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
@@ -1348,7 +1367,7 @@ All 692 tracked files in `apps/api`, by directory.
 | `preview-checkout.dto.ts` | dto | 57 |  |
 | `promo-code.dto.ts` | dto | 82 |  |
 
-### `apps/api/src/modules/purchasing` (11)
+### `apps/api/src/modules/purchasing` (13)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1357,7 +1376,9 @@ All 692 tracked files in `apps/api`, by directory.
 | `purchasing.controller.ts` | controller | 151 |  |
 | `purchasing.cron.spec.ts` | unit test | 144 |  |
 | `purchasing.cron.ts` | scheduled job | 118 |  |
-| `purchasing.module.ts` | nest module | 19 |  |
+| `purchasing.metrics.spec.ts` | unit test | 74 |  |
+| `purchasing.metrics.ts` | module | 135 |  |
+| `purchasing.module.ts` | nest module | 27 |  |
 | `purchasing.service.ts` | service | 664 |  |
 | `purchasing.spec.ts` | unit test | 233 |  |
 | `reorder.listener.spec.ts` | unit test | 146 |  |

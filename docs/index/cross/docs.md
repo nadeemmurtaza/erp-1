@@ -1899,25 +1899,25 @@ _no second-level headings_
 - WO-2.8 — Permission-check cleanup  <sub>:211</sub>
 - Phase 2 exit criteria  <sub>:233</sub>
 
-### `docs/implementation/admin-platform/10-admin-dashboard.md`  <sub>1,843 lines</sub>
+### `docs/implementation/admin-platform/10-admin-dashboard.md`  <sub>1,854 lines</sub>
 
-- Why  <sub>:9</sub>
-- What Phase 10 delivers  <sub>:31</sub>
-- Base branch  <sub>:43</sub>
-- Work orders  <sub>:50</sub>
-- Rules for this phase  <sub>:82</sub>
-- The corrected route tree  <sub>:388</sub>
-- The card inventory (~55 cards)  <sub>:471</sub>
-- A live bug the rebuild must not inherit  <sub>:527</sub>
-- Track A — Foundations  <sub>:566</sub>
-- Track B — Finance and expenses  <sub>:833</sub>
-- Track C — BOM and manufacturing  <sub>:1146</sub>
-- Track D — The remaining analytics pages  <sub>:1604</sub>
-- Track E — Navigation and retirement  <sub>:1635</sub>
-- Dependency table  <sub>:1691</sub>
-- Sequencing  <sub>:1725</sub>
-- Migration safety register  <sub>:1754</sub>
-- Phase 10 definition of done  <sub>:1798</sub>
+- Why  <sub>:20</sub>
+- What Phase 10 delivers  <sub>:42</sub>
+- Base branch  <sub>:54</sub>
+- Work orders  <sub>:61</sub>
+- Rules for this phase  <sub>:93</sub>
+- The corrected route tree  <sub>:399</sub>
+- The card inventory (~55 cards)  <sub>:482</sub>
+- A live bug the rebuild must not inherit  <sub>:538</sub>
+- Track A — Foundations  <sub>:577</sub>
+- Track B — Finance and expenses  <sub>:844</sub>
+- Track C — BOM and manufacturing  <sub>:1157</sub>
+- Track D — The remaining analytics pages  <sub>:1615</sub>
+- Track E — Navigation and retirement  <sub>:1646</sub>
+- Dependency table  <sub>:1702</sub>
+- Sequencing  <sub>:1736</sub>
+- Migration safety register  <sub>:1765</sub>
+- Phase 10 definition of done  <sub>:1809</sub>
 
 ### `docs/implementation/admin-platform/44-manager-action-hub.md`  <sub>160 lines</sub>
 
@@ -2683,7 +2683,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>2,556 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,761 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2720,6 +2720,7 @@ _no second-level headings_
 - ADR-030 — `docs/implementation/`, `docs/erp-lenses/` and `docs/design/` reorganized into domain subfolders, filenames unchanged  <sub>:2182</sub>
 - ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty, mobile parity) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 mobile parity  <sub>:2255</sub>
 - ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time  <sub>:2420</sub>
+- ADR-032 — Phase 10 Track A built end-to-end (WO-A.1–A.5), superseding ADR-019/ADR-025; Tracks D and B wired into the registry; WO-E.2 executed  <sub>:2559</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -2731,7 +2732,7 @@ _no second-level headings_
 - P — Permission rules  <sub>:203</sub>
 - What is actually enforced today  <sub>:217</sub>
 
-### `docs/implementation/finance-accounting/04-finance.md`  <sub>291 lines</sub>
+### `docs/implementation/finance-accounting/04-finance.md`  <sub>304 lines</sub>
 
 - Scope decision, already taken  <sub>:53</sub>
 - Work orders  <sub>:68</sub>
@@ -2740,8 +2741,8 @@ _no second-level headings_
 - WO-4.3 — The P&L report  <sub>:200</sub>
 - WO-4.4 — Cash flow  <sub>:239</sub>
 - WO-4.5 — Screens  <sub>:253</sub>
-- WO-4.6 — Month-end close and export  <sub>:273</sub>
-- Phase 4 exit criteria  <sub>:283</sub>
+- WO-4.6 — Month-end close and export  <sub>:286</sub>
+- Phase 4 exit criteria  <sub>:296</sub>
 
 ### `docs/implementation/finance-accounting/137-payment-method-resilience-audit.md`  <sub>75 lines</sub>
 

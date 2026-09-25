@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **553** endpoints across **98** controllers, with the access rule that actually guards each one.
+All **558** endpoints across **98** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -130,10 +130,11 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (19)
+### [`analytics`](../modules/analytics.md) (24)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/analytics/cards` | `analytics.view` | `AnalyticsController.cards` | Every dashboard card, batched by provider (D2) — one request per range change |
 | GET | `/admin/analytics/comparison` | `analytics.view` | `AnalyticsController.comparison` | Sales, purchases and expenses side by side, bucketed by day, week or month |
 | GET | `/admin/analytics/customers/overview` | `analytics.view` | `AnalyticsController.customersOverview` | The customer book — totals, by city, by acquisition source, by lifecycle status |
 | GET | `/admin/analytics/customers/retention` | `analytics.view` | `AnalyticsController.customersRetention` | Signup cohorts and how many of each went on to order again, plus the overall re… |
@@ -150,6 +151,10 @@ never authorization.
 | GET | `/admin/analytics/products/top-sellers` | `analytics.view` | `AnalyticsController.productsTopSellers` | Best-selling products by revenue, with units and margin |
 | GET | `/admin/analytics/purchasing/spend` | `analytics.view` | `AnalyticsController.purchasingSpend` | What was ordered, received, billed and is still owed to suppliers |
 | GET | `/admin/analytics/purchasing/suppliers` | `analytics.view` | `AnalyticsController.purchasingSuppliers` | Spend, order count, on-time rate and lead time by supplier |
+| GET | `/admin/analytics/sales/aov` | `analytics.view` | `AnalyticsController.salesAov` | Average order value, its median and basket size, plus the value distribution |
+| GET | `/admin/analytics/sales/funnel` | `analytics.view` | `AnalyticsController.salesFunnel` | View-to-purchase funnel, conversion rate, abandoned carts and traffic sources |
+| GET | `/admin/analytics/sales/profit` | `analytics.view` | `AnalyticsController.salesProfit` | Direct gross profit — revenue less unit cost — overall and by product |
+| GET | `/admin/analytics/sales/revenue` | `analytics.view` | `AnalyticsController.salesRevenue` | Revenue, AOV, channel split and progress against the monthly target |
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
 | GET | `/admin/analytics/workshop/output` | `analytics.view` | `AnalyticsController.workshopOutput` | Workshop throughput — started/completed per day, time in each stage, output by… |

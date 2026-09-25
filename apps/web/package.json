@@ -8,7 +8,7 @@
     "start": "next start --port 3000",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"no unit tests in web yet — covered by Playwright\" && exit 0",
+    "test": "vitest run",
     "placeholders": "node scripts/generate-placeholders.mjs"
   },
   "dependencies": {
@@ -21,20 +21,22 @@
     "next-intl": "4.13.6",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "recharts": "3.10.1",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.6",
+    "@newax/config": "workspace:*",
     "@tailwindcss/forms": "0.5.11",
     "@types/node": "22.20.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
-    "@newax/config": "workspace:*",
     "autoprefixer": "10.5.4",
     "eslint": "9.39.5",
     "eslint-config-next": "15.5.23",
     "postcss": "8.5.26",
     "tailwindcss": "3.4.19",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "5.0.2"
   }
 }

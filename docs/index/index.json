@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1882,
-    "lines": 283539,
+    "lines": 283544,
     "routes": 607,
     "controllers": 109,
     "models": 223,
@@ -63,8 +63,8 @@
     },
     "packages": {
       "files": 76,
-      "lines": 7190,
-      "bytes": 250424,
+      "lines": 7195,
+      "bytes": 250602,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -68665,8 +68665,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 777,
-      "bytes": 23152,
+      "lines": 782,
+      "bytes": 23330,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -68707,27 +68707,27 @@
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 626
+          "line": 631
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 764
+          "line": 769
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 769
+          "line": 774
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 770
+          "line": 775
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 773
+          "line": 778
         }
       ]
     },

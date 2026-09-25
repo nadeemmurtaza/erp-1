@@ -85,7 +85,7 @@ _none_
 - imports: —
 - controllers: `DevicesController`, `EmailTemplatesAdminController`, `EmailAccountsAdminController`, `UnsubscribeController`
 - providers: `LogNotificationChannel`, `ExpoPushChannel`, `EmailChannel`, `WhatsAppChannel`, `SmsChannel`, `NotificationsService`, `EmailAccountsService`, `NotificationPreferencesService`
-- exports: `NotificationsService`, `EmailAccountsService`, `EmailChannel`, `NotificationPreferencesService`
+- exports: `NotificationsService`, `EmailAccountsService`, `EmailChannel`, `WhatsAppChannel`, `NotificationPreferencesService`
 
 
 ## Reaches out to

@@ -268,7 +268,7 @@ against a real database.
 | [`VariantLocationStock`](../data/inventory.md#variantlocationstock) | `inventory` | 6 | 2 | — | Stock, per variant, per location. |
 | [`VariantSalesStat`](../data/inventory.md#variantsalesstat) | `inventory` | 11 | 1 | variantId | CACHE: variantId as primary key. |
 | [`WhatsAppConversation`](../data/whatsapp-assistant.md#whatsappconversation) | `whatsapp-assistant` | 10 | 1 | id | Set once identity is verified (the inbound phone number matches this Contact's own phoneE… |
-| [`WhatsAppMessage`](../data/whatsapp-assistant.md#whatsappmessage) | `whatsapp-assistant` | 7 | 1 | id |  |
+| [`WhatsAppMessage`](../data/whatsapp-assistant.md#whatsappmessage) | `whatsapp-assistant` | 8 | 1 | id |  |
 | [`WishlistItem`](../data/wishlist.md#wishlistitem) | `wishlist` | 8 | 3 | id | Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | [`WorkOrder`](../data/production.md#workorder) | `production` | 20 | 3 | id | The in-house "make this" ledger entry. |
 | [`WorkOrderNumberCounter`](../data/production.md#workordernumbercounter) | `production` | 2 | 0 | year | Same shape as PurchaseOrder's OrderNumberCounter-style tables: one row per year, incremen… |

@@ -3,7 +3,7 @@
 
 # Migrations
 
-**68** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**69** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -101,6 +101,7 @@ nothing here fails a build.
 | 2026-09-25 | `add_content_collections_search_marketing_onsite` | 82 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, UPDATE | Banner, BannerTranslation, BlogPost, BlogPostTranslation, Campaign, CampaignRecipient, Cart, Collection, Coll… |
 | 2026-09-25 | `add_ai_layer` | 43 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | AiUsageLog, MarkdownSuggestion, Order, ProductAiSuggestion, ProductCrossSell, ProductReviewSummary, ProductSi… |
 | 2026-09-25 | `add_cod_risk_reason_and_city_stats` | 3 | ALTER TABLE, CREATE TABLE | CityCodRiskStat, Order |
+| 2026-09-25 | `add_whatsapp_message_external_id` | 2 | ALTER TABLE, CREATE UNIQUE INDEX | WhatsAppMessage |
 
 
 ---

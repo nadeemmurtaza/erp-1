@@ -3,21 +3,21 @@
 
 # Module: `crm`
 
-Pack **core** · enabled by the `MODULES` allowlist · 17 files
+Pack **core** · enabled by the `MODULES` allowlist · 24 files
 
 
 
 Source: `apps/api/src/modules/crm/`
 
-## Files (17 · 2,018 lines)
+## Files (24 · 3,070 lines)
 
 All paths relative to `apps/api/src/modules/crm`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `crm.controller.ts` | controller | 199 | 2 |  |
-| `crm.module.ts` | nest module | 27 | 1 |  |
-| `crm.service.ts` | service | 526 | 2 |  |
+| `crm.module.ts` | nest module | 37 | 1 |  |
+| `crm.service.ts` | service | 556 | 2 |  |
 | `crm.dto.ts` | dto | 195 | 7 |  |
 | `segment.dto.ts` | dto | 42 | 3 |  |
 | `email-inbox.admin.controller.ts` | controller | 57 | 1 | Support Inbox — replies to order/support mail that the mailbox poller pulled from a connected mailbox. |
@@ -32,9 +32,16 @@ All paths relative to `apps/api/src/modules/crm`.
 | `segments.controller.ts` | controller | 48 | 1 |  |
 | `segments.service.spec.ts` | unit test | 105 | — |  |
 | `segments.service.ts` | service | 69 | 1 |  |
+| `whatsapp-assistant.controller.spec.ts` | unit test | 64 | — |  |
+| `whatsapp-assistant.controller.ts` | controller | 106 | 2 |  |
+| `whatsapp-assistant.dto.ts` | dto | 24 | 2 |  |
+| `whatsapp-assistant.service.spec.ts` | unit test | 312 | — |  |
+| `whatsapp-assistant.service.ts` | service | 427 | 2 | Flat, gateway-agnostic shape — see whatsapp.channel.ts's own header comment on why this codebase does not guess a speci… |
+| `whatsapp-copy.spec.ts` | unit test | 31 | — |  |
+| `whatsapp-copy.ts` | module | 48 | 3 | The assistant's own fixed sentences — the ones sent instead of the model's words whenever this shop cannot safely answe… |
 
 
-## HTTP routes (26)
+## HTTP routes (31)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -63,7 +70,12 @@ All paths relative to `apps/api/src/modules/crm`.
 | GET | `/admin/crm/segments/:id/members` | `crm.manage` | `SegmentsAdminController.members` :39 |  |
 | POST | `/admin/crm/segments/preview` | `crm.manage` | `SegmentsAdminController.preview` :44 |  |
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` :143 |  |
+| GET | `/admin/crm/whatsapp/conversations` | `crm.manage` | `WhatsAppAssistantAdminController.list` :79 | WhatsApp conversations, most recently active first |
+| GET | `/admin/crm/whatsapp/conversations/:id` | `crm.manage` | `WhatsAppAssistantAdminController.get` :90 |  |
+| POST | `/admin/crm/whatsapp/conversations/:id/reopen` | `crm.manage` | `WhatsAppAssistantAdminController.reopen` :102 | Let the assistant resume answering this conversation |
+| POST | `/admin/crm/whatsapp/conversations/:id/reply` | `crm.manage` | `WhatsAppAssistantAdminController.reply` :96 | Staff reply — hands the conversation off if it was not already |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` :39 | Contact-form enquiry — becomes a lead in the CRM |
+| POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` :34 | Inbound WhatsApp message (signature-verified, not session-authenticated) |
 
 
 ## Domain events
@@ -116,16 +128,18 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`CrmModule`** (`crm.module.ts`)
 - imports: —
-- controllers: `CrmPublicController`, `CrmAdminController`, `EmailInboxAdminController`, `SegmentsAdminController`
-- providers: `CrmService`, `CrmOrderSubscriber`, `EmailInboxService`, `MailboxPollerCron`, `RtoContactListener`, `SegmentsService`, `RfmScoringCron`
+- controllers: `CrmPublicController`, `CrmAdminController`, `EmailInboxAdminController`, `SegmentsAdminController`, `WhatsAppWebhookController`, `WhatsAppAssistantAdminController`
+- providers: `CrmService`, `CrmOrderSubscriber`, `EmailInboxService`, `MailboxPollerCron`, `RtoContactListener`, `SegmentsService`, `RfmScoringCron`, `WhatsAppAssistantService`
 - exports: `CrmService`, `SegmentsService`
 
 
 ## Reaches out to
 
+- core `ai`
 - core `audit`
 - core `auth`
 - core `common`
+- core `config`
 - core `crm`
 - core `events`
 - core `notifications`
@@ -137,13 +151,16 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (3)
+## Tests (6)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `email-inbox.service.spec.ts` | 7 | EmailInboxService · reply |
 | `rfm-scoring.cron.spec.ts` | 1 | RfmScoringCron |
 | `segments.service.spec.ts` | 4 | SegmentsService |
+| `whatsapp-assistant.controller.spec.ts` | 4 | WhatsAppWebhookController |
+| `whatsapp-assistant.service.spec.ts` | 18 | WhatsAppAssistantService · verifyWebhookSignature · handleInbound — identity · handleInbound — idempotency · handleInbo… |
+| `whatsapp-copy.spec.ts` | 5 | whatsapp-copy · detectWhatsAppLocale · whatsAppAssistantCopy |
 
 
 ## Every export in this unit
@@ -152,7 +169,7 @@ check there before adding another.
 |---|---|---|---|
 | `CrmPublicController` | class | `crm.controller.ts:33` |  |
 | `CrmAdminController` | class | `crm.controller.ts:47` |  |
-| `CrmModule` | class | `crm.module.ts:26` |  |
+| `CrmModule` | class | `crm.module.ts:36` |  |
 | `UpsertContactInput` | interface | `crm.service.ts:8` |  |
 | `CrmService` | class | `crm.service.ts:31` | Customer records. |
 | `ContactQueryDto` | class | `crm.dto.ts:18` |  |
@@ -177,6 +194,15 @@ check there before adding another.
 | `RtoContactListener` | class | `rto-contact.listener.ts:14` | WO-6.7 — "Increment an RTO counter on the customer's Contact record." Same rollup idiom as the CRM's own orde… |
 | `SegmentsAdminController` | class | `segments.controller.ts:10` |  |
 | `SegmentsService` | class | `segments.service.ts:15` |  |
+| `WhatsAppWebhookController` | class | `whatsapp-assistant.controller.ts:21` |  |
+| `WhatsAppAssistantAdminController` | class | `whatsapp-assistant.controller.ts:74` | The WhatsApp side of the Support Inbox (email-inbox.admin.controller.ts's sibling) — lives under crm.manage f… |
+| `WhatsAppConversationQueryDto` | class | `whatsapp-assistant.dto.ts:6` |  |
+| `ReplyToWhatsAppConversationDto` | class | `whatsapp-assistant.dto.ts:17` |  |
+| `InboundWhatsAppMessage` | interface | `whatsapp-assistant.service.ts:14` | Flat, gateway-agnostic shape — see whatsapp.channel.ts's own header comment on why this codebase does not gue… |
+| `WhatsAppAssistantService` | class | `whatsapp-assistant.service.ts:100` | WO-9.7 (09-ai-layer.md) — grounded strictly in the sender's own data, retrieved by their WhatsApp-verified ph… |
+| `WhatsAppAssistantCopy` | interface | `whatsapp-copy.ts:19` | The assistant's own fixed sentences — the ones sent instead of the model's words whenever this shop cannot sa… |
+| `detectWhatsAppLocale` | function | `whatsapp-copy.ts:41` |  |
+| `whatsAppAssistantCopy` | function | `whatsapp-copy.ts:45` |  |
 
 
 ---

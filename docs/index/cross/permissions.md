@@ -42,7 +42,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `crm.manage` | Manage leads, contacts and CRM | low | 25 | 15 | STAFF, ADMIN |
+| `crm.manage` | Manage leads, contacts and CRM | low | 29 | 15 | STAFF, ADMIN |
 
 ### Sales
 

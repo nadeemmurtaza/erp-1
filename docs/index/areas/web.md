@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-338 files · 51,608 lines
+338 files · 51,945 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,7 +31,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 171 | 30,318 | page, loading, layout, error |
+| `apps/web/src/app` | 171 | 30,632 | page, loading, layout, error |
 | `apps/web/src/components` | 104 | 15,847 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 5 | 328 | constants |
@@ -39,7 +39,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/i18n` | 3 | 53 | module |
 | `apps/web/src/lib` | 9 | 1,043 | utility |
 | `apps/web/src/providers` | 2 | 82 | react |
-| `apps/web/src/types` | 5 | 1,638 | types |
+| `apps/web/src/types` | 5 | 1,661 | types |
 | `apps/web/src/utils` | 5 | 306 | utility |
 
 
@@ -65,20 +65,20 @@ through `@newax/shared`'s `BRAND`.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `apps/web/src/components/admin/product-form.tsx` | 1,434 | component |  |
-| `apps/web/src/types/api.ts` | 1,314 | types |  |
+| `apps/web/src/types/api.ts` | 1,337 | types |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
 | `apps/web/src/components/admin/nav-registry.ts` | 775 | component |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 743 | page |  |
 | `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
 | `apps/web/src/components/admin/analytics/report-registry.ts` | 660 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 658 | page |  |
+| `apps/web/src/app/(admin)/admin/(app)/inbox/page.tsx` | 625 | page |  |
 | `apps/web/messages/en.json` | 607 | json |  |
 | `apps/web/messages/ur.json` | 607 | json |  |
 | `apps/web/src/app/globals.css` | 603 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 571 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 565 | page |  |
 | `apps/web/src/components/admin/image-manager.tsx` | 543 | component |  |
-| `apps/web/src/app/(admin)/admin/(app)/content/page.tsx` | 523 | page |  |
 
 
 ---

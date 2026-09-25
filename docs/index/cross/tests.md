@@ -3,7 +3,7 @@
 
 # Tests
 
-**180** spec files, **1,677** cases. What is already pinned down — and what is not.
+**183** spec files, **1,704** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (162)
+## Unit and integration (165)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -118,6 +118,9 @@ regression or an N+1.
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
 | `apps/api/src/modules/crm/rfm-scoring.cron.spec.ts` | crm | 1 | RfmScoringCron |
 | `apps/api/src/modules/crm/segments.service.spec.ts` | crm | 4 | SegmentsService |
+| `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.spec.ts` | crm | 4 | WhatsAppWebhookController |
+| `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.service.spec.ts` | crm | 18 | WhatsAppAssistantService · verifyWebhookSignature · handleInbound — identity · handleInbound — idem… |
+| `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.spec.ts` | crm | 5 | whatsapp-copy · detectWhatsAppLocale · whatsAppAssistantCopy |
 | `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
 | `apps/api/src/modules/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
 | `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |

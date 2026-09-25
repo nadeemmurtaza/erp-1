@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **558** endpoints across **98** controllers, with the access rule that actually guards each one.
+All **563** endpoints across **100** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 68** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 69** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -96,6 +96,7 @@ never authorization.
 | POST | `/track/event` | `TrackingController.track` |
 | POST | `/trading-partners/accept` | `TradingPartnerPortalController.accept` |
 | GET | `/trading-partners/stock` | `TradingPartnerPortalController.stock` |
+| POST | `/whatsapp/webhook` | `WhatsAppWebhookController.webhook` |
 
 
 ## By module
@@ -360,7 +361,7 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/files/*path` | **PUBLIC** | `FilesController.serve` |  |
 
-### [`crm`](../modules/crm.md) (26)
+### [`crm`](../modules/crm.md) (31)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -389,7 +390,12 @@ never authorization.
 | GET | `/admin/crm/segments/:id/members` | `crm.manage` | `SegmentsAdminController.members` |  |
 | POST | `/admin/crm/segments/preview` | `crm.manage` | `SegmentsAdminController.preview` |  |
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` |  |
+| GET | `/admin/crm/whatsapp/conversations` | `crm.manage` | `WhatsAppAssistantAdminController.list` | WhatsApp conversations, most recently active first |
+| GET | `/admin/crm/whatsapp/conversations/:id` | `crm.manage` | `WhatsAppAssistantAdminController.get` |  |
+| POST | `/admin/crm/whatsapp/conversations/:id/reopen` | `crm.manage` | `WhatsAppAssistantAdminController.reopen` | Let the assistant resume answering this conversation |
+| POST | `/admin/crm/whatsapp/conversations/:id/reply` | `crm.manage` | `WhatsAppAssistantAdminController.reply` | Staff reply — hands the conversation off if it was not already |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
+| POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` | Inbound WhatsApp message (signature-verified, not session-authenticated) |
 
 ### [`finance`](../modules/finance.md) (14)
 

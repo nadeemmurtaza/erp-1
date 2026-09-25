@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 708 tracked files in `apps/api`, by directory.
+All 716 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -70,7 +70,7 @@ All 708 tracked files in `apps/api`, by directory.
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
 | `transfers.prisma` | prisma schema | 167 | Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default |
-| `whatsapp-assistant.prisma` | prisma schema | 56 | WO-9.7, docs/implementation/ai-layer/09-ai-layer.md. |
+| `whatsapp-assistant.prisma` | prisma schema | 62 | WO-9.7, docs/implementation/ai-layer/09-ai-layer.md. |
 | `wishlist.prisma` | prisma schema | 44 | Phase 7 WO-7.6 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 
 ### `apps/api/prisma/schema/migrations` (1)
@@ -481,6 +481,12 @@ All 708 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 21 |  |
 
+### `apps/api/prisma/schema/migrations/20260925160000_add_whatsapp_message_external_id` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 8 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -583,7 +589,7 @@ All 708 tracked files in `apps/api`, by directory.
 | `app-config.service.ts` | service | 72 |  |
 | `config.module.ts` | nest module | 23 |  |
 | `env.validation.spec.ts` | unit test | 154 |  |
-| `env.validation.ts` | config | 322 |  |
+| `env.validation.ts` | config | 330 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 41 |  |
 
@@ -946,8 +952,8 @@ All 708 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `crm.controller.ts` | controller | 199 |  |
-| `crm.module.ts` | nest module | 27 |  |
-| `crm.service.ts` | service | 526 |  |
+| `crm.module.ts` | nest module | 37 |  |
+| `crm.service.ts` | service | 556 |  |
 | `order.subscriber.ts` | event subscriber | 87 |  |
 | `rfm-scoring.cron.spec.ts` | unit test | 44 |  |
 | `rfm-scoring.cron.ts` | scheduled job | 47 |  |
@@ -972,6 +978,18 @@ All 708 tracked files in `apps/api`, by directory.
 | `email-inbox.service.spec.ts` | unit test | 142 |  |
 | `email-inbox.service.ts` | service | 234 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 |  |
+
+### `apps/api/src/modules/crm/whatsapp-assistant` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `whatsapp-assistant.controller.spec.ts` | unit test | 64 |  |
+| `whatsapp-assistant.controller.ts` | controller | 106 |  |
+| `whatsapp-assistant.dto.ts` | dto | 24 |  |
+| `whatsapp-assistant.service.spec.ts` | unit test | 312 |  |
+| `whatsapp-assistant.service.ts` | service | 427 |  |
+| `whatsapp-copy.spec.ts` | unit test | 31 |  |
+| `whatsapp-copy.ts` | module | 48 |  |
 
 ### `apps/api/src/modules/finance` (16)
 

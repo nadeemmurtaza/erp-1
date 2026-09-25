@@ -48,6 +48,7 @@ Indexes: `@@index([contactId, lastMessageAt])` · `@@index([phoneE164])`
 | `direction` | `WhatsAppMessageDirection` |  |  |
 | `body` | `String` |  |  |
 | `aiGenerated` | `Boolean` |  | @default(false) |
+| `externalMessageId` | `String?` | unique, optional | @unique |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `conversation` | `WhatsAppConversation` | relation | @relation(fields: [conversationId], references: [id], onDelete: Cascade) |
 

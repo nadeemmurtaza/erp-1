@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1737,
-    "lines": 265803,
-    "routes": 558,
-    "controllers": 98,
+    "files": 1745,
+    "lines": 267219,
+    "routes": 563,
+    "controllers": 100,
     "models": 204,
     "enums": 88,
-    "migrations": 68,
+    "migrations": 69,
     "events": 46,
     "permissions": 65,
     "screens": 201,
     "crons": 16,
-    "specs": 180,
+    "specs": 183,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29121,
-      "bytes": 1137660,
+      "lines": 29126,
+      "bytes": 1137887,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 708,
-      "lines": 98131,
-      "bytes": 3640479,
+      "files": 716,
+      "lines": 99205,
+      "bytes": 3685372,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -51,8 +51,8 @@
     },
     "web": {
       "files": 338,
-      "lines": 51608,
-      "bytes": 1872656,
+      "lines": 51945,
+      "bytes": 1884776,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -278,9 +278,16 @@
         "apps/api/src/modules/crm/rto-contact.listener.ts",
         "apps/api/src/modules/crm/segments.controller.ts",
         "apps/api/src/modules/crm/segments.service.spec.ts",
-        "apps/api/src/modules/crm/segments.service.ts"
+        "apps/api/src/modules/crm/segments.service.ts",
+        "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.spec.ts",
+        "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.ts",
+        "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.dto.ts",
+        "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.service.spec.ts",
+        "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.service.ts",
+        "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.spec.ts",
+        "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.ts"
       ],
-      "routes": 26,
+      "routes": 31,
       "page": "docs/index/modules/crm.md"
     },
     {
@@ -3836,6 +3843,70 @@
       "public": false,
       "authOnly": false,
       "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/crm/whatsapp/conversations",
+      "module": "crm",
+      "controller": "WhatsAppAssistantAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.ts",
+      "line": 79,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WhatsApp conversations, most recently active first"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/crm/whatsapp/conversations/:id",
+      "module": "crm",
+      "controller": "WhatsAppAssistantAdminController",
+      "handler": "get",
+      "file": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.ts",
+      "line": 90,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/crm/whatsapp/conversations/:id/reopen",
+      "module": "crm",
+      "controller": "WhatsAppAssistantAdminController",
+      "handler": "reopen",
+      "file": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.ts",
+      "line": 102,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Let the assistant resume answering this conversation"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/crm/whatsapp/conversations/:id/reply",
+      "module": "crm",
+      "controller": "WhatsAppAssistantAdminController",
+      "handler": "reply",
+      "file": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.ts",
+      "line": 96,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Staff reply — hands the conversation off if it was not already"
     },
     {
       "method": "GET",
@@ -9823,6 +9894,20 @@
       "summary": ""
     },
     {
+      "method": "POST",
+      "path": "/whatsapp/webhook",
+      "module": "crm",
+      "controller": "WhatsAppWebhookController",
+      "handler": "webhook",
+      "file": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.ts",
+      "line": 34,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Inbound WhatsApp message (signature-verified, not session-authenticated)"
+    },
+    {
       "method": "GET",
       "path": "/wishlist",
       "module": "wishlist",
@@ -10039,7 +10124,11 @@
         "PATCH /admin/crm/segments/:id",
         "GET /admin/crm/segments/:id/members",
         "POST /admin/crm/segments/preview",
-        "GET /admin/crm/tags"
+        "GET /admin/crm/tags",
+        "GET /admin/crm/whatsapp/conversations",
+        "GET /admin/crm/whatsapp/conversations/:id",
+        "POST /admin/crm/whatsapp/conversations/:id/reopen",
+        "POST /admin/crm/whatsapp/conversations/:id/reply"
       ],
       "uiSites": 15,
       "roles": [
@@ -29666,6 +29755,13 @@
           "relation": false
         },
         {
+          "name": "externalMessageId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
           "name": "createdAt",
           "type": "DateTime",
           "id": false,
@@ -32182,6 +32278,20 @@
       "tables": [
         "CityCodRiskStat",
         "Order"
+      ]
+    },
+    {
+      "folder": "20260925160000_add_whatsapp_message_external_id",
+      "file": "apps/api/prisma/schema/migrations/20260925160000_add_whatsapp_message_external_id/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_whatsapp_message_external_id",
+      "statements": 2,
+      "kinds": [
+        "ALTER TABLE",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "WhatsAppMessage"
       ]
     }
   ],
@@ -35288,6 +35398,44 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.spec.ts",
+      "module": "crm",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "WhatsAppWebhookController"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.service.spec.ts",
+      "module": "crm",
+      "kind": "unit test",
+      "cases": 18,
+      "describes": [
+        "WhatsAppAssistantService",
+        "verifyWebhookSignature",
+        "handleInbound — identity",
+        "handleInbound — idempotency",
+        "handleInbound — deterministic handoff triggers",
+        "handleInbound — already handed off",
+        "handleInbound — AI degradation",
+        "grounding — never fetches another contact",
+        "staffReply",
+        "reopen"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.spec.ts",
+      "module": "crm",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "whatsapp-copy",
+        "detectWhatsAppLocale",
+        "whatsAppAssistantCopy"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
       "module": "finance",
       "kind": "unit test",
@@ -36826,8 +36974,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 159,
-      "bytes": 7802,
+      "lines": 162,
+      "bytes": 7957,
       "doc": "",
       "symbols": []
     },
@@ -36835,8 +36983,8 @@
       "path": ".env.production.example",
       "area": "infra",
       "kind": "example",
-      "lines": 127,
-      "bytes": 5662,
+      "lines": 129,
+      "bytes": 5734,
       "doc": "",
       "symbols": []
     },
@@ -37873,6 +38021,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925160000_add_whatsapp_message_external_id/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 8,
+      "bytes": 446,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -38056,8 +38213,8 @@
       "path": "apps/api/prisma/schema/whatsapp-assistant.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 56,
-      "bytes": 2323,
+      "lines": 62,
+      "bytes": 2747,
       "doc": "WO-9.7, docs/implementation/ai-layer/09-ai-layer.md.",
       "symbols": []
     },
@@ -38948,8 +39105,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 322,
-      "bytes": 14173,
+      "lines": 330,
+      "bytes": 14590,
       "doc": "",
       "symbols": [
         {
@@ -38960,12 +39117,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 188
+          "line": 196
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 214
+          "line": 222
         }
       ]
     },
@@ -40034,7 +40191,7 @@
       "area": "api",
       "kind": "nest module",
       "lines": 36,
-      "bytes": 1362,
+      "bytes": 1379,
       "doc": "",
       "symbols": [
         {
@@ -42943,14 +43100,14 @@
       "path": "apps/api/src/modules/crm/crm.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 27,
-      "bytes": 1044,
+      "lines": 37,
+      "bytes": 1386,
       "doc": "",
       "symbols": [
         {
           "name": "CrmModule",
           "kind": "class",
-          "line": 26
+          "line": 36
         }
       ]
     },
@@ -42958,8 +43115,8 @@
       "path": "apps/api/src/modules/crm/crm.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 526,
-      "bytes": 15668,
+      "lines": 556,
+      "bytes": 16995,
       "doc": "",
       "symbols": [
         {
@@ -43218,6 +43375,118 @@
           "name": "SegmentsService",
           "kind": "class",
           "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 64,
+      "bytes": 2956,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 106,
+      "bytes": 3909,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WhatsAppWebhookController",
+          "kind": "class",
+          "line": 21
+        },
+        {
+          "name": "WhatsAppAssistantAdminController",
+          "kind": "class",
+          "line": 74
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 24,
+      "bytes": 1028,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WhatsAppConversationQueryDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "ReplyToWhatsAppConversationDto",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 312,
+      "bytes": 12850,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-assistant.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 427,
+      "bytes": 17456,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InboundWhatsAppMessage",
+          "kind": "interface",
+          "line": 14
+        },
+        {
+          "name": "WhatsAppAssistantService",
+          "kind": "class",
+          "line": 100
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 31,
+      "bytes": 1246,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 48,
+      "bytes": 2475,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WhatsAppAssistantCopy",
+          "kind": "interface",
+          "line": 19
+        },
+        {
+          "name": "detectWhatsAppLocale",
+          "kind": "function",
+          "line": 41
+        },
+        {
+          "name": "whatsAppAssistantCopy",
+          "kind": "function",
+          "line": 45
         }
       ]
     },
@@ -51641,14 +51910,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 449,
-      "bytes": 14878,
+      "lines": 483,
+      "bytes": 16521,
       "doc": "",
       "symbols": [
         {
           "name": "AdminContactsPage",
           "kind": "default",
-          "line": 57
+          "line": 65
         }
       ]
     },
@@ -52016,14 +52285,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inbox/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 345,
-      "bytes": 11514,
+      "lines": 625,
+      "bytes": 21406,
       "doc": "",
       "symbols": [
         {
           "name": "AdminInboxPage",
           "kind": "default",
-          "line": 35
+          "line": 40
         }
       ]
     },
@@ -56562,8 +56831,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1314,
-      "bytes": 34448,
+      "lines": 1337,
+      "bytes": 35033,
       "doc": "",
       "symbols": [
         {
@@ -57057,164 +57326,174 @@
           "line": 958
         },
         {
-          "name": "PermissionDefinition",
+          "name": "WhatsAppMessage",
           "kind": "interface",
           "line": 975
         },
         {
+          "name": "WhatsAppConversation",
+          "kind": "interface",
+          "line": 983
+        },
+        {
+          "name": "PermissionDefinition",
+          "kind": "interface",
+          "line": 998
+        },
+        {
           "name": "AuditLogEntry",
-          "kind": "interface",
-          "line": 982
-        },
-        {
-          "name": "AuditLogPage",
-          "kind": "interface",
-          "line": 994
-        },
-        {
-          "name": "BackOfficeRole",
-          "kind": "type",
-          "line": 1003
-        },
-        {
-          "name": "AdminUser",
           "kind": "interface",
           "line": 1005
         },
         {
-          "name": "PermissionOverride",
+          "name": "AuditLogPage",
           "kind": "interface",
           "line": 1017
         },
         {
+          "name": "BackOfficeRole",
+          "kind": "type",
+          "line": 1026
+        },
+        {
+          "name": "AdminUser",
+          "kind": "interface",
+          "line": 1028
+        },
+        {
+          "name": "PermissionOverride",
+          "kind": "interface",
+          "line": 1040
+        },
+        {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 1023
+          "line": 1046
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 1030
+          "line": 1053
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 1035
+          "line": 1058
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1047
+          "line": 1070
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1056
+          "line": 1079
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1063
+          "line": 1086
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1077
+          "line": 1100
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1088
+          "line": 1111
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1092
+          "line": 1115
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1101
+          "line": 1124
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1109
+          "line": 1132
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1140
+          "line": 1163
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1173
+          "line": 1196
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1179
+          "line": 1202
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1197
+          "line": 1220
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1212
+          "line": 1235
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1221
+          "line": 1244
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1230
+          "line": 1253
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1246
+          "line": 1269
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1253
+          "line": 1276
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1261
+          "line": 1284
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1268
+          "line": 1291
         },
         {
           "name": "DashboardCardsResponse",
           "kind": "interface",
-          "line": 1285
+          "line": 1308
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1298
+          "line": 1321
         },
         {
           "name": "ProductCrossSellKind",
           "kind": "type",
-          "line": 1306
+          "line": 1329
         },
         {
           "name": "ProductCrossSellRow",
           "kind": "interface",
-          "line": 1308
+          "line": 1331
         }
       ]
     },

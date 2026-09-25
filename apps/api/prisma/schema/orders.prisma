@@ -103,6 +103,11 @@ model Order {
   codRiskScore       Int?
   codRiskAction      CodRiskAction?
   codRiskComputedAt  DateTime?
+  /// The single dominant reason CodRiskService picked codRiskAction — "start
+  /// with a transparent rule-based score. It is explainable to staff" (the
+  /// doc's own words). Staff-facing only, same as VariantForecast.reasonEn
+  /// (WO-9.3); never shown to the customer.
+  codRiskReasonEn    String?
 
   user                    User?                    @relation(fields: [userId], references: [id], onDelete: SetNull)
   contact                 Contact?                 @relation(fields: [contactId], references: [id], onDelete: SetNull)
@@ -307,6 +312,24 @@ model Shipment {
   @@index([trackingNumber])
   @@index([status])
   @@index([manifestId])
+}
+
+/// WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's
+/// "city RTO rate" and "order value versus the city's average" signals.
+/// CodRiskCron recomputes every row from this node's own COD Shipment/Order
+/// history; place() reads a row by city (a single indexed lookup) rather
+/// than aggregating this on every checkout. Both counts come from the same
+/// COD-shipment population, so the two signals never disagree about which
+/// orders they're describing. A city absent from this table, or below the
+/// shop's own minimum-sample setting, is simply not trusted yet — CodRiskService
+/// treats that as "no signal", never as "zero risk".
+model CityCodRiskStat {
+  city           String   @id
+  totalShipments Int
+  rtoShipments   Int
+  /// paisa.
+  avgOrderValue  Int
+  computedAt     DateTime @default(now())
 }
 
 /// Backing store for sequential per-year order numbers (YSN-2026-0001). One

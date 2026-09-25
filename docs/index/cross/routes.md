@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **550** endpoints across **95** controllers, with the access rule that actually guards each one.
+All **551** endpoints across **95** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 64** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 65** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -84,6 +84,7 @@ never authorization.
 | POST | `/replication/push` | `ReplicationController.push` |
 | POST | `/reviews/:id/helpful` | `ReviewsPublicController.markHelpful` |
 | GET | `/search` | `SearchController.search` |
+| POST | `/search/by-image` | `SearchController.searchByImage` |
 | GET | `/shipping/quote` | `ShippingController.quote` |
 | POST | `/stitching/bookings` | `StitchingController.book` |
 | POST | `/stitching/bookings/:number/track` | `StitchingController.track` |
@@ -744,7 +745,7 @@ never authorization.
 | POST | `/reviews/:id/helpful` | **PUBLIC** | `ReviewsPublicController.markHelpful` | Mark a review helpful |
 | GET | `/reviews/mine` | signed-in | `ReviewsPublicController.mine` | My own reviews, any status |
 
-### [`search`](../modules/search.md) (5)
+### [`search`](../modules/search.md) (6)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -753,6 +754,7 @@ never authorization.
 | DELETE | `/admin/search/synonyms/:id` | `search.manage` | `SearchAdminController.deleteSynonym` |  |
 | GET | `/admin/search/zero-results` | `search.view` `search.manage` | `SearchAdminController.zeroResults` |  |
 | GET | `/search` | **PUBLIC** | `SearchController.search` |  |
+| POST | `/search/by-image` | **PUBLIC** | `SearchController.searchByImage` | WO-9.5 — upload a photo, find the nearest products |
 
 ### [`settings`](../modules/settings.md) (8)
 

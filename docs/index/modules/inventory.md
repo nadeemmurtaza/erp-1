@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 18 files
 
 Source: `apps/api/src/modules/inventory/`
 
-## Files (18 · 2,240 lines)
+## Files (18 · 2,299 lines)
 
 All paths relative to `apps/api/src/modules/inventory/dto`.
 
@@ -18,15 +18,15 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | `inventory.dto.ts` | dto | 31 | 3 | Mirrors StockAdjustment.reason — kept as a union so the admin form has a fixed list. |
 | `stock-variance.dto.ts` | dto | 9 | 1 |  |
 | `inventory.controller.ts` | controller | 76 | 1 |  |
-| `inventory.cron.spec.ts` | unit test | 95 | — |  |
-| `inventory.cron.ts` | scheduled job | 124 | 1 |  |
+| `inventory.cron.spec.ts` | unit test | 100 | — |  |
+| `inventory.cron.ts` | scheduled job | 170 | 1 |  |
 | `inventory.listener.spec.ts` | unit test | 70 | — |  |
 | `inventory.listener.ts` | event subscriber | 61 | 1 |  |
 | `inventory.metrics.spec.ts` | unit test | 70 | — |  |
 | `inventory.metrics.ts` | module | 135 | 2 | The Inventory group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
 | `inventory.module.ts` | nest module | 27 | 1 |  |
 | `inventory.service.spec.ts` | unit test | 442 | — |  |
-| `inventory.service.ts` | service | 582 | 3 |  |
+| `inventory.service.ts` | service | 590 | 3 |  |
 | `stock-count.controller.ts` | controller | 62 | 1 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
 | `stock-count.service.spec.ts` | unit test | 95 | — |  |
 | `stock-count.service.ts` | service | 233 | 1 |  |
@@ -63,10 +63,10 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `ProductLowStock` | `catalog.product_low_stock` | `inventory.service.ts:367` |
-| `ProductReorderPointReached` | `catalog.product_reorder_point_reached` | `inventory.service.ts:385` |
-| `StockReplenished` | `inventory.stock_replenished` | `inventory.service.ts:402` |
-| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `inventory.service.ts:353` |
+| `ProductLowStock` | `catalog.product_low_stock` | `inventory.service.ts:374` |
+| `ProductReorderPointReached` | `catalog.product_reorder_point_reached` | `inventory.service.ts:392` |
+| `StockReplenished` | `inventory.stock_replenished` | `inventory.service.ts:409` |
+| `StockVarianceRecorded` | `inventory.stock_variance_recorded` | `inventory.service.ts:360` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -100,7 +100,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 | Schedule | Handler | Where | What it does |
 |---|---|---|---|
-| `0 2 * * *` | `computeNightlyStats()` | `inventory.cron.ts:16` |  |
+| `0 2 * * *` | `computeNightlyStats()` | `inventory.cron.ts:17` |  |
 
 
 ## Nest wiring
@@ -151,14 +151,14 @@ check there before adding another.
 | `AdjustStockDto` | class | `inventory.dto.ts:15` |  |
 | `ResolveStockVarianceDto` | class | `stock-variance.dto.ts:3` |  |
 | `InventoryAdminController` | class | `inventory.controller.ts:12` |  |
-| `InventoryCron` | class | `inventory.cron.ts:8` |  |
+| `InventoryCron` | class | `inventory.cron.ts:9` |  |
 | `InventoryListener` | class | `inventory.listener.ts:10` |  |
 | `InventoryMetricsProvider` | class | `inventory.metrics.ts:24` | The Inventory group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
 | `InventoryValuationMetricsProvider` | class | `inventory.metrics.ts:106` | `inventory.valuation` alone — see the class doc above for why it is split out. |
 | `InventoryModule` | class | `inventory.module.ts:26` |  |
-| `StockMoveInput` | interface | `inventory.service.ts:20` |  |
-| `InsufficientStockError` | class | `inventory.service.ts:37` |  |
-| `InventoryService` | class | `inventory.service.ts:58` | Stock levels and their audit trail. |
+| `StockMoveInput` | interface | `inventory.service.ts:21` |  |
+| `InsufficientStockError` | class | `inventory.service.ts:38` |  |
+| `InventoryService` | class | `inventory.service.ts:59` | Stock levels and their audit trail. |
 | `StockCountController` | class | `stock-count.controller.ts:10` |  |
 | `StockCountService` | class | `stock-count.service.ts:33` |  |
 | `StockVarianceController` | class | `stock-variance.controller.ts:11` |  |

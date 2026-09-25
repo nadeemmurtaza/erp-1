@@ -217,6 +217,10 @@
     "sortPriceDesc": "Price: high to low",
     "empty": "Nothing matches those filters.",
     "emptyBody": "Try removing a filter or widening the price range.",
+    "visualSearch": "Search by photo",
+    "visualSearchError": "Could not search by that photo — try again or search by text instead.",
+    "visualEmpty": "Nothing matched that photo.",
+    "visualEmptyBody": "Try a clearer or closer photo, or search by text instead.",
     "previous": "Previous",
     "next": "Next",
     "pageOf": "Page {page} of {total}"

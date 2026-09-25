@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 692 | 95,948 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 701 | 97,287 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 60,169 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 334 | 50,830 | Next.js — admin console and customer storefront in one app |
+| `apps/web` | 335 | 51,009 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,081 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 22 | 8,651 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 53 | 5,712 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 57 | 6,375 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,615 |  |
 | `.claude` | 22 | 1,017 |  |
@@ -78,7 +78,7 @@ Each is independent: no module imports another except through a named
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 13 | 4 |
 | [`notification-preferences`](modules/notification-preferences.md) | core | MODULES allowlist | 2 | 1 |
 | [`onsitemessages`](modules/onsitemessages.md) | core | MODULES allowlist | 10 | — |
-| [`orders`](modules/orders.md) | core | MODULES allowlist | 7 | 5 |
+| [`orders`](modules/orders.md) | core | MODULES allowlist | 7 | 6 |
 | [`organization`](modules/organization.md) | core | MODULES allowlist | 15 | 5 |
 | [`parties`](modules/parties.md) | core | MODULES allowlist | 3 | 2 |
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 7 | 1 |
@@ -89,7 +89,7 @@ Each is independent: no module imports another except through a named
 | [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 17 | 7 |
 | [`reports`](modules/reports.md) | core | MODULES allowlist | 12 | — |
 | [`reviews`](modules/reviews.md) | core | MODULES allowlist | 6 | 2 |
-| [`search`](modules/search.md) | core | MODULES allowlist | 5 | 2 |
+| [`search`](modules/search.md) | core | MODULES allowlist | 6 | 2 |
 | [`settings`](modules/settings.md) | core | always on | 8 | — |
 | [`stitching`](modules/stitching.md) | apparel | MODULES allowlist | 21 | 8 |
 | [`tax`](modules/tax.md) | core | MODULES allowlist | 8 | 2 |
@@ -111,7 +111,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`audit`](core/audit.md) | 2 |  |
 | [`auth`](core/auth.md) | 21 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
-| [`common`](core/common.md) | 6 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
+| [`common`](core/common.md) | 7 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
 | [`config`](core/config.md) | 6 |  |
 | [`crm`](core/crm.md) | 1 |  |
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |

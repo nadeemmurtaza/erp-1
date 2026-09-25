@@ -13,7 +13,7 @@ Source: `apps/api/src/core/time/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (4 · 677 lines)
+## Files (4 · 707 lines)
 
 All paths relative to `apps/api/src/core/time`.
 
@@ -21,8 +21,8 @@ All paths relative to `apps/api/src/core/time`.
 |---|---|---|---|---|
 | `metric-window.spec.ts` | unit test | 192 | — |  |
 | `metric-window.ts` | module | 105 | 6 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the… |
-| `shop-time.spec.ts` | unit test | 157 | — |  |
-| `shop-time.ts` | module | 223 | 11 | Calendar days in the shop's timezone. |
+| `shop-time.spec.ts` | unit test | 175 | — |  |
+| `shop-time.ts` | module | 235 | 12 | Calendar days in the shop's timezone. |
 
 
 ## HTTP routes (0)
@@ -55,7 +55,7 @@ _none_
 | Spec | Cases | Covers |
 |---|---|---|
 | `metric-window.spec.ts` | 18 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays · previousWindow |
-| `shop-time.spec.ts` | 16 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · assertIanaTimeZone |
+| `shop-time.spec.ts` | 19 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · shopLocalHour · assertIanaTimeZone |
 
 
 ## Every export in this unit
@@ -70,15 +70,16 @@ _none_
 | `previousWindow` | function | `metric-window.ts:99` | The shop-local-day window of equal length immediately preceding `[from, to)` — no overlap, no gap — for the d… |
 | `TimeZone` | type | `shop-time.ts:25` | An IANA zone name, e.g. |
 | `shopDayKey` | function | `shop-time.ts:41` | The shop-local calendar day an instant falls on, as `YYYY-MM-DD`. |
-| `startOfShopDay` | function | `shop-time.ts:100` | The UTC instant of shop-local midnight on the day `instant` falls in. |
-| `startOfShopDaysAgo` | function | `shop-time.ts:111` | Shop-local midnight `days - 1` local days before the day `instant` falls in. |
-| `startOfShopDayFromKey` | function | `shop-time.ts:124` | Parses a `YYYY-MM-DD` key into shop-local midnight, as a UTC instant. |
-| `endOfShopDayFromKey` | function | `shop-time.ts:138` | The last millisecond of the shop-local day named by a `YYYY-MM-DD` key. |
-| `startOfShopMonth` | function | `shop-time.ts:153` | The UTC instant of shop-local midnight on the 1st of `instant`'s local month. |
-| `shopDayKeys` | function | `shop-time.ts:163` | The list of `YYYY-MM-DD` keys from `start`'s local day forward, inclusive. |
-| `shopDaysBetween` | function | `shop-time.ts:180` | Inclusive count of shop-local days between two instants. |
-| `shopDayExpr` | function | `shop-time.ts:202` | SQL that buckets a UTC-stored `timestamp without time zone` by shop-local day and returns it already formatte… |
-| `assertIanaTimeZone` | function | `shop-time.ts:213` | Rejects anything that is not a zone this runtime knows. |
+| `shopLocalHour` | function | `shop-time.ts:51` | The shop-local hour (0-23) an instant falls in. |
+| `startOfShopDay` | function | `shop-time.ts:112` | The UTC instant of shop-local midnight on the day `instant` falls in. |
+| `startOfShopDaysAgo` | function | `shop-time.ts:123` | Shop-local midnight `days - 1` local days before the day `instant` falls in. |
+| `startOfShopDayFromKey` | function | `shop-time.ts:136` | Parses a `YYYY-MM-DD` key into shop-local midnight, as a UTC instant. |
+| `endOfShopDayFromKey` | function | `shop-time.ts:150` | The last millisecond of the shop-local day named by a `YYYY-MM-DD` key. |
+| `startOfShopMonth` | function | `shop-time.ts:165` | The UTC instant of shop-local midnight on the 1st of `instant`'s local month. |
+| `shopDayKeys` | function | `shop-time.ts:175` | The list of `YYYY-MM-DD` keys from `start`'s local day forward, inclusive. |
+| `shopDaysBetween` | function | `shop-time.ts:192` | Inclusive count of shop-local days between two instants. |
+| `shopDayExpr` | function | `shop-time.ts:214` | SQL that buckets a UTC-stored `timestamp without time zone` by shop-local day and returns it already formatte… |
+| `assertIanaTimeZone` | function | `shop-time.ts:225` | Rejects anything that is not a zone this runtime knows. |
 
 
 ---

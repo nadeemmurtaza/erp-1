@@ -1,5 +1,6 @@
 import { PRODUCT_KINDS } from '@newax/shared';
 import {
+  CodRiskAction,
   InteractionKind,
   LeadStatus,
   MeasurementUnit,
@@ -57,6 +58,11 @@ describe('shared enums stay in sync with the Prisma schema', () => {
       InteractionKind,
     ],
     ['MEASUREMENT_UNITS <-> MeasurementUnit', ['INCH', 'CM'], MeasurementUnit],
+    [
+      'COD_RISK_ACTIONS <-> CodRiskAction',
+      ['AUTO_CONFIRM', 'CONFIRMATION_CALL', 'REQUIRE_ADVANCE_PAYMENT'],
+      CodRiskAction,
+    ],
   ];
 
   it.each(cases)('%s', (_label, sharedValues, prismaEnum) => {

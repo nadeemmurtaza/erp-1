@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils/cn';
-import { ORDER_STATUSES, formatDate, formatMoney } from '@newax/shared';
+import { COD_RISK_ACTIONS, ORDER_STATUSES, formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
 import type { PaginatedResponse } from '@/types/api';
@@ -31,6 +31,8 @@ interface AdminOrder {
   shippingZone: string | null;
   shippingAddress: { city: string; province: string };
   payments: Array<{ id: string; provider: string; status: string; receiptUrl: string | null }>;
+  codRiskAction: string | null;
+  codRiskReasonEn: string | null;
 }
 
 /** Which status a staff member may move an order to next. Mirrors the API. */
@@ -48,6 +50,7 @@ const NEXT_STATUS: Record<string, string[]> = {
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<PaginatedResponse<AdminOrder> | null>(null);
   const status = useFilterParam('status');
+  const codRiskAction = useFilterParam('codRiskAction');
   const q = useFilterParam('q');
   const page = useFilterPage();
   const setPage = useSetFilterPage();
@@ -62,13 +65,19 @@ export default function AdminOrdersPage() {
     try {
       setOrders(
         await adminFetch<PaginatedResponse<AdminOrder>>('/admin/orders', {
-          query: { status: status || undefined, q: q || undefined, page, pageSize: 20 },
+          query: {
+            status: status || undefined,
+            codRiskAction: codRiskAction || undefined,
+            q: q || undefined,
+            page,
+            pageSize: 20,
+          },
         }),
       );
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not load orders');
     }
-  }, [status, q, page]);
+  }, [status, codRiskAction, q, page]);
 
   useEffect(() => {
     // FilterBar debounces the search box before it touches the URL.
@@ -142,6 +151,15 @@ export default function AdminOrdersPage() {
             placeholder: 'All statuses',
             options: ORDER_STATUSES.map((option) => ({ value: option, label: statusLabel(option) })),
           },
+          {
+            key: 'codRiskAction',
+            type: 'select',
+            placeholder: 'Any COD risk',
+            options: COD_RISK_ACTIONS.filter((option) => option !== 'AUTO_CONFIRM').map((option) => ({
+              value: option,
+              label: statusLabel(option),
+            })),
+          },
         ]}
       />
 
@@ -201,6 +219,15 @@ export default function AdminOrdersPage() {
                 )),
             },
             { header: 'Status', cell: (order) => <StatusBadge status={order.status} /> },
+            {
+              header: 'Risk',
+              cell: (order) =>
+                order.codRiskAction && order.codRiskAction !== 'AUTO_CONFIRM' ? (
+                  <span title={order.codRiskReasonEn ?? undefined}>
+                    <StatusBadge status={order.codRiskAction} />
+                  </span>
+                ) : null,
+            },
             {
               header: 'Total',
               align: 'end',

@@ -42,6 +42,18 @@ export function shopDayKey(instant: Date, timeZone: TimeZone): string {
   return dayFormatter(timeZone).format(instant);
 }
 
+/**
+ * The shop-local hour (0-23) an instant falls in. Same reasoning as
+ * `shopDayKey` — WO-9.4's "time of day" COD-risk signal has to read a
+ * checkout's local hour, never the server's or UTC's, or a shop east of
+ * Greenwich has every late-night order mislabelled as afternoon.
+ */
+export function shopLocalHour(instant: Date, timeZone: TimeZone): number {
+  const hour = new Intl.DateTimeFormat('en-US', { timeZone, hour: 'numeric', hour12: false }).format(instant);
+  // Some locales render midnight as "24" rather than "0".
+  return Number(hour) % 24;
+}
+
 /** The shop-local date parts of an instant, as numbers. */
 function shopDayParts(instant: Date, timeZone: TimeZone): { y: number; m: number; d: number } {
   const [y, m, d] = shopDayKey(instant, timeZone).split('-').map(Number);

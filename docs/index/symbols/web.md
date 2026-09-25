@@ -324,7 +324,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :3 |  |
-| `page.tsx` | `AdminInventoryPage` | default | :59 |  |
+| `page.tsx` | `AdminInventoryPage` | default | :61 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain`
 
@@ -445,13 +445,13 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :3 |  |
-| `page.tsx` | `AdminOrdersPage` | default | :48 |  |
+| `page.tsx` | `AdminOrdersPage` | default | :50 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminOrderDetailPage` | default | :105 |  |
+| `page.tsx` | `AdminOrderDetailPage` | default | :108 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payments`
 
@@ -518,7 +518,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PurchaseOrderDetailPage` | default | :41 |  |
+| `page.tsx` | `PurchaseOrderDetailPage` | default | :42 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive`
 
@@ -1106,8 +1106,8 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` | function | :64 | `READY_TO_SHIP` -> `Ready to ship`. |
-| `status-badge.tsx` | `StatusBadge` | function | :68 |  |
+| `status-badge.tsx` | `statusLabel` | function | :68 | `READY_TO_SHIP` -> `Ready to ship`. |
+| `status-badge.tsx` | `StatusBadge` | function | :72 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :11 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :36 | A form split into small, single-purpose steps instead of one long page. |
@@ -1152,7 +1152,7 @@ Every top-level export in `web`, with the line to open.
 | `product-reviews.tsx` | `ProductReviews` | function | :23 | WO-7.5 — reviews and Q&A, on the product's own page. |
 | `products-grid.tsx` | `ProductsGrid` | function | :44 |  |
 | `quick-view-modal.tsx` | `QuickViewModal` | function | :22 | Product preview from the shop grid, without leaving the listing. |
-| `search-box.tsx` | `SearchBox` | function | :23 |  |
+| `search-box.tsx` | `SearchBox` | function | :24 |  |
 | `shop-controls.tsx` | `ShopControls` | function | :17 |  |
 | `size-chart-modal.tsx` | `SizeChartModal` | function | :15 |  |
 | `smooth-scroller.tsx` | `SmoothScroller` | function | :6 |  |
@@ -1163,6 +1163,7 @@ Every top-level export in `web`, with the line to open.
 | `stitching-panel.tsx` | `prepareStitching` | function | :777 | Saves the typed measurements as a reusable profile, then hands back what the cart accepts. |
 | `stitching-timeline.tsx` | `TimelineEvent` | type | :9 | Declared in types/api.ts with the other wire shapes; kept here as a name. |
 | `stitching-timeline.tsx` | `StitchingTimeline` | function | :21 | How far along one garment is. |
+| `visual-search-button.tsx` | `VisualSearchButton` | function | :22 | WO-9.5 (09-ai-layer.md) — "Visual search via image embedding: upload a photo, find the nearest prod… |
 
 ### `apps/web/src/components/ui`
 
@@ -1267,15 +1268,15 @@ Every top-level export in `web`, with the line to open.
 | `api-client.ts` | `requestWithRefresh` | function | :29 |  |
 | `api.ts` | `apiFetch` | function | :36 | Storefront fetch. |
 | `api.ts` | `getProducts` | function | :61 |  |
-| `api.ts` | `getProduct` | function | :104 |  |
-| `api.ts` | `getCategories` | function | :108 |  |
-| `api.ts` | `getFacets` | function | :112 |  |
-| `api.ts` | `getStitchingServices` | function | :116 |  |
-| `api.ts` | `getBanners` | function | :128 | Active banners for one placement — see BANNER_PLACEMENTS in @newax/shared. |
-| `api.ts` | `getPage` | function | :132 |  |
-| `api.ts` | `getPosts` | function | :136 |  |
-| `api.ts` | `getPost` | function | :144 |  |
-| `api.ts` | `getMenu` | function | :149 | A named footer menu slot — see MENU_KEYS in @newax/shared. |
+| `api.ts` | `getProduct` | function | :119 |  |
+| `api.ts` | `getCategories` | function | :123 |  |
+| `api.ts` | `getFacets` | function | :127 |  |
+| `api.ts` | `getStitchingServices` | function | :131 |  |
+| `api.ts` | `getBanners` | function | :143 | Active banners for one placement — see BANNER_PLACEMENTS in @newax/shared. |
+| `api.ts` | `getPage` | function | :147 |  |
+| `api.ts` | `getPosts` | function | :151 |  |
+| `api.ts` | `getPost` | function | :159 |  |
+| `api.ts` | `getMenu` | function | :164 | A named footer menu slot — see MENU_KEYS in @newax/shared. |
 | `cart-client.ts` | `getCustomerToken` | function | :19 |  |
 | `cart-client.ts` | `fetchCart` | function | :46 |  |
 | `cart-client.ts` | `AddToCartInput` | interface | :50 |  |
@@ -1325,127 +1326,127 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `CategoryNode` | interface | :76 |  |
 | `api.ts` | `CatalogFacets` | interface | :86 |  |
 | `api.ts` | `ProductListQuery` | interface | :93 |  |
-| `api.ts` | `AdminTranslation` | interface | :110 | --- Admin shapes ---------------------------------------------------------- |
-| `api.ts` | `AdminVariant` | interface | :120 |  |
-| `api.ts` | `AdminProduct` | interface | :139 |  |
-| `api.ts` | `AdminCategory` | interface | :178 |  |
-| `api.ts` | `AdminBrand` | interface | :189 |  |
-| `api.ts` | `OptionValueTranslation` | interface | :199 |  |
-| `api.ts` | `AdminOptionTemplateValue` | interface | :204 |  |
-| `api.ts` | `AdminOptionTemplate` | interface | :213 |  |
-| `api.ts` | `AdminProductOption` | interface | :222 |  |
-| `api.ts` | `AdminRedirect` | interface | :232 |  |
-| `api.ts` | `SeoHealthRow` | interface | :242 |  |
-| `api.ts` | `AiSuggestionKind` | type | :251 |  |
-| `api.ts` | `AiSuggestionStatus` | type | :252 |  |
-| `api.ts` | `AiSuggestion` | interface | :254 |  |
-| `api.ts` | `AiStatus` | interface | :268 |  |
-| `api.ts` | `MeasurementFieldRow` | interface | :276 |  |
-| `api.ts` | `GarmentType` | interface | :291 |  |
-| `api.ts` | `AdminGarmentSizeChartRow` | interface | :311 | One row of a garment's RTW size chart, keyed by measurement field key. |
-| `api.ts` | `SizeRecommendation` | interface | :320 | WO-9.2 — "Based on your measurements, take M." Arithmetic, not AI; null whenever nothing can be rec… |
-| `api.ts` | `StitchingDesignArea` | type | :332 | The garment region a design option group belongs to. |
-| `api.ts` | `AdminStitchingOption` | interface | :345 |  |
-| `api.ts` | `AdminStitchingOptionGroup` | interface | :358 |  |
-| `api.ts` | `ImportRowResult` | interface | :378 |  |
-| `api.ts` | `ImportSummary` | interface | :385 |  |
-| `api.ts` | `AuthUser` | interface | :393 |  |
-| `api.ts` | `AuthResult` | interface | :411 |  |
-| `api.ts` | `DeploymentMeta` | interface | :419 | GET /meta — which optional modules and sector packs this deployment has enabled. |
-| `api.ts` | `RetailBrandSummary` | interface | :429 | --- Organization (RETAIL-ERP.md R19, WO-18.5) ------------------------------- Empty for every deplo… |
-| `api.ts` | `OrgNodeSummary` | interface | :438 |  |
-| `api.ts` | `MyScope` | interface | :449 | GET /organization/me/scope — where the caller lands, and what chips they see. |
-| `api.ts` | `AdminScopeWithHolder` | interface | :464 | GET/POST /organization/admin-scopes (WO-18.6) — who is a super admin, a brand admin, or a branch ad… |
-| `api.ts` | `PolicyQuarantineEntry` | interface | :479 | GET /organization/policy-quarantine (WO-23.3c/e, RETAIL-ERP.md R9) — a fact that applied but whose… |
-| `api.ts` | `GrantScopeInput` | interface | :495 |  |
-| `api.ts` | `BrandPolicy` | interface | :508 | GET/PATCH /organization/brands/:brandId/policy (WO-23.3b, RETAIL-ERP.md R9/R13) — a brand's own swi… |
-| `api.ts` | `UpdateBrandPolicyInput` | interface | :515 |  |
-| `api.ts` | `Location` | interface | :524 | GET /admin/inventory/locations — never an in-transit bucket (WO-22.1). |
-| `api.ts` | `StockAdjustment` | interface | :534 |  |
-| `api.ts` | `InventoryVariantRow` | interface | :546 |  |
-| `api.ts` | `StitchingAnalytics` | interface | :559 | --- Analytics --------------------------------------------------------------- |
-| `api.ts` | `ExtendedAnalytics` | interface | :565 |  |
-| `api.ts` | `VisitorFunnel` | interface | :576 | --- Visitor analytics -------------------------------------------------------- |
-| `api.ts` | `TrafficSourceRow` | interface | :583 |  |
-| `api.ts` | `VisitorAnalytics` | interface | :589 |  |
-| `api.ts` | `MonthlyTarget` | interface | :598 | Amounts in paisa. |
-| `api.ts` | `OrderAgeingBucket` | interface | :606 | --- WO-D.1: orders overview / fulfilment ------------------------------------ |
-| `api.ts` | `OrdersOverview` | interface | :611 |  |
-| `api.ts` | `OrderTransitionTiming` | interface | :618 |  |
-| `api.ts` | `OrdersFulfilment` | interface | :626 |  |
-| `api.ts` | `PurchasingSpend` | interface | :632 | --- WO-D.2: purchasing spend / suppliers ------------------------------------ |
-| `api.ts` | `PurchasingSupplierRow` | interface | :638 |  |
-| `api.ts` | `PurchasingSuppliers` | interface | :648 |  |
-| `api.ts` | `ProductTopSellerRow` | interface | :654 | --- WO-D.3: products top/slow-sellers, categories --------------------------- |
-| `api.ts` | `ProductsTopSellers` | interface | :666 |  |
-| `api.ts` | `ProductSlowSellerRow` | interface | :670 |  |
-| `api.ts` | `ProductsSlowSellers` | interface | :679 |  |
-| `api.ts` | `ProductCategoryRow` | interface | :683 |  |
-| `api.ts` | `ProductsCategories` | interface | :692 |  |
-| `api.ts` | `InventoryValuation` | interface | :699 | --- WO-D.4: inventory valuation / movements --------------------------------- |
-| `api.ts` | `StockMovementReasonRow` | interface | :706 |  |
-| `api.ts` | `InventoryMovementRow` | interface | :713 |  |
-| `api.ts` | `InventoryMovements` | interface | :723 |  |
-| `api.ts` | `CustomersOverview` | interface | :731 | --- WO-D.5: customers overview / retention / top ---------------------------- |
-| `api.ts` | `CustomerCohort` | interface | :738 |  |
-| `api.ts` | `CustomersRetention` | interface | :744 |  |
-| `api.ts` | `CustomerTopRow` | interface | :749 |  |
-| `api.ts` | `CustomersTop` | interface | :759 |  |
-| `api.ts` | `WorkshopStageRow` | interface | :765 | --- WO-D.6: workshop output -------------------------------------------------- |
-| `api.ts` | `WorkshopTailorRow` | interface | :771 |  |
-| `api.ts` | `WorkshopOutput` | interface | :778 |  |
-| `api.ts` | `CompensationBasis` | type | :787 | --- Payroll: compensation, leave, pay runs (docs/implementation/payroll/19-payroll.md) -- |
-| `api.ts` | `CompensationRate` | interface | :789 |  |
-| `api.ts` | `EmployeeCompensation` | interface | :800 |  |
-| `api.ts` | `GrossPreview` | interface | :805 |  |
-| `api.ts` | `LeaveKind` | type | :811 |  |
-| `api.ts` | `LeaveType` | interface | :813 |  |
-| `api.ts` | `LeaveBalance` | interface | :822 |  |
-| `api.ts` | `LeaveRequestStatus` | type | :831 |  |
-| `api.ts` | `LeaveRequest` | interface | :833 |  |
-| `api.ts` | `EmployeeLeave` | interface | :850 |  |
-| `api.ts` | `PayRunStatus` | type | :855 |  |
-| `api.ts` | `PayRunLine` | interface | :857 |  |
-| `api.ts` | `PayRunAdjustmentReason` | type | :871 |  |
-| `api.ts` | `PayRunAdjustment` | interface | :873 |  |
-| `api.ts` | `PayRun` | interface | :884 |  |
-| `api.ts` | `PayRunWithLines` | interface | :899 |  |
-| `api.ts` | `EmailAccountPurpose` | type | :906 | --- Settings: roles & permissions, audit log -------------------------------- |
-| `api.ts` | `EmailAccount` | interface | :908 |  |
-| `api.ts` | `EmailTemplateCatalogEntry` | interface | :933 |  |
-| `api.ts` | `RenderedEmailPreview` | interface | :941 |  |
-| `api.ts` | `InboundEmailReply` | interface | :949 | --- Support inbox (IMAP replies) -------------------------------------------- |
-| `api.ts` | `InboundEmail` | interface | :956 |  |
-| `api.ts` | `PermissionDefinition` | interface | :973 |  |
-| `api.ts` | `AuditLogEntry` | interface | :980 |  |
-| `api.ts` | `AuditLogPage` | interface | :992 |  |
-| `api.ts` | `BackOfficeRole` | type | :1001 | --- Back-office user management --------------------------------------------- |
-| `api.ts` | `AdminUser` | interface | :1003 |  |
-| `api.ts` | `PermissionOverride` | interface | :1015 |  |
-| `api.ts` | `HeldRole` | interface | :1021 | A custom Role (owner's request) this user holds, with its own permission set inline. |
-| `api.ts` | `UserRoleConflicts` | interface | :1028 | Non-blocking advisories — see RolesService.conflictsForUser() on the API. |
-| `api.ts` | `AdminUserDetail` | interface | :1033 |  |
-| `api.ts` | `RoleSummary` | interface | :1045 | --- Custom roles (owner's request) ----------------------------------------- GET/POST/PATCH/DELETE… |
-| `api.ts` | `RoleWriteResult` | interface | :1054 | POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. |
-| `api.ts` | `CustomerAddress` | interface | :1061 | --- Customer account portal -------------------------------------------------- |
-| `api.ts` | `MeasurementProfile` | interface | :1075 |  |
-| `api.ts` | `MeasurementProfileDetail` | interface | :1086 |  |
-| `api.ts` | `CustomerOrderSummary` | interface | :1090 |  |
-| `api.ts` | `StitchingTimelineEvent` | interface | :1099 | One move along a garment's workshop timeline. |
-| `api.ts` | `CustomerOrderItem` | interface | :1107 |  |
-| `api.ts` | `CustomerOrder` | interface | :1138 | One order as its buyer sees it — signed in, or tracked with a phone number. |
-| `api.ts` | `CustomerReturnReason` | interface | :1171 | WO-6.6's seeded, editable reason list — never free text. |
-| `api.ts` | `CustomerReturnRequest` | interface | :1177 |  |
-| `api.ts` | `PaginatedResult` | interface | :1195 |  |
-| `api.ts` | `StockTransferLine` | interface | :1210 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
-| `api.ts` | `InterBranchInvoice` | interface | :1219 |  |
-| `api.ts` | `StockTransfer` | interface | :1228 |  |
-| `api.ts` | `StockTransferListResult` | interface | :1244 |  |
-| `api.ts` | `CmsBanner` | interface | :1251 | --- Content (WO-8.1) ------------------------------------------------------- |
-| `api.ts` | `CmsPage` | interface | :1259 |  |
-| `api.ts` | `CmsPost` | interface | :1266 |  |
-| `api.ts` | `DashboardCardsResponse` | interface | :1283 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
-| `api.ts` | `CmsMenuLink` | interface | :1296 |  |
+| `api.ts` | `AdminTranslation` | interface | :112 | --- Admin shapes ---------------------------------------------------------- |
+| `api.ts` | `AdminVariant` | interface | :122 |  |
+| `api.ts` | `AdminProduct` | interface | :141 |  |
+| `api.ts` | `AdminCategory` | interface | :180 |  |
+| `api.ts` | `AdminBrand` | interface | :191 |  |
+| `api.ts` | `OptionValueTranslation` | interface | :201 |  |
+| `api.ts` | `AdminOptionTemplateValue` | interface | :206 |  |
+| `api.ts` | `AdminOptionTemplate` | interface | :215 |  |
+| `api.ts` | `AdminProductOption` | interface | :224 |  |
+| `api.ts` | `AdminRedirect` | interface | :234 |  |
+| `api.ts` | `SeoHealthRow` | interface | :244 |  |
+| `api.ts` | `AiSuggestionKind` | type | :253 |  |
+| `api.ts` | `AiSuggestionStatus` | type | :254 |  |
+| `api.ts` | `AiSuggestion` | interface | :256 |  |
+| `api.ts` | `AiStatus` | interface | :270 |  |
+| `api.ts` | `MeasurementFieldRow` | interface | :278 |  |
+| `api.ts` | `GarmentType` | interface | :293 |  |
+| `api.ts` | `AdminGarmentSizeChartRow` | interface | :313 | One row of a garment's RTW size chart, keyed by measurement field key. |
+| `api.ts` | `SizeRecommendation` | interface | :322 | WO-9.2 — "Based on your measurements, take M." Arithmetic, not AI; null whenever nothing can be rec… |
+| `api.ts` | `StitchingDesignArea` | type | :334 | The garment region a design option group belongs to. |
+| `api.ts` | `AdminStitchingOption` | interface | :347 |  |
+| `api.ts` | `AdminStitchingOptionGroup` | interface | :360 |  |
+| `api.ts` | `ImportRowResult` | interface | :380 |  |
+| `api.ts` | `ImportSummary` | interface | :387 |  |
+| `api.ts` | `AuthUser` | interface | :395 |  |
+| `api.ts` | `AuthResult` | interface | :413 |  |
+| `api.ts` | `DeploymentMeta` | interface | :421 | GET /meta — which optional modules and sector packs this deployment has enabled. |
+| `api.ts` | `RetailBrandSummary` | interface | :431 | --- Organization (RETAIL-ERP.md R19, WO-18.5) ------------------------------- Empty for every deplo… |
+| `api.ts` | `OrgNodeSummary` | interface | :440 |  |
+| `api.ts` | `MyScope` | interface | :451 | GET /organization/me/scope — where the caller lands, and what chips they see. |
+| `api.ts` | `AdminScopeWithHolder` | interface | :466 | GET/POST /organization/admin-scopes (WO-18.6) — who is a super admin, a brand admin, or a branch ad… |
+| `api.ts` | `PolicyQuarantineEntry` | interface | :481 | GET /organization/policy-quarantine (WO-23.3c/e, RETAIL-ERP.md R9) — a fact that applied but whose… |
+| `api.ts` | `GrantScopeInput` | interface | :497 |  |
+| `api.ts` | `BrandPolicy` | interface | :510 | GET/PATCH /organization/brands/:brandId/policy (WO-23.3b, RETAIL-ERP.md R9/R13) — a brand's own swi… |
+| `api.ts` | `UpdateBrandPolicyInput` | interface | :517 |  |
+| `api.ts` | `Location` | interface | :526 | GET /admin/inventory/locations — never an in-transit bucket (WO-22.1). |
+| `api.ts` | `StockAdjustment` | interface | :536 |  |
+| `api.ts` | `InventoryVariantRow` | interface | :548 |  |
+| `api.ts` | `StitchingAnalytics` | interface | :561 | --- Analytics --------------------------------------------------------------- |
+| `api.ts` | `ExtendedAnalytics` | interface | :567 |  |
+| `api.ts` | `VisitorFunnel` | interface | :578 | --- Visitor analytics -------------------------------------------------------- |
+| `api.ts` | `TrafficSourceRow` | interface | :585 |  |
+| `api.ts` | `VisitorAnalytics` | interface | :591 |  |
+| `api.ts` | `MonthlyTarget` | interface | :600 | Amounts in paisa. |
+| `api.ts` | `OrderAgeingBucket` | interface | :608 | --- WO-D.1: orders overview / fulfilment ------------------------------------ |
+| `api.ts` | `OrdersOverview` | interface | :613 |  |
+| `api.ts` | `OrderTransitionTiming` | interface | :620 |  |
+| `api.ts` | `OrdersFulfilment` | interface | :628 |  |
+| `api.ts` | `PurchasingSpend` | interface | :634 | --- WO-D.2: purchasing spend / suppliers ------------------------------------ |
+| `api.ts` | `PurchasingSupplierRow` | interface | :640 |  |
+| `api.ts` | `PurchasingSuppliers` | interface | :650 |  |
+| `api.ts` | `ProductTopSellerRow` | interface | :656 | --- WO-D.3: products top/slow-sellers, categories --------------------------- |
+| `api.ts` | `ProductsTopSellers` | interface | :668 |  |
+| `api.ts` | `ProductSlowSellerRow` | interface | :672 |  |
+| `api.ts` | `ProductsSlowSellers` | interface | :681 |  |
+| `api.ts` | `ProductCategoryRow` | interface | :685 |  |
+| `api.ts` | `ProductsCategories` | interface | :694 |  |
+| `api.ts` | `InventoryValuation` | interface | :701 | --- WO-D.4: inventory valuation / movements --------------------------------- |
+| `api.ts` | `StockMovementReasonRow` | interface | :708 |  |
+| `api.ts` | `InventoryMovementRow` | interface | :715 |  |
+| `api.ts` | `InventoryMovements` | interface | :725 |  |
+| `api.ts` | `CustomersOverview` | interface | :733 | --- WO-D.5: customers overview / retention / top ---------------------------- |
+| `api.ts` | `CustomerCohort` | interface | :740 |  |
+| `api.ts` | `CustomersRetention` | interface | :746 |  |
+| `api.ts` | `CustomerTopRow` | interface | :751 |  |
+| `api.ts` | `CustomersTop` | interface | :761 |  |
+| `api.ts` | `WorkshopStageRow` | interface | :767 | --- WO-D.6: workshop output -------------------------------------------------- |
+| `api.ts` | `WorkshopTailorRow` | interface | :773 |  |
+| `api.ts` | `WorkshopOutput` | interface | :780 |  |
+| `api.ts` | `CompensationBasis` | type | :789 | --- Payroll: compensation, leave, pay runs (docs/implementation/payroll/19-payroll.md) -- |
+| `api.ts` | `CompensationRate` | interface | :791 |  |
+| `api.ts` | `EmployeeCompensation` | interface | :802 |  |
+| `api.ts` | `GrossPreview` | interface | :807 |  |
+| `api.ts` | `LeaveKind` | type | :813 |  |
+| `api.ts` | `LeaveType` | interface | :815 |  |
+| `api.ts` | `LeaveBalance` | interface | :824 |  |
+| `api.ts` | `LeaveRequestStatus` | type | :833 |  |
+| `api.ts` | `LeaveRequest` | interface | :835 |  |
+| `api.ts` | `EmployeeLeave` | interface | :852 |  |
+| `api.ts` | `PayRunStatus` | type | :857 |  |
+| `api.ts` | `PayRunLine` | interface | :859 |  |
+| `api.ts` | `PayRunAdjustmentReason` | type | :873 |  |
+| `api.ts` | `PayRunAdjustment` | interface | :875 |  |
+| `api.ts` | `PayRun` | interface | :886 |  |
+| `api.ts` | `PayRunWithLines` | interface | :901 |  |
+| `api.ts` | `EmailAccountPurpose` | type | :908 | --- Settings: roles & permissions, audit log -------------------------------- |
+| `api.ts` | `EmailAccount` | interface | :910 |  |
+| `api.ts` | `EmailTemplateCatalogEntry` | interface | :935 |  |
+| `api.ts` | `RenderedEmailPreview` | interface | :943 |  |
+| `api.ts` | `InboundEmailReply` | interface | :951 | --- Support inbox (IMAP replies) -------------------------------------------- |
+| `api.ts` | `InboundEmail` | interface | :958 |  |
+| `api.ts` | `PermissionDefinition` | interface | :975 |  |
+| `api.ts` | `AuditLogEntry` | interface | :982 |  |
+| `api.ts` | `AuditLogPage` | interface | :994 |  |
+| `api.ts` | `BackOfficeRole` | type | :1003 | --- Back-office user management --------------------------------------------- |
+| `api.ts` | `AdminUser` | interface | :1005 |  |
+| `api.ts` | `PermissionOverride` | interface | :1017 |  |
+| `api.ts` | `HeldRole` | interface | :1023 | A custom Role (owner's request) this user holds, with its own permission set inline. |
+| `api.ts` | `UserRoleConflicts` | interface | :1030 | Non-blocking advisories — see RolesService.conflictsForUser() on the API. |
+| `api.ts` | `AdminUserDetail` | interface | :1035 |  |
+| `api.ts` | `RoleSummary` | interface | :1047 | --- Custom roles (owner's request) ----------------------------------------- GET/POST/PATCH/DELETE… |
+| `api.ts` | `RoleWriteResult` | interface | :1056 | POST/PATCH /admin/roles response — `duplicateOfRoleName` is a suggestion, never a block. |
+| `api.ts` | `CustomerAddress` | interface | :1063 | --- Customer account portal -------------------------------------------------- |
+| `api.ts` | `MeasurementProfile` | interface | :1077 |  |
+| `api.ts` | `MeasurementProfileDetail` | interface | :1088 |  |
+| `api.ts` | `CustomerOrderSummary` | interface | :1092 |  |
+| `api.ts` | `StitchingTimelineEvent` | interface | :1101 | One move along a garment's workshop timeline. |
+| `api.ts` | `CustomerOrderItem` | interface | :1109 |  |
+| `api.ts` | `CustomerOrder` | interface | :1140 | One order as its buyer sees it — signed in, or tracked with a phone number. |
+| `api.ts` | `CustomerReturnReason` | interface | :1173 | WO-6.6's seeded, editable reason list — never free text. |
+| `api.ts` | `CustomerReturnRequest` | interface | :1179 |  |
+| `api.ts` | `PaginatedResult` | interface | :1197 |  |
+| `api.ts` | `StockTransferLine` | interface | :1212 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
+| `api.ts` | `InterBranchInvoice` | interface | :1221 |  |
+| `api.ts` | `StockTransfer` | interface | :1230 |  |
+| `api.ts` | `StockTransferListResult` | interface | :1246 |  |
+| `api.ts` | `CmsBanner` | interface | :1253 | --- Content (WO-8.1) ------------------------------------------------------- |
+| `api.ts` | `CmsPage` | interface | :1261 |  |
+| `api.ts` | `CmsPost` | interface | :1268 |  |
+| `api.ts` | `DashboardCardsResponse` | interface | :1285 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
+| `api.ts` | `CmsMenuLink` | interface | :1298 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

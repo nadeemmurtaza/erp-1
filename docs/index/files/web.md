@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 334 tracked files in `apps/web`, by directory.
+All 335 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -26,8 +26,8 @@ All 334 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 596 |  |
-| `ur.json` | json | 596 |  |
+| `en.json` | json | 600 |  |
+| `ur.json` | json | 600 |  |
 
 ### `apps/web/public` (1)
 
@@ -375,7 +375,7 @@ All 334 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 6 |  |
-| `page.tsx` | page | 312 |  |
+| `page.tsx` | page | 324 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain` (1)
 
@@ -496,13 +496,13 @@ All 334 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 6 |  |
-| `page.tsx` | page | 252 |  |
+| `page.tsx` | page | 279 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/[id]` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 556 |  |
+| `page.tsx` | page | 565 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payments` (1)
 
@@ -569,7 +569,7 @@ All 334 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 200 |  |
+| `page.tsx` | page | 204 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive` (1)
 
@@ -943,7 +943,7 @@ All 334 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 55 |  |
-| `page.tsx` | page | 168 |  |
+| `page.tsx` | page | 174 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/stitching` (1)
 
@@ -1071,7 +1071,7 @@ All 334 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `status-badge.tsx` | component | 71 |  |
+| `status-badge.tsx` | component | 75 |  |
 | `toast-container.tsx` | component | 60 |  |
 | `wizard.tsx` | component | 146 |  |
 
@@ -1081,7 +1081,7 @@ All 334 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 73 |  |
 
-### `apps/web/src/components/storefront` (34)
+### `apps/web/src/components/storefront` (35)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1112,13 +1112,14 @@ All 334 tracked files in `apps/web`, by directory.
 | `product-reviews.tsx` | component | 134 |  |
 | `products-grid.tsx` | component | 70 |  |
 | `quick-view-modal.tsx` | component | 79 |  |
-| `search-box.tsx` | component | 131 |  |
+| `search-box.tsx` | component | 134 |  |
 | `shop-controls.tsx` | component | 56 |  |
 | `size-chart-modal.tsx` | component | 219 |  |
 | `smooth-scroller.tsx` | component | 35 |  |
 | `sort-select.tsx` | component | 64 |  |
 | `stitching-panel.tsx` | component | 969 |  |
 | `stitching-timeline.tsx` | component | 105 |  |
+| `visual-search-button.tsx` | component | 89 |  |
 
 ### `apps/web/src/components/ui` (17)
 
@@ -1183,7 +1184,7 @@ All 334 tracked files in `apps/web`, by directory.
 | `admin-client.ts` | utility | 143 |  |
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
-| `api.ts` | utility | 152 |  |
+| `api.ts` | utility | 167 |  |
 | `cart-client.ts` | utility | 99 |  |
 | `customer-client.ts` | utility | 217 |  |
 | `download-csv.ts` | utility | 36 |  |
@@ -1201,7 +1202,7 @@ All 334 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1302 |  |
+| `api.ts` | types | 1304 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

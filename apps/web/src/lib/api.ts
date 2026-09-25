@@ -61,6 +61,21 @@ function canRouteThroughSearch(query: ProductListQuery): boolean {
 export async function getProducts(
   query: ProductListQuery,
 ): Promise<PaginatedResponse<StorefrontProduct>> {
+  // WO-9.5 — a visual-search result is already a ranked, bounded list of
+  // slugs (from /search/by-image); fetch each directly rather than routing
+  // back through /search or /catalog/products, neither of which take a
+  // slug list as input.
+  if (query.visualSlugs?.length) {
+    const products = (
+      await Promise.all(query.visualSlugs.map((slug) => getProduct(slug, query.locale ?? 'en').catch(() => null)))
+    ).filter((p): p is StorefrontProduct => p !== null);
+
+    return {
+      data: products,
+      meta: { page: 1, pageSize: products.length, total: products.length, totalPages: 1, hasNext: false, hasPrevious: false },
+    };
+  }
+
   if (!canRouteThroughSearch(query)) {
     return apiFetch(`/catalog/products${toSearchParams(query as Record<string, unknown>)}`);
   }

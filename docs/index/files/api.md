@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 692 tracked files in `apps/api`, by directory.
+All 701 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -53,7 +53,7 @@ All 692 tracked files in `apps/api`, by directory.
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
-| `orders.prisma` | prisma schema | 335 | Orders and shipments. |
+| `orders.prisma` | prisma schema | 358 | Orders and shipments. |
 | `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
@@ -475,6 +475,12 @@ All 692 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 242 |  |
 
+### `apps/api/prisma/schema/migrations/20260925150000_add_cod_risk_reason_and_city_stats` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 21 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -548,13 +554,14 @@ All 692 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `checkout-validator.registry.ts` | registry | 59 |  |
 
-### `apps/api/src/core/common` (4)
+### `apps/api/src/core/common` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `aging.spec.ts` | unit test | 75 |  |
 | `aging.ts` | module | 76 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
-| `cost-fields.ts` | module | 72 |  |
+| `cost-fields.spec.ts` | unit test | 44 |  |
+| `cost-fields.ts` | module | 98 |  |
 | `sales-revenue.ts` | module | 17 |  |
 
 ### `apps/api/src/core/common/dto` (1)
@@ -665,7 +672,7 @@ All 692 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `client.ts` | module | 11 | Single import point for the generated Prisma client. |
-| `enums.spec.ts` | unit test | 66 |  |
+| `enums.spec.ts` | unit test | 72 |  |
 | `prisma.module.ts` | nest module | 10 |  |
 | `prisma.service.ts` | service | 46 |  |
 
@@ -715,7 +722,7 @@ All 692 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 366 |  |
+| `settings.defaults.ts` | module | 384 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -737,8 +744,8 @@ All 692 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `metric-window.spec.ts` | unit test | 192 |  |
 | `metric-window.ts` | module | 105 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the… |
-| `shop-time.spec.ts` | unit test | 157 |  |
-| `shop-time.ts` | module | 223 | Calendar days in the shop's timezone. |
+| `shop-time.spec.ts` | unit test | 175 |  |
+| `shop-time.ts` | module | 235 | Calendar days in the shop's timezone. |
 
 ### `apps/api/src/modules` (2)
 
@@ -1072,15 +1079,15 @@ All 692 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `inventory.controller.ts` | controller | 76 |  |
-| `inventory.cron.spec.ts` | unit test | 95 |  |
-| `inventory.cron.ts` | scheduled job | 124 |  |
+| `inventory.cron.spec.ts` | unit test | 100 |  |
+| `inventory.cron.ts` | scheduled job | 170 |  |
 | `inventory.listener.spec.ts` | unit test | 70 |  |
 | `inventory.listener.ts` | event subscriber | 61 |  |
 | `inventory.metrics.spec.ts` | unit test | 70 |  |
 | `inventory.metrics.ts` | module | 135 |  |
 | `inventory.module.ts` | nest module | 27 |  |
 | `inventory.service.spec.ts` | unit test | 442 |  |
-| `inventory.service.ts` | service | 582 |  |
+| `inventory.service.ts` | service | 590 |  |
 | `stock-count.controller.ts` | controller | 62 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
 | `stock-count.service.spec.ts` | unit test | 95 |  |
 | `stock-count.service.ts` | service | 233 |  |
@@ -1182,26 +1189,30 @@ All 692 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `onsite-message.dto.ts` | dto | 155 |  |
 
-### `apps/api/src/modules/orders` (10)
+### `apps/api/src/modules/orders` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `backorder.listener.spec.ts` | unit test | 84 |  |
 | `backorder.listener.ts` | event subscriber | 70 |  |
+| `cod-risk.cron.spec.ts` | unit test | 84 |  |
+| `cod-risk.cron.ts` | scheduled job | 82 |  |
+| `cod-risk.service.spec.ts` | unit test | 105 |  |
+| `cod-risk.service.ts` | service | 86 |  |
 | `notification.subscriber.ts` | event subscriber | 259 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 244 |  |
-| `orders.controller.ts` | controller | 134 |  |
-| `orders.module.ts` | nest module | 46 |  |
-| `orders.service.ts` | service | 1184 |  |
+| `orders-pos.service.spec.ts` | unit test | 249 |  |
+| `orders.controller.ts` | controller | 143 |  |
+| `orders.module.ts` | nest module | 50 |  |
+| `orders.service.ts` | service | 1207 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `order.dto.ts` | dto | 147 |  |
+| `order.dto.ts` | dto | 152 |  |
 
 ### `apps/api/src/modules/organization` (6)
 
@@ -1363,15 +1374,15 @@ All 692 tracked files in `apps/api`, by directory.
 | `goods-receipt-replication.listener.spec.ts` | unit test | 127 |  |
 | `goods-receipt-replication.listener.ts` | event subscriber | 82 |  |
 | `purchasing.controller.ts` | controller | 151 |  |
-| `purchasing.cron.spec.ts` | unit test | 67 |  |
-| `purchasing.cron.ts` | scheduled job | 71 |  |
+| `purchasing.cron.spec.ts` | unit test | 144 |  |
+| `purchasing.cron.ts` | scheduled job | 118 |  |
 | `purchasing.metrics.spec.ts` | unit test | 74 |  |
 | `purchasing.metrics.ts` | module | 135 |  |
 | `purchasing.module.ts` | nest module | 27 |  |
-| `purchasing.service.ts` | service | 657 |  |
+| `purchasing.service.ts` | service | 664 |  |
 | `purchasing.spec.ts` | unit test | 233 |  |
-| `reorder.listener.spec.ts` | unit test | 79 |  |
-| `reorder.listener.ts` | event subscriber | 51 |  |
+| `reorder.listener.spec.ts` | unit test | 146 |  |
+| `reorder.listener.ts` | event subscriber | 83 |  |
 | `supplier-bill.spec.ts` | unit test | 230 |  |
 
 ### `apps/api/src/modules/purchasing/dto` (3)
@@ -1414,15 +1425,18 @@ All 692 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `review.dto.ts` | dto | 67 |  |
 
-### `apps/api/src/modules/search` (5)
+### `apps/api/src/modules/search` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `search-reindex.listener.ts` | event subscriber | 28 |  |
-| `search.controller.ts` | controller | 48 |  |
-| `search.module.ts` | nest module | 12 |  |
-| `search.service.spec.ts` | unit test | 118 |  |
-| `search.service.ts` | service | 241 |  |
+| `search-embedding.cron.spec.ts` | unit test | 44 |  |
+| `search-embedding.cron.ts` | scheduled job | 34 |  |
+| `search-reindex.listener.spec.ts` | unit test | 34 |  |
+| `search-reindex.listener.ts` | event subscriber | 33 |  |
+| `search.controller.ts` | controller | 73 |  |
+| `search.module.ts` | nest module | 13 |  |
+| `search.service.spec.ts` | unit test | 294 |  |
+| `search.service.ts` | service | 401 |  |
 
 ### `apps/api/src/modules/search/dto` (1)
 

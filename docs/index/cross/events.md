@@ -89,8 +89,8 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:50` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:157` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:428` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:631` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:449` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:652` | `orders` |
 
 
 **Subscribed by**
@@ -111,7 +111,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:813` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:836` | `orders` |
 
 
 **Subscribed by**
@@ -131,7 +131,7 @@ order" is a new file, not an edit to checkout.
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:813` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:836` | `orders` |
 
 
 **Subscribed by**
@@ -150,7 +150,7 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:117` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:154` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:619` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:640` | `orders` |
 | `apps/api/src/modules/payments/payments.service.ts:191` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:293` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:341` | `payments` |
@@ -354,7 +354,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:367` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:374` | `inventory` |
 
 
 **Subscribed by**
@@ -371,7 +371,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:385` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:392` | `inventory` |
 
 
 **Subscribed by**
@@ -379,7 +379,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onReorderPointReached()` | `apps/api/src/modules/production/reorder-work-order.listener.ts:19` | `production` |
-| `onReorderPointReached()` | `apps/api/src/modules/purchasing/reorder.listener.ts:25` | `purchasing` |
+| `onReorderPointReached()` | `apps/api/src/modules/purchasing/reorder.listener.ts:33` | `purchasing` |
 
 ### `catalog.product_published`
 
@@ -444,7 +444,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:402` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:409` | `inventory` |
 
 
 **Subscribed by**
@@ -463,7 +463,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:281` | `accounting` |
-| `apps/api/src/modules/inventory/inventory.service.ts:353` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:360` | `inventory` |
 
 
 **Subscribed by**
@@ -514,7 +514,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:178` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:576` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:583` | `purchasing` |
 
 
 **Subscribed by**
@@ -531,7 +531,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:228` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:640` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:647` | `purchasing` |
 
 
 **Subscribed by**

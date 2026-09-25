@@ -25,7 +25,7 @@ import {
   TrackOrderDto,
 } from './dto/order.dto';
 import { OrdersService } from './orders.service';
-import { stripOrderCost, stripOrderListCost } from '../../core/common/cost-fields';
+import { stripCodRiskFields, stripCodRiskFieldsList, stripOrderCost, stripOrderListCost } from '../../core/common/cost-fields';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -42,10 +42,14 @@ export class OrdersController {
     @Query('locale') locale?: string,
   ) {
     // Cost is never exposed to customers -- strip unconditionally (requirePermission=false).
-    return stripOrderCost(
-      await this.orders.place(cartToken(request), user?.id, dto, toLocale(locale)),
-      user,
-      false,
+    // Same for WO-9.4's COD-risk fields: telling a customer they were
+    // flagged, and why, is a staff-only tool, never a checkout response.
+    return stripCodRiskFields(
+      stripOrderCost(
+        await this.orders.place(cartToken(request), user?.id, dto, toLocale(locale)),
+        user,
+        false,
+      ),
     );
   }
 
@@ -53,10 +57,12 @@ export class OrdersController {
   @Get('mine')
   @ApiOperation({ summary: "The signed-in customer's orders" })
   async mine(@CurrentUser() user: AuthenticatedUser, @Query() query: OrderHistoryQueryDto) {
-    return stripOrderListCost(
-      await this.orders.listForUser(user.id, query.page, query.pageSize),
-      user,
-      false,
+    return stripCodRiskFieldsList(
+      stripOrderListCost(
+        await this.orders.listForUser(user.id, query.page, query.pageSize),
+        user,
+        false,
+      ),
     );
   }
 
@@ -64,7 +70,7 @@ export class OrdersController {
   @Get(':number')
   @ApiOperation({ summary: 'One order, for its owner' })
   async get(@CurrentUser() user: AuthenticatedUser, @Param('number') number: string) {
-    return stripOrderCost(await this.orders.findByNumber(number, user.id), user, false);
+    return stripCodRiskFields(stripOrderCost(await this.orders.findByNumber(number, user.id), user, false));
   }
 
   @Public()
@@ -73,10 +79,12 @@ export class OrdersController {
     summary: 'Track a guest order with the phone number it was placed with',
   })
   async track(@Param('number') number: string, @Body() dto: TrackOrderDto) {
-    return stripOrderCost(
-      await this.orders.findByNumber(number, undefined, dto.phone),
-      undefined,
-      false,
+    return stripCodRiskFields(
+      stripOrderCost(
+        await this.orders.findByNumber(number, undefined, dto.phone),
+        undefined,
+        false,
+      ),
     );
   }
 }
@@ -98,6 +106,7 @@ export class OrdersAdminController {
         take: query.take,
         q: query.q,
         status: query.status,
+        codRiskAction: query.codRiskAction,
       }),
       user,
     );

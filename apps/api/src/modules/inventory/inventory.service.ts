@@ -13,6 +13,7 @@ const variantListInclude = {
     include: { translations: { where: { locale: DEFAULT_LOCALE }, take: 1 } },
   },
   salesStat: true,
+  forecast: { select: { projectedStockoutAt: true } },
 } satisfies Prisma.ProductVariantInclude;
 
 type VariantWithProduct = Prisma.ProductVariantGetPayload<{ include: typeof variantListInclude }>;
@@ -90,6 +91,12 @@ export class InventoryService implements OnModuleInit {
       where.stock = 0;
     } else if (query.filter === 'slow') {
       where.salesStat = { isSlowMover: true };
+    } else if (query.filter === 'stockout-risk') {
+      // WO-9.3 (09-ai-layer.md) — "flag stock that will run out before its
+      // supplier lead time allows a reorder to land": VariantForecast.projectedStockoutAt
+      // is non-null ONLY when that's true (see demand-forecast.ts), so this filter
+      // never needs its own date arithmetic.
+      where.forecast = { projectedStockoutAt: { not: null } };
     }
 
     if (query.search?.trim()) {
@@ -573,6 +580,7 @@ function toVariantView(variant: VariantWithProduct) {
       lastSoldAt: variant.salesStat.lastSoldAt,
       ageDays: variant.salesStat.ageDays,
     } : null,
+    projectedStockoutAt: variant.forecast?.projectedStockoutAt ?? null,
     product: {
       id: variant.product.id,
       name: variant.product.translations[0]?.name ?? variant.product.id,

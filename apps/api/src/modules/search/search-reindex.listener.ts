@@ -18,6 +18,11 @@ export class SearchReindexListener {
   async onProductChanged(payload: ProductChangedPayload): Promise<void> {
     try {
       await this.search.reindexProduct(payload.productId);
+      // WO-9.5 — invalidates the embedding alongside searchVector so the two
+      // never drift; SearchEmbeddingCron re-embeds it on its own timer. Never
+      // an AI call synchronously here — "re-embed... in the background,
+      // batched" is the doc's own instruction.
+      await this.search.invalidateEmbedding(payload.productId);
     } catch (error) {
       this.logger.error(
         `failed to reindex product ${payload.productId}: ${error instanceof Error ? error.message : String(error)}`,

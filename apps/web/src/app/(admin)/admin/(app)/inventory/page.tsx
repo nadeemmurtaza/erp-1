@@ -31,6 +31,7 @@ interface InventoryVariant {
     lastSoldAt: string | null;
     ageDays: number | null;
   } | null;
+  projectedStockoutAt: string | null;
   product: { id: string; name: string };
 }
 
@@ -47,13 +48,14 @@ interface StockMovementRow {
   actorName: string | null;
 }
 
-const STOCK_FILTERS = ['all', 'low', 'out', 'slow'] as const;
+const STOCK_FILTERS = ['all', 'low', 'out', 'slow', 'stockout-risk'] as const;
 type StockFilter = (typeof STOCK_FILTERS)[number];
 const STOCK_FILTER_LABELS: Record<StockFilter, string> = {
   all: 'All',
   low: 'Low Stock',
   out: 'Out of Stock',
   slow: 'Slow Movers',
+  'stockout-risk': 'Stockout Risk',
 };
 
 export default function AdminInventoryPage() {
@@ -230,18 +232,28 @@ export default function AdminInventoryPage() {
               align: 'end',
               numeric: true,
               cell: (variant) => (
-                <span
-                  className={cn(
-                    'font-medium',
-                    variant.stock <= 0
-                      ? 'text-red-600'
-                      : variant.stock <= variant.lowStockThreshold
-                        ? 'text-amber-600'
-                        : 'text-green-600',
+                <>
+                  <span
+                    className={cn(
+                      'font-medium',
+                      variant.stock <= 0
+                        ? 'text-red-600'
+                        : variant.stock <= variant.lowStockThreshold
+                          ? 'text-amber-600'
+                          : 'text-green-600',
+                    )}
+                  >
+                    {variant.stock}
+                  </span>
+                  {variant.projectedStockoutAt && (
+                    <div
+                      className="text-xs text-red-600 mt-0.5"
+                      title={`Forecast to stock out by ${formatDate(variant.projectedStockoutAt)} — before a reorder placed today would arrive`}
+                    >
+                      Stockout risk
+                    </div>
                   )}
-                >
-                  {variant.stock}
-                </span>
+                </>
               ),
             },
             {

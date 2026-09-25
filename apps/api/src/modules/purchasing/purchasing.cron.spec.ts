@@ -3,6 +3,7 @@ import { Logger } from '@nestjs/common';
 import { PurchasingCron } from './purchasing.cron';
 import { PurchasingService } from './purchasing.service';
 import { SettingsService } from '../../core/settings/settings.service';
+import { SettingKey } from '../../core/settings/settings.defaults';
 import { PrismaService } from '../../core/prisma/prisma.service';
 
 describe('PurchasingCron', () => {
@@ -17,6 +18,8 @@ describe('PurchasingCron', () => {
         findMany: jest.fn(),
         fields: { reorderPoint: Symbol('reorderPoint') },
       },
+      supplier: { findMany: jest.fn().mockResolvedValue([]) },
+      supplierProduct: { findMany: jest.fn().mockResolvedValue([]) },
     };
     settings = { get: jest.fn().mockResolvedValue(true) };
     purchasing = { upsertReorderDraftLine: jest.fn() };
@@ -62,5 +65,79 @@ describe('PurchasingCron', () => {
     await cron.sweepReorderCandidates();
     expect(prisma.productVariant.findMany).not.toHaveBeenCalled();
     expect(purchasing.upsertReorderDraftLine).not.toHaveBeenCalled();
+  });
+
+  it('uses a forecast-driven quantity and carries its reasoning as a note when reorderQuantity is unset (WO-9.3)', async () => {
+    settings.get.mockImplementation(async (key: string) => {
+      if (key === SettingKey.PurchasingAutoDraftReorder) return true;
+      if (key === SettingKey.DemandForecastSafetyStockDays) return 14;
+      return null;
+    });
+    prisma.productVariant.findMany.mockResolvedValue([
+      {
+        id: 'v1',
+        sku: 'SKU1',
+        stock: 5,
+        reorderPoint: 10,
+        reorderQuantity: null,
+        preferredSupplierId: 'sup1',
+        costPrice: 500,
+        forecast: { forecastedDailyDemand: 2, reasonEn: 'Demand typically runs about 2.0x higher this time of year, based on last year.' },
+      },
+    ]);
+    prisma.supplier.findMany.mockResolvedValue([{ id: 'sup1', leadTimeDays: 7 }]);
+
+    await cron.sweepReorderCandidates();
+
+    expect(purchasing.upsertReorderDraftLine).toHaveBeenCalledWith({
+      supplierId: 'sup1',
+      variantId: 'v1',
+      quantity: 42, // forecastedDailyDemand(2) * (leadTimeDays(7) + safetyStockDays(14))
+      unitCost: 500,
+      note: 'Demand typically runs about 2.0x higher this time of year, based on last year.',
+    });
+  });
+
+  it('falls back to the old reorderPoint-minus-stock guess when no forecast exists yet for the variant', async () => {
+    settings.get.mockImplementation(async (key: string) => {
+      if (key === SettingKey.PurchasingAutoDraftReorder) return true;
+      return null;
+    });
+    prisma.productVariant.findMany.mockResolvedValue([
+      { id: 'v1', sku: 'SKU1', stock: 2, reorderPoint: 10, reorderQuantity: null, preferredSupplierId: 'sup1', costPrice: 500, forecast: null },
+    ]);
+
+    await cron.sweepReorderCandidates();
+
+    expect(purchasing.upsertReorderDraftLine).toHaveBeenCalledWith(
+      expect.objectContaining({ quantity: 8, note: undefined }),
+    );
+  });
+
+  it('never overrides a buyer\'s own reorderQuantity with a forecast-driven number, even when a forecast exists', async () => {
+    settings.get.mockImplementation(async (key: string) => {
+      if (key === SettingKey.PurchasingAutoDraftReorder) return true;
+      if (key === SettingKey.DemandForecastSafetyStockDays) return 14;
+      return null;
+    });
+    prisma.productVariant.findMany.mockResolvedValue([
+      {
+        id: 'v1',
+        sku: 'SKU1',
+        stock: 5,
+        reorderPoint: 10,
+        reorderQuantity: 99,
+        preferredSupplierId: 'sup1',
+        costPrice: 500,
+        forecast: { forecastedDailyDemand: 2, reasonEn: 'Demand typically runs higher this time of year.' },
+      },
+    ]);
+    prisma.supplier.findMany.mockResolvedValue([{ id: 'sup1', leadTimeDays: 7 }]);
+
+    await cron.sweepReorderCandidates();
+
+    expect(purchasing.upsertReorderDraftLine).toHaveBeenCalledWith(
+      expect.objectContaining({ quantity: 99, note: undefined }),
+    );
   });
 });

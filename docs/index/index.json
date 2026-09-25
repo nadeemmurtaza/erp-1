@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1713,
-    "lines": 262195,
-    "routes": 550,
+    "files": 1727,
+    "lines": 264376,
+    "routes": 551,
     "controllers": 95,
-    "models": 203,
+    "models": 204,
     "enums": 88,
-    "migrations": 67,
+    "migrations": 68,
     "events": 46,
     "permissions": 65,
     "screens": 201,
-    "crons": 13,
-    "specs": 171,
+    "crons": 15,
+    "specs": 178,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 692,
-      "lines": 95948,
-      "bytes": 3547580,
+      "files": 701,
+      "lines": 97287,
+      "bytes": 3605452,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,9 +50,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 334,
-      "lines": 50830,
-      "bytes": 1842749,
+      "files": 335,
+      "lines": 51009,
+      "bytes": 1850221,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -62,9 +62,9 @@
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 70,
-      "lines": 6294,
-      "bytes": 213877,
+      "files": 74,
+      "lines": 6957,
+      "bytes": 240159,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -497,6 +497,10 @@
       "files": [
         "apps/api/src/modules/orders/backorder.listener.spec.ts",
         "apps/api/src/modules/orders/backorder.listener.ts",
+        "apps/api/src/modules/orders/cod-risk.cron.spec.ts",
+        "apps/api/src/modules/orders/cod-risk.cron.ts",
+        "apps/api/src/modules/orders/cod-risk.service.spec.ts",
+        "apps/api/src/modules/orders/cod-risk.service.ts",
         "apps/api/src/modules/orders/dto/order.dto.ts",
         "apps/api/src/modules/orders/notification.subscriber.ts",
         "apps/api/src/modules/orders/order-replication.listener.spec.ts",
@@ -728,13 +732,16 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/search/dto/search.dto.ts",
+        "apps/api/src/modules/search/search-embedding.cron.spec.ts",
+        "apps/api/src/modules/search/search-embedding.cron.ts",
+        "apps/api/src/modules/search/search-reindex.listener.spec.ts",
         "apps/api/src/modules/search/search-reindex.listener.ts",
         "apps/api/src/modules/search/search.controller.ts",
         "apps/api/src/modules/search/search.module.ts",
         "apps/api/src/modules/search/search.service.spec.ts",
         "apps/api/src/modules/search/search.service.ts"
       ],
-      "routes": 5,
+      "routes": 6,
       "page": "docs/index/modules/search.md"
     },
     {
@@ -940,6 +947,7 @@
       "files": [
         "apps/api/src/core/common/aging.spec.ts",
         "apps/api/src/core/common/aging.ts",
+        "apps/api/src/core/common/cost-fields.spec.ts",
         "apps/api/src/core/common/cost-fields.ts",
         "apps/api/src/core/common/dto/pagination.dto.ts",
         "apps/api/src/core/common/filters/all-exceptions.filter.ts",
@@ -5239,7 +5247,7 @@
       "controller": "OrdersAdminController",
       "handler": "list",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 92,
+      "line": 100,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -5255,7 +5263,7 @@
       "controller": "OrdersAdminController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 107,
+      "line": 116,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -5271,7 +5279,7 @@
       "controller": "OrdersAdminController",
       "handler": "changeStatus",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 113,
+      "line": 122,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -6663,7 +6671,7 @@
       "controller": "SearchAdminController",
       "handler": "listSynonyms",
       "file": "apps/api/src/modules/search/search.controller.ts",
-      "line": 26,
+      "line": 51,
       "access": "search.view | search.manage",
       "permissions": [
         "search.view",
@@ -6680,7 +6688,7 @@
       "controller": "SearchAdminController",
       "handler": "createSynonym",
       "file": "apps/api/src/modules/search/search.controller.ts",
-      "line": 32,
+      "line": 57,
       "access": "search.manage",
       "permissions": [
         "search.manage"
@@ -6696,7 +6704,7 @@
       "controller": "SearchAdminController",
       "handler": "deleteSynonym",
       "file": "apps/api/src/modules/search/search.controller.ts",
-      "line": 38,
+      "line": 63,
       "access": "search.manage",
       "permissions": [
         "search.manage"
@@ -6712,7 +6720,7 @@
       "controller": "SearchAdminController",
       "handler": "zeroResults",
       "file": "apps/api/src/modules/search/search.controller.ts",
-      "line": 44,
+      "line": 69,
       "access": "search.view | search.manage",
       "permissions": [
         "search.view",
@@ -9024,7 +9032,7 @@
       "controller": "OrdersController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 66,
+      "line": 72,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9038,7 +9046,7 @@
       "controller": "OrdersController",
       "handler": "track",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 75,
+      "line": 81,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9052,7 +9060,7 @@
       "controller": "OrdersController",
       "handler": "mine",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 55,
+      "line": 59,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9530,12 +9538,26 @@
       "controller": "SearchController",
       "handler": "search",
       "file": "apps/api/src/modules/search/search.controller.ts",
-      "line": 14,
+      "line": 24,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
       "authOnly": false,
       "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/search/by-image",
+      "module": "search",
+      "controller": "SearchController",
+      "handler": "searchByImage",
+      "file": "apps/api/src/modules/search/search.controller.ts",
+      "line": 32,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "WO-9.5 — upload a photo, find the nearest products"
     },
     {
       "method": "GET",
@@ -11112,8 +11134,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:50",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:157",
-        "apps/api/src/modules/orders/orders.service.ts:428",
-        "apps/api/src/modules/orders/orders.service.ts:631"
+        "apps/api/src/modules/orders/orders.service.ts:449",
+        "apps/api/src/modules/orders/orders.service.ts:652"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
@@ -11129,7 +11151,7 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:813"
+        "apps/api/src/modules/orders/orders.service.ts:836"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -11144,7 +11166,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:813"
+        "apps/api/src/modules/orders/orders.service.ts:836"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -11158,7 +11180,7 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:117",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:154",
-        "apps/api/src/modules/orders/orders.service.ts:619",
+        "apps/api/src/modules/orders/orders.service.ts:640",
         "apps/api/src/modules/payments/payments.service.ts:191",
         "apps/api/src/modules/payments/payments.service.ts:293",
         "apps/api/src/modules/payments/payments.service.ts:341"
@@ -11297,7 +11319,7 @@
       "name": "catalog.product_low_stock",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:367"
+        "apps/api/src/modules/inventory/inventory.service.ts:374"
       ],
       "subscribers": [
         "apps/api/src/modules/inventory/inventory.listener.ts:19 handleLowStock()"
@@ -11308,11 +11330,11 @@
       "name": "catalog.product_reorder_point_reached",
       "doc": "Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder).",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:385"
+        "apps/api/src/modules/inventory/inventory.service.ts:392"
       ],
       "subscribers": [
         "apps/api/src/modules/production/reorder-work-order.listener.ts:19 onReorderPointReached()",
-        "apps/api/src/modules/purchasing/reorder.listener.ts:25 onReorderPointReached()"
+        "apps/api/src/modules/purchasing/reorder.listener.ts:33 onReorderPointReached()"
       ]
     },
     {
@@ -11357,7 +11379,7 @@
       "name": "inventory.stock_replenished",
       "doc": "Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock.",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:402"
+        "apps/api/src/modules/inventory/inventory.service.ts:409"
       ],
       "subscribers": [
         "apps/api/src/modules/orders/backorder.listener.ts:29 onStockReplenished()",
@@ -11370,7 +11392,7 @@
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:281",
-        "apps/api/src/modules/inventory/inventory.service.ts:353"
+        "apps/api/src/modules/inventory/inventory.service.ts:360"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:279 onStockVarianceRecorded()"
@@ -11405,7 +11427,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:178",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:576"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:583"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:176 onSupplierBillRaised()"
@@ -11417,7 +11439,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:228",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:640"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:647"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:226 onSupplierBillPaid()"
@@ -14036,6 +14058,50 @@
       "indexes": [
         "@@unique([categoryId, locale])"
       ]
+    },
+    {
+      "name": "CityCodRiskStat",
+      "file": "apps/api/prisma/schema/orders.prisma",
+      "line": 326,
+      "doc": "WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's \"city RTO rate\" and \"order value versus the city's average\" signals.",
+      "fields": [
+        {
+          "name": "city",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "totalShipments",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rtoShipments",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "avgOrderValue",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "computedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "Collection",
@@ -19365,6 +19431,13 @@
           "relation": false
         },
         {
+          "name": "codRiskReasonEn",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "user",
           "type": "User?",
           "id": false,
@@ -19658,7 +19731,7 @@
     {
       "name": "OrderItem",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 151,
+      "line": 156,
       "doc": "",
       "fields": [
         {
@@ -19936,7 +20009,7 @@
     {
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 331,
+      "line": 354,
       "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
@@ -19959,7 +20032,7 @@
     {
       "name": "OrderStatusEvent",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 238,
+      "line": 243,
       "doc": "",
       "fields": [
         {
@@ -25372,7 +25445,7 @@
     {
       "name": "Shipment",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 262,
+      "line": 267,
       "doc": "",
       "fields": [
         {
@@ -30215,7 +30288,7 @@
     {
       "name": "OrderItemFulfillmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 140,
+      "line": 145,
       "values": [
         "READY",
         "AWAITING_STOCK",
@@ -30495,7 +30568,7 @@
     {
       "name": "ShipmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 253,
+      "line": 258,
       "values": [
         "PENDING",
         "DISPATCHED",
@@ -31967,6 +32040,21 @@
         "VariantForecast",
         "WhatsAppConversation",
         "WhatsAppMessage"
+      ]
+    },
+    {
+      "folder": "20260925150000_add_cod_risk_reason_and_city_stats",
+      "file": "apps/api/prisma/schema/migrations/20260925150000_add_cod_risk_reason_and_city_stats/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_cod_risk_reason_and_city_stats",
+      "statements": 3,
+      "kinds": [
+        "ALTER TABLE",
+        "CREATE TABLE"
+      ],
+      "tables": [
+        "CityCodRiskStat",
+        "Order"
       ]
     }
   ],
@@ -33848,7 +33936,7 @@
     {
       "schedule": "0 2 * * *",
       "file": "apps/api/src/modules/inventory/inventory.cron.ts",
-      "line": 16,
+      "line": 17,
       "handler": "computeNightlyStats",
       "doc": ""
     },
@@ -33867,6 +33955,13 @@
       "doc": ""
     },
     {
+      "schedule": "0 1 * * *",
+      "file": "apps/api/src/modules/orders/cod-risk.cron.ts",
+      "line": 22,
+      "handler": "computeCityCodRiskStats",
+      "doc": ""
+    },
+    {
       "schedule": "0 * * * *",
       "file": "apps/api/src/modules/payroll/leave-accrual.cron.ts",
       "line": 25,
@@ -33876,8 +33971,15 @@
     {
       "schedule": "0 3 * * *",
       "file": "apps/api/src/modules/purchasing/purchasing.cron.ts",
-      "line": 28,
+      "line": 36,
       "handler": "sweepReorderCandidates",
+      "doc": ""
+    },
+    {
+      "schedule": "*/10 * * * *",
+      "file": "apps/api/src/modules/search/search-embedding.cron.ts",
+      "line": 25,
+      "handler": "embedPending",
       "doc": ""
     }
   ],
@@ -34453,6 +34555,16 @@
       ]
     },
     {
+      "file": "apps/api/src/core/common/cost-fields.spec.ts",
+      "module": "core/common",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "stripCodRiskFields",
+        "stripCodRiskFieldsList"
+      ]
+    },
+    {
       "file": "apps/api/src/core/config/env.validation.spec.ts",
       "module": "core/config",
       "kind": "unit test",
@@ -34657,13 +34769,14 @@
       "file": "apps/api/src/core/time/shop-time.spec.ts",
       "module": "core/time",
       "kind": "unit test",
-      "cases": 16,
+      "cases": 19,
       "describes": [
         "shopDayKey",
         "startOfShopDay",
         "startOfShopDaysAgo",
         "shopDayKeys",
         "shopDayExpr",
+        "shopLocalHour",
         "assertIanaTimeZone"
       ]
     },
@@ -35288,6 +35401,24 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/orders/cod-risk.cron.spec.ts",
+      "module": "orders",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "CodRiskCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/orders/cod-risk.service.spec.ts",
+      "module": "orders",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "CodRiskService"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/orders/order-replication.listener.spec.ts",
       "module": "orders",
       "kind": "unit test",
@@ -35527,7 +35658,7 @@
       "file": "apps/api/src/modules/purchasing/purchasing.cron.spec.ts",
       "module": "purchasing",
       "kind": "unit test",
-      "cases": 2,
+      "cases": 5,
       "describes": [
         "PurchasingCron"
       ]
@@ -35558,7 +35689,7 @@
       "file": "apps/api/src/modules/purchasing/reorder.listener.spec.ts",
       "module": "purchasing",
       "kind": "unit test",
-      "cases": 5,
+      "cases": 9,
       "describes": [
         "PurchasingReorderListener"
       ]
@@ -35593,12 +35724,33 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/search/search-embedding.cron.spec.ts",
+      "module": "search",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "SearchEmbeddingCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/search/search-reindex.listener.spec.ts",
+      "module": "search",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "SearchReindexListener"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/search/search.service.spec.ts",
       "module": "search",
       "kind": "unit test",
-      "cases": 6,
+      "cases": 14,
       "describes": [
-        "SearchService"
+        "SearchService",
+        "SearchService — WO-9.5 semantic and visual search",
+        "embedPendingTranslations",
+        "searchByImage"
       ]
     },
     {
@@ -36066,6 +36218,26 @@
       "cases": 3,
       "describes": [
         "computeTender"
+      ]
+    },
+    {
+      "file": "packages/shared/src/cod-risk.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 19,
+      "describes": [
+        "computeCodRiskScore"
+      ]
+    },
+    {
+      "file": "packages/shared/src/demand-forecast.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 17,
+      "describes": [
+        "computeDemandForecast",
+        "suggestReorderQuantity",
+        "resolveLeadTimeDays"
       ]
     },
     {
@@ -37536,6 +37708,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925150000_add_cod_risk_reason_and_city_stats/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 21,
+      "bytes": 816,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -37566,8 +37747,8 @@
       "path": "apps/api/prisma/schema/orders.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 335,
-      "bytes": 14098,
+      "lines": 358,
+      "bytes": 15241,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -38455,11 +38636,20 @@
       ]
     },
     {
+      "path": "apps/api/src/core/common/cost-fields.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 44,
+      "bytes": 1603,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/common/cost-fields.ts",
       "area": "api",
       "kind": "module",
-      "lines": 72,
-      "bytes": 2539,
+      "lines": 98,
+      "bytes": 3594,
       "doc": "",
       "symbols": [
         {
@@ -38486,6 +38676,16 @@
           "name": "stripOrderListCost",
           "kind": "function",
           "line": 61
+        },
+        {
+          "name": "stripCodRiskFields",
+          "kind": "function",
+          "line": 82
+        },
+        {
+          "name": "stripCodRiskFieldsList",
+          "kind": "function",
+          "line": 92
         }
       ]
     },
@@ -39776,8 +39976,8 @@
       "path": "apps/api/src/core/prisma/enums.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 66,
-      "bytes": 2239,
+      "lines": 72,
+      "bytes": 2406,
       "doc": "",
       "symbols": []
     },
@@ -40194,8 +40394,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 366,
-      "bytes": 17816,
+      "lines": 384,
+      "bytes": 19718,
       "doc": "",
       "symbols": [
         {
@@ -40231,12 +40431,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 228
+          "line": 240
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 230
+          "line": 242
         }
       ]
     },
@@ -40437,8 +40637,8 @@
       "path": "apps/api/src/core/time/shop-time.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 157,
-      "bytes": 6257,
+      "lines": 175,
+      "bytes": 7016,
       "doc": "",
       "symbols": []
     },
@@ -40446,8 +40646,8 @@
       "path": "apps/api/src/core/time/shop-time.ts",
       "area": "api",
       "kind": "module",
-      "lines": 223,
-      "bytes": 8639,
+      "lines": 235,
+      "bytes": 9204,
       "doc": "Calendar days in the shop's timezone.",
       "symbols": [
         {
@@ -40461,49 +40661,54 @@
           "line": 41
         },
         {
+          "name": "shopLocalHour",
+          "kind": "function",
+          "line": 51
+        },
+        {
           "name": "startOfShopDay",
           "kind": "function",
-          "line": 100
+          "line": 112
         },
         {
           "name": "startOfShopDaysAgo",
           "kind": "function",
-          "line": 111
+          "line": 123
         },
         {
           "name": "startOfShopDayFromKey",
           "kind": "function",
-          "line": 124
+          "line": 136
         },
         {
           "name": "endOfShopDayFromKey",
           "kind": "function",
-          "line": 138
+          "line": 150
         },
         {
           "name": "startOfShopMonth",
           "kind": "function",
-          "line": 153
+          "line": 165
         },
         {
           "name": "shopDayKeys",
           "kind": "function",
-          "line": 163
+          "line": 175
         },
         {
           "name": "shopDaysBetween",
           "kind": "function",
-          "line": 180
+          "line": 192
         },
         {
           "name": "shopDayExpr",
           "kind": "function",
-          "line": 202
+          "line": 214
         },
         {
           "name": "assertIanaTimeZone",
           "kind": "function",
-          "line": 213
+          "line": 225
         }
       ]
     },
@@ -43828,8 +44033,8 @@
       "path": "apps/api/src/modules/inventory/inventory.cron.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 95,
-      "bytes": 3341,
+      "lines": 100,
+      "bytes": 3662,
       "doc": "",
       "symbols": []
     },
@@ -43837,14 +44042,14 @@
       "path": "apps/api/src/modules/inventory/inventory.cron.ts",
       "area": "api",
       "kind": "scheduled job",
-      "lines": 124,
-      "bytes": 3727,
+      "lines": 170,
+      "bytes": 5910,
       "doc": "",
       "symbols": [
         {
           "name": "InventoryCron",
           "kind": "class",
-          "line": 8
+          "line": 9
         }
       ]
     },
@@ -43929,24 +44134,24 @@
       "path": "apps/api/src/modules/inventory/inventory.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 582,
-      "bytes": 22159,
+      "lines": 590,
+      "bytes": 22699,
       "doc": "",
       "symbols": [
         {
           "name": "StockMoveInput",
           "kind": "interface",
-          "line": 20
+          "line": 21
         },
         {
           "name": "InsufficientStockError",
           "kind": "class",
-          "line": 37
+          "line": 38
         },
         {
           "name": "InventoryService",
           "kind": "class",
-          "line": 58
+          "line": 59
         }
       ]
     },
@@ -44706,11 +44911,69 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/orders/cod-risk.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 84,
+      "bytes": 2730,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/orders/cod-risk.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 82,
+      "bytes": 2745,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CodRiskCron",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orders/cod-risk.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 105,
+      "bytes": 4201,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/orders/cod-risk.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 86,
+      "bytes": 3495,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CodRiskScoreInput",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "CodRiskScoreResult",
+          "kind": "interface",
+          "line": 16
+        },
+        {
+          "name": "CodRiskService",
+          "kind": "class",
+          "line": 35
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/orders/dto/order.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 147,
-      "bytes": 3637,
+      "lines": 152,
+      "bytes": 3901,
       "doc": "",
       "symbols": [
         {
@@ -44741,7 +45004,7 @@
         {
           "name": "OrderHistoryQueryDto",
           "kind": "class",
-          "line": 132
+          "line": 137
         }
       ]
     },
@@ -44788,8 +45051,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 244,
-      "bytes": 10134,
+      "lines": 249,
+      "bytes": 10438,
       "doc": "",
       "symbols": []
     },
@@ -44797,8 +45060,8 @@
       "path": "apps/api/src/modules/orders/orders.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 134,
-      "bytes": 3897,
+      "lines": 143,
+      "bytes": 4277,
       "doc": "",
       "symbols": [
         {
@@ -44809,7 +45072,7 @@
         {
           "name": "OrdersAdminController",
           "kind": "class",
-          "line": 87
+          "line": 95
         }
       ]
     },
@@ -44817,14 +45080,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 46,
-      "bytes": 2412,
+      "lines": 50,
+      "bytes": 2549,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 45
+          "line": 49
         }
       ]
     },
@@ -44832,8 +45095,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1184,
-      "bytes": 46304,
+      "lines": 1207,
+      "bytes": 47335,
       "doc": "",
       "symbols": [
         {
@@ -44849,7 +45112,7 @@
         {
           "name": "OrdersService",
           "kind": "class",
-          "line": 91
+          "line": 92
         }
       ]
     },
@@ -46324,8 +46587,8 @@
       "path": "apps/api/src/modules/purchasing/purchasing.cron.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 67,
-      "bytes": 2346,
+      "lines": 144,
+      "bytes": 5432,
       "doc": "",
       "symbols": []
     },
@@ -46333,14 +46596,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.cron.ts",
       "area": "api",
       "kind": "scheduled job",
-      "lines": 71,
-      "bytes": 2483,
+      "lines": 118,
+      "bytes": 4780,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingCron",
           "kind": "class",
-          "line": 19
+          "line": 27
         }
       ]
     },
@@ -46392,8 +46655,8 @@
       "path": "apps/api/src/modules/purchasing/purchasing.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 657,
-      "bytes": 24441,
+      "lines": 664,
+      "bytes": 24814,
       "doc": "",
       "symbols": [
         {
@@ -46416,8 +46679,8 @@
       "path": "apps/api/src/modules/purchasing/reorder.listener.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 79,
-      "bytes": 2906,
+      "lines": 146,
+      "bytes": 6154,
       "doc": "",
       "symbols": []
     },
@@ -46425,14 +46688,14 @@
       "path": "apps/api/src/modules/purchasing/reorder.listener.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 51,
-      "bytes": 2021,
+      "lines": 83,
+      "bytes": 3679,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingReorderListener",
           "kind": "class",
-          "line": 16
+          "line": 24
         }
       ]
     },
@@ -46664,11 +46927,44 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/search/search-embedding.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 44,
+      "bytes": 1599,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/search/search-embedding.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 34,
+      "bytes": 1399,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SearchEmbeddingCron",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/search/search-reindex.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 34,
+      "bytes": 1377,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/search/search-reindex.listener.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 28,
-      "bytes": 1031,
+      "lines": 33,
+      "bytes": 1377,
       "doc": "",
       "symbols": [
         {
@@ -46682,19 +46978,19 @@
       "path": "apps/api/src/modules/search/search.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 48,
-      "bytes": 1453,
+      "lines": 73,
+      "bytes": 2405,
       "doc": "",
       "symbols": [
         {
           "name": "SearchController",
           "kind": "class",
-          "line": 10
+          "line": 20
         },
         {
           "name": "SearchAdminController",
           "kind": "class",
-          "line": 21
+          "line": 46
         }
       ]
     },
@@ -46702,14 +46998,14 @@
       "path": "apps/api/src/modules/search/search.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 12,
-      "bytes": 419,
+      "lines": 13,
+      "bytes": 503,
       "doc": "",
       "symbols": [
         {
           "name": "SearchModule",
           "kind": "class",
-          "line": 11
+          "line": 12
         }
       ]
     },
@@ -46717,8 +47013,8 @@
       "path": "apps/api/src/modules/search/search.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 118,
-      "bytes": 4600,
+      "lines": 294,
+      "bytes": 12278,
       "doc": "",
       "symbols": []
     },
@@ -46726,14 +47022,14 @@
       "path": "apps/api/src/modules/search/search.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 241,
-      "bytes": 11264,
+      "lines": 401,
+      "bytes": 18698,
       "doc": "",
       "symbols": [
         {
           "name": "SearchService",
           "kind": "class",
-          "line": 30
+          "line": 55
         }
       ]
     },
@@ -50572,8 +50868,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 596,
-      "bytes": 23395,
+      "lines": 600,
+      "bytes": 23668,
       "doc": "",
       "symbols": []
     },
@@ -50581,8 +50877,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 596,
-      "bytes": 31966,
+      "lines": 600,
+      "bytes": 32405,
       "doc": "",
       "symbols": []
     },
@@ -51526,14 +51822,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 312,
-      "bytes": 10138,
+      "lines": 324,
+      "bytes": 10684,
       "doc": "",
       "symbols": [
         {
           "name": "AdminInventoryPage",
           "kind": "default",
-          "line": 59
+          "line": 61
         }
       ]
     },
@@ -51811,14 +52107,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 556,
-      "bytes": 20551,
+      "lines": 565,
+      "bytes": 21023,
       "doc": "",
       "symbols": [
         {
           "name": "AdminOrderDetailPage",
           "kind": "default",
-          "line": 105
+          "line": 108
         }
       ]
     },
@@ -51841,14 +52137,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 252,
-      "bytes": 8257,
+      "lines": 279,
+      "bytes": 9203,
       "doc": "",
       "symbols": [
         {
           "name": "AdminOrdersPage",
           "kind": "default",
-          "line": 48
+          "line": 50
         }
       ]
     },
@@ -52021,14 +52317,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 200,
-      "bytes": 7253,
+      "lines": 204,
+      "bytes": 7442,
       "doc": "",
       "symbols": [
         {
           "name": "PurchaseOrderDetailPage",
           "kind": "default",
-          "line": 41
+          "line": 42
         }
       ]
     },
@@ -53216,8 +53512,8 @@
       "path": "apps/web/src/app/(storefront)/[locale]/shop/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 168,
-      "bytes": 6027,
+      "lines": 174,
+      "bytes": 6260,
       "doc": "",
       "symbols": [
         {
@@ -54392,19 +54688,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 71,
-      "bytes": 2589,
+      "lines": 75,
+      "bytes": 2793,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 64
+          "line": 68
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 68
+          "line": 72
         }
       ]
     },
@@ -54882,14 +55178,14 @@
       "path": "apps/web/src/components/storefront/search-box.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 131,
-      "bytes": 5264,
+      "lines": 134,
+      "bytes": 5355,
       "doc": "",
       "symbols": [
         {
           "name": "SearchBox",
           "kind": "function",
-          "line": 23
+          "line": 24
         }
       ]
     },
@@ -55000,6 +55296,21 @@
           "name": "StitchingTimeline",
           "kind": "function",
           "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/visual-search-button.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 89,
+      "bytes": 3217,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "VisualSearchButton",
+          "kind": "function",
+          "line": 22
         }
       ]
     },
@@ -55612,8 +55923,8 @@
       "path": "apps/web/src/lib/api.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 152,
-      "bytes": 5369,
+      "lines": 167,
+      "bytes": 6023,
       "doc": "",
       "symbols": [
         {
@@ -55629,47 +55940,47 @@
         {
           "name": "getProduct",
           "kind": "function",
-          "line": 104
+          "line": 119
         },
         {
           "name": "getCategories",
           "kind": "function",
-          "line": 108
+          "line": 123
         },
         {
           "name": "getFacets",
           "kind": "function",
-          "line": 112
+          "line": 127
         },
         {
           "name": "getStitchingServices",
           "kind": "function",
-          "line": 116
+          "line": 131
         },
         {
           "name": "getBanners",
           "kind": "function",
-          "line": 128
+          "line": 143
         },
         {
           "name": "getPage",
           "kind": "function",
-          "line": 132
+          "line": 147
         },
         {
           "name": "getPosts",
           "kind": "function",
-          "line": 136
+          "line": 151
         },
         {
           "name": "getPost",
           "kind": "function",
-          "line": 144
+          "line": 159
         },
         {
           "name": "getMenu",
           "kind": "function",
-          "line": 149
+          "line": 164
         }
       ]
     },
@@ -55927,8 +56238,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1302,
-      "bytes": 33883,
+      "lines": 1304,
+      "bytes": 34091,
       "doc": "",
       "symbols": [
         {
@@ -55969,607 +56280,607 @@
         {
           "name": "AdminTranslation",
           "kind": "interface",
-          "line": 110
+          "line": 112
         },
         {
           "name": "AdminVariant",
           "kind": "interface",
-          "line": 120
+          "line": 122
         },
         {
           "name": "AdminProduct",
           "kind": "interface",
-          "line": 139
+          "line": 141
         },
         {
           "name": "AdminCategory",
           "kind": "interface",
-          "line": 178
+          "line": 180
         },
         {
           "name": "AdminBrand",
           "kind": "interface",
-          "line": 189
+          "line": 191
         },
         {
           "name": "OptionValueTranslation",
           "kind": "interface",
-          "line": 199
+          "line": 201
         },
         {
           "name": "AdminOptionTemplateValue",
           "kind": "interface",
-          "line": 204
+          "line": 206
         },
         {
           "name": "AdminOptionTemplate",
           "kind": "interface",
-          "line": 213
+          "line": 215
         },
         {
           "name": "AdminProductOption",
           "kind": "interface",
-          "line": 222
+          "line": 224
         },
         {
           "name": "AdminRedirect",
           "kind": "interface",
-          "line": 232
+          "line": 234
         },
         {
           "name": "SeoHealthRow",
           "kind": "interface",
-          "line": 242
+          "line": 244
         },
         {
           "name": "AiSuggestionKind",
           "kind": "type",
-          "line": 251
+          "line": 253
         },
         {
           "name": "AiSuggestionStatus",
           "kind": "type",
-          "line": 252
+          "line": 254
         },
         {
           "name": "AiSuggestion",
           "kind": "interface",
-          "line": 254
+          "line": 256
         },
         {
           "name": "AiStatus",
           "kind": "interface",
-          "line": 268
+          "line": 270
         },
         {
           "name": "MeasurementFieldRow",
           "kind": "interface",
-          "line": 276
+          "line": 278
         },
         {
           "name": "GarmentType",
           "kind": "interface",
-          "line": 291
+          "line": 293
         },
         {
           "name": "AdminGarmentSizeChartRow",
           "kind": "interface",
-          "line": 311
+          "line": 313
         },
         {
           "name": "SizeRecommendation",
           "kind": "interface",
-          "line": 320
+          "line": 322
         },
         {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 332
+          "line": 334
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 345
+          "line": 347
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 358
+          "line": 360
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 378
+          "line": 380
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 385
+          "line": 387
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 393
+          "line": 395
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 411
+          "line": 413
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 419
+          "line": 421
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 429
+          "line": 431
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 438
+          "line": 440
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 449
+          "line": 451
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 464
+          "line": 466
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 479
+          "line": 481
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 495
+          "line": 497
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 508
+          "line": 510
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 515
+          "line": 517
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 524
+          "line": 526
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 534
+          "line": 536
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 546
+          "line": 548
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 559
+          "line": 561
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 565
+          "line": 567
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 576
+          "line": 578
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 583
+          "line": 585
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 589
+          "line": 591
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 598
+          "line": 600
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 606
+          "line": 608
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 611
+          "line": 613
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 618
+          "line": 620
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 626
+          "line": 628
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 632
+          "line": 634
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 638
+          "line": 640
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 648
+          "line": 650
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 654
+          "line": 656
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 666
+          "line": 668
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 670
+          "line": 672
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 679
+          "line": 681
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 683
+          "line": 685
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 692
+          "line": 694
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 699
+          "line": 701
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 706
+          "line": 708
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 713
+          "line": 715
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 723
+          "line": 725
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 731
+          "line": 733
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 738
+          "line": 740
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 744
+          "line": 746
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 749
+          "line": 751
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 759
+          "line": 761
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 765
+          "line": 767
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 771
+          "line": 773
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 778
+          "line": 780
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 787
+          "line": 789
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 789
+          "line": 791
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 800
+          "line": 802
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 805
+          "line": 807
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 811
+          "line": 813
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 813
+          "line": 815
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 822
+          "line": 824
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 831
+          "line": 833
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 833
+          "line": 835
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 850
+          "line": 852
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 855
+          "line": 857
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 857
+          "line": 859
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 871
+          "line": 873
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 873
+          "line": 875
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 884
+          "line": 886
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 899
+          "line": 901
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 906
+          "line": 908
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 908
+          "line": 910
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 933
+          "line": 935
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 941
+          "line": 943
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 949
+          "line": 951
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 956
+          "line": 958
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 973
+          "line": 975
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 980
+          "line": 982
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 992
+          "line": 994
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 1001
+          "line": 1003
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 1003
+          "line": 1005
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1015
+          "line": 1017
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 1021
+          "line": 1023
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 1028
+          "line": 1030
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 1033
+          "line": 1035
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1045
+          "line": 1047
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1054
+          "line": 1056
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1061
+          "line": 1063
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1075
+          "line": 1077
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1086
+          "line": 1088
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1090
+          "line": 1092
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1099
+          "line": 1101
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1107
+          "line": 1109
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1138
+          "line": 1140
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1171
+          "line": 1173
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1177
+          "line": 1179
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1195
+          "line": 1197
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1210
+          "line": 1212
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1219
+          "line": 1221
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1228
+          "line": 1230
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1244
+          "line": 1246
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1251
+          "line": 1253
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1259
+          "line": 1261
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1266
+          "line": 1268
         },
         {
           "name": "DashboardCardsResponse",
           "kind": "interface",
-          "line": 1283
+          "line": 1285
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1296
+          "line": 1298
         }
       ]
     },
@@ -60995,6 +61306,60 @@
       ]
     },
     {
+      "path": "packages/shared/src/cod-risk.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 199,
+      "bytes": 7162,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/cod-risk.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 167,
+      "bytes": 6637,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CodRiskAddress",
+          "kind": "interface",
+          "line": 4
+        },
+        {
+          "name": "CodRiskCityStats",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "CodRiskCustomerHistory",
+          "kind": "interface",
+          "line": 18
+        },
+        {
+          "name": "CodRiskThresholds",
+          "kind": "interface",
+          "line": 23
+        },
+        {
+          "name": "CodRiskInput",
+          "kind": "interface",
+          "line": 30
+        },
+        {
+          "name": "CodRiskResult",
+          "kind": "interface",
+          "line": 44
+        },
+        {
+          "name": "computeCodRiskScore",
+          "kind": "function",
+          "line": 70
+        }
+      ]
+    },
+    {
       "path": "packages/shared/src/collection-rules.ts",
       "area": "packages",
       "kind": "module",
@@ -61156,6 +61521,55 @@
           "name": "MenuKey",
           "kind": "type",
           "line": 47
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/demand-forecast.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 179,
+      "bytes": 7163,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/demand-forecast.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 112,
+      "bytes": 4996,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DemandForecastSale",
+          "kind": "interface",
+          "line": 7
+        },
+        {
+          "name": "DemandForecastInput",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "DemandForecast",
+          "kind": "interface",
+          "line": 23
+        },
+        {
+          "name": "computeDemandForecast",
+          "kind": "function",
+          "line": 39
+        },
+        {
+          "name": "suggestReorderQuantity",
+          "kind": "function",
+          "line": 87
+        },
+        {
+          "name": "resolveLeadTimeDays",
+          "kind": "function",
+          "line": 99
         }
       ]
     },
@@ -61516,8 +61930,8 @@
       "path": "packages/shared/src/enums.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 104,
-      "bytes": 3175,
+      "lines": 108,
+      "bytes": 3436,
       "doc": "Enum values mirrored from the Prisma schema.",
       "symbols": [
         {
@@ -61586,54 +62000,64 @@
           "line": 60
         },
         {
+          "name": "COD_RISK_ACTIONS",
+          "kind": "const",
+          "line": 63
+        },
+        {
+          "name": "CodRiskAction",
+          "kind": "type",
+          "line": 64
+        },
+        {
           "name": "STITCHING_STAGES",
           "kind": "const",
-          "line": 62
+          "line": 66
         },
         {
           "name": "StitchingStage",
           "kind": "type",
-          "line": 70
+          "line": 74
         },
         {
           "name": "LEAD_STATUSES",
           "kind": "const",
-          "line": 72
+          "line": 76
         },
         {
           "name": "LeadStatus",
           "kind": "type",
-          "line": 73
+          "line": 77
         },
         {
           "name": "INTERACTION_KINDS",
           "kind": "const",
-          "line": 75
+          "line": 79
         },
         {
           "name": "InteractionKind",
           "kind": "type",
-          "line": 84
+          "line": 88
         },
         {
           "name": "MEASUREMENT_UNITS",
           "kind": "const",
-          "line": 86
+          "line": 90
         },
         {
           "name": "MeasurementUnit",
           "kind": "type",
-          "line": 87
+          "line": 91
         },
         {
           "name": "nextStage",
           "kind": "function",
-          "line": 93
+          "line": 97
         },
         {
           "name": "previousStage",
           "kind": "function",
-          "line": 100
+          "line": 104
         }
       ]
     },
@@ -61730,8 +62154,8 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 38,
-      "bytes": 1618,
+      "lines": 40,
+      "bytes": 1681,
       "doc": "",
       "symbols": []
     },

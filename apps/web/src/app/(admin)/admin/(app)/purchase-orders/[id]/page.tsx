@@ -24,6 +24,7 @@ interface PurchaseOrder {
     quantityOrdered: number;
     quantityReceived: number;
     unitCost: number;
+    note: string | null;
     variant: {
       sku: string;
       product: { translations: { name: string }[] };
@@ -112,6 +113,9 @@ export default function PurchaseOrderDetailPage({ params }: { params: Promise<{ 
                       <div className="text-xs text-neutral-900/60">
                         {[item.variant.size, item.variant.color].filter(Boolean).join(' / ')}
                       </div>
+                      {item.note && (
+                        <div className="text-xs text-neutral-900/60 italic mt-0.5">{item.note}</div>
+                      )}
                     </>
                   ),
                 },

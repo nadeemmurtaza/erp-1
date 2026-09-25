@@ -459,6 +459,8 @@ export class PurchasingService {
     variantId: string;
     quantity: number;
     unitCost: number;
+    /** WO-9.3 (09-ai-layer.md) — VariantForecast.reasonEn, when the quantity was demand-forecast-driven and there's a notable seasonal signal worth a buyer's attention. Never overwrites an existing line's note with nothing. */
+    note?: string;
   }): Promise<void> {
     await this.prisma.$transaction(async (tx) => {
       // Serializes concurrent callers for the SAME supplier — otherwise two
@@ -490,7 +492,11 @@ export class PurchasingService {
         if (existingLine.quantityOrdered < input.quantity) {
           await tx.purchaseOrderItem.update({
             where: { id: existingLine.id },
-            data: { quantityOrdered: input.quantity, lineTotal: input.quantity * existingLine.unitCost },
+            data: {
+              quantityOrdered: input.quantity,
+              lineTotal: input.quantity * existingLine.unitCost,
+              note: input.note ?? existingLine.note,
+            },
           });
         }
       } else {
@@ -501,6 +507,7 @@ export class PurchasingService {
             quantityOrdered: input.quantity,
             unitCost: input.unitCost,
             lineTotal: input.quantity * input.unitCost,
+            note: input.note,
           },
         });
       }

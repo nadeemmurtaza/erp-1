@@ -6,6 +6,8 @@ import { OrdersService } from './orders.service';
 import { BackorderListener } from './backorder.listener';
 import { OrderReplicationListener } from './order-replication.listener';
 import { ShipmentStatusListener } from './shipment-status.listener';
+import { CodRiskService } from './cod-risk.service';
+import { CodRiskCron } from './cod-risk.cron';
 
 import { InventoryModule } from '../inventory/inventory.module';
 import { TaxModule } from '../tax/tax.module';
@@ -39,6 +41,8 @@ import { GiftCardsModule } from '../giftcards/giftcards.module';
     BackorderListener,
     OrderReplicationListener,
     ShipmentStatusListener,
+    CodRiskService,
+    CodRiskCron,
   ],
   exports: [OrdersService],
 })

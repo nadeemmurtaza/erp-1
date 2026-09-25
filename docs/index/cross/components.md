@@ -3,7 +3,7 @@
 
 # Components
 
-All **97** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **98** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -127,7 +127,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/storefront` (34)
+### `apps/web/src/components/storefront` (35)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -165,13 +165,14 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `sort-select.tsx` | `SortSelect` | client | 1 |  |
 | `stitching-panel.tsx` | `StitchingSelection` `CartStitchingRequest` `StitchingPanel` `prepareStitching` | client | 1 |  |
 | `stitching-timeline.tsx` | `TimelineEvent` `StitchingTimeline` | client | 2 |  |
+| `visual-search-button.tsx` | `VisualSearchButton` | client | 1 |  |
 
 ### `apps/web/src/components/ui` (16)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `badge.tsx` | `BadgeTone` `Badge` | server | 30 |  |
-| `button.tsx` | `ButtonProps` `Button` | server | 2 |  |
+| `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 7 |  |
 | `dialog.tsx` | `Dialog` | client | 3 |  |

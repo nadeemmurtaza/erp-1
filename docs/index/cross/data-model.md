@@ -3,7 +3,7 @@
 
 # Data model
 
-All **203** Prisma models and **88** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **204** Prisma models and **88** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -43,7 +43,7 @@ against a real database.
 | [`measurements.prisma`](../data/measurements.md) | 4 | 1 | [`measurements`](../modules/measurements.md) | GarmentSizeChart, GarmentType, MeasurementField, MeasurementProfile |
 | [`notification-preferences.prisma`](../data/notification-preferences.md) | 1 | 2 | [`notification-preferences`](../modules/notification-preferences.md) | NotificationPreference |
 | [`onsite-messaging.prisma`](../data/onsite-messaging.md) | 3 | 2 | core platform | NewsletterSubscriber, OnsiteMessage, OnsiteMessageTranslation |
-| [`orders.prisma`](../data/orders.md) | 5 | 5 | [`orders`](../modules/orders.md) | Order, OrderItem, OrderNumberCounter, OrderStatusEvent, Shipment |
+| [`orders.prisma`](../data/orders.md) | 6 | 5 | [`orders`](../modules/orders.md) | CityCodRiskStat, Order, OrderItem, OrderNumberCounter, OrderStatusEvent, Shipment |
 | [`organization.prisma`](../data/organization.md) | 5 | 3 | [`organization`](../modules/organization.md) | AdminScope, BrandPolicy, Node, Organization, RetailBrand |
 | [`parties.prisma`](../data/parties.md) | 2 | 1 | [`parties`](../modules/parties.md) | Party, PartyRoleAssignment |
 | [`payments.prisma`](../data/payments.md) | 1 | 1 | [`payments`](../modules/payments.md) | Payment |
@@ -96,6 +96,7 @@ against a real database.
 | [`CashMovement`](../data/pos.md#cashmovement) | `pos` | 8 | 1 | id | One physical cash movement at the drawer during a shift — always a positive `amountMinor`… |
 | [`Category`](../data/catalog.md#category) | `catalog` | 13 | 2 | id |  |
 | [`CategoryTranslation`](../data/catalog.md#categorytranslation) | `catalog` | 6 | 1 | id |  |
+| [`CityCodRiskStat`](../data/orders.md#citycodriskstat) | `orders` | 5 | 0 | city | WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "… |
 | [`Collection`](../data/catalog.md#collection) | `catalog` | 10 | 0 | id |  |
 | [`CollectionProduct`](../data/catalog.md#collectionproduct) | `catalog` | 5 | 2 | — | Manual membership and manual sort order. |
 | [`CollectionTranslation`](../data/catalog.md#collectiontranslation) | `catalog` | 8 | 1 | id |  |
@@ -153,7 +154,7 @@ against a real database.
 | [`OptionTemplateTranslation`](../data/catalog.md#optiontemplatetranslation) | `catalog` | 5 | 1 | id |  |
 | [`OptionTemplateValue`](../data/catalog.md#optiontemplatevalue) | `catalog` | 8 | 1 | id |  |
 | [`OptionTemplateValueTranslation`](../data/catalog.md#optiontemplatevaluetranslation) | `catalog` | 5 | 1 | id |  |
-| [`Order`](../data/orders.md#order) | `orders` | 54 | 5 | id |  |
+| [`Order`](../data/orders.md#order) | `orders` | 55 | 5 | id |  |
 | [`OrderDiscount`](../data/promotions.md#orderdiscount) | `promotions` | 10 | 2 | id | Which discounts an order actually received, so it can explain itself. |
 | [`OrderEconomics`](../data/finance.md#ordereconomics) | `finance` | 12 | 1 | orderId | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURN… |
 | [`OrderItem`](../data/orders.md#orderitem) | `orders` | 38 | 4 | id |  |

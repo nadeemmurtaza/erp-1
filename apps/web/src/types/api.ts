@@ -103,6 +103,8 @@ export interface ProductListQuery {
   minPrice?: number;
   maxPrice?: number;
   sort?: 'featured' | 'newest' | 'price_asc' | 'price_desc' | 'name';
+  /** WO-9.5 — product slugs already ranked by a /search/by-image call; when set, every other filter is ignored (visual search returns its own bounded, unpaginated result set). */
+  visualSlugs?: string[];
 }
 
 // --- Admin shapes ----------------------------------------------------------

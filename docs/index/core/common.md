@@ -3,7 +3,7 @@
 
 # Core: `common`
 
-Shared platform — available to every module, part of no feature · 6 files
+Shared platform — available to every module, part of no feature · 7 files
 
 
 > FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control account (Accounts Receivable or Accounts Payable), so it is unit-testable without a database.
@@ -13,7 +13,7 @@ Source: `apps/api/src/core/common/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 453 lines)
+## Files (7 · 523 lines)
 
 All paths relative to `apps/api/src/core/common`.
 
@@ -21,7 +21,8 @@ All paths relative to `apps/api/src/core/common`.
 |---|---|---|---|---|
 | `aging.spec.ts` | unit test | 75 | — |  |
 | `aging.ts` | module | 76 | 4 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
-| `cost-fields.ts` | module | 72 | 5 | The permission that gates visibility of cost / margin data. |
+| `cost-fields.spec.ts` | unit test | 44 | — |  |
+| `cost-fields.ts` | module | 98 | 7 | The permission that gates visibility of cost / margin data. |
 | `pagination.dto.ts` | dto | 77 | 4 |  |
 | `all-exceptions.filter.ts` | module | 136 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
 | `sales-revenue.ts` | module | 17 | 1 | The one place "does this order count as revenue" is decided. |
@@ -60,11 +61,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `aging.spec.ts` | 7 | ageMovements |
+| `cost-fields.spec.ts` | 3 | stripCodRiskFields · stripCodRiskFieldsList |
 
 
 ## Every export in this unit
@@ -80,6 +82,8 @@ check there before adding another.
 | `stripProductListCost` | function | `cost-fields.ts:30` | Same as stripProductCost but for a paginated list { data: Product[] }. |
 | `stripOrderCost` | function | `cost-fields.ts:48` | Strips unitCost from each order item. |
 | `stripOrderListCost` | function | `cost-fields.ts:61` | Same as stripOrderCost but for a paginated list { data: Order[] }. |
+| `stripCodRiskFields` | function | `cost-fields.ts:82` | WO-9.4 (09-ai-layer.md) — codRiskScore/codRiskAction/codRiskReasonEn exist for staff deciding whether to call… |
+| `stripCodRiskFieldsList` | function | `cost-fields.ts:92` | Same as stripCodRiskFields but for a paginated list { data: Order[] }. |
 | `MAX_PAGE_SIZE` | const | `pagination.dto.ts:5` |  |
 | `PaginationQueryDto` | class | `pagination.dto.ts:12` | Every list endpoint takes these. |
 | `PaginatedResult` | interface | `pagination.dto.ts:47` |  |

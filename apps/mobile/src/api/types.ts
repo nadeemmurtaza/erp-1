@@ -260,4 +260,101 @@ export interface ShippingQuote {
   codFee: number;
 }
 
+// --- Phase 7: customer portal ------------------------------------------------
+
+export interface WishlistItem {
+  id: string;
+  productId: string;
+  slug: string;
+  name: string;
+  imageUrl: string | null;
+  price: number;
+  variantId: string | null;
+  variantLabel: string | null;
+  inStock: boolean;
+  createdAt: string;
+}
+
+export type ReviewStatus = 'PENDING' | 'PUBLISHED' | 'REJECTED';
+
+export interface Review {
+  id: string;
+  productId: string;
+  userId: string;
+  rating: number;
+  title: string | null;
+  body: string | null;
+  status: ReviewStatus;
+  staffReply: string | null;
+  helpfulCount: number;
+  createdAt: string;
+}
+
+export type ReturnReasonCode =
+  | 'DEFECTIVE'
+  | 'WRONG_ITEM'
+  | 'DAMAGED_IN_TRANSIT'
+  | 'SIZE_FIT_ISSUE'
+  | 'CHANGED_MIND'
+  | 'OTHER';
+
+export type ReturnStatus = 'REQUESTED' | 'APPROVED' | 'REJECTED' | 'REFUNDED';
+
+export interface ReturnRequest {
+  id: string;
+  status: ReturnStatus;
+  reasonCode: ReturnReasonCode;
+  note: string | null;
+  decisionNote: string | null;
+  createdAt: string;
+  order: { number: string; status: string; deliveredAt: string | null };
+  lines: Array<{ id: string; quantity: number; orderItem: { id: string; nameEn: string; quantity: number; lineTotal: number } }>;
+}
+
+export interface LoyaltyTier {
+  id: string;
+  name: string;
+  minSpend: number;
+  benefitDescriptionEn: string;
+  benefitDescriptionUr: string | null;
+}
+
+export interface LoyaltyBalance {
+  points: number;
+  tier: LoyaltyTier | null;
+  trailing12MonthSpend: number;
+}
+
+export interface LoyaltyLedgerEntry {
+  id: string;
+  type: 'EARNED' | 'REDEEMED' | 'REVERSED' | 'ADJUSTED';
+  points: number;
+  note: string | null;
+  createdAt: string;
+}
+
+export interface Referral {
+  id: string;
+  rewardedAt: string | null;
+  createdAt: string;
+}
+
+export interface StoreCreditLedgerEntry {
+  id: string;
+  delta: number;
+  balanceAfter: number;
+  reason: string;
+  note: string | null;
+  createdAt: string;
+}
+
+export type NotificationChannel = 'EMAIL' | 'SMS' | 'WHATSAPP' | 'PUSH';
+export type NotificationCategory = 'STITCHING_PROGRESS' | 'MARKETING' | 'BACK_IN_STOCK';
+
+export interface NotificationPreferenceCell {
+  channel: NotificationChannel;
+  category: NotificationCategory;
+  enabled: boolean;
+}
+
 export type { Locale };

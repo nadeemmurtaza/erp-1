@@ -77,6 +77,12 @@ function Navigation() {
       <Stack.Screen name="measurements/edit" options={{ title: t('measurements.add') }} />
       <Stack.Screen name="workshop/index" options={{ title: t('workshop.title') }} />
       <Stack.Screen name="workshop/[id]" options={{ title: '' }} />
+      <Stack.Screen name="wishlist" options={{ title: t('wishlist.title') }} />
+      <Stack.Screen name="reviews" options={{ title: t('reviews.myTitle') }} />
+      <Stack.Screen name="returns" options={{ title: t('returns.title') }} />
+      <Stack.Screen name="loyalty" options={{ title: t('loyalty.title') }} />
+      <Stack.Screen name="credit" options={{ title: t('credit.title') }} />
+      <Stack.Screen name="notifications" options={{ title: t('notifications.title') }} />
     </Stack>
   );
 }

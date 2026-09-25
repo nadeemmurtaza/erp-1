@@ -2,8 +2,8 @@
 
 **Read `00-HOUSE-RULES.md` first.** Depends on Phases 5 and 6.
 
-> **Status (2026-09-25): WO-7.1 through WO-7.8 built, verified against a
-> real database — WO-7.9 not started.** Five new core modules —
+> **Status (2026-09-25): WO-7.1 through WO-7.9 built, verified against a
+> real database — Phase 7 complete.** Five new core modules —
 > `reviews`, `wishlist`, `returns`, `loyalty`, `notification-preferences`
 > (the last's service lives in `core/notifications/` since every other
 > module needs to read it) — plus store-credit/gift-card redemption added

@@ -2252,7 +2252,7 @@ this decided."
 ### Status
 **Accepted.**
 
-## ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 deferred
+## ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty, mobile parity) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 mobile parity
 
 ### Context
 `docs/implementation/customer-portal-loyalty/07-customer-portal.md` (WO-7.1
@@ -2354,16 +2354,39 @@ either blocking on it or silently inventing Phase 6 inside this work order.
    claiming to prevent all abuse; a determined bad actor using two real
    accounts is a known, named limitation, not a gap discovered later.
 
-7. **WO-7.9 (mobile app parity) is deferred, not attempted, in this pass.**
-   `apps/mobile` is a separate application with its own build, its own
-   component library, and no existing precedent in this session for
-   porting a storefront capability into it. Attempting it inside the same
-   pass as five new backend modules and twelve new/rewritten web pages
-   would risk a shallow, unverified port of all of WO-7.1 through 7.8 at
-   once rather than a properly scoped mobile work order on its own. This
+7. **WO-7.9 (mobile app parity) was built as a follow-up pass, once
+   WO-7.1–7.8 were verified, rather than folded into the same pass.**
+   `apps/mobile` is a separate application with its own build and component
+   library; sequencing it after the backend and web surfaces were already
+   tested against a real database meant every mobile screen could be built
+   directly against a proven API contract rather than a moving target. This
    mirrors this same body of work's own precedent of sequencing genuinely
-   separable pieces (Giftkarta after WO-5) rather than folding them in
-   silently.
+   separable pieces (Giftkarta after WO-5). Every screen the doc names —
+   returns, tracking timeline, credit and gift cards, reviews, wishlist,
+   loyalty and referrals — plus notification preferences (named by the
+   phase's own work-order list, if not by WO-7.9's one-sentence summary)
+   now exists in the Expo app, reachable from the account tab, with wording
+   drawn from the same terminology as the web catalogue's `account.*`
+   strings (`apps/mobile/src/i18n/messages.ts`'s own test already enforces
+   its en/ur catalogues stay in step; there is no separate web-vs-mobile
+   wording test, so this ADR is where that intent is recorded instead).
+
+8. **Two narrow, honest gaps inside WO-7.9 itself:** the mobile wishlist
+   requires sign-in — there is no on-device guest wishlist store to build
+   and migrate the way `apps/web/src/lib/wishlist.ts`'s pre-existing
+   `localStorage` implementation forced WO-7.6 to. Building a parallel
+   AsyncStorage-backed guest wishlist with its own migration flow, purely
+   to mirror a web implementation detail that exists there only because it
+   predates the server-side model, would be a duplicate implementation of
+   the same migration logic already shipped once for a real reason. A
+   signed-out tap on the mobile "Save" button routes to sign-in instead.
+   Separately, the order invoice — a browser `window.print()` page — is
+   opened from the order screen via `Linking.openURL()` to the storefront's
+   own origin (`EXPO_PUBLIC_SITE_URL`, mirroring `EXPO_PUBLIC_API_URL`'s own
+   env-var pattern in `src/api/client.ts`) rather than rebuilt as a native
+   share sheet or a second PDF pipeline — the same "no PDF dependency to
+   build on" reasoning from §3 above, applied to the app that has even less
+   precedent for one than the web app does.
 
 ### Consequences
 - The tracking timeline, invoice, and returns flow are each real, working,
@@ -2379,8 +2402,11 @@ either blocking on it or silently inventing Phase 6 inside this work order.
   approval both have a named, single integration point to pick up real
   shipment events and real refund/restock automation, rather than needing
   a rewrite.
-- WO-7.9 remains fully unstarted and is the natural next step; it is not
-  silently considered "done" by this phase's completion.
+- WO-7.9 is built and verified (`apps/mobile` typecheck, its own Jest suite,
+  and the repository's full `pnpm typecheck`/`pnpm test` all pass with it
+  included) — Phase 7's exit criterion #6 ("every web portal feature exists
+  in the Expo app with identical wording") is met for every screen named in
+  the work order, with the two narrow, named exceptions in §8 above.
 
 ### Status
 **Accepted.**

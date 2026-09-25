@@ -14,8 +14,14 @@ Every top-level export in `mobile`, with the line to open.
 |---|---|---|---|---|
 | `_layout.tsx` | `RootLayout` | default | :22 |  |
 | `checkout.tsx` | `CheckoutScreen` | default | :35 | Address, payment method, done. |
+| `credit.tsx` | `CreditScreen` | default | :11 | WO-7.4 — balance, full history, and redeeming a gift card into the account. |
 | `login.tsx` | `LoginScreen` | default | :10 | Signing in. |
+| `loyalty.tsx` | `LoyaltyScreen` | default | :11 | WO-7.7 — points, tiers, redemption, and referrals. |
+| `notifications.tsx` | `NotificationPreferencesScreen` | default | :13 | WO-7.8 — per-channel, per-category. |
 | `payment.tsx` | `PaymentScreen` | default | :20 | Hands the customer to JazzCash/Easypaisa's hosted checkout inside a WebView — the same auto-submitt… |
+| `returns.tsx` | `ReturnsScreen` | default | :49 | WO-7.3 — a return end to end without contacting the shop. |
+| `reviews.tsx` | `MyReviewsScreen` | default | :16 | WO-7.5 — what this customer has said about what they bought. |
+| `wishlist.tsx` | `WishlistScreen` | default | :21 | WO-7.6 — the server-side wishlist, and asking to be told when something comes back in stock. |
 
 ### `apps/mobile/app/(tabs)`
 
@@ -38,14 +44,14 @@ Every top-level export in `mobile`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `[number].tsx` | `OrderScreen` | default | :26 | One order: what was bought, where it is, and — for a stitched line — how far along the garment is. |
+| `[number].tsx` | `OrderScreen` | default | :28 | One order: what was bought, where it is, and — for a stitched line — how far along the garment is. |
 | `index.tsx` | `OrdersScreen` | default | :12 | Everything this customer has ordered, newest first. |
 
 ### `apps/mobile/app/product`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `[slug].tsx` | `ProductScreen` | default | :38 | One product, and the decision that goes with it. |
+| `[slug].tsx` | `ProductScreen` | default | :40 | One product, and the decision that goes with it. |
 
 ### `apps/mobile/app/stitching`
 
@@ -75,47 +81,74 @@ Every top-level export in `mobile`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `client.ts` | `API_URL` | const | :17 | The one place the app talks to the API. |
-| `client.ts` | `ApiError` | class | :33 |  |
-| `client.ts` | `setSignOutHandler` | function | :47 | Lets the auth provider clear its state when a refresh finally fails. |
-| `client.ts` | `getAccessToken` | function | :70 |  |
-| `client.ts` | `storeTokens` | function | :74 |  |
-| `client.ts` | `clearTokens` | function | :79 |  |
-| `client.ts` | `getCartToken` | function | :84 |  |
-| `client.ts` | `setCartToken` | function | :88 |  |
-| `client.ts` | `clearCartToken` | function | :92 |  |
-| `client.ts` | `RequestOptions` | interface | :96 |  |
-| `client.ts` | `toQuery` | function | :105 |  |
-| `client.ts` | `api` | function | :117 |  |
-| `resources.ts` | `listProducts` | function | :26 | --- Catalogue -------------------------------------------------------------- |
-| `resources.ts` | `getProduct` | function | :38 |  |
-| `resources.ts` | `listStitchingServices` | function | :42 |  |
-| `resources.ts` | `listOptionGroups` | function | :49 |  |
-| `resources.ts` | `getCart` | function | :62 |  |
-| `resources.ts` | `addToCart` | function | :66 |  |
-| `resources.ts` | `updateCartItem` | function | :79 |  |
-| `resources.ts` | `removeCartItem` | function | :83 |  |
-| `resources.ts` | `mergeCart` | function | :87 |  |
-| `resources.ts` | `login` | function | :93 | --- Auth ------------------------------------------------------------------- |
-| `resources.ts` | `logout` | function | :104 |  |
-| `resources.ts` | `listGarmentTypes` | function | :110 | --- Measurements ----------------------------------------------------------- |
-| `resources.ts` | `listProfiles` | function | :114 |  |
-| `resources.ts` | `createProfile` | function | :118 |  |
-| `resources.ts` | `updateProfile` | function | :127 |  |
-| `resources.ts` | `deleteProfile` | function | :134 |  |
-| `resources.ts` | `placeOrder` | function | :140 | --- Orders ----------------------------------------------------------------- |
-| `resources.ts` | `myOrders` | function | :148 |  |
-| `resources.ts` | `getOrder` | function | :152 |  |
-| `resources.ts` | `trackOrder` | function | :156 |  |
-| `resources.ts` | `uploadReceipt` | function | :160 |  |
-| `resources.ts` | `FormDataFile` | interface | :168 |  |
-| `resources.ts` | `paymentMethods` | function | :174 |  |
-| `resources.ts` | `bookStitching` | function | :180 | --- Stitching -------------------------------------------------------------- |
-| `resources.ts` | `trackBooking` | function | :196 |  |
-| `resources.ts` | `listJobs` | function | :206 | --- The workshop, for tailors --------------------------------------------- |
-| `resources.ts` | `getJob` | function | :216 |  |
-| `resources.ts` | `changeJobStage` | function | :220 |  |
-| `resources.ts` | `registerDevice` | function | :230 | --- Push notifications ----------------------------------------------------- |
-| `resources.ts` | `unregisterDevice` | function | :239 |  |
+| `client.ts` | `SITE_URL` | const | :27 | The storefront's own origin — used only to open the browser-print invoice page (WO-7.2) in the syst… |
+| `client.ts` | `ApiError` | class | :42 |  |
+| `client.ts` | `setSignOutHandler` | function | :56 | Lets the auth provider clear its state when a refresh finally fails. |
+| `client.ts` | `getAccessToken` | function | :79 |  |
+| `client.ts` | `storeTokens` | function | :83 |  |
+| `client.ts` | `clearTokens` | function | :88 |  |
+| `client.ts` | `getCartToken` | function | :93 |  |
+| `client.ts` | `setCartToken` | function | :97 |  |
+| `client.ts` | `clearCartToken` | function | :101 |  |
+| `client.ts` | `RequestOptions` | interface | :105 |  |
+| `client.ts` | `toQuery` | function | :114 |  |
+| `client.ts` | `api` | function | :126 |  |
+| `resources.ts` | `listProducts` | function | :36 | --- Catalogue -------------------------------------------------------------- |
+| `resources.ts` | `getProduct` | function | :48 |  |
+| `resources.ts` | `listStitchingServices` | function | :52 |  |
+| `resources.ts` | `listOptionGroups` | function | :59 |  |
+| `resources.ts` | `getCart` | function | :72 |  |
+| `resources.ts` | `addToCart` | function | :76 |  |
+| `resources.ts` | `updateCartItem` | function | :89 |  |
+| `resources.ts` | `removeCartItem` | function | :93 |  |
+| `resources.ts` | `mergeCart` | function | :97 |  |
+| `resources.ts` | `login` | function | :103 | --- Auth ------------------------------------------------------------------- |
+| `resources.ts` | `logout` | function | :114 |  |
+| `resources.ts` | `listGarmentTypes` | function | :120 | --- Measurements ----------------------------------------------------------- |
+| `resources.ts` | `listProfiles` | function | :124 |  |
+| `resources.ts` | `createProfile` | function | :128 |  |
+| `resources.ts` | `updateProfile` | function | :137 |  |
+| `resources.ts` | `deleteProfile` | function | :144 |  |
+| `resources.ts` | `placeOrder` | function | :150 | --- Orders ----------------------------------------------------------------- |
+| `resources.ts` | `myOrders` | function | :158 |  |
+| `resources.ts` | `getOrder` | function | :162 |  |
+| `resources.ts` | `trackOrder` | function | :166 |  |
+| `resources.ts` | `uploadReceipt` | function | :170 |  |
+| `resources.ts` | `FormDataFile` | interface | :178 |  |
+| `resources.ts` | `paymentMethods` | function | :184 |  |
+| `resources.ts` | `bookStitching` | function | :190 | --- Stitching -------------------------------------------------------------- |
+| `resources.ts` | `trackBooking` | function | :206 |  |
+| `resources.ts` | `listJobs` | function | :216 | --- The workshop, for tailors --------------------------------------------- |
+| `resources.ts` | `getJob` | function | :226 |  |
+| `resources.ts` | `changeJobStage` | function | :230 |  |
+| `resources.ts` | `listWishlist` | function | :242 | --- Wishlist (WO-7.6) ------------------------------------------------------- |
+| `resources.ts` | `addToWishlist` | function | :246 |  |
+| `resources.ts` | `removeFromWishlist` | function | :250 |  |
+| `resources.ts` | `requestBackInStockAlert` | function | :254 |  |
+| `resources.ts` | `cancelBackInStockAlert` | function | :258 |  |
+| `resources.ts` | `productReviews` | function | :264 | --- Reviews (WO-7.5) --------------------------------------------------------- |
+| `resources.ts` | `myReviews` | function | :268 |  |
+| `resources.ts` | `submitReview` | function | :272 |  |
+| `resources.ts` | `markReviewHelpful` | function | :281 |  |
+| `resources.ts` | `returnEligibility` | function | :287 | --- Returns (WO-7.3) --------------------------------------------------------- |
+| `resources.ts` | `myReturns` | function | :291 |  |
+| `resources.ts` | `createReturn` | function | :295 |  |
+| `resources.ts` | `loyaltyTiers` | function | :306 | --- Loyalty and referrals (WO-7.7) ------------------------------------------ |
+| `resources.ts` | `loyaltyBalance` | function | :310 |  |
+| `resources.ts` | `loyaltyLedger` | function | :314 |  |
+| `resources.ts` | `redeemLoyaltyPoints` | function | :318 |  |
+| `resources.ts` | `myReferralCode` | function | :322 |  |
+| `resources.ts` | `myReferrals` | function | :326 |  |
+| `resources.ts` | `applyReferralCode` | function | :330 |  |
+| `resources.ts` | `storeCreditBalance` | function | :336 | --- Store credit and gift cards (WO-7.4) ------------------------------------- |
+| `resources.ts` | `storeCreditLedger` | function | :340 |  |
+| `resources.ts` | `redeemGiftCardIntoAccount` | function | :344 |  |
+| `resources.ts` | `getNotificationPreferences` | function | :350 | --- Notification preferences (WO-7.8) --------------------------------------- |
+| `resources.ts` | `updateNotificationPreferences` | function | :354 |  |
+| `resources.ts` | `ReorderResult` | interface | :362 | --- Reorder (WO-7.2) ---------------------------------------------------------- |
+| `resources.ts` | `reorder` | function | :368 |  |
+| `resources.ts` | `registerDevice` | function | :376 | --- Push notifications ----------------------------------------------------- |
+| `resources.ts` | `unregisterDevice` | function | :385 |  |
 | `types.ts` | `Paginated` | interface | :5 | Shapes the API returns. |
 | `types.ts` | `ProductVariant` | interface | :17 |  |
 | `types.ts` | `Product` | interface | :29 | Already flattened into one locale by the API. |
@@ -135,6 +168,20 @@ Every top-level export in `mobile`, with the line to open.
 | `types.ts` | `WorkshopJob` | interface | :231 |  |
 | `types.ts` | `PaymentMethod` | interface | :247 |  |
 | `types.ts` | `ShippingQuote` | interface | :257 |  |
+| `types.ts` | `WishlistItem` | interface | :265 | --- Phase 7: customer portal ------------------------------------------------ |
+| `types.ts` | `ReviewStatus` | type | :278 |  |
+| `types.ts` | `Review` | interface | :280 |  |
+| `types.ts` | `ReturnReasonCode` | type | :293 |  |
+| `types.ts` | `ReturnStatus` | type | :301 |  |
+| `types.ts` | `ReturnRequest` | interface | :303 |  |
+| `types.ts` | `LoyaltyTier` | interface | :314 |  |
+| `types.ts` | `LoyaltyBalance` | interface | :322 |  |
+| `types.ts` | `LoyaltyLedgerEntry` | interface | :328 |  |
+| `types.ts` | `Referral` | interface | :336 |  |
+| `types.ts` | `StoreCreditLedgerEntry` | interface | :342 |  |
+| `types.ts` | `NotificationChannel` | type | :351 |  |
+| `types.ts` | `NotificationCategory` | type | :352 |  |
+| `types.ts` | `NotificationPreferenceCell` | interface | :354 |  |
 
 ### `apps/mobile/src/components`
 
@@ -170,7 +217,7 @@ Every top-level export in `mobile`, with the line to open.
 | `index.tsx` | `I18nProvider` | function | :29 |  |
 | `index.tsx` | `useI18n` | function | :71 |  |
 | `messages.ts` | `MESSAGES` | const | :10 | The app's copy, in both languages. |
-| `messages.ts` | `MessageKey` | type | :342 |  |
+| `messages.ts` | `MessageKey` | type | :586 |  |
 
 ### `apps/mobile/src/state`
 

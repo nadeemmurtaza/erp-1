@@ -2683,7 +2683,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:207</sub>
 - Phase 7 exit criteria  <sub>:216</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>2,387 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,413 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2718,7 +2718,7 @@ _no second-level headings_
 - ADR-028 — WO-5 (Phase 5: discounts, promo codes, gift cards, store credit) built from zero — permission split, checkout coupling, tender-as-Payment-rows, and the evaluator's own rounding/scope choices  <sub>:1963</sub>
 - ADR-029 — Third-party gift-card redemption at checkout (Giftkarta): a `PaymentProvider`, not a WO-5 tender field; code collected post-order; API contract unverified  <sub>:2095</sub>
 - ADR-030 — `docs/implementation/`, `docs/erp-lenses/` and `docs/design/` reorganized into domain subfolders, filenames unchanged  <sub>:2182</sub>
-- ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 deferred  <sub>:2255</sub>
+- ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty, mobile parity) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 mobile parity  <sub>:2255</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

@@ -3,7 +3,7 @@
 
 # Screens
 
-All **180** routable files across the web app, the till and the mobile app.
+All **186** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -140,23 +140,29 @@ _none_
 | `/admin/users/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx` |
 | `/admin/workshop/insights` | page | client | `apps/web/src/app/(admin)/admin/(app)/workshop/insights/page.tsx` |
 
-### mobile (15)
+### mobile (21)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
 | `/account` | screen | client | `apps/mobile/app/(tabs)/account.tsx` |
 | `/cart` | screen | client | `apps/mobile/app/(tabs)/cart.tsx` |
 | `/checkout` | screen | client | `apps/mobile/app/checkout.tsx` |
+| `/credit` | screen | client | `apps/mobile/app/credit.tsx` |
 | `/index` | screen | client | `apps/mobile/app/(tabs)/index.tsx` |
 | `/login` | screen | client | `apps/mobile/app/login.tsx` |
+| `/loyalty` | screen | client | `apps/mobile/app/loyalty.tsx` |
 | `/measurements/edit` | screen | client | `apps/mobile/app/measurements/edit.tsx` |
 | `/measurements/index` | screen | client | `apps/mobile/app/measurements/index.tsx` |
+| `/notifications` | screen | client | `apps/mobile/app/notifications.tsx` |
 | `/orders/[number]` | screen | client | `apps/mobile/app/orders/[number].tsx` |
 | `/orders/index` | screen | client | `apps/mobile/app/orders/index.tsx` |
 | `/payment` | screen | client | `apps/mobile/app/payment.tsx` |
 | `/product/[slug]` | screen | client | `apps/mobile/app/product/[slug].tsx` |
+| `/returns` | screen | client | `apps/mobile/app/returns.tsx` |
+| `/reviews` | screen | client | `apps/mobile/app/reviews.tsx` |
 | `/stitching` | screen | client | `apps/mobile/app/(tabs)/stitching.tsx` |
 | `/stitching/[number]` | screen | client | `apps/mobile/app/stitching/[number].tsx` |
+| `/wishlist` | screen | client | `apps/mobile/app/wishlist.tsx` |
 | `/workshop/[id]` | screen | client | `apps/mobile/app/workshop/[id].tsx` |
 | `/workshop/index` | screen | client | `apps/mobile/app/workshop/index.tsx` |
 

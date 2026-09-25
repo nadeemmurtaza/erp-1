@@ -104,6 +104,46 @@ export default function AccountScreen() {
 
         {user ? (
           <Card>
+            <Button
+              label={t('account.wishlist')}
+              variant="secondary"
+              onPress={() => router.push('/wishlist')}
+            />
+            <View style={styles.gap} />
+            <Button
+              label={t('account.returns')}
+              variant="secondary"
+              onPress={() => router.push('/returns')}
+            />
+            <View style={styles.gap} />
+            <Button
+              label={t('account.loyalty')}
+              variant="secondary"
+              onPress={() => router.push('/loyalty')}
+            />
+            <View style={styles.gap} />
+            <Button
+              label={t('account.credit')}
+              variant="secondary"
+              onPress={() => router.push('/credit')}
+            />
+            <View style={styles.gap} />
+            <Button
+              label={t('account.reviews')}
+              variant="secondary"
+              onPress={() => router.push('/reviews')}
+            />
+            <View style={styles.gap} />
+            <Button
+              label={t('account.notificationSettings')}
+              variant="secondary"
+              onPress={() => router.push('/notifications')}
+            />
+          </Card>
+        ) : null}
+
+        {user ? (
+          <Card>
             <View style={styles.switchRow}>
               <View style={styles.switchLabel}>
                 <Heading>{t('account.notifications')}</Heading>

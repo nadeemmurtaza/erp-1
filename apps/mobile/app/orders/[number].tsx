@@ -1,12 +1,14 @@
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { Linking, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { formatMoney } from '@newax/shared';
+import { SITE_URL } from '../../src/api/client';
 import * as resources from '../../src/api/resources';
 import type { Order } from '../../src/api/types';
 import { StageRail } from '../../src/components/stage-rail';
 import {
   Body,
+  Button,
   Card,
   ErrorNote,
   Heading,
@@ -30,6 +32,8 @@ export default function OrderScreen() {
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [reordering, setReordering] = useState(false);
+  const [reorderMessage, setReorderMessage] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -43,6 +47,27 @@ export default function OrderScreen() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  async function doReorder() {
+    setReordering(true);
+    setReorderMessage(null);
+    try {
+      const result = await resources.reorder(number);
+      if (result.unavailable.length > 0) {
+        setReorderMessage(t('order.reorderPartial', { names: result.unavailable.join(', ') }));
+      } else {
+        router.push('/cart');
+      }
+    } catch {
+      setReorderMessage(t('order.reorderFailed'));
+    } finally {
+      setReordering(false);
+    }
+  }
+
+  function openInvoice() {
+    void Linking.openURL(`${SITE_URL}/${locale}/orders/${number}/invoice`);
+  }
 
   if (!order) {
     return (
@@ -67,6 +92,24 @@ export default function OrderScreen() {
         <Title>{order.number}</Title>
         <Small muted>{t('orders.placedOn', { date: date(order.placedAt) })}</Small>
         <Body>{t(`status.${order.status}` as never)}</Body>
+
+        <View style={styles.actions}>
+          <Button
+            label={reordering ? t('order.reordering') : t('order.reorder')}
+            variant="secondary"
+            busy={reordering}
+            onPress={() => void doReorder()}
+          />
+          <Button label={t('order.viewInvoice')} variant="secondary" onPress={openInvoice} />
+          {order.status === 'DELIVERED' ? (
+            <Button
+              label={t('order.requestReturn')}
+              variant="secondary"
+              onPress={() => router.push(`/returns?order=${order.number}`)}
+            />
+          ) : null}
+        </View>
+        {reorderMessage ? <Small muted>{reorderMessage}</Small> : null}
 
         {payment === 'success' ? (
           <Card style={styles.paymentOk}>
@@ -162,6 +205,7 @@ const styles = StyleSheet.create({
   content: { padding: theme.space(4), gap: theme.space(4), paddingBottom: theme.space(10) },
   paymentOk: { backgroundColor: theme.color.brandSoft, borderColor: theme.color.brand },
   paymentFailed: { backgroundColor: theme.color.dangerSoft, borderColor: theme.color.danger },
+  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: theme.space(2) },
   item: {
     paddingVertical: theme.space(3),
     borderBottomWidth: StyleSheet.hairlineWidth,

@@ -19,6 +19,15 @@ export const API_URL =
   // The Android emulator reaches the host machine on 10.0.2.2, not localhost.
   (Platform.OS === 'android' ? 'http://10.0.2.2:3001/api/v1' : 'http://localhost:3001/api/v1');
 
+/**
+ * The storefront's own origin — used only to open the browser-print invoice
+ * page (WO-7.2) in the system browser, since that page's `window.print()`
+ * flow has no native-app equivalent worth building a second time here.
+ */
+export const SITE_URL =
+  process.env.EXPO_PUBLIC_SITE_URL ??
+  (Platform.OS === 'android' ? 'http://10.0.2.2:3000' : 'http://localhost:3000');
+
 /*
  * Namespaced to the builder, not the client — the same move the web app made
  * in its storage constants. A key carrying the client's name is a key that

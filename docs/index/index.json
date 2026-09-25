@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1564,
-    "lines": 239038,
+    "files": 1570,
+    "lines": 240690,
     "routes": 439,
     "controllers": 80,
     "models": 161,
@@ -12,7 +12,7 @@
     "migrations": 64,
     "events": 40,
     "permissions": 53,
-    "screens": 180,
+    "screens": 186,
     "crons": 10,
     "specs": 144,
     "designLaws": 0
@@ -38,9 +38,9 @@
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
-      "files": 42,
-      "lines": 5292,
-      "bytes": 262575,
+      "files": 48,
+      "lines": 6918,
+      "bytes": 320816,
       "label": "apps/mobile — Expo/React Native customer app"
     },
     "pos": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 392,
-      "lines": 59715,
-      "bytes": 3535842,
+      "lines": 59741,
+      "bytes": 3537772,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -26187,6 +26187,15 @@
     {
       "app": "mobile",
       "kind": "screen",
+      "url": "/credit",
+      "file": "apps/mobile/app/credit.tsx",
+      "client": true,
+      "surface": "mobile",
+      "doc": ""
+    },
+    {
+      "app": "mobile",
+      "kind": "screen",
       "url": "/index",
       "file": "apps/mobile/app/(tabs)/index.tsx",
       "client": true,
@@ -26205,6 +26214,15 @@
     {
       "app": "mobile",
       "kind": "screen",
+      "url": "/loyalty",
+      "file": "apps/mobile/app/loyalty.tsx",
+      "client": true,
+      "surface": "mobile",
+      "doc": ""
+    },
+    {
+      "app": "mobile",
+      "kind": "screen",
       "url": "/measurements/edit",
       "file": "apps/mobile/app/measurements/edit.tsx",
       "client": true,
@@ -26216,6 +26234,15 @@
       "kind": "screen",
       "url": "/measurements/index",
       "file": "apps/mobile/app/measurements/index.tsx",
+      "client": true,
+      "surface": "mobile",
+      "doc": ""
+    },
+    {
+      "app": "mobile",
+      "kind": "screen",
+      "url": "/notifications",
+      "file": "apps/mobile/app/notifications.tsx",
       "client": true,
       "surface": "mobile",
       "doc": ""
@@ -26259,6 +26286,24 @@
     {
       "app": "mobile",
       "kind": "screen",
+      "url": "/returns",
+      "file": "apps/mobile/app/returns.tsx",
+      "client": true,
+      "surface": "mobile",
+      "doc": ""
+    },
+    {
+      "app": "mobile",
+      "kind": "screen",
+      "url": "/reviews",
+      "file": "apps/mobile/app/reviews.tsx",
+      "client": true,
+      "surface": "mobile",
+      "doc": ""
+    },
+    {
+      "app": "mobile",
+      "kind": "screen",
       "url": "/stitching",
       "file": "apps/mobile/app/(tabs)/stitching.tsx",
       "client": true,
@@ -26270,6 +26315,15 @@
       "kind": "screen",
       "url": "/stitching/[number]",
       "file": "apps/mobile/app/stitching/[number].tsx",
+      "client": true,
+      "surface": "mobile",
+      "doc": ""
+    },
+    {
+      "app": "mobile",
+      "kind": "screen",
+      "url": "/wishlist",
+      "file": "apps/mobile/app/wishlist.tsx",
       "client": true,
       "surface": "mobile",
       "doc": ""
@@ -40245,8 +40299,8 @@
       "path": "apps/mobile/app/(tabs)/account.tsx",
       "area": "mobile",
       "kind": "react",
-      "lines": 155,
-      "bytes": 4596,
+      "lines": 195,
+      "bytes": 5883,
       "doc": "",
       "symbols": [
         {
@@ -40305,8 +40359,8 @@
       "path": "apps/mobile/app/_layout.tsx",
       "area": "mobile",
       "kind": "react",
-      "lines": 83,
-      "bytes": 3018,
+      "lines": 89,
+      "bytes": 3500,
       "doc": "",
       "symbols": [
         {
@@ -40332,6 +40386,21 @@
       ]
     },
     {
+      "path": "apps/mobile/app/credit.tsx",
+      "area": "mobile",
+      "kind": "react",
+      "lines": 117,
+      "bytes": 3940,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreditScreen",
+          "kind": "default",
+          "line": 11
+        }
+      ]
+    },
+    {
       "path": "apps/mobile/app/login.tsx",
       "area": "mobile",
       "kind": "react",
@@ -40343,6 +40412,21 @@
           "name": "LoginScreen",
           "kind": "default",
           "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/mobile/app/loyalty.tsx",
+      "area": "mobile",
+      "kind": "react",
+      "lines": 179,
+      "bytes": 5914,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LoyaltyScreen",
+          "kind": "default",
+          "line": 11
         }
       ]
     },
@@ -40377,17 +40461,32 @@
       ]
     },
     {
+      "path": "apps/mobile/app/notifications.tsx",
+      "area": "mobile",
+      "kind": "react",
+      "lines": 102,
+      "bytes": 3522,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NotificationPreferencesScreen",
+          "kind": "default",
+          "line": 13
+        }
+      ]
+    },
+    {
       "path": "apps/mobile/app/orders/[number].tsx",
       "area": "mobile",
       "kind": "react",
-      "lines": 179,
-      "bytes": 6220,
+      "lines": 223,
+      "bytes": 7764,
       "doc": "",
       "symbols": [
         {
           "name": "OrderScreen",
           "kind": "default",
-          "line": 26
+          "line": 28
         }
       ]
     },
@@ -40425,14 +40524,44 @@
       "path": "apps/mobile/app/product/[slug].tsx",
       "area": "mobile",
       "kind": "react",
-      "lines": 355,
-      "bytes": 12019,
+      "lines": 528,
+      "bytes": 17607,
       "doc": "",
       "symbols": [
         {
           "name": "ProductScreen",
           "kind": "default",
-          "line": 38
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/mobile/app/returns.tsx",
+      "area": "mobile",
+      "kind": "react",
+      "lines": 265,
+      "bytes": 9070,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ReturnsScreen",
+          "kind": "default",
+          "line": 49
+        }
+      ]
+    },
+    {
+      "path": "apps/mobile/app/reviews.tsx",
+      "area": "mobile",
+      "kind": "react",
+      "lines": 67,
+      "bytes": 2080,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyReviewsScreen",
+          "kind": "default",
+          "line": 16
         }
       ]
     },
@@ -40448,6 +40577,21 @@
           "name": "BookingScreen",
           "kind": "default",
           "line": 32
+        }
+      ]
+    },
+    {
+      "path": "apps/mobile/app/wishlist.tsx",
+      "area": "mobile",
+      "kind": "react",
+      "lines": 137,
+      "bytes": 4082,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WishlistScreen",
+          "kind": "default",
+          "line": 21
         }
       ]
     },
@@ -40557,8 +40701,8 @@
       "path": "apps/mobile/src/api/client.ts",
       "area": "mobile",
       "kind": "module",
-      "lines": 197,
-      "bytes": 6606,
+      "lines": 206,
+      "bytes": 6985,
       "doc": "",
       "symbols": [
         {
@@ -40567,59 +40711,64 @@
           "line": 17
         },
         {
+          "name": "SITE_URL",
+          "kind": "const",
+          "line": 27
+        },
+        {
           "name": "ApiError",
           "kind": "class",
-          "line": 33
+          "line": 42
         },
         {
           "name": "setSignOutHandler",
           "kind": "function",
-          "line": 47
+          "line": 56
         },
         {
           "name": "getAccessToken",
           "kind": "function",
-          "line": 70
+          "line": 79
         },
         {
           "name": "storeTokens",
           "kind": "function",
-          "line": 74
+          "line": 83
         },
         {
           "name": "clearTokens",
           "kind": "function",
-          "line": 79
+          "line": 88
         },
         {
           "name": "getCartToken",
           "kind": "function",
-          "line": 84
+          "line": 93
         },
         {
           "name": "setCartToken",
           "kind": "function",
-          "line": 88
+          "line": 97
         },
         {
           "name": "clearCartToken",
           "kind": "function",
-          "line": 92
+          "line": 101
         },
         {
           "name": "RequestOptions",
           "kind": "interface",
-          "line": 96
+          "line": 105
         },
         {
           "name": "toQuery",
           "kind": "function",
-          "line": 105
+          "line": 114
         },
         {
           "name": "api",
           "kind": "function",
-          "line": 117
+          "line": 126
         }
       ]
     },
@@ -40627,159 +40776,289 @@
       "path": "apps/mobile/src/api/resources.ts",
       "area": "mobile",
       "kind": "module",
-      "lines": 244,
-      "bytes": 7201,
+      "lines": 390,
+      "bytes": 11891,
       "doc": "",
       "symbols": [
         {
           "name": "listProducts",
           "kind": "function",
-          "line": 26
+          "line": 36
         },
         {
           "name": "getProduct",
           "kind": "function",
-          "line": 38
+          "line": 48
         },
         {
           "name": "listStitchingServices",
           "kind": "function",
-          "line": 42
+          "line": 52
         },
         {
           "name": "listOptionGroups",
           "kind": "function",
-          "line": 49
+          "line": 59
         },
         {
           "name": "getCart",
           "kind": "function",
-          "line": 62
+          "line": 72
         },
         {
           "name": "addToCart",
           "kind": "function",
-          "line": 66
+          "line": 76
         },
         {
           "name": "updateCartItem",
           "kind": "function",
-          "line": 79
+          "line": 89
         },
         {
           "name": "removeCartItem",
           "kind": "function",
-          "line": 83
+          "line": 93
         },
         {
           "name": "mergeCart",
           "kind": "function",
-          "line": 87
+          "line": 97
         },
         {
           "name": "login",
           "kind": "function",
-          "line": 93
+          "line": 103
         },
         {
           "name": "logout",
           "kind": "function",
-          "line": 104
+          "line": 114
         },
         {
           "name": "listGarmentTypes",
           "kind": "function",
-          "line": 110
+          "line": 120
         },
         {
           "name": "listProfiles",
           "kind": "function",
-          "line": 114
+          "line": 124
         },
         {
           "name": "createProfile",
           "kind": "function",
-          "line": 118
+          "line": 128
         },
         {
           "name": "updateProfile",
           "kind": "function",
-          "line": 127
+          "line": 137
         },
         {
           "name": "deleteProfile",
           "kind": "function",
-          "line": 134
+          "line": 144
         },
         {
           "name": "placeOrder",
           "kind": "function",
-          "line": 140
+          "line": 150
         },
         {
           "name": "myOrders",
           "kind": "function",
-          "line": 148
+          "line": 158
         },
         {
           "name": "getOrder",
           "kind": "function",
-          "line": 152
+          "line": 162
         },
         {
           "name": "trackOrder",
           "kind": "function",
-          "line": 156
+          "line": 166
         },
         {
           "name": "uploadReceipt",
           "kind": "function",
-          "line": 160
+          "line": 170
         },
         {
           "name": "FormDataFile",
           "kind": "interface",
-          "line": 168
+          "line": 178
         },
         {
           "name": "paymentMethods",
           "kind": "function",
-          "line": 174
+          "line": 184
         },
         {
           "name": "bookStitching",
           "kind": "function",
-          "line": 180
+          "line": 190
         },
         {
           "name": "trackBooking",
           "kind": "function",
-          "line": 196
+          "line": 206
         },
         {
           "name": "listJobs",
           "kind": "function",
-          "line": 206
+          "line": 216
         },
         {
           "name": "getJob",
           "kind": "function",
-          "line": 216
+          "line": 226
         },
         {
           "name": "changeJobStage",
           "kind": "function",
-          "line": 220
+          "line": 230
+        },
+        {
+          "name": "listWishlist",
+          "kind": "function",
+          "line": 242
+        },
+        {
+          "name": "addToWishlist",
+          "kind": "function",
+          "line": 246
+        },
+        {
+          "name": "removeFromWishlist",
+          "kind": "function",
+          "line": 250
+        },
+        {
+          "name": "requestBackInStockAlert",
+          "kind": "function",
+          "line": 254
+        },
+        {
+          "name": "cancelBackInStockAlert",
+          "kind": "function",
+          "line": 258
+        },
+        {
+          "name": "productReviews",
+          "kind": "function",
+          "line": 264
+        },
+        {
+          "name": "myReviews",
+          "kind": "function",
+          "line": 268
+        },
+        {
+          "name": "submitReview",
+          "kind": "function",
+          "line": 272
+        },
+        {
+          "name": "markReviewHelpful",
+          "kind": "function",
+          "line": 281
+        },
+        {
+          "name": "returnEligibility",
+          "kind": "function",
+          "line": 287
+        },
+        {
+          "name": "myReturns",
+          "kind": "function",
+          "line": 291
+        },
+        {
+          "name": "createReturn",
+          "kind": "function",
+          "line": 295
+        },
+        {
+          "name": "loyaltyTiers",
+          "kind": "function",
+          "line": 306
+        },
+        {
+          "name": "loyaltyBalance",
+          "kind": "function",
+          "line": 310
+        },
+        {
+          "name": "loyaltyLedger",
+          "kind": "function",
+          "line": 314
+        },
+        {
+          "name": "redeemLoyaltyPoints",
+          "kind": "function",
+          "line": 318
+        },
+        {
+          "name": "myReferralCode",
+          "kind": "function",
+          "line": 322
+        },
+        {
+          "name": "myReferrals",
+          "kind": "function",
+          "line": 326
+        },
+        {
+          "name": "applyReferralCode",
+          "kind": "function",
+          "line": 330
+        },
+        {
+          "name": "storeCreditBalance",
+          "kind": "function",
+          "line": 336
+        },
+        {
+          "name": "storeCreditLedger",
+          "kind": "function",
+          "line": 340
+        },
+        {
+          "name": "redeemGiftCardIntoAccount",
+          "kind": "function",
+          "line": 344
+        },
+        {
+          "name": "getNotificationPreferences",
+          "kind": "function",
+          "line": 350
+        },
+        {
+          "name": "updateNotificationPreferences",
+          "kind": "function",
+          "line": 354
+        },
+        {
+          "name": "ReorderResult",
+          "kind": "interface",
+          "line": 362
+        },
+        {
+          "name": "reorder",
+          "kind": "function",
+          "line": 368
         },
         {
           "name": "registerDevice",
           "kind": "function",
-          "line": 230
+          "line": 376
         },
         {
           "name": "unregisterDevice",
           "kind": "function",
-          "line": 239
+          "line": 385
         }
       ]
     },
@@ -40787,8 +41066,8 @@
       "path": "apps/mobile/src/api/types.ts",
       "area": "mobile",
       "kind": "module",
-      "lines": 264,
-      "bytes": 6266,
+      "lines": 361,
+      "bytes": 8511,
       "doc": "",
       "symbols": [
         {
@@ -40885,6 +41164,76 @@
           "name": "ShippingQuote",
           "kind": "interface",
           "line": 257
+        },
+        {
+          "name": "WishlistItem",
+          "kind": "interface",
+          "line": 265
+        },
+        {
+          "name": "ReviewStatus",
+          "kind": "type",
+          "line": 278
+        },
+        {
+          "name": "Review",
+          "kind": "interface",
+          "line": 280
+        },
+        {
+          "name": "ReturnReasonCode",
+          "kind": "type",
+          "line": 293
+        },
+        {
+          "name": "ReturnStatus",
+          "kind": "type",
+          "line": 301
+        },
+        {
+          "name": "ReturnRequest",
+          "kind": "interface",
+          "line": 303
+        },
+        {
+          "name": "LoyaltyTier",
+          "kind": "interface",
+          "line": 314
+        },
+        {
+          "name": "LoyaltyBalance",
+          "kind": "interface",
+          "line": 322
+        },
+        {
+          "name": "LoyaltyLedgerEntry",
+          "kind": "interface",
+          "line": 328
+        },
+        {
+          "name": "Referral",
+          "kind": "interface",
+          "line": 336
+        },
+        {
+          "name": "StoreCreditLedgerEntry",
+          "kind": "interface",
+          "line": 342
+        },
+        {
+          "name": "NotificationChannel",
+          "kind": "type",
+          "line": 351
+        },
+        {
+          "name": "NotificationCategory",
+          "kind": "type",
+          "line": 352
+        },
+        {
+          "name": "NotificationPreferenceCell",
+          "kind": "interface",
+          "line": 354
         }
       ]
     },
@@ -41080,8 +41429,8 @@
       "path": "apps/mobile/src/i18n/messages.ts",
       "area": "mobile",
       "kind": "module",
-      "lines": 343,
-      "bytes": 15207,
+      "lines": 587,
+      "bytes": 28625,
       "doc": "",
       "symbols": [
         {
@@ -41092,7 +41441,7 @@
         {
           "name": "MessageKey",
           "kind": "type",
-          "line": 342
+          "line": 586
         }
       ]
     },
@@ -49962,8 +50311,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 2387,
-      "bytes": 130736,
+      "lines": 2413,
+      "bytes": 132668,
       "doc": "",
       "symbols": []
     },
@@ -50827,7 +51176,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 224,
-      "bytes": 9828,
+      "bytes": 9826,
       "doc": "",
       "symbols": []
     },

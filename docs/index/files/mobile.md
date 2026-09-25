@@ -3,7 +3,7 @@
 
 # Files — mobile
 
-All 42 tracked files in `apps/mobile`, by directory.
+All 48 tracked files in `apps/mobile`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -19,21 +19,27 @@ All 42 tracked files in `apps/mobile`, by directory.
 | `package.json` | json | 53 |  |
 | `tsconfig.json` | json | 21 |  |
 
-### `apps/mobile/app` (4)
+### `apps/mobile/app` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `_layout.tsx` | react | 83 |  |
+| `_layout.tsx` | react | 89 |  |
 | `checkout.tsx` | react | 332 |  |
+| `credit.tsx` | react | 117 |  |
 | `login.tsx` | react | 74 |  |
+| `loyalty.tsx` | react | 179 |  |
+| `notifications.tsx` | react | 102 |  |
 | `payment.tsx` | react | 103 |  |
+| `returns.tsx` | react | 265 |  |
+| `reviews.tsx` | react | 67 |  |
+| `wishlist.tsx` | react | 137 |  |
 
 ### `apps/mobile/app/(tabs)` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `_layout.tsx` | react | 64 |  |
-| `account.tsx` | react | 155 |  |
+| `account.tsx` | react | 195 |  |
 | `cart.tsx` | react | 183 |  |
 | `index.tsx` | react | 170 |  |
 | `stitching.tsx` | react | 256 |  |
@@ -49,14 +55,14 @@ All 42 tracked files in `apps/mobile`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `[number].tsx` | react | 179 |  |
+| `[number].tsx` | react | 223 |  |
 | `index.tsx` | react | 61 |  |
 
 ### `apps/mobile/app/product` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `[slug].tsx` | react | 355 |  |
+| `[slug].tsx` | react | 528 |  |
 
 ### `apps/mobile/app/stitching` (1)
 
@@ -90,9 +96,9 @@ All 42 tracked files in `apps/mobile`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `client.ts` | module | 197 |  |
-| `resources.ts` | module | 244 |  |
-| `types.ts` | module | 264 |  |
+| `client.ts` | module | 206 |  |
+| `resources.ts` | module | 390 |  |
+| `types.ts` | module | 361 |  |
 
 ### `apps/mobile/src/api/__tests__` (1)
 
@@ -120,7 +126,7 @@ All 42 tracked files in `apps/mobile`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index.tsx` | react | 95 |  |
-| `messages.ts` | module | 343 |  |
+| `messages.ts` | module | 587 |  |
 
 ### `apps/mobile/src/i18n/__tests__` (1)
 

@@ -1,7 +1,21 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Header,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
+import { ExpenseImportService } from './expense-import.service';
 import { FinanceService } from './finance.service';
 import { CreateExpenseCategoryDto, UpdateExpenseCategoryDto } from './dto/expense-category.dto';
 import {
@@ -24,7 +38,10 @@ interface UploadedReceipt {
 @ApiTags('Finance Admin')
 @Controller('admin/finance')
 export class FinanceController {
-  constructor(private readonly finance: FinanceService) {}
+  constructor(
+    private readonly finance: FinanceService,
+    private readonly expenseImporter: ExpenseImportService,
+  ) {}
 
   @Get('expense-categories')
   @RequirePermission('finance.view')
@@ -128,5 +145,31 @@ export class FinanceController {
   async uploadReceipt(@Param('id') id: string, @UploadedFile() file: UploadedReceipt | undefined) {
     if (!file) throw new BadRequestException('Choose a receipt file to upload.');
     return this.finance.attachReceipt(id, file);
+  }
+
+  // --- Bulk import (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.2) --------
+
+  @Get('expenses/import/template')
+  @RequirePermission('finance.manage')
+  @Header('Content-Type', 'text/csv; charset=utf-8')
+  @Header('Content-Disposition', 'attachment; filename="expenses-template.csv"')
+  @ApiOperation({ summary: 'Download the CSV template for bulk expense upload' })
+  expenseImportTemplate(): string {
+    return this.expenseImporter.template();
+  }
+
+  @Post('expenses/import')
+  @RequirePermission('finance.manage')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Bulk record expenses from a CSV file (a paper expense log)' })
+  async importExpenses(
+    @CurrentUser('id') userId: string,
+    @UploadedFile() file: UploadedReceipt | undefined,
+    @Query('dryRun') dryRun?: string,
+  ) {
+    if (!file) throw new BadRequestException('Choose a CSV file to upload.');
+    return this.expenseImporter.import(userId, file.buffer, { dryRun: dryRun === 'true' });
   }
 }

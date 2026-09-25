@@ -1884,20 +1884,20 @@ _no second-level headings_
 - Acceptance  <sub>:206</sub>
 - Out of scope  <sub>:222</sub>
 
-### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>242 lines</sub>
+### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>253 lines</sub>
 
-- Why  <sub>:5</sub>
-- Rules for this phase  <sub>:24</sub>
-- Work orders  <sub>:37</sub>
-- WO-2.1 — The small four  <sub>:54</sub>
-- WO-2.2 — DataTable and Pagination  <sub>:80</sub>
-- WO-2.3 — Modal and ConfirmDialog  <sub>:119</sub>
-- WO-2.4 — FilterBar with URL-synced state  <sub>:140</sub>
-- WO-2.5 — Migrate the pages  <sub>:164</sub>
-- WO-2.6 — Command palette, breadcrumbs, collapsible groups  <sub>:182</sub>
-- WO-2.7 — Error, not-found and loading states  <sub>:197</sub>
-- WO-2.8 — Permission-check cleanup  <sub>:211</sub>
-- Phase 2 exit criteria  <sub>:233</sub>
+- Why  <sub>:16</sub>
+- Rules for this phase  <sub>:35</sub>
+- Work orders  <sub>:48</sub>
+- WO-2.1 — The small four  <sub>:65</sub>
+- WO-2.2 — DataTable and Pagination  <sub>:91</sub>
+- WO-2.3 — Modal and ConfirmDialog  <sub>:130</sub>
+- WO-2.4 — FilterBar with URL-synced state  <sub>:151</sub>
+- WO-2.5 — Migrate the pages  <sub>:175</sub>
+- WO-2.6 — Command palette, breadcrumbs, collapsible groups  <sub>:193</sub>
+- WO-2.7 — Error, not-found and loading states  <sub>:208</sub>
+- WO-2.8 — Permission-check cleanup  <sub>:222</sub>
+- Phase 2 exit criteria  <sub>:244</sub>
 
 ### `docs/implementation/admin-platform/10-admin-dashboard.md`  <sub>1,854 lines</sub>
 
@@ -1919,30 +1919,31 @@ _no second-level headings_
 - Migration safety register  <sub>:1765</sub>
 - Phase 10 definition of done  <sub>:1809</sub>
 
-### `docs/implementation/admin-platform/44-manager-action-hub.md`  <sub>160 lines</sub>
+### `docs/implementation/admin-platform/44-manager-action-hub.md`  <sub>176 lines</sub>
 
-- 1. An action item is a shape every contributing module already produces  <sub>:13</sub>
-- 2. Sources register, they are not hardcoded  <sub>:34</sub>
-- Scope lenses  <sub>:56</sub>
-- Work orders  <sub>:116</sub>
-- Acceptance  <sub>:135</sub>
-- Out of scope  <sub>:150</sub>
-
-### `docs/implementation/admin-platform/72-fragmented-tool-consolidation-import.md`  <sub>173 lines</sub>
-
-- 1. The pattern, generalized just enough to name its second and third users  <sub>:23</sub>
-- Scope lenses  <sub>:57</sub>
-- Work orders  <sub>:135</sub>
+- 1. An action item is a shape every contributing module already produces  <sub>:29</sub>
+- 2. Sources register, they are not hardcoded  <sub>:50</sub>
+- Scope lenses  <sub>:72</sub>
+- Work orders  <sub>:132</sub>
 - Acceptance  <sub>:151</sub>
-- Out of scope  <sub>:163</sub>
+- Out of scope  <sub>:166</sub>
 
-### `docs/implementation/admin-platform/75-managerial-todo-widget-coverage-note.md`  <sub>54 lines</sub>
+### `docs/implementation/admin-platform/72-fragmented-tool-consolidation-import.md`  <sub>184 lines</sub>
 
-- 1. What already exists  <sub>:14</sub>
-- Scope lenses  <sub>:32</sub>
-- Work orders  <sub>:38</sub>
-- Acceptance  <sub>:45</sub>
-- Out of scope  <sub>:50</sub>
+- 1. The pattern, generalized just enough to name its second and third users  <sub>:34</sub>
+- Scope lenses  <sub>:68</sub>
+- Work orders  <sub>:146</sub>
+- Acceptance  <sub>:162</sub>
+- Out of scope  <sub>:174</sub>
+
+### `docs/implementation/admin-platform/75-managerial-todo-widget-coverage-note.md`  <sub>86 lines</sub>
+
+- 1. What actually exists today  <sub>:24</sub>
+- 2. What is named but NOT registered — because its own module isn't built  <sub>:38</sub>
+- Scope lenses  <sub>:60</sub>
+- Work orders  <sub>:66</sub>
+- Acceptance  <sub>:71</sub>
+- Out of scope  <sub>:81</sub>
 
 ### `docs/implementation/ai-layer/09-ai-layer.md`  <sub>221 lines</sub>
 
@@ -2683,7 +2684,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>2,761 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>2,938 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2721,6 +2722,7 @@ _no second-level headings_
 - ADR-031 — WO-7 (Phase 7: customer portal, reviews, wishlist, returns, loyalty, mobile parity) built against a missing Phase 6 — tracking/invoice/returns scope narrowed, loyalty math, self-referral guard limits, WO-7.9 mobile parity  <sub>:2255</sub>
 - ADR-031 §9 — WO-7.3's returns module retired in favour of Phase 6's WO-6.6, discovered at merge time  <sub>:2420</sub>
 - ADR-032 — Phase 10 Track A built end-to-end (WO-A.1–A.5), superseding ADR-019/ADR-025; Tracks D and B wired into the registry; WO-E.2 executed  <sub>:2559</sub>
+- ADR-033 — `admin-platform` docs 02/44/72/75 completed; doc 75's own claims corrected after they were found false against the running code  <sub>:2762</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

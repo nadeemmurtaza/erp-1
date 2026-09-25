@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ContactImportService } from './contact-import.service';
 import { CrmAdminController, CrmPublicController } from './crm.controller';
 import { CrmService } from './crm.service';
 import { CrmOrderSubscriber } from './order.subscriber';
@@ -14,6 +15,7 @@ import { SegmentsService } from './segments.service';
   controllers: [CrmPublicController, CrmAdminController, EmailInboxAdminController, SegmentsAdminController],
   providers: [
     CrmService,
+    ContactImportService,
     CrmOrderSubscriber,
     EmailInboxService,
     MailboxPollerCron,

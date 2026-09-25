@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import { formatDateTime } from '@newax/shared';
 import { StatusBadge } from '@/components/common/status-badge';
+import { DataTable } from '@/components/ui';
 
 interface ReturnItem {
   id: string;
@@ -106,28 +107,31 @@ export default function ReturnDetailPage() {
         </p>
       ) : null}
 
-      <table className="table-flat mb-6 w-full text-sm">
-        <thead>
-          <tr className="text-left text-xs uppercase tracking-wide text-neutral-900/60">
-            <th className="pb-2">Item</th>
-            <th className="pb-2">Reason</th>
-            <th className="pb-2 text-end">Qty</th>
-            {request.status === 'RECEIVED' ? <th className="pb-2 text-end">Restockable</th> : <th className="pb-2 text-end">Outcome</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {request.items.map((item) => (
-            <tr key={item.id}>
-              <td className="py-1.5">
-                {item.orderItem.nameEn}
-                {item.orderItem.sku ? <span className="text-neutral-900/60"> · {item.orderItem.sku}</span> : null}
-              </td>
-              <td className="py-1.5 text-neutral-900/60">
-                {item.reason.translations.find((t) => t.locale === 'en')?.label ?? '—'}
-              </td>
-              <td className="py-1.5 text-end tabular-nums">{item.quantity}</td>
-              <td className="py-1.5 text-end">
-                {request.status === 'RECEIVED' ? (
+      <div className="mb-6">
+        <DataTable
+          rows={request.items}
+          rowKey={(item) => item.id}
+          columns={[
+            {
+              header: 'Item',
+              cell: (item) => (
+                <>
+                  {item.orderItem.nameEn}
+                  {item.orderItem.sku ? <span className="text-neutral-900/60"> · {item.orderItem.sku}</span> : null}
+                </>
+              ),
+            },
+            {
+              header: 'Reason',
+              muted: true,
+              cell: (item) => item.reason.translations.find((t) => t.locale === 'en')?.label ?? '—',
+            },
+            { header: 'Qty', align: 'end', numeric: true, cell: (item) => item.quantity },
+            {
+              header: request.status === 'RECEIVED' ? 'Restockable' : 'Outcome',
+              align: 'end',
+              cell: (item) =>
+                request.status === 'RECEIVED' ? (
                   <input
                     type="checkbox"
                     className="field-check"
@@ -140,12 +144,11 @@ export default function ReturnDetailPage() {
                   'Restocked'
                 ) : (
                   'Written off'
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                ),
+            },
+          ]}
+        />
+      </div>
 
       <div className="flex flex-wrap gap-2">
         {request.status === 'REQUESTED' ? (

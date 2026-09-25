@@ -15,7 +15,7 @@ import {
 } from '@/types/stitching';
 import { StageBadge } from '@/components/admin/stage-badge';
 import { ROUTES } from '@/constants/routes';
-import { Loading } from '@/components/ui';
+import { DataTable, Loading } from '@/components/ui';
 
 /**
  * One job: the tailor's worksheet.
@@ -146,24 +146,15 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
       <div className="grid gap-6 fold:grid-cols-2 lg:grid-cols-3">
         <section className="card min-w-0 p-4 lg:col-span-1">
           <h2 className="mb-3 text-sm font-semibold text-neutral-900">Measurements</h2>
-          {measurements.length === 0 ? (
-            <p className="text-sm text-neutral-900/60">No measurements were recorded.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <tbody className="divide-y divide-neutral-100">
-                  {measurements.map(([key, value]) => (
-                    <tr key={key}>
-                      <th scope="row" className="py-1.5 text-start font-normal text-neutral-900/60">
-                        {fieldLabel(key)}
-                      </th>
-                      <td className="py-1.5 text-end tabular-nums text-neutral-900">{value}&quot;</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+          <DataTable
+            rows={measurements}
+            rowKey={([key]) => key}
+            emptyLabel="No measurements were recorded."
+            columns={[
+              { header: 'Measurement', muted: true, cell: ([key]) => fieldLabel(key) },
+              { header: 'Value', align: 'end', numeric: true, cell: ([, value]) => `${value}"` },
+            ]}
+          />
 
           {job.optionsSnapshot?.length ? (
             <>

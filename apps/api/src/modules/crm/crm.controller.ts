@@ -1,5 +1,6 @@
 import { BRAND } from '@newax/shared';
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -11,12 +12,16 @@ import {
   Patch,
   Post,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { stringify } from 'csv-stringify/sync';
 import { toMajor } from '@newax/shared';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
+import { ContactImportService } from './contact-import.service';
 import { CrmService } from './crm.service';
 import {
   AddInteractionDto,
@@ -41,11 +46,19 @@ export class CrmPublicController {
   }
 }
 
+/** Uploaded file as Multer hands it over. */
+interface UploadedCsv {
+  buffer: Buffer;
+}
+
 @ApiTags('admin/crm')
 @Controller('admin/crm')
 @RequirePermission('crm.manage')
 export class CrmAdminController {
-  constructor(private readonly crm: CrmService) {}
+  constructor(
+    private readonly crm: CrmService,
+    private readonly contactImporter: ContactImportService,
+  ) {}
 
   // --- Contacts ------------------------------------------------------------
 
@@ -194,5 +207,31 @@ export class CrmAdminController {
     @Body() dto: UpdateLeadDto,
   ) {
     return this.crm.updateLead(user.id, id, dto);
+  }
+
+  // --- Bulk import (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.1) --------
+
+  @Get('contacts/import/template')
+  @Header('Content-Type', 'text/csv; charset=utf-8')
+  @Header('Content-Disposition', 'attachment; filename="contacts-template.csv"')
+  @ApiOperation({ summary: 'Download the CSV template for bulk contact upload' })
+  contactImportTemplate(): string {
+    return this.contactImporter.template();
+  }
+
+  @Post('contacts/import')
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Bulk create or update contacts from a CSV file' })
+  importContacts(
+    @CurrentUser() user: AuthenticatedUser,
+    @UploadedFile() file: UploadedCsv | undefined,
+    @Query('dryRun') dryRun?: string,
+  ) {
+    if (!file) {
+      throw new BadRequestException('Choose a CSV file to upload.');
+    }
+    return this.contactImporter.import(user.id, file.buffer, { dryRun: dryRun === 'true' });
   }
 }

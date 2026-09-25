@@ -4,6 +4,7 @@ import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
 import {
   DEFAULT_LOCALE,
+  IMPORT_ROW_CAP,
   PRODUCT_KINDS,
   slugifyWithFallback,
   toMinor,
@@ -108,7 +109,16 @@ export class ProductImportService {
     );
   }
 
-  async import(actorId: string, csv: Buffer | string): Promise<ImportSummary> {
+  /**
+   * `options.dryRun` (WO-72.3) runs every row's own validation and reports
+   * the `created`/`updated`/`skipped` counts it WOULD produce, without
+   * writing — the same per-row validation function `importRow()` always
+   * ran, called once for preview and once for commit, never two separately
+   * maintained validation paths. No audit record is written for a dry run:
+   * it changed nothing to attribute.
+   */
+  async import(actorId: string, csv: Buffer | string, options: { dryRun?: boolean } = {}): Promise<ImportSummary> {
+    const dryRun = options.dryRun ?? false;
     const rows = this.parseCsv(csv);
     const summary: ImportSummary = {
       total: rows.length,
@@ -142,7 +152,16 @@ export class ProductImportService {
       // +2: one for the header line, one because humans count from 1.
       const lineNumber = index + 2;
       try {
-        const result = await this.importRow(actorId, row, lineNumber, categoryBySlug, garmentByKey, brandByName, locationId);
+        const result = await this.importRow(
+          actorId,
+          row,
+          lineNumber,
+          categoryBySlug,
+          garmentByKey,
+          brandByName,
+          locationId,
+          dryRun,
+        );
         summary.results.push(result);
         summary[result.action === 'skipped' ? 'skipped' : result.action] += 1;
       } catch (error) {
@@ -156,20 +175,22 @@ export class ProductImportService {
       }
     }
 
-    await this.audit.record({
-      actorId,
-      action: 'product.imported',
-      entity: 'Product',
-      data: {
-        total: summary.total,
-        created: summary.created,
-        updated: summary.updated,
-        skipped: summary.skipped,
-      },
-    });
+    if (!dryRun) {
+      await this.audit.record({
+        actorId,
+        action: 'product.imported',
+        entity: 'Product',
+        data: {
+          total: summary.total,
+          created: summary.created,
+          updated: summary.updated,
+          skipped: summary.skipped,
+        },
+      });
+    }
 
     this.logger.log(
-      `CSV import: ${summary.created} created, ${summary.updated} updated, ${summary.skipped} skipped`,
+      `CSV import${dryRun ? ' (dry run)' : ''}: ${summary.created} created, ${summary.updated} updated, ${summary.skipped} skipped`,
     );
     return summary;
   }
@@ -194,8 +215,8 @@ export class ProductImportService {
     if (rows.length === 0) {
       throw new BadRequestException('The file has no data rows.');
     }
-    if (rows.length > 5000) {
-      throw new BadRequestException('Import at most 5000 rows at a time.');
+    if (rows.length > IMPORT_ROW_CAP) {
+      throw new BadRequestException(`Import at most ${IMPORT_ROW_CAP} rows at a time.`);
     }
 
     const first = rows[0] as Row;
@@ -253,6 +274,7 @@ export class ProductImportService {
     garmentByKey: Map<string, string>,
     brandByName: Map<string, string>,
     locationId: string | null,
+    dryRun: boolean,
   ): Promise<ImportRowResult> {
     const sku = (row.sku ?? '').trim().toUpperCase();
     if (!sku) throw new Error('sku is empty');
@@ -289,26 +311,28 @@ export class ProductImportService {
     });
 
     if (existingVariant) {
-      await this.prisma.productVariant.updateMany({
-        where: { id: existingVariant.id },
-        data: {
-          size: (row.size ?? '').trim() || null,
-          color: (row.color ?? '').trim() || null,
-        },
-      });
-      await this.prisma.product.update({
-        where: { id: existingVariant.productId },
-        data: { basePrice: price, status },
-      });
-      if (requestedStock !== existingVariant.stock && locationId) {
-        await this.stockIntake.recordIntake({
-          variantId: existingVariant.id,
-          locationId,
-          delta: requestedStock - existingVariant.stock,
-          reason: 'ADJUSTMENT',
-          actorId,
-          note: 'CSV Import update',
+      if (!dryRun) {
+        await this.prisma.productVariant.updateMany({
+          where: { id: existingVariant.id },
+          data: {
+            size: (row.size ?? '').trim() || null,
+            color: (row.color ?? '').trim() || null,
+          },
         });
+        await this.prisma.product.update({
+          where: { id: existingVariant.productId },
+          data: { basePrice: price, status },
+        });
+        if (requestedStock !== existingVariant.stock && locationId) {
+          await this.stockIntake.recordIntake({
+            variantId: existingVariant.id,
+            locationId,
+            delta: requestedStock - existingVariant.stock,
+            reason: 'ADJUSTMENT',
+            actorId,
+            note: 'CSV Import update',
+          });
+        }
       }
       return { row: lineNumber, sku, action: 'updated' };
     }
@@ -324,26 +348,35 @@ export class ProductImportService {
     });
 
     if (sibling) {
-      const created = await this.prisma.productVariant.create({
-        data: {
-          productId: sibling.id,
-          sku,
-          size: (row.size ?? '').trim() || null,
-          color: (row.color ?? '').trim() || null,
-          stock: 0,
-        },
-      });
-      if (requestedStock !== 0 && locationId) {
-        await this.stockIntake.recordIntake({
-          variantId: created.id,
-          locationId,
-          delta: requestedStock,
-          reason: 'ADJUSTMENT',
-          actorId,
-          note: 'CSV Import sibling added',
+      if (!dryRun) {
+        const created = await this.prisma.productVariant.create({
+          data: {
+            productId: sibling.id,
+            sku,
+            size: (row.size ?? '').trim() || null,
+            color: (row.color ?? '').trim() || null,
+            stock: 0,
+          },
         });
+        if (requestedStock !== 0 && locationId) {
+          await this.stockIntake.recordIntake({
+            variantId: created.id,
+            locationId,
+            delta: requestedStock,
+            reason: 'ADJUSTMENT',
+            actorId,
+            note: 'CSV Import sibling added',
+          });
+        }
       }
       return { row: lineNumber, sku, action: 'updated', message: 'variant added' };
+    }
+
+    // Row is valid and would create a brand-new product — everything past
+    // this point is the actual write, skipped entirely in dry-run mode so a
+    // preview never creates a brand, a slug reservation or a product row.
+    if (dryRun) {
+      return { row: lineNumber, sku, action: 'created' };
     }
 
     const slug = await this.freeSlug(nameEn);

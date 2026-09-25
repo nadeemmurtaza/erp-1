@@ -1,5 +1,21 @@
 # 44 — The manager action hub: one queue, many optional sources
 
+> **Status (2026-09-25): WO-44.1/44.3/44.4 built; WO-44.2 scoped to one
+> real source; WO-44.5 substituted.** `core/action-hub/` (registry,
+> `ActionHubSource` interface, `GET /admin/action-hub`), the dashboard
+> widget, and the `/admin/my-actions` overflow screen are real and
+> tested. Only `LeaveRequestActionSource` is registered — doc 42
+> (timesheets), doc 27/28 (expiring documents) and doc 25 (advances) are
+> themselves unbuilt, so their sources do not exist to register; this was
+> a scoping decision, not an oversight (see `DECISIONS.md`). Two brief
+> deviations, both because the brief assumes concepts this codebase does
+> not have: `fetchFor()` takes `AuthenticatedUser`, not
+> `actorPositionId` (no position/reporting-hierarchy model exists — see
+> §2 below); the endpoint is gated on `analytics.view`, not
+> `admin.dashboard.view` (that permission key does not exist in
+> `PERMISSION_CATALOG`). Doc 75 tracks which named sources remain
+> unregistered and why.
+
 A manager today checks four or five separate screens to find out what
 needs their signature — the leave-request list, the timesheet-approval
 queue (doc 42), an expiring-document report (doc 27/28), the advance-

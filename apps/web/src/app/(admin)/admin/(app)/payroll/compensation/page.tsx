@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { formatMoney, formatDate } from '@newax/shared';
+import { formatMoney, formatDate, toMajor, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
@@ -59,7 +59,7 @@ export default function PayrollCompensationPage() {
     setOpenUser(row);
     setDetail(null);
     setBasis(row.basis);
-    setAmount(String(row.amountMinor / 100));
+    setAmount(String(toMajor(row.amountMinor)));
     setEffectiveFrom('');
     try {
       setDetail(await adminFetch<EmployeeCompensation>(`/admin/payroll/compensation/${row.userId}`));
@@ -75,7 +75,7 @@ export default function PayrollCompensationPage() {
     try {
       await adminFetch(`/admin/payroll/compensation/${openUser.userId}`, {
         method: 'PATCH',
-        body: { basis, amountMinor: Math.round(Number(amount) * 100), effectiveFrom },
+        body: { basis, amountMinor: toMinor(Number(amount)), effectiveFrom },
       });
       addToast('Rate updated.', 'success');
       setOpenUser(null);

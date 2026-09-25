@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ActionHubModule } from './action-hub/action-hub.module';
 import { AiModule } from './ai/ai.module';
 import { AuditModule } from './audit/audit.module';
 import { AuthModule } from './auth/auth.module';
@@ -37,6 +38,7 @@ import { StorageModule } from './storage/storage.module';
     AuthModule,
     HealthModule,
     MetricsModule,
+    ActionHubModule,
   ],
 })
 export class CoreModule {}

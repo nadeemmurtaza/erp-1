@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 701 | 97,287 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 60,169 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 335 | 51,009 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 713 | 98,393 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 392 | 60,416 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 340 | 51,477 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,081 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 22 | 8,651 | repository checks and generators (lint gates, this index) |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 57 | 6,375 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 57 | 6,386 | brand, money, permissions, measurements, entities |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
 | `apps/platform` | 40 | 1,615 |  |
 | `.claude` | 22 | 1,017 |  |
@@ -67,8 +67,8 @@ Each is independent: no module imports another except through a named
 | [`catalog`](modules/catalog.md) | core | MODULES allowlist | 49 | 27 |
 | [`collections`](modules/collections.md) | core | MODULES allowlist | 10 | — |
 | [`content`](modules/content.md) | core | MODULES allowlist | 24 | 8 |
-| [`crm`](modules/crm.md) | core | MODULES allowlist | 26 | 9 |
-| [`finance`](modules/finance.md) | core | MODULES allowlist | 14 | 3 |
+| [`crm`](modules/crm.md) | core | MODULES allowlist | 28 | 9 |
+| [`finance`](modules/finance.md) | core | MODULES allowlist | 16 | 3 |
 | [`fulfilment`](modules/fulfilment.md) | core | MODULES allowlist | 39 | 16 |
 | [`giftcards`](modules/giftcards.md) | core | MODULES allowlist | 10 | 3 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
@@ -107,6 +107,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 
 | Subsystem | Files | What it owns |
 |---|---|---|
+| [`action-hub`](core/action-hub.md) | 5 |  |
 | [`ai`](core/ai.md) | 6 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and Stor… |
 | [`audit`](core/audit.md) | 2 |  |
 | [`auth`](core/auth.md) | 21 |  |

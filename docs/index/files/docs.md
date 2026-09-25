@@ -563,7 +563,7 @@ All 392 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 2761 |  |
+| `DECISIONS.md` | doc | 2938 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -586,11 +586,11 @@ All 392 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `02-admin-shell.md` | doc | 242 |  |
+| `02-admin-shell.md` | doc | 253 |  |
 | `10-admin-dashboard.md` | doc | 1854 |  |
-| `44-manager-action-hub.md` | doc | 160 |  |
-| `72-fragmented-tool-consolidation-import.md` | doc | 173 |  |
-| `75-managerial-todo-widget-coverage-note.md` | doc | 54 |  |
+| `44-manager-action-hub.md` | doc | 176 |  |
+| `72-fragmented-tool-consolidation-import.md` | doc | 184 |  |
+| `75-managerial-todo-widget-coverage-note.md` | doc | 86 |  |
 
 ### `docs/implementation/ai-layer` (6)
 

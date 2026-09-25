@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1727,
-    "lines": 264376,
-    "routes": 551,
-    "controllers": 95,
+    "files": 1744,
+    "lines": 266208,
+    "routes": 556,
+    "controllers": 96,
     "models": 204,
     "enums": 88,
     "migrations": 68,
     "events": 46,
     "permissions": 65,
-    "screens": 201,
+    "screens": 204,
     "crons": 15,
-    "specs": 178,
+    "specs": 183,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 701,
-      "lines": 97287,
-      "bytes": 3605452,
+      "files": 713,
+      "lines": 98393,
+      "bytes": 3648453,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 335,
-      "lines": 51009,
-      "bytes": 1850221,
+      "files": 340,
+      "lines": 51477,
+      "bytes": 1866440,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 60169,
-      "bytes": 3565188,
+      "lines": 60416,
+      "bytes": 3580601,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 74,
-      "lines": 6957,
-      "bytes": 240159,
+      "lines": 6968,
+      "bytes": 240654,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -210,6 +210,7 @@
         "apps/api/src/modules/catalog/option-template-admin.service.ts",
         "apps/api/src/modules/catalog/product-admin.service.spec.ts",
         "apps/api/src/modules/catalog/product-admin.service.ts",
+        "apps/api/src/modules/catalog/product-import.service.spec.ts",
         "apps/api/src/modules/catalog/product-import.service.ts",
         "apps/api/src/modules/catalog/product-option-admin.service.ts",
         "apps/api/src/modules/catalog/product-replication.listener.spec.ts",
@@ -262,6 +263,8 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/crm/contact-import.service.spec.ts",
+        "apps/api/src/modules/crm/contact-import.service.ts",
         "apps/api/src/modules/crm/crm.controller.ts",
         "apps/api/src/modules/crm/crm.module.ts",
         "apps/api/src/modules/crm/crm.service.ts",
@@ -280,7 +283,7 @@
         "apps/api/src/modules/crm/segments.service.spec.ts",
         "apps/api/src/modules/crm/segments.service.ts"
       ],
-      "routes": 26,
+      "routes": 28,
       "page": "docs/index/modules/crm.md"
     },
     {
@@ -291,6 +294,8 @@
       "files": [
         "apps/api/src/modules/finance/dto/expense-category.dto.ts",
         "apps/api/src/modules/finance/dto/expense.dto.ts",
+        "apps/api/src/modules/finance/expense-import.service.spec.ts",
+        "apps/api/src/modules/finance/expense-import.service.ts",
         "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
         "apps/api/src/modules/finance/expense-replication.listener.ts",
         "apps/api/src/modules/finance/finance-margins.spec.ts",
@@ -308,7 +313,7 @@
         "apps/api/src/modules/finance/order-economics.service.ts",
         "apps/api/src/modules/finance/rto-expense.listener.ts"
       ],
-      "routes": 14,
+      "routes": 16,
       "page": "docs/index/modules/finance.md"
     },
     {
@@ -585,6 +590,8 @@
         "apps/api/src/modules/payroll/dto/pay-run.dto.ts",
         "apps/api/src/modules/payroll/leave-accrual.cron.spec.ts",
         "apps/api/src/modules/payroll/leave-accrual.cron.ts",
+        "apps/api/src/modules/payroll/leave-request-action.source.spec.ts",
+        "apps/api/src/modules/payroll/leave-request-action.source.ts",
         "apps/api/src/modules/payroll/leave.controller.ts",
         "apps/api/src/modules/payroll/leave.service.spec.ts",
         "apps/api/src/modules/payroll/leave.service.ts",
@@ -888,6 +895,17 @@
     }
   ],
   "apiCore": [
+    {
+      "name": "action-hub",
+      "files": [
+        "apps/api/src/core/action-hub/action-hub-registry.service.spec.ts",
+        "apps/api/src/core/action-hub/action-hub-registry.service.ts",
+        "apps/api/src/core/action-hub/action-hub-source.ts",
+        "apps/api/src/core/action-hub/action-hub.controller.ts",
+        "apps/api/src/core/action-hub/action-hub.module.ts"
+      ],
+      "page": "docs/index/core/action-hub.md"
+    },
     {
       "name": "ai",
       "files": [
@@ -1440,6 +1458,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit) or something is wrong"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/action-hub",
+      "module": "core/action-hub",
+      "controller": "ActionHubController",
+      "handler": "collect",
+      "file": "apps/api/src/core/action-hub/action-hub.controller.ts",
+      "line": 22,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every action item pending on the caller, merged from every registered source"
     },
     {
       "method": "GET",
@@ -3363,7 +3397,7 @@
       "controller": "CrmAdminController",
       "handler": "backfill",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 151,
+      "line": 164,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3379,7 +3413,7 @@
       "controller": "CrmAdminController",
       "handler": "listContacts",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 54,
+      "line": 67,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3395,7 +3429,7 @@
       "controller": "CrmAdminController",
       "handler": "getContact",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 117,
+      "line": 130,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3411,7 +3445,7 @@
       "controller": "CrmAdminController",
       "handler": "updateContact",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 122,
+      "line": 135,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3427,7 +3461,7 @@
       "controller": "CrmAdminController",
       "handler": "tagContact",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 132,
+      "line": 145,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3443,7 +3477,7 @@
       "controller": "CrmAdminController",
       "handler": "untagContact",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 138,
+      "line": 151,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3459,7 +3493,7 @@
       "controller": "CrmAdminController",
       "handler": "exportContacts",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 77,
+      "line": 90,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3470,12 +3504,44 @@
     },
     {
       "method": "POST",
+      "path": "/admin/crm/contacts/import",
+      "module": "crm",
+      "controller": "CrmAdminController",
+      "handler": "importContacts",
+      "file": "apps/api/src/modules/crm/crm.controller.ts",
+      "line": 227,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Bulk create or update contacts from a CSV file"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/crm/contacts/import/template",
+      "module": "crm",
+      "controller": "CrmAdminController",
+      "handler": "contactImportTemplate",
+      "file": "apps/api/src/modules/crm/crm.controller.ts",
+      "line": 218,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Download the CSV template for bulk contact upload"
+    },
+    {
+      "method": "POST",
       "path": "/admin/crm/follow-ups",
       "module": "crm",
       "controller": "CrmAdminController",
       "handler": "addFollowUp",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 168,
+      "line": 181,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3491,7 +3557,7 @@
       "controller": "CrmAdminController",
       "handler": "completeFollowUp",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 173,
+      "line": 186,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3507,7 +3573,7 @@
       "controller": "CrmAdminController",
       "handler": "dueFollowUps",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 179,
+      "line": 192,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3587,7 +3653,7 @@
       "controller": "CrmAdminController",
       "handler": "addInteraction",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 159,
+      "line": 172,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3603,7 +3669,7 @@
       "controller": "CrmAdminController",
       "handler": "listLeads",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 186,
+      "line": 199,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3619,7 +3685,7 @@
       "controller": "CrmAdminController",
       "handler": "updateLead",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 191,
+      "line": 204,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3747,7 +3813,7 @@
       "controller": "CrmAdminController",
       "handler": "listTags",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 143,
+      "line": 156,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -3971,7 +4037,7 @@
       "controller": "FinanceController",
       "handler": "listCategories",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 32,
+      "line": 49,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -3987,7 +4053,7 @@
       "controller": "FinanceController",
       "handler": "createCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 39,
+      "line": 56,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4003,7 +4069,7 @@
       "controller": "FinanceController",
       "handler": "deleteCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 53,
+      "line": 70,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4019,7 +4085,7 @@
       "controller": "FinanceController",
       "handler": "updateCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 46,
+      "line": 63,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4035,7 +4101,7 @@
       "controller": "FinanceController",
       "handler": "listExpenses",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 61,
+      "line": 78,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4051,7 +4117,7 @@
       "controller": "FinanceController",
       "handler": "createExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 103,
+      "line": 120,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4067,7 +4133,7 @@
       "controller": "FinanceController",
       "handler": "deleteExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 117,
+      "line": 134,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4083,7 +4149,7 @@
       "controller": "FinanceController",
       "handler": "updateExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 110,
+      "line": 127,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4099,7 +4165,7 @@
       "controller": "FinanceController",
       "handler": "uploadReceipt",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 128,
+      "line": 145,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4115,7 +4181,7 @@
       "controller": "FinanceController",
       "handler": "byCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 75,
+      "line": 92,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4125,13 +4191,45 @@
       "summary": "Expense totals by category — share, period-over-period change, and share of revenue"
     },
     {
+      "method": "POST",
+      "path": "/admin/finance/expenses/import",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "importExpenses",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 167,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Bulk record expenses from a CSV file (a paper expense log)"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/finance/expenses/import/template",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "expenseImportTemplate",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 157,
+      "access": "finance.manage",
+      "permissions": [
+        "finance.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Download the CSV template for bulk expense upload"
+    },
+    {
       "method": "GET",
       "path": "/admin/finance/expenses/summary",
       "module": "finance",
       "controller": "FinanceController",
       "handler": "summary",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 68,
+      "line": 85,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4147,7 +4245,7 @@
       "controller": "FinanceController",
       "handler": "trend",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 82,
+      "line": 99,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4163,7 +4261,7 @@
       "controller": "FinanceController",
       "handler": "margins",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 89,
+      "line": 106,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4179,7 +4277,7 @@
       "controller": "FinanceController",
       "handler": "unitEconomics",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 96,
+      "line": 113,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -8556,7 +8654,7 @@
       "controller": "CrmPublicController",
       "handler": "createEnquiry",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
-      "line": 39,
+      "line": 44,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9763,6 +9861,7 @@
       "category": "Dashboard",
       "sensitivity": "low",
       "routes": [
+        "GET /admin/action-hub",
         "GET /admin/analytics/cards",
         "GET /admin/analytics/comparison",
         "GET /admin/analytics/customers/overview",
@@ -9789,7 +9888,7 @@
         "GET /admin/analytics/workshop/output",
         "GET /admin/wishlist/out-of-stock-report"
       ],
-      "uiSites": 9,
+      "uiSites": 10,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -9899,6 +9998,8 @@
         "POST /admin/crm/contacts/:id/tags",
         "DELETE /admin/crm/contacts/:id/tags/:tagId",
         "GET /admin/crm/contacts/export",
+        "POST /admin/crm/contacts/import",
+        "GET /admin/crm/contacts/import/template",
         "POST /admin/crm/follow-ups",
         "POST /admin/crm/follow-ups/:id/done",
         "GET /admin/crm/follow-ups/due",
@@ -10480,7 +10581,9 @@
         "POST /admin/finance/expenses",
         "DELETE /admin/finance/expenses/:id",
         "PATCH /admin/finance/expenses/:id",
-        "POST /admin/finance/expenses/:id/receipt"
+        "POST /admin/finance/expenses/:id/receipt",
+        "POST /admin/finance/expenses/import",
+        "GET /admin/finance/expenses/import/template"
       ],
       "uiSites": 1,
       "roles": [
@@ -33085,6 +33188,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/contacts/import",
+      "file": "apps/web/src/app/(admin)/admin/(app)/contacts/import/page.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/content",
       "file": "apps/web/src/app/(admin)/admin/(app)/content/page.tsx",
       "client": true,
@@ -33196,6 +33308,15 @@
       "url": "/admin/finance/expenses/categories",
       "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx",
       "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/finance/expenses/import",
+      "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/import/page.tsx",
+      "client": false,
       "surface": "admin",
       "doc": ""
     },
@@ -33447,6 +33568,15 @@
       "kind": "page",
       "url": "/admin/marketing/promo-codes",
       "file": "apps/web/src/app/(admin)/admin/(app)/marketing/promo-codes/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/my-actions",
+      "file": "apps/web/src/app/(admin)/admin/(app)/my-actions/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -34479,6 +34609,15 @@
   ],
   "tests": [
     {
+      "file": "apps/api/src/core/action-hub/action-hub-registry.service.spec.ts",
+      "module": "core/action-hub",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "ActionHubRegistryService"
+      ]
+    },
+    {
       "file": "apps/api/src/core/ai/ai.service.spec.ts",
       "module": "core/ai",
       "kind": "unit test",
@@ -35092,6 +35231,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/catalog/product-import.service.spec.ts",
+      "module": "catalog",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "ProductImportService — dry run"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/catalog/product-replication.listener.spec.ts",
       "module": "catalog",
       "kind": "unit test",
@@ -35126,6 +35274,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/crm/contact-import.service.spec.ts",
+      "module": "crm",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "ContactImportService"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts",
       "module": "crm",
       "kind": "unit test",
@@ -35151,6 +35308,15 @@
       "cases": 4,
       "describes": [
         "SegmentsService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/finance/expense-import.service.spec.ts",
+      "module": "finance",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "ExpenseImportService"
       ]
     },
     {
@@ -35502,6 +35668,15 @@
       "cases": 3,
       "describes": [
         "LeaveAccrualCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payroll/leave-request-action.source.spec.ts",
+      "module": "payroll",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "LeaveRequestActionSource"
       ]
     },
     {
@@ -37948,6 +38123,80 @@
       ]
     },
     {
+      "path": "apps/api/src/core/action-hub/action-hub-registry.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 82,
+      "bytes": 3805,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/action-hub/action-hub-registry.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 66,
+      "bytes": 2504,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ActionHubRegistryService",
+          "kind": "class",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/action-hub/action-hub-source.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 52,
+      "bytes": 2494,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ActionItem",
+          "kind": "interface",
+          "line": 25
+        },
+        {
+          "name": "ActionHubSource",
+          "kind": "interface",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/action-hub/action-hub.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 26,
+      "bytes": 1060,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ActionHubController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/action-hub/action-hub.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 19,
+      "bytes": 677,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ActionHubModule",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/ai/ai-provider.ts",
       "area": "api",
       "kind": "module",
@@ -38841,14 +39090,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 43,
-      "bytes": 1466,
+      "lines": 45,
+      "bytes": 1553,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 42
+          "line": 44
         }
       ]
     },
@@ -42011,8 +42260,8 @@
       "path": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 284,
-      "bytes": 8415,
+      "lines": 285,
+      "bytes": 8484,
       "doc": "",
       "symbols": [
         {
@@ -42312,27 +42561,36 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/catalog/product-import.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 77,
+      "bytes": 3394,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/catalog/product-import.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 476,
-      "bytes": 15291,
+      "lines": 509,
+      "bytes": 16483,
       "doc": "",
       "symbols": [
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 17
+          "line": 18
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 24
+          "line": 25
         },
         {
           "name": "ProductImportService",
           "kind": "class",
-          "line": 70
+          "line": 71
         }
       ]
     },
@@ -42764,22 +43022,56 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/crm/contact-import.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 81,
+      "bytes": 3055,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/crm/contact-import.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 187,
+      "bytes": 6430,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ImportRowResult",
+          "kind": "interface",
+          "line": 9
+        },
+        {
+          "name": "ImportSummary",
+          "kind": "interface",
+          "line": 16
+        },
+        {
+          "name": "ContactImportService",
+          "kind": "class",
+          "line": 45
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/crm/crm.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 199,
-      "bytes": 5379,
+      "lines": 238,
+      "bytes": 6817,
       "doc": "",
       "symbols": [
         {
           "name": "CrmPublicController",
           "kind": "class",
-          "line": 33
+          "line": 38
         },
         {
           "name": "CrmAdminController",
           "kind": "class",
-          "line": 47
+          "line": 57
         }
       ]
     },
@@ -42787,14 +43079,14 @@
       "path": "apps/api/src/modules/crm/crm.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 27,
-      "bytes": 1044,
+      "lines": 29,
+      "bytes": 1135,
       "doc": "",
       "symbols": [
         {
           "name": "CrmModule",
           "kind": "class",
-          "line": 26
+          "line": 28
         }
       ]
     },
@@ -43126,6 +43418,40 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/finance/expense-import.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 75,
+      "bytes": 2828,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/finance/expense-import.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 179,
+      "bytes": 6633,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ImportRowResult",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "ImportSummary",
+          "kind": "interface",
+          "line": 15
+        },
+        {
+          "name": "ExpenseImportService",
+          "kind": "class",
+          "line": 57
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -43162,14 +43488,14 @@
       "path": "apps/api/src/modules/finance/finance.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 133,
-      "bytes": 4969,
+      "lines": 176,
+      "bytes": 6289,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceController",
           "kind": "class",
-          "line": 26
+          "line": 40
         }
       ]
     },
@@ -43249,14 +43575,14 @@
       "path": "apps/api/src/modules/finance/finance.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 24,
-      "bytes": 785,
+      "lines": 26,
+      "bytes": 876,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceModule",
           "kind": "class",
-          "line": 23
+          "line": 25
         }
       ]
     },
@@ -45682,6 +46008,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/payroll/leave-request-action.source.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 84,
+      "bytes": 3452,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payroll/leave-request-action.source.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 55,
+      "bytes": 2281,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LeaveRequestActionSource",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/payroll/leave.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -45793,14 +46143,14 @@
       "path": "apps/api/src/modules/payroll/payroll.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 23,
-      "bytes": 1047,
+      "lines": 24,
+      "bytes": 1147,
       "doc": "",
       "symbols": [
         {
           "name": "PayrollModule",
           "kind": "class",
-          "line": 22
+          "line": 23
         }
       ]
     },
@@ -51073,7 +51423,7 @@
       "area": "web",
       "kind": "page",
       "lines": 316,
-      "bytes": 11049,
+      "bytes": 11061,
       "doc": "",
       "symbols": [
         {
@@ -51354,6 +51704,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/contacts/import/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 35,
+      "bytes": 1540,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AdminContactsImportPage",
+          "kind": "default",
+          "line": 11
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx",
       "area": "web",
       "kind": "loading",
@@ -51372,8 +51737,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/contacts/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 449,
-      "bytes": 14878,
+      "lines": 452,
+      "bytes": 14993,
       "doc": "",
       "symbols": [
         {
@@ -51549,17 +51914,32 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/import/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 37,
+      "bytes": 1622,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AdminExpensesImportPage",
+          "kind": "default",
+          "line": 12
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 470,
-      "bytes": 16008,
+      "lines": 474,
+      "bytes": 16181,
       "doc": "",
       "symbols": [
         {
           "name": "ExpensesPage",
           "kind": "default",
-          "line": 60
+          "line": 61
         }
       ]
     },
@@ -51582,8 +51962,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 221,
-      "bytes": 7889,
+      "lines": 208,
+      "bytes": 7416,
       "doc": "",
       "symbols": [
         {
@@ -51627,14 +52007,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/fulfilment/returns/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 196,
-      "bytes": 7383,
+      "lines": 199,
+      "bytes": 7205,
       "doc": "",
       "symbols": [
         {
           "name": "ReturnDetailPage",
           "kind": "default",
-          "line": 33
+          "line": 34
         }
       ]
     },
@@ -51702,14 +52082,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 504,
-      "bytes": 19558,
+      "lines": 505,
+      "bytes": 19602,
       "doc": "",
       "symbols": [
         {
           "name": "AdminGarmentPage",
           "kind": "default",
-          "line": 34
+          "line": 35
         }
       ]
     },
@@ -52014,6 +52394,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/my-actions/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 71,
+      "bytes": 2487,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyActionsPage",
+          "kind": "default",
+          "line": 15
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx",
       "area": "web",
       "kind": "page",
@@ -52152,14 +52547,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 100,
-      "bytes": 3682,
+      "lines": 102,
+      "bytes": 3790,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDashboardPage",
           "kind": "default",
-          "line": 29
+          "line": 30
         }
       ]
     },
@@ -52183,7 +52578,7 @@
       "area": "web",
       "kind": "page",
       "lines": 220,
-      "bytes": 8132,
+      "bytes": 8144,
       "doc": "",
       "symbols": [
         {
@@ -52512,8 +52907,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/stitching/jobs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 307,
-      "bytes": 10785,
+      "lines": 298,
+      "bytes": 10379,
       "doc": "",
       "symbols": [
         {
@@ -52677,8 +53072,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 454,
-      "bytes": 16182,
+      "lines": 457,
+      "bytes": 15943,
       "doc": "",
       "symbols": [
         {
@@ -53960,7 +54355,7 @@
       "area": "web",
       "kind": "component",
       "lines": 363,
-      "bytes": 13806,
+      "bytes": 13804,
       "doc": "",
       "symbols": [
         {
@@ -54206,6 +54601,36 @@
           "name": "CommandPalette",
           "kind": "function",
           "line": 97
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/csv-import-card.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 209,
+      "bytes": 7387,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CsvImportCard",
+          "kind": "function",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/dashboard/action-hub-widget.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 70,
+      "bytes": 2316,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ActionHubWidget",
+          "kind": "function",
+          "line": 19
         }
       ]
     },
@@ -54473,8 +54898,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 775,
-      "bytes": 20275,
+      "lines": 782,
+      "bytes": 20423,
       "doc": "",
       "symbols": [
         {
@@ -54505,12 +54930,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 745
+          "line": 752
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 760
+          "line": 767
         }
       ]
     },
@@ -55726,8 +56151,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 190,
-      "bytes": 8028,
+      "lines": 196,
+      "bytes": 8483,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -56238,8 +56663,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1304,
-      "bytes": 34091,
+      "lines": 1343,
+      "bytes": 35189,
       "doc": "",
       "symbols": [
         {
@@ -56398,489 +56823,509 @@
           "line": 387
         },
         {
+          "name": "CsvImportRowResult",
+          "kind": "interface",
+          "line": 401
+        },
+        {
+          "name": "CsvImportSummary",
+          "kind": "interface",
+          "line": 408
+        },
+        {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 395
+          "line": 416
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 413
+          "line": 434
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 421
+          "line": 442
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 431
+          "line": 452
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 440
+          "line": 461
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 451
+          "line": 472
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 466
+          "line": 487
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 481
+          "line": 502
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 497
+          "line": 518
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 510
+          "line": 531
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 517
+          "line": 538
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 526
+          "line": 547
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 536
+          "line": 557
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 548
+          "line": 569
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 561
+          "line": 582
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 567
+          "line": 588
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 578
+          "line": 599
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 585
+          "line": 606
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 591
+          "line": 612
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 600
+          "line": 621
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 608
+          "line": 629
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 613
+          "line": 634
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 620
+          "line": 641
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 628
+          "line": 649
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 634
+          "line": 655
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 640
+          "line": 661
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 650
+          "line": 671
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 656
+          "line": 677
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 668
+          "line": 689
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 672
+          "line": 693
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 681
+          "line": 702
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 685
+          "line": 706
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 694
+          "line": 715
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 701
+          "line": 722
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 708
+          "line": 729
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 715
+          "line": 736
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 725
+          "line": 746
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 733
+          "line": 754
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 740
+          "line": 761
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 746
+          "line": 767
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 751
+          "line": 772
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 761
+          "line": 782
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 767
+          "line": 788
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 773
+          "line": 794
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 780
+          "line": 801
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 789
+          "line": 810
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 791
+          "line": 812
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 802
+          "line": 823
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 807
+          "line": 828
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 813
+          "line": 834
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 815
+          "line": 836
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 824
+          "line": 845
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 833
+          "line": 854
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 835
+          "line": 856
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 852
+          "line": 873
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 857
+          "line": 878
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 859
+          "line": 880
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 873
+          "line": 894
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 875
+          "line": 896
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 886
+          "line": 907
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 901
+          "line": 922
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 908
+          "line": 929
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 910
+          "line": 931
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 935
+          "line": 956
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 943
+          "line": 964
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 951
+          "line": 972
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 958
+          "line": 979
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 975
+          "line": 996
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 982
+          "line": 1003
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 994
+          "line": 1015
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 1003
+          "line": 1024
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 1005
+          "line": 1026
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1017
+          "line": 1038
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 1023
+          "line": 1044
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 1030
+          "line": 1051
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 1035
+          "line": 1056
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1047
+          "line": 1068
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1056
+          "line": 1077
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1063
+          "line": 1084
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1077
+          "line": 1098
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1088
+          "line": 1109
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1092
+          "line": 1113
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1101
+          "line": 1122
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1109
+          "line": 1130
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1140
+          "line": 1161
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1173
+          "line": 1194
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1179
+          "line": 1200
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1197
+          "line": 1218
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1212
+          "line": 1233
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1221
+          "line": 1242
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1230
+          "line": 1251
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1246
+          "line": 1267
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1253
+          "line": 1274
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1261
+          "line": 1282
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1268
+          "line": 1289
         },
         {
           "name": "DashboardCardsResponse",
           "kind": "interface",
-          "line": 1285
+          "line": 1306
+        },
+        {
+          "name": "ActionItem",
+          "kind": "interface",
+          "line": 1320
+        },
+        {
+          "name": "ActionHubResponse",
+          "kind": "interface",
+          "line": 1331
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1298
+          "line": 1337
         }
       ]
     },
@@ -59415,8 +59860,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 2761,
-      "bytes": 154821,
+      "lines": 2938,
+      "bytes": 165920,
       "doc": "",
       "symbols": []
     },
@@ -59532,8 +59977,8 @@
       "path": "docs/implementation/admin-platform/02-admin-shell.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 242,
-      "bytes": 9408,
+      "lines": 253,
+      "bytes": 10096,
       "doc": "",
       "symbols": []
     },
@@ -59550,8 +59995,8 @@
       "path": "docs/implementation/admin-platform/44-manager-action-hub.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 160,
-      "bytes": 8867,
+      "lines": 176,
+      "bytes": 9849,
       "doc": "",
       "symbols": []
     },
@@ -59559,8 +60004,8 @@
       "path": "docs/implementation/admin-platform/72-fragmented-tool-consolidation-import.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 173,
-      "bytes": 9752,
+      "lines": 184,
+      "bytes": 10467,
       "doc": "",
       "symbols": []
     },
@@ -59568,8 +60013,8 @@
       "path": "docs/implementation/admin-platform/75-managerial-todo-widget-coverage-note.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 54,
-      "bytes": 2438,
+      "lines": 86,
+      "bytes": 4367,
       "doc": "",
       "symbols": []
     },
@@ -61383,8 +61828,8 @@
       "path": "packages/shared/src/constants.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 146,
-      "bytes": 5125,
+      "lines": 157,
+      "bytes": 5620,
       "doc": "",
       "symbols": [
         {
@@ -61476,6 +61921,11 @@
           "name": "formatMoney",
           "kind": "function",
           "line": 137
+        },
+        {
+          "name": "IMPORT_ROW_CAP",
+          "kind": "const",
+          "line": 156
         }
       ]
     },

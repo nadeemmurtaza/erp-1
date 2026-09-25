@@ -143,3 +143,14 @@ export function formatMoney(minorAmount: number, locale: Locale = 'en'): string 
   });
   return formatter.format(toMajor(minorAmount));
 }
+
+/**
+ * The row cap every CSV importer enforces
+ * (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.3) —
+ * one shared number, never three independently-chosen ones. Matches
+ * `ProductImportService`'s own pre-existing cap; `ContactImportService`
+ * and `ExpenseImportService` (`crm`/`finance`) import this rather than
+ * restating it. A file above the cap is rejected up front, before any row
+ * is processed, never silently truncated.
+ */
+export const IMPORT_ROW_CAP = 5000;

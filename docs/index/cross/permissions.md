@@ -32,7 +32,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 25 | 9 | STAFF, ADMIN |
+| `analytics.view` | View dashboard analytics | low | 26 | 10 | STAFF, ADMIN |
 | `reports.view` | Export CSV reports | low | 11 | 2 | STAFF, ADMIN |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
@@ -42,7 +42,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `crm.manage` | Manage leads, contacts and CRM | low | 25 | 15 | STAFF, ADMIN |
+| `crm.manage` | Manage leads, contacts and CRM | low | 27 | 15 | STAFF, ADMIN |
 
 ### Sales
 
@@ -111,7 +111,7 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `finance.view` | View expenses and finance reports | medium | 10 | 16 | STAFF, ADMIN |
-| `finance.manage` | Record and edit expenses | medium | 7 | 1 | ADMIN |
+| `finance.manage` | Record and edit expenses | medium | 9 | 1 | ADMIN |
 
 ### Fulfilment
 

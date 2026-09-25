@@ -44,8 +44,8 @@ Every top-level export in `packages`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `brand.ts` | `BRAND` | const | :321 | --------------------------------------------------------------------------- |
-| `brand.ts` | `Brand` | type | :333 |  |
+| `brand.ts` | `BRAND` | const | :332 | --------------------------------------------------------------------------- |
+| `brand.ts` | `Brand` | type | :344 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
 | `cod-risk.ts` | `CodRiskCityStats` | interface | :11 |  |
 | `cod-risk.ts` | `CodRiskCustomerHistory` | interface | :18 |  |

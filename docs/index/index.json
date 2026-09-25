@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1692,
-    "lines": 260060,
-    "routes": 546,
+    "files": 1727,
+    "lines": 264376,
+    "routes": 551,
     "controllers": 95,
     "models": 204,
     "enums": 88,
     "migrations": 68,
     "events": 46,
     "permissions": 65,
-    "screens": 207,
+    "screens": 201,
     "crons": 15,
-    "specs": 170,
+    "specs": 178,
     "designLaws": 0
   },
   "designLaws": [],
@@ -26,15 +26,15 @@
       "label": "repository root files"
     },
     "infra": {
-      "files": 56,
-      "lines": 28358,
-      "bytes": 1112262,
+      "files": 57,
+      "lines": 29137,
+      "bytes": 1138444,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 685,
-      "lines": 94553,
-      "bytes": 3483902,
+      "files": 701,
+      "lines": 97287,
+      "bytes": 3605452,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 317,
-      "lines": 50446,
-      "bytes": 1838284,
+      "files": 335,
+      "lines": 51009,
+      "bytes": 1850221,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 392,
-      "lines": 59940,
-      "bytes": 3550873,
+      "lines": 60169,
+      "bytes": 3565188,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 74,
-      "lines": 6946,
-      "bytes": 239526,
+      "lines": 6957,
+      "bytes": 240159,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -120,17 +120,21 @@
         "apps/api/src/modules/analytics/analytics.controller.ts",
         "apps/api/src/modules/analytics/analytics.customers.spec.ts",
         "apps/api/src/modules/analytics/analytics.inventory.spec.ts",
+        "apps/api/src/modules/analytics/analytics.metrics.spec.ts",
+        "apps/api/src/modules/analytics/analytics.metrics.ts",
         "apps/api/src/modules/analytics/analytics.module.ts",
         "apps/api/src/modules/analytics/analytics.orders.spec.ts",
         "apps/api/src/modules/analytics/analytics.products.spec.ts",
         "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
+        "apps/api/src/modules/analytics/analytics.sales.spec.ts",
         "apps/api/src/modules/analytics/analytics.service.ts",
         "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
         "apps/api/src/modules/analytics/dto/analytics.dto.ts",
+        "apps/api/src/modules/analytics/dto/cards.dto.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.ts"
       ],
-      "routes": 19,
+      "routes": 24,
       "page": "docs/index/modules/analytics.md"
     },
     {
@@ -139,6 +143,8 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/bom/bom-cards.metrics.spec.ts",
+        "apps/api/src/modules/bom/bom-cards.metrics.ts",
         "apps/api/src/modules/bom/bom-production-replication.listener.spec.ts",
         "apps/api/src/modules/bom/bom-production-replication.listener.ts",
         "apps/api/src/modules/bom/bom.controller.ts",
@@ -293,6 +299,8 @@
         "apps/api/src/modules/finance/finance.cron.ts",
         "apps/api/src/modules/finance/finance.listener.spec.ts",
         "apps/api/src/modules/finance/finance.listener.ts",
+        "apps/api/src/modules/finance/finance.metrics.spec.ts",
+        "apps/api/src/modules/finance/finance.metrics.ts",
         "apps/api/src/modules/finance/finance.module.ts",
         "apps/api/src/modules/finance/finance.service.ts",
         "apps/api/src/modules/finance/finance.spec.ts",
@@ -379,6 +387,8 @@
         "apps/api/src/modules/inventory/inventory.cron.ts",
         "apps/api/src/modules/inventory/inventory.listener.spec.ts",
         "apps/api/src/modules/inventory/inventory.listener.ts",
+        "apps/api/src/modules/inventory/inventory.metrics.spec.ts",
+        "apps/api/src/modules/inventory/inventory.metrics.ts",
         "apps/api/src/modules/inventory/inventory.module.ts",
         "apps/api/src/modules/inventory/inventory.service.spec.ts",
         "apps/api/src/modules/inventory/inventory.service.ts",
@@ -671,6 +681,8 @@
         "apps/api/src/modules/purchasing/purchasing.controller.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.spec.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.ts",
+        "apps/api/src/modules/purchasing/purchasing.metrics.spec.ts",
+        "apps/api/src/modules/purchasing/purchasing.metrics.ts",
         "apps/api/src/modules/purchasing/purchasing.module.ts",
         "apps/api/src/modules/purchasing/purchasing.service.ts",
         "apps/api/src/modules/purchasing/purchasing.spec.ts",
@@ -992,6 +1004,16 @@
         "apps/api/src/core/health/health.module.ts"
       ],
       "page": "docs/index/core/health.md"
+    },
+    {
+      "name": "metrics",
+      "files": [
+        "apps/api/src/core/metrics/metric-provider.ts",
+        "apps/api/src/core/metrics/metric-registry.service.spec.ts",
+        "apps/api/src/core/metrics/metric-registry.service.ts",
+        "apps/api/src/core/metrics/metrics.module.ts"
+      ],
+      "page": "docs/index/core/metrics.md"
     },
     {
       "name": "notifications",
@@ -1421,12 +1443,28 @@
     },
     {
       "method": "GET",
+      "path": "/admin/analytics/cards",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "cards",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 20,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every dashboard card, batched by provider (D2) — one request per range change"
+    },
+    {
+      "method": "GET",
       "path": "/admin/analytics/comparison",
       "module": "analytics",
       "controller": "AnalyticsController",
       "handler": "comparison",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 182,
+      "line": 220,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1442,7 +1480,7 @@
       "controller": "AnalyticsController",
       "handler": "customersOverview",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 135,
+      "line": 173,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1458,7 +1496,7 @@
       "controller": "AnalyticsController",
       "handler": "customersRetention",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 144,
+      "line": 182,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1474,7 +1512,7 @@
       "controller": "AnalyticsController",
       "handler": "customersTop",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 153,
+      "line": 191,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1490,7 +1528,7 @@
       "controller": "AnalyticsController",
       "handler": "dashboard",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 19,
+      "line": 57,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1506,7 +1544,7 @@
       "controller": "AnalyticsController",
       "handler": "extended",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 36,
+      "line": 74,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1522,7 +1560,7 @@
       "controller": "AnalyticsController",
       "handler": "inventoryMovements",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 123,
+      "line": 161,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1538,7 +1576,7 @@
       "controller": "AnalyticsController",
       "handler": "inventoryValuation",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 111,
+      "line": 149,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1554,7 +1592,7 @@
       "controller": "AnalyticsController",
       "handler": "setMonthlyTarget",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 199,
+      "line": 237,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1570,7 +1608,7 @@
       "controller": "AnalyticsController",
       "handler": "ordersFulfilment",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 50,
+      "line": 88,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1586,7 +1624,7 @@
       "controller": "AnalyticsController",
       "handler": "ordersOverview",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 44,
+      "line": 82,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1602,7 +1640,7 @@
       "controller": "AnalyticsController",
       "handler": "productsCategories",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 103,
+      "line": 141,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1618,7 +1656,7 @@
       "controller": "AnalyticsController",
       "handler": "productsSlowSellers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 97,
+      "line": 135,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1634,7 +1672,7 @@
       "controller": "AnalyticsController",
       "handler": "productsTopSellers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 87,
+      "line": 125,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1650,7 +1688,7 @@
       "controller": "AnalyticsController",
       "handler": "purchasingSpend",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 58,
+      "line": 96,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1666,7 +1704,7 @@
       "controller": "AnalyticsController",
       "handler": "purchasingSuppliers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 75,
+      "line": 113,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1677,12 +1715,76 @@
     },
     {
       "method": "GET",
+      "path": "/admin/analytics/sales/aov",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "salesAov",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 34,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Average order value, its median and basket size, plus the value distribution"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/sales/funnel",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "salesFunnel",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 51,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "View-to-purchase funnel, conversion rate, abandoned carts and traffic sources"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/sales/profit",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "salesProfit",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 40,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Direct gross profit — revenue less unit cost — overall and by product"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/sales/revenue",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "salesRevenue",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 28,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Revenue, AOV, channel split and progress against the monthly target"
+    },
+    {
+      "method": "GET",
       "path": "/admin/analytics/stitching",
       "module": "analytics",
       "controller": "AnalyticsController",
       "handler": "stitching",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 28,
+      "line": 66,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1698,7 +1800,7 @@
       "controller": "AnalyticsController",
       "handler": "visitors",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 174,
+      "line": 212,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1714,7 +1816,7 @@
       "controller": "AnalyticsController",
       "handler": "workshopOutput",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 162,
+      "line": 200,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -9661,6 +9763,7 @@
       "category": "Dashboard",
       "sensitivity": "low",
       "routes": [
+        "GET /admin/analytics/cards",
         "GET /admin/analytics/comparison",
         "GET /admin/analytics/customers/overview",
         "GET /admin/analytics/customers/retention",
@@ -9677,12 +9780,16 @@
         "GET /admin/analytics/products/top-sellers",
         "GET /admin/analytics/purchasing/spend",
         "GET /admin/analytics/purchasing/suppliers",
+        "GET /admin/analytics/sales/aov",
+        "GET /admin/analytics/sales/funnel",
+        "GET /admin/analytics/sales/profit",
+        "GET /admin/analytics/sales/revenue",
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors",
         "GET /admin/analytics/workshop/output",
         "GET /admin/wishlist/out-of-stock-report"
       ],
-      "uiSites": 10,
+      "uiSites": 9,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -9811,7 +9918,7 @@
         "POST /admin/crm/segments/preview",
         "GET /admin/crm/tags"
       ],
-      "uiSites": 5,
+      "uiSites": 15,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -9912,7 +10019,7 @@
         "GET /admin/stitching/jobs/:id",
         "GET /admin/stitching/jobs/workload"
       ],
-      "uiSites": 2,
+      "uiSites": 8,
       "roles": [
         "TAILOR",
         "STAFF",
@@ -10098,7 +10205,7 @@
         "POST /admin/catalog/redirects/import",
         "PATCH /admin/catalog/variants/:variantId/stock"
       ],
-      "uiSites": 6,
+      "uiSites": 17,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10120,7 +10227,7 @@
         "GET /admin/inventory/variances",
         "POST /admin/inventory/variances/:id/resolve"
       ],
-      "uiSites": 4,
+      "uiSites": 11,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10135,7 +10242,7 @@
       "routes": [
         "GET /admin/reports/export/stock-valuation"
       ],
-      "uiSites": 8,
+      "uiSites": 15,
       "roles": [
         "ADMIN"
       ],
@@ -10246,7 +10353,7 @@
         "POST /admin/trading-partners/:id/outbound-key",
         "POST /admin/trading-partners/:id/rotate-inbound-key"
       ],
-      "uiSites": 3,
+      "uiSites": 10,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10354,7 +10461,7 @@
         "GET /admin/finance/margins",
         "GET /admin/finance/unit-economics"
       ],
-      "uiSites": 6,
+      "uiSites": 16,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10471,7 +10578,7 @@
         "GET /admin/bom/recipes/:id/availability",
         "GET /admin/bom/recipes/:id/cost"
       ],
-      "uiSites": 4,
+      "uiSites": 10,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -10637,7 +10744,7 @@
         "DELETE /admin/users/:id/roles/:roleId",
         "POST /admin/users/:id/roles/:roleId"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "ADMIN"
       ],
@@ -32798,6 +32905,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/analytics",
+      "file": "apps/web/src/app/(admin)/admin/(app)/analytics/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/analytics/[...slug]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/b/[brandId]",
       "file": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "client": true,
@@ -32996,15 +33121,6 @@
     {
       "app": "web",
       "kind": "page",
-      "url": "/admin/customers/insights",
-      "file": "apps/web/src/app/(admin)/admin/(app)/customers/insights/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
       "url": "/admin/designs",
       "file": "apps/web/src/app/(admin)/admin/(app)/designs/page.tsx",
       "client": true,
@@ -33070,15 +33186,6 @@
       "kind": "page",
       "url": "/admin/finance/expenses",
       "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
-      "url": "/admin/finance/expenses/analytics",
-      "file": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -33202,15 +33309,6 @@
     },
     {
       "app": "web",
-      "kind": "page",
-      "url": "/admin/insights",
-      "file": "apps/web/src/app/(admin)/admin/(app)/insights/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
       "kind": "loading",
       "url": "/admin/inventory",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/loading.tsx",
@@ -33250,15 +33348,6 @@
       "kind": "page",
       "url": "/admin/inventory/counts/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
-      "url": "/admin/inventory/insights",
-      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/insights/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -33446,15 +33535,6 @@
     {
       "app": "web",
       "kind": "page",
-      "url": "/admin/orders/insights",
-      "file": "apps/web/src/app/(admin)/admin/(app)/orders/insights/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
       "url": "/admin/payments",
       "file": "apps/web/src/app/(admin)/admin/(app)/payments/page.tsx",
       "client": true,
@@ -33536,15 +33616,6 @@
     {
       "app": "web",
       "kind": "page",
-      "url": "/admin/products/insights",
-      "file": "apps/web/src/app/(admin)/admin/(app)/products/insights/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
       "url": "/admin/products/new",
       "file": "apps/web/src/app/(admin)/admin/(app)/products/new/page.tsx",
       "client": true,
@@ -33583,15 +33654,6 @@
       "kind": "page",
       "url": "/admin/purchase-orders/new",
       "file": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
-      "url": "/admin/purchase-orders/spend",
-      "file": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -33790,15 +33852,6 @@
       "kind": "page",
       "url": "/admin/users/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
-      "url": "/admin/workshop/insights",
-      "file": "apps/web/src/app/(admin)/admin/(app)/workshop/insights/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -34187,7 +34240,7 @@
       "pkg": "@newax/web",
       "file": "apps/web/package.json",
       "name": "test",
-      "cmd": "echo \"no unit tests in web yet — covered by Playwright\" && exit 0"
+      "cmd": "vitest run"
     },
     {
       "pkg": "@newax/web",
@@ -34211,7 +34264,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-chart-imports.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -34532,6 +34585,20 @@
       ]
     },
     {
+      "file": "apps/api/src/core/metrics/metric-registry.service.spec.ts",
+      "module": "core/metrics",
+      "kind": "unit test",
+      "cases": 15,
+      "describes": [
+        "MetricRegistryService",
+        "register",
+        "collect — permission gating",
+        "collect — failure isolation",
+        "collect — caching",
+        "global injection"
+      ]
+    },
+    {
       "file": "apps/api/src/core/notifications/email.channel.spec.ts",
       "module": "core/notifications",
       "kind": "unit test",
@@ -34689,12 +34756,13 @@
       "file": "apps/api/src/core/time/metric-window.spec.ts",
       "module": "core/time",
       "kind": "unit test",
-      "cases": 9,
+      "cases": 18,
       "describes": [
         "weekKeyOf",
         "monthKeyOf",
         "bucketKeyOf",
-        "rollUpDays"
+        "rollUpDays",
+        "previousWindow"
       ]
     },
     {
@@ -34815,6 +34883,21 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/analytics/analytics.metrics.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "SalesMetricsProvider",
+        "SalesCostMetricsProvider",
+        "OrdersMetricsProvider",
+        "ProductsMetricsProvider",
+        "CustomersMetricsProvider",
+        "WorkshopMetricsProvider",
+        "WorkshopStaffMetricsProvider"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/analytics/analytics.orders.spec.ts",
       "module": "analytics",
       "kind": "unit test",
@@ -34849,6 +34932,19 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/analytics/analytics.sales.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "AnalyticsService — WO-A.5 sales revenue/aov/profit/funnel",
+        "salesRevenue",
+        "salesAov",
+        "salesProfit",
+        "salesFunnel"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
       "module": "analytics",
       "kind": "unit test",
@@ -34870,6 +34966,16 @@
         "sendSupplierDigests",
         "sendSupplierScorecards",
         "sendDemandAlerts"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/bom/bom-cards.metrics.spec.ts",
+      "module": "bom",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "BomCardsMetricsProvider",
+        "BomValueMetricsProvider"
       ]
     },
     {
@@ -35088,6 +35194,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/finance/finance.metrics.spec.ts",
+      "module": "finance",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "FinanceMetricsProvider"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/finance/finance.spec.ts",
       "module": "finance",
       "kind": "unit test",
@@ -35162,6 +35277,16 @@
       "cases": 1,
       "describes": [
         "InventoryListener"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/inventory/inventory.metrics.spec.ts",
+      "module": "inventory",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "InventoryMetricsProvider",
+        "InventoryValuationMetricsProvider"
       ]
     },
     {
@@ -35536,6 +35661,16 @@
       "cases": 5,
       "describes": [
         "PurchasingCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/purchasing/purchasing.metrics.spec.ts",
+      "module": "purchasing",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "PurchasingMetricsProvider",
+        "PurchasingSpendMetricsProvider"
       ]
     },
     {
@@ -36037,6 +36172,16 @@
       "cases": 3,
       "describes": [
         "TenantsService"
+      ]
+    },
+    {
+      "file": "apps/web/src/components/admin/analytics/resolve-path.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 13,
+      "describes": [
+        "resolvePath",
+        "interpolateHref"
       ]
     },
     {
@@ -38696,14 +38841,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 41,
-      "bytes": 1389,
+      "lines": 43,
+      "bytes": 1466,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 40
+          "line": 42
         }
       ]
     },
@@ -39133,6 +39278,75 @@
           "name": "HealthModule",
           "kind": "class",
           "line": 5
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/metrics/metric-provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 59,
+      "bytes": 2792,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MetricContext",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "MetricUnit",
+          "kind": "type",
+          "line": 21
+        },
+        {
+          "name": "MetricValue",
+          "kind": "interface",
+          "line": 23
+        },
+        {
+          "name": "MetricProvider",
+          "kind": "interface",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/metrics/metric-registry.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 267,
+      "bytes": 10906,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/metrics/metric-registry.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 137,
+      "bytes": 5738,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MetricRegistryService",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/metrics/metrics.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 18,
+      "bytes": 706,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MetricsModule",
+          "kind": "class",
+          "line": 17
         }
       ]
     },
@@ -40180,8 +40394,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 370,
-      "bytes": 18955,
+      "lines": 384,
+      "bytes": 19718,
       "doc": "",
       "symbols": [
         {
@@ -40217,12 +40431,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 230
+          "line": 240
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 232
+          "line": 242
         }
       ]
     },
@@ -40374,8 +40588,8 @@
       "path": "apps/api/src/core/time/metric-window.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 85,
-      "bytes": 3306,
+      "lines": 192,
+      "bytes": 8159,
       "doc": "",
       "symbols": []
     },
@@ -40383,34 +40597,39 @@
       "path": "apps/api/src/core/time/metric-window.ts",
       "area": "api",
       "kind": "module",
-      "lines": 73,
-      "bytes": 2965,
+      "lines": 105,
+      "bytes": 4787,
       "doc": "Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the same three granularities.",
       "symbols": [
         {
           "name": "MetricBucket",
           "kind": "type",
-          "line": 15
+          "line": 20
         },
         {
           "name": "weekKeyOf",
           "kind": "function",
-          "line": 18
+          "line": 23
         },
         {
           "name": "monthKeyOf",
           "kind": "function",
-          "line": 27
+          "line": 32
         },
         {
           "name": "bucketKeyOf",
           "kind": "function",
-          "line": 32
+          "line": 37
         },
         {
           "name": "rollUpDays",
           "kind": "function",
-          "line": 46
+          "line": 51
+        },
+        {
+          "name": "previousWindow",
+          "kind": "function",
+          "line": 99
         }
       ]
     },
@@ -40836,8 +41055,8 @@
       "path": "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 309,
-      "bytes": 11989,
+      "lines": 311,
+      "bytes": 12104,
       "doc": "",
       "symbols": []
     },
@@ -40845,14 +41064,14 @@
       "path": "apps/api/src/modules/analytics/analytics.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 203,
-      "bytes": 8761,
+      "lines": 241,
+      "bytes": 10781,
       "doc": "",
       "symbols": [
         {
           "name": "AnalyticsController",
           "kind": "class",
-          "line": 14
+          "line": 15
         }
       ]
     },
@@ -40860,8 +41079,8 @@
       "path": "apps/api/src/modules/analytics/analytics.customers.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 166,
-      "bytes": 6604,
+      "lines": 168,
+      "bytes": 6719,
       "doc": "",
       "symbols": []
     },
@@ -40869,23 +41088,77 @@
       "path": "apps/api/src/modules/analytics/analytics.inventory.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 194,
-      "bytes": 8979,
+      "lines": 196,
+      "bytes": 9094,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.metrics.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 210,
+      "bytes": 9233,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.metrics.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 454,
+      "bytes": 21414,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SalesMetricsProvider",
+          "kind": "class",
+          "line": 38
+        },
+        {
+          "name": "SalesCostMetricsProvider",
+          "kind": "class",
+          "line": 113
+        },
+        {
+          "name": "OrdersMetricsProvider",
+          "kind": "class",
+          "line": 172
+        },
+        {
+          "name": "ProductsMetricsProvider",
+          "kind": "class",
+          "line": 223
+        },
+        {
+          "name": "CustomersMetricsProvider",
+          "kind": "class",
+          "line": 312
+        },
+        {
+          "name": "WorkshopMetricsProvider",
+          "kind": "class",
+          "line": 374
+        },
+        {
+          "name": "WorkshopStaffMetricsProvider",
+          "kind": "class",
+          "line": 430
+        }
+      ]
     },
     {
       "path": "apps/api/src/modules/analytics/analytics.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 11,
-      "bytes": 367,
+      "lines": 30,
+      "bytes": 815,
       "doc": "",
       "symbols": [
         {
           "name": "AnalyticsModule",
           "kind": "class",
-          "line": 10
+          "line": 29
         }
       ]
     },
@@ -40893,8 +41166,8 @@
       "path": "apps/api/src/modules/analytics/analytics.orders.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 199,
-      "bytes": 8968,
+      "lines": 201,
+      "bytes": 9083,
       "doc": "",
       "symbols": []
     },
@@ -40902,8 +41175,8 @@
       "path": "apps/api/src/modules/analytics/analytics.products.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 260,
-      "bytes": 10428,
+      "lines": 262,
+      "bytes": 10543,
       "doc": "",
       "symbols": []
     },
@@ -40911,8 +41184,17 @@
       "path": "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 329,
-      "bytes": 12086,
+      "lines": 331,
+      "bytes": 12201,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.sales.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 151,
+      "bytes": 6162,
       "doc": "",
       "symbols": []
     },
@@ -40920,174 +41202,194 @@
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 2018,
-      "bytes": 80927,
+      "lines": 2375,
+      "bytes": 98735,
       "doc": "",
       "symbols": [
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 20
+          "line": 23
+        },
+        {
+          "name": "SalesRevenueReport",
+          "kind": "interface",
+          "line": 30
+        },
+        {
+          "name": "SalesAovReport",
+          "kind": "interface",
+          "line": 37
+        },
+        {
+          "name": "SalesProfitReport",
+          "kind": "interface",
+          "line": 43
+        },
+        {
+          "name": "SalesFunnelReport",
+          "kind": "interface",
+          "line": 49
         },
         {
           "name": "DashboardSummary",
           "kind": "interface",
-          "line": 27
+          "line": 56
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 47
+          "line": 76
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 56
+          "line": 85
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 77
+          "line": 106
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 82
+          "line": 111
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 91
+          "line": 120
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 99
+          "line": 128
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 104
+          "line": 133
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 119
+          "line": 148
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 132
+          "line": 161
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 136
+          "line": 165
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 148
+          "line": 177
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 152
+          "line": 181
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 161
+          "line": 190
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 165
+          "line": 194
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 176
+          "line": 205
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 181
+          "line": 210
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 194
+          "line": 223
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 201
+          "line": 230
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 211
+          "line": 240
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 217
+          "line": 246
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 224
+          "line": 253
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 232
+          "line": 261
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 237
+          "line": 266
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 247
+          "line": 276
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 251
+          "line": 280
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 257
+          "line": 286
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 264
+          "line": 293
         },
         {
           "name": "ComparisonBucket",
           "kind": "interface",
-          "line": 271
+          "line": 300
         },
         {
           "name": "ComparisonAnalytics",
           "kind": "interface",
-          "line": 281
+          "line": 310
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 296
+          "line": 325
         },
         {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 318
+          "line": 347
         }
       ]
     },
@@ -41095,8 +41397,8 @@
       "path": "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 180,
-      "bytes": 7496,
+      "lines": 182,
+      "bytes": 7611,
       "doc": "",
       "symbols": []
     },
@@ -41112,6 +41414,26 @@
           "name": "SetMonthlyTargetDto",
           "kind": "class",
           "line": 4
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/analytics/dto/cards.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 44,
+      "bytes": 1400,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DashboardCardsQueryDto",
+          "kind": "class",
+          "line": 7
+        },
+        {
+          "name": "DashboardCardsResponse",
+          "kind": "interface",
+          "line": 33
         }
       ]
     },
@@ -41136,6 +41458,35 @@
           "name": "SupplyChainDigestCron",
           "kind": "class",
           "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bom/bom-cards.metrics.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 61,
+      "bytes": 2825,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/bom/bom-cards.metrics.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 126,
+      "bytes": 5241,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BomCardsMetricsProvider",
+          "kind": "class",
+          "line": 25
+        },
+        {
+          "name": "BomValueMetricsProvider",
+          "kind": "class",
+          "line": 102
         }
       ]
     },
@@ -41245,14 +41596,14 @@
       "path": "apps/api/src/modules/bom/bom.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 26,
-      "bytes": 838,
+      "lines": 29,
+      "bytes": 984,
       "doc": "",
       "symbols": [
         {
           "name": "BomModule",
           "kind": "class",
-          "line": 25
+          "line": 28
         }
       ]
     },
@@ -42871,17 +43222,41 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/finance/finance.metrics.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 63,
+      "bytes": 2799,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/finance/finance.metrics.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 125,
+      "bytes": 5250,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FinanceMetricsProvider",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/finance/finance.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 22,
-      "bytes": 697,
+      "lines": 24,
+      "bytes": 785,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceModule",
           "kind": "class",
-          "line": 21
+          "line": 23
         }
       ]
     },
@@ -43703,17 +44078,46 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/inventory/inventory.metrics.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 70,
+      "bytes": 3058,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/inventory/inventory.metrics.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 135,
+      "bytes": 5802,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InventoryMetricsProvider",
+          "kind": "class",
+          "line": 24
+        },
+        {
+          "name": "InventoryValuationMetricsProvider",
+          "kind": "class",
+          "line": 106
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/inventory/inventory.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 18,
-      "bytes": 808,
+      "lines": 27,
+      "bytes": 1001,
       "doc": "",
       "symbols": [
         {
           "name": "InventoryModule",
           "kind": "class",
-          "line": 17
+          "line": 26
         }
       ]
     },
@@ -46204,17 +46608,46 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/purchasing/purchasing.metrics.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 74,
+      "bytes": 3255,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/purchasing/purchasing.metrics.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 135,
+      "bytes": 5760,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PurchasingMetricsProvider",
+          "kind": "class",
+          "line": 17
+        },
+        {
+          "name": "PurchasingSpendMetricsProvider",
+          "kind": "class",
+          "line": 102
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/purchasing/purchasing.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 19,
-      "bytes": 969,
+      "lines": 27,
+      "bytes": 1155,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingModule",
           "kind": "class",
-          "line": 18
+          "line": 26
         }
       ]
     },
@@ -50453,8 +50886,8 @@
       "path": "apps/web/next.config.mjs",
       "area": "web",
       "kind": "script",
-      "lines": 42,
-      "bytes": 1832,
+      "lines": 62,
+      "bytes": 3024,
       "doc": "",
       "symbols": []
     },
@@ -50462,8 +50895,8 @@
       "path": "apps/web/package.json",
       "area": "web",
       "kind": "json",
-      "lines": 41,
-      "bytes": 1101,
+      "lines": 43,
+      "bytes": 1091,
       "doc": "",
       "symbols": []
     },
@@ -50647,6 +51080,36 @@
           "name": "AiAdminPage",
           "kind": "default",
           "line": 29
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 26,
+      "bytes": 960,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AnalyticsReportPage",
+          "kind": "default",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/analytics/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 56,
+      "bytes": 2358,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AnalyticsIndexPage",
+          "kind": "default",
+          "line": 18
         }
       ]
     },
@@ -50981,21 +51444,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/customers/insights/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 199,
-      "bytes": 7732,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "CustomerInsightsPage",
-          "kind": "default",
-          "line": 17
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -51086,21 +51534,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 201,
-      "bytes": 6729,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ExpenseAnalyticsPage",
-          "kind": "default",
-          "line": 56
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx",
       "area": "web",
       "kind": "page",
@@ -51120,7 +51553,7 @@
       "area": "web",
       "kind": "page",
       "lines": 470,
-      "bytes": 16004,
+      "bytes": 16008,
       "doc": "",
       "symbols": [
         {
@@ -51326,21 +51759,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/insights/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 334,
-      "bytes": 13578,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "InsightsPage",
-          "kind": "default",
-          "line": 44
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain/page.tsx",
       "area": "web",
       "kind": "page",
@@ -51382,21 +51800,6 @@
           "name": "CountsListPage",
           "kind": "default",
           "line": 22
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/insights/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 190,
-      "bytes": 7873,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "InventoryInsightsPage",
-          "kind": "default",
-          "line": 21
         }
       ]
     },
@@ -51509,14 +51912,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/loading.tsx",
       "area": "web",
       "kind": "loading",
-      "lines": 65,
-      "bytes": 2510,
+      "lines": 59,
+      "bytes": 2410,
       "doc": "The shape of the dashboard, before the dashboard.",
       "symbols": [
         {
           "name": "Loading",
           "kind": "default",
-          "line": 13
+          "line": 14
         }
       ]
     },
@@ -51716,21 +52119,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/orders/insights/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 183,
-      "bytes": 7624,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "OrderInsightsPage",
-          "kind": "default",
-          "line": 20
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/loading.tsx",
       "area": "web",
       "kind": "loading",
@@ -51764,14 +52152,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 523,
-      "bytes": 20446,
+      "lines": 100,
+      "bytes": 3682,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDashboardPage",
           "kind": "default",
-          "line": 53
+          "line": 29
         }
       ]
     },
@@ -51881,21 +52269,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/products/insights/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 167,
-      "bytes": 6957,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ProductInsightsPage",
-          "kind": "default",
-          "line": 18
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/products/loading.tsx",
       "area": "web",
       "kind": "loading",
@@ -51997,21 +52370,6 @@
           "name": "PurchaseOrdersPage",
           "kind": "default",
           "line": 26
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 148,
-      "bytes": 5803,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "PurchasingSpendPage",
-          "kind": "default",
-          "line": 17
         }
       ]
     },
@@ -52342,21 +52700,6 @@
           "name": "AdminUsersPage",
           "kind": "default",
           "line": 29
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/workshop/insights/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 109,
-      "bytes": 4059,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "WorkshopInsightsPage",
-          "kind": "default",
-          "line": 17
         }
       ]
     },
@@ -53409,6 +53752,195 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/analytics/analytics-detail-page.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 149,
+      "bytes": 5609,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AnalyticsDetailPage",
+          "kind": "function",
+          "line": 43
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/blocks/funnel-block.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 24,
+      "bytes": 998,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FunnelBlock",
+          "kind": "function",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/blocks/gauge-block.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 21,
+      "bytes": 963,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GaugeBlock",
+          "kind": "function",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/blocks/kpis-block.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 26,
+      "bytes": 1074,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "KpisBlock",
+          "kind": "function",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/blocks/ranking-block.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 32,
+      "bytes": 1436,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RankingBlock",
+          "kind": "function",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/blocks/share-block.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 32,
+      "bytes": 1379,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ShareBlock",
+          "kind": "function",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/blocks/table-block.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 35,
+      "bytes": 1673,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TableBlock",
+          "kind": "function",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/blocks/timeseries-block.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 24,
+      "bytes": 894,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TimeSeriesBlock",
+          "kind": "function",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/report-registry.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 660,
+      "bytes": 23421,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FilterSpec",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "ReportBlock",
+          "kind": "type",
+          "line": 19
+        },
+        {
+          "name": "AnalyticsReport",
+          "kind": "interface",
+          "line": 41
+        },
+        {
+          "name": "REPORT_REGISTRY",
+          "kind": "const",
+          "line": 59
+        },
+        {
+          "name": "reportFor",
+          "kind": "function",
+          "line": 652
+        },
+        {
+          "name": "reportsFor",
+          "kind": "function",
+          "line": 657
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/resolve-path.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 67,
+      "bytes": 2654,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/resolve-path.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 48,
+      "bytes": 1927,
+      "doc": "The declarative glue every report block reads through (10-admin-dashboard.md D3): a block config names a dot-path into an endpoint's JSON response (`totals.revenue`, `byCategory`, `series.0.t`) — never a function, so th…",
+      "symbols": [
+        {
+          "name": "resolvePath",
+          "kind": "function",
+          "line": 15
+        },
+        {
+          "name": "interpolateHref",
+          "kind": "function",
+          "line": 42
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/bom/cost-breakdown.tsx",
       "area": "web",
       "kind": "component",
@@ -53439,6 +53971,230 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/charts/category-bar-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 79,
+      "bytes": 2660,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CategoryBarItem",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "CategoryBarChart",
+          "kind": "function",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/chart-data-table.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 40,
+      "bytes": 977,
+      "doc": "The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: \"a screen-reader-only table whose cells equal the plotted values\").",
+      "symbols": [
+        {
+          "name": "ChartDataTable",
+          "kind": "function",
+          "line": 7
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/chart-marker.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 59,
+      "bytes": 1782,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ChartMarker",
+          "kind": "function",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/chart-theme.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 92,
+      "bytes": 3618,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ValueFormat",
+          "kind": "type",
+          "line": 20
+        },
+        {
+          "name": "CHART_PALETTE",
+          "kind": "const",
+          "line": 22
+        },
+        {
+          "name": "GRID",
+          "kind": "const",
+          "line": 23
+        },
+        {
+          "name": "SURFACE",
+          "kind": "const",
+          "line": 24
+        },
+        {
+          "name": "INK",
+          "kind": "const",
+          "line": 25
+        },
+        {
+          "name": "INK_SOFT",
+          "kind": "const",
+          "line": 26
+        },
+        {
+          "name": "INK_FAINT",
+          "kind": "const",
+          "line": 27
+        },
+        {
+          "name": "POSITIVE",
+          "kind": "const",
+          "line": 28
+        },
+        {
+          "name": "NEGATIVE",
+          "kind": "const",
+          "line": 29
+        },
+        {
+          "name": "DASH_PATTERNS",
+          "kind": "const",
+          "line": 38
+        },
+        {
+          "name": "MARKER_SHAPES",
+          "kind": "const",
+          "line": 48
+        },
+        {
+          "name": "paletteColor",
+          "kind": "function",
+          "line": 57
+        },
+        {
+          "name": "dashFor",
+          "kind": "function",
+          "line": 61
+        },
+        {
+          "name": "markerFor",
+          "kind": "function",
+          "line": 65
+        },
+        {
+          "name": "compactRupees",
+          "kind": "function",
+          "line": 74
+        },
+        {
+          "name": "compactMoney",
+          "kind": "function",
+          "line": 81
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/comparison-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 119,
+      "bytes": 4588,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ComparisonBucketPoint",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "ComparisonChart",
+          "kind": "function",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/index.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 29,
+      "bytes": 870,
+      "doc": "The whole charting vocabulary for the back office (10-admin-dashboard.md D9).",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/share-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 95,
+      "bytes": 3464,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ShareItem",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "ShareChart",
+          "kind": "function",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/sparkline-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 39,
+      "bytes": 1367,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SparklineChart",
+          "kind": "function",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/time-series-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 149,
+      "bytes": 4974,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TimeSeriesSeriesDef",
+          "kind": "interface",
+          "line": 22
+        },
+        {
+          "name": "TimeSeriesChart",
+          "kind": "function",
+          "line": 32
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/command-palette.tsx",
       "area": "web",
       "kind": "component",
@@ -53454,22 +54210,137 @@
       ]
     },
     {
-      "path": "apps/web/src/components/admin/comparison-chart.tsx",
+      "path": "apps/web/src/components/admin/dashboard/card-group.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 219,
-      "bytes": 7994,
+      "lines": 121,
+      "bytes": 4362,
       "doc": "",
       "symbols": [
         {
-          "name": "ComparisonBucketPoint",
-          "kind": "interface",
+          "name": "CardGroup",
+          "kind": "function",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/dashboard/card-registry.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 705,
+      "bytes": 20463,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DASHBOARD_GROUPS",
+          "kind": "const",
+          "line": 19
+        },
+        {
+          "name": "DashboardGroupKey",
+          "kind": "type",
           "line": 31
         },
         {
-          "name": "ComparisonChart",
+          "name": "ValueFormat",
+          "kind": "type",
+          "line": 34
+        },
+        {
+          "name": "DashboardCard",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "DASHBOARD_CARDS",
+          "kind": "const",
+          "line": 55
+        },
+        {
+          "name": "cardsFor",
           "kind": "function",
-          "line": 40
+          "line": 702
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/dashboard/comparison-panel.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 46,
+      "bytes": 1380,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ComparisonPanel",
+          "kind": "function",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/dashboard/metric-card.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 138,
+      "bytes": 4765,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MetricCardData",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "formatValue",
+          "kind": "function",
+          "line": 14
+        },
+        {
+          "name": "MetricCard",
+          "kind": "function",
+          "line": 47
+        },
+        {
+          "name": "MetricCardWithSparkline",
+          "kind": "function",
+          "line": 114
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/dashboard/needs-attention-strip.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 74,
+      "bytes": 2882,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NeedsAttentionStrip",
+          "kind": "function",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/dashboard/use-dashboard-metrics.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 71,
+      "bytes": 2320,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DashboardMetrics",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "useDashboardMetrics",
+          "kind": "function",
+          "line": 26
         }
       ]
     },
@@ -53490,26 +54361,6 @@
           "name": "useEnabledModules",
           "kind": "function",
           "line": 18
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/components/admin/donut-chart.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 136,
-      "bytes": 4741,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "DonutItem",
-          "kind": "interface",
-          "line": 37
-        },
-        {
-          "name": "DonutChart",
-          "kind": "function",
-          "line": 42
         }
       ]
     },
@@ -53622,44 +54473,44 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 773,
-      "bytes": 20184,
+      "lines": 775,
+      "bytes": 20275,
       "doc": "",
       "symbols": [
         {
           "name": "ICON_MAP",
           "kind": "const",
-          "line": 19
+          "line": 20
         },
         {
           "name": "AdminNavGroup",
           "kind": "interface",
-          "line": 34
+          "line": 36
         },
         {
           "name": "NAV_GROUPS",
           "kind": "const",
-          "line": 53
+          "line": 55
         },
         {
           "name": "AdminNavItem",
           "kind": "interface",
-          "line": 76
+          "line": 78
         },
         {
           "name": "ADMIN_NAV",
           "kind": "const",
-          "line": 116
+          "line": 118
         },
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 743
+          "line": 745
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 758
+          "line": 760
         }
       ]
     },
@@ -53717,8 +54568,8 @@
       "path": "apps/web/src/components/admin/range-picker.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 58,
-      "bytes": 1716,
+      "lines": 63,
+      "bytes": 2098,
       "doc": "",
       "symbols": [
         {
@@ -53727,14 +54578,19 @@
           "line": 6
         },
         {
+          "name": "DASHBOARD_RANGES",
+          "kind": "const",
+          "line": 8
+        },
+        {
           "name": "RangeDays",
           "kind": "type",
-          "line": 7
+          "line": 9
         },
         {
           "name": "RangePicker",
           "kind": "function",
-          "line": 22
+          "line": 24
         }
       ]
     },
@@ -53750,21 +54606,6 @@
           "name": "RoleWizard",
           "kind": "function",
           "line": 22
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/components/admin/sales-chart.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 242,
-      "bytes": 8304,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "SalesChart",
-          "kind": "function",
-          "line": 36
         }
       ]
     },
@@ -54885,8 +55726,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 177,
-      "bytes": 7112,
+      "lines": 190,
+      "bytes": 8028,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -54900,8 +55741,8 @@
       "path": "apps/web/src/constants/storage.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 54,
-      "bytes": 2129,
+      "lines": 61,
+      "bytes": 2505,
       "doc": "Browser storage keys.",
       "symbols": [
         {
@@ -55397,8 +56238,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1290,
-      "bytes": 33602,
+      "lines": 1304,
+      "bytes": 34091,
       "doc": "",
       "symbols": [
         {
@@ -56032,9 +56873,14 @@
           "line": 1268
         },
         {
+          "name": "DashboardCardsResponse",
+          "kind": "interface",
+          "line": 1285
+        },
+        {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1284
+          "line": 1298
         }
       ]
     },
@@ -56364,8 +57210,17 @@
       "path": "apps/web/tsconfig.json",
       "area": "web",
       "kind": "json",
-      "lines": 24,
-      "bytes": 576,
+      "lines": 25,
+      "bytes": 609,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/vitest.config.mts",
+      "area": "web",
+      "kind": "mts",
+      "lines": 0,
+      "bytes": 904,
       "doc": "",
       "symbols": []
     },
@@ -58560,8 +59415,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 2556,
-      "bytes": 142007,
+      "lines": 2761,
+      "bytes": 154821,
       "doc": "",
       "symbols": []
     },
@@ -58686,8 +59541,8 @@
       "path": "docs/implementation/admin-platform/10-admin-dashboard.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 1843,
-      "bytes": 92229,
+      "lines": 1854,
+      "bytes": 92888,
       "doc": "",
       "symbols": []
     },
@@ -59433,8 +60288,8 @@
       "path": "docs/implementation/finance-accounting/04-finance.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 291,
-      "bytes": 11828,
+      "lines": 304,
+      "bytes": 12670,
       "doc": "",
       "symbols": []
     },
@@ -60127,7 +60982,7 @@
       "area": "infra",
       "kind": "json",
       "lines": 58,
-      "bytes": 2301,
+      "bytes": 2341,
       "doc": "",
       "symbols": []
     },
@@ -60434,19 +61289,19 @@
       "path": "packages/shared/src/brand.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 334,
-      "bytes": 12304,
+      "lines": 345,
+      "bytes": 12937,
       "doc": "THE BRAND FILE.",
       "symbols": [
         {
           "name": "BRAND",
           "kind": "const",
-          "line": 321
+          "line": 332
         },
         {
           "name": "Brand",
           "kind": "type",
-          "line": 333
+          "line": 344
         }
       ]
     },
@@ -62003,8 +62858,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 17810,
-      "bytes": 655242,
+      "lines": 18517,
+      "bytes": 678893,
       "doc": "",
       "symbols": []
     },
@@ -62041,6 +62896,15 @@
       "kind": "script",
       "lines": 54,
       "bytes": 1945,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "scripts/check-chart-imports.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 72,
+      "bytes": 2491,
       "doc": "",
       "symbols": []
     },

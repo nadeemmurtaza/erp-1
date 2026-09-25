@@ -110,7 +110,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `start` | `next start --port 3000` |
 | `lint` | `eslint src` |
 | `typecheck` | `tsc --noEmit` |
-| `test` | `echo "no unit tests in web yet — covered by Playwright" && exit 0` |
+| `test` | `vitest run` |
 | `placeholders` | `node scripts/generate-placeholders.mjs` |
 
 ### `yaseenecom`  <sub>`package.json`</sub>
@@ -119,7 +119,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 |---|---|
 | `build` | `turbo run build` |
 | `dev` | `turbo run dev` |
-| `lint` | `node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-frontend-secrets.mjs && node s…` |
+| `lint` | `node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-chart-imports.mjs && node scri…` |
 | `typecheck` | `turbo run typecheck` |
 | `test` | `turbo run test` |
 | `format` | `prettier --write "**/*.{ts,tsx,js,mjs,json,md}"` |
@@ -155,6 +155,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 |---|---|---|
 | `scripts/build-index.mjs` | 2511 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
+| `scripts/check-chart-imports.mjs` | 72 |  |
 | `scripts/check-contrast.mjs` | 425 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |

@@ -3,23 +3,24 @@
 
 # Files — web
 
-All 317 tracked files in `apps/web`, by directory.
+All 335 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `apps/web` (8)
+### `apps/web` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `.gitignore` | file | 3 |  |
 | `Dockerfile` | file | 52 |  |
 | `eslint.config.mjs` | script | 29 |  |
-| `next.config.mjs` | script | 42 |  |
-| `package.json` | json | 41 |  |
+| `next.config.mjs` | script | 62 |  |
+| `package.json` | json | 43 |  |
 | `postcss.config.mjs` | script | 8 | @type {import('postcss-load-config').Config} |
 | `tailwind.config.ts` | module | 188 |  |
-| `tsconfig.json` | json | 24 |  |
+| `tsconfig.json` | json | 25 |  |
+| `vitest.config.mts` | mts | — |  |
 
 ### `apps/web/messages` (2)
 
@@ -89,8 +90,8 @@ All 317 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `layout.tsx` | layout | 15 |  |
-| `loading.tsx` | loading | 65 | The shape of the dashboard, before the dashboard. |
-| `page.tsx` | page | 523 |  |
+| `loading.tsx` | loading | 59 | The shape of the dashboard, before the dashboard. |
+| `page.tsx` | page | 100 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/account` (1)
 
@@ -103,6 +104,18 @@ All 317 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 316 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/analytics` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 56 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 26 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]` (1)
 
@@ -231,12 +244,6 @@ All 317 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 114 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/customers/insights` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `page.tsx` | page | 199 |  |
-
 ### `apps/web/src/app/(admin)/admin/(app)/designs` (1)
 
 | File | Kind | Lines | Purpose |
@@ -284,12 +291,6 @@ All 317 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 470 |  |
-
-### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `page.tsx` | page | 201 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories` (1)
 
@@ -369,12 +370,6 @@ All 317 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 345 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/insights` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `page.tsx` | page | 334 |  |
-
 ### `apps/web/src/app/(admin)/admin/(app)/inventory` (2)
 
 | File | Kind | Lines | Purpose |
@@ -399,12 +394,6 @@ All 317 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 250 |  |
-
-### `apps/web/src/app/(admin)/admin/(app)/inventory/insights` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `page.tsx` | page | 190 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/reorder` (1)
 
@@ -515,12 +504,6 @@ All 317 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 565 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/orders/insights` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `page.tsx` | page | 183 |  |
-
 ### `apps/web/src/app/(admin)/admin/(app)/payments` (1)
 
 | File | Kind | Lines | Purpose |
@@ -570,12 +553,6 @@ All 317 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 30 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/products/insights` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `page.tsx` | page | 167 |  |
-
 ### `apps/web/src/app/(admin)/admin/(app)/products/new` (1)
 
 | File | Kind | Lines | Purpose |
@@ -605,12 +582,6 @@ All 317 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 315 |  |
-
-### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `page.tsx` | page | 148 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/reports` (1)
 
@@ -743,12 +714,6 @@ All 317 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 454 |  |
-
-### `apps/web/src/app/(admin)/admin/(app)/workshop/insights` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `page.tsx` | page | 109 |  |
 
 ### `apps/web/src/app/(admin)/admin/login` (1)
 
@@ -1022,29 +987,47 @@ All 317 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (19)
+### `apps/web/src/components/admin` (16)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin-shell.tsx` | component | 469 |  |
 | `command-palette.tsx` | component | 285 |  |
-| `comparison-chart.tsx` | component | 219 |  |
 | `deployment-modules.tsx` | component | 21 |  |
-| `donut-chart.tsx` | component | 136 |  |
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 773 |  |
+| `nav-registry.ts` | component | 775 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1410 |  |
-| `range-picker.tsx` | component | 58 |  |
+| `range-picker.tsx` | component | 63 |  |
 | `role-wizard.tsx` | component | 359 |  |
-| `sales-chart.tsx` | component | 242 |  |
 | `scope-chips.tsx` | component | 71 |  |
 | `session.tsx` | component | 47 |  |
 | `stage-badge.tsx` | component | 15 |  |
 | `toast-stack.tsx` | component | 39 |  |
+
+### `apps/web/src/components/admin/analytics` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `analytics-detail-page.tsx` | component | 149 |  |
+| `report-registry.ts` | component | 660 |  |
+| `resolve-path.spec.ts` | unit test | 67 |  |
+| `resolve-path.ts` | component | 48 | The declarative glue every report block reads through (10-admin-dashboard.md D3): a block config names a dot-path into… |
+
+### `apps/web/src/components/admin/analytics/blocks` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `funnel-block.tsx` | component | 24 |  |
+| `gauge-block.tsx` | component | 21 |  |
+| `kpis-block.tsx` | component | 26 |  |
+| `ranking-block.tsx` | component | 32 |  |
+| `share-block.tsx` | component | 32 |  |
+| `table-block.tsx` | component | 35 |  |
+| `timeseries-block.tsx` | component | 24 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
 
@@ -1052,6 +1035,31 @@ All 317 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `cost-breakdown.tsx` | component | 121 |  |
 | `recipe-editor.tsx` | component | 363 |  |
+
+### `apps/web/src/components/admin/charts` (9)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `category-bar-chart.tsx` | component | 79 |  |
+| `chart-data-table.tsx` | component | 40 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-reader-only table whos… |
+| `chart-marker.tsx` | component | 59 |  |
+| `chart-theme.ts` | component | 92 |  |
+| `comparison-chart.tsx` | component | 119 |  |
+| `index.ts` | component | 29 | The whole charting vocabulary for the back office (10-admin-dashboard.md D9). |
+| `share-chart.tsx` | component | 95 |  |
+| `sparkline-chart.tsx` | component | 39 |  |
+| `time-series-chart.tsx` | component | 149 |  |
+
+### `apps/web/src/components/admin/dashboard` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `card-group.tsx` | component | 121 |  |
+| `card-registry.ts` | component | 705 |  |
+| `comparison-panel.tsx` | component | 46 |  |
+| `metric-card.tsx` | component | 138 |  |
+| `needs-attention-strip.tsx` | component | 74 |  |
+| `use-dashboard-metrics.ts` | component | 71 |  |
 
 ### `apps/web/src/components/admin/marketing` (1)
 
@@ -1150,8 +1158,8 @@ All 317 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 24 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 177 | Every internal path the app links to, in one place. |
-| `storage.ts` | constants | 54 | Browser storage keys. |
+| `routes.ts` | constants | 190 | Every internal path the app links to, in one place. |
+| `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)
 
@@ -1194,7 +1202,7 @@ All 317 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1290 |  |
+| `api.ts` | types | 1304 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

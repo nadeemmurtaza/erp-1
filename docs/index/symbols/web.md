@@ -39,8 +39,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `layout.tsx` | `AdminAppLayout` | default | :12 | Wraps every signed-in back-office page in the shell. |
-| `loading.tsx` | `Loading` | default | :13 | The shape of the dashboard, before the dashboard. |
-| `page.tsx` | `AdminDashboardPage` | default | :53 |  |
+| `loading.tsx` | `Loading` | default | :14 | The shape of the dashboard, before the dashboard. |
+| `page.tsx` | `AdminDashboardPage` | default | :29 | The dashboard, rebuilt as a grouped card grid driven entirely by data (10-admin-dashboard.md WO-A.4… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/account`
 
@@ -53,6 +53,18 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `AiAdminPage` | default | :29 | WO-9.1's review queue plus the AI foundation's own status and budget (09-ai-layer.md). |
+
+### `apps/web/src/app/(admin)/admin/(app)/analytics`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `AnalyticsIndexPage` | default | :18 | The analytics report index — every report the caller may see, grouped the same way the dashboard gr… |
+
+### `apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `AnalyticsReportPage` | default | :16 | One catch-all route for every analytics detail page (10-admin-dashboard.md D3) — the slug is looked… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
@@ -181,12 +193,6 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `GiftCardDetailPage` | default | :33 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/customers/insights`
-
-| File | Symbol | Kind | Line | Doc |
-|---|---|---|---|---|
-| `page.tsx` | `CustomerInsightsPage` | default | :17 | WO-D.5 (10-admin-dashboard.md Track D) — the customer book: where they are, where they came from, w… |
-
 ### `apps/web/src/app/(admin)/admin/(app)/designs`
 
 | File | Symbol | Kind | Line | Doc |
@@ -234,12 +240,6 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `ExpensesPage` | default | :60 | Record expenses and see what the shop is spending. |
-
-### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/analytics`
-
-| File | Symbol | Kind | Line | Doc |
-|---|---|---|---|---|
-| `page.tsx` | `ExpenseAnalyticsPage` | default | :56 | WO-23.1's WO-B.4 — expense-by-category, expense trend, and how spend compares to revenue. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories`
 
@@ -319,12 +319,6 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminInboxPage` | default | :35 | Support Inbox. |
 
-### `apps/web/src/app/(admin)/admin/(app)/insights`
-
-| File | Symbol | Kind | Line | Doc |
-|---|---|---|---|---|
-| `page.tsx` | `InsightsPage` | default | :44 |  |
-
 ### `apps/web/src/app/(admin)/admin/(app)/inventory`
 
 | File | Symbol | Kind | Line | Doc |
@@ -349,12 +343,6 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `CountSheetPage` | default | :31 |  |
-
-### `apps/web/src/app/(admin)/admin/(app)/inventory/insights`
-
-| File | Symbol | Kind | Line | Doc |
-|---|---|---|---|---|
-| `page.tsx` | `InventoryInsightsPage` | default | :21 | WO-D.4 (10-admin-dashboard.md Track D) — what stock on hand is worth, and how it's moving. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/reorder`
 
@@ -465,12 +453,6 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminOrderDetailPage` | default | :108 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/orders/insights`
-
-| File | Symbol | Kind | Line | Doc |
-|---|---|---|---|---|
-| `page.tsx` | `OrderInsightsPage` | default | :20 | WO-D.1 (10-admin-dashboard.md Track D) — where open orders are stuck, and how long each pipeline st… |
-
 ### `apps/web/src/app/(admin)/admin/(app)/payments`
 
 | File | Symbol | Kind | Line | Doc |
@@ -520,12 +502,6 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `EditProductPage` | default | :8 |  |
 
-### `apps/web/src/app/(admin)/admin/(app)/products/insights`
-
-| File | Symbol | Kind | Line | Doc |
-|---|---|---|---|---|
-| `page.tsx` | `ProductInsightsPage` | default | :18 | WO-D.3 (10-admin-dashboard.md Track D) — which products earn their shelf space, which don't, and wh… |
-
 ### `apps/web/src/app/(admin)/admin/(app)/products/new`
 
 | File | Symbol | Kind | Line | Doc |
@@ -555,12 +531,6 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `NewPurchaseOrderPage` | default | :24 |  |
-
-### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend`
-
-| File | Symbol | Kind | Line | Doc |
-|---|---|---|---|---|
-| `page.tsx` | `PurchasingSpendPage` | default | :17 | WO-D.2 (10-admin-dashboard.md Track D) — what the business has committed to buy, actually received,… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/reports`
 
@@ -693,12 +663,6 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `UserDetailPage` | default | :15 |  |
-
-### `apps/web/src/app/(admin)/admin/(app)/workshop/insights`
-
-| File | Symbol | Kind | Line | Doc |
-|---|---|---|---|---|
-| `page.tsx` | `WorkshopInsightsPage` | default | :17 | WO-D.6 (10-admin-dashboard.md Track D, the last one) — workshop throughput: what started and finish… |
 
 ### `apps/web/src/app/(admin)/admin/login`
 
@@ -1002,12 +966,8 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | function | :34 | The back office frame: role guard, sidebar and header. |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
-| `comparison-chart.tsx` | `ComparisonBucketPoint` | interface | :31 |  |
-| `comparison-chart.tsx` | `ComparisonChart` | function | :40 |  |
 | `deployment-modules.tsx` | `EnabledModulesProvider` | const | :7 |  |
 | `deployment-modules.tsx` | `useEnabledModules` | function | :18 | Which API modules `GET /meta` reported for this deployment — the same value `AdminShell` already fe… |
-| `donut-chart.tsx` | `DonutItem` | interface | :37 |  |
-| `donut-chart.tsx` | `DonutChart` | function | :42 |  |
 | `funnel-chart.tsx` | `FunnelStage` | interface | :23 |  |
 | `funnel-chart.tsx` | `FunnelChart` | function | :28 |  |
 | `gauge-chart.tsx` | `GaugeChart` | function | :32 |  |
@@ -1016,22 +976,22 @@ Every top-level export in `web`, with the line to open.
 | `image-manager.tsx` | `ImageStager` | function | :344 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
 | `image-manager.tsx` | `StagedImageUploadResult` | interface | :492 |  |
 | `image-manager.tsx` | `uploadStagedImages` | function | :510 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
-| `nav-registry.ts` | `ICON_MAP` | const | :19 |  |
-| `nav-registry.ts` | `AdminNavGroup` | interface | :34 |  |
-| `nav-registry.ts` | `NAV_GROUPS` | const | :53 | Sidebar order is THIS ARRAY's order. |
-| `nav-registry.ts` | `AdminNavItem` | interface | :76 |  |
-| `nav-registry.ts` | `ADMIN_NAV` | const | :116 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :743 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :758 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `ICON_MAP` | const | :20 |  |
+| `nav-registry.ts` | `AdminNavGroup` | interface | :36 |  |
+| `nav-registry.ts` | `NAV_GROUPS` | const | :55 | Sidebar order is THIS ARRAY's order. |
+| `nav-registry.ts` | `AdminNavItem` | interface | :78 |  |
+| `nav-registry.ts` | `ADMIN_NAV` | const | :118 | The admin navigation, as data. |
+| `nav-registry.ts` | `landingFor` | function | :745 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :760 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
 | `product-form.tsx` | `ProductForm` | function | :79 | One editor for all three product kinds. |
 | `range-picker.tsx` | `RANGES` | const | :6 | The windows every analytics screen offers. |
-| `range-picker.tsx` | `RangeDays` | type | :7 | The windows every analytics screen offers. |
-| `range-picker.tsx` | `RangePicker` | function | :22 | How long a window the figures below cover. |
+| `range-picker.tsx` | `DASHBOARD_RANGES` | const | :8 | The dashboard's own fourth option (10-admin-dashboard.md WO-A.4) — a year view nothing else here ne… |
+| `range-picker.tsx` | `RangeDays` | type | :9 | The dashboard's own fourth option (10-admin-dashboard.md WO-A.4) — a year view nothing else here ne… |
+| `range-picker.tsx` | `RangePicker` | function | :24 | How long a window the figures below cover. |
 | `role-wizard.tsx` | `RoleWizard` | function | :22 | Create-or-edit a role, one permission group per screen (owner's request): name and description firs… |
-| `sales-chart.tsx` | `SalesChart` | function | :36 |  |
 | `scope-chips.tsx` | `ScopeChip` | interface | :6 |  |
 | `scope-chips.tsx` | `ScopeChips` | function | :27 | The scope switcher for the three-level admin shell (RETAIL-ERP.md R19, WO-18.5) — brand chips over… |
 | `session.tsx` | `AdminSessionProvider` | const | :9 |  |
@@ -1040,12 +1000,97 @@ Every top-level export in `web`, with the line to open.
 | `stage-badge.tsx` | `StageBadge` | function | :12 | The stage a job is at. |
 | `toast-stack.tsx` | `ToastStack` | function | :13 | The fixed top-right toast stack every `useToast()` caller renders. |
 
+### `apps/web/src/components/admin/analytics`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `analytics-detail-page.tsx` | `AnalyticsDetailPage` | function | :43 | The one detail-page shell every report renders through (D3) — a report is a config object; this is… |
+| `report-registry.ts` | `FilterSpec` | interface | :11 | 25 detail pages are 25 config objects and one catch-all route (10-admin-dashboard.md D3). |
+| `report-registry.ts` | `ReportBlock` | type | :19 |  |
+| `report-registry.ts` | `AnalyticsReport` | interface | :41 |  |
+| `report-registry.ts` | `REPORT_REGISTRY` | const | :59 |  |
+| `report-registry.ts` | `reportFor` | function | :652 | Looks a slug up — `undefined` for an unregistered one, never a throw (the catch-all route renders `… |
+| `report-registry.ts` | `reportsFor` | function | :657 | Every report whose `module` (when set) is enabled — the report index's own list, same shape as `car… |
+| `resolve-path.ts` | `resolvePath` | function | :15 | Walks a dot-path into `data`, returning `undefined` for any missing or mistyped segment rather than… |
+| `resolve-path.ts` | `interpolateHref` | function | :42 | Fills a `{key}`-templated href (D3's `href` field on a `ranking`/`table` block) from a row object,… |
+
+### `apps/web/src/components/admin/analytics/blocks`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `funnel-block.tsx` | `FunnelBlock` | function | :9 | A stepped conversion funnel — `funnel-chart.tsx` predates Recharts (D9's own kept chart) and needs… |
+| `gauge-block.tsx` | `GaugeBlock` | function | :10 | A single percent-of-target figure — `gauge-chart.tsx` predates Recharts (D9's own kept chart). |
+| `kpis-block.tsx` | `KpisBlock` | function | :8 | A row of headline figures — the first thing a detail page shows. |
+| `ranking-block.tsx` | `RankingBlock` | function | :17 | A ranked list — top products, top suppliers, top customers. |
+| `share-block.tsx` | `ShareBlock` | function | :17 | A categorical share of a whole. |
+| `table-block.tsx` | `TableBlock` | function | :11 | The one table every report with rows-of-facts reaches for — a thin config over `<DataTable>`, the a… |
+| `timeseries-block.tsx` | `TimeSeriesBlock` | function | :8 |  |
+
 ### `apps/web/src/components/admin/bom`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `cost-breakdown.tsx` | `CostBreakdown` | function | :36 | Per-component cost breakdown — a live recompute (GET .../cost), not the cached rolledUpUnitCost sho… |
 | `recipe-editor.tsx` | `RecipeEditor` | function | :55 | Create or edit a recipe. |
+
+### `apps/web/src/components/admin/charts`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `category-bar-chart.tsx` | `CategoryBarItem` | interface | :10 |  |
+| `category-bar-chart.tsx` | `CategoryBarChart` | function | :16 | A ranked horizontal bar list — top sellers, categories, suppliers. |
+| `chart-data-table.tsx` | `ChartDataTable` | function | :7 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
+| `chart-marker.tsx` | `ChartMarker` | function | :8 | A per-series marker shape — the third channel (with colour and dash pattern) that keeps a multi-ser… |
+| `chart-theme.ts` | `ValueFormat` | type | :20 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
+| `chart-theme.ts` | `CHART_PALETTE` | const | :22 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
+| `chart-theme.ts` | `GRID` | const | :23 |  |
+| `chart-theme.ts` | `SURFACE` | const | :24 |  |
+| `chart-theme.ts` | `INK` | const | :25 |  |
+| `chart-theme.ts` | `INK_SOFT` | const | :26 |  |
+| `chart-theme.ts` | `INK_FAINT` | const | :27 |  |
+| `chart-theme.ts` | `POSITIVE` | const | :28 |  |
+| `chart-theme.ts` | `NEGATIVE` | const | :29 |  |
+| `chart-theme.ts` | `DASH_PATTERNS` | const | :38 | Dash pattern per series index — `strokeDasharray` values, index-aligned with `CHART_PALETTE`. |
+| `chart-theme.ts` | `MARKER_SHAPES` | const | :48 | Marker shape per series index, same alignment — the third channel alongside colour and dash. |
+| `chart-theme.ts` | `paletteColor` | function | :57 |  |
+| `chart-theme.ts` | `dashFor` | function | :61 |  |
+| `chart-theme.ts` | `markerFor` | function | :65 |  |
+| `chart-theme.ts` | `compactRupees` | function | :74 | Ported verbatim from `sales-chart.tsx` (retired in WO-E.2) — a Pakistan-specific asset (lakh notati… |
+| `chart-theme.ts` | `compactMoney` | function | :81 | Same lakh notation, taking paisa — what every chart in `charts/` actually receives (D9: "money char… |
+| `comparison-chart.tsx` | `ComparisonBucketPoint` | interface | :10 |  |
+| `comparison-chart.tsx` | `ComparisonChart` | function | :25 | WO-B.5's own headline chart, and the dashboard's empty comparison slot (WO-A.4). |
+| `index.ts` | `TimeSeriesChart` `type TimeSeriesSeriesDef` | re-export |  | from `./time-series-chart` |
+| `index.ts` | `ComparisonChart` `type ComparisonBucketPoint` | re-export |  | from `./comparison-chart` |
+| `index.ts` | `CategoryBarChart` `type CategoryBarItem` | re-export |  | from `./category-bar-chart` |
+| `index.ts` | `ShareChart` `type ShareItem` | re-export |  | from `./share-chart` |
+| `index.ts` | `SparklineChart` | re-export |  | from `./sparkline-chart` |
+| `index.ts` | `ChartDataTable` | re-export |  | from `./chart-data-table` |
+| `index.ts` | `CHART_PALETTE` `GRID` `SURFACE` `INK` `INK_SOFT` `INK_FAINT` `POSITIVE` `NEGATIVE` `compactRupees` `compactMoney` `paletteColor` `dashFor` `markerFor` `type ValueFormat` | re-export |  | from `./chart-theme` |
+| `share-chart.tsx` | `ShareItem` | interface | :10 |  |
+| `share-chart.tsx` | `ShareChart` | function | :23 | A categorical share of a whole — `donut-chart.tsx`'s replacement (WO-E.2). |
+| `sparkline-chart.tsx` | `SparklineChart` | function | :14 | The small trend line inside a dashboard card (D1's `sparkline` field). |
+| `time-series-chart.tsx` | `TimeSeriesSeriesDef` | interface | :22 |  |
+| `time-series-chart.tsx` | `TimeSeriesChart` | function | :32 | One or several series over time — line, or line-and-area for a single series (matching `sales-chart… |
+
+### `apps/web/src/components/admin/dashboard`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `card-group.tsx` | `CardGroup` | function | :29 | One of the dashboard's nine group rows (the "collapsed groups" layout): closed by default, showing… |
+| `card-registry.ts` | `DASHBOARD_GROUPS` | const | :19 | A dashboard card is a registry entry, never a component (10-admin-dashboard.md D1) — mirrors `nav-r… |
+| `card-registry.ts` | `DashboardGroupKey` | type | :31 |  |
+| `card-registry.ts` | `ValueFormat` | type | :34 | Matches `MetricValue.unit` 1:1, plus the client-only rendering choices `unit` alone can't express (… |
+| `card-registry.ts` | `DashboardCard` | interface | :36 | Matches `MetricValue.unit` 1:1, plus the client-only rendering choices `unit` alone can't express (… |
+| `card-registry.ts` | `DASHBOARD_CARDS` | const | :55 |  |
+| `card-registry.ts` | `cardsFor` | function | :702 | The visible cards for a caller: any card whose `module` (when set) is enabled. |
+| `comparison-panel.tsx` | `ComparisonPanel` | function | :20 | The one comparative chart the owner asked for by name (Phase 10's own "Why"), filling the empty slo… |
+| `metric-card.tsx` | `MetricCardData` | interface | :8 |  |
+| `metric-card.tsx` | `formatValue` | function | :14 |  |
+| `metric-card.tsx` | `MetricCard` | function | :47 | The whole dashboard card grid boils down to this one component (10-admin-dashboard.md D1) — every c… |
+| `metric-card.tsx` | `MetricCardWithSparkline` | function | :114 | The sparkline-bearing variant of the same tile, for the handful of headline cards D1 names. |
+| `needs-attention-strip.tsx` | `NeedsAttentionStrip` | function | :26 | "The one genuinely good part of the current page" (WO-A.4's own words) — kept, not rebuilt, straigh… |
+| `use-dashboard-metrics.ts` | `DashboardMetrics` | interface | :11 |  |
+| `use-dashboard-metrics.ts` | `useDashboardMetrics` | function | :26 | The dashboard's ONE network request per range change (WO-A.4's own acceptance criterion). |
 
 ### `apps/web/src/components/admin/marketing`
 
@@ -1400,7 +1445,8 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `CmsBanner` | interface | :1253 | --- Content (WO-8.1) ------------------------------------------------------- |
 | `api.ts` | `CmsPage` | interface | :1261 |  |
 | `api.ts` | `CmsPost` | interface | :1268 |  |
-| `api.ts` | `CmsMenuLink` | interface | :1284 |  |
+| `api.ts` | `DashboardCardsResponse` | interface | :1285 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
+| `api.ts` | `CmsMenuLink` | interface | :1298 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

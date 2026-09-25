@@ -3,7 +3,7 @@
 
 # Components
 
-All **82** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **98** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 158 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 164 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -41,28 +41,43 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `receipt-view.tsx` | `ReceiptView` | server | 1 |  |
 | `service-worker-registration.tsx` | `ServiceWorkerRegistration` | client | 1 |  |
 
-### `apps/web/src/components/admin` (18)
+### `apps/web/src/components/admin` (15)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | client | 1 |  |
 | `command-palette.tsx` | `CommandPalette` | client | 1 |  |
-| `comparison-chart.tsx` | `ComparisonBucketPoint` `ComparisonChart` | client | 1 |  |
-| `deployment-modules.tsx` | `EnabledModulesProvider` `useEnabledModules` | client | 3 |  |
-| `donut-chart.tsx` | `DonutItem` `DonutChart` | client | 2 |  |
+| `deployment-modules.tsx` | `EnabledModulesProvider` `useEnabledModules` | client | 5 |  |
 | `funnel-chart.tsx` | `FunnelStage` `FunnelChart` | client | 1 |  |
 | `gauge-chart.tsx` | `GaugeChart` | client | 2 |  |
 | `image-manager.tsx` | `ImageManager` `StagedImage` `ImageStager` `StagedImageUploadResult` `uploadStagedImages` | client | 1 |  |
 | `party-picker.tsx` | `PartySearchResult` `PartyPicker` | client | 1 |  |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | client | 2 |  |
 | `product-form.tsx` | `ProductForm` | client | 1 |  |
-| `range-picker.tsx` | `RANGES` `RangeDays` `RangePicker` | client | 4 |  |
+| `range-picker.tsx` | `RANGES` `DASHBOARD_RANGES` `RangeDays` `RangePicker` | client | 3 |  |
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
-| `sales-chart.tsx` | `SalesChart` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
-| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 40 |  |
+| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 41 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 | `toast-stack.tsx` | `ToastStack` | client | 15 |  |
+
+### `apps/web/src/components/admin/analytics` (1)
+
+| Component file | Exports | Client? | Imported by | Purpose |
+|---|---|---|---|---|
+| `analytics-detail-page.tsx` | `AnalyticsDetailPage` | client | 1 |  |
+
+### `apps/web/src/components/admin/analytics/blocks` (7)
+
+| Component file | Exports | Client? | Imported by | Purpose |
+|---|---|---|---|---|
+| `funnel-block.tsx` | `FunnelBlock` | server | 1 |  |
+| `gauge-block.tsx` | `GaugeBlock` | server | 1 |  |
+| `kpis-block.tsx` | `KpisBlock` | server | 1 |  |
+| `ranking-block.tsx` | `RankingBlock` | server | 1 |  |
+| `share-block.tsx` | `ShareBlock` | server | 1 |  |
+| `table-block.tsx` | `TableBlock` | server | 1 |  |
+| `timeseries-block.tsx` | `TimeSeriesBlock` | server | 1 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
 
@@ -70,6 +85,27 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `cost-breakdown.tsx` | `CostBreakdown` | client | 1 |  |
 | `recipe-editor.tsx` | `RecipeEditor` | client | 2 |  |
+
+### `apps/web/src/components/admin/charts` (7)
+
+| Component file | Exports | Client? | Imported by | Purpose |
+|---|---|---|---|---|
+| `category-bar-chart.tsx` | `CategoryBarItem` `CategoryBarChart` | client | 1 |  |
+| `chart-data-table.tsx` | `ChartDataTable` | server | 6 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
+| `chart-marker.tsx` | `ChartMarker` | server | 1 |  |
+| `comparison-chart.tsx` | `ComparisonBucketPoint` `ComparisonChart` | client | 1 |  |
+| `share-chart.tsx` | `ShareItem` `ShareChart` | client | 1 |  |
+| `sparkline-chart.tsx` | `SparklineChart` | client | 1 |  |
+| `time-series-chart.tsx` | `TimeSeriesSeriesDef` `TimeSeriesChart` | client | 1 |  |
+
+### `apps/web/src/components/admin/dashboard` (4)
+
+| Component file | Exports | Client? | Imported by | Purpose |
+|---|---|---|---|---|
+| `card-group.tsx` | `CardGroup` | client | 1 |  |
+| `comparison-panel.tsx` | `ComparisonPanel` | client | 1 |  |
+| `metric-card.tsx` | `MetricCardData` `formatValue` `MetricCard` `MetricCardWithSparkline` | client | 4 |  |
+| `needs-attention-strip.tsx` | `NeedsAttentionStrip` | client | 1 |  |
 
 ### `apps/web/src/components/admin/marketing` (1)
 
@@ -81,7 +117,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 26 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 25 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -135,14 +171,14 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 31 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 30 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
-| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 1 |  |
+| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 7 |  |
 | `dialog.tsx` | `Dialog` | client | 3 |  |
 | `disclosure.tsx` | `Disclosure` | client | 1 |  |
 | `empty-state.tsx` | `EmptyState` | server | 1 |  |
-| `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 1 |  |
+| `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 3 |  |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 1 | The shape of a list page, before the list page. |
 | `loading.tsx` | `Loading` | server | 1 |  |
 | `metric-strip.tsx` | `MetricItem` `MetricStrip` | client | 1 |  |

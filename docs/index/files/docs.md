@@ -563,7 +563,7 @@ All 392 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 2556 |  |
+| `DECISIONS.md` | doc | 2761 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 806 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -587,7 +587,7 @@ All 392 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `02-admin-shell.md` | doc | 242 |  |
-| `10-admin-dashboard.md` | doc | 1843 |  |
+| `10-admin-dashboard.md` | doc | 1854 |  |
 | `44-manager-action-hub.md` | doc | 160 |  |
 | `72-fragmented-tool-consolidation-import.md` | doc | 173 |  |
 | `75-managerial-todo-widget-coverage-note.md` | doc | 54 |  |
@@ -720,7 +720,7 @@ All 392 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `04-finance.md` | doc | 291 |  |
+| `04-finance.md` | doc | 304 |  |
 | `137-payment-method-resilience-audit.md` | doc | 75 |  |
 | `145-receivables-credit-limits-dunning.md` | doc | 285 |  |
 | `147-fixed-asset-depreciation.md` | doc | 210 |  |

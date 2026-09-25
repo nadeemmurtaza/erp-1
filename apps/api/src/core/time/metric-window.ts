@@ -1,7 +1,10 @@
 /**
  * Rolling a daily series up into week or month buckets — WO-B.5's
  * comparative chart, and anything after it that wants the same three
- * granularities.
+ * granularities. Also the dashboard's own "previous window" maths
+ * (10-admin-dashboard.md D2, WO-A.3) — the two are kept in one file because
+ * both are "what does a day-granular window mean at a coarser grain",
+ * answered once.
  *
  * Deliberately built ON TOP of `shop-time.ts`'s day-granularity primitives
  * rather than teaching SQL a second, third and fourth `date_trunc` grain:
@@ -12,6 +15,8 @@
  * totals, to the paisa" true by construction rather than by hoping two
  * different SQL roundings agree.
  */
+import { shopDaysBetween, startOfShopDaysAgo, type TimeZone } from './shop-time';
+
 export type MetricBucket = 'day' | 'week' | 'month';
 
 /** The Monday (ISO week start) containing the shop-local day named by `dayKey`, as its own `YYYY-MM-DD` key. */
@@ -69,4 +74,31 @@ export function rollUpDays<T extends Record<string, number>>(
   return [...buckets.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([t, values]) => ({ t, ...values }));
+}
+
+/**
+ * The shop-local-day window of equal length immediately preceding
+ * `[from, to)` — no overlap, no gap — for the dashboard's "vs the previous
+ * N days" comparisons (10-admin-dashboard.md D2).
+ *
+ * "Equal length" is measured in shop-local CALENDAR DAYS, not milliseconds:
+ * `to` may be "now" mid-day rather than a clean midnight, so the day count
+ * is taken from the last included instant (`to` minus one millisecond) back
+ * to `from`'s own day, then the previous window is built by stepping back
+ * that many shop-local days from the day before `from`. This is what keeps
+ * the previous window aligned to real calendar days across a DST transition
+ * or a leap day, where a fixed-millisecond subtraction would silently drift
+ * by an hour or land a day short — `startOfShopDaysAgo` already carries the
+ * DST correction, so building on it here (rather than on `to.getTime() -
+ * from.getTime()`) is what makes this function DST-safe rather than merely
+ * DST-untested.
+ *
+ * `prevTo` is exactly `from`, so the two windows touch with no gap and,
+ * both being half-open (`[start, end)`), no overlap either.
+ */
+export function previousWindow(from: Date, to: Date, timeZone: TimeZone): { prevFrom: Date; prevTo: Date } {
+  const lastIncludedInstant = new Date(Math.max(to.getTime() - 1, from.getTime()));
+  const dayCount = shopDaysBetween(from, lastIncludedInstant, timeZone);
+  const prevFrom = startOfShopDaysAgo(new Date(from.getTime() - 1), dayCount, timeZone);
+  return { prevFrom, prevTo: from };
 }

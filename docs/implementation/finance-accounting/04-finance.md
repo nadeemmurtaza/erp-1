@@ -265,6 +265,19 @@ Charts: reuse `sales-chart.tsx`, `donut-chart.tsx`, `gauge-chart.tsx` in
 `components/admin/`. **Do not add a charting library** — those three files are
 inline SVG and match the design system.
 
+> [!NOTE]
+> **Overridden 2026-09-25 (10-admin-dashboard.md D9, WO-A.2/E.2).** Recharts 3
+> was added, deliberately, at the owner's own instruction — a ~55-card
+> dashboard with multi-series time series, share and ranking charts across
+> nine domains outgrew what three hand-rolled SVG files could keep readable.
+> `sales-chart.tsx` and `donut-chart.tsx` are retired (their call sites moved
+> to `components/admin/charts/time-series-chart.tsx` and `share-chart.tsx`);
+> `gauge-chart.tsx` and `funnel-chart.tsx` are kept — a single-value gauge and
+> a stepped funnel have no multi-series need Recharts would improve on.
+> Recharts is confined to `components/admin/charts/` and enforced there by
+> `scripts/check-chart-imports.mjs` (part of `pnpm lint`) — no page or block
+> imports it directly. See `DECISIONS.md`'s corresponding entry.
+
 Every money figure through `<Money>` (Phase 2). Every screen gated on
 `finance.view`; edit actions on `finance.manage`.
 

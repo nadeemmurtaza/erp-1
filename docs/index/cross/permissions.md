@@ -32,7 +32,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 20 | 10 | STAFF, ADMIN |
+| `analytics.view` | View dashboard analytics | low | 25 | 9 | STAFF, ADMIN |
 | `reports.view` | Export CSV reports | low | 11 | 2 | STAFF, ADMIN |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
@@ -42,7 +42,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `crm.manage` | Manage leads, contacts and CRM | low | 25 | 5 | STAFF, ADMIN |
+| `crm.manage` | Manage leads, contacts and CRM | low | 25 | 15 | STAFF, ADMIN |
 
 ### Sales
 
@@ -57,7 +57,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 2 | TAILOR, STAFF, ADMIN |
+| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 8 | TAILOR, STAFF, ADMIN |
 | `stitching.jobs.change_stage` | Move a job to its next stage | low | 1 | — | TAILOR, STAFF, ADMIN |
 | `stitching.jobs.manage_own` | Change stage on own assigned jobs only | low | **0 — enforces nothing** | — | TAILOR |
 | `stitching.jobs.manage_all` | Change stage on any job, regardless of assignment | medium | **0 — enforces nothing** | — | STAFF, ADMIN |
@@ -71,9 +71,9 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `catalog.manage` | Manage products, categories and import | medium | 37 | 6 | STAFF, ADMIN |
-| `inventory.manage` | Adjust and view stock levels | medium | 8 | 4 | STAFF, ADMIN |
-| `inventory.view_cost` | See cost prices and margins | medium | 1 | 8 | ADMIN |
+| `catalog.manage` | Manage products, categories and import | medium | 37 | 17 | STAFF, ADMIN |
+| `inventory.manage` | Adjust and view stock levels | medium | 8 | 11 | STAFF, ADMIN |
+| `inventory.view_cost` | See cost prices and margins | medium | 1 | 15 | ADMIN |
 | `inventory.count` | Run stock counts | low | 7 | 3 | STAFF, ADMIN |
 | `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | 2 | STAFF, ADMIN |
 | `measurements.manage_blueprints` | Manage garment types, measurement fields and size charts | low | 5 | 1 | STAFF, ADMIN |
@@ -83,7 +83,7 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `suppliers.manage` | Manage suppliers | medium | 8 | 1 | STAFF, ADMIN |
-| `purchasing.manage` | Create and receive purchase orders | medium | 17 | 3 | STAFF, ADMIN |
+| `purchasing.manage` | Create and receive purchase orders | medium | 17 | 10 | STAFF, ADMIN |
 | `parties.manage` | Manage the shared counterparty (supplier/retailer/distributor/manufacturer) pro… | medium | 3 | — | STAFF, ADMIN |
 
 ### Account
@@ -101,7 +101,7 @@ the *catalogue*, not any particular deployment's grants.
 | `marketing.manage` | Turn on automated marketing email and set its timing | low | 3 | 1 | ADMIN |
 | `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | ADMIN |
 | `audit.view` | View the audit log | medium | 1 | — | ADMIN |
-| `users.manage` | Create and manage back-office user accounts | high | 8 | 1 | ADMIN |
+| `users.manage` | Create and manage back-office user accounts | high | 8 | 2 | ADMIN |
 | `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | — | ADMIN |
 | `ai.view` | View AI usage, cost and the review queue for AI-generated drafts | low | 2 | 2 | STAFF, ADMIN |
 | `ai.manage` | Configure AI providers and the monthly budget, and approve or reject AI-generat… | medium | 8 | 3 | STAFF, ADMIN |
@@ -110,7 +110,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `finance.view` | View expenses and finance reports | medium | 10 | 6 | STAFF, ADMIN |
+| `finance.view` | View expenses and finance reports | medium | 10 | 16 | STAFF, ADMIN |
 | `finance.manage` | Record and edit expenses | medium | 7 | 1 | ADMIN |
 
 ### Fulfilment
@@ -124,7 +124,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `bom.view` | View bills of materials and raw stock | low | 10 | 4 | STAFF, ADMIN |
+| `bom.view` | View bills of materials and raw stock | low | 10 | 10 | STAFF, ADMIN |
 | `bom.manage` | Create and edit raw materials and recipes | medium | 9 | 4 | ADMIN |
 | `bom.produce` | Record a production run | low | 1 | 1 | STAFF, ADMIN |
 

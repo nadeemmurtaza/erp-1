@@ -7,6 +7,7 @@ import { AppConfigModule } from './config/config.module';
 import { EventsModule } from './events/events.module';
 import { ExtensionPointsModule } from './extension-points/extension-points.module';
 import { HealthModule } from './health/health.module';
+import { MetricsModule } from './metrics/metrics.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ReplicationModule } from './replication/replication.module';
@@ -35,6 +36,7 @@ import { StorageModule } from './storage/storage.module';
     AuditModule,
     AuthModule,
     HealthModule,
+    MetricsModule,
   ],
 })
 export class CoreModule {}

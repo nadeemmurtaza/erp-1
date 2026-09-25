@@ -3,13 +3,13 @@
 
 # Module: `finance`
 
-Pack **core** · enabled by the `MODULES` allowlist · 16 files
+Pack **core** · enabled by the `MODULES` allowlist · 18 files
 
 
 
 Source: `apps/api/src/modules/finance/`
 
-## Files (16 · 2,369 lines)
+## Files (18 · 2,559 lines)
 
 All paths relative to `apps/api/src/modules/finance/dto`.
 
@@ -25,7 +25,9 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | `finance.cron.ts` | scheduled job | 36 | 1 | WO-B.2's recurring-expense job. |
 | `finance.listener.spec.ts` | unit test | 48 | — |  |
 | `finance.listener.ts` | event subscriber | 27 | 1 | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
-| `finance.module.ts` | nest module | 22 | 1 |  |
+| `finance.metrics.spec.ts` | unit test | 63 | — |  |
+| `finance.metrics.ts` | module | 125 | 1 | The Expenses group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4/D — wiring WO-B.4's already-built ex… |
+| `finance.module.ts` | nest module | 24 | 1 |  |
 | `finance.service.ts` | service | 675 | 6 |  |
 | `finance.spec.ts` | unit test | 522 | — |  |
 | `order-economics.service.spec.ts` | unit test | 216 | — |  |
@@ -100,7 +102,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`FinanceModule`** (`finance.module.ts`)
 - imports: —
 - controllers: `FinanceController`
-- providers: `FinanceService`, `FinanceCron`, `FinanceListener`, `OrderEconomicsService`, `ExpenseReplicationListener`, `RtoExpenseListener`
+- providers: `FinanceService`, `FinanceCron`, `FinanceListener`, `OrderEconomicsService`, `ExpenseReplicationListener`, `RtoExpenseListener`, `FinanceMetricsProvider`
 - exports: —
 
 
@@ -110,17 +112,19 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `common`
 - core `config`
 - core `events`
+- core `metrics`
 - core `prisma`
 - core `replication`
 - core `settings`
 - core `storage`
+- package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
 either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (6)
+## Tests (7)
 
 | Spec | Cases | Covers |
 |---|---|---|
@@ -128,6 +132,7 @@ check there before adding another.
 | `finance-margins.spec.ts` | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
 | `finance.cron.spec.ts` | 3 | FinanceCron |
 | `finance.listener.spec.ts` | 2 | FinanceListener |
+| `finance.metrics.spec.ts` | 2 | FinanceMetricsProvider |
 | `finance.spec.ts` | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4 · trend — WO-B.4 |
 | `order-economics.service.spec.ts` | 8 | OrderEconomicsService |
 
@@ -148,7 +153,8 @@ check there before adding another.
 | `FinanceController` | class | `finance.controller.ts:26` |  |
 | `FinanceCron` | class | `finance.cron.ts:19` | WO-B.2's recurring-expense job. |
 | `FinanceListener` | class | `finance.listener.ts:15` | WO-23.1's WO-B.3: compute OrderEconomics on DELIVERED, recompute on RETURNED. |
-| `FinanceModule` | class | `finance.module.ts:21` |  |
+| `FinanceMetricsProvider` | class | `finance.metrics.ts:17` | The Expenses group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4/D — wiring WO-B.4's alread… |
+| `FinanceModule` | class | `finance.module.ts:23` |  |
 | `ExpenseSummary` | interface | `finance.service.ts:55` |  |
 | `ExpenseByCategoryRow` | interface | `finance.service.ts:69` |  |
 | `ExpenseByCategoryResult` | interface | `finance.service.ts:87` |  |

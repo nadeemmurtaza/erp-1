@@ -3,6 +3,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { AnalyticsService } from './analytics.service';
+import { MetricRegistryService } from '../../core/metrics/metric-registry.service';
 
 /**
  * WO-D.1 (10-admin-dashboard.md Track D) — covers only `ordersOverview()`
@@ -17,6 +18,7 @@ describe('AnalyticsService — WO-D.1 orders overview/fulfilment', () => {
     const module = await Test.createTestingModule({
       providers: [
         AnalyticsService,
+        MetricRegistryService,
         PrismaService,
         SettingsService,
         { provide: AppConfigService, useValue: { isModuleEnabled: jest.fn().mockReturnValue(true) } },

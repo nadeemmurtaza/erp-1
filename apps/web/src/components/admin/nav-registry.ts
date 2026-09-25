@@ -14,6 +14,7 @@ import {
   Wallet,
   Landmark,
   Truck,
+  TrendingUp,
 } from 'lucide-react';
 
 export const ICON_MAP = {
@@ -29,6 +30,7 @@ export const ICON_MAP = {
   Wallet,
   Landmark,
   Truck,
+  TrendingUp,
 } as const;
 
 export interface AdminNavGroup {
@@ -144,7 +146,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
       {
         key: 'contacts-insights',
         label: 'Insights',
-        href: '/admin/customers/insights',
+        href: '/admin/analytics/customers/overview',
         permissions: ['crm.manage'],
         group: 'customers',
         module: 'analytics',
@@ -180,7 +182,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
       {
         key: 'orders-insights',
         label: 'Insights',
-        href: '/admin/orders/insights',
+        href: '/admin/analytics/orders/overview',
         permissions: ['analytics.view'],
         group: 'orders',
         module: 'analytics',
@@ -253,8 +255,8 @@ export const ADMIN_NAV: AdminNavItem[] = [
   // Group: Insights
   {
     key: 'insights',
-    label: 'Insights',
-    href: '/admin/insights',
+    label: 'Analytics',
+    href: '/admin/analytics',
     permissions: ['reports.view'],
     group: 'insights',
     module: 'reports',
@@ -310,7 +312,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
       {
         key: 'finance-expense-analytics',
         label: 'Analytics',
-        href: '/admin/finance/expenses/analytics',
+        href: '/admin/analytics/expenses/by-category',
         permissions: ['finance.view'],
         group: 'finance',
       },
@@ -336,7 +338,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
       {
         key: 'stitching-insights',
         label: 'Insights',
-        href: '/admin/workshop/insights',
+        href: '/admin/analytics/workshop/output',
         permissions: ['stitching.jobs.view_queue'],
         group: 'workshop',
         module: 'analytics',
@@ -372,7 +374,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
       {
         key: 'products-insights',
         label: 'Insights',
-        href: '/admin/products/insights',
+        href: '/admin/analytics/products/top-sellers',
         permissions: ['analytics.view'],
         group: 'catalogue',
         module: 'analytics',
@@ -461,7 +463,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
       {
         key: 'inventory-insights',
         label: 'Insights',
-        href: '/admin/inventory/insights',
+        href: '/admin/analytics/inventory/valuation',
         permissions: ['analytics.view'],
         group: 'stock',
         module: 'analytics',
@@ -487,7 +489,7 @@ export const ADMIN_NAV: AdminNavItem[] = [
       {
         key: 'purchasing-spend',
         label: 'Spend',
-        href: '/admin/purchase-orders/spend',
+        href: '/admin/analytics/purchasing/spend',
         permissions: ['purchasing.manage'],
         group: 'stock',
         module: 'analytics',

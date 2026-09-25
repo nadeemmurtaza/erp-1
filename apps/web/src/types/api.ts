@@ -1281,6 +1281,20 @@ export interface CmsPost {
   };
 }
 
+/** `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). */
+export interface DashboardCardsResponse {
+  days: number;
+  from: string;
+  to: string;
+  generatedAt: string;
+  /** Only keys the caller may see AND whose module is enabled — an absent key, not a hidden one. */
+  metrics: Record<
+    string,
+    { value: number; previous: number | null; unit: 'paisa' | 'count' | 'bps' | 'days'; label?: string }
+  >;
+  series: Record<string, Array<{ t: string; v: number }>>;
+}
+
 export interface CmsMenuLink {
   id: string;
   parentId: string | null;

@@ -1,5 +1,5 @@
-import { shopDayKeys } from './shop-time';
-import { bucketKeyOf, monthKeyOf, rollUpDays, weekKeyOf } from './metric-window';
+import { shopDayKeys, shopDaysBetween, startOfShopDayFromKey } from './shop-time';
+import { bucketKeyOf, monthKeyOf, previousWindow, rollUpDays, weekKeyOf } from './metric-window';
 
 describe('weekKeyOf', () => {
   it('rolls a day back to the Monday of its ISO week', () => {
@@ -80,5 +80,112 @@ describe('rollUpDays', () => {
 
     const months = rollUpDays(days, values, ZERO, 'month').map((b) => b.t);
     expect(months).toEqual([...months].sort());
+  });
+});
+
+describe('previousWindow', () => {
+  /** Inclusive shop-local day count spanned by a half-open `[from, to)` window. */
+  function dayCount(from: Date, to: Date, timeZone: string): number {
+    return shopDaysBetween(from, new Date(to.getTime() - 1), timeZone);
+  }
+
+  it('touches the current window with no gap: prevTo equals from', () => {
+    const from = startOfShopDayFromKey('2026-08-01', 'UTC');
+    const to = startOfShopDayFromKey('2026-08-31', 'UTC'); // 30-day window
+    const { prevTo } = previousWindow(from, to, 'UTC');
+    expect(prevTo.getTime()).toBe(from.getTime());
+  });
+
+  it('gives the previous window the same day count as the current one, with no overlap', () => {
+    const from = startOfShopDayFromKey('2026-08-01', 'UTC');
+    const to = startOfShopDayFromKey('2026-08-31', 'UTC'); // 30 shop-local days
+    const { prevFrom, prevTo } = previousWindow(from, to, 'UTC');
+
+    expect(dayCount(prevFrom, prevTo, 'UTC')).toBe(dayCount(from, to, 'UTC'));
+    // No overlap: the previous window's last included day is strictly before `from`.
+    expect(prevTo.getTime()).toBeLessThanOrEqual(from.getTime());
+    expect(prevFrom.getTime()).toBeLessThan(from.getTime());
+  });
+
+  it('crosses a month boundary correctly', () => {
+    // Window: Jan 25 .. Feb 5 inclusive (12 shop-local days).
+    const from = startOfShopDayFromKey('2026-01-25', 'UTC');
+    const to = startOfShopDayFromKey('2026-02-06', 'UTC');
+
+    const { prevFrom, prevTo } = previousWindow(from, to, 'UTC');
+
+    expect(prevTo.getTime()).toBe(from.getTime());
+    expect(prevFrom.getTime()).toBe(startOfShopDayFromKey('2026-01-13', 'UTC').getTime());
+    expect(dayCount(prevFrom, prevTo, 'UTC')).toBe(12);
+  });
+
+  it('crosses a leap day correctly (2028 is a leap year)', () => {
+    // Window: Feb 20 .. Mar 1 inclusive (11 shop-local days, including Feb 29).
+    const from = startOfShopDayFromKey('2028-02-20', 'UTC');
+    const to = startOfShopDayFromKey('2028-03-02', 'UTC');
+
+    const { prevFrom, prevTo } = previousWindow(from, to, 'UTC');
+
+    expect(prevTo.getTime()).toBe(from.getTime());
+    expect(prevFrom.getTime()).toBe(startOfShopDayFromKey('2028-02-09', 'UTC').getTime());
+    expect(dayCount(prevFrom, prevTo, 'UTC')).toBe(11);
+  });
+
+  it('keeps the day count equal across a spring-forward DST transition', () => {
+    // America/New_York springs forward on 2026-03-08.
+    const timeZone = 'America/New_York';
+    const from = startOfShopDayFromKey('2026-03-01', timeZone);
+    const to = startOfShopDayFromKey('2026-03-15', timeZone); // 14 days, straddling the transition
+
+    const { prevFrom, prevTo } = previousWindow(from, to, timeZone);
+
+    expect(prevTo.getTime()).toBe(from.getTime());
+    expect(dayCount(prevFrom, prevTo, timeZone)).toBe(dayCount(from, to, timeZone));
+  });
+
+  it('keeps the day count equal across a fall-back DST transition', () => {
+    // America/New_York falls back on 2026-11-01.
+    const timeZone = 'America/New_York';
+    const from = startOfShopDayFromKey('2026-10-25', timeZone);
+    const to = startOfShopDayFromKey('2026-11-08', timeZone); // 14 days, straddling the transition
+
+    const { prevFrom, prevTo } = previousWindow(from, to, timeZone);
+
+    expect(prevTo.getTime()).toBe(from.getTime());
+    expect(dayCount(prevFrom, prevTo, timeZone)).toBe(dayCount(from, to, timeZone));
+  });
+
+  it('handles a "to" of right now, mid-day (not a clean midnight)', () => {
+    const timeZone = 'UTC';
+    const from = startOfShopDayFromKey('2026-08-01', timeZone);
+    const to = new Date('2026-08-15T13:45:00.000Z'); // partial day 15 (Aug 1..Aug 15 inclusive = 15 days)
+
+    const { prevFrom, prevTo } = previousWindow(from, to, timeZone);
+
+    expect(prevTo.getTime()).toBe(from.getTime());
+    expect(dayCount(prevFrom, prevTo, timeZone)).toBe(15);
+    expect(prevFrom.getTime()).toBe(startOfShopDayFromKey('2026-07-17', timeZone).getTime());
+  });
+
+  it('treats a single-day window (to one millisecond after from) as a 1-day window', () => {
+    const timeZone = 'UTC';
+    const from = startOfShopDayFromKey('2026-08-01', timeZone);
+    const to = new Date(from.getTime() + 1);
+
+    const { prevFrom, prevTo } = previousWindow(from, to, timeZone);
+
+    expect(prevTo.getTime()).toBe(from.getTime());
+    expect(prevFrom.getTime()).toBe(startOfShopDayFromKey('2026-07-31', timeZone).getTime());
+  });
+
+  it('never lets `to` at or before `from` produce a window ending after it starts', () => {
+    const timeZone = 'UTC';
+    const from = startOfShopDayFromKey('2026-08-01', timeZone);
+    const to = from; // degenerate: zero-length window
+
+    const { prevFrom, prevTo } = previousWindow(from, to, timeZone);
+
+    expect(prevTo.getTime()).toBe(from.getTime());
+    expect(prevFrom.getTime()).toBeLessThanOrEqual(prevTo.getTime());
   });
 });

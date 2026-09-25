@@ -26,6 +26,13 @@ export const STORAGE_KEYS = {
     user: `${NS}.admin.user`,
     /** Which sidebar groups the person has collapsed. */
     navGroups: `${NS}.admin.navGroups`,
+    /**
+     * Which dashboard card groups are collapsed (10-admin-dashboard.md
+     * WO-A.4). The brief's own key literal is `yaseen.admin.dashboard.collapsed`
+     * — this file's own namespace note above is why that isn't used verbatim:
+     * `NS` stands in for the client's name everywhere else here.
+     */
+    dashboardCollapsed: `${NS}.admin.dashboard.collapsed`,
   },
   customer: {
     access: `${NS}.customer.access`,

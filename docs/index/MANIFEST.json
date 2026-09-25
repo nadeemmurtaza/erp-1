@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "b0f8fbdf7ae3b40d",
+  "contentHash": "acb3566bd9576c63",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -40,6 +40,7 @@
     "docs/index/core/events.md",
     "docs/index/core/extension-points.md",
     "docs/index/core/health.md",
+    "docs/index/core/metrics.md",
     "docs/index/core/notifications.md",
     "docs/index/core/prisma.md",
     "docs/index/core/replication.md",
@@ -155,18 +156,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 1692,
-    "lines": 260060,
-    "routes": 546,
+    "files": 1727,
+    "lines": 264376,
+    "routes": 551,
     "controllers": 95,
     "models": 204,
     "enums": 88,
     "migrations": 68,
     "events": 46,
     "permissions": 65,
-    "screens": 207,
+    "screens": 201,
     "crons": 15,
-    "specs": 170,
+    "specs": 178,
     "designLaws": 0
   }
 }

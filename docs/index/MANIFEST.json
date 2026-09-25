@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "0be3ae929a1fecef",
+  "contentHash": "6001124f53ddaa47",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -164,18 +164,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 1928,
-    "lines": 294299,
+    "files": 1940,
+    "lines": 296300,
     "routes": 634,
     "controllers": 116,
-    "models": 229,
-    "enums": 105,
-    "migrations": 77,
-    "events": 59,
+    "models": 233,
+    "enums": 106,
+    "migrations": 78,
+    "events": 60,
     "permissions": 75,
     "screens": 227,
     "crons": 18,
-    "specs": 224,
+    "specs": 228,
     "designLaws": 0
   }
 }

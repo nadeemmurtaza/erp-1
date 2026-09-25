@@ -1,7 +1,7 @@
-import { IsBoolean, IsIn, IsInt, IsOptional, IsString, Min, MinLength } from 'class-validator';
+import { IsBoolean, IsIn, IsInt, IsObject, IsOptional, IsString, Min, MinLength } from 'class-validator';
 import { RESOURCE_TIERS } from '../../tenants/resource-tier';
 
-const PRICING_MODELS = ['PER_SEAT', 'FLAT_MONTHLY', 'ONE_TIME_LICENSE'] as const;
+const PRICING_MODELS = ['PER_SEAT', 'FLAT_MONTHLY', 'ONE_TIME_LICENSE', 'USAGE_BASED'] as const;
 const LICENSE_DEPLOYMENT_MODES = ['OFFLINE', 'ONLINE'] as const;
 
 /** WO-50.1/50.5 — doc 50 §1's own three shapes, one set of fields each
@@ -42,6 +42,20 @@ export class CreatePlanDto {
   @IsOptional()
   @IsIn(LICENSE_DEPLOYMENT_MODES)
   licenseDeploymentMode?: (typeof LICENSE_DEPLOYMENT_MODES)[number];
+
+  /** USAGE_BASED only — doc 153 §1. */
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  transactionFeeBps?: number;
+
+  @IsOptional()
+  @IsObject()
+  usageRateCardMinor?: Record<string, number>;
+
+  @IsOptional()
+  @IsObject()
+  includedAllowances?: Record<string, number>;
 
   @IsOptional()
   @IsBoolean()

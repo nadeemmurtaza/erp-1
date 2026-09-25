@@ -2,12 +2,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { BillingService } from './billing.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SeatCounterService } from './seat-counter.service';
+import { UsageMeteringService } from './usage-metering.service';
+import { AppConfigService } from '../../core/config/app-config.service';
 import { PlatformNotificationsService } from '../../core/notifications/notifications.service';
 
 describe('BillingService', () => {
   let prisma: any;
   let seatCounter: any;
   let notifications: any;
+  let usageMetering: any;
+  let config: any;
   let service: BillingService;
 
   const periodStart = new Date('2026-09-01T00:00:00Z');
@@ -31,6 +35,16 @@ describe('BillingService', () => {
     billingContactEmail: 'a@once.test',
     plan: { id: 'plan-once', key: 'once', pricingModel: 'ONE_TIME_LICENSE', perSeatPriceMinor: null, monthlyPriceMinor: 0, oneTimeLicenseMinor: 500_000 },
   };
+  const usageTenant = {
+    id: 't-usage',
+    legalName: 'Usage Co',
+    billingContactEmail: 'a@usageco.test',
+    plan: {
+      id: 'plan-usage', key: 'usage', pricingModel: 'USAGE_BASED',
+      perSeatPriceMinor: null, monthlyPriceMinor: 0, oneTimeLicenseMinor: null,
+      transactionFeeBps: 100, usageRateCardMinor: { messages_sent: 100, products_over_limit: 50_000 }, includedAllowances: { products: 1000 },
+    },
+  };
 
   beforeEach(async () => {
     prisma = {
@@ -42,6 +56,8 @@ describe('BillingService', () => {
     };
     seatCounter = { countBillableSeats: jest.fn() };
     notifications = { send: jest.fn() };
+    usageMetering = { getMetersForPeriod: jest.fn().mockResolvedValue(new Map()) };
+    config = { get: jest.fn().mockReturnValue(15) };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -49,6 +65,8 @@ describe('BillingService', () => {
         { provide: PrismaService, useValue: prisma },
         { provide: SeatCounterService, useValue: seatCounter },
         { provide: PlatformNotificationsService, useValue: notifications },
+        { provide: UsageMeteringService, useValue: usageMetering },
+        { provide: AppConfigService, useValue: config },
       ],
     }).compile();
 
@@ -183,6 +201,84 @@ describe('BillingService', () => {
 
       expect(preview.amountMinor).toBe(2000);
       expect(prisma.platformInvoice.create).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('USAGE_BASED (doc 153)', () => {
+    it('a FLAT_MONTHLY/PER_SEAT/ONE_TIME_LICENSE tenant never reads UsageMeter at all', async () => {
+      prisma.platformTenant.findUnique.mockResolvedValue(flatTenant);
+
+      await service.previewInvoice('t-flat', periodStart, periodEnd);
+
+      expect(usageMetering.getMetersForPeriod).not.toHaveBeenCalled();
+    });
+
+    it('the transaction fee comes straight off the meter, with no further math', async () => {
+      usageMetering.getMetersForPeriod.mockResolvedValue(new Map([['transaction_fee_minor', 5_500]]));
+      prisma.platformTenant.findUnique.mockResolvedValue(usageTenant);
+
+      const preview = await service.previewInvoice('t-usage', periodStart, periodEnd);
+
+      expect(preview.usageBreakdown!.transactionFeeMinor).toBe(5_500);
+      expect(preview.amountMinor).toBe(5_500);
+    });
+
+    it('prices messages_sent per unit from the plan rate card', async () => {
+      usageMetering.getMetersForPeriod.mockResolvedValue(new Map([['transaction_fee_minor', 0], ['messages_sent', 30]]));
+      prisma.platformTenant.findUnique.mockResolvedValue(usageTenant);
+
+      const preview = await service.previewInvoice('t-usage', periodStart, periodEnd);
+
+      // 30 messages x 100 paisa (usageRateCardMinor.messages_sent) = 3,000.
+      expect(preview.amountMinor).toBe(3_000);
+      expect(preview.usageBreakdown!.lines).toContainEqual(
+        expect.objectContaining({ metric: 'messages_sent', quantity: 30, amountMinor: 3_000 }),
+      );
+    });
+
+    it('charges the flat over-limit fee once when a banded allowance is crossed, never per unit over', async () => {
+      usageMetering.getMetersForPeriod.mockResolvedValue(
+        new Map([['transaction_fee_minor', 0], ['products_count', 1_500]]), // allowance is 1,000
+      );
+      prisma.platformTenant.findUnique.mockResolvedValue(usageTenant);
+
+      const preview = await service.previewInvoice('t-usage', periodStart, periodEnd);
+
+      expect(preview.amountMinor).toBe(50_000); // the flat products_over_limit fee, not 500 x anything
+      expect(preview.usageBreakdown!.lines).toContainEqual(
+        expect.objectContaining({ metric: 'products_count', quantity: 1_500, allowance: 1_000, amountMinor: 50_000 }),
+      );
+    });
+
+    it('charges nothing extra when a banded allowance is not crossed', async () => {
+      usageMetering.getMetersForPeriod.mockResolvedValue(new Map([['transaction_fee_minor', 0], ['products_count', 400]]));
+      prisma.platformTenant.findUnique.mockResolvedValue(usageTenant);
+
+      const preview = await service.previewInvoice('t-usage', periodStart, periodEnd);
+
+      expect(preview.amountMinor).toBe(0);
+      expect(preview.usageBreakdown!.lines.find((l) => l.metric === 'products_count')).toBeUndefined();
+    });
+
+    it("a tenant's preview and their issued invoice agree exactly — both read the same UsageMeter rows", async () => {
+      usageMetering.getMetersForPeriod.mockResolvedValue(new Map([['transaction_fee_minor', 12_340], ['messages_sent', 10]]));
+      prisma.platformTenant.findUnique.mockResolvedValue(usageTenant);
+      prisma.platformInvoice.findUnique.mockResolvedValue(null);
+      prisma.platformSubscription.findFirst.mockResolvedValue({ id: 'sub-usage' });
+      prisma.platformInvoice.create.mockImplementation(({ data }: any) => Promise.resolve({ id: 'inv-usage', ...data }));
+
+      const preview = await service.previewInvoice('t-usage', periodStart, periodEnd);
+      const invoice = await service.issueInvoiceForPeriod('t-usage', periodStart, periodEnd);
+
+      expect(invoice!.amountMinor).toBe(preview.amountMinor);
+      expect(prisma.platformInvoice.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            transactionFeeMinorSnapshot: 12_340,
+            dueAt: expect.any(Date),
+          }),
+        }),
+      );
     });
   });
 });

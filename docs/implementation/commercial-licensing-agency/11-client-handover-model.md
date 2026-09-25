@@ -1,5 +1,15 @@
 # 11 - Client Distribution & Master Platform Model
 
+> The Extractor Script this document describes (§3 Phase C, §4, §5, §6) now
+> exists at `scripts/sync-client.mjs`, matching the seven-phase spec in
+> [`12-extractor-script-spec.md`](./12-extractor-script-spec.md) — see that
+> document's own status note for what it does, how it was verified against a
+> real local git fixture, and every place the real repository's structure
+> (the Prisma schema's actual pack boundary, `KNOWN_MODULE_COUPLINGS` as a
+> hard dependency, no white-label config file yet, etc.) turned out to
+> differ from this document's own architectural description, and how each
+> was resolved.
+
 ## 1. The Business Goals
 
 The architecture of this platform must simultaneously support two distinct business objectives:

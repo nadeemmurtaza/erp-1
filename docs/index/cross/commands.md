@@ -174,7 +174,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/lib/model-routing.mjs` | 363 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastruct… |
 | `scripts/nested-borders.py` | 0 |  |
-| `scripts/sync-client.mjs` | 243 | scripts/sync-client.mjs |
+| `scripts/sync-client.mjs` | 700 | scripts/sync-client.mjs — the Extractor. |
 
 
 ---

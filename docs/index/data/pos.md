@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `CashMovement`  <sub>`apps/api/prisma/schema/pos.prisma:105`</sub>
+### `CashMovement`  <sub>`apps/api/prisma/schema/pos.prisma:108`</sub>
 
 > One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which direction.
 
@@ -37,7 +37,7 @@ against a real database.
 
 Indexes: `@@index([shiftId])`
 
-### `PosReceipt`  <sub>`apps/api/prisma/schema/pos.prisma:127`</sub>
+### `PosReceipt`  <sub>`apps/api/prisma/schema/pos.prisma:130`</sub>
 
 > One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succeeds, best-effort and outside that call's own transaction, the same "not core to the sale'…
 
@@ -68,6 +68,7 @@ Indexes: `@@index([orderId])`
 | `closedAt` | `DateTime?` | optional |  |
 | `terminal` | `PosTerminal` | relation | @relation(fields: [terminalId], references: [id], onDelete: Restrict) |
 | `cashMovements` | `CashMovement[]` |  |  |
+| `stockVariances` | `StockVariance[]` |  |  |
 
 Indexes: `@@index([terminalId])` · `@@index([status])`
 
@@ -93,7 +94,7 @@ Indexes: `@@index([locationId])` · `@@index([status])`
 
 ## Enums
 
-### `CashMovementType`  <sub>`apps/api/prisma/schema/pos.prisma:87`</sub>
+### `CashMovementType`  <sub>`apps/api/prisma/schema/pos.prisma:90`</sub>
 
 | Value | Meaning |
 |---|---|

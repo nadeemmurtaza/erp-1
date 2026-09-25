@@ -3,6 +3,7 @@ import { CartLineValidatorRegistry } from './cart-line-validator.registry';
 import { EntityEnrichmentRegistry } from './entity-enrichment.registry';
 import { StockIntakeRegistry } from './stock-intake.registry';
 import { BranchPolicyRegistry } from './branch-policy.registry';
+import { CameraPeopleCountRegistry } from './camera-people-count.registry';
 import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.registry';
 
 /**
@@ -23,6 +24,7 @@ import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.regist
     CartLineValidatorRegistry,
     StockIntakeRegistry,
     BranchPolicyRegistry,
+    CameraPeopleCountRegistry,
   ],
   exports: [
     EntityEnrichmentRegistry,
@@ -30,6 +32,7 @@ import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.regist
     CartLineValidatorRegistry,
     StockIntakeRegistry,
     BranchPolicyRegistry,
+    CameraPeopleCountRegistry,
   ],
 })
 export class ExtensionPointsModule {}

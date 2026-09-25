@@ -3,7 +3,7 @@
 
 # Screens
 
-All **201** routable files across the web app, the till and the mobile app.
+All **208** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (114)
+### admin (121)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -43,6 +43,7 @@ _none_
 | `/admin/ai` | page | client | `apps/web/src/app/(admin)/admin/(app)/ai/page.tsx` |
 | `/admin/analytics` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/page.tsx` |
 | `/admin/analytics/[...slug]` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx` |
+| `/admin/analytics/suspicious-traffic` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic/page.tsx` |
 | `/admin/b/[brandId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx` |
 | `/admin/bom` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/page.tsx` |
 | `/admin/bom/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx` |
@@ -93,6 +94,9 @@ _none_
 | `/admin/inventory/counts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]/page.tsx` |
 | `/admin/inventory/reorder` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx` |
 | `/admin/inventory/slow-movers` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/page.tsx` |
+| `/admin/inventory/spot-checks` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/page.tsx` |
+| `/admin/inventory/spot-checks/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]/page.tsx` |
+| `/admin/inventory/variances/by-shift` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/variances/by-shift/page.tsx` |
 | `/admin/inventory/wishlisted` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx` |
 | `/admin/leads` | page | client | `apps/web/src/app/(admin)/admin/(app)/leads/page.tsx` |
 | `/admin/login` | page | client | `apps/web/src/app/(admin)/admin/login/page.tsx` |
@@ -126,6 +130,9 @@ _none_
 | `/admin/purchase-orders/[id]/receive` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive/page.tsx` |
 | `/admin/purchase-orders/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx` |
 | `/admin/reports` | page | client | `apps/web/src/app/(admin)/admin/(app)/reports/page.tsx` |
+| `/admin/requisitions` | page | client | `apps/web/src/app/(admin)/admin/(app)/requisitions/page.tsx` |
+| `/admin/requisitions/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/requisitions/[id]/page.tsx` |
+| `/admin/requisitions/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/requisitions/new/page.tsx` |
 | `/admin/reviews` | page | client | `apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx` |
 | `/admin/search` | page | client | `apps/web/src/app/(admin)/admin/(app)/search/page.tsx` |
 | `/admin/segments` | page | client | `apps/web/src/app/(admin)/admin/(app)/segments/page.tsx` |

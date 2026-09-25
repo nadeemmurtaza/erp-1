@@ -3,7 +3,7 @@
 
 # Schema: `purchasing.prisma`
 
-7 models · 2 enums. Owned by module [`purchasing`](../modules/purchasing.md).
+9 models · 3 enums. Owned by module [`purchasing`](../modules/purchasing.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `GoodsReceipt`  <sub>`apps/api/prisma/schema/purchasing.prisma:159`</sub>
+### `GoodsReceipt`  <sub>`apps/api/prisma/schema/purchasing.prisma:163`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -41,7 +41,7 @@ against a real database.
 
 Indexes: `@@index([purchaseOrderId])` · `@@index([locationId])`
 
-### `GoodsReceiptItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:187`</sub>
+### `GoodsReceiptItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:191`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -87,10 +87,11 @@ Indexes: `@@index([goodsReceiptId])` · `@@index([variantId])`
 | `items` | `PurchaseOrderItem[]` |  |  |
 | `receipts` | `GoodsReceipt[]` |  |  |
 | `bills` | `SupplierBill[]` |  |  |
+| `sourceRequisition` | `PurchaseRequisition?` | optional |  |
 
 Indexes: `@@index([status, createdAt])` · `@@index([supplierId])` · `@@index([scopeLevel])`
 
-### `PurchaseOrderItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:141`</sub>
+### `PurchaseOrderItem`  <sub>`apps/api/prisma/schema/purchasing.prisma:145`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -107,6 +108,39 @@ Indexes: `@@index([status, createdAt])` · `@@index([supplierId])` · `@@index([
 | `receiptItems` | `GoodsReceiptItem[]` |  |  |
 
 Indexes: `@@index([purchaseOrderId])` · `@@index([variantId])`
+
+### `PurchaseRequisition`  <sub>`apps/api/prisma/schema/purchasing.prisma:264`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `requestedById` | `String` |  |  |
+| `locationId` | `String` |  |  |
+| `justification` | `String` |  |  |
+| `status` | `RequisitionApprovalStatus` |  | @default(PENDING) |
+| `convertedPurchaseOrderId` | `String?` | unique, optional | @unique |
+| `rejectionNote` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `requestedBy` | `User` | relation | @relation("RequisitionRequester", fields: [requestedById], references: [id]) |
+| `convertedPurchaseOrder` | `PurchaseOrder?` | relation, optional | @relation(fields: [convertedPurchaseOrderId], references: [id], onDelete: SetNull) |
+| `lines` | `RequisitionLine[]` |  |  |
+
+Indexes: `@@index([status, createdAt])` · `@@index([requestedById, createdAt])` · `@@index([locationId])`
+
+### `RequisitionLine`  <sub>`apps/api/prisma/schema/purchasing.prisma:288`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `requisitionId` | `String` |  |  |
+| `variantId` | `String` |  |  |
+| `quantity` | `Int` |  |  |
+| `estimatedUnitCostMinor` | `Int?` | optional |  |
+| `requisition` | `PurchaseRequisition` | relation | @relation(fields: [requisitionId], references: [id], onDelete: Cascade) |
+| `variant` | `ProductVariant` | relation | @relation(fields: [variantId], references: [id]) |
+
+Indexes: `@@index([requisitionId])` · `@@index([variantId])`
 
 ### `Supplier`  <sub>`apps/api/prisma/schema/purchasing.prisma:1`</sub>
 
@@ -142,7 +176,7 @@ Indexes: `@@index([purchaseOrderId])` · `@@index([variantId])`
 
 Indexes: `@@index([isActive, name])` · `@@index([tradingPartnerId])`
 
-### `SupplierBill`  <sub>`apps/api/prisma/schema/purchasing.prisma:210`</sub>
+### `SupplierBill`  <sub>`apps/api/prisma/schema/purchasing.prisma:214`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -199,7 +233,18 @@ Indexes: `@@unique([supplierId, variantId])` · `@@index([variantId, isPreferred
 | `RECEIVED` |  |
 | `CANCELLED` |  |
 
-### `SupplierBillStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:204`</sub>
+### `RequisitionApprovalStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:257`</sub>
+
+> 152-purchase-requisition.md.
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `APPROVED` |  |
+| `REJECTED` |  |
+| `CONVERTED` |  |
+
+### `SupplierBillStatus`  <sub>`apps/api/prisma/schema/purchasing.prisma:208`</sub>
 
 | Value | Meaning |
 |---|---|

@@ -3,7 +3,7 @@
 
 # Background work
 
-**16** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
+**17** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
 
 
 Background work is invisible in the UI and easy to forget exists. Anything here
@@ -21,7 +21,8 @@ runs on every node that has its module enabled.
 | `0 * * * *` | `generateRecurringExpenses()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:27` |  |
 | `EVERY_` | `pollActiveShipments()` | `fulfilment` | `apps/api/src/modules/fulfilment/fulfilment.cron.ts:30` |  |
 | `0 3 * * *` | `reconcile()` | `giftcards` | `apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts:16` |  |
-| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:17` |  |
+| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:23` | 156-single-employee-branch-loss-prevention.md §3. |
+| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:33` |  |
 | `EVERY_MINUTE` | `run()` | `marketing` | `apps/api/src/modules/marketing/campaign-dispatch.cron.ts:23` |  |
 | `0 3 * * *` | `run()` | `marketing` | `apps/api/src/modules/marketing/marketing-automation.cron.ts:72` |  |
 | `0 1 * * *` | `computeCityCodRiskStats()` | `orders` | `apps/api/src/modules/orders/cod-risk.cron.ts:22` |  |

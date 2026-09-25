@@ -4,6 +4,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { computeDemandForecast, resolveLeadTimeDays } from '@newax/shared';
+import { SpotCheckService } from './spot-check.service';
 
 @Injectable()
 export class InventoryCron {
@@ -12,7 +13,22 @@ export class InventoryCron {
   constructor(
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
+    private readonly spotChecks: SpotCheckService,
   ) {}
+
+  // 156-single-employee-branch-loss-prevention.md §3. Checked hourly, but
+  // only sometimes fires — the point is unpredictability, not the cron
+  // interval itself. A failure for one location is logged and never blocks
+  // the rest (services.md).
+  @Cron('0 * * * *')
+  async maybeTriggerSpotCheck() {
+    try {
+      const created = await this.spotChecks.maybeTriggerDueChecks();
+      if (created.length > 0) this.logger.log(`Triggered ${created.length} spot check(s): ${created.join(', ')}`);
+    } catch (error) {
+      this.logger.error('maybeTriggerSpotCheck failed', error instanceof Error ? error.stack : String(error));
+    }
+  }
 
   @Cron('0 2 * * *')
   async computeNightlyStats() {

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { AiModule } from './ai/ai.module';
+import { ApprovalsModule } from './approvals/approvals.module';
 import { AuditModule } from './audit/audit.module';
 import { AuthModule } from './auth/auth.module';
 import { AppConfigModule } from './config/config.module';
@@ -33,6 +34,7 @@ import { StorageModule } from './storage/storage.module';
     StorageModule,
     NotificationsModule,
     AiModule,
+    ApprovalsModule,
     AuditModule,
     AuthModule,
     HealthModule,

@@ -1,5 +1,26 @@
 # 156 — Loss prevention at a single-employee branch: honest about the limit, real about what closes the gap
 
+> **Status: shipped (2026-09-25), WO-156.1–156.7.** `StockVariance.posShiftId`
+> is written inline inside `InventoryService.postUnconditional()`'s own
+> transaction (`inventory.service.ts`), stronger than this doc's own
+> post-hoc `attributeToShift()` sketch — no separate call, no risk of a
+> variance left unattributed. The self-resolution refusal is in
+> `StockVarianceService.resolve()`. `SpotCheckPolicy`/`SpotCheck`/
+> `SpotCheckLine` exist (`inventory.prisma`), driven by
+> `SpotCheckService.maybeTriggerDueChecks()` on `InventoryCron`'s hourly
+> tick, with counting UI at `/admin/inventory/spot-checks` and a barcode
+> entry screen at `/admin/inventory/spot-checks/[id]`. Variance history by
+> shift is at `/admin/inventory/variances/by-shift`.
+> `suspiciousTrafficReport()` is `SuspiciousTrafficService.report()`
+> (`/admin/analytics/suspicious-traffic`), correlating a new
+> `CameraPeopleCountRegistry` extension point (no provider registered —
+> `FaceMatchProvider`, doc 30, does face-match for attendance, not
+> people-counting, so this degrades honestly to "not available" exactly as
+> this document requires) against distinct `POS_SALE` `StockMovement`
+> refs, never a second, duplicated stock read. This brief is kept as the
+> design record and the acceptance criteria to re-verify against, not as a
+> to-do list.
+
 Stated plainly, because overselling this would be worse than not building
 it: **no software can technically prevent a lone, unsupervised employee
 with physical custody of the goods from handing them to a customer with

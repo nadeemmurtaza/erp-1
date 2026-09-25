@@ -75,9 +75,9 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `CashMovement` | 8 | :105 | One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which… |
-| `PosReceipt` | 5 | :127 | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succ… |
-| `PosShift` | 11 | :65 | One cashier's stretch at one terminal, opened with a cash float and closed with a physical count (RETAIL-ERP.… |
+| `CashMovement` | 8 | :108 | One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which… |
+| `PosReceipt` | 5 | :130 | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succ… |
+| `PosShift` | 12 | :65 | One cashier's stretch at one terminal, opened with a cash float and closed with a physical count (RETAIL-ERP.… |
 | `PosTerminal` | 10 | :27 | A physical till. |
 
 

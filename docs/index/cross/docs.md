@@ -2697,7 +2697,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>3,604 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>3,766 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2741,6 +2741,7 @@ _no second-level headings_
 - ADR-035 — Phase 8 (content, marketing and search) audited and confirmed built; the ranking rule's missing availability tier fixed; the phantom "Phase 8 status note" several files already cited now exists  <sub>:3269</sub>
 - ADR-037 — Personal API keys: a user-bound token capped live by its owner, an explicit non-delegatable list, and no service account yet  <sub>:3374</sub>
 - ADR-038 — Doc 153 (usage-based pricing): metering reads a tenant's own transactional outbox through `apps/platform`'s existing connection-per-call mechanism, never a new tenant→platform push credential; dunning reuses doc 145's shape only, not its code  <sub>:3450</sub>
+- ADR-039 — `finance-accounting` docs 04/56/68/79/137/147/151/49 completed; a department-permission planning doc (164) added, deliberately not built  <sub>:3605</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -2763,14 +2764,14 @@ _no second-level headings_
 - WO-4.6 — Month-end close and export  <sub>:303</sub>
 - Phase 4 exit criteria  <sub>:313</sub>
 
-### `docs/implementation/finance-accounting/137-payment-method-resilience-audit.md`  <sub>75 lines</sub>
+### `docs/implementation/finance-accounting/137-payment-method-resilience-audit.md`  <sub>84 lines</sub>
 
-- What was checked, against three plausible near-future payment shapes  <sub>:9</sub>
-- The actual finding: no gap, and why  <sub>:35</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:55</sub>
-- Acceptance  <sub>:59</sub>
-- Out of scope  <sub>:69</sub>
+- What was checked, against three plausible near-future payment shapes  <sub>:18</sub>
+- The actual finding: no gap, and why  <sub>:44</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:64</sub>
+- Acceptance  <sub>:68</sub>
+- Out of scope  <sub>:78</sub>
 
 ### `docs/implementation/finance-accounting/145-receivables-credit-limits-dunning.md`  <sub>358 lines</sub>
 
@@ -2802,23 +2803,23 @@ _no second-level headings_
 - Acceptance  <sub>:236</sub>
 - Out of scope  <sub>:246</sub>
 
-### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>265 lines</sub>
+### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>330 lines</sub>
 
-- 1. A settlement batch is a reconciliation target, not a payment record  <sub>:14</sub>
-- 2. A `FinancialInstitutionConnector` is doc 36's own pattern, applied to settlement  <sub>:76</sub>
-- 3. A shortfall is a named variance, never a silent write-off  <sub>:96</sub>
-- Scope lenses  <sub>:107</sub>
-- Work orders  <sub>:219</sub>
-- Acceptance  <sub>:241</sub>
-- Out of scope  <sub>:254</sub>
+- 1. A settlement batch is a reconciliation target, not a payment record  <sub>:79</sub>
+- 2. A `FinancialInstitutionConnector` is doc 36's own pattern, applied to settlement  <sub>:141</sub>
+- 3. A shortfall is a named variance, never a silent write-off  <sub>:161</sub>
+- Scope lenses  <sub>:172</sub>
+- Work orders  <sub>:284</sub>
+- Acceptance  <sub>:306</sub>
+- Out of scope  <sub>:319</sub>
 
-### `docs/implementation/finance-accounting/56-overdue-invoices-counter.md`  <sub>111 lines</sub>
+### `docs/implementation/finance-accounting/56-overdue-invoices-counter.md`  <sub>125 lines</sub>
 
-- 1. Overdue is computed at read time, always  <sub>:11</sub>
-- Scope lenses  <sub>:34</sub>
-- Work orders  <sub>:81</sub>
-- Acceptance  <sub>:91</sub>
-- Out of scope  <sub>:102</sub>
+- 1. Overdue is computed at read time, always  <sub>:25</sub>
+- Scope lenses  <sub>:48</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:105</sub>
+- Out of scope  <sub>:116</sub>
 
 ### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>213 lines</sub>
 

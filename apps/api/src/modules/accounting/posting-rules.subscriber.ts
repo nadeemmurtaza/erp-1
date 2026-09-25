@@ -17,6 +17,7 @@ import {
   type CreditNoteVoidedPayload,
   type DebitNoteIssuedPayload,
   type DebitNoteVoidedPayload,
+  type SettlementShortfallWrittenOffPayload,
 } from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AccountingService, type PostLineInput } from './accounting.service';
@@ -608,5 +609,44 @@ export class PostingRulesSubscriber {
       return;
     }
     await this.accounting.reverseEntry(entry.id, `Void — debit note ${payload.debitNoteId}`);
+  }
+
+  /**
+   * Dr Settlement Shortfall Expense · Cr Cash & Bank — the payment side
+   * already debited Cash & Bank in full when the payment succeeded
+   * (onPaymentSucceeded above); a bank's SHORT settlement means less of
+   * that actually arrived, so this credits it back down by the shortfall
+   * and recognises the loss. `settlements` never imports this module —
+   * SettlementsService.writeOffShortfall() only ever publishes this event.
+   */
+  @OnDomainEvent(DomainEvent.SettlementShortfallWrittenOff)
+  async onSettlementShortfallWrittenOff(payload: SettlementShortfallWrittenOffPayload): Promise<void> {
+    const source = DomainEvent.SettlementShortfallWrittenOff;
+    if (await this.accounting.findPostedEntry(source, payload.batchId)) return;
+    if (payload.shortfallMinor <= 0) return;
+
+    const accountIds = await this.accounting.accountIdsByCode([
+      ACCOUNT_CODE.SETTLEMENT_SHORTFALL_EXPENSE,
+      ACCOUNT_CODE.CASH_AND_BANK,
+    ]);
+    const shortfallExpense = accountIds.get(ACCOUNT_CODE.SETTLEMENT_SHORTFALL_EXPENSE);
+    const cashAndBank = accountIds.get(ACCOUNT_CODE.CASH_AND_BANK);
+    if (!shortfallExpense || !cashAndBank) {
+      this.logger.error(
+        `Chart of accounts is missing Settlement Shortfall Expense or Cash & Bank — cannot post the write-off for batch ${payload.batchId}.`,
+      );
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.writtenOffAt),
+      source,
+      sourceRef: payload.batchId,
+      memo: `Settlement shortfall write-off — batch ${payload.batchId}`,
+      lines: [
+        { accountId: shortfallExpense, debitMinor: payload.shortfallMinor },
+        { accountId: cashAndBank, creditMinor: payload.shortfallMinor },
+      ],
+    });
   }
 }

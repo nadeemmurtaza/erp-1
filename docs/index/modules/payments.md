@@ -66,7 +66,7 @@ All paths relative to `apps/api/src/modules/payments`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Payment` | 20 | :17 |  |
+| `Payment` | 21 | :17 |  |
 
 
 Enums: `PaymentStatus` (6)

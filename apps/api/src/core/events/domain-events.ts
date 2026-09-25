@@ -136,6 +136,9 @@ export const DomainEvent = {
    * own (see ADR-037).
    */
   NotificationSent: 'notification.sent',
+
+  /** 49-financial-institution-settlement-partnerships.md (WO-49.4) — SettlementService.writeOffShortfall() on an accepted SHORT batch. posting-rules.subscriber.ts's own handler posts the write-off through findPostedEntry(source, batchId), never a second posting mechanism; `settlements` never imports `accounting`. */
+  SettlementShortfallWrittenOff: 'settlement.shortfall_written_off',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -609,6 +612,7 @@ export interface DomainEventPayloads {
   [DomainEvent.DebitNoteVoided]: DebitNoteVoidedPayload;
   [DomainEvent.CreditHoldApplied]: CreditHoldAppliedPayload;
   [DomainEvent.NotificationSent]: NotificationSentPayload;
+  [DomainEvent.SettlementShortfallWrittenOff]: SettlementShortfallWrittenOffPayload;
 }
 
 export interface CreditNoteIssuedPayload {
@@ -650,4 +654,11 @@ export interface NotificationSentPayload {
    *  matched); never how many succeeded, since a channel-level failure is
    *  logged and swallowed by design (send() must never fail an order). */
   channelsAttempted: number;
+}
+
+export interface SettlementShortfallWrittenOffPayload {
+  batchId: string;
+  shortfallMinor: number;
+  /** ISO — the decision's own time, so a late post still resolves the currently open period (R15). */
+  writtenOffAt: string;
 }

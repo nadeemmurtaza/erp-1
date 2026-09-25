@@ -199,15 +199,15 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :506 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :508 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :518 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :525 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :703 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :853 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :858 |  |
-| `permissions.ts` | `PermissionEffect` | type | :859 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :862 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :524 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :526 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :536 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :543 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :724 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :877 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :882 |  |
+| `permissions.ts` | `PermissionEffect` | type | :883 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :886 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

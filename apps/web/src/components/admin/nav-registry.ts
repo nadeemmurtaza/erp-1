@@ -401,6 +401,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'finance',
     module: 'receivables',
   },
+  {
+    key: 'settlements',
+    label: 'Settlements',
+    href: '/admin/settlements',
+    permissions: ['finance.settlement.view', 'finance.settlement.reconcile', 'finance.settlement.approve_writeoff'],
+    group: 'finance',
+    module: 'settlements',
+  },
 
   // Group: Workshop
   {

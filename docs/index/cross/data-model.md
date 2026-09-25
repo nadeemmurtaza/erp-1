@@ -3,7 +3,7 @@
 
 # Data model
 
-All **240** Prisma models and **110** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **243** Prisma models and **111** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -60,6 +60,7 @@ against a real database.
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
 | [`reviews.prisma`](../data/reviews.md) | 2 | 1 | [`reviews`](../modules/reviews.md) | ProductReviewSummary, Review |
 | [`search.prisma`](../data/search.md) | 2 | 0 | [`search`](../modules/search.md) | SearchQueryLog, SearchSynonym |
+| [`settlements.prisma`](../data/settlements.md) | 3 | 1 | [`settlements`](../modules/settlements.md) | SettlementBatch, SettlementBatchLine, SettlementProvider |
 | [`stitching.prisma`](../data/stitching.md) | 8 | 3 | [`stitching`](../modules/stitching.md) | StitchingJob, StitchingJobEvent, StitchingJobNumberCounter, StitchingOption, StitchingOptionGroup, StitchingOrder, StitchingOrder… |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
 | [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
@@ -189,7 +190,7 @@ against a real database.
 | [`Party`](../data/parties.md#party) | `parties` | 16 | 0 | id |  |
 | [`PartyRoleAssignment`](../data/parties.md#partyroleassignment) | `parties` | 4 | 1 | id |  |
 | [`PasswordResetToken`](../data/core.md#passwordresettoken) | `core` | 7 | 1 | id | A one-time token mailed to reset a forgotten password. |
-| [`Payment`](../data/payments.md#payment) | `payments` | 20 | 2 | id |  |
+| [`Payment`](../data/payments.md#payment) | `payments` | 21 | 2 | id |  |
 | [`PayRun`](../data/payroll.md#payrun) | `payroll` | 16 | 2 | id | The pay-run document (erp-lenses/38: "the pay run is a document, not a report"). |
 | [`PayRunAdjustment`](../data/payroll.md#payrunadjustment) | `payroll` | 11 | 3 | id | erp-lenses/38's "the overpayment has no way back": a line-level correction keyed to the o… |
 | [`PayRunLine`](../data/payroll.md#payrunline) | `payroll` | 13 | 3 | id | One line per employee per run. |
@@ -255,6 +256,9 @@ against a real database.
 | [`SearchSynonym`](../data/search.md#searchsynonym) | `search` | 5 | 0 | id | Search. |
 | [`Segment`](../data/crm.md#segment) | `crm` | 10 | 1 | id | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filt… |
 | [`Setting`](../data/core.md#setting) | `core` | 4 | 0 | key | Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fe… |
+| [`SettlementBatch`](../data/settlements.md#settlementbatch) | `settlements` | 14 | 1 | id |  |
+| [`SettlementBatchLine`](../data/settlements.md#settlementbatchline) | `settlements` | 6 | 2 | id | Which of our own Payment rows this settlement batch is meant to cover — the join a reconc… |
+| [`SettlementProvider`](../data/settlements.md#settlementprovider) | `settlements` | 5 | 0 | id | Financial institution settlement partnerships (finance-accounting/49-financial-institutio… |
 | [`Shipment`](../data/orders.md#shipment) | `orders` | 26 | 3 | id |  |
 | [`ShipmentEvent`](../data/fulfilment.md#shipmentevent) | `fulfilment` | 7 | 1 | id | The tracking timeline — one row per status change, courier's raw string kept in `meta` fo… |
 | [`ShipmentItem`](../data/fulfilment.md#shipmentitem) | `fulfilment` | 6 | 2 | id | A shipment may cover only part of an order (WO-6.4's partial-shipment note) — the shipmen… |
@@ -404,6 +408,7 @@ against a real database.
 | [`ReturnStatus`](../data/fulfilment.md#returnstatus) | `fulfilment` | `REQUESTED` `APPROVED` `REJECTED` `IN_TRANSIT` `RECEIVED` `INSPECTED` `REFUNDED` `CLOSED` |
 | [`ReviewStatus`](../data/reviews.md#reviewstatus) | `reviews` | `PENDING` `PUBLISHED` `REJECTED` |
 | [`ScopeLevel`](../data/core.md#scopelevel) | `core` | `ORG` `BRAND` `BRANCH` |
+| [`SettlementBatchStatus`](../data/settlements.md#settlementbatchstatus) | `settlements` | `EXPECTED` `CONFIRMED` `SHORT` `DISPUTED` |
 | [`SettlementMode`](../data/transfers.md#settlementmode) | `transfers` | `NONE` `INTERNAL_PL` `INVOICED` |
 | [`ShipmentStatus`](../data/orders.md#shipmentstatus) | `orders` | `PENDING` `DISPATCHED` `IN_TRANSIT` `DELIVERED` `RETURNED` `LOST` |
 | [`ShippingRateType`](../data/fulfilment.md#shippingratetype) | `fulfilment` | `FLAT` `BY_WEIGHT` `BY_PRICE` `BY_ITEM` |

@@ -127,6 +127,10 @@ export const ROUTES = {
     dunningPolicy: '/admin/dunning-policy',
     statements: '/admin/statements',
 
+    /** 49-financial-institution-settlement-partnerships.md. */
+    settlements: '/admin/settlements',
+    settlementBatch: (id: string) => `/admin/settlements/${id}`,
+
     bom: '/admin/bom',
 
     /** The card registry's own detail tree (10-admin-dashboard.md D3) — one catch-all route, 25 config objects, not 25 hand-rolled pages. */

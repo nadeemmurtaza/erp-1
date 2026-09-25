@@ -51,6 +51,7 @@ export const MODULE_PACKS: Record<string, PackName> = {
   // The universal commerce core — what clothing, grocery, medicine, hardware
   // and electronics all need. None of these may name a sector concept.
   accounting: 'core',
+  settlements: 'core',
   addresses: 'core',
   analytics: 'core',
   bom: 'core',

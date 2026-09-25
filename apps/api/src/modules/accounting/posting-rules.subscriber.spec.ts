@@ -25,6 +25,7 @@ const ACCOUNT_ID: Record<string, string> = {
   [ACCOUNT_CODE.EMPLOYEE_ADVANCES]: 'acc-advances',
   [ACCOUNT_CODE.SALES_RETURNS]: 'acc-sales-returns',
   [ACCOUNT_CODE.PURCHASE_RETURNS]: 'acc-purchase-returns',
+  [ACCOUNT_CODE.SETTLEMENT_SHORTFALL_EXPENSE]: 'acc-settlement-shortfall',
 };
 
 describe('PostingRulesSubscriber — WO-19.2', () => {
@@ -729,6 +730,49 @@ describe('PostingRulesSubscriber — WO-19.2', () => {
 
       await subscriber.onDebitNoteIssued(payload);
 
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onSettlementShortfallWrittenOff', () => {
+    const payload = {
+      batchId: 'batch1',
+      shortfallMinor: 300,
+      writtenOffAt: '2026-09-25T00:00:00.000Z',
+    };
+
+    it('debits Settlement Shortfall Expense and credits Cash & Bank for the shortfall amount', async () => {
+      await subscriber.onSettlementShortfallWrittenOff(payload);
+
+      expect(accounting.postEntry).toHaveBeenCalledWith(
+        expect.objectContaining({
+          source: DomainEvent.SettlementShortfallWrittenOff,
+          sourceRef: 'batch1',
+          lines: [
+            { accountId: 'acc-settlement-shortfall', debitMinor: 300 },
+            { accountId: 'acc-bank', creditMinor: 300 },
+          ],
+        }),
+      );
+    });
+
+    it('is idempotent — does not repost when a POSTED entry already exists for this batch', async () => {
+      accounting.findPostedEntry.mockResolvedValue({ id: 'entry-existing' });
+
+      await subscriber.onSettlementShortfallWrittenOff(payload);
+
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+
+    it('never posts a zero or negative shortfall', async () => {
+      await subscriber.onSettlementShortfallWrittenOff({ ...payload, shortfallMinor: 0 });
+      expect(accounting.postEntry).not.toHaveBeenCalled();
+    });
+
+    it('logs and skips rather than throwing when the chart of accounts is missing an account', async () => {
+      accounting.accountIdsByCode.mockResolvedValue(new Map());
+
+      await expect(subscriber.onSettlementShortfallWrittenOff(payload)).resolves.toBeUndefined();
       expect(accounting.postEntry).not.toHaveBeenCalled();
     });
   });

@@ -1,5 +1,14 @@
 # 137 — `PaymentProvider`, checked against a wallet, BNPL, and CBDC future
 
+> **Status (2026-09-25): audit re-verified, no code change.** This doc's
+> own claim was re-checked against the current
+> `apps/api/src/modules/payments/payment-provider.ts` rather than trusted
+> from its own text: `PaymentContext` still carries only `orderId`/
+> `orderNumber`/`amount`/customer contact fields, and `PaymentInitiation`
+> still resolves through `redirectUrl` (nullable) plus an opaque `meta`
+> bag — no card number, no wallet-specific field, in either shape. The
+> audit's own finding stands unchanged. No work order fires from this doc.
+
 `PaymentProvider` (doc 15/50) already means a new payment method is a new
 registered class, never a rewrite of `PaymentsService`. This document is
 the specific audit: does the interface's own shape quietly assume "a

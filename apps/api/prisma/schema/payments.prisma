@@ -43,6 +43,10 @@ model Payment {
   /// instalments.prisma — set only for a payment that is a deposit or a
   /// scheduled instalment against a layby/instalment plan.
   instalmentPayment InstalmentPayment?
+  /// settlements.prisma — which SettlementBatch line(s), if any, cover this
+  /// payment. Plural: a partial-batch institution could in principle split
+  /// one payment's settlement across two batches, though none does today.
+  settlementBatchLines SettlementBatchLine[]
 
   @@index([orderId])
   @@index([status])

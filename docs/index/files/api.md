@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 823 tracked files in `apps/api`, by directory.
+All 833 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 823 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (42)
+### `apps/api/prisma/schema` (43)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -59,7 +59,7 @@ All 823 tracked files in `apps/api`, by directory.
 | `orders.prisma` | prisma schema | 361 | Orders and shipments. |
 | `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
-| `payments.prisma` | prisma schema | 51 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
+| `payments.prisma` | prisma schema | 55 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
 | `payroll.prisma` | prisma schema | 229 | Payroll: compensation rates, leave balances and pay runs |
 | `pos.prisma` | prisma schema | 139 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
@@ -70,6 +70,7 @@ All 823 tracked files in `apps/api`, by directory.
 | `reviews.prisma` | prisma schema | 79 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `schema.prisma` | prisma schema | 32 | Datasource and generator only. Models live in one file per module — |
 | `search.prisma` | prisma schema | 40 | Search. WO-8.3, |
+| `settlements.prisma` | prisma schema | 77 | Financial institution settlement partnerships |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
@@ -546,6 +547,18 @@ All 823 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 9 |  |
 
+### `apps/api/prisma/schema/migrations/20260925230000_add_settlements` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 63 |  |
+
+### `apps/api/prisma/schema/migrations/20260925231500_add_settlement_writeoff_approval` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 10 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -700,7 +713,7 @@ All 823 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 654 | The catalogue of domain events. |
+| `domain-events.ts` | module | 665 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -829,7 +842,7 @@ All 823 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 429 |  |
+| `settings.defaults.ts` | module | 433 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -858,8 +871,8 @@ All 823 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 99 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 208 |  |
+| `module-packs.ts` | module | 100 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 213 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -872,7 +885,7 @@ All 823 tracked files in `apps/api`, by directory.
 | `asset-depreciation.cron.ts` | scheduled job | 24 |  |
 | `asset-depreciation.service.spec.ts` | unit test | 376 |  |
 | `asset-depreciation.service.ts` | service | 295 |  |
-| `chart-of-accounts.ts` | module | 104 |  |
+| `chart-of-accounts.ts` | module | 112 |  |
 | `consolidation.controller.ts` | controller | 38 |  |
 | `consolidation.service.spec.ts` | unit test | 128 |  |
 | `consolidation.service.ts` | service | 132 |  |
@@ -882,8 +895,8 @@ All 823 tracked files in `apps/api`, by directory.
 | `gl-reports.controller.ts` | controller | 77 |  |
 | `gl-reports.service.spec.ts` | unit test | 174 |  |
 | `gl-reports.service.ts` | service | 298 |  |
-| `posting-rules.subscriber.spec.ts` | unit test | 746 |  |
-| `posting-rules.subscriber.ts` | event subscriber | 613 |  |
+| `posting-rules.subscriber.spec.ts` | unit test | 790 |  |
+| `posting-rules.subscriber.ts` | event subscriber | 653 |  |
 | `wallet-posting-rules.subscriber.spec.ts` | unit test | 140 |  |
 | `wallet-posting-rules.subscriber.ts` | event subscriber | 135 |  |
 
@@ -1670,6 +1683,23 @@ All 823 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `settings.dto.ts` | dto | 113 |  |
+
+### `apps/api/src/modules/settlements` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `settlement-connector.ts` | module | 30 | Extension point: financial institution settlement connectors (finance-accounting/49-financial-institution-settlement-pa… |
+| `settlements.controller.ts` | controller | 79 |  |
+| `settlements.cron.ts` | scheduled job | 26 |  |
+| `settlements.module.ts` | nest module | 23 |  |
+| `settlements.service.spec.ts` | unit test | 282 |  |
+| `settlements.service.ts` | service | 230 |  |
+
+### `apps/api/src/modules/settlements/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `settlement.dto.ts` | dto | 27 |  |
 
 ### `apps/api/src/modules/stitching` (7)
 

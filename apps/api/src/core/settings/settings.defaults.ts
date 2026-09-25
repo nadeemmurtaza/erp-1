@@ -265,6 +265,8 @@ export const SettingKey = {
   FinanceCreditNoteApprovalThresholdMinor: 'finance.credit_note_approval_threshold_minor',
   /** 151-layby-installment-sales.md (WO-151.4) — whether cancelling a LAYBY plan that already took a deposit forfeits it (true) or refunds it through the existing Payment refund path (false, the default: no client policy stated yet, so nothing is kept without being asked for). A per-client, per-jurisdiction policy value, never a hardcoded rule. */
   PosInstalmentForfeitDepositOnCancel: 'pos.instalment_forfeit_deposit_on_cancel',
+  /** 49-financial-institution-settlement-partnerships.md (WO-49.4) — "a configurable value threshold": a SHORT settlement batch's shortfall at or below this writes off straight through; above it needs a second approver first (finance.settlement.approve_writeoff), by someone other than whoever requested it — the identical shape FinanceCreditNoteApprovalThresholdMinor already establishes. */
+  FinanceSettlementWriteoffApprovalThresholdMinor: 'finance.settlement_writeoff_approval_threshold_minor',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -383,6 +385,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   /** Rs. 50,000 — a reasonable default for a shop that has never set its own. */
   [SettingKey.FinanceCreditNoteApprovalThresholdMinor]: toMinor(50_000),
   [SettingKey.PosInstalmentForfeitDepositOnCancel]: false,
+  /** Rs. 10,000 — a reasonable default; a shortfall this size or smaller is usually a rounding/fee difference, not something worth a second signature. */
+  [SettingKey.FinanceSettlementWriteoffApprovalThresholdMinor]: toMinor(10_000),
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartFirstTouchHours]: 1,

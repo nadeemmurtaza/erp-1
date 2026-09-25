@@ -29,6 +29,7 @@ import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReceivablesModule } from './receivables/receivables.module';
+import { SettlementsModule } from './settlements/settlements.module';
 import { RecommendationsModule } from './recommendations/recommendations.module';
 import { ReportsModule } from './reports/reports.module';
 import { ReviewsModule } from './reviews/reviews.module';
@@ -104,6 +105,10 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // credit terms still work as records, they just post nothing (same "absent
   // collaborator" shape as every other event-only coupling in this file).
   { name: 'receivables', module: ReceivablesModule },
+  // 49-financial-institution-settlement-partnerships.md — off by default,
+  // same tier as accounting: no real FinancialInstitutionConnector exists
+  // yet, so a deployment gains nothing by enabling this until one does.
+  { name: 'settlements', module: SettlementsModule, offByDefault: true },
   // Hard-imported by orders.module.ts directly (same reasoning as tax
   // above — checkout always needs ShippingService.quote()), but still
   // listed here so its own admin routes/nav follow the allowlist like

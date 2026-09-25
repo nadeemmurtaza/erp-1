@@ -3,7 +3,7 @@
 
 # Screens
 
-All **231** routable files across the web app, the till and the mobile app.
+All **233** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (142)
+### admin (144)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -157,6 +157,8 @@ _none_
 | `/admin/seo` | page | client | `apps/web/src/app/(admin)/admin/(app)/seo/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
 | `/admin/settings/shipping` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx` |
+| `/admin/settlements` | page | client | `apps/web/src/app/(admin)/admin/(app)/settlements/page.tsx` |
+| `/admin/settlements/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/settlements/[id]/page.tsx` |
 | `/admin/statements` | page | client | `apps/web/src/app/(admin)/admin/(app)/statements/page.tsx` |
 | `/admin/stitching` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx` |
 | `/admin/stitching/bookings` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/page.tsx` |

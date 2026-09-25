@@ -563,7 +563,7 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 3604 |  |
+| `DECISIONS.md` | doc | 3766 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -722,12 +722,12 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `04-finance.md` | doc | 321 |  |
-| `137-payment-method-resilience-audit.md` | doc | 75 |  |
+| `137-payment-method-resilience-audit.md` | doc | 84 |  |
 | `145-receivables-credit-limits-dunning.md` | doc | 358 |  |
 | `147-fixed-asset-depreciation.md` | doc | 259 |  |
 | `151-layby-installment-sales.md` | doc | 253 |  |
-| `49-financial-institution-settlement-partnerships.md` | doc | 265 |  |
-| `56-overdue-invoices-counter.md` | doc | 111 |  |
+| `49-financial-institution-settlement-partnerships.md` | doc | 330 |  |
+| `56-overdue-invoices-counter.md` | doc | 125 |  |
 | `68-realtime-gross-profit.md` | doc | 213 |  |
 
 ### `docs/implementation/hr-people-org` (19)

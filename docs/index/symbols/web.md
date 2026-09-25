@@ -724,6 +724,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `ShippingSettingsPage` | default | :40 | WO-6.8's `/admin/settings/shipping` — zones, rates, methods, classes. |
 
+### `apps/web/src/app/(admin)/admin/(app)/settlements`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SettlementsPage` | default | :38 | finance-accounting/49-financial-institution-settlement-partnerships.md WO-49.6 — what a bank or gat… |
+
+### `apps/web/src/app/(admin)/admin/(app)/settlements/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SettlementBatchDetailPage` | default | :40 | finance-accounting/49-financial-institution-settlement-partnerships.md WO-49.6 — one batch's own re… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/statements`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1163,8 +1175,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :55 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :78 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :118 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :892 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :907 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :900 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :915 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

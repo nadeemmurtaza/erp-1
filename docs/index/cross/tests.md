@@ -3,7 +3,7 @@
 
 # Tests
 
-**231** spec files, **2,280** cases. What is already pinned down — and what is not.
+**232** spec files, **2,306** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (212)
+## Unit and integration (213)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -100,7 +100,7 @@ regression or an N+1.
 | `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 48 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 52 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
 | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts` | accounting | 7 | WalletPostingRulesSubscriber — doc 155 §3 · onWalletCreditPurchased · onWalletCreditRedeemed · onWa… |
 | `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/analytics.customers.spec.ts` | analytics | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention… |
@@ -208,6 +208,7 @@ regression or an N+1.
 | `apps/api/src/modules/search/search-reindex.listener.spec.ts` | search | 2 | SearchReindexListener |
 | `apps/api/src/modules/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
 | `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
+| `apps/api/src/modules/settlements/settlements.service.spec.ts` | settlements | 22 | SettlementsService · createExpectedBatch · reconcile · pollExpectedBatches · requestWriteoff / appr… |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
 | `apps/api/src/modules/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |

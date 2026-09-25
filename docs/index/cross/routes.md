@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **650** endpoints across **119** controllers, with the access rule that actually guards each one.
+All **658** endpoints across **120** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -874,6 +874,19 @@ never authorization.
 | GET | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.getMedia` | How uploaded images are stored |
 | PUT | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.updateMedia` | Turn WebP conversion on or off for new uploads |
 | GET | `/admin/settings/permissions` | `settings.manage` | `SettingsAdminController.listPermissions` | The full permission catalog, grouped by category |
+
+### [`settlements`](../modules/settlements.md) (8)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/settlements/batches` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.listBatches` | Every settlement batch, optionally filtered by status |
+| POST | `/admin/settlements/batches` | `finance.settlement.reconcile` | `SettlementsController.createExpectedBatch` | Record which of our own payments a settlement batch is expected to cover |
+| GET | `/admin/settlements/batches/:id` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.getBatch` | One batch's detail, with every Payment line it covers |
+| POST | `/admin/settlements/batches/:id/approve-writeoff` | `finance.settlement.approve_writeoff` | `SettlementsController.approveWriteoff` | Approve a requested write-off — the checker half, never the same person as the… |
+| POST | `/admin/settlements/batches/:id/reconcile` | `finance.settlement.reconcile` | `SettlementsController.reconcile` | Ask the batch's own connector to confirm what actually settled |
+| POST | `/admin/settlements/batches/:id/request-writeoff` | `finance.settlement.reconcile` | `SettlementsController.requestWriteoff` | Request writing off a SHORT batch — the maker half of the maker-checker pair |
+| POST | `/admin/settlements/batches/:id/write-off` | `finance.settlement.reconcile` | `SettlementsController.writeOff` | Post the write-off — refused above the configured threshold without a prior, di… |
+| GET | `/admin/settlements/providers` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.listProviders` | Every registered settlement provider |
 
 ### [`stitching`](../modules/stitching.md) (21)
 

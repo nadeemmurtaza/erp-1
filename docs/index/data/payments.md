@@ -44,6 +44,7 @@ against a real database.
 | `order` | `Order` | relation | @relation(fields: [orderId], references: [id], onDelete: Cascade) |
 | `approvedBy` | `User?` | relation, optional | @relation("PaymentApprover", fields: [approvedById], references: [id], onDelete: SetNull) |
 | `instalmentPayment` | `InstalmentPayment?` | optional |  |
+| `settlementBatchLines` | `SettlementBatchLine[]` |  |  |
 
 Indexes: `@@index([orderId])` · `@@index([status])` · `@@index([provider, status])`
 

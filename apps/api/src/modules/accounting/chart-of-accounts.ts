@@ -71,6 +71,13 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   // chart already uses for Realised FX Gain (4900) / Realised FX Loss (5900).
   { code: '4300', name: 'Gain on Asset Disposal', type: 'INCOME' },
   { code: '5600', name: 'Loss on Asset Disposal', type: 'EXPENSE' },
+  // Settlement reconciliation (finance-accounting/
+  // 49-financial-institution-settlement-partnerships.md WO-49.4). The
+  // Payment side already debited Cash & Bank in full when the payment
+  // succeeded (onPaymentSucceeded); a bank's SHORT settlement means less of
+  // that actually arrived, so the write-off credits Cash & Bank back down
+  // by the shortfall and recognises the loss — no new asset account needed.
+  { code: '5700', name: 'Settlement Shortfall Expense', type: 'EXPENSE' },
 ];
 
 /** The codes above, named — so a posting rule never hand-types a magic string. */
@@ -100,4 +107,5 @@ export const ACCOUNT_CODE = {
   DEPRECIATION_EXPENSE: '5500',
   GAIN_ON_DISPOSAL: '4300',
   LOSS_ON_DISPOSAL: '5600',
+  SETTLEMENT_SHORTFALL_EXPENSE: '5700',
 } as const;

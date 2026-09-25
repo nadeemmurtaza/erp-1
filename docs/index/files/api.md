@@ -706,7 +706,7 @@ All 676 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 352 |  |
+| `settings.defaults.ts` | module | 358 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -1055,13 +1055,13 @@ All 676 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `inventory.controller.ts` | controller | 76 |  |
-| `inventory.cron.spec.ts` | unit test | 95 |  |
-| `inventory.cron.ts` | scheduled job | 124 |  |
+| `inventory.cron.spec.ts` | unit test | 100 |  |
+| `inventory.cron.ts` | scheduled job | 170 |  |
 | `inventory.listener.spec.ts` | unit test | 70 |  |
 | `inventory.listener.ts` | event subscriber | 61 |  |
 | `inventory.module.ts` | nest module | 18 |  |
 | `inventory.service.spec.ts` | unit test | 442 |  |
-| `inventory.service.ts` | service | 582 |  |
+| `inventory.service.ts` | service | 590 |  |
 | `stock-count.controller.ts` | controller | 62 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
 | `stock-count.service.spec.ts` | unit test | 95 |  |
 | `stock-count.service.ts` | service | 233 |  |
@@ -1344,13 +1344,13 @@ All 676 tracked files in `apps/api`, by directory.
 | `goods-receipt-replication.listener.spec.ts` | unit test | 127 |  |
 | `goods-receipt-replication.listener.ts` | event subscriber | 82 |  |
 | `purchasing.controller.ts` | controller | 151 |  |
-| `purchasing.cron.spec.ts` | unit test | 67 |  |
-| `purchasing.cron.ts` | scheduled job | 71 |  |
+| `purchasing.cron.spec.ts` | unit test | 144 |  |
+| `purchasing.cron.ts` | scheduled job | 118 |  |
 | `purchasing.module.ts` | nest module | 19 |  |
-| `purchasing.service.ts` | service | 657 |  |
+| `purchasing.service.ts` | service | 664 |  |
 | `purchasing.spec.ts` | unit test | 233 |  |
-| `reorder.listener.spec.ts` | unit test | 79 |  |
-| `reorder.listener.ts` | event subscriber | 51 |  |
+| `reorder.listener.spec.ts` | unit test | 146 |  |
+| `reorder.listener.ts` | event subscriber | 83 |  |
 | `supplier-bill.spec.ts` | unit test | 230 |  |
 
 ### `apps/api/src/modules/purchasing/dto` (3)

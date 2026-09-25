@@ -73,6 +73,12 @@ Every top-level export in `packages`, with the line to open.
 | `content-blocks.ts` | `BannerPlacementKey` | type | :38 | Fixed, code-known banner slots. |
 | `content-blocks.ts` | `MENU_KEYS` | const | :45 | Fixed, code-known menu slots for the two CMS-editable footer columns. |
 | `content-blocks.ts` | `MenuKey` | type | :47 | Fixed, code-known menu slots for the two CMS-editable footer columns. |
+| `demand-forecast.ts` | `DemandForecastSale` | interface | :7 |  |
+| `demand-forecast.ts` | `DemandForecastInput` | interface | :12 |  |
+| `demand-forecast.ts` | `DemandForecast` | interface | :23 |  |
+| `demand-forecast.ts` | `computeDemandForecast` | function | :39 | WO-9.3 (09-ai-layer.md) — "start with a simple seasonal model — trailing average with a same-period… |
+| `demand-forecast.ts` | `suggestReorderQuantity` | function | :87 | ceil(days of lead time + safety buffer, at the forecasted daily rate) — the quantity a forecast-dri… |
+| `demand-forecast.ts` | `resolveLeadTimeDays` | function | :99 | A SupplierProduct.leadTimeDays override for this exact (supplier, variant) pair, falling back to th… |
 | `discounts.ts` | `DiscountType` | type | :11 | The discount rules engine. |
 | `discounts.ts` | `DiscountScope` | type | :12 |  |
 | `discounts.ts` | `DiscountRule` | interface | :21 | A `Discount` row's shape, as `evaluateDiscounts` needs it — no id-only fields (createdAt, usageCoun… |
@@ -119,6 +125,7 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./collection-rules` |
 | `index.ts` | `*` | re-export |  | from `./constants` |
 | `index.ts` | `*` | re-export |  | from `./content-blocks` |
+| `index.ts` | `*` | re-export |  | from `./demand-forecast` |
 | `index.ts` | `*` | re-export |  | from `./discounts` |
 | `index.ts` | `*` | re-export |  | from `./enums` |
 | `index.ts` | `*` | re-export |  | from `./entities` |

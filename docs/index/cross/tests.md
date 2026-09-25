@@ -3,7 +3,7 @@
 
 # Tests
 
-**163** spec files, **1,514** cases. What is already pinned down — and what is not.
+**164** spec files, **1,538** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (145)
+## Unit and integration (146)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -156,9 +156,9 @@ regression or an N+1.
 | `apps/api/src/modules/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |
 | `apps/api/src/modules/production/work-orders.service.spec.ts` | production | 11 | WorkOrdersService · create · release · complete · cancel |
 | `apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts` | purchasing | 5 | GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023 · onModuleInit · onG… |
-| `apps/api/src/modules/purchasing/purchasing.cron.spec.ts` | purchasing | 2 | PurchasingCron |
+| `apps/api/src/modules/purchasing/purchasing.cron.spec.ts` | purchasing | 5 | PurchasingCron |
 | `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
-| `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 5 | PurchasingReorderListener |
+| `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 | `apps/api/src/modules/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |
 | `apps/api/src/modules/reviews/reviews.service.spec.ts` | reviews | 3 | ReviewsService — moderate |
@@ -188,6 +188,7 @@ regression or an N+1.
 | `packages/pos-core/src/outbox.spec.ts` | packages | 6 | outbox state machine |
 | `packages/pos-core/src/receipt.spec.ts` | packages | 2 | toReceipt |
 | `packages/pos-core/src/tender.spec.ts` | packages | 3 | computeTender |
+| `packages/shared/src/demand-forecast.spec.ts` | packages | 17 | computeDemandForecast · suggestReorderQuantity · resolveLeadTimeDays |
 | `packages/shared/src/discounts.spec.ts` | packages | 18 | isDiscountEligible · evaluateDiscounts — PERCENTAGE, ORDER scope · evaluateDiscounts — PRODUCT scop… |
 | `packages/shared/src/entities/address.spec.ts` | packages | 3 | getFormattedAddress · getAddressCityProvince |
 | `packages/shared/src/entities/order.spec.ts` | packages | 8 | getOrderStatusLabel · getOrderCustomerName · getOrderDisplayTotal · getOrderItemCount |

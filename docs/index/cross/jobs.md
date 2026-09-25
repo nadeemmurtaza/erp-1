@@ -21,11 +21,11 @@ runs on every node that has its module enabled.
 | `0 * * * *` | `generateRecurringExpenses()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:27` |  |
 | `EVERY_` | `pollActiveShipments()` | `fulfilment` | `apps/api/src/modules/fulfilment/fulfilment.cron.ts:30` |  |
 | `0 3 * * *` | `reconcile()` | `giftcards` | `apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts:16` |  |
-| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:16` |  |
+| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:17` |  |
 | `EVERY_MINUTE` | `run()` | `marketing` | `apps/api/src/modules/marketing/campaign-dispatch.cron.ts:23` |  |
 | `0 3 * * *` | `run()` | `marketing` | `apps/api/src/modules/marketing/marketing-automation.cron.ts:72` |  |
 | `0 * * * *` | `run()` | `payroll` | `apps/api/src/modules/payroll/leave-accrual.cron.ts:25` |  |
-| `0 3 * * *` | `sweepReorderCandidates()` | `purchasing` | `apps/api/src/modules/purchasing/purchasing.cron.ts:28` |  |
+| `0 3 * * *` | `sweepReorderCandidates()` | `purchasing` | `apps/api/src/modules/purchasing/purchasing.cron.ts:36` |  |
 
 
 ## Continuous workers

@@ -330,7 +330,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :3 |  |
-| `page.tsx` | `AdminInventoryPage` | default | :59 |  |
+| `page.tsx` | `AdminInventoryPage` | default | :61 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain`
 
@@ -542,7 +542,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PurchaseOrderDetailPage` | default | :41 |  |
+| `page.tsx` | `PurchaseOrderDetailPage` | default | :42 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive`
 

@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-676 files · 93,214 lines
+676 files · 93,509 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -31,8 +31,8 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/prisma` | 3 | 3,163 | module |
 | `apps/api/prisma/schema` | 104 | 11,778 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 131 | nest module, module |
-| `apps/api/src/core` | 124 | 13,401 | module, nest module, unit test, service |
-| `apps/api/src/modules` | 410 | 56,962 | nest module, unit test, service, module |
+| `apps/api/src/core` | 124 | 13,407 | module, nest module, unit test, service |
+| `apps/api/src/modules` | 410 | 57,251 | nest module, unit test, service, module |
 | `apps/api/test` | 22 | 6,894 | e2e test, unit test, module |
 | `apps/api/test/support` | 1 | 43 | module |
 
@@ -62,7 +62,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/src/modules/cart/cart.service.ts` | 704 | service |  |
 | `apps/api/prisma/schema/catalog.prisma` | 691 | prisma schema | Catalog: categories, products, variants, images. |
 | `apps/api/src/modules/finance/finance.service.ts` | 675 | service |  |
-| `apps/api/src/modules/purchasing/purchasing.service.ts` | 657 | service |  |
+| `apps/api/src/modules/purchasing/purchasing.service.ts` | 664 | service |  |
 | `apps/api/src/modules/reports/reports.service.ts` | 651 | service |  |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 643 | unit test |  |
 

@@ -26,7 +26,12 @@ describe('PurchasingReorderListener', () => {
   beforeEach(async () => {
     purchasing = { upsertReorderDraftLine: jest.fn() };
     settings = { get: jest.fn().mockResolvedValue(true) };
-    prisma = { productVariant: { findUnique: jest.fn().mockResolvedValue({ costPrice: 500 }) } };
+    prisma = {
+      productVariant: { findUnique: jest.fn().mockResolvedValue({ costPrice: 500 }) },
+      variantForecast: { findUnique: jest.fn().mockResolvedValue(null) },
+      supplierProduct: { findUnique: jest.fn().mockResolvedValue(null) },
+      supplier: { findUnique: jest.fn().mockResolvedValue(null) },
+    };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -73,6 +78,68 @@ describe('PurchasingReorderListener', () => {
     await listener.onReorderPointReached({ ...basePayload, reorderQuantity: null });
     expect(purchasing.upsertReorderDraftLine).toHaveBeenCalledWith(
       expect.objectContaining({ quantity: 5 }),
+    );
+  });
+
+  it('uses a forecast-driven quantity and carries its reasoning as a note when reorderQuantity is unset and a forecast exists (WO-9.3)', async () => {
+    settings.get.mockImplementation(async (key: string) => {
+      if (key === SettingKey.PurchasingAutoDraftReorder) return true;
+      if (key === SettingKey.DemandForecastSafetyStockDays) return 14;
+      return null;
+    });
+    prisma.variantForecast.findUnique.mockResolvedValue({
+      forecastedDailyDemand: 2,
+      reasonEn: 'Demand typically runs about 2.0x higher this time of year, based on last year.',
+    });
+    prisma.supplier.findUnique.mockResolvedValue({ leadTimeDays: 7 });
+
+    await listener.onReorderPointReached({ ...basePayload, reorderQuantity: null });
+
+    expect(purchasing.upsertReorderDraftLine).toHaveBeenCalledWith({
+      supplierId: 'sup1',
+      variantId: 'v1',
+      quantity: 42, // forecastedDailyDemand(2) * (leadTimeDays(7) + safetyStockDays(14))
+      unitCost: 500,
+      note: 'Demand typically runs about 2.0x higher this time of year, based on last year.',
+    });
+  });
+
+  it('prefers a SupplierProduct lead-time override over the supplier default', async () => {
+    settings.get.mockImplementation(async (key: string) => {
+      if (key === SettingKey.PurchasingAutoDraftReorder) return true;
+      if (key === SettingKey.DemandForecastSafetyStockDays) return 0;
+      return null;
+    });
+    prisma.variantForecast.findUnique.mockResolvedValue({ forecastedDailyDemand: 1, reasonEn: null });
+    prisma.supplierProduct.findUnique.mockResolvedValue({ leadTimeDays: 21 });
+    prisma.supplier.findUnique.mockResolvedValue({ leadTimeDays: 7 });
+
+    await listener.onReorderPointReached({ ...basePayload, reorderQuantity: null });
+
+    expect(purchasing.upsertReorderDraftLine).toHaveBeenCalledWith(
+      expect.objectContaining({ quantity: 21 }), // 1 * (21 + 0), not the supplier's own 7-day default
+    );
+  });
+
+  it('never overrides a buyer\'s own reorderQuantity with a forecast-driven number, even when a forecast exists', async () => {
+    prisma.variantForecast.findUnique.mockResolvedValue({ forecastedDailyDemand: 2, reasonEn: 'Demand is higher.' });
+    prisma.supplier.findUnique.mockResolvedValue({ leadTimeDays: 7 });
+
+    await listener.onReorderPointReached(basePayload); // reorderQuantity: 20, from basePayload
+
+    expect(purchasing.upsertReorderDraftLine).toHaveBeenCalledWith(
+      expect.objectContaining({ quantity: 20, note: undefined }),
+    );
+  });
+
+  it('falls back to (reorderPoint - stock) when a forecast exists but no lead time can be resolved', async () => {
+    prisma.variantForecast.findUnique.mockResolvedValue({ forecastedDailyDemand: 2, reasonEn: 'Demand is higher.' });
+    // Neither supplierProduct nor supplier default resolves a lead time.
+
+    await listener.onReorderPointReached({ ...basePayload, reorderQuantity: null });
+
+    expect(purchasing.upsertReorderDraftLine).toHaveBeenCalledWith(
+      expect.objectContaining({ quantity: 5, note: undefined }),
     );
   });
 });

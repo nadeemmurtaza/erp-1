@@ -1,6 +1,7 @@
 export * from './collection-rules';
 export * from './constants';
 export * from './content-blocks';
+export * from './demand-forecast';
 export * from './discounts';
 export * from './enums';
 export * from './entities';

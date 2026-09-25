@@ -112,6 +112,10 @@ export const SettingKey = {
   PurchasingSupplierScorecardOtifThreshold: 'purchasing.supplier_scorecard_otif_threshold',
   /** Projected days-of-cover (current stock + everything already in flight) below which the weekly demand alert fires for a variant whose sales velocity is rising. */
   InventoryDemandSurgeHorizonDays: 'inventory.demand_surge_horizon_days',
+  /** WO-9.3 (09-ai-layer.md) — minimum units in last year's own 90-day trailing baseline before VariantForecast trusts a same-period-last-year seasonalFactor; below it, "a well-chosen average" means falling back to the trailing average alone. */
+  DemandForecastMinLastYearUnits: 'inventory.demand_forecast_min_last_year_units',
+  /** Extra days of forecasted demand a forecast-driven reorder quantity covers beyond the supplier's own lead time. */
+  DemandForecastSafetyStockDays: 'inventory.demand_forecast_safety_stock_days',
   /** Off until an owner turns it on — every order's tax is zero either way. */
   TaxEnabled: 'tax.enabled',
   /** 'INCLUSIVE' (unitPrice already contains tax) or 'EXCLUSIVE' (tax is added at checkout). */
@@ -304,6 +308,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.PurchasingSupplierDigestLeadDays]: 3,
   [SettingKey.PurchasingSupplierScorecardOtifThreshold]: 85,
   [SettingKey.InventoryDemandSurgeHorizonDays]: 14,
+  [SettingKey.DemandForecastMinLastYearUnits]: 5,
+  [SettingKey.DemandForecastSafetyStockDays]: 14,
 
   [SettingKey.TaxEnabled]: false,
   [SettingKey.TaxPricingMode]: 'EXCLUSIVE',

@@ -15,6 +15,9 @@ describe('InventoryCron', () => {
       productVariant: { findMany: jest.fn() },
       stockMovement: { findMany: jest.fn(), findFirst: jest.fn() },
       variantSalesStat: { upsert: jest.fn() },
+      variantForecast: { upsert: jest.fn() },
+      supplier: { findMany: jest.fn().mockResolvedValue([]) },
+      supplierProduct: { findMany: jest.fn().mockResolvedValue([]) },
     };
 
     settings = {
@@ -39,6 +42,7 @@ describe('InventoryCron', () => {
       if (key === SettingKey.InventorySlowMoverDays) return 60;
       if (key === SettingKey.InventoryDeadStockDays) return 180;
       if (key === SettingKey.PurchasingAutoDraftReorder) return false;
+      if (key === SettingKey.DemandForecastMinLastYearUnits) return 5;
       return null;
     });
 
@@ -71,6 +75,7 @@ describe('InventoryCron', () => {
       if (key === SettingKey.InventorySlowMoverDays) return 60;
       if (key === SettingKey.InventoryDeadStockDays) return 180;
       if (key === SettingKey.PurchasingAutoDraftReorder) return false;
+      if (key === SettingKey.DemandForecastMinLastYearUnits) return 5;
       return null;
     });
 

@@ -3,6 +3,7 @@ import { Cron } from '@nestjs/schedule';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import { computeDemandForecast, resolveLeadTimeDays } from '@newax/shared';
 
 @Injectable()
 export class InventoryCron {
@@ -19,15 +20,36 @@ export class InventoryCron {
 
     const slowMoverDays = await this.settings.get<number>(SettingKey.InventorySlowMoverDays);
     const deadStockDays = await this.settings.get<number>(SettingKey.InventoryDeadStockDays);
+    const minLastYearUnits = await this.settings.get<number>(SettingKey.DemandForecastMinLastYearUnits);
 
     const variants = await this.prisma.productVariant.findMany({
       where: { isActive: true },
       select: {
         id: true,
         stock: true,
-        createdAt: true
+        createdAt: true,
+        preferredSupplierId: true,
       }
     });
+
+    // Batched up front rather than per variant (WO-9.3, 09-ai-layer.md) — a
+    // SupplierProduct.leadTimeDays override, falling back to Supplier's own
+    // default, resolved once per (supplier, variant) pair this pass needs.
+    const supplierIds = [...new Set(variants.map((v) => v.preferredSupplierId).filter((id): id is string => id !== null))];
+    const suppliers = await this.prisma.supplier.findMany({
+      where: { id: { in: supplierIds } },
+      select: { id: true, leadTimeDays: true },
+    });
+    const defaultLeadTimeBySupplier = new Map(suppliers.map((s) => [s.id, s.leadTimeDays]));
+    const supplierProducts = await this.prisma.supplierProduct.findMany({
+      where: { supplierId: { in: supplierIds }, leadTimeDays: { not: null } },
+      select: { supplierId: true, variantId: true, leadTimeDays: true },
+    });
+    const leadTimeOverrideByKey = new Map(
+      supplierProducts
+        .filter((sp): sp is typeof sp & { leadTimeDays: number } => sp.leadTimeDays !== null)
+        .map((sp) => [`${sp.supplierId}:${sp.variantId}`, sp.leadTimeDays]),
+    );
 
     const now = new Date();
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
@@ -110,6 +132,30 @@ export class InventoryCron {
           isDeadStock,
           computedAt: now
         }
+      });
+
+      // 2. WO-9.3 (09-ai-layer.md) — demand forecast, same pass, same sales
+      // rows already fetched above. "Start without a model": a trailing
+      // average nudged by a same-period-last-year factor, never an AiProvider call.
+      const leadTimeDays = resolveLeadTimeDays(
+        variant.preferredSupplierId,
+        variant.id,
+        defaultLeadTimeBySupplier,
+        leadTimeOverrideByKey,
+      );
+
+      const forecast = computeDemandForecast({
+        stock: variant.stock,
+        sales: sales.map((sale) => ({ qty: -sale.delta, occurredAt: sale.createdAt })),
+        now,
+        minLastYearUnits,
+        leadTimeDays,
+      });
+
+      await this.prisma.variantForecast.upsert({
+        where: { variantId: variant.id },
+        create: { variantId: variant.id, ...forecast, computedAt: now },
+        update: { ...forecast, computedAt: now },
       });
     }
 

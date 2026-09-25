@@ -380,7 +380,7 @@ All 316 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 6 |  |
-| `page.tsx` | page | 312 |  |
+| `page.tsx` | page | 324 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain` (1)
 
@@ -592,7 +592,7 @@ All 316 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 200 |  |
+| `page.tsx` | page | 204 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive` (1)
 

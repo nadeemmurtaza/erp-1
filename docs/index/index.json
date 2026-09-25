@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 1906,
-    "lines": 287499,
+    "lines": 287621,
     "routes": 627,
     "controllers": 114,
     "models": 228,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 392,
-      "lines": 61297,
-      "bytes": 3635213,
+      "lines": 61419,
+      "bytes": 3642357,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -67108,8 +67108,8 @@
       "path": "docs/implementation/MULTI-SECTOR.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 806,
-      "bytes": 41847,
+      "lines": 854,
+      "bytes": 44314,
       "doc": "",
       "symbols": []
     },
@@ -67900,8 +67900,8 @@
       "path": "docs/implementation/commercial-licensing-agency/81-transparent-flat-rate-pricing.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 55,
-      "bytes": 2582,
+      "lines": 67,
+      "bytes": 3350,
       "doc": "",
       "symbols": []
     },
@@ -67909,8 +67909,8 @@
       "path": "docs/implementation/commercial-licensing-agency/82-tiered-capex-licensing.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 86,
-      "bytes": 4446,
+      "lines": 101,
+      "bytes": 5354,
       "doc": "",
       "symbols": []
     },
@@ -67918,8 +67918,8 @@
       "path": "docs/implementation/commercial-licensing-agency/83-entry-level-pos-deployment.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 60,
-      "bytes": 2910,
+      "lines": 71,
+      "bytes": 3640,
       "doc": "",
       "symbols": []
     },
@@ -67927,8 +67927,8 @@
       "path": "docs/implementation/commercial-licensing-agency/84-micro-saas-hr-per-user-pricing.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 48,
-      "bytes": 2048,
+      "lines": 65,
+      "bytes": 3090,
       "doc": "",
       "symbols": []
     },
@@ -67936,8 +67936,8 @@
       "path": "docs/implementation/commercial-licensing-agency/89-rapid-onboarding-customizable-reports.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 68,
-      "bytes": 3279,
+      "lines": 87,
+      "bytes": 4508,
       "doc": "",
       "symbols": []
     },

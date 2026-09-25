@@ -1,5 +1,20 @@
 # 89 — "Minutes" onboarding and cloud reports: both already shipped
 
+> **Status: confirmed (2026-09-25). No work order.** Doc 51's provisioning
+> claim re-verified against `ProvisioningService.provisionTenant()` as
+> before. **Correction to this document's own count**: `ReportsController`
+> (`apps/api/src/modules/reports/reports.controller.ts`) now exposes
+> **twelve** CSV export endpoints, not eight — profit-and-loss, payables,
+> expense-register and sales-register (all `04-finance.md` WO-4.6) were
+> added since this document was written. Ten of the twelve accept
+> `ReportDateRangeQueryDto` (`from`/`to`); `export/stock` takes
+> `StockReportQueryDto` (a `lowStockOnly` flag, no date range),
+> `export/payables` takes `AsOfReportQueryDto` (a single `asOf` date), and
+> `export/slow-movers` takes no query at all. The underlying claim —
+> "customizable by date range, not by arbitrary column/filter" — still
+> holds for the great majority of the set; the exact count and the three
+> exceptions are corrected here rather than left stale.
+
 "Guarantees of rapid onboarding ('Easy Setup in minutes') paired with
 customizable cloud-based reports" is two already-built claims restated as
 one bullet.
@@ -14,16 +29,20 @@ guarantee to build; it is a guarantee this repository's own provisioning
 automation (built and tested this session's own earlier work, per the
 summary of `ProvisioningService`) already fulfills.
 
-## 2. "Customizable cloud-based reports" — already eight, with date-range filtering
+## 2. "Customizable cloud-based reports" — already twelve, mostly with date-range filtering
 
 `ReportsController` (`apps/api/src/modules/reports/reports.controller.ts`)
-already exposes eight CSV export endpoints — orders, sales-by-day,
+already exposes twelve CSV export endpoints — orders, sales-by-day,
 stitching bookings, stock, stock valuation, purchases-by-supplier, stock
-ledger, slow-movers — every one accepting a `ReportDateRangeQueryDto`
+ledger, slow-movers, profit-and-loss, payables, expense-register and
+sales-register. Ten of the twelve accept a `ReportDateRangeQueryDto`
 (`from`/`to`) query parameter, i.e., already "customizable" by the one
-dimension every real report request actually needs: a date window. They
-are cloud-based by construction, since `apps/api` is the hosted backend
-every deployment (online or offline, per doc 48) already runs against.
+dimension every real report request actually needs: a date window; `stock`
+takes a `lowStockOnly` flag instead and `payables` takes a single `asOf`
+date (both still filterable, just not by a range), and `slow-movers` takes
+no query at all. They are cloud-based by construction, since `apps/api` is
+the hosted backend every deployment (online or offline, per doc 48)
+already runs against.
 
 **The one honest gap**: "customizable" beyond a date range (choosing which
 columns appear, saving a custom report definition, filtering by an

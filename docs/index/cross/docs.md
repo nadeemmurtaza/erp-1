@@ -2616,46 +2616,46 @@ _no second-level headings_
 - Acceptance  <sub>:202</sub>
 - Out of scope  <sub>:217</sub>
 
-### `docs/implementation/commercial-licensing-agency/81-transparent-flat-rate-pricing.md`  <sub>55 lines</sub>
+### `docs/implementation/commercial-licensing-agency/81-transparent-flat-rate-pricing.md`  <sub>67 lines</sub>
 
-- What already exists, and what was checked to confirm the claim is true  <sub>:15</sub>
-- Scope lenses  <sub>:33</sub>
-- Work orders  <sub>:39</sub>
-- Acceptance  <sub>:45</sub>
-- Out of scope  <sub>:51</sub>
+- What already exists, and what was checked to confirm the claim is true  <sub>:27</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:51</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:63</sub>
 
-### `docs/implementation/commercial-licensing-agency/82-tiered-capex-licensing.md`  <sub>86 lines</sub>
+### `docs/implementation/commercial-licensing-agency/82-tiered-capex-licensing.md`  <sub>101 lines</sub>
 
-- The one genuinely open question: is a Basic-tier deployment actually smaller?  <sub>:24</sub>
-- Scope lenses  <sub>:58</sub>
-- Work orders  <sub>:64</sub>
-- Acceptance  <sub>:72</sub>
-- Out of scope  <sub>:79</sub>
+- The one genuinely open question: is a Basic-tier deployment actually smaller?  <sub>:36</sub>
+- Scope lenses  <sub>:70</sub>
+- Work orders  <sub>:76</sub>
+- Acceptance  <sub>:87</sub>
+- Out of scope  <sub>:94</sub>
 
-### `docs/implementation/commercial-licensing-agency/83-entry-level-pos-deployment.md`  <sub>60 lines</sub>
+### `docs/implementation/commercial-licensing-agency/83-entry-level-pos-deployment.md`  <sub>71 lines</sub>
 
-- What already makes "entry-level" real, not aspirational  <sub>:12</sub>
-- Scope lenses  <sub>:36</sub>
-- Work orders  <sub>:43</sub>
-- Acceptance  <sub>:49</sub>
-- Out of scope  <sub>:56</sub>
+- What already makes "entry-level" real, not aspirational  <sub>:23</sub>
+- Scope lenses  <sub>:47</sub>
+- Work orders  <sub>:54</sub>
+- Acceptance  <sub>:60</sub>
+- Out of scope  <sub>:67</sub>
 
-### `docs/implementation/commercial-licensing-agency/84-micro-saas-hr-per-user-pricing.md`  <sub>48 lines</sub>
+### `docs/implementation/commercial-licensing-agency/84-micro-saas-hr-per-user-pricing.md`  <sub>65 lines</sub>
 
-- What already exists  <sub>:15</sub>
-- Scope lenses  <sub>:23</sub>
-- Work orders  <sub>:29</sub>
-- Acceptance  <sub>:37</sub>
-- Out of scope  <sub>:44</sub>
-
-### `docs/implementation/commercial-licensing-agency/89-rapid-onboarding-customizable-reports.md`  <sub>68 lines</sub>
-
-- 1. "Easy setup in minutes" — doc 51's own words, verbatim  <sub>:7</sub>
-- 2. "Customizable cloud-based reports" — already eight, with date-range filtering  <sub>:17</sub>
-- Scope lenses  <sub>:38</sub>
-- Work orders  <sub>:44</sub>
+- What already exists  <sub>:32</sub>
+- Scope lenses  <sub>:40</sub>
+- Work orders  <sub>:46</sub>
 - Acceptance  <sub>:54</sub>
-- Out of scope  <sub>:62</sub>
+- Out of scope  <sub>:61</sub>
+
+### `docs/implementation/commercial-licensing-agency/89-rapid-onboarding-customizable-reports.md`  <sub>87 lines</sub>
+
+- 1. "Easy setup in minutes" — doc 51's own words, verbatim  <sub>:22</sub>
+- 2. "Customizable cloud-based reports" — already twelve, mostly with date-range filtering  <sub>:32</sub>
+- Scope lenses  <sub>:57</sub>
+- Work orders  <sub>:63</sub>
+- Acceptance  <sub>:73</sub>
+- Out of scope  <sub>:81</sub>
 
 ### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>160 lines</sub>
 
@@ -3194,7 +3194,7 @@ _no second-level headings_
 - Acceptance  <sub>:233</sub>
 - Out of scope  <sub>:248</sub>
 
-### `docs/implementation/MULTI-SECTOR.md`  <sub>806 lines</sub>
+### `docs/implementation/MULTI-SECTOR.md`  <sub>854 lines</sub>
 
 - The ruling, up front  <sub>:7</sub>
 - Why not `master_clothing_boutique`, `master_grocery`, …  <sub>:17</sub>
@@ -3213,8 +3213,9 @@ _no second-level headings_
 - Capability modules for business models  <sub>:571</sub>
 - The blockers — read this before planning anything  <sub>:616</sub>
 - What a deployment looks like  <sub>:727</sub>
-- Sequencing  <sub>:754</sub>
-- Open questions for the owner  <sub>:794</sub>
+- Commercial-tier module conventions  <sub>:754</sub>
+- Sequencing  <sub>:802</sub>
+- Open questions for the owner  <sub>:842</sub>
 
 ### `docs/implementation/NEWAX AI Engineering Master Protocol`  <sub>0 lines</sub>
 

@@ -565,7 +565,7 @@ All 392 tracked files in `docs/*`, by directory.
 | `00-HOUSE-RULES.md` | doc | 496 |  |
 | `DECISIONS.md` | doc | 3371 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
-| `MULTI-SECTOR.md` | doc | 806 |  |
+| `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
 | `README.md` | doc | 499 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
@@ -698,11 +698,11 @@ All 392 tracked files in `docs/*`, by directory.
 | `39-shared-cross-tenant-hosting-tier.md` | doc | 417 |  |
 | `50-commercial-pricing-licensing-models.md` | doc | 243 |  |
 | `51-free-demo-sandbox-onboarding.md` | doc | 225 |  |
-| `81-transparent-flat-rate-pricing.md` | doc | 55 |  |
-| `82-tiered-capex-licensing.md` | doc | 86 |  |
-| `83-entry-level-pos-deployment.md` | doc | 60 |  |
-| `84-micro-saas-hr-per-user-pricing.md` | doc | 48 |  |
-| `89-rapid-onboarding-customizable-reports.md` | doc | 68 |  |
+| `81-transparent-flat-rate-pricing.md` | doc | 67 |  |
+| `82-tiered-capex-licensing.md` | doc | 101 |  |
+| `83-entry-level-pos-deployment.md` | doc | 71 |  |
+| `84-micro-saas-hr-per-user-pricing.md` | doc | 65 |  |
+| `89-rapid-onboarding-customizable-reports.md` | doc | 87 |  |
 
 ### `docs/implementation/content-marketing-search` (1)
 

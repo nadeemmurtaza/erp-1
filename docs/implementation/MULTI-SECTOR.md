@@ -751,6 +751,54 @@ MODULES=catalog,cart,orders,payments,crm,analytics,reports,tracking,finance,digi
 Note the third: B2B and B2C together, no toggle. A shop is not "a B2B shop" — it
 enables the capabilities its trade needs.
 
+## Commercial-tier module conventions
+
+The sector examples above answer "what kind of business." Two commercial
+licensing work orders ask a related but different question — "what tier did
+this client buy" — and each names, without inventing a second enforcement
+mechanism, which of the existing `MODULES` allowlist entries that tier maps
+to. Both are documentation only: `MODULES` stays the same deployment-time env
+allowlist an operator sets at provisioning, per "What a sector actually is"
+above; no runtime, `PlatformPlan`-tier-based feature flag is introduced by
+either.
+
+**Basic vs. Standard capital-purchase licence**
+([`commercial-licensing-agency/82-tiered-capex-licensing.md`](./commercial-licensing-agency/82-tiered-capex-licensing.md))
+— a `PlatformPlan.pricingModel = ONE_TIME_LICENSE` client buys one of two
+recommended module sets:
+
+```bash
+# Basic — offline node (licenseDeploymentMode = OFFLINE): "Basic Accounts"
+# (finance) and "Basic Reports" (reports) only, no advanced analytics.
+MODULES=catalog,orders,pos,finance,reports
+
+# Standard — cloud-hosted (licenseDeploymentMode = ONLINE): adds inventory,
+# purchasing, bill-of-materials, payroll, CRM, tracking and the full
+# analytics surface (AnalyticsService's own existing breadth) on top of Basic.
+MODULES=catalog,orders,pos,finance,reports,inventory,purchasing,bom,payroll,crm,tracking,analytics
+```
+
+**HR-only micro-SaaS**
+([`commercial-licensing-agency/84-micro-saas-hr-per-user-pricing.md`](./commercial-licensing-agency/84-micro-saas-hr-per-user-pricing.md))
+— a `PlatformPlan.pricingModel = PER_SEAT` client buys HR/leave/pay-run
+capability with none of the retail-facing surface. **There is no module
+named `hr` in `FEATURE_MODULES`**
+(`apps/api/src/modules/modules.registry.ts`): compensation rates, leave
+policy/balances and pay runs are all one module, `payroll`
+(`apps/api/src/modules/payroll/`), so the recommended allowlist is just:
+
+```bash
+# HR-only — no catalog, no orders, no pos; payroll alone carries
+# compensation, leave and pay runs. users/settings/addresses stay alwaysOn
+# regardless (modules.registry.ts), so staff accounts still work.
+MODULES=payroll
+```
+
+Neither mapping is enforced in code — an operator still sets `MODULES`
+directly at provisioning time. Naming each once here means "what does Basic
+include," "what does Standard add," and "what does the HR-only tier include"
+each have one documented answer instead of being reconstructed per sale.
+
 ## Sequencing
 
 **Status as of 2026-09-03: B1, B3, B4, B6 and B7 are done** (B7 mostly — one

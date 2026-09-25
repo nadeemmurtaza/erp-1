@@ -1,5 +1,16 @@
 # 83 — Entry-level POS: the Solo edition, already this repository's smallest shape
 
+> **Status: confirmed (2026-09-25). No work order.** Re-verified: `pos` is
+> registered in `FEATURE_MODULES` (`apps/api/src/modules/modules.registry.ts`)
+> with `offByDefault: true`, so a Solo deployment's `MODULES` allowlist
+> correctly excludes it until enabled; `orders.module.ts` hard-imports
+> `InventoryModule`/`TaxModule`/`FulfilmentModule`/`PromotionsModule`/
+> `GiftCardsModule` regardless of the allowlist (their admin routes just
+> don't appear when excluded), so a minimal `catalog,orders,pos` allowlist
+> still checks out correctly end to end. `PlatformPlan.pricingModel`
+> (`FLAT_MONTHLY`/`ONE_TIME_LICENSE` + `licenseDeploymentMode`) confirmed
+> against `apps/platform/prisma/schema/platform.prisma` as in doc 82.
+
 "Entry-level POS deployment" names, without further detail, the smallest
 of the three editions `RETAIL-ERP.md`'s own R14 already defines: **Solo**
 — one brand, one till, one database, `apps/pos` alone (or `apps/pos` +

@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-392 files · 61,297 lines
+392 files · 61,419 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 8 | 7,088 | doc, file |
+| `docs/implementation` | 8 | 7,136 | doc, file |
 | `docs/implementation/access-control-identity` | 6 | 1,028 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -93,7 +93,7 @@ has a bug.
 | `docs/implementation/attendance-workforce` | 8 | 1,010 | doc |
 | `docs/implementation/b2b-wholesale-multientity` | 4 | 540 | doc |
 | `docs/implementation/catalog-variants-pricing` | 3 | 904 | doc |
-| `docs/implementation/commercial-licensing-agency` | 14 | 2,626 | doc |
+| `docs/implementation/commercial-licensing-agency` | 14 | 2,700 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
 | `docs/implementation/finance-accounting` | 8 | 1,715 | doc |
@@ -121,9 +121,9 @@ has a bug.
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
 | `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md` | 937 | doc |  |
+| `docs/implementation/MULTI-SECTOR.md` | 854 | doc |  |
 | `docs/design/principles-laws/10-laws.md` | 850 | doc |  |
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
-| `docs/implementation/MULTI-SECTOR.md` | 806 | doc |  |
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
 | `docs/erp-lenses/_meta/_conflicts.md` | 645 | doc |  |
 | `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md` | 566 | doc |  |

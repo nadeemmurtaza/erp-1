@@ -1,5 +1,17 @@
 # 81 — Flat-rate, no hidden fees: already one of doc 50's three shapes
 
+> **Status: confirmed (2026-09-25). No work order.** Re-verified against the
+> running code, not re-derived from doc 50's own text: `PlatformPlan`
+> (`apps/platform/prisma/schema/platform.prisma`) has `pricingModel`
+> defaulting to `FLAT_MONTHLY`, and no setup-charge field exists on
+> `PlatformPlan`, `PlatformSubscription` or `PlatformInvoice`.
+> `billing.service.ts`'s `computeCharge()` switches on exactly
+> `PER_SEAT`/`FLAT_MONTHLY`/`ONE_TIME_LICENSE` and never reads
+> `PlatformUsageRecord`; that model exists in the schema but its only
+> consumer today is `ResourceQuotasService` (alerting against a tier quota),
+> not billing — so "no per-invoice/usage metering feeds a tenant's bill" is
+> true of the code as it stands, not only of doc 50's stated design.
+
 "Transparent flat-rate monthly subscriptions (Rs./month) that explicitly
 remove hidden 'per-invoice' fees, setup charges, or overage limits" is
 doc 50's own `PricingModel.FLAT_MONTHLY` — `PlatformPlan.monthlyPriceMinor`

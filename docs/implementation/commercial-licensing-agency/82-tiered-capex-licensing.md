@@ -1,5 +1,17 @@
 # 82 — Basic (offline) vs. Standard (cloud): already `licenseDeploymentMode`
 
+> **Status: shipped (2026-09-25), WO-82.1.** Re-verified against
+> `apps/platform/prisma/schema/platform.prisma`:
+> `PlatformPlan.pricingModel`/`oneTimeLicenseMinor`/`licenseDeploymentMode`
+> (`String?`, DTO-validated to `OFFLINE`/`ONLINE`) all exist exactly as this
+> document describes. **WO-82.1** — the `BASIC_LICENSE_MODULES`/
+> `STANDARD_LICENSE_MODULES` convention below is now recorded in
+> [`../MULTI-SECTOR.md`](../MULTI-SECTOR.md)'s new "Commercial-tier module
+> conventions" section, using real `FEATURE_MODULES` entries
+> (`apps/api/src/modules/modules.registry.ts`) rather than this document's
+> own illustrative `inventory-advanced`/`analytics-advanced` placeholder
+> names, which are not registered module names in the codebase today.
+
 "Tiered capital expenditure models clearly defining feature boundaries:
 Basic licenses offer offline 'Basic Accounts' and 'Basic Reports,' while
 Standard licenses unlock cloud databases and advanced analytics" maps
@@ -63,11 +75,14 @@ deployment and pricing-model shape.
 
 ## Work orders
 
-**WO-82.1 (documentation only)** — record the `BASIC_LICENSE_MODULES`/
-`STANDARD_LICENSE_MODULES` convention above in the operator-facing
-provisioning runbook (wherever `MODULES` allowlist decisions are
-currently documented for a new deployment), so "what does Basic include"
-has one answer instead of being reconstructed per sale.
+**WO-82.1 (documentation only) — done, see status above.** Recorded the
+Basic/Standard `MODULES` convention in
+[`../MULTI-SECTOR.md`](../MULTI-SECTOR.md)'s "Commercial-tier module
+conventions" section (the file that already documents every other
+per-deployment `MODULES` allowlist decision), using real `FEATURE_MODULES`
+entries rather than this document's own illustrative placeholder names, so
+"what does Basic include" has one citable answer instead of being
+reconstructed per sale.
 
 ## Acceptance
 

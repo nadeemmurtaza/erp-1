@@ -3,32 +3,38 @@
 
 # Module: `crm`
 
-Pack **core** · enabled by the `MODULES` allowlist · 11 files
+Pack **core** · enabled by the `MODULES` allowlist · 17 files
 
 
 
 Source: `apps/api/src/modules/crm/`
 
-## Files (11 · 1,652 lines)
+## Files (17 · 1,995 lines)
 
 All paths relative to `apps/api/src/modules/crm`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `crm.controller.ts` | controller | 199 | 2 |  |
-| `crm.module.ts` | nest module | 16 | 1 |  |
+| `crm.module.ts` | nest module | 27 | 1 |  |
 | `crm.service.ts` | service | 526 | 2 |  |
 | `crm.dto.ts` | dto | 195 | 7 |  |
+| `segment.dto.ts` | dto | 42 | 3 |  |
 | `email-inbox.admin.controller.ts` | controller | 57 | 1 | Support Inbox — replies to order/support mail that the mailbox poller pulled from a connected mailbox. |
 | `email-inbox.dto.ts` | dto | 30 | 3 |  |
 | `email-inbox.service.spec.ts` | unit test | 142 | — |  |
 | `email-inbox.service.ts` | service | 234 | 2 |  |
 | `mailbox-poller.cron.ts` | scheduled job | 133 | 1 | Logs into every connected mailbox with IMAP configured and pulls unseen mail — a customer's reply to an order or suppor… |
 | `order.subscriber.ts` | event subscriber | 87 | 1 | Keeps customer records in step with orders. |
+| `rfm-scoring.cron.spec.ts` | unit test | 44 | — |  |
+| `rfm-scoring.cron.ts` | scheduled job | 47 | 1 | WO-8.4 — nightly RFM (recency/frequency/monetary) scoring, quintile-ranked (1-5) among contacts with at least one order. |
 | `rto-contact.listener.ts` | event subscriber | 33 | 1 | WO-6.7 — "Increment an RTO counter on the customer's Contact record." Same rollup idiom as the CRM's own order.placed s… |
+| `segments.controller.ts` | controller | 48 | 1 |  |
+| `segments.service.spec.ts` | unit test | 82 | — |  |
+| `segments.service.ts` | service | 69 | 1 |  |
 
 
-## HTTP routes (19)
+## HTTP routes (26)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -49,6 +55,13 @@ All paths relative to `apps/api/src/modules/crm`.
 | POST | `/admin/crm/interactions` | `crm.manage` | `CrmAdminController.addInteraction` :159 | Log a call, WhatsApp message, visit or complaint |
 | GET | `/admin/crm/leads` | `crm.manage` | `CrmAdminController.listLeads` :186 |  |
 | PATCH | `/admin/crm/leads/:id` | `crm.manage` | `CrmAdminController.updateLead` :191 |  |
+| GET | `/admin/crm/segments` | `crm.manage` | `SegmentsAdminController.list` :14 |  |
+| POST | `/admin/crm/segments` | `crm.manage` | `SegmentsAdminController.create` :24 |  |
+| DELETE | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.remove` :34 |  |
+| GET | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.get` :19 |  |
+| PATCH | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.update` :29 |  |
+| GET | `/admin/crm/segments/:id/members` | `crm.manage` | `SegmentsAdminController.members` :39 |  |
+| POST | `/admin/crm/segments/preview` | `crm.manage` | `SegmentsAdminController.preview` :44 |  |
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` :143 |  |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` :39 | Contact-form enquiry — becomes a lead in the CRM |
 
@@ -92,15 +105,20 @@ Enums: `ContactStatus` (5) · `InteractionKind` (7) · `LeadStatus` (5)
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
+## Scheduled work
+
+| Schedule | Handler | Where | What it does |
+|---|---|---|---|
+| `EVERY_DAY_AT_` | `run()` | `rfm-scoring.cron.ts:22` |  |
 
 
 ## Nest wiring
 
 **`CrmModule`** (`crm.module.ts`)
 - imports: —
-- controllers: `CrmPublicController`, `CrmAdminController`, `EmailInboxAdminController`
-- providers: `CrmService`, `CrmOrderSubscriber`, `EmailInboxService`, `MailboxPollerCron`, `RtoContactListener`
-- exports: `CrmService`
+- controllers: `CrmPublicController`, `CrmAdminController`, `EmailInboxAdminController`, `SegmentsAdminController`
+- providers: `CrmService`, `CrmOrderSubscriber`, `EmailInboxService`, `MailboxPollerCron`, `RtoContactListener`, `SegmentsService`, `RfmScoringCron`
+- exports: `CrmService`, `SegmentsService`
 
 
 ## Reaches out to
@@ -108,6 +126,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `audit`
 - core `auth`
 - core `common`
+- core `crm`
 - core `events`
 - core `notifications`
 - core `prisma`
@@ -118,11 +137,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (3)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `email-inbox.service.spec.ts` | 7 | EmailInboxService · reply |
+| `rfm-scoring.cron.spec.ts` | 1 | RfmScoringCron |
+| `segments.service.spec.ts` | 4 | SegmentsService |
 
 
 ## Every export in this unit
@@ -131,7 +152,7 @@ check there before adding another.
 |---|---|---|---|
 | `CrmPublicController` | class | `crm.controller.ts:33` |  |
 | `CrmAdminController` | class | `crm.controller.ts:47` |  |
-| `CrmModule` | class | `crm.module.ts:15` |  |
+| `CrmModule` | class | `crm.module.ts:26` |  |
 | `UpsertContactInput` | interface | `crm.service.ts:8` |  |
 | `CrmService` | class | `crm.service.ts:31` | Customer records. |
 | `ContactQueryDto` | class | `crm.dto.ts:18` |  |
@@ -141,6 +162,9 @@ check there before adding another.
 | `TagContactDto` | class | `crm.dto.ts:132` |  |
 | `CreateLeadDto` | class | `crm.dto.ts:140` |  |
 | `UpdateLeadDto` | class | `crm.dto.ts:172` |  |
+| `CreateSegmentDto` | class | `segment.dto.ts:4` |  |
+| `UpdateSegmentDto` | class | `segment.dto.ts:20` |  |
+| `PreviewSegmentFilterDto` | class | `segment.dto.ts:37` |  |
 | `EmailInboxAdminController` | class | `email-inbox.admin.controller.ts:17` | Support Inbox — replies to order/support mail that the mailbox poller pulled from a connected mailbox. |
 | `EmailInboxQueryDto` | class | `email-inbox.dto.ts:6` |  |
 | `LinkInboundEmailDto` | class | `email-inbox.dto.ts:16` |  |
@@ -149,7 +173,10 @@ check there before adding another.
 | `EmailInboxService` | class | `email-inbox.service.ts:46` | Support Inbox: messages the mailbox poller (mailbox-poller.cron.ts) pulled from a connected mailbox, plus the… |
 | `MailboxPollerCron` | class | `mailbox-poller.cron.ts:23` | Logs into every connected mailbox with IMAP configured and pulls unseen mail — a customer's reply to an order… |
 | `CrmOrderSubscriber` | class | `order.subscriber.ts:19` | Keeps customer records in step with orders. |
+| `RfmScoringCron` | class | `rfm-scoring.cron.ts:17` | WO-8.4 — nightly RFM (recency/frequency/monetary) scoring, quintile-ranked (1-5) among contacts with at least… |
 | `RtoContactListener` | class | `rto-contact.listener.ts:14` | WO-6.7 — "Increment an RTO counter on the customer's Contact record." Same rollup idiom as the CRM's own orde… |
+| `SegmentsAdminController` | class | `segments.controller.ts:10` |  |
+| `SegmentsService` | class | `segments.service.ts:15` |  |
 
 
 ---

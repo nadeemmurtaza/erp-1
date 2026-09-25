@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 608 tracked files in `apps/api`, by directory.
+All 622 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -543,9 +543,15 @@ All 608 tracked files in `apps/api`, by directory.
 | `app-config.service.ts` | service | 68 |  |
 | `config.module.ts` | nest module | 23 |  |
 | `env.validation.spec.ts` | unit test | 154 |  |
-| `env.validation.ts` | config | 256 |  |
+| `env.validation.ts` | config | 302 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 41 |  |
+
+### `apps/api/src/core/crm` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `segment-filter-engine.ts` | module | 94 |  |
 
 ### `apps/api/src/core/events` (5)
 
@@ -575,7 +581,7 @@ All 608 tracked files in `apps/api`, by directory.
 | `health.controller.ts` | controller | 52 |  |
 | `health.module.ts` | nest module | 6 |  |
 
-### `apps/api/src/core/notifications` (10)
+### `apps/api/src/core/notifications` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -585,10 +591,12 @@ All 608 tracked files in `apps/api`, by directory.
 | `expo-push.channel.ts` | channel | 89 |  |
 | `log.channel.ts` | channel | 26 |  |
 | `notification-channel.ts` | module | 38 | Extension point: outbound customer messaging. |
-| `notifications.module.ts` | nest module | 30 |  |
-| `notifications.service.ts` | service | 59 |  |
+| `notifications.module.ts` | nest module | 34 |  |
+| `notifications.service.ts` | service | 63 |  |
+| `sms.channel.ts` | channel | 48 |  |
 | `unsubscribe.controller.ts` | controller | 41 |  |
 | `unsubscribe.dto.ts` | dto | 15 |  |
+| `whatsapp.channel.ts` | channel | 63 |  |
 
 ### `apps/api/src/core/notifications/email` (6)
 
@@ -872,21 +880,27 @@ All 608 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `content.dto.ts` | dto | 398 |  |
 
-### `apps/api/src/modules/crm` (5)
+### `apps/api/src/modules/crm` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `crm.controller.ts` | controller | 199 |  |
-| `crm.module.ts` | nest module | 16 |  |
+| `crm.module.ts` | nest module | 27 |  |
 | `crm.service.ts` | service | 526 |  |
 | `order.subscriber.ts` | event subscriber | 87 |  |
+| `rfm-scoring.cron.spec.ts` | unit test | 44 |  |
+| `rfm-scoring.cron.ts` | scheduled job | 47 |  |
 | `rto-contact.listener.ts` | event subscriber | 33 |  |
+| `segments.controller.ts` | controller | 48 |  |
+| `segments.service.spec.ts` | unit test | 82 |  |
+| `segments.service.ts` | service | 69 |  |
 
-### `apps/api/src/modules/crm/dto` (1)
+### `apps/api/src/modules/crm/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `crm.dto.ts` | dto | 195 |  |
+| `segment.dto.ts` | dto | 42 |  |
 
 ### `apps/api/src/modules/crm/email-inbox` (5)
 
@@ -1022,20 +1036,25 @@ All 608 tracked files in `apps/api`, by directory.
 | `inventory.dto.ts` | dto | 31 |  |
 | `stock-variance.dto.ts` | dto | 9 |  |
 
-### `apps/api/src/modules/marketing` (5)
+### `apps/api/src/modules/marketing` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `campaign-dispatch.cron.ts` | scheduled job | 34 |  |
+| `campaigns.controller.ts` | controller | 105 |  |
+| `campaigns.service.spec.ts` | unit test | 126 |  |
+| `campaigns.service.ts` | service | 263 |  |
 | `marketing-automation.cron.spec.ts` | unit test | 299 |  |
 | `marketing-automation.cron.ts` | scheduled job | 347 |  |
 | `marketing-settings.service.ts` | service | 71 |  |
 | `marketing.controller.ts` | controller | 26 |  |
-| `marketing.module.ts` | nest module | 11 |  |
+| `marketing.module.ts` | nest module | 14 |  |
 
-### `apps/api/src/modules/marketing/dto` (1)
+### `apps/api/src/modules/marketing/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `campaign.dto.ts` | dto | 49 |  |
 | `marketing-settings.dto.ts` | dto | 38 |  |
 
 ### `apps/api/src/modules/measurements` (5)

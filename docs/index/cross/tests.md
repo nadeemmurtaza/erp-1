@@ -3,7 +3,7 @@
 
 # Tests
 
-**149** spec files, **1,410** cases. What is already pinned down — and what is not.
+**152** spec files, **1,419** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -53,7 +53,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (132)
+## Unit and integration (135)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -106,6 +106,8 @@ regression or an N+1.
 | `apps/api/src/modules/collections/collections.service.spec.ts` | collections | 6 | CollectionsService |
 | `apps/api/src/modules/content/content.service.spec.ts` | content | 9 | ContentService · pages · banners · menu items |
 | `apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts` | crm | 7 | EmailInboxService · reply |
+| `apps/api/src/modules/crm/rfm-scoring.cron.spec.ts` | crm | 1 | RfmScoringCron |
+| `apps/api/src/modules/crm/segments.service.spec.ts` | crm | 4 | SegmentsService |
 | `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
 | `apps/api/src/modules/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
 | `apps/api/src/modules/finance/finance.cron.spec.ts` | finance | 3 | FinanceCron |
@@ -121,6 +123,7 @@ regression or an N+1.
 | `apps/api/src/modules/inventory/inventory.service.spec.ts` | inventory | 14 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · InventoryS… |
 | `apps/api/src/modules/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
 | `apps/api/src/modules/inventory/stock-variance.service.spec.ts` | inventory | 4 | StockVarianceService — WO-21.3 · resolve |
+| `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
 | `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 13 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartIncentives · sendReviewRequ… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |

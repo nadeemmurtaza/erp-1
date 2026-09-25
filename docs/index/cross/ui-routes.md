@@ -3,7 +3,7 @@
 
 # Screens
 
-All **186** routable files across the web app, the till and the mobile app.
+All **188** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (112)
+### admin (114)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -52,6 +52,7 @@ _none_
 | `/admin/bom/raw-usage` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx` |
 | `/admin/br/[branchId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx` |
 | `/admin/brands` | page | client | `apps/web/src/app/(admin)/admin/(app)/brands/page.tsx` |
+| `/admin/campaigns` | page | client | `apps/web/src/app/(admin)/admin/(app)/campaigns/page.tsx` |
 | `/admin/categories` | page | client | `apps/web/src/app/(admin)/admin/(app)/categories/page.tsx` |
 | `/admin/collections` | page | client | `apps/web/src/app/(admin)/admin/(app)/collections/page.tsx` |
 | `/admin/contacts` | loading | server | `apps/web/src/app/(admin)/admin/(app)/contacts/loading.tsx` |
@@ -126,6 +127,7 @@ _none_
 | `/admin/purchase-orders/spend` | page | client | `apps/web/src/app/(admin)/admin/(app)/purchase-orders/spend/page.tsx` |
 | `/admin/reports` | page | client | `apps/web/src/app/(admin)/admin/(app)/reports/page.tsx` |
 | `/admin/search` | page | client | `apps/web/src/app/(admin)/admin/(app)/search/page.tsx` |
+| `/admin/segments` | page | client | `apps/web/src/app/(admin)/admin/(app)/segments/page.tsx` |
 | `/admin/seo` | page | client | `apps/web/src/app/(admin)/admin/(app)/seo/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
 | `/admin/settings/shipping` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx` |

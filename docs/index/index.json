@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1583,
-    "lines": 244424,
-    "routes": 478,
-    "controllers": 81,
+    "files": 1599,
+    "lines": 246046,
+    "routes": 493,
+    "controllers": 84,
     "models": 187,
     "enums": 76,
     "migrations": 65,
     "events": 45,
     "permissions": 60,
-    "screens": 186,
-    "crons": 11,
-    "specs": 149,
+    "screens": 188,
+    "crons": 13,
+    "specs": 152,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 56,
-      "lines": 28333,
-      "bytes": 1111139,
+      "lines": 28353,
+      "bytes": 1111774,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 608,
-      "lines": 85547,
-      "bytes": 3128195,
+      "files": 622,
+      "lines": 86729,
+      "bytes": 3172649,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,9 +50,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 299,
-      "lines": 46851,
-      "bytes": 1707517,
+      "files": 301,
+      "lines": 47271,
+      "bytes": 1720808,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -255,15 +255,21 @@
         "apps/api/src/modules/crm/crm.module.ts",
         "apps/api/src/modules/crm/crm.service.ts",
         "apps/api/src/modules/crm/dto/crm.dto.ts",
+        "apps/api/src/modules/crm/dto/segment.dto.ts",
         "apps/api/src/modules/crm/email-inbox/email-inbox.admin.controller.ts",
         "apps/api/src/modules/crm/email-inbox/email-inbox.dto.ts",
         "apps/api/src/modules/crm/email-inbox/email-inbox.service.spec.ts",
         "apps/api/src/modules/crm/email-inbox/email-inbox.service.ts",
         "apps/api/src/modules/crm/email-inbox/mailbox-poller.cron.ts",
         "apps/api/src/modules/crm/order.subscriber.ts",
-        "apps/api/src/modules/crm/rto-contact.listener.ts"
+        "apps/api/src/modules/crm/rfm-scoring.cron.spec.ts",
+        "apps/api/src/modules/crm/rfm-scoring.cron.ts",
+        "apps/api/src/modules/crm/rto-contact.listener.ts",
+        "apps/api/src/modules/crm/segments.controller.ts",
+        "apps/api/src/modules/crm/segments.service.spec.ts",
+        "apps/api/src/modules/crm/segments.service.ts"
       ],
-      "routes": 19,
+      "routes": 26,
       "page": "docs/index/modules/crm.md"
     },
     {
@@ -386,6 +392,11 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/marketing/campaign-dispatch.cron.ts",
+        "apps/api/src/modules/marketing/campaigns.controller.ts",
+        "apps/api/src/modules/marketing/campaigns.service.spec.ts",
+        "apps/api/src/modules/marketing/campaigns.service.ts",
+        "apps/api/src/modules/marketing/dto/campaign.dto.ts",
         "apps/api/src/modules/marketing/dto/marketing-settings.dto.ts",
         "apps/api/src/modules/marketing/marketing-automation.cron.spec.ts",
         "apps/api/src/modules/marketing/marketing-automation.cron.ts",
@@ -393,7 +404,7 @@
         "apps/api/src/modules/marketing/marketing.controller.ts",
         "apps/api/src/modules/marketing/marketing.module.ts"
       ],
-      "routes": 2,
+      "routes": 10,
       "page": "docs/index/modules/marketing.md"
     },
     {
@@ -836,6 +847,13 @@
       "page": "docs/index/core/config.md"
     },
     {
+      "name": "crm",
+      "files": [
+        "apps/api/src/core/crm/segment-filter-engine.ts"
+      ],
+      "page": "docs/index/core/crm.md"
+    },
+    {
       "name": "events",
       "files": [
         "apps/api/src/core/events/domain-events.ts",
@@ -886,8 +904,10 @@
         "apps/api/src/core/notifications/notification-channel.ts",
         "apps/api/src/core/notifications/notifications.module.ts",
         "apps/api/src/core/notifications/notifications.service.ts",
+        "apps/api/src/core/notifications/sms.channel.ts",
         "apps/api/src/core/notifications/unsubscribe.controller.ts",
-        "apps/api/src/core/notifications/unsubscribe.dto.ts"
+        "apps/api/src/core/notifications/unsubscribe.dto.ts",
+        "apps/api/src/core/notifications/whatsapp.channel.ts"
       ],
       "page": "docs/index/core/notifications.md"
     },
@@ -1912,6 +1932,104 @@
       "public": false,
       "authOnly": false,
       "summary": "Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM existed — only where costPrice is 0 and the cost is complete"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/campaigns",
+      "module": "marketing",
+      "controller": "CampaignsAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/marketing/campaigns.controller.ts",
+      "line": 22,
+      "access": "campaigns.view | campaigns.manage",
+      "permissions": [
+        "campaigns.view",
+        "campaigns.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/campaigns",
+      "module": "marketing",
+      "controller": "CampaignsAdminController",
+      "handler": "create",
+      "file": "apps/api/src/modules/marketing/campaigns.controller.ts",
+      "line": 33,
+      "access": "campaigns.manage",
+      "permissions": [
+        "campaigns.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/campaigns/:id",
+      "module": "marketing",
+      "controller": "CampaignsAdminController",
+      "handler": "get",
+      "file": "apps/api/src/modules/marketing/campaigns.controller.ts",
+      "line": 27,
+      "access": "campaigns.view | campaigns.manage",
+      "permissions": [
+        "campaigns.view",
+        "campaigns.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/campaigns/:id",
+      "module": "marketing",
+      "controller": "CampaignsAdminController",
+      "handler": "update",
+      "file": "apps/api/src/modules/marketing/campaigns.controller.ts",
+      "line": 39,
+      "access": "campaigns.manage",
+      "permissions": [
+        "campaigns.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/campaigns/:id/cancel",
+      "module": "marketing",
+      "controller": "CampaignsAdminController",
+      "handler": "cancel",
+      "file": "apps/api/src/modules/marketing/campaigns.controller.ts",
+      "line": 51,
+      "access": "campaigns.manage",
+      "permissions": [
+        "campaigns.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/campaigns/:id/schedule",
+      "module": "marketing",
+      "controller": "CampaignsAdminController",
+      "handler": "schedule",
+      "file": "apps/api/src/modules/marketing/campaigns.controller.ts",
+      "line": 45,
+      "access": "campaigns.manage",
+      "permissions": [
+        "campaigns.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
     },
     {
       "method": "GET",
@@ -3193,6 +3311,118 @@
       "handler": "updateLead",
       "file": "apps/api/src/modules/crm/crm.controller.ts",
       "line": 191,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/crm/segments",
+      "module": "crm",
+      "controller": "SegmentsAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/crm/segments.controller.ts",
+      "line": 14,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/crm/segments",
+      "module": "crm",
+      "controller": "SegmentsAdminController",
+      "handler": "create",
+      "file": "apps/api/src/modules/crm/segments.controller.ts",
+      "line": 24,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/crm/segments/:id",
+      "module": "crm",
+      "controller": "SegmentsAdminController",
+      "handler": "remove",
+      "file": "apps/api/src/modules/crm/segments.controller.ts",
+      "line": 34,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/crm/segments/:id",
+      "module": "crm",
+      "controller": "SegmentsAdminController",
+      "handler": "get",
+      "file": "apps/api/src/modules/crm/segments.controller.ts",
+      "line": 19,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/crm/segments/:id",
+      "module": "crm",
+      "controller": "SegmentsAdminController",
+      "handler": "update",
+      "file": "apps/api/src/modules/crm/segments.controller.ts",
+      "line": 29,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/crm/segments/:id/members",
+      "module": "crm",
+      "controller": "SegmentsAdminController",
+      "handler": "members",
+      "file": "apps/api/src/modules/crm/segments.controller.ts",
+      "line": 39,
+      "access": "crm.manage",
+      "permissions": [
+        "crm.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/crm/segments/preview",
+      "module": "crm",
+      "controller": "SegmentsAdminController",
+      "handler": "preview",
+      "file": "apps/api/src/modules/crm/segments.controller.ts",
+      "line": 44,
       "access": "crm.manage",
       "permissions": [
         "crm.manage"
@@ -7340,6 +7570,34 @@
       "summary": "Confirm an email address using a verification link token"
     },
     {
+      "method": "GET",
+      "path": "/campaigns/r/:recipientId/click",
+      "module": "marketing",
+      "controller": "CampaignTrackingController",
+      "handler": "click",
+      "file": "apps/api/src/modules/marketing/campaigns.controller.ts",
+      "line": 82,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "`url` is attacker-controlled input inside a link this codebase itself emails out, so an open-redirect check is not optional here: only a relative path, or an absolute URL on the storefront's own orig…"
+    },
+    {
+      "method": "GET",
+      "path": "/campaigns/r/:recipientId/open.gif",
+      "module": "marketing",
+      "controller": "CampaignTrackingController",
+      "handler": "open",
+      "file": "apps/api/src/modules/marketing/campaigns.controller.ts",
+      "line": 67,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
       "method": "DELETE",
       "path": "/cart",
       "module": "cart",
@@ -8637,9 +8895,16 @@
         "POST /admin/crm/interactions",
         "GET /admin/crm/leads",
         "PATCH /admin/crm/leads/:id",
+        "GET /admin/crm/segments",
+        "POST /admin/crm/segments",
+        "DELETE /admin/crm/segments/:id",
+        "GET /admin/crm/segments/:id",
+        "PATCH /admin/crm/segments/:id",
+        "GET /admin/crm/segments/:id/members",
+        "POST /admin/crm/segments/preview",
         "GET /admin/crm/tags"
       ],
-      "uiSites": 4,
+      "uiSites": 5,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -9690,7 +9955,10 @@
       "label": "View campaigns and their send/open/click stats",
       "category": "Marketing",
       "sensitivity": "low",
-      "routes": [],
+      "routes": [
+        "GET /admin/campaigns",
+        "GET /admin/campaigns/:id"
+      ],
       "uiSites": 1,
       "roles": [
         "STAFF",
@@ -9703,7 +9971,14 @@
       "label": "Create, schedule and send campaigns to a customer segment",
       "category": "Marketing",
       "sensitivity": "high",
-      "routes": [],
+      "routes": [
+        "GET /admin/campaigns",
+        "POST /admin/campaigns",
+        "GET /admin/campaigns/:id",
+        "PATCH /admin/campaigns/:id",
+        "POST /admin/campaigns/:id/cancel",
+        "POST /admin/campaigns/:id/schedule"
+      ],
       "uiSites": 1,
       "roles": [
         "ADMIN"
@@ -29838,6 +30113,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/campaigns",
+      "file": "apps/web/src/app/(admin)/admin/(app)/campaigns/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/categories",
       "file": "apps/web/src/app/(admin)/admin/(app)/categories/page.tsx",
       "client": true,
@@ -30504,6 +30788,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/segments",
+      "file": "apps/web/src/app/(admin)/admin/(app)/segments/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/seo",
       "file": "apps/web/src/app/(admin)/admin/(app)/seo/page.tsx",
       "client": true,
@@ -30715,6 +31008,13 @@
       "doc": "--- 3."
     },
     {
+      "schedule": "EVERY_DAY_AT_",
+      "file": "apps/api/src/modules/crm/rfm-scoring.cron.ts",
+      "line": 22,
+      "handler": "run",
+      "doc": ""
+    },
+    {
       "schedule": "0 3 * * *",
       "file": "apps/api/src/modules/finance/finance.cron.ts",
       "line": 13,
@@ -30747,6 +31047,13 @@
       "file": "apps/api/src/modules/inventory/inventory.cron.ts",
       "line": 16,
       "handler": "computeNightlyStats",
+      "doc": ""
+    },
+    {
+      "schedule": "EVERY_MINUTE",
+      "file": "apps/api/src/modules/marketing/campaign-dispatch.cron.ts",
+      "line": 23,
+      "handler": "run",
       "doc": ""
     },
     {
@@ -31821,6 +32128,24 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/crm/rfm-scoring.cron.spec.ts",
+      "module": "crm",
+      "kind": "unit test",
+      "cases": 1,
+      "describes": [
+        "RfmScoringCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/crm/segments.service.spec.ts",
+      "module": "crm",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "SegmentsService"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/finance/expense-replication.listener.spec.ts",
       "module": "finance",
       "kind": "unit test",
@@ -31966,6 +32291,15 @@
       "describes": [
         "StockVarianceService — WO-21.3",
         "resolve"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/marketing/campaigns.service.spec.ts",
+      "module": "marketing",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "CampaignsService"
       ]
     },
     {
@@ -33150,8 +33484,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 147,
-      "bytes": 7286,
+      "lines": 159,
+      "bytes": 7736,
       "doc": "",
       "symbols": []
     },
@@ -33159,8 +33493,8 @@
       "path": ".env.production.example",
       "area": "infra",
       "kind": "example",
-      "lines": 119,
-      "bytes": 5411,
+      "lines": 127,
+      "bytes": 5596,
       "doc": "",
       "symbols": []
     },
@@ -35072,8 +35406,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 256,
-      "bytes": 11151,
+      "lines": 302,
+      "bytes": 13161,
       "doc": "",
       "symbols": [
         {
@@ -35084,12 +35418,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 151
+          "line": 175
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 177
+          "line": 201
         }
       ]
     },
@@ -35129,6 +35463,21 @@
           "name": "CoreModule",
           "kind": "class",
           "line": 38
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/crm/segment-filter-engine.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 94,
+      "bytes": 4162,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "segmentFilterToWhere",
+          "kind": "function",
+          "line": 88
         }
       ]
     },
@@ -36048,14 +36397,14 @@
       "path": "apps/api/src/core/notifications/notifications.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 30,
-      "bytes": 1074,
+      "lines": 34,
+      "bytes": 1209,
       "doc": "",
       "symbols": [
         {
           "name": "NotificationsModule",
           "kind": "class",
-          "line": 29
+          "line": 33
         }
       ]
     },
@@ -36063,14 +36412,29 @@
       "path": "apps/api/src/core/notifications/notifications.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 59,
-      "bytes": 1874,
+      "lines": 63,
+      "bytes": 2039,
       "doc": "",
       "symbols": [
         {
           "name": "NotificationsService",
           "kind": "class",
-          "line": 15
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/notifications/sms.channel.ts",
+      "area": "api",
+      "kind": "channel",
+      "lines": 48,
+      "bytes": 1817,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SmsChannel",
+          "kind": "class",
+          "line": 7
         }
       ]
     },
@@ -36101,6 +36465,21 @@
           "name": "UnsubscribeDto",
           "kind": "class",
           "line": 4
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/notifications/whatsapp.channel.ts",
+      "area": "api",
+      "kind": "channel",
+      "lines": 63,
+      "bytes": 2701,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "WhatsAppChannel",
+          "kind": "class",
+          "line": 22
         }
       ]
     },
@@ -38713,14 +39092,14 @@
       "path": "apps/api/src/modules/crm/crm.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 16,
-      "bytes": 764,
+      "lines": 27,
+      "bytes": 1044,
       "doc": "",
       "symbols": [
         {
           "name": "CrmModule",
           "kind": "class",
-          "line": 15
+          "line": 26
         }
       ]
     },
@@ -38786,6 +39165,31 @@
           "name": "UpdateLeadDto",
           "kind": "class",
           "line": 172
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/crm/dto/segment.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 42,
+      "bytes": 850,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateSegmentDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "UpdateSegmentDto",
+          "kind": "class",
+          "line": 20
+        },
+        {
+          "name": "PreviewSegmentFilterDto",
+          "kind": "class",
+          "line": 37
         }
       ]
     },
@@ -38889,6 +39293,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/crm/rfm-scoring.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 44,
+      "bytes": 1563,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/crm/rfm-scoring.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 47,
+      "bytes": 1724,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RfmScoringCron",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/crm/rto-contact.listener.ts",
       "area": "api",
       "kind": "event subscriber",
@@ -38900,6 +39328,45 @@
           "name": "RtoContactListener",
           "kind": "class",
           "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/crm/segments.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 48,
+      "bytes": 1356,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SegmentsAdminController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/crm/segments.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 82,
+      "bytes": 3239,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/crm/segments.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 69,
+      "bytes": 2395,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SegmentsService",
+          "kind": "class",
+          "line": 15
         }
       ]
     },
@@ -39999,6 +40466,90 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/marketing/campaign-dispatch.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 34,
+      "bytes": 1298,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CampaignDispatchCron",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/marketing/campaigns.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 105,
+      "bytes": 3619,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CampaignsAdminController",
+          "kind": "class",
+          "line": 18
+        },
+        {
+          "name": "CampaignTrackingController",
+          "kind": "class",
+          "line": 60
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/marketing/campaigns.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 126,
+      "bytes": 5428,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/marketing/campaigns.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 263,
+      "bytes": 10244,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CampaignsService",
+          "kind": "class",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/marketing/dto/campaign.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 49,
+      "bytes": 1158,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateCampaignDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "UpdateCampaignDto",
+          "kind": "class",
+          "line": 26
+        },
+        {
+          "name": "ScheduleCampaignDto",
+          "kind": "class",
+          "line": 43
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/marketing/dto/marketing-settings.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -40076,14 +40627,14 @@
       "path": "apps/api/src/modules/marketing/marketing.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 11,
-      "bytes": 397,
+      "lines": 14,
+      "bytes": 707,
       "doc": "",
       "symbols": [
         {
           "name": "MarketingModule",
           "kind": "class",
-          "line": 10
+          "line": 13
         }
       ]
     },
@@ -45962,6 +46513,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/campaigns/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 235,
+      "bytes": 7448,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CampaignsAdminPage",
+          "kind": "default",
+          "line": 139
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/categories/page.tsx",
       "area": "web",
       "kind": "page",
@@ -47098,6 +47664,21 @@
           "name": "SearchAdminPage",
           "kind": "default",
           "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/segments/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 176,
+      "bytes": 5611,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SegmentsAdminPage",
+          "kind": "default",
+          "line": 119
         }
       ]
     },
@@ -48558,8 +49139,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 734,
-      "bytes": 19209,
+      "lines": 742,
+      "bytes": 19408,
       "doc": "",
       "symbols": [
         {
@@ -48590,12 +49171,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 704
+          "line": 712
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 719
+          "line": 727
         }
       ]
     },
@@ -49776,8 +50357,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 170,
-      "bytes": 6800,
+      "lines": 171,
+      "bytes": 6833,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {

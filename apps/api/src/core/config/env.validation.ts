@@ -35,6 +35,16 @@ export const envSchema = z.object({
   API_PORT: port(3001),
   API_PREFIX: z.string().default('api'),
   CORS_ORIGINS: csv('http://localhost:3000,http://localhost:3002'),
+  /**
+   * The API's own public origin (e.g. https://api.yaseen.pk) — optional
+   * because most links this codebase embeds in outbound mail point at
+   * STOREFRONT_URL instead (see unsubscribeToken's own callers). WO-8.4's
+   * campaign open-tracking pixel is the one exception: it is served by the
+   * API itself, so it needs the API's own address, not the storefront's.
+   * Left unset, campaign emails simply ship without an open-tracking pixel
+   * rather than embedding a broken URL.
+   */
+  API_PUBLIC_URL: z.string().optional(),
 
   // 32 characters is the shortest secret worth having for HS256.
   JWT_ACCESS_SECRET: z.string().min(32, 'JWT_ACCESS_SECRET must be at least 32 characters'),
@@ -132,6 +142,20 @@ export const envSchema = z.object({
   /** Where replies land. Customers do reply to order mail — send it somewhere staffed. */
   MAIL_REPLY_TO: z.string().optional(),
 
+  // WhatsApp/SMS (WO-8.4). A generic gateway contract deliberately — this
+  // codebase has no confirmed provider reference for either yet (same
+  // honesty as giftkarta.provider.ts's own header comment): whichever
+  // gateway a deployment picks (Twilio, a local aggregator) POSTs
+  // {from, to, message} as JSON with a bearer token to WHATSAPP_API_URL/
+  // SMS_API_URL. Mapping a specific provider's real request shape is a
+  // follow-on, not something to fake with an untested guess.
+  WHATSAPP_API_URL: z.string().optional(),
+  WHATSAPP_API_TOKEN: z.string().optional(),
+  WHATSAPP_FROM_NUMBER: z.string().optional(),
+  SMS_API_URL: z.string().optional(),
+  SMS_API_TOKEN: z.string().optional(),
+  SMS_FROM_NUMBER: z.string().optional(),
+
   STORE_NAME: z.string().default(BRAND.identity.name),
   /** Public storefront origin. Builds the order links and image URLs in emails. */
   STOREFRONT_URL: z.string().default('http://localhost:3000'),
@@ -220,6 +244,28 @@ export function validateEnv(raw: Record<string, unknown>): Env {
     if (missing.length > 0) {
       throw new Error(
         `NOTIFICATION_CHANNELS includes "email" but missing: ${missing.join(', ')}`,
+      );
+    }
+  }
+
+  if (result.data.NOTIFICATION_CHANNELS.includes('whatsapp')) {
+    const missing = (['WHATSAPP_API_URL', 'WHATSAPP_API_TOKEN', 'WHATSAPP_FROM_NUMBER'] as const).filter(
+      (key) => !result.data[key],
+    );
+    if (missing.length > 0) {
+      throw new Error(
+        `NOTIFICATION_CHANNELS includes "whatsapp" but missing: ${missing.join(', ')}`,
+      );
+    }
+  }
+
+  if (result.data.NOTIFICATION_CHANNELS.includes('sms')) {
+    const missing = (['SMS_API_URL', 'SMS_API_TOKEN', 'SMS_FROM_NUMBER'] as const).filter(
+      (key) => !result.data[key],
+    );
+    if (missing.length > 0) {
+      throw new Error(
+        `NOTIFICATION_CHANNELS includes "sms" but missing: ${missing.join(', ')}`,
       );
     }
   }

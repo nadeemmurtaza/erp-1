@@ -149,6 +149,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
         group: 'customers',
         module: 'analytics',
       },
+      {
+        key: 'contacts-segments',
+        label: 'Segments',
+        href: '/admin/segments',
+        permissions: ['crm.manage'],
+        group: 'customers',
+        module: 'crm',
+      },
     ],
   },
   {

@@ -120,6 +120,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminBrandsPage` | default | :35 | The brand list. |
 
+### `apps/web/src/app/(admin)/admin/(app)/campaigns`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `CampaignsAdminPage` | default | :139 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/categories`
 
 | File | Symbol | Kind | Line | Doc |
@@ -538,6 +544,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `SearchAdminPage` | default | :22 | WO-8.3 — synonym editing and the zero-result report ("the single most useful merchandising report t… |
 
+### `apps/web/src/app/(admin)/admin/(app)/segments`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SegmentsAdminPage` | default | :119 | WO-8.4 — Segment shipped in the CRM schema with no evaluator, service or UI until now. |
+
 ### `apps/web/src/app/(admin)/admin/(app)/seo`
 
 | File | Symbol | Kind | Line | Doc |
@@ -937,8 +949,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :53 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :76 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :116 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :704 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :719 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :712 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :727 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

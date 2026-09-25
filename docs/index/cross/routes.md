@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **478** endpoints across **81** controllers, with the access rule that actually guards each one.
+All **493** endpoints across **84** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 54** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 56** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -35,6 +35,8 @@ never authorization.
 | POST | `/auth/register` | `AuthController.register` |
 | POST | `/auth/reset-password` | `AuthController.resetPassword` |
 | POST | `/auth/verify-email` | `AuthController.verifyEmail` |
+| GET | `/campaigns/r/:recipientId/click` | `CampaignTrackingController.click` |
+| GET | `/campaigns/r/:recipientId/open.gif` | `CampaignTrackingController.open` |
 | DELETE | `/cart` | `CartController.clear` |
 | GET | `/cart` | `CartController.get` |
 | POST | `/cart/items` | `CartController.addItem` |
@@ -333,7 +335,7 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/files/*path` | **PUBLIC** | `FilesController.serve` |  |
 
-### [`crm`](../modules/crm.md) (19)
+### [`crm`](../modules/crm.md) (26)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -354,6 +356,13 @@ never authorization.
 | POST | `/admin/crm/interactions` | `crm.manage` | `CrmAdminController.addInteraction` | Log a call, WhatsApp message, visit or complaint |
 | GET | `/admin/crm/leads` | `crm.manage` | `CrmAdminController.listLeads` |  |
 | PATCH | `/admin/crm/leads/:id` | `crm.manage` | `CrmAdminController.updateLead` |  |
+| GET | `/admin/crm/segments` | `crm.manage` | `SegmentsAdminController.list` |  |
+| POST | `/admin/crm/segments` | `crm.manage` | `SegmentsAdminController.create` |  |
+| DELETE | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.remove` |  |
+| GET | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.get` |  |
+| PATCH | `/admin/crm/segments/:id` | `crm.manage` | `SegmentsAdminController.update` |  |
+| GET | `/admin/crm/segments/:id/members` | `crm.manage` | `SegmentsAdminController.members` |  |
+| POST | `/admin/crm/segments/preview` | `crm.manage` | `SegmentsAdminController.preview` |  |
 | GET | `/admin/crm/tags` | `crm.manage` | `CrmAdminController.listTags` |  |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 
@@ -462,12 +471,20 @@ never authorization.
 | GET | `/admin/inventory/variances` | `inventory.manage` | `StockVarianceController.listOpen` | Open oversells — postUnconditional() drove a location negative |
 | POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` | Acknowledge a variance — never reverses the shrinkage journal it already posted |
 
-### [`marketing`](../modules/marketing.md) (2)
+### [`marketing`](../modules/marketing.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/campaigns` | `campaigns.view` `campaigns.manage` | `CampaignsAdminController.list` |  |
+| POST | `/admin/campaigns` | `campaigns.manage` | `CampaignsAdminController.create` |  |
+| GET | `/admin/campaigns/:id` | `campaigns.view` `campaigns.manage` | `CampaignsAdminController.get` |  |
+| PATCH | `/admin/campaigns/:id` | `campaigns.manage` | `CampaignsAdminController.update` |  |
+| POST | `/admin/campaigns/:id/cancel` | `campaigns.manage` | `CampaignsAdminController.cancel` |  |
+| POST | `/admin/campaigns/:id/schedule` | `campaigns.manage` | `CampaignsAdminController.schedule` |  |
 | GET | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.getSettings` | Automation on/off and its timing thresholds |
 | PUT | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.updateSettings` | Turn automation on/off and/or change its timing |
+| GET | `/campaigns/r/:recipientId/click` | **PUBLIC** | `CampaignTrackingController.click` | `url` is attacker-controlled input inside a link this codebase itself emails ou… |
+| GET | `/campaigns/r/:recipientId/open.gif` | **PUBLIC** | `CampaignTrackingController.open` |  |
 
 ### [`measurements`](../modules/measurements.md) (12)
 

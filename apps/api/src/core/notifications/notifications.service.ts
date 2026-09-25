@@ -4,6 +4,8 @@ import { EmailChannel } from './email.channel';
 import { ExpoPushChannel } from './expo-push.channel';
 import { LogNotificationChannel } from './log.channel';
 import type { NotificationChannel, NotificationMessage } from './notification-channel';
+import { SmsChannel } from './sms.channel';
+import { WhatsAppChannel } from './whatsapp.channel';
 
 /**
  * Fans a message out to every enabled channel that can reach the recipient.
@@ -21,8 +23,10 @@ export class NotificationsService {
     log: LogNotificationChannel,
     expoPush: ExpoPushChannel,
     email: EmailChannel,
+    whatsapp: WhatsAppChannel,
+    sms: SmsChannel,
   ) {
-    const available: NotificationChannel[] = [log, expoPush, email];
+    const available: NotificationChannel[] = [log, expoPush, email, whatsapp, sms];
     this.channels = available.filter((channel) =>
       config.isNotificationChannelEnabled(channel.name),
     );

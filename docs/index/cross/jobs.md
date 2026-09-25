@@ -3,7 +3,7 @@
 
 # Background work
 
-**11** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
+**13** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
 
 
 Background work is invisible in the UI and easy to forget exists. Anything here
@@ -16,11 +16,13 @@ runs on every node that has its module enabled.
 | `0 1 * * *` | `sendSupplierDigests()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:36` | --- 1. |
 | `0 7 * * 1` | `sendSupplierScorecards()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:124` | --- 2. |
 | `0 8 * * 1` | `sendDemandAlerts()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:190` | --- 3. |
+| `EVERY_DAY_AT_` | `run()` | `crm` | `apps/api/src/modules/crm/rfm-scoring.cron.ts:22` |  |
 | `0 3 * * *` | `generateRecurringInstances()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:13` |  |
 | `0 * * * *` | `generateRecurringExpenses()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:27` |  |
 | `EVERY_` | `pollActiveShipments()` | `fulfilment` | `apps/api/src/modules/fulfilment/fulfilment.cron.ts:30` |  |
 | `0 3 * * *` | `reconcile()` | `giftcards` | `apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts:16` |  |
 | `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:16` |  |
+| `EVERY_MINUTE` | `run()` | `marketing` | `apps/api/src/modules/marketing/campaign-dispatch.cron.ts:23` |  |
 | `0 3 * * *` | `run()` | `marketing` | `apps/api/src/modules/marketing/marketing-automation.cron.ts:65` |  |
 | `0 * * * *` | `run()` | `payroll` | `apps/api/src/modules/payroll/leave-accrual.cron.ts:25` |  |
 | `0 3 * * *` | `sweepReorderCandidates()` | `purchasing` | `apps/api/src/modules/purchasing/purchasing.cron.ts:28` |  |

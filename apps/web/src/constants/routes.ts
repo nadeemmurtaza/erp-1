@@ -137,6 +137,7 @@ export const ROUTES = {
     search: '/admin/search',
     campaigns: '/admin/campaigns',
     campaign: (id: string) => `/admin/campaigns/${id}`,
+    segments: '/admin/segments',
     onsiteMessages: '/admin/onsite-messages',
     insights: '/admin/insights',
     orderInsights: '/admin/orders/insights',

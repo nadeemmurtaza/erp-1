@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **1,583** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,599** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 608 | 85,547 | [files/api.md](../files/api.md) |
-| apps/web | 299 | 46,851 | [files/web.md](../files/web.md) |
+| apps/api | 622 | 86,729 | [files/api.md](../files/api.md) |
+| apps/web | 301 | 47,271 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 42 | 5,292 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 67 | 5,903 | [files/packages.md](../files/packages.md) |
 | docs/* | 392 | 59,591 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 56 | 28,333 | [files/infra.md](../files/infra.md) |
+| scripts, CI, deployment and container configuration | 56 | 28,353 | [files/infra.md](../files/infra.md) |
 | repository root files | 88 | 11,033 | [files/root.md](../files/root.md) |
 
 
@@ -29,13 +29,13 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 417 |
-| page | 144 |
-| unit test | 132 |
-| module | 114 |
-| service | 95 |
+| page | 146 |
+| unit test | 135 |
+| module | 115 |
+| service | 97 |
 | component | 80 |
-| dto | 75 |
-| controller | 67 |
+| dto | 77 |
+| controller | 69 |
 | migration | 65 |
 | nest module | 51 |
 | script | 38 |
@@ -49,18 +49,18 @@ name a new file: the convention is what makes it findable.
 | file | 13 |
 | yaml | 12 |
 | config | 11 |
+| scheduled job | 11 |
 | loading | 11 |
-| scheduled job | 9 |
 | registry | 7 |
 | constants | 7 |
 | layout | 6 |
 | hook | 5 |
+| channel | 5 |
 | types | 5 |
 | toml | 4 |
 | not-found | 4 |
 | example | 3 |
 | guard | 3 |
-| channel | 3 |
 | driver | 3 |
 | error | 3 |
 | sh | 3 |

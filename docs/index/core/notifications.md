@@ -3,7 +3,7 @@
 
 # Core: `notifications`
 
-Shared platform — available to every module, part of no feature · 19 files
+Shared platform — available to every module, part of no feature · 21 files
 
 
 > Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which category it belongs to, whether something in the codebase actually sends it automatically (and what), and…
@@ -13,7 +13,7 @@ Source: `apps/api/src/core/notifications/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (19 · 4,193 lines)
+## Files (21 · 4,312 lines)
 
 All paths relative to `apps/api/src/core/notifications`.
 
@@ -34,10 +34,12 @@ All paths relative to `apps/api/src/core/notifications`.
 | `expo-push.channel.ts` | channel | 89 | 1 | Push notifications to the mobile app, through Expo's push service. |
 | `log.channel.ts` | channel | 26 | 1 | Writes notifications to the application log instead of sending them. |
 | `notification-channel.ts` | module | 38 | 3 | Extension point: outbound customer messaging. |
-| `notifications.module.ts` | nest module | 30 | 1 |  |
-| `notifications.service.ts` | service | 59 | 1 | Fans a message out to every enabled channel that can reach the recipient. |
+| `notifications.module.ts` | nest module | 34 | 1 |  |
+| `notifications.service.ts` | service | 63 | 1 | Fans a message out to every enabled channel that can reach the recipient. |
+| `sms.channel.ts` | channel | 48 | 1 | Same generic gateway contract and honesty as whatsapp.channel.ts — see its header comment. |
 | `unsubscribe.controller.ts` | controller | 41 | 1 | The link every automated marketing send carries (see MarketingAutomationCron, modules/marketing). |
 | `unsubscribe.dto.ts` | dto | 15 | 1 |  |
+| `whatsapp.channel.ts` | channel | 63 | 1 | WO-8.4. |
 
 
 ## HTTP routes (14)
@@ -81,7 +83,7 @@ _none_
 **`NotificationsModule`** (`notifications.module.ts`)
 - imports: —
 - controllers: `DevicesController`, `EmailTemplatesAdminController`, `EmailAccountsAdminController`, `UnsubscribeController`
-- providers: `LogNotificationChannel`, `ExpoPushChannel`, `EmailChannel`, `NotificationsService`, `EmailAccountsService`
+- providers: `LogNotificationChannel`, `ExpoPushChannel`, `EmailChannel`, `WhatsAppChannel`, `SmsChannel`, `NotificationsService`, `EmailAccountsService`
 - exports: `NotificationsService`, `EmailAccountsService`, `EmailChannel`
 
 
@@ -178,10 +180,12 @@ check there before adding another.
 | `NotificationRecipient` | interface | `notification-channel.ts:9` | Extension point: outbound customer messaging. |
 | `NotificationMessage` | interface | `notification-channel.ts:23` |  |
 | `NotificationChannel` | interface | `notification-channel.ts:32` |  |
-| `NotificationsModule` | class | `notifications.module.ts:29` |  |
-| `NotificationsService` | class | `notifications.service.ts:15` | Fans a message out to every enabled channel that can reach the recipient. |
+| `NotificationsModule` | class | `notifications.module.ts:33` |  |
+| `NotificationsService` | class | `notifications.service.ts:17` | Fans a message out to every enabled channel that can reach the recipient. |
+| `SmsChannel` | class | `sms.channel.ts:7` | Same generic gateway contract and honesty as whatsapp.channel.ts — see its header comment. |
 | `UnsubscribeController` | class | `unsubscribe.controller.ts:17` | The link every automated marketing send carries (see MarketingAutomationCron, modules/marketing). |
 | `UnsubscribeDto` | class | `unsubscribe.dto.ts:4` |  |
+| `WhatsAppChannel` | class | `whatsapp.channel.ts:22` | WO-8.4. |
 
 
 ---

@@ -32,10 +32,10 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 608 | 85,547 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 622 | 86,729 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 392 | 59,591 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 299 | 46,851 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 27,354 | workspace manifests, docker compose/stack files, env templates |
+| `apps/web` | 301 | 47,271 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 27,374 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 21 | 8,574 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 50 | 5,321 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 42 | 5,292 | Expo — customer mobile app |
@@ -67,13 +67,13 @@ Each is independent: no module imports another except through a named
 | [`catalog`](modules/catalog.md) | core | MODULES allowlist | 43 | 24 |
 | [`collections`](modules/collections.md) | core | MODULES allowlist | 10 | — |
 | [`content`](modules/content.md) | core | MODULES allowlist | 24 | 8 |
-| [`crm`](modules/crm.md) | core | MODULES allowlist | 19 | 9 |
+| [`crm`](modules/crm.md) | core | MODULES allowlist | 26 | 9 |
 | [`finance`](modules/finance.md) | core | MODULES allowlist | 14 | 3 |
 | [`fulfilment`](modules/fulfilment.md) | core | MODULES allowlist | 39 | 16 |
 | [`giftcards`](modules/giftcards.md) | core | MODULES allowlist | 7 | 3 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
 | [`inventory`](modules/inventory.md) | core | MODULES allowlist | 16 | 7 |
-| [`marketing`](modules/marketing.md) | core | MODULES allowlist | 2 | 3 |
+| [`marketing`](modules/marketing.md) | core | MODULES allowlist | 10 | 3 |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 12 | 4 |
 | [`orders`](modules/orders.md) | core | MODULES allowlist | 7 | 5 |
 | [`organization`](modules/organization.md) | core | MODULES allowlist | 15 | 5 |
@@ -107,10 +107,11 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`checkout`](core/checkout.md) | 1 |  |
 | [`common`](core/common.md) | 6 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
 | [`config`](core/config.md) | 6 |  |
+| [`crm`](core/crm.md) | 1 |  |
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
 | [`extension-points`](core/extension-points.md) | 6 |  |
 | [`health`](core/health.md) | 2 |  |
-| [`notifications`](core/notifications.md) | 19 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
+| [`notifications`](core/notifications.md) | 21 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |
 | [`replication`](core/replication.md) | 21 |  |
 | [`security`](core/security.md) | 3 |  |

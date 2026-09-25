@@ -3,32 +3,45 @@
 
 # Module: `marketing`
 
-Pack **core** · enabled by the `MODULES` allowlist · 6 files
+Pack **core** · enabled by the `MODULES` allowlist · 11 files
 
 
 
 Source: `apps/api/src/modules/marketing/`
 
-## Files (6 · 792 lines)
+## Files (11 · 1,372 lines)
 
-All paths relative to `apps/api/src/modules/marketing/dto`.
+All paths relative to `apps/api/src/modules/marketing`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `campaign-dispatch.cron.ts` | scheduled job | 34 | 1 | WO-8.4. |
+| `campaigns.controller.ts` | controller | 105 | 2 |  |
+| `campaigns.service.spec.ts` | unit test | 126 | — |  |
+| `campaigns.service.ts` | service | 263 | 1 | WO-8.4. |
+| `campaign.dto.ts` | dto | 49 | 3 |  |
 | `marketing-settings.dto.ts` | dto | 38 | 1 |  |
 | `marketing-automation.cron.spec.ts` | unit test | 299 | — |  |
 | `marketing-automation.cron.ts` | scheduled job | 347 | 1 | Lifecycle marketing email: the automation gap that used to sit behind every marketing template's `trigger: 'manual'` no… |
 | `marketing-settings.service.ts` | service | 71 | 2 |  |
 | `marketing.controller.ts` | controller | 26 | 1 |  |
-| `marketing.module.ts` | nest module | 11 | 1 |  |
+| `marketing.module.ts` | nest module | 14 | 1 |  |
 
 
-## HTTP routes (2)
+## HTTP routes (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/campaigns` | `campaigns.view` `campaigns.manage` | `CampaignsAdminController.list` :22 |  |
+| POST | `/admin/campaigns` | `campaigns.manage` | `CampaignsAdminController.create` :33 |  |
+| GET | `/admin/campaigns/:id` | `campaigns.view` `campaigns.manage` | `CampaignsAdminController.get` :27 |  |
+| PATCH | `/admin/campaigns/:id` | `campaigns.manage` | `CampaignsAdminController.update` :39 |  |
+| POST | `/admin/campaigns/:id/cancel` | `campaigns.manage` | `CampaignsAdminController.cancel` :51 |  |
+| POST | `/admin/campaigns/:id/schedule` | `campaigns.manage` | `CampaignsAdminController.schedule` :45 |  |
 | GET | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.getSettings` :15 | Automation on/off and its timing thresholds |
 | PUT | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.updateSettings` :22 | Turn automation on/off and/or change its timing |
+| GET | `/campaigns/r/:recipientId/click` | **PUBLIC** | `CampaignTrackingController.click` :82 | `url` is attacker-controlled input inside a link this codebase itself emails out, so an o… |
+| GET | `/campaigns/r/:recipientId/open.gif` | **PUBLIC** | `CampaignTrackingController.open` :67 |  |
 
 
 ## Domain events
@@ -61,6 +74,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 | Schedule | Handler | Where | What it does |
 |---|---|---|---|
+| `EVERY_MINUTE` | `run()` | `campaign-dispatch.cron.ts:23` |  |
 | `0 3 * * *` | `run()` | `marketing-automation.cron.ts:65` |  |
 
 
@@ -68,8 +82,8 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`MarketingModule`** (`marketing.module.ts`)
 - imports: —
-- controllers: `MarketingController`
-- providers: `MarketingSettingsService`, `MarketingAutomationCron`
+- controllers: `MarketingController`, `CampaignsAdminController`, `CampaignTrackingController`
+- providers: `MarketingSettingsService`, `MarketingAutomationCron`, `CampaignsService`, `CampaignDispatchCron`
 - exports: —
 
 
@@ -77,6 +91,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 - core `auth`
 - core `config`
+- core `crm`
 - core `notifications`
 - core `prisma`
 - core `security`
@@ -88,10 +103,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `campaigns.service.spec.ts` | 4 | CampaignsService |
 | `marketing-automation.cron.spec.ts` | 13 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartIncentives · sendReviewRequests · sendReplenish… |
 
 
@@ -99,12 +115,19 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `CampaignDispatchCron` | class | `campaign-dispatch.cron.ts:15` | WO-8.4. |
+| `CampaignsAdminController` | class | `campaigns.controller.ts:18` |  |
+| `CampaignTrackingController` | class | `campaigns.controller.ts:60` | Public — the open-tracking pixel and click-through redirect embedded in a sent campaign. |
+| `CampaignsService` | class | `campaigns.service.ts:27` | WO-8.4. |
+| `CreateCampaignDto` | class | `campaign.dto.ts:6` |  |
+| `UpdateCampaignDto` | class | `campaign.dto.ts:26` |  |
+| `ScheduleCampaignDto` | class | `campaign.dto.ts:43` |  |
 | `UpdateMarketingSettingsDto` | class | `marketing-settings.dto.ts:4` |  |
 | `MarketingAutomationCron` | class | `marketing-automation.cron.ts:55` | Lifecycle marketing email: the automation gap that used to sit behind every marketing template's `trigger: 'm… |
 | `MarketingSettings` | interface | `marketing-settings.service.ts:6` |  |
 | `MarketingSettingsService` | class | `marketing-settings.service.ts:15` |  |
 | `MarketingController` | class | `marketing.controller.ts:9` |  |
-| `MarketingModule` | class | `marketing.module.ts:10` |  |
+| `MarketingModule` | class | `marketing.module.ts:13` |  |
 
 
 ---

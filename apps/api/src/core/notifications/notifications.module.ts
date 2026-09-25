@@ -7,7 +7,9 @@ import { EmailTemplatesAdminController } from './email/email-templates.admin.con
 import { ExpoPushChannel } from './expo-push.channel';
 import { LogNotificationChannel } from './log.channel';
 import { NotificationsService } from './notifications.service';
+import { SmsChannel } from './sms.channel';
 import { UnsubscribeController } from './unsubscribe.controller';
+import { WhatsAppChannel } from './whatsapp.channel';
 
 @Global()
 @Module({
@@ -21,6 +23,8 @@ import { UnsubscribeController } from './unsubscribe.controller';
     LogNotificationChannel,
     ExpoPushChannel,
     EmailChannel,
+    WhatsAppChannel,
+    SmsChannel,
     NotificationsService,
     EmailAccountsService,
   ],

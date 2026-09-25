@@ -32,16 +32,16 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 786 | 109,302 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 392 | 61,419 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 363 | 55,980 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 801 | 113,035 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 393 | 62,132 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 367 | 57,479 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,096 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 22 | 9,108 | repository checks and generators (lint gates, this index) |
+| `packages/shared` | 61 | 7,193 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `packages/shared` | 59 | 6,647 | brand, money, permissions, measurements, entities |
 | `apps/platform` | 104 | 5,880 |  |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
-| `.claude` | 22 | 1,017 |  |
+| `.claude` | 22 | 1,043 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
 | `.github` | 3 | 335 | CI and deployment workflows |
@@ -114,7 +114,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`ai`](core/ai.md) | 6 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and Stor… |
 | [`approvals`](core/approvals.md) | 3 |  |
 | [`audit`](core/audit.md) | 2 |  |
-| [`auth`](core/auth.md) | 21 |  |
+| [`auth`](core/auth.md) | 31 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
 | [`common`](core/common.md) | 7 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
 | [`config`](core/config.md) | 6 |  |

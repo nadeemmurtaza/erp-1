@@ -3,26 +3,26 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1906,
-    "lines": 287621,
-    "routes": 627,
-    "controllers": 114,
-    "models": 228,
-    "enums": 103,
-    "migrations": 76,
-    "events": 58,
+    "files": 1928,
+    "lines": 294138,
+    "routes": 634,
+    "controllers": 116,
+    "models": 229,
+    "enums": 105,
+    "migrations": 77,
+    "events": 59,
     "permissions": 75,
-    "screens": 224,
+    "screens": 227,
     "crons": 18,
-    "specs": 216,
+    "specs": 224,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
       "files": 152,
-      "lines": 15308,
-      "bytes": 943434,
+      "lines": 15334,
+      "bytes": 944966,
       "label": "repository root files"
     },
     "infra": {
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 786,
-      "lines": 109302,
-      "bytes": 4111946,
+      "files": 801,
+      "lines": 113035,
+      "bytes": 4269688,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 363,
-      "lines": 55980,
-      "bytes": 2025790,
+      "files": 367,
+      "lines": 57479,
+      "bytes": 2079975,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 392,
-      "lines": 61419,
-      "bytes": 3642357,
+      "files": 393,
+      "lines": 62132,
+      "bytes": 3688705,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 76,
-      "lines": 7229,
-      "bytes": 251749,
+      "files": 78,
+      "lines": 7775,
+      "bytes": 274573,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1028,6 +1028,15 @@
     {
       "name": "auth",
       "files": [
+        "apps/api/src/core/auth/api-keys/api-key-access.spec.ts",
+        "apps/api/src/core/auth/api-keys/api-key-access.ts",
+        "apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts",
+        "apps/api/src/core/auth/api-keys/api-key-auth.service.ts",
+        "apps/api/src/core/auth/api-keys/api-keys-admin.controller.ts",
+        "apps/api/src/core/auth/api-keys/api-keys.controller.ts",
+        "apps/api/src/core/auth/api-keys/api-keys.service.spec.ts",
+        "apps/api/src/core/auth/api-keys/api-keys.service.ts",
+        "apps/api/src/core/auth/api-keys/dto/api-key.dto.ts",
         "apps/api/src/core/auth/auth.constants.ts",
         "apps/api/src/core/auth/auth.controller.ts",
         "apps/api/src/core/auth/auth.module.ts",
@@ -1037,6 +1046,7 @@
         "apps/api/src/core/auth/decorators.ts",
         "apps/api/src/core/auth/dto/auth.dto.ts",
         "apps/api/src/core/auth/dto/role.dto.ts",
+        "apps/api/src/core/auth/guards.spec.ts",
         "apps/api/src/core/auth/guards.ts",
         "apps/api/src/core/auth/jwt.strategy.ts",
         "apps/api/src/core/auth/ownership.guard.spec.ts",
@@ -1252,7 +1262,7 @@
       "controller": "AddressesController",
       "handler": "list",
       "file": "apps/api/src/modules/addresses/addresses.controller.ts",
-      "line": 16,
+      "line": 17,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -1266,7 +1276,7 @@
       "controller": "AddressesController",
       "handler": "create",
       "file": "apps/api/src/modules/addresses/addresses.controller.ts",
-      "line": 23,
+      "line": 25,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -1280,7 +1290,7 @@
       "controller": "AddressesController",
       "handler": "remove",
       "file": "apps/api/src/modules/addresses/addresses.controller.ts",
-      "line": 42,
+      "line": 46,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -1294,7 +1304,7 @@
       "controller": "AddressesController",
       "handler": "update",
       "file": "apps/api/src/modules/addresses/addresses.controller.ts",
-      "line": 30,
+      "line": 33,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -1959,6 +1969,38 @@
       "public": false,
       "authOnly": false,
       "summary": "Workshop throughput — started/completed per day, time in each stage, output by tailor, the bottleneck stage"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/api-keys",
+      "module": "core/auth",
+      "controller": "ApiKeysAdminController",
+      "handler": "list",
+      "file": "apps/api/src/core/auth/api-keys/api-keys-admin.controller.ts",
+      "line": 24,
+      "access": "users.manage",
+      "permissions": [
+        "users.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every API key on this deployment, by staff and customers — metadata only"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/api-keys/:id/revoke",
+      "module": "core/auth",
+      "controller": "ApiKeysAdminController",
+      "handler": "revoke",
+      "file": "apps/api/src/core/auth/api-keys/api-keys-admin.controller.ts",
+      "line": 37,
+      "access": "users.manage",
+      "permissions": [
+        "users.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Revoke anyone's API key — final; its next request is refused"
     },
     {
       "method": "GET",
@@ -5858,7 +5900,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "list",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 122,
+      "line": 127,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -5874,7 +5916,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "create",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 128,
+      "line": 133,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -5890,7 +5932,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "deactivate",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 144,
+      "line": 149,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -5906,7 +5948,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "update",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 134,
+      "line": 139,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -5922,7 +5964,7 @@
       "controller": "MeasurementsAdminController",
       "handler": "replaceSizeChart",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 152,
+      "line": 157,
       "access": "measurements.manage_blueprints",
       "permissions": [
         "measurements.manage_blueprints"
@@ -6214,7 +6256,7 @@
       "controller": "OrdersAdminController",
       "handler": "list",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 100,
+      "line": 102,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -6230,7 +6272,7 @@
       "controller": "OrdersAdminController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 116,
+      "line": 118,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -6246,7 +6288,7 @@
       "controller": "OrdersAdminController",
       "handler": "changeStatus",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 122,
+      "line": 124,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -6870,7 +6912,7 @@
       "controller": "PosTerminalsController",
       "handler": "rotateDeviceKey",
       "file": "apps/api/src/modules/pos/pos-terminals.controller.ts",
-      "line": 45,
+      "line": 47,
       "access": "pos.manage",
       "permissions": [
         "pos.manage"
@@ -8765,7 +8807,7 @@
       "controller": "TradingPartnersController",
       "handler": "findAll",
       "file": "apps/api/src/modules/tradingpartners/trading-partners.controller.ts",
-      "line": 15,
+      "line": 21,
       "access": "purchasing.manage",
       "permissions": [
         "purchasing.manage"
@@ -8781,7 +8823,7 @@
       "controller": "TradingPartnersController",
       "handler": "create",
       "file": "apps/api/src/modules/tradingpartners/trading-partners.controller.ts",
-      "line": 27,
+      "line": 33,
       "access": "purchasing.manage",
       "permissions": [
         "purchasing.manage"
@@ -8797,7 +8839,7 @@
       "controller": "TradingPartnersController",
       "handler": "remove",
       "file": "apps/api/src/modules/tradingpartners/trading-partners.controller.ts",
-      "line": 39,
+      "line": 45,
       "access": "purchasing.manage",
       "permissions": [
         "purchasing.manage"
@@ -8813,7 +8855,7 @@
       "controller": "TradingPartnersController",
       "handler": "findOne",
       "file": "apps/api/src/modules/tradingpartners/trading-partners.controller.ts",
-      "line": 21,
+      "line": 27,
       "access": "purchasing.manage",
       "permissions": [
         "purchasing.manage"
@@ -8829,7 +8871,7 @@
       "controller": "TradingPartnersController",
       "handler": "update",
       "file": "apps/api/src/modules/tradingpartners/trading-partners.controller.ts",
-      "line": 33,
+      "line": 39,
       "access": "purchasing.manage",
       "permissions": [
         "purchasing.manage"
@@ -8845,7 +8887,7 @@
       "controller": "TradingPartnersController",
       "handler": "invite",
       "file": "apps/api/src/modules/tradingpartners/trading-partners.controller.ts",
-      "line": 58,
+      "line": 67,
       "access": "purchasing.manage",
       "permissions": [
         "purchasing.manage"
@@ -8861,7 +8903,7 @@
       "controller": "TradingPartnersController",
       "handler": "setOutboundApiKey",
       "file": "apps/api/src/modules/tradingpartners/trading-partners.controller.ts",
-      "line": 51,
+      "line": 59,
       "access": "purchasing.manage",
       "permissions": [
         "purchasing.manage"
@@ -8877,7 +8919,7 @@
       "controller": "TradingPartnersController",
       "handler": "rotateInboundKey",
       "file": "apps/api/src/modules/tradingpartners/trading-partners.controller.ts",
-      "line": 45,
+      "line": 52,
       "access": "purchasing.manage",
       "permissions": [
         "purchasing.manage"
@@ -8989,7 +9031,7 @@
       "controller": "UsersAdminController",
       "handler": "create",
       "file": "apps/api/src/modules/users/users-admin.controller.ts",
-      "line": 28,
+      "line": 31,
       "access": "users.manage",
       "permissions": [
         "users.manage"
@@ -9021,7 +9063,7 @@
       "controller": "UsersAdminController",
       "handler": "update",
       "file": "apps/api/src/modules/users/users-admin.controller.ts",
-      "line": 34,
+      "line": 37,
       "access": "users.manage",
       "permissions": [
         "users.manage"
@@ -9037,7 +9079,7 @@
       "controller": "UsersAdminController",
       "handler": "updatePermissions",
       "file": "apps/api/src/modules/users/users-admin.controller.ts",
-      "line": 44,
+      "line": 47,
       "access": "users.manage",
       "permissions": [
         "users.manage"
@@ -9053,7 +9095,7 @@
       "controller": "UsersAdminController",
       "handler": "resetPassword",
       "file": "apps/api/src/modules/users/users-admin.controller.ts",
-      "line": 75,
+      "line": 79,
       "access": "users.manage",
       "permissions": [
         "users.manage"
@@ -9069,7 +9111,7 @@
       "controller": "UsersAdminController",
       "handler": "unassignRole",
       "file": "apps/api/src/modules/users/users-admin.controller.ts",
-      "line": 64,
+      "line": 67,
       "access": "users.manage",
       "permissions": [
         "users.manage"
@@ -9085,7 +9127,7 @@
       "controller": "UsersAdminController",
       "handler": "assignRole",
       "file": "apps/api/src/modules/users/users-admin.controller.ts",
-      "line": 54,
+      "line": 57,
       "access": "users.manage",
       "permissions": [
         "users.manage"
@@ -9223,13 +9265,83 @@
       "summary": "Wishlisted products that are currently out of stock, most-wanted first"
     },
     {
+      "method": "GET",
+      "path": "/api-keys",
+      "module": "core/auth",
+      "controller": "ApiKeysController",
+      "handler": "list",
+      "file": "apps/api/src/core/auth/api-keys/api-keys.controller.ts",
+      "line": 35,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Your own API keys for one surface, each with what it can do right now"
+    },
+    {
+      "method": "POST",
+      "path": "/api-keys",
+      "module": "core/auth",
+      "controller": "ApiKeysController",
+      "handler": "create",
+      "file": "apps/api/src/core/auth/api-keys/api-keys.controller.ts",
+      "line": 42,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Create a key carrying some of your own access — its secret is shown in this response only"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api-keys/:id",
+      "module": "core/auth",
+      "controller": "ApiKeysController",
+      "handler": "update",
+      "file": "apps/api/src/core/auth/api-keys/api-keys.controller.ts",
+      "line": 48,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Rename a key, or replace its scopes — re-checked against what you hold now"
+    },
+    {
+      "method": "POST",
+      "path": "/api-keys/:id/revoke",
+      "module": "core/auth",
+      "controller": "ApiKeysController",
+      "handler": "revoke",
+      "file": "apps/api/src/core/auth/api-keys/api-keys.controller.ts",
+      "line": 63,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Revoke a key — final; its next request is refused"
+    },
+    {
+      "method": "POST",
+      "path": "/api-keys/:id/rotate",
+      "module": "core/auth",
+      "controller": "ApiKeysController",
+      "handler": "rotate",
+      "file": "apps/api/src/core/auth/api-keys/api-keys.controller.ts",
+      "line": 56,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Issue a new secret and expiry for a key — same scopes; the old secret stops working at once"
+    },
+    {
       "method": "POST",
       "path": "/auth/change-password",
       "module": "core/auth",
       "controller": "AuthController",
       "handler": "changePassword",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 145,
+      "line": 150,
       "access": "account.change_own_password",
       "permissions": [
         "account.change_own_password"
@@ -9245,7 +9357,7 @@
       "controller": "AuthController",
       "handler": "forgotPassword",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 157,
+      "line": 162,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9287,7 +9399,7 @@
       "controller": "AuthController",
       "handler": "me",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 118,
+      "line": 119,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9301,7 +9413,7 @@
       "controller": "AuthController",
       "handler": "updateProfile",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 136,
+      "line": 140,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9343,7 +9455,7 @@
       "controller": "AuthController",
       "handler": "resendVerification",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 183,
+      "line": 188,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9357,7 +9469,7 @@
       "controller": "AuthController",
       "handler": "resetPassword",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 166,
+      "line": 171,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9371,7 +9483,7 @@
       "controller": "AuthController",
       "handler": "verifyEmail",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 174,
+      "line": 179,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9385,7 +9497,7 @@
       "controller": "WishlistController",
       "handler": "myAlerts",
       "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
-      "line": 41,
+      "line": 51,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9399,7 +9511,7 @@
       "controller": "WishlistController",
       "handler": "requestAlert",
       "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
-      "line": 47,
+      "line": 58,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9413,7 +9525,7 @@
       "controller": "WishlistController",
       "handler": "cancelAlert",
       "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
-      "line": 53,
+      "line": 65,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9959,7 +10071,7 @@
       "controller": "LoyaltyController",
       "handler": "balance",
       "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
-      "line": 24,
+      "line": 32,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9973,7 +10085,7 @@
       "controller": "LoyaltyController",
       "handler": "ledger",
       "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
-      "line": 31,
+      "line": 40,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9987,7 +10099,7 @@
       "controller": "LoyaltyController",
       "handler": "redeem",
       "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
-      "line": 38,
+      "line": 47,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10001,7 +10113,7 @@
       "controller": "LoyaltyController",
       "handler": "myReferralCode",
       "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
-      "line": 45,
+      "line": 55,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10015,7 +10127,7 @@
       "controller": "LoyaltyController",
       "handler": "applyReferralCode",
       "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
-      "line": 59,
+      "line": 70,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10029,7 +10141,7 @@
       "controller": "LoyaltyController",
       "handler": "myReferrals",
       "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
-      "line": 52,
+      "line": 63,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10043,7 +10155,7 @@
       "controller": "LoyaltyController",
       "handler": "tiers",
       "file": "apps/api/src/modules/loyalty/loyalty.controller.ts",
-      "line": 17,
+      "line": 24,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -10113,7 +10225,7 @@
       "controller": "MeasurementsController",
       "handler": "listProfiles",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 54,
+      "line": 55,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10127,7 +10239,7 @@
       "controller": "MeasurementsController",
       "handler": "createProfile",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 67,
+      "line": 70,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10141,7 +10253,7 @@
       "controller": "MeasurementsController",
       "handler": "deleteProfile",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 87,
+      "line": 92,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10155,7 +10267,7 @@
       "controller": "MeasurementsController",
       "handler": "getProfile",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 60,
+      "line": 62,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10169,7 +10281,7 @@
       "controller": "MeasurementsController",
       "handler": "updateProfile",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 76,
+      "line": 80,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10183,7 +10295,7 @@
       "controller": "MeasurementsController",
       "handler": "sizeRecommendation",
       "file": "apps/api/src/modules/measurements/measurements.controller.ts",
-      "line": 101,
+      "line": 106,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -10281,7 +10393,7 @@
       "controller": "OrdersController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 72,
+      "line": 74,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10295,7 +10407,7 @@
       "controller": "OrdersController",
       "handler": "track",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 81,
+      "line": 83,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -10309,7 +10421,7 @@
       "controller": "OrdersController",
       "handler": "mine",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 59,
+      "line": 60,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10323,7 +10435,7 @@
       "controller": "OrganizationController",
       "handler": "adminScopes",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 138,
+      "line": 140,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -10339,7 +10451,7 @@
       "controller": "OrganizationController",
       "handler": "grantScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 145,
+      "line": 147,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -10355,7 +10467,7 @@
       "controller": "OrganizationController",
       "handler": "revokeScope",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 152,
+      "line": 154,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -10387,7 +10499,7 @@
       "controller": "OrganizationController",
       "handler": "brandPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 103,
+      "line": 105,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -10403,7 +10515,7 @@
       "controller": "OrganizationController",
       "handler": "setBrandPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 110,
+      "line": 112,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -10483,7 +10595,7 @@
       "controller": "OrganizationController",
       "handler": "rotateNodeInboundKey",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 76,
+      "line": 78,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -10499,7 +10611,7 @@
       "controller": "OrganizationController",
       "handler": "listPolicyQuarantine",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 120,
+      "line": 122,
       "access": "organization.view",
       "permissions": [
         "organization.view"
@@ -10515,7 +10627,7 @@
       "controller": "OrganizationController",
       "handler": "resolvePolicyQuarantine",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 127,
+      "line": 129,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -10531,7 +10643,7 @@
       "controller": "OrganizationController",
       "handler": "setInterBrandTransfersPolicy",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 94,
+      "line": 96,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -10547,7 +10659,7 @@
       "controller": "OrganizationController",
       "handler": "resyncFromParent",
       "file": "apps/api/src/modules/organization/organization.controller.ts",
-      "line": 86,
+      "line": 88,
       "access": "organization.manage",
       "permissions": [
         "organization.manage"
@@ -10689,7 +10801,7 @@
       "controller": "ReturnsController",
       "handler": "create",
       "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
-      "line": 128,
+      "line": 132,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10703,7 +10815,7 @@
       "controller": "ReturnsController",
       "handler": "get",
       "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
-      "line": 122,
+      "line": 125,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10717,7 +10829,7 @@
       "controller": "ReturnsController",
       "handler": "uploadPhoto",
       "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
-      "line": 137,
+      "line": 142,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10731,7 +10843,7 @@
       "controller": "ReturnsController",
       "handler": "mine",
       "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
-      "line": 116,
+      "line": 118,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10745,7 +10857,7 @@
       "controller": "ReturnsController",
       "handler": "listReasons",
       "file": "apps/api/src/modules/fulfilment/returns.controller.ts",
-      "line": 109,
+      "line": 110,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10759,7 +10871,7 @@
       "controller": "ReviewsPublicController",
       "handler": "create",
       "file": "apps/api/src/modules/reviews/reviews-public.controller.ts",
-      "line": 43,
+      "line": 45,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10773,7 +10885,7 @@
       "controller": "ReviewsPublicController",
       "handler": "markHelpful",
       "file": "apps/api/src/modules/reviews/reviews-public.controller.ts",
-      "line": 51,
+      "line": 53,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -10787,7 +10899,7 @@
       "controller": "ReviewsPublicController",
       "handler": "mine",
       "file": "apps/api/src/modules/reviews/reviews-public.controller.ts",
-      "line": 35,
+      "line": 36,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10899,7 +11011,7 @@
       "controller": "StoreCreditAccountController",
       "handler": "balance",
       "file": "apps/api/src/modules/giftcards/store-credit-account.controller.ts",
-      "line": 16,
+      "line": 17,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -10913,7 +11025,7 @@
       "controller": "StoreCreditAccountController",
       "handler": "ledger",
       "file": "apps/api/src/modules/giftcards/store-credit-account.controller.ts",
-      "line": 22,
+      "line": 23,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -11025,7 +11137,7 @@
       "controller": "WishlistController",
       "handler": "list",
       "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
-      "line": 16,
+      "line": 23,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -11039,7 +11151,7 @@
       "controller": "WishlistController",
       "handler": "add",
       "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
-      "line": 22,
+      "line": 30,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -11053,7 +11165,7 @@
       "controller": "WishlistController",
       "handler": "remove",
       "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
-      "line": 28,
+      "line": 37,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -11067,7 +11179,7 @@
       "controller": "WishlistController",
       "handler": "migrate",
       "file": "apps/api/src/modules/wishlist/wishlist.controller.ts",
-      "line": 35,
+      "line": 44,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -12256,6 +12368,8 @@
       "category": "Administration",
       "sensitivity": "high",
       "routes": [
+        "GET /admin/api-keys",
+        "POST /admin/api-keys/:id/revoke",
         "GET /admin/users",
         "POST /admin/users",
         "GET /admin/users/:id",
@@ -12265,7 +12379,7 @@
         "DELETE /admin/users/:id/roles/:roleId",
         "POST /admin/users/:id/roles/:roleId"
       ],
-      "uiSites": 2,
+      "uiSites": 3,
       "roles": [
         "ADMIN"
       ],
@@ -12811,7 +12925,7 @@
         "apps/api/src/core/auth/auth.service.ts:258"
       ],
       "subscribers": [
-        "apps/api/src/modules/users/security-notification.subscriber.ts:33 onPasswordChanged()"
+        "apps/api/src/modules/users/security-notification.subscriber.ts:35 onPasswordChanged()"
       ]
     },
     {
@@ -12822,7 +12936,7 @@
         "apps/api/src/core/auth/auth.service.ts:228"
       ],
       "subscribers": [
-        "apps/api/src/modules/users/security-notification.subscriber.ts:55 onPasswordResetRequested()"
+        "apps/api/src/modules/users/security-notification.subscriber.ts:57 onPasswordResetRequested()"
       ]
     },
     {
@@ -12833,7 +12947,19 @@
         "apps/api/src/core/auth/auth.service.ts:279"
       ],
       "subscribers": [
-        "apps/api/src/modules/users/security-notification.subscriber.ts:78 onEmailVerificationRequested()"
+        "apps/api/src/modules/users/security-notification.subscriber.ts:80 onEmailVerificationRequested()"
+      ]
+    },
+    {
+      "symbol": "ApiKeyIssued",
+      "name": "user.api_key_issued",
+      "doc": "ApiKeysService issued a personal API key's secret — at create or at rotate (163-personal-api-keys.md).",
+      "publishers": [
+        "apps/api/src/core/auth/api-keys/api-keys.service.ts:255",
+        "apps/api/src/core/auth/api-keys/api-keys.service.ts:386"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/users/security-notification.subscriber.ts:113 onApiKeyIssued()"
       ]
     },
     {
@@ -13418,7 +13544,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 197,
+      "line": 283,
       "doc": "",
       "fields": [
         {
@@ -13609,7 +13735,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 514,
+      "line": 600,
       "doc": "",
       "fields": [
         {
@@ -13698,7 +13824,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 475,
+      "line": 561,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -13754,6 +13880,144 @@
       "indexes": [
         "@@index([type, createdAt])",
         "@@index([sessionId, createdAt])"
+      ]
+    },
+    {
+      "name": "ApiKey",
+      "file": "apps/api/prisma/schema/core.prisma",
+      "line": 233,
+      "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "surface",
+          "type": "ApiKeySurface",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "keyHash",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "lastFour",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "permissionKeys",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customerScopes",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lastUsedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rotatedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "revokedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "revokedReason",
+          "type": "ApiKeyRevocationReason?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "revokedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "revokedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, createdAt])",
+        "@@index([createdAt])"
       ]
     },
     {
@@ -13916,7 +14180,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 287,
+      "line": 373,
       "doc": "",
       "fields": [
         {
@@ -16773,7 +17037,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 455,
+      "line": 541,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -17124,7 +17388,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 242,
+      "line": 328,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -17310,7 +17574,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 183,
+      "line": 189,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -22442,7 +22706,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 428,
+      "line": 514,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -22829,7 +23093,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 166,
+      "line": 172,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -23370,7 +23634,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 308,
+      "line": 394,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -27012,7 +27276,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 145,
+      "line": 151,
       "doc": "",
       "fields": [
         {
@@ -28132,7 +28396,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 374,
+      "line": 460,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -28190,7 +28454,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 388,
+      "line": 474,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -28244,7 +28508,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 324,
+      "line": 410,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -28471,7 +28735,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 220,
+      "line": 306,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -32284,6 +32548,20 @@
           "relation": false
         },
         {
+          "name": "apiKeys",
+          "type": "ApiKey[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "apiKeysRevoked",
+          "type": "ApiKey[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "carts",
           "type": "Cart[]",
           "id": false,
@@ -32691,7 +32969,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 345,
+      "line": 431,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -32752,7 +33030,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 403,
+      "line": 489,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -33666,7 +33944,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 508,
+      "line": 594,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -33676,7 +33954,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 493,
+      "line": 579,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -33712,6 +33990,25 @@
         "PENDING",
         "APPROVED",
         "REJECTED"
+      ]
+    },
+    {
+      "name": "ApiKeyRevocationReason",
+      "file": "apps/api/prisma/schema/core.prisma",
+      "line": 214,
+      "values": [
+        "OWNER",
+        "ADMINISTRATOR",
+        "OWNER_DEACTIVATED"
+      ]
+    },
+    {
+      "name": "ApiKeySurface",
+      "file": "apps/api/prisma/schema/core.prisma",
+      "line": 207,
+      "values": [
+        "ADMIN",
+        "STOREFRONT"
       ]
     },
     {
@@ -33871,7 +34168,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 443,
+      "line": 529,
       "values": [
         "IOS",
         "ANDROID",
@@ -33905,7 +34202,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 231,
+      "line": 317,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -34211,7 +34508,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 417,
+      "line": 503,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -34266,7 +34563,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 336,
+      "line": 422,
       "values": [
         "GRANT",
         "REVOKE"
@@ -36097,6 +36394,23 @@
       ]
     },
     {
+      "folder": "20260925120000_add_personal_api_keys",
+      "file": "apps/api/prisma/schema/migrations/20260925120000_add_personal_api_keys/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_personal_api_keys",
+      "statements": 18,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "ApiKey"
+      ]
+    },
+    {
       "folder": "20260925150000_add_cod_risk_reason_and_city_stats",
       "file": "apps/api/prisma/schema/migrations/20260925150000_add_cod_risk_reason_and_city_stats/migration.sql",
       "date": "2026-09-25",
@@ -36650,6 +36964,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/[locale]/account/api-keys",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/api-keys/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/[locale]/account/credit",
       "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/credit/page.tsx",
       "client": true,
@@ -37075,6 +37398,15 @@
       "kind": "page",
       "url": "/admin/account",
       "file": "apps/web/src/app/(admin)/admin/(app)/account/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/account/api-keys",
+      "file": "apps/web/src/app/(admin)/admin/(app)/account/api-keys/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -38234,6 +38566,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/users/api-keys",
+      "file": "apps/web/src/app/(admin)/admin/(app)/users/api-keys/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/wallet",
       "file": "apps/web/src/app/(admin)/admin/(app)/wallet/page.tsx",
       "client": true,
@@ -38919,12 +39260,68 @@
       ]
     },
     {
+      "file": "apps/api/src/core/auth/api-keys/api-key-access.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "decideApiKeyAccess — an ADMIN key",
+        "decideApiKeyAccess — a STOREFRONT key",
+        "readRouteRequirements — the handler overrides its controller, as for sessions"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 20,
+      "describes": [
+        "ApiKeyAuthService.authenticate",
+        "a key never exceeds its owner",
+        "refusals — each a 401 that says why",
+        "failed attempts — counted per address, because they never reach the global throttler",
+        "lastUsedAt — operational, at most once a minute"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/auth/api-keys/api-keys.service.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 36,
+      "describes": [
+        "ApiKeysService",
+        "create",
+        "refuses what a key may never carry",
+        "listMine — what each key can do right now",
+        "update",
+        "rotate",
+        "revoke",
+        "oversight (users.manage)",
+        "revokeAllForUserInTransaction — the deactivation path"
+      ]
+    },
+    {
       "file": "apps/api/src/core/auth/auth.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
       "cases": 2,
       "describes": [
         "parseDuration"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/auth/guards.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 19,
+      "describes": [
+        "JwtAuthGuard",
+        "a session JWT — the path is unchanged",
+        "a personal API key",
+        "PermissionsGuard",
+        "a session — unchanged",
+        "an ADMIN key",
+        "a STOREFRONT key"
       ]
     },
     {
@@ -39036,7 +39433,7 @@
       "file": "apps/api/src/core/notifications/email/templates.spec.ts",
       "module": "core/notifications",
       "kind": "unit test",
-      "cases": 27,
+      "cases": 29,
       "describes": [
         "order confirmation email",
         "Urdu",
@@ -40519,9 +40916,10 @@
       "file": "apps/api/src/modules/users/users-admin.service.spec.ts",
       "module": "users",
       "kind": "unit test",
-      "cases": 3,
+      "cases": 7,
       "describes": [
-        "UsersAdminService.create — role selection at creation time"
+        "UsersAdminService.create — role selection at creation time",
+        "UsersAdminService.update — deactivation ends every personal API key (canonical ruling 6)"
       ]
     },
     {
@@ -40576,6 +40974,20 @@
         "Accounting ledger invariants (integration)",
         "WO-19.5 — closing a period redirects a fact dated inside it to the next OPEN one",
         "WO-19.5 — closeFiscalYear posts a real, database-balanced closing entry"
+      ]
+    },
+    {
+      "file": "apps/api/test/api-keys.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 21,
+      "describes": [
+        "Personal API keys (e2e)",
+        "an admin key",
+        "what can never go into a key",
+        "a storefront key",
+        "oversight (users.manage) and deactivation",
+        "guessing keys"
       ]
     },
     {
@@ -40655,6 +41067,16 @@
         "reviews",
         "loyalty",
         "wishlist and back-in-stock"
+      ]
+    },
+    {
+      "file": "apps/api/test/customer-scope-routes.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "storefront API key scopes, route by route",
+        "storefront API key scopes, swept across every controller"
       ]
     },
     {
@@ -40791,6 +41213,15 @@
       "cases": 2,
       "describes": [
         "Reports and dashboard: stitching-booking revenue (e2e)"
+      ]
+    },
+    {
+      "file": "apps/api/test/session-only-routes.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 1,
+      "describes": [
+        "credential routes are refused to every API key"
       ]
     },
     {
@@ -41040,6 +41471,23 @@
       "cases": 3,
       "describes": [
         "computeTender"
+      ]
+    },
+    {
+      "file": "packages/shared/src/api-keys.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 34,
+      "describes": [
+        "NON_DELEGATABLE_PERMISSIONS",
+        "effectiveApiKeyPermissions — a key never exceeds its owner",
+        "refuseApiKeyPermissions — what may go into a key at create and at edit",
+        "delegatablePermissionsOf — the admin picker’s options",
+        "CUSTOMER_SCOPE_CATALOG",
+        "expandCustomerScopes",
+        "unknownCustomerScopes",
+        "prefixes and surfaces",
+        "lifetimes"
       ]
     },
     {
@@ -41420,8 +41868,8 @@
       "path": ".claude/rules/security.md",
       "area": "root",
       "kind": "doc",
-      "lines": 20,
-      "bytes": 738,
+      "lines": 46,
+      "bytes": 2270,
       "doc": "",
       "symbols": []
     },
@@ -41858,8 +42306,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 534,
-      "bytes": 20575,
+      "lines": 620,
+      "bytes": 24835,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -42548,6 +42996,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925120000_add_personal_api_keys/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 120,
+      "bytes": 5354,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/20260925150000_add_cod_risk_reason_and_city_stats/migration.sql",
       "area": "api",
       "kind": "migration",
@@ -43101,8 +43558,8 @@
       "path": "apps/api/src/core/audit/audit.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 49,
-      "bytes": 1419,
+      "lines": 69,
+      "bytes": 2372,
       "doc": "",
       "symbols": [
         {
@@ -43118,62 +43575,289 @@
       ]
     },
     {
+      "path": "apps/api/src/core/auth/api-keys/api-key-access.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 159,
+      "bytes": 6266,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/api-keys/api-key-access.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 93,
+      "bytes": 3884,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RouteRequirements",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "ApiKeyAccessDecision",
+          "kind": "type",
+          "line": 22
+        },
+        {
+          "name": "decideApiKeyAccess",
+          "kind": "function",
+          "line": 44
+        },
+        {
+          "name": "readRouteRequirements",
+          "kind": "function",
+          "line": 84
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 270,
+      "bytes": 11407,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/api-keys/api-key-auth.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 192,
+      "bytes": 7946,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "API_KEY_LAST_USED_RESOLUTION_MS",
+          "kind": "const",
+          "line": 9
+        },
+        {
+          "name": "API_KEY_FAILURE_LIMIT",
+          "kind": "const",
+          "line": 22
+        },
+        {
+          "name": "API_KEY_FAILURE_WINDOW_MS",
+          "kind": "const",
+          "line": 23
+        },
+        {
+          "name": "ApiKeyAuthContext",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "ApiKeyAuthService",
+          "kind": "class",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/api-keys/api-keys-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 41,
+      "bytes": 1664,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ApiKeysAdminController",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/api-keys/api-keys.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 67,
+      "bytes": 2903,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ApiKeysController",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/api-keys/api-keys.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 505,
+      "bytes": 22233,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/api-keys/api-keys.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 693,
+      "bytes": 25682,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ApiKeyStatus",
+          "kind": "type",
+          "line": 34
+        },
+        {
+          "name": "API_KEY_STATUSES",
+          "kind": "const",
+          "line": 35
+        },
+        {
+          "name": "ApiKeyView",
+          "kind": "interface",
+          "line": 38
+        },
+        {
+          "name": "IssuedApiKey",
+          "kind": "interface",
+          "line": 72
+        },
+        {
+          "name": "ApiKeyOversightView",
+          "kind": "interface",
+          "line": 78
+        },
+        {
+          "name": "CreateApiKeyInput",
+          "kind": "interface",
+          "line": 90
+        },
+        {
+          "name": "UpdateApiKeyInput",
+          "kind": "interface",
+          "line": 98
+        },
+        {
+          "name": "ApiKeyOversightQuery",
+          "kind": "interface",
+          "line": 104
+        },
+        {
+          "name": "ApiKeysService",
+          "kind": "class",
+          "line": 159
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/api-keys/dto/api-key.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 114,
+      "bytes": 3249,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateApiKeyDto",
+          "kind": "class",
+          "line": 32
+        },
+        {
+          "name": "UpdateApiKeyDto",
+          "kind": "class",
+          "line": 65
+        },
+        {
+          "name": "RotateApiKeyDto",
+          "kind": "class",
+          "line": 88
+        },
+        {
+          "name": "ListMyApiKeysQueryDto",
+          "kind": "class",
+          "line": 97
+        },
+        {
+          "name": "ListApiKeysQueryDto",
+          "kind": "class",
+          "line": 103
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/auth/auth.constants.ts",
       "area": "api",
       "kind": "module",
-      "lines": 62,
-      "bytes": 2343,
+      "lines": 99,
+      "bytes": 3827,
       "doc": "",
       "symbols": [
         {
           "name": "IS_PUBLIC_KEY",
           "kind": "const",
-          "line": 1
+          "line": 3
         },
         {
           "name": "PERMISSIONS_KEY",
           "kind": "const",
-          "line": 2
+          "line": 4
+        },
+        {
+          "name": "SESSION_ONLY_KEY",
+          "kind": "const",
+          "line": 6
+        },
+        {
+          "name": "CUSTOMER_SCOPES_KEY",
+          "kind": "const",
+          "line": 8
         },
         {
           "name": "JwtPayload",
           "kind": "interface",
-          "line": 12
+          "line": 18
+        },
+        {
+          "name": "ApiKeyPrincipal",
+          "kind": "interface",
+          "line": 31
         },
         {
           "name": "AuthenticatedUser",
           "kind": "interface",
-          "line": 22
+          "line": 44
         },
         {
           "name": "AUTHENTICATED_ONLY_KEY",
           "kind": "const",
-          "line": 46
+          "line": 83
         },
         {
           "name": "REFRESH_COOKIE",
           "kind": "const",
-          "line": 48
+          "line": 85
         },
         {
           "name": "CART_COOKIE",
           "kind": "const",
-          "line": 49
+          "line": 86
         },
         {
           "name": "LEGACY_REFRESH_COOKIE",
           "kind": "const",
-          "line": 51
+          "line": 88
         },
         {
           "name": "LEGACY_CART_COOKIE",
           "kind": "const",
-          "line": 52
+          "line": 89
         },
         {
           "name": "readCookie",
           "kind": "function",
-          "line": 55
+          "line": 92
         }
       ]
     },
@@ -43181,8 +43865,8 @@
       "path": "apps/api/src/core/auth/auth.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 197,
-      "bytes": 6040,
+      "lines": 202,
+      "bytes": 6267,
       "doc": "",
       "symbols": [
         {
@@ -43196,14 +43880,14 @@
       "path": "apps/api/src/core/auth/auth.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 19,
-      "bytes": 797,
+      "lines": 28,
+      "bytes": 1399,
       "doc": "",
       "symbols": [
         {
           "name": "AuthModule",
           "kind": "class",
-          "line": 18
+          "line": 27
         }
       ]
     },
@@ -43260,14 +43944,19 @@
       "path": "apps/api/src/core/auth/bearer-token.ts",
       "area": "api",
       "kind": "module",
-      "lines": 16,
-      "bytes": 694,
+      "lines": 31,
+      "bytes": 1433,
       "doc": "",
       "symbols": [
         {
           "name": "bearerToken",
           "kind": "function",
           "line": 10
+        },
+        {
+          "name": "bearerCredential",
+          "kind": "function",
+          "line": 26
         }
       ]
     },
@@ -43275,29 +43964,39 @@
       "path": "apps/api/src/core/auth/decorators.ts",
       "area": "api",
       "kind": "module",
-      "lines": 53,
-      "bytes": 2099,
+      "lines": 80,
+      "bytes": 3422,
       "doc": "",
       "symbols": [
         {
           "name": "Public",
           "kind": "const",
-          "line": 16
+          "line": 18
         },
         {
           "name": "RequirePermission",
           "kind": "const",
-          "line": 25
+          "line": 27
         },
         {
           "name": "AuthenticatedOnly",
           "kind": "const",
-          "line": 41
+          "line": 43
+        },
+        {
+          "name": "SessionOnly",
+          "kind": "const",
+          "line": 56
+        },
+        {
+          "name": "CustomerScope",
+          "kind": "const",
+          "line": 68
         },
         {
           "name": "CurrentUser",
           "kind": "const",
-          "line": 45
+          "line": 72
         }
       ]
     },
@@ -43372,22 +44071,31 @@
       ]
     },
     {
+      "path": "apps/api/src/core/auth/guards.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 212,
+      "bytes": 8553,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/auth/guards.ts",
       "area": "api",
       "kind": "module",
-      "lines": 102,
-      "bytes": 3119,
+      "lines": 167,
+      "bytes": 5758,
       "doc": "",
       "symbols": [
         {
           "name": "JwtAuthGuard",
           "kind": "class",
-          "line": 25
+          "line": 40
         },
         {
           "name": "PermissionsGuard",
           "kind": "class",
-          "line": 80
+          "line": 139
         }
       ]
     },
@@ -43897,8 +44605,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 608,
-      "bytes": 24023,
+      "lines": 624,
+      "bytes": 24723,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -43909,257 +44617,262 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 121
+          "line": 123
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 123
+          "line": 125
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 136
+          "line": 138
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 144
+          "line": 146
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 152
+          "line": 154
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 172
+          "line": 174
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 178
+          "line": 180
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 185
+          "line": 187
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 192
+          "line": 194
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 196
+          "line": 198
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 202
+          "line": 204
         },
         {
-          "name": "PaymentRefundedPayload",
-          "kind": "interface",
-          "line": 208
-        },
-        {
-          "name": "ShipmentStatusChangedPayload",
+          "name": "ApiKeyIssuedPayload",
           "kind": "interface",
           "line": 215
         },
         {
+          "name": "PaymentRefundedPayload",
+          "kind": "interface",
+          "line": 223
+        },
+        {
+          "name": "ShipmentStatusChangedPayload",
+          "kind": "interface",
+          "line": 230
+        },
+        {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 225
+          "line": 240
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 234
+          "line": 249
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 243
+          "line": 258
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 251
+          "line": 266
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 259
+          "line": 274
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 270
+          "line": 285
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 277
+          "line": 292
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 286
+          "line": 301
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 294
+          "line": 309
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 299
+          "line": 314
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 307
+          "line": 322
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 312
+          "line": 327
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 318
+          "line": 333
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 324
+          "line": 339
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 336
+          "line": 351
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 351
+          "line": 366
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 359
+          "line": 374
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 373
+          "line": 388
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 386
+          "line": 401
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 399
+          "line": 414
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 415
+          "line": 430
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 423
+          "line": 438
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 435
+          "line": 450
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 446
+          "line": 461
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 457
+          "line": 472
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 464
+          "line": 479
         },
         {
           "name": "WalletCreditPurchasedPayload",
           "kind": "interface",
-          "line": 470
+          "line": 485
         },
         {
           "name": "WalletCreditRedeemedPayload",
           "kind": "interface",
-          "line": 478
+          "line": 493
         },
         {
           "name": "WalletCreditRefundedPayload",
           "kind": "interface",
-          "line": 487
+          "line": 502
         },
         {
           "name": "MerchantPayableCreatedPayload",
           "kind": "interface",
-          "line": 498
+          "line": 513
         },
         {
           "name": "MerchantPayablePaidPayload",
           "kind": "interface",
-          "line": 505
+          "line": 520
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 512
+          "line": 527
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 518
+          "line": 533
         },
         {
           "name": "CreditNoteIssuedPayload",
           "kind": "interface",
-          "line": 579
+          "line": 595
         },
         {
           "name": "CreditNoteVoidedPayload",
           "kind": "interface",
-          "line": 588
+          "line": 604
         },
         {
           "name": "DebitNoteIssuedPayload",
           "kind": "interface",
-          "line": 592
+          "line": 608
         },
         {
           "name": "DebitNoteVoidedPayload",
           "kind": "interface",
-          "line": 600
+          "line": 616
         },
         {
           "name": "CreditHoldAppliedPayload",
           "kind": "interface",
-          "line": 604
+          "line": 620
         }
       ]
     },
@@ -44634,8 +45347,8 @@
       "path": "apps/api/src/core/notifications/email/catalog.ts",
       "area": "api",
       "kind": "module",
-      "lines": 355,
-      "bytes": 14175,
+      "lines": 364,
+      "bytes": 14588,
       "doc": "Everything the admin \"manage templates\" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which category it belongs to, whether something in the codebase actually sends it automatically (and what), and…",
       "symbols": [
         {
@@ -44656,7 +45369,7 @@
         {
           "name": "purposeForTemplate",
           "kind": "function",
-          "line": 351
+          "line": 360
         }
       ]
     },
@@ -44664,8 +45377,8 @@
       "path": "apps/api/src/core/notifications/email/copy.ts",
       "area": "api",
       "kind": "module",
-      "lines": 570,
-      "bytes": 23739,
+      "lines": 602,
+      "bytes": 26083,
       "doc": "",
       "symbols": [
         {
@@ -44676,7 +45389,7 @@
         {
           "name": "copyFor",
           "kind": "function",
-          "line": 567
+          "line": 599
         }
       ]
     },
@@ -44804,8 +45517,8 @@
       "path": "apps/api/src/core/notifications/email/templates.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 365,
-      "bytes": 12644,
+      "lines": 380,
+      "bytes": 13562,
       "doc": "",
       "symbols": []
     },
@@ -44813,8 +45526,8 @@
       "path": "apps/api/src/core/notifications/email/templates.ts",
       "area": "api",
       "kind": "module",
-      "lines": 1039,
-      "bytes": 29346,
+      "lines": 1091,
+      "bytes": 31141,
       "doc": "",
       "symbols": [
         {
@@ -44873,54 +45586,59 @@
           "line": 102
         },
         {
+          "name": "ApiKeyIssuedEmailData",
+          "kind": "interface",
+          "line": 112
+        },
+        {
           "name": "MarketingProduct",
           "kind": "interface",
-          "line": 108
+          "line": 119
         },
         {
           "name": "AbandonedCartEmailData",
           "kind": "interface",
-          "line": 116
+          "line": 127
         },
         {
           "name": "AbandonedBrowseEmailData",
           "kind": "interface",
-          "line": 126
+          "line": 137
         },
         {
           "name": "ReviewRequestEmailData",
           "kind": "interface",
-          "line": 130
+          "line": 141
         },
         {
           "name": "CrossSellEmailData",
           "kind": "interface",
-          "line": 136
+          "line": 147
         },
         {
           "name": "ReplenishmentEmailData",
           "kind": "interface",
-          "line": 142
+          "line": 153
         },
         {
           "name": "CampaignEmailData",
           "kind": "interface",
-          "line": 153
+          "line": 164
         },
         {
           "name": "StitchingEmailData",
           "kind": "interface",
-          "line": 163
+          "line": 174
         },
         {
           "name": "EMAIL_TEMPLATES",
           "kind": "const",
-          "line": 902
+          "line": 949
         },
         {
           "name": "renderEmail",
           "kind": "function",
-          "line": 1029
+          "line": 1081
         }
       ]
     },
@@ -46140,8 +46858,8 @@
       "path": "apps/api/src/modules/addresses/addresses.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 46,
-      "bytes": 1554,
+      "lines": 50,
+      "bytes": 1712,
       "doc": "",
       "symbols": [
         {
@@ -49014,8 +49732,8 @@
       "path": "apps/api/src/modules/fulfilment/returns.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 155,
-      "bytes": 4795,
+      "lines": 160,
+      "bytes": 4977,
       "doc": "",
       "symbols": [
         {
@@ -49227,14 +49945,14 @@
       "path": "apps/api/src/modules/giftcards/store-credit-account.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 26,
-      "bytes": 1047,
+      "lines": 27,
+      "bytes": 1140,
       "doc": "",
       "symbols": [
         {
           "name": "StoreCreditAccountController",
           "kind": "class",
-          "line": 11
+          "line": 12
         }
       ]
     },
@@ -49852,14 +50570,14 @@
       "path": "apps/api/src/modules/loyalty/loyalty.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 63,
-      "bytes": 2267,
+      "lines": 74,
+      "bytes": 2697,
       "doc": "",
       "symbols": [
         {
           "name": "LoyaltyController",
           "kind": "class",
-          "line": 11
+          "line": 18
         }
       ]
     },
@@ -50129,8 +50847,8 @@
       "path": "apps/api/src/modules/measurements/measurements.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 161,
-      "bytes": 5356,
+      "lines": 166,
+      "bytes": 5564,
       "doc": "",
       "symbols": [
         {
@@ -50141,7 +50859,7 @@
         {
           "name": "MeasurementsAdminController",
           "kind": "class",
-          "line": 114
+          "line": 119
         }
       ]
     },
@@ -50615,8 +51333,8 @@
       "path": "apps/api/src/modules/orders/orders.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 143,
-      "bytes": 4277,
+      "lines": 145,
+      "bytes": 4356,
       "doc": "",
       "symbols": [
         {
@@ -50627,7 +51345,7 @@
         {
           "name": "OrdersAdminController",
           "kind": "class",
-          "line": 95
+          "line": 97
         }
       ]
     },
@@ -50804,8 +51522,8 @@
       "path": "apps/api/src/modules/organization/organization.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 157,
-      "bytes": 7237,
+      "lines": 159,
+      "bytes": 7366,
       "doc": "",
       "symbols": [
         {
@@ -51662,8 +52380,8 @@
       "path": "apps/api/src/modules/pos/pos-terminals.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 49,
-      "bytes": 1689,
+      "lines": 51,
+      "bytes": 1806,
       "doc": "",
       "symbols": [
         {
@@ -52896,8 +53614,8 @@
       "path": "apps/api/src/modules/reviews/reviews-public.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 55,
-      "bytes": 2058,
+      "lines": 57,
+      "bytes": 2140,
       "doc": "",
       "symbols": [
         {
@@ -53840,14 +54558,14 @@
       "path": "apps/api/src/modules/tradingpartners/trading-partners.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 62,
-      "bytes": 2310,
+      "lines": 71,
+      "bytes": 2683,
       "doc": "",
       "symbols": [
         {
           "name": "TradingPartnersController",
           "kind": "class",
-          "line": 10
+          "line": 16
         }
       ]
     },
@@ -54063,14 +54781,14 @@
       "path": "apps/api/src/modules/users/security-notification.subscriber.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 115,
-      "bytes": 4584,
+      "lines": 152,
+      "bytes": 6189,
       "doc": "",
       "symbols": [
         {
           "name": "SecurityNotificationSubscriber",
           "kind": "class",
-          "line": 25
+          "line": 27
         }
       ]
     },
@@ -54078,8 +54796,8 @@
       "path": "apps/api/src/modules/users/users-admin.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 83,
-      "bytes": 2788,
+      "lines": 87,
+      "bytes": 2978,
       "doc": "",
       "symbols": [
         {
@@ -54108,8 +54826,8 @@
       "path": "apps/api/src/modules/users/users-admin.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 88,
-      "bytes": 3192,
+      "lines": 157,
+      "bytes": 6258,
       "doc": "",
       "symbols": []
     },
@@ -54117,14 +54835,14 @@
       "path": "apps/api/src/modules/users/users-admin.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 340,
-      "bytes": 10584,
+      "lines": 353,
+      "bytes": 11330,
       "doc": "",
       "symbols": [
         {
           "name": "UsersAdminService",
           "kind": "class",
-          "line": 24
+          "line": 25
         }
       ]
     },
@@ -54394,14 +55112,14 @@
       "path": "apps/api/src/modules/wishlist/wishlist.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 58,
-      "bytes": 2207,
+      "lines": 70,
+      "bytes": 2652,
       "doc": "",
       "symbols": [
         {
           "name": "WishlistController",
           "kind": "class",
-          "line": 11
+          "line": 17
         }
       ]
     },
@@ -54447,6 +55165,15 @@
       "lines": 462,
       "bytes": 18747,
       "doc": "The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked PrismaService — a posted entry's immutability and the balance check are both database triggers (see the `…",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/test/api-keys.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 356,
+      "bytes": 15393,
+      "doc": "",
       "symbols": []
     },
     {
@@ -54498,8 +55225,17 @@
       "path": "apps/api/test/customer-portal.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 243,
-      "bytes": 10237,
+      "lines": 255,
+      "bytes": 10885,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/test/customer-scope-routes.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 230,
+      "bytes": 11049,
       "doc": "",
       "symbols": []
     },
@@ -54621,6 +55357,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/test/session-only-routes.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 65,
+      "bytes": 3624,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/test/setup-env.ts",
       "area": "api",
       "kind": "module",
@@ -54637,6 +55382,21 @@
       "bytes": 20775,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/api/test/support/outbox.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 38,
+      "bytes": 1587,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "drainOutboxSince",
+          "kind": "function",
+          "line": 20
+        }
+      ]
     },
     {
       "path": "apps/api/test/support/stock.ts",
@@ -58033,8 +58793,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 623,
-      "bytes": 24656,
+      "lines": 679,
+      "bytes": 27275,
       "doc": "",
       "symbols": []
     },
@@ -58042,8 +58802,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 623,
-      "bytes": 33756,
+      "lines": 679,
+      "bytes": 37559,
       "doc": "",
       "symbols": []
     },
@@ -58219,17 +58979,32 @@
       "symbols": []
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/account/api-keys/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 484,
+      "bytes": 17232,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyApiKeysPage",
+          "kind": "default",
+          "line": 35
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/account/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 94,
-      "bytes": 3123,
+      "lines": 103,
+      "bytes": 3494,
       "doc": "",
       "symbols": [
         {
           "name": "AdminAccountPage",
           "kind": "default",
-          "line": 7
+          "line": 9
         }
       ]
     },
@@ -60169,6 +60944,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/users/api-keys/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 227,
+      "bytes": 7216,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ApiKeysOversightPage",
+          "kind": "default",
+          "line": 36
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/users/page.tsx",
       "area": "web",
       "kind": "page",
@@ -60275,6 +61065,21 @@
           "name": "AccountAddressesPage",
           "kind": "default",
           "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/api-keys/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 466,
+      "bytes": 16273,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AccountApiKeysPage",
+          "kind": "default",
+          "line": 75
         }
       ]
     },
@@ -62028,8 +62833,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 871,
-      "bytes": 22977,
+      "lines": 892,
+      "bytes": 23711,
       "doc": "",
       "symbols": [
         {
@@ -62060,12 +62865,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 841
+          "line": 862
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 856
+          "line": 877
         }
       ]
     },
@@ -62240,22 +63045,37 @@
       ]
     },
     {
+      "path": "apps/web/src/components/common/secret-once.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 100,
+      "bytes": 3015,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SecretOnce",
+          "kind": "function",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 79,
-      "bytes": 2924,
+      "lines": 83,
+      "bytes": 3086,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 72
+          "line": 76
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 76
+          "line": 80
         }
       ]
     },
@@ -62298,14 +63118,14 @@
       "path": "apps/web/src/components/dashboard/dashboard-nav.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 98,
-      "bytes": 3707,
+      "lines": 101,
+      "bytes": 3919,
       "doc": "",
       "symbols": [
         {
           "name": "DashboardNav",
           "kind": "function",
-          "line": 53
+          "line": 56
         }
       ]
     },
@@ -63302,8 +64122,8 @@
       "path": "apps/web/src/constants/permissions.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 24,
-      "bytes": 807,
+      "lines": 38,
+      "bytes": 1307,
       "doc": "Permission keys, re-exported from the shared catalogue.",
       "symbols": []
     },
@@ -63311,8 +64131,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 225,
-      "bytes": 9863,
+      "lines": 231,
+      "bytes": 10223,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -63833,729 +64653,754 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1441,
-      "bytes": 37894,
+      "lines": 1494,
+      "bytes": 39582,
       "doc": "",
       "symbols": [
         {
           "name": "PaginatedResponse",
           "kind": "interface",
-          "line": 11
+          "line": 12
         },
         {
           "name": "ProductImage",
           "kind": "interface",
-          "line": 23
+          "line": 24
         },
         {
           "name": "ProductVariant",
           "kind": "interface",
-          "line": 29
+          "line": 30
         },
         {
           "name": "StorefrontProduct",
           "kind": "interface",
-          "line": 42
+          "line": 43
         },
         {
           "name": "CategoryNode",
           "kind": "interface",
-          "line": 76
+          "line": 77
         },
         {
           "name": "CatalogFacets",
           "kind": "interface",
-          "line": 86
+          "line": 87
         },
         {
           "name": "ProductListQuery",
           "kind": "interface",
-          "line": 93
+          "line": 94
         },
         {
           "name": "AdminTranslation",
           "kind": "interface",
-          "line": 112
+          "line": 113
         },
         {
           "name": "AdminVariant",
           "kind": "interface",
-          "line": 122
+          "line": 123
         },
         {
           "name": "AdminProduct",
           "kind": "interface",
-          "line": 141
+          "line": 142
         },
         {
           "name": "AdminCategory",
           "kind": "interface",
-          "line": 180
+          "line": 181
         },
         {
           "name": "AdminBrand",
           "kind": "interface",
-          "line": 191
+          "line": 192
         },
         {
           "name": "OptionValueTranslation",
           "kind": "interface",
-          "line": 201
+          "line": 202
         },
         {
           "name": "AdminOptionTemplateValue",
           "kind": "interface",
-          "line": 206
+          "line": 207
         },
         {
           "name": "AdminOptionTemplate",
           "kind": "interface",
-          "line": 215
+          "line": 216
         },
         {
           "name": "AdminProductOption",
           "kind": "interface",
-          "line": 224
+          "line": 225
         },
         {
           "name": "AdminRedirect",
           "kind": "interface",
-          "line": 234
+          "line": 235
         },
         {
           "name": "SeoHealthRow",
           "kind": "interface",
-          "line": 244
+          "line": 245
         },
         {
           "name": "AiSuggestionKind",
           "kind": "type",
-          "line": 253
+          "line": 254
         },
         {
           "name": "AiSuggestionStatus",
           "kind": "type",
-          "line": 254
+          "line": 255
         },
         {
           "name": "AiSuggestion",
           "kind": "interface",
-          "line": 256
+          "line": 257
         },
         {
           "name": "AiStatus",
           "kind": "interface",
-          "line": 270
+          "line": 271
         },
         {
           "name": "MeasurementFieldRow",
           "kind": "interface",
-          "line": 278
+          "line": 279
         },
         {
           "name": "GarmentType",
           "kind": "interface",
-          "line": 293
+          "line": 294
         },
         {
           "name": "AdminGarmentSizeChartRow",
           "kind": "interface",
-          "line": 313
+          "line": 314
         },
         {
           "name": "SizeRecommendation",
           "kind": "interface",
-          "line": 322
+          "line": 323
         },
         {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 334
+          "line": 335
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 347
+          "line": 348
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 360
+          "line": 361
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 380
+          "line": 381
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 387
+          "line": 388
         },
         {
           "name": "ColumnMappingSuggestion",
           "kind": "interface",
-          "line": 396
+          "line": 397
         },
         {
           "name": "ValueNormalizationSuggestion",
           "kind": "interface",
-          "line": 401
+          "line": 402
         },
         {
           "name": "DuplicateFlag",
           "kind": "interface",
-          "line": 407
+          "line": 408
         },
         {
           "name": "CategorySuggestion",
           "kind": "interface",
-          "line": 413
+          "line": 414
         },
         {
           "name": "TranslationSuggestion",
           "kind": "interface",
-          "line": 418
+          "line": 419
         },
         {
           "name": "ImportAssistanceResult",
           "kind": "interface",
-          "line": 424
+          "line": 425
         },
         {
           "name": "CsvImportRowResult",
           "kind": "interface",
-          "line": 439
+          "line": 440
         },
         {
           "name": "CsvImportSummary",
           "kind": "interface",
-          "line": 446
+          "line": 447
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 454
+          "line": 455
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 472
+          "line": 473
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 480
+          "line": 481
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 490
+          "line": 491
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 499
+          "line": 500
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 510
+          "line": 511
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 525
+          "line": 526
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 540
+          "line": 541
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 556
+          "line": 557
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 569
+          "line": 570
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 576
+          "line": 577
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 585
+          "line": 586
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 595
+          "line": 596
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 607
+          "line": 608
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 620
+          "line": 621
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 626
+          "line": 627
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 637
+          "line": 638
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 644
+          "line": 645
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 650
+          "line": 651
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 659
+          "line": 660
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 667
+          "line": 668
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 672
+          "line": 673
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 679
+          "line": 680
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 687
+          "line": 688
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 693
+          "line": 694
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 699
+          "line": 700
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 712
+          "line": 713
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 718
+          "line": 719
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 730
+          "line": 731
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 734
+          "line": 735
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 743
+          "line": 744
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 747
+          "line": 748
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 756
+          "line": 757
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 763
+          "line": 764
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 770
+          "line": 771
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 777
+          "line": 778
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 787
+          "line": 788
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 795
+          "line": 796
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 802
+          "line": 803
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 808
+          "line": 809
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 813
+          "line": 814
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 823
+          "line": 824
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 829
+          "line": 830
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 835
+          "line": 836
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 842
+          "line": 843
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 851
+          "line": 852
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 853
+          "line": 854
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 864
+          "line": 865
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 869
+          "line": 870
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 875
+          "line": 876
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 877
+          "line": 878
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 886
+          "line": 887
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 895
+          "line": 896
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 897
+          "line": 898
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 914
+          "line": 915
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 919
+          "line": 920
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 921
+          "line": 922
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 935
+          "line": 936
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 937
+          "line": 938
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 948
+          "line": 949
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 963
+          "line": 964
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 970
+          "line": 971
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 972
+          "line": 973
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 997
+          "line": 998
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 1005
+          "line": 1006
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 1013
+          "line": 1014
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 1020
+          "line": 1021
         },
         {
           "name": "WhatsAppMessage",
           "kind": "interface",
-          "line": 1037
+          "line": 1038
         },
         {
           "name": "WhatsAppConversation",
           "kind": "interface",
-          "line": 1045
+          "line": 1046
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 1060
+          "line": 1061
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 1067
+          "line": 1068
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 1079
+          "line": 1080
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 1088
+          "line": 1089
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 1090
+          "line": 1091
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1102
+          "line": 1103
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 1108
+          "line": 1109
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 1115
+          "line": 1116
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 1120
+          "line": 1121
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1132
+          "line": 1133
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1141
+          "line": 1142
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1148
+          "line": 1149
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1162
+          "line": 1163
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1173
+          "line": 1174
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1177
+          "line": 1178
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1186
+          "line": 1187
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1194
+          "line": 1195
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1225
+          "line": 1226
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1258
+          "line": 1259
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1264
+          "line": 1265
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1282
+          "line": 1283
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1297
+          "line": 1298
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1306
+          "line": 1307
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1315
+          "line": 1316
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1331
+          "line": 1332
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1338
+          "line": 1339
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1346
+          "line": 1347
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1353
+          "line": 1354
         },
         {
           "name": "DashboardCardsResponse",
           "kind": "interface",
-          "line": 1370
+          "line": 1371
         },
         {
           "name": "ActionItem",
           "kind": "interface",
-          "line": 1384
+          "line": 1385
         },
         {
           "name": "ActionHubResponse",
           "kind": "interface",
-          "line": 1395
+          "line": 1396
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1401
+          "line": 1402
         },
         {
           "name": "ProductCrossSellKind",
           "kind": "type",
-          "line": 1409
+          "line": 1410
         },
         {
           "name": "ProductCrossSellRow",
           "kind": "interface",
-          "line": 1411
+          "line": 1412
         },
         {
           "name": "MarkdownSuggestionStatus",
           "kind": "type",
-          "line": 1418
+          "line": 1419
         },
         {
           "name": "MarkdownSuggestion",
           "kind": "interface",
-          "line": 1420
+          "line": 1421
+        },
+        {
+          "name": "ApiKeyStatus",
+          "kind": "type",
+          "line": 1447
+        },
+        {
+          "name": "ApiKeyRevocationReason",
+          "kind": "type",
+          "line": 1448
+        },
+        {
+          "name": "ApiKeyView",
+          "kind": "interface",
+          "line": 1469
+        },
+        {
+          "name": "IssuedApiKey",
+          "kind": "interface",
+          "line": 1476
+        },
+        {
+          "name": "ApiKeyOversightView",
+          "kind": "interface",
+          "line": 1483
         }
       ]
     },
@@ -67090,8 +67935,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 3371,
-      "bytes": 191389,
+      "lines": 3447,
+      "bytes": 195781,
       "doc": "",
       "symbols": []
     },
@@ -67126,8 +67971,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 499,
-      "bytes": 65171,
+      "lines": 500,
+      "bytes": 65845,
       "doc": "",
       "symbols": []
     },
@@ -67182,6 +68027,15 @@
       "kind": "doc",
       "lines": 245,
       "bytes": 12772,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/access-control-identity/163-personal-api-keys.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 625,
+      "bytes": 40616,
       "doc": "",
       "symbols": []
     },
@@ -68296,8 +69150,8 @@
       "path": "docs/implementation/integrations-connectivity/34-partner-developer-api-access.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 235,
-      "bytes": 12948,
+      "lines": 246,
+      "bytes": 13614,
       "doc": "",
       "symbols": []
     },
@@ -68959,6 +69813,155 @@
       "bytes": 897,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "packages/shared/src/api-keys.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 231,
+      "bytes": 8999,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/api-keys.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 314,
+      "bytes": 13797,
+      "doc": "Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request.",
+      "symbols": [
+        {
+          "name": "API_KEY_SURFACES",
+          "kind": "const",
+          "line": 30
+        },
+        {
+          "name": "ApiKeySurface",
+          "kind": "type",
+          "line": 31
+        },
+        {
+          "name": "API_KEY_PREFIXES",
+          "kind": "const",
+          "line": 41
+        },
+        {
+          "name": "apiKeySurfaceOf",
+          "kind": "function",
+          "line": 51
+        },
+        {
+          "name": "API_KEY_LIFETIME_OPTIONS_DAYS",
+          "kind": "const",
+          "line": 64
+        },
+        {
+          "name": "API_KEY_DEFAULT_LIFETIME_DAYS",
+          "kind": "const",
+          "line": 65
+        },
+        {
+          "name": "API_KEY_MAX_LIFETIME_DAYS",
+          "kind": "const",
+          "line": 66
+        },
+        {
+          "name": "API_KEY_MAX_ACTIVE_PER_SURFACE",
+          "kind": "const",
+          "line": 74
+        },
+        {
+          "name": "API_KEY_NAME_MAX_LENGTH",
+          "kind": "const",
+          "line": 76
+        },
+        {
+          "name": "NonDelegatablePermission",
+          "kind": "interface",
+          "line": 80
+        },
+        {
+          "name": "NON_DELEGATABLE_PERMISSIONS",
+          "kind": "const",
+          "line": 109
+        },
+        {
+          "name": "isDelegatablePermission",
+          "kind": "function",
+          "line": 143
+        },
+        {
+          "name": "nonDelegatableReason",
+          "kind": "function",
+          "line": 148
+        },
+        {
+          "name": "effectiveApiKeyPermissions",
+          "kind": "function",
+          "line": 163
+        },
+        {
+          "name": "ApiKeyPermissionRefusal",
+          "kind": "type",
+          "line": 177
+        },
+        {
+          "name": "refuseApiKeyPermissions",
+          "kind": "function",
+          "line": 184
+        },
+        {
+          "name": "delegatablePermissionsOf",
+          "kind": "function",
+          "line": 202
+        },
+        {
+          "name": "CUSTOMER_SCOPE_RESOURCES",
+          "kind": "const",
+          "line": 217
+        },
+        {
+          "name": "CustomerScopeResource",
+          "kind": "type",
+          "line": 228
+        },
+        {
+          "name": "CustomerScopeAccess",
+          "kind": "type",
+          "line": 229
+        },
+        {
+          "name": "CustomerScopeDefinition",
+          "kind": "interface",
+          "line": 231
+        },
+        {
+          "name": "CUSTOMER_SCOPE_CATALOG",
+          "kind": "const",
+          "line": 255
+        },
+        {
+          "name": "CustomerScopeKey",
+          "kind": "type",
+          "line": 284
+        },
+        {
+          "name": "CUSTOMER_SCOPE_KEYS",
+          "kind": "const",
+          "line": 286
+        },
+        {
+          "name": "expandCustomerScopes",
+          "kind": "function",
+          "line": 299
+        },
+        {
+          "name": "unknownCustomerScopes",
+          "kind": "function",
+          "line": 311
+        }
+      ]
     },
     {
       "path": "packages/shared/src/brand.ts",
@@ -69834,8 +70837,8 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 41,
-      "bytes": 1720,
+      "lines": 42,
+      "bytes": 1748,
       "doc": "",
       "symbols": []
     },

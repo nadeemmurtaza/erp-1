@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
-import { AuthenticatedOnly, CurrentUser, Public } from '../../core/auth/decorators';
+import { AuthenticatedOnly, CurrentUser, CustomerScope, Public } from '../../core/auth/decorators';
 import { PaginationQueryDto } from '../../core/common/dto/pagination.dto';
 import { ReviewsService } from './reviews.service';
 import { ReviewSummaryService } from './review-summary.service';
@@ -31,6 +31,7 @@ export class ReviewsPublicController {
 
   @Get('reviews/mine')
   @AuthenticatedOnly()
+  @CustomerScope('reviews:read')
   @ApiOperation({ summary: 'My own reviews, any status' })
   async mine(@CurrentUser('id') userId: string) {
     return this.reviews.myReviews(userId);
@@ -38,6 +39,7 @@ export class ReviewsPublicController {
 
   @Post('reviews')
   @AuthenticatedOnly()
+  @CustomerScope('reviews:write')
   @ApiOperation({ summary: 'Submit a review — goes to PENDING, moderated before it shows' })
   @Throttle({ default: { limit: 10, ttl: 60_000 } })
   async create(@CurrentUser('id') userId: string, @Body() dto: CreateReviewDto) {

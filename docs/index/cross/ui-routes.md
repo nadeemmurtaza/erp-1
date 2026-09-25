@@ -3,7 +3,7 @@
 
 # Screens
 
-All **224** routable files across the web app, the till and the mobile app.
+All **227** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (136)
+### admin (138)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -40,6 +40,7 @@ _none_
 | `/admin` | not-found | server | `apps/web/src/app/(admin)/admin/not-found.tsx` |
 | `/admin` | page | client | `apps/web/src/app/(admin)/admin/(app)/page.tsx` |
 | `/admin/account` | page | client | `apps/web/src/app/(admin)/admin/(app)/account/page.tsx` |
+| `/admin/account/api-keys` | page | client | `apps/web/src/app/(admin)/admin/(app)/account/api-keys/page.tsx` |
 | `/admin/ai` | page | client | `apps/web/src/app/(admin)/admin/(app)/ai/page.tsx` |
 | `/admin/analytics` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/page.tsx` |
 | `/admin/analytics/[...slug]` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx` |
@@ -168,6 +169,7 @@ _none_
 | `/admin/transfers/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/transfers/new/page.tsx` |
 | `/admin/users` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/page.tsx` |
 | `/admin/users/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/[id]/page.tsx` |
+| `/admin/users/api-keys` | page | client | `apps/web/src/app/(admin)/admin/(app)/users/api-keys/page.tsx` |
 | `/admin/wallet` | page | client | `apps/web/src/app/(admin)/admin/(app)/wallet/page.tsx` |
 
 ### mobile (22)
@@ -214,7 +216,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (50)
+### storefront (51)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -227,6 +229,7 @@ _none_
 | `/[locale]` | page | server | `apps/web/src/app/(storefront)/[locale]/page.tsx` |
 | `/[locale]/account` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/page.tsx` |
 | `/[locale]/account/addresses` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/addresses/page.tsx` |
+| `/[locale]/account/api-keys` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/api-keys/page.tsx` |
 | `/[locale]/account/credit` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/credit/page.tsx` |
 | `/[locale]/account/loyalty` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/loyalty/page.tsx` |
 | `/[locale]/account/measurements` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/measurements/page.tsx` |

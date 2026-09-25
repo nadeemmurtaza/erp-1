@@ -3,7 +3,7 @@
 
 # Migrations
 
-**76** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**77** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -103,6 +103,7 @@ nothing here fails a build.
 | 2026-09-25 | `wo39_quotas_export_routing` | 18 | ALTER TABLE, CREATE TABLE, CREATE TYPE, CREATE UNIQUE INDEX, CREATE INDEX | PlatformTenant, ResourceQuotaAlert, ResourceTierQuota, SupportAccessGrant, TenantDataExport |
 | 2026-09-25 | `wo50_pricing_billing` | 20 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformPlan |
 | 2026-09-25 | `wo51_trials` | 11 | ALTER TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | PlatformTenant, SignupVerification, TrialExtension |
+| 2026-09-25 | `add_personal_api_keys` | 18 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | ApiKey |
 | 2026-09-25 | `add_cod_risk_reason_and_city_stats` | 3 | ALTER TABLE, CREATE TABLE | CityCodRiskStat, Order |
 | 2026-09-25 | `add_requisitions_approvals_and_loss_prevention` | 40 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | ApprovalChain, ApprovalStep, PurchaseRequisition, RequisitionLine, SpotCheck, SpotCheckLine, SpotCheckPolicy,… |
 | 2026-09-25 | `add_whatsapp_message_external_id` | 2 | ALTER TABLE, CREATE UNIQUE INDEX | WhatsAppMessage |

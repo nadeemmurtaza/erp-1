@@ -16,7 +16,7 @@ import {
   readCookie,
   type AuthenticatedUser,
 } from '../../core/auth/auth.constants';
-import { AuthenticatedOnly, CurrentUser, Public, RequirePermission } from '../../core/auth/decorators';
+import { AuthenticatedOnly, CurrentUser, CustomerScope, Public, RequirePermission } from '../../core/auth/decorators';
 import {
   AdminOrderQueryDto,
   ChangeOrderStatusDto,
@@ -54,6 +54,7 @@ export class OrdersController {
   }
 
   @AuthenticatedOnly()
+  @CustomerScope('orders:read')
   @Get('mine')
   @ApiOperation({ summary: "The signed-in customer's orders" })
   async mine(@CurrentUser() user: AuthenticatedUser, @Query() query: OrderHistoryQueryDto) {
@@ -67,6 +68,7 @@ export class OrdersController {
   }
 
   @AuthenticatedOnly()
+  @CustomerScope('orders:read')
   @Get(':number')
   @ApiOperation({ summary: 'One order, for its owner' })
   async get(@CurrentUser() user: AuthenticatedUser, @Param('number') number: string) {

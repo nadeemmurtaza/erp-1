@@ -9,7 +9,7 @@ Pack **apparel** · enabled by the `MODULES` allowlist · 12 files
 
 Source: `apps/api/src/modules/measurements/`
 
-## Files (12 · 1,641 lines)
+## Files (12 · 1,646 lines)
 
 All paths relative to `apps/api/src/modules/measurements/dto`.
 
@@ -18,7 +18,7 @@ All paths relative to `apps/api/src/modules/measurements/dto`.
 | `measurements.dto.ts` | dto | 233 | 5 |  |
 | `garment-fields-seed.spec.ts` | unit test | 64 | — |  |
 | `measurements-admin.service.ts` | service | 283 | 1 | Dashboard management of garment types and their measurement fields. |
-| `measurements.controller.ts` | controller | 161 | 2 |  |
+| `measurements.controller.ts` | controller | 166 | 2 |  |
 | `measurements.module.ts` | nest module | 19 | 1 |  |
 | `measurements.service.ts` | service | 204 | 2 | Garment types, their measurement fields, and customers' saved profiles. |
 | `size-bias.listener.spec.ts` | unit test | 96 | — |  |
@@ -33,19 +33,19 @@ All paths relative to `apps/api/src/modules/measurements/dto`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/measurements/garment-types` | `measurements.manage_blueprints` | `MeasurementsAdminController.list` :122 | All garment types, including deactivated ones |
-| POST | `/admin/measurements/garment-types` | `measurements.manage_blueprints` | `MeasurementsAdminController.create` :128 | Add a garment type and its measurement fields |
-| DELETE | `/admin/measurements/garment-types/:id` | `measurements.manage_blueprints` | `MeasurementsAdminController.deactivate` :144 | Deactivate a garment type (never hard-deleted) |
-| PATCH | `/admin/measurements/garment-types/:id` | `measurements.manage_blueprints` | `MeasurementsAdminController.update` :134 | Edit a garment type; removed fields are deactivated |
-| PUT | `/admin/measurements/garment-types/:id/size-chart` | `measurements.manage_blueprints` | `MeasurementsAdminController.replaceSizeChart` :152 |  |
+| GET | `/admin/measurements/garment-types` | `measurements.manage_blueprints` | `MeasurementsAdminController.list` :127 | All garment types, including deactivated ones |
+| POST | `/admin/measurements/garment-types` | `measurements.manage_blueprints` | `MeasurementsAdminController.create` :133 | Add a garment type and its measurement fields |
+| DELETE | `/admin/measurements/garment-types/:id` | `measurements.manage_blueprints` | `MeasurementsAdminController.deactivate` :149 | Deactivate a garment type (never hard-deleted) |
+| PATCH | `/admin/measurements/garment-types/:id` | `measurements.manage_blueprints` | `MeasurementsAdminController.update` :139 | Edit a garment type; removed fields are deactivated |
+| PUT | `/admin/measurements/garment-types/:id/size-chart` | `measurements.manage_blueprints` | `MeasurementsAdminController.replaceSizeChart` :157 |  |
 | GET | `/measurements/garment-types` | **PUBLIC** | `MeasurementsController.listGarmentTypes` :40 | Garment types with their measurement fields |
 | GET | `/measurements/garment-types/:idOrKey` | **PUBLIC** | `MeasurementsController.getGarmentType` :47 | One garment type and its fields |
-| GET | `/measurements/profiles` | signed-in | `MeasurementsController.listProfiles` :54 | The signed-in customer's saved measurement profiles |
-| POST | `/measurements/profiles` | signed-in | `MeasurementsController.createProfile` :67 | Save a measurement profile |
-| DELETE | `/measurements/profiles/:id` | signed-in | `MeasurementsController.deleteProfile` :87 |  |
-| GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` :60 |  |
-| PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` :76 |  |
-| GET | `/measurements/size-recommendation/:productId` | **PUBLIC** | `MeasurementsController.sizeRecommendation` :101 | Based on the signed-in customer's saved measurements, the size this product's own chart s… |
+| GET | `/measurements/profiles` | signed-in | `MeasurementsController.listProfiles` :55 | The signed-in customer's saved measurement profiles |
+| POST | `/measurements/profiles` | signed-in | `MeasurementsController.createProfile` :70 | Save a measurement profile |
+| DELETE | `/measurements/profiles/:id` | signed-in | `MeasurementsController.deleteProfile` :92 |  |
+| GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` :62 |  |
+| PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` :80 |  |
+| GET | `/measurements/size-recommendation/:productId` | **PUBLIC** | `MeasurementsController.sizeRecommendation` :106 | Based on the signed-in customer's saved measurements, the size this product's own chart s… |
 
 
 ## Domain events
@@ -125,7 +125,7 @@ check there before adding another.
 | `GarmentSizeChartRowDto` | class | `measurements.dto.ts:220` |  |
 | `MeasurementsAdminService` | class | `measurements-admin.service.ts:16` | Dashboard management of garment types and their measurement fields. |
 | `MeasurementsController` | class | `measurements.controller.ts:31` |  |
-| `MeasurementsAdminController` | class | `measurements.controller.ts:114` |  |
+| `MeasurementsAdminController` | class | `measurements.controller.ts:119` |  |
 | `MeasurementsModule` | class | `measurements.module.ts:18` |  |
 | `MeasurementsService` | class | `measurements.service.ts:25` | Garment types, their measurement fields, and customers' saved profiles. |
 | `toFieldDefs` | function | `measurements.service.ts:188` | Prisma rows -> the plain definitions @newax/shared validates against. |

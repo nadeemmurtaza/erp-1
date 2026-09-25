@@ -1,5 +1,16 @@
 # 34 — Partner and developer API access
 
+> **Status (2026-09-25): deferred — the personal-token half shipped instead.**
+> The owner chose personal API keys first: a key owned by a `User`, capped on
+> every request by that user's live permissions, dying with them. That is built
+> and documented in
+> [`163-personal-api-keys.md`](../access-control-identity/163-personal-api-keys.md)
+> (`DECISIONS.md` ADR-037). The `ApiClient` below — an organisation-level
+> principal that survives its creator — is the **service account** that ADR
+> deliberately defers. This document stays its starting design; doc 163 §9
+> lists what it will have to answer that a personal key does not. Nothing below
+> is built.
+
 This repository already has API-key authentication — `TradingPartner.
 inboundApiKeyHash` and `Node.inboundApiKeyHash`, both built on
 `core/replication`'s key-hash pattern (`node-credential.service.ts`). What

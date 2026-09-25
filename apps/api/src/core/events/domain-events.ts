@@ -29,6 +29,8 @@ export const DomainEvent = {
   PasswordChanged: 'user.password_changed',
   PasswordResetRequested: 'user.password_reset_requested',
   EmailVerificationRequested: 'user.email_verification_requested',
+  /** ApiKeysService issued a personal API key's secret — at create or at rotate (163-personal-api-keys.md). SecurityNotificationSubscriber mails the owner; the secret itself is never on the event. */
+  ApiKeyIssued: 'user.api_key_issued',
 
   ProductLowStock: 'catalog.product_low_stock',
   /** Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder). ProductLowStock fires against lowStockThreshold and only ever notifies. */
@@ -203,6 +205,19 @@ export interface EmailVerificationRequestedPayload {
   userId: string;
   /** Raw token — mailed once, never persisted anywhere but its hash. */
   token: string;
+}
+
+/**
+ * Deliberately carries no secret, no hash and no key name — the name is text
+ * whoever minted the key chose, and the mail this drives is a trusted message
+ * to the owner. The last four characters identify the key well enough.
+ */
+export interface ApiKeyIssuedPayload {
+  userId: string;
+  apiKeyId: string;
+  surface: 'ADMIN' | 'STOREFRONT';
+  lastFour: string;
+  reason: 'CREATED' | 'ROTATED';
 }
 
 export interface PaymentRefundedPayload {
@@ -532,6 +547,7 @@ export interface DomainEventPayloads {
   [DomainEvent.PasswordChanged]: PasswordChangedPayload;
   [DomainEvent.PasswordResetRequested]: PasswordResetRequestedPayload;
   [DomainEvent.EmailVerificationRequested]: EmailVerificationRequestedPayload;
+  [DomainEvent.ApiKeyIssued]: ApiKeyIssuedPayload;
   [DomainEvent.ProductLowStock]: ProductLowStockPayload;
   [DomainEvent.ProductReorderPointReached]: ProductReorderPointReachedPayload;
   [DomainEvent.ProductPublished]: ProductPublishedPayload;

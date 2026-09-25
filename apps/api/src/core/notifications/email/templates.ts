@@ -104,6 +104,17 @@ export interface EmailVerificationEmailData {
   token: string;
 }
 
+/**
+ * A personal API key's secret was issued (163-personal-api-keys.md). Never
+ * the secret, and never the key's name — that is text whoever minted it
+ * chose, with no place in a trusted message.
+ */
+export interface ApiKeyIssuedEmailData {
+  surface: 'ADMIN' | 'STOREFRONT';
+  lastFour: string;
+  reason: 'CREATED' | 'ROTATED';
+}
+
 /** A product line for a marketing email — lighter than OrderEmailItem, since these are drawn from the catalogue, not an order snapshot. */
 export interface MarketingProduct {
   name: string;
@@ -201,6 +212,17 @@ function emailVerificationUrl(ctx: EmailContext, locale: Locale, token: string):
   return `${ctx.storefrontUrl.replace(/\/+$/, '')}/${locale}/verify-email?token=${encodeURIComponent(
     token,
   )}`;
+}
+
+/**
+ * Where the owner reviews and revokes the key: the storefront account page
+ * for a store key, the admin's own page for an admin key. The admin is served
+ * by the same web app as the storefront, under /admin, and is English-only —
+ * so it takes no locale segment.
+ */
+function apiKeysUrl(ctx: EmailContext, locale: Locale, surface: ApiKeyIssuedEmailData['surface']): string {
+  const base = ctx.storefrontUrl.replace(/\/+$/, '');
+  return surface === 'ADMIN' ? `${base}/admin/account/api-keys` : `${base}/${locale}/account/api-keys`;
 }
 
 function renderOrderConfirmed(
@@ -523,6 +545,31 @@ function renderPasswordChanged(
   });
 
   return { subject: t.passwordChanged.subject, html, text: htmlToText(html) };
+}
+
+function renderApiKeyIssued(data: ApiKeyIssuedEmailData, locale: Locale, ctx: EmailContext): RenderedEmail {
+  const t = copyFor(locale);
+  const lastFour = ltr(data.lastFour);
+  const body = [
+    heading(t.apiKeyIssued.heading, locale),
+    paragraph(
+      data.reason === 'ROTATED'
+        ? t.apiKeyIssued.rotated(lastFour, data.surface)
+        : t.apiKeyIssued.created(lastFour, data.surface),
+      locale,
+    ),
+    paragraph(t.apiKeyIssued.notYou, locale),
+    button(t.apiKeyIssued.cta, apiKeysUrl(ctx, locale, data.surface), locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.apiKeyIssued.subject, html, text: htmlToText(html) };
 }
 
 function renderPasswordReset(
@@ -954,6 +1001,11 @@ export const EMAIL_TEMPLATES: Record<
     ctx: EmailContext,
   ) => RenderedEmail,
   'user.password_reset': renderPasswordReset as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'user.api_key_issued': renderApiKeyIssued as (
     data: never,
     locale: Locale,
     ctx: EmailContext,

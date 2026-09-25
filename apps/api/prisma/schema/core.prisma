@@ -54,6 +54,12 @@ model User {
   refreshTokens             RefreshToken[]
   passwordResetTokens       PasswordResetToken[]
   emailVerificationTokens   EmailVerificationToken[]
+  /// Personal API keys this person issued — each one acts as them, capped
+  /// live by their permissions (access-control-identity/163-personal-api-keys.md).
+  apiKeys                   ApiKey[]                 @relation("ApiKeyOwner")
+  /// Keys this person revoked as someone else's administrator, or by
+  /// deactivating their owner.
+  apiKeysRevoked            ApiKey[]                 @relation("ApiKeyRevoker")
   carts                     Cart[]
   orders                    Order[]
   orderStatusEvents         OrderStatusEvent[]
@@ -192,6 +198,86 @@ model EmailVerificationToken {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+/// Which request surface a personal API key acts on — two separate scope
+/// catalogues, never mixed (163-personal-api-keys.md §2). ADMIN keys carry
+/// `PERMISSION_CATALOG` keys (`permissionKeys`); STOREFRONT keys carry
+/// `CUSTOMER_SCOPE_CATALOG` keys (`customerScopes`).
+enum ApiKeySurface {
+  ADMIN
+  STOREFRONT
+}
+
+/// Why a key stopped working — kept on the row so the owner's own list can
+/// say it, not only the audit trail.
+enum ApiKeyRevocationReason {
+  /// The owner revoked it from their own list.
+  OWNER
+  /// A `users.manage` holder revoked it from the oversight list.
+  ADMINISTRATOR
+  /// UsersAdminService.update() deactivated the owner (canonical ruling 6).
+  OWNER_DEACTIVATED
+}
+
+/// A personal API key: a credential that acts as `user`, never as anyone more
+/// powerful. Its effective access on every request is
+/// `(permissionKeys or customerScopes) ∩ (user's live permissions) −
+/// NON_DELEGATABLE_PERMISSIONS`, recomputed by ApiKeyAuthService — nothing
+/// here is a snapshot of what the owner could do when it was made.
+///
+/// Written only by ApiKeysService. Node-local: deliberately not registered
+/// with ReplicationRegistry, so a credential never leaves the node that
+/// minted it. The migration adds what this DSL cannot say: a CHECK tying each
+/// row to exactly one catalogue, and a trigger making revocation final.
+model ApiKey {
+  id             String                  @id @default(cuid())
+  userId         String
+  surface        ApiKeySurface
+  /// Chosen by the owner. Shown to the owner and to `users.manage`, never
+  /// put in the security email (it is text the minting person chose).
+  name           String
+  /// SHA-256 of the raw secret (core/security/api-token.ts) — the raw value
+  /// is in exactly one HTTP response, the one that created or rotated it.
+  /// Same discipline as TradingPartner.inboundApiKeyHash. Never selected by
+  /// any read path.
+  keyHash        String                  @unique
+  /// The secret's last four characters, so a list can tell keys apart. The
+  /// other 252 bits of the secret stay unknown.
+  lastFour       String
+  /// `PERMISSION_CATALOG` keys chosen at create/edit — ADMIN keys only; the
+  /// CHECK keeps it empty on a STOREFRONT key.
+  permissionKeys String[]                @default([])
+  /// `CUSTOMER_SCOPE_CATALOG` keys — STOREFRONT keys only; the CHECK keeps it
+  /// empty on an ADMIN key.
+  customerScopes String[]                @default([])
+  /// Mandatory, at most API_KEY_MAX_LIFETIME_DAYS after create or rotate.
+  expiresAt      DateTime
+  /// Best-effort, written at most once a minute per key — operational, not
+  /// evidence; never fails a request.
+  lastUsedAt     DateTime?
+  /// Set by every rotate; null until the first.
+  rotatedAt      DateTime?
+  /// Null while the key is live. Once set, the row is final (trigger).
+  revokedAt      DateTime?
+  /// Set with revokedAt, never without it (CHECK).
+  revokedReason  ApiKeyRevocationReason?
+  /// Who revoked it: the owner, an administrator, or the admin who
+  /// deactivated the owner. Null while the key is live — and null again if
+  /// that person's own account is later erased (SetNull); revokedReason still
+  /// says which kind of actor it was.
+  revokedById    String?
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+
+  user      User  @relation("ApiKeyOwner", fields: [userId], references: [id], onDelete: Cascade)
+  revokedBy User? @relation("ApiKeyRevoker", fields: [revokedById], references: [id], onDelete: SetNull)
+
+  // The owner's own list (WHERE userId ORDER BY createdAt DESC), and the
+  // deactivation revoke (WHERE userId AND revokedAt IS NULL).
+  @@index([userId, createdAt])
+  // The `users.manage` oversight list, newest first, paginated.
+  @@index([createdAt])
 }
 
 model Address {

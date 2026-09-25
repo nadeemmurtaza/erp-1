@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-392 files · 61,419 lines
+393 files · 62,132 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,8 +84,8 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 8 | 7,136 | doc, file |
-| `docs/implementation/access-control-identity` | 6 | 1,028 | doc |
+| `docs/implementation` | 8 | 7,213 | doc, file |
+| `docs/implementation/access-control-identity` | 7 | 1,653 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
 | `docs/implementation/analytics-reporting` | 5 | 480 | doc |
@@ -98,7 +98,7 @@ has a bug.
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
 | `docs/implementation/finance-accounting` | 8 | 1,715 | doc |
 | `docs/implementation/hr-people-org` | 18 | 3,331 | doc |
-| `docs/implementation/integrations-connectivity` | 13 | 2,140 | doc |
+| `docs/implementation/integrations-connectivity` | 13 | 2,151 | doc |
 | `docs/implementation/inventory-purchasing` | 5 | 1,798 | doc |
 | `docs/implementation/lots-serials-traceability` | 3 | 805 | doc |
 | `docs/implementation/payroll` | 4 | 1,178 | doc |
@@ -116,7 +116,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 3,371 | doc |  |
+| `docs/implementation/DECISIONS.md` | 3,447 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
@@ -126,11 +126,11 @@ has a bug.
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
 | `docs/erp-lenses/_meta/_conflicts.md` | 645 | doc |  |
+| `docs/implementation/access-control-identity/163-personal-api-keys.md` | 625 | doc |  |
 | `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md` | 566 | doc |  |
 | `docs/erp-lenses/_meta/_index.md` | 550 | doc |  |
 | `docs/implementation/WO-22-lens-workflow-results.md` | 539 | doc |  |
 | `docs/implementation/payroll/19-payroll.md` | 522 | doc |  |
-| `docs/implementation/README.md` | 499 | doc |  |
 
 
 ---

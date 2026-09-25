@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 15 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (15 · 2,803 lines)
+## Files (15 · 2,805 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -26,7 +26,7 @@ All paths relative to `apps/api/src/modules/orders`.
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
 | `orders-pos.service.spec.ts` | unit test | 275 | — |  |
-| `orders.controller.ts` | controller | 143 | 2 |  |
+| `orders.controller.ts` | controller | 145 | 2 |  |
 | `orders.module.ts` | nest module | 50 | 1 |  |
 | `orders.service.ts` | service | 1226 | 3 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
@@ -36,13 +36,13 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` :100 | All orders, filterable by status |
-| GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` :116 |  |
-| POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` :122 | Move the order along; cancelling restores stock |
+| GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` :102 | All orders, filterable by status |
+| GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` :118 |  |
+| POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` :124 | Move the order along; cancelling restores stock |
 | POST | `/orders` | **PUBLIC** | `OrdersController.place` :38 | Place the order in the current cart |
-| GET | `/orders/:number` | signed-in | `OrdersController.get` :72 | One order, for its owner |
-| POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` :81 |  |
-| GET | `/orders/mine` | signed-in | `OrdersController.mine` :59 | The signed-in customer's orders |
+| GET | `/orders/:number` | signed-in | `OrdersController.get` :74 | One order, for its owner |
+| POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` :83 |  |
+| GET | `/orders/mine` | signed-in | `OrdersController.mine` :60 | The signed-in customer's orders |
 
 
 ## Domain events
@@ -158,7 +158,7 @@ check there before adding another.
 | `OrderNotificationSubscriber` | class | `notification.subscriber.ts:53` |  |
 | `OrderReplicationListener` | class | `order-replication.listener.ts:30` | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
 | `OrdersController` | class | `orders.controller.ts:32` |  |
-| `OrdersAdminController` | class | `orders.controller.ts:95` |  |
+| `OrdersAdminController` | class | `orders.controller.ts:97` |  |
 | `OrdersModule` | class | `orders.module.ts:49` |  |
 | `PosSaleLineInput` | interface | `orders.service.ts:41` |  |
 | `PlaceFromPosInput` | interface | `orders.service.ts:46` |  |

@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 Source: `apps/api/src/modules/giftcards/`
 
-## Files (9 · 617 lines)
+## Files (9 · 618 lines)
 
 All paths relative to `apps/api/src/modules/giftcards/dto`.
 
@@ -21,7 +21,7 @@ All paths relative to `apps/api/src/modules/giftcards/dto`.
 | `giftcards.controller.ts` | controller | 67 | 2 |  |
 | `giftcards.module.ts` | nest module | 15 | 1 |  |
 | `giftcards.service.ts` | service | 202 | 2 | Never log or display a full code — WO-5.4's own security note. |
-| `store-credit-account.controller.ts` | controller | 26 | 1 | WO-7.4 — the customer's own balance and full transaction history. |
+| `store-credit-account.controller.ts` | controller | 27 | 1 | WO-7.4 — the customer's own balance and full transaction history. |
 | `store-credit-reconcile.cron.ts` | scheduled job | 26 | 1 | Nightly integrity check for the `User.storeCreditBalance` cache (WO-5.5's own "if you cache it, add a reconciliation ch… |
 | `store-credit.service.ts` | service | 162 | 1 | Store credit: the same ledger shape as GiftCard, attached to a User rather than a code (WO-5.5). |
 
@@ -38,8 +38,8 @@ All paths relative to `apps/api/src/modules/giftcards/dto`.
 | PATCH | `/admin/gift-cards/:id/cancel` | `giftcards.manage` | `GiftCardsController.cancel` :39 | Cancel a gift card, forfeiting any remaining balance |
 | GET | `/gift-cards/:code/balance` | signed-in | `GiftCardsAccountController.balance` :24 | Check a gift card balance by code |
 | POST | `/gift-cards/redeem-into-account` | signed-in | `GiftCardsAccountController.redeemIntoAccount` :32 | Redeem a gift card's full balance into my store credit |
-| GET | `/store-credit` | signed-in | `StoreCreditAccountController.balance` :16 | My store credit balance |
-| GET | `/store-credit/ledger` | signed-in | `StoreCreditAccountController.ledger` :22 | My store credit history |
+| GET | `/store-credit` | signed-in | `StoreCreditAccountController.balance` :17 | My store credit balance |
+| GET | `/store-credit/ledger` | signed-in | `StoreCreditAccountController.ledger` :23 | My store credit history |
 
 
 ## Domain events
@@ -117,7 +117,7 @@ _No spec files in this unit._
 | `GiftCardsModule` | class | `giftcards.module.ts:14` |  |
 | `maskGiftCardCode` | function | `giftcards.service.ts:11` | Never log or display a full code — WO-5.4's own security note. |
 | `GiftCardsService` | class | `giftcards.service.ts:20` |  |
-| `StoreCreditAccountController` | class | `store-credit-account.controller.ts:11` | WO-7.4 — the customer's own balance and full transaction history. |
+| `StoreCreditAccountController` | class | `store-credit-account.controller.ts:12` | WO-7.4 — the customer's own balance and full transaction history. |
 | `StoreCreditReconcileCron` | class | `store-credit-reconcile.cron.ts:11` | Nightly integrity check for the `User.storeCreditBalance` cache (WO-5.5's own "if you cache it, add a reconci… |
 | `StoreCreditService` | class | `store-credit.service.ts:18` | Store credit: the same ledger shape as GiftCard, attached to a User rather than a code (WO-5.5). |
 

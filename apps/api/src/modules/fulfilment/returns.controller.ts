@@ -12,7 +12,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
-import { AuthenticatedOnly, CurrentUser, RequirePermission } from '../../core/auth/decorators';
+import { AuthenticatedOnly, CurrentUser, CustomerScope, RequirePermission } from '../../core/auth/decorators';
 import { StorageService } from '../../core/storage/storage.service';
 import type { ReturnStatus } from '../../core/prisma/client';
 import {
@@ -105,12 +105,14 @@ export class ReturnsController {
   ) {}
 
   @AuthenticatedOnly()
+  @CustomerScope('returns:read')
   @Get('reasons')
   listReasons() {
     return this.returns.listReasons();
   }
 
   @AuthenticatedOnly()
+  @CustomerScope('returns:read')
   @Get('mine')
   @ApiOperation({ summary: "The signed-in customer's own return requests" })
   mine(@CurrentUser() user: AuthenticatedUser) {
@@ -118,18 +120,21 @@ export class ReturnsController {
   }
 
   @AuthenticatedOnly()
+  @CustomerScope('returns:read')
   @Get(':id')
   get(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.returns.getRequest(id, user.id);
   }
 
   @AuthenticatedOnly()
+  @CustomerScope('returns:write')
   @Post()
   create(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateReturnRequestDto) {
     return this.returns.createRequest(dto, user.id);
   }
 
   @AuthenticatedOnly()
+  @CustomerScope('returns:write')
   @Post(':id/photos')
   @ApiConsumes('multipart/form-data')
   @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })

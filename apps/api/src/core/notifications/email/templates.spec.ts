@@ -251,6 +251,21 @@ describe('account security emails', () => {
     expect(mail.subject).toBe('Confirm your email address');
     expect(mail.html).toContain('https://yaseen.pk/en/verify-email?token=xyz789');
   });
+
+  it('tells the owner a store API key was created, and links to where they can revoke it', () => {
+    const mail = renderEmail('user.api_key_issued', { surface: 'STOREFRONT', lastFour: 'x7Qa', reason: 'CREATED' }, 'en', ctx)!;
+    expect(mail.subject).toBe('A new API key was issued for your account');
+    // Pinned left-to-right, like every other Latin value in these mails, so
+    // Urdu's right-to-left flow cannot reorder it.
+    expect(mail.text).toContain('ending in ‎x7Qa‎');
+    expect(mail.html).toContain('https://yaseen.pk/en/account/api-keys');
+  });
+
+  it('links an admin key to the admin’s own key page, with no locale segment', () => {
+    const mail = renderEmail('user.api_key_issued', { surface: 'ADMIN', lastFour: 'Zz09', reason: 'ROTATED' }, 'ur', ctx)!;
+    expect(mail.html).toContain('https://yaseen.pk/admin/account/api-keys');
+    expect(mail.html).not.toContain('/ur/admin');
+  });
 });
 
 describe('marketing templates', () => {

@@ -47,6 +47,9 @@ const TABS: Tab[] = [
   // doc 155 — off by default (`wallet` module); see DECISIONS.md.
   { href: ROUTES.storefront.accountWallet, key: 'wallet', module: 'wallet' },
   { href: ROUTES.storefront.accountNotifications, key: 'notifications' },
+  // Personal API keys (163-personal-api-keys.md) — the same place, under the
+  // person's own account, as the admin's own "My API keys" (NAV-12).
+  { href: ROUTES.storefront.accountApiKeys, key: 'apiKeys' },
   { href: ROUTES.storefront.account, key: 'profile', exact: true },
 ];
 

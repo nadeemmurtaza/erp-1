@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 10 files
 
 Source: `apps/api/src/modules/reviews/`
 
-## Files (10 · 860 lines)
+## Files (10 · 862 lines)
 
 All paths relative to `apps/api/src/modules/reviews/dto`.
 
@@ -22,7 +22,7 @@ All paths relative to `apps/api/src/modules/reviews/dto`.
 | `review-summary.listener.ts` | event subscriber | 26 | 1 | Only a review that just became visible is worth checking the threshold over — a REJECTED one never grows the published… |
 | `review-summary.service.spec.ts` | unit test | 244 | — |  |
 | `review-summary.service.ts` | service | 188 | 1 | WO-9.9 (09-ai-layer.md) — "'Most customers say it runs small' above the review list, regenerated when review count cros… |
-| `reviews-public.controller.ts` | controller | 55 | 1 |  |
+| `reviews-public.controller.ts` | controller | 57 | 1 |  |
 | `reviews.controller.ts` | controller | 26 | 1 | Staff moderation — every review starts PENDING and is spam-prone by design (WO-7.5). |
 | `reviews.module.ts` | nest module | 14 | 1 |  |
 | `reviews.service.spec.ts` | unit test | 68 | — |  |
@@ -37,9 +37,9 @@ All paths relative to `apps/api/src/modules/reviews/dto`.
 | PATCH | `/admin/reviews/:id` | `reviews.moderate` | `ReviewsController.moderate` :22 | Publish, reject, or reply to a review |
 | GET | `/products/:productId/reviews` | **PUBLIC** | `ReviewsPublicController.listForProduct` :21 | A product's published reviews |
 | GET | `/products/:productId/reviews/summary` | **PUBLIC** | `ReviewsPublicController.summary` :28 | WO-9.9 — the cached AI review summary, or null until enough reviews exist |
-| POST | `/reviews` | signed-in | `ReviewsPublicController.create` :43 | Submit a review — goes to PENDING, moderated before it shows |
-| POST | `/reviews/:id/helpful` | **PUBLIC** | `ReviewsPublicController.markHelpful` :51 | Mark a review helpful |
-| GET | `/reviews/mine` | signed-in | `ReviewsPublicController.mine` :35 | My own reviews, any status |
+| POST | `/reviews` | signed-in | `ReviewsPublicController.create` :45 | Submit a review — goes to PENDING, moderated before it shows |
+| POST | `/reviews/:id/helpful` | **PUBLIC** | `ReviewsPublicController.markHelpful` :53 | Mark a review helpful |
+| GET | `/reviews/mine` | signed-in | `ReviewsPublicController.mine` :36 | My own reviews, any status |
 
 
 ## Domain events

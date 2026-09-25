@@ -1,5 +1,11 @@
+import type { ApiKeySurface } from '@newax/shared';
+
 export const IS_PUBLIC_KEY = 'auth:isPublic';
 export const PERMISSIONS_KEY = 'auth:permissions';
+/** @see SessionOnly — refused to every API key, whatever it carries. */
+export const SESSION_ONLY_KEY = 'auth:sessionOnly';
+/** @see CustomerScope — which storefront API keys may reach a customer route. */
+export const CUSTOMER_SCOPES_KEY = 'auth:customerScopes';
 
 /**
  * What a verified access token carries. No `role`/`roles` here on purpose —
@@ -18,15 +24,46 @@ export interface JwtPayload {
   exp?: number;
 }
 
+/**
+ * The personal API key a request authenticated with, when it did not come
+ * from a session (163-personal-api-keys.md). @see ApiKeyAuthService
+ */
+export interface ApiKeyPrincipal {
+  /** The `ApiKey` row. */
+  id: string;
+  surface: ApiKeySurface;
+  /**
+   * A STOREFRONT key's scopes, expanded (write ⇒ read) and filtered to the
+   * catalogue. Empty for an ADMIN key, whose effective set is
+   * `AuthenticatedUser.permissions` itself.
+   */
+  customerScopes: readonly string[];
+}
+
 /** The authenticated principal attached to the request. */
 export interface AuthenticatedUser {
   id: string;
-  /** Every `Role` name this user currently holds — plural (custom roles); resolved fresh on every request. */
+  /** Every `Role` name this user currently holds — plural (custom roles); resolved fresh on every request. `[]` for an API key. */
   roles: string[];
-  /** Resolved fresh from every held role's grants, plus overrides, on every request — @see PermissionsResolverService. */
+  /**
+   * Resolved fresh from every held role's grants, plus overrides, on every
+   * request — @see PermissionsResolverService. For an API key it is already
+   * the key's effective set, `(key's permissions) ∩ (owner's live
+   * permissions) − NON_DELEGATABLE_PERMISSIONS`, and `[]` for a STOREFRONT
+   * key — so every existing check that reads it (a route's
+   * `@RequirePermission`, `stripOrderCost()`'s cost columns) caps a key
+   * without knowing keys exist.
+   */
   permissions: string[];
   email: string | null;
   phone: string | null;
+  /**
+   * Present only when the request authenticated with a personal API key.
+   * `id` above is still the owner's: a key acts as its owner, never as a
+   * separate actor, so every audit row and every "is this your own row"
+   * filter treats it as them.
+   */
+  apiKey?: ApiKeyPrincipal;
 }
 
 /*

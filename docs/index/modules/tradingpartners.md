@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 23 files
 
 Source: `apps/api/src/modules/tradingpartners/`
 
-## Files (23 · 1,947 lines)
+## Files (23 · 1,956 lines)
 
 All paths relative to `apps/api/src/modules/tradingpartners/dto`.
 
@@ -34,7 +34,7 @@ All paths relative to `apps/api/src/modules/tradingpartners/dto`.
 | `supplier-digest.listener.ts` | event subscriber | 35 | 1 | The "back" direction: SupplyChainDigestCron's own nightly stock/velocity computation, delivered to a connected SUPPLIER… |
 | `trading-partner-portal.controller.spec.ts` | unit test | 63 | — |  |
 | `trading-partner-portal.controller.ts` | controller | 46 | 1 | What a connected trading partner's own system calls — authenticated by their inbound API key (WO-18.2), never a user se… |
-| `trading-partners.controller.ts` | controller | 62 | 1 |  |
+| `trading-partners.controller.ts` | controller | 71 | 1 | `purchasing.manage` may be put in a personal API key (purchase-order sync is a legitimate integration), so the three ro… |
 | `trading-partners.module.ts` | nest module | 53 | 1 |  |
 | `trading-partners.service.spec.ts` | unit test | 385 | — |  |
 | `trading-partners.service.ts` | service | 299 | 1 | `TradingPartner` CRUD, credential issuance (WO-18.1), inbound authentication (WO-18.2) and outbound delivery (WO-18.3)… |
@@ -52,14 +52,14 @@ All paths relative to `apps/api/src/modules/tradingpartners/dto`.
 | GET | `/admin/quotes` | `orders.manage` | `QuotesController.findAll` :15 | List quotes sent to trading partners |
 | POST | `/admin/quotes` | `orders.manage` | `QuotesController.send` :27 | Send a quote — auto-pushed to the trading partner immediately |
 | GET | `/admin/quotes/:id` | `orders.manage` | `QuotesController.findOne` :21 | Get a quote |
-| GET | `/admin/trading-partners` | `purchasing.manage` | `TradingPartnersController.findAll` :15 | List trading partners |
-| POST | `/admin/trading-partners` | `purchasing.manage` | `TradingPartnersController.create` :27 | Register a trading partner |
-| DELETE | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.remove` :39 | Remove a trading partner — linked suppliers fall back to manual entry |
-| GET | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.findOne` :21 | Get a trading partner |
-| PATCH | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.update` :33 | Update a trading partner |
-| POST | `/admin/trading-partners/:id/invite` | `purchasing.manage` | `TradingPartnersController.invite` :58 | Send the first-connection request — returns a one-time accept link, shown once |
-| POST | `/admin/trading-partners/:id/outbound-key` | `purchasing.manage` | `TradingPartnersController.setOutboundApiKey` :51 | Store the key they gave us, for calling their API |
-| POST | `/admin/trading-partners/:id/rotate-inbound-key` | `purchasing.manage` | `TradingPartnersController.rotateInboundKey` :45 | Issue a fresh key for them to call us with — shown once, never retrievable again |
+| GET | `/admin/trading-partners` | `purchasing.manage` | `TradingPartnersController.findAll` :21 | List trading partners |
+| POST | `/admin/trading-partners` | `purchasing.manage` | `TradingPartnersController.create` :33 | Register a trading partner |
+| DELETE | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.remove` :45 | Remove a trading partner — linked suppliers fall back to manual entry |
+| GET | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.findOne` :27 | Get a trading partner |
+| PATCH | `/admin/trading-partners/:id` | `purchasing.manage` | `TradingPartnersController.update` :39 | Update a trading partner |
+| POST | `/admin/trading-partners/:id/invite` | `purchasing.manage` | `TradingPartnersController.invite` :67 | Send the first-connection request — returns a one-time accept link, shown once |
+| POST | `/admin/trading-partners/:id/outbound-key` | `purchasing.manage` | `TradingPartnersController.setOutboundApiKey` :59 | Store the key they gave us, for calling their API |
+| POST | `/admin/trading-partners/:id/rotate-inbound-key` | `purchasing.manage` | `TradingPartnersController.rotateInboundKey` :52 | Issue a fresh key for them to call us with — shown once, never retrievable again |
 | POST | `/trading-partners/accept` | **PUBLIC** | `TradingPartnerPortalController.accept` :41 | "They accept" — the second half of the first-connection handshake, starts the relation |
 | GET | `/trading-partners/stock` | **PUBLIC** | `TradingPartnerPortalController.stock` :25 |  |
 
@@ -148,7 +148,7 @@ check there before adding another.
 | `QuotesController` | class | `quotes.controller.ts:10` |  |
 | `SupplierDigestListener` | class | `supplier-digest.listener.ts:16` | The "back" direction: SupplyChainDigestCron's own nightly stock/velocity computation, delivered to a connecte… |
 | `TradingPartnerPortalController` | class | `trading-partner-portal.controller.ts:17` | What a connected trading partner's own system calls — authenticated by their inbound API key (WO-18.2), never… |
-| `TradingPartnersController` | class | `trading-partners.controller.ts:10` |  |
+| `TradingPartnersController` | class | `trading-partners.controller.ts:16` | `purchasing.manage` may be put in a personal API key (purchase-order sync is a legitimate integration), so th… |
 | `TradingPartnersModule` | class | `trading-partners.module.ts:52` |  |
 | `TradingPartnersService` | class | `trading-partners.service.ts:31` | `TradingPartner` CRUD, credential issuance (WO-18.1), inbound authentication (WO-18.2) and outbound delivery… |
 

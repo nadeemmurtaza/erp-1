@@ -1,9 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { RequirePermission } from '../../core/auth/decorators';
+import { RequirePermission, SessionOnly } from '../../core/auth/decorators';
 import { TradingPartnersService } from './trading-partners.service';
 import { CreateTradingPartnerDto, SetOutboundApiKeyDto, UpdateTradingPartnerDto } from './dto/trading-partner.dto';
 
+/**
+ * `purchasing.manage` may be put in a personal API key (purchase-order sync
+ * is a legitimate integration), so the three routes that issue or install a
+ * credential are `@SessionOnly()` instead: a key must never mint a
+ * trading-partner credential that outlives it (163-personal-api-keys.md §2).
+ */
 @ApiTags('Trading Partners')
 @Controller('admin/trading-partners')
 @RequirePermission('purchasing.manage')
@@ -41,12 +47,14 @@ export class TradingPartnersController {
   }
 
   @Post(':id/rotate-inbound-key')
+  @SessionOnly()
   @ApiOperation({ summary: 'Issue a fresh key for them to call us with — shown once, never retrievable again' })
   async rotateInboundKey(@Param('id') id: string) {
     return this.tradingPartners.rotateInboundKey(id);
   }
 
   @Post(':id/outbound-key')
+  @SessionOnly()
   @ApiOperation({ summary: 'Store the key they gave us, for calling their API' })
   async setOutboundApiKey(@Param('id') id: string, @Body() dto: SetOutboundApiKeyDto) {
     await this.tradingPartners.setOutboundApiKey(id, dto.apiKey);
@@ -54,6 +62,7 @@ export class TradingPartnersController {
   }
 
   @Post(':id/invite')
+  @SessionOnly()
   @ApiOperation({ summary: 'Send the first-connection request — returns a one-time accept link, shown once' })
   async invite(@Param('id') id: string) {
     return this.tradingPartners.inviteConnection(id);

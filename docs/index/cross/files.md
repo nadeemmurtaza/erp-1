@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **1,906** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,928** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 786 | 109,302 | [files/api.md](../files/api.md) |
-| apps/web | 363 | 55,980 | [files/web.md](../files/web.md) |
+| apps/api | 801 | 113,035 | [files/api.md](../files/api.md) |
+| apps/web | 367 | 57,479 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 76 | 7,229 | [files/packages.md](../files/packages.md) |
-| docs/* | 392 | 61,419 | [files/docs.md](../files/docs.md) |
+| packages/* | 78 | 7,775 | [files/packages.md](../files/packages.md) |
+| docs/* | 393 | 62,132 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 29,609 | [files/infra.md](../files/infra.md) |
-| repository root files | 152 | 15,308 | [files/root.md](../files/root.md) |
+| repository root files | 152 | 15,334 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -28,15 +28,15 @@ name a new file: the convention is what makes it findable.
 
 | Kind | Count |
 |---|---|
-| doc | 417 |
-| unit test | 198 |
-| page | 175 |
-| service | 141 |
-| module | 136 |
-| component | 110 |
-| controller | 100 |
-| dto | 96 |
-| migration | 76 |
+| doc | 418 |
+| unit test | 205 |
+| page | 178 |
+| service | 143 |
+| module | 139 |
+| component | 111 |
+| controller | 102 |
+| dto | 97 |
+| migration | 77 |
 | nest module | 72 |
 | prisma schema | 42 |
 | script | 39 |
@@ -46,7 +46,7 @@ name a new file: the convention is what makes it findable.
 | asset | 26 |
 | utility | 22 |
 | scheduled job | 20 |
-| e2e test | 18 |
+| e2e test | 19 |
 | file | 13 |
 | yaml | 12 |
 | config | 11 |

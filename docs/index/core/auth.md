@@ -3,7 +3,7 @@
 
 # Core: `auth`
 
-Shared platform — available to every module, part of no feature · 21 files
+Shared platform — available to every module, part of no feature · 31 files
 
 
 
@@ -12,22 +12,32 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (21 · 2,208 lines)
+## Files (31 · 4,712 lines)
 
-All paths relative to `apps/api/src/core/auth`.
+All paths relative to `apps/api/src/core/auth/api-keys`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `auth.constants.ts` | module | 62 | 10 |  |
-| `auth.controller.ts` | controller | 197 | 1 |  |
-| `auth.module.ts` | nest module | 19 | 1 |  |
+| `api-key-access.spec.ts` | unit test | 159 | — |  |
+| `api-key-access.ts` | module | 93 | 4 | What a route declares about who may call it, read off its decorators. |
+| `api-key-auth.service.spec.ts` | unit test | 270 | — |  |
+| `api-key-auth.service.ts` | service | 192 | 5 | `lastUsedAt` is stamped at most this often per key — a key making 300 requests a minute writes it once. |
+| `api-keys-admin.controller.ts` | controller | 41 | 1 | Oversight of every account's personal API keys — read and revoke only (163-personal-api-keys.md §5). |
+| `api-keys.controller.ts` | controller | 67 | 1 | A signed-in person managing their own personal API keys, on either surface (163-personal-api-keys.md §5). |
+| `api-keys.service.spec.ts` | unit test | 505 | — |  |
+| `api-keys.service.ts` | service | 693 | 9 |  |
+| `api-key.dto.ts` | dto | 114 | 5 | Shape and bounds only. |
+| `auth.constants.ts` | module | 99 | 13 |  |
+| `auth.controller.ts` | controller | 202 | 1 |  |
+| `auth.module.ts` | nest module | 28 | 1 |  |
 | `auth.service.spec.ts` | unit test | 24 | — |  |
 | `auth.service.ts` | service | 429 | 6 |  |
-| `bearer-token.ts` | module | 16 | 1 | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machine auth pa… |
-| `decorators.ts` | module | 53 | 4 | Marks a route as reachable without a token. |
+| `bearer-token.ts` | module | 31 | 2 | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machine auth pa… |
+| `decorators.ts` | module | 80 | 6 | Marks a route as reachable without a token. |
 | `auth.dto.ts` | dto | 126 | 8 |  |
 | `role.dto.ts` | dto | 44 | 2 |  |
-| `guards.ts` | module | 102 | 2 | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
+| `guards.spec.ts` | unit test | 212 | — |  |
+| `guards.ts` | module | 167 | 2 | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
 | `jwt.strategy.ts` | auth strategy | 44 | 1 |  |
 | `ownership.guard.spec.ts` | unit test | 49 | — |  |
 | `ownership.guard.ts` | guard | 24 | 2 |  |
@@ -41,25 +51,32 @@ All paths relative to `apps/api/src/core/auth`.
 | `scope.guard.ts` | guard | 129 | 7 | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RETAIL-ERP.md… |
 
 
-## HTTP routes (15)
+## HTTP routes (22)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/api-keys` | `users.manage` | `ApiKeysAdminController.list` :24 | Every API key on this deployment, by staff and customers — metadata only |
+| POST | `/admin/api-keys/:id/revoke` | `users.manage` | `ApiKeysAdminController.revoke` :37 | Revoke anyone's API key — final; its next request is refused |
 | GET | `/admin/roles` | `roles.manage_permissions` | `RolesController.list` :21 | Every custom role, its permissions, and how many users hold it |
 | POST | `/admin/roles` | `roles.manage_permissions` | `RolesController.create` :27 | Create a role. Duplicate names are refused; a duplicate permission set is only flagged. |
 | DELETE | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.delete` :39 | Delete a role — refused if it would leave a critical permission held by nobody |
 | PATCH | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.update` :33 | Edit a role's name, description, or permission set |
-| POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` :145 | Change your password and sign out other devices |
-| POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` :157 | Request a password reset link by email |
+| GET | `/api-keys` | signed-in | `ApiKeysController.list` :35 | Your own API keys for one surface, each with what it can do right now |
+| POST | `/api-keys` | signed-in | `ApiKeysController.create` :42 | Create a key carrying some of your own access — its secret is shown in this response only |
+| PATCH | `/api-keys/:id` | signed-in | `ApiKeysController.update` :48 | Rename a key, or replace its scopes — re-checked against what you hold now |
+| POST | `/api-keys/:id/revoke` | signed-in | `ApiKeysController.revoke` :63 | Revoke a key — final; its next request is refused |
+| POST | `/api-keys/:id/rotate` | signed-in | `ApiKeysController.rotate` :56 | Issue a new secret and expiry for a key — same scopes; the old secret stops working at on… |
+| POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` :150 | Change your password and sign out other devices |
+| POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` :162 | Request a password reset link by email |
 | POST | `/auth/login` | **PUBLIC** | `AuthController.login` :71 | Sign in with an email or phone number |
 | POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` :101 | Revoke the current refresh token |
-| GET | `/auth/me` | signed-in | `AuthController.me` :118 | The signed-in user |
-| PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :136 | Update your own profile fields |
+| GET | `/auth/me` | signed-in | `AuthController.me` :119 | The signed-in user |
+| PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :140 | Update your own profile fields |
 | POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` :81 | Exchange a refresh token for a new access token |
 | POST | `/auth/register` | **PUBLIC** | `AuthController.register` :57 | Create a customer account |
-| POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :183 | Resend the email verification link |
-| POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` :166 | Set a new password using a reset link token |
-| POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` :174 | Confirm an email address using a verification link token |
+| POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :188 | Resend the email verification link |
+| POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` :171 | Set a new password using a reset link token |
+| POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` :179 | Confirm an email address using a verification link token |
 
 
 ## Domain events
@@ -72,6 +89,7 @@ All paths relative to `apps/api/src/core/auth`.
 | `PasswordChanged` | `user.password_changed` | `auth.service.ts:203`, `auth.service.ts:258` |
 | `PasswordResetRequested` | `user.password_reset_requested` | `auth.service.ts:228` |
 | `EmailVerificationRequested` | `user.email_verification_requested` | `auth.service.ts:279` |
+| `ApiKeyIssued` | `user.api_key_issued` | `api-keys.service.ts:255`, `api-keys.service.ts:386` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -87,9 +105,9 @@ _none_
 
 **`AuthModule`** (`auth.module.ts`)
 - imports: `PassportModule`, `JwtModule`
-- controllers: `AuthController`, `RolesController`
-- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`
-- exports: `AuthService`, `PermissionsResolverService`, `RolesService`
+- controllers: `AuthController`, `RolesController`, `ApiKeysController`, `ApiKeysAdminController`
+- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`
+- exports: `AuthService`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`
 
 
 ## Reaches out to
@@ -101,11 +119,15 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (5)
+## Tests (9)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `api-key-access.spec.ts` | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements — the handler overrid… |
+| `api-key-auth.service.spec.ts` | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says why · failed attempts… |
+| `api-keys.service.spec.ts` | 36 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do right now · update · rot… |
 | `auth.service.spec.ts` | 2 | parseDuration |
+| `guards.spec.ts` | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a session — unchanged ·… |
 | `ownership.guard.spec.ts` | 5 | assertCanManage |
 | `permissions.service.spec.ts` | 6 | PermissionsResolverService.resolveForUser |
 | `roles.service.spec.ts` | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStillHeldAfterRevoke · c… |
@@ -116,18 +138,46 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `IS_PUBLIC_KEY` | const | `auth.constants.ts:1` |  |
-| `PERMISSIONS_KEY` | const | `auth.constants.ts:2` |  |
-| `JwtPayload` | interface | `auth.constants.ts:12` | What a verified access token carries. |
-| `AuthenticatedUser` | interface | `auth.constants.ts:22` | The authenticated principal attached to the request. |
-| `AUTHENTICATED_ONLY_KEY` | const | `auth.constants.ts:46` | Marks a route as deliberately open to any signed-in user. |
-| `REFRESH_COOKIE` | const | `auth.constants.ts:48` | Marks a route as deliberately open to any signed-in user. |
-| `CART_COOKIE` | const | `auth.constants.ts:49` |  |
-| `LEGACY_REFRESH_COOKIE` | const | `auth.constants.ts:51` |  |
-| `LEGACY_CART_COOKIE` | const | `auth.constants.ts:52` |  |
-| `readCookie` | function | `auth.constants.ts:55` | The current cookie, or the one written before the rename. |
+| `RouteRequirements` | interface | `api-key-access.ts:12` | What a route declares about who may call it, read off its decorators. |
+| `ApiKeyAccessDecision` | type | `api-key-access.ts:22` |  |
+| `decideApiKeyAccess` | function | `api-key-access.ts:44` | May this API key call this route? |
+| `readRouteRequirements` | function | `api-key-access.ts:84` | Reads a route's requirements the way the global guards already read `@Public()`/`@RequirePermission()` — the… |
+| `API_KEY_LAST_USED_RESOLUTION_MS` | const | `api-key-auth.service.ts:9` | `lastUsedAt` is stamped at most this often per key — a key making 300 requests a minute writes it once. |
+| `API_KEY_FAILURE_LIMIT` | const | `api-key-auth.service.ts:22` | Failed key authentications one client address may make per window before its key attempts are refused with a… |
+| `API_KEY_FAILURE_WINDOW_MS` | const | `api-key-auth.service.ts:23` | Failed key authentications one client address may make per window before its key attempts are refused with a… |
+| `ApiKeyAuthContext` | interface | `api-key-auth.service.ts:36` |  |
+| `ApiKeyAuthService` | class | `api-key-auth.service.ts:59` | Turns a raw personal API key into the principal it acts as — or a 401 that says why not (163-personal-api-key… |
+| `ApiKeysAdminController` | class | `api-keys-admin.controller.ts:19` | Oversight of every account's personal API keys — read and revoke only (163-personal-api-keys.md §5). |
+| `ApiKeysController` | class | `api-keys.controller.ts:30` | A signed-in person managing their own personal API keys, on either surface (163-personal-api-keys.md §5). |
+| `ApiKeyStatus` | type | `api-keys.service.ts:34` |  |
+| `API_KEY_STATUSES` | const | `api-keys.service.ts:35` |  |
+| `ApiKeyView` | interface | `api-keys.service.ts:38` | One key, as its owner sees it. |
+| `IssuedApiKey` | interface | `api-keys.service.ts:72` | A key together with its raw secret — returned by create and rotate, and by nothing else, ever. |
+| `ApiKeyOversightView` | interface | `api-keys.service.ts:78` | One key, as the `users.manage` oversight list sees it: its owner, its stored scopes, its state — no secret, n… |
+| `CreateApiKeyInput` | interface | `api-keys.service.ts:90` |  |
+| `UpdateApiKeyInput` | interface | `api-keys.service.ts:98` |  |
+| `ApiKeyOversightQuery` | interface | `api-keys.service.ts:104` |  |
+| `ApiKeysService` | class | `api-keys.service.ts:159` | The lifecycle of personal API keys — and the only code that writes `ApiKey` (163-personal-api-keys.md §5). |
+| `CreateApiKeyDto` | class | `api-key.dto.ts:32` | Shape and bounds only. |
+| `UpdateApiKeyDto` | class | `api-key.dto.ts:65` |  |
+| `RotateApiKeyDto` | class | `api-key.dto.ts:88` |  |
+| `ListMyApiKeysQueryDto` | class | `api-key.dto.ts:97` |  |
+| `ListApiKeysQueryDto` | class | `api-key.dto.ts:103` |  |
+| `IS_PUBLIC_KEY` | const | `auth.constants.ts:3` |  |
+| `PERMISSIONS_KEY` | const | `auth.constants.ts:4` |  |
+| `SESSION_ONLY_KEY` | const | `auth.constants.ts:6` | @see SessionOnly — refused to every API key, whatever it carries. |
+| `CUSTOMER_SCOPES_KEY` | const | `auth.constants.ts:8` | @see CustomerScope — which storefront API keys may reach a customer route. |
+| `JwtPayload` | interface | `auth.constants.ts:18` | What a verified access token carries. |
+| `ApiKeyPrincipal` | interface | `auth.constants.ts:31` | The personal API key a request authenticated with, when it did not come from a session (163-personal-api-keys… |
+| `AuthenticatedUser` | interface | `auth.constants.ts:44` | The authenticated principal attached to the request. |
+| `AUTHENTICATED_ONLY_KEY` | const | `auth.constants.ts:83` | Marks a route as deliberately open to any signed-in user. |
+| `REFRESH_COOKIE` | const | `auth.constants.ts:85` | Marks a route as deliberately open to any signed-in user. |
+| `CART_COOKIE` | const | `auth.constants.ts:86` |  |
+| `LEGACY_REFRESH_COOKIE` | const | `auth.constants.ts:88` |  |
+| `LEGACY_CART_COOKIE` | const | `auth.constants.ts:89` |  |
+| `readCookie` | function | `auth.constants.ts:92` | The current cookie, or the one written before the rename. |
 | `AuthController` | class | `auth.controller.ts:46` |  |
-| `AuthModule` | class | `auth.module.ts:18` |  |
+| `AuthModule` | class | `auth.module.ts:27` |  |
 | `AuthTokens` | interface | `auth.service.ts:21` |  |
 | `AuthResult` | interface | `auth.service.ts:27` |  |
 | `RegisterInput` | interface | `auth.service.ts:31` |  |
@@ -135,10 +185,13 @@ check there before adding another.
 | `AuthService` | class | `auth.service.ts:48` |  |
 | `parseDuration` | function | `auth.service.ts:416` | "30d" -> milliseconds. |
 | `bearerToken` | function | `bearer-token.ts:10` | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machi… |
-| `Public` | const | `decorators.ts:16` | Marks a route as reachable without a token. |
-| `RequirePermission` | const | `decorators.ts:25` | Restricts a route to callers holding at least one of the given permissions. |
-| `AuthenticatedOnly` | const | `decorators.ts:41` | Marks a route as deliberately open to any signed-in user. |
-| `CurrentUser` | const | `decorators.ts:45` | Injects the authenticated user, or undefined on a @Public route. |
+| `bearerCredential` | function | `bearer-token.ts:26` | The credential in an `Authorization: Bearer <credential>` header, or undefined — never throws. |
+| `Public` | const | `decorators.ts:18` | Marks a route as reachable without a token. |
+| `RequirePermission` | const | `decorators.ts:27` | Restricts a route to callers holding at least one of the given permissions. |
+| `AuthenticatedOnly` | const | `decorators.ts:43` | Marks a route as deliberately open to any signed-in user. |
+| `SessionOnly` | const | `decorators.ts:56` | Refuses the route to every personal API key, whatever permission or scope it carries — only a signed-in sessi… |
+| `CustomerScope` | const | `decorators.ts:68` | Lets a storefront API key reach this customer self-service route when it carries any one of the named scopes… |
+| `CurrentUser` | const | `decorators.ts:72` | Injects the authenticated user, or undefined on a @Public route. |
 | `RegisterDto` | class | `auth.dto.ts:11` |  |
 | `LoginDto` | class | `auth.dto.ts:41` |  |
 | `RefreshDto` | class | `auth.dto.ts:56` |  |
@@ -149,8 +202,8 @@ check there before adding another.
 | `VerifyEmailDto` | class | `auth.dto.ts:120` |  |
 | `CreateRoleDto` | class | `role.dto.ts:5` |  |
 | `UpdateRoleDto` | class | `role.dto.ts:24` |  |
-| `JwtAuthGuard` | class | `guards.ts:25` | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
-| `PermissionsGuard` | class | `guards.ts:80` | Enforces @RequirePermission(...). |
+| `JwtAuthGuard` | class | `guards.ts:40` | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
+| `PermissionsGuard` | class | `guards.ts:139` | Enforces @RequirePermission(...). |
 | `JwtStrategy` | class | `jwt.strategy.ts:10` |  |
 | `OwnedEntity` | interface | `ownership.guard.ts:3` |  |
 | `assertCanManage` | function | `ownership.guard.ts:13` | Throws unless the actor holds "<capability>.manage_all", or holds "<capability>.manage_own" AND entity.ownerI… |

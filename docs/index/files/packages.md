@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 76 tracked files in `packages/*`, by directory.
+All 78 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -49,10 +49,12 @@ All 76 tracked files in `packages/*`, by directory.
 | `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (38)
+### `packages/shared/src` (40)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `api-keys.spec.ts` | unit test | 231 |  |
+| `api-keys.ts` | module | 314 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
 | `brand.ts` | module | 345 | THE BRAND FILE. |
 | `cod-risk.spec.ts` | unit test | 199 |  |
 | `cod-risk.ts` | module | 167 |  |
@@ -68,7 +70,7 @@ All 76 tracked files in `packages/*`, by directory.
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
-| `index.ts` | module | 41 |  |
+| `index.ts` | module | 42 |  |
 | `markdown-suggestion.spec.ts` | unit test | 86 |  |
 | `markdown-suggestion.ts` | module | 85 | WO-9.8 (09-ai-layer.md) — "recommend the discount that clears [ageing stock] at the least margin loss, showing the trad… |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |

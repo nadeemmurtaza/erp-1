@@ -1,13 +1,14 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthenticatedOnly, CurrentUser } from '../../core/auth/decorators';
+import { AuthenticatedOnly, CurrentUser, CustomerScope } from '../../core/auth/decorators';
 import { PaginationQueryDto } from '../../core/common/dto/pagination.dto';
 import { StoreCreditService } from './store-credit.service';
 
-/** WO-7.4 — the customer's own balance and full transaction history. */
+/** WO-7.4 — the customer's own balance and full transaction history. Read-only, so one scope covers the class. */
 @ApiTags('store-credit')
 @Controller('store-credit')
 @AuthenticatedOnly()
+@CustomerScope('store-credit:read')
 export class StoreCreditAccountController {
   constructor(private readonly storeCredit: StoreCreditService) {}
 

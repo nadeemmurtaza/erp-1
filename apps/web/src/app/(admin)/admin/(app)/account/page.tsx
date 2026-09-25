@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import { useAdminSession } from '@/components/admin/session';
+import { ROUTES } from '@/constants/routes';
 
 export default function AdminAccountPage() {
   const { can, ...user } = useAdminSession();
@@ -88,6 +90,13 @@ export default function AdminAccountPage() {
           to reset your password from Team &amp; Access.
         </div>
       )}
+
+      <p className="mt-6 max-w-sm text-sm text-neutral-900/60">
+        Connecting a script, an integration or an AI agent?{' '}
+        <Link href={ROUTES.admin.accountApiKeys} className="font-medium text-accent-hover hover:underline">
+          Manage your API keys
+        </Link>
+      </p>
     </>
   );
 }

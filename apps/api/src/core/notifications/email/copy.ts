@@ -77,6 +77,16 @@ export interface EmailCopy {
     heading: string;
     intro: string;
   };
+  /** A personal API key's secret was issued — at create or at rotate (163-personal-api-keys.md). */
+  apiKeyIssued: {
+    subject: string;
+    heading: string;
+    /** `lastFour` identifies the key; the key's own name is deliberately never in this mail. */
+    created: (lastFour: string, surface: 'ADMIN' | 'STOREFRONT') => string;
+    rotated: (lastFour: string, surface: 'ADMIN' | 'STOREFRONT') => string;
+    notYou: string;
+    cta: string;
+  };
   passwordReset: {
     subject: string;
     heading: string;
@@ -264,6 +274,17 @@ const en: EmailCopy = {
     heading: 'Your password was changed',
     intro:
       'Your password was just changed. If this was you, no action is needed. If it was not, contact us right away — reply to this email.',
+  },
+  apiKeyIssued: {
+    subject: 'A new API key was issued for your account',
+    heading: 'A new API key was issued for your account',
+    created: (lastFour, surface) =>
+      `A new ${surface === 'ADMIN' ? 'admin' : 'store'} API key ending in ${lastFour} was just created on your account. Whoever holds it can act as you, within the access it was given.`,
+    rotated: (lastFour, surface) =>
+      `Your ${surface === 'ADMIN' ? 'admin' : 'store'} API key was just given a new secret, ending in ${lastFour}. The old secret no longer works.`,
+    notYou:
+      'If this was you, no action is needed. If it was not, revoke the key now, change your password, and reply to this email.',
+    cta: 'Review your API keys',
   },
   passwordReset: {
     subject: 'Reset your password',
@@ -462,6 +483,17 @@ const ur: EmailCopy = {
     heading: 'آپ کا پاس ورڈ تبدیل کر دیا گیا',
     intro:
       'ابھی آپ کا پاس ورڈ تبدیل کیا گیا ہے۔ اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو فوراً ہم سے رابطہ کریں — اس ای میل کا جواب دیں۔',
+  },
+  apiKeyIssued: {
+    subject: 'آپ کے اکاؤنٹ کے لیے نئی API کلید جاری کی گئی',
+    heading: 'آپ کے اکاؤنٹ کے لیے نئی API کلید جاری کی گئی',
+    created: (lastFour, surface) =>
+      `ابھی آپ کے اکاؤنٹ پر ایک نئی ${surface === 'ADMIN' ? 'ایڈمن' : 'اسٹور'} API کلید بنائی گئی ہے جس کے آخری حروف ${lastFour} ہیں۔ جس کے پاس یہ کلید ہو وہ اسے دی گئی رسائی کی حد میں آپ کی جگہ کام کر سکتا ہے۔`,
+    rotated: (lastFour, surface) =>
+      `ابھی آپ کی ${surface === 'ADMIN' ? 'ایڈمن' : 'اسٹور'} API کلید کو نیا خفیہ کوڈ دیا گیا ہے جس کے آخری حروف ${lastFour} ہیں۔ پرانا خفیہ کوڈ اب کام نہیں کرتا۔`,
+    notYou:
+      'اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو ابھی یہ کلید منسوخ کریں، اپنا پاس ورڈ تبدیل کریں اور اس ای میل کا جواب دیں۔',
+    cta: 'اپنی API کلیدیں دیکھیں',
   },
   passwordReset: {
     subject: 'اپنا پاس ورڈ ری سیٹ کریں',

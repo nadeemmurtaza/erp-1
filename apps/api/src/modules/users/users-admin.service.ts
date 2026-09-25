@@ -1,6 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { normalizeEmail, normalizePkPhone } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
+import { ApiKeysService } from '../../core/auth/api-keys/api-keys.service';
 import { hashPassword } from '../../core/auth/password.util';
 import { PermissionsResolverService } from '../../core/auth/permissions.service';
 import { RolesService } from '../../core/auth/roles.service';
@@ -27,6 +28,7 @@ export class UsersAdminService {
     private readonly permissions: PermissionsResolverService,
     private readonly roles: RolesService,
     private readonly audit: AuditService,
+    private readonly apiKeys: ApiKeysService,
   ) {}
 
   list() {
@@ -228,6 +230,7 @@ export class UsersAdminService {
     if (dto.role !== undefined) data.role = dto.role;
     if (dto.isActive !== undefined) data.isActive = dto.isActive;
 
+    let apiKeysRevoked = 0;
     const user = await this.prisma.$transaction(async (tx) => {
       const updated = await tx.user.update({
         where: { id: targetId },
@@ -254,6 +257,16 @@ export class UsersAdminService {
         });
       }
 
+      // A deactivated person's personal API keys die with their authority,
+      // in this same transaction (canonical ruling 6) — revoked, not merely
+      // refused while inactive, so reactivating the account never revives
+      // one. A role change deliberately does not revoke them: a key's access
+      // is re-intersected with its owner's live permissions on every
+      // request, so it already shrinks with the demotion.
+      if (dto.isActive === false) {
+        apiKeysRevoked = await this.apiKeys.revokeAllForUserInTransaction(tx, targetId, actorId);
+      }
+
       return updated;
     });
 
@@ -262,7 +275,7 @@ export class UsersAdminService {
       action: 'user.updated',
       entity: 'User',
       entityId: targetId,
-      data: { from: { role: existing.role, isActive: existing.isActive }, to: data },
+      data: { from: { role: existing.role, isActive: existing.isActive }, to: data, apiKeysRevoked },
     });
 
     return user;

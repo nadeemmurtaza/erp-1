@@ -13,7 +13,7 @@ Source: `apps/api/src/core/notifications/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (22 · 4,445 lines)
+## Files (22 · 4,553 lines)
 
 All paths relative to `apps/api/src/core/notifications`.
 
@@ -25,12 +25,12 @@ All paths relative to `apps/api/src/core/notifications`.
 | `email-accounts.service.ts` | service | 389 | 6 | Everything but the two *Encrypted columns — what the API is allowed to return. |
 | `email.channel.spec.ts` | unit test | 43 | — |  |
 | `email.channel.ts` | channel | 337 | 2 | Sends customer email over SMTP. |
-| `catalog.ts` | module | 355 | 4 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
-| `copy.ts` | module | 570 | 2 | Email wording, in both languages the storefront ships. |
+| `catalog.ts` | module | 364 | 4 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
+| `copy.ts` | module | 602 | 2 | Email wording, in both languages the storefront ships. |
 | `email-templates.admin.controller.ts` | controller | 59 | 1 | The "manage email templates" screen's backend: a list of every registered template with what triggers it (or the honest… |
 | `html.ts` | module | 414 | 19 | Escapes text for interpolation into HTML. |
-| `templates.spec.ts` | unit test | 365 | — |  |
-| `templates.ts` | module | 1039 | 21 | Everything a template needs that comes from configuration, not the event. |
+| `templates.spec.ts` | unit test | 380 | — |  |
+| `templates.ts` | module | 1091 | 22 | Everything a template needs that comes from configuration, not the event. |
 | `expo-push.channel.ts` | channel | 89 | 1 | Push notifications to the mobile app, through Expo's push service. |
 | `log.channel.ts` | channel | 26 | 1 | Writes notifications to the application log instead of sending them. |
 | `notification-channel.ts` | module | 38 | 3 | Extension point: outbound customer messaging. |
@@ -103,7 +103,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `email.channel.spec.ts` | 2 | isDeliverable |
-| `templates.spec.ts` | 27 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment refunded email · accou… |
+| `templates.spec.ts` | 29 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment refunded email · accou… |
 
 
 ## Every export in this unit
@@ -132,9 +132,9 @@ check there before adding another.
 | `EmailTemplateCategory` | type | `catalog.ts:18` |  |
 | `EmailTemplateCatalogEntry` | interface | `catalog.ts:20` |  |
 | `EMAIL_TEMPLATE_CATALOG` | const | `catalog.ts:83` |  |
-| `purposeForTemplate` | function | `catalog.ts:351` | Which connected mailbox (see EmailAccountsService) a template should send from. |
+| `purposeForTemplate` | function | `catalog.ts:360` | Which connected mailbox (see EmailAccountsService) a template should send from. |
 | `EmailCopy` | interface | `copy.ts:15` | Email wording, in both languages the storefront ships. |
-| `copyFor` | function | `copy.ts:567` |  |
+| `copyFor` | function | `copy.ts:599` |  |
 | `EmailTemplatesAdminController` | class | `email-templates.admin.controller.ts:23` | The "manage email templates" screen's backend: a list of every registered template with what triggers it (or… |
 | `esc` | function | `html.ts:22` | Escapes text for interpolation into HTML. |
 | `escUrl` | function | `html.ts:38` | Escapes a URL for an href or src. |
@@ -166,16 +166,17 @@ check there before adding another.
 | `RefundEmailData` | interface | `templates.ts:90` |  |
 | `PasswordResetEmailData` | interface | `templates.ts:97` |  |
 | `EmailVerificationEmailData` | interface | `templates.ts:102` |  |
-| `MarketingProduct` | interface | `templates.ts:108` | A product line for a marketing email — lighter than OrderEmailItem, since these are drawn from the catalogue,… |
-| `AbandonedCartEmailData` | interface | `templates.ts:116` |  |
-| `AbandonedBrowseEmailData` | interface | `templates.ts:126` |  |
-| `ReviewRequestEmailData` | interface | `templates.ts:130` |  |
-| `CrossSellEmailData` | interface | `templates.ts:136` |  |
-| `ReplenishmentEmailData` | interface | `templates.ts:142` |  |
-| `CampaignEmailData` | interface | `templates.ts:153` | A one-off campaign send — holiday sale, product launch, flash sale. |
-| `StitchingEmailData` | interface | `templates.ts:163` |  |
-| `EMAIL_TEMPLATES` | const | `templates.ts:902` | Template key -> renderer. |
-| `renderEmail` | function | `templates.ts:1029` | Renders a template, or null when none is registered for that key. |
+| `ApiKeyIssuedEmailData` | interface | `templates.ts:112` | A personal API key's secret was issued (163-personal-api-keys.md). |
+| `MarketingProduct` | interface | `templates.ts:119` | A product line for a marketing email — lighter than OrderEmailItem, since these are drawn from the catalogue,… |
+| `AbandonedCartEmailData` | interface | `templates.ts:127` |  |
+| `AbandonedBrowseEmailData` | interface | `templates.ts:137` |  |
+| `ReviewRequestEmailData` | interface | `templates.ts:141` |  |
+| `CrossSellEmailData` | interface | `templates.ts:147` |  |
+| `ReplenishmentEmailData` | interface | `templates.ts:153` |  |
+| `CampaignEmailData` | interface | `templates.ts:164` | A one-off campaign send — holiday sale, product launch, flash sale. |
+| `StitchingEmailData` | interface | `templates.ts:174` |  |
+| `EMAIL_TEMPLATES` | const | `templates.ts:949` | Template key -> renderer. |
+| `renderEmail` | function | `templates.ts:1081` | Renders a template, or null when none is registered for that key. |
 | `ExpoPushChannel` | class | `expo-push.channel.ts:29` | Push notifications to the mobile app, through Expo's push service. |
 | `LogNotificationChannel` | class | `log.channel.ts:12` | Writes notifications to the application log instead of sending them. |
 | `NotificationRecipient` | interface | `notification-channel.ts:9` | Extension point: outbound customer messaging. |

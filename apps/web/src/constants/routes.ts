@@ -47,6 +47,8 @@ export const ROUTES = {
     /** doc 155 — off by default (module: 'wallet'); see dashboard-nav.tsx's own module gate. */
     accountWallet: '/account/wallet',
     accountNotifications: '/account/notifications',
+    /** Personal API keys for the customer's own data (163-personal-api-keys.md). */
+    accountApiKeys: '/account/api-keys',
     orders: '/orders',
     order: (number: string) => `/orders/${number}`,
     orderInvoice: (number: string) => `/orders/${number}/invoice`,
@@ -74,6 +76,8 @@ export const ROUTES = {
   admin: {
     dashboard: '/admin',
     account: '/admin/account',
+    /** Your own personal API keys (163-personal-api-keys.md). */
+    accountApiKeys: '/admin/account/api-keys',
     login: '/admin/login',
     /** The manager action hub's overflow screen (admin-platform/44-manager-action-hub.md WO-44.4). */
     myActions: '/admin/my-actions',
@@ -200,6 +204,8 @@ export const ROUTES = {
     settings: '/admin/settings',
     users: '/admin/users',
     user: (id: string) => `/admin/users/${id}`,
+    /** Every account's API keys — read and revoke only, `users.manage`. */
+    usersApiKeys: '/admin/users/api-keys',
     emailTemplates: '/admin/email-templates',
     emailAccounts: '/admin/email-accounts',
     /** `new` is a real id here: the editor route handles creating and editing. */

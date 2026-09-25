@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { DEFAULT_LOCALE, isLocale, type Locale } from '@newax/shared';
 import {
   DomainEvent,
+  type ApiKeyIssuedPayload,
   type EmailVerificationRequestedPayload,
   type PasswordChangedPayload,
   type PasswordResetRequestedPayload,
@@ -10,6 +11,7 @@ import { OnDomainEvent } from '../../core/events/on-domain-event.decorator';
 import { NotificationsService } from '../../core/notifications/notifications.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type {
+  ApiKeyIssuedEmailData,
   EmailVerificationEmailData,
   PasswordResetEmailData,
 } from '../../core/notifications/email/templates';
@@ -98,6 +100,41 @@ export class SecurityNotificationSubscriber {
     });
 
     this.logger.log(`Sent email-verification link to user ${payload.userId}`);
+  }
+
+  /**
+   * A personal API key's secret was issued, at create or rotate
+   * (163-personal-api-keys.md §5). The one control that makes the
+   * persistence attack visible — someone briefly holding a session mints a
+   * key to keep access after the password is changed — so it goes to the
+   * key's owner every time, never gated by a notification preference.
+   * Idempotent in effect: a redelivered event re-sends the same notice.
+   */
+  @OnDomainEvent(DomainEvent.ApiKeyIssued)
+  async onApiKeyIssued(payload: ApiKeyIssuedPayload): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: { email: true, firstName: true, lastName: true },
+    });
+    if (!user?.email) return;
+
+    const name = [user.firstName, user.lastName].filter(Boolean).join(' ') || null;
+    const locale = await this.localeFor(payload.userId);
+    const data: ApiKeyIssuedEmailData = {
+      surface: payload.surface,
+      lastFour: payload.lastFour,
+      reason: payload.reason,
+    };
+
+    await this.notifications.send({
+      template: 'user.api_key_issued',
+      recipient: { name, email: user.email, phone: null, userId: payload.userId, locale },
+      subject: 'A new API key was issued for your account',
+      body: 'A new API key was issued for your account. If this was not you, revoke it and change your password.',
+      data: data as unknown as Record<string, unknown>,
+    });
+
+    this.logger.log(`Sent API-key-issued notice for key ${payload.apiKeyId} to user ${payload.userId}`);
   }
 
   /** Same resolution as the orders/payments subscribers; see the note there. */

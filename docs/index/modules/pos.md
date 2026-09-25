@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 19 files
 
 Source: `apps/api/src/modules/pos/`
 
-## Files (19 · 1,382 lines)
+## Files (19 · 1,384 lines)
 
 All paths relative to `apps/api/src/modules/pos/dto`.
 
@@ -32,7 +32,7 @@ All paths relative to `apps/api/src/modules/pos/dto`.
 | `pos-shifts.controller.ts` | controller | 55 | 1 | Shift and cash-drawer operations (WO-21.2) — day-to-day cashier work, so gated by `pos.operate` (medium sensitivity, ha… |
 | `pos-shifts.service.spec.ts` | unit test | 177 | — |  |
 | `pos-shifts.service.ts` | service | 139 | 2 |  |
-| `pos-terminals.controller.ts` | controller | 49 | 1 |  |
+| `pos-terminals.controller.ts` | controller | 51 | 1 |  |
 | `pos-terminals.service.spec.ts` | unit test | 145 | — |  |
 | `pos-terminals.service.ts` | service | 116 | 1 | `PosTerminal` registration and device auth (RETAIL-ERP.md R7/R11, WO-21.1) — same shape as `TradingPartnersService`/`No… |
 | `pos.module.ts` | nest module | 44 | 1 |  |
@@ -55,7 +55,7 @@ All paths relative to `apps/api/src/modules/pos/dto`.
 | POST | `/admin/pos/terminals` | `pos.manage` | `PosTerminalsController.register` :27 | Register a till terminal at a location |
 | GET | `/admin/pos/terminals/:id` | `pos.manage` | `PosTerminalsController.findOne` :21 | Get a terminal |
 | PATCH | `/admin/pos/terminals/:id` | `pos.manage` | `PosTerminalsController.update` :33 | Update a terminal |
-| POST | `/admin/pos/terminals/:id/rotate-device-key` | `pos.manage` | `PosTerminalsController.rotateDeviceKey` :45 | Issue a fresh device credential for this terminal — shown once, never retrievable again |
+| POST | `/admin/pos/terminals/:id/rotate-device-key` | `pos.manage` | `PosTerminalsController.rotateDeviceKey` :47 | Issue a fresh device credential for this terminal — shown once, never retrievable again |
 | POST | `/admin/pos/terminals/:id/suspend` | `pos.manage` | `PosTerminalsController.suspend` :39 | Suspend a terminal — never deletes it, its history stays put |
 
 

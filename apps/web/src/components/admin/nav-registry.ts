@@ -790,6 +790,18 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'settings',
   },
   {
+    // doc 14 (commercial-licensing-agency/14-managed-services-module.md) —
+    // agency-hosted deliveries only; `managed-services` is off by default
+    // for every deployment (modules.registry.ts) and never appears here for
+    // a self-hosted client's own extracted repo.
+    key: 'managed-services',
+    label: 'Hosting & Billing',
+    href: '/admin/managed-services',
+    permissions: ['settings.manage'],
+    group: 'settings',
+    module: 'managed-services',
+  },
+  {
     key: 'ai',
     label: 'AI',
     href: '/admin/ai',

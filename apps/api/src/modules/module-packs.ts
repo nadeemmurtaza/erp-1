@@ -92,6 +92,12 @@ export const MODULE_PACKS: Record<string, PackName> = {
   transfers: 'core',
   users: 'core',
   wallet: 'core',
+  // doc 14 (commercial-licensing-agency/14-managed-services-module.md) —
+  // reads THIS deployment's own hosting/billing status from the agency's
+  // Master Platform; core infrastructure for the agency's own hosting
+  // arrangement, never a sector concept, and never in a client's default
+  // MODULES allowlist (see modules.registry.ts's own `offByDefault`).
+  'managed-services': 'core',
 
   // Apparel & boutique — what makes this particular shop what it is.
   measurements: 'apparel',

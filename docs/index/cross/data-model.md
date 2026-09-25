@@ -3,7 +3,7 @@
 
 # Data model
 
-All **243** Prisma models and **111** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **244** Prisma models and **112** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -51,7 +51,7 @@ against a real database.
 | [`parties.prisma`](../data/parties.md) | 2 | 1 | [`parties`](../modules/parties.md) | Party, PartyRoleAssignment |
 | [`payments.prisma`](../data/payments.md) | 1 | 1 | [`payments`](../modules/payments.md) | Payment |
 | [`payroll.prisma`](../data/payroll.md) | 9 | 5 | [`payroll`](../modules/payroll.md) | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLine, PayRunNumberCount… |
-| [`platform.prisma`](../data/platform.md) | 19 | 10 | core platform | MeteredOrderFee, PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformOpsClient, PlatformPlan, PlatformRateCa… |
+| [`platform.prisma`](../data/platform.md) | 20 | 11 | core platform | AgencyUsageSnapshot, MeteredOrderFee, PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformOpsClient, Platfor… |
 | [`pos.prisma`](../data/pos.md) | 4 | 3 | [`pos`](../modules/pos.md) | CashMovement, PosReceipt, PosShift, PosTerminal |
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
@@ -77,6 +77,7 @@ against a real database.
 | [`Account`](../data/accounting.md#account) | `accounting` | 14 | 2 | id | The chart of accounts. |
 | [`Address`](../data/core.md#address) | `core` | 15 | 1 | id |  |
 | [`AdminScope`](../data/organization.md#adminscope) | `organization` | 9 | 3 | id | What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids… |
+| [`AgencyUsageSnapshot`](../data/platform.md#agencyusagesnapshot) | `platform` | 8 | 1 | id | One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe… |
 | [`AiUsageLog`](../data/core.md#aiusagelog) | `core` | 11 | 0 | id |  |
 | [`AnalyticsEvent`](../data/core.md#analyticsevent) | `core` | 7 | 0 | id | Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started. |
 | [`ApiKey`](../data/core.md#apikey) | `core` | 18 | 2 | id | A personal API key: a credential that acts as `user`, never as anyone more powerful. |
@@ -198,13 +199,13 @@ against a real database.
 | [`Permission`](../data/core.md#permission) | `core` | 8 | 0 | id | A single grantable capability, e.g. |
 | [`PhoneOptOut`](../data/marketing.md#phoneoptout) | `marketing` | 2 | 0 | phoneE164 | The phone-number equivalent of User.marketingEmailOptOut's unsubscribe link. |
 | [`PlatformCustomQuote`](../data/platform.md#platformcustomquote) | `platform` | 16 | 2 | id | WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_T… |
-| [`PlatformInvoice`](../data/platform.md#platforminvoice) | `platform` | 23 | 2 | id |  |
+| [`PlatformInvoice`](../data/platform.md#platforminvoice) | `platform` | 27 | 2 | id |  |
 | [`PlatformInvoiceCreditNote`](../data/platform.md#platforminvoicecreditnote) | `platform` | 7 | 1 | id | A billing dispute is resolved here, against the specific invoice — never an edited invoic… |
 | [`PlatformOpsClient`](../data/platform.md#platformopsclient) | `platform` | 8 | 0 | id | A key-hash principal for internal hosting-ops tooling calling this control plane — the sa… |
 | [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 18 | 0 | id |  |
 | [`PlatformRateCardChangeRequest`](../data/platform.md#platformratecardchangerequest) | `platform` | 15 | 1 | id | doc 153's own "the threshold nobody approves alone" / "authority and blast radius" lenses… |
 | [`PlatformSubscription`](../data/platform.md#platformsubscription) | `platform` | 8 | 2 | id |  |
-| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 31 | 1 | id | One row per hosted client. |
+| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 37 | 1 | id | One row per hosted client. |
 | [`PlatformUsageRecord`](../data/platform.md#platformusagerecord) | `platform` | 6 | 1 | id | Metered usage a tenant's own deployment reports about itself — never a source of business… |
 | [`PolicyQuarantine`](../data/replication.md#policyquarantine) | `replication` | 14 | 1 | id | R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for rev… |
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
@@ -420,6 +421,7 @@ against a real database.
 | [`StockMovementReason`](../data/inventory.md#stockmovementreason) | `inventory` | `PURCHASE_RECEIPT` `SALE` `CANCELLATION` `RETURN` `ADJUSTMENT` `DAMAGE` `COUNT` `WRITE_OFF` `PRODUCTION_CONSUMPTION` `PRODUCTION_RECEIPT` `POS_SALE`… |
 | [`StockTransferStatus`](../data/transfers.md#stocktransferstatus) | `transfers` | `IN_TRANSIT` `RECEIVED` `CANCELLED` |
 | [`StockVarianceStatus`](../data/inventory.md#stockvariancestatus) | `inventory` | `OPEN` `RESOLVED` |
+| [`StripeInvoicePaymentStatus`](../data/platform.md#stripeinvoicepaymentstatus) | `platform` | `PENDING` `PAID` `FAILED` |
 | [`SubscriptionStatus`](../data/platform.md#subscriptionstatus) | `platform` | `ACTIVE` `PAST_DUE` `CANCELLED` |
 | [`SupplierBillStatus`](../data/purchasing.md#supplierbillstatus) | `purchasing` | `UNPAID` `PARTIAL` `PAID` |
 | [`TenantExportStatus`](../data/platform.md#tenantexportstatus) | `platform` | `PENDING` `RUNNING` `COMPLETE` `FAILED` |

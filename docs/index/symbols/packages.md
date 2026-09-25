@@ -99,7 +99,9 @@ Every top-level export in `packages`, with the line to open.
 | `constants.ts` | `formatDateShort` | function | :109 | A chart axis tick — "7 Sept". |
 | `constants.ts` | `formatNumber` | function | :132 | A plain count, grouped for the locale — 6017 -> "6,017". |
 | `constants.ts` | `formatMoney` | function | :137 | Formats integer paisa as a display string, e.g. |
-| `constants.ts` | `IMPORT_ROW_CAP` | const | :156 | The row cap every CSV importer enforces (admin-platform/72-fragmented-tool-consolidation-import.md… |
+| `constants.ts` | `formatMoneyIn` | function | :160 | Formats a minor-unit amount in an EXPLICITLY given currency, e.g. |
+| `constants.ts` | `formatBytes` | function | :177 | A byte count as a human-readable size, e.g. |
+| `constants.ts` | `IMPORT_ROW_CAP` | const | :198 | The row cap every CSV importer enforces (admin-platform/72-fragmented-tool-consolidation-import.md… |
 | `content-blocks.ts` | `ContentBlock` | type | :10 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
 | `content-blocks.ts` | `CONTENT_BLOCK_TYPES` | const | :18 |  |
 | `content-blocks.ts` | `ContentBlockType` | type | :27 |  |

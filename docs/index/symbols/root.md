@@ -12,7 +12,7 @@ Every top-level export in `root`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `app.module.ts` | `AppModule` | class | :43 |  |
+| `app.module.ts` | `AppModule` | class | :45 |  |
 
 ### `apps/platform/src/core/config`
 
@@ -21,8 +21,8 @@ Every top-level export in `root`, with the line to open.
 | `app-config.service.ts` | `AppConfigService` | class | :10 | Typed accessor over ConfigService — one place an env var name is spelled out, mirroring apps/api's… |
 | `config.module.ts` | `AppConfigModule` | class | :19 |  |
 | `env.validation.ts` | `envSchema` | const | :14 |  |
-| `env.validation.ts` | `PlatformEnv` | type | :139 |  |
-| `env.validation.ts` | `validatePlatformEnv` | function | :141 |  |
+| `env.validation.ts` | `PlatformEnv` | type | :185 |  |
+| `env.validation.ts` | `validatePlatformEnv` | function | :187 |  |
 
 ### `apps/platform/src/core/notifications`
 
@@ -51,7 +51,7 @@ Every top-level export in `root`, with the line to open.
 | `ops-key.ts` | `generateOpsKey` | function | :14 | A bearer credential for internal hosting-ops tooling calling the control plane — same shape as apps… |
 | `ops-key.ts` | `hashOpsKey` | function | :18 |  |
 | `ops-permissions.ts` | `PLATFORM_PERMISSIONS` | const | :16 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permission… |
-| `ops-permissions.ts` | `PlatformPermission` | type | :34 |  |
+| `ops-permissions.ts` | `PlatformPermission` | type | :44 |  |
 
 ### `apps/platform/src/core/tenant-credentials`
 
@@ -59,6 +59,35 @@ Every top-level export in `root`, with the line to open.
 |---|---|---|---|---|
 | `tenant-credential-resolver.module.ts` | `TenantCredentialResolverModule` | class | :9 |  |
 | `tenant-credential-resolver.service.ts` | `TenantCredentialResolverService` | class | :18 | The one place a tenant's own connection string is decrypted — shared by `ProvisioningService` (supp… |
+
+### `apps/platform/src/modules/agency`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `agency-api-key.guard.ts` | `RequestWithAgencyClient` | interface | :8 |  |
+| `agency-api-key.guard.ts` | `AgencyApiKeyGuard` | class | :32 | doc 14's own load-bearing security property, enforced here rather than merely documented: "There is… |
+| `agency-clients.controller.ts` | `AgencyClientsController` | class | :14 | WO-14.1 — ops-only, session-equivalent (`OpsAuthGuard`) management of which existing `PlatformTenan… |
+| `agency-clients.service.ts` | `AgencyClientsService` | class | :21 | WO-14.1 — the ops-facing half of doc 14. |
+| `agency-key-throttler.guard.ts` | `AgencyKeyThrottlerGuard` | class | :20 | doc 14's own security note: "Rate-limit the X-Agency-Api-Key endpoints per key — this is the one su… |
+| `agency-key.ts` | `generateAgencyApiKey` | function | :21 | The `AGENCY_API_KEY` credential doc 14 describes — generated once by `scripts/sync-client.mjs` (the… |
+| `agency-key.ts` | `hashAgencyApiKey` | function | :25 |  |
+| `agency-reporting.controller.ts` | `AgencyReportingController` | class | :23 | WO-14.3 — `GET /agency/clients/me/{usage,invoices}`, doc 14's own read- only reporting API. |
+| `agency-reporting.service.ts` | `AgencyReportingService` | class | :15 | WO-14.3's read-only half. |
+| `agency-stripe-charge.cron.ts` | `AgencyStripeChargeCron` | class | :17 | WO-14.4's own bridge — deliberately a SEPARATE, decoupled sweep rather than a hook inside `BillingS… |
+| `agency-stripe-webhook.controller.ts` | `AgencyStripeWebhookController` | class | :19 | Stripe posts here for this control plane's OWN Stripe account (`invoice.paid`, `invoice.payment_fai… |
+| `agency-stripe.service.ts` | `AgencyStripeService` | class | :24 | WO-14.4 — real money collection for an agency-managed tenant's own hosting invoice. |
+| `agency-usage.cron.ts` | `AgencyUsageCron` | class | :14 | WO-14.2's own sweep — same shape as `inventory.cron.ts` and `UsageMeteringCron`'s daily snapshot: i… |
+| `agency-usage.service.ts` | `AgencyUsageService` | class | :22 | WO-14.2 — the nightly usage-snapshot job's own reads. |
+| `agency.module.ts` | `AgencyModule` | class | :45 |  |
+| `decorators.ts` | `CurrentAgencyClient` | const | :8 | The `PlatformTenant` `AgencyApiKeyGuard` resolved from the presented `X-Agency-Api-Key` — the ONLY… |
+| `stalwart-admin.client.ts` | `StalwartAdminClient` | class | :24 | WO-14.2's Stalwart leg. |
+
+### `apps/platform/src/modules/agency/dto`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `register-agency-client.dto.ts` | `RegisterAgencyClientDto` | class | :11 | WO-14.1's own "manual, deliberate step" — an ops principal opens this once, when the agency actuall… |
+| `register-agency-client.dto.ts` | `UpdateAgencyClientDto` | class | :28 | `PATCH /agency/clients/:id` — updates the same fields post-registration without minting a new API k… |
 
 ### `apps/platform/src/modules/billing`
 

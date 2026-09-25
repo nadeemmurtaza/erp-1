@@ -3,38 +3,38 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1979,
-    "lines": 303682,
-    "routes": 658,
-    "controllers": 120,
-    "models": 243,
-    "enums": 111,
-    "migrations": 84,
+    "files": 2009,
+    "lines": 306188,
+    "routes": 660,
+    "controllers": 121,
+    "models": 244,
+    "enums": 112,
+    "migrations": 85,
     "events": 61,
     "permissions": 84,
-    "screens": 233,
+    "screens": 234,
     "crons": 20,
-    "specs": 232,
+    "specs": 241,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 163,
-      "lines": 17028,
-      "bytes": 1025919,
+      "files": 187,
+      "lines": 18817,
+      "bytes": 1103887,
       "label": "repository root files"
     },
     "infra": {
       "files": 57,
-      "lines": 29609,
-      "bytes": 1166046,
+      "lines": 29638,
+      "bytes": 1167381,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 833,
-      "lines": 117196,
-      "bytes": 4443773,
+      "files": 837,
+      "lines": 117378,
+      "bytes": 4451676,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 374,
-      "lines": 60046,
-      "bytes": 2164061,
+      "files": 375,
+      "lines": 60259,
+      "bytes": 2172090,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 63054,
-      "bytes": 3745716,
+      "lines": 63263,
+      "bytes": 3758938,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 78,
-      "lines": 7849,
-      "bytes": 277010,
+      "files": 79,
+      "lines": 7933,
+      "bytes": 280618,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -463,6 +463,20 @@
       ],
       "routes": 11,
       "page": "docs/index/modules/loyalty.md"
+    },
+    {
+      "name": "managed-services",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/managed-services/managed-services.controller.ts",
+        "apps/api/src/modules/managed-services/managed-services.module.ts",
+        "apps/api/src/modules/managed-services/managed-services.service.spec.ts",
+        "apps/api/src/modules/managed-services/managed-services.service.ts"
+      ],
+      "routes": 2,
+      "page": "docs/index/modules/managed-services.md"
     },
     {
       "name": "marketing",
@@ -10593,6 +10607,38 @@
       "summary": "Loyalty tiers and their benefits"
     },
     {
+      "method": "GET",
+      "path": "/managed-services/invoices",
+      "module": "managed-services",
+      "controller": "ManagedServicesController",
+      "handler": "invoices",
+      "file": "apps/api/src/modules/managed-services/managed-services.controller.ts",
+      "line": 21,
+      "access": "settings.manage",
+      "permissions": [
+        "settings.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/managed-services/usage",
+      "module": "managed-services",
+      "controller": "ManagedServicesController",
+      "handler": "usage",
+      "file": "apps/api/src/modules/managed-services/managed-services.controller.ts",
+      "line": 16,
+      "access": "settings.manage",
+      "permissions": [
+        "settings.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
       "method": "POST",
       "path": "/me/devices",
       "module": "core/notifications",
@@ -12380,9 +12426,11 @@
         "PUT /admin/settings/documents",
         "GET /admin/settings/media",
         "PUT /admin/settings/media",
-        "GET /admin/settings/permissions"
+        "GET /admin/settings/permissions",
+        "GET /managed-services/invoices",
+        "GET /managed-services/usage"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "ADMIN"
       ],
@@ -14326,6 +14374,74 @@
       "indexes": [
         "@@unique([userId, level, retailBrandId, branchNodeId])",
         "@@index([userId])"
+      ]
+    },
+    {
+      "name": "AgencyUsageSnapshot",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 743,
+      "doc": "One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe to delete and recompute (same discipline as `VariantSalesStat` on the tenant side).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "snapshotDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "capturedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "databaseBytes",
+          "type": "BigInt",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "emailsSent30d",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "activeUsers30d",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, snapshotDate])",
+        "@@index([tenantId, snapshotDate])"
       ]
     },
     {
@@ -22180,7 +22296,7 @@
     {
       "name": "MeteredOrderFee",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 587,
+      "line": 640,
       "doc": "Doc 153's own \"the reversal document, not the reversal flag\" — one row per order actually metered for the transaction fee, naming the specific order and the exact amount metered for it, so a later `R…",
       "fields": [
         {
@@ -24976,7 +25092,7 @@
     {
       "name": "PlatformCustomQuote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 468,
+      "line": 521,
       "doc": "WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…",
       "fields": [
         {
@@ -25100,7 +25216,7 @@
     {
       "name": "PlatformInvoice",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 378,
+      "line": 411,
       "doc": "",
       "fields": [
         {
@@ -25244,6 +25360,34 @@
           "relation": false
         },
         {
+          "name": "stripeInvoiceId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "stripeHostedInvoiceUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stripePaymentStatus",
+          "type": "StripeInvoicePaymentStatus?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stripePaymentFailedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tenant",
           "type": "PlatformTenant",
           "id": false,
@@ -25274,7 +25418,7 @@
     {
       "name": "PlatformInvoiceCreditNote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 444,
+      "line": 497,
       "doc": "A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own \"the reversal document\" lens).",
       "fields": [
         {
@@ -25334,7 +25478,7 @@
     {
       "name": "PlatformOpsClient",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 246,
+      "line": 279,
       "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
       "fields": [
         {
@@ -25401,7 +25545,7 @@
     {
       "name": "PlatformPlan",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 110,
+      "line": 143,
       "doc": "",
       "fields": [
         {
@@ -25536,7 +25680,7 @@
     {
       "name": "PlatformRateCardChangeRequest",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 643,
+      "line": 696,
       "doc": "doc 153's own \"the threshold nobody approves alone\" / \"authority and blast radius\" lenses, resolved with the identical create/approve split `PlatformCustomQuote` (doc 50 §4) already established: a ra…",
       "fields": [
         {
@@ -25653,7 +25797,7 @@
     {
       "name": "PlatformSubscription",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 167,
+      "line": 200,
       "doc": "",
       "fields": [
         {
@@ -25850,6 +25994,41 @@
           "relation": false
         },
         {
+          "name": "mailDomain",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "apiKeyHash",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "apiKeyRotatedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stripeCustomerId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "stripeSubscriptionId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
           "name": "plan",
           "type": "PlatformPlan",
           "id": false,
@@ -25939,6 +26118,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "agencyUsageSnapshots",
+          "type": "AgencyUsageSnapshot[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -25950,7 +26136,7 @@
     {
       "name": "PlatformUsageRecord",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 183,
+      "line": 216,
       "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
       "fields": [
         {
@@ -29121,7 +29307,7 @@
     {
       "name": "ResourceQuotaAlert",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 292,
+      "line": 325,
       "doc": "One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.",
       "fields": [
         {
@@ -29203,7 +29389,7 @@
     {
       "name": "ResourceTierQuota",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 267,
+      "line": 300,
       "doc": "--------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…",
       "fields": [
         {
@@ -31222,7 +31408,7 @@
     {
       "name": "SignupVerification",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 503,
+      "line": 556,
       "doc": "A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.",
       "fields": [
         {
@@ -33377,7 +33563,7 @@
     {
       "name": "SupportAccessGrant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 198,
+      "line": 231,
       "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
       "fields": [
         {
@@ -33708,7 +33894,7 @@
     {
       "name": "TenantDataExport",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 336,
+      "line": 369,
       "doc": "",
       "fields": [
         {
@@ -33810,7 +33996,7 @@
     {
       "name": "TenantDeploymentCredential",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 226,
+      "line": 259,
       "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
       "fields": [
         {
@@ -34000,7 +34186,7 @@
     {
       "name": "TrialExtension",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 521,
+      "line": 574,
       "doc": "WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so \"extended more than once\" is a query, not a memory.",
       "fields": [
         {
@@ -34067,7 +34253,7 @@
     {
       "name": "UsageMeter",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 554,
+      "line": 607,
       "doc": "One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` increments off a tenant's own transactional outbox (`transaction_fee_minor`, `messages_sent`) or sets to the late…",
       "fields": [
         {
@@ -34135,7 +34321,7 @@
     {
       "name": "UsageMeteringCursor",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 618,
+      "line": 671,
       "doc": "The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each batch — so a poll reads only the outbox rows it has not already applied, rather than rescanning the whole table…",
       "fields": [
         {
@@ -36131,7 +36317,7 @@
     {
       "name": "InvoiceStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 373,
+      "line": 406,
       "values": [
         "ISSUED",
         "CREDITED"
@@ -36304,7 +36490,7 @@
     {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 236,
+      "line": 269,
       "values": [
         "ACTIVE",
         "REVOKED"
@@ -36441,7 +36627,7 @@
     {
       "name": "PricingModel",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 96,
+      "line": 129,
       "values": [
         "PER_SEAT",
         "FLAT_MONTHLY",
@@ -36508,7 +36694,7 @@
     {
       "name": "QuoteStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 457,
+      "line": 510,
       "values": [
         "PENDING",
         "APPROVED",
@@ -36518,7 +36704,7 @@
     {
       "name": "RateCardChangeStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 628,
+      "line": 681,
       "values": [
         "PENDING",
         "APPROVED",
@@ -36787,9 +36973,19 @@
       ]
     },
     {
+      "name": "StripeInvoicePaymentStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 730,
+      "values": [
+        "PENDING",
+        "PAID",
+        "FAILED"
+      ]
+    },
+    {
       "name": "SubscriptionStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 161,
+      "line": 194,
       "values": [
         "ACTIVE",
         "PAST_DUE",
@@ -36809,7 +37005,7 @@
     {
       "name": "TenantExportStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 316,
+      "line": 349,
       "values": [
         "PENDING",
         "RUNNING",
@@ -36820,7 +37016,7 @@
     {
       "name": "TenantExportTrigger",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 323,
+      "line": 356,
       "values": [
         "MANUAL",
         "DEPROVISION"
@@ -38287,6 +38483,25 @@
         "PlatformRateCardChangeRequest",
         "UsageMeter",
         "UsageMeteringCursor"
+      ]
+    },
+    {
+      "folder": "20260925093000_wo14_agency_managed_services",
+      "file": "apps/platform/prisma/schema/migrations/20260925093000_wo14_agency_managed_services/migration.sql",
+      "date": "2026-09-25",
+      "slug": "wo14_agency_managed_services",
+      "statements": 19,
+      "kinds": [
+        "ALTER TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "AgencyUsageSnapshot",
+        "PlatformInvoice",
+        "PlatformTenant"
       ]
     },
     {
@@ -40078,6 +40293,15 @@
       "kind": "page",
       "url": "/admin/loyalty",
       "file": "apps/web/src/app/(admin)/admin/(app)/loyalty/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/managed-services",
+      "file": "apps/web/src/app/(admin)/admin/(app)/managed-services/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -42382,6 +42606,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/managed-services/managed-services.service.spec.ts",
+      "module": "managed-services",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "ManagedServicesService"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/marketing/campaigns.service.spec.ts",
       "module": "marketing",
       "kind": "unit test",
@@ -43417,6 +43650,74 @@
       ]
     },
     {
+      "file": "apps/platform/src/modules/agency/agency-api-key.guard.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "AgencyApiKeyGuard"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-clients.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "AgencyClientsService",
+        "list",
+        "register",
+        "rotateKey"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-cross-tenant.integration.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": []
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-key.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "agency-key"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-reporting.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "AgencyReportingService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-stripe.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "AgencyStripeService",
+        "chargeInvoice",
+        "handleWebhookEvent"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-usage.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "AgencyUsageService",
+        "listRegisteredTenantIds",
+        "captureSnapshotForTenant"
+      ]
+    },
+    {
       "file": "apps/platform/src/modules/billing/billing-period.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -43665,6 +43966,16 @@
       "cases": 19,
       "describes": [
         "computeCodRiskScore"
+      ]
+    },
+    {
+      "file": "packages/shared/src/constants.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "formatMoneyIn",
+        "formatBytes"
       ]
     },
     {
@@ -44109,7 +44420,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5323,
+      "bytes": 5340,
       "doc": "",
       "symbols": []
     },
@@ -44117,8 +44428,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 162,
-      "bytes": 7991,
+      "lines": 174,
+      "bytes": 8747,
       "doc": "",
       "symbols": []
     },
@@ -44127,7 +44438,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5768,
+      "bytes": 5785,
       "doc": "",
       "symbols": []
     },
@@ -46775,8 +47086,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 330,
-      "bytes": 14590,
+      "lines": 341,
+      "bytes": 15243,
       "doc": "",
       "symbols": [
         {
@@ -46787,12 +47098,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 196
+          "line": 207
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 222
+          "line": 233
         }
       ]
     },
@@ -53103,6 +53414,60 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/managed-services/managed-services.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 25,
+      "bytes": 756,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManagedServicesController",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/managed-services/managed-services.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 19,
+      "bytes": 823,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManagedServicesModule",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/managed-services/managed-services.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 56,
+      "bytes": 2358,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/managed-services/managed-services.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 57,
+      "bytes": 2333,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManagedServicesService",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/marketing/campaign-dispatch.cron.ts",
       "area": "api",
       "kind": "scheduled job",
@@ -53470,8 +53835,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 100,
-      "bytes": 3067,
+      "lines": 106,
+      "bytes": 3463,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -53490,24 +53855,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 213,
-      "bytes": 11530,
+      "lines": 221,
+      "bytes": 12114,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 47
+          "line": 48
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 78
+          "line": 79
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 189
+          "line": 197
         }
       ]
     },
@@ -59433,8 +59798,8 @@
       "path": "apps/platform/package.json",
       "area": "root",
       "kind": "json",
-      "lines": 55,
-      "bytes": 1499,
+      "lines": 56,
+      "bytes": 1523,
       "doc": "",
       "symbols": []
     },
@@ -59493,6 +59858,15 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/migrations/20260925093000_wo14_agency_managed_services/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 56,
+      "bytes": 3099,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
       "area": "root",
       "kind": "toml",
@@ -59505,8 +59879,8 @@
       "path": "apps/platform/prisma/schema/platform.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 667,
-      "bytes": 28878,
+      "lines": 767,
+      "bytes": 34270,
       "doc": "WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the",
       "symbols": []
     },
@@ -59523,14 +59897,14 @@
       "path": "apps/platform/src/app.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 44,
-      "bytes": 1946,
+      "lines": 46,
+      "bytes": 2027,
       "doc": "",
       "symbols": [
         {
           "name": "AppModule",
           "kind": "class",
-          "line": 43
+          "line": 45
         }
       ]
     },
@@ -59568,8 +59942,8 @@
       "path": "apps/platform/src/core/config/env.validation.ts",
       "area": "root",
       "kind": "config",
-      "lines": 148,
-      "bytes": 7485,
+      "lines": 194,
+      "bytes": 9882,
       "doc": "",
       "symbols": [
         {
@@ -59580,12 +59954,12 @@
         {
           "name": "PlatformEnv",
           "kind": "type",
-          "line": 139
+          "line": 185
         },
         {
           "name": "validatePlatformEnv",
           "kind": "function",
-          "line": 141
+          "line": 187
         }
       ]
     },
@@ -59754,8 +60128,8 @@
       "path": "apps/platform/src/core/security/ops-permissions.ts",
       "area": "root",
       "kind": "module",
-      "lines": 35,
-      "bytes": 1625,
+      "lines": 45,
+      "bytes": 2170,
       "doc": "The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps/api's tenant-facing PBAC catalog, seeded against that app's own User/Role/RolePermission tables.",
       "symbols": [
         {
@@ -59766,7 +60140,7 @@
         {
           "name": "PlatformPermission",
           "kind": "type",
-          "line": 34
+          "line": 44
         }
       ]
     },
@@ -59804,10 +60178,328 @@
       "path": "apps/platform/src/main.ts",
       "area": "root",
       "kind": "module",
-      "lines": 48,
-      "bytes": 1701,
+      "lines": 52,
+      "bytes": 2003,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-api-key.guard.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 3106,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-api-key.guard.ts",
+      "area": "root",
+      "kind": "guard",
+      "lines": 58,
+      "bytes": 2555,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestWithAgencyClient",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "AgencyApiKeyGuard",
+          "kind": "class",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-clients.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 45,
+      "bytes": 1650,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyClientsController",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-clients.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 72,
+      "bytes": 3082,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-clients.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 108,
+      "bytes": 4591,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyClientsService",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-cross-tenant.integration.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 155,
+      "bytes": 6499,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-key-throttler.guard.ts",
+      "area": "root",
+      "kind": "guard",
+      "lines": 28,
+      "bytes": 1473,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyKeyThrottlerGuard",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-key.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 25,
+      "bytes": 1035,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-key.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 28,
+      "bytes": 1343,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "generateAgencyApiKey",
+          "kind": "function",
+          "line": 21
+        },
+        {
+          "name": "hashAgencyApiKey",
+          "kind": "function",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-reporting.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 36,
+      "bytes": 1568,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyReportingController",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-reporting.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 52,
+      "bytes": 1934,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-reporting.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 64,
+      "bytes": 2362,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyReportingService",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-stripe-charge.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 45,
+      "bytes": 1721,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyStripeChargeCron",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-stripe-webhook.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 30,
+      "bytes": 1417,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyStripeWebhookController",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-stripe.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 146,
+      "bytes": 6457,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-stripe.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 180,
+      "bytes": 7473,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyStripeService",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-usage.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 38,
+      "bytes": 1335,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyUsageCron",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-usage.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 120,
+      "bytes": 5167,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-usage.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 118,
+      "bytes": 4703,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyUsageService",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 46,
+      "bytes": 2244,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyModule",
+          "kind": "class",
+          "line": 45
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/decorators.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 12,
+      "bytes": 639,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CurrentAgencyClient",
+          "kind": "const",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/dto/register-agency-client.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 29,
+      "bytes": 1051,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RegisterAgencyClientDto",
+          "kind": "class",
+          "line": 11
+        },
+        {
+          "name": "UpdateAgencyClientDto",
+          "kind": "class",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/stalwart-admin.client.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 54,
+      "bytes": 2631,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "StalwartAdminClient",
+          "kind": "class",
+          "line": 24
+        }
+      ]
     },
     {
       "path": "apps/platform/src/modules/billing/billing-period.spec.ts",
@@ -60968,8 +61660,8 @@
       "path": "apps/platform/test/setup-env.ts",
       "area": "root",
       "kind": "module",
-      "lines": 9,
-      "bytes": 359,
+      "lines": 10,
+      "bytes": 451,
       "doc": "",
       "symbols": []
     },
@@ -62990,6 +63682,21 @@
           "name": "LoyaltyAdminPage",
           "kind": "default",
           "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/managed-services/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 138,
+      "bytes": 5006,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManagedServicesPage",
+          "kind": "default",
+          "line": 18
         }
       ]
     },
@@ -65783,8 +66490,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 930,
-      "bytes": 24892,
+      "lines": 942,
+      "bytes": 25372,
       "doc": "",
       "symbols": [
         {
@@ -65815,12 +66522,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 900
+          "line": 912
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 915
+          "line": 927
         }
       ]
     },
@@ -66013,19 +66720,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 83,
-      "bytes": 3086,
+      "lines": 94,
+      "bytes": 3648,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 76
+          "line": 87
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 80
+          "line": 91
         }
       ]
     },
@@ -67081,8 +67788,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 243,
-      "bytes": 10775,
+      "lines": 246,
+      "bytes": 10981,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -67603,8 +68310,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1494,
-      "bytes": 39582,
+      "lines": 1543,
+      "bytes": 41357,
       "doc": "",
       "symbols": [
         {
@@ -68351,6 +69058,41 @@
           "name": "ApiKeyOversightView",
           "kind": "interface",
           "line": 1483
+        },
+        {
+          "name": "ManagedServicesUsageSnapshot",
+          "kind": "interface",
+          "line": 1504
+        },
+        {
+          "name": "ManagedServicesTenantStatus",
+          "kind": "type",
+          "line": 1511
+        },
+        {
+          "name": "ManagedServicesUsageResponse",
+          "kind": "interface",
+          "line": 1513
+        },
+        {
+          "name": "ManagedServicesInvoiceStatus",
+          "kind": "type",
+          "line": 1520
+        },
+        {
+          "name": "ManagedServicesStripePaymentStatus",
+          "kind": "type",
+          "line": 1521
+        },
+        {
+          "name": "ManagedServicesInvoice",
+          "kind": "interface",
+          "line": 1523
+        },
+        {
+          "name": "ManagedServicesInvoicesResponse",
+          "kind": "interface",
+          "line": 1539
         }
       ]
     },
@@ -70885,8 +71627,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 3766,
-      "bytes": 215432,
+      "lines": 3948,
+      "bytes": 226589,
       "doc": "",
       "symbols": []
     },
@@ -71641,8 +72383,8 @@
       "path": "docs/implementation/commercial-licensing-agency/14-managed-services-module.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 272,
-      "bytes": 12781,
+      "lines": 299,
+      "bytes": 14846,
       "doc": "",
       "symbols": []
     },
@@ -73017,11 +73759,20 @@
       ]
     },
     {
+      "path": "packages/shared/src/constants.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 42,
+      "bytes": 1457,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "packages/shared/src/constants.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 157,
-      "bytes": 5620,
+      "lines": 199,
+      "bytes": 7771,
       "doc": "",
       "symbols": [
         {
@@ -73115,9 +73866,19 @@
           "line": 137
         },
         {
+          "name": "formatMoneyIn",
+          "kind": "function",
+          "line": 160
+        },
+        {
+          "name": "formatBytes",
+          "kind": "function",
+          "line": 177
+        },
+        {
           "name": "IMPORT_ROW_CAP",
           "kind": "const",
-          "line": 156
+          "line": 198
         }
       ]
     },
@@ -74534,8 +75295,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18513,
-      "bytes": 678633,
+      "lines": 18529,
+      "bytes": 679103,
       "doc": "",
       "symbols": []
     },
@@ -75031,8 +75792,8 @@
       "path": "scripts/sync-client.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 700,
-      "bytes": 37167,
+      "lines": 701,
+      "bytes": 37242,
       "doc": "scripts/sync-client.mjs — the Extractor.",
       "symbols": []
     },

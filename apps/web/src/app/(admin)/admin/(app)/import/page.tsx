@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
-import type { ImportSummary } from '@/types/api';
+import type { ImportAssistanceResult, ImportSummary } from '@/types/api';
 import { exportFilename } from '@/constants/downloads';
-import { DataTable } from '@/components/ui';
+import { DataTable, Disclosure } from '@/components/ui';
 
 /**
  * Bulk catalogue upload.
@@ -13,12 +13,24 @@ import { DataTable } from '@/components/ui';
  * single product with several variants, which is how a real stock list is
  * written. A bad row is reported with its line number and skipped — the rest of
  * the file still imports, so a 500-row spreadsheet is not lost to one typo.
+ *
+ * WO-9.10 (09-ai-layer.md) adds two things on top of the existing importer:
+ * a preview step (the API already supported `dryRun`, this screen simply
+ * exposes it) and an optional AI-assist pass — column-mapping, value
+ * cleanup, likely duplicates, category and translation suggestions. Every
+ * suggestion is read-only text for a person to act on by editing their
+ * spreadsheet; `assist()` never writes anything itself.
  */
 export default function AdminImportPage() {
   const [file, setFile] = useState<File | null>(null);
   const [summary, setSummary] = useState<ImportSummary | null>(null);
+  const [wasPreview, setWasPreview] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<'preview' | 'commit' | null>(null);
+
+  const [assistance, setAssistance] = useState<ImportAssistanceResult | null>(null);
+  const [assistError, setAssistError] = useState<string | null>(null);
+  const [assisting, setAssisting] = useState(false);
 
   async function downloadTemplate() {
     setError(null);
@@ -40,22 +52,41 @@ export default function AdminImportPage() {
     }
   }
 
-  async function upload(event: React.FormEvent) {
-    event.preventDefault();
+  async function run(dryRun: boolean) {
     if (!file) return;
-
     setError(null);
-    setSummary(null);
-    setBusy(true);
+    setBusy(dryRun ? 'preview' : 'commit');
 
     try {
       const formData = new FormData();
       formData.append('file', file);
-      setSummary(await adminFetch<ImportSummary>('/admin/catalog/import', { method: 'POST', formData }));
+      const result = await adminFetch<ImportSummary>('/admin/catalog/import', {
+        method: 'POST',
+        formData,
+        query: { dryRun: dryRun ? 'true' : undefined },
+      });
+      setSummary(result);
+      setWasPreview(dryRun);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'The import failed');
     } finally {
-      setBusy(false);
+      setBusy(null);
+    }
+  }
+
+  async function getAssistance() {
+    if (!file) return;
+    setAssistError(null);
+    setAssisting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      setAssistance(await adminFetch<ImportAssistanceResult>('/admin/catalog/import/assist', { method: 'POST', formData }));
+    } catch (cause) {
+      setAssistError(cause instanceof Error ? cause.message : 'Could not get AI suggestions');
+    } finally {
+      setAssisting(false);
     }
   }
 
@@ -93,30 +124,78 @@ export default function AdminImportPage() {
           </dl>
         </div>
 
-        <form onSubmit={upload} className="card p-4">
-          <h2 className="text-sm font-semibold text-neutral-900">2. Upload the file</h2>
+        <div className="card p-4">
+          <h2 className="text-sm font-semibold text-neutral-900">2. Preview, then import</h2>
+          <p className="mt-1 text-sm text-neutral-900/60">
+            Preview validates every row and changes nothing. Import commits it.
+          </p>
 
           <input
             type="file"
             accept=".csv,text/csv"
-            onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            onChange={(event) => {
+              setFile(event.target.files?.[0] ?? null);
+              setSummary(null);
+              setAssistance(null);
+              setAssistError(null);
+            }}
             className="mt-3 block w-full text-sm file:me-3 file:rounded-md file:border-0 file:bg-accent-hover file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-accent-hover"
           />
 
-          <button type="submit" disabled={!file || busy} className="btn-primary mt-4">
-            {busy ? 'Importing…' : 'Import products'}
-          </button>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => void getAssistance()}
+              disabled={!file || assisting || busy !== null}
+              className="btn-text"
+            >
+              {assisting ? 'Asking the assistant…' : 'Get AI suggestions'}
+            </button>
+          </div>
+
+          <div className="mt-4 flex gap-2">
+            <button
+              type="button"
+              onClick={() => void run(true)}
+              disabled={!file || busy !== null}
+              className="btn-secondary"
+            >
+              {busy === 'preview' ? 'Previewing…' : 'Preview'}
+            </button>
+            <button
+              type="button"
+              onClick={() => void run(false)}
+              disabled={!file || busy !== null}
+              className="btn-primary"
+            >
+              {busy === 'commit' ? 'Importing…' : 'Import products'}
+            </button>
+          </div>
 
           {error ? (
             <p role="alert" className="notice notice-error mt-4">
               {error}
             </p>
           ) : null}
-        </form>
+        </div>
       </div>
+
+      {assistError ? (
+        <p role="alert" className="notice notice-error mt-6">
+          {assistError}
+        </p>
+      ) : null}
+
+      {assistance ? <AssistancePanel assistance={assistance} /> : null}
 
       {summary ? (
         <section className="card mt-6">
+          {wasPreview ? (
+            <p className="notice notice-info m-4">
+              Preview only — nothing was saved. Click &ldquo;Import products&rdquo; to commit these rows.
+            </p>
+          ) : null}
+
           <div className="flex flex-wrap gap-6 border-b border-neutral-100 px-4 py-3 text-sm">
             <Count label="Rows" value={summary.total} />
             <Count label="Created" value={summary.created} tone="good" />
@@ -160,6 +239,102 @@ export default function AdminImportPage() {
         </section>
       ) : null}
     </>
+  );
+}
+
+function AssistancePanel({ assistance }: { assistance: ImportAssistanceResult }) {
+  const nothingToShow =
+    assistance.headersAlreadyMatch &&
+    assistance.valueSuggestions.length === 0 &&
+    assistance.duplicateFlags.length === 0 &&
+    assistance.categorySuggestions.length === 0 &&
+    assistance.translationSuggestions.length === 0;
+
+  if (nothingToShow) {
+    return <p className="notice notice-success mt-6">The file already looks clean — nothing to suggest.</p>;
+  }
+
+  return (
+    <section className="card mt-6 p-4">
+      <h2 className="text-sm font-semibold text-neutral-900">AI suggestions</h2>
+      <p className="mt-1 text-sm text-neutral-900/60">
+        Nothing here has been saved. Edit your spreadsheet to apply any of these, then preview again.
+      </p>
+
+      {!assistance.headersAlreadyMatch ? (
+        <Disclosure label={`Column mapping (${assistance.columnMapping.length})`} className="mt-4">
+          <ul className="space-y-1 text-sm">
+            {assistance.columnMapping.map((entry) => (
+              <li key={entry.header} className="flex items-center gap-2">
+                <span className="font-mono text-xs text-neutral-900/80">{entry.header}</span>
+                <span className="text-neutral-900/60">→</span>
+                <span className="font-mono text-xs text-neutral-900">{entry.column ?? '— no match —'}</span>
+              </li>
+            ))}
+          </ul>
+        </Disclosure>
+      ) : null}
+
+      {assistance.valueSuggestions.length > 0 ? (
+        <Disclosure label={`Inconsistent values (${assistance.valueSuggestions.length})`} className="mt-4">
+          <ul className="space-y-1 text-sm">
+            {assistance.valueSuggestions.map((entry, index) => (
+              <li key={`${entry.column}-${entry.raw}-${index}`}>
+                <span className="text-neutral-900/60">{entry.column}:</span>{' '}
+                <span className="font-mono text-xs text-neutral-900">{entry.raw}</span>
+                <span className="text-neutral-900/60"> → </span>
+                <span className="font-mono text-xs text-neutral-900">{entry.suggested}</span>
+              </li>
+            ))}
+          </ul>
+        </Disclosure>
+      ) : null}
+
+      {assistance.duplicateFlags.length > 0 ? (
+        <Disclosure label={`Possible duplicates (${assistance.duplicateFlags.length})`} className="mt-4">
+          <ul className="space-y-2 text-sm">
+            {assistance.duplicateFlags.map((flag, index) => (
+              <li key={index}>
+                <p className="text-neutral-900">
+                  Rows {flag.rows.join(', ')}: {flag.nameEn.join(' / ')}
+                </p>
+                <p className="text-xs text-neutral-900/60">{flag.reason}</p>
+              </li>
+            ))}
+          </ul>
+        </Disclosure>
+      ) : null}
+
+      {assistance.categorySuggestions.length > 0 ? (
+        <Disclosure label={`Category suggestions (${assistance.categorySuggestions.length})`} className="mt-4">
+          <ul className="space-y-1 text-sm">
+            {assistance.categorySuggestions.map((entry) => (
+              <li key={entry.row}>
+                <span className="text-neutral-900/60">Row {entry.row}:</span>{' '}
+                <span className="font-mono text-xs text-neutral-900">{entry.suggestedCategorySlug}</span>
+              </li>
+            ))}
+          </ul>
+        </Disclosure>
+      ) : null}
+
+      {assistance.translationSuggestions.length > 0 ? (
+        <Disclosure label={`Missing translations (${assistance.translationSuggestions.length})`} className="mt-4">
+          <ul className="space-y-2 text-sm">
+            {assistance.translationSuggestions.map((entry, index) => (
+              <li key={`${entry.row}-${entry.field}-${index}`}>
+                <p className="text-neutral-900/60">
+                  Row {entry.row}, {entry.field}:
+                </p>
+                <p dir="rtl" className="text-neutral-900">
+                  {entry.suggestedText}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </Disclosure>
+      ) : null}
+    </section>
   );
 }
 

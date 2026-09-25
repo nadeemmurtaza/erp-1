@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 753 tracked files in `apps/api`, by directory.
+All 755 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -908,7 +908,7 @@ All 753 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `cart.dto.ts` | dto | 150 |  |
 
-### `apps/api/src/modules/catalog` (24)
+### `apps/api/src/modules/catalog` (26)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -916,17 +916,19 @@ All 753 tracked files in `apps/api`, by directory.
 | `ai-suggestions.service.spec.ts` | unit test | 314 |  |
 | `ai-suggestions.service.ts` | service | 352 |  |
 | `brand-admin.service.ts` | service | 170 |  |
-| `catalog-admin.controller.ts` | controller | 285 |  |
+| `catalog-admin.controller.ts` | controller | 304 |  |
 | `catalog-options-admin.controller.ts` | controller | 105 |  |
 | `catalog.controller.ts` | controller | 51 |  |
-| `catalog.module.ts` | nest module | 55 |  |
+| `catalog.module.ts` | nest module | 57 |  |
 | `catalog.service.ts` | service | 379 |  |
 | `category-admin.service.ts` | service | 192 |  |
+| `import-assistant.service.spec.ts` | unit test | 387 |  |
+| `import-assistant.service.ts` | service | 392 |  |
 | `option-template-admin.service.ts` | service | 125 |  |
 | `product-admin.service.spec.ts` | unit test | 109 |  |
 | `product-admin.service.ts` | service | 739 |  |
 | `product-import.service.spec.ts` | unit test | 77 |  |
-| `product-import.service.ts` | service | 509 |  |
+| `product-import.service.ts` | service | 510 |  |
 | `product-option-admin.service.ts` | service | 248 |  |
 | `product-replication.listener.spec.ts` | unit test | 120 |  |
 | `product-replication.listener.ts` | event subscriber | 77 |  |

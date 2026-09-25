@@ -11,6 +11,7 @@ import { CategoryAdminService } from './category-admin.service';
 import { OptionTemplateAdminService } from './option-template-admin.service';
 import { ProductOptionAdminService } from './product-option-admin.service';
 import { ProductAdminService } from './product-admin.service';
+import { ImportAssistantService } from './import-assistant.service';
 import { ProductImportService } from './product-import.service';
 import { ProductReplicationListener } from './product-replication.listener';
 import { RedirectService } from './redirect.service';
@@ -41,6 +42,7 @@ import { InventoryModule } from '../inventory/inventory.module';
     CategoryAdminService,
     BrandAdminService,
     ProductImportService,
+    ImportAssistantService,
     ProductReplicationListener,
     OptionTemplateAdminService,
     ProductOptionAdminService,

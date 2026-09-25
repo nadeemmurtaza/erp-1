@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **589** endpoints across **106** controllers, with the access rule that actually guards each one.
+All **590** endpoints across **106** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -199,7 +199,7 @@ never authorization.
 | POST | `/cart/merge` | **PUBLIC** | `CartController.merge` | Fold a guest cart into the signed-in account |
 | POST | `/cart/reorder/:orderNumber` | **PUBLIC** | `CartController.reorderFromOrder` | Add every still-available line from a past order to the cart |
 
-### [`catalog`](../modules/catalog.md) (49)
+### [`catalog`](../modules/catalog.md) (50)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -220,6 +220,7 @@ never authorization.
 | DELETE | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.deleteImage` |  |
 | PATCH | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.updateImage` | Edit an image's alt text |
 | POST | `/admin/catalog/import` | `catalog.manage` | `CatalogAdminController.import` | Bulk create or update products from a CSV file |
+| POST | `/admin/catalog/import/assist` | `catalog.manage` | `CatalogAdminController.assistImport` | WO-9.10 — AI-suggested column mapping, value cleanup, duplicates, categories an… |
 | GET | `/admin/catalog/import/template` | `catalog.manage` | `CatalogAdminController.importTemplate` | Download the CSV template for bulk product upload |
 | DELETE | `/admin/catalog/option-template-values/:valueId` | `catalog.manage` | `CatalogOptionsAdminController.deleteTemplateValue` | Remove a template value |
 | GET | `/admin/catalog/option-templates` | `catalog.manage` | `CatalogOptionsAdminController.listTemplates` | Store-level reusable option axes (Catalogue -> Options & attributes) |

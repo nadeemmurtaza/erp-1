@@ -3,7 +3,7 @@
 
 # Tests
 
-**207** spec files, **1,902** cases. What is already pinned down — and what is not.
+**208** spec files, **1,923** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (189)
+## Unit and integration (190)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -113,6 +113,7 @@ regression or an N+1.
 | `apps/api/src/modules/bom/production.service.spec.ts` | bom | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
 | `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
 | `apps/api/src/modules/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
+| `apps/api/src/modules/catalog/import-assistant.service.spec.ts` | catalog | 21 | ImportAssistantService · column mapping · value normalization · duplicate flagging (pure arithmetic… |
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
 | `apps/api/src/modules/catalog/product-import.service.spec.ts` | catalog | 3 | ProductImportService — dry run |
 | `apps/api/src/modules/catalog/product-replication.listener.spec.ts` | catalog | 7 | ProductReplicationListener — WO-20.3 · onModuleInit · onProductPublished · onProductPriceChanged ·… |

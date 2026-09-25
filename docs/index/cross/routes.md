@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **546** endpoints across **95** controllers, with the access rule that actually guards each one.
+All **553** endpoints across **98** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 65** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 68** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -49,6 +49,9 @@ never authorization.
 | GET | `/catalog/facets` | `CatalogController.facets` |
 | GET | `/catalog/products` | `CatalogController.products` |
 | GET | `/catalog/products/:slug` | `CatalogController.product` |
+| GET | `/catalog/products/:slug/frequently-bought-together` | `RecommendationsController.frequentlyBoughtTogether` |
+| GET | `/catalog/products/:slug/related` | `RecommendationsController.related` |
+| GET | `/catalog/recommendations/personalized` | `PersonalizedRecommendationsController.personalized` |
 | GET | `/catalog/redirects/lookup` | `RedirectLookupController.lookup` |
 | GET | `/catalog/stitching-services` | `CatalogController.stitchingServices` |
 | GET | `/collections` | `CollectionsController.list` |
@@ -711,6 +714,18 @@ never authorization.
 | GET | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.getProducts` | Get products for a supplier |
 | POST | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.addProduct` | Add a product to a supplier |
 | DELETE | `/admin/suppliers/:id/products/:variantId` | `suppliers.manage` | `PurchasingController.removeProduct` | Remove a product from a supplier |
+
+### [`recommendations`](../modules/recommendations.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/catalog/products/:id/cross-sells` | `catalog.manage` | `CrossSellAdminController.list` | WO-9.6 — every cross-sell for this product, manual and algorithmic alike |
+| POST | `/admin/catalog/products/:id/cross-sells` | `catalog.manage` | `CrossSellAdminController.add` | WO-9.6 — add (or promote to) a manual cross-sell — "a merchandiser's curated pa… |
+| DELETE | `/admin/catalog/products/:id/cross-sells/:relatedProductId` | `catalog.manage` | `CrossSellAdminController.remove` | WO-9.6 — remove a cross-sell (manual or algorithmic) |
+| PATCH | `/admin/catalog/products/:id/cross-sells/order` | `catalog.manage` | `CrossSellAdminController.reorder` | WO-9.6 — reorder this product's manual cross-sells |
+| GET | `/catalog/products/:slug/frequently-bought-together` | **PUBLIC** | `RecommendationsController.frequentlyBoughtTogether` | WO-9.6 — co-occurrence only, for the bundle widget |
+| GET | `/catalog/products/:slug/related` | **PUBLIC** | `RecommendationsController.related` | WO-9.6 — related products / "complete the look" (manual > co-occurrence > embed… |
+| GET | `/catalog/recommendations/personalized` | **PUBLIC** | `PersonalizedRecommendationsController.personalized` | WO-9.6 — "personalised homepage from browse... history", by anonymous session id |
 
 ### [`reports`](../modules/reports.md) (12)
 

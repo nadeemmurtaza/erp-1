@@ -71,6 +71,7 @@ export const MODULE_PACKS: Record<string, PackName> = {
   production: 'core',
   purchasing: 'core',
   tradingpartners: 'core',
+  recommendations: 'core',
   reports: 'core',
   settings: 'core',
   tax: 'core',

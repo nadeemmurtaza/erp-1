@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1692,
-    "lines": 260060,
-    "routes": 546,
-    "controllers": 95,
+    "files": 1702,
+    "lines": 261503,
+    "routes": 553,
+    "controllers": 98,
     "models": 204,
     "enums": 88,
     "migrations": 68,
     "events": 46,
     "permissions": 65,
     "screens": 207,
-    "crons": 15,
-    "specs": 170,
+    "crons": 16,
+    "specs": 172,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 56,
       "lines": 28358,
-      "bytes": 1112262,
+      "bytes": 1112310,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 685,
-      "lines": 94553,
-      "bytes": 3483902,
+      "files": 692,
+      "lines": 95397,
+      "bytes": 3518929,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,9 +50,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 317,
-      "lines": 50446,
-      "bytes": 1838284,
+      "files": 320,
+      "lines": 51045,
+      "bytes": 1860719,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -680,6 +680,23 @@
       ],
       "routes": 17,
       "page": "docs/index/modules/purchasing.md"
+    },
+    {
+      "name": "recommendations",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/recommendations/dto/recommendations.dto.ts",
+        "apps/api/src/modules/recommendations/recommendations.controller.ts",
+        "apps/api/src/modules/recommendations/recommendations.cron.spec.ts",
+        "apps/api/src/modules/recommendations/recommendations.cron.ts",
+        "apps/api/src/modules/recommendations/recommendations.module.ts",
+        "apps/api/src/modules/recommendations/recommendations.service.spec.ts",
+        "apps/api/src/modules/recommendations/recommendations.service.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/recommendations.md"
     },
     {
       "name": "reports",
@@ -2637,6 +2654,70 @@
       "public": false,
       "authOnly": false,
       "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/products/:id/cross-sells",
+      "module": "recommendations",
+      "controller": "CrossSellAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 47,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-9.6 — every cross-sell for this product, manual and algorithmic alike"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/products/:id/cross-sells",
+      "module": "recommendations",
+      "controller": "CrossSellAdminController",
+      "handler": "add",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 53,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-9.6 — add (or promote to) a manual cross-sell — \"a merchandiser's curated pairing beats the algorithm\""
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/catalog/products/:id/cross-sells/:relatedProductId",
+      "module": "recommendations",
+      "controller": "CrossSellAdminController",
+      "handler": "remove",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 65,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-9.6 — remove a cross-sell (manual or algorithmic)"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/catalog/products/:id/cross-sells/order",
+      "module": "recommendations",
+      "controller": "CrossSellAdminController",
+      "handler": "reorder",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 59,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-9.6 — reorder this product's manual cross-sells"
     },
     {
       "method": "POST",
@@ -8309,6 +8390,48 @@
     },
     {
       "method": "GET",
+      "path": "/catalog/products/:slug/frequently-bought-together",
+      "module": "recommendations",
+      "controller": "RecommendationsController",
+      "handler": "frequentlyBoughtTogether",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 21,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "WO-9.6 — co-occurrence only, for the bundle widget"
+    },
+    {
+      "method": "GET",
+      "path": "/catalog/products/:slug/related",
+      "module": "recommendations",
+      "controller": "RecommendationsController",
+      "handler": "related",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 15,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "WO-9.6 — related products / \"complete the look\" (manual > co-occurrence > embedding)"
+    },
+    {
+      "method": "GET",
+      "path": "/catalog/recommendations/personalized",
+      "module": "recommendations",
+      "controller": "PersonalizedRecommendationsController",
+      "handler": "personalized",
+      "file": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "line": 34,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "WO-9.6 — \"personalised homepage from browse... history\", by anonymous session id"
+    },
+    {
+      "method": "GET",
       "path": "/catalog/redirects/lookup",
       "module": "catalog",
       "controller": "RedirectLookupController",
@@ -10085,6 +10208,10 @@
         "DELETE /admin/catalog/products/:id",
         "GET /admin/catalog/products/:id",
         "PATCH /admin/catalog/products/:id",
+        "GET /admin/catalog/products/:id/cross-sells",
+        "POST /admin/catalog/products/:id/cross-sells",
+        "DELETE /admin/catalog/products/:id/cross-sells/:relatedProductId",
+        "PATCH /admin/catalog/products/:id/cross-sells/order",
         "POST /admin/catalog/products/:id/images",
         "PATCH /admin/catalog/products/:id/images/order",
         "GET /admin/catalog/products/:id/publish-gate",
@@ -33923,6 +34050,13 @@
       "doc": ""
     },
     {
+      "schedule": "0 4 * * *",
+      "file": "apps/api/src/modules/recommendations/recommendations.cron.ts",
+      "line": 30,
+      "handler": "recompute",
+      "doc": ""
+    },
+    {
       "schedule": "*/10 * * * *",
       "file": "apps/api/src/modules/search/search-embedding.cron.ts",
       "line": 25,
@@ -35571,6 +35705,28 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/recommendations/recommendations.cron.spec.ts",
+      "module": "recommendations",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "RecommendationsCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/recommendations/recommendations.service.spec.ts",
+      "module": "recommendations",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "RecommendationsService",
+        "relatedFor",
+        "frequentlyBoughtWith",
+        "manual cross-sell curation (admin)",
+        "personalizedFor"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/reports/reports-finance-exports.spec.ts",
       "module": "reports",
       "kind": "unit test",
@@ -36517,7 +36673,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5273,
+      "bytes": 5289,
       "doc": "",
       "symbols": []
     },
@@ -36526,7 +36682,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 159,
-      "bytes": 7786,
+      "bytes": 7802,
       "doc": "",
       "symbols": []
     },
@@ -36535,7 +36691,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 127,
-      "bytes": 5646,
+      "bytes": 5662,
       "doc": "",
       "symbols": []
     },
@@ -44302,8 +44458,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 95,
-      "bytes": 2962,
+      "lines": 96,
+      "bytes": 2989,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -44322,24 +44478,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 183,
-      "bytes": 9499,
+      "lines": 188,
+      "bytes": 9866,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 42
+          "line": 43
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 73
+          "line": 74
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 159
+          "line": 164
         }
       ]
     },
@@ -46274,6 +46430,119 @@
       "bytes": 8558,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/dto/recommendations.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 17,
+      "bytes": 585,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AddCrossSellDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "ReorderCrossSellsDto",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 69,
+      "bytes": 2928,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecommendationsController",
+          "kind": "class",
+          "line": 10
+        },
+        {
+          "name": "PersonalizedRecommendationsController",
+          "kind": "class",
+          "line": 29
+        },
+        {
+          "name": "CrossSellAdminController",
+          "kind": "class",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 177,
+      "bytes": 6849,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 148,
+      "bytes": 7058,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecommendationsCron",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 16,
+      "bytes": 575,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecommendationsModule",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 228,
+      "bytes": 8690,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/recommendations/recommendations.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 183,
+      "bytes": 7948,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RelatedProductsResult",
+          "kind": "interface",
+          "line": 18
+        },
+        {
+          "name": "RecommendationsService",
+          "kind": "class",
+          "line": 32
+        }
+      ]
     },
     {
       "path": "apps/api/src/modules/reports/csv.util.ts",
@@ -50435,8 +50704,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 600,
-      "bytes": 23668,
+      "lines": 607,
+      "bytes": 24097,
       "doc": "",
       "symbols": []
     },
@@ -50444,8 +50713,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 600,
-      "bytes": 32405,
+      "lines": 607,
+      "bytes": 33004,
       "doc": "",
       "symbols": []
     },
@@ -52994,24 +53263,24 @@
       "path": "apps/web/src/app/(storefront)/[locale]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 262,
-      "bytes": 11243,
+      "lines": 265,
+      "bytes": 11382,
       "doc": "",
       "symbols": [
         {
           "name": "revalidate",
           "kind": "const",
-          "line": 12
+          "line": 13
         },
         {
           "name": "generateMetadata",
           "kind": "function",
-          "line": 14
+          "line": 15
         },
         {
           "name": "HomePage",
           "kind": "default",
-          "line": 32
+          "line": 33
         }
       ]
     },
@@ -53079,24 +53348,24 @@
       "path": "apps/web/src/app/(storefront)/[locale]/product/[slug]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 398,
-      "bytes": 15408,
+      "lines": 427,
+      "bytes": 16673,
       "doc": "",
       "symbols": [
         {
           "name": "revalidate",
           "kind": "const",
-          "line": 19
+          "line": 27
         },
         {
           "name": "generateMetadata",
           "kind": "function",
-          "line": 34
+          "line": 42
         },
         {
           "name": "ProductPage",
           "kind": "default",
-          "line": 134
+          "line": 142
         }
       ]
     },
@@ -53474,6 +53743,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/cross-sell-manager.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 256,
+      "bytes": 9117,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CrossSellManager",
+          "kind": "function",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/deployment-modules.tsx",
       "area": "web",
       "kind": "component",
@@ -53702,14 +53986,14 @@
       "path": "apps/web/src/components/admin/product-form.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 1410,
-      "bytes": 52429,
+      "lines": 1434,
+      "bytes": 53335,
       "doc": "",
       "symbols": [
         {
           "name": "ProductForm",
           "kind": "function",
-          "line": 79
+          "line": 80
         }
       ]
     },
@@ -54089,6 +54373,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/storefront/frequently-bought-together.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 149,
+      "bytes": 5282,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FrequentlyBoughtTogether",
+          "kind": "function",
+          "line": 29
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/storefront/grid-toggle-wrapper.tsx",
       "area": "web",
       "kind": "component",
@@ -54220,6 +54519,21 @@
           "name": "OnsiteMessages",
           "kind": "function",
           "line": 37
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/personalized-recommendations.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 81,
+      "bytes": 2921,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PersonalizedRecommendations",
+          "kind": "function",
+          "line": 28
         }
       ]
     },
@@ -55082,8 +55396,8 @@
       "path": "apps/web/src/lib/api.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 167,
-      "bytes": 6023,
+      "lines": 200,
+      "bytes": 7443,
       "doc": "",
       "symbols": [
         {
@@ -55102,44 +55416,54 @@
           "line": 119
         },
         {
+          "name": "getRelatedProducts",
+          "kind": "function",
+          "line": 138
+        },
+        {
+          "name": "getFrequentlyBoughtTogether",
+          "kind": "function",
+          "line": 149
+        },
+        {
           "name": "getCategories",
           "kind": "function",
-          "line": 123
+          "line": 156
         },
         {
           "name": "getFacets",
           "kind": "function",
-          "line": 127
+          "line": 160
         },
         {
           "name": "getStitchingServices",
           "kind": "function",
-          "line": 131
+          "line": 164
         },
         {
           "name": "getBanners",
           "kind": "function",
-          "line": 143
+          "line": 176
         },
         {
           "name": "getPage",
           "kind": "function",
-          "line": 147
+          "line": 180
         },
         {
           "name": "getPosts",
           "kind": "function",
-          "line": 151
+          "line": 184
         },
         {
           "name": "getPost",
           "kind": "function",
-          "line": 159
+          "line": 192
         },
         {
           "name": "getMenu",
           "kind": "function",
-          "line": 164
+          "line": 197
         }
       ]
     },
@@ -55397,8 +55721,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1290,
-      "bytes": 33602,
+      "lines": 1300,
+      "bytes": 33959,
       "doc": "",
       "symbols": [
         {
@@ -56035,6 +56359,16 @@
           "name": "CmsMenuLink",
           "kind": "interface",
           "line": 1284
+        },
+        {
+          "name": "ProductCrossSellKind",
+          "kind": "type",
+          "line": 1292
+        },
+        {
+          "name": "ProductCrossSellRow",
+          "kind": "interface",
+          "line": 1294
         }
       ]
     },

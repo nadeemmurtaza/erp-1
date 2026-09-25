@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Image from 'next/image';
 import type { Locale } from '@newax/shared';
+import { PersonalizedRecommendations } from '@/components/storefront/personalized-recommendations';
 import { ProductCard } from '@/components/storefront/product-card';
 import { Link } from '@/i18n/navigation';
 import { getBanners, getCategories, getProducts } from '@/lib/api';
@@ -212,6 +213,8 @@ export default async function HomePage({
           ))}
         </div>
       </section>
+
+      <PersonalizedRecommendations />
 
       <section className="border-y border-neutral-100 bg-white">
         <div className="container-page py-10 sm:py-14 lg:py-16">

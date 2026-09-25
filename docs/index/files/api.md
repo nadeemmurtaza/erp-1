@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 685 tracked files in `apps/api`, by directory.
+All 692 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -742,8 +742,8 @@ All 685 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 95 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 183 |  |
+| `module-packs.ts` | module | 96 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 188 |  |
 
 ### `apps/api/src/modules/accounting` (15)
 
@@ -1371,6 +1371,23 @@ All 685 tracked files in `apps/api`, by directory.
 | `purchase-order.dto.ts` | dto | 104 |  |
 | `supplier-bill.dto.ts` | dto | 67 |  |
 | `supplier.dto.ts` | dto | 104 |  |
+
+### `apps/api/src/modules/recommendations` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `recommendations.controller.ts` | controller | 69 |  |
+| `recommendations.cron.spec.ts` | unit test | 177 |  |
+| `recommendations.cron.ts` | scheduled job | 148 |  |
+| `recommendations.module.ts` | nest module | 16 |  |
+| `recommendations.service.spec.ts` | unit test | 228 |  |
+| `recommendations.service.ts` | service | 183 |  |
+
+### `apps/api/src/modules/recommendations/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `recommendations.dto.ts` | dto | 17 |  |
 
 ### `apps/api/src/modules/reports` (5)
 

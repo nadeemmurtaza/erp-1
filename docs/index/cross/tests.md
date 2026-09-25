@@ -3,7 +3,7 @@
 
 # Tests
 
-**170** spec files, **1,586** cases. What is already pinned down — and what is not.
+**172** spec files, **1,606** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (152)
+## Unit and integration (154)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -163,6 +163,8 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
+| `apps/api/src/modules/recommendations/recommendations.cron.spec.ts` | recommendations | 6 | RecommendationsCron |
+| `apps/api/src/modules/recommendations/recommendations.service.spec.ts` | recommendations | 14 | RecommendationsService · relatedFor · frequentlyBoughtWith · manual cross-sell curation (admin) · p… |
 | `apps/api/src/modules/reports/reports-finance-exports.spec.ts` | reports | 4 | ReportsService finance exports |
 | `apps/api/src/modules/reviews/reviews.service.spec.ts` | reviews | 3 | ReviewsService — moderate |
 | `apps/api/src/modules/search/search-embedding.cron.spec.ts` | search | 2 | SearchEmbeddingCron |

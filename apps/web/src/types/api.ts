@@ -1287,3 +1287,13 @@ export interface CmsMenuLink {
   url: string;
   label: string;
 }
+
+/** ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read time". */
+export type ProductCrossSellKind = 'MANUAL' | 'CO_OCCURRENCE' | 'EMBEDDING';
+
+export interface ProductCrossSellRow {
+  id: string;
+  kind: ProductCrossSellKind;
+  order: number;
+  relatedProduct: { id: string; slug: string; name: string };
+}

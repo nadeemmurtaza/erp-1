@@ -120,6 +120,39 @@ export function getProduct(slug: string, locale: string): Promise<StorefrontProd
   return apiFetch(`/catalog/products/${encodeURIComponent(slug)}?locale=${locale}`);
 }
 
+interface RelatedProductsApiResult {
+  slugs: string[];
+  hasManualCuration: boolean;
+}
+interface SlugListApiResult {
+  slugs: string[];
+}
+
+async function resolveProductsBySlug(slugs: string[], locale: string): Promise<StorefrontProduct[]> {
+  return (
+    await Promise.all(slugs.map((slug) => getProduct(slug, locale).catch(() => null)))
+  ).filter((p): p is StorefrontProduct => p !== null);
+}
+
+/** WO-9.6 — manual cross-sell links first, then co-occurrence, then embedding similarity; hasManualCuration lets the caller label the section "Complete the look" rather than a generic "You may also like". */
+export async function getRelatedProducts(
+  slug: string,
+  locale: string,
+): Promise<{ products: StorefrontProduct[]; hasManualCuration: boolean }> {
+  const result = await apiFetch<RelatedProductsApiResult>(
+    `/catalog/products/${encodeURIComponent(slug)}/related`,
+  );
+  return { products: await resolveProductsBySlug(result.slugs, locale), hasManualCuration: result.hasManualCuration };
+}
+
+/** WO-9.6 — co-occurrence only ("customers who bought this also bought…"), for the bundle widget. */
+export async function getFrequentlyBoughtTogether(slug: string, locale: string): Promise<StorefrontProduct[]> {
+  const result = await apiFetch<SlugListApiResult>(
+    `/catalog/products/${encodeURIComponent(slug)}/frequently-bought-together`,
+  );
+  return resolveProductsBySlug(result.slugs, locale);
+}
+
 export function getCategories(locale: string): Promise<CategoryNode[]> {
   return apiFetch(`/catalog/categories?locale=${locale}`);
 }

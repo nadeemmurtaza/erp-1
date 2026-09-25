@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 317 tracked files in `apps/web`, by directory.
+All 320 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -25,8 +25,8 @@ All 317 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 600 |  |
-| `ur.json` | json | 600 |  |
+| `en.json` | json | 607 |  |
+| `ur.json` | json | 607 |  |
 
 ### `apps/web/public` (1)
 
@@ -764,7 +764,7 @@ All 317 tracked files in `apps/web`, by directory.
 | `layout.tsx` | layout | 194 |  |
 | `loading.tsx` | loading | 66 |  |
 | `not-found.tsx` | not-found | 37 |  |
-| `page.tsx` | page | 262 |  |
+| `page.tsx` | page | 265 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)` (1)
 
@@ -953,7 +953,7 @@ All 317 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 79 |  |
-| `page.tsx` | page | 398 |  |
+| `page.tsx` | page | 427 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/register` (1)
 
@@ -1022,13 +1022,14 @@ All 317 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (19)
+### `apps/web/src/components/admin` (20)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin-shell.tsx` | component | 469 |  |
 | `command-palette.tsx` | component | 285 |  |
 | `comparison-chart.tsx` | component | 219 |  |
+| `cross-sell-manager.tsx` | component | 256 |  |
 | `deployment-modules.tsx` | component | 21 |  |
 | `donut-chart.tsx` | component | 136 |  |
 | `funnel-chart.tsx` | component | 81 |  |
@@ -1037,7 +1038,7 @@ All 317 tracked files in `apps/web`, by directory.
 | `nav-registry.ts` | component | 773 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
-| `product-form.tsx` | component | 1410 |  |
+| `product-form.tsx` | component | 1434 |  |
 | `range-picker.tsx` | component | 58 |  |
 | `role-wizard.tsx` | component | 359 |  |
 | `sales-chart.tsx` | component | 242 |  |
@@ -1073,7 +1074,7 @@ All 317 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 73 |  |
 
-### `apps/web/src/components/storefront` (35)
+### `apps/web/src/components/storefront` (37)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1088,6 +1089,7 @@ All 317 tracked files in `apps/web`, by directory.
 | `customer-session.tsx` | component | 36 |  |
 | `filter-panel.tsx` | component | 358 |  |
 | `footer.tsx` | component | 145 |  |
+| `frequently-bought-together.tsx` | component | 149 |  |
 | `grid-toggle-wrapper.tsx` | component | 13 |  |
 | `grid-toggle.tsx` | component | 41 |  |
 | `header.tsx` | component | 208 |  |
@@ -1097,6 +1099,7 @@ All 317 tracked files in `apps/web`, by directory.
 | `logo.tsx` | component | 126 | The "yaseen" wordmark, traced from the brand's source artwork into a single vector path. |
 | `mobile-nav.tsx` | component | 190 |  |
 | `onsite-messages.tsx` | component | 209 |  |
+| `personalized-recommendations.tsx` | component | 81 |  |
 | `price.tsx` | component | 39 |  |
 | `product-card.tsx` | component | 239 |  |
 | `product-gallery.tsx` | component | 137 |  |
@@ -1176,7 +1179,7 @@ All 317 tracked files in `apps/web`, by directory.
 | `admin-client.ts` | utility | 143 |  |
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
-| `api.ts` | utility | 167 |  |
+| `api.ts` | utility | 200 |  |
 | `cart-client.ts` | utility | 99 |  |
 | `customer-client.ts` | utility | 217 |  |
 | `download-csv.ts` | utility | 36 |  |
@@ -1194,7 +1197,7 @@ All 317 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1290 |  |
+| `api.ts` | types | 1300 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

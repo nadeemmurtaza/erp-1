@@ -18,6 +18,7 @@ import type {
   GarmentType,
 } from '@/types/api';
 import { ImageManager, ImageStager, uploadStagedImages, type StagedImage } from './image-manager';
+import { CrossSellManager } from './cross-sell-manager';
 
 const KIND_LABELS: Record<string, string> = {
   GOODS: 'Goods',
@@ -1069,6 +1070,28 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     ),
   };
 
+  const crossSellsStep: WizardStep = {
+    id: 'cross-sells',
+    label: 'Related products',
+    isValid: true,
+    content: effectiveProduct ? (
+      <Section
+        title="Related products"
+        description={
+          'A manual pick always wins over the algorithm on the storefront\'s "Complete the look" and ' +
+          '"Frequently bought together" sections. Leave it empty and those fill in automatically once ' +
+          'customers start buying and browsing.'
+        }
+      >
+        <CrossSellManager productId={effectiveProduct.id} />
+      </Section>
+    ) : (
+      <Section title="Related products" description="Available once this product has been created.">
+        <p className="text-sm text-neutral-900/60">Save this product first, then come back to pair it manually.</p>
+      </Section>
+    ),
+  };
+
   const steps: WizardStep[] = [
     basicsStep,
     nameStep,
@@ -1077,6 +1100,7 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
     tagsStep,
     variantsStep,
     imagesStep,
+    crossSellsStep,
     seoStep,
   ];
 

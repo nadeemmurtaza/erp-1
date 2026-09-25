@@ -1,3 +1,4 @@
+export * from './cod-risk';
 export * from './collection-rules';
 export * from './constants';
 export * from './content-blocks';

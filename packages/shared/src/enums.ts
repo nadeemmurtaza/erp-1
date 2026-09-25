@@ -59,6 +59,10 @@ export const PAYMENT_STATUSES = [
 ] as const;
 export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
 
+/** WO-9.4 (09-ai-layer.md). Matches the Prisma `CodRiskAction` enum in orders.prisma. */
+export const COD_RISK_ACTIONS = ['AUTO_CONFIRM', 'CONFIRMATION_CALL', 'REQUIRE_ADVANCE_PAYMENT'] as const;
+export type CodRiskAction = (typeof COD_RISK_ACTIONS)[number];
+
 export const STITCHING_STAGES = [
   'RECEIVED',
   'CUTTING',

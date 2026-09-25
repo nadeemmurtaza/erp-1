@@ -51,6 +51,10 @@ const TONES: Record<string, BadgeTone> = {
   AWAITING_APPROVAL: 'warning',
   QUOTED: 'warning',
   IN_PROGRESS: 'info',
+  // WO-9.4 — CodRiskAction, shown only when not AUTO_CONFIRM (that case
+  // renders no badge at all; a clean order needs no flag).
+  CONFIRMATION_CALL: 'warning',
+  REQUIRE_ADVANCE_PAYMENT: 'danger',
   // Not live, but not wrong either
   DRAFT: 'neutral',
   RECEIVED: 'neutral',

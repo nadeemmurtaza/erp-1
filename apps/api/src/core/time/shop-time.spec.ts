@@ -4,6 +4,7 @@ import {
   shopDayKey,
   shopDayKeys,
   shopDaysBetween,
+  shopLocalHour,
   startOfShopDay,
   startOfShopDaysAgo,
 } from './shop-time';
@@ -142,6 +143,23 @@ describe('shopDayExpr', () => {
     expect(() => shopDayExpr('"placedAt"', "UTC'; DROP TABLE \"Order\"; --")).toThrow(
       /Invalid timezone/,
     );
+  });
+});
+
+describe('shopLocalHour', () => {
+  it('reads the hour in the shop zone, not UTC', () => {
+    // 2026-08-29 19:00 UTC is already 2026-08-30 00:00 in Karachi (UTC+5).
+    expect(shopLocalHour(new Date('2026-08-29T19:00:00.000Z'), KARACHI)).toBe(0);
+    expect(new Date('2026-08-29T19:00:00.000Z').getUTCHours()).toBe(19); // the wrong answer this guards against
+  });
+
+  it('works west of Greenwich, where the local hour is behind UTC', () => {
+    // 2026-08-29 03:00 UTC is 2026-08-28 23:00 EDT (UTC-4).
+    expect(shopLocalHour(new Date('2026-08-29T03:00:00.000Z'), NEW_YORK)).toBe(23);
+  });
+
+  it('never returns 24 for local midnight', () => {
+    expect(shopLocalHour(new Date('2026-08-29T19:00:00.000Z'), KARACHI)).toBe(0);
   });
 });
 

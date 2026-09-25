@@ -3,13 +3,13 @@
 
 # Module: `orders`
 
-Pack **core** · enabled by the `MODULES` allowlist · 11 files
+Pack **core** · enabled by the `MODULES` allowlist · 15 files
 
 
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (11 · 2,355 lines)
+## Files (15 · 2,758 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -17,14 +17,18 @@ All paths relative to `apps/api/src/modules/orders`.
 |---|---|---|---|---|
 | `backorder.listener.spec.ts` | unit test | 84 | — |  |
 | `backorder.listener.ts` | event subscriber | 70 | 1 | Closes the backorder loop: whenever ANY stock arrives for a variant — a PO receipt, a completed WorkOrder, a manual adj… |
-| `order.dto.ts` | dto | 147 | 6 |  |
+| `cod-risk.cron.spec.ts` | unit test | 84 | — |  |
+| `cod-risk.cron.ts` | scheduled job | 82 | 1 | WO-9.4 (09-ai-layer.md) — nightly recompute of CityCodRiskStat, the cached input CodRiskService reads at place() instea… |
+| `cod-risk.service.spec.ts` | unit test | 105 | — |  |
+| `cod-risk.service.ts` | service | 86 | 3 |  |
+| `order.dto.ts` | dto | 152 | 6 |  |
 | `notification.subscriber.ts` | event subscriber | 259 | 1 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `orders-pos.service.spec.ts` | unit test | 244 | — |  |
-| `orders.controller.ts` | controller | 134 | 2 |  |
-| `orders.module.ts` | nest module | 46 | 1 |  |
-| `orders.service.ts` | service | 1184 | 3 |  |
+| `orders-pos.service.spec.ts` | unit test | 249 | — |  |
+| `orders.controller.ts` | controller | 143 | 2 |  |
+| `orders.module.ts` | nest module | 50 | 1 |  |
+| `orders.service.ts` | service | 1207 | 3 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
@@ -32,13 +36,13 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` :92 | All orders, filterable by status |
-| GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` :107 |  |
-| POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` :113 | Move the order along; cancelling restores stock |
+| GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` :100 | All orders, filterable by status |
+| GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` :116 |  |
+| POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` :122 | Move the order along; cancelling restores stock |
 | POST | `/orders` | **PUBLIC** | `OrdersController.place` :38 | Place the order in the current cart |
-| GET | `/orders/:number` | signed-in | `OrdersController.get` :66 | One order, for its owner |
-| POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` :75 |  |
-| GET | `/orders/mine` | signed-in | `OrdersController.mine` :55 | The signed-in customer's orders |
+| GET | `/orders/:number` | signed-in | `OrdersController.get` :72 | One order, for its owner |
+| POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` :81 |  |
+| GET | `/orders/mine` | signed-in | `OrdersController.mine` :59 | The signed-in customer's orders |
 
 
 ## Domain events
@@ -47,10 +51,10 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `orders.service.ts:428`, `orders.service.ts:631` |
-| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:813` |
-| `OrderCancelled` | `order.cancelled` | `orders.service.ts:813` |
-| `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:619` |
+| `OrderPlaced` | `order.placed` | `orders.service.ts:449`, `orders.service.ts:652` |
+| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:836` |
+| `OrderCancelled` | `order.cancelled` | `orders.service.ts:836` |
+| `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:640` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -69,11 +73,12 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Order` | 54 | :35 |  |
-| `OrderItem` | 38 | :151 |  |
-| `OrderNumberCounter` | 2 | :331 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
-| `OrderStatusEvent` | 9 | :238 |  |
-| `Shipment` | 26 | :262 |  |
+| `CityCodRiskStat` | 5 | :326 | WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "order value versus t… |
+| `Order` | 55 | :35 |  |
+| `OrderItem` | 38 | :156 |  |
+| `OrderNumberCounter` | 2 | :354 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
+| `OrderStatusEvent` | 9 | :243 |  |
+| `Shipment` | 26 | :267 |  |
 
 
 Enums: `CodRiskAction` (3) · `OrderChannel` (2) · `OrderItemFulfillmentStatus` (3) · `OrderStatus` (8) · `ShipmentStatus` (6)
@@ -81,6 +86,11 @@ Enums: `CodRiskAction` (3) · `OrderChannel` (2) · `OrderItemFulfillmentStatus`
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
+## Scheduled work
+
+| Schedule | Handler | Where | What it does |
+|---|---|---|---|
+| `0 1 * * *` | `computeCityCodRiskStats()` | `cod-risk.cron.ts:22` |  |
 
 
 ## Nest wiring
@@ -88,7 +98,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`OrdersModule`** (`orders.module.ts`)
 - imports: `PaymentsModule`, `InventoryModule`, `TaxModule`, `FulfilmentModule`, `PromotionsModule`, `GiftCardsModule`
 - controllers: `OrdersController`, `OrdersAdminController`
-- providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`, `ShipmentStatusListener`
+- providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`, `ShipmentStatusListener`, `CodRiskService`, `CodRiskCron`
 - exports: `OrdersService`
 
 
@@ -111,6 +121,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `prisma`
 - core `replication`
 - core `settings`
+- core `time`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -118,11 +129,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (3)
+## Tests (5)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `backorder.listener.spec.ts` | 4 | BackorderListener |
+| `cod-risk.cron.spec.ts` | 4 | CodRiskCron |
+| `cod-risk.service.spec.ts` | 7 | CodRiskService |
 | `order-replication.listener.spec.ts` | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
 | `orders-pos.service.spec.ts` | 6 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
 
@@ -132,20 +145,24 @@ check there before adding another.
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `BackorderListener` | class | `backorder.listener.ts:21` | Closes the backorder loop: whenever ANY stock arrives for a variant — a PO receipt, a completed WorkOrder, a… |
+| `CodRiskCron` | class | `cod-risk.cron.ts:17` | WO-9.4 (09-ai-layer.md) — nightly recompute of CityCodRiskStat, the cached input CodRiskService reads at plac… |
+| `CodRiskScoreInput` | interface | `cod-risk.service.ts:8` |  |
+| `CodRiskScoreResult` | interface | `cod-risk.service.ts:16` |  |
+| `CodRiskService` | class | `cod-risk.service.ts:35` | WO-9.4 (09-ai-layer.md) — gathers every input `computeCodRiskScore` (the pure rule) needs and calls it. |
 | `ShippingAddressDto` | class | `order.dto.ts:17` |  |
 | `PlaceOrderDto` | class | `order.dto.ts:61` |  |
 | `TrackOrderDto` | class | `order.dto.ts:106` |  |
 | `ChangeOrderStatusDto` | class | `order.dto.ts:113` |  |
 | `AdminOrderQueryDto` | class | `order.dto.ts:125` |  |
-| `OrderHistoryQueryDto` | class | `order.dto.ts:132` |  |
+| `OrderHistoryQueryDto` | class | `order.dto.ts:137` |  |
 | `OrderNotificationSubscriber` | class | `notification.subscriber.ts:53` |  |
 | `OrderReplicationListener` | class | `order-replication.listener.ts:30` | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
 | `OrdersController` | class | `orders.controller.ts:32` |  |
-| `OrdersAdminController` | class | `orders.controller.ts:87` |  |
-| `OrdersModule` | class | `orders.module.ts:45` |  |
+| `OrdersAdminController` | class | `orders.controller.ts:95` |  |
+| `OrdersModule` | class | `orders.module.ts:49` |  |
 | `PosSaleLineInput` | interface | `orders.service.ts:41` |  |
 | `PlaceFromPosInput` | interface | `orders.service.ts:46` |  |
-| `OrdersService` | class | `orders.service.ts:91` |  |
+| `OrdersService` | class | `orders.service.ts:92` |  |
 | `ShipmentStatusListener` | class | `shipment-status.listener.ts:28` | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 

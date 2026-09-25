@@ -69,3 +69,29 @@ export function stripOrderListCost<T extends { data: Array<{ items: object[] }> 
   }
   return result;
 }
+
+/**
+ * WO-9.4 (09-ai-layer.md) — codRiskScore/codRiskAction/codRiskReasonEn exist
+ * for staff deciding whether to call a customer or hold their order for
+ * advance payment; telling the customer themselves they were flagged (and
+ * why — "this phone has returned 3 of its last 4 orders") defeats the
+ * purpose and could tip off exactly the person it's meant to catch. Always
+ * stripped on the customer-facing routes, unlike cost above, which is
+ * permission-gated for staff but never optional for a customer either way.
+ */
+export function stripCodRiskFields<T extends object>(payload: T): T {
+  const order = payload as Record<string, unknown>;
+  delete order.codRiskScore;
+  delete order.codRiskAction;
+  delete order.codRiskReasonEn;
+  delete order.codRiskComputedAt;
+  return payload;
+}
+
+/** Same as stripCodRiskFields but for a paginated list { data: Order[] }. */
+export function stripCodRiskFieldsList<T extends { data: object[] }>(result: T): T {
+  for (const order of result.data) {
+    stripCodRiskFields(order);
+  }
+  return result;
+}

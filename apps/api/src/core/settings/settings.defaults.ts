@@ -116,6 +116,12 @@ export const SettingKey = {
   DemandForecastMinLastYearUnits: 'inventory.demand_forecast_min_last_year_units',
   /** Extra days of forecasted demand a forecast-driven reorder quantity covers beyond the supplier's own lead time. */
   DemandForecastSafetyStockDays: 'inventory.demand_forecast_safety_stock_days',
+  /** WO-9.4 (09-ai-layer.md) — minimum COD shipments this node has to have seen for a city before CityCodRiskStat's rate/average is trusted; below it, a checkout in that city gets no city-level signal at all rather than one built on a handful of shipments. */
+  CodRiskMinCityOrders: 'orders.cod_risk_min_city_orders',
+  /** A COD order's risk score (0-100) at or above this gets CONFIRMATION_CALL instead of AUTO_CONFIRM — "it is tunable" (the doc's own words), so staff can adjust without a deploy. */
+  CodRiskConfirmationCallThreshold: 'orders.cod_risk_confirmation_call_threshold',
+  /** A COD order's risk score at or above this gets REQUIRE_ADVANCE_PAYMENT instead of CONFIRMATION_CALL. */
+  CodRiskAdvancePaymentThreshold: 'orders.cod_risk_advance_payment_threshold',
   /** Off until an owner turns it on — every order's tax is zero either way. */
   TaxEnabled: 'tax.enabled',
   /** 'INCLUSIVE' (unitPrice already contains tax) or 'EXCLUSIVE' (tax is added at checkout). */
@@ -310,6 +316,9 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.InventoryDemandSurgeHorizonDays]: 14,
   [SettingKey.DemandForecastMinLastYearUnits]: 5,
   [SettingKey.DemandForecastSafetyStockDays]: 14,
+  [SettingKey.CodRiskMinCityOrders]: 10,
+  [SettingKey.CodRiskConfirmationCallThreshold]: 35,
+  [SettingKey.CodRiskAdvancePaymentThreshold]: 65,
 
   [SettingKey.TaxEnabled]: false,
   [SettingKey.TaxPricingMode]: 'EXCLUSIVE',

@@ -11,7 +11,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { ORDER_STATUSES } from '@newax/shared';
+import { COD_RISK_ACTIONS, ORDER_STATUSES } from '@newax/shared';
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
 
 export class ShippingAddressDto {
@@ -127,6 +127,11 @@ export class AdminOrderQueryDto extends PaginationQueryDto {
   @IsOptional()
   @IsIn([...ORDER_STATUSES])
   status?: (typeof ORDER_STATUSES)[number];
+
+  @ApiPropertyOptional({ enum: COD_RISK_ACTIONS, description: 'WO-9.4 — filter the queue to orders CodRiskService flagged for this action.' })
+  @IsOptional()
+  @IsIn([...COD_RISK_ACTIONS])
+  codRiskAction?: (typeof COD_RISK_ACTIONS)[number];
 }
 
 export class OrderHistoryQueryDto {

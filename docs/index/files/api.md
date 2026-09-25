@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 676 tracked files in `apps/api`, by directory.
+All 681 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -53,7 +53,7 @@ All 676 tracked files in `apps/api`, by directory.
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
-| `orders.prisma` | prisma schema | 335 | Orders and shipments. |
+| `orders.prisma` | prisma schema | 358 | Orders and shipments. |
 | `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 48 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
@@ -548,13 +548,14 @@ All 676 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `checkout-validator.registry.ts` | registry | 59 |  |
 
-### `apps/api/src/core/common` (4)
+### `apps/api/src/core/common` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `aging.spec.ts` | unit test | 75 |  |
 | `aging.ts` | module | 76 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
-| `cost-fields.ts` | module | 72 |  |
+| `cost-fields.spec.ts` | unit test | 44 |  |
+| `cost-fields.ts` | module | 98 |  |
 | `sales-revenue.ts` | module | 17 |  |
 
 ### `apps/api/src/core/common/dto` (1)
@@ -656,7 +657,7 @@ All 676 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `client.ts` | module | 11 | Single import point for the generated Prisma client. |
-| `enums.spec.ts` | unit test | 66 |  |
+| `enums.spec.ts` | unit test | 72 |  |
 | `prisma.module.ts` | nest module | 10 |  |
 | `prisma.service.ts` | service | 46 |  |
 
@@ -706,7 +707,7 @@ All 676 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 48 |  |
-| `settings.defaults.ts` | module | 358 |  |
+| `settings.defaults.ts` | module | 367 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
@@ -728,8 +729,8 @@ All 676 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `metric-window.spec.ts` | unit test | 85 |  |
 | `metric-window.ts` | module | 73 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that wants the… |
-| `shop-time.spec.ts` | unit test | 157 |  |
-| `shop-time.ts` | module | 223 | Calendar days in the shop's timezone. |
+| `shop-time.spec.ts` | unit test | 175 |  |
+| `shop-time.ts` | module | 235 | Calendar days in the shop's timezone. |
 
 ### `apps/api/src/modules` (2)
 
@@ -1163,26 +1164,30 @@ All 676 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `onsite-message.dto.ts` | dto | 155 |  |
 
-### `apps/api/src/modules/orders` (10)
+### `apps/api/src/modules/orders` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `backorder.listener.spec.ts` | unit test | 84 |  |
 | `backorder.listener.ts` | event subscriber | 70 |  |
+| `cod-risk.cron.spec.ts` | unit test | 84 |  |
+| `cod-risk.cron.ts` | scheduled job | 82 |  |
+| `cod-risk.service.spec.ts` | unit test | 105 |  |
+| `cod-risk.service.ts` | service | 86 |  |
 | `notification.subscriber.ts` | event subscriber | 259 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 244 |  |
-| `orders.controller.ts` | controller | 134 |  |
-| `orders.module.ts` | nest module | 46 |  |
-| `orders.service.ts` | service | 1184 |  |
+| `orders-pos.service.spec.ts` | unit test | 249 |  |
+| `orders.controller.ts` | controller | 143 |  |
+| `orders.module.ts` | nest module | 50 |  |
+| `orders.service.ts` | service | 1207 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `order.dto.ts` | dto | 147 |  |
+| `order.dto.ts` | dto | 152 |  |
 
 ### `apps/api/src/modules/organization` (6)
 

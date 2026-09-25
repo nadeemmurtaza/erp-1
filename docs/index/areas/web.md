@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-316 files · 50,283 lines
+316 files · 50,323 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,8 +31,8 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 177 | 32,122 | page, loading, layout, error |
-| `apps/web/src/components` | 77 | 12,857 | component, loading |
+| `apps/web/src/app` | 177 | 32,158 | page, loading, layout, error |
+| `apps/web/src/components` | 77 | 12,861 | component, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 5 | 308 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
@@ -73,7 +73,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/messages/en.json` | 596 | json |  |
 | `apps/web/messages/ur.json` | 596 | json |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 571 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 556 | page |  |
+| `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 565 | page |  |
 | `apps/web/src/components/admin/image-manager.tsx` | 543 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/content/page.tsx` | 523 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/page.tsx` | 523 | page |  |

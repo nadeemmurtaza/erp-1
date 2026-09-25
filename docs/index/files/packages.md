@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 72 tracked files in `packages/*`, by directory.
+All 74 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -49,11 +49,13 @@ All 72 tracked files in `packages/*`, by directory.
 | `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (34)
+### `packages/shared/src` (36)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `brand.ts` | module | 334 | THE BRAND FILE. |
+| `cod-risk.spec.ts` | unit test | 199 |  |
+| `cod-risk.ts` | module | 167 |  |
 | `collection-rules.ts` | module | 16 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually cu… |
 | `constants.ts` | module | 146 |  |
 | `content-blocks.ts` | module | 48 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
@@ -61,12 +63,12 @@ All 72 tracked files in `packages/*`, by directory.
 | `demand-forecast.ts` | module | 112 |  |
 | `discounts.spec.ts` | unit test | 215 |  |
 | `discounts.ts` | module | 322 | The discount rules engine. |
-| `enums.ts` | module | 104 | Enum values mirrored from the Prisma schema. |
+| `enums.ts` | module | 108 | Enum values mirrored from the Prisma schema. |
 | `fabric-estimate.spec.ts` | unit test | 79 | ((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833... |
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `http-client.ts` | module | 200 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
-| `index.ts` | module | 39 |  |
+| `index.ts` | module | 40 |  |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
 | `permissions.spec.ts` | unit test | 68 |  |
 | `permissions.ts` | module | 727 | The permission catalog for PBAC (Permission-Based Access Control). |

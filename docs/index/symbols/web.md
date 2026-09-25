@@ -457,13 +457,13 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :3 |  |
-| `page.tsx` | `AdminOrdersPage` | default | :48 |  |
+| `page.tsx` | `AdminOrdersPage` | default | :50 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminOrderDetailPage` | default | :105 |  |
+| `page.tsx` | `AdminOrderDetailPage` | default | :108 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/insights`
 
@@ -1061,8 +1061,8 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `status-badge.tsx` | `statusLabel` | function | :64 | `READY_TO_SHIP` -> `Ready to ship`. |
-| `status-badge.tsx` | `StatusBadge` | function | :68 |  |
+| `status-badge.tsx` | `statusLabel` | function | :68 | `READY_TO_SHIP` -> `Ready to ship`. |
+| `status-badge.tsx` | `StatusBadge` | function | :72 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :11 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :36 | A form split into small, single-purpose steps instead of one long page. |

@@ -3,7 +3,7 @@
 
 # Schema: `orders.prisma`
 
-5 models · 5 enums. Owned by module [`orders`](../modules/orders.md).
+6 models · 5 enums. Owned by module [`orders`](../modules/orders.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -19,6 +19,18 @@ Migrations are **hand-written and forward-only** — never `prisma migrate diff`
 against a real database.
 
 ## Models
+
+### `CityCodRiskStat`  <sub>`apps/api/prisma/schema/orders.prisma:326`</sub>
+
+> WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "order value versus the city's average" signals.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `city` | `String` | id | @id |
+| `totalShipments` | `Int` |  |  |
+| `rtoShipments` | `Int` |  |  |
+| `avgOrderValue` | `Int` |  |  |
+| `computedAt` | `DateTime` |  | @default(now()) |
 
 ### `Order`  <sub>`apps/api/prisma/schema/orders.prisma:35`</sub>
 
@@ -63,6 +75,7 @@ against a real database.
 | `codRiskScore` | `Int?` | optional |  |
 | `codRiskAction` | `CodRiskAction?` | optional |  |
 | `codRiskComputedAt` | `DateTime?` | optional |  |
+| `codRiskReasonEn` | `String?` | optional |  |
 | `user` | `User?` | relation, optional | @relation(fields: [userId], references: [id], onDelete: SetNull) |
 | `contact` | `Contact?` | relation, optional | @relation(fields: [contactId], references: [id], onDelete: SetNull) |
 | `sourceCart` | `Cart?` | relation, optional | @relation(fields: [sourceCartId], references: [id], onDelete: SetNull) |
@@ -81,7 +94,7 @@ against a real database.
 
 Indexes: `@@index([status, placedAt])` · `@@index([userId])` · `@@index([contactId])` · `@@index([guestPhone])` · `@@index([channel])` · `@@index([shiftId])` · `@@index([sourceCartId])` · `@@index([codRiskAction, placedAt])`
 
-### `OrderItem`  <sub>`apps/api/prisma/schema/orders.prisma:151`</sub>
+### `OrderItem`  <sub>`apps/api/prisma/schema/orders.prisma:156`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -126,7 +139,7 @@ Indexes: `@@index([status, placedAt])` · `@@index([userId])` · `@@index([conta
 
 Indexes: `@@index([orderId])` · `@@index([productId])`
 
-### `OrderNumberCounter`  <sub>`apps/api/prisma/schema/orders.prisma:331`</sub>
+### `OrderNumberCounter`  <sub>`apps/api/prisma/schema/orders.prisma:354`</sub>
 
 > Backing store for sequential per-year order numbers (YSN-2026-0001).
 
@@ -135,7 +148,7 @@ Indexes: `@@index([orderId])` · `@@index([productId])`
 | `year` | `Int` | id | @id |
 | `counter` | `Int` |  | @default(0) |
 
-### `OrderStatusEvent`  <sub>`apps/api/prisma/schema/orders.prisma:238`</sub>
+### `OrderStatusEvent`  <sub>`apps/api/prisma/schema/orders.prisma:243`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -151,7 +164,7 @@ Indexes: `@@index([orderId])` · `@@index([productId])`
 
 Indexes: `@@index([orderId, createdAt])`
 
-### `Shipment`  <sub>`apps/api/prisma/schema/orders.prisma:262`</sub>
+### `Shipment`  <sub>`apps/api/prisma/schema/orders.prisma:267`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -206,7 +219,7 @@ Indexes: `@@index([orderId])` · `@@index([trackingNumber])` · `@@index([status
 | `WEB` |  |
 | `POS` |  |
 
-### `OrderItemFulfillmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:140`</sub>
+### `OrderItemFulfillmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:145`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -229,7 +242,7 @@ Indexes: `@@index([orderId])` · `@@index([trackingNumber])` · `@@index([status
 | `CANCELLED` |  |
 | `RETURNED` |  |
 
-### `ShipmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:253`</sub>
+### `ShipmentStatus`  <sub>`apps/api/prisma/schema/orders.prisma:258`</sub>
 
 | Value | Meaning |
 |---|---|

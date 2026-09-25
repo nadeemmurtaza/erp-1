@@ -84,6 +84,9 @@ interface OrderDetail {
   staffNote: string | null;
   cancelReason: string | null;
   placedAt: string;
+  codRiskScore: number | null;
+  codRiskAction: string | null;
+  codRiskReasonEn: string | null;
   items: OrderItem[];
   payments: Payment[];
   shipments: Shipment[];
@@ -234,6 +237,9 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
           <span className="flex items-center gap-3">
             {order.number}
             <StatusBadge status={order.status} />
+            {order.codRiskAction && order.codRiskAction !== 'AUTO_CONFIRM' ? (
+              <StatusBadge status={order.codRiskAction} />
+            ) : null}
           </span>
         }
         description={
@@ -246,6 +252,9 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
                   Store credit
                 </Link>
               </>
+            ) : null}
+            {order.codRiskAction && order.codRiskAction !== 'AUTO_CONFIRM' && order.codRiskReasonEn ? (
+              <span className="mt-1 block text-amber-700">{order.codRiskReasonEn}</span>
             ) : null}
           </>
         }

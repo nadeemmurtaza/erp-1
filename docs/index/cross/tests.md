@@ -3,7 +3,7 @@
 
 # Tests
 
-**164** spec files, **1,538** cases. What is already pinned down — and what is not.
+**168** spec files, **1,574** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -55,7 +55,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (146)
+## Unit and integration (150)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -66,6 +66,7 @@ regression or an N+1.
 | `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStil… |
 | `apps/api/src/core/auth/scope.guard.spec.ts` | core/auth | 20 | resolveScope · assertCanManageAtScope · scopeFilterFor |
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
+| `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
@@ -84,7 +85,7 @@ regression or an N+1.
 | `apps/api/src/core/settings/document-number.spec.ts` | core/settings | 5 | documentNumber |
 | `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 11 | StorageService.putImage · StorageService.putDocument |
 | `apps/api/src/core/time/metric-window.spec.ts` | core/time | 9 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays |
-| `apps/api/src/core/time/shop-time.spec.ts` | core/time | 16 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · assertIanaTimeZone |
+| `apps/api/src/core/time/shop-time.spec.ts` | core/time | 19 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · shopLocalHour · asse… |
 | `apps/api/src/modules/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
 | `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
@@ -136,6 +137,8 @@ regression or an N+1.
 | `apps/api/src/modules/measurements/size-recommendation.service.spec.ts` | measurements | 8 | SizeRecommendationService |
 | `apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts` | onsitemessages | 8 | OnsiteMessagesService |
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
+| `apps/api/src/modules/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |
+| `apps/api/src/modules/orders/cod-risk.service.spec.ts` | orders | 7 | CodRiskService |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
 | `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 6 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
@@ -188,6 +191,7 @@ regression or an N+1.
 | `packages/pos-core/src/outbox.spec.ts` | packages | 6 | outbox state machine |
 | `packages/pos-core/src/receipt.spec.ts` | packages | 2 | toReceipt |
 | `packages/pos-core/src/tender.spec.ts` | packages | 3 | computeTender |
+| `packages/shared/src/cod-risk.spec.ts` | packages | 19 | computeCodRiskScore |
 | `packages/shared/src/demand-forecast.spec.ts` | packages | 17 | computeDemandForecast · suggestReorderQuantity · resolveLeadTimeDays |
 | `packages/shared/src/discounts.spec.ts` | packages | 18 | isDiscountEligible · evaluateDiscounts — PERCENTAGE, ORDER scope · evaluateDiscounts — PRODUCT scop… |
 | `packages/shared/src/entities/address.spec.ts` | packages | 3 | getFormattedAddress · getAddressCityProvince |

@@ -29,7 +29,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { paginated } from '../../core/common/dto/pagination.dto';
-import { Prisma, type OrderStatus } from '../../core/prisma/client';
+import { Prisma, type CodRiskAction, type OrderStatus } from '../../core/prisma/client';
 import { PaymentsService } from '../payments/payments.service';
 import { TaxService } from '../tax/tax.service';
 import { ShippingService } from '../fulfilment/shipping.service';
@@ -86,6 +86,7 @@ const orderInclude = {
 } satisfies Prisma.OrderInclude;
 
 import { InventoryService, InsufficientStockError } from '../inventory/inventory.service';
+import { CodRiskService } from './cod-risk.service';
 
 @Injectable()
 export class OrdersService {
@@ -106,6 +107,7 @@ export class OrdersService {
     private readonly promotions: PromotionsService,
     private readonly giftCards: GiftCardsService,
     private readonly storeCredit: StoreCreditService,
+    private readonly codRisk: CodRiskService,
   ) {}
 
   /**
@@ -234,6 +236,21 @@ export class OrdersService {
     // rather than something computed inside that transaction.
     const orderNumber = await nextOrderNumber(this.prisma, this.settings, this.config);
 
+    // WO-9.4 (09-ai-layer.md) — computed synchronously here, COD orders only
+    // (a paid order has already cleared; RTO risk does not apply to it).
+    // Read-only, so — like quote/discountEvaluation above — it runs before
+    // the transaction opens rather than inside it.
+    const placedAt = new Date();
+    const codRisk =
+      dto.paymentMethod === 'cod'
+        ? await this.codRisk.score({
+            address: { ...dto.shippingAddress, phone },
+            orderValue: totals.grandTotal,
+            userId: userId ?? null,
+            placedAt,
+          })
+        : null;
+
     const order = await this.prisma.$transaction(async (tx) => {
       const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
       const variants = await tx.productVariant.findMany({
@@ -266,6 +283,10 @@ export class OrdersService {
           grandTotal: totals.grandTotal,
           shippingZone: quote.zoneKey,
           customerNote: dto.note ?? null,
+          codRiskScore: codRisk?.score ?? null,
+          codRiskAction: codRisk?.action ?? null,
+          codRiskComputedAt: codRisk ? placedAt : null,
+          codRiskReasonEn: codRisk?.reasonEn ?? null,
           items: {
             create: priced.lines.map((line, index) => {
               const discountUnit = linePerUnitDiscounts[String(index)] ?? 0;
@@ -701,9 +722,11 @@ export class OrdersService {
     take: number;
     q?: string;
     status?: OrderStatus;
+    codRiskAction?: CodRiskAction;
   }) {
     const where: Prisma.OrderWhereInput = {};
     if (query.status) where.status = query.status;
+    if (query.codRiskAction) where.codRiskAction = query.codRiskAction;
 
     if (query.q?.trim()) {
       const term = query.q.trim();

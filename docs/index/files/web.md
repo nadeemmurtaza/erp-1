@@ -507,13 +507,13 @@ All 316 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 6 |  |
-| `page.tsx` | page | 252 |  |
+| `page.tsx` | page | 279 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/[id]` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 556 |  |
+| `page.tsx` | page | 565 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/insights` (1)
 
@@ -1063,7 +1063,7 @@ All 316 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `status-badge.tsx` | component | 71 |  |
+| `status-badge.tsx` | component | 75 |  |
 | `toast-container.tsx` | component | 60 |  |
 | `wizard.tsx` | component | 146 |  |
 

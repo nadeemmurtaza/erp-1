@@ -16,6 +16,7 @@ import { ShippingService } from '../fulfilment/shipping.service';
 import { PromotionsService } from '../promotions/promotions.service';
 import { GiftCardsService } from '../giftcards/giftcards.service';
 import { StoreCreditService } from '../giftcards/store-credit.service';
+import { CodRiskService } from './cod-risk.service';
 import { OrdersService } from './orders.service';
 
 /**
@@ -58,6 +59,10 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
         { provide: PromotionsService, useValue: {} },
         { provide: GiftCardsService, useValue: {} },
         { provide: StoreCreditService, useValue: {} },
+        // placeFromPos() never scores COD risk — that's place()'s own
+        // web-checkout path (WO-9.4); a till sale is DELIVERED/paid at
+        // creation, so RTO risk does not apply to it.
+        { provide: CodRiskService, useValue: {} },
       ],
     }).compile();
 

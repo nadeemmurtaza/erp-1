@@ -3,7 +3,7 @@
 
 # Background work
 
-**13** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
+**14** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
 
 
 Background work is invisible in the UI and easy to forget exists. Anything here
@@ -24,6 +24,7 @@ runs on every node that has its module enabled.
 | `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:17` |  |
 | `EVERY_MINUTE` | `run()` | `marketing` | `apps/api/src/modules/marketing/campaign-dispatch.cron.ts:23` |  |
 | `0 3 * * *` | `run()` | `marketing` | `apps/api/src/modules/marketing/marketing-automation.cron.ts:72` |  |
+| `0 1 * * *` | `computeCityCodRiskStats()` | `orders` | `apps/api/src/modules/orders/cod-risk.cron.ts:22` |  |
 | `0 * * * *` | `run()` | `payroll` | `apps/api/src/modules/payroll/leave-accrual.cron.ts:25` |  |
 | `0 3 * * *` | `sweepReorderCandidates()` | `purchasing` | `apps/api/src/modules/purchasing/purchasing.cron.ts:36` |  |
 

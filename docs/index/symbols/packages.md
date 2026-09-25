@@ -46,6 +46,13 @@ Every top-level export in `packages`, with the line to open.
 |---|---|---|---|---|
 | `brand.ts` | `BRAND` | const | :321 | --------------------------------------------------------------------------- |
 | `brand.ts` | `Brand` | type | :333 |  |
+| `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
+| `cod-risk.ts` | `CodRiskCityStats` | interface | :11 |  |
+| `cod-risk.ts` | `CodRiskCustomerHistory` | interface | :18 |  |
+| `cod-risk.ts` | `CodRiskThresholds` | interface | :23 |  |
+| `cod-risk.ts` | `CodRiskInput` | interface | :30 |  |
+| `cod-risk.ts` | `CodRiskResult` | interface | :44 |  |
+| `cod-risk.ts` | `computeCodRiskScore` | function | :70 | WO-9.4 (09-ai-layer.md) — "start with a transparent rule-based score... |
 | `collection-rules.ts` | `CollectionRuleCondition` | interface | :7 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rat… |
 | `collection-rules.ts` | `CollectionRule` | interface | :13 |  |
 | `constants.ts` | `LOCALES` | const | :3 | Locales the storefront ships in. |
@@ -102,16 +109,18 @@ Every top-level export in `packages`, with the line to open.
 | `enums.ts` | `OrderStatus` | type | :50 |  |
 | `enums.ts` | `PAYMENT_STATUSES` | const | :52 |  |
 | `enums.ts` | `PaymentStatus` | type | :60 |  |
-| `enums.ts` | `STITCHING_STAGES` | const | :62 |  |
-| `enums.ts` | `StitchingStage` | type | :70 |  |
-| `enums.ts` | `LEAD_STATUSES` | const | :72 |  |
-| `enums.ts` | `LeadStatus` | type | :73 |  |
-| `enums.ts` | `INTERACTION_KINDS` | const | :75 |  |
-| `enums.ts` | `InteractionKind` | type | :84 |  |
-| `enums.ts` | `MEASUREMENT_UNITS` | const | :86 |  |
-| `enums.ts` | `MeasurementUnit` | type | :87 |  |
-| `enums.ts` | `nextStage` | function | :93 | Stage order is a straight line: a job may only advance to the next stage, or be sent back one stage… |
-| `enums.ts` | `previousStage` | function | :100 |  |
+| `enums.ts` | `COD_RISK_ACTIONS` | const | :63 | WO-9.4 (09-ai-layer.md). |
+| `enums.ts` | `CodRiskAction` | type | :64 | WO-9.4 (09-ai-layer.md). |
+| `enums.ts` | `STITCHING_STAGES` | const | :66 | WO-9.4 (09-ai-layer.md). |
+| `enums.ts` | `StitchingStage` | type | :74 |  |
+| `enums.ts` | `LEAD_STATUSES` | const | :76 |  |
+| `enums.ts` | `LeadStatus` | type | :77 |  |
+| `enums.ts` | `INTERACTION_KINDS` | const | :79 |  |
+| `enums.ts` | `InteractionKind` | type | :88 |  |
+| `enums.ts` | `MEASUREMENT_UNITS` | const | :90 |  |
+| `enums.ts` | `MeasurementUnit` | type | :91 |  |
+| `enums.ts` | `nextStage` | function | :97 | Stage order is a straight line: a job may only advance to the next stage, or be sent back one stage… |
+| `enums.ts` | `previousStage` | function | :104 |  |
 | `fabric-estimate.ts` | `FabricEstimateInput` | interface | :10 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `fabric-estimate.ts` | `FabricEstimateResult` | interface | :25 |  |
 | `fabric-estimate.ts` | `computeFabricEstimate` | function | :42 |  |
@@ -122,6 +131,7 @@ Every top-level export in `packages`, with the line to open.
 | `http-client.ts` | `request` | function | :116 | One request. |
 | `http-client.ts` | `requestWithRefresh` | function | :158 | Wraps `request` with a 401 retry. |
 | `human-code.ts` | `generateHumanCode` | function | :30 | A cryptographically random, human-readable code — never sequential. |
+| `index.ts` | `*` | re-export |  | from `./cod-risk` |
 | `index.ts` | `*` | re-export |  | from `./collection-rules` |
 | `index.ts` | `*` | re-export |  | from `./constants` |
 | `index.ts` | `*` | re-export |  | from `./content-blocks` |

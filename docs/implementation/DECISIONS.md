@@ -5482,7 +5482,7 @@ boundary: no second interpreter, ever.
   future `ApprovalSubjectType` consumer wires itself into
   `WorkflowStepsRegistry` the same way, never by importing
   `bpmn-workflows` directly.
-## ADR-050 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)
+## ADR-051 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)
 
 ### Context
 

@@ -3,7 +3,7 @@
 
 # Migrations
 
-**106** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**107** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -139,6 +139,7 @@ nothing here fails a build.
 | 2026-09-26 | `wo149_b2b_accounts_approvals` | 13 | CREATE TYPE, ALTER TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | ApprovalStep, B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
 | 2026-09-26 | `wo165_marketplace_listing_viewer_engagement` | 16 | CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | MarketplaceEngagement, MarketplaceListing, MarketplaceViewerProfile |
 | 2026-09-26 | `wo1656_sso_enforce_sso` | 1 | ALTER TABLE | SsoConnection |
+| 2026-09-26 | `wo166_product_reference_sync_provenance` | 2 | ALTER TABLE | ProductImage, ProductTranslation |
 
 
 ---

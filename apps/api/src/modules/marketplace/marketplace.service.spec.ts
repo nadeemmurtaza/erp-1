@@ -64,4 +64,52 @@ describe('MarketplaceService — 165-cross-tenant-marketplace-directory.md WO-16
     (global.fetch as jest.Mock).mockRejectedValue(new Error('ECONNREFUSED'));
     await expect(service.listMine()).rejects.toThrow(ServiceUnavailableException);
   });
+
+  describe('product references — 166-unified-product-reference-registry.md WO-166.3', () => {
+    it('lookupProductReference() returns null on a 404, never throwing — the barcode simply has no match', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({ ok: false, status: 404 });
+
+      const result = await service.lookupProductReference('01234567890123');
+
+      expect(result).toBeNull();
+    });
+
+    it('lookupProductReference() calls the platform endpoint with the barcode in the path', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({ ok: true, json: async () => ({ id: 'ref1' }) });
+
+      await service.lookupProductReference('01234567890123');
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://platform.example.com/platform/marketplace/v1/product-references/01234567890123',
+        expect.objectContaining({ method: 'GET' }),
+      );
+    });
+
+    it('lookupProductReference() still throws ServiceUnavailableException on a non-404 error', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({ ok: false, status: 500 });
+      await expect(service.lookupProductReference('01234567890123')).rejects.toThrow(ServiceUnavailableException);
+    });
+
+    it('registerProductReference() POSTs to the registration endpoint', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({ ok: true, json: async () => ({ id: 'ref1' }) });
+
+      await service.registerProductReference({ barcode: '01234567890123', translations: [{ locale: 'en', name: 'Lawn suit' }] });
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://platform.example.com/platform/marketplace/v1/product-references',
+        expect.objectContaining({ method: 'POST', body: expect.stringContaining('"barcode":"01234567890123"') }),
+      );
+    });
+
+    it('linkProductReference() POSTs the variant id as variantRef', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({ ok: true, json: async () => ({ linked: true }) });
+
+      await service.linkProductReference('ref1', 'variant1');
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://platform.example.com/platform/marketplace/v1/product-references/ref1/link',
+        expect.objectContaining({ method: 'POST', body: JSON.stringify({ variantRef: 'variant1' }) }),
+      );
+    });
+  });
 });

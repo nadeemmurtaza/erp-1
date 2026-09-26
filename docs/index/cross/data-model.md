@@ -264,7 +264,7 @@ against a real database.
 | [`ProductBundle`](../data/catalog.md#productbundle) | `catalog` | 6 | 0 | id | 150-product-kitting-bundles.md — a sellable shell over existing variants, never a new phy… |
 | [`ProductCrossSell`](../data/catalog.md#productcrosssell) | `catalog` | 8 | 2 | id |  |
 | [`ProductGarmentType`](../data/catalog.md#productgarmenttype) | `catalog` | 3 | 1 | — | Which garments a given unstitched fabric can be made into. |
-| [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 12 | 2 | id |  |
+| [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 13 | 2 | id |  |
 | [`ProductImageTranslation`](../data/catalog.md#productimagetranslation) | `catalog` | 5 | 1 | id | Alt text per locale. |
 | [`ProductOption`](../data/catalog.md#productoption) | `catalog` | 9 | 1 | id | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
 | [`ProductOptionTranslation`](../data/catalog.md#productoptiontranslation) | `catalog` | 5 | 1 | id |  |
@@ -272,7 +272,7 @@ against a real database.
 | [`ProductOptionValueTranslation`](../data/catalog.md#productoptionvaluetranslation) | `catalog` | 5 | 1 | id |  |
 | [`ProductReviewSummary`](../data/reviews.md#productreviewsummary) | `reviews` | 9 | 1 | productId | WO-9.9 (09-ai-layer.md). |
 | [`ProductSizeBias`](../data/catalog.md#productsizebias) | `catalog` | 8 | 1 | productId | WO-9.2. |
-| [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 12 | 1 | id |  |
+| [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 14 | 1 | id |  |
 | [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 51 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PromoCode`](../data/promotions.md#promocode) | `promotions` | 12 | 1 | id |  |

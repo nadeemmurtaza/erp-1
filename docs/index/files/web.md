@@ -1309,7 +1309,7 @@ All 403 tracked files in `apps/web`, by directory.
 | `nav-registry.ts` | component | 1073 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
-| `product-form.tsx` | component | 1434 |  |
+| `product-form.tsx` | component | 1572 |  |
 | `range-picker.tsx` | component | 63 |  |
 | `role-wizard.tsx` | component | 359 |  |
 | `scope-chips.tsx` | component | 71 |  |
@@ -1520,7 +1520,7 @@ All 403 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1772 |  |
+| `api.ts` | types | 1786 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

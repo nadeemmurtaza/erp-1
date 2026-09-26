@@ -3,7 +3,7 @@
 
 # Tests
 
-**297** spec files, **2,897** cases. What is already pinned down — and what is not.
+**301** spec files, **2,925** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (277)
+## Unit and integration (281)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -185,7 +185,11 @@ regression or an N+1.
 | `apps/api/src/modules/managed-services/managed-services.service.spec.ts` | managed-services | 5 | ManagedServicesService |
 | `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
 | `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
-| `apps/api/src/modules/marketplace/marketplace.service.spec.ts` | marketplace | 5 | MarketplaceService — 165-cross-tenant-marketplace-directory.md WO-165.2 |
+| `apps/api/src/modules/marketplace/marketplace-webhook.controller.spec.ts` | marketplace | 1 | MarketplaceWebhookController — 166-unified-product-reference-registry.md WO-166.4 |
+| `apps/api/src/modules/marketplace/marketplace-webhook.guard.spec.ts` | marketplace | 4 | MarketplaceWebhookGuard — 166-unified-product-reference-registry.md WO-166.4 |
+| `apps/api/src/modules/marketplace/marketplace.service.spec.ts` | marketplace | 10 | MarketplaceService — 165-cross-tenant-marketplace-directory.md WO-165.2 · product references — 166-… |
+| `apps/api/src/modules/marketplace/product-reference-sync.service.spec.ts` | marketplace | 9 | ProductReferenceSyncService · adopt · apply |
+| `apps/api/src/modules/marketplace/product-references.controller.spec.ts` | marketplace | 9 | ProductReferencesController — 166-unified-product-reference-registry.md WO-166.3 · lookup · apply ·… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
 | `apps/api/src/modules/measurements/size-bias.listener.spec.ts` | measurements | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
 | `apps/api/src/modules/measurements/size-bias.service.spec.ts` | measurements | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |

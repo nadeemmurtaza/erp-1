@@ -288,6 +288,12 @@ export class ProductAdminService {
               metaTitle: translation.metaTitle?.trim() || null,
               metaDescription: translation.metaDescription?.trim() || null,
               focusKeyword: translation.focusKeyword?.trim() || null,
+              // 166-unified-product-reference-registry.md WO-166.4 — an
+              // ordinary edit through this form is a deliberate local
+              // override; clearing the marker here is what stops the next
+              // sync delivery from silently clobbering it back.
+              sourcedFromGlobalReferenceId: null,
+              sourcedFromReferenceUpdatedAt: null,
             },
           });
         }

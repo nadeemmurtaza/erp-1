@@ -3,7 +3,7 @@
 
 # Module: `marketplace`
 
-Pack **core** · enabled by the `MODULES` allowlist · 5 files
+Pack **core** · enabled by the `MODULES` allowlist · 14 files
 
 
 
@@ -11,20 +11,29 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 Source: `apps/api/src/modules/marketplace/`
 
-## Files (5 · 311 lines)
+## Files (14 · 1,331 lines)
 
 All paths relative to `apps/api/src/modules/marketplace/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `marketplace.dto.ts` | dto | 98 | 2 | `POST /admin/marketplace/listings` — the "Publish to marketplace" screen (165-cross-tenant-marketplace-directory.md §2,… |
+| `product-reference.dto.ts` | dto | 113 | 7 | The GTIN/UPC/EAN format the platform's own registry enforces — mirrored here so a malformed value never reaches an outb… |
+| `marketplace-webhook.controller.spec.ts` | unit test | 20 | — |  |
+| `marketplace-webhook.controller.ts` | controller | 30 | 1 | 166-unified-product-reference-registry.md, WO-166.4 — the receiving end of a push delivery once the platform's own outb… |
+| `marketplace-webhook.guard.spec.ts` | unit test | 38 | — |  |
+| `marketplace-webhook.guard.ts` | guard | 39 | 1 | Authenticates an inbound push FROM the platform (166-unified-product- reference-registry.md WO-166.4), the reverse dire… |
 | `marketplace.controller.ts` | controller | 49 | 1 | WO-165.2 — "who may create/rotate a MarketplacePublisherCredential and edit visibleTo/engagementMode on a tenant's own… |
-| `marketplace.module.ts` | nest module | 18 | 1 |  |
-| `marketplace.service.spec.ts` | unit test | 68 | — |  |
-| `marketplace.service.ts` | service | 78 | 1 | WO-165.2 — the erp-1 side of "Publish to marketplace" (165-cross-tenant-marketplace-directory.md §2). |
+| `marketplace.module.ts` | nest module | 24 | 1 |  |
+| `marketplace.service.spec.ts` | unit test | 116 | — |  |
+| `marketplace.service.ts` | service | 147 | 5 |  |
+| `product-reference-sync.service.spec.ts` | unit test | 180 | — |  |
+| `product-reference-sync.service.ts` | service | 204 | 5 | Loose on purpose: shared by a `ProductReferenceView` (marketplace.service.ts, always `string \| null`) and a validated w… |
+| `product-references.controller.spec.ts` | unit test | 131 | — |  |
+| `product-references.controller.ts` | controller | 142 | 1 | 166-unified-product-reference-registry.md, WO-166.3 — the erp-1-side barcode-autofill API the product editor calls. |
 
 
-## HTTP routes (6)
+## HTTP routes (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -34,6 +43,10 @@ All paths relative to `apps/api/src/modules/marketplace/dto`.
 | POST | `/admin/marketplace/listings/:id/delist` | `catalog.manage` | `MarketplaceController.delist` :45 |  |
 | POST | `/admin/marketplace/listings/:id/pause` | `catalog.manage` | `MarketplaceController.pause` :35 |  |
 | POST | `/admin/marketplace/listings/:id/resume` | `catalog.manage` | `MarketplaceController.resume` :40 |  |
+| POST | `/admin/marketplace/product-references/apply` | `catalog.manage` | `ProductReferencesController.apply` :52 | "Fill from shared listing?" accepted. |
+| GET | `/admin/marketplace/product-references/lookup` | `catalog.manage` | `ProductReferencesController.lookup` :35 | Fires on the barcode field's blur — a REQUEST, refusable by 404: the form falls back to a… |
+| POST | `/admin/marketplace/product-references/register` | `catalog.manage` | `ProductReferencesController.register` :85 | The barcode had no match when looked up — register this tenant's own just-saved data as t… |
+| POST | `/webhooks/marketplace/product-reference-sync` | **PUBLIC** | `MarketplaceWebhookController.productReferenceSync` :26 |  |
 
 
 ## Domain events
@@ -56,8 +69,8 @@ _none_
 
 **`MarketplaceModule`** (`marketplace.module.ts`)
 - imports: —
-- controllers: `MarketplaceController`
-- providers: `MarketplaceService`
+- controllers: `MarketplaceController`, `ProductReferencesController`, `MarketplaceWebhookController`
+- providers: `MarketplaceService`, `ProductReferenceSyncService`, `MarketplaceWebhookGuard`
 - exports: —
 
 
@@ -65,17 +78,23 @@ _none_
 
 - core `auth`
 - core `config`
+- core `prisma`
+- package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
 either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (5)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `marketplace.service.spec.ts` | 5 | MarketplaceService — 165-cross-tenant-marketplace-directory.md WO-165.2 |
+| `marketplace-webhook.controller.spec.ts` | 1 | MarketplaceWebhookController — 166-unified-product-reference-registry.md WO-166.4 |
+| `marketplace-webhook.guard.spec.ts` | 4 | MarketplaceWebhookGuard — 166-unified-product-reference-registry.md WO-166.4 |
+| `marketplace.service.spec.ts` | 10 | MarketplaceService — 165-cross-tenant-marketplace-directory.md WO-165.2 · product references — 166-unified-product-refe… |
+| `product-reference-sync.service.spec.ts` | 9 | ProductReferenceSyncService · adopt · apply |
+| `product-references.controller.spec.ts` | 9 | ProductReferencesController — 166-unified-product-reference-registry.md WO-166.3 · lookup · apply · register |
 
 
 ## Every export in this unit
@@ -84,9 +103,28 @@ check there before adding another.
 |---|---|---|---|
 | `PublishMarketplaceListingDto` | class | `marketplace.dto.ts:17` | `POST /admin/marketplace/listings` — the "Publish to marketplace" screen (165-cross-tenant-marketplace-direct… |
 | `UpdateMarketplaceListingDto` | class | `marketplace.dto.ts:63` |  |
+| `BARCODE_PATTERN` | const | `product-reference.dto.ts:17` | The GTIN/UPC/EAN format the platform's own registry enforces — mirrored here so a malformed value never reach… |
+| `LookupProductReferenceQueryDto` | class | `product-reference.dto.ts:21` | `GET /admin/marketplace/product-references/lookup?barcode=` — the autofill trigger (166-unified-product-refer… |
+| `ApplyProductReferenceDto` | class | `product-reference.dto.ts:33` | `POST /admin/marketplace/product-references/apply` — "Fill from shared listing?" accepted (WO-166.3). |
+| `RegisterProductReferenceDto` | class | `product-reference.dto.ts:43` | `POST /admin/marketplace/product-references/register` — a genuinely new barcode with no existing reference. |
+| `ProductReferenceSyncTranslationDto` | class | `product-reference.dto.ts:49` |  |
+| `ProductReferenceSyncImageDto` | class | `product-reference.dto.ts:67` |  |
+| `ProductReferenceSyncPayloadDto` | class | `product-reference.dto.ts:89` | The body of a push delivery this tenant receives at `POST /webhooks/marketplace/product-reference-sync`, once… |
+| `MarketplaceWebhookController` | class | `marketplace-webhook.controller.ts:22` | 166-unified-product-reference-registry.md, WO-166.4 — the receiving end of a push delivery once the platform'… |
+| `MarketplaceWebhookGuard` | class | `marketplace-webhook.guard.ts:17` | Authenticates an inbound push FROM the platform (166-unified-product- reference-registry.md WO-166.4), the re… |
 | `MarketplaceController` | class | `marketplace.controller.ts:16` | WO-165.2 — "who may create/rotate a MarketplacePublisherCredential and edit visibleTo/engagementMode on a ten… |
-| `MarketplaceModule` | class | `marketplace.module.ts:17` |  |
-| `MarketplaceService` | class | `marketplace.service.ts:18` | WO-165.2 — the erp-1 side of "Publish to marketplace" (165-cross-tenant-marketplace-directory.md §2). |
+| `MarketplaceModule` | class | `marketplace.module.ts:23` |  |
+| `ProductReferenceTranslationView` | interface | `marketplace.service.ts:5` |  |
+| `ProductReferenceImageView` | interface | `marketplace.service.ts:12` |  |
+| `ProductReferenceView` | interface | `marketplace.service.ts:22` | The platform's own `ReferenceWithDetails` shape (product-reference.service.ts) — never trusted from a client,… |
+| `RegisterProductReferenceInput` | interface | `marketplace.service.ts:30` |  |
+| `MarketplaceService` | class | `marketplace.service.ts:50` | WO-165.2 — the erp-1 side of "Publish to marketplace" (165-cross-tenant-marketplace-directory.md §2). |
+| `SyncableTranslation` | interface | `product-reference-sync.service.ts:9` | Loose on purpose: shared by a `ProductReferenceView` (marketplace.service.ts, always `string \| null`) and a v… |
+| `SyncableImage` | interface | `product-reference-sync.service.ts:16` |  |
+| `ProductReferenceSyncPayload` | interface | `product-reference-sync.service.ts:22` |  |
+| `ProductReferenceContent` | interface | `product-reference-sync.service.ts:34` | What `adopt()` needs from a reference — deliberately excludes `referenceId`, which the caller already has sep… |
+| `ProductReferenceSyncService` | class | `product-reference-sync.service.ts:49` | 166-unified-product-reference-registry.md, WO-166.4 — the erp-1-side consumer of a `GlobalProductReference`. |
+| `ProductReferencesController` | class | `product-references.controller.ts:23` | 166-unified-product-reference-registry.md, WO-166.3 — the erp-1-side barcode-autofill API the product editor… |
 
 
 ---

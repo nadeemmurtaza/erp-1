@@ -8,6 +8,8 @@ import { Wizard, type WizardStep } from '@/components/common/wizard';
 import { Disclosure } from '@/components/ui';
 import { adminFetch } from '@/lib/admin-client';
 import { useAdminSession } from '@/components/admin/session';
+import { useEnabledModules } from '@/components/admin/deployment-modules';
+import { isModuleEnabled } from '@/utils/module-gate';
 import type {
   AdminBrand,
   AdminCategory,
@@ -16,6 +18,7 @@ import type {
   AdminOptionTemplate,
   AdminVariant,
   GarmentType,
+  ProductReferenceLookup,
 } from '@/types/api';
 import { ImageManager, ImageStager, uploadStagedImages, type StagedImage } from './image-manager';
 import { CrossSellManager } from './cross-sell-manager';
@@ -161,6 +164,8 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
 
   const { can } = useAdminSession();
   const canViewCost = can('inventory.view_cost');
+  const enabledModules = useEnabledModules();
+  const marketplaceEnabled = isModuleEnabled('marketplace', enabledModules);
 
   const [variants, setVariants] = useState<VariantDraft[]>(
     product?.variants.length ? product.variants.map(toDraft) : [{ ...BLANK_VARIANT }],
@@ -188,6 +193,52 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
   // constraint, one silently overwriting stock. Flagging them here, live, is
   // cheaper for staff than a round trip to find out.
   const variantIssues = useMemo(() => findVariantIssues(variants), [variants]);
+
+  // 166-unified-product-reference-registry.md WO-166.3 — the barcode
+  // autofill. Keyed by variant index: `status` drives what the row shows,
+  // `reference` is the preview once found, `outcome` is what to do after
+  // this save succeeds (adopt a found reference, or register a genuinely
+  // new barcode) — resolved once here rather than re-checked on save, since
+  // the barcode itself is what was just looked up.
+  const [referenceChecks, setReferenceChecks] = useState<
+    Record<number, { status: 'checking' | 'match' | 'none'; barcode: string; reference?: ProductReferenceLookup; accepted?: boolean }>
+  >({});
+
+  const checkBarcode = useCallback(async (index: number, barcode: string) => {
+    if (!marketplaceEnabled) return;
+    const trimmed = barcode.trim();
+    if (!/^\d{8,14}$/.test(trimmed)) return; // not barcode-shaped — no wasted round trip
+    setReferenceChecks((current) => ({ ...current, [index]: { status: 'checking', barcode: trimmed } }));
+    try {
+      const reference = await adminFetch<ProductReferenceLookup>('/admin/marketplace/product-references/lookup', {
+        query: { barcode: trimmed },
+      });
+      setReferenceChecks((current) => ({ ...current, [index]: { status: 'match', barcode: trimmed, reference } }));
+    } catch {
+      // 404 (no match) and "marketplace not configured for this deployment"
+      // both land here — either way, the form behaves exactly as it does
+      // today, per doc 166's own "absent collaborator" lens.
+      setReferenceChecks((current) => ({ ...current, [index]: { status: 'none', barcode: trimmed } }));
+    }
+  }, [marketplaceEnabled]);
+
+  function acceptReference(index: number) {
+    const check = referenceChecks[index];
+    if (!check?.reference) return;
+    const en = check.reference.translations.find((t) => t.locale === 'en');
+    const ur = check.reference.translations.find((t) => t.locale === 'ur');
+    if (en) {
+      setNameEn(en.name);
+      setDescriptionEn(en.description ?? '');
+      setCareEn(en.careInstructions ?? '');
+    }
+    if (ur) {
+      setNameUr(ur.name);
+      setDescriptionUr(ur.description ?? '');
+      setCareUr(ur.careInstructions ?? '');
+    }
+    setReferenceChecks((current) => ({ ...current, [index]: { ...check, accepted: true } }));
+  }
 
   const isUnstitched = kind === 'UNSTITCHED';
   const isService = kind === 'STITCHING_SERVICE';
@@ -295,6 +346,37 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
             method: 'POST',
             body: payload,
           });
+
+      // 166-unified-product-reference-registry.md WO-166.3 — close the loop
+      // now that the product's own translations/variants are saved: adopt
+      // any shared listing the staff accepted, and silently register any
+      // genuinely new barcode so the next business finds it instead of a
+      // blank form. Best-effort and never surfaced: the product above
+      // already saved successfully regardless of what happens here.
+      if (marketplaceEnabled) {
+        await Promise.allSettled(
+          Object.entries(referenceChecks).map(([indexStr, check]) => {
+            if (check.status === 'checking') return Promise.resolve();
+            const draft = variants[Number(indexStr)];
+            const savedVariant = draft && saved.variants.find((v) => v.sku === draft.sku.trim());
+            if (!savedVariant) return Promise.resolve();
+
+            if (check.status === 'match' && check.accepted) {
+              return adminFetch('/admin/marketplace/product-references/apply', {
+                method: 'POST',
+                body: { variantId: savedVariant.id },
+              });
+            }
+            if (check.status === 'none') {
+              return adminFetch('/admin/marketplace/product-references/register', {
+                method: 'POST',
+                body: { variantId: savedVariant.id },
+              });
+            }
+            return Promise.resolve();
+          }),
+        );
+      }
 
       // The product now has an id, so any photos picked during the Images
       // step can finally be sent. Failures here are reported but never undo
@@ -1002,12 +1084,24 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
               <div className="sm:col-span-6">
                 <Disclosure label="Barcode, cost & reorder">
                   <div className="grid gap-3 pt-2 sm:grid-cols-4">
-                    <LabelledInput
-                      label="Barcode"
-                      value={variant.barcode}
-                      onChange={(value) => updateVariant(setVariants, index, { barcode: value })}
-                      placeholder="EAN-13 / UPC-A"
-                    />
+                    <div>
+                      <LabelledInput
+                        label="Barcode"
+                        value={variant.barcode}
+                        onChange={(value) => {
+                          updateVariant(setVariants, index, { barcode: value });
+                          setReferenceChecks((current) => {
+                            if (!current[index]) return current;
+                            const next = { ...current };
+                            delete next[index];
+                            return next;
+                          });
+                        }}
+                        onBlur={() => checkBarcode(index, variant.barcode)}
+                        placeholder="EAN-13 / UPC-A"
+                      />
+                      {marketplaceEnabled ? <BarcodeReferencePreview check={referenceChecks[index]} onAccept={() => acceptReference(index)} /> : null}
+                    </div>
                     {canViewCost ? (
                       <LabelledInput
                         label="Cost price (Rs)"
@@ -1265,6 +1359,7 @@ function LabelledInput({
   label,
   value,
   onChange,
+  onBlur,
   type = 'text',
   placeholder,
   invalid,
@@ -1272,6 +1367,7 @@ function LabelledInput({
   label: string;
   value: string;
   onChange: (value: string) => void;
+  onBlur?: () => void;
   type?: string;
   placeholder?: string;
   invalid?: boolean;
@@ -1284,6 +1380,7 @@ function LabelledInput({
         value={value}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
+        onBlur={onBlur}
         aria-invalid={invalid || undefined}
         className={cn(
           'field-input py-1.5 text-sm',
@@ -1291,6 +1388,47 @@ function LabelledInput({
         )}
       />
     </label>
+  );
+}
+
+/**
+ * 166-unified-product-reference-registry.md WO-166.3 — "a match shows a
+ * preview... before writing anything." A genuinely new barcode (`status:
+ * 'none'`) needs no message at all: this document's own text says the form
+ * "behaves exactly as it does today", and it does — the product's own save
+ * silently registers it afterward (see `product-form.tsx`'s own `onSubmit`).
+ */
+function BarcodeReferencePreview({
+  check,
+  onAccept,
+}: {
+  check: { status: 'checking' | 'match' | 'none'; reference?: ProductReferenceLookup; accepted?: boolean } | undefined;
+  onAccept: () => void;
+}) {
+  if (!check || check.status === 'none') return null;
+
+  if (check.status === 'checking') {
+    return <p className="mt-1 text-xs text-neutral-900/60">Checking the shared registry…</p>;
+  }
+
+  if (check.accepted) {
+    return <p className="mt-1 text-xs text-emerald-700">Filled from the shared listing.</p>;
+  }
+
+  const name = check.reference?.translations.find((t) => t.locale === 'en')?.name ?? check.reference?.translations[0]?.name;
+  const image = check.reference?.images[0];
+
+  return (
+    <div className="mt-1 flex items-center gap-2 rounded bg-neutral-50 p-1.5">
+      {image ? (
+        // eslint-disable-next-line @next/next/no-img-element -- a remote registry URL, not a Next-optimizable local asset.
+        <img src={image.url} alt="" className="h-8 w-8 rounded object-cover" />
+      ) : null}
+      <p className="flex-1 text-xs text-neutral-900/70">Already in the shared registry as “{name}”.</p>
+      <button type="button" onClick={onAccept} className="btn-text shrink-0 text-xs">
+        Fill from shared listing
+      </button>
+    </div>
   );
 }
 

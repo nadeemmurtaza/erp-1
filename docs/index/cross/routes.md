@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **794** endpoints across **143** controllers, with the access rule that actually guards each one.
+All **798** endpoints across **145** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -32,7 +32,7 @@ never authorization.
 | POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/accounts/accounts.controller.ts:59` |
 | POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/accounts/accounts.controller.ts:52` |
 
-- **Public routes: 75** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 76** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -110,6 +110,7 @@ never authorization.
 | POST | `/track/event` | `TrackingController.track` |
 | POST | `/trading-partners/accept` | `TradingPartnerPortalController.accept` |
 | GET | `/trading-partners/stock` | `TradingPartnerPortalController.stock` |
+| POST | `/webhooks/marketplace/product-reference-sync` | `MarketplaceWebhookController.productReferenceSync` |
 | POST | `/whatsapp/webhook` | `WhatsAppWebhookController.webhook` |
 
 
@@ -729,7 +730,7 @@ never authorization.
 | GET | `/campaigns/r/:recipientId/click` | **PUBLIC** | `CampaignTrackingController.click` | `url` is attacker-controlled input inside a link this codebase itself emails ou… |
 | GET | `/campaigns/r/:recipientId/open.gif` | **PUBLIC** | `CampaignTrackingController.open` |  |
 
-### [`marketplace`](../modules/marketplace.md) (6)
+### [`marketplace`](../modules/marketplace.md) (10)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -739,6 +740,10 @@ never authorization.
 | POST | `/admin/marketplace/listings/:id/delist` | `catalog.manage` | `MarketplaceController.delist` |  |
 | POST | `/admin/marketplace/listings/:id/pause` | `catalog.manage` | `MarketplaceController.pause` |  |
 | POST | `/admin/marketplace/listings/:id/resume` | `catalog.manage` | `MarketplaceController.resume` |  |
+| POST | `/admin/marketplace/product-references/apply` | `catalog.manage` | `ProductReferencesController.apply` | "Fill from shared listing?" accepted. |
+| GET | `/admin/marketplace/product-references/lookup` | `catalog.manage` | `ProductReferencesController.lookup` | Fires on the barcode field's blur — a REQUEST, refusable by 404: the form falls… |
+| POST | `/admin/marketplace/product-references/register` | `catalog.manage` | `ProductReferencesController.register` | The barcode had no match when looked up — register this tenant's own just-saved… |
+| POST | `/webhooks/marketplace/product-reference-sync` | **PUBLIC** | `MarketplaceWebhookController.productReferenceSync` |  |
 
 ### [`measurements`](../modules/measurements.md) (13)
 

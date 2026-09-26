@@ -51,7 +51,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `cross-sell-manager.tsx` | `CrossSellManager` | client | 1 |  |
 | `csv-import-card.tsx` | `CsvImportCard` | client | 2 |  |
 | `custom-field-form-section.tsx` | `CustomFieldFormSection` | client | 1 |  |
-| `deployment-modules.tsx` | `EnabledModulesProvider` `useEnabledModules` | client | 5 |  |
+| `deployment-modules.tsx` | `EnabledModulesProvider` `useEnabledModules` | client | 6 |  |
 | `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | client | 1 |  |
 | `entity-attribute-editor.tsx` | `EntityAttributeEditor` | client | 1 |  |
 | `fragment-mount-point.tsx` | `FragmentMountPoint` | client | 1 |  |

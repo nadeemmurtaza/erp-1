@@ -1769,3 +1769,17 @@ export interface BpmnWorkflowDefinition {
 }
 
 export type ApprovalSubjectType = 'PURCHASE_REQUISITION' | 'WALLET_ADJUSTMENT';
+
+/**
+ * `GET /admin/marketplace/product-references/lookup`
+ * (architecture-patterns/166-unified-product-reference-registry.md
+ * WO-166.3) — the shared registry's own view of a barcode, used to prefill
+ * the product form before a staff member types or uploads anything.
+ */
+export interface ProductReferenceLookup {
+  id: string;
+  barcode: string;
+  updatedAt: string;
+  translations: { locale: string; name: string; description: string | null; careInstructions: string | null }[];
+  images: { id: string; url: string; altText: string; order: number }[];
+}

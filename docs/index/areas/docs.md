@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-396 files · 67,576 lines
+396 files · 67,780 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,12 +84,12 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 8 | 9,836 | doc, file |
+| `docs/implementation` | 8 | 9,975 | doc, file |
 | `docs/implementation/access-control-identity` | 7 | 1,896 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
 | `docs/implementation/analytics-reporting` | 5 | 555 | doc |
-| `docs/implementation/architecture-patterns` | 38 | 4,607 | doc |
+| `docs/implementation/architecture-patterns` | 38 | 4,672 | doc |
 | `docs/implementation/attendance-workforce` | 8 | 1,072 | doc |
 | `docs/implementation/b2b-wholesale-multientity` | 5 | 1,148 | doc |
 | `docs/implementation/catalog-variants-pricing` | 3 | 947 | doc |
@@ -116,7 +116,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 6,042 | doc |  |
+| `docs/implementation/DECISIONS.md` | 6,181 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
@@ -127,9 +127,9 @@ has a bug.
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
 | `docs/erp-lenses/_meta/_conflicts.md` | 645 | doc |  |
 | `docs/implementation/access-control-identity/163-personal-api-keys.md` | 625 | doc |  |
+| `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md` | 610 | doc |  |
 | `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md` | 566 | doc |  |
 | `docs/erp-lenses/_meta/_index.md` | 550 | doc |  |
-| `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md` | 545 | doc |  |
 | `docs/implementation/WO-22-lens-workflow-results.md` | 539 | doc |  |
 
 

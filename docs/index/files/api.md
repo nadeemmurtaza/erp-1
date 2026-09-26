@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,020 tracked files in `apps/api`, by directory.
+All 1,030 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -42,7 +42,7 @@ All 1,020 tracked files in `apps/api`, by directory.
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 742 | Catalog: categories, products, variants, images. |
+| `catalog.prisma` | prisma schema | 766 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
 | `core.prisma` | prisma schema | 667 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
@@ -680,6 +680,12 @@ All 1,020 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 3 |  |
 
+### `apps/api/prisma/schema/migrations/20260926210218_wo166_product_reference_sync_provenance` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 7 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -1236,7 +1242,7 @@ All 1,020 tracked files in `apps/api`, by directory.
 | `import-assistant.service.ts` | service | 392 |  |
 | `option-template-admin.service.ts` | service | 125 |  |
 | `product-admin.service.spec.ts` | unit test | 109 |  |
-| `product-admin.service.ts` | service | 739 |  |
+| `product-admin.service.ts` | service | 745 |  |
 | `product-import.service.spec.ts` | unit test | 77 |  |
 | `product-import.service.ts` | service | 510 |  |
 | `product-option-admin.service.ts` | service | 248 |  |
@@ -1607,20 +1613,29 @@ All 1,020 tracked files in `apps/api`, by directory.
 | `campaign.dto.ts` | dto | 49 |  |
 | `marketing-settings.dto.ts` | dto | 38 |  |
 
-### `apps/api/src/modules/marketplace` (4)
+### `apps/api/src/modules/marketplace` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `marketplace-webhook.controller.spec.ts` | unit test | 20 |  |
+| `marketplace-webhook.controller.ts` | controller | 30 |  |
+| `marketplace-webhook.guard.spec.ts` | unit test | 38 |  |
+| `marketplace-webhook.guard.ts` | guard | 39 |  |
 | `marketplace.controller.ts` | controller | 49 |  |
-| `marketplace.module.ts` | nest module | 18 |  |
-| `marketplace.service.spec.ts` | unit test | 68 |  |
-| `marketplace.service.ts` | service | 78 |  |
+| `marketplace.module.ts` | nest module | 24 |  |
+| `marketplace.service.spec.ts` | unit test | 116 |  |
+| `marketplace.service.ts` | service | 147 |  |
+| `product-reference-sync.service.spec.ts` | unit test | 180 |  |
+| `product-reference-sync.service.ts` | service | 204 |  |
+| `product-references.controller.spec.ts` | unit test | 131 |  |
+| `product-references.controller.ts` | controller | 142 |  |
 
-### `apps/api/src/modules/marketplace/dto` (1)
+### `apps/api/src/modules/marketplace/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `marketplace.dto.ts` | dto | 98 |  |
+| `product-reference.dto.ts` | dto | 113 |  |
 
 ### `apps/api/src/modules/measurements` (11)
 

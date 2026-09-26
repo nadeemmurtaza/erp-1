@@ -1296,7 +1296,7 @@ Every top-level export in `web`, with the line to open.
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
-| `product-form.tsx` | `ProductForm` | function | :80 | One editor for all three product kinds. |
+| `product-form.tsx` | `ProductForm` | function | :83 | One editor for all three product kinds. |
 | `range-picker.tsx` | `RANGES` | const | :6 | The windows every analytics screen offers. |
 | `range-picker.tsx` | `DASHBOARD_RANGES` | const | :8 | The dashboard's own fourth option (10-admin-dashboard.md WO-A.4) — a year view nothing else here ne… |
 | `range-picker.tsx` | `RangeDays` | type | :9 | The dashboard's own fourth option (10-admin-dashboard.md WO-A.4) — a year view nothing else here ne… |
@@ -1830,6 +1830,7 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `FieldMetadataValueType` | type | :1756 |  |
 | `api.ts` | `BpmnWorkflowDefinition` | interface | :1764 | `GET/PUT /admin/bpmn-workflows/:subjectType` (architecture-patterns/142-bpmn-visual-workflow-engine… |
 | `api.ts` | `ApprovalSubjectType` | type | :1771 |  |
+| `api.ts` | `ProductReferenceLookup` | interface | :1779 | `GET /admin/marketplace/product-references/lookup` (architecture-patterns/166-unified-product-refer… |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

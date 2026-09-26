@@ -2326,17 +2326,17 @@ _no second-level headings_
 - Acceptance  <sub>:254</sub>
 - Out of scope  <sub>:266</sub>
 
-### `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md`  <sub>545 lines</sub>
+### `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md`  <sub>610 lines</sub>
 
-- The principle, named honestly  <sub>:37</sub>
-- Where the real storage cost is, and where it is not  <sub>:90</sub>
-- 1. Schema — extends the platform module doc 165 already introduced  <sub>:141</sub>
-- 2. The two moments this actually runs  <sub>:243</sub>
-- What's built  <sub>:293</sub>
-- Scope lenses  <sub>:359</sub>
-- Work orders  <sub>:459</sub>
-- Acceptance  <sub>:495</sub>
-- Out of scope  <sub>:519</sub>
+- The principle, named honestly  <sub>:59</sub>
+- Where the real storage cost is, and where it is not  <sub>:112</sub>
+- 1. Schema — extends the platform module doc 165 already introduced  <sub>:163</sub>
+- 2. The two moments this actually runs  <sub>:265</sub>
+- What's built  <sub>:315</sub>
+- Scope lenses  <sub>:424</sub>
+- Work orders  <sub>:524</sub>
+- Acceptance  <sub>:560</sub>
+- Out of scope  <sub>:584</sub>
 
 ### `docs/implementation/architecture-patterns/92-microservices-module-decoupling.md`  <sub>94 lines</sub>
 
@@ -2725,7 +2725,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,042 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>6,181 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2785,6 +2785,7 @@ _no second-level headings_
 - ADR-052 — Docs 127/128/136 (hardcoded-policy sweep, extension-point coverage audit, database/cache portability audit): two real policy gaps converted; both of doc 128's own "gaps found" turn out to already be closed by prior work it never checked against; 170+ raw-SQL call sites triaged, none rewritten  <sub>:5593</sub>
 - ADR-053 — Doc 149 (`accounts`/`approvals` sector packs): a genuine REQUEST/RECORD split (`B2BOrderRequest`) rather than gating the generic checkout endpoint; the doc's own self-approval-refusal claim corrected against `ApprovalService`'s real behavior; an approval step widened to a Contact set, never a second chain mechanism  <sub>:5715</sub>
 - ADR-054 — Doc 165 (cross-tenant marketplace directory), part two: WO-165.1/165.2/165.6 built; WO-165.3/165.4/165.5 deferred together as ADR-047 already scoped them; the publisher credential is ops-issued, not self-service; `enforceSso` gates by legacy `User.role`, exempting whoever turned it on  <sub>:5916</sub>
+- ADR-055 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6044</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

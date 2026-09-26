@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import { PageHeader, EmptyState, Disclosure, ConfirmDialog, Dialog, Loading } from '@/components/ui';
 import { useAdminSession } from '@/components/admin/session';
+import { ROUTES } from '@/constants/routes';
 
 interface OrgUnitType {
   id: string;
@@ -31,6 +33,7 @@ interface OrgUnitView {
 export default function OrgStructurePage() {
   const { can } = useAdminSession();
   const canManage = can('org.structure.manage');
+  const canSeeAccess = can('org.access.view') || can('org.access.grant');
 
   const [units, setUnits] = useState<OrgUnitView[] | null>(null);
   const [types, setTypes] = useState<OrgUnitType[]>([]);
@@ -185,32 +188,41 @@ export default function OrgStructurePage() {
                 <span className="text-xs text-neutral-900/60">{unit.code}</span>
                 <span className="chip">{unit.typeLabel}</span>
               </div>
-              {canManage ? (
+              {canManage || canSeeAccess ? (
                 <div className="flex shrink-0 gap-3 text-xs">
-                  <button
-                    className="btn-text"
-                    onClick={() => {
-                      setRenaming(unit);
-                      setRenameValue(unit.name);
-                    }}
-                  >
-                    Rename
-                  </button>
-                  <button
-                    className="btn-text"
-                    onClick={() => {
-                      setMoving(unit);
-                      setMoveTargetId('');
-                    }}
-                  >
-                    Move
-                  </button>
-                  <button className="btn-text" onClick={() => openNewUnitDialog(unit.id)}>
-                    Add child
-                  </button>
-                  <button className="btn-text text-red-700" onClick={() => setClosing(unit)}>
-                    Close
-                  </button>
+                  {canSeeAccess ? (
+                    <Link className="btn-text" href={ROUTES.admin.orgUnitAccess(unit.id)}>
+                      Access
+                    </Link>
+                  ) : null}
+                  {canManage ? (
+                    <>
+                      <button
+                        className="btn-text"
+                        onClick={() => {
+                          setRenaming(unit);
+                          setRenameValue(unit.name);
+                        }}
+                      >
+                        Rename
+                      </button>
+                      <button
+                        className="btn-text"
+                        onClick={() => {
+                          setMoving(unit);
+                          setMoveTargetId('');
+                        }}
+                      >
+                        Move
+                      </button>
+                      <button className="btn-text" onClick={() => openNewUnitDialog(unit.id)}>
+                        Add child
+                      </button>
+                      <button className="btn-text text-red-700" onClick={() => setClosing(unit)}>
+                        Close
+                      </button>
+                    </>
+                  ) : null}
                 </div>
               ) : null}
             </div>

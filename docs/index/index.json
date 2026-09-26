@@ -3,38 +3,38 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2110,
-    "lines": 322572,
-    "routes": 717,
-    "controllers": 129,
-    "models": 255,
-    "enums": 118,
-    "migrations": 92,
+    "files": 2135,
+    "lines": 327726,
+    "routes": 726,
+    "controllers": 131,
+    "models": 264,
+    "enums": 123,
+    "migrations": 93,
     "events": 63,
-    "permissions": 93,
-    "screens": 242,
-    "crons": 21,
-    "specs": 269,
+    "permissions": 96,
+    "screens": 244,
+    "crons": 23,
+    "specs": 275,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 192,
-      "lines": 19327,
-      "bytes": 1135948,
+      "files": 208,
+      "lines": 20690,
+      "bytes": 1194527,
       "label": "repository root files"
     },
     "infra": {
       "files": 57,
-      "lines": 30050,
-      "bytes": 1181643,
+      "lines": 29967,
+      "bytes": 1177729,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 919,
-      "lines": 128562,
-      "bytes": 4934438,
+      "files": 926,
+      "lines": 130839,
+      "bytes": 5029827,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -51,20 +51,20 @@
     },
     "web": {
       "files": 389,
-      "lines": 63384,
-      "bytes": 2285253,
+      "lines": 63302,
+      "bytes": 2283339,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 394,
-      "lines": 64300,
-      "bytes": 3822709,
+      "files": 396,
+      "lines": 65920,
+      "bytes": 3920038,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8049,
-      "bytes": 285745,
+      "lines": 8108,
+      "bytes": 288698,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -146,6 +146,29 @@
       ],
       "routes": 26,
       "page": "docs/index/modules/analytics.md"
+    },
+    {
+      "name": "attendance",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/attendance/attendance-device-punch.controller.ts",
+        "apps/api/src/modules/attendance/attendance-device.controller.ts",
+        "apps/api/src/modules/attendance/attendance-device.service.spec.ts",
+        "apps/api/src/modules/attendance/attendance-device.service.ts",
+        "apps/api/src/modules/attendance/attendance-partition.cron.ts",
+        "apps/api/src/modules/attendance/attendance-time.spec.ts",
+        "apps/api/src/modules/attendance/attendance-time.ts",
+        "apps/api/src/modules/attendance/attendance.controller.ts",
+        "apps/api/src/modules/attendance/attendance.module.ts",
+        "apps/api/src/modules/attendance/attendance.service.spec.ts",
+        "apps/api/src/modules/attendance/attendance.service.ts",
+        "apps/api/src/modules/attendance/dto/attendance-device.dto.ts",
+        "apps/api/src/modules/attendance/dto/attendance.dto.ts"
+      ],
+      "routes": 17,
+      "page": "docs/index/modules/attendance.md"
     },
     {
       "name": "bom",
@@ -304,36 +327,6 @@
       ],
       "routes": 33,
       "page": "docs/index/modules/crm.md"
-    },
-    {
-      "name": "custom-fields",
-      "pack": "core",
-      "alwaysOn": true,
-      "inRegistry": true,
-      "files": [
-        "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
-        "apps/api/src/modules/custom-fields/custom-fields.module.ts",
-        "apps/api/src/modules/custom-fields/custom-fields.service.spec.ts",
-        "apps/api/src/modules/custom-fields/custom-fields.service.ts",
-        "apps/api/src/modules/custom-fields/dto/custom-field.dto.ts"
-      ],
-      "routes": 6,
-      "page": "docs/index/modules/custom-fields.md"
-    },
-    {
-      "name": "embeds",
-      "pack": "core",
-      "alwaysOn": true,
-      "inRegistry": true,
-      "files": [
-        "apps/api/src/modules/embeds/dto/embedded-widget.dto.ts",
-        "apps/api/src/modules/embeds/embed-widgets.controller.ts",
-        "apps/api/src/modules/embeds/embed-widgets.service.spec.ts",
-        "apps/api/src/modules/embeds/embed-widgets.service.ts",
-        "apps/api/src/modules/embeds/embeds.module.ts"
-      ],
-      "routes": 6,
-      "page": "docs/index/modules/embeds.md"
     },
     {
       "name": "finance",
@@ -645,13 +638,18 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/orgstructure/dto/org-unit-grant.dto.ts",
         "apps/api/src/modules/orgstructure/dto/org-unit.dto.ts",
+        "apps/api/src/modules/orgstructure/org-access.cron.ts",
+        "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+        "apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts",
+        "apps/api/src/modules/orgstructure/org-unit-grant.service.ts",
         "apps/api/src/modules/orgstructure/org-unit.controller.ts",
         "apps/api/src/modules/orgstructure/org-unit.service.spec.ts",
         "apps/api/src/modules/orgstructure/org-unit.service.ts",
         "apps/api/src/modules/orgstructure/orgstructure.module.ts"
       ],
-      "routes": 9,
+      "routes": 13,
       "page": "docs/index/modules/orgstructure.md"
     },
     {
@@ -2260,6 +2258,258 @@
       "public": false,
       "authOnly": false,
       "summary": "Revoke anyone's API key — final; its next request is refused"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/adjust",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "adjust",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 103,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Correct an event — never mutates the original row"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/adjust/preview",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "previewAdjust",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 93,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Which refusals an adjustment would hit, without writing anything"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/devices",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 21,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List enrolled attendance devices"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/devices",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "register",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 33,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Enrol a device at an org unit"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/devices/:id",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "findOne",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 27,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Get a device"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/attendance/devices/:id",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "update",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 39,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Update a device"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/devices/:id/rotate-device-key",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "rotateDeviceKey",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 53,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue a fresh device credential — shown once, never retrievable again"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/devices/:id/suspend",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "suspend",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 45,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Suspend a device — never deletes it, its punch history stays put"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/events",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "listOwnEvents",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 62,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Your own attendance events in a date range"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/events/:userId",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "listEvents",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 69,
+      "access": "hr.attendance.view | hr.attendance.reconcile",
+      "permissions": [
+        "hr.attendance.view",
+        "hr.attendance.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Someone else's attendance events in a date range"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/exceptions",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "listExceptions",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 76,
+      "access": "hr.attendance.view | hr.attendance.reconcile",
+      "permissions": [
+        "hr.attendance.view",
+        "hr.attendance.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Attendance exceptions — the reconcile queue"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/exceptions/:id/resolve",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "resolve",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 86,
+      "access": "hr.attendance.reconcile",
+      "permissions": [
+        "hr.attendance.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Clear an exception"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/punch",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "punch",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 26,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Punch yourself in/out — never refused"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/punch/manager",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "punchManager",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 44,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Record a punch on someone else’s behalf — never refused"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/shifts",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "listShifts",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 113,
+      "access": "hr.attendance.view | hr.attendance.record | hr.attendance.reconcile",
+      "permissions": [
+        "hr.attendance.view",
+        "hr.attendance.record",
+        "hr.attendance.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Shifts for one person"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/shifts",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "createShift",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 120,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a planned shift"
     },
     {
       "method": "GET",
@@ -4546,98 +4796,6 @@
     },
     {
       "method": "GET",
-      "path": "/admin/custom-fields/definitions",
-      "module": "custom-fields",
-      "controller": "CustomFieldsController",
-      "handler": "definitions",
-      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
-      "line": 35,
-      "access": "settings.custom-fields.manage",
-      "permissions": [
-        "settings.custom-fields.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Every custom-field definition for one entity type"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/custom-fields/definitions",
-      "module": "custom-fields",
-      "controller": "CustomFieldsController",
-      "handler": "define",
-      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
-      "line": 42,
-      "access": "settings.custom-fields.manage",
-      "permissions": [
-        "settings.custom-fields.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Define a new custom field on one entity type"
-    },
-    {
-      "method": "DELETE",
-      "path": "/admin/custom-fields/definitions/:id",
-      "module": "custom-fields",
-      "controller": "CustomFieldsController",
-      "handler": "remove",
-      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
-      "line": 49,
-      "access": "settings.custom-fields.manage",
-      "permissions": [
-        "settings.custom-fields.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Remove a custom-field definition"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/custom-fields/entity-types",
-      "module": "custom-fields",
-      "controller": "CustomFieldsController",
-      "handler": "entityTypes",
-      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
-      "line": 28,
-      "access": "settings.custom-fields.manage",
-      "permissions": [
-        "settings.custom-fields.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Every entity type this mechanism is wired up for"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/custom-fields/values",
-      "module": "custom-fields",
-      "controller": "CustomFieldsController",
-      "handler": "values",
-      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
-      "line": 56,
-      "access": "any signed-in user",
-      "permissions": [],
-      "public": false,
-      "authOnly": true,
-      "summary": "One entity's own custom-field values, gated by that entity's own edit permission"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/custom-fields/values",
-      "module": "custom-fields",
-      "controller": "CustomFieldsController",
-      "handler": "setValues",
-      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
-      "line": 64,
-      "access": "any signed-in user",
-      "permissions": [],
-      "public": false,
-      "authOnly": true,
-      "summary": "Set one entity's own custom-field values, gated by that entity's own edit permission"
-    },
-    {
-      "method": "GET",
       "path": "/admin/customers/:userId/store-credit",
       "module": "giftcards",
       "controller": "StoreCreditController",
@@ -4971,102 +5129,6 @@
       "public": false,
       "authOnly": false,
       "summary": "Render a template against sample data"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/embeds",
-      "module": "embeds",
-      "controller": "EmbedWidgetsController",
-      "handler": "list",
-      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
-      "line": 24,
-      "access": "analytics.view",
-      "permissions": [
-        "analytics.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Every active embedded widget"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/embeds",
-      "module": "embeds",
-      "controller": "EmbedWidgetsController",
-      "handler": "create",
-      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
-      "line": 38,
-      "access": "settings.embeds.manage",
-      "permissions": [
-        "settings.embeds.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Register a new embeddable widget"
-    },
-    {
-      "method": "DELETE",
-      "path": "/admin/embeds/:id",
-      "module": "embeds",
-      "controller": "EmbedWidgetsController",
-      "handler": "remove",
-      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
-      "line": 52,
-      "access": "settings.embeds.manage",
-      "permissions": [
-        "settings.embeds.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Remove an embedded widget"
-    },
-    {
-      "method": "PATCH",
-      "path": "/admin/embeds/:id",
-      "module": "embeds",
-      "controller": "EmbedWidgetsController",
-      "handler": "update",
-      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
-      "line": 45,
-      "access": "settings.embeds.manage",
-      "permissions": [
-        "settings.embeds.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Edit or deactivate an embedded widget"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/embeds/:key/token",
-      "module": "embeds",
-      "controller": "EmbedWidgetsController",
-      "handler": "issueToken",
-      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
-      "line": 59,
-      "access": "analytics.view",
-      "permissions": [
-        "analytics.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "A short-lived, scoped token for one active widget — never a raw session credential"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/embeds/all",
-      "module": "embeds",
-      "controller": "EmbedWidgetsController",
-      "handler": "listAll",
-      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
-      "line": 31,
-      "access": "settings.embeds.manage",
-      "permissions": [
-        "settings.embeds.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Every embedded widget, active or not — for the configuration screen"
     },
     {
       "method": "GET",
@@ -7081,6 +7143,71 @@
       "public": false,
       "authOnly": false,
       "summary": "One unit and everything under it"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/org-structure/:unitId/access",
+      "module": "orgstructure",
+      "controller": "GrantController",
+      "handler": "accessOverUnit",
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "line": 23,
+      "access": "org.access.view | org.access.grant",
+      "permissions": [
+        "org.access.view",
+        "org.access.grant"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Who reaches this unit, by posting or by grant"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:unitId/access",
+      "module": "orgstructure",
+      "controller": "GrantController",
+      "handler": "issue",
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "line": 41,
+      "access": "org.access.grant",
+      "permissions": [
+        "org.access.grant"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue a time-boxed access grant over this unit"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:unitId/access/:grantId/revoke",
+      "module": "orgstructure",
+      "controller": "GrantController",
+      "handler": "revoke",
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "line": 48,
+      "access": "org.access.grant",
+      "permissions": [
+        "org.access.grant"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Revoke an active grant"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:unitId/access/preview",
+      "module": "orgstructure",
+      "controller": "GrantController",
+      "handler": "previewIssue",
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "line": 30,
+      "access": "org.access.grant",
+      "permissions": [
+        "org.access.grant"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Which refusals a grant would hit, without writing anything"
     },
     {
       "method": "GET",
@@ -10756,6 +10883,20 @@
     },
     {
       "method": "POST",
+      "path": "/attendance/punch",
+      "module": "attendance",
+      "controller": "AttendanceDevicePunchController",
+      "handler": "punch",
+      "file": "apps/api/src/modules/attendance/attendance-device-punch.controller.ts",
+      "line": 32,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Record a punch from an enrolled device — never refused"
+    },
+    {
+      "method": "POST",
       "path": "/auth/change-password",
       "module": "core/auth",
       "controller": "AuthController",
@@ -12729,13 +12870,11 @@
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors",
         "GET /admin/analytics/workshop/output",
-        "GET /admin/embeds",
-        "POST /admin/embeds/:key/token",
         "GET /admin/feed",
         "GET /admin/inventory/suspicious-traffic",
         "GET /admin/wishlist/out-of-stock-report"
       ],
-      "uiSites": 12,
+      "uiSites": 11,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -13495,40 +13634,6 @@
       "inSeed": true
     },
     {
-      "key": "settings.custom-fields.manage",
-      "label": "Define custom fields on Suppliers and other wired entities",
-      "category": "Administration",
-      "sensitivity": "medium",
-      "routes": [
-        "GET /admin/custom-fields/definitions",
-        "POST /admin/custom-fields/definitions",
-        "DELETE /admin/custom-fields/definitions/:id",
-        "GET /admin/custom-fields/entity-types"
-      ],
-      "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
-      "key": "settings.embeds.manage",
-      "label": "Register and configure embeddable third-party widgets",
-      "category": "Administration",
-      "sensitivity": "medium",
-      "routes": [
-        "POST /admin/embeds",
-        "DELETE /admin/embeds/:id",
-        "PATCH /admin/embeds/:id",
-        "GET /admin/embeds/all"
-      ],
-      "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
       "key": "tax.manage",
       "label": "Manage tax classes, rates and the pricing mode",
       "category": "Administration",
@@ -14071,6 +14176,55 @@
       "inSeed": true
     },
     {
+      "key": "hr.attendance.view",
+      "label": "View attendance events, shifts and exceptions",
+      "category": "Human Resources",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/attendance/events/:userId",
+        "GET /admin/attendance/exceptions",
+        "GET /admin/attendance/shifts"
+      ],
+      "uiSites": 1,
+      "roles": [],
+      "inSeed": false
+    },
+    {
+      "key": "hr.attendance.record",
+      "label": "Record a punch for someone else, or import paper sign-in sheets",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/attendance/devices",
+        "POST /admin/attendance/devices",
+        "GET /admin/attendance/devices/:id",
+        "PATCH /admin/attendance/devices/:id",
+        "POST /admin/attendance/devices/:id/rotate-device-key",
+        "POST /admin/attendance/devices/:id/suspend",
+        "POST /admin/attendance/punch/manager",
+        "GET /admin/attendance/shifts",
+        "POST /admin/attendance/shifts"
+      ],
+      "uiSites": 0,
+      "roles": [],
+      "inSeed": false
+    },
+    {
+      "key": "hr.attendance.reconcile",
+      "label": "Clear an attendance exception — link it to a shift or accept it as-is",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/attendance/events/:userId",
+        "GET /admin/attendance/exceptions",
+        "POST /admin/attendance/exceptions/:id/resolve",
+        "GET /admin/attendance/shifts"
+      ],
+      "uiSites": 2,
+      "roles": [],
+      "inSeed": false
+    },
+    {
       "key": "org.structure.view",
       "label": "View the organization tree — offices, regions and departments",
       "category": "Organization",
@@ -14102,6 +14256,37 @@
         "GET /admin/org-structure/:id/subtree",
         "GET /admin/org-structure/tree",
         "GET /admin/org-structure/types"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "org.access.view",
+      "label": "See who reaches an organization unit, by posting or by grant",
+      "category": "Organization",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/org-structure/:unitId/access"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "org.access.grant",
+      "label": "Issue or revoke a time-boxed access grant over an organization unit",
+      "category": "Organization",
+      "sensitivity": "high",
+      "routes": [
+        "GET /admin/org-structure/:unitId/access",
+        "POST /admin/org-structure/:unitId/access",
+        "POST /admin/org-structure/:unitId/access/:grantId/revoke",
+        "POST /admin/org-structure/:unitId/access/preview"
       ],
       "uiSites": 2,
       "roles": [
@@ -15421,7 +15606,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 308,
+      "line": 322,
       "doc": "",
       "fields": [
         {
@@ -15612,7 +15797,7 @@
     {
       "name": "AgencyUsageSnapshot",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 765,
+      "line": 777,
       "doc": "One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe to delete and recompute (same discipline as `VariantSalesStat` on the tenant side).",
       "fields": [
         {
@@ -15680,7 +15865,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 631,
+      "line": 645,
       "doc": "",
       "fields": [
         {
@@ -15769,7 +15954,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 586,
+      "line": 600,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -15830,7 +16015,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 258,
+      "line": 272,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -16477,9 +16662,322 @@
       ]
     },
     {
+      "name": "AttendanceDevice",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 78,
+      "doc": "A biometric terminal or kiosk that punches on behalf of employees at one unit.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deviceKeyHash",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "AttendanceDeviceStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lastSeenAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "events",
+          "type": "AttendanceEvent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([orgUnitId])",
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "AttendanceEvent",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 102,
+      "doc": "Raw, immutable.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "AttendanceKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "occurredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "timezone",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "source",
+          "type": "AttendanceSource",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deviceId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "correctsId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "externalRef",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "device",
+          "type": "AttendanceDevice?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "exceptions",
+          "type": "AttendanceException[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@id([id, occurredAt])",
+        "@@unique([userId, source, externalRef, occurredAt])",
+        "@@index([userId, occurredAt])",
+        "@@index([orgUnitId, occurredAt])",
+        "@@index([id])"
+      ]
+    },
+    {
+      "name": "AttendanceException",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 178,
+      "doc": "A punch that did not fit.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "eventId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "eventOccurredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "AttendanceExceptionReason",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "note",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "event",
+          "type": "AttendanceEvent",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "resolvedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([resolvedAt])",
+        "@@index([userId])",
+        "@@index([orgUnitId])"
+      ]
+    },
+    {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 398,
+      "line": 412,
       "doc": "",
       "fields": [
         {
@@ -19239,74 +19737,6 @@
       ]
     },
     {
-      "name": "CustomFieldDefinition",
-      "file": "apps/api/prisma/schema/custom-fields.prisma",
-      "line": 20,
-      "doc": "",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "entityType",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "key",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "label",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "valueType",
-          "type": "CustomFieldValueType",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "isRequired",
-          "type": "Boolean",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "createdAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "updatedAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        }
-      ],
-      "indexes": [
-        "@@unique([entityType, key])",
-        "@@index([entityType])"
-      ]
-    },
-    {
       "name": "DebitNote",
       "file": "apps/api/prisma/schema/receivables.prisma",
       "line": 80,
@@ -19404,7 +19834,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 566,
+      "line": 580,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -19961,7 +20391,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 353,
+      "line": 367,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -20147,7 +20577,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 214,
+      "line": 228,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -20204,78 +20634,6 @@
         "@@index([userId])",
         "@@index([expiresAt])"
       ]
-    },
-    {
-      "name": "EmbeddedWidget",
-      "file": "apps/api/prisma/schema/embeds.prisma",
-      "line": 6,
-      "doc": "Embedding a third-party dashboard: a narrow iframe pattern, not a micro-frontend architecture (architecture-patterns/113-micro-frontend- embedding.md, WO-113.1).",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "key",
-          "type": "String",
-          "id": false,
-          "unique": true,
-          "relation": false
-        },
-        {
-          "name": "label",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "targetUrl",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "isActive",
-          "type": "Boolean",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "createdByUserId",
-          "type": "String?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "createdBy",
-          "type": "User?",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "createdAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "updatedAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        }
-      ],
-      "indexes": []
     },
     {
       "name": "EmployeeProfile",
@@ -21288,9 +21646,346 @@
       ]
     },
     {
+      "name": "GlobalProductReference",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 46,
+      "doc": "One row per physical product, keyed by the one fact that is unambiguously true regardless of who is selling it: its barcode.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "barcode",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "registeredByTenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reviewStatus",
+          "type": "ProductReferenceReviewStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attributes",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "registeredByTenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "translations",
+          "type": "GlobalProductReferenceTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "images",
+          "type": "GlobalProductReferenceImage[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "links",
+          "type": "GlobalProductReferenceLink[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "flags",
+          "type": "GlobalProductReferenceFlag[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([registeredByTenantId])"
+      ]
+    },
+    {
+      "name": "GlobalProductReferenceFlag",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 132,
+      "doc": "A non-owning tenant's report that a shared reference is wrong — reviewed by platform staff, never auto-applied.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referenceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "flaggedByTenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "GlobalProductReference",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "flaggedByTenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([referenceId])"
+      ]
+    },
+    {
+      "name": "GlobalProductReferenceImage",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 95,
+      "doc": "The shared image itself, stored once in the platform app's own storage driver — never copied into a linking tenant's bucket for a cloud-connected tenant (an offline-capable deployment's own local sna…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referenceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "url",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "altText",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "GlobalProductReference",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([referenceId])"
+      ]
+    },
+    {
+      "name": "GlobalProductReferenceLink",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 111,
+      "doc": "One row per tenant that has linked one of their own ProductVariants to this shared reference.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referenceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantRef",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "linkedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "GlobalProductReference",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, variantRef])",
+        "@@index([referenceId])",
+        "@@index([tenantId])"
+      ]
+    },
+    {
+      "name": "GlobalProductReferenceTranslation",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 76,
+      "doc": "Mirrors ProductTranslation's own locale-keyed shape exactly (en/ur) — the identical structure a linked tenant's own table is synced into.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referenceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "careInstructions",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "GlobalProductReference",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([referenceId, locale])"
+      ]
+    },
+    {
       "name": "GoodsReceipt",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 168,
+      "line": 163,
       "doc": "",
       "fields": [
         {
@@ -21400,7 +22095,7 @@
     {
       "name": "GoodsReceiptItem",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 196,
+      "line": 191,
       "doc": "",
       "fields": [
         {
@@ -23505,6 +24200,57 @@
       ]
     },
     {
+      "name": "MarketplacePublisherCredential",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 24,
+      "doc": "One row per tenant that has opted into the cross-tenant network (either capability this file offers).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "apiKeyHash",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "rotatedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "MeasurementField",
       "file": "apps/api/prisma/schema/measurements.prisma",
       "line": 50,
@@ -23949,7 +24695,7 @@
     {
       "name": "MeteredOrderFee",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 662,
+      "line": 674,
       "doc": "Doc 153's own \"the reversal document, not the reversal flag\" — one row per order actually metered for the transaction fee, naming the specific order and the exact amount metered for it, so a later `R…",
       "fields": [
         {
@@ -25857,6 +26603,34 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "grants",
+          "type": "OrgUnitGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attendanceDevices",
+          "type": "AttendanceDevice[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attendanceEvents",
+          "type": "AttendanceEvent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shifts",
+          "type": "Shift[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -25864,6 +26638,123 @@
         "@@index([parentId])",
         "@@index([path])",
         "@@index([nodeId])"
+      ]
+    },
+    {
+      "name": "OrgUnitGrant",
+      "file": "apps/api/prisma/schema/org-structure.prisma",
+      "line": 95,
+      "doc": "access-control-identity/21-access-over-the-org-tree.md — an explicit, time-boxed grant of authority over a subtree.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "permissionKeys",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "mode",
+          "type": "GrantMode",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "grantedByUserId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "countersignedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "revokedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "grantedBy",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "countersignedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, expiresAt])",
+        "@@index([orgUnitId])"
       ]
     },
     {
@@ -25920,7 +26811,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 539,
+      "line": 553,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -26307,7 +27198,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 197,
+      "line": 211,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -26862,7 +27753,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 419,
+      "line": 433,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -26950,7 +27841,7 @@
     {
       "name": "PlatformCustomQuote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 543,
+      "line": 555,
       "doc": "WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…",
       "fields": [
         {
@@ -27074,7 +27965,7 @@
     {
       "name": "PlatformInvoice",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 433,
+      "line": 445,
       "doc": "",
       "fields": [
         {
@@ -27276,7 +28167,7 @@
     {
       "name": "PlatformInvoiceCreditNote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 519,
+      "line": 531,
       "doc": "A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own \"the reversal document\" lens).",
       "fields": [
         {
@@ -27336,7 +28227,7 @@
     {
       "name": "PlatformOpsClient",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 301,
+      "line": 313,
       "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
       "fields": [
         {
@@ -27403,7 +28294,7 @@
     {
       "name": "PlatformPlan",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 143,
+      "line": 155,
       "doc": "",
       "fields": [
         {
@@ -27580,7 +28471,7 @@
     {
       "name": "PlatformRateCardChangeRequest",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 718,
+      "line": 730,
       "doc": "doc 153's own \"the threshold nobody approves alone\" / \"authority and blast radius\" lenses, resolved with the identical create/approve split `PlatformCustomQuote` (doc 50 §4) already established: a ra…",
       "fields": [
         {
@@ -27697,7 +28588,7 @@
     {
       "name": "PlatformSubscription",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 222,
+      "line": 234,
       "doc": "",
       "fields": [
         {
@@ -28025,6 +28916,34 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "marketplacePublisherCredential",
+          "type": "MarketplacePublisherCredential?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "registeredProductReferences",
+          "type": "GlobalProductReference[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productReferenceLinks",
+          "type": "GlobalProductReferenceLink[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productReferenceFlags",
+          "type": "GlobalProductReferenceFlag[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -28036,7 +28955,7 @@
     {
       "name": "PlatformUsageRecord",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 238,
+      "line": 250,
       "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
       "fields": [
         {
@@ -30221,7 +31140,7 @@
     {
       "name": "PurchaseOrder",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 102,
+      "line": 97,
       "doc": "",
       "fields": [
         {
@@ -30416,7 +31335,7 @@
     {
       "name": "PurchaseOrderItem",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 150,
+      "line": 145,
       "doc": "",
       "fields": [
         {
@@ -30505,7 +31424,7 @@
     {
       "name": "PurchaseRequisition",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 269,
+      "line": 264,
       "doc": "",
       "fields": [
         {
@@ -31012,7 +31931,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 176,
+      "line": 190,
       "doc": "",
       "fields": [
         {
@@ -31340,7 +32259,7 @@
     {
       "name": "RequisitionLine",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 293,
+      "line": 288,
       "doc": "",
       "fields": [
         {
@@ -31401,7 +32320,7 @@
     {
       "name": "ResourceQuotaAlert",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 347,
+      "line": 359,
       "doc": "One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.",
       "fields": [
         {
@@ -31483,7 +32402,7 @@
     {
       "name": "ResourceTierQuota",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 322,
+      "line": 334,
       "doc": "--------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…",
       "fields": [
         {
@@ -32139,7 +33058,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 485,
+      "line": 499,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -32197,7 +33116,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 499,
+      "line": 513,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -32251,7 +33170,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 435,
+      "line": 449,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -32478,7 +33397,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 331,
+      "line": 345,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -32718,6 +33637,74 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "Shift",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 148,
+      "doc": "A planned shift.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startsAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endsAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "timezone",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, startsAt])",
+        "@@index([orgUnitId, startsAt])"
+      ]
     },
     {
       "name": "Shipment",
@@ -33509,7 +34496,7 @@
     {
       "name": "SignupVerification",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 578,
+      "line": 590,
       "doc": "A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.",
       "fields": [
         {
@@ -35503,13 +36490,6 @@
           "relation": false
         },
         {
-          "name": "customFields",
-          "type": "Json",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
           "name": "tradingPartner",
           "type": "TradingPartner?",
           "id": false,
@@ -35546,7 +36526,7 @@
     {
       "name": "SupplierBill",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 219,
+      "line": 214,
       "doc": "",
       "fields": [
         {
@@ -35684,7 +36664,7 @@
     {
       "name": "SupplierProduct",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 74,
+      "line": 69,
       "doc": "What a given supplier charges for a given variant, and under what terms.",
       "fields": [
         {
@@ -35766,7 +36746,7 @@
     {
       "name": "SupportAccessGrant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 253,
+      "line": 265,
       "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
       "fields": [
         {
@@ -36097,7 +37077,7 @@
     {
       "name": "TenantDataExport",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 391,
+      "line": 403,
       "doc": "",
       "fields": [
         {
@@ -36199,7 +37179,7 @@
     {
       "name": "TenantDeploymentCredential",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 281,
+      "line": 293,
       "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
       "fields": [
         {
@@ -36389,7 +37369,7 @@
     {
       "name": "TrialExtension",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 596,
+      "line": 608,
       "doc": "WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so \"extended more than once\" is a query, not a memory.",
       "fields": [
         {
@@ -36456,7 +37436,7 @@
     {
       "name": "UsageMeter",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 629,
+      "line": 641,
       "doc": "One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` increments off a tenant's own transactional outbox (`transaction_fee_minor`, `messages_sent`) or sets to the late…",
       "fields": [
         {
@@ -36524,7 +37504,7 @@
     {
       "name": "UsageMeteringCursor",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 693,
+      "line": 705,
       "doc": "The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each batch — so a poll reads only the outbox rows it has not already applied, rather than rescanning the whole table…",
       "fields": [
         {
@@ -36880,13 +37860,6 @@
           "relation": true
         },
         {
-          "name": "embeddedWidgetsCreated",
-          "type": "EmbeddedWidget[]",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
           "name": "goodsReceiptsReceived",
           "type": "GoodsReceipt[]",
           "id": false,
@@ -37062,6 +38035,55 @@
           "relation": false
         },
         {
+          "name": "orgUnitGrantsHeld",
+          "type": "OrgUnitGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnitGrantsIssued",
+          "type": "OrgUnitGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnitGrantsCountersigned",
+          "type": "OrgUnitGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "attendanceEvents",
+          "type": "AttendanceEvent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shifts",
+          "type": "Shift[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attendanceExceptions",
+          "type": "AttendanceException[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "attendanceExceptionsResolved",
+          "type": "AttendanceException[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "assetDepreciationSchedulesCreated",
           "type": "AssetDepreciationSchedule[]",
           "id": false,
@@ -37197,7 +38219,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 456,
+      "line": 470,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -37258,7 +38280,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 514,
+      "line": 528,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -38172,7 +39194,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 625,
+      "line": 639,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -38182,7 +39204,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 604,
+      "line": 618,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -38226,7 +39248,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 239,
+      "line": 253,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -38236,7 +39258,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 232,
+      "line": 246,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -38281,6 +39303,52 @@
         "ASSIGNED",
         "RETIRED",
         "LOST"
+      ]
+    },
+    {
+      "name": "AttendanceDeviceStatus",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 68,
+      "values": [
+        "PENDING",
+        "ACTIVE",
+        "SUSPENDED"
+      ]
+    },
+    {
+      "name": "AttendanceExceptionReason",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 163,
+      "values": [
+        "NO_MATCHING_SHIFT",
+        "OUTSIDE_ROSTER",
+        "WRONG_UNIT",
+        "WHILE_ON_LEAVE",
+        "DUPLICATE_SUSPECTED",
+        "MISSING_COUNTERPART"
+      ]
+    },
+    {
+      "name": "AttendanceKind",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 53,
+      "values": [
+        "IN",
+        "OUT",
+        "BREAK_START",
+        "BREAK_END",
+        "ADJUSTMENT"
+      ]
+    },
+    {
+      "name": "AttendanceSource",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 61,
+      "values": [
+        "DEVICE",
+        "SELF",
+        "MANAGER",
+        "IMPORT"
       ]
     },
     {
@@ -38408,17 +39476,6 @@
       ]
     },
     {
-      "name": "CustomFieldValueType",
-      "file": "apps/api/prisma/schema/custom-fields.prisma",
-      "line": 13,
-      "values": [
-        "TEXT",
-        "NUMBER",
-        "BOOLEAN",
-        "DATE"
-      ]
-    },
-    {
       "name": "DepreciationMethod",
       "file": "apps/api/prisma/schema/accounting.prisma",
       "line": 231,
@@ -38430,7 +39487,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 554,
+      "line": 568,
       "values": [
         "IOS",
         "ANDROID",
@@ -38475,7 +39532,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 342,
+      "line": 356,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -38524,6 +39581,15 @@
         "REDEEMED",
         "EXPIRED",
         "CANCELLED"
+      ]
+    },
+    {
+      "name": "GrantMode",
+      "file": "apps/api/prisma/schema/org-structure.prisma",
+      "line": 128,
+      "values": [
+        "READ",
+        "ACTING"
       ]
     },
     {
@@ -38598,7 +39664,7 @@
     {
       "name": "InvoiceStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 428,
+      "line": 440,
       "values": [
         "ISSUED",
         "CREDITED"
@@ -38771,7 +39837,7 @@
     {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 291,
+      "line": 303,
       "values": [
         "ACTIVE",
         "REVOKED"
@@ -38825,7 +39891,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 528,
+      "line": 542,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -38880,7 +39946,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 447,
+      "line": 461,
       "values": [
         "GRANT",
         "REVOKE"
@@ -38908,7 +39974,7 @@
     {
       "name": "PricingModel",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 129,
+      "line": 141,
       "values": [
         "PER_SEAT",
         "FLAT_MONTHLY",
@@ -38940,6 +40006,16 @@
       ]
     },
     {
+      "name": "ProductReferenceReviewStatus",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 34,
+      "values": [
+        "UNREVIEWED",
+        "CONFIRMED",
+        "FLAGGED"
+      ]
+    },
+    {
       "name": "ProductStatus",
       "file": "apps/api/prisma/schema/catalog.prisma",
       "line": 17,
@@ -38952,7 +40028,7 @@
     {
       "name": "PurchaseOrderStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 94,
+      "line": 89,
       "values": [
         "DRAFT",
         "SENT",
@@ -38975,7 +40051,7 @@
     {
       "name": "QuoteStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 532,
+      "line": 544,
       "values": [
         "PENDING",
         "APPROVED",
@@ -38985,7 +40061,7 @@
     {
       "name": "RateCardChangeStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 703,
+      "line": 715,
       "values": [
         "PENDING",
         "APPROVED",
@@ -39045,7 +40121,7 @@
     {
       "name": "RequisitionApprovalStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 262,
+      "line": 257,
       "values": [
         "PENDING",
         "APPROVED",
@@ -39273,7 +40349,7 @@
     {
       "name": "StripeInvoicePaymentStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 752,
+      "line": 764,
       "values": [
         "PENDING",
         "PAID",
@@ -39283,7 +40359,7 @@
     {
       "name": "SubscriptionStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 216,
+      "line": 228,
       "values": [
         "ACTIVE",
         "PAST_DUE",
@@ -39293,7 +40369,7 @@
     {
       "name": "SupplierBillStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 213,
+      "line": 208,
       "values": [
         "UNPAID",
         "PARTIAL",
@@ -39303,7 +40379,7 @@
     {
       "name": "TenantExportStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 371,
+      "line": 383,
       "values": [
         "PENDING",
         "RUNNING",
@@ -39314,7 +40390,7 @@
     {
       "name": "TenantExportTrigger",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 378,
+      "line": 390,
       "values": [
         "MANUAL",
         "DEPROVISION"
@@ -41112,11 +42188,27 @@
       ]
     },
     {
-      "folder": "20260926090000_add_custom_fields",
-      "file": "apps/api/prisma/schema/migrations/20260926090000_add_custom_fields/migration.sql",
+      "folder": "20260926090000_add_org_unit_grant",
+      "file": "apps/api/prisma/schema/migrations/20260926090000_add_org_unit_grant/migration.sql",
       "date": "2026-09-26",
-      "slug": "add_custom_fields",
-      "statements": 5,
+      "slug": "add_org_unit_grant",
+      "statements": 8,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "OrgUnitGrant"
+      ]
+    },
+    {
+      "folder": "20260926100000_add_attendance",
+      "file": "apps/api/prisma/schema/migrations/20260926100000_add_attendance/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_attendance",
+      "statements": 44,
       "kinds": [
         "CREATE TYPE",
         "CREATE TABLE",
@@ -41125,23 +42217,33 @@
         "ALTER TABLE"
       ],
       "tables": [
-        "CustomFieldDefinition",
-        "Supplier"
+        "AttendanceDevice",
+        "AttendanceEvent",
+        "AttendanceEvent_default",
+        "AttendanceException",
+        "Shift"
       ]
     },
     {
-      "folder": "20260926093000_add_embedded_widgets",
-      "file": "apps/api/prisma/schema/migrations/20260926093000_add_embedded_widgets/migration.sql",
+      "folder": "20260926125941_wo166_product_reference_registry",
+      "file": "apps/platform/prisma/schema/migrations/20260926125941_wo166_product_reference_registry/migration.sql",
       "date": "2026-09-26",
-      "slug": "add_embedded_widgets",
-      "statements": 3,
+      "slug": "wo166_product_reference_registry",
+      "statements": 25,
       "kinds": [
+        "CREATE TYPE",
         "CREATE TABLE",
         "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
         "ALTER TABLE"
       ],
       "tables": [
-        "EmbeddedWidget"
+        "GlobalProductReference",
+        "GlobalProductReferenceFlag",
+        "GlobalProductReferenceImage",
+        "GlobalProductReferenceLink",
+        "GlobalProductReferenceTranslation",
+        "MarketplacePublisherCredential"
       ]
     }
   ],
@@ -42086,6 +43188,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/attendance",
+      "file": "apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/b/[brandId]",
       "file": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "client": true,
@@ -42403,15 +43514,6 @@
       "kind": "page",
       "url": "/admin/email-templates",
       "file": "apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
-      "url": "/admin/embeds",
-      "file": "apps/web/src/app/(admin)/admin/(app)/embeds/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -42815,6 +43917,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/my-attendance",
+      "file": "apps/web/src/app/(admin)/admin/(app)/my-attendance/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/o",
       "file": "apps/web/src/app/(admin)/admin/(app)/o/page.tsx",
       "client": true,
@@ -42898,6 +44009,15 @@
       "kind": "page",
       "url": "/admin/org-structure",
       "file": "apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/org-structure/[unitId]/access",
+      "file": "apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -43393,6 +44513,13 @@
       "doc": "--- 3."
     },
     {
+      "schedule": "0 5 1 * *",
+      "file": "apps/api/src/modules/attendance/attendance-partition.cron.ts",
+      "line": 31,
+      "handler": "ensureFuturePartitions",
+      "doc": ""
+    },
+    {
       "schedule": "EVERY_DAY_AT_",
       "file": "apps/api/src/modules/crm/rfm-scoring.cron.ts",
       "line": 22,
@@ -43460,6 +44587,13 @@
       "file": "apps/api/src/modules/orders/cod-risk.cron.ts",
       "line": 22,
       "handler": "computeCityCodRiskStats",
+      "doc": ""
+    },
+    {
+      "schedule": "0 4 * * *",
+      "file": "apps/api/src/modules/orgstructure/org-access.cron.ts",
+      "line": 17,
+      "handler": "sweep",
       "doc": ""
     },
     {
@@ -44129,9 +45263,10 @@
       "file": "apps/api/src/core/auth/permissions.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 6,
+      "cases": 10,
       "describes": [
-        "PermissionsResolverService.resolveForUser"
+        "PermissionsResolverService.resolveForUser",
+        "explicit OrgUnitGrant keys (doc 21)"
       ]
     },
     {
@@ -44151,10 +45286,11 @@
       "file": "apps/api/src/core/auth/roles.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 18,
+      "cases": 22,
       "describes": [
         "RolesService",
         "create",
+        "toxic-pair refusal (doc 21)",
         "update / delete — the locked-permission orphan guard",
         "assertLockedKeysStillHeldAfterRevoke",
         "conflictsForUser",
@@ -44165,11 +45301,12 @@
       "file": "apps/api/src/core/auth/scope.guard.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 20,
+      "cases": 24,
       "describes": [
         "resolveScope",
         "assertCanManageAtScope",
-        "scopeFilterFor"
+        "scopeFilterFor",
+        "orgUnitScopeFilterFor"
       ]
     },
     {
@@ -44729,6 +45866,43 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/attendance/attendance-device.service.spec.ts",
+      "module": "attendance",
+      "kind": "unit test",
+      "cases": 13,
+      "describes": [
+        "AttendanceDeviceService",
+        "register",
+        "findOne / update / suspend — the not-found guard",
+        "update",
+        "rotateDeviceKey",
+        "verifyDeviceKey"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/attendance/attendance-time.spec.ts",
+      "module": "attendance",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "workingDayOf",
+        "workedMinutesBetween"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/attendance/attendance.service.spec.ts",
+      "module": "attendance",
+      "kind": "unit test",
+      "cases": 22,
+      "describes": [
+        "AttendanceService",
+        "record — the unconditional path",
+        "reconcile",
+        "adjust / previewAdjust — never mutates the original row",
+        "minutesBetween"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/bom/bom-cards.metrics.spec.ts",
       "module": "bom",
       "kind": "unit test",
@@ -44983,24 +46157,6 @@
         "whatsapp-copy",
         "detectWhatsAppLocale",
         "whatsAppAssistantCopy"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/custom-fields/custom-fields.service.spec.ts",
-      "module": "custom-fields",
-      "kind": "unit test",
-      "cases": 9,
-      "describes": [
-        "CustomFieldsService — WO-104.2"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/embeds/embed-widgets.service.spec.ts",
-      "module": "embeds",
-      "kind": "unit test",
-      "cases": 8,
-      "describes": [
-        "EmbedWidgetsService — WO-113.1"
       ]
     },
     {
@@ -45430,6 +46586,21 @@
         "allowsBranchLocalPurchasing (BranchPolicyRegistry handler) — WO-23.3b",
         "allowsBranchLocalPurchasingForNode (BranchPolicyRegistry handler) — WO-23.3c/e, ADR-023",
         "revokeScope"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts",
+      "module": "orgstructure",
+      "kind": "unit test",
+      "cases": 18,
+      "describes": [
+        "GrantService",
+        "reachOf",
+        "previewIssue / issue — the five refusals",
+        "ACTING mode",
+        "revoke",
+        "sweepExpired",
+        "accessOverUnit"
       ]
     },
     {
@@ -46604,6 +47775,52 @@
       ]
     },
     {
+      "file": "apps/platform/src/modules/product-reference/marketplace-credential.guard.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "MarketplaceCredentialGuard"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/product-reference/marketplace-credentials.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "MarketplaceCredentialsService",
+        "issue",
+        "rotate",
+        "revoke"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/product-reference/product-reference-key.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "product-reference-key"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/product-reference/product-reference.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "ProductReferenceService",
+        "lookup",
+        "bulkLookup",
+        "register",
+        "update",
+        "link",
+        "flag",
+        "exportSince"
+      ]
+    },
+    {
       "file": "apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -47203,7 +48420,7 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 3926,
+      "bytes": 3844,
       "doc": "",
       "symbols": []
     },
@@ -47212,7 +48429,7 @@
       "area": "root",
       "kind": "mdc",
       "lines": 0,
-      "bytes": 3977,
+      "bytes": 3895,
       "doc": "",
       "symbols": []
     },
@@ -47230,7 +48447,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5357,
+      "bytes": 5368,
       "doc": "",
       "symbols": []
     },
@@ -47238,8 +48455,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 174,
-      "bytes": 8764,
+      "lines": 177,
+      "bytes": 9032,
       "doc": "",
       "symbols": []
     },
@@ -47248,7 +48465,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5802,
+      "bytes": 5813,
       "doc": "",
       "symbols": []
     },
@@ -47283,8 +48500,8 @@
       "path": ".github/copilot-instructions.md",
       "area": "infra",
       "kind": "doc",
-      "lines": 81,
-      "bytes": 3976,
+      "lines": 80,
+      "bytes": 3894,
       "doc": "",
       "symbols": []
     },
@@ -47319,8 +48536,8 @@
       "path": ".junie/guidelines.md",
       "area": "root",
       "kind": "doc",
-      "lines": 81,
-      "bytes": 3924,
+      "lines": 80,
+      "bytes": 3842,
       "doc": "",
       "symbols": []
     },
@@ -47338,7 +48555,7 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 3927,
+      "bytes": 3845,
       "doc": "",
       "symbols": []
     },
@@ -47346,8 +48563,8 @@
       "path": "AGENTS.md",
       "area": "root",
       "kind": "doc",
-      "lines": 81,
-      "bytes": 4027,
+      "lines": 80,
+      "bytes": 3945,
       "doc": "",
       "symbols": []
     },
@@ -47409,8 +48626,8 @@
       "path": "GEMINI.md",
       "area": "root",
       "kind": "doc",
-      "lines": 81,
-      "bytes": 3941,
+      "lines": 80,
+      "bytes": 3859,
       "doc": "",
       "symbols": []
     },
@@ -47556,6 +48773,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/attendance.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 198,
+      "bytes": 8387,
+      "doc": "Attendance, shifts and leave —",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/bom.prisma",
       "area": "api",
       "kind": "prisma schema",
@@ -47595,8 +48821,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 651,
-      "bytes": 26802,
+      "lines": 665,
+      "bytes": 27853,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -47607,24 +48833,6 @@
       "lines": 269,
       "bytes": 9861,
       "doc": "CRM: one customer record, whatever door the customer came in through.",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/prisma/schema/custom-fields.prisma",
-      "area": "api",
-      "kind": "prisma schema",
-      "lines": 33,
-      "bytes": 1169,
-      "doc": "Custom fields: a narrow, bounded JSONB overlay, never a general EAV model",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/prisma/schema/embeds.prisma",
-      "area": "api",
-      "kind": "prisma schema",
-      "lines": 19,
-      "bytes": 787,
-      "doc": "Embedding a third-party dashboard: a narrow iframe pattern, not a",
       "symbols": []
     },
     {
@@ -48474,20 +49682,20 @@
       "symbols": []
     },
     {
-      "path": "apps/api/prisma/schema/migrations/20260926090000_add_custom_fields/migration.sql",
+      "path": "apps/api/prisma/schema/migrations/20260926090000_add_org_unit_grant/migration.sql",
       "area": "api",
       "kind": "migration",
-      "lines": 31,
-      "bytes": 1166,
+      "lines": 38,
+      "bytes": 1804,
       "doc": "",
       "symbols": []
     },
     {
-      "path": "apps/api/prisma/schema/migrations/20260926093000_add_embedded_widgets/migration.sql",
+      "path": "apps/api/prisma/schema/migrations/20260926100000_add_attendance/migration.sql",
       "area": "api",
       "kind": "migration",
-      "lines": 27,
-      "bytes": 1001,
+      "lines": 148,
+      "bytes": 7289,
       "doc": "",
       "symbols": []
     },
@@ -48531,8 +49739,8 @@
       "path": "apps/api/prisma/schema/org-structure.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 81,
-      "bytes": 3581,
+      "lines": 132,
+      "bytes": 5825,
       "doc": "The org tree: offices, regions, departments — whatever shape a client's",
       "symbols": []
     },
@@ -48603,8 +49811,8 @@
       "path": "apps/api/prisma/schema/purchasing.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 308,
-      "bytes": 12637,
+      "lines": 303,
+      "bytes": 12379,
       "doc": "",
       "symbols": []
     },
@@ -49785,8 +50993,8 @@
       "path": "apps/api/src/core/auth/permissions.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 85,
-      "bytes": 3337,
+      "lines": 129,
+      "bytes": 5398,
       "doc": "",
       "symbols": []
     },
@@ -49794,8 +51002,8 @@
       "path": "apps/api/src/core/auth/permissions.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 64,
-      "bytes": 2248,
+      "lines": 86,
+      "bytes": 3371,
       "doc": "",
       "symbols": [
         {
@@ -49806,7 +51014,7 @@
         {
           "name": "PermissionsResolverService",
           "kind": "class",
-          "line": 26
+          "line": 39
         }
       ]
     },
@@ -49858,8 +51066,8 @@
       "path": "apps/api/src/core/auth/roles.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 236,
-      "bytes": 9202,
+      "lines": 277,
+      "bytes": 10895,
       "doc": "",
       "symbols": []
     },
@@ -49867,8 +51075,8 @@
       "path": "apps/api/src/core/auth/roles.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 307,
-      "bytes": 12011,
+      "lines": 332,
+      "bytes": 13176,
       "doc": "",
       "symbols": [
         {
@@ -49897,8 +51105,8 @@
       "path": "apps/api/src/core/auth/scope.guard.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 151,
-      "bytes": 5234,
+      "lines": 195,
+      "bytes": 7401,
       "doc": "",
       "symbols": []
     },
@@ -49906,8 +51114,8 @@
       "path": "apps/api/src/core/auth/scope.guard.ts",
       "area": "api",
       "kind": "guard",
-      "lines": 129,
-      "bytes": 5846,
+      "lines": 170,
+      "bytes": 7888,
       "doc": "",
       "symbols": [
         {
@@ -49944,6 +51152,16 @@
           "name": "scopeFilterFor",
           "kind": "function",
           "line": 124
+        },
+        {
+          "name": "OrgUnitReach",
+          "kind": "interface",
+          "line": 140
+        },
+        {
+          "name": "orgUnitScopeFilterFor",
+          "kind": "function",
+          "line": 166
         }
       ]
     },
@@ -52175,8 +53393,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 433,
-      "bytes": 24179,
+      "lines": 486,
+      "bytes": 27212,
       "doc": "",
       "symbols": [
         {
@@ -52212,12 +53430,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 272
+          "line": 314
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 274
+          "line": 316
         }
       ]
     },
@@ -52240,8 +53458,8 @@
       "path": "apps/api/src/core/settings/settings.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 85,
-      "bytes": 3016,
+      "lines": 107,
+      "bytes": 3940,
       "doc": "",
       "symbols": [
         {
@@ -53413,6 +54631,258 @@
           "name": "SupplyChainDigestCron",
           "kind": "class",
           "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-device-punch.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 50,
+      "bytes": 1956,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceDevicePunchController",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 57,
+      "bytes": 2128,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceDeviceController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-device.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 146,
+      "bytes": 6054,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-device.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 116,
+      "bytes": 4917,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceDeviceService",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-partition.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 57,
+      "bytes": 2572,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendancePartitionCron",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-time.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 3838,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-time.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 50,
+      "bytes": 2561,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "workingDayOf",
+          "kind": "function",
+          "line": 32
+        },
+        {
+          "name": "workedMinutesBetween",
+          "kind": "function",
+          "line": 47
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 130,
+      "bytes": 5072,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceController",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 25,
+      "bytes": 1357,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceModule",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 324,
+      "bytes": 14726,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 507,
+      "bytes": 18848,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecordPunchInput",
+          "kind": "interface",
+          "line": 9
+        },
+        {
+          "name": "AttendanceEventView",
+          "kind": "interface",
+          "line": 20
+        },
+        {
+          "name": "AttendanceExceptionView",
+          "kind": "interface",
+          "line": 32
+        },
+        {
+          "name": "ShiftView",
+          "kind": "type",
+          "line": 44
+        },
+        {
+          "name": "RecordPunchResult",
+          "kind": "interface",
+          "line": 46
+        },
+        {
+          "name": "AdjustRefusalCode",
+          "kind": "type",
+          "line": 52
+        },
+        {
+          "name": "AdjustRefusal",
+          "kind": "interface",
+          "line": 54
+        },
+        {
+          "name": "AdjustInput",
+          "kind": "interface",
+          "line": 59
+        },
+        {
+          "name": "PreviewAdjustResult",
+          "kind": "interface",
+          "line": 68
+        },
+        {
+          "name": "AttendanceService",
+          "kind": "class",
+          "line": 114
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/dto/attendance-device.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 34,
+      "bytes": 586,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RegisterAttendanceDeviceDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "UpdateAttendanceDeviceDto",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/dto/attendance.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 83,
+      "bytes": 1354,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PunchDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "ManagerPunchDto",
+          "kind": "class",
+          "line": 27
+        },
+        {
+          "name": "ResolveExceptionDto",
+          "kind": "class",
+          "line": 33
+        },
+        {
+          "name": "AdjustDto",
+          "kind": "class",
+          "line": 40
+        },
+        {
+          "name": "CreateShiftDto",
+          "kind": "class",
+          "line": 64
         }
       ]
     },
@@ -55241,154 +56711,6 @@
           "name": "whatsAppAssistantCopy",
           "kind": "function",
           "line": 45
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 76,
-      "bytes": 3338,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "CustomFieldsController",
-          "kind": "class",
-          "line": 22
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/custom-fields/custom-fields.module.ts",
-      "area": "api",
-      "kind": "nest module",
-      "lines": 18,
-      "bytes": 701,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "CustomFieldsModule",
-          "kind": "class",
-          "line": 17
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/custom-fields/custom-fields.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 118,
-      "bytes": 5024,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/custom-fields/custom-fields.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 146,
-      "bytes": 6053,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "CustomFieldsService",
-          "kind": "class",
-          "line": 17
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/custom-fields/dto/custom-field.dto.ts",
-      "area": "api",
-      "kind": "dto",
-      "lines": 44,
-      "bytes": 1405,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "DefineCustomFieldDto",
-          "kind": "class",
-          "line": 5
-        },
-        {
-          "name": "SetCustomFieldValuesDto",
-          "kind": "class",
-          "line": 30
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/embeds/dto/embedded-widget.dto.ts",
-      "area": "api",
-      "kind": "dto",
-      "lines": 37,
-      "bytes": 904,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "CreateEmbeddedWidgetDto",
-          "kind": "class",
-          "line": 4
-        },
-        {
-          "name": "UpdateEmbeddedWidgetDto",
-          "kind": "class",
-          "line": 20
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 63,
-      "bytes": 2471,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "EmbedWidgetsController",
-          "kind": "class",
-          "line": 18
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/embeds/embed-widgets.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 110,
-      "bytes": 4758,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/embeds/embed-widgets.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 73,
-      "bytes": 3284,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "EmbedWidgetsService",
-          "kind": "class",
-          "line": 21
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/embeds/embeds.module.ts",
-      "area": "api",
-      "kind": "nest module",
-      "lines": 18,
-      "bytes": 599,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "EmbedsModule",
-          "kind": "class",
-          "line": 17
         }
       ]
     },
@@ -57441,8 +58763,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 110,
-      "bytes": 3547,
+      "lines": 109,
+      "bytes": 3524,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -57461,24 +58783,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 240,
-      "bytes": 13319,
+      "lines": 239,
+      "bytes": 13245,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 52
+          "line": 51
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 83
+          "line": 82
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 216
+          "line": 215
         }
       ]
     },
@@ -58138,6 +59460,21 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/orgstructure/dto/org-unit-grant.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 29,
+      "bytes": 608,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IssueOrgUnitGrantDto",
+          "kind": "class",
+          "line": 5
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/orgstructure/dto/org-unit.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -58159,6 +59496,90 @@
           "name": "MoveOrgUnitDto",
           "kind": "class",
           "line": 39
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-access.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 25,
+      "bytes": 842,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgAccessCron",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 52,
+      "bytes": 2233,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GrantController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 249,
+      "bytes": 10789,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit-grant.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 339,
+      "bytes": 12749,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgUnitGrantView",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "GrantRefusalCode",
+          "kind": "type",
+          "line": 24
+        },
+        {
+          "name": "GrantRefusal",
+          "kind": "interface",
+          "line": 31
+        },
+        {
+          "name": "IssueGrantInput",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "PreviewIssueResult",
+          "kind": "interface",
+          "line": 46
+        },
+        {
+          "name": "AccessOverUnit",
+          "kind": "interface",
+          "line": 50
+        },
+        {
+          "name": "GrantService",
+          "kind": "class",
+          "line": 91
         }
       ]
     },
@@ -58215,14 +59636,14 @@
       "path": "apps/api/src/modules/orgstructure/orgstructure.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 11,
-      "bytes": 298,
+      "lines": 14,
+      "bytes": 529,
       "doc": "",
       "symbols": [
         {
           "name": "OrgStructureModule",
           "kind": "class",
-          "line": 10
+          "line": 13
         }
       ]
     },
@@ -63975,6 +65396,15 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/marketplace.prisma",
+      "area": "root",
+      "kind": "prisma schema",
+      "lines": 145,
+      "bytes": 6428,
+      "doc": "The cross-tenant marketplace/product-reference network — doc 165",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql",
       "area": "root",
       "kind": "migration",
@@ -64038,6 +65468,15 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/migrations/20260926125941_wo166_product_reference_registry/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 127,
+      "bytes": 5267,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
       "area": "root",
       "kind": "toml",
@@ -64050,8 +65489,8 @@
       "path": "apps/platform/prisma/schema/platform.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 789,
-      "bytes": 35515,
+      "lines": 801,
+      "bytes": 36782,
       "doc": "WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the",
       "symbols": []
     },
@@ -64068,14 +65507,14 @@
       "path": "apps/platform/src/app.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 46,
-      "bytes": 2027,
+      "lines": 48,
+      "bytes": 2150,
       "doc": "",
       "symbols": [
         {
           "name": "AppModule",
           "kind": "class",
-          "line": 45
+          "line": 47
         }
       ]
     },
@@ -64113,8 +65552,8 @@
       "path": "apps/platform/src/core/config/env.validation.ts",
       "area": "root",
       "kind": "config",
-      "lines": 203,
-      "bytes": 10353,
+      "lines": 215,
+      "bytes": 11000,
       "doc": "",
       "symbols": [
         {
@@ -64125,12 +65564,12 @@
         {
           "name": "PlatformEnv",
           "kind": "type",
-          "line": 194
+          "line": 206
         },
         {
           "name": "validatePlatformEnv",
           "kind": "function",
-          "line": 196
+          "line": 208
         }
       ]
     },
@@ -64299,8 +65738,8 @@
       "path": "apps/platform/src/core/security/ops-permissions.ts",
       "area": "root",
       "kind": "module",
-      "lines": 45,
-      "bytes": 2170,
+      "lines": 55,
+      "bytes": 2682,
       "doc": "The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps/api's tenant-facing PBAC catalog, seeded against that app's own User/Role/RolePermission tables.",
       "symbols": [
         {
@@ -64311,7 +65750,7 @@
         {
           "name": "PlatformPermission",
           "kind": "type",
-          "line": 44
+          "line": 54
         }
       ]
     },
@@ -65115,6 +66554,232 @@
       ]
     },
     {
+      "path": "apps/platform/src/modules/product-reference/decorators.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 13,
+      "bytes": 671,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CurrentPublisherTenant",
+          "kind": "const",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/dto/product-reference.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 142,
+      "bytes": 4019,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductReferenceTranslationDto",
+          "kind": "class",
+          "line": 18
+        },
+        {
+          "name": "ProductReferenceImageDto",
+          "kind": "class",
+          "line": 35
+        },
+        {
+          "name": "RegisterProductReferenceDto",
+          "kind": "class",
+          "line": 58
+        },
+        {
+          "name": "UpdateProductReferenceDto",
+          "kind": "class",
+          "line": 94
+        },
+        {
+          "name": "LinkProductReferenceDto",
+          "kind": "class",
+          "line": 116
+        },
+        {
+          "name": "FlagProductReferenceDto",
+          "kind": "class",
+          "line": 125
+        },
+        {
+          "name": "BulkLookupProductReferenceDto",
+          "kind": "class",
+          "line": 135
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credential.guard.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 86,
+      "bytes": 3220,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credential.guard.ts",
+      "area": "root",
+      "kind": "guard",
+      "lines": 57,
+      "bytes": 2397,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestWithPublisherTenant",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "MarketplaceCredentialGuard",
+          "kind": "class",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credentials.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 40,
+      "bytes": 1662,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceCredentialsController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credentials.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 79,
+      "bytes": 3622,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credentials.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 83,
+      "bytes": 3888,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceCredentialsService",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-key-throttler.guard.ts",
+      "area": "root",
+      "kind": "guard",
+      "lines": 23,
+      "bytes": 1144,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceKeyThrottlerGuard",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference-key.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 27,
+      "bytes": 1140,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference-key.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 22,
+      "bytes": 1013,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "generateMarketplaceApiKey",
+          "kind": "function",
+          "line": 15
+        },
+        {
+          "name": "hashMarketplaceApiKey",
+          "kind": "function",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 89,
+      "bytes": 3677,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductReferenceController",
+          "kind": "class",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 25,
+      "bytes": 1426,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductReferenceModule",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 195,
+      "bytes": 8718,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 176,
+      "bytes": 8128,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductReferenceService",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/platform/src/modules/resource-quotas/dto/upsert-quota.dto.ts",
       "area": "root",
       "kind": "dto",
@@ -65884,8 +67549,8 @@
       "path": "apps/platform/test/setup-env.ts",
       "area": "root",
       "kind": "module",
-      "lines": 10,
-      "bytes": 451,
+      "lines": 11,
+      "bytes": 553,
       "doc": "",
       "symbols": []
     },
@@ -66845,6 +68510,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 170,
+      "bytes": 5928,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendancePage",
+          "kind": "default",
+          "line": 42
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -67381,21 +69061,6 @@
           "name": "EmailTemplatesPage",
           "kind": "default",
           "line": 26
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/embeds/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 62,
-      "bytes": 2059,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "EmbedsPage",
-          "kind": "default",
-          "line": 18
         }
       ]
     },
@@ -68060,6 +69725,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/my-attendance/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 138,
+      "bytes": 4646,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyAttendancePage",
+          "kind": "default",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx",
       "area": "web",
       "kind": "page",
@@ -68195,17 +69875,32 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 318,
+      "bytes": 11412,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgUnitAccessPage",
+          "kind": "default",
+          "line": 50
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 316,
-      "bytes": 11027,
+      "lines": 328,
+      "bytes": 11608,
       "doc": "",
       "symbols": [
         {
           "name": "OrgStructurePage",
           "kind": "default",
-          "line": 31
+          "line": 33
         }
       ]
     },
@@ -68603,14 +70298,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/settings/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 965,
-      "bytes": 33647,
+      "lines": 571,
+      "bytes": 19680,
       "doc": "",
       "symbols": [
         {
           "name": "AdminSettingsPage",
           "kind": "default",
-          "line": 16
+          "line": 15
         }
       ]
     },
@@ -68768,14 +70463,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/suppliers/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 189,
-      "bytes": 6952,
+      "lines": 186,
+      "bytes": 6795,
       "doc": "No clsx import needed",
       "symbols": [
         {
           "name": "SupplierDetailPage",
           "kind": "default",
-          "line": 32
+          "line": 31
         }
       ]
     },
@@ -70556,21 +72251,6 @@
       ]
     },
     {
-      "path": "apps/web/src/components/admin/custom-field-form-section.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 179,
-      "bytes": 5905,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "CustomFieldFormSection",
-          "kind": "function",
-          "line": 18
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/components/admin/dashboard/action-hub-widget.tsx",
       "area": "web",
       "kind": "component",
@@ -70771,21 +72451,6 @@
       ]
     },
     {
-      "path": "apps/web/src/components/admin/embedded-widget-frame.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 64,
-      "bytes": 2198,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "EmbeddedWidgetFrame",
-          "kind": "function",
-          "line": 15
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/components/admin/funnel-chart.tsx",
       "area": "web",
       "kind": "component",
@@ -70894,8 +72559,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1012,
-      "bytes": 27794,
+      "lines": 1020,
+      "bytes": 28032,
       "doc": "",
       "symbols": [
         {
@@ -70926,12 +72591,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 982
+          "line": 990
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 997
+          "line": 1005
         }
       ]
     },
@@ -72192,8 +73857,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 257,
-      "bytes": 11585,
+      "lines": 262,
+      "bytes": 11998,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -72759,8 +74424,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1689,
-      "bytes": 45528,
+      "lines": 1658,
+      "bytes": 44682,
       "doc": "",
       "symbols": [
         {
@@ -73617,36 +75282,6 @@
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
           "line": 1654
-        },
-        {
-          "name": "CustomFieldDefinition",
-          "kind": "interface",
-          "line": 1660
-        },
-        {
-          "name": "CustomFieldEntityType",
-          "kind": "type",
-          "line": 1669
-        },
-        {
-          "name": "CustomFieldValueType",
-          "kind": "type",
-          "line": 1670
-        },
-        {
-          "name": "CustomFieldValue",
-          "kind": "type",
-          "line": 1672
-        },
-        {
-          "name": "EmbeddedWidget",
-          "kind": "interface",
-          "line": 1675
-        },
-        {
-          "name": "EmbedToken",
-          "kind": "interface",
-          "line": 1684
         }
       ]
     },
@@ -76181,8 +77816,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 4475,
-      "bytes": 257966,
+      "lines": 5044,
+      "bytes": 292643,
       "doc": "",
       "symbols": []
     },
@@ -76217,8 +77852,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 501,
-      "bytes": 66827,
+      "lines": 528,
+      "bytes": 70573,
       "doc": "",
       "symbols": []
     },
@@ -76298,8 +77933,8 @@
       "path": "docs/implementation/access-control-identity/21-access-over-the-org-tree.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 228,
-      "bytes": 11809,
+      "lines": 294,
+      "bytes": 16032,
       "doc": "",
       "symbols": []
     },
@@ -76451,8 +78086,8 @@
       "path": "docs/implementation/architecture-patterns/100-event-driven-architecture.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 82,
-      "bytes": 4462,
+      "lines": 75,
+      "bytes": 4058,
       "doc": "",
       "symbols": []
     },
@@ -76460,8 +78095,8 @@
       "path": "docs/implementation/architecture-patterns/103-semantic-data-contracts.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 83,
-      "bytes": 4444,
+      "lines": 69,
+      "bytes": 3620,
       "doc": "",
       "symbols": []
     },
@@ -76487,8 +78122,8 @@
       "path": "docs/implementation/architecture-patterns/106-finite-state-machines-registry.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 119,
-      "bytes": 6109,
+      "lines": 98,
+      "bytes": 4652,
       "doc": "",
       "symbols": []
     },
@@ -76496,8 +78131,8 @@
       "path": "docs/implementation/architecture-patterns/107-visual-bpmn-workflow-modeling.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 81,
-      "bytes": 4126,
+      "lines": 77,
+      "bytes": 3926,
       "doc": "",
       "symbols": []
     },
@@ -76505,8 +78140,8 @@
       "path": "docs/implementation/architecture-patterns/108-event-triggered-side-effects.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 79,
-      "bytes": 4105,
+      "lines": 61,
+      "bytes": 2765,
       "doc": "",
       "symbols": []
     },
@@ -76514,8 +78149,8 @@
       "path": "docs/implementation/architecture-patterns/109-immutable-event-ledger.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 102,
-      "bytes": 5624,
+      "lines": 98,
+      "bytes": 5449,
       "doc": "",
       "symbols": []
     },
@@ -76523,8 +78158,8 @@
       "path": "docs/implementation/architecture-patterns/110-cqrs-read-write-separation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 99,
-      "bytes": 5295,
+      "lines": 93,
+      "bytes": 5019,
       "doc": "",
       "symbols": []
     },
@@ -76532,8 +78167,8 @@
       "path": "docs/implementation/architecture-patterns/113-micro-frontend-embedding.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 129,
-      "bytes": 7106,
+      "lines": 114,
+      "bytes": 6198,
       "doc": "",
       "symbols": []
     },
@@ -76550,8 +78185,8 @@
       "path": "docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 81,
-      "bytes": 4968,
+      "lines": 69,
+      "bytes": 4271,
       "doc": "",
       "symbols": []
     },
@@ -76709,11 +78344,20 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/architecture-patterns/166-unified-product-reference-registry.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 545,
+      "bytes": 31014,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/architecture-patterns/92-microservices-module-decoupling.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 94,
-      "bytes": 5767,
+      "lines": 89,
+      "bytes": 5471,
       "doc": "",
       "symbols": []
     },
@@ -76721,8 +78365,8 @@
       "path": "docs/implementation/architecture-patterns/93-headless-frontend-architecture.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 73,
-      "bytes": 3558,
+      "lines": 66,
+      "bytes": 3171,
       "doc": "",
       "symbols": []
     },
@@ -76730,8 +78374,8 @@
       "path": "docs/implementation/architecture-patterns/94-cloud-native-container-scalability.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 75,
-      "bytes": 3602,
+      "lines": 70,
+      "bytes": 3335,
       "doc": "",
       "symbols": []
     },
@@ -76739,8 +78383,8 @@
       "path": "docs/implementation/architecture-patterns/95-externalized-rule-logic.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 89,
-      "bytes": 5064,
+      "lines": 78,
+      "bytes": 4366,
       "doc": "",
       "symbols": []
     },
@@ -76748,8 +78392,8 @@
       "path": "docs/implementation/architecture-patterns/96-version-controlled-policy-execution.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 72,
-      "bytes": 3675,
+      "lines": 68,
+      "bytes": 3494,
       "doc": "",
       "symbols": []
     },
@@ -76757,8 +78401,8 @@
       "path": "docs/implementation/architecture-patterns/97-realtime-validation-single-source-of-truth.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 68,
-      "bytes": 3388,
+      "lines": 63,
+      "bytes": 3154,
       "doc": "",
       "symbols": []
     },
@@ -76766,8 +78410,8 @@
       "path": "docs/implementation/architecture-patterns/98-contract-first-api-development.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 89,
-      "bytes": 4761,
+      "lines": 80,
+      "bytes": 4228,
       "doc": "",
       "symbols": []
     },
@@ -76775,8 +78419,8 @@
       "path": "docs/implementation/architecture-patterns/99-centralized-api-gateway.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 66,
-      "bytes": 3457,
+      "lines": 60,
+      "bytes": 3180,
       "doc": "",
       "symbols": []
     },
@@ -76784,8 +78428,8 @@
       "path": "docs/implementation/attendance-workforce/22-attendance-shifts-leave.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 230,
-      "bytes": 11040,
+      "lines": 292,
+      "bytes": 15096,
       "doc": "",
       "symbols": []
     },
@@ -76876,6 +78520,15 @@
       "kind": "doc",
       "lines": 163,
       "bytes": 8913,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 487,
+      "bytes": 27658,
       "doc": "",
       "symbols": []
     },
@@ -77144,8 +78797,8 @@
       "path": "docs/implementation/hr-people-org/19-org-structure-offices-departments.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 291,
-      "bytes": 15504,
+      "lines": 304,
+      "bytes": 16348,
       "doc": "",
       "symbols": []
     },
@@ -77153,8 +78806,8 @@
       "path": "docs/implementation/hr-people-org/20-people-positions-ranks.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 297,
-      "bytes": 15230,
+      "lines": 301,
+      "bytes": 15495,
       "doc": "",
       "symbols": []
     },
@@ -78887,8 +80540,8 @@
       "path": "packages/shared/src/enums.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 121,
-      "bytes": 4121,
+      "lines": 108,
+      "bytes": 3436,
       "doc": "Enum values mirrored from the Prisma schema.",
       "symbols": [
         {
@@ -79015,26 +80668,6 @@
           "name": "previousStage",
           "kind": "function",
           "line": 104
-        },
-        {
-          "name": "CUSTOM_FIELD_ENTITY_TYPES",
-          "kind": "const",
-          "line": 116
-        },
-        {
-          "name": "CustomFieldEntityType",
-          "kind": "type",
-          "line": 117
-        },
-        {
-          "name": "CUSTOM_FIELD_VALUE_TYPES",
-          "kind": "const",
-          "line": 119
-        },
-        {
-          "name": "CustomFieldValueType",
-          "kind": "type",
-          "line": 120
         }
       ]
     },
@@ -79361,8 +80994,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 987,
-      "bytes": 30946,
+      "lines": 1059,
+      "bytes": 34584,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -79383,47 +81016,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 601
+          "line": 625
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 603
+          "line": 627
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 613
+          "line": 637
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 620
+          "line": 644
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 810
+          "line": 840
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 974
+          "line": 1023
+        },
+        {
+          "name": "TOXIC_PERMISSION_PAIRS",
+          "kind": "const",
+          "line": 1042
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 979
+          "line": 1051
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 980
+          "line": 1052
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 983
+          "line": 1055
         }
       ]
     },
@@ -79896,8 +81534,8 @@
       "path": "scripts/build-index.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 2558,
-      "bytes": 117379,
+      "lines": 2511,
+      "bytes": 114955,
       "doc": "",
       "symbols": []
     },
@@ -80097,8 +81735,8 @@
       "path": "scripts/lib/index-scan.mjs",
       "area": "infra",
       "kind": "utility",
-      "lines": 944,
-      "bytes": 39355,
+      "lines": 906,
+      "bytes": 37657,
       "doc": "Scanners for the repository index.",
       "symbols": [
         {
@@ -80182,94 +81820,89 @@
           "line": 362
         },
         {
-          "name": "scanStateMachines",
-          "kind": "function",
-          "line": 391
-        },
-        {
           "name": "scanCron",
           "kind": "function",
-          "line": 421
+          "line": 383
         },
         {
           "name": "scanPrisma",
           "kind": "function",
-          "line": 451
+          "line": 413
         },
         {
           "name": "scanMigration",
           "kind": "function",
-          "line": 511
+          "line": 473
         },
         {
           "name": "balancedLiteral",
           "kind": "function",
-          "line": 547
+          "line": 509
         },
         {
           "name": "splitObjectLiterals",
           "kind": "function",
-          "line": 581
+          "line": 543
         },
         {
           "name": "scanPermissionCatalog",
           "kind": "function",
-          "line": 609
+          "line": 571
         },
         {
           "name": "scanRoleSeed",
           "kind": "function",
-          "line": 630
+          "line": 592
         },
         {
           "name": "appRouterPath",
           "kind": "function",
-          "line": 651
+          "line": 613
         },
         {
           "name": "routeKind",
           "kind": "function",
-          "line": 662
+          "line": 624
         },
         {
           "name": "isClientComponent",
           "kind": "function",
-          "line": 677
+          "line": 639
         },
         {
           "name": "scanDescribes",
           "kind": "function",
-          "line": 684
+          "line": 646
         },
         {
           "name": "scanTestNames",
           "kind": "function",
-          "line": 692
+          "line": 654
         },
         {
           "name": "scanHeadings",
           "kind": "function",
-          "line": 701
+          "line": 663
         },
         {
           "name": "classify",
           "kind": "function",
-          "line": 716
+          "line": 678
         },
         {
           "name": "splitSqlStatements",
           "kind": "function",
-          "line": 782
+          "line": 744
         },
         {
           "name": "scanMigrationSql",
           "kind": "function",
-          "line": 823
+          "line": 785
         },
         {
           "name": "schemaMigrationDrift",
           "kind": "function",
-          "line": 902
+          "line": 864
         }
       ]
     },

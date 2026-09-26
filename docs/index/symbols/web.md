@@ -84,6 +84,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `SuspiciousTrafficPage` | default | :16 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/attendance`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `AttendancePage` | default | :42 | attendance-workforce/22-attendance-shifts-leave.md WO-22.5 — the queue that makes "a punch is never… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
 | File | Symbol | Kind | Line | Doc |
@@ -294,12 +300,6 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `EmailTemplatesPage` | default | :26 | Every email template registered in EMAIL_TEMPLATES, with what actually sends each one — and a live… |
-
-### `apps/web/src/app/(admin)/admin/(app)/embeds`
-
-| File | Symbol | Kind | Line | Doc |
-|---|---|---|---|---|
-| `page.tsx` | `EmbedsPage` | default | :18 | architecture-patterns/113-micro-frontend-embedding.md (WO-113.2) — every active embedded widget, ea… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance`
 
@@ -548,6 +548,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `MyActionsPage` | default | :15 | The manager action hub's full screen (admin-platform/44-manager-action-hub.md WO-44.4) — the overfl… |
 
+### `apps/web/src/app/(admin)/admin/(app)/my-attendance`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MyAttendancePage` | default | :30 | attendance-workforce/22-attendance-shifts-leave.md — "Solo: self punch on one screen, no devices, n… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/o`
 
 | File | Symbol | Kind | Line | Doc |
@@ -601,7 +607,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `OrgStructurePage` | default | :31 | hr-people-org/19-org-structure-offices-departments.md WO-19.4 — one tree screen: the whole org char… |
+| `page.tsx` | `OrgStructurePage` | default | :33 | hr-people-org/19-org-structure-offices-departments.md WO-19.4 — one tree screen: the whole org char… |
+
+### `apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `OrgUnitAccessPage` | default | :50 | access-control-identity/21-access-over-the-org-tree.md WO-21.6 — "one access screen per unit: who r… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payments`
 
@@ -752,7 +764,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminSettingsPage` | default | :16 |  |
+| `page.tsx` | `AdminSettingsPage` | default | :15 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/settings/shipping`
 
@@ -824,7 +836,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SupplierDetailPage` | default | :32 |  |
+| `page.tsx` | `SupplierDetailPage` | default | :31 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/tax`
 
@@ -1214,10 +1226,8 @@ Every top-level export in `web`, with the line to open.
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |
 | `csv-import-card.tsx` | `CsvImportCard` | function | :29 | Shared upload/preview/commit card for the CSV importers (admin-platform/72-fragmented-tool-consolid… |
-| `custom-field-form-section.tsx` | `CustomFieldFormSection` | function | :18 | architecture-patterns/105-metadata-driven-ui-rendering.md (WO-105.1) — the one piece of metadata-dr… |
 | `deployment-modules.tsx` | `EnabledModulesProvider` | const | :7 |  |
 | `deployment-modules.tsx` | `useEnabledModules` | function | :18 | Which API modules `GET /meta` reported for this deployment — the same value `AdminShell` already fe… |
-| `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | function | :15 | architecture-patterns/113-micro-frontend-embedding.md (WO-113.2) — a narrow, reusable iframe contai… |
 | `funnel-chart.tsx` | `FunnelStage` | interface | :23 |  |
 | `funnel-chart.tsx` | `FunnelChart` | function | :28 |  |
 | `gauge-chart.tsx` | `GaugeChart` | function | :32 |  |
@@ -1231,8 +1241,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :982 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :997 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :990 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1005 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1754,12 +1764,6 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `ManagedServicesStripePaymentStatus` | type | :1636 |  |
 | `api.ts` | `ManagedServicesInvoice` | interface | :1638 |  |
 | `api.ts` | `ManagedServicesInvoicesResponse` | interface | :1654 | `currency` travels with every response that carries money — the agency's OWN billing currency (`PLA… |
-| `api.ts` | `CustomFieldDefinition` | interface | :1660 | `GET/POST /admin/custom-fields/definitions` (architecture-patterns/104-jsonb-eav-extensibility.md,… |
-| `api.ts` | `CustomFieldEntityType` | type | :1669 |  |
-| `api.ts` | `CustomFieldValueType` | type | :1670 |  |
-| `api.ts` | `CustomFieldValue` | type | :1672 |  |
-| `api.ts` | `EmbeddedWidget` | interface | :1675 | `GET/POST /admin/embeds` (architecture-patterns/113-micro-frontend-embedding.md, WO-113). |
-| `api.ts` | `EmbedToken` | interface | :1684 | `POST /admin/embeds/:key/token`. |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

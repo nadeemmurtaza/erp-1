@@ -1,5 +1,5 @@
 import { ForbiddenException } from '@nestjs/common';
-import { assertCanManageAtScope, resolveScope, scopeFilterFor } from './scope.guard';
+import { assertCanManageAtScope, orgUnitScopeFilterFor, resolveScope, scopeFilterFor } from './scope.guard';
 import type { AdminScopeGrant } from './scope.guard';
 
 const actor = (permissions: string[], adminScopes: AdminScopeGrant[] = []) => ({
@@ -146,5 +146,49 @@ describe('scopeFilterFor', () => {
 
   it('matches nothing for an actor with no grants at all — fail closed, not fail open', () => {
     expect(scopeFilterFor(actor([]))).toEqual({ retailBrandId: { in: [] } });
+  });
+});
+
+// access-control-identity/21-access-over-the-org-tree.md WO-21.2 — the
+// fourth scopeFilterFor case, over an OrgUnit's own `path`.
+describe('orgUnitScopeFilterFor', () => {
+  it('returns no restriction when unrestricted (no open posting — see GrantService)', () => {
+    expect(orgUnitScopeFilterFor({ isUnrestricted: true, unitIds: [] })).toEqual({});
+  });
+
+  it('narrows to a hasSome filter over the reach-root unit ids', () => {
+    expect(orgUnitScopeFilterFor({ isUnrestricted: false, unitIds: ['north'] })).toEqual({
+      path: { hasSome: ['north'] },
+    });
+  });
+
+  it('matches nothing for a restricted reach with zero unit ids — fail closed, not fail open', () => {
+    expect(orgUnitScopeFilterFor({ isUnrestricted: false, unitIds: [] })).toEqual({ path: { hasSome: [] } });
+  });
+
+  /**
+   * doc 19's own acceptance criterion, word for word: "scopeFilterFor()
+   * over a mid-tree unit returns that unit and its descendants and nothing
+   * else, proven at three depths." Simulated here over an in-memory tree
+   * (root -> north -> north-hr) the way the real GIN-indexed `path && ...`
+   * containment query behaves in Postgres — `hasSome` is exactly the
+   * overlap test, so filtering this array in JS is a faithful stand-in for
+   * what the database does.
+   */
+  it('reaches a mid-tree unit and every descendant, and nothing above or beside it — three depths', () => {
+    const tree = [
+      { id: 'root', path: ['root'] },
+      { id: 'north', path: ['root', 'north'] },
+      { id: 'south', path: ['root', 'south'] },
+      { id: 'north-hr', path: ['root', 'north', 'north-hr'] },
+      { id: 'north-hr-payroll', path: ['root', 'north', 'north-hr', 'north-hr-payroll'] },
+    ];
+
+    const filter = orgUnitScopeFilterFor({ isUnrestricted: false, unitIds: ['north'] });
+    const reachable = tree.filter((unit) => unit.path.some((id) => filter.path!.hasSome.includes(id)));
+
+    expect(reachable.map((u) => u.id).sort()).toEqual(['north', 'north-hr', 'north-hr-payroll']);
+    expect(reachable.map((u) => u.id)).not.toContain('root');
+    expect(reachable.map((u) => u.id)).not.toContain('south');
   });
 });

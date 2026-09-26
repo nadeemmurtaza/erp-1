@@ -92,6 +92,47 @@ describe('RolesService', () => {
     });
   });
 
+  // access-control-identity/21-access-over-the-org-tree.md —
+  // TOXIC_PERMISSION_PAIRS: "invent the thing, then authorise yourself over
+  // the thing".
+  describe('toxic-pair refusal (doc 21)', () => {
+    it('refuses creating a role holding org.structure.manage with org.access.grant', async () => {
+      await expect(
+        service.create({ name: 'Rogue', permissions: ['org.structure.manage', 'org.access.grant'] }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(prisma.role.create).not.toHaveBeenCalled();
+    });
+
+    it('refuses creating a role holding hr.people.manage with org.access.grant', async () => {
+      await expect(
+        service.create({ name: 'Rogue', permissions: ['hr.people.manage', 'org.access.grant'] }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('allows a role holding only one half of the pair', async () => {
+      prisma.role.create.mockResolvedValue({
+        id: 'r1',
+        name: 'Structure Editor',
+        description: null,
+        grants: [{ permission: { key: 'org.structure.manage' } }],
+        _count: { assignments: 0 },
+      });
+
+      await expect(
+        service.create({ name: 'Structure Editor', permissions: ['org.structure.manage'] }),
+      ).resolves.toBeDefined();
+    });
+
+    it('refuses updating an existing role into holding a toxic pair', async () => {
+      prisma.role.findUnique.mockResolvedValue({ id: 'r1', name: 'Access Reviewer' });
+
+      await expect(
+        service.update('r1', { permissions: ['org.access.grant', 'hr.people.manage'] }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+      expect(prisma.role.update).not.toHaveBeenCalled();
+    });
+  });
+
   describe('update / delete — the locked-permission orphan guard', () => {
     it('refuses to remove a locked permission from the only role that grants it, with no personal override anywhere', async () => {
       prisma.role.findUnique.mockResolvedValue({ id: 'r1', name: 'Admin' });

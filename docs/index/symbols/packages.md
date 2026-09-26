@@ -150,10 +150,6 @@ Every top-level export in `packages`, with the line to open.
 | `enums.ts` | `MeasurementUnit` | type | :91 |  |
 | `enums.ts` | `nextStage` | function | :97 | Stage order is a straight line: a job may only advance to the next stage, or be sent back one stage… |
 | `enums.ts` | `previousStage` | function | :104 |  |
-| `enums.ts` | `CUSTOM_FIELD_ENTITY_TYPES` | const | :116 | architecture-patterns/104-jsonb-eav-extensibility.md — the closed, code-known list of entities `Cus… |
-| `enums.ts` | `CustomFieldEntityType` | type | :117 | architecture-patterns/104-jsonb-eav-extensibility.md — the closed, code-known list of entities `Cus… |
-| `enums.ts` | `CUSTOM_FIELD_VALUE_TYPES` | const | :119 | architecture-patterns/104-jsonb-eav-extensibility.md — the closed, code-known list of entities `Cus… |
-| `enums.ts` | `CustomFieldValueType` | type | :120 |  |
 | `fabric-estimate.ts` | `FabricEstimateInput` | interface | :10 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
 | `fabric-estimate.ts` | `FabricEstimateResult` | interface | :25 |  |
 | `fabric-estimate.ts` | `computeFabricEstimate` | function | :42 |  |
@@ -205,15 +201,16 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :601 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :603 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :613 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :620 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :810 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :974 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :979 |  |
-| `permissions.ts` | `PermissionEffect` | type | :980 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :983 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :625 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :627 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :637 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :644 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :840 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :1023 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `TOXIC_PERMISSION_PAIRS` | const | :1042 | Permission pairs a single role must never grant together (access-control-identity/21-access-over-th… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :1051 |  |
+| `permissions.ts` | `PermissionEffect` | type | :1052 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :1055 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

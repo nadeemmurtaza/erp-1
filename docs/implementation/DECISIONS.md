@@ -4472,3 +4472,572 @@ the identical reason `OrgUnitType.organizationId` is dropped above;
 
 ### Status
 **Accepted.**
+
+## ADR-045 — Doc 21 (access over the org tree): `OrgUnitGrant` built exactly as specified; `MAX_GRANT_DAYS` as a plain Setting, not a `BrandPolicy` column; `org.access.grant` seeded to no role by default; the granter's own reach treats "no posting" as unrestricted; existing list endpoints are NOT retrofitted to scope by `OrgUnit`
+
+### Context
+
+Doc 21 (`access-control-identity/21-access-over-the-org-tree.md`) was
+blocked on docs 19/20 (ADR-043/ADR-044); both now ship. This document adds a
+fourth `scopeFilterFor()` case (`OrgUnit`, alongside ORG/BRAND/BRANCH) and an
+explicit, time-boxed grant table with a ceiling on who may issue one. Four
+decisions were made while building it, each checked against this
+repository's actual code before being written down, not assumed from the
+doc's own text.
+
+### Decision 1 — `OrgUnitGrant`/`GrantMode` built exactly as specified
+
+The schema (`org-structure.prisma`), the resolution order (derived ∪
+explicit, DENY last and unconditional), and the five-refusal shape of
+`GrantService.issue()` are adopted as the document argues them, with the
+model's own precedent (`Posting`, `EmployeeProfile`) followed for placement:
+`OrgUnitGrant` lives in `org-structure.prisma` next to `OrgUnit`, `GrantService`
+in the `orgstructure` module next to `OrgUnitService`. `GrantService` reads
+`Posting`/`Position`/`Rank` (the `hr` module's own tables) by a direct Prisma
+query, never by importing `PeopleService` — `check-module-boundaries.mjs`'s
+`KNOWN_MODULE_COUPLINGS` is reserved for a same-transaction WRITE, and this is
+a read; the same "cross-schema Prisma relation without a TS coupling" pattern
+`Position.orgUnitId -> OrgUnit` already established, mirrored in the other
+direction. This causes one deliberate, small duplication: the maximum-rank
+comparison doc 20's `outranks()` expresses is restated as a private
+~1-line helper in `GrantService` rather than imported — module independence
+is exactly the "documented boundary" CLAUDE.md's own "no duplicate
+implementation" rule carves an exception for.
+
+### Decision 2 — `MAX_GRANT_DAYS` is a plain `Setting`, not a `BrandPolicy` column
+
+The doc's own text names this "a `BrandPolicy` value (`organization.prisma:70`)".
+Checked directly: `BrandPolicy` is `@unique` on `retailBrandId` — one row per
+`RetailBrand` — and `RetailBrand` rows exist only when the `organization`
+module is switched on, off by default in every deployment today
+(`modules.registry.ts`). A required per-brand read would make issuing a
+grant impossible on the Solo/Chain shape this repository actually ships —
+the identical trap ADR-044 already caught and corrected for
+`OrgUnitType.organizationId` and `Rank.organizationId`. `BrandPolicy`'s own
+doc comment already names the exact precedent for this situation:
+`org.allow_inter_brand_transfers` "is organization-level, not brand-level,
+and stays a plain Setting." `SettingKey.OrgAccessMaxGrantDays`
+(`settings.defaults.ts`, default 90 days) follows that precedent instead.
+
+### Decision 3 — `org.access.grant` is seeded to no role by default, not to ADMIN
+
+WO-21.5 says the two new permissions are "seeded to a real grant." Every
+prior permission this session added to a *new* capability was seeded onto
+`ROLE_PERMISSION_SEED.ADMIN` (docs 19, 20, and earlier). Doing the same for
+`org.access.grant` here would be a real defect, not a style choice: ADMIN
+already holds both `org.structure.manage` and `hr.people.manage` (docs
+19/20's own seeding), and `TOXIC_PERMISSION_PAIRS`
+(`packages/shared/src/permissions.ts`) — this document's own defence against
+"invent the thing, then authorise yourself over the thing" — names both of
+those paired with `org.access.grant` as exactly the combination to refuse.
+Seeding all three onto the one role every deployment starts with would put
+the very toxic pair this document defines onto that role from day one,
+un-catchable by `RolesService.create()`/`.update()`'s own check because the
+seed writes `RolePermission`/`RoleGrant` directly, never through that
+service. `org.access.view` (medium, safe) is seeded to ADMIN; `org.access.grant`
+(high) is seeded to no role — a deployment that needs to issue explicit
+grants creates a dedicated custom role (e.g. "Access Reviewer") holding it
+alone, through the existing custom-roles screen. This is not a gap: it is
+exactly the "Solo: ... the grant screen never rendered" silhouette the
+document's own text already names, and the access screen still renders
+read-only for ADMIN via `org.access.view`.
+
+### Decision 4 — the granter's own reach: no open posting is unrestricted, not empty
+
+`GrantService.issue()`'s refusal #2 ("the target unit is inside the
+granter's own reachable subtree") needs the granter's OWN reach computed
+somehow. The document's worked example bounds a person WHO HOLDS a posting
+("a Finance Manager of North reaches North and everything under it, never
+North's parent") but says nothing about a person who holds none.
+`GrantService.reachOf()` treats zero open postings as **unrestricted**
+(skips this refusal), not empty (which would refuse everything). This is
+the only reading under which the one account that exists on a fresh
+deployment — ADMIN, which holds no `Posting` because docs 19/20 built no
+"implicit position" mechanism for it — can ever issue a first grant at all;
+the alternative (empty-by-default) would make the whole mechanism
+unreachable from its own bootstrap state. `orgUnitScopeFilterFor()`
+(`scope.guard.ts`) mirrors this with an explicit `isUnrestricted` field on
+`OrgUnitReach`, the same shape `resolveScope()`'s own `isOrgWide` already
+takes for the ORG/BRAND/BRANCH axis.
+
+A related concretisation: the document's `ACTING` refusal names
+"a countersignature from a second principal who outranks **the target
+post**" — but `OrgUnitGrant` carries no `positionId` or rank of its own.
+`GrantService` reads this as *outranks the grant's own recipient* (their
+current open-posting rank levels, via doc 20's `outranks()` rule restated
+per Decision 1), the only interpretation buildable from fields that
+actually exist on the schema as specified.
+
+### Decision 5 — no existing list endpoint is retrofitted to scope by `OrgUnit`
+
+`orgUnitScopeFilterFor()` is built and proven in isolation
+(`scope.guard.spec.ts`, including doc 19's own acceptance wording verbatim:
+"returns that unit and its descendants and nothing else, proven at three
+depths"), and `PermissionsResolverService.resolveForUser()` now unions in a
+currently-valid `OrgUnitGrant`'s keys so an explicit grant actually clears
+`PermissionsGuard`. What this ADR does **not** do: call
+`orgUnitScopeFilterFor()` from `PeopleService.listPeople()` or
+`OrgUnitService.tree()`/`.subtree()`. Doing so would silently change
+default visibility for every admin who holds no `Posting` — which is
+every admin on every deployment today, ADMIN included — turning an
+unscoped list into an empty one the moment this ADR merged. No work order
+in doc 21 names this retrofit, and doc 19's own status note already
+deferred exactly this question to doc 21; deferring it again, honestly,
+beats guessing at a default-visibility change no acceptance criterion
+asks for. `GrantService.accessOverUnit()` (WO-21.6's own "who reaches this
+unit" screen) and `reachOf()` are built and are the pieces a future
+document retrofitting a specific list screen would call.
+
+### Consequences
+
+- A deployment that wants explicit access grants creates a dedicated role
+  for `org.access.grant` — this is expected, not a workaround, per Decision 3.
+- `PermissionsResolverService.resolveForUser()` now makes three queries
+  instead of two; the third (`orgUnitGrant.findMany`) returns `[]` for every
+  user until a grant is issued, so this changes nothing for any deployment
+  today — read this ADR before assuming a fourth would be free to add the
+  same way.
+- The toxic-pair mechanism (`TOXIC_PERMISSION_PAIRS`, `RolesService`) now
+  exists, closing the gap ADR-044 named — but it guards `RolesService.create()`/
+  `.update()` only, not a raw seed script or a direct database write; Decision 3
+  exists because that boundary is real, not closed by this ADR.
+- Any future document that wants a specific list screen scoped by the
+  caller's `OrgUnit` reach calls `GrantService.reachOf()` and
+  `orgUnitScopeFilterFor()` directly — both are built, tested infrastructure,
+  not a placeholder — see Decision 5 for why no consumer was wired up here.
+
+### Status
+**Accepted.**
+
+## ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify
+
+### Context
+
+Doc 22 (`attendance-workforce/22-attendance-shifts-leave.md`) is this
+document set's first genuine RECORD, not REQUEST: a punch must never be
+refused, and the doc's own words are explicit that this is "the one table
+in this set that must be designed for the volume on day one." Building it
+required more decisions than any prior document in this set, because the
+doc names several mechanisms (a device principal, a partitioned table, a
+classification engine, an adjustment threshold) without fully specifying
+their schema or algorithm. Each decision below was checked against this
+repository's actual code before being written down.
+
+### Decision 1 — `employeeId` is `userId -> User`, exactly ADR-044's precedent
+
+The doc's own schema uses `employeeId Employee`. This document predates
+ADR-044 (docs 19/20), which already settled this question for the entire
+hr-people-org set: no separate `Employee` model, every actor is a `User`.
+`AttendanceEvent.userId`, `Shift.userId` and `AttendanceException.userId`
+all key straight to `User`, matching `Posting`, `EmployeeProfile` and
+`AssetAssignment` before them. Not re-litigated here.
+
+### Decision 2 — `AttendanceDevice` is a new model this document adds
+
+The doc's own text says a device "authenticates by key hash exactly as
+`PosTerminal.deviceKeyHash` does" — but its own schema block never declares
+the table. WO-22.4 ("device enrolment, key hash, rotation, externalRef
+required") is exactly that missing model. `AttendanceDevice`
+(`attendance.prisma`) mirrors `PosTerminal` field-for-field:
+`code`/`label`/`orgUnitId`, a nullable `deviceKeyHash` issued once via
+`rotateDeviceKey()`, a `PENDING`/`ACTIVE`/`SUSPENDED` status, `lastSeenAt`.
+`AttendanceDeviceService` mirrors `PosTerminalsService` method-for-method.
+
+### Decision 3 — a new module and schema file, not appended to `hr`/`hr.prisma`
+
+The doc's own text says "append to hr.prisma." This document's own folder
+(`attendance-workforce/`) is a different category from `hr-people-org/`
+(docs 19/20) — a genuinely distinct capability, not an extension of
+assets/positions/postings. A new `attendance` module (core-packed, on by
+default, matching `hr`/`orgstructure`) with its own `attendance.prisma`
+follows the one-schema-file-per-module convention `org-structure.prisma`
+already set for `orgstructure`, rather than growing `hr.prisma` with a
+15,000-row-a-day table that has nothing to do with assets or ranks.
+
+### Decision 4 — partitioning: composite primary key, a widened but still-correct unique constraint, a DEFAULT partition as the actual safety net, and a real composite foreign key where the doc implies one
+
+Postgres requires every unique constraint and the primary key on a
+partitioned table to include the partition key column. `AttendanceEvent`'s
+primary key is therefore the composite `(id, occurredAt)`, and its
+idempotency constraint — `@@unique([userId, source, externalRef, occurredAt])`
+— includes `occurredAt` too. This is not a weaker guarantee in practice: a
+genuine replay of the same punch (the case this constraint exists for)
+carries the identical `occurredAt` the device sent the first time, so the
+extra column changes nothing about what "the same punch" means.
+
+The migration creates monthly partitions three months back through nine
+months ahead (twelve total) plus an `AttendanceEvent_default` partition.
+The default is not decorative: it is what keeps "a punch is never refused"
+literally true even if `AttendancePartitionCron` (which extends real
+coverage six months ahead, monthly) ever stops running — Postgres routes
+any `occurredAt` outside every named range into it rather than raising "no
+partition found for row," which would be exactly the refusal this whole
+document exists to prevent.
+
+`AttendanceException.eventId` gets a real, DB-enforced two-column foreign
+key against `AttendanceEvent`'s own composite primary key
+`(id, occurredAt)` — supported since Postgres 12 — rather than the bare
+scalar a first reading of "no plain FK to a partitioned table's `id`" might
+suggest; `eventOccurredAt` is denormalised alongside it for exactly this.
+`AttendanceEvent.correctsId` (self-referencing the same partitioned table,
+used only by the rarer adjustment path) stays a bare scalar with no
+relation — the one place this schema does use the documented
+`PosTerminal.locationId` pattern ("a bare scalar... checks it exists itself
+rather than leaning on a DB-level FK"), since a second denormalised
+timestamp column for that path was not worth the schema weight the core
+reconciliation path already justifies. Verified end to end with a real
+insert/read/delete against the partitioned table before writing any
+service code against it.
+
+### Decision 5 — `workingDayOf()`/`workedMinutesBetween()` reuse `core/time/shop-time.ts`, not a new DST implementation
+
+The doc's own "working day is not a date" section describes exactly the
+problem `core/time/shop-time.ts` already solves for the shop's own
+calendar day ("never label a day with `toISOString()`", DST-safe day
+stepping via `shopLocalHour`/`startOfShopDay`/`startOfShopDaysAgo`).
+`workingDayOf()` is that same computation with a configurable cut-over hour
+instead of midnight, built by composing those existing functions rather
+than re-deriving timezone/DST handling — CLAUDE.md's own "can the existing
+system already solve this?" question, answered yes. `workedMinutesBetween()`
+is a plain UTC-instant subtraction, correct by construction because
+`AttendanceEvent.occurredAt` is always a true UTC instant (the schema's own
+rule) — proven against both a spring-forward and a fall-back transition in
+`attendance-time.spec.ts`.
+
+### Decision 6 — the toxic pair is `hr.attendance.reconcile` + `payroll.manage`, not `hr.attendance.reconcile` + `hr.payroll.run`
+
+The doc names the pair as "`hr.attendance.reconcile` with `hr.payroll.run`."
+Checked directly: no `hr.payroll.run` permission key exists anywhere in
+this codebase; running a pay run is gated by `payroll.manage`
+(`pay-run.controller.ts`). `TOXIC_PERMISSION_PAIRS` therefore pairs
+`hr.attendance.reconcile` with `payroll.manage`, the key that actually
+gates the write the doc's own reasoning ("clearing your own exception and
+then paying it") is protecting against.
+
+### Decision 7 — `hr.attendance.reconcile` is seeded to no role by default, not ADMIN — the identical shape ADR-045 already established for `org.access.grant`
+
+ADMIN already holds `payroll.manage` (seeded since payroll shipped).
+Seeding `hr.attendance.reconcile` onto the same role would put the toxic
+pair Decision 6 just defined onto the one role every deployment starts
+with, on a path (`seedRoles()`/`seedPermissions()`) the `RolesService`
+check cannot reach. `hr.attendance.view` and `hr.attendance.record` (safe,
+no toxic pairing) are seeded to ADMIN; `hr.attendance.reconcile` is not — a
+deployment that needs to reconcile attendance creates a dedicated role
+holding it without `payroll.manage`, exactly the "Access Reviewer" pattern
+ADR-045 already established, applied here to a second pair.
+
+### Decision 8 — the classification algorithm: a concretisation, not a literal reading
+
+The doc names six exception reasons but not the algorithm that produces
+them. `AttendanceService.classify()` checks, in priority order: an approved
+`LeaveRequest` covering the punch (`WHILE_ON_LEAVE`) before anything else;
+a same-kind punch within `AttendanceDuplicateWindowMinutes` (new Setting,
+default 2) of the previous one (`DUPLICATE_SUSPECTED`); then the nearest
+`Shift` within 24 hours by distance to its own window — none at all is
+`NO_MATCHING_SHIFT`, a different `orgUnitId` is `WRONG_UNIT`, outside
+`AttendanceShiftGraceMinutes` (new Setting, default 15) of that shift's own
+start/end is `OUTSIDE_ROSTER`; finally, for an `OUT` or `BREAK_END`, no
+immediately preceding `IN`/`BREAK_START` is `MISSING_COUNTERPART`. Each
+reason gets its own spec in `attendance.service.spec.ts`, isolating exactly
+the condition that produces it.
+
+### Decision 9 — the adjustment threshold, the second-approver check, and one authorisation gap closed before it shipped
+
+`SettingKey.AttendanceMaxSelfAdjustMinutes` (default 30) is the "policy"
+value the doc names but does not default; `AttendanceService.adjust()`
+needs an approver who outranks the employee (rank levels from open
+`Posting` rows, the identical duplicated-rather-than-imported pattern
+`GrantService`, doc 21, already establishes and justifies) whenever the
+actor is adjusting their own record, or the change exceeds that threshold.
+While building this, a real authorisation gap surfaced that the doc's own
+text does not name: nothing stopped an arbitrary signed-in user from
+submitting an adjustment against *someone else's* event, so long as they
+also supplied a valid approver. `checkAdjustRefusals()` now refuses
+(`NOT_AUTHORIZED`) any adjustment where the actor is neither the event's
+own user nor a holder of `hr.attendance.record` — closed before this ADR
+was written, not left as a known issue.
+
+### Decision 10 — what shipped in the UI, and what did not
+
+WO-22.5's reconcile screen (`/admin/attendance`) is built exactly as named:
+every open exception, gated by `hr.attendance.reconcile` to resolve, listed
+for `hr.attendance.view` to see. A second screen, `/admin/my-attendance`,
+ships alongside it — the doc's own "Solo: self punch on one screen, no
+devices, no roster" silhouette describes UI, and without it nothing in
+this deployment could ever create an `AttendanceEvent` through the product
+at all for a shop with no devices; it carries no `permissions` field
+(nav-registry.ts's own documented "omit for everyone signed in"), matching
+the fact that `POST /admin/attendance/punch` itself needs no capability
+beyond `@AuthenticatedOnly()`.
+
+`AttendanceDeviceController` (enrolment CRUD) ships API-only, no web page —
+the same precedent `PosTerminalsController` already sets in this exact
+codebase (a full CRUD controller with zero web pages consuming it today).
+Shift creation/listing ships as a plain API (`POST`/`GET
+/admin/attendance/shifts`) with no dedicated roster-management screen — the
+doc's own text calls rostering "deliberately thin" and separately lists
+"rota optimisation and shift bidding" as out of scope; a full roster
+builder is not required to satisfy any acceptance criterion here.
+
+### Consequences
+
+- Every later `attendance-workforce` document that reads or writes
+  `AttendanceEvent` must go through `AttendanceService.record()` — the only
+  writer — and must never assume `id` alone is a valid `findUnique` key;
+  it is always `id_occurredAt`.
+- `AttendancePartitionCron` must keep running for `AttendanceEvent` to stay
+  performant at scale; its failure degrades gracefully (rows land in the
+  default partition, never refused) rather than breaking anything, but a
+  large default partition eventually needs a manual detach-and-resplit —
+  named here so it is not discovered cold in an incident.
+- `hr.attendance.reconcile`'s no-default-seed follows the exact shape
+  ADR-045 established; any THIRD toxic pair this document set discovers
+  should look here and at ADR-045 before assuming ADMIN can safely hold it.
+- The classification algorithm (Decision 8) is this document's own
+  reasonable reading of an under-specified brief, not a literal
+  transcription — a future document refining rostering rules should read
+  this ADR, not just the original doc, before changing `classify()`.
+
+### Status
+**Accepted.**
+
+## ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo
+
+### Context
+
+The owner's own request — "centralize everything shared by different
+clients... login should remain with nID only" — read literally would mean
+merging tenant business data into one shared store, which
+`39-shared-cross-tenant-hosting-tier.md` already rejected in writing
+("shared compute, never shared data"). Two rounds of clarification
+(`AskUserQuestion`) established the actual ask: separate, isolated tenants
+exactly as doc 39 already built, plus a Facebook-like layer where a tenant
+voluntarily publishes products/services to an audience it controls by type
+(retailer/distributor/supplier/direct customer), with both discovery-only
+and full-transaction paths available per listing, the client's own choice.
+This ADR records the design in `165-cross-tenant-marketplace-directory.md`
+and why it does not reopen doc 39.
+
+### Options considered
+
+1. **A shared `Product`/`Party` table across tenants** (the literal reading)
+   — rejected outright: this is precisely doc 39's own named trap, "the
+   exact duplicate-implementation trap CLAUDE.md warns against, just at the
+   tenancy layer." Never seriously pursued past the first read of the
+   request.
+2. **Put the catalog inside nID** — rejected: nID's own scope
+   (`18-identity-verification.md`) is identity/KYC, not commerce; nID has no
+   `Product` concept and stretching it there duplicates
+   `catalog-variants-pricing/03-variants-sku-seo.md`'s own `ProductVariant`
+   a third way for no benefit.
+3. **Extend `18-trading-partner-network.md`'s own 1:1 model** to allow an
+   unregistered viewer — rejected as the primary mechanism, reused as a
+   component instead: `TradingPartner` is built around a *named, pre-linked*
+   partner and an API key issued to that specific partner. The owner's own
+   "control who can see it, by category" is an audience/visibility question
+   a 1:1 link model cannot express without being bent out of its own shape.
+   Reused, correctly, as the **delivery** mechanism once a transaction is
+   actually chosen (§2 below) — the marketplace registers as one more
+   `TradingPartner` from the selling tenant's own point of view, so no new
+   inbound-order code was written.
+4. **A new module inside `apps/platform`, with its own schema, that a
+   tenant explicitly publishes toward** — selected. `apps/platform` is
+   already the one place in this codebase authorized to know about more
+   than one tenant, for exactly this reason (doc 39). A tenant's published
+   listing is data that tenant chose to make shared — categorically
+   different from doc 39's "never shared data," which was always about
+   data nobody chose to expose.
+
+### Decision
+
+Built as designed in doc 165: `MarketplaceListing` /
+`MarketplacePublisherCredential` / `MarketplaceViewerProfile` /
+`MarketplaceEngagement` in a new `apps/platform/prisma/schema/marketplace.prisma`
+(not yet migrated — this ADR records the design, WO-165.1–165.7 are not yet
+implemented). Publishing is per-listing and explicit; audience is
+`visibleTo: MarketplaceAudience[]`; the transact-or-discover choice is
+`engagementMode`, set by the publishing tenant, never a platform-wide
+default. Login-centralization splits into two pieces that must not be
+conflated: erp-1 staff login already has an SSO mechanism
+(`161-sso-identity-federation.md`) and needs only one additive column
+(`SsoConnection.enforceSso`) to make nID-only actually enforced, once nID
+is configured as that connection's issuer; a marketplace viewer, who may
+hold no `User` row anywhere, needs a second, narrower, hardcoded-to-nID
+OIDC client living in `apps/platform` itself — justified as a real
+extraction (`packages/shared/src/oidc-client.ts`) rather than a duplicate
+implementation, because it is the second genuine call site, not the first.
+
+### Reasoning
+
+The owner's own clarifying answers are the load-bearing evidence here, not
+an inference: "client will have access to his own organization only, not
+all" confirms doc 39's isolation stands; "he can control who can see his
+product/services" names an opt-in, filtered publication, not a merge;
+"give both discovery and transactional option and let the client choose"
+is why `engagementMode` is a per-listing enum, not a global toggle. Every
+reused mechanism (doc 18's inbound trading-partner API, doc 155's
+stored-value design for a later payment-centralization decision, doc 161's
+OIDC provider mechanics) was reused because doc 165 confirmed no
+architectural boundary requires a separate implementation — the same
+search-before-creating discipline this repository's house rules require
+everywhere else.
+
+### Consequences
+
+- `apps/platform` gains its first module whose entire purpose is to hold
+  data a tenant *chose* to expose across the tenant boundary — a new kind
+  of row in that app, distinct from `PlatformTenant`/billing/support-access,
+  and any future cross-tenant capability should be measured against this
+  precedent (does the tenant explicitly opt in per record, or is this
+  actually doc-39-forbidden shared business data) before being added there.
+- WO-165.5 (the `oidc-client.ts` extraction) and WO-165.6
+  (`enforceSso`) are real, small, immediately buildable work with no
+  external dependency. WO-165.3/165.4 (discovery/transact) and the
+  platform-side nID login half of WO-165.5 are blocked on confirming nID's
+  own OIDC surface — `nadeemmurtaza/nID` is a separate repository not
+  attached to this session, so this cannot be verified or built from here.
+  A future session with that repository attached must confirm or build it
+  before those work orders can close.
+- Phase 2 (`verifiedType`, nID-backed KYB audience verification) is
+  intentionally unbuilt scaffolding — a nullable column and a deferred flag
+  — exactly the pattern doc 18.5's EDI deferral already established for
+  "shape it so a real request isn't a design exercise, but do not build it
+  before a real trigger exists."
+- Payment/escrow centralization across a marketplace transaction was
+  explicitly named and deferred (doc 165's own "Out of scope") rather than
+  silently assumed; if a tenant later asks for it, doc 155's stored-value
+  design is the stated starting point, not a new mechanism invented cold.
+
+### Status
+**Accepted.**
+
+## ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism
+
+### Context
+
+The owner's follow-up named a concrete, real cost this document set had not
+yet addressed: the identical product's name, description and photographs
+are re-entered from scratch by every business in a supply chain —
+manufacturer, then each distributor, supplier and retailer who stocks the
+same physical item — because nothing in this codebase reads
+`ProductVariant.barcode` (already unique per tenant, `03-variants-sku-seo.md`)
+as proof that two tenants are describing the same object. The owner asked
+for this to be designed using Apple's unified-memory principle by name: one
+shared copy, read by every consumer through a reference, instead of a
+copy per consumer.
+
+### Options considered
+
+1. **Do nothing / leave it as tenant-private duplication** — rejected: the
+   owner named a real, measurable cost (a hundred-fold repeated upload of
+   identical photographs across a real supply chain) that doc 39's own
+   isolation, correct for commercial data, was never meant to force onto
+   purely descriptive facts.
+2. **Fully centralize the `Product`/`ProductVariant` tables themselves**
+   (the literal "one shared product table" reading) — rejected for the
+   same reason ADR-047 rejected it for the marketplace: it would erase the
+   commercial data (price, stock, SKU, cost) that must stay private per
+   tenant, conflating two different kinds of fact doc 39 already
+   separates.
+3. **A shared reference table for descriptive facts only, joined by
+   barcode, living in the same `apps/platform` module doc 165 already
+   introduced** — selected. Reuses the one tenant-trust boundary this
+   codebase has already built for cross-tenant, opt-in, non-commercial data,
+   rather than standing up a second one.
+4. **Sync images as local copies alongside the text** (treat images and
+   text identically) — rejected specifically for images: a locally-copied
+   image defeats the entire storage-saving purpose the owner asked for. The
+   correct application of the unified-memory principle is that images are
+   *referenced* by shared URL, never copied, which is where the actual
+   "100 times" storage cost lives; text is cheap enough that caching it
+   locally for storefront-render resilience is a reasoned, explicit
+   exception, not an oversight.
+
+### Decision
+
+`GlobalProductReference` (keyed by barcode) plus its
+`Translation`/`Image`/`Link`/`Flag` tables, additive to the same
+`apps/platform/prisma/schema/marketplace.prisma` doc 165 introduced. A
+tenant creating a product looks up its barcode; a match autofills text and
+images without a manual re-entry. Text is synced into the tenant's own
+`ProductTranslation` for render-time resilience (doc 39's own "no
+application code inside a tenant's own instance needs to know a shared
+tier exists above it" restated). Images are never re-uploaded — a linked
+tenant's own `ProductImage.imageUrl` points directly at the platform's own
+shared storage, the literal "one buffer, many readers" move that actually
+removes the duplicated storage cost. Only the registering tenant may edit
+the canonical record; every other tenant's write path is a reviewed flag,
+closing the toxic-pair risk of one tenant vandalizing another's shared data.
+
+### Reasoning
+
+The Apple unified-memory analogy is exact, not decorative: the traditional
+GPU-has-its-own-VRAM design pays a real copy-and-sync cost for data the CPU
+already holds, precisely mirroring a hundred tenants each holding their own
+copy of one manufacturer's product description. The fix in both cases is
+the same — stop copying, start referencing — applied here only to the half
+of a product record that is objectively, physically true regardless of who
+is selling it, never to the half that is true only for one business's own
+commercial relationship to it. That boundary is exactly doc 39's own
+existing shared-vs-private line, not a new one invented for this decision.
+
+### Consequences
+
+- `apps/platform`'s marketplace module now holds two related but distinct
+  cross-tenant capabilities — doc 165's publish/discover listings and this
+  document's shared reference registry — sharing one tenant credential
+  rather than two, and any future addition to that module should be
+  checked against the same "opt-in, non-commercial, tenant-explicit" test
+  before being added there.
+- The real, measurable storage saving this document delivers is on image
+  storage specifically, not on the schema row count — a future review of
+  "did this actually save 100x" should look at the storage driver's own
+  bucket size for shared vs. duplicated images, not at Postgres row counts.
+- `GlobalProductReferenceFlag`'s manual-review path is a deliberate
+  slower-but-safer choice; if flag volume ever becomes a real moderation
+  burden, an automatic resolution heuristic is a named future refinement
+  (doc 166's own "Out of scope"), not something to build ahead of that need.
+- WO-166.1–166.5 are unblocked and buildable today — unlike doc 165's own
+  nID-login half, this document has no external cross-repo dependency.
+
+### Build-time follow-up (2026-09-26) — WO-166.1, WO-166.2 and the new WO-166.6 built; four decisions the original sketch left open
+
+A same-day follow-up from the owner sharpened the design before any code
+was written — "centralize everything, not just images... cloud stays
+synced, offline gets a full copy" — recorded in doc 166's own revision note
+and reflected in the schema (`attributes Json` for every other descriptive
+detail) and a new bulk-lookup/export pull path (WO-166.6) before the build
+started. Building WO-166.1/166.2/166.6 against a real Postgres then
+required four decisions the doc's own text had left implicit:
+
+1. **Credential issuance is ops-gated (`OpsAuthGuard`,
+   `platform.marketplace.manage`), not self-service**, mirroring
+   `AgencyClientsService.register()`'s exact precedent — doc 165, which was
+   to have "already issued" this credential, does not exist yet, so there
+   was no self-service path to build against. `MarketplaceCredentialsService.
+   issue()/rotate()/revoke()` mint/replace/delete a `MarketplacePublisherCredential`
+   on an existing `PlatformTenant`, never creating a new entity (ADR-039's
+   own convention).
+2. **`revoke()`** — deletes the credential row outright; nothing on it
+   needs preserving once a tenant stops authenticating with it.
+3. **`unlink()`** — removes a `GlobalProductReferenceLink` by
+   `(tenantId, variantRef)`, giving the "reversal document, not the
+   reversal flag" lens a real method rather than only a description.
+4. **`link()` upserts on `(tenantId, variantRef)`** rather than only
+   inserting, so a corrected barcode scan re-points the existing link
+   instead of hitting the unique constraint doc 166's own schema already
+   relies on for "the second copy of the write."
+
+`PlatformTenant` (`platform.prisma`) gained the back-relations Prisma
+requires for `marketplace.prisma`'s new relations (`MarketplacePublisherCredential`,
+`GlobalProductReference.registeredByTenant`, `GlobalProductReferenceLink.tenant`,
+`GlobalProductReferenceFlag.flaggedByTenant`) — additive, no existing
+column touched. Migration `20260926125941_wo166_product_reference_registry`
+applied cleanly against the real `newax_platform` database. 32 new tests
+across six spec files; `pnpm lint`/`typecheck`/`test` for `apps/platform`
+all pass. WO-166.3 (erp-1-side autofill UI), WO-166.4 (erp-1-side sync
+consumer) and WO-166.5 (moderation screen) remain unbuilt — see doc 166's
+own "What's built" section for the exact file list.
+
+### Status
+**Accepted.**

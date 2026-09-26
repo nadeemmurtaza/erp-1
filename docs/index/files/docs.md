@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 394 tracked files in `docs/*`, by directory.
+All 396 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,11 +563,11 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 4475 |  |
+| `DECISIONS.md` | doc | 5044 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 501 |  |
+| `README.md` | doc | 528 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
@@ -581,7 +581,7 @@ All 394 tracked files in `docs/*`, by directory.
 | `161-sso-identity-federation.md` | doc | 366 |  |
 | `163-personal-api-keys.md` | doc | 625 |  |
 | `18-identity-verification.md` | doc | 149 |  |
-| `21-access-over-the-org-tree.md` | doc | 228 |  |
+| `21-access-over-the-org-tree.md` | doc | 294 |  |
 
 ### `docs/implementation/admin-platform` (5)
 
@@ -614,22 +614,22 @@ All 394 tracked files in `docs/*`, by directory.
 | `69-order-lifecycle-status-dashboard.md` | doc | 121 |  |
 | `77-sales-category-breakdown-coverage-note.md` | doc | 70 |  |
 
-### `docs/implementation/architecture-patterns` (37)
+### `docs/implementation/architecture-patterns` (38)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `100-event-driven-architecture.md` | doc | 82 |  |
-| `103-semantic-data-contracts.md` | doc | 83 |  |
+| `100-event-driven-architecture.md` | doc | 75 |  |
+| `103-semantic-data-contracts.md` | doc | 69 |  |
 | `104-jsonb-eav-extensibility.md` | doc | 159 |  |
 | `105-metadata-driven-ui-rendering.md` | doc | 101 |  |
-| `106-finite-state-machines-registry.md` | doc | 119 |  |
-| `107-visual-bpmn-workflow-modeling.md` | doc | 81 |  |
-| `108-event-triggered-side-effects.md` | doc | 79 |  |
-| `109-immutable-event-ledger.md` | doc | 102 |  |
-| `110-cqrs-read-write-separation.md` | doc | 99 |  |
-| `113-micro-frontend-embedding.md` | doc | 129 |  |
+| `106-finite-state-machines-registry.md` | doc | 98 |  |
+| `107-visual-bpmn-workflow-modeling.md` | doc | 77 |  |
+| `108-event-triggered-side-effects.md` | doc | 61 |  |
+| `109-immutable-event-ledger.md` | doc | 98 |  |
+| `110-cqrs-read-write-separation.md` | doc | 93 |  |
+| `113-micro-frontend-embedding.md` | doc | 114 |  |
 | `114-sandboxed-scripting-runtime.md` | doc | 119 |  |
-| `115-hexagonal-architecture-ports-adapters.md` | doc | 81 |  |
+| `115-hexagonal-architecture-ports-adapters.md` | doc | 69 |  |
 | `117-event-driven-choreography-immutability.md` | doc | 82 |  |
 | `118-headless-composable-api-capabilities.md` | doc | 87 |  |
 | `122-data-lake-cold-storage-architecture.md` | doc | 75 |  |
@@ -647,20 +647,21 @@ All 394 tracked files in `docs/*`, by directory.
 | `142-bpmn-visual-workflow-engine.md` | doc | 109 |  |
 | `143-micro-frontend-architecture.md` | doc | 160 |  |
 | `157-client-request-idempotency-keys.md` | doc | 276 |  |
-| `92-microservices-module-decoupling.md` | doc | 94 |  |
-| `93-headless-frontend-architecture.md` | doc | 73 |  |
-| `94-cloud-native-container-scalability.md` | doc | 75 |  |
-| `95-externalized-rule-logic.md` | doc | 89 |  |
-| `96-version-controlled-policy-execution.md` | doc | 72 |  |
-| `97-realtime-validation-single-source-of-truth.md` | doc | 68 |  |
-| `98-contract-first-api-development.md` | doc | 89 |  |
-| `99-centralized-api-gateway.md` | doc | 66 |  |
+| `166-unified-product-reference-registry.md` | doc | 545 |  |
+| `92-microservices-module-decoupling.md` | doc | 89 |  |
+| `93-headless-frontend-architecture.md` | doc | 66 |  |
+| `94-cloud-native-container-scalability.md` | doc | 70 |  |
+| `95-externalized-rule-logic.md` | doc | 78 |  |
+| `96-version-controlled-policy-execution.md` | doc | 68 |  |
+| `97-realtime-validation-single-source-of-truth.md` | doc | 63 |  |
+| `98-contract-first-api-development.md` | doc | 80 |  |
+| `99-centralized-api-gateway.md` | doc | 60 |  |
 
 ### `docs/implementation/attendance-workforce` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `22-attendance-shifts-leave.md` | doc | 230 |  |
+| `22-attendance-shifts-leave.md` | doc | 292 |  |
 | `30-field-attendance-biometric-geofencing.md` | doc | 289 |  |
 | `43-visual-attendance-heatmap.md` | doc | 132 |  |
 | `55-anti-proxy-verification-coverage-note.md` | doc | 56 |  |
@@ -669,13 +670,14 @@ All 394 tracked files in `docs/*`, by directory.
 | `85-ai-face-detection-proxy-attendance.md` | doc | 51 |  |
 | `87-corporate-attendance-automation.md` | doc | 71 |  |
 
-### `docs/implementation/b2b-wholesale-multientity` (4)
+### `docs/implementation/b2b-wholesale-multientity` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `111-hierarchical-entity-isolation.md` | doc | 68 |  |
 | `146-wholesale-tiered-pricing.md` | doc | 182 |  |
 | `149-b2b-accounts-approvals-sector-packs.md` | doc | 163 |  |
+| `165-cross-tenant-marketplace-directory.md` | doc | 487 |  |
 | `73-multi-entity-multi-company-configuration.md` | doc | 127 |  |
 
 ### `docs/implementation/catalog-variants-pricing` (3)
@@ -735,8 +737,8 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `164-department-permission-role-duty-control.md` | doc | 327 |  |
-| `19-org-structure-offices-departments.md` | doc | 291 |  |
-| `20-people-positions-ranks.md` | doc | 297 |  |
+| `19-org-structure-offices-departments.md` | doc | 304 |  |
+| `20-people-positions-ranks.md` | doc | 301 |  |
 | `26-performance-reviews.md` | doc | 247 |  |
 | `27-training-skill-development.md` | doc | 246 |  |
 | `28-recruitment-onboarding-document-vault.md` | doc | 335 |  |

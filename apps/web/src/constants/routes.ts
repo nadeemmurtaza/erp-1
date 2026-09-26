@@ -133,8 +133,15 @@ export const ROUTES = {
 
     /** hr-people-org/19-org-structure-offices-departments.md. */
     orgStructure: '/admin/org-structure',
+    /** access-control-identity/21-access-over-the-org-tree.md WO-21.6 — one access screen per unit, reached by clicking from the tree. */
+    orgUnitAccess: (unitId: string) => `/admin/org-structure/${unitId}/access`,
     /** hr-people-org/20-people-positions-ranks.md. */
     people: '/admin/people',
+
+    /** attendance-workforce/22-attendance-shifts-leave.md WO-22.5 — the reconcile screen. */
+    attendance: '/admin/attendance',
+    /** Self-punch — every signed-in admin, no permission required (this document's own "Solo: self punch on one screen" silhouette). */
+    myAttendance: '/admin/my-attendance',
 
     bom: '/admin/bom',
 

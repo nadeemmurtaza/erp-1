@@ -368,6 +368,33 @@ doc 160 itself named and deliberately left unbuilt:
 | [`163-personal-api-keys.md`](./access-control-identity/163-personal-api-keys.md) | Personal API keys, **built**: a signed-in person mints a key carrying a subset of their own access for an AI agent, script or integration — admin API and storefront API, one `ApiKey` lifecycle with two scope catalogues. Effective access is `scopes ∩ owner's live permissions`, recomputed per request; `NON_DELEGATABLE_PERMISSIONS` and a new `CUSTOMER_SCOPE_CATALOG` in `packages/shared`; both guards fail closed; `@SessionOnly()` on every credential-minting route. ADR-037 |
 | [`164-department-permission-role-duty-control.md`](./hr-people-org/164-department-permission-role-duty-control.md) | Department dynamics, **not built** — depends on docs 19/20/21/23's own unbuilt schemas and adds nothing to them. `OrgUnitControlProfile` (a standing, nearest-ancestor-inherited permission ceiling and role allow-list per `OrgUnit`, defaulting to fully unrestricted so the feature is purely additive) and `OrgUnitDuty` (a department's declared charter/duty list, copied — never referenced — onto the first `Posting`'s starter `Task` rows). Enforced at two existing writers, `RolesService.assign()` and doc 21's `GrantService.issue()`, never a third mechanism |
 
+**Number 165** answers the owner's own follow-up request to "centralize
+everything shared by different clients... like a Facebook," clarified over
+two rounds of questions into: separate, isolated tenants exactly as doc 39
+already built, plus an opt-in publish/discover layer a tenant controls by
+audience type, with both discovery and transaction available per listing.
+Read literally the request would have merged tenant business data, which
+doc 39 already rejected in writing; the owner's own clarification ruled
+that reading out:
+
+| File | What it is |
+|---|---|
+| [`165-cross-tenant-marketplace-directory.md`](./b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md) | **Not built — designed.** A new `apps/platform` module (`MarketplaceListing`/`MarketplacePublisherCredential`/`MarketplaceViewerProfile`/`MarketplaceEngagement`), never a shared `Product` table — a tenant explicitly publishes a listing, tagged with the audience (retailer/distributor/supplier/direct customer) allowed to see it and a per-listing discovery-only-or-transact mode. A chosen transaction reuses doc 18's own inbound trading-partner API unchanged — the marketplace registers as one more `TradingPartner` from the selling tenant's own side, zero new inbound-order code. Login-centralization splits in two: an additive `SsoConnection.enforceSso` column makes doc 161's existing SSO actually mandatory for erp-1 staff; a marketplace viewer (who may hold no `User` anywhere) authenticates through a new, narrower, hardcoded-to-nID OIDC client in `apps/platform`, sharing a newly-extracted `packages/shared/src/oidc-client.ts` with doc 161's own provider rather than duplicating OIDC a second time. Blocked, honestly: nID exposing an OIDC surface at all cannot be confirmed or built from this repository — `nadeemmurtaza/nID` is a separate repo not attached to this session. ADR-047 |
+
+**Number 166** answers the owner's direct follow-up, naming Apple's
+unified-memory principle by request: the same physical product's name,
+description and photographs are re-entered from scratch by every business
+in a supply chain — manufacturer, then each distributor, supplier and
+retailer — because nothing reads `ProductVariant.barcode` as proof two
+tenants describe the same object. Lives in `architecture-patterns/`, not
+`b2b-wholesale-multientity/`, because it is a general write-once/
+reference-many pattern applied to product data, built on the same platform
+module doc 165 introduced rather than a second cross-tenant mechanism:
+
+| File | What it is |
+|---|---|
+| [`166-unified-product-reference-registry.md`](./architecture-patterns/166-unified-product-reference-registry.md) | **Platform-side schema + API built; erp-1 consumer not yet built.** `GlobalProductReference` (keyed by barcode, `attributes Json` for every other sector-varying detail) in a new `apps/platform/prisma/schema/marketplace.prisma`, migrated against a real Postgres. A tenant looks a barcode up and autofills name/description/photographs/attributes instead of re-typing them — GS1's own GTIN-registry pattern, sized to this codebase. Revised same-day per a direct follow-up to centralize everything non-commercial (not just images) and split sync by connectivity: a cloud-connected tenant stays synced by push in near-real time; an offline-capable deployment pulls a full local snapshot — text, attributes, and the image bytes themselves — via the new `bulk-lookup`/`export` endpoints (WO-166.6). `MarketplacePublisherCredential` (ops-issued, mirroring `AgencyClientsService`'s exact precedent) authenticates every route; only the registering tenant may edit a canonical record, every other tenant's write path is a reviewed flag. 32 tests, all passing. ADR-048 |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

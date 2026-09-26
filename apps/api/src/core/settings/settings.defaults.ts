@@ -267,6 +267,48 @@ export const SettingKey = {
   PosInstalmentForfeitDepositOnCancel: 'pos.instalment_forfeit_deposit_on_cancel',
   /** 49-financial-institution-settlement-partnerships.md (WO-49.4) — "a configurable value threshold": a SHORT settlement batch's shortfall at or below this writes off straight through; above it needs a second approver first (finance.settlement.approve_writeoff), by someone other than whoever requested it — the identical shape FinanceCreditNoteApprovalThresholdMinor already establishes. */
   FinanceSettlementWriteoffApprovalThresholdMinor: 'finance.settlement_writeoff_approval_threshold_minor',
+  /**
+   * access-control-identity/21-access-over-the-org-tree.md (WO-21.3) — the
+   * ceiling on how far in the future an OrgUnitGrant's expiresAt may be set.
+   * DEVIATION from the doc's own text, which names this "a BrandPolicy
+   * value": BrandPolicy is 1:1 with RetailBrand, and RetailBrand rows exist
+   * only when the `organization` module is on (off by default in every
+   * deployment today — modules.registry.ts) — a required per-brand read
+   * would make grant issuance impossible on the Solo/Chain shape this
+   * repository actually ships (the identical reasoning ADR-044 already
+   * applies to OrgUnitType/Rank). BrandPolicy's own doc comment already
+   * names the precedent for this exact situation: "org.allow_inter_brand_
+   * transfers... is organization-level, not brand-level, and stays a plain
+   * Setting." See DECISIONS.md ADR-045.
+   */
+  OrgAccessMaxGrantDays: 'org_access.max_grant_days',
+  /**
+   * attendance-workforce/22-attendance-shifts-leave.md — "the working day is
+   * not a date." The local hour at which a new working day begins; an
+   * instant before this hour belongs to the PREVIOUS calendar day's working
+   * day, so a night shift ending after midnight resolves to the same
+   * working day as the clock-in before it. See `attendance-time.ts`.
+   */
+  AttendanceWorkingDayCutoverHour: 'attendance.working_day_cutover_hour',
+  /**
+   * How far a punch may fall outside its matching Shift's own start/end
+   * before it is classified OUTSIDE_ROSTER rather than linked cleanly — a
+   * few minutes early or late is normal, not an exception.
+   */
+  AttendanceShiftGraceMinutes: 'attendance.shift_grace_minutes',
+  /**
+   * Two punches of the same kind for the same person inside this many
+   * minutes are DUPLICATE_SUSPECTED — a device double-scan or a network
+   * retry, not two genuine punches.
+   */
+  AttendanceDuplicateWindowMinutes: 'attendance.duplicate_window_minutes',
+  /**
+   * An ADJUSTMENT that changes worked time by more than this many minutes
+   * needs a second approver who outranks the employee (this document's own
+   * "threshold nobody approves alone" lens) — adjusting your own attendance
+   * always does, regardless of amount.
+   */
+  AttendanceMaxSelfAdjustMinutes: 'attendance.max_self_adjust_minutes',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -387,6 +429,17 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.PosInstalmentForfeitDepositOnCancel]: false,
   /** Rs. 10,000 — a reasonable default; a shortfall this size or smaller is usually a rounding/fee difference, not something worth a second signature. */
   [SettingKey.FinanceSettlementWriteoffApprovalThresholdMinor]: toMinor(10_000),
+  /** 90 days — long enough to cover a real leave or a seasonal audit, short enough that a grant nobody renewed is gone within a quarter. */
+  [SettingKey.OrgAccessMaxGrantDays]: 90,
+
+  /** 6am — after most night shifts have ended, before most day shifts have started. */
+  [SettingKey.AttendanceWorkingDayCutoverHour]: 6,
+  /** 15 minutes either side of a shift's own start/end. */
+  [SettingKey.AttendanceShiftGraceMinutes]: 15,
+  /** 2 minutes — long enough to catch a double-scan, short enough never to merge two real punches. */
+  [SettingKey.AttendanceDuplicateWindowMinutes]: 2,
+  /** 30 minutes — a small correction is routine; anything larger needs a second signature. */
+  [SettingKey.AttendanceMaxSelfAdjustMinutes]: 30,
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartFirstTouchHours]: 1,

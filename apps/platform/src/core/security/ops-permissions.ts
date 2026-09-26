@@ -39,6 +39,16 @@ export const PLATFORM_PERMISSIONS = [
    * governs the agency-onboarding fields ADR-039 added to that same row.
    */
   'platform.agency.manage',
+  /**
+   * Docs 165/166 — issuing/rotating a tenant's own
+   * `MarketplacePublisherCredential` for the cross-tenant marketplace/
+   * product-reference network. Deliberately its own key, not folded into
+   * `platform.tenants.manage`: this only ever mints or rotates a key on an
+   * existing tenant (identical "never creates a new entity" shape ADR-039
+   * already established for `platform.agency.manage`), and never touches
+   * that tenant's own status/suspension.
+   */
+  'platform.marketplace.manage',
 ] as const;
 
 export type PlatformPermission = (typeof PLATFORM_PERMISSIONS)[number];

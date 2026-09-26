@@ -81,4 +81,26 @@ export class SettingsService implements OnModuleInit {
   async getUseOptionModelReads(): Promise<boolean> {
     return this.get<boolean>(SettingKey.CatalogUseOptionModelReads);
   }
+
+  /** access-control-identity/21-access-over-the-org-tree.md — see the setting's own doc comment for why this lives here rather than on BrandPolicy. */
+  async getOrgAccessMaxGrantDays(): Promise<number> {
+    return this.get<number>(SettingKey.OrgAccessMaxGrantDays);
+  }
+
+  /** attendance-workforce/22-attendance-shifts-leave.md — see attendance-time.ts. */
+  async getAttendanceWorkingDayCutoverHour(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceWorkingDayCutoverHour);
+  }
+
+  async getAttendanceShiftGraceMinutes(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceShiftGraceMinutes);
+  }
+
+  async getAttendanceDuplicateWindowMinutes(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceDuplicateWindowMinutes);
+  }
+
+  async getAttendanceMaxSelfAdjustMinutes(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceMaxSelfAdjustMinutes);
+  }
 }

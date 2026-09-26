@@ -759,6 +759,25 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'organization',
     module: 'hr',
   },
+  {
+    // attendance-workforce/22-attendance-shifts-leave.md WO-22.5.
+    key: 'attendance',
+    label: 'Attendance',
+    href: '/admin/attendance',
+    permissions: ['hr.attendance.view', 'hr.attendance.reconcile'],
+    group: 'organization',
+    module: 'attendance',
+  },
+  {
+    // No `permissions` — visible to everyone signed in (this document's own
+    // "Solo: self punch on one screen" silhouette). Self-punch needs no
+    // capability beyond being signed in; see AttendanceController.
+    key: 'my-attendance',
+    label: 'My attendance',
+    href: '/admin/my-attendance',
+    group: 'organization',
+    module: 'attendance',
+  },
 
   // Group: Settings
   {

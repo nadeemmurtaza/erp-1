@@ -3,7 +3,7 @@
 
 # Components
 
-All **109** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **107** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -41,7 +41,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `receipt-view.tsx` | `ReceiptView` | server | 1 |  |
 | `service-worker-registration.tsx` | `ServiceWorkerRegistration` | client | 1 |  |
 
-### `apps/web/src/components/admin` (19)
+### `apps/web/src/components/admin` (17)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -49,9 +49,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `command-palette.tsx` | `CommandPalette` | client | 1 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | client | 1 |  |
 | `csv-import-card.tsx` | `CsvImportCard` | client | 2 |  |
-| `custom-field-form-section.tsx` | `CustomFieldFormSection` | client | 1 |  |
 | `deployment-modules.tsx` | `EnabledModulesProvider` `useEnabledModules` | client | 5 |  |
-| `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | client | 1 |  |
 | `funnel-chart.tsx` | `FunnelStage` `FunnelChart` | client | 1 |  |
 | `gauge-chart.tsx` | `GaugeChart` | client | 2 |  |
 | `image-manager.tsx` | `ImageManager` `StagedImage` `ImageStager` `StagedImageUploadResult` `uploadStagedImages` | client | 1 |  |
@@ -61,7 +59,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `range-picker.tsx` | `RANGES` `DASHBOARD_RANGES` `RangeDays` `RangePicker` | client | 3 |  |
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
-| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 55 |  |
+| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 56 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 | `toast-stack.tsx` | `ToastStack` | client | 18 |  |
 
@@ -196,7 +194,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `page-header.tsx` | `PageHeader` | server | 1 |  |
 | `pagination.tsx` | `PaginationMeta` `Pagination` | server | 1 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 1 |  |
-| `section.tsx` | `Section` | server | 6 |  |
+| `section.tsx` | `Section` | server | 5 |  |
 | `tabs.tsx` | `TabItem` `Tabs` | client | 1 |  |
 
 

@@ -3,7 +3,7 @@
 
 # Schema: `org-structure.prisma`
 
-2 models · 0 enums. Owned by the core platform.
+3 models · 1 enums. Owned by the core platform.
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -43,8 +43,36 @@ against a real database.
 | `node` | `Node?` | relation, optional | @relation(fields: [nodeId], references: [id]) |
 | `retailBrand` | `RetailBrand?` | relation, optional | @relation(fields: [retailBrandId], references: [id]) |
 | `positions` | `Position[]` |  |  |
+| `grants` | `OrgUnitGrant[]` |  |  |
+| `attendanceDevices` | `AttendanceDevice[]` |  |  |
+| `attendanceEvents` | `AttendanceEvent[]` |  |  |
+| `shifts` | `Shift[]` |  |  |
 
 Indexes: `@@unique([retailBrandId, code])` · `@@index([parentId])` · `@@index([path])` · `@@index([nodeId])`
+
+### `OrgUnitGrant`  <sub>`apps/api/prisma/schema/org-structure.prisma:95`</sub>
+
+> access-control-identity/21-access-over-the-org-tree.md — an explicit, time-boxed grant of authority over a subtree.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `userId` | `String` |  |  |
+| `orgUnitId` | `String` |  |  |
+| `permissionKeys` | `String[]` |  |  |
+| `mode` | `GrantMode` |  | @default(READ) |
+| `expiresAt` | `DateTime` |  |  |
+| `grantedByUserId` | `String` |  |  |
+| `countersignedByUserId` | `String?` | optional |  |
+| `reason` | `String` |  |  |
+| `revokedAt` | `DateTime?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `user` | `User` | relation | @relation("OrgUnitGrantHolder", fields: [userId], references: [id], onDelete: Cascade) |
+| `grantedBy` | `User` | relation | @relation("OrgUnitGrantGranter", fields: [grantedByUserId], references: [id]) |
+| `countersignedBy` | `User?` | relation, optional | @relation("OrgUnitGrantCountersigner", fields: [countersignedByUserId], references: [id]) |
+| `orgUnit` | `OrgUnit` | relation | @relation(fields: [orgUnitId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@index([userId, expiresAt])` · `@@index([orgUnitId])`
 
 ### `OrgUnitType`  <sub>`apps/api/prisma/schema/org-structure.prisma:20`</sub>
 
@@ -60,6 +88,14 @@ Indexes: `@@unique([retailBrandId, code])` · `@@index([parentId])` · `@@index(
 | `units` | `OrgUnit[]` |  |  |
 
 
+## Enums
+
+### `GrantMode`  <sub>`apps/api/prisma/schema/org-structure.prisma:128`</sub>
+
+| Value | Meaning |
+|---|---|
+| `READ` |  |
+| `ACTING` |  |
 
 
 ---

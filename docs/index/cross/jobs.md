@@ -3,7 +3,7 @@
 
 # Background work
 
-**21** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
+**23** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
 
 
 Background work is invisible in the UI and easy to forget exists. Anything here
@@ -17,6 +17,7 @@ runs on every node that has its module enabled.
 | `0 1 * * *` | `sendSupplierDigests()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:36` | --- 1. |
 | `0 7 * * 1` | `sendSupplierScorecards()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:124` | --- 2. |
 | `0 8 * * 1` | `sendDemandAlerts()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:190` | --- 3. |
+| `0 5 1 * *` | `ensureFuturePartitions()` | `attendance` | `apps/api/src/modules/attendance/attendance-partition.cron.ts:31` |  |
 | `EVERY_DAY_AT_` | `run()` | `crm` | `apps/api/src/modules/crm/rfm-scoring.cron.ts:22` |  |
 | `0 3 * * *` | `generateRecurringInstances()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:13` |  |
 | `0 * * * *` | `generateRecurringExpenses()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:27` |  |
@@ -27,6 +28,7 @@ runs on every node that has its module enabled.
 | `EVERY_MINUTE` | `run()` | `marketing` | `apps/api/src/modules/marketing/campaign-dispatch.cron.ts:23` |  |
 | `0 3 * * *` | `run()` | `marketing` | `apps/api/src/modules/marketing/marketing-automation.cron.ts:72` |  |
 | `0 1 * * *` | `computeCityCodRiskStats()` | `orders` | `apps/api/src/modules/orders/cod-risk.cron.ts:22` |  |
+| `0 4 * * *` | `sweep()` | `orgstructure` | `apps/api/src/modules/orgstructure/org-access.cron.ts:17` |  |
 | `0 * * * *` | `run()` | `payroll` | `apps/api/src/modules/payroll/leave-accrual.cron.ts:25` |  |
 | `0 3 * * *` | `sweepReorderCandidates()` | `purchasing` | `apps/api/src/modules/purchasing/purchasing.cron.ts:36` |  |
 | `*/5 * * * *` | `run()` | `rag` | `apps/api/src/modules/rag/rag-ingestion.cron.ts:19` |  |

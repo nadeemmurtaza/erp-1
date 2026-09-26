@@ -1,5 +1,71 @@
 # 21 — Access over the org tree: scoping to an office or a department
 
+> **Status (2026-09-26): built, WO-21.1–21.6, with deviations recorded in
+> DECISIONS.md ADR-045 before most of them were written, per this
+> document's own architecture.** `OrgUnitGrant`/`GrantMode`
+> (`apps/api/prisma/schema/org-structure.prisma`) ship exactly as specified.
+> `GrantService.issue()` (`apps/api/src/modules/orgstructure/`) refuses
+> unless all four checks hold (five for `ACTING`), each its own named
+> `GrantRefusalCode` with its own spec — 18 specs in
+> `org-unit-grant.service.spec.ts` cover every refusal, `previewIssue()`'s
+> dry run, `revoke()`'s idempotency, `sweepExpired()`, and
+> `accessOverUnit()`. `orgUnitScopeFilterFor()`
+> (`apps/api/src/core/auth/scope.guard.ts`) is the fourth `scopeFilterFor()`
+> case this document itself adds, proven against doc 19's own acceptance
+> wording verbatim ("returns that unit and its descendants and nothing
+> else, proven at three depths" — `scope.guard.spec.ts`).
+> `PermissionsResolverService.resolveForUser()` now unions in a
+> currently-valid `OrgUnitGrant`'s keys, so an explicit grant actually
+> clears `PermissionsGuard`, not just this document's own resolution-order
+> pseudocode. `TOXIC_PERMISSION_PAIRS`
+> (`packages/shared/src/permissions.ts`) is the generic toxic-pair
+> mechanism docs 19/20 both named as missing — `RolesService.create()`/
+> `.update()` now refuse a role holding `org.structure.manage` or
+> `hr.people.manage` together with `org.access.grant`, closing that gap for
+> all three documents at once.
+>
+> **Four deviations, each reasoned through against this repository's actual
+> code rather than assumed from the doc's own text** (full "Options
+> Considered" in ADR-045): `MAX_GRANT_DAYS` is a plain `Setting`
+> (`SettingKey.OrgAccessMaxGrantDays`, default 90 days) rather than a
+> `BrandPolicy` column — `BrandPolicy` needs a `RetailBrand` row, which
+> exists only when the off-by-default `organization` module is on, the
+> identical trap ADR-044 already caught for `OrgUnitType`/`Rank`; `BrandPolicy`'s
+> own doc comment names the exact precedent ("stays a plain Setting").
+> `org.access.grant` is seeded to **no role by default, deliberately not
+> ADMIN** — ADMIN already holds both `org.structure.manage` and
+> `hr.people.manage`, and adding `org.access.grant` to the same role would
+> put the toxic pair this document defines onto the one role every
+> deployment starts with, on a path (`seedRoles()`/`seedPermissions()`) the
+> new `RolesService` check cannot reach; a deployment that needs to issue
+> grants creates a dedicated custom role, exactly this document's own
+> "Solo: the grant screen never rendered" silhouette. The granter's own
+> reach (`GrantService.reachOf()`) treats holding **zero open postings as
+> unrestricted, not empty** — the only reading under which ADMIN, which
+> holds no posting because docs 19/20 built no "implicit position"
+> mechanism, can ever issue a first grant. And the `ACTING` refusal's
+> "outranks the target post" is read as *outranks the grant's own
+> recipient* (their own current rank), since `OrgUnitGrant` carries no
+> `positionId` for the doc's literal phrase to resolve against.
+>
+> **One deliberate scope boundary, not a gap:** no existing list endpoint
+> (`PeopleService.listPeople()`, `OrgUnitService.tree()`/`.subtree()`) is
+> retrofitted to call `orgUnitScopeFilterFor()`. Doing so would silently
+> turn every admin's unscoped view into an empty one the moment this
+> shipped, since every admin on every deployment today holds no `Posting`;
+> no work order here names that retrofit, and doc 19's own status note
+> already deferred exactly this question to this document. The
+> infrastructure (`reachOf()`, `orgUnitScopeFilterFor()`,
+> `accessOverUnit()`) is built and tested; wiring a specific screen to it
+> is a future document's call, not guessed at here.
+>
+> The admin UI is one access screen per unit
+> (`apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access/page.tsx`),
+> reached by an "Access" link from the tree — who reaches the unit by
+> posting or by grant, expiry visible, issue/revoke gated on
+> `org.access.grant`. `org.access.view` is seeded to ADMIN so the screen
+> renders read-only there even without the grant permission.
+
 Docs 19 and 20 built a tree and put people in it. This one decides who may see
 and do what, where. It extends the existing mechanism rather than replacing it:
 `PermissionsGuard` (`apps/api/src/core/auth/guards.ts:80`) still answers *may

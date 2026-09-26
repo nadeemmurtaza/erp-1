@@ -1,5 +1,5 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { ADMIN_LOCKED_PERMISSIONS, type PermissionKey } from '@newax/shared';
+import { ADMIN_LOCKED_PERMISSIONS, TOXIC_PERMISSION_PAIRS, type PermissionKey } from '@newax/shared';
 import type { PrismaLike } from '../events/event-bus.service';
 import { PrismaService } from '../prisma/prisma.service';
 
@@ -69,6 +69,8 @@ export class RolesService {
     const clash = await this.prisma.role.findUnique({ where: { name } });
     if (clash) throw new ConflictException(`A role named "${name}" already exists.`);
 
+    this.assertNoToxicPair(input.permissions);
+
     const duplicateOfRoleName = await this.findRoleWithIdenticalPermissions(input.permissions);
     const permissionRows = await this.prisma.permission.findMany({
       where: { key: { in: input.permissions } },
@@ -107,6 +109,7 @@ export class RolesService {
     let duplicateOfRoleName: string | null = null;
 
     if (input.permissions !== undefined) {
+      this.assertNoToxicPair(input.permissions);
       await this.assertLockedPermissionsStillHeldSomewhere(roleId, input.permissions);
       duplicateOfRoleName = await this.findRoleWithIdenticalPermissions(input.permissions, roleId);
 
@@ -256,6 +259,28 @@ export class RolesService {
         }
         return null;
       });
+  }
+
+  /**
+   * Refuses a role whose own permission set contains BOTH keys of a
+   * `TOXIC_PERMISSION_PAIRS` entry — access-control-identity/
+   * 21-access-over-the-org-tree.md's own defence against "invent the thing,
+   * then authorise yourself over the thing" (a unit and org.access.grant, or
+   * a post and org.access.grant). This checks the role's OWN grants only,
+   * not what a user might separately accumulate by holding two different
+   * roles at once — the same scope this document's own text names
+   * ("Both refused in RolesService.create/.update").
+   */
+  private assertNoToxicPair(permissions: readonly string[]): void {
+    const held = new Set(permissions);
+    for (const [a, b] of TOXIC_PERMISSION_PAIRS) {
+      if (held.has(a) && held.has(b)) {
+        throw new BadRequestException(
+          `A role may not hold both "${a}" and "${b}" — that combination lets its holder invent the thing ` +
+            `the first key creates and then authorise themselves over it with the second.`,
+        );
+      }
+    }
   }
 
   /**

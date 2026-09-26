@@ -1,5 +1,67 @@
 # 22 — Attendance, shifts and leave
 
+> **Status (2026-09-26): built, WO-22.1–22.6, with deviations recorded in
+> DECISIONS.md ADR-046 before most of the code was written.**
+> `AttendanceEvent` (`apps/api/prisma/schema/attendance.prisma`) is
+> `PARTITION BY RANGE (occurredAt)` from its first migration, exactly as
+> WO-22.1 asks — verified end to end with a real insert/read/delete against
+> the partitioned table, including `AttendanceException`'s real two-column
+> foreign key against `AttendanceEvent`'s own composite primary key, before
+> any service code was written against it. `AttendanceService.record()`
+> (`apps/api/src/modules/attendance/`) is the unconditional write path: 22
+> specs (`attendance.service.spec.ts`) prove a punch is recorded in every
+> one of the acceptance criteria's own cases — no shift, wrong unit, on
+> leave, a duplicate, a missing counterpart — and that a replayed
+> `externalRef` is a no-op, never a second row. `workingDayOf()`/
+> `workedMinutesBetween()` (`attendance-time.ts`) are pure, reusing
+> `core/time/shop-time.ts` rather than a new DST implementation, proven
+> against both a spring-forward and a fall-back transition.
+>
+> **`AttendanceDevice` is a new model this build adds** — WO-22.4's own
+> "device enrolment, key hash, rotation" names a mechanism the doc's own
+> schema block never declares; it mirrors `PosTerminal`/
+> `PosTerminalsService` field-for-field and method-for-method. `employeeId`
+> is `userId -> User` throughout (`AttendanceEvent`, `Shift`,
+> `AttendanceException`) — this document predates ADR-044, which already
+> settled that question for hr-people-org; not re-litigated here. The
+> schema lives in its own `attendance.prisma`, and the service code in a
+> new `attendance` module, not appended to `hr`/`hr.prisma` as the doc's
+> own text says — a genuinely distinct capability, matching the
+> one-schema-file-per-module convention `org-structure.prisma` already set.
+>
+> **The toxic pair is `hr.attendance.reconcile` + `payroll.manage`, not
+> `hr.attendance.reconcile` + `hr.payroll.run`** — no `hr.payroll.run`
+> permission exists anywhere in this codebase; running a pay run is gated
+> by `payroll.manage`. For the identical reason ADR-045 gave for
+> `org.access.grant`, `hr.attendance.reconcile` is seeded to **no role by
+> default**, not ADMIN — ADMIN already holds `payroll.manage`, and pairing
+> the two on the one role every deployment starts with would recreate the
+> exact toxic combination this document defines. `hr.attendance.view` and
+> `hr.attendance.record` (safe) are seeded to ADMIN; a deployment that
+> needs to reconcile attendance creates a dedicated role for it.
+>
+> **The classification algorithm and the adjustment threshold are this
+> build's own concretisation** of a brief that names six exception reasons
+> and a policy threshold without specifying the algorithm or a default —
+> full reasoning, including the exact priority order `classify()` checks
+> in, is in ADR-046 Decisions 8–9. One real authorisation gap was found and
+> closed while building `adjust()`, not left as a known issue: nothing in
+> the doc's own text stops a stranger from submitting a correction against
+> someone else's event provided they name a valid approver;
+> `checkAdjustRefusals()` now refuses that (`NOT_AUTHORIZED`) unless the
+> actor holds `hr.attendance.record`.
+>
+> **UI**: the reconcile screen (WO-22.5, `/admin/attendance`) ships exactly
+> as named. A second screen, `/admin/my-attendance` (no permission
+> required — nav-registry.ts's own "everyone signed in"), ships alongside
+> it — without it nothing in the product could ever create an
+> `AttendanceEvent` at all for a shop with no devices, the doc's own "Solo:
+> self punch on one screen" silhouette made concrete. Device enrolment
+> ships API-only, no web page — the same precedent `PosTerminalsController`
+> already sets in this codebase. Shift creation/listing is a plain API with
+> no roster-builder screen — rostering is "deliberately thin" by the doc's
+> own words, and rota optimisation is explicitly out of scope.
+
 Attendance is the first module in this set that is **a record, not a request**.
 Somebody walked through a door at 08:58. The system does not get a vote. A
 design that can refuse that write — because the shift roster disagrees, because

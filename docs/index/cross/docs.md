@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**420** markdown documents. These explain **why**; this index only says **where**.
+**422** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -101,26 +101,26 @@ _no second-level headings_
 - Borders and boxes  <sub>:64</sub>
 - No dead ends  <sub>:104</sub>
 
-### `.github/copilot-instructions.md`  <sub>81 lines</sub>
+### `.github/copilot-instructions.md`  <sub>80 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:56</sub>
-- Commands  <sub>:68</sub>
+- Three rules about the index  <sub>:55</sub>
+- Commands  <sub>:67</sub>
 
-### `.junie/guidelines.md`  <sub>81 lines</sub>
-
-- Read the rules first  <sub>:9</sub>
-- Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:56</sub>
-- Commands  <sub>:68</sub>
-
-### `AGENTS.md`  <sub>81 lines</sub>
+### `.junie/guidelines.md`  <sub>80 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:56</sub>
-- Commands  <sub>:68</sub>
+- Three rules about the index  <sub>:55</sub>
+- Commands  <sub>:67</sub>
+
+### `AGENTS.md`  <sub>80 lines</sub>
+
+- Read the rules first  <sub>:9</sub>
+- Look it up before you search  <sub>:19</sub>
+- Three rules about the index  <sub>:55</sub>
+- Commands  <sub>:67</sub>
 
 ### `Architecture.md`  <sub>32 lines</sub>
 
@@ -1886,16 +1886,16 @@ _no second-level headings_
 - Explicitly out of scope for this module  <sub>:115</sub>
 - Local setup  <sub>:137</sub>
 
-### `docs/implementation/access-control-identity/21-access-over-the-org-tree.md`  <sub>228 lines</sub>
+### `docs/implementation/access-control-identity/21-access-over-the-org-tree.md`  <sub>294 lines</sub>
 
-- Two sources of access, and only one of them is remembered  <sub>:11</sub>
-- The ceiling on the granter  <sub>:70</sub>
-- Resolution order  <sub>:94</sub>
-- What a department sees  <sub>:114</sub>
-- Scope lenses  <sub>:127</sub>
-- Work orders  <sub>:191</sub>
-- Acceptance  <sub>:206</sub>
-- Out of scope  <sub>:222</sub>
+- Two sources of access, and only one of them is remembered  <sub>:77</sub>
+- The ceiling on the granter  <sub>:136</sub>
+- Resolution order  <sub>:160</sub>
+- What a department sees  <sub>:180</sub>
+- Scope lenses  <sub>:193</sub>
+- Work orders  <sub>:257</sub>
+- Acceptance  <sub>:272</sub>
+- Out of scope  <sub>:288</sub>
 
 ### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>253 lines</sub>
 
@@ -2062,22 +2062,21 @@ _no second-level headings_
 - Acceptance  <sub>:60</sub>
 - Out of scope  <sub>:66</sub>
 
-### `docs/implementation/architecture-patterns/100-event-driven-architecture.md`  <sub>82 lines</sub>
+### `docs/implementation/architecture-patterns/100-event-driven-architecture.md`  <sub>75 lines</sub>
 
-- What already exists, mapped onto the bullet's own example  <sub>:24</sub>
-- Scope lenses  <sub>:56</sub>
-- Work orders  <sub>:62</sub>
-- Acceptance  <sub>:69</sub>
-- Out of scope  <sub>:74</sub>
+- What already exists, mapped onto the bullet's own example  <sub>:17</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:62</sub>
+- Out of scope  <sub>:67</sub>
 
-### `docs/implementation/architecture-patterns/103-semantic-data-contracts.md`  <sub>83 lines</sub>
+### `docs/implementation/architecture-patterns/103-semantic-data-contracts.md`  <sub>69 lines</sub>
 
-- What already enforces this, at one real layer  <sub>:28</sub>
-- What is not built: a per-partner wire-format translator  <sub>:41</sub>
-- Scope lenses  <sub>:51</sub>
-- Work orders  <sub>:58</sub>
-- Acceptance  <sub>:65</sub>
-- Out of scope  <sub>:73</sub>
+- What already enforces this, at two layers  <sub>:15</sub>
+- Scope lenses  <sub>:41</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:54</sub>
+- Out of scope  <sub>:60</sub>
 
 ### `docs/implementation/architecture-patterns/104-jsonb-eav-extensibility.md`  <sub>159 lines</sub>
 
@@ -2097,60 +2096,59 @@ _no second-level headings_
 - Acceptance  <sub>:84</sub>
 - Out of scope  <sub>:94</sub>
 
-### `docs/implementation/architecture-patterns/106-finite-state-machines-registry.md`  <sub>119 lines</sub>
+### `docs/implementation/architecture-patterns/106-finite-state-machines-registry.md`  <sub>98 lines</sub>
 
-- What already exists, cited rather than re-derived  <sub>:35</sub>
-- The one real improvement: a read-only cross-module registry, never a runtime-editable one  <sub>:58</sub>
-- Scope lenses  <sub>:88</sub>
-- Work orders  <sub>:95</sub>
-- Acceptance  <sub>:103</sub>
-- Out of scope  <sub>:114</sub>
-
-### `docs/implementation/architecture-patterns/107-visual-bpmn-workflow-modeling.md`  <sub>81 lines</sub>
-
-- Why this remains declined, restated once more for this specific framing  <sub>:26</sub>
-- What already answers the bullet's own three named use cases  <sub>:45</sub>
-- Scope lenses  <sub>:57</sub>
-- Work orders  <sub>:63</sub>
-- Acceptance  <sub>:71</sub>
-- Out of scope  <sub>:76</sub>
-
-### `docs/implementation/architecture-patterns/108-event-triggered-side-effects.md`  <sub>79 lines</sub>
-
-- What is real today  <sub>:28</sub>
-- What is not built  <sub>:39</sub>
-- Scope lenses  <sub>:50</sub>
-- Work orders  <sub>:58</sub>
-- Acceptance  <sub>:67</sub>
-- Out of scope  <sub>:74</sub>
-
-### `docs/implementation/architecture-patterns/109-immutable-event-ledger.md`  <sub>102 lines</sub>
-
-- What already exists: a real, append-only audit trail  <sub>:18</sub>
-- Why full event sourcing (state derived by replaying events) is not adopted here, stated plainly  <sub>:41</sub>
-- Scope lenses  <sub>:73</sub>
-- Work orders  <sub>:79</sub>
-- Acceptance  <sub>:87</sub>
-- Out of scope  <sub>:95</sub>
-
-### `docs/implementation/architecture-patterns/110-cqrs-read-write-separation.md`  <sub>99 lines</sub>
-
-- What already exists: precomputed read-optimized projections, without a second database  <sub>:22</sub>
-- The bullet's own example, named honestly  <sub>:39</sub>
-- When literal CQRS (a separate read-side store) would become the right call  <sub>:55</sub>
-- Scope lenses  <sub>:72</sub>
-- Work orders  <sub>:78</sub>
+- What already exists, cited rather than re-derived  <sub>:18</sub>
+- The one real improvement: a read-only cross-module registry, never a runtime-editable one  <sub>:41</sub>
+- Scope lenses  <sub>:71</sub>
+- Work orders  <sub>:77</sub>
 - Acceptance  <sub>:85</sub>
+- Out of scope  <sub>:93</sub>
+
+### `docs/implementation/architecture-patterns/107-visual-bpmn-workflow-modeling.md`  <sub>77 lines</sub>
+
+- Why this remains declined, restated once more for this specific framing  <sub>:22</sub>
+- What already answers the bullet's own three named use cases  <sub>:41</sub>
+- Scope lenses  <sub>:53</sub>
+- Work orders  <sub>:59</sub>
+- Acceptance  <sub>:67</sub>
+- Out of scope  <sub>:72</sub>
+
+### `docs/implementation/architecture-patterns/108-event-triggered-side-effects.md`  <sub>61 lines</sub>
+
+- The mapping, stated once  <sub>:18</sub>
+- Scope lenses  <sub>:32</sub>
+- Work orders  <sub>:37</sub>
+- Acceptance  <sub>:45</sub>
+- Out of scope  <sub>:53</sub>
+
+### `docs/implementation/architecture-patterns/109-immutable-event-ledger.md`  <sub>98 lines</sub>
+
+- What already exists: a real, append-only audit trail  <sub>:14</sub>
+- Why full event sourcing (state derived by replaying events) is not adopted here, stated plainly  <sub>:37</sub>
+- Scope lenses  <sub>:69</sub>
+- Work orders  <sub>:75</sub>
+- Acceptance  <sub>:83</sub>
 - Out of scope  <sub>:91</sub>
 
-### `docs/implementation/architecture-patterns/113-micro-frontend-embedding.md`  <sub>129 lines</sub>
+### `docs/implementation/architecture-patterns/110-cqrs-read-write-separation.md`  <sub>93 lines</sub>
 
-- Why full micro-frontend architecture is declined here  <sub>:37</sub>
-- What the bullet's own concrete example actually needs: an embed, not a framework  <sub>:54</sub>
-- Scope lenses  <sub>:73</sub>
-- Work orders  <sub>:110</sub>
-- Acceptance  <sub>:118</sub>
-- Out of scope  <sub>:124</sub>
+- What already exists: precomputed read-optimized projections, without a second database  <sub>:16</sub>
+- The bullet's own example, named honestly  <sub>:33</sub>
+- When literal CQRS (a separate read-side store) would become the right call  <sub>:49</sub>
+- Scope lenses  <sub>:66</sub>
+- Work orders  <sub>:72</sub>
+- Acceptance  <sub>:79</sub>
+- Out of scope  <sub>:85</sub>
+
+### `docs/implementation/architecture-patterns/113-micro-frontend-embedding.md`  <sub>114 lines</sub>
+
+- Why full micro-frontend architecture is declined here  <sub>:22</sub>
+- What the bullet's own concrete example actually needs: an embed, not a framework  <sub>:39</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:103</sub>
+- Out of scope  <sub>:109</sub>
 
 ### `docs/implementation/architecture-patterns/114-sandboxed-scripting-runtime.md`  <sub>119 lines</sub>
 
@@ -2162,14 +2160,14 @@ _no second-level headings_
 - Acceptance  <sub>:100</sub>
 - Out of scope  <sub>:109</sub>
 
-### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>81 lines</sub>
+### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>69 lines</sub>
 
-- The mapping, made explicit  <sub>:30</sub>
-- What this document adds: naming, not architecture  <sub>:47</sub>
-- Scope lenses  <sub>:58</sub>
-- Work orders  <sub>:65</sub>
-- Acceptance  <sub>:70</sub>
-- Out of scope  <sub>:76</sub>
+- The mapping, made explicit  <sub>:17</sub>
+- What this document adds: naming, not architecture  <sub>:34</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:52</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:64</sub>
 
 ### `docs/implementation/architecture-patterns/117-event-driven-choreography-immutability.md`  <sub>82 lines</sub>
 
@@ -2326,85 +2324,97 @@ _no second-level headings_
 - Acceptance  <sub>:254</sub>
 - Out of scope  <sub>:266</sub>
 
-### `docs/implementation/architecture-patterns/92-microservices-module-decoupling.md`  <sub>94 lines</sub>
+### `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md`  <sub>545 lines</sub>
 
-- 1. What the bullet actually wants, and what already delivers it  <sub>:21</sub>
-- 2. Why literal microservices would be the wrong trade here, not just an unbuilt feature  <sub>:44</sub>
-- Scope lenses  <sub>:66</sub>
-- Work orders  <sub>:73</sub>
-- Acceptance  <sub>:82</sub>
-- Out of scope  <sub>:88</sub>
+- The principle, named honestly  <sub>:37</sub>
+- Where the real storage cost is, and where it is not  <sub>:90</sub>
+- 1. Schema — extends the platform module doc 165 already introduced  <sub>:141</sub>
+- 2. The two moments this actually runs  <sub>:243</sub>
+- What's built  <sub>:293</sub>
+- Scope lenses  <sub>:359</sub>
+- Work orders  <sub>:459</sub>
+- Acceptance  <sub>:495</sub>
+- Out of scope  <sub>:519</sub>
 
-### `docs/implementation/architecture-patterns/93-headless-frontend-architecture.md`  <sub>73 lines</sub>
+### `docs/implementation/architecture-patterns/92-microservices-module-decoupling.md`  <sub>89 lines</sub>
 
-- What already exists  <sub>:17</sub>
-- The one correction: framework choice is fixed, not "any"  <sub>:34</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:55</sub>
-- Acceptance  <sub>:63</sub>
-- Out of scope  <sub>:68</sub>
+- 1. What the bullet actually wants, and what already delivers it  <sub>:16</sub>
+- 2. Why literal microservices would be the wrong trade here, not just an unbuilt feature  <sub>:39</sub>
+- Scope lenses  <sub>:61</sub>
+- Work orders  <sub>:68</sub>
+- Acceptance  <sub>:77</sub>
+- Out of scope  <sub>:83</sub>
 
-### `docs/implementation/architecture-patterns/94-cloud-native-container-scalability.md`  <sub>75 lines</sub>
+### `docs/implementation/architecture-patterns/93-headless-frontend-architecture.md`  <sub>66 lines</sub>
 
-- What already exists  <sub>:19</sub>
-- The honest gap: "automatically... based on demand spikes" is not autoscaling  <sub>:32</sub>
+- What already exists  <sub>:10</sub>
+- The one correction: framework choice is fixed, not "any"  <sub>:27</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:56</sub>
+- Out of scope  <sub>:61</sub>
+
+### `docs/implementation/architecture-patterns/94-cloud-native-container-scalability.md`  <sub>70 lines</sub>
+
+- What already exists  <sub>:14</sub>
+- The honest gap: "automatically... based on demand spikes" is not autoscaling  <sub>:27</sub>
+- Scope lenses  <sub>:43</sub>
+- Work orders  <sub>:49</sub>
+- Acceptance  <sub>:57</sub>
+- Out of scope  <sub>:64</sub>
+
+### `docs/implementation/architecture-patterns/95-externalized-rule-logic.md`  <sub>78 lines</sub>
+
+- What is already externalized, named one by one, per the bullet's own three examples  <sub>:15</sub>
+- Why a single generic rules engine is the wrong abstraction here  <sub>:32</sub>
 - Scope lenses  <sub>:48</sub>
 - Work orders  <sub>:54</sub>
-- Acceptance  <sub>:62</sub>
-- Out of scope  <sub>:69</sub>
+- Acceptance  <sub>:63</sub>
+- Out of scope  <sub>:71</sub>
 
-### `docs/implementation/architecture-patterns/95-externalized-rule-logic.md`  <sub>89 lines</sub>
+### `docs/implementation/architecture-patterns/96-version-controlled-policy-execution.md`  <sub>68 lines</sub>
 
-- What is already externalized, named one by one, per the bullet's own three examples  <sub>:26</sub>
-- Why a single generic rules engine is the wrong abstraction here  <sub>:43</sub>
-- Scope lenses  <sub>:59</sub>
-- Work orders  <sub>:65</sub>
-- Acceptance  <sub>:74</sub>
-- Out of scope  <sub>:82</sub>
+- What already delivers "no engineering deployment" today  <sub>:13</sub>
+- The one honest, already-named gap: a visual chain *designer*  <sub>:29</sub>
+- Scope lenses  <sub>:43</sub>
+- Work orders  <sub>:48</sub>
+- Acceptance  <sub>:56</sub>
+- Out of scope  <sub>:63</sub>
 
-### `docs/implementation/architecture-patterns/96-version-controlled-policy-execution.md`  <sub>72 lines</sub>
+### `docs/implementation/architecture-patterns/97-realtime-validation-single-source-of-truth.md`  <sub>63 lines</sub>
 
-- What already delivers "no engineering deployment" today  <sub>:17</sub>
-- The one honest, already-named gap: a visual chain *designer*  <sub>:33</sub>
-- Scope lenses  <sub>:47</sub>
-- Work orders  <sub>:52</sub>
-- Acceptance  <sub>:60</sub>
-- Out of scope  <sub>:67</sub>
-
-### `docs/implementation/architecture-patterns/97-realtime-validation-single-source-of-truth.md`  <sub>68 lines</sub>
-
-- The three layers already doing this  <sub>:16</sub>
-- Scope lenses  <sub>:42</sub>
-- Work orders  <sub>:49</sub>
-- Acceptance  <sub>:54</sub>
-- Out of scope  <sub>:60</sub>
-
-### `docs/implementation/architecture-patterns/98-contract-first-api-development.md`  <sub>89 lines</sub>
-
-- What already makes the interface stable, without contract-first sequencing  <sub>:24</sub>
-- The one honest gap: no automated contract-diff / backward-compatibility check  <sub>:48</sub>
-- Scope lenses  <sub>:59</sub>
-- Work orders  <sub>:64</sub>
-- Acceptance  <sub>:74</sub>
-- Out of scope  <sub>:82</sub>
-
-### `docs/implementation/architecture-patterns/99-centralized-api-gateway.md`  <sub>66 lines</sub>
-
-- What each named responsibility already maps to  <sub>:27</sub>
+- The three layers already doing this  <sub>:11</sub>
 - Scope lenses  <sub>:37</sub>
 - Work orders  <sub>:44</sub>
-- Acceptance  <sub>:54</sub>
-- Out of scope  <sub>:59</sub>
+- Acceptance  <sub>:49</sub>
+- Out of scope  <sub>:55</sub>
 
-### `docs/implementation/attendance-workforce/22-attendance-shifts-leave.md`  <sub>230 lines</sub>
+### `docs/implementation/architecture-patterns/98-contract-first-api-development.md`  <sub>80 lines</sub>
 
-- The unconditional path  <sub>:13</sub>
-- Schema — append to `hr.prisma`  <sub>:31</sub>
-- The working day is not a date  <sub>:126</sub>
-- Scope lenses  <sub>:135</sub>
-- Work orders  <sub>:204</sub>
-- Acceptance  <sub>:216</sub>
-- Out of scope  <sub>:226</sub>
+- What already makes the interface stable, without contract-first sequencing  <sub>:16</sub>
+- The one honest gap: no automated contract-diff / backward-compatibility check  <sub>:39</sub>
+- Scope lenses  <sub>:50</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:65</sub>
+- Out of scope  <sub>:73</sub>
+
+### `docs/implementation/architecture-patterns/99-centralized-api-gateway.md`  <sub>60 lines</sub>
+
+- What each named responsibility already maps to  <sub>:21</sub>
+- Scope lenses  <sub>:31</sub>
+- Work orders  <sub>:38</sub>
+- Acceptance  <sub>:48</sub>
+- Out of scope  <sub>:53</sub>
+
+### `docs/implementation/attendance-workforce/22-attendance-shifts-leave.md`  <sub>292 lines</sub>
+
+- The unconditional path  <sub>:75</sub>
+- Schema — append to `hr.prisma`  <sub>:93</sub>
+- The working day is not a date  <sub>:188</sub>
+- Scope lenses  <sub>:197</sub>
+- Work orders  <sub>:266</sub>
+- Acceptance  <sub>:278</sub>
+- Out of scope  <sub>:288</sub>
 
 ### `docs/implementation/attendance-workforce/30-field-attendance-biometric-geofencing.md`  <sub>289 lines</sub>
 
@@ -2491,6 +2501,20 @@ _no second-level headings_
 - Work orders  <sub>:132</sub>
 - Acceptance  <sub>:146</sub>
 - Out of scope  <sub>:155</sub>
+
+### `docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md`  <sub>487 lines</sub>
+
+- What this actually is, and what it is not  <sub>:12</sub>
+- Where it lives: a new module in the existing platform app, not a new repo  <sub>:51</sub>
+- 1. Schema  <sub>:68</sub>
+- 2. Publish, and the transactional path — reusing doc 18, not duplicating it  <sub>:173</sub>
+- 3. Login stays nID-only — two distinct pieces, not one  <sub>:219</sub>
+- 4. Cross-repo dependency — honestly out of this repo's reach  <sub>:256</sub>
+- 5. Phase 2, named and deferred: nID-verified audience, not self-declared  <sub>:272</sub>
+- Scope lenses  <sub>:286</sub>
+- Work orders  <sub>:406</sub>
+- Acceptance  <sub>:446</sub>
+- Out of scope  <sub>:461</sub>
 
 ### `docs/implementation/b2b-wholesale-multientity/73-multi-entity-multi-company-configuration.md`  <sub>127 lines</sub>
 
@@ -2699,7 +2723,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>4,475 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>5,044 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2749,6 +2773,10 @@ _no second-level headings_
 - ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:4049</sub>
 - ADR-043 — `access-control-identity` docs 126/161 built; 16/18/163 re-verified; 125 corrected; 21 reported blocked on missing docs 19/20  <sub>:4183</sub>
 - ADR-044 — Docs 19/20 (org tree, positions and ranks): `OrgUnit` kept orthogonal to `Node` exactly as specified; no separate `Employee` model — every posting keys to `User`, matching payroll's and doc 79's own precedent  <sub>:4340</sub>
+- ADR-045 — Doc 21 (access over the org tree): `OrgUnitGrant` built exactly as specified; `MAX_GRANT_DAYS` as a plain Setting, not a `BrandPolicy` column; `org.access.grant` seeded to no role by default; the granter's own reach treats "no posting" as unrestricted; existing list endpoints are NOT retrofitted to scope by `OrgUnit`  <sub>:4476</sub>
+- ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify  <sub>:4612</sub>
+- ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo  <sub>:4804</sub>
+- ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism  <sub>:4914</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -2848,24 +2876,24 @@ _no second-level headings_
 - Out of scope  <sub>:309</sub>
 - Decision to record  <sub>:319</sub>
 
-### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>291 lines</sub>
+### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>304 lines</sub>
 
-- Two hierarchies that look like one  <sub>:56</sub>
-- The design: `OrgUnit`, orthogonal to `Node`  <sub>:79</sub>
-- Scope lenses  <sub>:190</sub>
-- Work orders  <sub>:246</sub>
-- Acceptance  <sub>:266</sub>
-- Out of scope for this document  <sub>:280</sub>
-- Decision to record  <sub>:286</sub>
+- Two hierarchies that look like one  <sub>:69</sub>
+- The design: `OrgUnit`, orthogonal to `Node`  <sub>:92</sub>
+- Scope lenses  <sub>:203</sub>
+- Work orders  <sub>:259</sub>
+- Acceptance  <sub>:279</sub>
+- Out of scope for this document  <sub>:293</sub>
+- Decision to record  <sub>:299</sub>
 
-### `docs/implementation/hr-people-org/20-people-positions-ranks.md`  <sub>297 lines</sub>
+### `docs/implementation/hr-people-org/20-people-positions-ranks.md`  <sub>301 lines</sub>
 
-- Three things that are not each other  <sub>:67</sub>
-- Schema — `hr.prisma`  <sub>:85</sub>
-- Scope lenses  <sub>:207</sub>
-- Work orders  <sub>:265</sub>
-- Acceptance  <sub>:280</sub>
-- Out of scope  <sub>:291</sub>
+- Three things that are not each other  <sub>:71</sub>
+- Schema — `hr.prisma`  <sub>:89</sub>
+- Scope lenses  <sub>:211</sub>
+- Work orders  <sub>:269</sub>
+- Acceptance  <sub>:284</sub>
+- Out of scope  <sub>:295</sub>
 
 ### `docs/implementation/hr-people-org/26-performance-reviews.md`  <sub>247 lines</sub>
 
@@ -3346,15 +3374,15 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>501 lines</sub>
+### `docs/implementation/README.md`  <sub>528 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:371</sub>
-- The two module groups  <sub>:400</sub>
-- How a work order runs  <sub>:437</sub>
-- Known gaps not yet owned by a phase  <sub>:455</sub>
-- When a brief is wrong  <sub>:482</sub>
-- Scope, honestly  <sub>:495</sub>
+- Dependency order  <sub>:398</sub>
+- The two module groups  <sub>:427</sub>
+- How a work order runs  <sub>:464</sub>
+- Known gaps not yet owned by a phase  <sub>:482</sub>
+- When a brief is wrong  <sub>:509</sub>
+- Scope, honestly  <sub>:522</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 
@@ -3570,12 +3598,12 @@ _no second-level headings_
 - Grounded Context (partial, from ground:4 retries)  <sub>:510</sub>
 - Recommendation  <sub>:524</sub>
 
-### `GEMINI.md`  <sub>81 lines</sub>
+### `GEMINI.md`  <sub>80 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:56</sub>
-- Commands  <sub>:68</sub>
+- Three rules about the index  <sub>:55</sub>
+- Commands  <sub>:67</sub>
 
 ### `Memory.md`  <sub>28 lines</sub>
 

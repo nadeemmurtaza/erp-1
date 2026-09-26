@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (41 · 7,706 lines)
+## Files (41 · 7,923 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -45,15 +45,15 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `ownership.guard.ts` | guard | 24 | 2 |  |
 | `password.util.spec.ts` | unit test | 80 | — |  |
 | `password.util.ts` | module | 89 | 6 |  |
-| `permissions.service.spec.ts` | unit test | 85 | — |  |
-| `permissions.service.ts` | service | 64 | 2 |  |
+| `permissions.service.spec.ts` | unit test | 129 | — |  |
+| `permissions.service.ts` | service | 86 | 2 |  |
 | `oidc.provider.spec.ts` | unit test | 204 | — |  |
 | `oidc.provider.ts` | module | 195 | 2 | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnection.protocol… |
 | `roles.controller.ts` | controller | 44 | 1 | Custom roles (owner's request) — create, edit, delete a named permission bundle, freely, without a deploy. |
-| `roles.service.spec.ts` | unit test | 236 | — |  |
-| `roles.service.ts` | service | 307 | 4 |  |
-| `scope.guard.spec.ts` | unit test | 151 | — |  |
-| `scope.guard.ts` | guard | 129 | 7 | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RETAIL-ERP.md… |
+| `roles.service.spec.ts` | unit test | 277 | — |  |
+| `roles.service.ts` | service | 332 | 4 |  |
+| `scope.guard.spec.ts` | unit test | 195 | — |  |
+| `scope.guard.ts` | guard | 170 | 9 | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RETAIL-ERP.md… |
 | `sso-admin.controller.ts` | controller | 82 | 1 | Registering, editing and suspending single sign-on connections (161-sso-identity-federation.md, WO-161.4/161.5), and th… |
 | `sso.controller.spec.ts` | unit test | 221 | — |  |
 | `sso.controller.ts` | controller | 227 | 1 | Single sign-on, the browser half (161-sso-identity-federation.md). |
@@ -155,10 +155,10 @@ check there before adding another.
 | `guards.spec.ts` | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a session — unchanged ·… |
 | `ownership.guard.spec.ts` | 5 | assertCanManage |
 | `password.util.spec.ts` | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
-| `permissions.service.spec.ts` | 6 | PermissionsResolverService.resolveForUser |
+| `permissions.service.spec.ts` | 10 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) |
 | `oidc.provider.spec.ts` | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityFromClaims |
-| `roles.service.spec.ts` | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStillHeldAfterRevoke · c… |
-| `scope.guard.spec.ts` | 20 | resolveScope · assertCanManageAtScope · scopeFilterFor |
+| `roles.service.spec.ts` | 22 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orphan guard · assertLock… |
+| `scope.guard.spec.ts` | 24 | resolveScope · assertCanManageAtScope · scopeFilterFor · orgUnitScopeFilterFor |
 | `sso.controller.spec.ts` | 8 | SsoController · start · callback · session |
 | `sso.service.spec.ts` | 33 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing connection · startLogin ·… |
 
@@ -263,7 +263,7 @@ check there before adding another.
 | `hashPassword` | function | `password.util.ts:61` | The one place a plaintext password becomes a stored hash — keeps the algorithm and round count consistent eve… |
 | `verifyPassword` | function | `password.util.ts:75` | Checks a plaintext password against a stored hash, whichever registered algorithm wrote it. |
 | `ResolvedPermissions` | interface | `permissions.service.ts:4` |  |
-| `PermissionsResolverService` | class | `permissions.service.ts:26` | Resolves a user's currently effective roles and permission keys. |
+| `PermissionsResolverService` | class | `permissions.service.ts:39` | Resolves a user's currently effective roles and permission keys. |
 | `OidcProvider` | class | `oidc.provider.ts:50` | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnectio… |
 | `identityFromClaims` | function | `oidc.provider.ts:161` | The identity a verified ID token proves. |
 | `RolesController` | class | `roles.controller.ts:16` | Custom roles (owner's request) — create, edit, delete a named permission bundle, freely, without a deploy. |
@@ -278,6 +278,8 @@ check there before adding another.
 | `resolveScope` | function | `scope.guard.ts:47` | Reduces an actor's raw `AdminScope` rows to the three sets the guard and the filter each need. |
 | `assertCanManageAtScope` | function | `scope.guard.ts:84` | Throws unless the actor holds `"<capability>.manage_all"`, or an `AdminScope` grant wide enough to cover `tar… |
 | `scopeFilterFor` | function | `scope.guard.ts:124` | A Prisma `where` fragment scoping a list query to what the actor's `AdminScope` grants make visible — spread… |
+| `OrgUnitReach` | interface | `scope.guard.ts:140` | What `GrantService.reachableUnitIdsFor()` hands to `orgUnitScopeFilterFor` below — access-control-identity/21… |
+| `orgUnitScopeFilterFor` | function | `scope.guard.ts:166` | A Prisma `where` fragment scoping a list query to the OrgUnit subtree(s) a reach descriptor covers — doc 21's… |
 | `SsoAdminController` | class | `sso-admin.controller.ts:25` | Registering, editing and suspending single sign-on connections (161-sso-identity-federation.md, WO-161.4/161.… |
 | `SsoController` | class | `sso.controller.ts:58` | Single sign-on, the browser half (161-sso-identity-federation.md). |
 | `ssoCookiePath` | function | `sso.service.ts:27` | `/api/v1/auth/sso` — the path both SSO cookies are scoped to, so no other route ever receives them. |

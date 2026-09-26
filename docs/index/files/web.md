@@ -135,6 +135,12 @@ All 389 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 103 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/attendance` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 170 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]` (1)
 
 | File | Kind | Lines | Purpose |
@@ -345,12 +351,6 @@ All 389 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 197 |  |
-
-### `apps/web/src/app/(admin)/admin/(app)/embeds` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `page.tsx` | page | 62 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance` (1)
 
@@ -599,6 +599,12 @@ All 389 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 71 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/my-attendance` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 138 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/o` (1)
 
 | File | Kind | Lines | Purpose |
@@ -652,7 +658,13 @@ All 389 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 316 |  |
+| `page.tsx` | page | 328 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 318 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payments` (1)
 
@@ -803,7 +815,7 @@ All 389 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 965 |  |
+| `page.tsx` | page | 571 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/settings/shipping` (1)
 
@@ -875,7 +887,7 @@ All 389 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 189 | No clsx import needed |
+| `page.tsx` | page | 186 | No clsx import needed |
 
 ### `apps/web/src/app/(admin)/admin/(app)/tax` (1)
 
@@ -1233,7 +1245,7 @@ All 389 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (20)
+### `apps/web/src/components/admin` (18)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1241,13 +1253,11 @@ All 389 tracked files in `apps/web`, by directory.
 | `command-palette.tsx` | component | 285 |  |
 | `cross-sell-manager.tsx` | component | 256 |  |
 | `csv-import-card.tsx` | component | 209 |  |
-| `custom-field-form-section.tsx` | component | 179 |  |
 | `deployment-modules.tsx` | component | 21 |  |
-| `embedded-widget-frame.tsx` | component | 64 |  |
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 1012 |  |
+| `nav-registry.ts` | component | 1020 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1415,7 +1425,7 @@ All 389 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 257 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 262 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)
@@ -1461,7 +1471,7 @@ All 389 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1689 |  |
+| `api.ts` | types | 1658 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

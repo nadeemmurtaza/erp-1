@@ -3,7 +3,7 @@
 
 # Screens
 
-All **242** routable files across the web app, the till and the mobile app.
+All **244** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (153)
+### admin (155)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -46,6 +46,7 @@ _none_
 | `/admin/analytics` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/page.tsx` |
 | `/admin/analytics/[...slug]` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx` |
 | `/admin/analytics/suspicious-traffic` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic/page.tsx` |
+| `/admin/attendance` | page | client | `apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx` |
 | `/admin/b/[brandId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx` |
 | `/admin/bom` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/page.tsx` |
 | `/admin/bom/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx` |
@@ -82,7 +83,6 @@ _none_
 | `/admin/email-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/page.tsx` |
 | `/admin/email-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` |
 | `/admin/email-templates` | page | client | `apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx` |
-| `/admin/embeds` | page | client | `apps/web/src/app/(admin)/admin/(app)/embeds/page.tsx` |
 | `/admin/finance` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/page.tsx` |
 | `/admin/finance/cash-flow` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/cash-flow/page.tsx` |
 | `/admin/finance/expenses` | page | client | `apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx` |
@@ -127,6 +127,7 @@ _none_
 | `/admin/merchant-payables` | page | client | `apps/web/src/app/(admin)/admin/(app)/merchant-payables/page.tsx` |
 | `/admin/merchant-payables/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/merchant-payables/[id]/page.tsx` |
 | `/admin/my-actions` | page | client | `apps/web/src/app/(admin)/admin/(app)/my-actions/page.tsx` |
+| `/admin/my-attendance` | page | client | `apps/web/src/app/(admin)/admin/(app)/my-attendance/page.tsx` |
 | `/admin/o` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/page.tsx` |
 | `/admin/o/[orgId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/page.tsx` |
 | `/admin/o/[orgId]/access` | page | client | `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx` |
@@ -137,6 +138,7 @@ _none_
 | `/admin/orders` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/page.tsx` |
 | `/admin/orders/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` |
 | `/admin/org-structure` | page | client | `apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx` |
+| `/admin/org-structure/[unitId]/access` | page | client | `apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access/page.tsx` |
 | `/admin/payments` | page | client | `apps/web/src/app/(admin)/admin/(app)/payments/page.tsx` |
 | `/admin/payroll/compensation` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx` |
 | `/admin/payroll/leave` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/leave/page.tsx` |

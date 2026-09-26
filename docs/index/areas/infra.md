@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-57 files · 30,050 lines
+57 files · 29,967 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,14 +19,14 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 20,112 | file, example, json, yaml |
-| `.github` | 1 | 81 | doc |
+| `.` | 20 | 20,115 | file, example, json, yaml |
+| `.github` | 1 | 80 | doc |
 | `.github/workflows` | 2 | 255 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 19 | 7,557 | script, py |
-| `scripts/lib` | 3 | 1,644 | utility |
+| `scripts` | 19 | 7,510 | script, py |
+| `scripts/lib` | 3 | 1,606 | utility |
 
 
 ## Entry points
@@ -41,8 +41,8 @@ on them.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `pnpm-lock.yaml` | 18,847 | yaml |  |
-| `scripts/build-index.mjs` | 2,558 | script |  |
-| `scripts/lib/index-scan.mjs` | 944 | utility | Scanners for the repository index. |
+| `scripts/build-index.mjs` | 2,511 | script |  |
+| `scripts/lib/index-scan.mjs` | 906 | utility | Scanners for the repository index. |
 | `scripts/sync-client.mjs` | 701 | script | scripts/sync-client.mjs — the Extractor. |
 | `scripts/check-overflow.mjs` | 644 | script |  |
 | `scripts/check-module-boundaries.mjs` | 572 | script |  |
@@ -53,7 +53,7 @@ on them.
 | `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
-| `.env.example` | 174 | example |  |
+| `.env.example` | 177 | example |  |
 | `.github/workflows/ci.yml` | 164 | yaml |  |
 
 

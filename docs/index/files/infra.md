@@ -14,7 +14,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 |---|---|---|---|
 | `.dockerignore` | file | — |  |
 | `.env.branch.example` | example | 101 |  |
-| `.env.example` | example | 174 |  |
+| `.env.example` | example | 177 |  |
 | `.env.production.example` | example | 129 |  |
 | `.gitignore` | file | 68 |  |
 | `Caddyfile` | file | 63 |  |

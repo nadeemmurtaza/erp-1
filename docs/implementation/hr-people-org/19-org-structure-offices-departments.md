@@ -30,19 +30,32 @@
 > new "Organization" nav group, gated by `org.structure.view`/`.manage`,
 > both seeded to `ADMIN`.
 >
-> **Two acceptance criteria are not yet met by this document alone.**
-> `scopeFilterFor()` (`apps/api/src/core/auth/scope.guard.ts`) has no
+> **Update (2026-09-26, doc 21 built):** both gaps named below are now
+> closed. `scopeFilterFor()` gained its `OrgUnit` case as
+> `orgUnitScopeFilterFor()` (`scope.guard.ts`), proven at three depths
+> exactly as this document's own acceptance criterion asks — see doc 21's
+> own status note and ADR-045. `TOXIC_PERMISSION_PAIRS`
+> (`packages/shared/src/permissions.ts`) now refuses `org.structure.manage`
+> together with `org.access.grant` in `RolesService.create()`/`.update()`,
+> making this document's own scope-lens claim true. One boundary remains
+> deliberate, not a gap: `OrgUnitService.tree()`/`.subtree()` are NOT
+> retrofitted to call `orgUnitScopeFilterFor()` — see ADR-045's Decision 5
+> for why forcing that now would silently empty every admin's existing view.
+>
+> **The original note, kept for the record.** Two acceptance criteria were
+> not met by this document alone when it shipped.
+> `scopeFilterFor()` (`apps/api/src/core/auth/scope.guard.ts`) had no
 > `OrgUnit` case — reading over a mid-tree unit's subtree is explicitly
 > `21-access-over-the-org-tree.md`'s own WO-21.2, named as such in this
 > document's own scope lens ("Whose rows, and which columns") and left
 > untouched here on purpose. And this document's own scope-lens claim that
 > the toxic pair `org.structure.manage` + `org.access.grant` is "refused
-> together in `RolesService.create`/`.update`" does not hold today:
-> `org.access.grant` does not exist until doc 21 defines it, and
-> `RolesService` has no generic toxic-pair mechanism at all yet (confirmed
-> by reading `roles.service.ts` — only `ADMIN_LOCKED_PERMISSIONS` exists).
-> Both gaps are doc 21's to close, not silently claimed here; ADR-044
-> records them. Everything else — the seeded Solo root unit, the partial
+> together in `RolesService.create`/`.update`" did not hold at the time:
+> `org.access.grant` did not exist until doc 21 defined it, and
+> `RolesService` had no generic toxic-pair mechanism at all yet (confirmed
+> by reading `roles.service.ts` — only `ADMIN_LOCKED_PERMISSIONS` existed).
+> Both gaps were doc 21's to close, not silently claimed here; ADR-044
+> recorded them. Everything else — the seeded Solo root unit, the partial
 > unique index, `previewMove()`'s pure dry run, closing a unit with open
 > children or positions refused — is built and covered by
 > `org-unit.service.spec.ts`.

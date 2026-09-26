@@ -428,6 +428,34 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    // attendance-workforce/22-attendance-shifts-leave.md.
+    key: 'hr.attendance.view',
+    label: 'View attendance events, shifts and exceptions',
+    category: 'Human Resources',
+    sensitivity: 'low',
+  },
+  {
+    // Recording a punch on someone else's behalf (MANAGER source) or
+    // importing paper sign-in sheets (IMPORT source) — never refusing the
+    // write itself, only who may perform it on another person's behalf.
+    key: 'hr.attendance.record',
+    label: 'Record a punch for someone else, or import paper sign-in sheets',
+    category: 'Human Resources',
+    sensitivity: 'medium',
+  },
+  {
+    // Deliberately seeded to no role by default — see this key's own note
+    // next to ROLE_PERMISSION_SEED.ADMIN below, and DECISIONS.md ADR-046.
+    // Toxic paired with payroll.manage (TOXIC_PERMISSION_PAIRS below): the
+    // doc's own text names 'hr.payroll.run', which does not exist in this
+    // codebase — running a pay run is gated by payroll.manage, so that is
+    // the key this pair actually names.
+    key: 'hr.attendance.reconcile',
+    label: 'Clear an attendance exception — link it to a shift or accept it as-is',
+    category: 'Human Resources',
+    sensitivity: 'medium',
+  },
+  {
     // hr-people-org/19-org-structure-offices-departments.md.
     key: 'org.structure.view',
     label: 'View the organization tree — offices, regions and departments',
@@ -437,6 +465,21 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
   {
     key: 'org.structure.manage',
     label: 'Create, rename, move and close units in the organization tree',
+    category: 'Organization',
+    sensitivity: 'high',
+  },
+  {
+    // access-control-identity/21-access-over-the-org-tree.md.
+    key: 'org.access.view',
+    label: 'See who reaches an organization unit, by posting or by grant',
+    category: 'Organization',
+    sensitivity: 'medium',
+  },
+  {
+    // Deliberately seeded to no role by default — see this key's own note
+    // next to ROLE_PERMISSION_SEED.ADMIN below, and DECISIONS.md ADR-045.
+    key: 'org.access.grant',
+    label: 'Issue or revoke a time-boxed access grant over an organization unit',
     category: 'Organization',
     sensitivity: 'high',
   },
@@ -769,14 +812,22 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'hr',
     label: 'Human resources',
-    description: 'Which physical equipment is issued to which employee, the people list, positions and the rank ladder.',
-    permissions: ['hr.assets.manage', 'hr.assets.writeoff', 'hr.people.view', 'hr.people.manage'],
+    description: 'Which physical equipment is issued to which employee, the people list, positions and the rank ladder, and attendance.',
+    permissions: [
+      'hr.assets.manage',
+      'hr.assets.writeoff',
+      'hr.people.view',
+      'hr.people.manage',
+      'hr.attendance.view',
+      'hr.attendance.record',
+      'hr.attendance.reconcile',
+    ],
   },
   {
     key: 'organization',
     label: 'Organization structure',
-    description: 'Offices, regions and departments — the tree everything else scopes access and reporting to.',
-    permissions: ['org.structure.view', 'org.structure.manage'],
+    description: 'Offices, regions and departments — the tree everything else scopes access and reporting to — plus who is granted access over which unit.',
+    permissions: ['org.structure.view', 'org.structure.manage', 'org.access.view', 'org.access.grant'],
   },
   {
     key: 'system-admin',
@@ -881,6 +932,27 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'hr.people.manage',
     'org.structure.view',
     'org.structure.manage',
+    'org.access.view',
+    // 'org.access.grant' is deliberately NOT seeded here. ADMIN already
+    // holds both 'org.structure.manage' and 'hr.people.manage' above —
+    // adding 'org.access.grant' to the SAME role would recreate, on the one
+    // role every deployment starts with, exactly the toxic pair this
+    // document defines and TOXIC_PERMISSION_PAIRS refuses at
+    // RolesService.create()/.update() (see ADR-045). A deployment that
+    // needs to issue explicit grants creates a dedicated custom role (e.g.
+    // "Access Reviewer") holding org.access.grant alone, through the
+    // existing custom-roles screen — the access screen renders read-only
+    // for ADMIN (org.access.view) until then, matching this document's own
+    // "Solo: the grant screen never rendered" silhouette.
+    'hr.attendance.view',
+    'hr.attendance.record',
+    // 'hr.attendance.reconcile' is deliberately NOT seeded here, the
+    // identical reasoning as 'org.access.grant' just above: ADMIN already
+    // holds 'payroll.manage', and TOXIC_PERMISSION_PAIRS refuses the two
+    // together (attendance-workforce/22-attendance-shifts-leave.md's own
+    // "clearing your own exception and then paying it" — DECISIONS.md
+    // ADR-046). A deployment that needs to reconcile attendance creates a
+    // dedicated role holding hr.attendance.reconcile without payroll.manage.
     'analytics.view',
     'reports.view',
     'organization.view',
@@ -974,6 +1046,29 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
 export const ADMIN_LOCKED_PERMISSIONS: readonly PermissionKey[] = [
   'settings.manage',
   'roles.manage_permissions',
+];
+
+/**
+ * Permission pairs a single role must never grant together
+ * (access-control-identity/21-access-over-the-org-tree.md) — each pair is
+ * "invent the thing, then authorise yourself over the thing": inventing an
+ * org unit and granting yourself authority over it, or inventing a post and
+ * posting yourself to it. Checked by RolesService.create()/.update() against
+ * a role's own full permission set; a role failing this check is refused
+ * outright, the same "generalisation, not a one-off special case" RolesService
+ * already applies to ADMIN_LOCKED_PERMISSIONS above.
+ *
+ * This is why `org.access.grant` and `hr.attendance.reconcile` are each
+ * seeded to no role by default — see their own notes next to
+ * ROLE_PERMISSION_SEED.ADMIN below.
+ */
+export const TOXIC_PERMISSION_PAIRS: readonly (readonly [PermissionKey, PermissionKey])[] = [
+  ['org.structure.manage', 'org.access.grant'],
+  ['hr.people.manage', 'org.access.grant'],
+  // attendance-workforce/22-attendance-shifts-leave.md: "clearing your own
+  // exception and then paying it." payroll.manage, not the doc's own
+  // 'hr.payroll.run' — see hr.attendance.reconcile's own catalogue note.
+  ['hr.attendance.reconcile', 'payroll.manage'],
 ];
 
 export const PERMISSION_EFFECTS = ['GRANT', 'REVOKE'] as const;

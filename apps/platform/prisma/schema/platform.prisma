@@ -25,27 +25,27 @@ enum ResourceTier {
 /// TenantDeploymentCredential below, never the connection string itself —
 /// doc 39 §1's own distinction between a pointer and a credential.
 model PlatformTenant {
-  id              String       @id @default(cuid())
-  slug            String       @unique
-  customDomain    String?      @unique
+  id                     String       @id @default(cuid())
+  slug                   String       @unique
+  customDomain           String?      @unique
   /// WO-39.3 — a custom domain is routable only once this is set; a
   /// present `customDomain` with a null `customDomainVerifiedAt` is a
   /// claimed-but-unproven domain and HostnameResolverService never routes
   /// to it, closing the domain-hijack gap an unverified custom domain
   /// would otherwise open.
   customDomainVerifiedAt DateTime?
-  legalName       String
-  status          TenantStatus @default(PROVISIONING)
-  planId          String
-  deploymentRef   String?      @unique
-  resourceTier    ResourceTier @default(STANDARD)
-  createdAt       DateTime     @default(now())
-  suspendedAt     DateTime?
-  suspendedReason String?
-  deprovisionedAt DateTime?
+  legalName              String
+  status                 TenantStatus @default(PROVISIONING)
+  planId                 String
+  deploymentRef          String?      @unique
+  resourceTier           ResourceTier @default(STANDARD)
+  createdAt              DateTime     @default(now())
+  suspendedAt            DateTime?
+  suspendedReason        String?
+  deprovisionedAt        DateTime?
   /// WO-51.1 — set only for a TRIAL tenant; null for every other status.
   /// The expiry cron transitions TRIAL -> SUSPENDED once this passes.
-  trialExpiresAt  DateTime?
+  trialExpiresAt         DateTime?
   /// The tenant's own billing/signup contact — doc 39's own "audience is a
   /// capability, not an address" lens resolved concretely: every
   /// tenant-facing notification (quota alert, export-ready, trial expiry,
@@ -55,24 +55,24 @@ model PlatformTenant {
   /// contact) — ops must backfill it before any tenant-audience
   /// notification can reach that tenant; the notification services log and
   /// skip rather than guess an address.
-  billingContactEmail String?
+  billingContactEmail    String?
   /// WO-51.2 — set once the self-service signup's email-verification link
   /// is followed; the signup flow itself never provisions before this is
   /// set (see SignupVerification below). Null for any tenant provisioned
   /// through the ops-authenticated `POST /tenants` path, where an ops
   /// principal already vouches for the request instead.
-  signupEmailVerifiedAt DateTime?
+  signupEmailVerifiedAt  DateTime?
   /// WO-39.7 — set when the tenant enters DEPROVISIONED: the retention
   /// window's own deadline, after which TenantRetentionCron is eligible to
   /// call the deployment provisioner's destructive `deprovision()` and
   /// actually drop the isolated database. Null for any tenant not yet
   /// DEPROVISIONED.
-  retentionExpiresAt DateTime?
+  retentionExpiresAt     DateTime?
   /// WO-39.7 — set once the isolated database has actually been dropped
   /// (the retention window closed and teardown ran). Distinct from
   /// `deprovisionedAt` (the status transition) — a DEPROVISIONED tenant
   /// with `dataDeletedAt: null` still has a live, recoverable database.
-  dataDeletedAt   DateTime?
+  dataDeletedAt          DateTime?
 
   /// doc 14 (commercial-licensing-agency/14-managed-services-module.md) —
   /// the agency-hosted "managed services" tier reuses THIS row rather than
@@ -86,7 +86,7 @@ model PlatformTenant {
   /// The mail domain this tenant's transactional mail sends from on the
   /// agency's own shared Stalwart instance (docs/email.md) — null until an
   /// agency-managed client's mailbox is actually provisioned there.
-  mailDomain      String?
+  mailDomain           String?
   /// SHA-256(pepper + key) of the `AGENCY_API_KEY` `scripts/sync-client.mjs`
   /// generates for this client's extracted `managed-services` module (doc
   /// 12's own extractor). The plaintext key is never stored here — see
@@ -94,32 +94,44 @@ model PlatformTenant {
   /// that nullability IS "has this tenant been onboarded to the agency
   /// managed-services dashboard yet", read by every nightly-snapshot and
   /// reporting-API query below as the "is this an agency client" predicate.
-  apiKeyHash      String?  @unique
+  apiKeyHash           String?   @unique
   /// Null until `apiKeyHash` is first set; refreshed on every rotation.
   /// There is no endpoint that recovers the plaintext key — only rotates
   /// the hash (doc 14's own security note).
-  apiKeyRotatedAt DateTime?
+  apiKeyRotatedAt      DateTime?
   /// Set once at onboarding (`AgencyClientsService.register()`), read by
   /// `AgencyStripeChargeCron` to decide whether an issued `PlatformInvoice`
   /// gets a real Stripe charge, and by the webhook to resolve which tenant
   /// an incoming Stripe event is about.
-  stripeCustomerId     String?  @unique
-  stripeSubscriptionId String?  @unique
+  stripeCustomerId     String?   @unique
+  stripeSubscriptionId String?   @unique
 
-  plan               PlatformPlan          @relation(fields: [planId], references: [id])
-  subscriptions      PlatformSubscription[]
-  usageRecords       PlatformUsageRecord[]
-  supportAccessGrants SupportAccessGrant[]
-  deploymentCredential TenantDeploymentCredential?
-  resourceQuotaAlerts ResourceQuotaAlert[]
-  dataExports         TenantDataExport[]
-  invoices            PlatformInvoice[]
-  customQuotes        PlatformCustomQuote[]
-  trialExtensions     TrialExtension[]
-  usageMeters         UsageMeter[]
-  meteredOrderFees    MeteredOrderFee[]
-  usageMeteringCursor UsageMeteringCursor?
-  agencyUsageSnapshots AgencyUsageSnapshot[]
+  plan                           PlatformPlan                    @relation(fields: [planId], references: [id])
+  subscriptions                  PlatformSubscription[]
+  usageRecords                   PlatformUsageRecord[]
+  supportAccessGrants            SupportAccessGrant[]
+  deploymentCredential           TenantDeploymentCredential?
+  resourceQuotaAlerts            ResourceQuotaAlert[]
+  dataExports                    TenantDataExport[]
+  invoices                       PlatformInvoice[]
+  customQuotes                   PlatformCustomQuote[]
+  trialExtensions                TrialExtension[]
+  usageMeters                    UsageMeter[]
+  meteredOrderFees               MeteredOrderFee[]
+  usageMeteringCursor            UsageMeteringCursor?
+  agencyUsageSnapshots           AgencyUsageSnapshot[]
+  /// Doc 165/166 (marketplace.prisma) — this tenant's own credential for
+  /// the cross-tenant marketplace/product-reference network. Nullable:
+  /// most tenants never opt in, and doing so changes nothing else on this
+  /// row (mirrors deploymentCredential's own "not every tenant has one").
+  marketplacePublisherCredential MarketplacePublisherCredential?
+  /// GlobalProductReference rows this tenant was the first to register.
+  /// Informational/provenance only — see marketplace.prisma's own
+  /// "toxic pair" note for why this is never a runtime ownership check
+  /// beyond who may edit the canonical record.
+  registeredProductReferences    GlobalProductReference[]
+  productReferenceLinks          GlobalProductReferenceLink[]
+  productReferenceFlags          GlobalProductReferenceFlag[]
 
   @@index([status])
   @@index([status, trialExpiresAt])
@@ -141,21 +153,21 @@ enum PricingModel {
 }
 
 model PlatformPlan {
-  id                   String       @id @default(cuid())
-  key                  String       @unique
-  editionCap           String
-  monthlyPriceMinor    Int
-  includedResourceTier ResourceTier
-  isActive             Boolean      @default(true)
+  id                    String       @id @default(cuid())
+  key                   String       @unique
+  editionCap            String
+  monthlyPriceMinor     Int
+  includedResourceTier  ResourceTier
+  isActive              Boolean      @default(true)
   /// doc 50 §1 — a pricing model is a shape, not a bigger integer: three
   /// real commercial shapes, each meaningful only for its own fields below.
-  pricingModel         PricingModel @default(FLAT_MONTHLY)
+  pricingModel          PricingModel @default(FLAT_MONTHLY)
   /// PER_SEAT only — the per-user monthly rate; the actual charge is
   /// `perSeatPriceMinor x countBillableSeats()` at invoicing time (doc 50 §2).
-  perSeatPriceMinor    Int?
+  perSeatPriceMinor     Int?
   /// ONE_TIME_LICENSE only — the capital price; a tenant on this model has
   /// no recurring PlatformSubscription charge after its one invoice.
-  oneTimeLicenseMinor  Int?
+  oneTimeLicenseMinor   Int?
   /// ONE_TIME_LICENSE only — "OFFLINE" (doc 48's desktop node, sold once,
   /// never touches this control plane again) or "ONLINE" (still hosted and
   /// provisioned through doc 39's control plane, billed once). Validated
@@ -168,7 +180,7 @@ model PlatformPlan {
   /// never a float percentage, so a future graduated step-down at volume
   /// (doc 153 §4, named, not built) is a data edit under the same column,
   /// never a new one.
-  transactionFeeBps    Int?
+  transactionFeeBps     Int?
   /// USAGE_BASED only. Per-unit rates for genuinely consumed actions, in
   /// paisa-per-unit — `{"messages_sent": 100}` today; a JSON rate card
   /// (never one column per metered dimension) so a new metered action is a
@@ -176,13 +188,13 @@ model PlatformPlan {
   /// `"<dimension>_over_limit"` flat step-up fees for a count-at-rest
   /// dimension in `includedAllowances` below — e.g. `"products_over_limit":
   /// 50000` — doc 153 §1's own "stored in the same rate card" instruction.
-  usageRateCardMinor   Json?
+  usageRateCardMinor    Json?
   /// USAGE_BASED only. Banded allowances for count-at-rest dimensions
   /// (never metered per unit) — `{"products": 1000, "seats": 10}` meaning
   /// the first N are included free; crossing the allowance charges the
   /// matching `"<dimension>_over_limit"` flat fee from `usageRateCardMinor`
   /// above, once per period, never per unit over.
-  includedAllowances   Json?
+  includedAllowances    Json?
 
   /// doc 154 §3 — "shown on the pricing comparison page." An admin flips
   /// exactly the three headline `PricingModel` rows (ONE_TIME_LICENSE,
@@ -191,25 +203,25 @@ model PlatformPlan {
   /// PlatformPlan field change (doc 153). PER_SEAT is refused at that same
   /// write boundary — doc 154 §1's "never a fourth tile," enforced, not
   /// left to admin discipline alone.
-  isHeadline    Boolean @default(false)
+  isHeadline       Boolean @default(false)
   /// Display order among headline plans (ascending); null for every plan
   /// this doesn't apply to. `getPlanComparison()` sorts by this column, so
   /// an unmarked plan carrying a stale order can never affect what renders.
-  headlineOrder Int?
+  headlineOrder    Int?
   /// ADR-040 — public-facing pricing-page copy, additive and nullable
   /// because most plans (PER_SEAT, anything not headline) need none. Never
   /// hardcoded in a frontend template (Law 1): the actual price this copy
   /// describes lives in this same row's own pricing fields above, and must
   /// never be free to drift from what billing actually charges.
-  displayName       String?
-  priceDescription  String?
-  bestFor           String?
-  ctaLabel          String?
+  displayName      String?
+  priceDescription String?
+  bestFor          String?
+  ctaLabel         String?
 
-  tenants       PlatformTenant[]
-  subscriptions PlatformSubscription[]
-  invoices      PlatformInvoice[]
-  customQuotes  PlatformCustomQuote[]
+  tenants                PlatformTenant[]
+  subscriptions          PlatformSubscription[]
+  invoices               PlatformInvoice[]
+  customQuotes           PlatformCustomQuote[]
   rateCardChangeRequests PlatformRateCardChangeRequest[]
 }
 
@@ -251,12 +263,12 @@ model PlatformUsageRecord {
 /// The one deliberately time-boxed door into a tenant's isolated deployment
 /// — doc 39 §3. Every grant expires; every actual use is logged.
 model SupportAccessGrant {
-  id               String    @id @default(cuid())
+  id               String     @id @default(cuid())
   tenantId         String
   grantedToUserId  String
   reason           String
   approvedByUserId String?
-  startsAt         DateTime  @default(now())
+  startsAt         DateTime   @default(now())
   expiresAt        DateTime
   revokedAt        DateTime?
   accessedAt       DateTime[]
@@ -279,11 +291,11 @@ model SupportAccessGrant {
 /// endpoint. `PlatformTenant.deploymentRef` is the id of this row, not its
 /// contents.
 model TenantDeploymentCredential {
-  id                     String   @id @default(cuid())
-  tenantId               String   @unique
+  id                        String    @id @default(cuid())
+  tenantId                  String    @unique
   connectionStringEncrypted String
-  createdAt              DateTime @default(now())
-  rotatedAt              DateTime?
+  createdAt                 DateTime  @default(now())
+  rotatedAt                 DateTime?
 
   tenant PlatformTenant @relation(fields: [tenantId], references: [id])
 }
@@ -299,14 +311,14 @@ enum OpsClientStatus {
 /// Deliberately not a staff login/session system: that belongs to a later
 /// admin-console work order (doc 39 WO-39.8), not WO-39.1/39.2.
 model PlatformOpsClient {
-  id            String          @id @default(cuid())
-  label         String
-  keyHash       String          @unique
-  scopes        String[]
-  status        OpsClientStatus @default(ACTIVE)
-  createdAt     DateTime        @default(now())
-  lastUsedAt    DateTime?
-  revokedAt     DateTime?
+  id         String          @id @default(cuid())
+  label      String
+  keyHash    String          @unique
+  scopes     String[]
+  status     OpsClientStatus @default(ACTIVE)
+  createdAt  DateTime        @default(now())
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
 
   @@index([status])
 }
@@ -389,26 +401,26 @@ enum TenantExportTrigger {
 }
 
 model TenantDataExport {
-  id             String              @id @default(cuid())
-  tenantId       String
-  status         TenantExportStatus  @default(PENDING)
-  triggeredBy    TenantExportTrigger @default(MANUAL)
-  requestedAt    DateTime            @default(now())
-  startedAt      DateTime?
-  completedAt    DateTime?
-  failedAt       DateTime?
-  failureReason  String?
+  id            String              @id @default(cuid())
+  tenantId      String
+  status        TenantExportStatus  @default(PENDING)
+  triggeredBy   TenantExportTrigger @default(MANUAL)
+  requestedAt   DateTime            @default(now())
+  startedAt     DateTime?
+  completedAt   DateTime?
+  failedAt      DateTime?
+  failureReason String?
   /// Where TenantExportStorage actually put the archive — an opaque key
   /// for that storage implementation (a local filesystem path today; an
   /// object-storage key for a future S3-backed implementation, a class
   /// swap behind the same extension point DeploymentProvisioner already
   /// uses). Never a public URL.
-  storageKey     String?
-  sizeBytes      BigInt?
+  storageKey    String?
+  sizeBytes     BigInt?
   /// The downloadable artifact's own expiry — independent of and always
   /// <= the tenant's `retentionExpiresAt`; an export doesn't extend how
   /// long the source database itself survives.
-  expiresAt      DateTime?
+  expiresAt     DateTime?
 
   tenant PlatformTenant @relation(fields: [tenantId], references: [id])
 
@@ -431,27 +443,27 @@ enum InvoiceStatus {
 }
 
 model PlatformInvoice {
-  id                  String        @id @default(cuid())
-  tenantId            String
-  subscriptionId      String?
-  planId              String
+  id                          String        @id @default(cuid())
+  tenantId                    String
+  subscriptionId              String?
+  planId                      String
   /// Snapshotted from PlatformPlan.pricingModel at issue time — restated
   /// on the row so a later plan edit can never change how a past invoice
   /// reads, exactly like every other snapshot field below.
-  pricingModel        PricingModel
-  periodStart         DateTime
-  periodEnd           DateTime
+  pricingModel                PricingModel
+  periodStart                 DateTime
+  periodEnd                   DateTime
   /// PER_SEAT only — the exact countBillableSeats() result this invoice
   /// was computed from ("click the number": the count this line sums back
   /// to, retrievable independent of whatever the tenant's live seat count
   /// is by the time anyone looks again).
-  seatCount           Int?
+  seatCount                   Int?
   /// PER_SEAT only — PlatformPlan.perSeatPriceMinor AT issue time.
-  seatPriceMinorSnapshot Int?
+  seatPriceMinorSnapshot      Int?
   /// FLAT_MONTHLY only — PlatformPlan.monthlyPriceMinor AT issue time.
-  flatPriceMinorSnapshot Int?
+  flatPriceMinorSnapshot      Int?
   /// ONE_TIME_LICENSE only — PlatformPlan.oneTimeLicenseMinor AT issue time.
-  oneTimePriceMinorSnapshot Int?
+  oneTimePriceMinorSnapshot   Int?
   /// USAGE_BASED only — the transaction-fee line, read directly from that
   /// period's `UsageMeter('transaction_fee_minor')` row at issue time.
   transactionFeeMinorSnapshot Int?
@@ -459,29 +471,29 @@ model PlatformInvoice {
   /// computed from (doc 153's own "the version stamp": a later plan-rate
   /// edit never reprices a past invoice, exactly like the other three
   /// snapshot fields above).
-  usageRateCardSnapshot Json?
+  usageRateCardSnapshot       Json?
   /// USAGE_BASED only — the computed per-metric breakdown ("click the
   /// number": messages-sent line, and any allowance-overage line, each
   /// traceable back to the exact `UsageMeter` period it summed from).
-  usageLinesSnapshot   Json?
+  usageLinesSnapshot          Json?
   /// The actual charge — always traceable to exactly one of the four
   /// snapshot fields above via `pricingModel`.
-  amountMinor         Int
-  status              InvoiceStatus @default(ISSUED)
-  issuedAt            DateTime      @default(now())
+  amountMinor                 Int
+  status                      InvoiceStatus @default(ISSUED)
+  issuedAt                    DateTime      @default(now())
   /// When the seat count / amount was actually computed — may differ
   /// slightly from `issuedAt` under retry, but never from a stale read.
-  computedAt           DateTime
+  computedAt                  DateTime
   /// doc 153's own "AR from tenants" — when this invoice is due, computed
   /// at issuance from `PLATFORM_INVOICE_NET_TERMS_DAYS`. Set for every
   /// invoice regardless of pricing model (a real due date is meaningful AR
   /// modeling for any of the four shapes, not only USAGE_BASED's COD/cash
   /// gap), never used to recompute a CLOSED period's own amount.
-  dueAt                DateTime?
+  dueAt                       DateTime?
   /// One overdue reminder per invoice — doc 145's own dunning shape reused
   /// at the minimal scope this control plane needs today (a single
   /// reminder, not a multi-stage escalation ladder; see ADR-037).
-  dunningReminderSentAt DateTime?
+  dunningReminderSentAt       DateTime?
 
   /// doc 14 / ADR-039 — real money collection for an agency-managed
   /// tenant's own hosting invoice, bridged onto this ALREADY-authoritative
@@ -492,19 +504,19 @@ model PlatformInvoice {
   /// picks up rows where this is still null on a Stripe-linked tenant, so
   /// a redelivered/rerun sweep never double-charges the same invoice
   /// (doc's own "second copy of the write").
-  stripeInvoiceId       String?    @unique
+  stripeInvoiceId        String?                     @unique
   /// The Stripe-hosted invoice page — what `GET /agency/clients/me/invoices`
   /// links to; never a PDF this control plane generates itself.
   stripeHostedInvoiceUrl String?
-  stripePaymentStatus   StripeInvoicePaymentStatus?
+  stripePaymentStatus    StripeInvoicePaymentStatus?
   /// Set when a `invoice.payment_failed` webhook lands for this invoice —
   /// distinct from `dunningReminderSentAt` (this control plane's own
   /// unpaid-ISSUED-invoice reminder), which fires independent of whether a
   /// Stripe charge was ever attempted.
-  stripePaymentFailedAt DateTime?
+  stripePaymentFailedAt  DateTime?
 
-  tenant      PlatformTenant          @relation(fields: [tenantId], references: [id])
-  plan        PlatformPlan            @relation(fields: [planId], references: [id])
+  tenant      PlatformTenant              @relation(fields: [tenantId], references: [id])
+  plan        PlatformPlan                @relation(fields: [planId], references: [id])
   creditNotes PlatformInvoiceCreditNote[]
 
   /// Doc 50's own "second copy of the write": a billing run retried for an
@@ -576,16 +588,16 @@ model PlatformCustomQuote {
 /// trial (doc 39's own slug-idempotency is the second, independent layer
 /// that also prevents this).
 model SignupVerification {
-  id          String    @id @default(cuid())
-  email       String
-  slug        String
-  legalName   String
-  planKey     String
-  tokenHash   String    @unique
-  createdAt   DateTime  @default(now())
-  expiresAt   DateTime
-  consumedAt  DateTime?
-  ipAddress   String?
+  id         String    @id @default(cuid())
+  email      String
+  slug       String
+  legalName  String
+  planKey    String
+  tokenHash  String    @unique
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime
+  consumedAt DateTime?
+  ipAddress  String?
 
   @@index([email, createdAt])
 }
@@ -594,13 +606,13 @@ model SignupVerification {
 /// principal push `trialExpiresAt` forward; every extension is recorded
 /// here so "extended more than once" is a query, not a memory.
 model TrialExtension {
-  id                     String   @id @default(cuid())
-  tenantId               String
-  previousExpiresAt      DateTime
-  newExpiresAt           DateTime
-  reason                 String
-  extendedByOpsClientId  String
-  createdAt              DateTime @default(now())
+  id                    String   @id @default(cuid())
+  tenantId              String
+  previousExpiresAt     DateTime
+  newExpiresAt          DateTime
+  reason                String
+  extendedByOpsClientId String
+  createdAt             DateTime @default(now())
 
   tenant PlatformTenant @relation(fields: [tenantId], references: [id])
 
@@ -660,17 +672,17 @@ model UsageMeter {
 /// own invoice was already issued knows to credit-note the invoice instead
 /// of mutating a closed period's own meter (doc 153's own "undo fan-out").
 model MeteredOrderFee {
-  id                  String    @id @default(cuid())
-  tenantId            String
+  id                   String    @id @default(cuid())
+  tenantId             String
   /// The tenant's own `Order.id` — never dereferenced by this database,
   /// only carried as the traceability key doc 153's own "click the number"
   /// lens names.
-  orderId             String
-  feeMinor            Int
-  periodStart         DateTime
-  periodEnd           DateTime
-  meteredAt           DateTime  @default(now())
-  reversedAt          DateTime?
+  orderId              String
+  feeMinor             Int
+  periodStart          DateTime
+  periodEnd            DateTime
+  meteredAt            DateTime  @default(now())
+  reversedAt           DateTime?
   /// Set when the reversal landed as a `PlatformInvoiceCreditNote` against
   /// an already-issued invoice, rather than as a same-period meter
   /// decrement — which of the two happened is otherwise not reconstructible
@@ -716,23 +728,23 @@ enum RateCardChangeStatus {
 /// `CustomQuoteService.approve()` already enforces, reused, not
 /// reinvented).
 model PlatformRateCardChangeRequest {
-  id                          String              @id @default(cuid())
-  planId                      String
-  proposedTransactionFeeBps   Int?
-  proposedUsageRateCardMinor  Json?
-  proposedIncludedAllowances  Json?
-  requiresApproval            Boolean
-  status                      RateCardChangeStatus @default(PENDING)
-  requestedByOpsClientId      String
-  approvedByOpsClientId       String?
-  approvedAt                  DateTime?
-  rejectedAt                  DateTime?
-  rejectionReason             String?
+  id                         String               @id @default(cuid())
+  planId                     String
+  proposedTransactionFeeBps  Int?
+  proposedUsageRateCardMinor Json?
+  proposedIncludedAllowances Json?
+  requiresApproval           Boolean
+  status                     RateCardChangeStatus @default(PENDING)
+  requestedByOpsClientId     String
+  approvedByOpsClientId      String?
+  approvedAt                 DateTime?
+  rejectedAt                 DateTime?
+  rejectionReason            String?
   /// When `approve()` actually wrote the proposed values onto
   /// `PlatformPlan` — distinct from `approvedAt` so a request that was
   /// approved but not yet (or never) applied is visible as such.
-  appliedAt                   DateTime?
-  createdAt                   DateTime            @default(now())
+  appliedAt                  DateTime?
+  createdAt                  DateTime             @default(now())
 
   plan PlatformPlan @relation(fields: [planId], references: [id])
 

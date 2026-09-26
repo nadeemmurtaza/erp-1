@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **717** endpoints across **129** controllers, with the access rule that actually guards each one.
+All **726** endpoints across **131** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,10 +24,11 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 74** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 75** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
+| POST | `/attendance/punch` | `AttendanceDevicePunchController.punch` |
 | POST | `/auth/forgot-password` | `AuthController.forgotPassword` |
 | POST | `/auth/login` | `AuthController.login` |
 | POST | `/auth/logout` | `AuthController.logout` |
@@ -169,6 +170,28 @@ never authorization.
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
 | GET | `/admin/analytics/workshop/output` | `analytics.view` | `AnalyticsController.workshopOutput` | Workshop throughput — started/completed per day, time in each stage, output by… |
+
+### [`attendance`](../modules/attendance.md) (17)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/admin/attendance/adjust` | signed-in | `AttendanceController.adjust` | Correct an event — never mutates the original row |
+| POST | `/admin/attendance/adjust/preview` | signed-in | `AttendanceController.previewAdjust` | Which refusals an adjustment would hit, without writing anything |
+| GET | `/admin/attendance/devices` | `hr.attendance.record` | `AttendanceDeviceController.findAll` | List enrolled attendance devices |
+| POST | `/admin/attendance/devices` | `hr.attendance.record` | `AttendanceDeviceController.register` | Enrol a device at an org unit |
+| GET | `/admin/attendance/devices/:id` | `hr.attendance.record` | `AttendanceDeviceController.findOne` | Get a device |
+| PATCH | `/admin/attendance/devices/:id` | `hr.attendance.record` | `AttendanceDeviceController.update` | Update a device |
+| POST | `/admin/attendance/devices/:id/rotate-device-key` | `hr.attendance.record` | `AttendanceDeviceController.rotateDeviceKey` | Issue a fresh device credential — shown once, never retrievable again |
+| POST | `/admin/attendance/devices/:id/suspend` | `hr.attendance.record` | `AttendanceDeviceController.suspend` | Suspend a device — never deletes it, its punch history stays put |
+| GET | `/admin/attendance/events` | signed-in | `AttendanceController.listOwnEvents` | Your own attendance events in a date range |
+| GET | `/admin/attendance/events/:userId` | `hr.attendance.view` `hr.attendance.reconcile` | `AttendanceController.listEvents` | Someone else's attendance events in a date range |
+| GET | `/admin/attendance/exceptions` | `hr.attendance.view` `hr.attendance.reconcile` | `AttendanceController.listExceptions` | Attendance exceptions — the reconcile queue |
+| POST | `/admin/attendance/exceptions/:id/resolve` | `hr.attendance.reconcile` | `AttendanceController.resolve` | Clear an exception |
+| POST | `/admin/attendance/punch` | signed-in | `AttendanceController.punch` | Punch yourself in/out — never refused |
+| POST | `/admin/attendance/punch/manager` | `hr.attendance.record` | `AttendanceController.punchManager` | Record a punch on someone else’s behalf — never refused |
+| GET | `/admin/attendance/shifts` | `hr.attendance.view` `hr.attendance.record` `hr.attendance.reconcile` | `AttendanceController.listShifts` | Shifts for one person |
+| POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
+| POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
 
 ### [`bom`](../modules/bom.md) (20)
 
@@ -441,28 +464,6 @@ never authorization.
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 | POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` | Inbound WhatsApp message (signature-verified, not session-authenticated) |
 
-### [`custom-fields`](../modules/custom-fields.md) (6)
-
-| Method | Path | Access | Handler | Summary |
-|---|---|---|---|---|
-| GET | `/admin/custom-fields/definitions` | `settings.custom-fields.manage` | `CustomFieldsController.definitions` | Every custom-field definition for one entity type |
-| POST | `/admin/custom-fields/definitions` | `settings.custom-fields.manage` | `CustomFieldsController.define` | Define a new custom field on one entity type |
-| DELETE | `/admin/custom-fields/definitions/:id` | `settings.custom-fields.manage` | `CustomFieldsController.remove` | Remove a custom-field definition |
-| GET | `/admin/custom-fields/entity-types` | `settings.custom-fields.manage` | `CustomFieldsController.entityTypes` | Every entity type this mechanism is wired up for |
-| GET | `/admin/custom-fields/values` | signed-in | `CustomFieldsController.values` | One entity's own custom-field values, gated by that entity's own edit permission |
-| POST | `/admin/custom-fields/values` | signed-in | `CustomFieldsController.setValues` | Set one entity's own custom-field values, gated by that entity's own edit permi… |
-
-### [`embeds`](../modules/embeds.md) (6)
-
-| Method | Path | Access | Handler | Summary |
-|---|---|---|---|---|
-| GET | `/admin/embeds` | `analytics.view` | `EmbedWidgetsController.list` | Every active embedded widget |
-| POST | `/admin/embeds` | `settings.embeds.manage` | `EmbedWidgetsController.create` | Register a new embeddable widget |
-| DELETE | `/admin/embeds/:id` | `settings.embeds.manage` | `EmbedWidgetsController.remove` | Remove an embedded widget |
-| PATCH | `/admin/embeds/:id` | `settings.embeds.manage` | `EmbedWidgetsController.update` | Edit or deactivate an embedded widget |
-| POST | `/admin/embeds/:key/token` | `analytics.view` | `EmbedWidgetsController.issueToken` | A short-lived, scoped token for one active widget — never a raw session credent… |
-| GET | `/admin/embeds/all` | `settings.embeds.manage` | `EmbedWidgetsController.listAll` | Every embedded widget, active or not — for the configuration screen |
-
 ### [`finance`](../modules/finance.md) (17)
 
 | Method | Path | Access | Handler | Summary |
@@ -724,7 +725,7 @@ never authorization.
 | PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, W… |
 | POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` |  |
 
-### [`orgstructure`](../modules/orgstructure.md) (9)
+### [`orgstructure`](../modules/orgstructure.md) (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -735,6 +736,10 @@ never authorization.
 | POST | `/admin/org-structure/:id/move/preview` | `org.structure.manage` | `OrgUnitController.previewMove` | What a move would touch, without writing anything |
 | PATCH | `/admin/org-structure/:id/rename` | `org.structure.manage` | `OrgUnitController.rename` | Rename a unit |
 | GET | `/admin/org-structure/:id/subtree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.subtree` | One unit and everything under it |
+| GET | `/admin/org-structure/:unitId/access` | `org.access.view` `org.access.grant` | `GrantController.accessOverUnit` | Who reaches this unit, by posting or by grant |
+| POST | `/admin/org-structure/:unitId/access` | `org.access.grant` | `GrantController.issue` | Issue a time-boxed access grant over this unit |
+| POST | `/admin/org-structure/:unitId/access/:grantId/revoke` | `org.access.grant` | `GrantController.revoke` | Revoke an active grant |
+| POST | `/admin/org-structure/:unitId/access/preview` | `org.access.grant` | `GrantController.previewIssue` | Which refusals a grant would hit, without writing anything |
 | GET | `/admin/org-structure/tree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.tree` | The whole org tree |
 | GET | `/admin/org-structure/types` | `org.structure.view` `org.structure.manage` | `OrgUnitController.listTypes` | Every configured unit type |
 

@@ -3,38 +3,38 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1932,
-    "lines": 294755,
-    "routes": 634,
-    "controllers": 116,
-    "models": 229,
-    "enums": 105,
-    "migrations": 77,
-    "events": 59,
-    "permissions": 75,
-    "screens": 227,
-    "crons": 18,
-    "specs": 225,
+    "files": 2013,
+    "lines": 306661,
+    "routes": 660,
+    "controllers": 121,
+    "models": 244,
+    "enums": 112,
+    "migrations": 85,
+    "events": 61,
+    "permissions": 84,
+    "screens": 234,
+    "crons": 20,
+    "specs": 242,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 152,
-      "lines": 15337,
-      "bytes": 945198,
+      "files": 187,
+      "lines": 18817,
+      "bytes": 1103887,
       "label": "repository root files"
     },
     "infra": {
       "files": 57,
-      "lines": 29609,
-      "bytes": 1166001,
+      "lines": 29638,
+      "bytes": 1167381,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 805,
-      "lines": 113549,
-      "bytes": 4295368,
+      "files": 841,
+      "lines": 117736,
+      "bytes": 4469541,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -45,26 +45,26 @@
     },
     "pos": {
       "files": 31,
-      "lines": 1874,
-      "bytes": 62523,
+      "lines": 2000,
+      "bytes": 68220,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 367,
-      "lines": 57481,
-      "bytes": 2080186,
+      "files": 375,
+      "lines": 60259,
+      "bytes": 2172090,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 393,
-      "lines": 62230,
-      "bytes": 3694718,
+      "files": 394,
+      "lines": 63378,
+      "bytes": 3766078,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 78,
-      "lines": 7775,
-      "bytes": 274573,
+      "files": 79,
+      "lines": 7933,
+      "bytes": 280618,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -78,10 +78,15 @@
         "apps/api/src/modules/accounting/accounting.module.ts",
         "apps/api/src/modules/accounting/accounting.service.spec.ts",
         "apps/api/src/modules/accounting/accounting.service.ts",
+        "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+        "apps/api/src/modules/accounting/asset-depreciation.cron.ts",
+        "apps/api/src/modules/accounting/asset-depreciation.service.spec.ts",
+        "apps/api/src/modules/accounting/asset-depreciation.service.ts",
         "apps/api/src/modules/accounting/chart-of-accounts.ts",
         "apps/api/src/modules/accounting/consolidation.controller.ts",
         "apps/api/src/modules/accounting/consolidation.service.spec.ts",
         "apps/api/src/modules/accounting/consolidation.service.ts",
+        "apps/api/src/modules/accounting/dto/asset-depreciation.dto.ts",
         "apps/api/src/modules/accounting/dto/fiscal-period.dto.ts",
         "apps/api/src/modules/accounting/dto/gl-reports.dto.ts",
         "apps/api/src/modules/accounting/fiscal-periods.controller.ts",
@@ -95,7 +100,7 @@
         "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts",
         "apps/api/src/modules/accounting/wallet-posting-rules.subscriber.ts"
       ],
-      "routes": 16,
+      "routes": 19,
       "page": "docs/index/modules/accounting.md"
     },
     {
@@ -324,7 +329,7 @@
         "apps/api/src/modules/finance/order-economics.service.ts",
         "apps/api/src/modules/finance/rto-expense.listener.ts"
       ],
-      "routes": 16,
+      "routes": 17,
       "page": "docs/index/modules/finance.md"
     },
     {
@@ -372,6 +377,21 @@
       ],
       "routes": 10,
       "page": "docs/index/modules/giftcards.md"
+    },
+    {
+      "name": "hr",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/hr/assets.controller.ts",
+        "apps/api/src/modules/hr/assets.service.spec.ts",
+        "apps/api/src/modules/hr/assets.service.ts",
+        "apps/api/src/modules/hr/dto/asset.dto.ts",
+        "apps/api/src/modules/hr/hr.module.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/hr.md"
     },
     {
       "name": "identity-verification",
@@ -443,6 +463,20 @@
       ],
       "routes": 11,
       "page": "docs/index/modules/loyalty.md"
+    },
+    {
+      "name": "managed-services",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/managed-services/managed-services.controller.ts",
+        "apps/api/src/modules/managed-services/managed-services.module.ts",
+        "apps/api/src/modules/managed-services/managed-services.service.spec.ts",
+        "apps/api/src/modules/managed-services/managed-services.service.ts"
+      ],
+      "routes": 2,
+      "page": "docs/index/modules/managed-services.md"
     },
     {
       "name": "marketing",
@@ -527,7 +561,11 @@
         "apps/api/src/modules/orders/cod-risk.cron.ts",
         "apps/api/src/modules/orders/cod-risk.service.spec.ts",
         "apps/api/src/modules/orders/cod-risk.service.ts",
+        "apps/api/src/modules/orders/dto/instalment-plan.dto.ts",
         "apps/api/src/modules/orders/dto/order.dto.ts",
+        "apps/api/src/modules/orders/instalment-plan.controller.ts",
+        "apps/api/src/modules/orders/instalment-plan.service.spec.ts",
+        "apps/api/src/modules/orders/instalment-plan.service.ts",
         "apps/api/src/modules/orders/notification.subscriber.ts",
         "apps/api/src/modules/orders/order-replication.listener.spec.ts",
         "apps/api/src/modules/orders/order-replication.listener.ts",
@@ -537,7 +575,7 @@
         "apps/api/src/modules/orders/orders.service.ts",
         "apps/api/src/modules/orders/shipment-status.listener.ts"
       ],
-      "routes": 7,
+      "routes": 11,
       "page": "docs/index/modules/orders.md"
     },
     {
@@ -836,6 +874,23 @@
       "page": "docs/index/modules/settings.md"
     },
     {
+      "name": "settlements",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/settlements/dto/settlement.dto.ts",
+        "apps/api/src/modules/settlements/settlement-connector.ts",
+        "apps/api/src/modules/settlements/settlements.controller.ts",
+        "apps/api/src/modules/settlements/settlements.cron.ts",
+        "apps/api/src/modules/settlements/settlements.module.ts",
+        "apps/api/src/modules/settlements/settlements.service.spec.ts",
+        "apps/api/src/modules/settlements/settlements.service.ts"
+      ],
+      "routes": 8,
+      "page": "docs/index/modules/settlements.md"
+    },
+    {
       "name": "stitching",
       "pack": "apparel",
       "alwaysOn": false,
@@ -911,7 +966,7 @@
         "apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts",
         "apps/api/src/modules/tradingpartners/trading-partners.service.ts"
       ],
-      "routes": 18,
+      "routes": 19,
       "page": "docs/index/modules/tradingpartners.md"
     },
     {
@@ -1119,6 +1174,7 @@
         "apps/api/src/core/extension-points/branch-policy.registry.ts",
         "apps/api/src/core/extension-points/camera-people-count.registry.ts",
         "apps/api/src/core/extension-points/cart-line-validator.registry.ts",
+        "apps/api/src/core/extension-points/employee-offboarding.registry.ts",
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
         "apps/api/src/core/extension-points/extension-points.module.ts",
         "apps/api/src/core/extension-points/identity-verification-status.registry.ts",
@@ -1174,6 +1230,7 @@
         "apps/api/src/core/notifications/notification-channel.ts",
         "apps/api/src/core/notifications/notification-preferences.service.ts",
         "apps/api/src/core/notifications/notifications.module.ts",
+        "apps/api/src/core/notifications/notifications.service.spec.ts",
         "apps/api/src/core/notifications/notifications.service.ts",
         "apps/api/src/core/notifications/sms.channel.ts",
         "apps/api/src/core/notifications/unsubscribe.controller.ts",
@@ -1320,6 +1377,54 @@
       "public": false,
       "authOnly": true,
       "summary": "Edit a saved address"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/accounting/assets/:assetId/depreciation-schedule",
+      "module": "accounting",
+      "controller": "AssetDepreciationController",
+      "handler": "getSchedule",
+      "file": "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+      "line": 21,
+      "access": "finance.assets.depreciate",
+      "permissions": [
+        "finance.assets.depreciate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "An asset's depreciation schedule and every period posted so far"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/accounting/assets/:assetId/depreciation-schedule",
+      "module": "accounting",
+      "controller": "AssetDepreciationController",
+      "handler": "createSchedule",
+      "file": "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+      "line": 30,
+      "access": "finance.assets.depreciate",
+      "permissions": [
+        "finance.assets.depreciate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Put an asset on a monthly depreciation schedule"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/accounting/assets/:assetId/dispose",
+      "module": "accounting",
+      "controller": "AssetDepreciationController",
+      "handler": "dispose",
+      "file": "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+      "line": 41,
+      "access": "finance.assets.dispose",
+      "permissions": [
+        "finance.assets.dispose"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Dispose an asset — posts the remaining book value as a loss and any sale proceeds as a gain"
     },
     {
       "method": "GET",
@@ -4638,7 +4743,7 @@
       "controller": "FinanceController",
       "handler": "listCategories",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 49,
+      "line": 60,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4654,7 +4759,7 @@
       "controller": "FinanceController",
       "handler": "createCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 56,
+      "line": 67,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4670,7 +4775,7 @@
       "controller": "FinanceController",
       "handler": "deleteCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 70,
+      "line": 81,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4686,7 +4791,7 @@
       "controller": "FinanceController",
       "handler": "updateCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 63,
+      "line": 74,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4702,7 +4807,7 @@
       "controller": "FinanceController",
       "handler": "listExpenses",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 78,
+      "line": 89,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4718,7 +4823,7 @@
       "controller": "FinanceController",
       "handler": "createExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 120,
+      "line": 131,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4734,7 +4839,7 @@
       "controller": "FinanceController",
       "handler": "deleteExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 134,
+      "line": 145,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4750,7 +4855,7 @@
       "controller": "FinanceController",
       "handler": "updateExpense",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 127,
+      "line": 138,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4766,7 +4871,7 @@
       "controller": "FinanceController",
       "handler": "uploadReceipt",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 145,
+      "line": 156,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4782,7 +4887,7 @@
       "controller": "FinanceController",
       "handler": "byCategory",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 92,
+      "line": 103,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4798,7 +4903,7 @@
       "controller": "FinanceController",
       "handler": "importExpenses",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 167,
+      "line": 178,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4814,7 +4919,7 @@
       "controller": "FinanceController",
       "handler": "expenseImportTemplate",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 157,
+      "line": 168,
       "access": "finance.manage",
       "permissions": [
         "finance.manage"
@@ -4830,7 +4935,7 @@
       "controller": "FinanceController",
       "handler": "summary",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 85,
+      "line": 96,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4846,7 +4951,7 @@
       "controller": "FinanceController",
       "handler": "trend",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 99,
+      "line": 110,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4857,12 +4962,28 @@
     },
     {
       "method": "GET",
+      "path": "/admin/finance/gross-profit-today",
+      "module": "finance",
+      "controller": "FinanceController",
+      "handler": "grossProfitToday",
+      "file": "apps/api/src/modules/finance/finance.controller.ts",
+      "line": 53,
+      "access": "inventory.view_cost",
+      "permissions": [
+        "inventory.view_cost"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Per-transaction and day-total gross profit for orders placed today, every channel"
+    },
+    {
+      "method": "GET",
       "path": "/admin/finance/margins",
       "module": "finance",
       "controller": "FinanceController",
       "handler": "margins",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 106,
+      "line": 117,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -4878,7 +4999,7 @@
       "controller": "FinanceController",
       "handler": "unitEconomics",
       "file": "apps/api/src/modules/finance/finance.controller.ts",
-      "line": 113,
+      "line": 124,
       "access": "finance.view",
       "permissions": [
         "finance.view"
@@ -5278,6 +5399,118 @@
       "public": false,
       "authOnly": false,
       "summary": "Cancel a gift card, forfeiting any remaining balance"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/hr/assets",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 23,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List assets, optionally filtered by status"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/hr/assets",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "create",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 37,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Register a new asset"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/hr/assets/:id",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "get",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 30,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One asset's detail and full assignment history"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/hr/assets/:id/issue",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "issue",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 44,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue an AVAILABLE asset to an employee"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/hr/assets/:id/write-off",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "writeOff",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 62,
+      "access": "hr.assets.writeoff",
+      "permissions": [
+        "hr.assets.writeoff"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Mark an asset RETIRED or LOST"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/hr/assets/assignments/:assignmentId/return",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "returnAsset",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 51,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Return an issued asset"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/hr/assets/employees/:userId/unreturned",
+      "module": "hr",
+      "controller": "AssetsController",
+      "handler": "unreturnedFor",
+      "file": "apps/api/src/modules/hr/assets.controller.ts",
+      "line": 69,
+      "access": "hr.assets.manage",
+      "permissions": [
+        "hr.assets.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "An employee's unreturned assets — the offboarding gate's own check"
     },
     {
       "method": "GET",
@@ -5766,7 +5999,7 @@
       "controller": "InvoicesController",
       "handler": "issue",
       "file": "apps/api/src/modules/tradingpartners/invoices.controller.ts",
-      "line": 27,
+      "line": 33,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -5782,7 +6015,7 @@
       "controller": "InvoicesController",
       "handler": "findOne",
       "file": "apps/api/src/modules/tradingpartners/invoices.controller.ts",
-      "line": 21,
+      "line": 27,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -5790,6 +6023,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Get an invoice"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/invoices/overdue-summary",
+      "module": "tradingpartners",
+      "controller": "InvoicesController",
+      "handler": "overdueSummary",
+      "file": "apps/api/src/modules/tradingpartners/invoices.controller.ts",
+      "line": 21,
+      "access": "orders.manage",
+      "permissions": [
+        "orders.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Count, total and oldest due date of ISSUED invoices past their due date"
     },
     {
       "method": "GET",
@@ -6306,6 +6555,70 @@
       "public": false,
       "authOnly": false,
       "summary": "Move the order along; cancelling restores stock"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/orders/:orderId/instalments",
+      "module": "orders",
+      "controller": "InstalmentPlanController",
+      "handler": "get",
+      "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "line": 23,
+      "access": "pos.operate",
+      "permissions": [
+        "pos.operate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "An order's instalment plan, its schedule, and every payment received so far"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:orderId/instalments/cancel",
+      "module": "orders",
+      "controller": "InstalmentPlanController",
+      "handler": "cancel",
+      "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "line": 41,
+      "access": "pos.instalments.cancel",
+      "permissions": [
+        "pos.instalments.cancel"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Cancel an active plan — refunds or forfeits the deposit per the configured policy"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:orderId/instalments/default",
+      "module": "orders",
+      "controller": "InstalmentPlanController",
+      "handler": "markDefaulted",
+      "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "line": 48,
+      "access": "pos.instalments.default",
+      "permissions": [
+        "pos.instalments.default"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Mark an active plan defaulted — writes off the unpaid balance"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/orders/:orderId/instalments/payments",
+      "module": "orders",
+      "controller": "InstalmentPlanController",
+      "handler": "recordPayment",
+      "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "line": 30,
+      "access": "pos.operate",
+      "permissions": [
+        "pos.operate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Record one instalment payment against the plan"
     },
     {
       "method": "POST",
@@ -8201,6 +8514,137 @@
       "public": false,
       "authOnly": false,
       "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/settlements/batches",
+      "module": "settlements",
+      "controller": "SettlementsController",
+      "handler": "listBatches",
+      "file": "apps/api/src/modules/settlements/settlements.controller.ts",
+      "line": 33,
+      "access": "finance.settlement.view | finance.settlement.reconcile",
+      "permissions": [
+        "finance.settlement.view",
+        "finance.settlement.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every settlement batch, optionally filtered by status"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/settlements/batches",
+      "module": "settlements",
+      "controller": "SettlementsController",
+      "handler": "createExpectedBatch",
+      "file": "apps/api/src/modules/settlements/settlements.controller.ts",
+      "line": 46,
+      "access": "finance.settlement.reconcile",
+      "permissions": [
+        "finance.settlement.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Record which of our own payments a settlement batch is expected to cover"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/settlements/batches/:id",
+      "module": "settlements",
+      "controller": "SettlementsController",
+      "handler": "getBatch",
+      "file": "apps/api/src/modules/settlements/settlements.controller.ts",
+      "line": 40,
+      "access": "finance.settlement.view | finance.settlement.reconcile",
+      "permissions": [
+        "finance.settlement.view",
+        "finance.settlement.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One batch's detail, with every Payment line it covers"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/settlements/batches/:id/approve-writeoff",
+      "module": "settlements",
+      "controller": "SettlementsController",
+      "handler": "approveWriteoff",
+      "file": "apps/api/src/modules/settlements/settlements.controller.ts",
+      "line": 69,
+      "access": "finance.settlement.approve_writeoff",
+      "permissions": [
+        "finance.settlement.approve_writeoff"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve a requested write-off — the checker half, never the same person as the request"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/settlements/batches/:id/reconcile",
+      "module": "settlements",
+      "controller": "SettlementsController",
+      "handler": "reconcile",
+      "file": "apps/api/src/modules/settlements/settlements.controller.ts",
+      "line": 52,
+      "access": "finance.settlement.reconcile",
+      "permissions": [
+        "finance.settlement.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Ask the batch's own connector to confirm what actually settled"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/settlements/batches/:id/request-writeoff",
+      "module": "settlements",
+      "controller": "SettlementsController",
+      "handler": "requestWriteoff",
+      "file": "apps/api/src/modules/settlements/settlements.controller.ts",
+      "line": 58,
+      "access": "finance.settlement.reconcile",
+      "permissions": [
+        "finance.settlement.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Request writing off a SHORT batch — the maker half of the maker-checker pair"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/settlements/batches/:id/write-off",
+      "module": "settlements",
+      "controller": "SettlementsController",
+      "handler": "writeOff",
+      "file": "apps/api/src/modules/settlements/settlements.controller.ts",
+      "line": 75,
+      "access": "finance.settlement.reconcile",
+      "permissions": [
+        "finance.settlement.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Post the write-off — refused above the configured threshold without a prior, different approver"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/settlements/providers",
+      "module": "settlements",
+      "controller": "SettlementsController",
+      "handler": "listProviders",
+      "file": "apps/api/src/modules/settlements/settlements.controller.ts",
+      "line": 26,
+      "access": "finance.settlement.view | finance.settlement.reconcile",
+      "permissions": [
+        "finance.settlement.view",
+        "finance.settlement.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every registered settlement provider"
     },
     {
       "method": "GET",
@@ -10173,6 +10617,38 @@
       "summary": "Loyalty tiers and their benefits"
     },
     {
+      "method": "GET",
+      "path": "/managed-services/invoices",
+      "module": "managed-services",
+      "controller": "ManagedServicesController",
+      "handler": "invoices",
+      "file": "apps/api/src/modules/managed-services/managed-services.controller.ts",
+      "line": 21,
+      "access": "settings.manage",
+      "permissions": [
+        "settings.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/managed-services/usage",
+      "module": "managed-services",
+      "controller": "ManagedServicesController",
+      "handler": "usage",
+      "file": "apps/api/src/modules/managed-services/managed-services.controller.ts",
+      "line": 16,
+      "access": "settings.manage",
+      "permissions": [
+        "settings.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
       "method": "POST",
       "path": "/me/devices",
       "module": "core/notifications",
@@ -11323,7 +11799,7 @@
         "GET /admin/accounting/reports/profit-and-loss",
         "GET /admin/accounting/reports/trial-balance"
       ],
-      "uiSites": 0,
+      "uiSites": 1,
       "roles": [
         "ADMIN"
       ],
@@ -11383,6 +11859,7 @@
         "GET /admin/invoices",
         "POST /admin/invoices",
         "GET /admin/invoices/:id",
+        "GET /admin/invoices/overdue-summary",
         "GET /admin/offers",
         "POST /admin/offers",
         "GET /admin/orders",
@@ -11392,7 +11869,7 @@
         "POST /admin/quotes",
         "GET /admin/quotes/:id"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -11424,6 +11901,8 @@
       "category": "Sales",
       "sensitivity": "medium",
       "routes": [
+        "GET /admin/orders/:orderId/instalments",
+        "POST /admin/orders/:orderId/instalments/payments",
         "GET /admin/pos/products/search",
         "GET /admin/pos/receipts/:orderId",
         "POST /admin/pos/receipts/:orderId/print",
@@ -11434,9 +11913,37 @@
         "GET /admin/pos/shifts/:id/z-report",
         "POST /admin/pos/shifts/open"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "pos.instalments.cancel",
+      "label": "Cancel a layby/instalment plan — may forfeit or refund its deposit, per policy",
+      "category": "Sales",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/orders/:orderId/instalments/cancel"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "pos.instalments.default",
+      "label": "Mark a layby/instalment plan defaulted — writes off the unpaid balance",
+      "category": "Sales",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/orders/:orderId/instalments/default"
+      ],
+      "uiSites": 1,
+      "roles": [
         "ADMIN"
       ],
       "inSeed": true
@@ -11698,6 +12205,7 @@
       "category": "Catalogue",
       "sensitivity": "medium",
       "routes": [
+        "GET /admin/finance/gross-profit-today",
         "GET /admin/reports/export/stock-valuation"
       ],
       "uiSites": 15,
@@ -11928,9 +12436,11 @@
         "PUT /admin/settings/documents",
         "GET /admin/settings/media",
         "PUT /admin/settings/media",
-        "GET /admin/settings/permissions"
+        "GET /admin/settings/permissions",
+        "GET /managed-services/invoices",
+        "GET /managed-services/usage"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "ADMIN"
       ],
@@ -12132,6 +12642,85 @@
       "inSeed": true
     },
     {
+      "key": "finance.assets.depreciate",
+      "label": "Put a company asset on a depreciation schedule — a real accounting-policy decision",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/accounting/assets/:assetId/depreciation-schedule",
+        "POST /admin/accounting/assets/:assetId/depreciation-schedule"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.assets.dispose",
+      "label": "Dispose an asset — posts a real loss/gain to the ledger",
+      "category": "Finance",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/accounting/assets/:assetId/dispose"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.settlement.view",
+      "label": "View settlement batches — what a bank or gateway actually paid out, reconciled against what is owed",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/settlements/batches",
+        "GET /admin/settlements/batches/:id",
+        "GET /admin/settlements/providers"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.settlement.reconcile",
+      "label": "Register expected settlement batches, reconcile them, and request writing off a shortfall",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/settlements/batches",
+        "POST /admin/settlements/batches",
+        "GET /admin/settlements/batches/:id",
+        "POST /admin/settlements/batches/:id/reconcile",
+        "POST /admin/settlements/batches/:id/request-writeoff",
+        "POST /admin/settlements/batches/:id/write-off",
+        "GET /admin/settlements/providers"
+      ],
+      "uiSites": 3,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.settlement.approve_writeoff",
+      "label": "Approve writing off a settlement shortfall above the configured threshold",
+      "category": "Finance",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/settlements/batches/:id/approve-writeoff"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "fulfilment.view",
       "label": "View shipments, manifests, RTO and returns",
       "category": "Fulfilment",
@@ -12326,6 +12915,39 @@
       "inSeed": true
     },
     {
+      "key": "hr.assets.manage",
+      "label": "Issue and return company equipment (laptops, phones, uniforms) to staff",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/hr/assets",
+        "POST /admin/hr/assets",
+        "GET /admin/hr/assets/:id",
+        "POST /admin/hr/assets/:id/issue",
+        "POST /admin/hr/assets/assignments/:assignmentId/return",
+        "GET /admin/hr/assets/employees/:userId/unreturned"
+      ],
+      "uiSites": 3,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "hr.assets.writeoff",
+      "label": "Mark an asset retired or lost — a real cost, separate from day-to-day issue/return",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/hr/assets/:id/write-off"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -12408,7 +13030,7 @@
         "POST /admin/accounting/fiscal-years",
         "POST /admin/accounting/fiscal-years/:id/close"
       ],
-      "uiSites": 0,
+      "uiSites": 1,
       "roles": [
         "ADMIN"
       ],
@@ -12777,14 +13399,14 @@
       "name": "order.placed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:54",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:161",
-        "apps/api/src/modules/orders/orders.service.ts:449",
-        "apps/api/src/modules/orders/orders.service.ts:652"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:55",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:162",
+        "apps/api/src/modules/orders/orders.service.ts:463",
+        "apps/api/src/modules/orders/orders.service.ts:721"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:52 onOrderPlaced()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:53 onOrderPlaced()",
         "apps/api/src/modules/crm/order.subscriber.ts:27 onOrderPlaced()",
         "apps/api/src/modules/orders/notification.subscriber.ts:70 onOrderPlaced()",
         "apps/api/src/modules/orders/order-replication.listener.ts:48 onOrderPlaced()",
@@ -12796,8 +13418,8 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:675",
-        "apps/api/src/modules/orders/orders.service.ts:855"
+        "apps/api/src/modules/orders/orders.service.ts:748",
+        "apps/api/src/modules/orders/orders.service.ts:929"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -12812,7 +13434,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:855"
+        "apps/api/src/modules/orders/orders.service.ts:929"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -12824,15 +13446,16 @@
       "name": "payment.succeeded",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:121",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:158",
-        "apps/api/src/modules/orders/orders.service.ts:640",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:122",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:159",
+        "apps/api/src/modules/orders/instalment-plan.service.ts:90",
+        "apps/api/src/modules/orders/orders.service.ts:692",
         "apps/api/src/modules/payments/payments.service.ts:191",
         "apps/api/src/modules/payments/payments.service.ts:293",
         "apps/api/src/modules/payments/payments.service.ts:341"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:119 onPaymentSucceeded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:120 onPaymentSucceeded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:34 onPaymentSucceeded()"
       ]
     },
@@ -12865,7 +13488,7 @@
         "apps/api/src/modules/payments/payments.service.ts:400"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:156 onPaymentRefunded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:157 onPaymentRefunded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:118 onPaymentRefunded()"
       ]
     },
@@ -13049,11 +13672,11 @@
       "name": "inventory.stock_variance_recorded",
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:285",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:286",
         "apps/api/src/modules/inventory/inventory.service.ts:396"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:283 onStockVarianceRecorded()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:284 onStockVarianceRecorded()"
       ]
     },
     {
@@ -13102,11 +13725,11 @@
       "name": "purchasing.supplier_bill_raised",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:182",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:183",
         "apps/api/src/modules/purchasing/purchasing.service.ts:592"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:180 onSupplierBillRaised()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:181 onSupplierBillRaised()"
       ]
     },
     {
@@ -13114,11 +13737,11 @@
       "name": "purchasing.supplier_bill_paid",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:232",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:233",
         "apps/api/src/modules/purchasing/purchasing.service.ts:656"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:230 onSupplierBillPaid()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:231 onSupplierBillPaid()"
       ]
     },
     {
@@ -13126,11 +13749,11 @@
       "name": "transfers.inter_branch_invoiced",
       "doc": "An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3).",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:338",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:339",
         "apps/api/src/modules/transfers/transfers.service.ts:300"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:336 onInterBranchTransferInvoiced()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:337 onInterBranchTransferInvoiced()"
       ]
     },
     {
@@ -13212,12 +13835,12 @@
       "name": "finance.expense_recorded",
       "doc": "FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:398",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:399",
         "apps/api/src/modules/finance/finance.service.ts:252",
         "apps/api/src/modules/finance/finance.service.ts:645"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:396 onExpenseRecorded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:397 onExpenseRecorded()",
         "apps/api/src/modules/finance/expense-replication.listener.ts:38 onExpenseRecorded()"
       ]
     },
@@ -13226,7 +13849,7 @@
       "name": "finance.order_economics_computed",
       "doc": "OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists.",
       "publishers": [
-        "apps/api/src/modules/finance/order-economics.service.ts:127"
+        "apps/api/src/modules/finance/order-economics.service.ts:143"
       ],
       "subscribers": []
     },
@@ -13235,11 +13858,11 @@
       "name": "payroll.run_posted",
       "doc": "PayRunService.post() (docs/implementation/payroll/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:443",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:444",
         "apps/api/src/modules/payroll/pay-run.service.ts:186"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:441 onPayrollRunPosted()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:442 onPayrollRunPosted()"
       ]
     },
     {
@@ -13247,11 +13870,11 @@
       "name": "payroll.adjustment_posted",
       "doc": "PayRunService.postAdjustment() (docs/implementation/payroll/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:494",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:495",
         "apps/api/src/modules/payroll/pay-run.service.ts:237"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:492 onPayrollAdjustmentPosted()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:493 onPayrollAdjustmentPosted()"
       ]
     },
     {
@@ -13387,12 +14010,12 @@
       "name": "receivables.credit_note_issued",
       "doc": "145-receivables-credit-limits-dunning.md (WO-145.2) — CreditNotesService.issue().",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:533",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:560",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:534",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:561",
         "apps/api/src/modules/receivables/credit-notes.service.ts:130"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:531 onCreditNoteIssued()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:532 onCreditNoteIssued()"
       ]
     },
     {
@@ -13403,7 +14026,7 @@
         "apps/api/src/modules/receivables/credit-notes.service.ts:181"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:558 onCreditNoteVoided()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:559 onCreditNoteVoided()"
       ]
     },
     {
@@ -13411,12 +14034,12 @@
       "name": "receivables.debit_note_issued",
       "doc": "DebitNotesService.issue() — the AP-side mirror of CreditNoteIssued.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:579",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:605",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:580",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:606",
         "apps/api/src/modules/receivables/debit-notes.service.ts:93"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:577 onDebitNoteIssued()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:578 onDebitNoteIssued()"
       ]
     },
     {
@@ -13427,7 +14050,7 @@
         "apps/api/src/modules/receivables/debit-notes.service.ts:123"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:603 onDebitNoteVoided()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:604 onDebitNoteVoided()"
       ]
     },
     {
@@ -13438,6 +14061,27 @@
         "apps/api/src/modules/receivables/credit-terms.service.ts:86"
       ],
       "subscribers": []
+    },
+    {
+      "symbol": "NotificationSent",
+      "name": "notification.sent",
+      "doc": "NotificationsService.send() (doc 153, commercial-licensing-agency/ 153-usage-based-pricing-model.md, WO-153.2) — fires once per logical message, at the SAME consolidated call site every channel (emai…",
+      "publishers": [
+        "apps/api/src/core/notifications/notifications.service.ts:73"
+      ],
+      "subscribers": []
+    },
+    {
+      "symbol": "SettlementShortfallWrittenOff",
+      "name": "settlement.shortfall_written_off",
+      "doc": "49-financial-institution-settlement-partnerships.md (WO-49.4) — SettlementService.writeOffShortfall() on an accepted SHORT batch.",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:624",
+        "apps/api/src/modules/settlements/settlements.service.ts:210"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:622 onSettlementShortfallWrittenOff()"
+      ]
     }
   ],
   "models": [
@@ -13554,7 +14198,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 283,
+      "line": 293,
       "doc": "",
       "fields": [
         {
@@ -13743,9 +14387,77 @@
       ]
     },
     {
+      "name": "AgencyUsageSnapshot",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 743,
+      "doc": "One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe to delete and recompute (same discipline as `VariantSalesStat` on the tenant side).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "snapshotDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "capturedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "databaseBytes",
+          "type": "BigInt",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "emailsSent30d",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "activeUsers30d",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, snapshotDate])",
+        "@@index([tenantId, snapshotDate])"
+      ]
+    },
+    {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 600,
+      "line": 610,
       "doc": "",
       "fields": [
         {
@@ -13834,7 +14546,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 561,
+      "line": 571,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -13895,7 +14607,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 233,
+      "line": 243,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -14188,9 +14900,363 @@
       ]
     },
     {
+      "name": "Asset",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 21,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assetTag",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "category",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "purchaseCostMinor",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "purchasedOn",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "AssetStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assignments",
+          "type": "AssetAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "depreciationSchedule",
+          "type": "AssetDepreciationSchedule?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "AssetAssignment",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 50,
+      "doc": "One row per issue/return cycle — an asset's full custody history, never overwritten.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assetId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuedById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "returnedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "condition",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "asset",
+          "type": "Asset",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "issuedBy",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "returnedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([assetId])",
+        "@@index([userId, returnedAt])"
+      ]
+    },
+    {
+      "name": "AssetDepreciationPosting",
+      "file": "apps/api/prisma/schema/accounting.prisma",
+      "line": 272,
+      "doc": "One row per period posted — the same \"snapshot at write time, never re-derived\" discipline PayRunLine/OrderEconomics already establish.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "scheduleId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "postedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "schedule",
+          "type": "AssetDepreciationSchedule",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([scheduleId, periodStart])",
+        "@@index([scheduleId])"
+      ]
+    },
+    {
+      "name": "AssetDepreciationSchedule",
+      "file": "apps/api/prisma/schema/accounting.prisma",
+      "line": 236,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assetId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "method",
+          "type": "DepreciationMethod",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "acquisitionCostMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "salvageValueMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usefulLifeMonths",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decliningRateBps",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "closedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "asset",
+          "type": "Asset",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdBy",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "postings",
+          "type": "AssetDepreciationPosting[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([closedAt])"
+      ]
+    },
+    {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 373,
+      "line": 383,
       "doc": "",
       "fields": [
         {
@@ -16149,7 +17215,7 @@
     {
       "name": "CityCodRiskStat",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 326,
+      "line": 329,
       "doc": "WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's \"city RTO rate\" and \"order value versus the city's average\" signals.",
       "fields": [
         {
@@ -17047,7 +18113,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 541,
+      "line": 551,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -17398,7 +18464,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 328,
+      "line": 338,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -17584,7 +18650,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 189,
+      "line": 199,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -19053,6 +20119,207 @@
       ],
       "indexes": [
         "@@index([inboundEmailId, sentAt])"
+      ]
+    },
+    {
+      "name": "InstalmentPayment",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 61,
+      "doc": "One row per actual payment received — never assumed to match the schedule exactly; a customer paying early, late, or a different amount than scheduled is normal, and the schedule is a plan, not a con…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "paymentId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "receivedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isDeposit",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "plan",
+          "type": "InstalmentPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payment",
+          "type": "Payment",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([planId])"
+      ]
+    },
+    {
+      "name": "InstalmentPlan",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 24,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "InstalmentPlanType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "totalMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "depositMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "InstalmentPlanStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "cancelledAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "defaultedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Order",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "schedule",
+          "type": "InstalmentScheduleLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payments",
+          "type": "InstalmentPayment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "InstalmentScheduleLine",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 45,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "dueDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "plan",
+          "type": "InstalmentPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([planId, dueDate])"
       ]
     },
     {
@@ -21037,6 +22304,88 @@
       ]
     },
     {
+      "name": "MeteredOrderFee",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 640,
+      "doc": "Doc 153's own \"the reversal document, not the reversal flag\" — one row per order actually metered for the transaction fee, naming the specific order and the exact amount metered for it, so a later `R…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "feeMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "meteredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reversedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reversalCreditNoteId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, orderId])",
+        "@@index([tenantId, periodStart])"
+      ]
+    },
+    {
       "name": "NewsletterSubscriber",
       "file": "apps/api/prisma/schema/onsite-messaging.prisma",
       "line": 62,
@@ -22088,6 +23437,13 @@
           "relation": false
         },
         {
+          "name": "instalmentPlan",
+          "type": "InstalmentPlan?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "giftCardsSold",
           "type": "GiftCard[]",
           "id": false,
@@ -22290,7 +23646,7 @@
     {
       "name": "OrderItem",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 156,
+      "line": 159,
       "doc": "",
       "fields": [
         {
@@ -22568,7 +23924,7 @@
     {
       "name": "OrderNumberCounter",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 354,
+      "line": 357,
       "doc": "Backing store for sequential per-year order numbers (YSN-2026-0001).",
       "fields": [
         {
@@ -22591,7 +23947,7 @@
     {
       "name": "OrderStatusEvent",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 243,
+      "line": 246,
       "doc": "",
       "fields": [
         {
@@ -22716,7 +24072,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 514,
+      "line": 524,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -23103,7 +24459,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 172,
+      "line": 182,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -23299,6 +24655,20 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "instalmentPayment",
+          "type": "InstalmentPayment?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "settlementBatchLines",
+          "type": "SettlementBatchLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -23644,7 +25014,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 394,
+      "line": 404,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -23732,7 +25102,7 @@
     {
       "name": "PlatformCustomQuote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 412,
+      "line": 521,
       "doc": "WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…",
       "fields": [
         {
@@ -23856,7 +25226,7 @@
     {
       "name": "PlatformInvoice",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 345,
+      "line": 411,
       "doc": "",
       "fields": [
         {
@@ -23937,6 +25307,27 @@
           "relation": false
         },
         {
+          "name": "transactionFeeMinorSnapshot",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageRateCardSnapshot",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageLinesSnapshot",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "amountMinor",
           "type": "Int",
           "id": false,
@@ -23965,6 +25356,48 @@
           "relation": false
         },
         {
+          "name": "dueAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "dunningReminderSentAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stripeInvoiceId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "stripeHostedInvoiceUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stripePaymentStatus",
+          "type": "StripeInvoicePaymentStatus?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stripePaymentFailedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tenant",
           "type": "PlatformTenant",
           "id": false,
@@ -23988,13 +25421,14 @@
       ],
       "indexes": [
         "@@unique([tenantId, periodStart, periodEnd])",
-        "@@index([tenantId, issuedAt])"
+        "@@index([tenantId, issuedAt])",
+        "@@index([status, dueAt])"
       ]
     },
     {
       "name": "PlatformInvoiceCreditNote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 388,
+      "line": 497,
       "doc": "A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own \"the reversal document\" lens).",
       "fields": [
         {
@@ -24054,7 +25488,7 @@
     {
       "name": "PlatformOpsClient",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 213,
+      "line": 279,
       "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
       "fields": [
         {
@@ -24121,7 +25555,7 @@
     {
       "name": "PlatformPlan",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 99,
+      "line": 143,
       "doc": "",
       "fields": [
         {
@@ -24195,6 +25629,27 @@
           "relation": false
         },
         {
+          "name": "transactionFeeBps",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageRateCardMinor",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "includedAllowances",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tenants",
           "type": "PlatformTenant[]",
           "id": false,
@@ -24221,14 +25676,138 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "rateCardChangeRequests",
+          "type": "PlatformRateCardChangeRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": []
     },
     {
+      "name": "PlatformRateCardChangeRequest",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 696,
+      "doc": "doc 153's own \"the threshold nobody approves alone\" / \"authority and blast radius\" lenses, resolved with the identical create/approve split `PlatformCustomQuote` (doc 50 §4) already established: a ra…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "planId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedTransactionFeeBps",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedUsageRateCardMinor",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedIncludedAllowances",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requiresApproval",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "RateCardChangeStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestedByOpsClientId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedByOpsClientId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rejectedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rejectionReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "appliedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "plan",
+          "type": "PlatformPlan",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([planId])",
+        "@@index([status])"
+      ]
+    },
+    {
       "name": "PlatformSubscription",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 134,
+      "line": 200,
       "doc": "",
       "fields": [
         {
@@ -24425,6 +26004,41 @@
           "relation": false
         },
         {
+          "name": "mailDomain",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "apiKeyHash",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "apiKeyRotatedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stripeCustomerId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "stripeSubscriptionId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
           "name": "plan",
           "type": "PlatformPlan",
           "id": false,
@@ -24493,6 +26107,34 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "usageMeters",
+          "type": "UsageMeter[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "meteredOrderFees",
+          "type": "MeteredOrderFee[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "usageMeteringCursor",
+          "type": "UsageMeteringCursor?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "agencyUsageSnapshots",
+          "type": "AgencyUsageSnapshot[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -24504,7 +26146,7 @@
     {
       "name": "PlatformUsageRecord",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 150,
+      "line": 216,
       "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
       "fields": [
         {
@@ -27286,7 +28928,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 151,
+      "line": 161,
       "doc": "",
       "fields": [
         {
@@ -27675,7 +29317,7 @@
     {
       "name": "ResourceQuotaAlert",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 259,
+      "line": 325,
       "doc": "One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.",
       "fields": [
         {
@@ -27757,7 +29399,7 @@
     {
       "name": "ResourceTierQuota",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 234,
+      "line": 300,
       "doc": "--------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…",
       "fields": [
         {
@@ -28406,7 +30048,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 460,
+      "line": 470,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -28464,7 +30106,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 474,
+      "line": 484,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -28518,7 +30160,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 410,
+      "line": 420,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -28745,7 +30387,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 306,
+      "line": 316,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -28780,9 +30422,216 @@
       "indexes": []
     },
     {
+      "name": "SettlementBatch",
+      "file": "apps/api/prisma/schema/settlements.prisma",
+      "line": 29,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "settlementProviderId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "externalBatchRef",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expectedAmountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "settledAmountMinor",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "SettlementBatchStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "settledAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "writtenOffAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "writeoffRequestedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "writeoffApprovedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "writeoffNote",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "provider",
+          "type": "SettlementProvider",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "lines",
+          "type": "SettlementBatchLine[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([settlementProviderId, externalBatchRef])",
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "SettlementBatchLine",
+      "file": "apps/api/prisma/schema/settlements.prisma",
+      "line": 66,
+      "doc": "Which of our own Payment rows this settlement batch is meant to cover — the join a reconciliation report walks.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "batchId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "paymentId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "batch",
+          "type": "SettlementBatch",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "payment",
+          "type": "Payment",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([batchId, paymentId])"
+      ]
+    },
+    {
+      "name": "SettlementProvider",
+      "file": "apps/api/prisma/schema/settlements.prisma",
+      "line": 10,
+      "doc": "Financial institution settlement partnerships (finance-accounting/49-financial-institution-settlement-partnerships.md).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "batches",
+          "type": "SettlementBatch[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "Shipment",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 267,
+      "line": 270,
       "doc": "",
       "fields": [
         {
@@ -29569,7 +31418,7 @@
     {
       "name": "SignupVerification",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 447,
+      "line": 556,
       "doc": "A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.",
       "fields": [
         {
@@ -31724,7 +33573,7 @@
     {
       "name": "SupportAccessGrant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 165,
+      "line": 231,
       "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
       "fields": [
         {
@@ -32055,7 +33904,7 @@
     {
       "name": "TenantDataExport",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 303,
+      "line": 369,
       "doc": "",
       "fields": [
         {
@@ -32157,7 +34006,7 @@
     {
       "name": "TenantDeploymentCredential",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 193,
+      "line": 259,
       "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
       "fields": [
         {
@@ -32347,7 +34196,7 @@
     {
       "name": "TrialExtension",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 465,
+      "line": 574,
       "doc": "WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so \"extended more than once\" is a query, not a memory.",
       "fields": [
         {
@@ -32410,6 +34259,125 @@
       "indexes": [
         "@@index([tenantId, createdAt])"
       ]
+    },
+    {
+      "name": "UsageMeter",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 607,
+      "doc": "One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` increments off a tenant's own transactional outbox (`transaction_fee_minor`, `messages_sent`) or sets to the late…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "metric",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, metric, periodStart])",
+        "@@index([tenantId, periodStart])"
+      ]
+    },
+    {
+      "name": "UsageMeteringCursor",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 671,
+      "doc": "The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each batch — so a poll reads only the outbox rows it has not already applied, rather than rescanning the whole table…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "lastEventId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lastEventCreatedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "User",
@@ -32852,6 +34820,34 @@
           "relation": true
         },
         {
+          "name": "assetAssignments",
+          "type": "AssetAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "assetAssignmentsIssued",
+          "type": "AssetAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "assetAssignmentsReturned",
+          "type": "AssetAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "assetDepreciationSchedulesCreated",
+          "type": "AssetDepreciationSchedule[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "manifestsCreated",
           "type": "Manifest[]",
           "id": false,
@@ -32979,7 +34975,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 431,
+      "line": 441,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -33040,7 +35036,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 489,
+      "line": 499,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -33954,7 +35950,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 594,
+      "line": 604,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -33964,7 +35960,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 579,
+      "line": 589,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -34005,7 +36001,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 214,
+      "line": 224,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -34015,7 +36011,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 207,
+      "line": 217,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -34049,6 +36045,17 @@
       "values": [
         "PURCHASE_REQUISITION",
         "WALLET_ADJUSTMENT"
+      ]
+    },
+    {
+      "name": "AssetStatus",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 14,
+      "values": [
+        "AVAILABLE",
+        "ASSIGNED",
+        "RETIRED",
+        "LOST"
       ]
     },
     {
@@ -34176,9 +36183,18 @@
       ]
     },
     {
+      "name": "DepreciationMethod",
+      "file": "apps/api/prisma/schema/accounting.prisma",
+      "line": 231,
+      "values": [
+        "STRAIGHT_LINE",
+        "DECLINING_BALANCE"
+      ]
+    },
+    {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 529,
+      "line": 539,
       "values": [
         "IOS",
         "ANDROID",
@@ -34212,7 +36228,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 317,
+      "line": 327,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -34265,6 +36281,26 @@
       ]
     },
     {
+      "name": "InstalmentPlanStatus",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 17,
+      "values": [
+        "ACTIVE",
+        "COMPLETED",
+        "DEFAULTED",
+        "CANCELLED"
+      ]
+    },
+    {
+      "name": "InstalmentPlanType",
+      "file": "apps/api/prisma/schema/instalments.prisma",
+      "line": 12,
+      "values": [
+        "LAYBY",
+        "INSTALMENT"
+      ]
+    },
+    {
       "name": "InteractionKind",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 132,
@@ -34291,7 +36327,7 @@
     {
       "name": "InvoiceStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 340,
+      "line": 406,
       "values": [
         "ISSUED",
         "CREDITED"
@@ -34464,7 +36500,7 @@
     {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 203,
+      "line": 269,
       "values": [
         "ACTIVE",
         "REVOKED"
@@ -34493,7 +36529,7 @@
     {
       "name": "OrderItemFulfillmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 145,
+      "line": 148,
       "values": [
         "READY",
         "AWAITING_STOCK",
@@ -34518,7 +36554,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 503,
+      "line": 513,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -34573,7 +36609,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 422,
+      "line": 432,
       "values": [
         "GRANT",
         "REVOKE"
@@ -34601,11 +36637,12 @@
     {
       "name": "PricingModel",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 93,
+      "line": 129,
       "values": [
         "PER_SEAT",
         "FLAT_MONTHLY",
-        "ONE_TIME_LICENSE"
+        "ONE_TIME_LICENSE",
+        "USAGE_BASED"
       ]
     },
     {
@@ -34667,11 +36704,22 @@
     {
       "name": "QuoteStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 401,
+      "line": 510,
       "values": [
         "PENDING",
         "APPROVED",
         "REJECTED"
+      ]
+    },
+    {
+      "name": "RateCardChangeStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 681,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "APPLIED"
       ]
     },
     {
@@ -34792,6 +36840,17 @@
       ]
     },
     {
+      "name": "SettlementBatchStatus",
+      "file": "apps/api/prisma/schema/settlements.prisma",
+      "line": 22,
+      "values": [
+        "EXPECTED",
+        "CONFIRMED",
+        "SHORT",
+        "DISPUTED"
+      ]
+    },
+    {
       "name": "SettlementMode",
       "file": "apps/api/prisma/schema/transfers.prisma",
       "line": 35,
@@ -34804,7 +36863,7 @@
     {
       "name": "ShipmentStatus",
       "file": "apps/api/prisma/schema/orders.prisma",
-      "line": 258,
+      "line": 261,
       "values": [
         "PENDING",
         "DISPATCHED",
@@ -34924,9 +36983,19 @@
       ]
     },
     {
+      "name": "StripeInvoicePaymentStatus",
+      "file": "apps/platform/prisma/schema/platform.prisma",
+      "line": 730,
+      "values": [
+        "PENDING",
+        "PAID",
+        "FAILED"
+      ]
+    },
+    {
       "name": "SubscriptionStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 128,
+      "line": 194,
       "values": [
         "ACTIVE",
         "PAST_DUE",
@@ -34946,7 +37015,7 @@
     {
       "name": "TenantExportStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 283,
+      "line": 349,
       "values": [
         "PENDING",
         "RUNNING",
@@ -34957,7 +37026,7 @@
     {
       "name": "TenantExportTrigger",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 290,
+      "line": 356,
       "values": [
         "MANUAL",
         "DEPROVISION"
@@ -36404,6 +38473,48 @@
       ]
     },
     {
+      "folder": "20260925091000_wo153_usage_based_pricing",
+      "file": "apps/platform/prisma/schema/migrations/20260925091000_wo153_usage_based_pricing/migration.sql",
+      "date": "2026-09-25",
+      "slug": "wo153_usage_based_pricing",
+      "statements": 27,
+      "kinds": [
+        "ALTER TYPE",
+        "ALTER TABLE",
+        "CREATE INDEX",
+        "CREATE TABLE",
+        "CREATE TYPE",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "MeteredOrderFee",
+        "PlatformInvoice",
+        "PlatformPlan",
+        "PlatformRateCardChangeRequest",
+        "UsageMeter",
+        "UsageMeteringCursor"
+      ]
+    },
+    {
+      "folder": "20260925093000_wo14_agency_managed_services",
+      "file": "apps/platform/prisma/schema/migrations/20260925093000_wo14_agency_managed_services/migration.sql",
+      "date": "2026-09-25",
+      "slug": "wo14_agency_managed_services",
+      "statements": 19,
+      "kinds": [
+        "ALTER TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "AgencyUsageSnapshot",
+        "PlatformInvoice",
+        "PlatformTenant"
+      ]
+    },
+    {
       "folder": "20260925120000_add_personal_api_keys",
       "file": "apps/api/prisma/schema/migrations/20260925120000_add_personal_api_keys/migration.sql",
       "date": "2026-09-25",
@@ -36525,6 +38636,106 @@
         "DebitNote",
         "DunningEvent",
         "DunningPolicy"
+      ]
+    },
+    {
+      "folder": "20260925200000_add_hr_assets",
+      "file": "apps/api/prisma/schema/migrations/20260925200000_add_hr_assets/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_hr_assets",
+      "statements": 12,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "Asset",
+        "AssetAssignment"
+      ]
+    },
+    {
+      "folder": "20260925210000_add_asset_depreciation",
+      "file": "apps/api/prisma/schema/migrations/20260925210000_add_asset_depreciation/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_asset_depreciation",
+      "statements": 10,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "AssetDepreciationPosting",
+        "AssetDepreciationSchedule"
+      ]
+    },
+    {
+      "folder": "20260925220000_add_instalment_plans",
+      "file": "apps/api/prisma/schema/migrations/20260925220000_add_instalment_plans/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_instalment_plans",
+      "statements": 14,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "InstalmentPayment",
+        "InstalmentPlan",
+        "InstalmentScheduleLine"
+      ]
+    },
+    {
+      "folder": "20260925223000_add_instalment_payment_is_deposit",
+      "file": "apps/api/prisma/schema/migrations/20260925223000_add_instalment_payment_is_deposit/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_instalment_payment_is_deposit",
+      "statements": 1,
+      "kinds": [
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "InstalmentPayment"
+      ]
+    },
+    {
+      "folder": "20260925230000_add_settlements",
+      "file": "apps/api/prisma/schema/migrations/20260925230000_add_settlements/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_settlements",
+      "statements": 11,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "SettlementBatch",
+        "SettlementBatchLine",
+        "SettlementProvider"
+      ]
+    },
+    {
+      "folder": "20260925231500_add_settlement_writeoff_approval",
+      "file": "apps/api/prisma/schema/migrations/20260925231500_add_settlement_writeoff_approval/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_settlement_writeoff_approval",
+      "statements": 4,
+      "kinds": [
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "SettlementBatch"
       ]
     }
   ],
@@ -37424,6 +39635,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/accounting/fiscal-periods",
+      "file": "apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/ai",
       "file": "apps/web/src/app/(admin)/admin/(app)/ai/page.tsx",
       "client": true,
@@ -37919,6 +40139,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/hr/assets",
+      "file": "apps/web/src/app/(admin)/admin/(app)/hr/assets/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/hr/assets/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/import",
       "file": "apps/web/src/app/(admin)/admin/(app)/import/page.tsx",
       "client": true,
@@ -38036,6 +40274,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/invoices",
+      "file": "apps/web/src/app/(admin)/admin/(app)/invoices/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/leads",
       "file": "apps/web/src/app/(admin)/admin/(app)/leads/page.tsx",
       "client": true,
@@ -38056,6 +40303,15 @@
       "kind": "page",
       "url": "/admin/loyalty",
       "file": "apps/web/src/app/(admin)/admin/(app)/loyalty/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/managed-services",
+      "file": "apps/web/src/app/(admin)/admin/(app)/managed-services/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -38432,6 +40688,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/settlements",
+      "file": "apps/web/src/app/(admin)/admin/(app)/settlements/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/settlements/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/settlements/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/statements",
       "file": "apps/web/src/app/(admin)/admin/(app)/statements/page.tsx",
       "client": true,
@@ -38613,6 +40887,13 @@
   "nav": [],
   "crons": [
     {
+      "schedule": "0 2 1 * *",
+      "file": "apps/api/src/modules/accounting/asset-depreciation.cron.ts",
+      "line": 18,
+      "handler": "run",
+      "doc": ""
+    },
+    {
       "schedule": "0 1 * * *",
       "file": "apps/api/src/modules/analytics/supply-chain-digest.cron.ts",
       "line": 36,
@@ -38736,6 +41017,13 @@
       "file": "apps/api/src/modules/search/search-embedding.cron.ts",
       "line": 25,
       "handler": "embedPending",
+      "doc": ""
+    },
+    {
+      "schedule": "0 * * * *",
+      "file": "apps/api/src/modules/settlements/settlements.cron.ts",
+      "line": 18,
+      "handler": "run",
       "doc": ""
     }
   ],
@@ -39469,6 +41757,15 @@
       ]
     },
     {
+      "file": "apps/api/src/core/notifications/notifications.service.spec.ts",
+      "module": "core/notifications",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "NotificationsService"
+      ]
+    },
+    {
       "file": "apps/api/src/core/prisma/enums.spec.ts",
       "module": "core/prisma",
       "kind": "unit test",
@@ -39635,6 +41932,20 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/accounting/asset-depreciation.service.spec.ts",
+      "module": "accounting",
+      "kind": "unit test",
+      "cases": 24,
+      "describes": [
+        "monthlyDepreciation — pure",
+        "date helpers",
+        "AssetDepreciationService",
+        "createSchedule",
+        "postMonthlyDepreciation — WO-147.3 acceptance: a re-run posts nothing further",
+        "disposeAsset"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/accounting/consolidation.service.spec.ts",
       "module": "accounting",
       "kind": "unit test",
@@ -39679,7 +41990,7 @@
       "file": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "module": "accounting",
       "kind": "unit test",
-      "cases": 48,
+      "cases": 52,
       "describes": [
         "PostingRulesSubscriber — WO-19.2",
         "onOrderPlaced",
@@ -39695,6 +42006,7 @@
         "onCreditNoteIssued",
         "onCreditNoteVoided",
         "onDebitNoteIssued",
+        "onSettlementShortfallWrittenOff",
         "onDebitNoteVoided"
       ]
     },
@@ -40161,9 +42473,10 @@
       "file": "apps/api/src/modules/finance/order-economics.service.spec.ts",
       "module": "finance",
       "kind": "unit test",
-      "cases": 8,
+      "cases": 13,
       "describes": [
-        "OrderEconomicsService"
+        "OrderEconomicsService",
+        "grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md)"
       ]
     },
     {
@@ -40192,6 +42505,21 @@
       "describes": [
         "ShippingService — migrated zones produce the old fees",
         "computeRateFee — pure logic"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/hr/assets.service.spec.ts",
+      "module": "hr",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "AssetsService",
+        "createAsset",
+        "issue — WO-79 acceptance: an already-ASSIGNED asset cannot be issued again",
+        "returnAsset",
+        "writeOff",
+        "unreturnedAssetsFor — the offboarding gate’s own check",
+        "EmployeeOffboardingRegistry — WO-79.4, the offboarding gate"
       ]
     },
     {
@@ -40301,6 +42629,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/managed-services/managed-services.service.spec.ts",
+      "module": "managed-services",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "ManagedServicesService"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/marketing/campaigns.service.spec.ts",
       "module": "marketing",
       "kind": "unit test",
@@ -40400,6 +42737,18 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/orders/instalment-plan.service.spec.ts",
+      "module": "orders",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "InstalmentPlanService",
+        "recordInstalmentPayment",
+        "cancel",
+        "markDefaulted"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/orders/order-replication.listener.spec.ts",
       "module": "orders",
       "kind": "unit test",
@@ -40414,10 +42763,11 @@
       "file": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "module": "orders",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 12,
       "describes": [
         "OrdersService — placeFromPos (WO-21.3)",
-        "changeStatus — return releases stock to the order\\"
+        "changeStatus — return releases stock to the order\\",
+        "placeFromPos — instalmentPlan (WO-151.3)"
       ]
     },
     {
@@ -40846,14 +43196,30 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/settlements/settlements.service.spec.ts",
+      "module": "settlements",
+      "kind": "unit test",
+      "cases": 22,
+      "describes": [
+        "SettlementsService",
+        "createExpectedBatch",
+        "reconcile",
+        "pollExpectedBatches",
+        "requestWriteoff / approveWriteoff — the maker-checker pair",
+        "writeOffShortfall"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/tradingpartners/invoice.service.spec.ts",
       "module": "tradingpartners",
       "kind": "unit test",
-      "cases": 4,
+      "cases": 8,
       "describes": [
         "InvoiceService",
         "issue",
-        "findOne"
+        "findOne",
+        "overdueInvoicesSummary — WO-56.1",
+        "findAll — overdue filter"
       ]
     },
     {
@@ -40939,7 +43305,7 @@
       "file": "apps/api/src/modules/users/users-admin.service.spec.ts",
       "module": "users",
       "kind": "unit test",
-      "cases": 10,
+      "cases": 12,
       "describes": [
         "UsersAdminService.create — role selection at creation time",
         "UsersAdminService.update — deactivation ends every personal API key (canonical ruling 6)",
@@ -41307,16 +43673,94 @@
       ]
     },
     {
+      "file": "apps/platform/src/modules/agency/agency-api-key.guard.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "AgencyApiKeyGuard"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-clients.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "AgencyClientsService",
+        "list",
+        "register",
+        "rotateKey"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-cross-tenant.integration.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": []
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-key.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "agency-key"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-reporting.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "AgencyReportingService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-stripe.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "AgencyStripeService",
+        "chargeInvoice",
+        "handleWebhookEvent"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/agency/agency-usage.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "AgencyUsageService",
+        "listRegisteredTenantIds",
+        "captureSnapshotForTenant"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/billing/billing-period.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "currentCalendarMonthPeriod"
+      ]
+    },
+    {
       "file": "apps/platform/src/modules/billing/billing.service.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 9,
+      "cases": 15,
       "describes": [
         "BillingService",
         "issueInvoiceForPeriod",
         "runBillingForPeriod",
         "issueCreditNote",
-        "previewInvoice"
+        "previewInvoice",
+        "USAGE_BASED (doc 153)"
       ]
     },
     {
@@ -41334,9 +43778,21 @@
       "file": "apps/platform/src/modules/billing/plans.service.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 5,
+      "cases": 7,
       "describes": [
         "PlansService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/billing/rate-card.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "RateCardService",
+        "proposeChange",
+        "approve",
+        "apply"
       ]
     },
     {
@@ -41346,6 +43802,18 @@
       "cases": 3,
       "describes": [
         "SeatCounterService"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/billing/usage-metering.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 11,
+      "describes": [
+        "UsageMeteringService",
+        "pollTenant",
+        "snapshotAllowances",
+        "getMetersForPeriod"
       ]
     },
     {
@@ -41521,6 +43989,16 @@
       "cases": 19,
       "describes": [
         "computeCodRiskScore"
+      ]
+    },
+    {
+      "file": "packages/shared/src/constants.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "formatMoneyIn",
+        "formatBytes"
       ]
     },
     {
@@ -41965,7 +44443,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5308,
+      "bytes": 5340,
       "doc": "",
       "symbols": []
     },
@@ -41973,8 +44451,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 162,
-      "bytes": 7976,
+      "lines": 174,
+      "bytes": 8747,
       "doc": "",
       "symbols": []
     },
@@ -41983,7 +44461,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5753,
+      "bytes": 5785,
       "doc": "",
       "symbols": []
     },
@@ -42276,8 +44754,8 @@
       "path": "apps/api/prisma/schema/accounting.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 222,
-      "bytes": 9701,
+      "lines": 285,
+      "bytes": 12311,
       "doc": "The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a",
       "symbols": []
     },
@@ -42330,8 +44808,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 620,
-      "bytes": 24835,
+      "lines": 630,
+      "bytes": 25629,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -42372,12 +44850,30 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/hr.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 69,
+      "bytes": 2845,
+      "doc": "Employee assets: which physical equipment (laptop, phone, uniform) is",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/identity-verification.prisma",
       "area": "api",
       "kind": "prisma schema",
       "lines": 40,
       "bytes": 1506,
       "doc": "/ Tracks a User's identity verification against nID (Newax's external",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/instalments.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 76,
+      "bytes": 2864,
+      "doc": "Layby and instalment sales (finance-accounting/151-layby-installment-sales.md)",
       "symbols": []
     },
     {
@@ -43083,6 +45579,60 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925200000_add_hr_assets/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 62,
+      "bytes": 2356,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260925210000_add_asset_depreciation/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 59,
+      "bytes": 2467,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260925220000_add_instalment_plans/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 74,
+      "bytes": 2777,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260925223000_add_instalment_payment_is_deposit/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 9,
+      "bytes": 446,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260925230000_add_settlements/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 63,
+      "bytes": 2366,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260925231500_add_settlement_writeoff_approval/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 10,
+      "bytes": 515,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -43113,8 +45663,8 @@
       "path": "apps/api/prisma/schema/orders.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 358,
-      "bytes": 15237,
+      "lines": 361,
+      "bytes": 15421,
       "doc": "Orders and shipments.",
       "symbols": []
     },
@@ -43140,8 +45690,8 @@
       "path": "apps/api/prisma/schema/payments.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 48,
-      "bytes": 1418,
+      "lines": 55,
+      "bytes": 1867,
       "doc": "Payments. `provider` is a plain string key, not an enum, so a new gateway is",
       "symbols": []
     },
@@ -43233,6 +45783,15 @@
       "lines": 40,
       "bytes": 1447,
       "doc": "Search. WO-8.3,",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/settlements.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 77,
+      "bytes": 3142,
+      "doc": "Financial institution settlement partnerships",
       "symbols": []
     },
     {
@@ -44550,8 +47109,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 330,
-      "bytes": 14590,
+      "lines": 341,
+      "bytes": 15243,
       "doc": "",
       "symbols": [
         {
@@ -44562,12 +47121,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 196
+          "line": 207
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 222
+          "line": 233
         }
       ]
     },
@@ -44629,8 +47188,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 624,
-      "bytes": 24723,
+      "lines": 665,
+      "bytes": 27034,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -44641,262 +47200,272 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 123
+          "line": 144
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 125
+          "line": 146
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 138
+          "line": 159
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 146
+          "line": 167
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 154
+          "line": 175
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 174
+          "line": 195
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 180
+          "line": 201
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 187
+          "line": 208
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 194
+          "line": 215
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 198
+          "line": 219
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 204
+          "line": 225
         },
         {
           "name": "ApiKeyIssuedPayload",
           "kind": "interface",
-          "line": 215
+          "line": 236
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 223
+          "line": 244
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 230
+          "line": 251
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 240
+          "line": 261
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 249
+          "line": 270
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 258
+          "line": 279
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 266
+          "line": 287
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 274
+          "line": 295
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 285
+          "line": 306
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 292
+          "line": 313
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 301
+          "line": 322
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 309
+          "line": 330
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 314
+          "line": 335
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 322
+          "line": 343
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 327
+          "line": 348
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 333
+          "line": 354
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 339
+          "line": 360
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 351
+          "line": 372
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 366
+          "line": 387
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 374
+          "line": 395
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 388
+          "line": 409
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 401
+          "line": 422
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 414
+          "line": 435
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 430
+          "line": 451
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 438
+          "line": 459
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 450
+          "line": 471
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 461
+          "line": 482
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 472
+          "line": 493
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 479
+          "line": 500
         },
         {
           "name": "WalletCreditPurchasedPayload",
           "kind": "interface",
-          "line": 485
+          "line": 506
         },
         {
           "name": "WalletCreditRedeemedPayload",
           "kind": "interface",
-          "line": 493
+          "line": 514
         },
         {
           "name": "WalletCreditRefundedPayload",
           "kind": "interface",
-          "line": 502
+          "line": 523
         },
         {
           "name": "MerchantPayableCreatedPayload",
           "kind": "interface",
-          "line": 513
+          "line": 534
         },
         {
           "name": "MerchantPayablePaidPayload",
           "kind": "interface",
-          "line": 520
+          "line": 541
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 527
+          "line": 548
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 533
+          "line": 554
         },
         {
           "name": "CreditNoteIssuedPayload",
           "kind": "interface",
-          "line": 595
+          "line": 618
         },
         {
           "name": "CreditNoteVoidedPayload",
           "kind": "interface",
-          "line": 604
+          "line": 627
         },
         {
           "name": "DebitNoteIssuedPayload",
           "kind": "interface",
-          "line": 608
+          "line": 631
         },
         {
           "name": "DebitNoteVoidedPayload",
           "kind": "interface",
-          "line": 616
+          "line": 639
         },
         {
           "name": "CreditHoldAppliedPayload",
           "kind": "interface",
-          "line": 620
+          "line": 643
+        },
+        {
+          "name": "NotificationSentPayload",
+          "kind": "interface",
+          "line": 648
+        },
+        {
+          "name": "SettlementShortfallWrittenOffPayload",
+          "kind": "interface",
+          "line": 659
         }
       ]
     },
@@ -45035,6 +47604,31 @@
       ]
     },
     {
+      "path": "apps/api/src/core/extension-points/employee-offboarding.registry.ts",
+      "area": "api",
+      "kind": "registry",
+      "lines": 39,
+      "bytes": 1419,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UnreturnedAsset",
+          "kind": "interface",
+          "line": 3
+        },
+        {
+          "name": "EmployeeOffboardingHandler",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "EmployeeOffboardingRegistry",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
       "area": "api",
       "kind": "registry",
@@ -45058,14 +47652,14 @@
       "path": "apps/api/src/core/extension-points/extension-points.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 42,
-      "bytes": 1673,
+      "lines": 45,
+      "bytes": 1847,
       "doc": "",
       "symbols": [
         {
           "name": "ExtensionPointsModule",
           "kind": "class",
-          "line": 41
+          "line": 44
         }
       ]
     },
@@ -45816,17 +48410,26 @@
       ]
     },
     {
+      "path": "apps/api/src/core/notifications/notifications.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 98,
+      "bytes": 3199,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/notifications/notifications.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 63,
-      "bytes": 2039,
+      "lines": 80,
+      "bytes": 2877,
       "doc": "",
       "symbols": [
         {
           "name": "NotificationsService",
           "kind": "class",
-          "line": 17
+          "line": 19
         }
       ]
     },
@@ -46321,8 +48924,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 426,
-      "bytes": 22941,
+      "lines": 433,
+      "bytes": 24179,
       "doc": "",
       "symbols": [
         {
@@ -46358,12 +48961,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 268
+          "line": 272
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 270
+          "line": 274
         }
       ]
     },
@@ -46652,14 +49255,14 @@
       "path": "apps/api/src/modules/accounting/accounting.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 30,
-      "bytes": 1671,
+      "lines": 46,
+      "bytes": 2348,
       "doc": "",
       "symbols": [
         {
           "name": "AccountingModule",
           "kind": "class",
-          "line": 29
+          "line": 45
         }
       ]
     },
@@ -46703,11 +49306,95 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/accounting/asset-depreciation.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 50,
+      "bytes": 2243,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetDepreciationController",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounting/asset-depreciation.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 24,
+      "bytes": 965,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetDepreciationCron",
+          "kind": "class",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounting/asset-depreciation.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 376,
+      "bytes": 14888,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/accounting/asset-depreciation.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 295,
+      "bytes": 11791,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "monthKey",
+          "kind": "function",
+          "line": 9
+        },
+        {
+          "name": "startOfMonthUTC",
+          "kind": "function",
+          "line": 13
+        },
+        {
+          "name": "endOfMonthUTC",
+          "kind": "function",
+          "line": 17
+        },
+        {
+          "name": "monthsBetweenUTC",
+          "kind": "function",
+          "line": 22
+        },
+        {
+          "name": "DepreciationInput",
+          "kind": "interface",
+          "line": 26
+        },
+        {
+          "name": "monthlyDepreciation",
+          "kind": "function",
+          "line": 46
+        },
+        {
+          "name": "AssetDepreciationService",
+          "kind": "class",
+          "line": 77
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/accounting/chart-of-accounts.ts",
       "area": "api",
       "kind": "module",
-      "lines": 81,
-      "bytes": 4016,
+      "lines": 112,
+      "bytes": 6045,
       "doc": "",
       "symbols": [
         {
@@ -46718,7 +49405,7 @@
         {
           "name": "ACCOUNT_CODE",
           "kind": "const",
-          "line": 58
+          "line": 84
         }
       ]
     },
@@ -46761,6 +49448,26 @@
         },
         {
           "name": "ConsolidationService",
+          "kind": "class",
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounting/dto/asset-depreciation.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 53,
+      "bytes": 1098,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateDepreciationScheduleDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "DisposeAssetDto",
           "kind": "class",
           "line": 41
         }
@@ -46893,8 +49600,8 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 746,
-      "bytes": 26632,
+      "lines": 790,
+      "bytes": 28331,
       "doc": "",
       "symbols": []
     },
@@ -46902,14 +49609,14 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 613,
-      "bytes": 27561,
+      "lines": 653,
+      "bytes": 29358,
       "doc": "",
       "symbols": [
         {
           "name": "PostingRulesSubscriber",
           "kind": "class",
-          "line": 38
+          "line": 39
         }
       ]
     },
@@ -49371,14 +52078,14 @@
       "path": "apps/api/src/modules/finance/finance.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 176,
-      "bytes": 6289,
+      "lines": 187,
+      "bytes": 6819,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceController",
           "kind": "class",
-          "line": 40
+          "line": 41
         }
       ]
     },
@@ -49522,8 +52229,8 @@
       "path": "apps/api/src/modules/finance/order-economics.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 216,
-      "bytes": 8712,
+      "lines": 298,
+      "bytes": 12835,
       "doc": "",
       "symbols": []
     },
@@ -49531,14 +52238,24 @@
       "path": "apps/api/src/modules/finance/order-economics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 137,
-      "bytes": 5060,
+      "lines": 205,
+      "bytes": 7491,
       "doc": "",
       "symbols": [
         {
+          "name": "GrossProfitTransaction",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "GrossProfitToday",
+          "kind": "interface",
+          "line": 20
+        },
+        {
           "name": "OrderEconomicsService",
           "kind": "class",
-          "line": 40
+          "line": 56
         }
       ]
     },
@@ -50066,6 +52783,90 @@
           "name": "StoreCreditService",
           "kind": "class",
           "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/assets.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 73,
+      "bytes": 2899,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetsController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/assets.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 211,
+      "bytes": 8203,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/hr/assets.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 149,
+      "bytes": 6164,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetsService",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/dto/asset.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 49,
+      "bytes": 973,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateAssetDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "IssueAssetDto",
+          "kind": "class",
+          "line": 31
+        },
+        {
+          "name": "ReturnAssetDto",
+          "kind": "class",
+          "line": 37
+        },
+        {
+          "name": "WriteOffAssetDto",
+          "kind": "class",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/hr.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 16,
+      "bytes": 448,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "HrModule",
+          "kind": "class",
+          "line": 15
         }
       ]
     },
@@ -50695,6 +53496,60 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/managed-services/managed-services.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 25,
+      "bytes": 756,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManagedServicesController",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/managed-services/managed-services.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 19,
+      "bytes": 823,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManagedServicesModule",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/managed-services/managed-services.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 56,
+      "bytes": 2358,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/managed-services/managed-services.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 57,
+      "bytes": 2333,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManagedServicesService",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/marketing/campaign-dispatch.cron.ts",
       "area": "api",
       "kind": "scheduled job",
@@ -51062,8 +53917,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 98,
-      "bytes": 3030,
+      "lines": 106,
+      "bytes": 3463,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -51082,24 +53937,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 204,
-      "bytes": 10966,
+      "lines": 221,
+      "bytes": 12114,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 45
+          "line": 48
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 76
+          "line": 79
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 180
+          "line": 197
         }
       ]
     },
@@ -51325,6 +54180,21 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/orders/dto/instalment-plan.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 16,
+      "bytes": 379,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecordInstalmentPaymentDto",
+          "kind": "class",
+          "line": 4
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/orders/dto/order.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -51361,6 +54231,45 @@
           "name": "OrderHistoryQueryDto",
           "kind": "class",
           "line": 137
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orders/instalment-plan.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 52,
+      "bytes": 2270,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InstalmentPlanController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orders/instalment-plan.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 239,
+      "bytes": 10355,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/orders/instalment-plan.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 228,
+      "bytes": 9718,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InstalmentPlanService",
+          "kind": "class",
+          "line": 22
         }
       ]
     },
@@ -51407,8 +54316,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 277,
-      "bytes": 11805,
+      "lines": 405,
+      "bytes": 17475,
       "doc": "",
       "symbols": []
     },
@@ -51436,14 +54345,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 50,
-      "bytes": 2549,
+      "lines": 53,
+      "bytes": 2742,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 49
+          "line": 52
         }
       ]
     },
@@ -51451,8 +54360,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1226,
-      "bytes": 48135,
+      "lines": 1300,
+      "bytes": 51573,
       "doc": "",
       "symbols": [
         {
@@ -51461,14 +54370,19 @@
           "line": 41
         },
         {
+          "name": "PlaceFromPosInstalmentInput",
+          "kind": "interface",
+          "line": 53
+        },
+        {
           "name": "PlaceFromPosInput",
           "kind": "interface",
-          "line": 46
+          "line": 59
         },
         {
           "name": "OrdersService",
           "kind": "class",
-          "line": 92
+          "line": 106
         }
       ]
     },
@@ -52222,19 +55136,29 @@
       "path": "apps/api/src/modules/pos/dto/pos-sale.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 40,
-      "bytes": 945,
+      "lines": 94,
+      "bytes": 2042,
       "doc": "",
       "symbols": [
         {
+          "name": "InstalmentScheduleLineDto",
+          "kind": "class",
+          "line": 19
+        },
+        {
+          "name": "PosInstalmentPlanDto",
+          "kind": "class",
+          "line": 35
+        },
+        {
           "name": "PosSaleLineDto",
           "kind": "class",
-          "line": 5
+          "line": 53
         },
         {
           "name": "CreatePosSaleDto",
           "kind": "class",
-          "line": 17
+          "line": 65
         }
       ]
     },
@@ -52380,8 +55304,8 @@
       "path": "apps/api/src/modules/pos/pos-sales.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 24,
-      "bytes": 1004,
+      "lines": 30,
+      "bytes": 1069,
       "doc": "",
       "symbols": [
         {
@@ -52404,8 +55328,8 @@
       "path": "apps/api/src/modules/pos/pos-sales.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 59,
-      "bytes": 2188,
+      "lines": 63,
+      "bytes": 2431,
       "doc": "",
       "symbols": [
         {
@@ -53979,6 +56903,110 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/settlements/dto/settlement.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 27,
+      "bytes": 559,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateExpectedBatchDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "RequestWriteoffDto",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/settlements/settlement-connector.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 30,
+      "bytes": 1602,
+      "doc": "Extension point: financial institution settlement connectors (finance-accounting/49-financial-institution-settlement-partnerships.md §2).",
+      "symbols": [
+        {
+          "name": "FinancialInstitutionConnector",
+          "kind": "interface",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/settlements/settlements.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 79,
+      "bytes": 3509,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SettlementsController",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/settlements/settlements.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 26,
+      "bytes": 983,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SettlementsCron",
+          "kind": "class",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/settlements/settlements.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 23,
+      "bytes": 1016,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SettlementsModule",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/settlements/settlements.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 282,
+      "bytes": 12009,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/settlements/settlements.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 230,
+      "bytes": 10724,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SettlementsService",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/stitching/design-options.service.ts",
       "area": "api",
       "kind": "service",
@@ -54347,19 +57375,24 @@
       "path": "apps/api/src/modules/tradingpartners/dto/invoice.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 67,
-      "bytes": 1222,
+      "lines": 77,
+      "bytes": 1601,
       "doc": "",
       "symbols": [
         {
           "name": "InvoiceLineDto",
           "kind": "class",
-          "line": 16
+          "line": 17
         },
         {
           "name": "CreateInvoiceDto",
           "kind": "class",
-          "line": 38
+          "line": 39
+        },
+        {
+          "name": "InvoiceQueryDto",
+          "kind": "class",
+          "line": 69
         }
       ]
     },
@@ -54452,8 +57485,8 @@
       "path": "apps/api/src/modules/tradingpartners/invoice.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 106,
-      "bytes": 4095,
+      "lines": 150,
+      "bytes": 6256,
       "doc": "",
       "symbols": []
     },
@@ -54461,8 +57494,8 @@
       "path": "apps/api/src/modules/tradingpartners/invoice.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 117,
-      "bytes": 4551,
+      "lines": 139,
+      "bytes": 5429,
       "doc": "",
       "symbols": [
         {
@@ -54476,8 +57509,8 @@
       "path": "apps/api/src/modules/tradingpartners/invoices.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 31,
-      "bytes": 1001,
+      "lines": 37,
+      "bytes": 1274,
       "doc": "",
       "symbols": [
         {
@@ -54909,8 +57942,8 @@
       "path": "apps/api/src/modules/users/users-admin.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 223,
-      "bytes": 9051,
+      "lines": 242,
+      "bytes": 10234,
       "doc": "",
       "symbols": []
     },
@@ -54918,14 +57951,14 @@
       "path": "apps/api/src/modules/users/users-admin.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 356,
-      "bytes": 11747,
+      "lines": 373,
+      "bytes": 12760,
       "doc": "",
       "symbols": [
         {
           "name": "UsersAdminService",
           "kind": "class",
-          "line": 25
+          "line": 26
         }
       ]
     },
@@ -56847,8 +59880,8 @@
       "path": "apps/platform/package.json",
       "area": "root",
       "kind": "json",
-      "lines": 55,
-      "bytes": 1499,
+      "lines": 56,
+      "bytes": 1523,
       "doc": "",
       "symbols": []
     },
@@ -56898,6 +59931,24 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/migrations/20260925091000_wo153_usage_based_pricing/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 126,
+      "bytes": 5905,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/prisma/schema/migrations/20260925093000_wo14_agency_managed_services/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 56,
+      "bytes": 3099,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
       "area": "root",
       "kind": "toml",
@@ -56910,8 +59961,8 @@
       "path": "apps/platform/prisma/schema/platform.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 478,
-      "bytes": 19309,
+      "lines": 767,
+      "bytes": 34270,
       "doc": "WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the",
       "symbols": []
     },
@@ -56928,14 +59979,14 @@
       "path": "apps/platform/src/app.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 44,
-      "bytes": 1946,
+      "lines": 46,
+      "bytes": 2027,
       "doc": "",
       "symbols": [
         {
           "name": "AppModule",
           "kind": "class",
-          "line": 43
+          "line": 45
         }
       ]
     },
@@ -56973,8 +60024,8 @@
       "path": "apps/platform/src/core/config/env.validation.ts",
       "area": "root",
       "kind": "config",
-      "lines": 130,
-      "bytes": 6606,
+      "lines": 194,
+      "bytes": 9882,
       "doc": "",
       "symbols": [
         {
@@ -56985,12 +60036,12 @@
         {
           "name": "PlatformEnv",
           "kind": "type",
-          "line": 121
+          "line": 185
         },
         {
           "name": "validatePlatformEnv",
           "kind": "function",
-          "line": 123
+          "line": 187
         }
       ]
     },
@@ -57159,8 +60210,8 @@
       "path": "apps/platform/src/core/security/ops-permissions.ts",
       "area": "root",
       "kind": "module",
-      "lines": 26,
-      "bytes": 1153,
+      "lines": 45,
+      "bytes": 2170,
       "doc": "The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps/api's tenant-facing PBAC catalog, seeded against that app's own User/Role/RolePermission tables.",
       "symbols": [
         {
@@ -57171,7 +60222,7 @@
         {
           "name": "PlatformPermission",
           "kind": "type",
-          "line": 25
+          "line": 44
         }
       ]
     },
@@ -57209,23 +60260,370 @@
       "path": "apps/platform/src/main.ts",
       "area": "root",
       "kind": "module",
-      "lines": 48,
-      "bytes": 1701,
+      "lines": 52,
+      "bytes": 2003,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-api-key.guard.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 3106,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-api-key.guard.ts",
+      "area": "root",
+      "kind": "guard",
+      "lines": 58,
+      "bytes": 2555,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestWithAgencyClient",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "AgencyApiKeyGuard",
+          "kind": "class",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-clients.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 45,
+      "bytes": 1650,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyClientsController",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-clients.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 72,
+      "bytes": 3082,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-clients.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 108,
+      "bytes": 4591,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyClientsService",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-cross-tenant.integration.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 155,
+      "bytes": 6499,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-key-throttler.guard.ts",
+      "area": "root",
+      "kind": "guard",
+      "lines": 28,
+      "bytes": 1473,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyKeyThrottlerGuard",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-key.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 25,
+      "bytes": 1035,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-key.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 28,
+      "bytes": 1343,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "generateAgencyApiKey",
+          "kind": "function",
+          "line": 21
+        },
+        {
+          "name": "hashAgencyApiKey",
+          "kind": "function",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-reporting.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 36,
+      "bytes": 1568,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyReportingController",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-reporting.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 52,
+      "bytes": 1934,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-reporting.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 64,
+      "bytes": 2362,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyReportingService",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-stripe-charge.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 45,
+      "bytes": 1721,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyStripeChargeCron",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-stripe-webhook.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 30,
+      "bytes": 1417,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyStripeWebhookController",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-stripe.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 146,
+      "bytes": 6457,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-stripe.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 180,
+      "bytes": 7473,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyStripeService",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-usage.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 38,
+      "bytes": 1335,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyUsageCron",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-usage.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 120,
+      "bytes": 5167,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency-usage.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 118,
+      "bytes": 4703,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyUsageService",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/agency.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 46,
+      "bytes": 2244,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AgencyModule",
+          "kind": "class",
+          "line": 45
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/decorators.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 12,
+      "bytes": 639,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CurrentAgencyClient",
+          "kind": "const",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/dto/register-agency-client.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 29,
+      "bytes": 1051,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RegisterAgencyClientDto",
+          "kind": "class",
+          "line": 11
+        },
+        {
+          "name": "UpdateAgencyClientDto",
+          "kind": "class",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/agency/stalwart-admin.client.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 54,
+      "bytes": 2631,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "StalwartAdminClient",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/billing-period.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 18,
+      "bytes": 761,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/billing-period.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 18,
+      "bytes": 692,
+      "doc": "The one place a calendar-month billing period is computed from \"now\" — shared by `BillingCron` (doc 50 §3) and `UsageMeteringCron` (doc 153 §2) so the two never compute period boundaries by two slightly different routes.",
+      "symbols": [
+        {
+          "name": "BillingPeriod",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "currentCalendarMonthPeriod",
+          "kind": "function",
+          "line": 13
+        }
+      ]
     },
     {
       "path": "apps/platform/src/modules/billing/billing.controller.ts",
       "area": "root",
       "kind": "controller",
-      "lines": 34,
-      "bytes": 1402,
+      "lines": 48,
+      "bytes": 2089,
       "doc": "",
       "symbols": [
         {
           "name": "BillingController",
           "kind": "class",
-          "line": 10
+          "line": 11
         }
       ]
     },
@@ -57233,14 +60631,14 @@
       "path": "apps/platform/src/modules/billing/billing.cron.ts",
       "area": "root",
       "kind": "scheduled job",
-      "lines": 26,
-      "bytes": 1235,
+      "lines": 25,
+      "bytes": 1161,
       "doc": "",
       "symbols": [
         {
           "name": "BillingCron",
           "kind": "class",
-          "line": 11
+          "line": 12
         }
       ]
     },
@@ -57248,14 +60646,14 @@
       "path": "apps/platform/src/modules/billing/billing.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 17,
-      "bytes": 789,
+      "lines": 32,
+      "bytes": 1268,
       "doc": "",
       "symbols": [
         {
           "name": "BillingModule",
           "kind": "class",
-          "line": 16
+          "line": 31
         }
       ]
     },
@@ -57263,8 +60661,8 @@
       "path": "apps/platform/src/modules/billing/billing.service.spec.ts",
       "area": "root",
       "kind": "unit test",
-      "lines": 189,
-      "bytes": 8835,
+      "lines": 285,
+      "bytes": 13599,
       "doc": "",
       "symbols": []
     },
@@ -57272,19 +60670,29 @@
       "path": "apps/platform/src/modules/billing/billing.service.ts",
       "area": "root",
       "kind": "service",
-      "lines": 196,
-      "bytes": 8168,
+      "lines": 275,
+      "bytes": 11901,
       "doc": "",
       "symbols": [
         {
+          "name": "UsageLine",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "UsageBreakdown",
+          "kind": "interface",
+          "line": 20
+        },
+        {
           "name": "InvoicePreview",
           "kind": "interface",
-          "line": 7
+          "line": 25
         },
         {
           "name": "BillingService",
           "kind": "class",
-          "line": 26
+          "line": 45
         }
       ]
     },
@@ -57336,8 +60744,8 @@
       "path": "apps/platform/src/modules/billing/dto/create-plan.dto.ts",
       "area": "root",
       "kind": "dto",
-      "lines": 50,
-      "bytes": 1287,
+      "lines": 64,
+      "bytes": 1579,
       "doc": "",
       "symbols": [
         {
@@ -57368,6 +60776,26 @@
       ]
     },
     {
+      "path": "apps/platform/src/modules/billing/dto/rate-card.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 27,
+      "bytes": 753,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProposeRateCardChangeDto",
+          "kind": "class",
+          "line": 7
+        },
+        {
+          "name": "RejectRateCardChangeDto",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/platform/src/modules/billing/dto/request-quote.dto.ts",
       "area": "root",
       "kind": "dto",
@@ -57384,6 +60812,21 @@
           "name": "RejectQuoteDto",
           "kind": "class",
           "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/invoice-dunning.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 52,
+      "bytes": 2129,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InvoiceDunningCron",
+          "kind": "class",
+          "line": 18
         }
       ]
     },
@@ -57406,8 +60849,8 @@
       "path": "apps/platform/src/modules/billing/plans.service.spec.ts",
       "area": "root",
       "kind": "unit test",
-      "lines": 61,
-      "bytes": 2765,
+      "lines": 88,
+      "bytes": 3857,
       "doc": "",
       "symbols": []
     },
@@ -57415,14 +60858,58 @@
       "path": "apps/platform/src/modules/billing/plans.service.ts",
       "area": "root",
       "kind": "service",
-      "lines": 42,
-      "bytes": 1998,
+      "lines": 48,
+      "bytes": 2489,
       "doc": "",
       "symbols": [
         {
           "name": "PlansService",
           "kind": "class",
           "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/rate-card.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 53,
+      "bytes": 1825,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RateCardController",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/rate-card.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 127,
+      "bytes": 5356,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/rate-card.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 141,
+      "bytes": 6804,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProposeRateCardChangeInput",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "RateCardService",
+          "kind": "class",
+          "line": 30
         }
       ]
     },
@@ -57447,6 +60934,50 @@
           "name": "SeatCounterService",
           "kind": "class",
           "line": 37
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/usage-metering.cron.ts",
+      "area": "root",
+      "kind": "scheduled job",
+      "lines": 60,
+      "bytes": 2351,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UsageMeteringCron",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/usage-metering.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 285,
+      "bytes": 12416,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/billing/usage-metering.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 318,
+      "bytes": 13965,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PollResult",
+          "kind": "interface",
+          "line": 48
+        },
+        {
+          "name": "UsageMeteringService",
+          "kind": "class",
+          "line": 55
         }
       ]
     },
@@ -58155,7 +61686,7 @@
       "area": "root",
       "kind": "html",
       "lines": 0,
-      "bytes": 17427,
+      "bytes": 22807,
       "doc": "",
       "symbols": []
     },
@@ -58211,8 +61742,8 @@
       "path": "apps/platform/test/setup-env.ts",
       "area": "root",
       "kind": "module",
-      "lines": 9,
-      "bytes": 359,
+      "lines": 10,
+      "bytes": 451,
       "doc": "",
       "symbols": []
     },
@@ -58491,14 +62022,14 @@
       "path": "apps/pos/src/app/till/page.tsx",
       "area": "pos",
       "kind": "page",
-      "lines": 288,
-      "bytes": 11055,
+      "lines": 406,
+      "bytes": 16455,
       "doc": "",
       "symbols": [
         {
           "name": "TillPage",
           "kind": "default",
-          "line": 25
+          "line": 42
         }
       ]
     },
@@ -58686,8 +62217,8 @@
       "path": "apps/pos/src/lib/pos-client.ts",
       "area": "pos",
       "kind": "utility",
-      "lines": 195,
-      "bytes": 5489,
+      "lines": 203,
+      "bytes": 5786,
       "doc": "",
       "symbols": [
         {
@@ -58731,99 +62262,104 @@
           "line": 72
         },
         {
-          "name": "PosSaleRequest",
+          "name": "PosInstalmentPlanRequest",
           "kind": "interface",
-          "line": 77
+          "line": 78
         },
         {
-          "name": "PosReceiptData",
+          "name": "PosSaleRequest",
           "kind": "interface",
           "line": 84
         },
         {
+          "name": "PosReceiptData",
+          "kind": "interface",
+          "line": 92
+        },
+        {
           "name": "AdminOrderSummary",
           "kind": "interface",
-          "line": 99
+          "line": 107
         },
         {
           "name": "AdminOrderPayment",
           "kind": "interface",
-          "line": 109
+          "line": 117
         },
         {
           "name": "AdminOrderDetail",
           "kind": "interface",
-          "line": 116
+          "line": 124
         },
         {
           "name": "listTerminals",
           "kind": "function",
-          "line": 127
+          "line": 135
         },
         {
           "name": "searchProducts",
           "kind": "function",
-          "line": 131
+          "line": 139
         },
         {
           "name": "openShift",
           "kind": "function",
-          "line": 135
+          "line": 143
         },
         {
           "name": "closeShift",
           "kind": "function",
-          "line": 139
+          "line": 147
         },
         {
           "name": "xReport",
           "kind": "function",
-          "line": 143
+          "line": 151
         },
         {
           "name": "zReport",
           "kind": "function",
-          "line": 147
+          "line": 155
         },
         {
           "name": "recordCashMovement",
           "kind": "function",
-          "line": 151
+          "line": 159
         },
         {
           "name": "sell",
           "kind": "function",
-          "line": 160
+          "line": 168
         },
         {
           "name": "getReceipt",
           "kind": "function",
-          "line": 164
+          "line": 172
         },
         {
           "name": "printReceipt",
           "kind": "function",
-          "line": 169
+          "line": 177
         },
         {
           "name": "searchOrders",
           "kind": "function",
-          "line": 180
+          "line": 188
         },
         {
           "name": "getOrder",
           "kind": "function",
-          "line": 184
+          "line": 192
         },
         {
           "name": "returnOrder",
           "kind": "function",
-          "line": 188
+          "line": 196
         },
         {
           "name": "refundPayment",
           "kind": "function",
-          "line": 192
+          "line": 200
         }
       ]
     },
@@ -59088,6 +62624,21 @@
           "name": "AdminAccountPage",
           "kind": "default",
           "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 545,
+      "bytes": 17389,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FiscalPeriodsPage",
+          "kind": "default",
+          "line": 36
         }
       ]
     },
@@ -59917,6 +63468,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 853,
+      "bytes": 26262,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetDetailPage",
+          "kind": "default",
+          "line": 50
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/hr/assets/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 227,
+      "bytes": 7231,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AssetsPage",
+          "kind": "default",
+          "line": 34
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/import/page.tsx",
       "area": "web",
       "kind": "page",
@@ -60112,6 +63693,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/invoices/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 119,
+      "bytes": 3812,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "InvoicesPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/layout.tsx",
       "area": "web",
       "kind": "layout",
@@ -60168,6 +63764,21 @@
           "name": "LoyaltyAdminPage",
           "kind": "default",
           "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/managed-services/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 138,
+      "bytes": 5006,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManagedServicesPage",
+          "kind": "default",
+          "line": 18
         }
       ]
     },
@@ -60385,8 +63996,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 565,
-      "bytes": 21023,
+      "lines": 774,
+      "bytes": 27965,
       "doc": "",
       "symbols": [
         {
@@ -60430,14 +64041,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 102,
-      "bytes": 3790,
+      "lines": 104,
+      "bytes": 3920,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDashboardPage",
           "kind": "default",
-          "line": 30
+          "line": 31
         }
       ]
     },
@@ -60802,6 +64413,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/settlements/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 228,
+      "bytes": 8478,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SettlementBatchDetailPage",
+          "kind": "default",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/settlements/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 211,
+      "bytes": 7632,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SettlementsPage",
+          "kind": "default",
+          "line": 38
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/statements/page.tsx",
       "area": "web",
       "kind": "page",
@@ -60955,14 +64596,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/trading-partners/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 106,
-      "bytes": 3430,
+      "lines": 132,
+      "bytes": 4499,
       "doc": "",
       "symbols": [
         {
           "name": "TradingPartnersPage",
           "kind": "default",
-          "line": 17
+          "line": 25
         }
       ]
     },
@@ -62723,6 +66364,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/dashboard/gross-profit-today-widget.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 95,
+      "bytes": 3197,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GrossProfitTodayWidget",
+          "kind": "function",
+          "line": 33
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/dashboard/metric-card.tsx",
       "area": "web",
       "kind": "component",
@@ -62916,8 +66572,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 892,
-      "bytes": 23711,
+      "lines": 942,
+      "bytes": 25372,
       "doc": "",
       "symbols": [
         {
@@ -62948,12 +66604,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 862
+          "line": 912
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 877
+          "line": 927
         }
       ]
     },
@@ -63146,19 +66802,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 83,
-      "bytes": 3086,
+      "lines": 94,
+      "bytes": 3648,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 76
+          "line": 87
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 80
+          "line": 91
         }
       ]
     },
@@ -64214,8 +67870,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 231,
-      "bytes": 10223,
+      "lines": 246,
+      "bytes": 10981,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -64736,8 +68392,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1494,
-      "bytes": 39582,
+      "lines": 1543,
+      "bytes": 41357,
       "doc": "",
       "symbols": [
         {
@@ -65484,6 +69140,41 @@
           "name": "ApiKeyOversightView",
           "kind": "interface",
           "line": 1483
+        },
+        {
+          "name": "ManagedServicesUsageSnapshot",
+          "kind": "interface",
+          "line": 1504
+        },
+        {
+          "name": "ManagedServicesTenantStatus",
+          "kind": "type",
+          "line": 1511
+        },
+        {
+          "name": "ManagedServicesUsageResponse",
+          "kind": "interface",
+          "line": 1513
+        },
+        {
+          "name": "ManagedServicesInvoiceStatus",
+          "kind": "type",
+          "line": 1520
+        },
+        {
+          "name": "ManagedServicesStripePaymentStatus",
+          "kind": "type",
+          "line": 1521
+        },
+        {
+          "name": "ManagedServicesInvoice",
+          "kind": "interface",
+          "line": 1523
+        },
+        {
+          "name": "ManagedServicesInvoicesResponse",
+          "kind": "interface",
+          "line": 1539
         }
       ]
     },
@@ -68018,8 +71709,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 3545,
-      "bytes": 201496,
+      "lines": 4046,
+      "bytes": 232304,
       "doc": "",
       "symbols": []
     },
@@ -68054,8 +71745,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 500,
-      "bytes": 66143,
+      "lines": 501,
+      "bytes": 66827,
       "doc": "",
       "symbols": []
     },
@@ -68081,8 +71772,8 @@
       "path": "docs/implementation/access-control-identity/125-zero-trust-networking.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 85,
-      "bytes": 4422,
+      "lines": 102,
+      "bytes": 5549,
       "doc": "",
       "symbols": []
     },
@@ -68774,8 +72465,8 @@
       "path": "docs/implementation/commercial-licensing-agency/14-managed-services-module.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 272,
-      "bytes": 12781,
+      "lines": 299,
+      "bytes": 14846,
       "doc": "",
       "symbols": []
     },
@@ -68783,8 +72474,8 @@
       "path": "docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 290,
-      "bytes": 15871,
+      "lines": 298,
+      "bytes": 16396,
       "doc": "",
       "symbols": []
     },
@@ -68900,8 +72591,8 @@
       "path": "docs/implementation/finance-accounting/04-finance.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 304,
-      "bytes": 12670,
+      "lines": 321,
+      "bytes": 13847,
       "doc": "",
       "symbols": []
     },
@@ -68909,8 +72600,8 @@
       "path": "docs/implementation/finance-accounting/137-payment-method-resilience-audit.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 75,
-      "bytes": 3724,
+      "lines": 84,
+      "bytes": 4281,
       "doc": "",
       "symbols": []
     },
@@ -68927,8 +72618,8 @@
       "path": "docs/implementation/finance-accounting/147-fixed-asset-depreciation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 210,
-      "bytes": 10340,
+      "lines": 259,
+      "bytes": 13611,
       "doc": "",
       "symbols": []
     },
@@ -68936,8 +72627,8 @@
       "path": "docs/implementation/finance-accounting/151-layby-installment-sales.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 201,
-      "bytes": 10575,
+      "lines": 253,
+      "bytes": 13847,
       "doc": "",
       "symbols": []
     },
@@ -68945,8 +72636,8 @@
       "path": "docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 265,
-      "bytes": 13899,
+      "lines": 330,
+      "bytes": 18239,
       "doc": "",
       "symbols": []
     },
@@ -68954,8 +72645,8 @@
       "path": "docs/implementation/finance-accounting/56-overdue-invoices-counter.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 111,
-      "bytes": 5614,
+      "lines": 125,
+      "bytes": 6471,
       "doc": "",
       "symbols": []
     },
@@ -68963,8 +72654,17 @@
       "path": "docs/implementation/finance-accounting/68-realtime-gross-profit.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 191,
-      "bytes": 10831,
+      "lines": 213,
+      "bytes": 12294,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/hr-people-org/164-department-permission-role-duty-control.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 327,
+      "bytes": 18720,
       "doc": "",
       "symbols": []
     },
@@ -69107,8 +72807,8 @@
       "path": "docs/implementation/hr-people-org/79-employee-asset-management.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 183,
-      "bytes": 9082,
+      "lines": 222,
+      "bytes": 11576,
       "doc": "",
       "symbols": []
     },
@@ -70141,11 +73841,20 @@
       ]
     },
     {
+      "path": "packages/shared/src/constants.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 42,
+      "bytes": 1457,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "packages/shared/src/constants.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 157,
-      "bytes": 5620,
+      "lines": 199,
+      "bytes": 7771,
       "doc": "",
       "symbols": [
         {
@@ -70239,9 +73948,19 @@
           "line": 137
         },
         {
+          "name": "formatMoneyIn",
+          "kind": "function",
+          "line": 160
+        },
+        {
+          "name": "formatBytes",
+          "kind": "function",
+          "line": 177
+        },
+        {
           "name": "IMPORT_ROW_CAP",
           "kind": "const",
-          "line": 156
+          "line": 198
         }
       ]
     },
@@ -71150,8 +74869,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 816,
-      "bytes": 24477,
+      "lines": 890,
+      "bytes": 26914,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -71172,47 +74891,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 470
+          "line": 524
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 472
+          "line": 526
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 482
+          "line": 536
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 489
+          "line": 543
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 659
+          "line": 724
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 803
+          "line": 877
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 808
+          "line": 882
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 809
+          "line": 883
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 812
+          "line": 886
         }
       ]
     },
@@ -71658,8 +75377,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18513,
-      "bytes": 678633,
+      "lines": 18529,
+      "bytes": 679103,
       "doc": "",
       "symbols": []
     },
@@ -72155,8 +75874,8 @@
       "path": "scripts/sync-client.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 700,
-      "bytes": 37167,
+      "lines": 701,
+      "bytes": 37242,
       "doc": "scripts/sync-client.mjs — the Extractor.",
       "symbols": []
     },

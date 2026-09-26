@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **1,932** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,013** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 805 | 113,549 | [files/api.md](../files/api.md) |
-| apps/web | 367 | 57,481 | [files/web.md](../files/web.md) |
-| apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
+| apps/api | 841 | 117,736 | [files/api.md](../files/api.md) |
+| apps/web | 375 | 60,259 | [files/web.md](../files/web.md) |
+| apps/pos | 31 | 2,000 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 78 | 7,775 | [files/packages.md](../files/packages.md) |
-| docs/* | 393 | 62,230 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 57 | 29,609 | [files/infra.md](../files/infra.md) |
-| repository root files | 152 | 15,337 | [files/root.md](../files/root.md) |
+| packages/* | 79 | 7,933 | [files/packages.md](../files/packages.md) |
+| docs/* | 394 | 63,378 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 57 | 29,638 | [files/infra.md](../files/infra.md) |
+| repository root files | 187 | 18,817 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -28,39 +28,39 @@ name a new file: the convention is what makes it findable.
 
 | Kind | Count |
 |---|---|
-| doc | 418 |
-| unit test | 206 |
-| page | 178 |
-| service | 144 |
-| module | 140 |
-| component | 111 |
-| controller | 102 |
-| dto | 97 |
-| migration | 77 |
-| nest module | 73 |
-| prisma schema | 42 |
+| doc | 419 |
+| unit test | 223 |
+| page | 185 |
+| service | 155 |
+| module | 145 |
+| component | 112 |
+| controller | 111 |
+| dto | 103 |
+| migration | 85 |
+| nest module | 77 |
+| prisma schema | 45 |
 | script | 39 |
 | event subscriber | 31 |
 | json | 29 |
 | react | 29 |
+| scheduled job | 26 |
 | asset | 26 |
 | utility | 22 |
-| scheduled job | 20 |
 | e2e test | 19 |
 | file | 13 |
 | yaml | 12 |
 | config | 11 |
 | loading | 11 |
-| registry | 9 |
+| registry | 10 |
 | constants | 7 |
 | layout | 6 |
 | hook | 5 |
+| guard | 5 |
 | channel | 5 |
 | types | 5 |
 | toml | 4 |
 | not-found | 4 |
 | example | 3 |
-| guard | 3 |
 | driver | 3 |
 | html | 3 |
 | error | 3 |

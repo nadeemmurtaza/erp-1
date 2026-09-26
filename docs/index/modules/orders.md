@@ -3,13 +3,13 @@
 
 # Module: `orders`
 
-Pack **core** · enabled by the `MODULES` allowlist · 15 files
+Pack **core** · enabled by the `MODULES` allowlist · 19 files
 
 
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (15 · 2,807 lines)
+## Files (19 · 3,547 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -21,24 +21,32 @@ All paths relative to `apps/api/src/modules/orders`.
 | `cod-risk.cron.ts` | scheduled job | 82 | 1 | WO-9.4 (09-ai-layer.md) — nightly recompute of CityCodRiskStat, the cached input CodRiskService reads at place() instea… |
 | `cod-risk.service.spec.ts` | unit test | 105 | — |  |
 | `cod-risk.service.ts` | service | 86 | 3 |  |
+| `instalment-plan.dto.ts` | dto | 16 | 1 |  |
 | `order.dto.ts` | dto | 152 | 6 |  |
+| `instalment-plan.controller.ts` | controller | 52 | 1 | finance-accounting/151-layby-installment-sales.md — a plan is created at the point of sale (POS's own sell() endpoint);… |
+| `instalment-plan.service.spec.ts` | unit test | 239 | — |  |
+| `instalment-plan.service.ts` | service | 228 | 1 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md). |
 | `notification.subscriber.ts` | event subscriber | 259 | 1 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `orders-pos.service.spec.ts` | unit test | 277 | — |  |
+| `orders-pos.service.spec.ts` | unit test | 405 | — |  |
 | `orders.controller.ts` | controller | 145 | 2 |  |
-| `orders.module.ts` | nest module | 50 | 1 |  |
-| `orders.service.ts` | service | 1226 | 3 |  |
+| `orders.module.ts` | nest module | 53 | 1 |  |
+| `orders.service.ts` | service | 1300 | 4 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
-## HTTP routes (7)
+## HTTP routes (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` :102 | All orders, filterable by status |
 | GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` :118 |  |
 | POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` :124 | Move the order along; cancelling restores stock |
+| GET | `/admin/orders/:orderId/instalments` | `pos.operate` | `InstalmentPlanController.get` :23 | An order's instalment plan, its schedule, and every payment received so far |
+| POST | `/admin/orders/:orderId/instalments/cancel` | `pos.instalments.cancel` | `InstalmentPlanController.cancel` :41 | Cancel an active plan — refunds or forfeits the deposit per the configured policy |
+| POST | `/admin/orders/:orderId/instalments/default` | `pos.instalments.default` | `InstalmentPlanController.markDefaulted` :48 | Mark an active plan defaulted — writes off the unpaid balance |
+| POST | `/admin/orders/:orderId/instalments/payments` | `pos.operate` | `InstalmentPlanController.recordPayment` :30 | Record one instalment payment against the plan |
 | POST | `/orders` | **PUBLIC** | `OrdersController.place` :38 | Place the order in the current cart |
 | GET | `/orders/:number` | signed-in | `OrdersController.get` :74 | One order, for its owner |
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` :83 |  |
@@ -51,10 +59,10 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `orders.service.ts:449`, `orders.service.ts:652` |
-| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:675`, `orders.service.ts:855` |
-| `OrderCancelled` | `order.cancelled` | `orders.service.ts:855` |
-| `PaymentSucceeded` | `payment.succeeded` | `orders.service.ts:640` |
+| `OrderPlaced` | `order.placed` | `orders.service.ts:463`, `orders.service.ts:721` |
+| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:748`, `orders.service.ts:929` |
+| `OrderCancelled` | `order.cancelled` | `orders.service.ts:929` |
+| `PaymentSucceeded` | `payment.succeeded` | `instalment-plan.service.ts:90`, `orders.service.ts:692` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -73,12 +81,12 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `CityCodRiskStat` | 5 | :326 | WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "order value versus t… |
-| `Order` | 55 | :35 |  |
-| `OrderItem` | 38 | :156 |  |
-| `OrderNumberCounter` | 2 | :354 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
-| `OrderStatusEvent` | 9 | :243 |  |
-| `Shipment` | 26 | :267 |  |
+| `CityCodRiskStat` | 5 | :329 | WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "order value versus t… |
+| `Order` | 56 | :35 |  |
+| `OrderItem` | 38 | :159 |  |
+| `OrderNumberCounter` | 2 | :357 | Backing store for sequential per-year order numbers (YSN-2026-0001). |
+| `OrderStatusEvent` | 9 | :246 |  |
+| `Shipment` | 26 | :270 |  |
 
 
 Enums: `CodRiskAction` (3) · `OrderChannel` (2) · `OrderItemFulfillmentStatus` (3) · `OrderStatus` (8) · `ShipmentStatus` (6)
@@ -97,8 +105,8 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`OrdersModule`** (`orders.module.ts`)
 - imports: `PaymentsModule`, `InventoryModule`, `TaxModule`, `FulfilmentModule`, `PromotionsModule`, `GiftCardsModule`
-- controllers: `OrdersController`, `OrdersAdminController`
-- providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`, `ShipmentStatusListener`, `CodRiskService`, `CodRiskCron`
+- controllers: `OrdersController`, `OrdersAdminController`, `InstalmentPlanController`
+- providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`, `ShipmentStatusListener`, `CodRiskService`, `CodRiskCron`, `InstalmentPlanService`
 - exports: `OrdersService`
 
 
@@ -130,15 +138,16 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (5)
+## Tests (6)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `backorder.listener.spec.ts` | 4 | BackorderListener |
 | `cod-risk.cron.spec.ts` | 4 | CodRiskCron |
 | `cod-risk.service.spec.ts` | 7 | CodRiskService |
+| `instalment-plan.service.spec.ts` | 16 | InstalmentPlanService · recordInstalmentPayment · cancel · markDefaulted |
 | `order-replication.listener.spec.ts` | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
-| `orders-pos.service.spec.ts` | 7 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
+| `orders-pos.service.spec.ts` | 12 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · placeFromPos — instalment… |
 
 
 ## Every export in this unit
@@ -150,20 +159,24 @@ check there before adding another.
 | `CodRiskScoreInput` | interface | `cod-risk.service.ts:8` |  |
 | `CodRiskScoreResult` | interface | `cod-risk.service.ts:16` |  |
 | `CodRiskService` | class | `cod-risk.service.ts:35` | WO-9.4 (09-ai-layer.md) — gathers every input `computeCodRiskScore` (the pure rule) needs and calls it. |
+| `RecordInstalmentPaymentDto` | class | `instalment-plan.dto.ts:4` |  |
 | `ShippingAddressDto` | class | `order.dto.ts:17` |  |
 | `PlaceOrderDto` | class | `order.dto.ts:61` |  |
 | `TrackOrderDto` | class | `order.dto.ts:106` |  |
 | `ChangeOrderStatusDto` | class | `order.dto.ts:113` |  |
 | `AdminOrderQueryDto` | class | `order.dto.ts:125` |  |
 | `OrderHistoryQueryDto` | class | `order.dto.ts:137` |  |
+| `InstalmentPlanController` | class | `instalment-plan.controller.ts:17` | finance-accounting/151-layby-installment-sales.md — a plan is created at the point of sale (POS's own sell()… |
+| `InstalmentPlanService` | class | `instalment-plan.service.ts:22` | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md). |
 | `OrderNotificationSubscriber` | class | `notification.subscriber.ts:53` |  |
 | `OrderReplicationListener` | class | `order-replication.listener.ts:30` | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
 | `OrdersController` | class | `orders.controller.ts:32` |  |
 | `OrdersAdminController` | class | `orders.controller.ts:97` |  |
-| `OrdersModule` | class | `orders.module.ts:49` |  |
+| `OrdersModule` | class | `orders.module.ts:52` |  |
 | `PosSaleLineInput` | interface | `orders.service.ts:41` |  |
-| `PlaceFromPosInput` | interface | `orders.service.ts:46` |  |
-| `OrdersService` | class | `orders.service.ts:92` |  |
+| `PlaceFromPosInstalmentInput` | interface | `orders.service.ts:53` | finance-accounting/151-layby-installment-sales.md — a layby/instalment plan requested at the point of sale. |
+| `PlaceFromPosInput` | interface | `orders.service.ts:59` |  |
+| `OrdersService` | class | `orders.service.ts:106` |  |
 | `ShipmentStatusListener` | class | `shipment-status.listener.ts:28` | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 

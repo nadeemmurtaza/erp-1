@@ -3,7 +3,7 @@
 
 # Tests
 
-**225** spec files, **2,192** cases. What is already pinned down — and what is not.
+**242** spec files, **2,374** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (206)
+## Unit and integration (223)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -80,6 +80,7 @@ regression or an N+1.
 | `apps/api/src/core/metrics/metric-registry.service.spec.ts` | core/metrics | 15 | MetricRegistryService · register · collect — permission gating · collect — failure isolation · coll… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
 | `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 29 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
+| `apps/api/src/core/notifications/notifications.service.spec.ts` | core/notifications | 2 | NotificationsService |
 | `apps/api/src/core/prisma/enums.spec.ts` | core/prisma | 0 | shared enums stay in sync with the Prisma schema |
 | `apps/api/src/core/replication/node-credential.service.spec.ts` | core/replication | 5 | NodeCredentialService — WO-20.2 |
 | `apps/api/src/core/replication/policy-quarantine.service.spec.ts` | core/replication | 4 | PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023 · resolve |
@@ -96,10 +97,11 @@ regression or an N+1.
 | `apps/api/src/core/time/metric-window.spec.ts` | core/time | 18 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays · previousWindow |
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 19 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · shopLocalHour · asse… |
 | `apps/api/src/modules/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
+| `apps/api/src/modules/accounting/asset-depreciation.service.spec.ts` | accounting | 24 | monthlyDepreciation — pure · date helpers · AssetDepreciationService · createSchedule · postMonthly… |
 | `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
 | `apps/api/src/modules/accounting/fiscal-periods.service.spec.ts` | accounting | 24 | FiscalPeriodsService — WO-19.5 · createFiscalYear · createFiscalPeriod · closePeriod · reopenPeriod… |
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 48 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 52 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
 | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts` | accounting | 7 | WalletPostingRulesSubscriber — doc 155 §3 · onWalletCreditPurchased · onWalletCreditRedeemed · onWa… |
 | `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/analytics.customers.spec.ts` | analytics | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention… |
@@ -140,10 +142,11 @@ regression or an N+1.
 | `apps/api/src/modules/finance/finance.listener.spec.ts` | finance | 2 | FinanceListener |
 | `apps/api/src/modules/finance/finance.metrics.spec.ts` | finance | 2 | FinanceMetricsProvider |
 | `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
-| `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 8 | OrderEconomicsService |
+| `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 13 | OrderEconomicsService · grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md) |
 | `apps/api/src/modules/fulfilment/fulfilment.spec.ts` | fulfilment | 4 | FulfilmentService.applyStatusChange |
 | `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
 | `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
+| `apps/api/src/modules/hr/assets.service.spec.ts` | hr | 14 | AssetsService · createAsset · issue — WO-79 acceptance: an already-ASSIGNED asset cannot be issued… |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
 | `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 10 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-… |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
@@ -154,6 +157,7 @@ regression or an N+1.
 | `apps/api/src/modules/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
 | `apps/api/src/modules/inventory/stock-variance.service.spec.ts` | inventory | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
 | `apps/api/src/modules/inventory/suspicious-traffic.service.spec.ts` | inventory | 5 | SuspiciousTrafficService — 156-single-employee-branch-loss-prevention.md §4 |
+| `apps/api/src/modules/managed-services/managed-services.service.spec.ts` | managed-services | 5 | ManagedServicesService |
 | `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
 | `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
@@ -164,8 +168,9 @@ regression or an N+1.
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
 | `apps/api/src/modules/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |
 | `apps/api/src/modules/orders/cod-risk.service.spec.ts` | orders | 7 | CodRiskService |
+| `apps/api/src/modules/orders/instalment-plan.service.spec.ts` | orders | 16 | InstalmentPlanService · recordInstalmentPayment · cancel · markDefaulted |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
-| `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 7 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ |
+| `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 12 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
 | `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
@@ -205,7 +210,8 @@ regression or an N+1.
 | `apps/api/src/modules/search/search-reindex.listener.spec.ts` | search | 2 | SearchReindexListener |
 | `apps/api/src/modules/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
 | `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
-| `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 4 | InvoiceService · issue · findOne |
+| `apps/api/src/modules/settlements/settlements.service.spec.ts` | settlements | 22 | SettlementsService · createExpectedBatch · reconcile · pollExpectedBatches · requestWriteoff / appr… |
+| `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
 | `apps/api/src/modules/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |
 | `apps/api/src/modules/tradingpartners/quote.service.spec.ts` | tradingpartners | 4 | QuoteService · send · findOne |
@@ -213,7 +219,7 @@ regression or an N+1.
 | `apps/api/src/modules/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
-| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 10 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
+| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 12 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
 | `apps/api/src/modules/wallet/merchant-payable.service.spec.ts` | wallet | 16 | MerchantPayableService — 155-wallet-stored-value-merchant-escrow.md §3 · createMerchantPayable · sc… |
 | `apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts` | wallet | 3 | MerchantPayableAdjustmentCreditNoteService — the interim default, pending doc 145 |
 | `apps/api/src/modules/wallet/wallet.service.spec.ts` | wallet | 34 | WalletService — 155-wallet-stored-value-merchant-escrow.md · availableBalance — the three transitio… |
@@ -227,10 +233,20 @@ regression or an N+1.
 | `apps/mobile/src/i18n/__tests__/messages.spec.ts` | mobile | 3 | the message catalogue |
 | `apps/platform/src/core/security/ops-auth.guard.spec.ts` | root | 6 | OpsAuthGuard |
 | `apps/platform/src/core/security/ops-key.spec.ts` | root | 4 | ops-key |
-| `apps/platform/src/modules/billing/billing.service.spec.ts` | root | 9 | BillingService · issueInvoiceForPeriod · runBillingForPeriod · issueCreditNote · previewInvoice |
+| `apps/platform/src/modules/agency/agency-api-key.guard.spec.ts` | root | 5 | AgencyApiKeyGuard |
+| `apps/platform/src/modules/agency/agency-clients.service.spec.ts` | root | 6 | AgencyClientsService · list · register · rotateKey |
+| `apps/platform/src/modules/agency/agency-cross-tenant.integration.spec.ts` | root | 5 |  |
+| `apps/platform/src/modules/agency/agency-key.spec.ts` | root | 4 | agency-key |
+| `apps/platform/src/modules/agency/agency-reporting.service.spec.ts` | root | 4 | AgencyReportingService |
+| `apps/platform/src/modules/agency/agency-stripe.service.spec.ts` | root | 10 | AgencyStripeService · chargeInvoice · handleWebhookEvent |
+| `apps/platform/src/modules/agency/agency-usage.service.spec.ts` | root | 7 | AgencyUsageService · listRegisteredTenantIds · captureSnapshotForTenant |
+| `apps/platform/src/modules/billing/billing-period.spec.ts` | root | 2 | currentCalendarMonthPeriod |
+| `apps/platform/src/modules/billing/billing.service.spec.ts` | root | 15 | BillingService · issueInvoiceForPeriod · runBillingForPeriod · issueCreditNote · previewInvoice · U… |
 | `apps/platform/src/modules/billing/custom-quote.service.spec.ts` | root | 6 | CustomQuoteService · requestQuote · approve |
-| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 5 | PlansService |
+| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 7 | PlansService |
+| `apps/platform/src/modules/billing/rate-card.service.spec.ts` | root | 9 | RateCardService · proposeChange · approve · apply |
 | `apps/platform/src/modules/billing/seat-counter.service.spec.ts` | root | 3 | SeatCounterService |
+| `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | root | 11 | UsageMeteringService · pollTenant · snapshotAllowances · getMetersForPeriod |
 | `apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts` | root | 4 | ResourceQuotasService · upsertQuota |
 | `apps/platform/src/modules/routing/hostname-resolver.service.spec.ts` | root | 8 | HostnameResolverService |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | root | 14 | SupportAccessService · issue · approve · recordAccess · markExpiredInert · findByTicketReference |
@@ -248,6 +264,7 @@ regression or an N+1.
 | `packages/pos-core/src/tender.spec.ts` | packages | 3 | computeTender |
 | `packages/shared/src/api-keys.spec.ts` | packages | 34 | NON_DELEGATABLE_PERMISSIONS · effectiveApiKeyPermissions — a key never exceeds its owner · refuseAp… |
 | `packages/shared/src/cod-risk.spec.ts` | packages | 19 | computeCodRiskScore |
+| `packages/shared/src/constants.spec.ts` | packages | 8 | formatMoneyIn · formatBytes |
 | `packages/shared/src/demand-forecast.spec.ts` | packages | 17 | computeDemandForecast · suggestReorderQuantity · resolveLeadTimeDays |
 | `packages/shared/src/discounts.spec.ts` | packages | 18 | isDiscountEligible · evaluateDiscounts — PERCENTAGE, ORDER scope · evaluateDiscounts — PRODUCT scop… |
 | `packages/shared/src/entities/address.spec.ts` | packages | 3 | getFormattedAddress · getAddressCityProvince |

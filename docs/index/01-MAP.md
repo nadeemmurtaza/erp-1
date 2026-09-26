@@ -32,15 +32,15 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 805 | 113,549 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 393 | 62,230 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 367 | 57,481 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 28,096 | workspace manifests, docker compose/stack files, env templates |
-| `scripts` | 22 | 9,108 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 61 | 7,193 | brand, money, permissions, measurements, entities |
+| `apps/api` | 841 | 117,736 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 394 | 63,378 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 375 | 60,259 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 28,124 | workspace manifests, docker compose/stack files, env templates |
+| `apps/platform` | 139 | 9,360 |  |
+| `scripts` | 22 | 9,109 | repository checks and generators (lint gates, this index) |
+| `packages/shared` | 62 | 7,351 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `apps/platform` | 104 | 5,880 |  |
-| `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
+| `apps/pos` | 31 | 2,000 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,046 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
@@ -59,7 +59,7 @@ Each is independent: no module imports another except through a named
 
 | Module | Pack | Enabled by | Routes | Tables |
 |---|---|---|---|---|
-| [`accounting`](modules/accounting.md) | core | MODULES allowlist | 16 | 6 |
+| [`accounting`](modules/accounting.md) | core | MODULES allowlist | 19 | 8 |
 | [`addresses`](modules/addresses.md) | core | always on | 4 | — |
 | [`analytics`](modules/analytics.md) | core | MODULES allowlist | 24 | — |
 | [`bom`](modules/bom.md) | core | MODULES allowlist | 20 | 5 |
@@ -68,17 +68,19 @@ Each is independent: no module imports another except through a named
 | [`collections`](modules/collections.md) | core | MODULES allowlist | 10 | — |
 | [`content`](modules/content.md) | core | MODULES allowlist | 24 | 8 |
 | [`crm`](modules/crm.md) | core | MODULES allowlist | 33 | 9 |
-| [`finance`](modules/finance.md) | core | MODULES allowlist | 16 | 3 |
+| [`finance`](modules/finance.md) | core | MODULES allowlist | 17 | 3 |
 | [`fulfilment`](modules/fulfilment.md) | core | MODULES allowlist | 39 | 16 |
 | [`giftcards`](modules/giftcards.md) | core | MODULES allowlist | 10 | 3 |
+| [`hr`](modules/hr.md) | core | MODULES allowlist | 7 | 2 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
 | [`inventory`](modules/inventory.md) | core | MODULES allowlist | 29 | 12 |
 | [`loyalty`](modules/loyalty.md) | core | MODULES allowlist | 11 | 3 |
+| [`managed-services`](modules/managed-services.md) | core | MODULES allowlist | 2 | — |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 11 | 3 |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 13 | 4 |
 | [`notification-preferences`](modules/notification-preferences.md) | core | MODULES allowlist | 2 | 1 |
 | [`onsitemessages`](modules/onsitemessages.md) | core | MODULES allowlist | 10 | — |
-| [`orders`](modules/orders.md) | core | MODULES allowlist | 7 | 6 |
+| [`orders`](modules/orders.md) | core | MODULES allowlist | 11 | 6 |
 | [`organization`](modules/organization.md) | core | MODULES allowlist | 15 | 5 |
 | [`parties`](modules/parties.md) | core | MODULES allowlist | 3 | 2 |
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 7 | 1 |
@@ -93,10 +95,11 @@ Each is independent: no module imports another except through a named
 | [`reviews`](modules/reviews.md) | core | MODULES allowlist | 7 | 2 |
 | [`search`](modules/search.md) | core | MODULES allowlist | 6 | 2 |
 | [`settings`](modules/settings.md) | core | always on | 8 | — |
+| [`settlements`](modules/settlements.md) | core | MODULES allowlist | 8 | 3 |
 | [`stitching`](modules/stitching.md) | apparel | MODULES allowlist | 21 | 8 |
 | [`tax`](modules/tax.md) | core | MODULES allowlist | 8 | 2 |
 | [`tracking`](modules/tracking.md) | core | MODULES allowlist | 1 | — |
-| [`tradingpartners`](modules/tradingpartners.md) | core | MODULES allowlist | 18 | — |
+| [`tradingpartners`](modules/tradingpartners.md) | core | MODULES allowlist | 19 | — |
 | [`transfers`](modules/transfers.md) | core | MODULES allowlist | 5 | 5 |
 | [`users`](modules/users.md) | core | always on | 8 | — |
 | [`wallet`](modules/wallet.md) | core | MODULES allowlist | 17 | 4 |
@@ -120,11 +123,11 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`config`](core/config.md) | 6 |  |
 | [`crm`](core/crm.md) | 1 |  |
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
-| [`extension-points`](core/extension-points.md) | 8 |  |
+| [`extension-points`](core/extension-points.md) | 9 |  |
 | [`health`](core/health.md) | 2 |  |
 | [`intent`](core/intent.md) | 4 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
-| [`notifications`](core/notifications.md) | 22 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
+| [`notifications`](core/notifications.md) | 23 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |
 | [`replication`](core/replication.md) | 21 |  |
 | [`security`](core/security.md) | 3 |  |

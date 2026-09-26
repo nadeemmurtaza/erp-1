@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**419** markdown documents. These explain **why**; this index only says **where**.
+**420** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -1827,14 +1827,14 @@ _no second-level headings_
 - 7. Commit and PR conventions  <sub>:387</sub>
 - 8. Interface rules  <sub>:440</sub>
 
-### `docs/implementation/access-control-identity/125-zero-trust-networking.md`  <sub>85 lines</sub>
+### `docs/implementation/access-control-identity/125-zero-trust-networking.md`  <sub>102 lines</sub>
 
-- Where zero-trust's actual principle already holds  <sub>:23</sub>
-- Why a service mesh is not the right implementation of this principle here  <sub>:47</sub>
-- Scope lenses  <sub>:60</sub>
-- Work orders  <sub>:66</sub>
-- Acceptance  <sub>:74</sub>
-- Out of scope  <sub>:80</sub>
+- Where zero-trust's actual principle already holds  <sub>:40</sub>
+- Why a service mesh is not the right implementation of this principle here  <sub>:64</sub>
+- Scope lenses  <sub>:77</sub>
+- Work orders  <sub>:83</sub>
+- Acceptance  <sub>:91</sub>
+- Out of scope  <sub>:97</sub>
 
 ### `docs/implementation/access-control-identity/126-pluggable-cryptography.md`  <sub>137 lines</sub>
 
@@ -2552,28 +2552,28 @@ _no second-level headings_
 - Phase 6: CI/CD & Database Cleanup  <sub>:150</sub>
 - Phase 7: Delivery & Pull Request  <sub>:158</sub>
 
-### `docs/implementation/commercial-licensing-agency/14-managed-services-module.md`  <sub>272 lines</sub>
+### `docs/implementation/commercial-licensing-agency/14-managed-services-module.md`  <sub>299 lines</sub>
 
-- Why this is two modules, not one  <sub>:17</sub>
-- The load-bearing scope decision: where usage numbers actually come from  <sub>:35</sub>
-- Master side: the `agency` module  <sub>:60</sub>
-- Client side: the `managed-services` module  <sub>:183</sub>
-- Security notes  <sub>:207</sub>
-- Explicitly out of scope for v1  <sub>:223</sub>
-- Work orders  <sub>:236</sub>
-- When to actually build this  <sub>:263</sub>
+- Why this is two modules, not one  <sub>:22</sub>
+- The load-bearing scope decision: where usage numbers actually come from  <sub>:40</sub>
+- Master side: the `agency` module  <sub>:65</sub>
+- Client side: the `managed-services` module  <sub>:188</sub>
+- Security notes  <sub>:212</sub>
+- Explicitly out of scope for v1  <sub>:228</sub>
+- Work orders  <sub>:241</sub>
+- When to actually build this  <sub>:285</sub>
 
-### `docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md`  <sub>290 lines</sub>
+### `docs/implementation/commercial-licensing-agency/153-usage-based-pricing-model.md`  <sub>298 lines</sub>
 
-- What changed from the original proposal, and why  <sub>:13</sub>
-- 1. `PlatformPlan` gains `USAGE_BASED`, alongside doc 50's existing three shapes  <sub>:41</sub>
-- 2. Metering is event-driven, reusing this repository's own transactional outbox — never a slow end-of-month aggregate scan  <sub>:69</sub>
-- 3. Collection: COD and cash have no settlement to net against — this is doc 145's own mechanism, one level up  <sub>:117</sub>
-- 4. A graduated rate, so growth is rewarded rather than punished forever  <sub>:145</sub>
-- Scope lenses  <sub>:156</sub>
-- Work orders  <sub>:247</sub>
-- Acceptance  <sub>:267</sub>
-- Out of scope  <sub>:281</sub>
+- What changed from the original proposal, and why  <sub>:21</sub>
+- 1. `PlatformPlan` gains `USAGE_BASED`, alongside doc 50's existing three shapes  <sub>:49</sub>
+- 2. Metering is event-driven, reusing this repository's own transactional outbox — never a slow end-of-month aggregate scan  <sub>:77</sub>
+- 3. Collection: COD and cash have no settlement to net against — this is doc 145's own mechanism, one level up  <sub>:125</sub>
+- 4. A graduated rate, so growth is rewarded rather than punished forever  <sub>:153</sub>
+- Scope lenses  <sub>:164</sub>
+- Work orders  <sub>:255</sub>
+- Acceptance  <sub>:275</sub>
+- Out of scope  <sub>:289</sub>
 
 ### `docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md`  <sub>182 lines</sub>
 
@@ -2697,7 +2697,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>3,545 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>4,046 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2740,7 +2740,10 @@ _no second-level headings_
 - ADR-036 — WO-145 (receivables: CreditNote/DebitNote, credit limits, dunning) keys the customer to `Contact`, not R18's own `Invoice`; ships undimensioned like its siblings; dunning gets its own cron, not doc 54's unbuilt registry  <sub>:3143</sub>
 - ADR-035 — Phase 8 (content, marketing and search) audited and confirmed built; the ranking rule's missing availability tier fixed; the phantom "Phase 8 status note" several files already cited now exists  <sub>:3269</sub>
 - ADR-037 — Personal API keys: a user-bound token capped live by its owner, an explicit non-delegatable list, and no service account yet  <sub>:3374</sub>
-- ADR-038 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call  <sub>:3450</sub>
+- ADR-038 — Doc 153 (usage-based pricing): metering reads a tenant's own transactional outbox through `apps/platform`'s existing connection-per-call mechanism, never a new tenant→platform push credential; dunning reuses doc 145's shape only, not its code  <sub>:3450</sub>
+- ADR-040 — `finance-accounting` docs 04/56/68/79/137/147/151/49 completed; a department-permission planning doc (164) added, deliberately not built  <sub>:3607</sub>
+- ADR-039 — Doc 14 (managed services) built in full, overriding its own "not now": `PlatformTenant`/`PlatformInvoice` extended rather than a parallel `AgencyClient` registry and invoice cache, real Stripe collection bridged in decoupled from `BillingService`  <sub>:3771</sub>
+- ADR-041 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call  <sub>:3951</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -2752,26 +2755,25 @@ _no second-level headings_
 - P — Permission rules  <sub>:203</sub>
 - What is actually enforced today  <sub>:217</sub>
 
-### `docs/implementation/finance-accounting/04-finance.md`  <sub>304 lines</sub>
+### `docs/implementation/finance-accounting/04-finance.md`  <sub>321 lines</sub>
 
-- Scope decision, already taken  <sub>:53</sub>
-- Work orders  <sub>:68</sub>
-- WO-4.1 — Expenses  <sub>:84</sub>
-- WO-4.2 — Order economics  <sub>:160</sub>
-- WO-4.3 — The P&L report  <sub>:200</sub>
-- WO-4.4 — Cash flow  <sub>:239</sub>
-- WO-4.5 — Screens  <sub>:253</sub>
-- WO-4.6 — Month-end close and export  <sub>:286</sub>
-- Phase 4 exit criteria  <sub>:296</sub>
+- Work orders  <sub>:85</sub>
+- WO-4.1 — Expenses  <sub>:101</sub>
+- WO-4.2 — Order economics  <sub>:177</sub>
+- WO-4.3 — The P&L report  <sub>:217</sub>
+- WO-4.4 — Cash flow  <sub>:256</sub>
+- WO-4.5 — Screens  <sub>:270</sub>
+- WO-4.6 — Month-end close and export  <sub>:303</sub>
+- Phase 4 exit criteria  <sub>:313</sub>
 
-### `docs/implementation/finance-accounting/137-payment-method-resilience-audit.md`  <sub>75 lines</sub>
+### `docs/implementation/finance-accounting/137-payment-method-resilience-audit.md`  <sub>84 lines</sub>
 
-- What was checked, against three plausible near-future payment shapes  <sub>:9</sub>
-- The actual finding: no gap, and why  <sub>:35</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:55</sub>
-- Acceptance  <sub>:59</sub>
-- Out of scope  <sub>:69</sub>
+- What was checked, against three plausible near-future payment shapes  <sub>:18</sub>
+- The actual finding: no gap, and why  <sub>:44</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:64</sub>
+- Acceptance  <sub>:68</sub>
+- Out of scope  <sub>:78</sub>
 
 ### `docs/implementation/finance-accounting/145-receivables-credit-limits-dunning.md`  <sub>358 lines</sub>
 
@@ -2784,51 +2786,62 @@ _no second-level headings_
 - Acceptance  <sub>:339</sub>
 - Out of scope  <sub>:351</sub>
 
-### `docs/implementation/finance-accounting/147-fixed-asset-depreciation.md`  <sub>210 lines</sub>
+### `docs/implementation/finance-accounting/147-fixed-asset-depreciation.md`  <sub>259 lines</sub>
 
-- 1. A depreciation schedule, computed once at acquisition, posted periodically  <sub>:11</sub>
-- 2. Posting is a cron, through the identical `findPostedEntry()` idempotency key every other posting rule already uses  <sub>:55</sub>
-- 3. Write-off and disposal reuse doc 79's own `AssetStatus`, closing the schedule rather than deleting it  <sub>:81</sub>
-- Scope lenses  <sub>:94</sub>
-- Work orders  <sub>:175</sub>
+- 1. A depreciation schedule, computed once at acquisition, posted periodically  <sub>:60</sub>
+- 2. Posting is a cron, through the identical `findPostedEntry()` idempotency key every other posting rule already uses  <sub>:104</sub>
+- 3. Write-off and disposal reuse doc 79's own `AssetStatus`, closing the schedule rather than deleting it  <sub>:130</sub>
+- Scope lenses  <sub>:143</sub>
+- Work orders  <sub>:224</sub>
+- Acceptance  <sub>:240</sub>
+- Out of scope  <sub>:251</sub>
+
+### `docs/implementation/finance-accounting/151-layby-installment-sales.md`  <sub>253 lines</sub>
+
+- 1. A layby/instalment plan is a schedule of expected payments against one order, fulfilment gated on completion  <sub>:66</sub>
+- 2. Fulfilment gating is the one real difference between LAYBY and INSTALMENT, and the one place this touches the order lifecycle  <sub>:111</sub>
+- Scope lenses  <sub>:134</sub>
+- Work orders  <sub>:221</sub>
+- Acceptance  <sub>:236</sub>
+- Out of scope  <sub>:246</sub>
+
+### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>330 lines</sub>
+
+- 1. A settlement batch is a reconciliation target, not a payment record  <sub>:79</sub>
+- 2. A `FinancialInstitutionConnector` is doc 36's own pattern, applied to settlement  <sub>:141</sub>
+- 3. A shortfall is a named variance, never a silent write-off  <sub>:161</sub>
+- Scope lenses  <sub>:172</sub>
+- Work orders  <sub>:284</sub>
+- Acceptance  <sub>:306</sub>
+- Out of scope  <sub>:319</sub>
+
+### `docs/implementation/finance-accounting/56-overdue-invoices-counter.md`  <sub>125 lines</sub>
+
+- 1. Overdue is computed at read time, always  <sub>:25</sub>
+- Scope lenses  <sub>:48</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:105</sub>
+- Out of scope  <sub>:116</sub>
+
+### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>213 lines</sub>
+
+- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:61</sub>
+- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:83</sub>
+- Scope lenses  <sub>:105</sub>
+- Work orders  <sub>:170</sub>
 - Acceptance  <sub>:191</sub>
-- Out of scope  <sub>:202</sub>
+- Out of scope  <sub>:204</sub>
 
-### `docs/implementation/finance-accounting/151-layby-installment-sales.md`  <sub>201 lines</sub>
+### `docs/implementation/hr-people-org/164-department-permission-role-duty-control.md`  <sub>327 lines</sub>
 
-- 1. A layby/instalment plan is a schedule of expected payments against one order, fulfilment gated on completion  <sub>:14</sub>
-- 2. Fulfilment gating is the one real difference between LAYBY and INSTALMENT, and the one place this touches the order lifecycle  <sub>:59</sub>
-- Scope lenses  <sub>:82</sub>
-- Work orders  <sub>:169</sub>
-- Acceptance  <sub>:184</sub>
-- Out of scope  <sub>:194</sub>
-
-### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>265 lines</sub>
-
-- 1. A settlement batch is a reconciliation target, not a payment record  <sub>:14</sub>
-- 2. A `FinancialInstitutionConnector` is doc 36's own pattern, applied to settlement  <sub>:76</sub>
-- 3. A shortfall is a named variance, never a silent write-off  <sub>:96</sub>
-- Scope lenses  <sub>:107</sub>
-- Work orders  <sub>:219</sub>
-- Acceptance  <sub>:241</sub>
-- Out of scope  <sub>:254</sub>
-
-### `docs/implementation/finance-accounting/56-overdue-invoices-counter.md`  <sub>111 lines</sub>
-
-- 1. Overdue is computed at read time, always  <sub>:11</sub>
-- Scope lenses  <sub>:34</sub>
-- Work orders  <sub>:81</sub>
-- Acceptance  <sub>:91</sub>
-- Out of scope  <sub>:102</sub>
-
-### `docs/implementation/finance-accounting/68-realtime-gross-profit.md`  <sub>191 lines</sub>
-
-- 1. The fix is one more publish, at the point POS already knows it happened  <sub>:39</sub>
-- 2. "Per transaction and per day" is then a read over rows that now exist  <sub>:61</sub>
-- Scope lenses  <sub>:83</sub>
-- Work orders  <sub>:148</sub>
-- Acceptance  <sub>:169</sub>
-- Out of scope  <sub>:182</sub>
+- What already exists and is not redesigned here  <sub>:11</sub>
+- The three genuine gaps  <sub>:34</sub>
+- Design: two new models, no change to docs 19/20/21/23's own schemas  <sub>:59</sub>
+- Scope lenses  <sub>:144</sub>
+- Work orders  <sub>:245</sub>
+- Acceptance  <sub>:288</sub>
+- Out of scope  <sub>:309</sub>
+- Decision to record  <sub>:319</sub>
 
 ### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>250 lines</sub>
 
@@ -2970,14 +2983,14 @@ _no second-level headings_
 - Acceptance  <sub>:122</sub>
 - Out of scope  <sub>:131</sub>
 
-### `docs/implementation/hr-people-org/79-employee-asset-management.md`  <sub>183 lines</sub>
+### `docs/implementation/hr-people-org/79-employee-asset-management.md`  <sub>222 lines</sub>
 
-- 1. An asset is a trackable item; an assignment is who has it and since when  <sub>:9</sub>
-- 2. An employee's exit is the one write path that must never be optional  <sub>:59</sub>
-- Scope lenses  <sub>:74</sub>
-- Work orders  <sub>:154</sub>
-- Acceptance  <sub>:169</sub>
-- Out of scope  <sub>:178</sub>
+- 1. An asset is a trackable item; an assignment is who has it and since when  <sub>:48</sub>
+- 2. An employee's exit is the one write path that must never be optional  <sub>:98</sub>
+- Scope lenses  <sub>:113</sub>
+- Work orders  <sub>:193</sub>
+- Acceptance  <sub>:208</sub>
+- Out of scope  <sub>:217</sub>
 
 ### `docs/implementation/hr-people-org/80-employee-training-certification.md`  <sub>161 lines</sub>
 
@@ -3328,15 +3341,15 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>500 lines</sub>
+### `docs/implementation/README.md`  <sub>501 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:370</sub>
-- The two module groups  <sub>:399</sub>
-- How a work order runs  <sub>:436</sub>
-- Known gaps not yet owned by a phase  <sub>:454</sub>
-- When a brief is wrong  <sub>:481</sub>
-- Scope, honestly  <sub>:494</sub>
+- Dependency order  <sub>:371</sub>
+- The two module groups  <sub>:400</sub>
+- How a work order runs  <sub>:437</sub>
+- Known gaps not yet owned by a phase  <sub>:455</sub>
+- When a brief is wrong  <sub>:482</sub>
+- Scope, honestly  <sub>:495</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 

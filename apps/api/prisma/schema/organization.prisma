@@ -54,6 +54,9 @@ model RetailBrand {
   locations    Location[]
   adminScopes  AdminScope[]
   nodes        Node[]
+  /// hr-people-org/19-org-structure-offices-departments.md — units
+  /// belonging to this brand; NULL on OrgUnit means group-wide.
+  orgUnits     OrgUnit[]
 
   @@index([organizationId])
   @@index([parentId])
@@ -174,6 +177,9 @@ model Node {
 
   adminScopes AdminScope[]
   retailBrand RetailBrand? @relation(fields: [retailBrandId], references: [id], onDelete: SetNull)
+  /// hr-people-org/19-org-structure-offices-departments.md — units whose
+  /// data physically lives on this node.
+  orgUnits    OrgUnit[]
 
   @@index([role])
   @@index([status])

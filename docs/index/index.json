@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2079,
-    "lines": 318109,
-    "routes": 686,
-    "controllers": 125,
-    "models": 247,
-    "enums": 116,
-    "migrations": 88,
+    "files": 2077,
+    "lines": 319214,
+    "routes": 702,
+    "controllers": 126,
+    "models": 253,
+    "enums": 117,
+    "migrations": 90,
     "events": 63,
-    "permissions": 87,
-    "screens": 239,
+    "permissions": 91,
+    "screens": 241,
     "crons": 21,
-    "specs": 265,
+    "specs": 260,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 57,
       "lines": 29964,
-      "bytes": 1177400,
+      "bytes": 1177439,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 893,
-      "lines": 126143,
-      "bytes": 4839051,
+      "files": 891,
+      "lines": 126484,
+      "bytes": 4847304,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -51,20 +51,20 @@
     },
     "web": {
       "files": 384,
-      "lines": 61894,
-      "bytes": 2233657,
+      "lines": 62457,
+      "bytes": 2252739,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 63912,
-      "bytes": 3798991,
+      "lines": 64072,
+      "bytes": 3808754,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 7972,
-      "bytes": 282481,
+      "lines": 8013,
+      "bytes": 284084,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -123,12 +123,10 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
-        "apps/api/src/modules/analytics/analytics.category-velocity.spec.ts",
         "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
         "apps/api/src/modules/analytics/analytics.controller.ts",
         "apps/api/src/modules/analytics/analytics.customers.spec.ts",
         "apps/api/src/modules/analytics/analytics.inventory.spec.ts",
-        "apps/api/src/modules/analytics/analytics.lifecycle.spec.ts",
         "apps/api/src/modules/analytics/analytics.metrics.spec.ts",
         "apps/api/src/modules/analytics/analytics.metrics.ts",
         "apps/api/src/modules/analytics/analytics.module.ts",
@@ -137,14 +135,13 @@
         "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
         "apps/api/src/modules/analytics/analytics.sales.spec.ts",
         "apps/api/src/modules/analytics/analytics.service.ts",
-        "apps/api/src/modules/analytics/analytics.summary.spec.ts",
         "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
         "apps/api/src/modules/analytics/dto/analytics.dto.ts",
         "apps/api/src/modules/analytics/dto/cards.dto.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.ts"
       ],
-      "routes": 26,
+      "routes": 24,
       "page": "docs/index/modules/analytics.md"
     },
     {
@@ -391,9 +388,13 @@
         "apps/api/src/modules/hr/assets.service.spec.ts",
         "apps/api/src/modules/hr/assets.service.ts",
         "apps/api/src/modules/hr/dto/asset.dto.ts",
-        "apps/api/src/modules/hr/hr.module.ts"
+        "apps/api/src/modules/hr/dto/people.dto.ts",
+        "apps/api/src/modules/hr/hr.module.ts",
+        "apps/api/src/modules/hr/people.controller.ts",
+        "apps/api/src/modules/hr/people.service.spec.ts",
+        "apps/api/src/modules/hr/people.service.ts"
       ],
-      "routes": 7,
+      "routes": 17,
       "page": "docs/index/modules/hr.md"
     },
     {
@@ -570,8 +571,6 @@
         "apps/api/src/modules/orders/instalment-plan.service.spec.ts",
         "apps/api/src/modules/orders/instalment-plan.service.ts",
         "apps/api/src/modules/orders/notification.subscriber.ts",
-        "apps/api/src/modules/orders/order-feed.source.spec.ts",
-        "apps/api/src/modules/orders/order-feed.source.ts",
         "apps/api/src/modules/orders/order-replication.listener.spec.ts",
         "apps/api/src/modules/orders/order-replication.listener.ts",
         "apps/api/src/modules/orders/orders-pos.service.spec.ts",
@@ -606,6 +605,21 @@
       "page": "docs/index/modules/organization.md"
     },
     {
+      "name": "orgstructure",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/orgstructure/dto/org-unit.dto.ts",
+        "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+        "apps/api/src/modules/orgstructure/org-unit.service.spec.ts",
+        "apps/api/src/modules/orgstructure/org-unit.service.ts",
+        "apps/api/src/modules/orgstructure/orgstructure.module.ts"
+      ],
+      "routes": 9,
+      "page": "docs/index/modules/orgstructure.md"
+    },
+    {
       "name": "parties",
       "pack": "core",
       "alwaysOn": false,
@@ -628,8 +642,6 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/payments/notification.subscriber.ts",
-        "apps/api/src/modules/payments/payment-feed.source.spec.ts",
-        "apps/api/src/modules/payments/payment-feed.source.ts",
         "apps/api/src/modules/payments/payment-provider.ts",
         "apps/api/src/modules/payments/payments.controller.ts",
         "apps/api/src/modules/payments/payments.module.ts",
@@ -752,8 +764,6 @@
         "apps/api/src/modules/purchasing/dto/supplier.dto.ts",
         "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
         "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts",
-        "apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts",
-        "apps/api/src/modules/purchasing/purchase-order-feed.source.ts",
         "apps/api/src/modules/purchasing/purchasing.controller.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.spec.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.ts",
@@ -1232,17 +1242,6 @@
         "apps/api/src/core/extension-points/stock-intake.registry.ts"
       ],
       "page": "docs/index/core/extension-points.md"
-    },
-    {
-      "name": "feed",
-      "files": [
-        "apps/api/src/core/feed/feed-registry.service.spec.ts",
-        "apps/api/src/core/feed/feed-registry.service.ts",
-        "apps/api/src/core/feed/feed-source.ts",
-        "apps/api/src/core/feed/feed.controller.ts",
-        "apps/api/src/core/feed/feed.module.ts"
-      ],
-      "page": "docs/index/core/feed.md"
     },
     {
       "name": "health",
@@ -1787,7 +1786,7 @@
       "controller": "AnalyticsController",
       "handler": "comparison",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 232,
+      "line": 220,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1803,7 +1802,7 @@
       "controller": "AnalyticsController",
       "handler": "customersOverview",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 185,
+      "line": 173,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1819,7 +1818,7 @@
       "controller": "AnalyticsController",
       "handler": "customersRetention",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 194,
+      "line": 182,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1835,7 +1834,7 @@
       "controller": "AnalyticsController",
       "handler": "customersTop",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 203,
+      "line": 191,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1883,7 +1882,7 @@
       "controller": "AnalyticsController",
       "handler": "inventoryMovements",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 173,
+      "line": 161,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1899,7 +1898,7 @@
       "controller": "AnalyticsController",
       "handler": "inventoryValuation",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 161,
+      "line": 149,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1915,7 +1914,7 @@
       "controller": "AnalyticsController",
       "handler": "setMonthlyTarget",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 249,
+      "line": 237,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1931,22 +1930,6 @@
       "controller": "AnalyticsController",
       "handler": "ordersFulfilment",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 94,
-      "access": "analytics.view",
-      "permissions": [
-        "analytics.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Average and median time spent in each order-status transition"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/analytics/orders/lifecycle-breakdown",
-      "module": "analytics",
-      "controller": "AnalyticsController",
-      "handler": "orderLifecycleBreakdown",
-      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
       "line": 88,
       "access": "analytics.view",
       "permissions": [
@@ -1954,7 +1937,7 @@
       ],
       "public": false,
       "authOnly": false,
-      "summary": "Every order, right now, grouped by status into Pending/Completed/Voided"
+      "summary": "Average and median time spent in each order-status transition"
     },
     {
       "method": "GET",
@@ -1979,7 +1962,7 @@
       "controller": "AnalyticsController",
       "handler": "productsCategories",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 147,
+      "line": 141,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1990,28 +1973,12 @@
     },
     {
       "method": "GET",
-      "path": "/admin/analytics/products/category-velocity",
-      "module": "analytics",
-      "controller": "AnalyticsController",
-      "handler": "categoryVelocity",
-      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 155,
-      "access": "analytics.view",
-      "permissions": [
-        "analytics.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "The top categories' own revenue, broken out day by day"
-    },
-    {
-      "method": "GET",
       "path": "/admin/analytics/products/slow-sellers",
       "module": "analytics",
       "controller": "AnalyticsController",
       "handler": "productsSlowSellers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 141,
+      "line": 135,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2027,7 +1994,7 @@
       "controller": "AnalyticsController",
       "handler": "productsTopSellers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 131,
+      "line": 125,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2043,7 +2010,7 @@
       "controller": "AnalyticsController",
       "handler": "purchasingSpend",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 102,
+      "line": 96,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2059,7 +2026,7 @@
       "controller": "AnalyticsController",
       "handler": "purchasingSuppliers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 119,
+      "line": 113,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2155,7 +2122,7 @@
       "controller": "AnalyticsController",
       "handler": "visitors",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 224,
+      "line": 212,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2171,7 +2138,7 @@
       "controller": "AnalyticsController",
       "handler": "workshopOutput",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 212,
+      "line": 200,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -4833,22 +4800,6 @@
     },
     {
       "method": "GET",
-      "path": "/admin/feed",
-      "module": "core/feed",
-      "controller": "FeedController",
-      "handler": "collect",
-      "file": "apps/api/src/core/feed/feed.controller.ts",
-      "line": 23,
-      "access": "analytics.view",
-      "permissions": [
-        "analytics.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Recent order, purchase-order and payment activity, merged and capped, newest first"
-    },
-    {
-      "method": "GET",
       "path": "/admin/finance/expense-categories",
       "module": "finance",
       "controller": "FinanceController",
@@ -6733,6 +6684,154 @@
     },
     {
       "method": "POST",
+      "path": "/admin/org-structure",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "create",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 47,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a unit — root if parentId is omitted"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/org-structure/:id",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "get",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 34,
+      "access": "org.structure.view | org.structure.manage",
+      "permissions": [
+        "org.structure.view",
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One unit"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:id/close",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "close",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 75,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Close a unit — never deleted"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:id/move",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "move",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 68,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Re-parent a unit, rewriting its whole subtree"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:id/move/preview",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "previewMove",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 61,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What a move would touch, without writing anything"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/org-structure/:id/rename",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "rename",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 54,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Rename a unit"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/org-structure/:id/subtree",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "subtree",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 40,
+      "access": "org.structure.view | org.structure.manage",
+      "permissions": [
+        "org.structure.view",
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One unit and everything under it"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/org-structure/tree",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "tree",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 28,
+      "access": "org.structure.view | org.structure.manage",
+      "permissions": [
+        "org.structure.view",
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The whole org tree"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/org-structure/types",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "listTypes",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 22,
+      "access": "org.structure.view | org.structure.manage",
+      "permissions": [
+        "org.structure.view",
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every configured unit type"
+    },
+    {
+      "method": "POST",
       "path": "/admin/parties",
       "module": "parties",
       "controller": "PartiesController",
@@ -7130,6 +7229,171 @@
       "public": false,
       "authOnly": false,
       "summary": "Recompute every line on a still-DRAFT pay run, replacing them."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "list",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 21,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Everyone who holds at least one posting"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people/:userId/postings",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "postings",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 53,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One person's postings, open and past"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people/:userId/ranks",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "ranksOf",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 83,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every rank level this person currently holds, across all open postings"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people/positions",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "listPositions",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 40,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every position"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/positions",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "createPosition",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 47,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a position"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/postings/:id/end",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "end",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 77,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "End a posting"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/postings/assign",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "assign",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 67,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Assign a posting — refused if it would create a second open primary posting"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/postings/assign/preview",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "previewAssign",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 60,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What assigning this posting would do, without writing anything"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people/ranks",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "listRanks",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 27,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The rank ladder"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/ranks",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "createRank",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 34,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Add a rank"
     },
     {
       "method": "GET",
@@ -12164,10 +12428,8 @@
         "GET /admin/analytics/inventory/valuation",
         "PATCH /admin/analytics/monthly-target",
         "GET /admin/analytics/orders/fulfilment",
-        "GET /admin/analytics/orders/lifecycle-breakdown",
         "GET /admin/analytics/orders/overview",
         "GET /admin/analytics/products/categories",
-        "GET /admin/analytics/products/category-velocity",
         "GET /admin/analytics/products/slow-sellers",
         "GET /admin/analytics/products/top-sellers",
         "GET /admin/analytics/purchasing/spend",
@@ -12179,7 +12441,6 @@
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors",
         "GET /admin/analytics/workshop/output",
-        "GET /admin/feed",
         "GET /admin/inventory/suspicious-traffic",
         "GET /admin/wishlist/out-of-stock-report"
       ],
@@ -12641,7 +12902,7 @@
         "POST /admin/catalog/redirects/import",
         "PATCH /admin/catalog/variants/:variantId/stock"
       ],
-      "uiSites": 18,
+      "uiSites": 17,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -13444,6 +13705,86 @@
       "inSeed": true
     },
     {
+      "key": "hr.people.view",
+      "label": "View the people list, positions and the rank ladder",
+      "category": "Human Resources",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/people",
+        "GET /admin/people/:userId/postings",
+        "GET /admin/people/:userId/ranks",
+        "GET /admin/people/positions",
+        "GET /admin/people/ranks"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "hr.people.manage",
+      "label": "Create positions, assign and end postings, manage the rank ladder",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/people",
+        "GET /admin/people/:userId/postings",
+        "GET /admin/people/:userId/ranks",
+        "GET /admin/people/positions",
+        "POST /admin/people/positions",
+        "POST /admin/people/postings/:id/end",
+        "POST /admin/people/postings/assign",
+        "POST /admin/people/postings/assign/preview",
+        "GET /admin/people/ranks",
+        "POST /admin/people/ranks"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "org.structure.view",
+      "label": "View the organization tree — offices, regions and departments",
+      "category": "Organization",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/org-structure/:id",
+        "GET /admin/org-structure/:id/subtree",
+        "GET /admin/org-structure/tree",
+        "GET /admin/org-structure/types"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "org.structure.manage",
+      "label": "Create, rename, move and close units in the organization tree",
+      "category": "Organization",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/org-structure",
+        "GET /admin/org-structure/:id",
+        "POST /admin/org-structure/:id/close",
+        "POST /admin/org-structure/:id/move",
+        "POST /admin/org-structure/:id/move/preview",
+        "PATCH /admin/org-structure/:id/rename",
+        "GET /admin/org-structure/:id/subtree",
+        "GET /admin/org-structure/tree",
+        "GET /admin/org-structure/types"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -13955,7 +14296,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/orders/orders.service.ts:748",
-        "apps/api/src/modules/orders/orders.service.ts:933"
+        "apps/api/src/modules/orders/orders.service.ts:929"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -13970,7 +14311,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:933"
+        "apps/api/src/modules/orders/orders.service.ts:929"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -14755,7 +15096,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 301,
+      "line": 307,
       "doc": "",
       "fields": [
         {
@@ -14871,7 +15212,7 @@
     {
       "name": "AdminScope",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 107,
+      "line": 110,
       "doc": "What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids `if (user.role === 'SUPER_ADMIN')`).",
       "fields": [
         {
@@ -15014,7 +15355,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 624,
+      "line": 630,
       "doc": "",
       "fields": [
         {
@@ -15103,7 +15444,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 579,
+      "line": 585,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -15164,7 +15505,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 251,
+      "line": 257,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -15459,7 +15800,7 @@
     {
       "name": "Asset",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 21,
+      "line": 123,
       "doc": "",
       "fields": [
         {
@@ -15547,7 +15888,7 @@
     {
       "name": "AssetAssignment",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 50,
+      "line": 152,
       "doc": "One row per issue/return cycle — an asset's full custody history, never overwritten.",
       "fields": [
         {
@@ -15813,7 +16154,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 391,
+      "line": 397,
       "doc": "",
       "fields": [
         {
@@ -16932,7 +17273,7 @@
     {
       "name": "BrandPolicy",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 71,
+      "line": 74,
       "doc": "Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and its siblings, generalised from a single Setting row (House Rule 4, still the answer while a deployment has onl…",
       "fields": [
         {
@@ -18670,7 +19011,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 559,
+      "line": 565,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -19227,7 +19568,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 346,
+      "line": 352,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -19413,7 +19754,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 207,
+      "line": 213,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -19469,6 +19810,80 @@
       "indexes": [
         "@@index([userId])",
         "@@index([expiresAt])"
+      ]
+    },
+    {
+      "name": "EmployeeProfile",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 38,
+      "doc": "Optional HR-specific metadata about a User who works here.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "employeeCode",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "EmploymentStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "joinedOn",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leftOn",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([status])"
       ]
     },
     {
@@ -23204,7 +23619,7 @@
     {
       "name": "Node",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 143,
+      "line": 146,
       "doc": "A child node this deployment knows about — a brand's branches, or an organization's brands (R1, R14; WO-18.1, moved here from core.prisma in WO-18.3 once it had siblings to live beside — Part 5 owns…",
       "fields": [
         {
@@ -23297,6 +23712,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "orgUnits",
+          "type": "OrgUnit[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -24833,9 +25255,207 @@
       "indexes": []
     },
     {
+      "name": "OrgUnit",
+      "file": "apps/api/prisma/schema/org-structure.prisma",
+      "line": 33,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "typeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "parentId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "path",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "depth",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "nodeId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "retailBrandId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "closedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "OrgUnitType",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "parent",
+          "type": "OrgUnit?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "children",
+          "type": "OrgUnit[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "node",
+          "type": "Node?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "retailBrand",
+          "type": "RetailBrand?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "positions",
+          "type": "Position[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([retailBrandId, code])",
+        "@@index([parentId])",
+        "@@index([path])",
+        "@@index([nodeId])"
+      ]
+    },
+    {
+      "name": "OrgUnitType",
+      "file": "apps/api/prisma/schema/org-structure.prisma",
+      "line": 20,
+      "doc": "What kinds of unit this deployment's org chart has.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rank",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isOffice",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "units",
+          "type": "OrgUnit[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 532,
+      "line": 538,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -25222,7 +25842,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 190,
+      "line": 196,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -25777,7 +26397,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 412,
+      "line": 418,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -27114,6 +27734,88 @@
       ]
     },
     {
+      "name": "Position",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 74,
+      "doc": "A post in the org chart: \"Finance Manager, North Region\".",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rankId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reportsToId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "rank",
+          "type": "Rank",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "reportsTo",
+          "type": "Position?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "reports",
+          "type": "Position[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "postings",
+          "type": "Posting[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([orgUnitId])",
+        "@@index([reportsToId])"
+      ]
+    },
+    {
       "name": "PosReceipt",
       "file": "apps/api/prisma/schema/pos.prisma",
       "line": 130,
@@ -27335,6 +28037,74 @@
       "indexes": [
         "@@index([locationId])",
         "@@index([status])"
+      ]
+    },
+    {
+      "name": "Posting",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 97,
+      "doc": "Who holds which post, when.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "positionId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isPrimary",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startedOn",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endedOn",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "position",
+          "type": "Position",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, endedOn])",
+        "@@index([positionId, endedOn])"
       ]
     },
     {
@@ -29500,6 +30270,50 @@
       ]
     },
     {
+      "name": "Rank",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 60,
+      "doc": "A rank is a rung.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "level",
+          "type": "Int",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "positions",
+          "type": "Position[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "RawMaterial",
       "file": "apps/api/prisma/schema/bom.prisma",
       "line": 32,
@@ -29733,7 +30547,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 169,
+      "line": 175,
       "doc": "",
       "fields": [
         {
@@ -30371,6 +31185,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "orgUnits",
+          "type": "OrgUnit[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -30853,7 +31674,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 478,
+      "line": 484,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -30911,7 +31732,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 492,
+      "line": 498,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -30965,7 +31786,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 428,
+      "line": 434,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -31192,7 +32013,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 324,
+      "line": 330,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -35748,6 +36569,20 @@
           "relation": true
         },
         {
+          "name": "employeeProfile",
+          "type": "EmployeeProfile?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "postings",
+          "type": "Posting[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "assetDepreciationSchedulesCreated",
           "type": "AssetDepreciationSchedule[]",
           "id": false,
@@ -35883,7 +36718,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 449,
+      "line": 455,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -35944,7 +36779,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 507,
+      "line": 513,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -36848,7 +37683,7 @@
     {
       "name": "AdminScopeLevel",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 83,
+      "line": 86,
       "values": [
         "ORG",
         "BRAND",
@@ -36858,7 +37693,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 618,
+      "line": 624,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -36868,7 +37703,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 597,
+      "line": 603,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -36912,7 +37747,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 232,
+      "line": 238,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -36922,7 +37757,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 225,
+      "line": 231,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -36961,7 +37796,7 @@
     {
       "name": "AssetStatus",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 14,
+      "line": 116,
       "values": [
         "AVAILABLE",
         "ASSIGNED",
@@ -37105,7 +37940,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 547,
+      "line": 553,
       "values": [
         "IOS",
         "ANDROID",
@@ -37150,11 +37985,22 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 335,
+      "line": 341,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
         "SUPPORT"
+      ]
+    },
+    {
+      "name": "EmploymentStatus",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 28,
+      "values": [
+        "ACTIVE",
+        "ON_LEAVE",
+        "SUSPENDED",
+        "LEFT"
       ]
     },
     {
@@ -37375,7 +38221,7 @@
     {
       "name": "NodeRole",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 123,
+      "line": 126,
       "values": [
         "BRANCH",
         "BRAND"
@@ -37384,7 +38230,7 @@
     {
       "name": "NodeStatus",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 128,
+      "line": 131,
       "values": [
         "ACTIVE",
         "SUSPENDED"
@@ -37489,7 +38335,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 521,
+      "line": 527,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -37544,7 +38390,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 440,
+      "line": 446,
       "values": [
         "GRANT",
         "REVOKE"
@@ -39737,6 +40583,43 @@
         "DocumentChunk",
         "DocumentSource"
       ]
+    },
+    {
+      "folder": "20260926080000_add_org_structure",
+      "file": "apps/api/prisma/schema/migrations/20260926080000_add_org_structure/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_org_structure",
+      "statements": 12,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "OrgUnit",
+        "OrgUnitType"
+      ]
+    },
+    {
+      "folder": "20260926083000_add_positions_ranks",
+      "file": "apps/api/prisma/schema/migrations/20260926083000_add_positions_ranks/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_positions_ranks",
+      "statements": 22,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "EmployeeProfile",
+        "Position",
+        "Posting",
+        "Rank"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -41481,6 +42364,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/org-structure",
+      "file": "apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/payments",
       "file": "apps/web/src/app/(admin)/admin/(app)/payments/page.tsx",
       "client": true,
@@ -41528,6 +42420,15 @@
       "kind": "page",
       "url": "/admin/payroll/runs/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/people",
+      "file": "apps/web/src/app/(admin)/admin/(app)/people/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -42814,15 +43715,6 @@
       ]
     },
     {
-      "file": "apps/api/src/core/feed/feed-registry.service.spec.ts",
-      "module": "core/feed",
-      "kind": "unit test",
-      "cases": 6,
-      "describes": [
-        "FeedRegistryService — WO-58.2"
-      ]
-    },
-    {
       "file": "apps/api/src/core/intent/intent-router.service.spec.ts",
       "module": "core/intent",
       "kind": "unit test",
@@ -43150,15 +44042,6 @@
       ]
     },
     {
-      "file": "apps/api/src/modules/analytics/analytics.category-velocity.spec.ts",
-      "module": "analytics",
-      "kind": "unit test",
-      "cases": 4,
-      "describes": [
-        "AnalyticsService.categoryVelocity — WO-57.1"
-      ]
-    },
-    {
       "file": "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
       "module": "analytics",
       "kind": "unit test",
@@ -43188,15 +44071,6 @@
         "AnalyticsService — WO-D.4 inventory valuation/movements",
         "inventoryValuation",
         "inventoryMovements"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/analytics/analytics.lifecycle.spec.ts",
-      "module": "analytics",
-      "kind": "unit test",
-      "cases": 4,
-      "describes": [
-        "AnalyticsService.orderLifecycleBreakdown — WO-69.1"
       ]
     },
     {
@@ -43260,15 +44134,6 @@
         "salesAov",
         "salesProfit",
         "salesFunnel"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/analytics/analytics.summary.spec.ts",
-      "module": "analytics",
-      "kind": "unit test",
-      "cases": 2,
-      "describes": [
-        "AnalyticsService.summary — WO-45.1 totalUnits"
       ]
     },
     {
@@ -43677,6 +44542,21 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/hr/people.service.spec.ts",
+      "module": "hr",
+      "kind": "unit test",
+      "cases": 17,
+      "describes": [
+        "PeopleService",
+        "createRank",
+        "createPosition",
+        "primaryFor / postingsFor",
+        "ranksOf / outranks — the maximum rule, never first-found",
+        "previewAssign / assign — refuses a second open primary rather than silently ending the first",
+        "end"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts",
       "module": "identity-verification",
       "kind": "unit test",
@@ -43903,15 +44783,6 @@
       ]
     },
     {
-      "file": "apps/api/src/modules/orders/order-feed.source.spec.ts",
-      "module": "orders",
-      "kind": "unit test",
-      "cases": 6,
-      "describes": [
-        "OrderFeedSource — WO-58.2"
-      ]
-    },
-    {
       "file": "apps/api/src/modules/orders/order-replication.listener.spec.ts",
       "module": "orders",
       "kind": "unit test",
@@ -43967,6 +44838,19 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/orgstructure/org-unit.service.spec.ts",
+      "module": "orgstructure",
+      "kind": "unit test",
+      "cases": 13,
+      "describes": [
+        "OrgUnitService",
+        "create",
+        "close",
+        "move / previewMove — the single-writer discipline",
+        "get / findRow"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/parties/parties.service.spec.ts",
       "module": "parties",
       "kind": "unit test",
@@ -43977,15 +44861,6 @@
         "dedupeCandidate",
         "findOrCreateForRole",
         "search"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/payments/payment-feed.source.spec.ts",
-      "module": "payments",
-      "kind": "unit test",
-      "cases": 5,
-      "describes": [
-        "PaymentFeedSource — WO-58.2"
       ]
     },
     {
@@ -44164,15 +45039,6 @@
         "GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023",
         "onModuleInit",
         "onGoodsReceived"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts",
-      "module": "purchasing",
-      "kind": "unit test",
-      "cases": 5,
-      "describes": [
-        "PurchaseOrderFeedSource — WO-58.2"
       ]
     },
     {
@@ -44831,7 +45697,7 @@
       "file": "apps/api/test/orders.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
-      "cases": 34,
+      "cases": 33,
       "describes": [
         "Orders (e2e)",
         "payment methods",
@@ -45751,7 +46617,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5344,
+      "bytes": 5357,
       "doc": "",
       "symbols": []
     },
@@ -45760,7 +46626,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 174,
-      "bytes": 8751,
+      "bytes": 8764,
       "doc": "",
       "symbols": []
     },
@@ -45769,7 +46635,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5789,
+      "bytes": 5802,
       "doc": "",
       "symbols": []
     },
@@ -46116,8 +46982,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 644,
-      "bytes": 26363,
+      "lines": 650,
+      "bytes": 26714,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -46161,8 +47027,8 @@
       "path": "apps/api/prisma/schema/hr.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 69,
-      "bytes": 2845,
+      "lines": 171,
+      "bytes": 7045,
       "doc": "Employee assets: which physical equipment (laptop, phone, uniform) is",
       "symbols": []
     },
@@ -46959,6 +47825,24 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926080000_add_org_structure/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 72,
+      "bytes": 2776,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260926083000_add_positions_ranks/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 94,
+      "bytes": 3782,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -46995,11 +47879,20 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/org-structure.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 81,
+      "bytes": 3581,
+      "doc": "The org tree: offices, regions, departments — whatever shape a client's",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/organization.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 182,
-      "bytes": 8737,
+      "lines": 188,
+      "bytes": 9039,
       "doc": "The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier",
       "symbols": []
     },
@@ -47205,8 +48098,8 @@
       "path": "apps/api/prisma/seed.ts",
       "area": "api",
       "kind": "module",
-      "lines": 3070,
-      "bytes": 105776,
+      "lines": 3100,
+      "bytes": 107115,
       "doc": "",
       "symbols": []
     },
@@ -48783,14 +49676,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 51,
-      "bytes": 1795,
+      "lines": 49,
+      "bytes": 1730,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 50
+          "line": 48
         }
       ]
     },
@@ -49340,80 +50233,6 @@
           "name": "StockIntakeRegistry",
           "kind": "class",
           "line": 52
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/feed/feed-registry.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 83,
-      "bytes": 4391,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/core/feed/feed-registry.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 89,
-      "bytes": 3495,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FeedRegistryService",
-          "kind": "class",
-          "line": 16
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/feed/feed-source.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 39,
-      "bytes": 1954,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FeedEntry",
-          "kind": "interface",
-          "line": 11
-        },
-        {
-          "name": "FeedSource",
-          "kind": "interface",
-          "line": 24
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/feed/feed.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 32,
-      "bytes": 1310,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FeedController",
-          "kind": "class",
-          "line": 18
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/feed/feed.module.ts",
-      "area": "api",
-      "kind": "nest module",
-      "lines": 19,
-      "bytes": 635,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FeedModule",
-          "kind": "class",
-          "line": 18
         }
       ]
     },
@@ -51428,15 +52247,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/analytics/analytics.category-velocity.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 136,
-      "bytes": 5563,
-      "doc": "",
-      "symbols": []
-    },
-    {
       "path": "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -51449,8 +52259,8 @@
       "path": "apps/api/src/modules/analytics/analytics.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 253,
-      "bytes": 11356,
+      "lines": 241,
+      "bytes": 10781,
       "doc": "",
       "symbols": [
         {
@@ -51475,15 +52285,6 @@
       "kind": "unit test",
       "lines": 196,
       "bytes": 9094,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/analytics/analytics.lifecycle.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 115,
-      "bytes": 4285,
       "doc": "",
       "symbols": []
     },
@@ -51596,8 +52397,8 @@
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 2590,
-      "bytes": 109766,
+      "lines": 2410,
+      "bytes": 100672,
       "doc": "",
       "symbols": [
         {
@@ -51633,178 +52434,159 @@
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 80
+          "line": 77
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 89
+          "line": 86
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 110
+          "line": 107
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 115
-        },
-        {
-          "name": "OrderLifecycleBreakdown",
-          "kind": "interface",
-          "line": 124
+          "line": 112
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 143
+          "line": 121
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 151
+          "line": 129
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 156
+          "line": 134
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 171
+          "line": 149
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 194
+          "line": 172
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 198
+          "line": 176
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 210
+          "line": 188
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 214
+          "line": 192
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 223
+          "line": 201
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 227
+          "line": 205
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 238
-        },
-        {
-          "name": "CategoryVelocitySeries",
-          "kind": "interface",
-          "line": 245
+          "line": 216
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 252
+          "line": 221
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 265
+          "line": 234
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 272
+          "line": 241
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 282
+          "line": 251
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 288
+          "line": 257
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 295
+          "line": 264
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 303
+          "line": 272
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 308
+          "line": 277
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 318
+          "line": 287
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 322
+          "line": 291
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 328
+          "line": 297
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 335
+          "line": 304
         },
         {
           "name": "ComparisonBucket",
           "kind": "interface",
-          "line": 342
+          "line": 311
         },
         {
           "name": "ComparisonAnalytics",
           "kind": "interface",
-          "line": 352
+          "line": 321
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 367
+          "line": 336
         },
         {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 389
+          "line": 358
         }
       ]
-    },
-    {
-      "path": "apps/api/src/modules/analytics/analytics.summary.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 94,
-      "bytes": 3402,
-      "doc": "",
-      "symbols": []
     },
     {
       "path": "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
@@ -54611,17 +55393,96 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/hr/dto/people.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 60,
+      "bytes": 949,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateRankDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "CreatePositionDto",
+          "kind": "class",
+          "line": 17
+        },
+        {
+          "name": "AssignPostingDto",
+          "kind": "class",
+          "line": 36
+        },
+        {
+          "name": "EndPostingDto",
+          "kind": "class",
+          "line": 54
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/hr/hr.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 16,
-      "bytes": 448,
+      "lines": 21,
+      "bytes": 870,
       "doc": "",
       "symbols": [
         {
           "name": "HrModule",
           "kind": "class",
-          "line": 15
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/people.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 87,
+      "bytes": 3178,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PeopleController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/people.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 171,
+      "bytes": 7848,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/hr/people.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 254,
+      "bytes": 10667,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PostingView",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "PreviewAssignResult",
+          "kind": "interface",
+          "line": 19
+        },
+        {
+          "name": "PeopleService",
+          "kind": "class",
+          "line": 45
         }
       ]
     },
@@ -55672,8 +56533,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 107,
-      "bytes": 3478,
+      "lines": 108,
+      "bytes": 3502,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -55692,24 +56553,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 231,
-      "bytes": 12750,
+      "lines": 233,
+      "bytes": 12879,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 49
+          "line": 50
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 80
+          "line": 81
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 207
+          "line": 209
         }
       ]
     },
@@ -55953,39 +56814,39 @@
       "path": "apps/api/src/modules/orders/dto/order.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 168,
-      "bytes": 4588,
+      "lines": 152,
+      "bytes": 3901,
       "doc": "",
       "symbols": [
         {
           "name": "ShippingAddressDto",
           "kind": "class",
-          "line": 29
+          "line": 17
         },
         {
           "name": "PlaceOrderDto",
           "kind": "class",
-          "line": 73
+          "line": 61
         },
         {
           "name": "TrackOrderDto",
           "kind": "class",
-          "line": 118
+          "line": 106
         },
         {
           "name": "ChangeOrderStatusDto",
           "kind": "class",
-          "line": 125
+          "line": 113
         },
         {
           "name": "AdminOrderQueryDto",
           "kind": "class",
-          "line": 137
+          "line": 125
         },
         {
           "name": "OrderHistoryQueryDto",
           "kind": "class",
-          "line": 153
+          "line": 137
         }
       ]
     },
@@ -56040,30 +56901,6 @@
           "name": "OrderNotificationSubscriber",
           "kind": "class",
           "line": 53
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/orders/order-feed.source.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 77,
-      "bytes": 3222,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/orders/order-feed.source.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 57,
-      "bytes": 2159,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "OrderFeedSource",
-          "kind": "class",
-          "line": 16
         }
       ]
     },
@@ -56124,14 +56961,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 55,
-      "bytes": 2818,
+      "lines": 53,
+      "bytes": 2742,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 54
+          "line": 52
         }
       ]
     },
@@ -56139,8 +56976,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1304,
-      "bytes": 51883,
+      "lines": 1300,
+      "bytes": 51573,
       "doc": "",
       "symbols": [
         {
@@ -56369,6 +57206,95 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/orgstructure/dto/org-unit.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 45,
+      "bytes": 784,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateOrgUnitDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "RenameOrgUnitDto",
+          "kind": "class",
+          "line": 33
+        },
+        {
+          "name": "MoveOrgUnitDto",
+          "kind": "class",
+          "line": 39
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 79,
+      "bytes": 2860,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgUnitController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 185,
+      "bytes": 8155,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 300,
+      "bytes": 10251,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgUnitView",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "MovePreview",
+          "kind": "interface",
+          "line": 22
+        },
+        {
+          "name": "OrgUnitService",
+          "kind": "class",
+          "line": 56
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/orgstructure.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 11,
+      "bytes": 298,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgStructureModule",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/parties/dto/party-role.const.ts",
       "area": "api",
       "kind": "dto",
@@ -56473,30 +57399,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/payments/payment-feed.source.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 69,
-      "bytes": 2953,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/payments/payment-feed.source.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 58,
-      "bytes": 2296,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "PaymentFeedSource",
-          "kind": "class",
-          "line": 16
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/payments/payment-provider.ts",
       "area": "api",
       "kind": "module",
@@ -56550,14 +57452,14 @@
       "path": "apps/api/src/modules/payments/payments.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 28,
-      "bytes": 1073,
+      "lines": 26,
+      "bytes": 991,
       "doc": "",
       "symbols": [
         {
           "name": "PaymentsModule",
           "kind": "class",
-          "line": 27
+          "line": 25
         }
       ]
     },
@@ -57696,30 +58598,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 69,
-      "bytes": 2984,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/purchasing/purchase-order-feed.source.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 62,
-      "bytes": 2599,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "PurchaseOrderFeedSource",
-          "kind": "class",
-          "line": 22
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/purchasing/purchasing.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -57801,14 +58679,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 32,
-      "bytes": 1449,
+      "lines": 30,
+      "bytes": 1348,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingModule",
           "kind": "class",
-          "line": 31
+          "line": 29
         }
       ]
     },
@@ -60635,8 +61513,8 @@
       "path": "apps/api/test/orders.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 981,
-      "bytes": 37117,
+      "lines": 950,
+      "bytes": 35712,
       "doc": "",
       "symbols": []
     },
@@ -66322,17 +67200,32 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 316,
+      "bytes": 11027,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgStructurePage",
+          "kind": "default",
+          "line": 31
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 106,
-      "bytes": 4025,
+      "lines": 104,
+      "bytes": 3920,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDashboardPage",
           "kind": "default",
-          "line": 32
+          "line": 31
         }
       ]
     },
@@ -66423,6 +67316,21 @@
           "name": "PayrollRunsPage",
           "kind": "default",
           "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/people/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 397,
+      "bytes": 13889,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PeoplePage",
+          "kind": "default",
+          "line": 53
         }
       ]
     },
@@ -68153,29 +69061,14 @@
       "path": "apps/web/src/components/admin/analytics/analytics-detail-page.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 152,
-      "bytes": 5816,
+      "lines": 149,
+      "bytes": 5609,
       "doc": "",
       "symbols": [
         {
           "name": "AnalyticsDetailPage",
           "kind": "function",
-          "line": 44
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/components/admin/analytics/blocks/dynamic-timeseries-block.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 29,
-      "bytes": 1267,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "DynamicTimeSeriesBlock",
-          "kind": "function",
-          "line": 14
+          "line": 43
         }
       ]
     },
@@ -68288,8 +69181,8 @@
       "path": "apps/web/src/components/admin/analytics/report-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 713,
-      "bytes": 25494,
+      "lines": 662,
+      "bytes": 23615,
       "doc": "",
       "symbols": [
         {
@@ -68305,22 +69198,22 @@
         {
           "name": "AnalyticsReport",
           "kind": "interface",
-          "line": 51
+          "line": 41
         },
         {
           "name": "REPORT_REGISTRY",
           "kind": "const",
-          "line": 69
+          "line": 59
         },
         {
           "name": "reportFor",
           "kind": "function",
-          "line": 705
+          "line": 654
         },
         {
           "name": "reportsFor",
           "kind": "function",
-          "line": 710
+          "line": 659
         }
       ]
     },
@@ -68753,21 +69646,6 @@
       ]
     },
     {
-      "path": "apps/web/src/components/admin/dashboard/live-feed-widget.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 79,
-      "bytes": 2901,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "LiveFeedWidget",
-          "kind": "function",
-          "line": 20
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/components/admin/dashboard/metric-card.tsx",
       "area": "web",
       "kind": "component",
@@ -68961,44 +69839,44 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 975,
-      "bytes": 26562,
+      "lines": 1001,
+      "bytes": 27386,
       "doc": "",
       "symbols": [
         {
           "name": "ICON_MAP",
           "kind": "const",
-          "line": 20
+          "line": 21
         },
         {
           "name": "AdminNavGroup",
           "kind": "interface",
-          "line": 36
+          "line": 38
         },
         {
           "name": "NAV_GROUPS",
           "kind": "const",
-          "line": 55
+          "line": 57
         },
         {
           "name": "AdminNavItem",
           "kind": "interface",
-          "line": 78
+          "line": 85
         },
         {
           "name": "ADMIN_NAV",
           "kind": "const",
-          "line": 118
+          "line": 126
         },
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 945
+          "line": 971
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 960
+          "line": 986
         }
       ]
     },
@@ -70259,8 +71137,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 250,
-      "bytes": 11269,
+      "lines": 255,
+      "bytes": 11462,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -70826,8 +71704,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1658,
-      "bytes": 44682,
+      "lines": 1641,
+      "bytes": 44190,
       "doc": "",
       "symbols": [
         {
@@ -71561,129 +72439,119 @@
           "line": 1440
         },
         {
-          "name": "FeedEntry",
-          "kind": "interface",
-          "line": 1447
-        },
-        {
-          "name": "FeedResponse",
-          "kind": "interface",
-          "line": 1457
-        },
-        {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1463
+          "line": 1446
         },
         {
           "name": "ProductCrossSellKind",
           "kind": "type",
-          "line": 1471
+          "line": 1454
         },
         {
           "name": "ProductCrossSellRow",
           "kind": "interface",
-          "line": 1473
+          "line": 1456
         },
         {
           "name": "MarkdownSuggestionStatus",
           "kind": "type",
-          "line": 1480
+          "line": 1463
         },
         {
           "name": "MarkdownSuggestion",
           "kind": "interface",
-          "line": 1482
+          "line": 1465
         },
         {
           "name": "ApiKeyStatus",
           "kind": "type",
-          "line": 1508
+          "line": 1491
         },
         {
           "name": "ApiKeyRevocationReason",
           "kind": "type",
-          "line": 1509
+          "line": 1492
         },
         {
           "name": "ApiKeyView",
           "kind": "interface",
-          "line": 1530
+          "line": 1513
         },
         {
           "name": "IssuedApiKey",
           "kind": "interface",
-          "line": 1537
+          "line": 1520
         },
         {
           "name": "SsoConnectionStatus",
           "kind": "type",
-          "line": 1547
+          "line": 1530
         },
         {
           "name": "SsoConnection",
           "kind": "interface",
-          "line": 1549
+          "line": 1532
         },
         {
           "name": "SsoConnectionList",
           "kind": "interface",
-          "line": 1566
+          "line": 1549
         },
         {
           "name": "SsoDefaultRoleOption",
           "kind": "interface",
-          "line": 1572
+          "line": 1555
         },
         {
           "name": "SsoAccount",
           "kind": "interface",
-          "line": 1578
+          "line": 1561
         },
         {
           "name": "SsoSignInOption",
           "kind": "interface",
-          "line": 1592
+          "line": 1575
         },
         {
           "name": "ApiKeyOversightView",
           "kind": "interface",
-          "line": 1598
+          "line": 1581
         },
         {
           "name": "ManagedServicesUsageSnapshot",
           "kind": "interface",
-          "line": 1619
+          "line": 1602
         },
         {
           "name": "ManagedServicesTenantStatus",
           "kind": "type",
-          "line": 1626
+          "line": 1609
         },
         {
           "name": "ManagedServicesUsageResponse",
           "kind": "interface",
-          "line": 1628
+          "line": 1611
         },
         {
           "name": "ManagedServicesInvoiceStatus",
           "kind": "type",
-          "line": 1635
+          "line": 1618
         },
         {
           "name": "ManagedServicesStripePaymentStatus",
           "kind": "type",
-          "line": 1636
+          "line": 1619
         },
         {
           "name": "ManagedServicesInvoice",
           "kind": "interface",
-          "line": 1638
+          "line": 1621
         },
         {
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
-          "line": 1654
+          "line": 1637
         }
       ]
     },
@@ -74218,8 +75086,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 4339,
-      "bytes": 249842,
+      "lines": 4475,
+      "bytes": 257966,
       "doc": "",
       "symbols": []
     },
@@ -74443,8 +75311,8 @@
       "path": "docs/implementation/analytics-reporting/45-order-count-tracking-coverage-note.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 73,
-      "bytes": 3843,
+      "lines": 63,
+      "bytes": 3243,
       "doc": "",
       "symbols": []
     },
@@ -74452,8 +75320,8 @@
       "path": "docs/implementation/analytics-reporting/57-multiday-category-velocity.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 130,
-      "bytes": 6590,
+      "lines": 117,
+      "bytes": 5772,
       "doc": "",
       "symbols": []
     },
@@ -74461,8 +75329,8 @@
       "path": "docs/implementation/analytics-reporting/58-live-operational-feed.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 161,
-      "bytes": 8699,
+      "lines": 141,
+      "bytes": 7387,
       "doc": "",
       "symbols": []
     },
@@ -74470,8 +75338,8 @@
       "path": "docs/implementation/analytics-reporting/69-order-lifecycle-status-dashboard.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 121,
-      "bytes": 6412,
+      "lines": 107,
+      "bytes": 5532,
       "doc": "",
       "symbols": []
     },
@@ -74479,8 +75347,8 @@
       "path": "docs/implementation/analytics-reporting/77-sales-category-breakdown-coverage-note.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 70,
-      "bytes": 3573,
+      "lines": 52,
+      "bytes": 2382,
       "doc": "",
       "symbols": []
     },
@@ -75181,8 +76049,8 @@
       "path": "docs/implementation/hr-people-org/19-org-structure-offices-departments.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 250,
-      "bytes": 12823,
+      "lines": 291,
+      "bytes": 15504,
       "doc": "",
       "symbols": []
     },
@@ -75190,8 +76058,8 @@
       "path": "docs/implementation/hr-people-org/20-people-positions-ranks.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 239,
-      "bytes": 11471,
+      "lines": 297,
+      "bytes": 15230,
       "doc": "",
       "symbols": []
     },
@@ -77378,8 +78246,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 923,
-      "bytes": 28367,
+      "lines": 964,
+      "bytes": 29970,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -77400,47 +78268,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 551
+          "line": 582
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 553
+          "line": 584
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 563
+          "line": 594
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 570
+          "line": 601
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 752
+          "line": 789
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 910
+          "line": 951
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 915
+          "line": 956
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 916
+          "line": 957
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 919
+          "line": 960
         }
       ]
     },

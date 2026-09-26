@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **686** endpoints across **125** controllers, with the access rule that actually guards each one.
+All **702** endpoints across **126** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -139,7 +139,7 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (26)
+### [`analytics`](../modules/analytics.md) (24)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -154,10 +154,8 @@ never authorization.
 | GET | `/admin/analytics/inventory/valuation` | `analytics.view` | `AnalyticsController.inventoryValuation` | What the stock on hand is worth right now, by category, kind and age |
 | PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` | Set the monthly revenue target shown on the dashboard |
 | GET | `/admin/analytics/orders/fulfilment` | `analytics.view` | `AnalyticsController.ordersFulfilment` | Average and median time spent in each order-status transition |
-| GET | `/admin/analytics/orders/lifecycle-breakdown` | `analytics.view` | `AnalyticsController.orderLifecycleBreakdown` | Every order, right now, grouped by status into Pending/Completed/Voided |
 | GET | `/admin/analytics/orders/overview` | `analytics.view` | `AnalyticsController.ordersOverview` | Open orders right now — ageing buckets, the oldest worklist, by-city and by-pay… |
 | GET | `/admin/analytics/products/categories` | `analytics.view` | `AnalyticsController.productsCategories` | Revenue, units and product count by category, with a daily trend |
-| GET | `/admin/analytics/products/category-velocity` | `analytics.view` | `AnalyticsController.categoryVelocity` | The top categories' own revenue, broken out day by day |
 | GET | `/admin/analytics/products/slow-sellers` | `analytics.view` | `AnalyticsController.productsSlowSellers` | In-stock, active variants flagged as slow movers, oldest first |
 | GET | `/admin/analytics/products/top-sellers` | `analytics.view` | `AnalyticsController.productsTopSellers` | Best-selling products by revenue, with units and margin |
 | GET | `/admin/analytics/purchasing/spend` | `analytics.view` | `AnalyticsController.purchasingSpend` | What was ordered, received, billed and is still owed to suppliers |
@@ -358,12 +356,6 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/meta` | **PUBLIC** | `MetaController.get` | Which optional modules and sector packs this deployment has enabled |
 
-### [`core/feed`](../core/feed.md) (1)
-
-| Method | Path | Access | Handler | Summary |
-|---|---|---|---|---|
-| GET | `/admin/feed` | `analytics.view` | `FeedController.collect` | Recent order, purchase-order and payment activity, merged and capped, newest fi… |
-
 ### [`core/health`](../core/health.md) (2)
 
 | Method | Path | Access | Handler | Summary |
@@ -522,7 +514,7 @@ never authorization.
 | GET | `/store-credit` | signed-in | `StoreCreditAccountController.balance` | My store credit balance |
 | GET | `/store-credit/ledger` | signed-in | `StoreCreditAccountController.ledger` | My store credit history |
 
-### [`hr`](../modules/hr.md) (7)
+### [`hr`](../modules/hr.md) (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -533,6 +525,16 @@ never authorization.
 | POST | `/admin/hr/assets/:id/write-off` | `hr.assets.writeoff` | `AssetsController.writeOff` | Mark an asset RETIRED or LOST |
 | POST | `/admin/hr/assets/assignments/:assignmentId/return` | `hr.assets.manage` | `AssetsController.returnAsset` | Return an issued asset |
 | GET | `/admin/hr/assets/employees/:userId/unreturned` | `hr.assets.manage` | `AssetsController.unreturnedFor` | An employee's unreturned assets — the offboarding gate's own check |
+| GET | `/admin/people` | `hr.people.view` `hr.people.manage` | `PeopleController.list` | Everyone who holds at least one posting |
+| GET | `/admin/people/:userId/postings` | `hr.people.view` `hr.people.manage` | `PeopleController.postings` | One person's postings, open and past |
+| GET | `/admin/people/:userId/ranks` | `hr.people.view` `hr.people.manage` | `PeopleController.ranksOf` | Every rank level this person currently holds, across all open postings |
+| GET | `/admin/people/positions` | `hr.people.view` `hr.people.manage` | `PeopleController.listPositions` | Every position |
+| POST | `/admin/people/positions` | `hr.people.manage` | `PeopleController.createPosition` | Create a position |
+| POST | `/admin/people/postings/:id/end` | `hr.people.manage` | `PeopleController.end` | End a posting |
+| POST | `/admin/people/postings/assign` | `hr.people.manage` | `PeopleController.assign` | Assign a posting — refused if it would create a second open primary posting |
+| POST | `/admin/people/postings/assign/preview` | `hr.people.manage` | `PeopleController.previewAssign` | What assigning this posting would do, without writing anything |
+| GET | `/admin/people/ranks` | `hr.people.view` `hr.people.manage` | `PeopleController.listRanks` | The rank ladder |
+| POST | `/admin/people/ranks` | `hr.people.manage` | `PeopleController.createRank` | Add a rank |
 
 ### [`identity-verification`](../modules/identity-verification.md) (4)
 
@@ -691,6 +693,20 @@ never authorization.
 | POST | `/organization/policy-quarantine/:id/resolve` | `organization.manage` | `OrganizationController.resolvePolicyQuarantine` | Mark a quarantined policy exception reviewed |
 | PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, W… |
 | POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` |  |
+
+### [`orgstructure`](../modules/orgstructure.md) (9)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/admin/org-structure` | `org.structure.manage` | `OrgUnitController.create` | Create a unit — root if parentId is omitted |
+| GET | `/admin/org-structure/:id` | `org.structure.view` `org.structure.manage` | `OrgUnitController.get` | One unit |
+| POST | `/admin/org-structure/:id/close` | `org.structure.manage` | `OrgUnitController.close` | Close a unit — never deleted |
+| POST | `/admin/org-structure/:id/move` | `org.structure.manage` | `OrgUnitController.move` | Re-parent a unit, rewriting its whole subtree |
+| POST | `/admin/org-structure/:id/move/preview` | `org.structure.manage` | `OrgUnitController.previewMove` | What a move would touch, without writing anything |
+| PATCH | `/admin/org-structure/:id/rename` | `org.structure.manage` | `OrgUnitController.rename` | Rename a unit |
+| GET | `/admin/org-structure/:id/subtree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.subtree` | One unit and everything under it |
+| GET | `/admin/org-structure/tree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.tree` | The whole org tree |
+| GET | `/admin/org-structure/types` | `org.structure.view` `org.structure.manage` | `OrgUnitController.listTypes` | Every configured unit type |
 
 ### [`parties`](../modules/parties.md) (3)
 

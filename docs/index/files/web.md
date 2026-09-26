@@ -642,6 +642,12 @@ All 384 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 774 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/org-structure` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 316 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/payments` (1)
 
 | File | Kind | Lines | Purpose |
@@ -677,6 +683,12 @@ All 384 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 264 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/people` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 397 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products` (2)
 
@@ -1227,7 +1239,7 @@ All 384 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 975 |  |
+| `nav-registry.ts` | component | 1001 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1395,7 +1407,7 @@ All 384 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 250 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 255 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)

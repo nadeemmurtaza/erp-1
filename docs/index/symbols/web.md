@@ -591,6 +591,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminOrderDetailPage` | default | :108 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/org-structure`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `OrgStructurePage` | default | :31 | hr-people-org/19-org-structure-offices-departments.md WO-19.4 — one tree screen: the whole org char… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/payments`
 
 | File | Symbol | Kind | Line | Doc |
@@ -626,6 +632,12 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `PayrollRunDetailPage` | default | :24 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — one pay run: every line, the build/approve/po… |
+
+### `apps/web/src/app/(admin)/admin/(app)/people`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `PeoplePage` | default | :53 | hr-people-org/20-people-positions-ranks.md WO-20.5 — the people list, one nav entry. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products`
 
@@ -1206,13 +1218,13 @@ Every top-level export in `web`, with the line to open.
 | `image-manager.tsx` | `ImageStager` | function | :344 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
 | `image-manager.tsx` | `StagedImageUploadResult` | interface | :492 |  |
 | `image-manager.tsx` | `uploadStagedImages` | function | :510 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
-| `nav-registry.ts` | `ICON_MAP` | const | :20 |  |
-| `nav-registry.ts` | `AdminNavGroup` | interface | :36 |  |
-| `nav-registry.ts` | `NAV_GROUPS` | const | :55 | Sidebar order is THIS ARRAY's order. |
-| `nav-registry.ts` | `AdminNavItem` | interface | :78 |  |
-| `nav-registry.ts` | `ADMIN_NAV` | const | :118 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :945 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :960 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `ICON_MAP` | const | :21 |  |
+| `nav-registry.ts` | `AdminNavGroup` | interface | :38 |  |
+| `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
+| `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
+| `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
+| `nav-registry.ts` | `landingFor` | function | :971 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :986 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

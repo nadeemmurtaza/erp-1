@@ -6,6 +6,47 @@
 > never renumbered. Cite this document by its full filename, never as bare
 > "doc 19" — see `README.md`.
 
+> **Status (2026-09-26): built, WO-19.1–19.4, with one deviation from this
+> doc's own schema (recorded in `DECISIONS.md` ADR-044 before it was
+> written, per this document's own "Decision to record" section).**
+> `OrgUnitType`/`OrgUnit` (`apps/api/prisma/schema/org-structure.prisma`)
+> ship exactly as specified — self-referencing materialised-path tree,
+> `AdminScopeLevel` untouched, `Node`/`RetailBrand` kept nullable and
+> orthogonal, the `org_unit_code_group_wide` partial index closing the
+> same NULL trap already on `AdminScope`/`Location.code`. The deviation:
+> `OrgUnitType.organizationId` is dropped and `key` is `@unique` alone —
+> the `organization` module is off by default (`module-packs.ts`) and
+> `Organization` itself is optional even when it is on, so a required
+> `organizationId` on every `OrgUnitType` row would make the tree
+> impossible to create on the Solo/Chain shape this repository actually
+> ships; this follows the same single-tenant idiom already used in
+> `receivables.prisma`/`settlements.prisma` (ADR-040). `OrgUnitService`
+> (`apps/api/src/modules/orgstructure/org-unit.service.ts`) is the sole
+> writer of `path`/`depth`/`parentId`: `move()` refuses a unit becoming
+> its own ancestor and rewrites the whole affected subtree in one
+> transaction, proven by 13 specs including the cycle refusal and a
+> multi-level re-basing case. The admin UI is one tree screen
+> (`apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx`) under a
+> new "Organization" nav group, gated by `org.structure.view`/`.manage`,
+> both seeded to `ADMIN`.
+>
+> **Two acceptance criteria are not yet met by this document alone.**
+> `scopeFilterFor()` (`apps/api/src/core/auth/scope.guard.ts`) has no
+> `OrgUnit` case — reading over a mid-tree unit's subtree is explicitly
+> `21-access-over-the-org-tree.md`'s own WO-21.2, named as such in this
+> document's own scope lens ("Whose rows, and which columns") and left
+> untouched here on purpose. And this document's own scope-lens claim that
+> the toxic pair `org.structure.manage` + `org.access.grant` is "refused
+> together in `RolesService.create`/`.update`" does not hold today:
+> `org.access.grant` does not exist until doc 21 defines it, and
+> `RolesService` has no generic toxic-pair mechanism at all yet (confirmed
+> by reading `roles.service.ts` — only `ADMIN_LOCKED_PERMISSIONS` exists).
+> Both gaps are doc 21's to close, not silently claimed here; ADR-044
+> records them. Everything else — the seeded Solo root unit, the partial
+> unique index, `previewMove()`'s pure dry run, closing a unit with open
+> children or positions refused — is built and covered by
+> `org-unit.service.spec.ts`.
+
 A corporate group asks for a head office, four regional offices, and departments
 inside each of them — finance, HR, procurement, operations — with sub-teams
 inside the larger ones. The obvious move is to add `OFFICE` and `DEPARTMENT` to

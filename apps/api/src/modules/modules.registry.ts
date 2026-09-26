@@ -12,6 +12,7 @@ import { FinanceModule } from './finance/finance.module';
 import { FulfilmentModule } from './fulfilment/fulfilment.module';
 import { GiftCardsModule } from './giftcards/giftcards.module';
 import { HrModule } from './hr/hr.module';
+import { OrgStructureModule } from './orgstructure/orgstructure.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { LoyaltyModule } from './loyalty/loyalty.module';
@@ -120,6 +121,7 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // hr-people-org/79-employee-asset-management.md — standalone, no
   // dependency on any other optional module.
   { name: 'hr', module: HrModule },
+  { name: 'orgstructure', module: OrgStructureModule },
   // Same allowlist tier as payments/finance (not offByDefault): checkout
   // couples to both directly, in the same transaction as order creation
   // (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE_COUPLINGS)

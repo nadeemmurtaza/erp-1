@@ -3,7 +3,7 @@
 
 # Schema: `hr.prisma`
 
-2 models · 1 enums. Owned by module [`hr`](../modules/hr.md).
+6 models · 2 enums. Owned by module [`hr`](../modules/hr.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Asset`  <sub>`apps/api/prisma/schema/hr.prisma:21`</sub>
+### `Asset`  <sub>`apps/api/prisma/schema/hr.prisma:123`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -38,7 +38,7 @@ against a real database.
 
 Indexes: `@@index([status])`
 
-### `AssetAssignment`  <sub>`apps/api/prisma/schema/hr.prisma:50`</sub>
+### `AssetAssignment`  <sub>`apps/api/prisma/schema/hr.prisma:152`</sub>
 
 > One row per issue/return cycle — an asset's full custody history, never overwritten.
 
@@ -59,12 +59,76 @@ Indexes: `@@index([status])`
 
 Indexes: `@@index([assetId])` · `@@index([userId, returnedAt])`
 
+### `EmployeeProfile`  <sub>`apps/api/prisma/schema/hr.prisma:38`</sub>
+
+> Optional HR-specific metadata about a User who works here.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `userId` | `String` | unique | @unique |
+| `employeeCode` | `String` | unique | @unique |
+| `status` | `EmploymentStatus` |  | @default(ACTIVE) |
+| `joinedOn` | `DateTime` |  |  |
+| `leftOn` | `DateTime?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `user` | `User` | relation | @relation(fields: [userId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@index([status])`
+
+### `Position`  <sub>`apps/api/prisma/schema/hr.prisma:74`</sub>
+
+> A post in the org chart: "Finance Manager, North Region".
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `title` | `String` |  |  |
+| `orgUnitId` | `String` |  |  |
+| `rankId` | `String` |  |  |
+| `reportsToId` | `String?` | optional |  |
+| `orgUnit` | `OrgUnit` | relation | @relation(fields: [orgUnitId], references: [id]) |
+| `rank` | `Rank` | relation | @relation(fields: [rankId], references: [id]) |
+| `reportsTo` | `Position?` | relation, optional | @relation("Reporting", fields: [reportsToId], references: [id]) |
+| `reports` | `Position[]` | relation | @relation("Reporting") |
+| `postings` | `Posting[]` |  |  |
+
+Indexes: `@@index([orgUnitId])` · `@@index([reportsToId])`
+
+### `Posting`  <sub>`apps/api/prisma/schema/hr.prisma:97`</sub>
+
+> Who holds which post, when.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `userId` | `String` |  |  |
+| `positionId` | `String` |  |  |
+| `isPrimary` | `Boolean` |  | @default(true) |
+| `startedOn` | `DateTime` |  |  |
+| `endedOn` | `DateTime?` | optional |  |
+| `user` | `User` | relation | @relation(fields: [userId], references: [id]) |
+| `position` | `Position` | relation | @relation(fields: [positionId], references: [id]) |
+
+Indexes: `@@index([userId, endedOn])` · `@@index([positionId, endedOn])`
+
+### `Rank`  <sub>`apps/api/prisma/schema/hr.prisma:60`</sub>
+
+> A rank is a rung.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `key` | `String` | unique | @unique |
+| `label` | `String` |  |  |
+| `level` | `Int` | unique | @unique |
+| `positions` | `Position[]` |  |  |
+
 
 ## Enums
 
-### `AssetStatus`  <sub>`apps/api/prisma/schema/hr.prisma:14`</sub>
-
-> Employee assets: which physical equipment (laptop, phone, uniform) is issued to which employee, and whether it came back (docs/implementation/hr-people-org/79-employee-asset-management.md).
+### `AssetStatus`  <sub>`apps/api/prisma/schema/hr.prisma:116`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -72,6 +136,17 @@ Indexes: `@@index([assetId])` · `@@index([userId, returnedAt])`
 | `ASSIGNED` |  |
 | `RETIRED` |  |
 | `LOST` |  |
+
+### `EmploymentStatus`  <sub>`apps/api/prisma/schema/hr.prisma:28`</sub>
+
+> Positions and the rank ladder (hr-people-org/20-people-positions-ranks.md, DECISIONS.md ADR-044).
+
+| Value | Meaning |
+|---|---|
+| `ACTIVE` |  |
+| `ON_LEAVE` |  |
+| `SUSPENDED` |  |
+| `LEFT` |  |
 
 
 ---

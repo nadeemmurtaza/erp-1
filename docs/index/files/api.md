@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 893 tracked files in `apps/api`, by directory.
+All 891 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -29,9 +29,9 @@ All 893 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `backfill-parties.ts` | module | 69 |  |
 | `backfill-product-options.ts` | module | 26 |  |
-| `seed.ts` | module | 3070 |  |
+| `seed.ts` | module | 3100 |  |
 
-### `apps/api/prisma/schema` (45)
+### `apps/api/prisma/schema` (46)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -41,12 +41,12 @@ All 893 tracked files in `apps/api`, by directory.
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 644 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 650 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
-| `hr.prisma` | prisma schema | 69 | Employee assets: which physical equipment (laptop, phone, uniform) is |
+| `hr.prisma` | prisma schema | 171 | Employee assets: which physical equipment (laptop, phone, uniform) is |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `instalments.prisma` | prisma schema | 76 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md) |
 | `inventory.prisma` | prisma schema | 369 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
@@ -57,7 +57,8 @@ All 893 tracked files in `apps/api`, by directory.
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
 | `orders.prisma` | prisma schema | 361 | Orders and shipments. |
-| `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
+| `org-structure.prisma` | prisma schema | 81 | The org tree: offices, regions, departments — whatever shape a client's |
+| `organization.prisma` | prisma schema | 188 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 55 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
 | `payroll.prisma` | prisma schema | 229 | Payroll: compensation rates, leave balances and pay runs |
@@ -573,6 +574,18 @@ All 893 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 86 |  |
 
+### `apps/api/prisma/schema/migrations/20260926080000_add_org_structure` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 72 |  |
+
+### `apps/api/prisma/schema/migrations/20260926083000_add_positions_ranks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 94 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -584,7 +597,7 @@ All 893 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 51 |  |
+| `core.module.ts` | nest module | 49 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -762,16 +775,6 @@ All 893 tracked files in `apps/api`, by directory.
 | `identity-verification-status.registry.ts` | registry | 36 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
 
-### `apps/api/src/core/feed` (5)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `feed-registry.service.spec.ts` | unit test | 83 |  |
-| `feed-registry.service.ts` | service | 89 |  |
-| `feed-source.ts` | module | 39 |  |
-| `feed.controller.ts` | controller | 32 |  |
-| `feed.module.ts` | nest module | 19 |  |
-
 ### `apps/api/src/core/health` (2)
 
 | File | Kind | Lines | Purpose |
@@ -920,8 +923,8 @@ All 893 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 107 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 231 |  |
+| `module-packs.ts` | module | 108 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 233 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -971,16 +974,14 @@ All 893 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `address.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/analytics` (18)
+### `apps/api/src/modules/analytics` (15)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `analytics.category-velocity.spec.ts` | unit test | 136 |  |
 | `analytics.comparison.spec.ts` | unit test | 311 |  |
-| `analytics.controller.ts` | controller | 253 |  |
+| `analytics.controller.ts` | controller | 241 |  |
 | `analytics.customers.spec.ts` | unit test | 168 |  |
 | `analytics.inventory.spec.ts` | unit test | 196 |  |
-| `analytics.lifecycle.spec.ts` | unit test | 115 |  |
 | `analytics.metrics.spec.ts` | unit test | 210 |  |
 | `analytics.metrics.ts` | module | 454 |  |
 | `analytics.module.ts` | nest module | 30 |  |
@@ -988,8 +989,7 @@ All 893 tracked files in `apps/api`, by directory.
 | `analytics.products.spec.ts` | unit test | 262 |  |
 | `analytics.purchasing.spec.ts` | unit test | 385 |  |
 | `analytics.sales.spec.ts` | unit test | 151 |  |
-| `analytics.service.ts` | service | 2590 |  |
-| `analytics.summary.spec.ts` | unit test | 94 |  |
+| `analytics.service.ts` | service | 2410 |  |
 | `analytics.workshop.spec.ts` | unit test | 182 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
@@ -1250,20 +1250,24 @@ All 893 tracked files in `apps/api`, by directory.
 | `gift-card.dto.ts` | dto | 62 |  |
 | `store-credit.dto.ts` | dto | 21 |  |
 
-### `apps/api/src/modules/hr` (4)
+### `apps/api/src/modules/hr` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `assets.controller.ts` | controller | 73 |  |
 | `assets.service.spec.ts` | unit test | 211 |  |
 | `assets.service.ts` | service | 149 |  |
-| `hr.module.ts` | nest module | 16 |  |
+| `hr.module.ts` | nest module | 21 |  |
+| `people.controller.ts` | controller | 87 |  |
+| `people.service.spec.ts` | unit test | 171 |  |
+| `people.service.ts` | service | 254 |  |
 
-### `apps/api/src/modules/hr/dto` (1)
+### `apps/api/src/modules/hr/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `asset.dto.ts` | dto | 49 |  |
+| `people.dto.ts` | dto | 60 |  |
 
 ### `apps/api/src/modules/identity-verification` (4)
 
@@ -1421,7 +1425,7 @@ All 893 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `onsite-message.dto.ts` | dto | 155 |  |
 
-### `apps/api/src/modules/orders` (19)
+### `apps/api/src/modules/orders` (17)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1435,14 +1439,12 @@ All 893 tracked files in `apps/api`, by directory.
 | `instalment-plan.service.spec.ts` | unit test | 239 |  |
 | `instalment-plan.service.ts` | service | 228 |  |
 | `notification.subscriber.ts` | event subscriber | 259 |  |
-| `order-feed.source.spec.ts` | unit test | 77 |  |
-| `order-feed.source.ts` | module | 57 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
 | `orders-pos.service.spec.ts` | unit test | 405 |  |
 | `orders.controller.ts` | controller | 145 |  |
-| `orders.module.ts` | nest module | 55 |  |
-| `orders.service.ts` | service | 1304 |  |
+| `orders.module.ts` | nest module | 53 |  |
+| `orders.service.ts` | service | 1300 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (2)
@@ -1450,7 +1452,7 @@ All 893 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `instalment-plan.dto.ts` | dto | 16 |  |
-| `order.dto.ts` | dto | 168 |  |
+| `order.dto.ts` | dto | 152 |  |
 
 ### `apps/api/src/modules/organization` (6)
 
@@ -1474,6 +1476,21 @@ All 893 tracked files in `apps/api`, by directory.
 | `organization-policy.dto.ts` | dto | 10 |  |
 | `policy-quarantine.dto.ts` | dto | 11 |  |
 
+### `apps/api/src/modules/orgstructure` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `org-unit.controller.ts` | controller | 79 |  |
+| `org-unit.service.spec.ts` | unit test | 185 |  |
+| `org-unit.service.ts` | service | 300 |  |
+| `orgstructure.module.ts` | nest module | 11 |  |
+
+### `apps/api/src/modules/orgstructure/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `org-unit.dto.ts` | dto | 45 |  |
+
 ### `apps/api/src/modules/parties` (4)
 
 | File | Kind | Lines | Purpose |
@@ -1490,16 +1507,14 @@ All 893 tracked files in `apps/api`, by directory.
 | `party-role.const.ts` | dto | 3 | Mirrors the Prisma PartyRoleName enum — kept as a plain array so DTOs can validate against it without importing the gen… |
 | `party.dto.ts` | dto | 44 |  |
 
-### `apps/api/src/modules/payments` (7)
+### `apps/api/src/modules/payments` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `notification.subscriber.ts` | event subscriber | 168 |  |
-| `payment-feed.source.spec.ts` | unit test | 69 |  |
-| `payment-feed.source.ts` | module | 58 |  |
 | `payment-provider.ts` | module | 99 | Extension point: payment providers. |
 | `payments.controller.ts` | controller | 135 |  |
-| `payments.module.ts` | nest module | 28 |  |
+| `payments.module.ts` | nest module | 26 |  |
 | `payments.service.ts` | service | 437 |  |
 
 ### `apps/api/src/modules/payments/providers` (6)
@@ -1609,20 +1624,18 @@ All 893 tracked files in `apps/api`, by directory.
 | `preview-checkout.dto.ts` | dto | 57 |  |
 | `promo-code.dto.ts` | dto | 82 |  |
 
-### `apps/api/src/modules/purchasing` (18)
+### `apps/api/src/modules/purchasing` (16)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `goods-receipt-replication.listener.spec.ts` | unit test | 127 |  |
 | `goods-receipt-replication.listener.ts` | event subscriber | 82 |  |
-| `purchase-order-feed.source.spec.ts` | unit test | 69 |  |
-| `purchase-order-feed.source.ts` | module | 62 |  |
 | `purchasing.controller.ts` | controller | 151 |  |
 | `purchasing.cron.spec.ts` | unit test | 144 |  |
 | `purchasing.cron.ts` | scheduled job | 118 |  |
 | `purchasing.metrics.spec.ts` | unit test | 74 |  |
 | `purchasing.metrics.ts` | module | 135 |  |
-| `purchasing.module.ts` | nest module | 32 |  |
+| `purchasing.module.ts` | nest module | 30 |  |
 | `purchasing.service.ts` | service | 673 |  |
 | `purchasing.spec.ts` | unit test | 233 |  |
 | `reorder.listener.spec.ts` | unit test | 146 |  |
@@ -1968,7 +1981,7 @@ All 893 tracked files in `apps/api`, by directory.
 | `email-templates-admin.e2e-spec.ts` | e2e test | 86 |  |
 | `giftkarta-checkout.e2e-spec.ts` | e2e test | 215 |  |
 | `meta.e2e-spec.ts` | e2e test | 65 |  |
-| `orders.e2e-spec.ts` | e2e test | 981 |  |
+| `orders.e2e-spec.ts` | e2e test | 950 |  |
 | `payments-gateway.e2e-spec.ts` | e2e test | 214 |  |
 | `payments-refund.e2e-spec.ts` | e2e test | 164 |  |
 | `promotions-checkout.e2e-spec.ts` | e2e test | 327 |  |

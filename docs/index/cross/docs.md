@@ -2697,7 +2697,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>4,339 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>4,475 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2746,6 +2746,7 @@ _no second-level headings_
 - ADR-041 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call  <sub>:3951</sub>
 - ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:4049</sub>
 - ADR-043 — `access-control-identity` docs 126/161 built; 16/18/163 re-verified; 125 corrected; 21 reported blocked on missing docs 19/20  <sub>:4183</sub>
+- ADR-044 — Docs 19/20 (org tree, positions and ranks): `OrgUnit` kept orthogonal to `Node` exactly as specified; no separate `Employee` model — every posting keys to `User`, matching payroll's and doc 79's own precedent  <sub>:4340</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -2845,24 +2846,24 @@ _no second-level headings_
 - Out of scope  <sub>:309</sub>
 - Decision to record  <sub>:319</sub>
 
-### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>250 lines</sub>
+### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>291 lines</sub>
 
-- Two hierarchies that look like one  <sub>:15</sub>
-- The design: `OrgUnit`, orthogonal to `Node`  <sub>:38</sub>
-- Scope lenses  <sub>:149</sub>
-- Work orders  <sub>:205</sub>
-- Acceptance  <sub>:225</sub>
-- Out of scope for this document  <sub>:239</sub>
-- Decision to record  <sub>:245</sub>
+- Two hierarchies that look like one  <sub>:56</sub>
+- The design: `OrgUnit`, orthogonal to `Node`  <sub>:79</sub>
+- Scope lenses  <sub>:190</sub>
+- Work orders  <sub>:246</sub>
+- Acceptance  <sub>:266</sub>
+- Out of scope for this document  <sub>:280</sub>
+- Decision to record  <sub>:286</sub>
 
-### `docs/implementation/hr-people-org/20-people-positions-ranks.md`  <sub>239 lines</sub>
+### `docs/implementation/hr-people-org/20-people-positions-ranks.md`  <sub>297 lines</sub>
 
-- Three things that are not each other  <sub>:9</sub>
-- Schema — `hr.prisma`  <sub>:27</sub>
-- Scope lenses  <sub>:149</sub>
-- Work orders  <sub>:207</sub>
-- Acceptance  <sub>:222</sub>
-- Out of scope  <sub>:233</sub>
+- Three things that are not each other  <sub>:67</sub>
+- Schema — `hr.prisma`  <sub>:85</sub>
+- Scope lenses  <sub>:207</sub>
+- Work orders  <sub>:265</sub>
+- Acceptance  <sub>:280</sub>
+- Out of scope  <sub>:291</sub>
 
 ### `docs/implementation/hr-people-org/26-performance-reviews.md`  <sub>247 lines</sub>
 

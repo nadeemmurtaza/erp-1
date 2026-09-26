@@ -123,6 +123,12 @@ model User {
   assetAssignments          AssetAssignment[]        @relation("AssetAssignmentHolder")
   assetAssignmentsIssued    AssetAssignment[]        @relation("AssetAssignmentIssuer")
   assetAssignmentsReturned  AssetAssignment[]        @relation("AssetAssignmentReturner")
+  /// hr.prisma (hr-people-org/20-people-positions-ranks.md, ADR-044) — no
+  /// separate Employee model; this User IS the employee when it holds a
+  /// Posting. employeeProfile is optional supplementary detail, never a
+  /// gate on whether a posting is possible.
+  employeeProfile           EmployeeProfile?
+  postings                  Posting[]
   /// accounting.prisma (finance-accounting/147-fixed-asset-depreciation.md)
   /// — who set up a depreciation schedule, a real accounting-policy decision.
   assetDepreciationSchedulesCreated AssetDepreciationSchedule[]

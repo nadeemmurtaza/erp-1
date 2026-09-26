@@ -3,13 +3,13 @@
 
 # Module: `users`
 
-Pack **core** · always on · 7 files
+Pack **core** · always on · 8 files
 
 
 
 Source: `apps/api/src/modules/users/`
 
-## Files (7 · 1,031 lines)
+## Files (8 · 1,130 lines)
 
 All paths relative to `apps/api/src/modules/users/dto`.
 
@@ -17,7 +17,8 @@ All paths relative to `apps/api/src/modules/users/dto`.
 |---|---|---|---|---|
 | `user.dto.ts` | dto | 122 | 7 | The roles this screen can create/assign — never CUSTOMER, which is self-serve only. |
 | `notification.subscriber.ts` | event subscriber | 43 | 1 | Welcomes a new account. |
-| `security-notification.subscriber.ts` | event subscriber | 152 | 1 | Account-security mail: a changed password, a reset link, a verification link. |
+| `security-notification.subscriber.spec.ts` | unit test | 67 | — |  |
+| `security-notification.subscriber.ts` | event subscriber | 184 | 1 | Account-security mail: a changed password, a reset link, a verification link. |
 | `users-admin.controller.ts` | controller | 87 | 1 |  |
 | `users-admin.module.ts` | nest module | 12 | 1 |  |
 | `users-admin.service.spec.ts` | unit test | 242 | — |  |
@@ -50,10 +51,11 @@ _none_
 | Event | Name | Handler |
 |---|---|---|
 | `UserRegistered` | `user.registered` | `notification.subscriber.ts:21` → `onRegistered()` |
-| `PasswordChanged` | `user.password_changed` | `security-notification.subscriber.ts:35` → `onPasswordChanged()` |
-| `PasswordResetRequested` | `user.password_reset_requested` | `security-notification.subscriber.ts:57` → `onPasswordResetRequested()` |
-| `EmailVerificationRequested` | `user.email_verification_requested` | `security-notification.subscriber.ts:80` → `onEmailVerificationRequested()` |
-| `ApiKeyIssued` | `user.api_key_issued` | `security-notification.subscriber.ts:113` → `onApiKeyIssued()` |
+| `PasswordChanged` | `user.password_changed` | `security-notification.subscriber.ts:36` → `onPasswordChanged()` |
+| `PasswordResetRequested` | `user.password_reset_requested` | `security-notification.subscriber.ts:58` → `onPasswordResetRequested()` |
+| `EmailVerificationRequested` | `user.email_verification_requested` | `security-notification.subscriber.ts:81` → `onEmailVerificationRequested()` |
+| `ApiKeyIssued` | `user.api_key_issued` | `security-notification.subscriber.ts:114` → `onApiKeyIssued()` |
+| `SsoAccountLinked` | `user.sso_account_linked` | `security-notification.subscriber.ts:150` → `onSsoAccountLinked()` |
 
 
 
@@ -84,10 +86,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `security-notification.subscriber.spec.ts` | 3 | SecurityNotificationSubscriber.onSsoAccountLinked |
 | `users-admin.service.spec.ts` | 12 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivation ends every persona… |
 
 
@@ -103,7 +106,7 @@ check there before adding another.
 | `PermissionOverrideDto` | class | `user.dto.ts:105` |  |
 | `UpdateUserPermissionsDto` | class | `user.dto.ts:115` |  |
 | `WelcomeNotificationSubscriber` | class | `notification.subscriber.ts:18` | Welcomes a new account. |
-| `SecurityNotificationSubscriber` | class | `security-notification.subscriber.ts:27` | Account-security mail: a changed password, a reset link, a verification link. |
+| `SecurityNotificationSubscriber` | class | `security-notification.subscriber.ts:28` | Account-security mail: a changed password, a reset link, a verification link. |
 | `UsersAdminController` | class | `users-admin.controller.ts:11` |  |
 | `UsersAdminModule` | class | `users-admin.module.ts:11` |  |
 | `UsersAdminService` | class | `users-admin.service.ts:26` |  |

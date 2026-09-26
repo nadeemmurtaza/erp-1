@@ -905,7 +905,7 @@ All 375 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 89 |  |
+| `page.tsx` | page | 125 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]` (5)
 
@@ -1197,7 +1197,7 @@ All 375 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 942 |  |
+| `nav-registry.ts` | component | 952 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1363,7 +1363,7 @@ All 375 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 246 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 256 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)
@@ -1386,7 +1386,7 @@ All 375 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `admin-client.ts` | utility | 143 |  |
+| `admin-client.ts` | utility | 186 |  |
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
 | `api.ts` | utility | 200 |  |
@@ -1407,7 +1407,7 @@ All 375 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1543 |  |
+| `api.ts` | types | 1597 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

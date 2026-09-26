@@ -854,7 +854,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminLoginPage` | default | :9 |  |
+| `page.tsx` | `AdminLoginPage` | default | :14 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]`
 
@@ -1181,8 +1181,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :55 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :78 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :118 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :912 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :927 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :922 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :937 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1463,8 +1463,11 @@ Every top-level export in `web`, with the line to open.
 | `admin-client.ts` | `getStoredUser` | function | :25 |  |
 | `admin-client.ts` | `clearSession` | function | :43 |  |
 | `admin-client.ts` | `login` | function | :61 |  |
-| `admin-client.ts` | `logout` | function | :78 |  |
-| `admin-client.ts` | `adminFetch` | function | :117 |  |
+| `admin-client.ts` | `listSsoSignInOptions` | function | :89 | The single sign-on buttons the sign-in screen offers. |
+| `admin-client.ts` | `ssoStartUrl` | function | :98 | Where a "Sign in with …" button navigates: the API redirects the browser on to the identity provide… |
+| `admin-client.ts` | `completeSsoSignIn` | function | :103 | Redeems a just-completed single sign-on for a session, and stores it the way `login()` does. |
+| `admin-client.ts` | `logout` | function | :121 |  |
+| `admin-client.ts` | `adminFetch` | function | :160 |  |
 | `analytics-client.ts` | `getSessionId` | function | :27 | Reads (or mints and persists) this browser's opaque analytics session id. |
 | `analytics-client.ts` | `TrackedEventType` | type | :44 |  |
 | `analytics-client.ts` | `trackEvent` | function | :58 | Fires one tracking event. |
@@ -1674,14 +1677,20 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `ApiKeyRevocationReason` | type | :1448 |  |
 | `api.ts` | `ApiKeyView` | interface | :1469 | One of your own keys, with what it can do right now. |
 | `api.ts` | `IssuedApiKey` | interface | :1476 |  |
-| `api.ts` | `ApiKeyOversightView` | interface | :1483 | A key on the `users.manage` oversight list — its owner, never its secret. |
-| `api.ts` | `ManagedServicesUsageSnapshot` | interface | :1504 | doc 14 (commercial-licensing-agency/14-managed-services-module.md) — the "Hosting & Billing" admin… |
-| `api.ts` | `ManagedServicesTenantStatus` | type | :1511 |  |
-| `api.ts` | `ManagedServicesUsageResponse` | interface | :1513 |  |
-| `api.ts` | `ManagedServicesInvoiceStatus` | type | :1520 |  |
-| `api.ts` | `ManagedServicesStripePaymentStatus` | type | :1521 |  |
-| `api.ts` | `ManagedServicesInvoice` | interface | :1523 |  |
-| `api.ts` | `ManagedServicesInvoicesResponse` | interface | :1539 | `currency` travels with every response that carries money — the agency's OWN billing currency (`PLA… |
+| `api.ts` | `SsoConnectionStatus` | type | :1486 | --- Single sign-on (docs/implementation/access-control-identity/161-sso-identity-federation.md) ---… |
+| `api.ts` | `SsoConnection` | interface | :1488 |  |
+| `api.ts` | `SsoConnectionList` | interface | :1505 | `GET /admin/sso/connections` — the callback URL beside the rows, so it can be registered before the… |
+| `api.ts` | `SsoDefaultRoleOption` | interface | :1511 | A role, and the access-widening permissions that keep it from being a connection's default — empty… |
+| `api.ts` | `SsoAccount` | interface | :1517 | One account created or linked through a connection, read from its audit trail. |
+| `api.ts` | `SsoSignInOption` | interface | :1531 | `GET /auth/sso/connections` — public: what the sign-in screen draws a button for. |
+| `api.ts` | `ApiKeyOversightView` | interface | :1537 | A key on the `users.manage` oversight list — its owner, never its secret. |
+| `api.ts` | `ManagedServicesUsageSnapshot` | interface | :1558 | doc 14 (commercial-licensing-agency/14-managed-services-module.md) — the "Hosting & Billing" admin… |
+| `api.ts` | `ManagedServicesTenantStatus` | type | :1565 |  |
+| `api.ts` | `ManagedServicesUsageResponse` | interface | :1567 |  |
+| `api.ts` | `ManagedServicesInvoiceStatus` | type | :1574 |  |
+| `api.ts` | `ManagedServicesStripePaymentStatus` | type | :1575 |  |
+| `api.ts` | `ManagedServicesInvoice` | interface | :1577 |  |
+| `api.ts` | `ManagedServicesInvoicesResponse` | interface | :1593 | `currency` travels with every response that carries money — the agency's OWN billing currency (`PLA… |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

@@ -572,6 +572,34 @@ function renderApiKeyIssued(data: ApiKeyIssuedEmailData, locale: Locale, ctx: Em
   return { subject: t.apiKeyIssued.subject, html, text: htmlToText(html) };
 }
 
+/**
+ * 161-sso-identity-federation.md §3. Carries no data on purpose: never the
+ * identity provider, never the external identity, and never the admin-typed
+ * connection label — only that a new way in exists. The footer's contact
+ * line is the way to report one that was not theirs.
+ */
+function renderSsoAccountLinked(
+  _data: Record<string, never>,
+  locale: Locale,
+  ctx: EmailContext,
+): RenderedEmail {
+  const t = copyFor(locale);
+  const body = [
+    heading(t.ssoAccountLinked.heading, locale),
+    paragraph(t.ssoAccountLinked.intro, locale),
+    paragraph(t.ssoAccountLinked.notYou, locale),
+  ].join('\n');
+
+  const html = layout({
+    locale,
+    storeName: ctx.storeName,
+    footer: t.footer(ctx.storeName, ctx.contactEmail),
+    body,
+  });
+
+  return { subject: t.ssoAccountLinked.subject, html, text: htmlToText(html) };
+}
+
 function renderPasswordReset(
   data: PasswordResetEmailData,
   locale: Locale,
@@ -1006,6 +1034,11 @@ export const EMAIL_TEMPLATES: Record<
     ctx: EmailContext,
   ) => RenderedEmail,
   'user.api_key_issued': renderApiKeyIssued as (
+    data: never,
+    locale: Locale,
+    ctx: EmailContext,
+  ) => RenderedEmail,
+  'user.sso_account_linked': renderSsoAccountLinked as (
     data: never,
     locale: Locale,
     ctx: EmailContext,

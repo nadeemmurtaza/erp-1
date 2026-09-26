@@ -576,7 +576,7 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `125-zero-trust-networking.md` | doc | 102 |  |
-| `126-pluggable-cryptography.md` | doc | 137 |  |
+| `126-pluggable-cryptography.md` | doc | 176 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `161-sso-identity-federation.md` | doc | 245 |  |
 | `163-personal-api-keys.md` | doc | 625 |  |

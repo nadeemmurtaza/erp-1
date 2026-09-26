@@ -1,5 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { ADMIN_LOCKED_PERMISSIONS, type PermissionKey } from '@newax/shared';
+import type { PrismaLike } from '../events/event-bus.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 export interface RoleWithGrants {
@@ -141,11 +142,16 @@ export class RolesService {
   }
 
   /** Idempotent — assigning a role a user already holds is a no-op, not an error. */
-  async assign(userId: string, roleId: string): Promise<void> {
-    const role = await this.prisma.role.findUnique({ where: { id: roleId } });
+  /**
+   * Pass the transaction client to assign inside the caller's own
+   * transaction — SsoService's provisioning does, so an account it creates
+   * never exists without the role it was provisioned into.
+   */
+  async assign(userId: string, roleId: string, tx: PrismaLike = this.prisma): Promise<void> {
+    const role = await tx.role.findUnique({ where: { id: roleId } });
     if (!role) throw new NotFoundException('Role not found.');
 
-    await this.prisma.userRoleAssignment.upsert({
+    await tx.userRoleAssignment.upsert({
       where: { userId_roleId: { userId, roleId } },
       create: { userId, roleId },
       update: {},

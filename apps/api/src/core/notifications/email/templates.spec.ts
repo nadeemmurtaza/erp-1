@@ -261,6 +261,18 @@ describe('account security emails', () => {
     expect(mail.html).toContain('https://yaseen.pk/en/account/api-keys');
   });
 
+  it('tells the account holder single sign-on was linked, naming no provider, and how to report it', () => {
+    const mail = renderEmail('user.sso_account_linked', {}, 'en', ctx)!;
+    expect(mail.subject).toBe(`Single sign-on was linked to your ${BRAND.identity.shortName} account`);
+    expect(mail.text).toContain('If it was not, reply to this email right away');
+    // The footer's contact line is the way to report a link that was not theirs.
+    expect(mail.html).toContain('hello@yaseen.pk');
+
+    const urdu = renderEmail('user.sso_account_linked', {}, 'ur', ctx)!;
+    expect(urdu.html).toContain('dir="rtl"');
+    expect(urdu.subject).toContain(BRAND.identity.nameUr);
+  });
+
   it('links an admin key to the admin’s own key page, with no locale segment', () => {
     const mail = renderEmail('user.api_key_issued', { surface: 'ADMIN', lastFour: 'Zz09', reason: 'ROTATED' }, 'ur', ctx)!;
     expect(mail.html).toContain('https://yaseen.pk/admin/account/api-keys');

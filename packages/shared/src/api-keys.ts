@@ -128,6 +128,11 @@ export const NON_DELEGATABLE_PERMISSIONS: readonly NonDelegatablePermission[] = 
       "Controls the store's mailboxes: repointing the transactional mailbox would deliver every password-reset link, an admin's included, to whoever holds the key.",
   },
   {
+    key: 'settings.sso.manage',
+    reason:
+      'Decides which identity provider may sign people in and which role new sign-ins get: a provider trusted for a domain signs in, and links, every account at that domain, an admin’s included — account takeover by configuration.',
+  },
+  {
     key: 'pos.manage',
     reason:
       'Issues till device credentials — a second credential that would survive this key being revoked and its owner being deactivated.',

@@ -31,6 +31,10 @@ export const DomainEvent = {
   EmailVerificationRequested: 'user.email_verification_requested',
   /** ApiKeysService issued a personal API key's secret — at create or at rotate (163-personal-api-keys.md). SecurityNotificationSubscriber mails the owner; the secret itself is never on the event. */
   ApiKeyIssued: 'user.api_key_issued',
+  /** SsoService linked an existing account to a single sign-on identity (161-sso-identity-federation.md §3). SecurityNotificationSubscriber mails the account holder, so an unexpected link is seen — and an admin can reverse it. */
+  SsoAccountLinked: 'user.sso_account_linked',
+  /** SsoService provisioned a brand-new account at its first single sign-on. Deliberately NOT UserRegistered, whose CRM subscriber would turn a staff login into a customer Contact. Recorded; nothing subscribes yet. */
+  SsoUserProvisioned: 'user.sso_user_provisioned',
 
   ProductLowStock: 'catalog.product_low_stock',
   /** Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder). ProductLowStock fires against lowStockThreshold and only ever notifies. */
@@ -239,6 +243,21 @@ export interface ApiKeyIssuedPayload {
   surface: 'ADMIN' | 'STOREFRONT';
   lastFour: string;
   reason: 'CREATED' | 'ROTATED';
+}
+
+/**
+ * Ids only — the subscriber looks the account up fresh, and nothing about
+ * the identity provider's credential or the external identity itself is
+ * put on the event bus.
+ */
+export interface SsoAccountLinkedPayload {
+  userId: string;
+  connectionId: string;
+}
+
+export interface SsoUserProvisionedPayload {
+  userId: string;
+  connectionId: string;
 }
 
 export interface PaymentRefundedPayload {
@@ -569,6 +588,8 @@ export interface DomainEventPayloads {
   [DomainEvent.PasswordResetRequested]: PasswordResetRequestedPayload;
   [DomainEvent.EmailVerificationRequested]: EmailVerificationRequestedPayload;
   [DomainEvent.ApiKeyIssued]: ApiKeyIssuedPayload;
+  [DomainEvent.SsoAccountLinked]: SsoAccountLinkedPayload;
+  [DomainEvent.SsoUserProvisioned]: SsoUserProvisionedPayload;
   [DomainEvent.ProductLowStock]: ProductLowStockPayload;
   [DomainEvent.ProductReorderPointReached]: ProductReorderPointReachedPayload;
   [DomainEvent.ProductPublished]: ProductPublishedPayload;

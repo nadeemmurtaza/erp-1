@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2009,
-    "lines": 306205,
-    "routes": 660,
-    "controllers": 121,
-    "models": 244,
-    "enums": 112,
-    "migrations": 85,
-    "events": 61,
-    "permissions": 84,
+    "files": 2022,
+    "lines": 309729,
+    "routes": 672,
+    "controllers": 123,
+    "models": 245,
+    "enums": 114,
+    "migrations": 86,
+    "events": 63,
+    "permissions": 85,
     "screens": 234,
     "crons": 20,
-    "specs": 241,
+    "specs": 246,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29638,
-      "bytes": 1167381,
+      "lines": 29688,
+      "bytes": 1169052,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 837,
-      "lines": 117378,
-      "bytes": 4451676,
+      "files": 850,
+      "lines": 120643,
+      "bytes": 4587686,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -51,20 +51,20 @@
     },
     "web": {
       "files": 375,
-      "lines": 60259,
-      "bytes": 2172090,
+      "lines": 60412,
+      "bytes": 2178171,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 63280,
-      "bytes": 3760065,
+      "lines": 63319,
+      "bytes": 3762463,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 7933,
-      "bytes": 280618,
+      "lines": 7950,
+      "bytes": 281433,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -992,6 +992,7 @@
       "files": [
         "apps/api/src/modules/users/dto/user.dto.ts",
         "apps/api/src/modules/users/notification.subscriber.ts",
+        "apps/api/src/modules/users/security-notification.subscriber.spec.ts",
         "apps/api/src/modules/users/security-notification.subscriber.ts",
         "apps/api/src/modules/users/users-admin.controller.ts",
         "apps/api/src/modules/users/users-admin.module.ts",
@@ -1101,19 +1102,29 @@
         "apps/api/src/core/auth/decorators.ts",
         "apps/api/src/core/auth/dto/auth.dto.ts",
         "apps/api/src/core/auth/dto/role.dto.ts",
+        "apps/api/src/core/auth/dto/sso.dto.ts",
         "apps/api/src/core/auth/guards.spec.ts",
         "apps/api/src/core/auth/guards.ts",
+        "apps/api/src/core/auth/identity-provider.ts",
         "apps/api/src/core/auth/jwt.strategy.ts",
         "apps/api/src/core/auth/ownership.guard.spec.ts",
         "apps/api/src/core/auth/ownership.guard.ts",
+        "apps/api/src/core/auth/password.util.spec.ts",
         "apps/api/src/core/auth/password.util.ts",
         "apps/api/src/core/auth/permissions.service.spec.ts",
         "apps/api/src/core/auth/permissions.service.ts",
+        "apps/api/src/core/auth/providers/oidc.provider.spec.ts",
+        "apps/api/src/core/auth/providers/oidc.provider.ts",
         "apps/api/src/core/auth/roles.controller.ts",
         "apps/api/src/core/auth/roles.service.spec.ts",
         "apps/api/src/core/auth/roles.service.ts",
         "apps/api/src/core/auth/scope.guard.spec.ts",
-        "apps/api/src/core/auth/scope.guard.ts"
+        "apps/api/src/core/auth/scope.guard.ts",
+        "apps/api/src/core/auth/sso-admin.controller.ts",
+        "apps/api/src/core/auth/sso.controller.spec.ts",
+        "apps/api/src/core/auth/sso.controller.ts",
+        "apps/api/src/core/auth/sso.service.spec.ts",
+        "apps/api/src/core/auth/sso.service.ts"
       ],
       "page": "docs/index/core/auth.md"
     },
@@ -8638,6 +8649,134 @@
     },
     {
       "method": "GET",
+      "path": "/admin/sso/connections",
+      "module": "core/auth",
+      "controller": "SsoAdminController",
+      "handler": "list",
+      "file": "apps/api/src/core/auth/sso-admin.controller.ts",
+      "line": 30,
+      "access": "settings.sso.manage",
+      "permissions": [
+        "settings.sso.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every single sign-on connection, and the callback URL to register — never a client secret"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/sso/connections",
+      "module": "core/auth",
+      "controller": "SsoAdminController",
+      "handler": "create",
+      "file": "apps/api/src/core/auth/sso-admin.controller.ts",
+      "line": 36,
+      "access": "settings.sso.manage",
+      "permissions": [
+        "settings.sso.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Register an identity provider for staff sign-in"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/sso/connections/:id",
+      "module": "core/auth",
+      "controller": "SsoAdminController",
+      "handler": "get",
+      "file": "apps/api/src/core/auth/sso-admin.controller.ts",
+      "line": 42,
+      "access": "settings.sso.manage",
+      "permissions": [
+        "settings.sso.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One connection, with the callback URL to register at the provider"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/sso/connections/:id",
+      "module": "core/auth",
+      "controller": "SsoAdminController",
+      "handler": "update",
+      "file": "apps/api/src/core/auth/sso-admin.controller.ts",
+      "line": 48,
+      "access": "settings.sso.manage",
+      "permissions": [
+        "settings.sso.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit a connection — audited with every old and new value; a sent secret replaces the stored one"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/sso/connections/:id/accounts",
+      "module": "core/auth",
+      "controller": "SsoAdminController",
+      "handler": "accounts",
+      "file": "apps/api/src/core/auth/sso-admin.controller.ts",
+      "line": 61,
+      "access": "settings.sso.manage",
+      "permissions": [
+        "settings.sso.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Accounts provisioned or linked through a connection, newest first"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/sso/connections/:id/accounts/:userId/unlink",
+      "module": "core/auth",
+      "controller": "SsoAdminController",
+      "handler": "unlink",
+      "file": "apps/api/src/core/auth/sso-admin.controller.ts",
+      "line": 68,
+      "access": "settings.sso.manage",
+      "permissions": [
+        "settings.sso.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Unlink an account's single sign-on identity and sign it out everywhere"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/sso/connections/:id/suspend",
+      "module": "core/auth",
+      "controller": "SsoAdminController",
+      "handler": "suspend",
+      "file": "apps/api/src/core/auth/sso-admin.controller.ts",
+      "line": 55,
+      "access": "settings.sso.manage",
+      "permissions": [
+        "settings.sso.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Stop new sign-ins through a connection — accounts it created or linked are untouched"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/sso/roles",
+      "module": "core/auth",
+      "controller": "SsoAdminController",
+      "handler": "roles",
+      "file": "apps/api/src/core/auth/sso-admin.controller.ts",
+      "line": 78,
+      "access": "settings.sso.manage",
+      "permissions": [
+        "settings.sso.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Roles a new sign-in could be given, and why any may not be"
+    },
+    {
+      "method": "GET",
       "path": "/admin/statements/:customerId",
       "module": "receivables",
       "controller": "StatementsController",
@@ -9785,7 +9924,7 @@
       "controller": "AuthController",
       "handler": "changePassword",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 150,
+      "line": 162,
       "access": "account.change_own_password",
       "permissions": [
         "account.change_own_password"
@@ -9801,7 +9940,7 @@
       "controller": "AuthController",
       "handler": "forgotPassword",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 162,
+      "line": 174,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9815,7 +9954,7 @@
       "controller": "AuthController",
       "handler": "login",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 71,
+      "line": 83,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9829,7 +9968,7 @@
       "controller": "AuthController",
       "handler": "logout",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 101,
+      "line": 113,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9843,7 +9982,7 @@
       "controller": "AuthController",
       "handler": "me",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 119,
+      "line": 131,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9857,7 +9996,7 @@
       "controller": "AuthController",
       "handler": "updateProfile",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 140,
+      "line": 152,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9871,7 +10010,7 @@
       "controller": "AuthController",
       "handler": "refresh",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 81,
+      "line": 93,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9885,7 +10024,7 @@
       "controller": "AuthController",
       "handler": "register",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 57,
+      "line": 69,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -9899,7 +10038,7 @@
       "controller": "AuthController",
       "handler": "resendVerification",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 188,
+      "line": 200,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -9913,12 +10052,68 @@
       "controller": "AuthController",
       "handler": "resetPassword",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 171,
+      "line": 183,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
       "authOnly": false,
       "summary": "Set a new password using a reset link token"
+    },
+    {
+      "method": "GET",
+      "path": "/auth/sso/:connectionId/start",
+      "module": "core/auth",
+      "controller": "SsoController",
+      "handler": "start",
+      "file": "apps/api/src/core/auth/sso.controller.ts",
+      "line": 78,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Begin single sign-on — redirects to the identity provider"
+    },
+    {
+      "method": "GET",
+      "path": "/auth/sso/callback",
+      "module": "core/auth",
+      "controller": "SsoController",
+      "handler": "callback",
+      "file": "apps/api/src/core/auth/sso.controller.ts",
+      "line": 92,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Where the identity provider returns — completes single sign-on and redirects to the admin app"
+    },
+    {
+      "method": "GET",
+      "path": "/auth/sso/connections",
+      "module": "core/auth",
+      "controller": "SsoController",
+      "handler": "signInOptions",
+      "file": "apps/api/src/core/auth/sso.controller.ts",
+      "line": 70,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "The single sign-on buttons the admin sign-in screen shows — id and label only"
+    },
+    {
+      "method": "POST",
+      "path": "/auth/sso/session",
+      "module": "core/auth",
+      "controller": "SsoController",
+      "handler": "session",
+      "file": "apps/api/src/core/auth/sso.controller.ts",
+      "line": 133,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Exchange a completed single sign-on for a session — the same result a password sign-in returns"
     },
     {
       "method": "POST",
@@ -9927,7 +10122,7 @@
       "controller": "AuthController",
       "handler": "verifyEmail",
       "file": "apps/api/src/core/auth/auth.controller.ts",
-      "line": 179,
+      "line": 191,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -12437,6 +12632,27 @@
       "inSeed": true
     },
     {
+      "key": "settings.sso.manage",
+      "label": "Register, edit and suspend single sign-on connections",
+      "category": "Administration",
+      "sensitivity": "critical",
+      "routes": [
+        "GET /admin/sso/connections",
+        "POST /admin/sso/connections",
+        "GET /admin/sso/connections/:id",
+        "PATCH /admin/sso/connections/:id",
+        "GET /admin/sso/connections/:id/accounts",
+        "POST /admin/sso/connections/:id/accounts/:userId/unlink",
+        "POST /admin/sso/connections/:id/suspend",
+        "GET /admin/sso/roles"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "tax.manage",
       "label": "Manage tax classes, rates and the pricing mode",
       "category": "Administration",
@@ -13533,7 +13749,7 @@
       "name": "user.registered",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:104"
+        "apps/api/src/core/auth/auth.service.ts:103"
       ],
       "subscribers": [
         "apps/api/src/modules/users/notification.subscriber.ts:21 onRegistered()"
@@ -13544,11 +13760,11 @@
       "name": "user.password_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:203",
-        "apps/api/src/core/auth/auth.service.ts:258"
+        "apps/api/src/core/auth/auth.service.ts:202",
+        "apps/api/src/core/auth/auth.service.ts:257"
       ],
       "subscribers": [
-        "apps/api/src/modules/users/security-notification.subscriber.ts:35 onPasswordChanged()"
+        "apps/api/src/modules/users/security-notification.subscriber.ts:36 onPasswordChanged()"
       ]
     },
     {
@@ -13556,10 +13772,10 @@
       "name": "user.password_reset_requested",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:228"
+        "apps/api/src/core/auth/auth.service.ts:227"
       ],
       "subscribers": [
-        "apps/api/src/modules/users/security-notification.subscriber.ts:57 onPasswordResetRequested()"
+        "apps/api/src/modules/users/security-notification.subscriber.ts:58 onPasswordResetRequested()"
       ]
     },
     {
@@ -13567,10 +13783,10 @@
       "name": "user.email_verification_requested",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:279"
+        "apps/api/src/core/auth/auth.service.ts:278"
       ],
       "subscribers": [
-        "apps/api/src/modules/users/security-notification.subscriber.ts:80 onEmailVerificationRequested()"
+        "apps/api/src/modules/users/security-notification.subscriber.ts:81 onEmailVerificationRequested()"
       ]
     },
     {
@@ -13582,8 +13798,29 @@
         "apps/api/src/core/auth/api-keys/api-keys.service.ts:386"
       ],
       "subscribers": [
-        "apps/api/src/modules/users/security-notification.subscriber.ts:113 onApiKeyIssued()"
+        "apps/api/src/modules/users/security-notification.subscriber.ts:114 onApiKeyIssued()"
       ]
+    },
+    {
+      "symbol": "SsoAccountLinked",
+      "name": "user.sso_account_linked",
+      "doc": "SsoService linked an existing account to a single sign-on identity (161-sso-identity-federation.md §3).",
+      "publishers": [
+        "apps/api/src/core/auth/sso.service.ts:612",
+        "apps/api/src/core/auth/sso.service.ts:632"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/users/security-notification.subscriber.ts:150 onSsoAccountLinked()"
+      ]
+    },
+    {
+      "symbol": "SsoUserProvisioned",
+      "name": "user.sso_user_provisioned",
+      "doc": "SsoService provisioned a brand-new account at its first single sign-on.",
+      "publishers": [
+        "apps/api/src/core/auth/sso.service.ts:672"
+      ],
+      "subscribers": []
     },
     {
       "symbol": "ProductLowStock",
@@ -14188,7 +14425,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 293,
+      "line": 301,
       "doc": "",
       "fields": [
         {
@@ -14447,7 +14684,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 610,
+      "line": 618,
       "doc": "",
       "fields": [
         {
@@ -14536,7 +14773,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 571,
+      "line": 579,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -14597,7 +14834,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 243,
+      "line": 251,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -15246,7 +15483,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 383,
+      "line": 391,
       "doc": "",
       "fields": [
         {
@@ -18103,7 +18340,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 551,
+      "line": 559,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -18454,7 +18691,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 338,
+      "line": 346,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -18640,7 +18877,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 199,
+      "line": 207,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -24062,7 +24299,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 524,
+      "line": 532,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -24449,7 +24686,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 182,
+      "line": 190,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -25004,7 +25241,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 404,
+      "line": 412,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -28918,7 +29155,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 161,
+      "line": 169,
       "doc": "",
       "fields": [
         {
@@ -30038,7 +30275,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 470,
+      "line": 478,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -30096,7 +30333,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 484,
+      "line": 492,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -30150,7 +30387,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 420,
+      "line": 428,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -30377,7 +30614,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 316,
+      "line": 324,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -31714,6 +31951,101 @@
       ],
       "indexes": [
         "@@index([locationId, isActive])"
+      ]
+    },
+    {
+      "name": "SsoConnection",
+      "file": "apps/api/prisma/schema/sso.prisma",
+      "line": 29,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "protocol",
+          "type": "SsoProtocol",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "issuerUrl",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "clientId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "credentialEncrypted",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "allowedEmailDomains",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "defaultRoleName",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "SsoConnectionStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdByUserId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])"
       ]
     },
     {
@@ -34474,6 +34806,13 @@
           "relation": false
         },
         {
+          "name": "ssoExternalId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "createdAt",
           "type": "DateTime",
           "id": false,
@@ -34959,13 +35298,14 @@
       ],
       "indexes": [
         "@@index([role])",
-        "@@index([createdAt])"
+        "@@index([createdAt])",
+        "@@index([ssoExternalId])"
       ]
     },
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 441,
+      "line": 449,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -35026,7 +35366,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 499,
+      "line": 507,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -35940,7 +36280,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 604,
+      "line": 612,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -35950,7 +36290,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 589,
+      "line": 597,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -35991,7 +36331,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 224,
+      "line": 232,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -36001,7 +36341,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 217,
+      "line": 225,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -36184,7 +36524,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 539,
+      "line": 547,
       "values": [
         "IOS",
         "ANDROID",
@@ -36218,7 +36558,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 327,
+      "line": 335,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -36544,7 +36884,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 513,
+      "line": 521,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -36599,7 +36939,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 432,
+      "line": 440,
       "values": [
         "GRANT",
         "REVOKE"
@@ -36883,6 +37223,23 @@
         "IN_PROGRESS",
         "COMPLETED",
         "CANCELLED"
+      ]
+    },
+    {
+      "name": "SsoConnectionStatus",
+      "file": "apps/api/prisma/schema/sso.prisma",
+      "line": 24,
+      "values": [
+        "ACTIVE",
+        "SUSPENDED"
+      ]
+    },
+    {
+      "name": "SsoProtocol",
+      "file": "apps/api/prisma/schema/sso.prisma",
+      "line": 17,
+      "values": [
+        "OIDC"
       ]
     },
     {
@@ -38726,6 +39083,23 @@
       ],
       "tables": [
         "SettlementBatch"
+      ]
+    },
+    {
+      "folder": "20260925234500_add_sso_identity_federation",
+      "file": "apps/api/prisma/schema/migrations/20260925234500_add_sso_identity_federation/migration.sql",
+      "date": "2026-09-25",
+      "slug": "add_sso_identity_federation",
+      "statements": 8,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "SsoConnection",
+        "User"
       ]
     }
   ],
@@ -41622,12 +41996,34 @@
       ]
     },
     {
+      "file": "apps/api/src/core/auth/password.util.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "password hashing (126-pluggable-cryptography.md, WO-126.1)"
+      ]
+    },
+    {
       "file": "apps/api/src/core/auth/permissions.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
       "cases": 6,
       "describes": [
         "PermissionsResolverService.resolveForUser"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/auth/providers/oidc.provider.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "OidcProvider",
+        "handleCallback",
+        "trusting the discovery document",
+        "buildAuthorizationUrl",
+        "identityFromClaims"
       ]
     },
     {
@@ -41653,6 +42049,41 @@
         "resolveScope",
         "assertCanManageAtScope",
         "scopeFilterFor"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/auth/sso.controller.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "SsoController",
+        "start",
+        "callback",
+        "session"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/auth/sso.service.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 33,
+      "describes": [
+        "SsoService",
+        "the domain gate (§2)",
+        "CSRF",
+        "resolve-or-provision (§3)",
+        "a suspended or missing connection",
+        "startLogin",
+        "ssoCallbackUrl",
+        "listConnections",
+        "defaultRoleOptions",
+        "listSignInOptions",
+        "createConnection",
+        "updateConnection",
+        "suspendConnection",
+        "unlinkAccount",
+        "listAccounts"
       ]
     },
     {
@@ -41721,7 +42152,7 @@
       "file": "apps/api/src/core/notifications/email/templates.spec.ts",
       "module": "core/notifications",
       "kind": "unit test",
-      "cases": 29,
+      "cases": 30,
       "describes": [
         "order confirmation email",
         "Urdu",
@@ -43279,6 +43710,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/users/security-notification.subscriber.spec.ts",
+      "module": "users",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "SecurityNotificationSubscriber.onSsoAccountLinked"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/users/users-admin.service.spec.ts",
       "module": "users",
       "kind": "unit test",
@@ -44689,8 +45129,8 @@
       "path": "apps/api/package.json",
       "area": "api",
       "kind": "json",
-      "lines": 78,
-      "bytes": 2461,
+      "lines": 79,
+      "bytes": 2491,
       "doc": "",
       "symbols": []
     },
@@ -44785,8 +45225,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 630,
-      "bytes": 25629,
+      "lines": 638,
+      "bytes": 26118,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -45610,6 +46050,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260925234500_add_sso_identity_federation/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 50,
+      "bytes": 2061,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -45769,6 +46218,15 @@
       "lines": 77,
       "bytes": 3142,
       "doc": "Financial institution settlement partnerships",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/sso.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 63,
+      "bytes": 2965,
+      "doc": "SSO / identity federation",
       "symbols": []
     },
     {
@@ -46350,8 +46808,8 @@
       "path": "apps/api/src/core/auth/auth.constants.ts",
       "area": "api",
       "kind": "module",
-      "lines": 99,
-      "bytes": 3827,
+      "lines": 114,
+      "bytes": 4523,
       "doc": "",
       "symbols": [
         {
@@ -46405,19 +46863,39 @@
           "line": 86
         },
         {
+          "name": "SSO_STATE_COOKIE",
+          "kind": "const",
+          "line": 98
+        },
+        {
+          "name": "SSO_HANDOFF_COOKIE",
+          "kind": "const",
+          "line": 99
+        },
+        {
+          "name": "SSO_STATE_TTL_MS",
+          "kind": "const",
+          "line": 100
+        },
+        {
+          "name": "SSO_HANDOFF_TTL_MS",
+          "kind": "const",
+          "line": 101
+        },
+        {
           "name": "LEGACY_REFRESH_COOKIE",
           "kind": "const",
-          "line": 88
+          "line": 103
         },
         {
           "name": "LEGACY_CART_COOKIE",
           "kind": "const",
-          "line": 89
+          "line": 104
         },
         {
           "name": "readCookie",
           "kind": "function",
-          "line": 92
+          "line": 107
         }
       ]
     },
@@ -46425,14 +46903,24 @@
       "path": "apps/api/src/core/auth/auth.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 202,
-      "bytes": 6267,
+      "lines": 208,
+      "bytes": 6598,
       "doc": "",
       "symbols": [
         {
+          "name": "CREDENTIAL_THROTTLE",
+          "kind": "const",
+          "line": 43
+        },
+        {
+          "name": "setRefreshCookie",
+          "kind": "function",
+          "line": 46
+        },
+        {
           "name": "AuthController",
           "kind": "class",
-          "line": 46
+          "line": 58
         }
       ]
     },
@@ -46440,14 +46928,14 @@
       "path": "apps/api/src/core/auth/auth.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 28,
-      "bytes": 1399,
+      "lines": 52,
+      "bytes": 1954,
       "doc": "",
       "symbols": [
         {
           "name": "AuthModule",
           "kind": "class",
-          "line": 27
+          "line": 51
         }
       ]
     },
@@ -46464,39 +46952,39 @@
       "path": "apps/api/src/core/auth/auth.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 429,
-      "bytes": 14623,
+      "lines": 445,
+      "bytes": 15196,
       "doc": "",
       "symbols": [
         {
           "name": "AuthTokens",
           "kind": "interface",
-          "line": 21
+          "line": 20
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 27
+          "line": 26
         },
         {
           "name": "RegisterInput",
           "kind": "interface",
-          "line": 31
+          "line": 30
         },
         {
           "name": "UpdateProfileInput",
           "kind": "interface",
-          "line": 39
+          "line": 38
         },
         {
           "name": "AuthService",
           "kind": "class",
-          "line": 48
+          "line": 47
         },
         {
           "name": "parseDuration",
           "kind": "function",
-          "line": 416
+          "line": 432
         }
       ]
     },
@@ -46631,6 +47119,56 @@
       ]
     },
     {
+      "path": "apps/api/src/core/auth/dto/sso.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 177,
+      "bytes": 5358,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SSO_PROTOCOLS",
+          "kind": "const",
+          "line": 21
+        },
+        {
+          "name": "SSO_CONNECTION_STATUSES",
+          "kind": "const",
+          "line": 22
+        },
+        {
+          "name": "SSO_LABEL_MAX_LENGTH",
+          "kind": "const",
+          "line": 24
+        },
+        {
+          "name": "SSO_MAX_ALLOWED_DOMAINS",
+          "kind": "const",
+          "line": 25
+        },
+        {
+          "name": "CreateSsoConnectionDto",
+          "kind": "class",
+          "line": 27
+        },
+        {
+          "name": "UpdateSsoConnectionDto",
+          "kind": "class",
+          "line": 72
+        },
+        {
+          "name": "SsoCallbackQuery",
+          "kind": "type",
+          "line": 129
+        },
+        {
+          "name": "readSsoCallbackQuery",
+          "kind": "function",
+          "line": 144
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/auth/guards.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -46656,6 +47194,46 @@
           "name": "PermissionsGuard",
           "kind": "class",
           "line": 139
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/identity-provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 91,
+      "bytes": 3191,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SSO_SIGN_IN_FAILED",
+          "kind": "const",
+          "line": 5
+        },
+        {
+          "name": "SsoSignInRefused",
+          "kind": "class",
+          "line": 13
+        },
+        {
+          "name": "SsoCallbackParams",
+          "kind": "interface",
+          "line": 25
+        },
+        {
+          "name": "SsoFlowSecrets",
+          "kind": "interface",
+          "line": 38
+        },
+        {
+          "name": "VerifiedIdentity",
+          "kind": "interface",
+          "line": 45
+        },
+        {
+          "name": "IdentityProvider",
+          "kind": "interface",
+          "line": 67
         }
       ]
     },
@@ -46704,22 +47282,51 @@
       ]
     },
     {
+      "path": "apps/api/src/core/auth/password.util.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 3439,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/auth/password.util.ts",
       "area": "api",
       "kind": "module",
-      "lines": 9,
-      "bytes": 321,
+      "lines": 89,
+      "bytes": 3614,
       "doc": "",
       "symbols": [
         {
           "name": "PASSWORD_HASH_ROUNDS",
           "kind": "const",
-          "line": 3
+          "line": 4
+        },
+        {
+          "name": "PasswordHasher",
+          "kind": "interface",
+          "line": 19
+        },
+        {
+          "name": "BcryptPasswordHasher",
+          "kind": "class",
+          "line": 29
+        },
+        {
+          "name": "PASSWORD_HASHERS",
+          "kind": "const",
+          "line": 54
         },
         {
           "name": "hashPassword",
           "kind": "function",
-          "line": 6
+          "line": 61
+        },
+        {
+          "name": "verifyPassword",
+          "kind": "function",
+          "line": 75
         }
       ]
     },
@@ -46753,6 +47360,35 @@
       ]
     },
     {
+      "path": "apps/api/src/core/auth/providers/oidc.provider.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 204,
+      "bytes": 8722,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/providers/oidc.provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 195,
+      "bytes": 7884,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OidcProvider",
+          "kind": "class",
+          "line": 50
+        },
+        {
+          "name": "identityFromClaims",
+          "kind": "function",
+          "line": 161
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/auth/roles.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -46780,29 +47416,29 @@
       "path": "apps/api/src/core/auth/roles.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 301,
-      "bytes": 11719,
+      "lines": 307,
+      "bytes": 12011,
       "doc": "",
       "symbols": [
         {
           "name": "RoleWithGrants",
           "kind": "interface",
-          "line": 5
+          "line": 6
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 13
+          "line": 14
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 19
+          "line": 20
         },
         {
           "name": "RolesService",
           "kind": "class",
-          "line": 45
+          "line": 46
         }
       ]
     },
@@ -46857,6 +47493,109 @@
           "name": "scopeFilterFor",
           "kind": "function",
           "line": 124
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/sso-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 82,
+      "bytes": 3388,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SsoAdminController",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/sso.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 221,
+      "bytes": 9796,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/sso.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 227,
+      "bytes": 8951,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SsoController",
+          "kind": "class",
+          "line": 58
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/sso.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 643,
+      "bytes": 29257,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/sso.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 867,
+      "bytes": 34694,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ssoCookiePath",
+          "kind": "function",
+          "line": 27
+        },
+        {
+          "name": "ssoCallbackUrl",
+          "kind": "function",
+          "line": 39
+        },
+        {
+          "name": "SsoConnectionView",
+          "kind": "interface",
+          "line": 148
+        },
+        {
+          "name": "SsoConnectionList",
+          "kind": "interface",
+          "line": 158
+        },
+        {
+          "name": "SsoDefaultRoleOption",
+          "kind": "interface",
+          "line": 164
+        },
+        {
+          "name": "SsoSignInOption",
+          "kind": "interface",
+          "line": 170
+        },
+        {
+          "name": "SsoAccountView",
+          "kind": "interface",
+          "line": 176
+        },
+        {
+          "name": "SsoLoginStart",
+          "kind": "interface",
+          "line": 189
+        },
+        {
+          "name": "SsoService",
+          "kind": "class",
+          "line": 209
         }
       ]
     },
@@ -47165,8 +47904,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 665,
-      "bytes": 27034,
+      "lines": 686,
+      "bytes": 28068,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -47177,272 +47916,282 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 144
+          "line": 148
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 146
+          "line": 150
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 159
+          "line": 163
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 167
+          "line": 171
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 175
+          "line": 179
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 195
+          "line": 199
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 201
+          "line": 205
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 208
+          "line": 212
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 215
+          "line": 219
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 219
+          "line": 223
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 225
+          "line": 229
         },
         {
           "name": "ApiKeyIssuedPayload",
           "kind": "interface",
-          "line": 236
+          "line": 240
+        },
+        {
+          "name": "SsoAccountLinkedPayload",
+          "kind": "interface",
+          "line": 253
+        },
+        {
+          "name": "SsoUserProvisionedPayload",
+          "kind": "interface",
+          "line": 258
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 244
+          "line": 263
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 251
+          "line": 270
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 261
+          "line": 280
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 270
+          "line": 289
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 279
+          "line": 298
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 287
+          "line": 306
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 295
+          "line": 314
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 306
+          "line": 325
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 313
+          "line": 332
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 322
+          "line": 341
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 330
+          "line": 349
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 335
+          "line": 354
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 343
+          "line": 362
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 348
+          "line": 367
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 354
+          "line": 373
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 360
+          "line": 379
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 372
+          "line": 391
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 387
+          "line": 406
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 395
+          "line": 414
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 409
+          "line": 428
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 422
+          "line": 441
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 435
+          "line": 454
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 451
+          "line": 470
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 459
+          "line": 478
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 471
+          "line": 490
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 482
+          "line": 501
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 493
+          "line": 512
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 500
+          "line": 519
         },
         {
           "name": "WalletCreditPurchasedPayload",
           "kind": "interface",
-          "line": 506
+          "line": 525
         },
         {
           "name": "WalletCreditRedeemedPayload",
           "kind": "interface",
-          "line": 514
+          "line": 533
         },
         {
           "name": "WalletCreditRefundedPayload",
           "kind": "interface",
-          "line": 523
+          "line": 542
         },
         {
           "name": "MerchantPayableCreatedPayload",
           "kind": "interface",
-          "line": 534
+          "line": 553
         },
         {
           "name": "MerchantPayablePaidPayload",
           "kind": "interface",
-          "line": 541
+          "line": 560
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 548
+          "line": 567
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 554
+          "line": 573
         },
         {
           "name": "CreditNoteIssuedPayload",
           "kind": "interface",
-          "line": 618
+          "line": 639
         },
         {
           "name": "CreditNoteVoidedPayload",
           "kind": "interface",
-          "line": 627
+          "line": 648
         },
         {
           "name": "DebitNoteIssuedPayload",
           "kind": "interface",
-          "line": 631
+          "line": 652
         },
         {
           "name": "DebitNoteVoidedPayload",
           "kind": "interface",
-          "line": 639
+          "line": 660
         },
         {
           "name": "CreditHoldAppliedPayload",
           "kind": "interface",
-          "line": 643
+          "line": 664
         },
         {
           "name": "NotificationSentPayload",
           "kind": "interface",
-          "line": 648
+          "line": 669
         },
         {
           "name": "SettlementShortfallWrittenOffPayload",
           "kind": "interface",
-          "line": 659
+          "line": 680
         }
       ]
     },
@@ -47942,8 +48691,8 @@
       "path": "apps/api/src/core/notifications/email/catalog.ts",
       "area": "api",
       "kind": "module",
-      "lines": 364,
-      "bytes": 14588,
+      "lines": 373,
+      "bytes": 15005,
       "doc": "Everything the admin \"manage templates\" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which category it belongs to, whether something in the codebase actually sends it automatically (and what), and…",
       "symbols": [
         {
@@ -47964,7 +48713,7 @@
         {
           "name": "purposeForTemplate",
           "kind": "function",
-          "line": 360
+          "line": 369
         }
       ]
     },
@@ -47972,8 +48721,8 @@
       "path": "apps/api/src/core/notifications/email/copy.ts",
       "area": "api",
       "kind": "module",
-      "lines": 602,
-      "bytes": 26083,
+      "lines": 628,
+      "bytes": 27855,
       "doc": "",
       "symbols": [
         {
@@ -47984,7 +48733,7 @@
         {
           "name": "copyFor",
           "kind": "function",
-          "line": 599
+          "line": 625
         }
       ]
     },
@@ -48112,8 +48861,8 @@
       "path": "apps/api/src/core/notifications/email/templates.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 380,
-      "bytes": 13562,
+      "lines": 392,
+      "bytes": 14250,
       "doc": "",
       "symbols": []
     },
@@ -48121,8 +48870,8 @@
       "path": "apps/api/src/core/notifications/email/templates.ts",
       "area": "api",
       "kind": "module",
-      "lines": 1091,
-      "bytes": 31141,
+      "lines": 1124,
+      "bytes": 32127,
       "doc": "",
       "symbols": [
         {
@@ -48228,12 +48977,12 @@
         {
           "name": "EMAIL_TEMPLATES",
           "kind": "const",
-          "line": 949
+          "line": 977
         },
         {
           "name": "renderEmail",
           "kind": "function",
-          "line": 1081
+          "line": 1114
         }
       ]
     },
@@ -57812,17 +58561,26 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/users/security-notification.subscriber.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 67,
+      "bytes": 2912,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/users/security-notification.subscriber.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 152,
-      "bytes": 6189,
+      "lines": 184,
+      "bytes": 7668,
       "doc": "",
       "symbols": [
         {
           "name": "SecurityNotificationSubscriber",
           "kind": "class",
-          "line": 27
+          "line": 28
         }
       ]
     },
@@ -58394,8 +59152,8 @@
       "path": "apps/api/test/session-only-routes.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 66,
-      "bytes": 3721,
+      "lines": 75,
+      "bytes": 4478,
       "doc": "",
       "symbols": []
     },
@@ -64669,14 +65427,14 @@
       "path": "apps/web/src/app/(admin)/admin/login/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 89,
-      "bytes": 2893,
+      "lines": 125,
+      "bytes": 4429,
       "doc": "",
       "symbols": [
         {
           "name": "AdminLoginPage",
           "kind": "default",
-          "line": 9
+          "line": 14
         }
       ]
     },
@@ -66490,8 +67248,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 942,
-      "bytes": 25372,
+      "lines": 952,
+      "bytes": 25744,
       "doc": "",
       "symbols": [
         {
@@ -66522,12 +67280,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 912
+          "line": 922
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 927
+          "line": 937
         }
       ]
     },
@@ -67788,8 +68546,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 246,
-      "bytes": 10981,
+      "lines": 256,
+      "bytes": 11531,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -67895,8 +68653,8 @@
       "path": "apps/web/src/lib/admin-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 143,
-      "bytes": 4446,
+      "lines": 186,
+      "bytes": 6279,
       "doc": "",
       "symbols": [
         {
@@ -67920,14 +68678,29 @@
           "line": 61
         },
         {
+          "name": "listSsoSignInOptions",
+          "kind": "function",
+          "line": 89
+        },
+        {
+          "name": "ssoStartUrl",
+          "kind": "function",
+          "line": 98
+        },
+        {
+          "name": "completeSsoSignIn",
+          "kind": "function",
+          "line": 103
+        },
+        {
           "name": "logout",
           "kind": "function",
-          "line": 78
+          "line": 121
         },
         {
           "name": "adminFetch",
           "kind": "function",
-          "line": 117
+          "line": 160
         }
       ]
     },
@@ -68310,8 +69083,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1543,
-      "bytes": 41357,
+      "lines": 1597,
+      "bytes": 43147,
       "doc": "",
       "symbols": [
         {
@@ -69055,44 +69828,74 @@
           "line": 1476
         },
         {
+          "name": "SsoConnectionStatus",
+          "kind": "type",
+          "line": 1486
+        },
+        {
+          "name": "SsoConnection",
+          "kind": "interface",
+          "line": 1488
+        },
+        {
+          "name": "SsoConnectionList",
+          "kind": "interface",
+          "line": 1505
+        },
+        {
+          "name": "SsoDefaultRoleOption",
+          "kind": "interface",
+          "line": 1511
+        },
+        {
+          "name": "SsoAccount",
+          "kind": "interface",
+          "line": 1517
+        },
+        {
+          "name": "SsoSignInOption",
+          "kind": "interface",
+          "line": 1531
+        },
+        {
           "name": "ApiKeyOversightView",
           "kind": "interface",
-          "line": 1483
+          "line": 1537
         },
         {
           "name": "ManagedServicesUsageSnapshot",
           "kind": "interface",
-          "line": 1504
+          "line": 1558
         },
         {
           "name": "ManagedServicesTenantStatus",
           "kind": "type",
-          "line": 1511
+          "line": 1565
         },
         {
           "name": "ManagedServicesUsageResponse",
           "kind": "interface",
-          "line": 1513
+          "line": 1567
         },
         {
           "name": "ManagedServicesInvoiceStatus",
           "kind": "type",
-          "line": 1520
+          "line": 1574
         },
         {
           "name": "ManagedServicesStripePaymentStatus",
           "kind": "type",
-          "line": 1521
+          "line": 1575
         },
         {
           "name": "ManagedServicesInvoice",
           "kind": "interface",
-          "line": 1523
+          "line": 1577
         },
         {
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
-          "line": 1539
+          "line": 1593
         }
       ]
     },
@@ -71699,8 +72502,8 @@
       "path": "docs/implementation/access-control-identity/126-pluggable-cryptography.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 137,
-      "bytes": 7394,
+      "lines": 176,
+      "bytes": 9792,
       "doc": "",
       "symbols": []
     },
@@ -73528,8 +74331,8 @@
       "path": "packages/shared/src/api-keys.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 314,
-      "bytes": 13797,
+      "lines": 319,
+      "bytes": 14087,
       "doc": "Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request.",
       "symbols": [
         {
@@ -73590,77 +74393,77 @@
         {
           "name": "isDelegatablePermission",
           "kind": "function",
-          "line": 143
+          "line": 148
         },
         {
           "name": "nonDelegatableReason",
           "kind": "function",
-          "line": 148
+          "line": 153
         },
         {
           "name": "effectiveApiKeyPermissions",
           "kind": "function",
-          "line": 163
+          "line": 168
         },
         {
           "name": "ApiKeyPermissionRefusal",
           "kind": "type",
-          "line": 177
+          "line": 182
         },
         {
           "name": "refuseApiKeyPermissions",
           "kind": "function",
-          "line": 184
+          "line": 189
         },
         {
           "name": "delegatablePermissionsOf",
           "kind": "function",
-          "line": 202
+          "line": 207
         },
         {
           "name": "CUSTOMER_SCOPE_RESOURCES",
           "kind": "const",
-          "line": 217
+          "line": 222
         },
         {
           "name": "CustomerScopeResource",
           "kind": "type",
-          "line": 228
+          "line": 233
         },
         {
           "name": "CustomerScopeAccess",
           "kind": "type",
-          "line": 229
+          "line": 234
         },
         {
           "name": "CustomerScopeDefinition",
           "kind": "interface",
-          "line": 231
+          "line": 236
         },
         {
           "name": "CUSTOMER_SCOPE_CATALOG",
           "kind": "const",
-          "line": 255
+          "line": 260
         },
         {
           "name": "CustomerScopeKey",
           "kind": "type",
-          "line": 284
+          "line": 289
         },
         {
           "name": "CUSTOMER_SCOPE_KEYS",
           "kind": "const",
-          "line": 286
+          "line": 291
         },
         {
           "name": "expandCustomerScopes",
           "kind": "function",
-          "line": 299
+          "line": 304
         },
         {
           "name": "unknownCustomerScopes",
           "kind": "function",
-          "line": 311
+          "line": 316
         }
       ]
     },
@@ -74787,8 +75590,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 890,
-      "bytes": 26914,
+      "lines": 902,
+      "bytes": 27439,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -74809,47 +75612,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 524
+          "line": 534
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 526
+          "line": 536
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 536
+          "line": 546
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 543
+          "line": 553
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 724
+          "line": 735
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 877
+          "line": 889
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 882
+          "line": 894
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 883
+          "line": 895
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 886
+          "line": 898
         }
       ]
     },
@@ -75295,8 +76098,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18529,
-      "bytes": 679103,
+      "lines": 18572,
+      "bytes": 680437,
       "doc": "",
       "symbols": []
     },
@@ -75396,8 +76199,8 @@
       "path": "scripts/check-links.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 402,
-      "bytes": 17726,
+      "lines": 409,
+      "bytes": 18063,
       "doc": "",
       "symbols": [
         {
@@ -75408,27 +76211,27 @@
         {
           "name": "routeUrl",
           "kind": "function",
-          "line": 77
+          "line": 84
         },
         {
           "name": "routeInventory",
           "kind": "function",
-          "line": 93
+          "line": 100
         },
         {
           "name": "matches",
           "kind": "function",
-          "line": 126
+          "line": 133
         },
         {
           "name": "resolve1",
           "kind": "function",
-          "line": 167
+          "line": 174
         },
         {
           "name": "scanLinks",
           "kind": "function",
-          "line": 212
+          "line": 219
         }
       ]
     },

@@ -6,7 +6,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcryptjs';
 import { normalizeEmail, normalizePkPhone } from '@newax/shared';
 import { AppConfigService } from '../config/app-config.service';
 import { EventBusService } from '../events/event-bus.service';
@@ -14,7 +13,7 @@ import { DomainEvent } from '../events/domain-events';
 import { PrismaService } from '../prisma/prisma.service';
 import type { Prisma } from '../prisma/client';
 import type { AuthenticatedUser, JwtPayload } from './auth.constants';
-import { hashPassword } from './password.util';
+import { hashPassword, verifyPassword } from './password.util';
 import { PermissionsResolverService } from './permissions.service';
 import { RolesService } from './roles.service';
 
@@ -127,7 +126,7 @@ export class AuthService {
     // Compare against a dummy hash when the user does not exist so that a
     // missing account and a wrong password take the same time to answer.
     const passwordHash = user?.passwordHash ?? DUMMY_HASH;
-    const ok = await compare(password, passwordHash);
+    const ok = await verifyPassword(password, passwordHash);
 
     if (!user || !ok) {
       throw new UnauthorizedException('Incorrect email/phone or password.');
@@ -181,7 +180,7 @@ export class AuthService {
     newPassword: string,
   ): Promise<void> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
-    if (!user?.passwordHash || !(await compare(currentPassword, user.passwordHash))) {
+    if (!user?.passwordHash || !(await verifyPassword(currentPassword, user.passwordHash))) {
       throw new UnauthorizedException('Your current password is incorrect.');
     }
 
@@ -357,6 +356,23 @@ export class AuthService {
       firstName: user.firstName,
       lastName: user.lastName,
     };
+  }
+
+  /**
+   * Mints a session for an account another sign-in path has already
+   * authenticated — today single sign-on (sso.service.ts). The same
+   * `issue()` a password sign-in ends in: how a session is minted never
+   * depends on how the person proved who they are. Every check that path
+   * owes (an active account, a verified identity) is the caller's.
+   */
+  issueSession(user: {
+    id: string;
+    email: string | null;
+    phone: string | null;
+    firstName: string | null;
+    lastName: string | null;
+  }): Promise<AuthResult> {
+    return this.issue(user);
   }
 
   private async issue(user: {

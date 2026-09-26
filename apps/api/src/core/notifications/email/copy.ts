@@ -87,6 +87,18 @@ export interface EmailCopy {
     notYou: string;
     cta: string;
   };
+  /**
+   * An existing account was linked to a single sign-on identity at its first
+   * sign-in that way (161-sso-identity-federation.md). Names no identity
+   * provider and no credential — only that a new way in exists, and what to
+   * do if it was not them.
+   */
+  ssoAccountLinked: {
+    subject: string;
+    heading: string;
+    intro: string;
+    notYou: string;
+  };
   passwordReset: {
     subject: string;
     heading: string;
@@ -285,6 +297,13 @@ const en: EmailCopy = {
     notYou:
       'If this was you, no action is needed. If it was not, revoke the key now, change your password, and reply to this email.',
     cta: 'Review your API keys',
+  },
+  ssoAccountLinked: {
+    subject: `Single sign-on was linked to your ${BRAND.identity.shortName} account`,
+    heading: 'A new way to sign in was added to your account',
+    intro: `Your ${BRAND.identity.shortName} account can now be signed in to through your organization's single sign-on. It was linked the first time this email address signed in that way.`,
+    notYou:
+      'If this was you, no action is needed. If it was not, reply to this email right away — we will remove it and sign you out everywhere.',
   },
   passwordReset: {
     subject: 'Reset your password',
@@ -494,6 +513,13 @@ const ur: EmailCopy = {
     notYou:
       'اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو ابھی یہ کلید منسوخ کریں، اپنا پاس ورڈ تبدیل کریں اور اس ای میل کا جواب دیں۔',
     cta: 'اپنی API کلیدیں دیکھیں',
+  },
+  ssoAccountLinked: {
+    subject: `آپ کے ${BRAND.identity.nameUr} اکاؤنٹ سے سنگل سائن آن منسلک کر دیا گیا`,
+    heading: 'آپ کے اکاؤنٹ میں سائن اِن کا ایک نیا طریقہ شامل کیا گیا',
+    intro: `اب آپ کے ${BRAND.identity.nameUr} اکاؤنٹ میں آپ کے ادارے کے سنگل سائن آن کے ذریعے سائن اِن کیا جا سکتا ہے۔ یہ اُس وقت منسلک ہوا جب اس ای میل ایڈریس سے پہلی بار اس طریقے سے سائن اِن کیا گیا۔`,
+    notYou:
+      'اگر یہ آپ نے کیا تو کوئی کارروائی درکار نہیں۔ اگر نہیں تو فوراً اس ای میل کا جواب دیں — ہم اسے ہٹا دیں گے اور آپ کو ہر جگہ سے سائن آؤٹ کر دیں گے۔',
   },
   passwordReset: {
     subject: 'اپنا پاس ورڈ ری سیٹ کریں',

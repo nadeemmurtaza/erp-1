@@ -55,21 +55,21 @@ Every top-level export in `packages`, with the line to open.
 | `api-keys.ts` | `API_KEY_NAME_MAX_LENGTH` | const | :76 | Live keys one person may hold on one surface. |
 | `api-keys.ts` | `NonDelegatablePermission` | interface | :80 | ─── The admin surface: what can never be delegated ──────────────────────── |
 | `api-keys.ts` | `NON_DELEGATABLE_PERMISSIONS` | const | :109 | Permissions that can never be put in an API key, by anyone, whatever else they hold. |
-| `api-keys.ts` | `isDelegatablePermission` | function | :143 |  |
-| `api-keys.ts` | `nonDelegatableReason` | function | :148 | The recorded reason `key` can never be in an API key, or null when it can. |
-| `api-keys.ts` | `effectiveApiKeyPermissions` | function | :163 | What an ADMIN key may actually do on this request: its stored permission keys, kept only where its… |
-| `api-keys.ts` | `ApiKeyPermissionRefusal` | type | :177 |  |
-| `api-keys.ts` | `refuseApiKeyPermissions` | function | :184 | Why each requested permission may not go into a key right now — empty when every one may. |
-| `api-keys.ts` | `delegatablePermissionsOf` | function | :202 | What this person could put in an admin key right now — the picker's options, in catalogue order. |
-| `api-keys.ts` | `CUSTOMER_SCOPE_RESOURCES` | const | :217 | The resources a storefront key can reach — each one a customer's own rows behind a self-service rou… |
-| `api-keys.ts` | `CustomerScopeResource` | type | :228 |  |
-| `api-keys.ts` | `CustomerScopeAccess` | type | :229 |  |
-| `api-keys.ts` | `CustomerScopeDefinition` | interface | :231 |  |
-| `api-keys.ts` | `CUSTOMER_SCOPE_CATALOG` | const | :255 | The storefront's scope vocabulary. |
-| `api-keys.ts` | `CustomerScopeKey` | type | :284 |  |
-| `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :286 |  |
-| `api-keys.ts` | `expandCustomerScopes` | function | :299 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
-| `api-keys.ts` | `unknownCustomerScopes` | function | :311 | Requested scopes the catalogue does not know — refused at create and edit. |
+| `api-keys.ts` | `isDelegatablePermission` | function | :148 |  |
+| `api-keys.ts` | `nonDelegatableReason` | function | :153 | The recorded reason `key` can never be in an API key, or null when it can. |
+| `api-keys.ts` | `effectiveApiKeyPermissions` | function | :168 | What an ADMIN key may actually do on this request: its stored permission keys, kept only where its… |
+| `api-keys.ts` | `ApiKeyPermissionRefusal` | type | :182 |  |
+| `api-keys.ts` | `refuseApiKeyPermissions` | function | :189 | Why each requested permission may not go into a key right now — empty when every one may. |
+| `api-keys.ts` | `delegatablePermissionsOf` | function | :207 | What this person could put in an admin key right now — the picker's options, in catalogue order. |
+| `api-keys.ts` | `CUSTOMER_SCOPE_RESOURCES` | const | :222 | The resources a storefront key can reach — each one a customer's own rows behind a self-service rou… |
+| `api-keys.ts` | `CustomerScopeResource` | type | :233 |  |
+| `api-keys.ts` | `CustomerScopeAccess` | type | :234 |  |
+| `api-keys.ts` | `CustomerScopeDefinition` | interface | :236 |  |
+| `api-keys.ts` | `CUSTOMER_SCOPE_CATALOG` | const | :260 | The storefront's scope vocabulary. |
+| `api-keys.ts` | `CustomerScopeKey` | type | :289 |  |
+| `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :291 |  |
+| `api-keys.ts` | `expandCustomerScopes` | function | :304 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
+| `api-keys.ts` | `unknownCustomerScopes` | function | :316 | Requested scopes the catalogue does not know — refused at create and edit. |
 | `brand.ts` | `BRAND` | const | :332 | --------------------------------------------------------------------------- |
 | `brand.ts` | `Brand` | type | :344 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
@@ -201,15 +201,15 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :524 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :526 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :536 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :543 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :724 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :877 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :882 |  |
-| `permissions.ts` | `PermissionEffect` | type | :883 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :886 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :534 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :536 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :546 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :553 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :735 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :889 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :894 |  |
+| `permissions.ts` | `PermissionEffect` | type | :895 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :898 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

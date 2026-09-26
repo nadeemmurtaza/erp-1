@@ -1836,15 +1836,15 @@ _no second-level headings_
 - Acceptance  <sub>:91</sub>
 - Out of scope  <sub>:97</sub>
 
-### `docs/implementation/access-control-identity/126-pluggable-cryptography.md`  <sub>137 lines</sub>
+### `docs/implementation/access-control-identity/126-pluggable-cryptography.md`  <sub>176 lines</sub>
 
-- The two mechanisms, checked individually  <sub>:21</sub>
-- Why a full "dedicated security service" is oversized for what this actually needs  <sub>:35</sub>
-- The narrow, correct answer: a versioned hashing/encryption interface, in-process  <sub>:44</sub>
-- Scope lenses  <sub>:72</sub>
-- Work orders  <sub>:110</sub>
-- Acceptance  <sub>:121</sub>
-- Out of scope  <sub>:128</sub>
+- The two mechanisms, checked individually  <sub>:60</sub>
+- Why a full "dedicated security service" is oversized for what this actually needs  <sub>:74</sub>
+- The narrow, correct answer: a versioned hashing/encryption interface, in-process  <sub>:83</sub>
+- Scope lenses  <sub>:111</sub>
+- Work orders  <sub>:149</sub>
+- Acceptance  <sub>:160</sub>
+- Out of scope  <sub>:167</sub>
 
 ### `docs/implementation/access-control-identity/16-pbac-row-scoping.md`  <sub>184 lines</sub>
 

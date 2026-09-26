@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-837 files · 117,378 lines
+850 files · 120,643 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -27,13 +27,13 @@ Structure: `src/core/` is the shared platform every deployment runs;
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `apps/api` | 10 | 842 | file, script, json, module |
+| `apps/api` | 10 | 843 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,163 | module |
-| `apps/api/prisma/schema` | 123 | 13,609 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 125 | 13,730 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 143 | nest module, module |
-| `apps/api/src/core` | 151 | 17,878 | unit test, service, module, controller |
-| `apps/api/src/modules` | 521 | 74,098 | nest module, unit test, service, controller |
-| `apps/api/test` | 25 | 7,564 | e2e test, unit test, module |
+| `apps/api/src/core` | 161 | 20,913 | unit test, service, module, controller |
+| `apps/api/src/modules` | 522 | 74,197 | nest module, unit test, service, controller |
+| `apps/api/test` | 25 | 7,573 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
 
@@ -53,9 +53,10 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/prisma/seed.ts` | 3,068 | module |  |
 | `apps/api/src/modules/analytics/analytics.service.ts` | 2,410 | service |  |
 | `apps/api/src/modules/orders/orders.service.ts` | 1,300 | service |  |
-| `apps/api/src/core/notifications/email/templates.ts` | 1,091 | module |  |
+| `apps/api/src/core/notifications/email/templates.ts` | 1,124 | module |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
 | `apps/api/test/orders.e2e-spec.ts` | 950 | e2e test |  |
+| `apps/api/src/core/auth/sso.service.ts` | 867 | service |  |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | 818 | unit test |  |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
@@ -63,8 +64,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/src/core/auth/api-keys/api-keys.service.ts` | 712 | service |  |
 | `apps/api/src/modules/cart/cart.service.ts` | 704 | service |  |
 | `apps/api/prisma/schema/catalog.prisma` | 693 | prisma schema | Catalog: categories, products, variants, images. |
-| `apps/api/src/modules/finance/finance.service.ts` | 675 | service |  |
-| `apps/api/src/modules/purchasing/purchasing.service.ts` | 673 | service |  |
+| `apps/api/src/core/events/domain-events.ts` | 686 | module | The catalogue of domain events. |
 
 
 ---

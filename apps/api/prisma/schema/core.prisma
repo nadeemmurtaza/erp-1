@@ -47,6 +47,13 @@ model User {
   /// transactional mail (order/payment/account), which isn't marketing.
   marketingEmailOptOut Boolean   @default(false)
   lastLoginAt          DateTime?
+  /// The single sign-on identity linked to this account
+  /// (access-control-identity/161-sso-identity-federation.md) —
+  /// `<issuer>#<sub>`, because an OIDC `sub` is only unique within its own
+  /// issuer. Null for a password-only account, which SSO leaves untouched.
+  /// Indexed, not unique: sign-in resolves by email first; the index serves
+  /// SsoService's refusal to link one external identity to a second account.
+  ssoExternalId        String?
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 
@@ -156,6 +163,7 @@ model User {
 
   @@index([role])
   @@index([createdAt])
+  @@index([ssoExternalId])
 }
 
 model RefreshToken {

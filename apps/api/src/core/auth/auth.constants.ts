@@ -85,6 +85,21 @@ export const AUTHENTICATED_ONLY_KEY = 'auth:authenticatedOnly';
 export const REFRESH_COOKIE = 'newax_refresh';
 export const CART_COOKIE = 'newax_cart';
 
+/**
+ * Single sign-on (161-sso-identity-federation.md). Both are sealed
+ * (AES-256-GCM under APP_ENCRYPTION_KEY, so they can be neither read nor
+ * forged), httpOnly, scoped to the /auth/sso routes and short-lived — they
+ * carry one sign-in across a redirect, never a session.
+ *
+ * STATE: the state, nonce and PKCE verifier from `/start` to `/callback`.
+ * HANDOFF: the session the callback issued, to the admin app's one
+ * `POST /auth/sso/session` — so no token ever travels in a URL.
+ */
+export const SSO_STATE_COOKIE = 'newax_sso_state';
+export const SSO_HANDOFF_COOKIE = 'newax_sso_handoff';
+export const SSO_STATE_TTL_MS = 10 * 60_000;
+export const SSO_HANDOFF_TTL_MS = 2 * 60_000;
+
 export const LEGACY_REFRESH_COOKIE = 'yaseen_refresh';
 export const LEGACY_CART_COOKIE = 'yaseen_cart';
 

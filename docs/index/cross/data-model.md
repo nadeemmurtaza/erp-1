@@ -3,7 +3,7 @@
 
 # Data model
 
-All **244** Prisma models and **112** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **245** Prisma models and **114** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -61,6 +61,7 @@ against a real database.
 | [`reviews.prisma`](../data/reviews.md) | 2 | 1 | [`reviews`](../modules/reviews.md) | ProductReviewSummary, Review |
 | [`search.prisma`](../data/search.md) | 2 | 0 | [`search`](../modules/search.md) | SearchQueryLog, SearchSynonym |
 | [`settlements.prisma`](../data/settlements.md) | 3 | 1 | [`settlements`](../modules/settlements.md) | SettlementBatch, SettlementBatchLine, SettlementProvider |
+| [`sso.prisma`](../data/sso.md) | 1 | 2 | core platform | SsoConnection |
 | [`stitching.prisma`](../data/stitching.md) | 8 | 3 | [`stitching`](../modules/stitching.md) | StitchingJob, StitchingJobEvent, StitchingJobNumberCounter, StitchingOption, StitchingOptionGroup, StitchingOrder, StitchingOrder… |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
 | [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
@@ -274,6 +275,7 @@ against a real database.
 | [`SpotCheck`](../data/inventory.md#spotcheck) | `inventory` | 11 | 2 | id | A small, unscheduled StockCount-like sheet — a handful of SKUs, never the whole shop, com… |
 | [`SpotCheckLine`](../data/inventory.md#spotcheckline) | `inventory` | 8 | 2 | id |  |
 | [`SpotCheckPolicy`](../data/inventory.md#spotcheckpolicy) | `inventory` | 9 | 1 | id | 156-single-employee-branch-loss-prevention.md §3. |
+| [`SsoConnection`](../data/sso.md#ssoconnection) | `sso` | 12 | 0 | id |  |
 | [`StitchingJob`](../data/stitching.md#stitchingjob) | `stitching` | 19 | 2 | id |  |
 | [`StitchingJobEvent`](../data/stitching.md#stitchingjobevent) | `stitching` | 9 | 1 | id | Every stage transition, appended and never updated. |
 | [`StitchingJobNumberCounter`](../data/stitching.md#stitchingjobnumbercounter) | `stitching` | 2 | 0 | year | Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers. |
@@ -304,7 +306,7 @@ against a real database.
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
 | [`UsageMeter`](../data/platform.md#usagemeter) | `platform` | 8 | 1 | id | One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` inc… |
 | [`UsageMeteringCursor`](../data/platform.md#usagemeteringcursor) | `platform` | 6 | 1 | id | The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each ba… |
-| [`User`](../data/core.md#user) | `core` | 83 | 31 | id |  |
+| [`User`](../data/core.md#user) | `core` | 84 | 31 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
@@ -414,6 +416,8 @@ against a real database.
 | [`ShipmentStatus`](../data/orders.md#shipmentstatus) | `orders` | `PENDING` `DISPATCHED` `IN_TRANSIT` `DELIVERED` `RETURNED` `LOST` |
 | [`ShippingRateType`](../data/fulfilment.md#shippingratetype) | `fulfilment` | `FLAT` `BY_WEIGHT` `BY_PRICE` `BY_ITEM` |
 | [`SpotCheckStatus`](../data/inventory.md#spotcheckstatus) | `inventory` | `PENDING` `IN_PROGRESS` `COMPLETED` `CANCELLED` |
+| [`SsoConnectionStatus`](../data/sso.md#ssoconnectionstatus) | `sso` | `ACTIVE` `SUSPENDED` |
+| [`SsoProtocol`](../data/sso.md#ssoprotocol) | `sso` | `OIDC` |
 | [`StitchingOrderStatus`](../data/stitching.md#stitchingorderstatus) | `stitching` | `DRAFT` `AWAITING_FABRIC` `FABRIC_RECEIVED` `IN_PRODUCTION` `READY` `COMPLETED` `CANCELLED` |
 | [`StitchingSelectionType`](../data/stitching.md#stitchingselectiontype) | `stitching` | `SINGLE` `MULTI` |
 | [`StitchingStage`](../data/stitching.md#stitchingstage) | `stitching` | `RECEIVED` `CUTTING` `STITCHING` `QC` `READY` `DISPATCHED` |

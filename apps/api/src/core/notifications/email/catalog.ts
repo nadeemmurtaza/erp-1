@@ -198,6 +198,15 @@ export const EMAIL_TEMPLATE_CATALOG: EmailTemplateCatalogEntry[] = [
     sampleData: { surface: 'STOREFRONT', lastFour: 'x7Qa', reason: 'CREATED' },
   },
   {
+    key: 'user.sso_account_linked',
+    label: 'Single Sign-On Linked Notice',
+    category: 'Account',
+    trigger: 'automatic',
+    triggerDescription:
+      'Sent to the account holder when their first single sign-on links an existing account to that identity (user.sso_account_linked). Never sent for a brand-new account single sign-on creates — that person just signed in, live.',
+    sampleData: {},
+  },
+  {
     key: 'user.email_verification',
     label: 'Email Verification',
     category: 'Account',

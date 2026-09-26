@@ -4,6 +4,7 @@ import { readRouteRequirements } from '../src/core/auth/api-keys/api-key-access'
 import { ApiKeysAdminController } from '../src/core/auth/api-keys/api-keys-admin.controller';
 import { ApiKeysController } from '../src/core/auth/api-keys/api-keys.controller';
 import { AuthController } from '../src/core/auth/auth.controller';
+import { SsoAdminController } from '../src/core/auth/sso-admin.controller';
 import { OrganizationController } from '../src/modules/organization/organization.controller';
 import { PosTerminalsController } from '../src/modules/pos/pos-terminals.controller';
 import { TradingPartnersController } from '../src/modules/tradingpartners/trading-partners.controller';
@@ -42,6 +43,14 @@ const SESSION_ONLY_ROUTES: Array<[Controller, string, string]> = [
   [ApiKeysController, 'revoke', 'a key never manages keys'],
   [ApiKeysAdminController, 'list', 'a key never manages keys'],
   [ApiKeysAdminController, 'revoke', 'a key never manages keys'],
+  [SsoAdminController, 'create', 'installs an identity provider client secret'],
+  [SsoAdminController, 'update', 'can replace a client secret, or repoint which provider signs accounts in'],
+  [SsoAdminController, 'suspend', "changes how accounts may sign in"],
+  [SsoAdminController, 'unlink', "changes an account's sign-in identity"],
+  [SsoAdminController, 'list', 'sign-in configuration is never reachable by a key'],
+  [SsoAdminController, 'get', 'sign-in configuration is never reachable by a key'],
+  [SsoAdminController, 'accounts', 'sign-in configuration is never reachable by a key'],
+  [SsoAdminController, 'roles', 'sign-in configuration is never reachable by a key'],
 ];
 
 const reflector = new Reflector();

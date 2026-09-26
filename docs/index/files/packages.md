@@ -54,7 +54,7 @@ All 79 tracked files in `packages/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `api-keys.spec.ts` | unit test | 231 |  |
-| `api-keys.ts` | module | 314 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
+| `api-keys.ts` | module | 319 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
 | `brand.ts` | module | 345 | THE BRAND FILE. |
 | `cod-risk.spec.ts` | unit test | 199 |  |
 | `cod-risk.ts` | module | 167 |  |
@@ -76,7 +76,7 @@ All 79 tracked files in `packages/*`, by directory.
 | `markdown-suggestion.ts` | module | 85 | WO-9.8 (09-ai-layer.md) — "recommend the discount that clears [ageing stock] at the least margin loss, showing the trad… |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
 | `permissions.spec.ts` | unit test | 68 |  |
-| `permissions.ts` | module | 890 | The permission catalog for PBAC (Permission-Based Access Control). |
+| `permissions.ts` | module | 902 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |

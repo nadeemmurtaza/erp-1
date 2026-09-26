@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 837 tracked files in `apps/api`, by directory.
+All 850 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -16,7 +16,7 @@ All 837 tracked files in `apps/api`, by directory.
 | `eslint.config.mjs` | script | 36 | Nest resolves constructor parameter types at runtime through decorator |
 | `jest.config.js` | script | 26 | @type {import('jest').Config} |
 | `nest-cli.json` | json | 18 |  |
-| `package.json` | json | 78 |  |
+| `package.json` | json | 79 |  |
 | `prisma.config.ts` | module | 19 | A Prisma config file switches OFF Prisma's automatic .env loading, so we do |
 | `report.20260921.035047.1334.0.001.json` | json | 548 |  |
 | `tsconfig.build.json` | json | 5 |  |
@@ -31,7 +31,7 @@ All 837 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3068 |  |
 
-### `apps/api/prisma/schema` (43)
+### `apps/api/prisma/schema` (44)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -41,7 +41,7 @@ All 837 tracked files in `apps/api`, by directory.
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 630 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 638 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
@@ -71,6 +71,7 @@ All 837 tracked files in `apps/api`, by directory.
 | `schema.prisma` | prisma schema | 32 | Datasource and generator only. Models live in one file per module — |
 | `search.prisma` | prisma schema | 40 | Search. WO-8.3, |
 | `settlements.prisma` | prisma schema | 77 | Financial institution settlement partnerships |
+| `sso.prisma` | prisma schema | 63 | SSO / identity federation |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
@@ -559,6 +560,12 @@ All 837 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 10 |  |
 
+### `apps/api/prisma/schema/migrations/20260925234500_add_sso_identity_federation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 50 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -613,30 +620,37 @@ All 837 tracked files in `apps/api`, by directory.
 | `audit.module.ts` | nest module | 10 |  |
 | `audit.service.ts` | service | 69 |  |
 
-### `apps/api/src/core/auth` (20)
+### `apps/api/src/core/auth` (27)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auth.constants.ts` | module | 99 |  |
-| `auth.controller.ts` | controller | 202 |  |
-| `auth.module.ts` | nest module | 28 |  |
+| `auth.constants.ts` | module | 114 |  |
+| `auth.controller.ts` | controller | 208 |  |
+| `auth.module.ts` | nest module | 52 |  |
 | `auth.service.spec.ts` | unit test | 24 |  |
-| `auth.service.ts` | service | 429 |  |
+| `auth.service.ts` | service | 445 |  |
 | `bearer-token.ts` | module | 31 |  |
 | `decorators.ts` | module | 80 |  |
 | `guards.spec.ts` | unit test | 212 |  |
 | `guards.ts` | module | 167 |  |
+| `identity-provider.ts` | module | 91 |  |
 | `jwt.strategy.ts` | auth strategy | 44 |  |
 | `ownership.guard.spec.ts` | unit test | 49 |  |
 | `ownership.guard.ts` | guard | 24 |  |
-| `password.util.ts` | module | 9 |  |
+| `password.util.spec.ts` | unit test | 80 |  |
+| `password.util.ts` | module | 89 |  |
 | `permissions.service.spec.ts` | unit test | 85 |  |
 | `permissions.service.ts` | service | 64 |  |
 | `roles.controller.ts` | controller | 44 |  |
 | `roles.service.spec.ts` | unit test | 236 |  |
-| `roles.service.ts` | service | 301 |  |
+| `roles.service.ts` | service | 307 |  |
 | `scope.guard.spec.ts` | unit test | 151 |  |
 | `scope.guard.ts` | guard | 129 |  |
+| `sso-admin.controller.ts` | controller | 82 |  |
+| `sso.controller.spec.ts` | unit test | 221 |  |
+| `sso.controller.ts` | controller | 227 |  |
+| `sso.service.spec.ts` | unit test | 643 |  |
+| `sso.service.ts` | service | 867 |  |
 
 ### `apps/api/src/core/auth/api-keys` (8)
 
@@ -657,12 +671,20 @@ All 837 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `api-key.dto.ts` | dto | 114 |  |
 
-### `apps/api/src/core/auth/dto` (2)
+### `apps/api/src/core/auth/dto` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `auth.dto.ts` | dto | 126 |  |
 | `role.dto.ts` | dto | 44 |  |
+| `sso.dto.ts` | dto | 177 |  |
+
+### `apps/api/src/core/auth/providers` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `oidc.provider.spec.ts` | unit test | 204 |  |
+| `oidc.provider.ts` | module | 195 |  |
 
 ### `apps/api/src/core/checkout` (1)
 
@@ -713,7 +735,7 @@ All 837 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 665 | The catalogue of domain events. |
+| `domain-events.ts` | module | 686 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -772,12 +794,12 @@ All 837 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `catalog.ts` | module | 364 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
-| `copy.ts` | module | 602 |  |
+| `catalog.ts` | module | 373 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, which catego… |
+| `copy.ts` | module | 628 |  |
 | `email-templates.admin.controller.ts` | controller | 59 |  |
 | `html.ts` | module | 414 |  |
-| `templates.spec.ts` | unit test | 380 |  |
-| `templates.ts` | module | 1091 |  |
+| `templates.spec.ts` | unit test | 392 |  |
+| `templates.ts` | module | 1124 |  |
 
 ### `apps/api/src/core/notifications/email-accounts` (3)
 
@@ -1804,12 +1826,13 @@ All 837 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `transfer.dto.ts` | dto | 109 |  |
 
-### `apps/api/src/modules/users` (6)
+### `apps/api/src/modules/users` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `notification.subscriber.ts` | event subscriber | 43 |  |
-| `security-notification.subscriber.ts` | event subscriber | 152 |  |
+| `security-notification.subscriber.spec.ts` | unit test | 67 |  |
+| `security-notification.subscriber.ts` | event subscriber | 184 |  |
 | `users-admin.controller.ts` | controller | 87 |  |
 | `users-admin.module.ts` | nest module | 12 |  |
 | `users-admin.service.spec.ts` | unit test | 242 |  |
@@ -1884,7 +1907,7 @@ All 837 tracked files in `apps/api`, by directory.
 | `promotions-checkout.e2e-spec.ts` | e2e test | 327 |  |
 | `publish-gate.spec.ts` | unit test | 69 |  |
 | `reports.e2e-spec.ts` | e2e test | 189 |  |
-| `session-only-routes.spec.ts` | unit test | 66 |  |
+| `session-only-routes.spec.ts` | unit test | 75 |  |
 | `setup-env.ts` | module | 11 | Same ordering rule as src/core/config/load-env.ts: the environment must be |
 | `stitching.e2e-spec.ts` | e2e test | 590 |  |
 

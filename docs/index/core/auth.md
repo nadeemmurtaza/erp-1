@@ -3,7 +3,7 @@
 
 # Core: `auth`
 
-Shared platform — available to every module, part of no feature · 31 files
+Shared platform — available to every module, part of no feature · 41 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (31 · 4,772 lines)
+## Files (41 · 7,706 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -27,31 +27,41 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `api-keys.service.spec.ts` | unit test | 546 | — |  |
 | `api-keys.service.ts` | service | 712 | 9 |  |
 | `api-key.dto.ts` | dto | 114 | 5 | Shape and bounds only. |
-| `auth.constants.ts` | module | 99 | 13 |  |
-| `auth.controller.ts` | controller | 202 | 1 |  |
-| `auth.module.ts` | nest module | 28 | 1 |  |
+| `auth.constants.ts` | module | 114 | 17 |  |
+| `auth.controller.ts` | controller | 208 | 3 | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 password gue… |
+| `auth.module.ts` | nest module | 52 | 1 |  |
 | `auth.service.spec.ts` | unit test | 24 | — |  |
-| `auth.service.ts` | service | 429 | 6 |  |
+| `auth.service.ts` | service | 445 | 6 |  |
 | `bearer-token.ts` | module | 31 | 2 | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machine auth pa… |
 | `decorators.ts` | module | 80 | 6 | Marks a route as reachable without a token. |
 | `auth.dto.ts` | dto | 126 | 8 |  |
 | `role.dto.ts` | dto | 44 | 2 |  |
+| `sso.dto.ts` | dto | 177 | 8 | Shape and bounds only. |
 | `guards.spec.ts` | unit test | 212 | — |  |
 | `guards.ts` | module | 167 | 2 | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
+| `identity-provider.ts` | module | 91 | 6 | All a person is ever told when single sign-on fails. |
 | `jwt.strategy.ts` | auth strategy | 44 | 1 |  |
 | `ownership.guard.spec.ts` | unit test | 49 | — |  |
 | `ownership.guard.ts` | guard | 24 | 2 |  |
-| `password.util.ts` | module | 9 | 2 |  |
+| `password.util.spec.ts` | unit test | 80 | — |  |
+| `password.util.ts` | module | 89 | 6 |  |
 | `permissions.service.spec.ts` | unit test | 85 | — |  |
 | `permissions.service.ts` | service | 64 | 2 |  |
+| `oidc.provider.spec.ts` | unit test | 204 | — |  |
+| `oidc.provider.ts` | module | 195 | 2 | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnection.protocol… |
 | `roles.controller.ts` | controller | 44 | 1 | Custom roles (owner's request) — create, edit, delete a named permission bundle, freely, without a deploy. |
 | `roles.service.spec.ts` | unit test | 236 | — |  |
-| `roles.service.ts` | service | 301 | 4 |  |
+| `roles.service.ts` | service | 307 | 4 |  |
 | `scope.guard.spec.ts` | unit test | 151 | — |  |
 | `scope.guard.ts` | guard | 129 | 7 | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RETAIL-ERP.md… |
+| `sso-admin.controller.ts` | controller | 82 | 1 | Registering, editing and suspending single sign-on connections (161-sso-identity-federation.md, WO-161.4/161.5), and th… |
+| `sso.controller.spec.ts` | unit test | 221 | — |  |
+| `sso.controller.ts` | controller | 227 | 1 | Single sign-on, the browser half (161-sso-identity-federation.md). |
+| `sso.service.spec.ts` | unit test | 643 | — |  |
+| `sso.service.ts` | service | 867 | 9 | `/api/v1/auth/sso` — the path both SSO cookies are scoped to, so no other route ever receives them. |
 
 
-## HTTP routes (22)
+## HTTP routes (34)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -61,22 +71,34 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | POST | `/admin/roles` | `roles.manage_permissions` | `RolesController.create` :27 | Create a role. Duplicate names are refused; a duplicate permission set is only flagged. |
 | DELETE | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.delete` :39 | Delete a role — refused if it would leave a critical permission held by nobody |
 | PATCH | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.update` :33 | Edit a role's name, description, or permission set |
+| GET | `/admin/sso/connections` | `settings.sso.manage` | `SsoAdminController.list` :30 | Every single sign-on connection, and the callback URL to register — never a client secret |
+| POST | `/admin/sso/connections` | `settings.sso.manage` | `SsoAdminController.create` :36 | Register an identity provider for staff sign-in |
+| GET | `/admin/sso/connections/:id` | `settings.sso.manage` | `SsoAdminController.get` :42 | One connection, with the callback URL to register at the provider |
+| PATCH | `/admin/sso/connections/:id` | `settings.sso.manage` | `SsoAdminController.update` :48 | Edit a connection — audited with every old and new value; a sent secret replaces the stor… |
+| GET | `/admin/sso/connections/:id/accounts` | `settings.sso.manage` | `SsoAdminController.accounts` :61 | Accounts provisioned or linked through a connection, newest first |
+| POST | `/admin/sso/connections/:id/accounts/:userId/unlink` | `settings.sso.manage` | `SsoAdminController.unlink` :68 | Unlink an account's single sign-on identity and sign it out everywhere |
+| POST | `/admin/sso/connections/:id/suspend` | `settings.sso.manage` | `SsoAdminController.suspend` :55 | Stop new sign-ins through a connection — accounts it created or linked are untouched |
+| GET | `/admin/sso/roles` | `settings.sso.manage` | `SsoAdminController.roles` :78 | Roles a new sign-in could be given, and why any may not be |
 | GET | `/api-keys` | signed-in | `ApiKeysController.list` :35 | Your own API keys for one surface, each with what it can do right now |
 | POST | `/api-keys` | signed-in | `ApiKeysController.create` :42 | Create a key carrying some of your own access — its secret is shown in this response only |
 | PATCH | `/api-keys/:id` | signed-in | `ApiKeysController.update` :48 | Rename a key, or replace its scopes — re-checked against what you hold now |
 | POST | `/api-keys/:id/revoke` | signed-in | `ApiKeysController.revoke` :63 | Revoke a key — final; its next request is refused |
 | POST | `/api-keys/:id/rotate` | signed-in | `ApiKeysController.rotate` :56 | Issue a new secret and expiry for a key — same scopes; the old secret stops working at on… |
-| POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` :150 | Change your password and sign out other devices |
-| POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` :162 | Request a password reset link by email |
-| POST | `/auth/login` | **PUBLIC** | `AuthController.login` :71 | Sign in with an email or phone number |
-| POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` :101 | Revoke the current refresh token |
-| GET | `/auth/me` | signed-in | `AuthController.me` :119 | The signed-in user |
-| PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :140 | Update your own profile fields |
-| POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` :81 | Exchange a refresh token for a new access token |
-| POST | `/auth/register` | **PUBLIC** | `AuthController.register` :57 | Create a customer account |
-| POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :188 | Resend the email verification link |
-| POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` :171 | Set a new password using a reset link token |
-| POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` :179 | Confirm an email address using a verification link token |
+| POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` :162 | Change your password and sign out other devices |
+| POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` :174 | Request a password reset link by email |
+| POST | `/auth/login` | **PUBLIC** | `AuthController.login` :83 | Sign in with an email or phone number |
+| POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` :113 | Revoke the current refresh token |
+| GET | `/auth/me` | signed-in | `AuthController.me` :131 | The signed-in user |
+| PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :152 | Update your own profile fields |
+| POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` :93 | Exchange a refresh token for a new access token |
+| POST | `/auth/register` | **PUBLIC** | `AuthController.register` :69 | Create a customer account |
+| POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :200 | Resend the email verification link |
+| POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` :183 | Set a new password using a reset link token |
+| GET | `/auth/sso/:connectionId/start` | **PUBLIC** | `SsoController.start` :78 | Begin single sign-on — redirects to the identity provider |
+| GET | `/auth/sso/callback` | **PUBLIC** | `SsoController.callback` :92 | Where the identity provider returns — completes single sign-on and redirects to the admin… |
+| GET | `/auth/sso/connections` | **PUBLIC** | `SsoController.signInOptions` :70 | The single sign-on buttons the admin sign-in screen shows — id and label only |
+| POST | `/auth/sso/session` | **PUBLIC** | `SsoController.session` :133 | Exchange a completed single sign-on for a session — the same result a password sign-in re… |
+| POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` :191 | Confirm an email address using a verification link token |
 
 
 ## Domain events
@@ -85,11 +107,13 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `UserRegistered` | `user.registered` | `auth.service.ts:104` |
-| `PasswordChanged` | `user.password_changed` | `auth.service.ts:203`, `auth.service.ts:258` |
-| `PasswordResetRequested` | `user.password_reset_requested` | `auth.service.ts:228` |
-| `EmailVerificationRequested` | `user.email_verification_requested` | `auth.service.ts:279` |
+| `UserRegistered` | `user.registered` | `auth.service.ts:103` |
+| `PasswordChanged` | `user.password_changed` | `auth.service.ts:202`, `auth.service.ts:257` |
+| `PasswordResetRequested` | `user.password_reset_requested` | `auth.service.ts:227` |
+| `EmailVerificationRequested` | `user.email_verification_requested` | `auth.service.ts:278` |
 | `ApiKeyIssued` | `user.api_key_issued` | `api-keys.service.ts:255`, `api-keys.service.ts:386` |
+| `SsoAccountLinked` | `user.sso_account_linked` | `sso.service.ts:612`, `sso.service.ts:632` |
+| `SsoUserProvisioned` | `user.sso_user_provisioned` | `sso.service.ts:672` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -105,13 +129,14 @@ _none_
 
 **`AuthModule`** (`auth.module.ts`)
 - imports: `PassportModule`, `JwtModule`
-- controllers: `AuthController`, `RolesController`, `ApiKeysController`, `ApiKeysAdminController`
-- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`
+- controllers: `AuthController`, `RolesController`, `ApiKeysController`, `ApiKeysAdminController`, `SsoController`, `SsoAdminController`
+- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `SsoService`, `OidcProvider`
 - exports: `AuthService`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`
 
 
 ## Reaches out to
 
+- package `@newax/shared/secret-crypto`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -119,7 +144,7 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (9)
+## Tests (13)
 
 | Spec | Cases | Covers |
 |---|---|---|
@@ -129,9 +154,13 @@ check there before adding another.
 | `auth.service.spec.ts` | 2 | parseDuration |
 | `guards.spec.ts` | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a session — unchanged ·… |
 | `ownership.guard.spec.ts` | 5 | assertCanManage |
+| `password.util.spec.ts` | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
 | `permissions.service.spec.ts` | 6 | PermissionsResolverService.resolveForUser |
+| `oidc.provider.spec.ts` | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityFromClaims |
 | `roles.service.spec.ts` | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStillHeldAfterRevoke · c… |
 | `scope.guard.spec.ts` | 20 | resolveScope · assertCanManageAtScope · scopeFilterFor |
+| `sso.controller.spec.ts` | 8 | SsoController · start · callback · session |
+| `sso.service.spec.ts` | 33 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing connection · startLogin ·… |
 
 
 ## Every export in this unit
@@ -173,17 +202,23 @@ check there before adding another.
 | `AUTHENTICATED_ONLY_KEY` | const | `auth.constants.ts:83` | Marks a route as deliberately open to any signed-in user. |
 | `REFRESH_COOKIE` | const | `auth.constants.ts:85` | Marks a route as deliberately open to any signed-in user. |
 | `CART_COOKIE` | const | `auth.constants.ts:86` |  |
-| `LEGACY_REFRESH_COOKIE` | const | `auth.constants.ts:88` |  |
-| `LEGACY_CART_COOKIE` | const | `auth.constants.ts:89` |  |
-| `readCookie` | function | `auth.constants.ts:92` | The current cookie, or the one written before the rename. |
-| `AuthController` | class | `auth.controller.ts:46` |  |
-| `AuthModule` | class | `auth.module.ts:27` |  |
-| `AuthTokens` | interface | `auth.service.ts:21` |  |
-| `AuthResult` | interface | `auth.service.ts:27` |  |
-| `RegisterInput` | interface | `auth.service.ts:31` |  |
-| `UpdateProfileInput` | interface | `auth.service.ts:39` |  |
-| `AuthService` | class | `auth.service.ts:48` |  |
-| `parseDuration` | function | `auth.service.ts:416` | "30d" -> milliseconds. |
+| `SSO_STATE_COOKIE` | const | `auth.constants.ts:98` | Single sign-on (161-sso-identity-federation.md). |
+| `SSO_HANDOFF_COOKIE` | const | `auth.constants.ts:99` | Single sign-on (161-sso-identity-federation.md). |
+| `SSO_STATE_TTL_MS` | const | `auth.constants.ts:100` | Single sign-on (161-sso-identity-federation.md). |
+| `SSO_HANDOFF_TTL_MS` | const | `auth.constants.ts:101` | Single sign-on (161-sso-identity-federation.md). |
+| `LEGACY_REFRESH_COOKIE` | const | `auth.constants.ts:103` | Single sign-on (161-sso-identity-federation.md). |
+| `LEGACY_CART_COOKIE` | const | `auth.constants.ts:104` |  |
+| `readCookie` | function | `auth.constants.ts:107` | The current cookie, or the one written before the rename. |
+| `CREDENTIAL_THROTTLE` | const | `auth.controller.ts:43` | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 pa… |
+| `setRefreshCookie` | function | `auth.controller.ts:46` | The refresh-token cookie every sign-in path writes — password here, single sign-on in sso.controller.ts. |
+| `AuthController` | class | `auth.controller.ts:58` |  |
+| `AuthModule` | class | `auth.module.ts:51` |  |
+| `AuthTokens` | interface | `auth.service.ts:20` |  |
+| `AuthResult` | interface | `auth.service.ts:26` |  |
+| `RegisterInput` | interface | `auth.service.ts:30` |  |
+| `UpdateProfileInput` | interface | `auth.service.ts:38` |  |
+| `AuthService` | class | `auth.service.ts:47` |  |
+| `parseDuration` | function | `auth.service.ts:432` | "30d" -> milliseconds. |
 | `bearerToken` | function | `bearer-token.ts:10` | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machi… |
 | `bearerCredential` | function | `bearer-token.ts:26` | The credential in an `Authorization: Bearer <credential>` header, or undefined — never throws. |
 | `Public` | const | `decorators.ts:18` | Marks a route as reachable without a token. |
@@ -202,20 +237,40 @@ check there before adding another.
 | `VerifyEmailDto` | class | `auth.dto.ts:120` |  |
 | `CreateRoleDto` | class | `role.dto.ts:5` |  |
 | `UpdateRoleDto` | class | `role.dto.ts:24` |  |
+| `SSO_PROTOCOLS` | const | `sso.dto.ts:21` | Shape and bounds only. |
+| `SSO_CONNECTION_STATUSES` | const | `sso.dto.ts:22` |  |
+| `SSO_LABEL_MAX_LENGTH` | const | `sso.dto.ts:24` |  |
+| `SSO_MAX_ALLOWED_DOMAINS` | const | `sso.dto.ts:25` |  |
+| `CreateSsoConnectionDto` | class | `sso.dto.ts:27` |  |
+| `UpdateSsoConnectionDto` | class | `sso.dto.ts:72` | Every field optional; `credential` replaces the stored secret only when sent. |
+| `SsoCallbackQuery` | type | `sso.dto.ts:129` | What the provider sent back: a code to exchange, or an error (the person cancelled, or the provider refused). |
+| `readSsoCallbackQuery` | function | `sso.dto.ts:144` | Reads the callback's query string. |
 | `JwtAuthGuard` | class | `guards.ts:40` | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
 | `PermissionsGuard` | class | `guards.ts:139` | Enforces @RequirePermission(...). |
+| `SSO_SIGN_IN_FAILED` | const | `identity-provider.ts:5` | All a person is ever told when single sign-on fails. |
+| `SsoSignInRefused` | class | `identity-provider.ts:13` | A refused single sign-on (161-sso-identity-federation.md, "The failure path"). |
+| `SsoCallbackParams` | interface | `identity-provider.ts:25` | What an identity provider sends back to the callback in an authorization-code flow — and only that. |
+| `SsoFlowSecrets` | interface | `identity-provider.ts:38` | Minted by the start step and required again by the callback. |
+| `VerifiedIdentity` | interface | `identity-provider.ts:45` | Who the provider says signed in, after every protocol check has passed. |
+| `IdentityProvider` | interface | `identity-provider.ts:67` | One sign-in protocol (161-sso-identity-federation.md §1, doc 128's own interface). |
 | `JwtStrategy` | class | `jwt.strategy.ts:10` |  |
 | `OwnedEntity` | interface | `ownership.guard.ts:3` |  |
 | `assertCanManage` | function | `ownership.guard.ts:13` | Throws unless the actor holds "<capability>.manage_all", or holds "<capability>.manage_own" AND entity.ownerI… |
-| `PASSWORD_HASH_ROUNDS` | const | `password.util.ts:3` |  |
-| `hashPassword` | function | `password.util.ts:6` | The one place a plaintext password becomes a stored hash — keeps the round count consistent everywhere a pass… |
+| `PASSWORD_HASH_ROUNDS` | const | `password.util.ts:4` |  |
+| `PasswordHasher` | interface | `password.util.ts:19` | One password-hashing algorithm (126-pluggable-cryptography.md, WO-126.1). |
+| `BcryptPasswordHasher` | class | `password.util.ts:29` | The only algorithm in use today, at the cost this codebase has always used. |
+| `PASSWORD_HASHERS` | const | `password.util.ts:54` | Every registered algorithm. |
+| `hashPassword` | function | `password.util.ts:61` | The one place a plaintext password becomes a stored hash — keeps the algorithm and round count consistent eve… |
+| `verifyPassword` | function | `password.util.ts:75` | Checks a plaintext password against a stored hash, whichever registered algorithm wrote it. |
 | `ResolvedPermissions` | interface | `permissions.service.ts:4` |  |
 | `PermissionsResolverService` | class | `permissions.service.ts:26` | Resolves a user's currently effective roles and permission keys. |
+| `OidcProvider` | class | `oidc.provider.ts:50` | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnectio… |
+| `identityFromClaims` | function | `oidc.provider.ts:161` | The identity a verified ID token proves. |
 | `RolesController` | class | `roles.controller.ts:16` | Custom roles (owner's request) — create, edit, delete a named permission bundle, freely, without a deploy. |
-| `RoleWithGrants` | interface | `roles.service.ts:5` |  |
-| `RoleWriteResult` | interface | `roles.service.ts:13` |  |
-| `UserRoleConflicts` | interface | `roles.service.ts:19` |  |
-| `RolesService` | class | `roles.service.ts:45` | Custom roles (owner's request, WO-R2/R3): create, edit, delete a `Role`, assign or unassign one on a user, pl… |
+| `RoleWithGrants` | interface | `roles.service.ts:6` |  |
+| `RoleWriteResult` | interface | `roles.service.ts:14` |  |
+| `UserRoleConflicts` | interface | `roles.service.ts:20` |  |
+| `RolesService` | class | `roles.service.ts:46` | Custom roles (owner's request, WO-R2/R3): create, edit, delete a `Role`, assign or unassign one on a user, pl… |
 | `AdminScopeGrant` | interface | `scope.guard.ts:11` | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RET… |
 | `ScopedActor` | interface | `scope.guard.ts:17` |  |
 | `ScopeTarget` | interface | `scope.guard.ts:24` | What a `RetailBrand`- or `Location`-shaped row needs, to be checked or filtered against an actor's scope. |
@@ -223,6 +278,17 @@ check there before adding another.
 | `resolveScope` | function | `scope.guard.ts:47` | Reduces an actor's raw `AdminScope` rows to the three sets the guard and the filter each need. |
 | `assertCanManageAtScope` | function | `scope.guard.ts:84` | Throws unless the actor holds `"<capability>.manage_all"`, or an `AdminScope` grant wide enough to cover `tar… |
 | `scopeFilterFor` | function | `scope.guard.ts:124` | A Prisma `where` fragment scoping a list query to what the actor's `AdminScope` grants make visible — spread… |
+| `SsoAdminController` | class | `sso-admin.controller.ts:25` | Registering, editing and suspending single sign-on connections (161-sso-identity-federation.md, WO-161.4/161.… |
+| `SsoController` | class | `sso.controller.ts:58` | Single sign-on, the browser half (161-sso-identity-federation.md). |
+| `ssoCookiePath` | function | `sso.service.ts:27` | `/api/v1/auth/sso` — the path both SSO cookies are scoped to, so no other route ever receives them. |
+| `ssoCallbackUrl` | function | `sso.service.ts:39` | The one callback URL every identity provider is registered with: the API's own public origin (API_PUBLIC_URL… |
+| `SsoConnectionView` | interface | `sso.service.ts:148` | A connection as the admin screen sees it — never the credential. |
+| `SsoConnectionList` | interface | `sso.service.ts:158` | The admin list. |
+| `SsoDefaultRoleOption` | interface | `sso.service.ts:164` | A role, and what disqualifies it as a connection's default — empty when it may be one. |
+| `SsoSignInOption` | interface | `sso.service.ts:170` | What the sign-in screen needs to draw one button. |
+| `SsoAccountView` | interface | `sso.service.ts:176` | One account provisioned or linked through a connection — doc 161, "Click the number". |
+| `SsoLoginStart` | interface | `sso.service.ts:189` |  |
+| `SsoService` | class | `sso.service.ts:209` | Single sign-on (access-control-identity/161-sso-identity-federation.md): the connections an admin registers,… |
 
 
 ---

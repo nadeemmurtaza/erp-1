@@ -38,8 +38,20 @@ import {
  * Credential endpoints are rate limited far tighter than the global 300/min,
  * which on a login form is 18,000 password guesses an hour from one address.
  * These are the only routes where an attacker gets to guess a secret.
+ * Exported for sso.controller.ts, whose sign-in routes take the same limit.
  */
-const CREDENTIAL_THROTTLE = { default: { limit: 10, ttl: 60_000 } };
+export const CREDENTIAL_THROTTLE = { default: { limit: 10, ttl: 60_000 } };
+
+/** The refresh-token cookie every sign-in path writes — password here, single sign-on in sso.controller.ts. */
+export function setRefreshCookie(response: Response, token: string, config: AppConfigService): void {
+  response.cookie(REFRESH_COOKIE, token, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: config.isProduction,
+    path: '/',
+    maxAge: parseDuration(config.get('JWT_REFRESH_TTL')),
+  });
+}
 
 @ApiTags('auth')
 @Controller('auth')
@@ -190,12 +202,6 @@ export class AuthController {
   }
 
   private setRefreshCookie(response: Response, token: string): void {
-    response.cookie(REFRESH_COOKIE, token, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: this.config.isProduction,
-      path: '/',
-      maxAge: parseDuration(this.config.get('JWT_REFRESH_TTL')),
-    });
+    setRefreshCookie(response, token, this.config);
   }
 }

@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **61** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **63** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -24,7 +24,7 @@ order" is a new file, not an edit to checkout.
 ## Attention list
 
 - Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`, `notification.sent`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `user.sso_user_provisioned`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`, `notification.sent`
 
 ## Summary
 
@@ -47,6 +47,8 @@ order" is a new file, not an edit to checkout.
 | `user.password_reset_requested` | `PasswordResetRequested` | core/`auth` | `users` |
 | `user.email_verification_requested` | `EmailVerificationRequested` | core/`auth` | `users` |
 | `user.api_key_issued` | `ApiKeyIssued` | core/`auth` | `users` |
+| `user.sso_account_linked` | `SsoAccountLinked` | core/`auth` | `users` |
+| `user.sso_user_provisioned` | `SsoUserProvisioned` | core/`auth` | _none_ |
 | `catalog.product_low_stock` | `ProductLowStock` | `inventory` | `inventory` |
 | `catalog.product_reorder_point_reached` | `ProductReorderPointReached` | `inventory` | `production`, `purchasing` |
 | `catalog.product_published` | `ProductPublished` | `catalog` | `catalog`, `tradingpartners` |
@@ -306,7 +308,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:104` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:103` | core/`auth` |
 
 
 **Subscribed by**
@@ -322,15 +324,15 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:203` | core/`auth` |
-| `apps/api/src/core/auth/auth.service.ts:258` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:202` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:257` | core/`auth` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPasswordChanged()` | `apps/api/src/modules/users/security-notification.subscriber.ts:35` | `users` |
+| `onPasswordChanged()` | `apps/api/src/modules/users/security-notification.subscriber.ts:36` | `users` |
 
 ### `user.password_reset_requested`
 
@@ -339,14 +341,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:228` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:227` | core/`auth` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPasswordResetRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:57` | `users` |
+| `onPasswordResetRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:58` | `users` |
 
 ### `user.email_verification_requested`
 
@@ -355,14 +357,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:279` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:278` | core/`auth` |
 
 
 **Subscribed by**
 
 | Handler | Where | Module |
 |---|---|---|
-| `onEmailVerificationRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:80` | `users` |
+| `onEmailVerificationRequested()` | `apps/api/src/modules/users/security-notification.subscriber.ts:81` | `users` |
 
 ### `user.api_key_issued`
 
@@ -380,7 +382,40 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onApiKeyIssued()` | `apps/api/src/modules/users/security-notification.subscriber.ts:113` | `users` |
+| `onApiKeyIssued()` | `apps/api/src/modules/users/security-notification.subscriber.ts:114` | `users` |
+
+### `user.sso_account_linked`
+
+> SsoService linked an existing account to a single sign-on identity (161-sso-identity-federation.md §3).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/core/auth/sso.service.ts:612` | core/`auth` |
+| `apps/api/src/core/auth/sso.service.ts:632` | core/`auth` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onSsoAccountLinked()` | `apps/api/src/modules/users/security-notification.subscriber.ts:150` | `users` |
+
+### `user.sso_user_provisioned`
+
+> SsoService provisioned a brand-new account at its first single sign-on.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/core/auth/sso.service.ts:672` | core/`auth` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
 
 ### `catalog.product_low_stock`
 

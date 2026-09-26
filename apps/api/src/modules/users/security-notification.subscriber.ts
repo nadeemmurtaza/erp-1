@@ -6,6 +6,7 @@ import {
   type EmailVerificationRequestedPayload,
   type PasswordChangedPayload,
   type PasswordResetRequestedPayload,
+  type SsoAccountLinkedPayload,
 } from '../../core/events/domain-events';
 import { OnDomainEvent } from '../../core/events/on-domain-event.decorator';
 import { NotificationsService } from '../../core/notifications/notifications.service';
@@ -135,6 +136,37 @@ export class SecurityNotificationSubscriber {
     });
 
     this.logger.log(`Sent API-key-issued notice for key ${payload.apiKeyId} to user ${payload.userId}`);
+  }
+
+  /**
+   * An existing account was linked to a single sign-on identity
+   * (161-sso-identity-federation.md §3). Linking is automatic once the
+   * domain gate passes, so this mail is what makes it never silent: an
+   * unexpected link reaches the account holder, who can have an admin
+   * unlink it. Not sent for an account single sign-on newly created — that
+   * person just signed in, live, and nothing about it is unexpected.
+   * Idempotent in effect: a redelivered event re-sends the same notice.
+   */
+  @OnDomainEvent(DomainEvent.SsoAccountLinked)
+  async onSsoAccountLinked(payload: SsoAccountLinkedPayload): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.userId },
+      select: { email: true, firstName: true, lastName: true },
+    });
+    if (!user?.email) return;
+
+    const name = [user.firstName, user.lastName].filter(Boolean).join(' ') || null;
+    const locale = await this.localeFor(payload.userId);
+
+    await this.notifications.send({
+      template: 'user.sso_account_linked',
+      recipient: { name, email: user.email, phone: null, userId: payload.userId, locale },
+      subject: 'Single sign-on was linked to your account',
+      body: 'Your account can now be signed in to through single sign-on. If this was not you, reply to this email right away.',
+      data: {},
+    });
+
+    this.logger.log(`Sent single-sign-on-linked notice to user ${payload.userId}`);
   }
 
   /** Same resolution as the orders/payments subscribers; see the note there. */

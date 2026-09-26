@@ -15,11 +15,11 @@ Every top-level export in `infra`, with the line to open.
 | `check-contrast.mjs` | `contrast` | const | :69 | WCAG 2.x contrast ratio. |
 | `check-contrast.mjs` | `scanColours` | function | :213 | Every colour utility in a file, with the className it shared, if any. |
 | `check-links.mjs` | `APPS` | const | :37 | The apps with a Next.js app router, and where each one's assets live. |
-| `check-links.mjs` | `routeUrl` | function | :77 | The URL a `page.tsx` / `route.ts` serves: route groups vanish, `[id]` stays. |
-| `check-links.mjs` | `routeInventory` | function | :93 | Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`. |
-| `check-links.mjs` | `matches` | function | :126 | Does `link` land on `route`? |
-| `check-links.mjs` | `resolve1` | function | :167 | The route Next.js would pick for this link, or null. |
-| `check-links.mjs` | `scanLinks` | function | :212 | Every internal path a file refers to, with the line it is on. |
+| `check-links.mjs` | `routeUrl` | function | :84 | The URL a `page.tsx` / `route.ts` serves: route groups vanish, `[id]` stays. |
+| `check-links.mjs` | `routeInventory` | function | :100 | Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`. |
+| `check-links.mjs` | `matches` | function | :133 | Does `link` land on `route`? |
+| `check-links.mjs` | `resolve1` | function | :174 | The route Next.js would pick for this link, or null. |
+| `check-links.mjs` | `scanLinks` | function | :219 | Every internal path a file refers to, with the line it is on. |
 | `check-rebrand.mjs` | `scan` | function | :160 | Every violation on one file's contents. |
 
 ### `scripts/lib`

@@ -28,7 +28,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 | `docker-stack.prod.yml` | yaml | 88 |  |
 | `docker-stack.staging.yml` | yaml | 88 |  |
 | `package.json` | json | 58 |  |
-| `pnpm-lock.yaml` | yaml | 18529 |  |
+| `pnpm-lock.yaml` | yaml | 18572 |  |
 | `pnpm-workspace.yaml` | yaml | 12 |  |
 | `turbo.json` | json | 55 |  |
 | `wrangler.toml` | toml | 17 |  |
@@ -84,7 +84,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
-| `check-links.mjs` | script | 402 |  |
+| `check-links.mjs` | script | 409 |  |
 | `check-module-boundaries.mjs` | script | 572 |  |
 | `check-overflow.mjs` | script | 644 |  |
 | `check-permission-checks.mjs` | script | 127 |  |

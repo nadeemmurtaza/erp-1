@@ -231,6 +231,16 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'critical',
   },
   {
+    // 161-sso-identity-federation.md — critical because a connection's
+    // allowed domains and default role decide who may sign in at all: an
+    // identity provider trusted for a domain signs in, and auto-links, every
+    // existing account at that domain, admins included.
+    key: 'settings.sso.manage',
+    label: 'Register, edit and suspend single sign-on connections',
+    category: 'Administration',
+    sensitivity: 'critical',
+  },
+  {
     key: 'tax.manage',
     label: 'Manage tax classes, rates and the pricing mode',
     category: 'Administration',
@@ -698,9 +708,10 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'system-admin',
     label: 'System administration',
-    description: 'Settings, roles, user accounts and the audit log — the most sensitive group.',
+    description: 'Settings, single sign-on, roles, user accounts and the audit log — the most sensitive group.',
     permissions: [
       'settings.manage',
+      'settings.sso.manage',
       'roles.manage_permissions',
       'users.manage',
       'audit.view',
@@ -837,6 +848,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'bom.manage',
     'bom.produce',
     'settings.manage',
+    'settings.sso.manage',
     'roles.manage_permissions',
     'audit.view',
     'users.manage',

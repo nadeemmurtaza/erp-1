@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **660** endpoints across **121** controllers, with the access rule that actually guards each one.
+All **672** endpoints across **123** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,7 +24,7 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 70** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 74** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -34,6 +34,10 @@ never authorization.
 | POST | `/auth/refresh` | `AuthController.refresh` |
 | POST | `/auth/register` | `AuthController.register` |
 | POST | `/auth/reset-password` | `AuthController.resetPassword` |
+| GET | `/auth/sso/:connectionId/start` | `SsoController.start` |
+| GET | `/auth/sso/callback` | `SsoController.callback` |
+| GET | `/auth/sso/connections` | `SsoController.signInOptions` |
+| POST | `/auth/sso/session` | `SsoController.session` |
 | POST | `/auth/verify-email` | `AuthController.verifyEmail` |
 | GET | `/campaigns/r/:recipientId/click` | `CampaignTrackingController.click` |
 | GET | `/campaigns/r/:recipientId/open.gif` | `CampaignTrackingController.open` |
@@ -307,7 +311,7 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/admin/action-hub` | `analytics.view` | `ActionHubController.collect` | Every action item pending on the caller, merged from every registered source |
 
-### [`core/auth`](../core/auth.md) (22)
+### [`core/auth`](../core/auth.md) (34)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -317,6 +321,14 @@ never authorization.
 | POST | `/admin/roles` | `roles.manage_permissions` | `RolesController.create` | Create a role. Duplicate names are refused; a duplicate permission set is only… |
 | DELETE | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.delete` | Delete a role — refused if it would leave a critical permission held by nobody |
 | PATCH | `/admin/roles/:id` | `roles.manage_permissions` | `RolesController.update` | Edit a role's name, description, or permission set |
+| GET | `/admin/sso/connections` | `settings.sso.manage` | `SsoAdminController.list` | Every single sign-on connection, and the callback URL to register — never a cli… |
+| POST | `/admin/sso/connections` | `settings.sso.manage` | `SsoAdminController.create` | Register an identity provider for staff sign-in |
+| GET | `/admin/sso/connections/:id` | `settings.sso.manage` | `SsoAdminController.get` | One connection, with the callback URL to register at the provider |
+| PATCH | `/admin/sso/connections/:id` | `settings.sso.manage` | `SsoAdminController.update` | Edit a connection — audited with every old and new value; a sent secret replace… |
+| GET | `/admin/sso/connections/:id/accounts` | `settings.sso.manage` | `SsoAdminController.accounts` | Accounts provisioned or linked through a connection, newest first |
+| POST | `/admin/sso/connections/:id/accounts/:userId/unlink` | `settings.sso.manage` | `SsoAdminController.unlink` | Unlink an account's single sign-on identity and sign it out everywhere |
+| POST | `/admin/sso/connections/:id/suspend` | `settings.sso.manage` | `SsoAdminController.suspend` | Stop new sign-ins through a connection — accounts it created or linked are unto… |
+| GET | `/admin/sso/roles` | `settings.sso.manage` | `SsoAdminController.roles` | Roles a new sign-in could be given, and why any may not be |
 | GET | `/api-keys` | signed-in | `ApiKeysController.list` | Your own API keys for one surface, each with what it can do right now |
 | POST | `/api-keys` | signed-in | `ApiKeysController.create` | Create a key carrying some of your own access — its secret is shown in this res… |
 | PATCH | `/api-keys/:id` | signed-in | `ApiKeysController.update` | Rename a key, or replace its scopes — re-checked against what you hold now |
@@ -332,6 +344,10 @@ never authorization.
 | POST | `/auth/register` | **PUBLIC** | `AuthController.register` | Create a customer account |
 | POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` | Resend the email verification link |
 | POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` | Set a new password using a reset link token |
+| GET | `/auth/sso/:connectionId/start` | **PUBLIC** | `SsoController.start` | Begin single sign-on — redirects to the identity provider |
+| GET | `/auth/sso/callback` | **PUBLIC** | `SsoController.callback` | Where the identity provider returns — completes single sign-on and redirects to… |
+| GET | `/auth/sso/connections` | **PUBLIC** | `SsoController.signInOptions` | The single sign-on buttons the admin sign-in screen shows — id and label only |
+| POST | `/auth/sso/session` | **PUBLIC** | `SsoController.session` | Exchange a completed single sign-on for a session — the same result a password… |
 | POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` | Confirm an email address using a verification link token |
 
 ### [`core/config`](../core/config.md) (1)

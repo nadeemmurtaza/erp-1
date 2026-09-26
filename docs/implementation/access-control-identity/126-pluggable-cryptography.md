@@ -1,6 +1,45 @@
 # 126 — Cryptographic agility: today a fixed, correct default; a real, narrow gap for the one algorithm this repository would actually need to rotate
 
-> **Status: this document's own recommendation stands, again.** Per
+> **Status (2026-09-25): WO-126.1 built; WO-126.2 deferred.** `bcryptjs`
+> now sits behind the `PasswordHasher` interface in
+> `apps/api/src/core/auth/password.util.ts` — the file whose own comment
+> already called itself "the one place a plaintext password becomes a
+> stored hash", extended rather than forked. `BcryptPasswordHasher`
+> (`version: 'bcrypt-v1'`; `recognizes()` reads the hash's own `$2`
+> prefix, so `$2a$`/`$2b$`/`$2y$` all resolve to it) is the only entry in
+> `PASSWORD_HASHERS`, a frozen array whose first entry writes every new
+> hash — nothing registers a hasher at runtime, so the algorithm stays a
+> reviewed code change, per "Authority and blast radius" below.
+> `hashPassword()` keeps its exact signature and round count
+> (`PASSWORD_HASH_ROUNDS = 12`), so `users-admin.service.ts`'s two call
+> sites and `test/api-keys.e2e-spec.ts` are untouched. The new
+> `verifyPassword()` replaces `auth.service.ts`'s two direct `bcryptjs`
+> `compare()` calls (`login()`, `changePassword()`), the constant-time
+> `DUMMY_HASH` comparison included — no other line of either method
+> changed.
+>
+> **Behavior unchanged, proven by spec**: `password.util.spec.ts` verifies
+> a hash `bcryptjs` wrote directly, before this interface existed (and its
+> `$2a$`/`$2y$` forms), round-trips a fresh hash at the unchanged cost, and
+> checks `DUMMY_HASH` never matches; `auth.service.spec.ts` and
+> `users-admin.service.spec.ts` pass unmodified.
+>
+> **One tightening, from "The failure path" below**: a hash no hasher
+> recognizes still goes through the default hasher's real comparison, and
+> a stored value that makes that comparison *throw* — `bcryptjs` does, with
+> "Invalid salt version", on a 60-character non-bcrypt string — answers
+> `false` with a logged warning naming only the hasher, never the hash. A
+> corrupted hash is a refused sign-in, never a 500 and never a match.
+>
+> **WO-126.2 stays deferred**, exactly as the work orders below say: no
+> second algorithm (argon2id or any other) is registered, because no audit
+> finding or compliance requirement names one — "No speculative
+> functionality." Adding it is one `PASSWORD_HASHERS` entry placed first,
+> plus the rehash-on-next-successful-login step this document describes;
+> `auth.service.ts`'s call sites do not change. Algorithm pluggability for
+> `secret-crypto.ts` remains out of scope, as below.
+>
+> **Earlier history — this document's own recommendation stands, again.** Per
 > **ADR-026** (`DECISIONS.md`), the owner briefly instructed that a
 > dedicated crypto microservice be built anyway (specified as doc 146).
 > Per **ADR-027**, the owner reviewed the actual security exposure a

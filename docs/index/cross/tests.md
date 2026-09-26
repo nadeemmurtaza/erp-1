@@ -3,7 +3,7 @@
 
 # Tests
 
-**241** spec files, **2,360** cases. What is already pinned down — and what is not.
+**246** spec files, **2,422** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (222)
+## Unit and integration (227)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -69,16 +69,20 @@ regression or an N+1.
 | `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 2 | parseDuration |
 | `apps/api/src/core/auth/guards.spec.ts` | core/auth | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a se… |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
+| `apps/api/src/core/auth/password.util.spec.ts` | core/auth | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
 | `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 6 | PermissionsResolverService.resolveForUser |
+| `apps/api/src/core/auth/providers/oidc.provider.spec.ts` | core/auth | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityF… |
 | `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStil… |
 | `apps/api/src/core/auth/scope.guard.spec.ts` | core/auth | 20 | resolveScope · assertCanManageAtScope · scopeFilterFor |
+| `apps/api/src/core/auth/sso.controller.spec.ts` | core/auth | 8 | SsoController · start · callback · session |
+| `apps/api/src/core/auth/sso.service.spec.ts` | core/auth | 33 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing conne… |
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/metrics/metric-registry.service.spec.ts` | core/metrics | 15 | MetricRegistryService · register · collect — permission gating · collect — failure isolation · coll… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
-| `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 29 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
+| `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 30 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
 | `apps/api/src/core/notifications/notifications.service.spec.ts` | core/notifications | 2 | NotificationsService |
 | `apps/api/src/core/prisma/enums.spec.ts` | core/prisma | 0 | shared enums stay in sync with the Prisma schema |
 | `apps/api/src/core/replication/node-credential.service.spec.ts` | core/replication | 5 | NodeCredentialService — WO-20.2 |
@@ -218,6 +222,7 @@ regression or an N+1.
 | `apps/api/src/modules/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
+| `apps/api/src/modules/users/security-notification.subscriber.spec.ts` | users | 3 | SecurityNotificationSubscriber.onSsoAccountLinked |
 | `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 12 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
 | `apps/api/src/modules/wallet/merchant-payable.service.spec.ts` | wallet | 16 | MerchantPayableService — 155-wallet-stored-value-merchant-escrow.md §3 · createMerchantPayable · sc… |
 | `apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts` | wallet | 3 | MerchantPayableAdjustmentCreditNoteService — the interim default, pending doc 145 |

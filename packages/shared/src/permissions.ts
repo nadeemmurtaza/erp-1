@@ -744,8 +744,18 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'sales',
     label: 'Sales & payments',
-    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, and registering terminals.',
-    permissions: ['orders.manage', 'payments.approve', 'pos.manage', 'pos.operate', 'pos.instalments.cancel', 'pos.instalments.default'],
+    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, registering terminals, and wholesale pricing.',
+    permissions: [
+      'orders.manage',
+      'payments.approve',
+      'pos.manage',
+      'pos.operate',
+      'pos.instalments.cancel',
+      'pos.instalments.default',
+      'pricing.price-lists.manage',
+      'pricing.price-lists.approve',
+      'pricing.assignments.manage',
+    ],
   },
   {
     key: 'fulfilment',

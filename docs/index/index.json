@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2166,
-    "lines": 331698,
-    "routes": 753,
-    "controllers": 134,
-    "models": 272,
-    "enums": 124,
-    "migrations": 98,
-    "events": 63,
-    "permissions": 101,
+    "files": 2205,
+    "lines": 335439,
+    "routes": 766,
+    "controllers": 138,
+    "models": 276,
+    "enums": 125,
+    "migrations": 102,
+    "events": 64,
+    "permissions": 104,
     "screens": 245,
     "crons": 23,
-    "specs": 280,
+    "specs": 286,
     "designLaws": 0
   },
   "designLaws": [],
@@ -26,15 +26,15 @@
       "label": "repository root files"
     },
     "infra": {
-      "files": 57,
-      "lines": 30073,
-      "bytes": 1183108,
+      "files": 58,
+      "lines": 30367,
+      "bytes": 1193628,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 954,
-      "lines": 133524,
-      "bytes": 5140252,
+      "files": 987,
+      "lines": 135198,
+      "bytes": 5213655,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 392,
-      "lines": 64048,
-      "bytes": 2309002,
+      "files": 397,
+      "lines": 65238,
+      "bytes": 2352538,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 396,
-      "lines": 66287,
-      "bytes": 3942886,
+      "lines": 66823,
+      "bytes": 3975475,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8173,
-      "bytes": 291426,
+      "lines": 8220,
+      "bytes": 293251,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -201,6 +201,23 @@
       ],
       "routes": 20,
       "page": "docs/index/modules/bom.md"
+    },
+    {
+      "name": "bpmn-workflows",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts",
+        "apps/api/src/modules/bpmn-workflows/bpmn-compiler.ts",
+        "apps/api/src/modules/bpmn-workflows/bpmn-workflows.controller.ts",
+        "apps/api/src/modules/bpmn-workflows/bpmn-workflows.module.ts",
+        "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts",
+        "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.ts",
+        "apps/api/src/modules/bpmn-workflows/dto/bpmn-workflow.dto.ts"
+      ],
+      "routes": 2,
+      "page": "docs/index/modules/bpmn-workflows.md"
     },
     {
       "name": "cart",
@@ -364,6 +381,23 @@
       "page": "docs/index/modules/embeds.md"
     },
     {
+      "name": "entity-attributes",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/entity-attributes/dto/entity-attribute.dto.ts",
+        "apps/api/src/modules/entity-attributes/entity-attributes.controller.ts",
+        "apps/api/src/modules/entity-attributes/entity-attributes.module.ts",
+        "apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts",
+        "apps/api/src/modules/entity-attributes/entity-attributes.service.ts",
+        "apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts",
+        "apps/api/src/modules/entity-attributes/supplier-deleted.listener.ts"
+      ],
+      "routes": 2,
+      "page": "docs/index/modules/entity-attributes.md"
+    },
+    {
       "name": "finance",
       "pack": "core",
       "alwaysOn": false,
@@ -392,6 +426,21 @@
       ],
       "routes": 17,
       "page": "docs/index/modules/finance.md"
+    },
+    {
+      "name": "fragments",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/fragments/dto/fragment.dto.ts",
+        "apps/api/src/modules/fragments/fragments.controller.ts",
+        "apps/api/src/modules/fragments/fragments.module.ts",
+        "apps/api/src/modules/fragments/fragments.service.spec.ts",
+        "apps/api/src/modules/fragments/fragments.service.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/fragments.md"
     },
     {
       "name": "fulfilment",
@@ -585,6 +634,21 @@
       ],
       "routes": 13,
       "page": "docs/index/modules/measurements.md"
+    },
+    {
+      "name": "metadata-forms",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/metadata-forms/dto/form-metadata.dto.ts",
+        "apps/api/src/modules/metadata-forms/metadata-forms.controller.ts",
+        "apps/api/src/modules/metadata-forms/metadata-forms.module.ts",
+        "apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts",
+        "apps/api/src/modules/metadata-forms/metadata-forms.service.ts"
+      ],
+      "routes": 2,
+      "page": "docs/index/modules/metadata-forms.md"
     },
     {
       "name": "notification-preferences",
@@ -1326,7 +1390,8 @@
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
         "apps/api/src/core/extension-points/extension-points.module.ts",
         "apps/api/src/core/extension-points/identity-verification-status.registry.ts",
-        "apps/api/src/core/extension-points/stock-intake.registry.ts"
+        "apps/api/src/core/extension-points/stock-intake.registry.ts",
+        "apps/api/src/core/extension-points/workflow-steps.registry.ts"
       ],
       "page": "docs/index/core/extension-points.md"
     },
@@ -2880,6 +2945,36 @@
       "public": false,
       "authOnly": false,
       "summary": "Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM existed — only where costPrice is 0 and the cost is complete"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/bpmn-workflows/:subjectType",
+      "module": "bpmn-workflows",
+      "controller": "BpmnWorkflowsController",
+      "handler": "get",
+      "file": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.controller.ts",
+      "line": 24,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "The saved BPMN diagram (and its compiled steps) for one approval subject type, or null if none is defined"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/bpmn-workflows/:subjectType",
+      "module": "bpmn-workflows",
+      "controller": "BpmnWorkflowsController",
+      "handler": "save",
+      "file": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.controller.ts",
+      "line": 31,
+      "access": "settings.bpmn-workflows.manage",
+      "permissions": [
+        "settings.bpmn-workflows.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Compile and save a BPMN diagram for one approval subject type"
     },
     {
       "method": "GET",
@@ -5498,6 +5593,34 @@
     },
     {
       "method": "GET",
+      "path": "/admin/entity-attributes",
+      "module": "entity-attributes",
+      "controller": "EntityAttributesController",
+      "handler": "list",
+      "file": "apps/api/src/modules/entity-attributes/entity-attributes.controller.ts",
+      "line": 29,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "One entity's own attributes, gated by that entity's own edit permission"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/entity-attributes",
+      "module": "entity-attributes",
+      "controller": "EntityAttributesController",
+      "handler": "set",
+      "file": "apps/api/src/modules/entity-attributes/entity-attributes.controller.ts",
+      "line": 37,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Set one attribute on one entity, gated by that entity's own edit permission"
+    },
+    {
+      "method": "GET",
       "path": "/admin/feed",
       "module": "core/feed",
       "controller": "FeedController",
@@ -5783,6 +5906,114 @@
       "public": false,
       "authOnly": false,
       "summary": "Contribution per order, paginated, plus the average by product/category (WO-4.2)"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/fragments",
+      "module": "fragments",
+      "controller": "FragmentsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
+      "line": 26,
+      "access": "settings.fragments.manage",
+      "permissions": [
+        "settings.fragments.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every registered fragment, active or suspended — for the management screen"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fragments",
+      "module": "fragments",
+      "controller": "FragmentsController",
+      "handler": "register",
+      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
+      "line": 40,
+      "access": "settings.fragments.manage",
+      "permissions": [
+        "settings.fragments.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Register a new micro-frontend fragment, with the required design-law attestation"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/fragments/:id",
+      "module": "fragments",
+      "controller": "FragmentsController",
+      "handler": "update",
+      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
+      "line": 47,
+      "access": "settings.fragments.manage",
+      "permissions": [
+        "settings.fragments.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit a fragment’s label, remote URL, mount points or status"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fragments/:id/activate",
+      "module": "fragments",
+      "controller": "FragmentsController",
+      "handler": "activate",
+      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
+      "line": 61,
+      "access": "settings.fragments.manage",
+      "permissions": [
+        "settings.fragments.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Resume serving a previously suspended fragment"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fragments/:id/suspend",
+      "module": "fragments",
+      "controller": "FragmentsController",
+      "handler": "suspend",
+      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
+      "line": 54,
+      "access": "settings.fragments.manage",
+      "permissions": [
+        "settings.fragments.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The kill switch — stop serving a fragment with no deploy"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/fragments/:key/token",
+      "module": "fragments",
+      "controller": "FragmentsController",
+      "handler": "issueToken",
+      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
+      "line": 68,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "A short-lived token scoped to one fragment and one mount point — never a raw session credential"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/fragments/for-mount-point",
+      "module": "fragments",
+      "controller": "FragmentsController",
+      "handler": "listForMountPoint",
+      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
+      "line": 33,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Every active fragment registered for one named mount point"
     },
     {
       "method": "GET",
@@ -7119,6 +7350,36 @@
       "public": false,
       "authOnly": false,
       "summary": "Schedule OPEN payables into the next payout run — verified merchants immediately, unverified ones wait for delivery confirmation"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/metadata-forms/:entityType",
+      "module": "metadata-forms",
+      "controller": "MetadataFormsController",
+      "handler": "get",
+      "file": "apps/api/src/modules/metadata-forms/metadata-forms.controller.ts",
+      "line": 23,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "The defined form shape for one entity type, or null if none is defined"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/metadata-forms/:entityType",
+      "module": "metadata-forms",
+      "controller": "MetadataFormsController",
+      "handler": "define",
+      "file": "apps/api/src/modules/metadata-forms/metadata-forms.controller.ts",
+      "line": 30,
+      "access": "settings.metadata-forms.manage",
+      "permissions": [
+        "settings.metadata-forms.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Define (or replace) the form shape for one entity type"
     },
     {
       "method": "GET",
@@ -14058,7 +14319,7 @@
         "POST /admin/requisitions/:id/approve",
         "POST /admin/requisitions/:id/reject"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "ADMIN"
       ],
@@ -14195,6 +14456,52 @@
         "GET /admin/embeds/all"
       ],
       "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "settings.fragments.manage",
+      "label": "Register and suspend micro-frontend fragments",
+      "category": "Administration",
+      "sensitivity": "critical",
+      "routes": [
+        "GET /admin/fragments",
+        "POST /admin/fragments",
+        "PATCH /admin/fragments/:id",
+        "POST /admin/fragments/:id/activate",
+        "POST /admin/fragments/:id/suspend"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "settings.metadata-forms.manage",
+      "label": "Define metadata-driven form field shapes",
+      "category": "Administration",
+      "sensitivity": "medium",
+      "routes": [
+        "PUT /admin/metadata-forms/:entityType"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "settings.bpmn-workflows.manage",
+      "label": "Redraw approval workflow diagrams",
+      "category": "Administration",
+      "sensitivity": "critical",
+      "routes": [
+        "PUT /admin/bpmn-workflows/:subjectType"
+      ],
+      "uiSites": 0,
       "roles": [
         "ADMIN"
       ],
@@ -15659,7 +15966,7 @@
       "name": "purchasing.goods_received",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/purchasing/purchasing.service.ts:441"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:448"
       ],
       "subscribers": [
         "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()",
@@ -15671,7 +15978,7 @@
       "name": "purchasing.requisition_created",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/purchasing/requisition.service.ts:59"
+        "apps/api/src/modules/purchasing/requisition.service.ts:72"
       ],
       "subscribers": []
     },
@@ -15680,7 +15987,7 @@
       "name": "purchasing.requisition_converted",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/purchasing/requisition.service.ts:192"
+        "apps/api/src/modules/purchasing/requisition.service.ts:205"
       ],
       "subscribers": []
     },
@@ -15701,7 +16008,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:183",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:592"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:599"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:181 onSupplierBillRaised()"
@@ -15713,10 +16020,21 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:233",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:656"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:663"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:231 onSupplierBillPaid()"
+      ]
+    },
+    {
+      "symbol": "SupplierDeleted",
+      "name": "purchasing.supplier_deleted",
+      "doc": "PurchasingService.remove() — fired so any module holding data keyed to this supplier (e.g.",
+      "publishers": [
+        "apps/api/src/modules/purchasing/purchasing.service.ts:182"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/entity-attributes/supplier-deleted.listener.ts:23 onSupplierDeleted()"
       ]
     },
     {
@@ -16173,7 +16491,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 323,
+      "line": 324,
       "doc": "",
       "fields": [
         {
@@ -16432,7 +16750,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 646,
+      "line": 647,
       "doc": "",
       "fields": [
         {
@@ -16521,7 +16839,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 601,
+      "line": 602,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -16582,7 +16900,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 273,
+      "line": 274,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -17544,7 +17862,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 413,
+      "line": 414,
       "doc": "",
       "fields": [
         {
@@ -18585,6 +18903,57 @@
         "@@index([status])",
         "@@index([costComplete])"
       ]
+    },
+    {
+      "name": "BpmnWorkflowDefinition",
+      "file": "apps/api/prisma/schema/bpmn-workflows.prisma",
+      "line": 10,
+      "doc": "A BPMN visual workflow engine, built by explicit owner override (ADR-026) — architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.3).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subjectType",
+          "type": "ApprovalSubjectType",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "diagramXml",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "compiledSteps",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "Brand",
@@ -20559,7 +20928,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 581,
+      "line": 582,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -21116,7 +21485,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 368,
+      "line": 369,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -21302,7 +21671,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 229,
+      "line": 230,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -21504,6 +21873,74 @@
       ],
       "indexes": [
         "@@index([status])"
+      ]
+    },
+    {
+      "name": "EntityAttribute",
+      "file": "apps/api/prisma/schema/entity-attributes.prisma",
+      "line": 17,
+      "doc": "A general EAV model, built by explicit owner override (ADR-026).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entityType",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entityId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attributeKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attributeValue",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "valueType",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([entityType, entityId, attributeKey])",
+        "@@index([entityType, entityId])"
       ]
     },
     {
@@ -22009,6 +22446,50 @@
         "@@index([isDone, dueAt])",
         "@@index([assigneeId, isDone])"
       ]
+    },
+    {
+      "name": "FormMetadata",
+      "file": "apps/api/prisma/schema/metadata-forms.prisma",
+      "line": 15,
+      "doc": "A general metadata-driven UI engine, built by explicit owner override (ADR-026) — architecture-patterns/141-general-metadata-driven-ui-engine.md (WO-141.1).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entityType",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "fields",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "GarmentSizeChart",
@@ -25572,6 +26053,92 @@
       ]
     },
     {
+      "name": "MicroFrontendFragment",
+      "file": "apps/api/prisma/schema/fragments.prisma",
+      "line": 15,
+      "doc": "Micro-frontend fragments, built by explicit owner override (ADR-026), added alongside doc 93's single-app convention rather than replacing it (architecture-patterns/143-micro-frontend-architecture.md…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "remoteUrl",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "mountPoints",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "FragmentStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attestedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attestedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attestedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "NewsletterSubscriber",
       "file": "apps/api/prisma/schema/onsite-messaging.prisma",
       "line": 62,
@@ -27608,7 +28175,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 554,
+      "line": 555,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -27995,7 +28562,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 212,
+      "line": 213,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -28550,7 +29117,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 434,
+      "line": 435,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -32945,7 +33512,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 191,
+      "line": 192,
       "doc": "",
       "fields": [
         {
@@ -34072,7 +34639,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 500,
+      "line": 501,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -34130,7 +34697,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 514,
+      "line": 515,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -34184,7 +34751,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 450,
+      "line": 451,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -34411,7 +34978,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 346,
+      "line": 347,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -38888,6 +39455,13 @@
           "relation": true
         },
         {
+          "name": "microFrontendFragmentsRegistered",
+          "type": "MicroFrontendFragment[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "goodsReceiptsReceived",
           "type": "GoodsReceipt[]",
           "id": false,
@@ -39247,7 +39821,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 471,
+      "line": 472,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -39308,7 +39882,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 529,
+      "line": 530,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -40222,7 +40796,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 640,
+      "line": 641,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -40232,7 +40806,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 619,
+      "line": 620,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -40276,7 +40850,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 254,
+      "line": 255,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -40286,7 +40860,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 247,
+      "line": 248,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -40526,7 +41100,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 569,
+      "line": 570,
       "values": [
         "IOS",
         "ANDROID",
@@ -40571,7 +41145,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 357,
+      "line": 358,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -40609,6 +41183,15 @@
         "OPEN",
         "CLOSED",
         "LOCKED"
+      ]
+    },
+    {
+      "name": "FragmentStatus",
+      "file": "apps/api/prisma/schema/fragments.prisma",
+      "line": 37,
+      "values": [
+        "ACTIVE",
+        "SUSPENDED"
       ]
     },
     {
@@ -40930,7 +41513,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 543,
+      "line": 544,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -40985,7 +41568,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 462,
+      "line": 463,
       "values": [
         "GRANT",
         "REVOKE"
@@ -43297,6 +43880,37 @@
       ]
     },
     {
+      "folder": "20260926110000_add_entity_attributes",
+      "file": "apps/api/prisma/schema/migrations/20260926110000_add_entity_attributes/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_entity_attributes",
+      "statements": 3,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "EntityAttribute"
+      ]
+    },
+    {
+      "folder": "20260926120000_add_micro_frontend_fragments",
+      "file": "apps/api/prisma/schema/migrations/20260926120000_add_micro_frontend_fragments/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_micro_frontend_fragments",
+      "statements": 4,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "MicroFrontendFragment"
+      ]
+    },
+    {
       "folder": "20260926125941_wo166_product_reference_registry",
       "file": "apps/platform/prisma/schema/migrations/20260926125941_wo166_product_reference_registry/migration.sql",
       "date": "2026-09-26",
@@ -43316,6 +43930,20 @@
         "GlobalProductReferenceLink",
         "GlobalProductReferenceTranslation",
         "MarketplacePublisherCredential"
+      ]
+    },
+    {
+      "folder": "20260926130000_add_form_metadata",
+      "file": "apps/api/prisma/schema/migrations/20260926130000_add_form_metadata/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_form_metadata",
+      "statements": 2,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "FormMetadata"
       ]
     },
     {
@@ -43348,6 +43976,20 @@
       ],
       "tables": [
         "CategoryPreset"
+      ]
+    },
+    {
+      "folder": "20260926140000_add_bpmn_workflow_definitions",
+      "file": "apps/api/prisma/schema/migrations/20260926140000_add_bpmn_workflow_definitions/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_bpmn_workflow_definitions",
+      "statements": 2,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "BpmnWorkflowDefinition"
       ]
     },
     {
@@ -46056,7 +46698,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-chart-imports.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -46087,6 +46729,12 @@
       "file": "package.json",
       "name": "boundaries",
       "cmd": "node scripts/check-module-boundaries.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:metadata-renderer",
+      "cmd": "node scripts/check-metadata-renderer.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -47121,6 +47769,24 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts",
+      "module": "bpmn-workflows",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "compileBpmnToApprovalSteps — WO-142.1"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts",
+      "module": "bpmn-workflows",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "BpmnWorkflowsService — WO-142.3"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/cart/cart.guest-contact.spec.ts",
       "module": "cart",
       "kind": "unit test",
@@ -47334,6 +48000,24 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts",
+      "module": "entity-attributes",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "EntityAttributeService — WO-140.2"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts",
+      "module": "entity-attributes",
+      "kind": "unit test",
+      "cases": 1,
+      "describes": [
+        "EntityAttributeSupplierDeletedListener — WO-140.3"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/finance/expense-import.service.spec.ts",
       "module": "finance",
       "kind": "unit test",
@@ -47412,6 +48096,15 @@
       "describes": [
         "OrderEconomicsService",
         "grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/fragments/fragments.service.spec.ts",
+      "module": "fragments",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "FragmentsService — WO-143.2/143.3"
       ]
     },
     {
@@ -47648,6 +48341,15 @@
       "cases": 8,
       "describes": [
         "SizeRecommendationService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts",
+      "module": "metadata-forms",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "MetadataFormsService — WO-141.1"
       ]
     },
     {
@@ -49636,7 +50338,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5368,
+      "bytes": 5376,
       "doc": "",
       "symbols": []
     },
@@ -49645,7 +50347,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 177,
-      "bytes": 9032,
+      "bytes": 9048,
       "doc": "",
       "symbols": []
     },
@@ -49654,7 +50356,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5813,
+      "bytes": 5829,
       "doc": "",
       "symbols": []
     },
@@ -49980,6 +50682,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/bpmn-workflows.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 21,
+      "bytes": 1026,
+      "doc": "A BPMN visual workflow engine, built by explicit owner override (ADR-026)",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/cart.prisma",
       "area": "api",
       "kind": "prisma schema",
@@ -50010,8 +50721,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 666,
-      "bytes": 28577,
+      "lines": 667,
+      "bytes": 28688,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -50043,12 +50754,30 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/entity-attributes.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 36,
+      "bytes": 1751,
+      "doc": "A general EAV model, built by explicit owner override (ADR-026).",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/finance.prisma",
       "area": "api",
       "kind": "prisma schema",
       "lines": 133,
       "bytes": 5692,
       "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/fragments.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 41,
+      "bytes": 1971,
+      "doc": "Micro-frontend fragments, built by explicit owner override (ADR-026),",
       "symbols": []
     },
     {
@@ -50139,6 +50868,15 @@
       "lines": 107,
       "bytes": 3811,
       "doc": "Measurements: garment types, their measurement fields, and saved customer",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/metadata-forms.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 26,
+      "bytes": 1319,
+      "doc": "A general metadata-driven UI engine, built by explicit owner override",
       "symbols": []
     },
     {
@@ -50925,6 +51663,33 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926110000_add_entity_attributes/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 28,
+      "bytes": 1213,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260926120000_add_micro_frontend_fragments/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 32,
+      "bytes": 1225,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260926130000_add_form_metadata/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 21,
+      "bytes": 711,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/20260926134514_wo146_pricing_module/migration.sql",
       "area": "api",
       "kind": "migration",
@@ -50939,6 +51704,15 @@
       "kind": "migration",
       "lines": 21,
       "bytes": 717,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260926140000_add_bpmn_workflow_definitions/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 22,
+      "bytes": 798,
       "doc": "",
       "symbols": []
     },
@@ -52834,8 +53608,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 686,
-      "bytes": 28068,
+      "lines": 693,
+      "bytes": 28537,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -52846,282 +53620,287 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 148
+          "line": 150
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 150
+          "line": 152
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 163
+          "line": 165
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 171
+          "line": 173
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 179
+          "line": 181
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 199
+          "line": 201
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 205
+          "line": 207
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 212
+          "line": 214
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 219
+          "line": 221
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 223
+          "line": 225
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 229
+          "line": 231
         },
         {
           "name": "ApiKeyIssuedPayload",
           "kind": "interface",
-          "line": 240
+          "line": 242
         },
         {
           "name": "SsoAccountLinkedPayload",
           "kind": "interface",
-          "line": 253
+          "line": 255
         },
         {
           "name": "SsoUserProvisionedPayload",
           "kind": "interface",
-          "line": 258
+          "line": 260
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 263
+          "line": 265
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 270
+          "line": 272
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 280
+          "line": 282
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 289
+          "line": 291
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 298
+          "line": 300
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 306
+          "line": 308
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 314
+          "line": 316
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 325
+          "line": 327
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 332
+          "line": 334
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 341
+          "line": 343
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 349
+          "line": 351
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 354
+          "line": 356
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 362
+          "line": 364
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 367
+          "line": 369
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 373
+          "line": 375
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 379
+          "line": 381
+        },
+        {
+          "name": "SupplierDeletedPayload",
+          "kind": "interface",
+          "line": 393
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 391
+          "line": 397
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 406
+          "line": 412
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 414
+          "line": 420
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 428
+          "line": 434
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 441
+          "line": 447
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 454
+          "line": 460
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 470
+          "line": 476
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 478
+          "line": 484
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 490
+          "line": 496
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 501
+          "line": 507
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 512
+          "line": 518
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 519
+          "line": 525
         },
         {
           "name": "WalletCreditPurchasedPayload",
           "kind": "interface",
-          "line": 525
+          "line": 531
         },
         {
           "name": "WalletCreditRedeemedPayload",
           "kind": "interface",
-          "line": 533
+          "line": 539
         },
         {
           "name": "WalletCreditRefundedPayload",
           "kind": "interface",
-          "line": 542
+          "line": 548
         },
         {
           "name": "MerchantPayableCreatedPayload",
           "kind": "interface",
-          "line": 553
+          "line": 559
         },
         {
           "name": "MerchantPayablePaidPayload",
           "kind": "interface",
-          "line": 560
+          "line": 566
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 567
+          "line": 573
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 573
+          "line": 579
         },
         {
           "name": "CreditNoteIssuedPayload",
           "kind": "interface",
-          "line": 639
+          "line": 646
         },
         {
           "name": "CreditNoteVoidedPayload",
           "kind": "interface",
-          "line": 648
+          "line": 655
         },
         {
           "name": "DebitNoteIssuedPayload",
           "kind": "interface",
-          "line": 652
+          "line": 659
         },
         {
           "name": "DebitNoteVoidedPayload",
           "kind": "interface",
-          "line": 660
+          "line": 667
         },
         {
           "name": "CreditHoldAppliedPayload",
           "kind": "interface",
-          "line": 664
+          "line": 671
         },
         {
           "name": "NotificationSentPayload",
           "kind": "interface",
-          "line": 669
+          "line": 676
         },
         {
           "name": "SettlementShortfallWrittenOffPayload",
           "kind": "interface",
-          "line": 680
+          "line": 687
         }
       ]
     },
@@ -53308,14 +54087,14 @@
       "path": "apps/api/src/core/extension-points/extension-points.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 45,
-      "bytes": 1847,
+      "lines": 48,
+      "bytes": 1968,
       "doc": "",
       "symbols": [
         {
           "name": "ExtensionPointsModule",
           "kind": "class",
-          "line": 44
+          "line": 47
         }
       ]
     },
@@ -53361,6 +54140,31 @@
           "name": "StockIntakeRegistry",
           "kind": "class",
           "line": 52
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/extension-points/workflow-steps.registry.ts",
+      "area": "api",
+      "kind": "registry",
+      "lines": 39,
+      "bytes": 1617,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CompiledApprovalStep",
+          "kind": "interface",
+          "line": 4
+        },
+        {
+          "name": "WorkflowStepsHandler",
+          "kind": "interface",
+          "line": 9
+        },
+        {
+          "name": "WorkflowStepsRegistry",
+          "kind": "class",
+          "line": 26
         }
       ]
     },
@@ -56521,6 +57325,99 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 108,
+      "bytes": 4655,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/bpmn-workflows/bpmn-compiler.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 120,
+      "bytes": 5835,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "compileBpmnToApprovalSteps",
+          "kind": "function",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 42,
+      "bytes": 1979,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BpmnWorkflowsController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 19,
+      "bytes": 743,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BpmnWorkflowsModule",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 74,
+      "bytes": 3605,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 52,
+      "bytes": 2422,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BpmnWorkflowsService",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bpmn-workflows/dto/bpmn-workflow.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 10,
+      "bytes": 269,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SaveBpmnWorkflowDto",
+          "kind": "class",
+          "line": 4
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/cart/cart.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -58197,6 +59094,109 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/entity-attributes/dto/entity-attribute.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 30,
+      "bytes": 1006,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SetEntityAttributeDto",
+          "kind": "class",
+          "line": 5
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/entity-attributes/entity-attributes.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 49,
+      "bytes": 2251,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EntityAttributesController",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/entity-attributes/entity-attributes.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 20,
+      "bytes": 940,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EntityAttributesModule",
+          "kind": "class",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 82,
+      "bytes": 3394,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/entity-attributes/entity-attributes.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 80,
+      "bytes": 3405,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ENTITY_ATTRIBUTE_VALUE_TYPES",
+          "kind": "const",
+          "line": 6
+        },
+        {
+          "name": "EntityAttributeValueType",
+          "kind": "type",
+          "line": 7
+        },
+        {
+          "name": "EntityAttributeService",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 14,
+      "bytes": 673,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/entity-attributes/supplier-deleted.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 29,
+      "bytes": 1437,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EntityAttributeSupplierDeletedListener",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/finance/dto/expense-category.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -58520,6 +59520,80 @@
           "name": "RtoExpenseListener",
           "kind": "class",
           "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fragments/dto/fragment.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 60,
+      "bytes": 1885,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RegisterFragmentDto",
+          "kind": "class",
+          "line": 7
+        },
+        {
+          "name": "UpdateFragmentDto",
+          "kind": "class",
+          "line": 36
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fragments/fragments.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 72,
+      "bytes": 3302,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FragmentsController",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fragments/fragments.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 19,
+      "bytes": 642,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FragmentsModule",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/fragments/fragments.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 133,
+      "bytes": 5984,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/fragments/fragments.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 119,
+      "bytes": 5336,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FragmentsService",
+          "kind": "class",
+          "line": 23
         }
       ]
     },
@@ -60242,11 +61316,95 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/metadata-forms/dto/form-metadata.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 45,
+      "bytes": 1341,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FieldMetadataDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "DefineFormMetadataDto",
+          "kind": "class",
+          "line": 37
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/metadata-forms/metadata-forms.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 34,
+      "bytes": 1516,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MetadataFormsController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/metadata-forms/metadata-forms.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 606,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MetadataFormsModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 70,
+      "bytes": 2605,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/metadata-forms/metadata-forms.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 53,
+      "bytes": 2320,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FIELD_METADATA_VALUE_TYPES",
+          "kind": "const",
+          "line": 7
+        },
+        {
+          "name": "FieldMetadataValueType",
+          "kind": "type",
+          "line": 8
+        },
+        {
+          "name": "MetadataFormsService",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 115,
-      "bytes": 3770,
+      "lines": 119,
+      "bytes": 3878,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -60265,24 +61423,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 253,
-      "bytes": 14115,
+      "lines": 271,
+      "bytes": 15383,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 54
+          "line": 58
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 85
+          "line": 89
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 229
+          "line": 247
         }
       ]
     },
@@ -62676,8 +63834,8 @@
       "path": "apps/api/src/modules/purchasing/purchasing.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 673,
-      "bytes": 25275,
+      "lines": 680,
+      "bytes": 25771,
       "doc": "",
       "symbols": [
         {
@@ -62739,8 +63897,8 @@
       "path": "apps/api/src/modules/purchasing/requisition.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 203,
-      "bytes": 9428,
+      "lines": 207,
+      "bytes": 9670,
       "doc": "",
       "symbols": []
     },
@@ -62748,14 +63906,14 @@
       "path": "apps/api/src/modules/purchasing/requisition.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 201,
-      "bytes": 8280,
+      "lines": 214,
+      "bytes": 9086,
       "doc": "",
       "symbols": [
         {
           "name": "RequisitionService",
           "kind": "class",
-          "line": 23
+          "line": 25
         }
       ]
     },
@@ -69827,8 +70985,8 @@
       "path": "apps/web/package.json",
       "area": "web",
       "kind": "json",
-      "lines": 43,
-      "bytes": 1091,
+      "lines": 44,
+      "bytes": 1117,
       "doc": "",
       "symbols": []
     },
@@ -71894,14 +73052,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/settings/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 965,
-      "bytes": 33647,
+      "lines": 1424,
+      "bytes": 51106,
       "doc": "",
       "symbols": [
         {
           "name": "AdminSettingsPage",
           "kind": "default",
-          "line": 16
+          "line": 30
         }
       ]
     },
@@ -72059,14 +73217,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/suppliers/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 189,
-      "bytes": 6952,
+      "lines": 195,
+      "bytes": 7402,
       "doc": "No clsx import needed",
       "symbols": [
         {
           "name": "SupplierDetailPage",
           "kind": "default",
-          "line": 32
+          "line": 35
         }
       ]
     },
@@ -73578,6 +74736,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/bpmn-editor.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 118,
+      "bytes": 4701,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BpmnEditor",
+          "kind": "function",
+          "line": 46
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/charts/category-bar-chart.tsx",
       "area": "web",
       "kind": "component",
@@ -74077,6 +75250,36 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/entity-attribute-editor.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 160,
+      "bytes": 6173,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EntityAttributeEditor",
+          "kind": "function",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/fragment-mount-point.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 98,
+      "bytes": 3310,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FragmentMountPoint",
+          "kind": "function",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/funnel-chart.tsx",
       "area": "web",
       "kind": "component",
@@ -74178,6 +75381,41 @@
           "name": "DiscountForm",
           "kind": "function",
           "line": 97
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/metadata-driven-entity-form.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 120,
+      "bytes": 4199,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MetadataDrivenEntityForm",
+          "kind": "function",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/metadata-driven-form.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 147,
+      "bytes": 4763,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MetadataFieldValue",
+          "kind": "type",
+          "line": 5
+        },
+        {
+          "name": "MetadataDrivenForm",
+          "kind": "function",
+          "line": 25
         }
       ]
     },
@@ -76050,8 +77288,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1689,
-      "bytes": 45528,
+      "lines": 1770,
+      "bytes": 47983,
       "doc": "",
       "symbols": [
         {
@@ -76938,6 +78176,56 @@
           "name": "EmbedToken",
           "kind": "interface",
           "line": 1684
+        },
+        {
+          "name": "EntityAttribute",
+          "kind": "interface",
+          "line": 1697
+        },
+        {
+          "name": "EntityAttributeValueType",
+          "kind": "type",
+          "line": 1706
+        },
+        {
+          "name": "MicroFrontendFragment",
+          "kind": "interface",
+          "line": 1714
+        },
+        {
+          "name": "FragmentStatus",
+          "kind": "type",
+          "line": 1724
+        },
+        {
+          "name": "FragmentToken",
+          "kind": "interface",
+          "line": 1727
+        },
+        {
+          "name": "FormMetadata",
+          "kind": "interface",
+          "line": 1739
+        },
+        {
+          "name": "FieldMetadata",
+          "kind": "interface",
+          "line": 1745
+        },
+        {
+          "name": "FieldMetadataValueType",
+          "kind": "type",
+          "line": 1754
+        },
+        {
+          "name": "BpmnWorkflowDefinition",
+          "kind": "interface",
+          "line": 1762
+        },
+        {
+          "name": "ApprovalSubjectType",
+          "kind": "type",
+          "line": 1769
         }
       ]
     },
@@ -79472,8 +80760,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 5151,
-      "bytes": 299020,
+      "lines": 5510,
+      "bytes": 320689,
       "doc": "",
       "symbols": []
     },
@@ -79958,8 +81246,8 @@
       "path": "docs/implementation/architecture-patterns/140-general-eav-extensibility-model.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 148,
-      "bytes": 8241,
+      "lines": 184,
+      "bytes": 10406,
       "doc": "",
       "symbols": []
     },
@@ -79967,8 +81255,8 @@
       "path": "docs/implementation/architecture-patterns/141-general-metadata-driven-ui-engine.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 147,
-      "bytes": 7726,
+      "lines": 192,
+      "bytes": 10530,
       "doc": "",
       "symbols": []
     },
@@ -79976,8 +81264,8 @@
       "path": "docs/implementation/architecture-patterns/142-bpmn-visual-workflow-engine.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 109,
-      "bytes": 5867,
+      "lines": 166,
+      "bytes": 9332,
       "doc": "",
       "symbols": []
     },
@@ -79985,8 +81273,8 @@
       "path": "docs/implementation/architecture-patterns/143-micro-frontend-architecture.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 160,
-      "bytes": 8180,
+      "lines": 199,
+      "bytes": 10666,
       "doc": "",
       "symbols": []
     },
@@ -81074,8 +82362,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 59,
-      "bytes": 2373,
+      "lines": 60,
+      "bytes": 2492,
       "doc": "",
       "symbols": []
     },
@@ -82670,8 +83958,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1111,
-      "bytes": 36627,
+      "lines": 1158,
+      "bytes": 38452,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -82692,52 +83980,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 669
+          "line": 700
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 671
+          "line": 702
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 681
+          "line": 712
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 688
+          "line": 719
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 886
+          "line": 930
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1075
+          "line": 1122
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1094
+          "line": 1141
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1103
+          "line": 1150
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1104
+          "line": 1151
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1107
+          "line": 1154
         }
       ]
     },
@@ -83183,8 +84471,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18847,
-      "bytes": 688741,
+      "lines": 19006,
+      "bytes": 693853,
       "doc": "",
       "symbols": []
     },
@@ -83317,6 +84605,41 @@
           "name": "scanLinks",
           "kind": "function",
           "line": 219
+        }
+      ]
+    },
+    {
+      "path": "scripts/check-metadata-renderer.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 134,
+      "bytes": 5249,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TARGET_FILE",
+          "kind": "const",
+          "line": 31
+        },
+        {
+          "name": "findViolations",
+          "kind": "function",
+          "line": 38
+        },
+        {
+          "name": "MetadataDrivenForm",
+          "kind": "function",
+          "line": 63
+        },
+        {
+          "name": "MetadataDrivenForm",
+          "kind": "function",
+          "line": 71
+        },
+        {
+          "name": "MetadataDrivenForm",
+          "kind": "function",
+          "line": 78
         }
       ]
     },

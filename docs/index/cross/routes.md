@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **753** endpoints across **134** controllers, with the access rule that actually guards each one.
+All **766** endpoints across **138** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -217,6 +217,13 @@ never authorization.
 | GET | `/admin/bom/recipes/:id/availability` | `bom.view` | `BomController.recipeAvailability` | Whether this recipe can be produced now, and how many runs current stock suppor… |
 | GET | `/admin/bom/recipes/:id/cost` | `bom.view` | `BomController.recipeCost` | Per-component cost breakdown, recomputed live |
 | POST | `/admin/bom/recipes/:id/seed-cost-price` | `bom.manage` | `BomController.seedCostPrice` | Backfill costPrice = rolledUpUnitCost for a variant manufactured before BOM exi… |
+
+### [`bpmn-workflows`](../modules/bpmn-workflows.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/bpmn-workflows/:subjectType` | signed-in | `BpmnWorkflowsController.get` | The saved BPMN diagram (and its compiled steps) for one approval subject type,… |
+| PUT | `/admin/bpmn-workflows/:subjectType` | `settings.bpmn-workflows.manage` | `BpmnWorkflowsController.save` | Compile and save a BPMN diagram for one approval subject type |
 
 ### [`cart`](../modules/cart.md) (8)
 
@@ -494,6 +501,13 @@ never authorization.
 | POST | `/admin/embeds/:key/token` | `analytics.view` | `EmbedWidgetsController.issueToken` | A short-lived, scoped token for one active widget — never a raw session credent… |
 | GET | `/admin/embeds/all` | `settings.embeds.manage` | `EmbedWidgetsController.listAll` | Every embedded widget, active or not — for the configuration screen |
 
+### [`entity-attributes`](../modules/entity-attributes.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/entity-attributes` | signed-in | `EntityAttributesController.list` | One entity's own attributes, gated by that entity's own edit permission |
+| POST | `/admin/entity-attributes` | signed-in | `EntityAttributesController.set` | Set one attribute on one entity, gated by that entity's own edit permission |
+
 ### [`finance`](../modules/finance.md) (17)
 
 | Method | Path | Access | Handler | Summary |
@@ -515,6 +529,18 @@ never authorization.
 | GET | `/admin/finance/gross-profit-today` | `inventory.view_cost` | `FinanceController.grossProfitToday` | Per-transaction and day-total gross profit for orders placed today, every chann… |
 | GET | `/admin/finance/margins` | `finance.view` | `FinanceController.margins` | Margin by product, category or variant (WO-4.3, 04-finance.md) |
 | GET | `/admin/finance/unit-economics` | `finance.view` | `FinanceController.unitEconomics` | Contribution per order, paginated, plus the average by product/category (WO-4.2) |
+
+### [`fragments`](../modules/fragments.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/fragments` | `settings.fragments.manage` | `FragmentsController.list` | Every registered fragment, active or suspended — for the management screen |
+| POST | `/admin/fragments` | `settings.fragments.manage` | `FragmentsController.register` | Register a new micro-frontend fragment, with the required design-law attestation |
+| PATCH | `/admin/fragments/:id` | `settings.fragments.manage` | `FragmentsController.update` | Edit a fragment’s label, remote URL, mount points or status |
+| POST | `/admin/fragments/:id/activate` | `settings.fragments.manage` | `FragmentsController.activate` | Resume serving a previously suspended fragment |
+| POST | `/admin/fragments/:id/suspend` | `settings.fragments.manage` | `FragmentsController.suspend` | The kill switch — stop serving a fragment with no deploy |
+| POST | `/admin/fragments/:key/token` | signed-in | `FragmentsController.issueToken` | A short-lived token scoped to one fragment and one mount point — never a raw se… |
+| GET | `/admin/fragments/for-mount-point` | signed-in | `FragmentsController.listForMountPoint` | Every active fragment registered for one named mount point |
 
 ### [`fulfilment`](../modules/fulfilment.md) (39)
 
@@ -696,6 +722,13 @@ never authorization.
 | GET | `/measurements/profiles/:id` | signed-in | `MeasurementsController.getProfile` |  |
 | PATCH | `/measurements/profiles/:id` | signed-in | `MeasurementsController.updateProfile` |  |
 | GET | `/measurements/size-recommendation/:productId` | **PUBLIC** | `MeasurementsController.sizeRecommendation` | Based on the signed-in customer's saved measurements, the size this product's o… |
+
+### [`metadata-forms`](../modules/metadata-forms.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/metadata-forms/:entityType` | signed-in | `MetadataFormsController.get` | The defined form shape for one entity type, or null if none is defined |
+| PUT | `/admin/metadata-forms/:entityType` | `settings.metadata-forms.manage` | `MetadataFormsController.define` | Define (or replace) the form shape for one entity type |
 
 ### [`notification-preferences`](../modules/notification-preferences.md) (2)
 

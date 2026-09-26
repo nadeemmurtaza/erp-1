@@ -620,8 +620,8 @@ All 396 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `100-event-driven-architecture.md` | doc | 82 |  |
 | `103-semantic-data-contracts.md` | doc | 83 |  |
-| `104-jsonb-eav-extensibility.md` | doc | 159 |  |
-| `105-metadata-driven-ui-rendering.md` | doc | 101 |  |
+| `104-jsonb-eav-extensibility.md` | doc | 169 |  |
+| `105-metadata-driven-ui-rendering.md` | doc | 109 |  |
 | `106-finite-state-machines-registry.md` | doc | 119 |  |
 | `107-visual-bpmn-workflow-modeling.md` | doc | 81 |  |
 | `108-event-triggered-side-effects.md` | doc | 79 |  |

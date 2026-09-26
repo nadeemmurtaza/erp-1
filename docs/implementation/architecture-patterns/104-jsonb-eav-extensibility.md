@@ -9,6 +9,16 @@
 > mechanism rather than a replacement of this one. Both are live; this
 > document's own reasoning for keeping this overlay bounded is unchanged
 > and doc 140 cites it directly.
+>
+> **Status: shipped (2026-09-26), WO-104.1/104.2/104.3.**
+> `CustomFieldDefinition` + `CustomFieldValueType` (`custom-fields.prisma`)
+> and `Supplier.customFields Json` are live; `CustomFieldsService`
+> validates every value against its own definition's `valueType` before
+> writing. No `organizationId` — corrected against this repository's own
+> ADR-044/ADR-040 (this deployment IS the tenant), not the doc's own
+> sketched required column. Admin screen at Settings > Custom fields
+> (`settings.custom-fields.manage`); the generic form-section renderer
+> (doc 105) is embedded on the Supplier detail screen.
 
 "Store custom attributes in flexible, schemaless database columns... This
 allows administrators to add new business fields (e.g., a 'Carbon

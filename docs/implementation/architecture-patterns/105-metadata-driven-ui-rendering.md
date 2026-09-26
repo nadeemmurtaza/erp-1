@@ -6,6 +6,14 @@
 > own named risk (a second, uninspected component library) made a
 > mandatory, enforced guardrail rather than removed. This document's own
 > narrow renderer for doc 104's custom fields remains live and unchanged.
+>
+> **Status: shipped (2026-09-26), WO-105.1.**
+> `CustomFieldFormSection` (`apps/web/src/components/admin/custom-field-
+> form-section.tsx`) consumes doc 104's own `CustomFieldDefinition` shape
+> and is embedded on the Supplier detail screen — adding a definition
+> with `isRequired: true` makes the field mandatory on the next render,
+> with no frontend deploy. No other screen renders from a generic server
+> metadata payload.
 
 "Decouple frontend views from fixed data models. The UI dynamically
 renders forms and data tables based on JSON metadata payloads from the

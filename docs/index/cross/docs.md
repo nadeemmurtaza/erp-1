@@ -2079,23 +2079,23 @@ _no second-level headings_
 - Acceptance  <sub>:65</sub>
 - Out of scope  <sub>:73</sub>
 
-### `docs/implementation/architecture-patterns/104-jsonb-eav-extensibility.md`  <sub>159 lines</sub>
+### `docs/implementation/architecture-patterns/104-jsonb-eav-extensibility.md`  <sub>169 lines</sub>
 
-- 1. `CustomFieldDefinition` + a JSONB overlay column, one per entity that needs it — never one universal EAV table  <sub>:30</sub>
-- 2. Why this stays narrow, deliberately  <sub>:67</sub>
-- Scope lenses  <sub>:89</sub>
-- Work orders  <sub>:131</sub>
-- Acceptance  <sub>:144</sub>
-- Out of scope  <sub>:153</sub>
+- 1. `CustomFieldDefinition` + a JSONB overlay column, one per entity that needs it — never one universal EAV table  <sub>:40</sub>
+- 2. Why this stays narrow, deliberately  <sub>:77</sub>
+- Scope lenses  <sub>:99</sub>
+- Work orders  <sub>:141</sub>
+- Acceptance  <sub>:154</sub>
+- Out of scope  <sub>:163</sub>
 
-### `docs/implementation/architecture-patterns/105-metadata-driven-ui-rendering.md`  <sub>101 lines</sub>
+### `docs/implementation/architecture-patterns/105-metadata-driven-ui-rendering.md`  <sub>109 lines</sub>
 
-- What doc 104 already needs, and this document supplies  <sub>:21</sub>
-- Why a general metadata-driven UI engine is not this repository's architecture, and should not become it  <sub>:43</sub>
-- Scope lenses  <sub>:71</sub>
-- Work orders  <sub>:77</sub>
-- Acceptance  <sub>:84</sub>
-- Out of scope  <sub>:94</sub>
+- What doc 104 already needs, and this document supplies  <sub>:29</sub>
+- Why a general metadata-driven UI engine is not this repository's architecture, and should not become it  <sub>:51</sub>
+- Scope lenses  <sub>:79</sub>
+- Work orders  <sub>:85</sub>
+- Acceptance  <sub>:92</sub>
+- Out of scope  <sub>:102</sub>
 
 ### `docs/implementation/architecture-patterns/106-finite-state-machines-registry.md`  <sub>119 lines</sub>
 

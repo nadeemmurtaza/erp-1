@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2152,
-    "lines": 329578,
+    "lines": 329596,
     "routes": 738,
     "controllers": 133,
     "models": 266,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 396,
-      "lines": 66073,
-      "bytes": 3929192,
+      "lines": 66091,
+      "bytes": 3930238,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -78842,8 +78842,8 @@
       "path": "docs/implementation/architecture-patterns/104-jsonb-eav-extensibility.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 159,
-      "bytes": 8611,
+      "lines": 169,
+      "bytes": 9225,
       "doc": "",
       "symbols": []
     },
@@ -78851,8 +78851,8 @@
       "path": "docs/implementation/architecture-patterns/105-metadata-driven-ui-rendering.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 101,
-      "bytes": 5124,
+      "lines": 109,
+      "bytes": 5556,
       "doc": "",
       "symbols": []
     },

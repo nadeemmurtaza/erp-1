@@ -475,6 +475,17 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'catalog',
   },
   {
+    // 165-cross-tenant-marketplace-directory.md — off by default (module:
+    // 'marketplace'); a deployment sees this only once ops has issued it a
+    // MarketplacePublisherCredential (MARKETPLACE_API_URL/_API_KEY set).
+    key: 'marketplace',
+    label: 'Marketplace',
+    href: '/admin/marketplace',
+    permissions: ['catalog.manage'],
+    group: 'catalogue',
+    module: 'marketplace',
+  },
+  {
     key: 'products',
     label: 'Products & services',
     href: '/admin/products',

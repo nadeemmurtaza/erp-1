@@ -1555,6 +1555,8 @@ export interface SsoConnection {
   allowedEmailDomains: string[];
   defaultRoleName: string;
   status: SsoConnectionStatus;
+  /** 165-cross-tenant-marketplace-directory.md WO-165.6 — refuses staff password sign-in when true. */
+  enforceSso: boolean;
   createdByUserId: string;
   createdAt: string;
   updatedAt: string;

@@ -4,6 +4,7 @@ import {
   ArrayMaxSize,
   ArrayMinSize,
   IsArray,
+  IsBoolean,
   IsIn,
   IsNotEmpty,
   IsOptional,
@@ -123,6 +124,16 @@ export class UpdateSsoConnectionDto {
   @IsOptional()
   @IsIn(SSO_CONNECTION_STATUSES)
   status?: (typeof SSO_CONNECTION_STATUSES)[number];
+
+  @ApiPropertyOptional({
+    description:
+      'When true, staff password sign-in is refused with a message pointing at this SSO button — except the ' +
+      'admin who enabled it, who can always undo the change. Turn this on only after confirming sign-in through ' +
+      'this connection already works.',
+  })
+  @IsOptional()
+  @IsBoolean()
+  enforceSso?: boolean;
 }
 
 /** What the provider sent back: a code to exchange, or an error (the person cancelled, or the provider refused). */

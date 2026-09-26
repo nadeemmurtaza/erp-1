@@ -84,6 +84,8 @@ export const ROUTES = {
     /** The manager action hub's overflow screen (admin-platform/44-manager-action-hub.md WO-44.4). */
     myActions: '/admin/my-actions',
 
+    /** 165-cross-tenant-marketplace-directory.md — off by default (module: 'marketplace'). */
+    marketplace: '/admin/marketplace',
     products: '/admin/products',
     productNew: '/admin/products/new',
     product: (id: string) => `/admin/products/${id}`,

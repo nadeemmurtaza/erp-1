@@ -125,6 +125,8 @@ model PlatformTenant {
   /// most tenants never opt in, and doing so changes nothing else on this
   /// row (mirrors deploymentCredential's own "not every tenant has one").
   marketplacePublisherCredential MarketplacePublisherCredential?
+  /// Doc 165 — listings this tenant has published to the directory.
+  marketplaceListings            MarketplaceListing[]
   /// GlobalProductReference rows this tenant was the first to register.
   /// Informational/provenance only — see marketplace.prisma's own
   /// "toxic pair" note for why this is never a runtime ownership check

@@ -85,6 +85,7 @@ export default function SsoConnectionPage({ params }: { params: Promise<{ id: st
   const [saved, setSaved] = useState(false);
   const [confirmingSuspend, setConfirmingSuspend] = useState(false);
   const [statusBusy, setStatusBusy] = useState(false);
+  const [enforceBusy, setEnforceBusy] = useState(false);
 
   const [accounts, setAccounts] = useState<PaginatedResult<SsoAccount> | null>(null);
   const [accountsPage, setAccountsPage] = useState(1);
@@ -194,6 +195,24 @@ export default function SsoConnectionPage({ params }: { params: Promise<{ id: st
       setError(cause instanceof Error ? cause.message : 'Could not resume this connection');
     } finally {
       setStatusBusy(false);
+    }
+  }
+
+  async function toggleEnforceSso() {
+    if (!connection) return;
+    setEnforceBusy(true);
+    setError(null);
+    try {
+      setConnection(
+        await adminFetch<SsoConnection>(`/admin/sso/connections/${id}`, {
+          method: 'PATCH',
+          body: { enforceSso: !connection.enforceSso },
+        }),
+      );
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not change this setting');
+    } finally {
+      setEnforceBusy(false);
     }
   }
 
@@ -452,6 +471,23 @@ export default function SsoConnectionPage({ params }: { params: Promise<{ id: st
               </button>
             )}
           </Section>
+
+          {connection.status === 'ACTIVE' ? (
+            <Section
+              className="mt-10"
+              title="Require single sign-on"
+              description={
+                connection.enforceSso
+                  ? `Staff must sign in with "${connection.label}". Password sign-in is refused for every staff account except the one that turned this on.`
+                  : 'Staff can still sign in with a password alongside this button. Turn this on only after confirming sign-in through it already works.'
+              }
+              action={<StatusBadge status={connection.enforceSso ? 'ACTIVE' : 'INACTIVE'} label={connection.enforceSso ? 'Required' : 'Optional'} />}
+            >
+              <button type="button" className={connection.enforceSso ? 'btn-secondary' : 'btn-danger'} onClick={() => void toggleEnforceSso()} disabled={enforceBusy}>
+                {enforceBusy ? 'Saving…' : connection.enforceSso ? 'Allow password sign-in again' : 'Require this connection for staff sign-in'}
+              </button>
+            </Section>
+          ) : null}
 
           <Section
             className="mt-10"

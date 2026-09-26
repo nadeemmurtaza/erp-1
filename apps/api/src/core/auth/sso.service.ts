@@ -109,6 +109,7 @@ const CONNECTION_SELECT = {
   allowedEmailDomains: true,
   defaultRoleName: true,
   status: true,
+  enforceSso: true,
   createdByUserId: true,
   createdAt: true,
   updatedAt: true,
@@ -121,7 +122,7 @@ type ConnectionRow = Prisma.SsoConnectionGetPayload<{ select: typeof CONNECTION_
 /** The fields an admin edits, audited old-and-new on every change. */
 type EditableFields = Pick<
   ConnectionRow,
-  'protocol' | 'label' | 'issuerUrl' | 'clientId' | 'allowedEmailDomains' | 'defaultRoleName' | 'status'
+  'protocol' | 'label' | 'issuerUrl' | 'clientId' | 'allowedEmailDomains' | 'defaultRoleName' | 'status' | 'enforceSso'
 >;
 
 const SESSION_USER_SELECT = {
@@ -380,6 +381,7 @@ export class SsoService {
     if (dto.allowedEmailDomains !== undefined) next.allowedEmailDomains = cleanDomains(dto.allowedEmailDomains);
     if (dto.defaultRoleName !== undefined) next.defaultRoleName = await this.assertSafeDefaultRole(dto.defaultRoleName);
     if (dto.status !== undefined) next.status = dto.status;
+    if (dto.enforceSso !== undefined) next.enforceSso = dto.enforceSso;
     const credential = dto.credential !== undefined ? cleanRequired(dto.credential, 'the client secret') : undefined;
 
     const changed = (Object.keys(next) as (keyof EditableFields)[]).filter(

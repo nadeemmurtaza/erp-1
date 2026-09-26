@@ -3,38 +3,38 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2238,
-    "lines": 340883,
-    "routes": 788,
-    "controllers": 142,
-    "models": 282,
-    "enums": 127,
-    "migrations": 104,
+    "files": 2250,
+    "lines": 342438,
+    "routes": 794,
+    "controllers": 143,
+    "models": 285,
+    "enums": 133,
+    "migrations": 106,
     "events": 65,
     "permissions": 108,
-    "screens": 250,
+    "screens": 251,
     "crons": 23,
-    "specs": 295,
+    "specs": 297,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 208,
-      "lines": 20693,
-      "bytes": 1195019,
+      "files": 213,
+      "lines": 21303,
+      "bytes": 1217316,
       "label": "repository root files"
     },
     "infra": {
       "files": 59,
       "lines": 30474,
-      "bytes": 1198308,
+      "bytes": 1198344,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1014,
-      "lines": 138731,
-      "bytes": 5367279,
+      "files": 1020,
+      "lines": 139208,
+      "bytes": 5386152,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,15 +50,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 402,
-      "lines": 66375,
-      "bytes": 2394970,
+      "files": 403,
+      "lines": 66688,
+      "bytes": 2407006,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 396,
-      "lines": 67421,
-      "bytes": 4012155,
+      "lines": 67576,
+      "bytes": 4021254,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -628,6 +628,21 @@
       ],
       "routes": 11,
       "page": "docs/index/modules/marketing.md"
+    },
+    {
+      "name": "marketplace",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/marketplace/dto/marketplace.dto.ts",
+        "apps/api/src/modules/marketplace/marketplace.controller.ts",
+        "apps/api/src/modules/marketplace/marketplace.module.ts",
+        "apps/api/src/modules/marketplace/marketplace.service.spec.ts",
+        "apps/api/src/modules/marketplace/marketplace.service.ts"
+      ],
+      "routes": 6,
+      "page": "docs/index/modules/marketplace.md"
     },
     {
       "name": "measurements",
@@ -7355,6 +7370,102 @@
       "public": false,
       "authOnly": false,
       "summary": "Turn automation on/off and/or change its timing"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/marketplace/listings",
+      "module": "marketplace",
+      "controller": "MarketplaceController",
+      "handler": "mine",
+      "file": "apps/api/src/modules/marketplace/marketplace.controller.ts",
+      "line": 20,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/marketplace/listings",
+      "module": "marketplace",
+      "controller": "MarketplaceController",
+      "handler": "publish",
+      "file": "apps/api/src/modules/marketplace/marketplace.controller.ts",
+      "line": 25,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/marketplace/listings/:id",
+      "module": "marketplace",
+      "controller": "MarketplaceController",
+      "handler": "update",
+      "file": "apps/api/src/modules/marketplace/marketplace.controller.ts",
+      "line": 30,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/marketplace/listings/:id/delist",
+      "module": "marketplace",
+      "controller": "MarketplaceController",
+      "handler": "delist",
+      "file": "apps/api/src/modules/marketplace/marketplace.controller.ts",
+      "line": 45,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/marketplace/listings/:id/pause",
+      "module": "marketplace",
+      "controller": "MarketplaceController",
+      "handler": "pause",
+      "file": "apps/api/src/modules/marketplace/marketplace.controller.ts",
+      "line": 35,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/marketplace/listings/:id/resume",
+      "module": "marketplace",
+      "controller": "MarketplaceController",
+      "handler": "resume",
+      "file": "apps/api/src/modules/marketplace/marketplace.controller.ts",
+      "line": 40,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
     },
     {
       "method": "GET",
@@ -14496,9 +14607,15 @@
         "POST /admin/catalog/redirects",
         "DELETE /admin/catalog/redirects/:id",
         "POST /admin/catalog/redirects/import",
-        "PATCH /admin/catalog/variants/:variantId/stock"
+        "PATCH /admin/catalog/variants/:variantId/stock",
+        "GET /admin/marketplace/listings",
+        "POST /admin/marketplace/listings",
+        "PATCH /admin/marketplace/listings/:id",
+        "POST /admin/marketplace/listings/:id/delist",
+        "POST /admin/marketplace/listings/:id/pause",
+        "POST /admin/marketplace/listings/:id/resume"
       ],
-      "uiSites": 18,
+      "uiSites": 19,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -16248,8 +16365,8 @@
       "name": "user.password_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:202",
-        "apps/api/src/core/auth/auth.service.ts:257"
+        "apps/api/src/core/auth/auth.service.ts:218",
+        "apps/api/src/core/auth/auth.service.ts:273"
       ],
       "subscribers": [
         "apps/api/src/modules/users/security-notification.subscriber.ts:36 onPasswordChanged()"
@@ -16260,7 +16377,7 @@
       "name": "user.password_reset_requested",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:227"
+        "apps/api/src/core/auth/auth.service.ts:243"
       ],
       "subscribers": [
         "apps/api/src/modules/users/security-notification.subscriber.ts:58 onPasswordResetRequested()"
@@ -16271,7 +16388,7 @@
       "name": "user.email_verification_requested",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:278"
+        "apps/api/src/core/auth/auth.service.ts:294"
       ],
       "subscribers": [
         "apps/api/src/modules/users/security-notification.subscriber.ts:81 onEmailVerificationRequested()"
@@ -16294,8 +16411,8 @@
       "name": "user.sso_account_linked",
       "doc": "SsoService linked an existing account to a single sign-on identity (161-sso-identity-federation.md §3).",
       "publishers": [
-        "apps/api/src/core/auth/sso.service.ts:612",
-        "apps/api/src/core/auth/sso.service.ts:632"
+        "apps/api/src/core/auth/sso.service.ts:614",
+        "apps/api/src/core/auth/sso.service.ts:634"
       ],
       "subscribers": [
         "apps/api/src/modules/users/security-notification.subscriber.ts:150 onSsoAccountLinked()"
@@ -16306,7 +16423,7 @@
       "name": "user.sso_user_provisioned",
       "doc": "SsoService provisioned a brand-new account at its first single sign-on.",
       "publishers": [
-        "apps/api/src/core/auth/sso.service.ts:672"
+        "apps/api/src/core/auth/sso.service.ts:674"
       ],
       "subscribers": []
     },
@@ -17127,7 +17244,7 @@
     {
       "name": "AgencyUsageSnapshot",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 777,
+      "line": 779,
       "doc": "One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe to delete and recompute (same discipline as `VariantSalesStat` on the tenant side).",
       "fields": [
         {
@@ -23619,7 +23736,7 @@
     {
       "name": "GlobalProductReference",
       "file": "apps/platform/prisma/schema/marketplace.prisma",
-      "line": 46,
+      "line": 59,
       "doc": "One row per physical product, keyed by the one fact that is unambiguously true regardless of who is selling it: its barcode.",
       "fields": [
         {
@@ -23714,7 +23831,7 @@
     {
       "name": "GlobalProductReferenceFlag",
       "file": "apps/platform/prisma/schema/marketplace.prisma",
-      "line": 132,
+      "line": 145,
       "doc": "A non-owning tenant's report that a shared reference is wrong — reviewed by platform staff, never auto-applied.",
       "fields": [
         {
@@ -23781,7 +23898,7 @@
     {
       "name": "GlobalProductReferenceImage",
       "file": "apps/platform/prisma/schema/marketplace.prisma",
-      "line": 95,
+      "line": 108,
       "doc": "The shared image itself, stored once in the platform app's own storage driver — never copied into a linking tenant's bucket for a cloud-connected tenant (an offline-capable deployment's own local sna…",
       "fields": [
         {
@@ -23834,7 +23951,7 @@
     {
       "name": "GlobalProductReferenceLink",
       "file": "apps/platform/prisma/schema/marketplace.prisma",
-      "line": 111,
+      "line": 124,
       "doc": "One row per tenant that has linked one of their own ProductVariants to this shared reference.",
       "fields": [
         {
@@ -23896,7 +24013,7 @@
     {
       "name": "GlobalProductReferenceTranslation",
       "file": "apps/platform/prisma/schema/marketplace.prisma",
-      "line": 76,
+      "line": 89,
       "doc": "Mirrors ProductTranslation's own locale-keyed shape exactly (en/ur) — the identical structure a linked tenant's own table is synced into.",
       "fields": [
         {
@@ -26171,9 +26288,221 @@
       ]
     },
     {
+      "name": "MarketplaceEngagement",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 255,
+      "doc": "A viewer acting on a listing, chosen by the listing's own engagementMode.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "listingId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "viewerProfileId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "MarketplaceEngagementKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payload",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "MarketplaceEngagementStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deliveryError",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deliveredAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "listing",
+          "type": "MarketplaceListing",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "viewerProfile",
+          "type": "MarketplaceViewerProfile",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([listingId, status])"
+      ]
+    },
+    {
+      "name": "MarketplaceListing",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 192,
+      "doc": "A tenant's own published product/service, WO-165.2.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "MarketplaceListingKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "externalRef",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceMinorUnits",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "currency",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "imageUrl",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "visibleTo",
+          "type": "MarketplaceAudience[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "engagementMode",
+          "type": "MarketplaceEngagementMode",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "MarketplaceListingStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "publishedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "engagements",
+          "type": "MarketplaceEngagement[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, externalRef])",
+        "@@index([status, kind])"
+      ]
+    },
+    {
       "name": "MarketplacePublisherCredential",
       "file": "apps/platform/prisma/schema/marketplace.prisma",
-      "line": 24,
+      "line": 37,
       "doc": "One row per tenant that has opted into the cross-tenant network (either capability this file offers).",
       "fields": [
         {
@@ -26217,6 +26546,57 @@
           "id": false,
           "unique": false,
           "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "MarketplaceViewerProfile",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 225,
+      "doc": "A viewer authenticated once via nID and reused across every tenant's published listings — a fourth kind of principal (doc 165's own \"actor with three tables\" lens): not a User (no tenant relationship…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "nidSubjectId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "declaredType",
+          "type": "MarketplaceAudience",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "verifiedType",
+          "type": "MarketplaceAudience?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "engagements",
+          "type": "MarketplaceEngagement[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": []
@@ -26666,7 +27046,7 @@
     {
       "name": "MeteredOrderFee",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 674,
+      "line": 676,
       "doc": "Doc 153's own \"the reversal document, not the reversal flag\" — one row per order actually metered for the transaction fee, naming the specific order and the exact amount metered for it, so a later `R…",
       "fields": [
         {
@@ -29898,7 +30278,7 @@
     {
       "name": "PlatformCustomQuote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 555,
+      "line": 557,
       "doc": "WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…",
       "fields": [
         {
@@ -30022,7 +30402,7 @@
     {
       "name": "PlatformInvoice",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 445,
+      "line": 447,
       "doc": "",
       "fields": [
         {
@@ -30224,7 +30604,7 @@
     {
       "name": "PlatformInvoiceCreditNote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 531,
+      "line": 533,
       "doc": "A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own \"the reversal document\" lens).",
       "fields": [
         {
@@ -30284,7 +30664,7 @@
     {
       "name": "PlatformOpsClient",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 313,
+      "line": 315,
       "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
       "fields": [
         {
@@ -30351,7 +30731,7 @@
     {
       "name": "PlatformPlan",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 155,
+      "line": 157,
       "doc": "",
       "fields": [
         {
@@ -30528,7 +30908,7 @@
     {
       "name": "PlatformRateCardChangeRequest",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 730,
+      "line": 732,
       "doc": "doc 153's own \"the threshold nobody approves alone\" / \"authority and blast radius\" lenses, resolved with the identical create/approve split `PlatformCustomQuote` (doc 50 §4) already established: a ra…",
       "fields": [
         {
@@ -30645,7 +31025,7 @@
     {
       "name": "PlatformSubscription",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 234,
+      "line": 236,
       "doc": "",
       "fields": [
         {
@@ -30982,6 +31362,13 @@
           "relation": false
         },
         {
+          "name": "marketplaceListings",
+          "type": "MarketplaceListing[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "registeredProductReferences",
           "type": "GlobalProductReference[]",
           "id": false,
@@ -31012,7 +31399,7 @@
     {
       "name": "PlatformUsageRecord",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 250,
+      "line": 252,
       "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
       "fields": [
         {
@@ -34601,7 +34988,7 @@
     {
       "name": "ResourceQuotaAlert",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 359,
+      "line": 361,
       "doc": "One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.",
       "fields": [
         {
@@ -34683,7 +35070,7 @@
     {
       "name": "ResourceTierQuota",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 334,
+      "line": 336,
       "doc": "--------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…",
       "fields": [
         {
@@ -36777,7 +37164,7 @@
     {
       "name": "SignupVerification",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 590,
+      "line": 592,
       "doc": "A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.",
       "fields": [
         {
@@ -37150,6 +37537,13 @@
         {
           "name": "status",
           "type": "SsoConnectionStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "enforceSso",
+          "type": "Boolean",
           "id": false,
           "unique": false,
           "relation": false
@@ -39034,7 +39428,7 @@
     {
       "name": "SupportAccessGrant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 265,
+      "line": 267,
       "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
       "fields": [
         {
@@ -39631,7 +40025,7 @@
     {
       "name": "TenantDataExport",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 403,
+      "line": 405,
       "doc": "",
       "fields": [
         {
@@ -39733,7 +40127,7 @@
     {
       "name": "TenantDeploymentCredential",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 293,
+      "line": 295,
       "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
       "fields": [
         {
@@ -39923,7 +40317,7 @@
     {
       "name": "TrialExtension",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 608,
+      "line": 610,
       "doc": "WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so \"extended more than once\" is a query, not a memory.",
       "fields": [
         {
@@ -39990,7 +40384,7 @@
     {
       "name": "UsageMeter",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 641,
+      "line": 643,
       "doc": "One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` increments off a tenant's own transactional outbox (`transaction_fee_minor`, `messages_sent`) or sets to the late…",
       "fields": [
         {
@@ -40058,7 +40452,7 @@
     {
       "name": "UsageMeteringCursor",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 705,
+      "line": 707,
       "doc": "The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each batch — so a poll reads only the outbox rows it has not already applied, rather than rescanning the whole table…",
       "fields": [
         {
@@ -42264,7 +42658,7 @@
     {
       "name": "InvoiceStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 440,
+      "line": 442,
       "values": [
         "ISSUED",
         "CREDITED"
@@ -42355,6 +42749,64 @@
       ]
     },
     {
+      "name": "MarketplaceAudience",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 169,
+      "values": [
+        "RETAILER",
+        "DISTRIBUTOR",
+        "SUPPLIER",
+        "DIRECT_CUSTOMER"
+      ]
+    },
+    {
+      "name": "MarketplaceEngagementKind",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 241,
+      "values": [
+        "INQUIRY",
+        "ORDER_REQUEST"
+      ]
+    },
+    {
+      "name": "MarketplaceEngagementMode",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 184,
+      "values": [
+        "DISCOVERY_ONLY",
+        "DISCOVERY_AND_TRANSACT"
+      ]
+    },
+    {
+      "name": "MarketplaceEngagementStatus",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 246,
+      "values": [
+        "PENDING",
+        "DELIVERED",
+        "FAILED"
+      ]
+    },
+    {
+      "name": "MarketplaceListingKind",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 161,
+      "values": [
+        "PRODUCT",
+        "SERVICE"
+      ]
+    },
+    {
+      "name": "MarketplaceListingStatus",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 176,
+      "values": [
+        "ACTIVE",
+        "PAUSED",
+        "DELISTED"
+      ]
+    },
+    {
       "name": "MeasurementUnit",
       "file": "apps/api/prisma/schema/measurements.prisma",
       "line": 9,
@@ -42437,7 +42889,7 @@
     {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 303,
+      "line": 305,
       "values": [
         "ACTIVE",
         "REVOKED"
@@ -42574,7 +43026,7 @@
     {
       "name": "PricingModel",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 141,
+      "line": 143,
       "values": [
         "PER_SEAT",
         "FLAT_MONTHLY",
@@ -42608,7 +43060,7 @@
     {
       "name": "ProductReferenceReviewStatus",
       "file": "apps/platform/prisma/schema/marketplace.prisma",
-      "line": 34,
+      "line": 47,
       "values": [
         "UNREVIEWED",
         "CONFIRMED",
@@ -42651,7 +43103,7 @@
     {
       "name": "QuoteStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 544,
+      "line": 546,
       "values": [
         "PENDING",
         "APPROVED",
@@ -42661,7 +43113,7 @@
     {
       "name": "RateCardChangeStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 715,
+      "line": 717,
       "values": [
         "PENDING",
         "APPROVED",
@@ -42949,7 +43401,7 @@
     {
       "name": "StripeInvoicePaymentStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 764,
+      "line": 766,
       "values": [
         "PENDING",
         "PAID",
@@ -42959,7 +43411,7 @@
     {
       "name": "SubscriptionStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 228,
+      "line": 230,
       "values": [
         "ACTIVE",
         "PAST_DUE",
@@ -42991,7 +43443,7 @@
     {
       "name": "TenantExportStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 383,
+      "line": 385,
       "values": [
         "PENDING",
         "RUNNING",
@@ -43002,7 +43454,7 @@
     {
       "name": "TenantExportTrigger",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 390,
+      "line": 392,
       "values": [
         "MANUAL",
         "DEPROVISION"
@@ -45037,6 +45489,38 @@
         "B2BOrderRequest",
         "B2BPurchaseApprovalPolicy"
       ]
+    },
+    {
+      "folder": "20260926201927_wo165_marketplace_listing_viewer_engagement",
+      "file": "apps/platform/prisma/schema/migrations/20260926201927_wo165_marketplace_listing_viewer_engagement/migration.sql",
+      "date": "2026-09-26",
+      "slug": "wo165_marketplace_listing_viewer_engagement",
+      "statements": 16,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "CREATE UNIQUE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "MarketplaceEngagement",
+        "MarketplaceListing",
+        "MarketplaceViewerProfile"
+      ]
+    },
+    {
+      "folder": "20260926203715_wo1656_sso_enforce_sso",
+      "file": "apps/api/prisma/schema/migrations/20260926203715_wo1656_sso_enforce_sso/migration.sql",
+      "date": "2026-09-26",
+      "slug": "wo1656_sso_enforce_sso",
+      "statements": 1,
+      "kinds": [
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "SsoConnection"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -46718,6 +47202,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/marketplace",
+      "file": "apps/web/src/app/(admin)/admin/(app)/marketplace/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/merchant-payables",
       "file": "apps/web/src/app/(admin)/admin/(app)/merchant-payables/page.tsx",
       "client": true,
@@ -48079,8 +48572,9 @@
       "file": "apps/api/src/core/auth/auth.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 2,
+      "cases": 7,
       "describes": [
+        "AuthService.login — enforceSso (WO-165.6)",
         "parseDuration"
       ]
     },
@@ -48183,7 +48677,7 @@
       "file": "apps/api/src/core/auth/sso.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 33,
+      "cases": 34,
       "describes": [
         "SsoService",
         "the domain gate (§2)",
@@ -49404,6 +49898,15 @@
         "sendReviewRequests",
         "sendReplenishmentReminders",
         "run"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/marketplace/marketplace.service.spec.ts",
+      "module": "marketplace",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "MarketplaceService — 165-cross-tenant-marketplace-directory.md WO-165.2"
       ]
     },
     {
@@ -50852,12 +51355,24 @@
       "file": "apps/platform/src/modules/product-reference/marketplace-credentials.service.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 8,
       "describes": [
         "MarketplaceCredentialsService",
         "issue",
         "rotate",
         "revoke"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/product-reference/marketplace-listings.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "MarketplaceListingsService — 165-cross-tenant-marketplace-directory.md WO-165.2",
+        "publish",
+        "the toxic pair — only the publishing tenant may change its own listing",
+        "delistAllForTenant — "
       ]
     },
     {
@@ -51512,7 +52027,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5391,
+      "bytes": 5403,
       "doc": "",
       "symbols": []
     },
@@ -51521,7 +52036,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 180,
-      "bytes": 9287,
+      "bytes": 9299,
       "doc": "",
       "symbols": []
     },
@@ -51530,7 +52045,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5844,
+      "bytes": 5856,
       "doc": "",
       "symbols": []
     },
@@ -52927,6 +53442,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926203715_wo1656_sso_enforce_sso/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 3,
+      "bytes": 102,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -53119,8 +53643,8 @@
       "path": "apps/api/prisma/schema/sso.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 63,
-      "bytes": 2965,
+      "lines": 73,
+      "bytes": 3698,
       "doc": "SSO / identity federation",
       "symbols": []
     },
@@ -53852,8 +54376,8 @@
       "path": "apps/api/src/core/auth/auth.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 24,
-      "bytes": 745,
+      "lines": 111,
+      "bytes": 4677,
       "doc": "",
       "symbols": []
     },
@@ -53861,8 +54385,8 @@
       "path": "apps/api/src/core/auth/auth.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 445,
-      "bytes": 15196,
+      "lines": 461,
+      "bytes": 16112,
       "doc": "",
       "symbols": [
         {
@@ -53893,7 +54417,7 @@
         {
           "name": "parseDuration",
           "kind": "function",
-          "line": 432
+          "line": 448
         }
       ]
     },
@@ -54031,49 +54555,49 @@
       "path": "apps/api/src/core/auth/dto/sso.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 177,
-      "bytes": 5358,
+      "lines": 188,
+      "bytes": 5744,
       "doc": "",
       "symbols": [
         {
           "name": "SSO_PROTOCOLS",
           "kind": "const",
-          "line": 21
+          "line": 22
         },
         {
           "name": "SSO_CONNECTION_STATUSES",
           "kind": "const",
-          "line": 22
+          "line": 23
         },
         {
           "name": "SSO_LABEL_MAX_LENGTH",
           "kind": "const",
-          "line": 24
+          "line": 25
         },
         {
           "name": "SSO_MAX_ALLOWED_DOMAINS",
           "kind": "const",
-          "line": 25
+          "line": 26
         },
         {
           "name": "CreateSsoConnectionDto",
           "kind": "class",
-          "line": 27
+          "line": 28
         },
         {
           "name": "UpdateSsoConnectionDto",
           "kind": "class",
-          "line": 72
+          "line": 73
         },
         {
           "name": "SsoCallbackQuery",
           "kind": "type",
-          "line": 129
+          "line": 140
         },
         {
           "name": "readSsoCallbackQuery",
           "kind": "function",
-          "line": 144
+          "line": 155
         }
       ]
     },
@@ -54272,8 +54796,8 @@
       "path": "apps/api/src/core/auth/providers/oidc.provider.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 204,
-      "bytes": 8722,
+      "lines": 205,
+      "bytes": 8745,
       "doc": "",
       "symbols": []
     },
@@ -54458,8 +54982,8 @@
       "path": "apps/api/src/core/auth/sso.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 643,
-      "bytes": 29257,
+      "lines": 656,
+      "bytes": 29815,
       "doc": "",
       "symbols": []
     },
@@ -54467,8 +54991,8 @@
       "path": "apps/api/src/core/auth/sso.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 867,
-      "bytes": 34694,
+      "lines": 869,
+      "bytes": 34801,
       "doc": "",
       "symbols": [
         {
@@ -54484,37 +55008,37 @@
         {
           "name": "SsoConnectionView",
           "kind": "interface",
-          "line": 148
+          "line": 149
         },
         {
           "name": "SsoConnectionList",
           "kind": "interface",
-          "line": 158
+          "line": 159
         },
         {
           "name": "SsoDefaultRoleOption",
           "kind": "interface",
-          "line": 164
+          "line": 165
         },
         {
           "name": "SsoSignInOption",
           "kind": "interface",
-          "line": 170
+          "line": 171
         },
         {
           "name": "SsoAccountView",
           "kind": "interface",
-          "line": 176
+          "line": 177
         },
         {
           "name": "SsoLoginStart",
           "kind": "interface",
-          "line": 189
+          "line": 190
         },
         {
           "name": "SsoService",
           "kind": "class",
-          "line": 209
+          "line": 210
         }
       ]
     },
@@ -54744,8 +55268,8 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 341,
-      "bytes": 15243,
+      "lines": 350,
+      "bytes": 15754,
       "doc": "",
       "symbols": [
         {
@@ -54756,12 +55280,12 @@
         {
           "name": "Env",
           "kind": "type",
-          "line": 207
+          "line": 216
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 233
+          "line": 242
         }
       ]
     },
@@ -62468,6 +62992,80 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/marketplace/dto/marketplace.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 98,
+      "bytes": 2512,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PublishMarketplaceListingDto",
+          "kind": "class",
+          "line": 17
+        },
+        {
+          "name": "UpdateMarketplaceListingDto",
+          "kind": "class",
+          "line": 63
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/marketplace/marketplace.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 49,
+      "bytes": 1527,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/marketplace/marketplace.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 18,
+      "bytes": 702,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceModule",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/marketplace/marketplace.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 68,
+      "bytes": 2752,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/marketplace/marketplace.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 78,
+      "bytes": 3219,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceService",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/measurements/dto/measurements.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -62746,8 +63344,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 128,
-      "bytes": 4378,
+      "lines": 135,
+      "bytes": 4802,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -62766,24 +63364,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 285,
-      "bytes": 16319,
+      "lines": 292,
+      "bytes": 16788,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 60
+          "line": 61
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 91
+          "line": 92
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 261
+          "line": 268
         }
       ]
     },
@@ -69724,8 +70322,8 @@
       "path": "apps/platform/prisma/schema/marketplace.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 145,
-      "bytes": 6428,
+      "lines": 271,
+      "bytes": 11320,
       "doc": "The cross-tenant marketplace/product-reference network — doc 165",
       "symbols": []
     },
@@ -69802,6 +70400,15 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/migrations/20260926201927_wo165_marketplace_listing_viewer_engagement/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 85,
+      "bytes": 3241,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
       "area": "root",
       "kind": "toml",
@@ -69814,8 +70421,8 @@
       "path": "apps/platform/prisma/schema/platform.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 801,
-      "bytes": 36782,
+      "lines": 803,
+      "bytes": 36907,
       "doc": "WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the",
       "symbols": []
     },
@@ -70894,6 +71501,26 @@
       ]
     },
     {
+      "path": "apps/platform/src/modules/product-reference/dto/marketplace-listing.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 106,
+      "bytes": 2375,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateMarketplaceListingDto",
+          "kind": "class",
+          "line": 23
+        },
+        {
+          "name": "UpdateMarketplaceListingDto",
+          "kind": "class",
+          "line": 71
+        }
+      ]
+    },
+    {
       "path": "apps/platform/src/modules/product-reference/dto/product-reference.dto.ts",
       "area": "root",
       "kind": "dto",
@@ -70986,8 +71613,8 @@
       "path": "apps/platform/src/modules/product-reference/marketplace-credentials.service.spec.ts",
       "area": "root",
       "kind": "unit test",
-      "lines": 79,
-      "bytes": 3622,
+      "lines": 87,
+      "bytes": 4029,
       "doc": "",
       "symbols": []
     },
@@ -70995,14 +71622,14 @@
       "path": "apps/platform/src/modules/product-reference/marketplace-credentials.service.ts",
       "area": "root",
       "kind": "service",
-      "lines": 83,
-      "bytes": 3888,
+      "lines": 89,
+      "bytes": 4306,
       "doc": "",
       "symbols": [
         {
           "name": "MarketplaceCredentialsService",
           "kind": "class",
-          "line": 18
+          "line": 19
         }
       ]
     },
@@ -71018,6 +71645,45 @@
           "name": "MarketplaceKeyThrottlerGuard",
           "kind": "class",
           "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-listings.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 58,
+      "bytes": 2283,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceListingsController",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-listings.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 98,
+      "bytes": 3792,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-listings.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 113,
+      "bytes": 4557,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceListingsService",
+          "kind": "class",
+          "line": 12
         }
       ]
     },
@@ -71069,14 +71735,14 @@
       "path": "apps/platform/src/modules/product-reference/product-reference.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 25,
-      "bytes": 1426,
+      "lines": 33,
+      "bytes": 1633,
       "doc": "",
       "symbols": [
         {
           "name": "ProductReferenceModule",
           "kind": "class",
-          "line": 24
+          "line": 32
         }
       ]
     },
@@ -74050,6 +74716,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/marketplace/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 262,
+      "bytes": 9735,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplacePage",
+          "kind": "default",
+          "line": 31
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/merchant-payables/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -74713,8 +75394,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/settings/sso/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 549,
-      "bytes": 20318,
+      "lines": 585,
+      "bytes": 21948,
       "doc": "",
       "symbols": [
         {
@@ -77084,8 +77765,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1062,
-      "bytes": 29508,
+      "lines": 1073,
+      "bytes": 29914,
       "doc": "",
       "symbols": [
         {
@@ -77116,12 +77797,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1032
+          "line": 1043
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1047
+          "line": 1058
         }
       ]
     },
@@ -78382,8 +79063,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 268,
-      "bytes": 12343,
+      "lines": 270,
+      "bytes": 12479,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -78949,8 +79630,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1770,
-      "bytes": 47983,
+      "lines": 1772,
+      "bytes": 48112,
       "doc": "",
       "symbols": [
         {
@@ -79751,142 +80432,142 @@
         {
           "name": "SsoConnectionList",
           "kind": "interface",
-          "line": 1566
+          "line": 1568
         },
         {
           "name": "SsoDefaultRoleOption",
           "kind": "interface",
-          "line": 1572
+          "line": 1574
         },
         {
           "name": "SsoAccount",
           "kind": "interface",
-          "line": 1578
+          "line": 1580
         },
         {
           "name": "SsoSignInOption",
           "kind": "interface",
-          "line": 1592
+          "line": 1594
         },
         {
           "name": "ApiKeyOversightView",
           "kind": "interface",
-          "line": 1598
+          "line": 1600
         },
         {
           "name": "ManagedServicesUsageSnapshot",
           "kind": "interface",
-          "line": 1619
+          "line": 1621
         },
         {
           "name": "ManagedServicesTenantStatus",
           "kind": "type",
-          "line": 1626
+          "line": 1628
         },
         {
           "name": "ManagedServicesUsageResponse",
           "kind": "interface",
-          "line": 1628
+          "line": 1630
         },
         {
           "name": "ManagedServicesInvoiceStatus",
           "kind": "type",
-          "line": 1635
+          "line": 1637
         },
         {
           "name": "ManagedServicesStripePaymentStatus",
           "kind": "type",
-          "line": 1636
+          "line": 1638
         },
         {
           "name": "ManagedServicesInvoice",
           "kind": "interface",
-          "line": 1638
+          "line": 1640
         },
         {
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
-          "line": 1654
+          "line": 1656
         },
         {
           "name": "CustomFieldDefinition",
           "kind": "interface",
-          "line": 1660
+          "line": 1662
         },
         {
           "name": "CustomFieldEntityType",
           "kind": "type",
-          "line": 1669
+          "line": 1671
         },
         {
           "name": "CustomFieldValueType",
           "kind": "type",
-          "line": 1670
+          "line": 1672
         },
         {
           "name": "CustomFieldValue",
           "kind": "type",
-          "line": 1672
+          "line": 1674
         },
         {
           "name": "EmbeddedWidget",
           "kind": "interface",
-          "line": 1675
+          "line": 1677
         },
         {
           "name": "EmbedToken",
           "kind": "interface",
-          "line": 1684
+          "line": 1686
         },
         {
           "name": "EntityAttribute",
           "kind": "interface",
-          "line": 1697
+          "line": 1699
         },
         {
           "name": "EntityAttributeValueType",
           "kind": "type",
-          "line": 1706
+          "line": 1708
         },
         {
           "name": "MicroFrontendFragment",
           "kind": "interface",
-          "line": 1714
+          "line": 1716
         },
         {
           "name": "FragmentStatus",
           "kind": "type",
-          "line": 1724
+          "line": 1726
         },
         {
           "name": "FragmentToken",
           "kind": "interface",
-          "line": 1727
+          "line": 1729
         },
         {
           "name": "FormMetadata",
           "kind": "interface",
-          "line": 1739
+          "line": 1741
         },
         {
           "name": "FieldMetadata",
           "kind": "interface",
-          "line": 1745
+          "line": 1747
         },
         {
           "name": "FieldMetadataValueType",
           "kind": "type",
-          "line": 1754
+          "line": 1756
         },
         {
           "name": "BpmnWorkflowDefinition",
           "kind": "interface",
-          "line": 1762
+          "line": 1764
         },
         {
           "name": "ApprovalSubjectType",
           "kind": "type",
-          "line": 1769
+          "line": 1771
         }
       ]
     },
@@ -82421,8 +83102,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 5913,
-      "bytes": 344581,
+      "lines": 6042,
+      "bytes": 352168,
       "doc": "",
       "symbols": []
     },
@@ -82458,7 +83139,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 528,
-      "bytes": 71423,
+      "bytes": 71470,
       "doc": "",
       "symbols": []
     },
@@ -83132,8 +83813,8 @@
       "path": "docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 487,
-      "bytes": 27658,
+      "lines": 513,
+      "bytes": 29123,
       "doc": "",
       "symbols": []
     },

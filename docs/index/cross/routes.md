@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **788** endpoints across **142** controllers, with the access rule that actually guards each one.
+All **794** endpoints across **143** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -728,6 +728,17 @@ never authorization.
 | PUT | `/admin/marketing/settings` | `marketing.manage` | `MarketingController.updateSettings` | Turn automation on/off and/or change its timing |
 | GET | `/campaigns/r/:recipientId/click` | **PUBLIC** | `CampaignTrackingController.click` | `url` is attacker-controlled input inside a link this codebase itself emails ou… |
 | GET | `/campaigns/r/:recipientId/open.gif` | **PUBLIC** | `CampaignTrackingController.open` |  |
+
+### [`marketplace`](../modules/marketplace.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/marketplace/listings` | `catalog.manage` | `MarketplaceController.mine` |  |
+| POST | `/admin/marketplace/listings` | `catalog.manage` | `MarketplaceController.publish` |  |
+| PATCH | `/admin/marketplace/listings/:id` | `catalog.manage` | `MarketplaceController.update` |  |
+| POST | `/admin/marketplace/listings/:id/delist` | `catalog.manage` | `MarketplaceController.delist` |  |
+| POST | `/admin/marketplace/listings/:id/pause` | `catalog.manage` | `MarketplaceController.pause` |  |
+| POST | `/admin/marketplace/listings/:id/resume` | `catalog.manage` | `MarketplaceController.resume` |  |
 
 ### [`measurements`](../modules/measurements.md) (13)
 

@@ -548,6 +548,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `PromoCodesPage` | default | :31 | Promo codes — the same discount rules, plus a code the customer types. |
 
+### `apps/web/src/app/(admin)/admin/(app)/marketplace`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MarketplacePage` | default | :31 | 165-cross-tenant-marketplace-directory.md §2, WO-165.2 — "Publish to marketplace": the actual UI fo… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/merchant-payables`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1285,8 +1291,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1032 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1047 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1043 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1058 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1796,34 +1802,34 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `IssuedApiKey` | interface | :1537 |  |
 | `api.ts` | `SsoConnectionStatus` | type | :1547 | --- Single sign-on (docs/implementation/access-control-identity/161-sso-identity-federation.md) ---… |
 | `api.ts` | `SsoConnection` | interface | :1549 |  |
-| `api.ts` | `SsoConnectionList` | interface | :1566 | `GET /admin/sso/connections` — the callback URL beside the rows, so it can be registered before the… |
-| `api.ts` | `SsoDefaultRoleOption` | interface | :1572 | A role, and the access-widening permissions that keep it from being a connection's default — empty… |
-| `api.ts` | `SsoAccount` | interface | :1578 | One account created or linked through a connection, read from its audit trail. |
-| `api.ts` | `SsoSignInOption` | interface | :1592 | `GET /auth/sso/connections` — public: what the sign-in screen draws a button for. |
-| `api.ts` | `ApiKeyOversightView` | interface | :1598 | A key on the `users.manage` oversight list — its owner, never its secret. |
-| `api.ts` | `ManagedServicesUsageSnapshot` | interface | :1619 | doc 14 (commercial-licensing-agency/14-managed-services-module.md) — the "Hosting & Billing" admin… |
-| `api.ts` | `ManagedServicesTenantStatus` | type | :1626 |  |
-| `api.ts` | `ManagedServicesUsageResponse` | interface | :1628 |  |
-| `api.ts` | `ManagedServicesInvoiceStatus` | type | :1635 |  |
-| `api.ts` | `ManagedServicesStripePaymentStatus` | type | :1636 |  |
-| `api.ts` | `ManagedServicesInvoice` | interface | :1638 |  |
-| `api.ts` | `ManagedServicesInvoicesResponse` | interface | :1654 | `currency` travels with every response that carries money — the agency's OWN billing currency (`PLA… |
-| `api.ts` | `CustomFieldDefinition` | interface | :1660 | `GET/POST /admin/custom-fields/definitions` (architecture-patterns/104-jsonb-eav-extensibility.md,… |
-| `api.ts` | `CustomFieldEntityType` | type | :1669 |  |
-| `api.ts` | `CustomFieldValueType` | type | :1670 |  |
-| `api.ts` | `CustomFieldValue` | type | :1672 |  |
-| `api.ts` | `EmbeddedWidget` | interface | :1675 | `GET/POST /admin/embeds` (architecture-patterns/113-micro-frontend-embedding.md, WO-113). |
-| `api.ts` | `EmbedToken` | interface | :1684 | `POST /admin/embeds/:key/token`. |
-| `api.ts` | `EntityAttribute` | interface | :1697 | `GET/POST /admin/entity-attributes` (architecture-patterns/140-general-eav-extensibility-model.md,… |
-| `api.ts` | `EntityAttributeValueType` | type | :1706 |  |
-| `api.ts` | `MicroFrontendFragment` | interface | :1714 | `GET/POST /admin/fragments` (architecture-patterns/143-micro-frontend- architecture.md, WO-143.2). |
-| `api.ts` | `FragmentStatus` | type | :1724 |  |
-| `api.ts` | `FragmentToken` | interface | :1727 | `POST /admin/fragments/:key/token?mountPoint=...`. |
-| `api.ts` | `FormMetadata` | interface | :1739 | `GET/PUT /admin/metadata-forms/:entityType` (architecture-patterns/141-general-metadata-driven-ui-e… |
-| `api.ts` | `FieldMetadata` | interface | :1745 |  |
-| `api.ts` | `FieldMetadataValueType` | type | :1754 |  |
-| `api.ts` | `BpmnWorkflowDefinition` | interface | :1762 | `GET/PUT /admin/bpmn-workflows/:subjectType` (architecture-patterns/142-bpmn-visual-workflow-engine… |
-| `api.ts` | `ApprovalSubjectType` | type | :1769 |  |
+| `api.ts` | `SsoConnectionList` | interface | :1568 | `GET /admin/sso/connections` — the callback URL beside the rows, so it can be registered before the… |
+| `api.ts` | `SsoDefaultRoleOption` | interface | :1574 | A role, and the access-widening permissions that keep it from being a connection's default — empty… |
+| `api.ts` | `SsoAccount` | interface | :1580 | One account created or linked through a connection, read from its audit trail. |
+| `api.ts` | `SsoSignInOption` | interface | :1594 | `GET /auth/sso/connections` — public: what the sign-in screen draws a button for. |
+| `api.ts` | `ApiKeyOversightView` | interface | :1600 | A key on the `users.manage` oversight list — its owner, never its secret. |
+| `api.ts` | `ManagedServicesUsageSnapshot` | interface | :1621 | doc 14 (commercial-licensing-agency/14-managed-services-module.md) — the "Hosting & Billing" admin… |
+| `api.ts` | `ManagedServicesTenantStatus` | type | :1628 |  |
+| `api.ts` | `ManagedServicesUsageResponse` | interface | :1630 |  |
+| `api.ts` | `ManagedServicesInvoiceStatus` | type | :1637 |  |
+| `api.ts` | `ManagedServicesStripePaymentStatus` | type | :1638 |  |
+| `api.ts` | `ManagedServicesInvoice` | interface | :1640 |  |
+| `api.ts` | `ManagedServicesInvoicesResponse` | interface | :1656 | `currency` travels with every response that carries money — the agency's OWN billing currency (`PLA… |
+| `api.ts` | `CustomFieldDefinition` | interface | :1662 | `GET/POST /admin/custom-fields/definitions` (architecture-patterns/104-jsonb-eav-extensibility.md,… |
+| `api.ts` | `CustomFieldEntityType` | type | :1671 |  |
+| `api.ts` | `CustomFieldValueType` | type | :1672 |  |
+| `api.ts` | `CustomFieldValue` | type | :1674 |  |
+| `api.ts` | `EmbeddedWidget` | interface | :1677 | `GET/POST /admin/embeds` (architecture-patterns/113-micro-frontend-embedding.md, WO-113). |
+| `api.ts` | `EmbedToken` | interface | :1686 | `POST /admin/embeds/:key/token`. |
+| `api.ts` | `EntityAttribute` | interface | :1699 | `GET/POST /admin/entity-attributes` (architecture-patterns/140-general-eav-extensibility-model.md,… |
+| `api.ts` | `EntityAttributeValueType` | type | :1708 |  |
+| `api.ts` | `MicroFrontendFragment` | interface | :1716 | `GET/POST /admin/fragments` (architecture-patterns/143-micro-frontend- architecture.md, WO-143.2). |
+| `api.ts` | `FragmentStatus` | type | :1726 |  |
+| `api.ts` | `FragmentToken` | interface | :1729 | `POST /admin/fragments/:key/token?mountPoint=...`. |
+| `api.ts` | `FormMetadata` | interface | :1741 | `GET/PUT /admin/metadata-forms/:entityType` (architecture-patterns/141-general-metadata-driven-ui-e… |
+| `api.ts` | `FieldMetadata` | interface | :1747 |  |
+| `api.ts` | `FieldMetadataValueType` | type | :1756 |  |
+| `api.ts` | `BpmnWorkflowDefinition` | interface | :1764 | `GET/PUT /admin/bpmn-workflows/:subjectType` (architecture-patterns/142-bpmn-visual-workflow-engine… |
+| `api.ts` | `ApprovalSubjectType` | type | :1771 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

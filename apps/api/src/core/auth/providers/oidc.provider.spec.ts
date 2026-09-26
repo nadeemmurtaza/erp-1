@@ -29,6 +29,7 @@ describe('OidcProvider', () => {
     allowedEmailDomains: ['shop.test'],
     defaultRoleName: 'Staff',
     status: 'ACTIVE',
+    enforceSso: false,
     createdByUserId: 'admin-1',
     createdAt: new Date(),
     updatedAt: new Date(),

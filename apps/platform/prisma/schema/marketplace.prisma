@@ -7,12 +7,25 @@
 // publish/share, categorically different from the private business data
 // doc 39 protects.
 //
-// This file currently ships only doc 166's own registry plus the shared
-// tenant credential doc 165 first named — MarketplaceListing/
-// ViewerProfile/Engagement (doc 165's own discovery/transact layer) are not
-// yet built; the credential below is deliberately named for the whole
-// network, not just this registry, so doc 165 extends this same file and
-// this same credential rather than issuing a second one per capability.
+// Doc 165's own publish layer (MarketplaceListing) is built and live —
+// WO-165.2's publish API (product-reference.module.ts's own
+// MarketplaceListingsController) reads and writes it, gated by the same
+// MarketplacePublisherCredential this file already shipped for doc 166.
+//
+// MarketplaceViewerProfile/MarketplaceEngagement are schema only, matching
+// this file's own bundled WO-165.1 ("MarketplaceListing,
+// MarketplacePublisherCredential, MarketplaceViewerProfile,
+// MarketplaceEngagement... one forward-only migration"): no service or
+// controller reads or writes either table yet. Doc 165 §4 names why,
+// honestly, rather than half-building around it — discovery (WO-165.3) and
+// the transact path (WO-165.4) both need a viewer to be identified, and
+// the only login doc 165 permits is nID's own OIDC, whose issuer surface
+// `nadeemmurtaza/nID` (a separate repository not attached to any session
+// that has built this) has never confirmed exists. These two tables are
+// shaped now, per doc 18.5's own "shape it so a real request isn't a
+// design exercise" precedent, so the day that blocker clears, WO-165.3/
+// 165.4 are pure service/controller work against an already-reviewed
+// schema — never a second migration to re-derive the shape.
 
 /// One row per tenant that has opted into the cross-tenant network (either
 /// capability this file offers). Same "hash-only, shown once" discipline
@@ -141,4 +154,117 @@ model GlobalProductReferenceFlag {
   flaggedByTenant PlatformTenant         @relation(fields: [flaggedByTenantId], references: [id])
 
   @@index([referenceId])
+}
+
+// --- Doc 165's own publish/discover/transact layer -------------------------
+
+enum MarketplaceListingKind {
+  PRODUCT
+  SERVICE
+}
+
+/// Exactly the four categories the owner named. A viewer who is none of
+/// these sees only listings with DIRECT_CUSTOMER in their visibleTo set, or
+/// nothing (WO-165.3, not yet built — see this file's own header note).
+enum MarketplaceAudience {
+  RETAILER
+  DISTRIBUTOR
+  SUPPLIER
+  DIRECT_CUSTOMER
+}
+
+enum MarketplaceListingStatus {
+  ACTIVE
+  PAUSED
+  DELISTED
+}
+
+/// The owner's own answer: "give both discovery and transaction and let the
+/// client choose" — a per-listing choice, never a platform-wide one.
+enum MarketplaceEngagementMode {
+  DISCOVERY_ONLY
+  DISCOVERY_AND_TRANSACT
+}
+
+/// A tenant's own published product/service, WO-165.2. Every write goes
+/// through MarketplaceListingsService, gated by MarketplaceCredentialGuard —
+/// "which tenant" is always the presented key, never a body/query parameter.
+model MarketplaceListing {
+  id              String                     @id @default(cuid())
+  tenantId        String
+  kind            MarketplaceListingKind
+  /// The tenant's own ProductVariant/Service id — opaque here, never
+  /// resolved or dereferenced by the directory, only echoed back to the
+  /// tenant on an engagement (doc 165 §2), the same decoupling
+  /// GlobalProductReferenceLink.variantRef already uses in this same file.
+  externalRef     String
+  title           String
+  description     String
+  priceMinorUnits Int?
+  currency        String?
+  imageUrl        String?
+  visibleTo       MarketplaceAudience[]
+  engagementMode  MarketplaceEngagementMode  @default(DISCOVERY_ONLY)
+  status          MarketplaceListingStatus   @default(ACTIVE)
+  publishedAt     DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+
+  tenant      PlatformTenant          @relation(fields: [tenantId], references: [id])
+  engagements MarketplaceEngagement[]
+
+  @@unique([tenantId, externalRef])
+  @@index([status, kind])
+}
+
+/// A viewer authenticated once via nID and reused across every tenant's
+/// published listings — a fourth kind of principal (doc 165's own "actor
+/// with three tables" lens): not a User (no tenant relationship), not a
+/// Party/Contact (no tenant owns them), not a TradingPartner (not
+/// pre-registered). Schema only until WO-165.3/165.4 unblock — see this
+/// file's own header note.
+model MarketplaceViewerProfile {
+  id           String               @id @default(cuid())
+  /// Ties to nID's own subject, the identical join key
+  /// IdentityVerification.nidSubjectId already uses on the erp-1 side.
+  nidSubjectId String               @unique
+  /// Phase 1: self-declared at first login, shown back as "you told us
+  /// you're a distributor" — never presented as verified.
+  declaredType MarketplaceAudience
+  /// Phase 2 (doc 165 §5, explicitly deferred): set only once nID's own KYB
+  /// confirms the organization's declared type. Null until nID ships KYB.
+  verifiedType MarketplaceAudience?
+  createdAt    DateTime             @default(now())
+
+  engagements MarketplaceEngagement[]
+}
+
+enum MarketplaceEngagementKind {
+  INQUIRY
+  ORDER_REQUEST
+}
+
+enum MarketplaceEngagementStatus {
+  PENDING
+  DELIVERED
+  FAILED
+}
+
+/// A viewer acting on a listing, chosen by the listing's own
+/// engagementMode. Schema only until WO-165.3/165.4 unblock — see this
+/// file's own header note.
+model MarketplaceEngagement {
+  id              String                      @id @default(cuid())
+  listingId       String
+  viewerProfileId String
+  kind            MarketplaceEngagementKind
+  payload         Json
+  status          MarketplaceEngagementStatus @default(PENDING)
+  deliveryError   String?
+  createdAt       DateTime                    @default(now())
+  deliveredAt     DateTime?
+
+  listing       MarketplaceListing       @relation(fields: [listingId], references: [id])
+  viewerProfile MarketplaceViewerProfile @relation(fields: [viewerProfileId], references: [id])
+
+  @@index([listingId, status])
 }

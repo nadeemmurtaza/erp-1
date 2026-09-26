@@ -1,13 +1,37 @@
 # 165 — Cross-tenant marketplace directory: publish, discover, transact
 
-> **Status: not built — designed (2026-09-26).** Written at the owner's own
+> **Status: partially built (2026-09-26).** Written at the owner's own
 > request: *"we need to centralize the all shared/reusable things at one
 > place... like a facebook in this way client can publish his product and
 > services, he can control who can see his product/services like retailers,
 > distributer, supplier, or direct customer also... login should remain with
 > nID only."* This document is the buildable architecture behind that
-> request. Nothing here is implemented; every schema and interface below is
-> a sketch to build against, not code that exists.
+> request.
+>
+> **Built:** WO-165.1 (full schema — `MarketplaceListing`,
+> `MarketplaceViewerProfile`, `MarketplaceEngagement`, alongside doc 166's
+> already-built `MarketplacePublisherCredential`), WO-165.2 (the platform's
+> own publish API — `MarketplaceListingsController`/`Service`, upsert-not-
+> duplicate on `[tenantId, externalRef]`, auto-delist on credential
+> revocation — plus erp-1's server-to-server proxy — `MarketplaceModule`,
+> off by default — and its admin "Publish to marketplace" screen), and
+> WO-165.6 (`SsoConnection.enforceSso`, the erp-1 staff password-login
+> guard, and its admin toggle).
+>
+> **Deviation from §2's own wording:** `MarketplacePublisherCredential` is
+> issued by platform ops staff (`OpsAuthGuard`), not self-service by the
+> tenant as §2 describes — the mechanism doc 166 already built. erp-1 reads
+> the issued credential from `MARKETPLACE_API_URL`/`MARKETPLACE_API_KEY`,
+> mirroring doc 14's `ManagedServicesService` pattern exactly. See
+> ADR-054.
+>
+> **Still blocked, named honestly, not built:** WO-165.3 (discovery),
+> WO-165.4 (transact), WO-165.5 (the `oidc-client.ts` extraction and
+> the platform-side nID login client) — all wait on nID's own OIDC surface
+> per §4, a cross-repo dependency this session cannot confirm or build.
+> `MarketplaceViewerProfile`/`MarketplaceEngagement` exist as schema only;
+> no service or controller reads or writes them yet. WO-165.7 (Phase 2)
+> remains deferred as designed.
 
 ## What this actually is, and what it is not
 
@@ -454,7 +478,9 @@ adapter waits on a real partner naming a standard.
   one order on the receiving tenant's side, via doc 18.2's own existing
   `externalRef` guard — proven by a spec, not a new de-dup mechanism.
 - Revoking a `MarketplacePublisherCredential` stops new listing writes and
-  offers to delist every listing that credential's tenant owns.
+  delists every listing that credential's tenant owns, automatically — "the
+  grant that ends itself" lens above; built as `delistAllForTenant()`, not
+  an offer a human has to act on.
 - With `SsoConnection.enforceSso: false` (the default), erp-1's login screen
   is byte-identical to today's, restated from doc 161's own acceptance.
 

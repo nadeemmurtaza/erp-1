@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { generateMarketplaceApiKey, hashMarketplaceApiKey } from './product-reference-key';
+import { MarketplaceListingsService } from './marketplace-listings.service';
 import type { MarketplacePublisherCredential } from '../../core/prisma/client';
 
 /**
@@ -19,6 +20,7 @@ export class MarketplaceCredentialsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly config: AppConfigService,
+    private readonly listings: MarketplaceListingsService,
   ) {}
 
   private async assertTenantExists(tenantId: string): Promise<void> {
@@ -67,16 +69,20 @@ export class MarketplaceCredentialsService {
   }
 
   /**
-   * Revoking a tenant's participation entirely — doc 166's own "the grant
-   * that ends itself" lens. Deleting the credential row, not a status flag:
-   * there is nothing else on this row to preserve once a tenant is no
+   * Revoking a tenant's participation entirely — doc 165/166's own "the
+   * grant that ends itself" lens. Deleting the credential row, not a status
+   * flag: there is nothing else on this row to preserve once a tenant is no
    * longer authenticating with it, and `GlobalProductReferenceLink` rows
    * this tenant already created are untouched (their own local cache does
-   * not depend on the credential staying live).
+   * not depend on the credential staying live). Doc 165's own listings are
+   * different: they are LIVE published data, so revocation also delists
+   * every one this tenant owns immediately — no dangling published data
+   * outliving the credential that published it.
    */
   async revoke(tenantId: string): Promise<void> {
     const existing = await this.prisma.marketplacePublisherCredential.findUnique({ where: { tenantId } });
     if (!existing) throw new NotFoundException(`Tenant ${tenantId} has no marketplace credential to revoke`);
     await this.prisma.marketplacePublisherCredential.delete({ where: { tenantId } });
+    await this.listings.delistAllForTenant(tenantId);
   }
 }

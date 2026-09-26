@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 208 tracked files in `repository root files`, by directory.
+All 213 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -112,8 +112,8 @@ All 208 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `marketplace.prisma` | prisma schema | 145 | The cross-tenant marketplace/product-reference network — doc 165 |
-| `platform.prisma` | prisma schema | 801 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
+| `marketplace.prisma` | prisma schema | 271 | The cross-tenant marketplace/product-reference network — doc 165 |
+| `platform.prisma` | prisma schema | 803 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
 | `schema.prisma` | prisma schema | 19 | Datasource and generator only — the control plane's OWN database, never a |
 
 ### `apps/platform/prisma/schema/migrations` (1)
@@ -169,6 +169,12 @@ All 208 tracked files in `repository root files`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `migration.sql` | migration | 127 |  |
+
+### `apps/platform/prisma/schema/migrations/20260926201927_wo165_marketplace_listing_viewer_engagement` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 85 |  |
 
 ### `apps/platform/src` (2)
 
@@ -291,7 +297,7 @@ All 208 tracked files in `repository root files`, by directory.
 | `request-quote.dto.ts` | dto | 26 |  |
 | `update-plan.dto.ts` | dto | 46 |  |
 
-### `apps/platform/src/modules/product-reference` (13)
+### `apps/platform/src/modules/product-reference` (16)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -299,20 +305,24 @@ All 208 tracked files in `repository root files`, by directory.
 | `marketplace-credential.guard.spec.ts` | unit test | 86 |  |
 | `marketplace-credential.guard.ts` | guard | 57 |  |
 | `marketplace-credentials.controller.ts` | controller | 40 |  |
-| `marketplace-credentials.service.spec.ts` | unit test | 79 |  |
-| `marketplace-credentials.service.ts` | service | 83 |  |
+| `marketplace-credentials.service.spec.ts` | unit test | 87 |  |
+| `marketplace-credentials.service.ts` | service | 89 |  |
 | `marketplace-key-throttler.guard.ts` | guard | 23 |  |
+| `marketplace-listings.controller.ts` | controller | 58 |  |
+| `marketplace-listings.service.spec.ts` | unit test | 98 |  |
+| `marketplace-listings.service.ts` | service | 113 |  |
 | `product-reference-key.spec.ts` | unit test | 27 |  |
 | `product-reference-key.ts` | module | 22 |  |
 | `product-reference.controller.ts` | controller | 89 |  |
-| `product-reference.module.ts` | nest module | 25 |  |
+| `product-reference.module.ts` | nest module | 33 |  |
 | `product-reference.service.spec.ts` | unit test | 195 |  |
 | `product-reference.service.ts` | service | 176 |  |
 
-### `apps/platform/src/modules/product-reference/dto` (1)
+### `apps/platform/src/modules/product-reference/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `marketplace-listing.dto.ts` | dto | 106 |  |
 | `product-reference.dto.ts` | dto | 142 |  |
 
 ### `apps/platform/src/modules/resource-quotas` (5)

@@ -33,6 +33,7 @@ against a real database.
 | `allowedEmailDomains` | `String[]` |  |  |
 | `defaultRoleName` | `String` |  |  |
 | `status` | `SsoConnectionStatus` |  | @default(ACTIVE) |
+| `enforceSso` | `Boolean` |  | @default(false) |
 | `createdByUserId` | `String` |  |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |

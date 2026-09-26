@@ -1,5 +1,47 @@
 # 161 — SSO / identity federation: the buildable brief behind doc 128's own sketch
 
+> **Status (2026-09-26): built, WO-161.1–161.5.** `SsoConnection`
+> (`apps/api/prisma/schema/sso.prisma`), `OidcProvider`
+> (`core/auth/providers/oidc.provider.ts`, `openid-client` 5.7.1 — pinned
+> to the 5.x line because 6.x is ESM-only and this API is CommonJS),
+> `SsoService`, `SsoController`/`SsoAdminController`, and the admin UI
+> (`/admin/settings/sso`, a login-screen button per active connection, a
+> `/admin/login/sso-complete` handoff page) are all built and tested.
+> `assertSafeDefaultRole()` refuses to JIT-provision into any role holding
+> a `NON_DELEGATABLE_PERMISSIONS` entry, so a misconfigured default role
+> can never grant admin capability; `settings.sso.manage` is itself
+> non-delegatable and `@SessionOnly()` — no personal API key can install a
+> client secret. `OidcProvider` refuses a templated or multi-tenant
+> issuer (`/common/`, `/organizations/`, `/consumers/`) outright, and
+> `SsoService.cleanDomains()` refuses an open-signup domain
+> (gmail.com and its siblings) as an allowed domain at configuration —
+> two real misconfigurations this build makes structurally impossible
+> rather than merely documented against.
+>
+> **Four deviations from this doc's own schema/interface sketch:**
+> `SsoConnection` carries no `organizationId` — this codebase's real
+> tenant boundary is the deployment itself, not a column
+> (`DECISIONS.md` ADR-040, `receivables.prisma`'s own header); one
+> deployment may register more than one connection. `credentialEncrypted`
+> is `String`, not `Bytes` — `encryptSecret()`/`decryptSecret()`
+> (`@newax/shared/secret-crypto`) already return the `iv:authTag:ciphertext`
+> base64url string every other encrypted-at-rest column in this schema
+> uses (`TradingPartner.outboundApiKeyEncrypted`). The one-method
+> `IdentityProvider.verifyAssertion(rawAssertion)` this doc and doc 128
+> sketched became two methods, `buildAuthorizationUrl()`/
+> `handleCallback()` — a real browser-redirect OIDC flow has two steps,
+> not one. And the session handoff from the callback to the admin app
+> carries no token in a URL at all, not even a fragment: the callback
+> seals the issued session into a two-minute, encrypted, httpOnly cookie
+> scoped to `/api/v1/auth/sso`, and the admin app's `/sso-complete` page
+> redeems it once through `POST /auth/sso/session` — the same `AuthResult`
+> a password sign-in returns, stored the identical way.
+>
+> **WO-161.2b (a `SamlProvider`) remains deliberately unbuilt** — no real
+> client has named a SAML-only identity provider yet, per doc 36's own
+> "write it once a real, repeated need exists" rule; `SsoProtocol` is
+> `OIDC`-only today rather than carrying an unused enum value.
+
 Doc 128 already confirmed the gap by grep ("no `SsoProvider`, `IdentityProvider`,
 SAML, or OIDC login path exists anywhere in `apps/api/src`") and sketched a
 one-method `IdentityProvider` interface. This document is the full,

@@ -578,7 +578,7 @@ All 394 tracked files in `docs/*`, by directory.
 | `125-zero-trust-networking.md` | doc | 102 |  |
 | `126-pluggable-cryptography.md` | doc | 176 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
-| `161-sso-identity-federation.md` | doc | 245 |  |
+| `161-sso-identity-federation.md` | doc | 287 |  |
 | `163-personal-api-keys.md` | doc | 625 |  |
 | `18-identity-verification.md` | doc | 149 |  |
 | `21-access-over-the-org-tree.md` | doc | 228 |  |

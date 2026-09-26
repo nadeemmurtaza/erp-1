@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 854 tracked files in `apps/api`, by directory.
+All 855 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -1890,7 +1890,7 @@ All 854 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `wishlist.dto.ts` | dto | 30 |  |
 
-### `apps/api/test` (25)
+### `apps/api/test` (26)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1918,6 +1918,7 @@ All 854 tracked files in `apps/api`, by directory.
 | `reports.e2e-spec.ts` | e2e test | 189 |  |
 | `session-only-routes.spec.ts` | unit test | 75 |  |
 | `setup-env.ts` | module | 11 | Same ordering rule as src/core/config/load-env.ts: the environment must be |
+| `sso.e2e-spec.ts` | e2e test | 414 |  |
 | `stitching.e2e-spec.ts` | e2e test | 590 |  |
 
 ### `apps/api/test/support` (2)

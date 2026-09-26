@@ -1855,16 +1855,16 @@ _no second-level headings_
 - Work orders  <sub>:157</sub>
 - When to actually build this  <sub>:176</sub>
 
-### `docs/implementation/access-control-identity/161-sso-identity-federation.md`  <sub>245 lines</sub>
+### `docs/implementation/access-control-identity/161-sso-identity-federation.md`  <sub>287 lines</sub>
 
-- What already exists, cited exactly  <sub>:13</sub>
-- 1. `SsoConnection` — one row per configured identity provider, per organization  <sub>:28</sub>
-- 2. The domain allowlist is not optional — the one control that makes everything else in this document safe  <sub>:73</sub>
-- 3. JIT provisioning — least privilege by default, never `UserRegistered`  <sub>:96</sub>
-- Scope lenses  <sub>:134</sub>
-- Work orders  <sub>:202</sub>
-- Acceptance  <sub>:223</sub>
-- Out of scope  <sub>:236</sub>
+- What already exists, cited exactly  <sub>:55</sub>
+- 1. `SsoConnection` — one row per configured identity provider, per organization  <sub>:70</sub>
+- 2. The domain allowlist is not optional — the one control that makes everything else in this document safe  <sub>:115</sub>
+- 3. JIT provisioning — least privilege by default, never `UserRegistered`  <sub>:138</sub>
+- Scope lenses  <sub>:176</sub>
+- Work orders  <sub>:244</sub>
+- Acceptance  <sub>:265</sub>
+- Out of scope  <sub>:278</sub>
 
 ### `docs/implementation/access-control-identity/163-personal-api-keys.md`  <sub>625 lines</sub>
 

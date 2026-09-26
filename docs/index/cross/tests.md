@@ -3,7 +3,7 @@
 
 # Tests
 
-**248** spec files, **2,448** cases. What is already pinned down — and what is not.
+**249** spec files, **2,457** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -28,7 +28,7 @@ such exemption.
 - [`tracking`](../modules/tracking.md)
 - [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (19)
+## End-to-end (20)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -53,6 +53,7 @@ regression or an N+1.
 | `apps/api/test/payments-refund.e2e-spec.ts` | 5 | Payment refunds (e2e) |
 | `apps/api/test/promotions-checkout.e2e-spec.ts` | 8 | Promotions & gift cards at checkout (e2e) · automatic discounts · promo codes · gift cards · store credit |
 | `apps/api/test/reports.e2e-spec.ts` | 2 | Reports and dashboard: stitching-booking revenue (e2e) |
+| `apps/api/test/sso.e2e-spec.ts` | 9 | Single sign-on (e2e) |
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 

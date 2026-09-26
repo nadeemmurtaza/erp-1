@@ -3,38 +3,38 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2149,
-    "lines": 329828,
-    "routes": 741,
-    "controllers": 132,
-    "models": 270,
-    "enums": 123,
-    "migrations": 96,
+    "files": 2166,
+    "lines": 331698,
+    "routes": 753,
+    "controllers": 134,
+    "models": 272,
+    "enums": 124,
+    "migrations": 98,
     "events": 63,
-    "permissions": 99,
-    "screens": 244,
+    "permissions": 101,
+    "screens": 245,
     "crons": 23,
-    "specs": 278,
+    "specs": 280,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
       "files": 208,
-      "lines": 20690,
-      "bytes": 1194527,
+      "lines": 20693,
+      "bytes": 1195019,
       "label": "repository root files"
     },
     "infra": {
       "files": 57,
-      "lines": 29987,
-      "bytes": 1178904,
+      "lines": 30073,
+      "bytes": 1183108,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 940,
-      "lines": 132696,
-      "bytes": 5106750,
+      "files": 954,
+      "lines": 133524,
+      "bytes": 5140252,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 389,
-      "lines": 63302,
-      "bytes": 2283339,
+      "files": 392,
+      "lines": 64048,
+      "bytes": 2309002,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 396,
-      "lines": 66116,
-      "bytes": 3932686,
+      "lines": 66287,
+      "bytes": 3942886,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8137,
-      "bytes": 289765,
+      "lines": 8173,
+      "bytes": 291426,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -332,6 +332,36 @@
       ],
       "routes": 33,
       "page": "docs/index/modules/crm.md"
+    },
+    {
+      "name": "custom-fields",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
+        "apps/api/src/modules/custom-fields/custom-fields.module.ts",
+        "apps/api/src/modules/custom-fields/custom-fields.service.spec.ts",
+        "apps/api/src/modules/custom-fields/custom-fields.service.ts",
+        "apps/api/src/modules/custom-fields/dto/custom-field.dto.ts"
+      ],
+      "routes": 6,
+      "page": "docs/index/modules/custom-fields.md"
+    },
+    {
+      "name": "embeds",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/embeds/dto/embedded-widget.dto.ts",
+        "apps/api/src/modules/embeds/embed-widgets.controller.ts",
+        "apps/api/src/modules/embeds/embed-widgets.service.spec.ts",
+        "apps/api/src/modules/embeds/embed-widgets.service.ts",
+        "apps/api/src/modules/embeds/embeds.module.ts"
+      ],
+      "routes": 6,
+      "page": "docs/index/modules/embeds.md"
     },
     {
       "name": "finance",
@@ -4944,6 +4974,98 @@
     },
     {
       "method": "GET",
+      "path": "/admin/custom-fields/definitions",
+      "module": "custom-fields",
+      "controller": "CustomFieldsController",
+      "handler": "definitions",
+      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
+      "line": 35,
+      "access": "settings.custom-fields.manage",
+      "permissions": [
+        "settings.custom-fields.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every custom-field definition for one entity type"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/custom-fields/definitions",
+      "module": "custom-fields",
+      "controller": "CustomFieldsController",
+      "handler": "define",
+      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
+      "line": 42,
+      "access": "settings.custom-fields.manage",
+      "permissions": [
+        "settings.custom-fields.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Define a new custom field on one entity type"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/custom-fields/definitions/:id",
+      "module": "custom-fields",
+      "controller": "CustomFieldsController",
+      "handler": "remove",
+      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
+      "line": 49,
+      "access": "settings.custom-fields.manage",
+      "permissions": [
+        "settings.custom-fields.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove a custom-field definition"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/custom-fields/entity-types",
+      "module": "custom-fields",
+      "controller": "CustomFieldsController",
+      "handler": "entityTypes",
+      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
+      "line": 28,
+      "access": "settings.custom-fields.manage",
+      "permissions": [
+        "settings.custom-fields.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every entity type this mechanism is wired up for"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/custom-fields/values",
+      "module": "custom-fields",
+      "controller": "CustomFieldsController",
+      "handler": "values",
+      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
+      "line": 56,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "One entity's own custom-field values, gated by that entity's own edit permission"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/custom-fields/values",
+      "module": "custom-fields",
+      "controller": "CustomFieldsController",
+      "handler": "setValues",
+      "file": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
+      "line": 64,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Set one entity's own custom-field values, gated by that entity's own edit permission"
+    },
+    {
+      "method": "GET",
       "path": "/admin/customers/:userId/store-credit",
       "module": "giftcards",
       "controller": "StoreCreditController",
@@ -5277,6 +5399,102 @@
       "public": false,
       "authOnly": false,
       "summary": "Render a template against sample data"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/embeds",
+      "module": "embeds",
+      "controller": "EmbedWidgetsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
+      "line": 24,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every active embedded widget"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/embeds",
+      "module": "embeds",
+      "controller": "EmbedWidgetsController",
+      "handler": "create",
+      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
+      "line": 38,
+      "access": "settings.embeds.manage",
+      "permissions": [
+        "settings.embeds.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Register a new embeddable widget"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/embeds/:id",
+      "module": "embeds",
+      "controller": "EmbedWidgetsController",
+      "handler": "remove",
+      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
+      "line": 52,
+      "access": "settings.embeds.manage",
+      "permissions": [
+        "settings.embeds.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove an embedded widget"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/embeds/:id",
+      "module": "embeds",
+      "controller": "EmbedWidgetsController",
+      "handler": "update",
+      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
+      "line": 45,
+      "access": "settings.embeds.manage",
+      "permissions": [
+        "settings.embeds.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit or deactivate an embedded widget"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/embeds/:key/token",
+      "module": "embeds",
+      "controller": "EmbedWidgetsController",
+      "handler": "issueToken",
+      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
+      "line": 59,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A short-lived, scoped token for one active widget — never a raw session credential"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/embeds/all",
+      "module": "embeds",
+      "controller": "EmbedWidgetsController",
+      "handler": "listAll",
+      "file": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
+      "line": 31,
+      "access": "settings.embeds.manage",
+      "permissions": [
+        "settings.embeds.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every embedded widget, active or not — for the configuration screen"
     },
     {
       "method": "GET",
@@ -13130,11 +13348,13 @@
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors",
         "GET /admin/analytics/workshop/output",
+        "GET /admin/embeds",
+        "POST /admin/embeds/:key/token",
         "GET /admin/feed",
         "GET /admin/inventory/suspicious-traffic",
         "GET /admin/wishlist/out-of-stock-report"
       ],
-      "uiSites": 11,
+      "uiSites": 12,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -13941,6 +14161,40 @@
         "GET /admin/sso/roles"
       ],
       "uiSites": 3,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "settings.custom-fields.manage",
+      "label": "Define custom fields on Suppliers and other wired entities",
+      "category": "Administration",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/custom-fields/definitions",
+        "POST /admin/custom-fields/definitions",
+        "DELETE /admin/custom-fields/definitions/:id",
+        "GET /admin/custom-fields/entity-types"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "settings.embeds.manage",
+      "label": "Register and configure embeddable third-party widgets",
+      "category": "Administration",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/embeds",
+        "DELETE /admin/embeds/:id",
+        "PATCH /admin/embeds/:id",
+        "GET /admin/embeds/all"
+      ],
+      "uiSites": 1,
       "roles": [
         "ADMIN"
       ],
@@ -15919,7 +16173,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 322,
+      "line": 323,
       "doc": "",
       "fields": [
         {
@@ -16178,7 +16432,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 645,
+      "line": 646,
       "doc": "",
       "fields": [
         {
@@ -16267,7 +16521,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 600,
+      "line": 601,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -16328,7 +16582,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 272,
+      "line": 273,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -17290,7 +17544,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 412,
+      "line": 413,
       "doc": "",
       "fields": [
         {
@@ -20140,6 +20394,74 @@
       ]
     },
     {
+      "name": "CustomFieldDefinition",
+      "file": "apps/api/prisma/schema/custom-fields.prisma",
+      "line": 20,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entityType",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "valueType",
+          "type": "CustomFieldValueType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isRequired",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([entityType, key])",
+        "@@index([entityType])"
+      ]
+    },
+    {
       "name": "DebitNote",
       "file": "apps/api/prisma/schema/receivables.prisma",
       "line": 80,
@@ -20237,7 +20559,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 580,
+      "line": 581,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -20794,7 +21116,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 367,
+      "line": 368,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -20980,7 +21302,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 228,
+      "line": 229,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -21037,6 +21359,78 @@
         "@@index([userId])",
         "@@index([expiresAt])"
       ]
+    },
+    {
+      "name": "EmbeddedWidget",
+      "file": "apps/api/prisma/schema/embeds.prisma",
+      "line": 6,
+      "doc": "Embedding a third-party dashboard: a narrow iframe pattern, not a micro-frontend architecture (architecture-patterns/113-micro-frontend- embedding.md, WO-113.1).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "targetUrl",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "EmployeeProfile",
@@ -22388,7 +22782,7 @@
     {
       "name": "GoodsReceipt",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 163,
+      "line": 168,
       "doc": "",
       "fields": [
         {
@@ -22498,7 +22892,7 @@
     {
       "name": "GoodsReceiptItem",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 191,
+      "line": 196,
       "doc": "",
       "fields": [
         {
@@ -27214,7 +27608,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 553,
+      "line": 554,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -27601,7 +27995,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 211,
+      "line": 212,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -28156,7 +28550,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 433,
+      "line": 434,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -31760,7 +32154,7 @@
     {
       "name": "PurchaseOrder",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 97,
+      "line": 102,
       "doc": "",
       "fields": [
         {
@@ -31955,7 +32349,7 @@
     {
       "name": "PurchaseOrderItem",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 145,
+      "line": 150,
       "doc": "",
       "fields": [
         {
@@ -32044,7 +32438,7 @@
     {
       "name": "PurchaseRequisition",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 264,
+      "line": 269,
       "doc": "",
       "fields": [
         {
@@ -32551,7 +32945,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 190,
+      "line": 191,
       "doc": "",
       "fields": [
         {
@@ -32879,7 +33273,7 @@
     {
       "name": "RequisitionLine",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 288,
+      "line": 293,
       "doc": "",
       "fields": [
         {
@@ -33678,7 +34072,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 499,
+      "line": 500,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -33736,7 +34130,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 513,
+      "line": 514,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -33790,7 +34184,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 449,
+      "line": 450,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -34017,7 +34411,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 345,
+      "line": 346,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -37110,6 +37504,13 @@
           "relation": false
         },
         {
+          "name": "customFields",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tradingPartner",
           "type": "TradingPartner?",
           "id": false,
@@ -37146,7 +37547,7 @@
     {
       "name": "SupplierBill",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 214,
+      "line": 219,
       "doc": "",
       "fields": [
         {
@@ -37284,7 +37685,7 @@
     {
       "name": "SupplierProduct",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 69,
+      "line": 74,
       "doc": "What a given supplier charges for a given variant, and under what terms.",
       "fields": [
         {
@@ -38480,6 +38881,13 @@
           "relation": true
         },
         {
+          "name": "embeddedWidgetsCreated",
+          "type": "EmbeddedWidget[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "goodsReceiptsReceived",
           "type": "GoodsReceipt[]",
           "id": false,
@@ -38839,7 +39247,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 470,
+      "line": 471,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -38900,7 +39308,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 528,
+      "line": 529,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -39814,7 +40222,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 639,
+      "line": 640,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -39824,7 +40232,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 618,
+      "line": 619,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -39868,7 +40276,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 253,
+      "line": 254,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -39878,7 +40286,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 246,
+      "line": 247,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -40096,6 +40504,17 @@
       ]
     },
     {
+      "name": "CustomFieldValueType",
+      "file": "apps/api/prisma/schema/custom-fields.prisma",
+      "line": 13,
+      "values": [
+        "TEXT",
+        "NUMBER",
+        "BOOLEAN",
+        "DATE"
+      ]
+    },
+    {
       "name": "DepreciationMethod",
       "file": "apps/api/prisma/schema/accounting.prisma",
       "line": 231,
@@ -40107,7 +40526,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 568,
+      "line": 569,
       "values": [
         "IOS",
         "ANDROID",
@@ -40152,7 +40571,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 356,
+      "line": 357,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -40511,7 +40930,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 542,
+      "line": 543,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -40566,7 +40985,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 461,
+      "line": 462,
       "values": [
         "GRANT",
         "REVOKE"
@@ -40648,7 +41067,7 @@
     {
       "name": "PurchaseOrderStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 89,
+      "line": 94,
       "values": [
         "DRAFT",
         "SENT",
@@ -40741,7 +41160,7 @@
     {
       "name": "RequisitionApprovalStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 257,
+      "line": 262,
       "values": [
         "PENDING",
         "APPROVED",
@@ -40989,7 +41408,7 @@
     {
       "name": "SupplierBillStatus",
       "file": "apps/api/prisma/schema/purchasing.prisma",
-      "line": 208,
+      "line": 213,
       "values": [
         "UNPAID",
         "PARTIAL",
@@ -42808,6 +43227,24 @@
       ]
     },
     {
+      "folder": "20260926090000_add_custom_fields",
+      "file": "apps/api/prisma/schema/migrations/20260926090000_add_custom_fields/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_custom_fields",
+      "statements": 5,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "CustomFieldDefinition",
+        "Supplier"
+      ]
+    },
+    {
       "folder": "20260926090000_add_org_unit_grant",
       "file": "apps/api/prisma/schema/migrations/20260926090000_add_org_unit_grant/migration.sql",
       "date": "2026-09-26",
@@ -42821,6 +43258,21 @@
       ],
       "tables": [
         "OrgUnitGrant"
+      ]
+    },
+    {
+      "folder": "20260926093000_add_embedded_widgets",
+      "file": "apps/api/prisma/schema/migrations/20260926093000_add_embedded_widgets/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_embedded_widgets",
+      "statements": 3,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "EmbeddedWidget"
       ]
     },
     {
@@ -44182,6 +44634,15 @@
       "kind": "page",
       "url": "/admin/email-templates",
       "file": "apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/embeds",
+      "file": "apps/web/src/app/(admin)/admin/(app)/embeds/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -46855,6 +47316,24 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/custom-fields/custom-fields.service.spec.ts",
+      "module": "custom-fields",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "CustomFieldsService — WO-104.2"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/embeds/embed-widgets.service.spec.ts",
+      "module": "embeds",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "EmbedWidgetsService — WO-113.1"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/finance/expense-import.service.spec.ts",
       "module": "finance",
       "kind": "unit test",
@@ -49130,7 +49609,7 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 3844,
+      "bytes": 3926,
       "doc": "",
       "symbols": []
     },
@@ -49139,7 +49618,7 @@
       "area": "root",
       "kind": "mdc",
       "lines": 0,
-      "bytes": 3895,
+      "bytes": 3977,
       "doc": "",
       "symbols": []
     },
@@ -49210,8 +49689,8 @@
       "path": ".github/copilot-instructions.md",
       "area": "infra",
       "kind": "doc",
-      "lines": 80,
-      "bytes": 3894,
+      "lines": 81,
+      "bytes": 3976,
       "doc": "",
       "symbols": []
     },
@@ -49246,8 +49725,8 @@
       "path": ".junie/guidelines.md",
       "area": "root",
       "kind": "doc",
-      "lines": 80,
-      "bytes": 3842,
+      "lines": 81,
+      "bytes": 3924,
       "doc": "",
       "symbols": []
     },
@@ -49265,7 +49744,7 @@
       "area": "root",
       "kind": "file",
       "lines": 0,
-      "bytes": 3845,
+      "bytes": 3927,
       "doc": "",
       "symbols": []
     },
@@ -49273,8 +49752,8 @@
       "path": "AGENTS.md",
       "area": "root",
       "kind": "doc",
-      "lines": 80,
-      "bytes": 3945,
+      "lines": 81,
+      "bytes": 4027,
       "doc": "",
       "symbols": []
     },
@@ -49336,8 +49815,8 @@
       "path": "GEMINI.md",
       "area": "root",
       "kind": "doc",
-      "lines": 80,
-      "bytes": 3859,
+      "lines": 81,
+      "bytes": 3941,
       "doc": "",
       "symbols": []
     },
@@ -49531,8 +50010,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 665,
-      "bytes": 28478,
+      "lines": 666,
+      "bytes": 28577,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -49543,6 +50022,24 @@
       "lines": 269,
       "bytes": 9861,
       "doc": "CRM: one customer record, whatever door the customer came in through.",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/custom-fields.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 33,
+      "bytes": 1169,
+      "doc": "Custom fields: a narrow, bounded JSONB overlay, never a general EAV model",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/embeds.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 19,
+      "bytes": 787,
+      "doc": "Embedding a third-party dashboard: a narrow iframe pattern, not a",
       "symbols": []
     },
     {
@@ -50392,11 +50889,29 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926090000_add_custom_fields/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 31,
+      "bytes": 1166,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/20260926090000_add_org_unit_grant/migration.sql",
       "area": "api",
       "kind": "migration",
       "lines": 38,
       "bytes": 1804,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260926093000_add_embedded_widgets/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 27,
+      "bytes": 1001,
       "doc": "",
       "symbols": []
     },
@@ -50557,8 +51072,8 @@
       "path": "apps/api/prisma/schema/purchasing.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 303,
-      "bytes": 12379,
+      "lines": 308,
+      "bytes": 12637,
       "doc": "",
       "symbols": []
     },
@@ -57534,6 +58049,154 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/custom-fields/custom-fields.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 76,
+      "bytes": 3338,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomFieldsController",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/custom-fields/custom-fields.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 18,
+      "bytes": 701,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomFieldsModule",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/custom-fields/custom-fields.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 118,
+      "bytes": 5024,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/custom-fields/custom-fields.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 146,
+      "bytes": 6053,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomFieldsService",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/custom-fields/dto/custom-field.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 44,
+      "bytes": 1405,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DefineCustomFieldDto",
+          "kind": "class",
+          "line": 5
+        },
+        {
+          "name": "SetCustomFieldValuesDto",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/embeds/dto/embedded-widget.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 37,
+      "bytes": 904,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateEmbeddedWidgetDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "UpdateEmbeddedWidgetDto",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/embeds/embed-widgets.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 63,
+      "bytes": 2471,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EmbedWidgetsController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/embeds/embed-widgets.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 110,
+      "bytes": 4758,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/embeds/embed-widgets.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 73,
+      "bytes": 3284,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EmbedWidgetsService",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/embeds/embeds.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 18,
+      "bytes": 599,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EmbedsModule",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/finance/dto/expense-category.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -59582,8 +60245,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 113,
-      "bytes": 3725,
+      "lines": 115,
+      "bytes": 3770,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -59602,24 +60265,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 246,
-      "bytes": 13675,
+      "lines": 253,
+      "bytes": 14115,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 52
+          "line": 54
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 83
+          "line": 85
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 222
+          "line": 229
         }
       ]
     },
@@ -69983,6 +70646,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/embeds/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 62,
+      "bytes": 2059,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EmbedsPage",
+          "kind": "default",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/cash-flow/page.tsx",
       "area": "web",
       "kind": "page",
@@ -71216,14 +71894,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/settings/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 571,
-      "bytes": 19680,
+      "lines": 965,
+      "bytes": 33647,
       "doc": "",
       "symbols": [
         {
           "name": "AdminSettingsPage",
           "kind": "default",
-          "line": 15
+          "line": 16
         }
       ]
     },
@@ -71381,14 +72059,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/suppliers/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 186,
-      "bytes": 6795,
+      "lines": 189,
+      "bytes": 6952,
       "doc": "No clsx import needed",
       "symbols": [
         {
           "name": "SupplierDetailPage",
           "kind": "default",
-          "line": 31
+          "line": 32
         }
       ]
     },
@@ -73169,6 +73847,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/custom-field-form-section.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 179,
+      "bytes": 5905,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomFieldFormSection",
+          "kind": "function",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/dashboard/action-hub-widget.tsx",
       "area": "web",
       "kind": "component",
@@ -73369,6 +74062,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/embedded-widget-frame.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 64,
+      "bytes": 2198,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EmbeddedWidgetFrame",
+          "kind": "function",
+          "line": 15
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/funnel-chart.tsx",
       "area": "web",
       "kind": "component",
@@ -73477,8 +74185,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1020,
-      "bytes": 28032,
+      "lines": 1031,
+      "bytes": 28440,
       "doc": "",
       "symbols": [
         {
@@ -73509,12 +74217,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 990
+          "line": 1001
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1005
+          "line": 1016
         }
       ]
     },
@@ -74775,8 +75483,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 262,
-      "bytes": 11998,
+      "lines": 264,
+      "bytes": 12121,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -75342,8 +76050,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1658,
-      "bytes": 44682,
+      "lines": 1689,
+      "bytes": 45528,
       "doc": "",
       "symbols": [
         {
@@ -76200,6 +76908,36 @@
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
           "line": 1654
+        },
+        {
+          "name": "CustomFieldDefinition",
+          "kind": "interface",
+          "line": 1660
+        },
+        {
+          "name": "CustomFieldEntityType",
+          "kind": "type",
+          "line": 1669
+        },
+        {
+          "name": "CustomFieldValueType",
+          "kind": "type",
+          "line": 1670
+        },
+        {
+          "name": "CustomFieldValue",
+          "kind": "type",
+          "line": 1672
+        },
+        {
+          "name": "EmbeddedWidget",
+          "kind": "interface",
+          "line": 1675
+        },
+        {
+          "name": "EmbedToken",
+          "kind": "interface",
+          "line": 1684
         }
       ]
     },
@@ -79004,8 +79742,8 @@
       "path": "docs/implementation/architecture-patterns/100-event-driven-architecture.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 75,
-      "bytes": 4058,
+      "lines": 82,
+      "bytes": 4462,
       "doc": "",
       "symbols": []
     },
@@ -79013,8 +79751,8 @@
       "path": "docs/implementation/architecture-patterns/103-semantic-data-contracts.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 69,
-      "bytes": 3620,
+      "lines": 83,
+      "bytes": 4444,
       "doc": "",
       "symbols": []
     },
@@ -79022,8 +79760,8 @@
       "path": "docs/implementation/architecture-patterns/104-jsonb-eav-extensibility.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 159,
-      "bytes": 8611,
+      "lines": 169,
+      "bytes": 9225,
       "doc": "",
       "symbols": []
     },
@@ -79031,8 +79769,8 @@
       "path": "docs/implementation/architecture-patterns/105-metadata-driven-ui-rendering.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 101,
-      "bytes": 5124,
+      "lines": 109,
+      "bytes": 5556,
       "doc": "",
       "symbols": []
     },
@@ -79040,8 +79778,8 @@
       "path": "docs/implementation/architecture-patterns/106-finite-state-machines-registry.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 98,
-      "bytes": 4652,
+      "lines": 119,
+      "bytes": 6109,
       "doc": "",
       "symbols": []
     },
@@ -79049,8 +79787,8 @@
       "path": "docs/implementation/architecture-patterns/107-visual-bpmn-workflow-modeling.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 77,
-      "bytes": 3926,
+      "lines": 81,
+      "bytes": 4126,
       "doc": "",
       "symbols": []
     },
@@ -79058,8 +79796,8 @@
       "path": "docs/implementation/architecture-patterns/108-event-triggered-side-effects.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 61,
-      "bytes": 2765,
+      "lines": 79,
+      "bytes": 4105,
       "doc": "",
       "symbols": []
     },
@@ -79067,8 +79805,8 @@
       "path": "docs/implementation/architecture-patterns/109-immutable-event-ledger.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 98,
-      "bytes": 5449,
+      "lines": 102,
+      "bytes": 5624,
       "doc": "",
       "symbols": []
     },
@@ -79076,8 +79814,8 @@
       "path": "docs/implementation/architecture-patterns/110-cqrs-read-write-separation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 93,
-      "bytes": 5019,
+      "lines": 99,
+      "bytes": 5295,
       "doc": "",
       "symbols": []
     },
@@ -79085,8 +79823,8 @@
       "path": "docs/implementation/architecture-patterns/113-micro-frontend-embedding.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 114,
-      "bytes": 6198,
+      "lines": 129,
+      "bytes": 7106,
       "doc": "",
       "symbols": []
     },
@@ -79103,8 +79841,8 @@
       "path": "docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 69,
-      "bytes": 4271,
+      "lines": 81,
+      "bytes": 4968,
       "doc": "",
       "symbols": []
     },
@@ -79274,8 +80012,8 @@
       "path": "docs/implementation/architecture-patterns/92-microservices-module-decoupling.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 89,
-      "bytes": 5471,
+      "lines": 94,
+      "bytes": 5767,
       "doc": "",
       "symbols": []
     },
@@ -79283,8 +80021,8 @@
       "path": "docs/implementation/architecture-patterns/93-headless-frontend-architecture.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 66,
-      "bytes": 3171,
+      "lines": 73,
+      "bytes": 3558,
       "doc": "",
       "symbols": []
     },
@@ -79292,8 +80030,8 @@
       "path": "docs/implementation/architecture-patterns/94-cloud-native-container-scalability.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 70,
-      "bytes": 3335,
+      "lines": 75,
+      "bytes": 3602,
       "doc": "",
       "symbols": []
     },
@@ -79301,8 +80039,8 @@
       "path": "docs/implementation/architecture-patterns/95-externalized-rule-logic.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 78,
-      "bytes": 4366,
+      "lines": 89,
+      "bytes": 5064,
       "doc": "",
       "symbols": []
     },
@@ -79310,8 +80048,8 @@
       "path": "docs/implementation/architecture-patterns/96-version-controlled-policy-execution.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 68,
-      "bytes": 3494,
+      "lines": 72,
+      "bytes": 3675,
       "doc": "",
       "symbols": []
     },
@@ -79319,8 +80057,8 @@
       "path": "docs/implementation/architecture-patterns/97-realtime-validation-single-source-of-truth.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 63,
-      "bytes": 3154,
+      "lines": 68,
+      "bytes": 3388,
       "doc": "",
       "symbols": []
     },
@@ -79328,8 +80066,8 @@
       "path": "docs/implementation/architecture-patterns/98-contract-first-api-development.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 80,
-      "bytes": 4228,
+      "lines": 89,
+      "bytes": 4761,
       "doc": "",
       "symbols": []
     },
@@ -79337,8 +80075,8 @@
       "path": "docs/implementation/architecture-patterns/99-centralized-api-gateway.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 60,
-      "bytes": 3180,
+      "lines": 66,
+      "bytes": 3457,
       "doc": "",
       "symbols": []
     },
@@ -81458,8 +82196,8 @@
       "path": "packages/shared/src/enums.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 108,
-      "bytes": 3436,
+      "lines": 121,
+      "bytes": 4121,
       "doc": "Enum values mirrored from the Prisma schema.",
       "symbols": [
         {
@@ -81586,6 +82324,26 @@
           "name": "previousStage",
           "kind": "function",
           "line": 104
+        },
+        {
+          "name": "CUSTOM_FIELD_ENTITY_TYPES",
+          "kind": "const",
+          "line": 116
+        },
+        {
+          "name": "CustomFieldEntityType",
+          "kind": "type",
+          "line": 117
+        },
+        {
+          "name": "CUSTOM_FIELD_VALUE_TYPES",
+          "kind": "const",
+          "line": 119
+        },
+        {
+          "name": "CustomFieldValueType",
+          "kind": "type",
+          "line": 120
         }
       ]
     },
@@ -81912,8 +82670,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1088,
-      "bytes": 35651,
+      "lines": 1111,
+      "bytes": 36627,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -81934,52 +82692,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 650
+          "line": 669
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 652
+          "line": 671
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 662
+          "line": 681
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 669
+          "line": 688
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 865
+          "line": 886
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1052
+          "line": 1075
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1071
+          "line": 1094
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1080
+          "line": 1103
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1081
+          "line": 1104
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1084
+          "line": 1107
         }
       ]
     },
@@ -82452,8 +83210,8 @@
       "path": "scripts/build-index.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 2511,
-      "bytes": 114955,
+      "lines": 2558,
+      "bytes": 117379,
       "doc": "",
       "symbols": []
     },
@@ -82653,8 +83411,8 @@
       "path": "scripts/lib/index-scan.mjs",
       "area": "infra",
       "kind": "utility",
-      "lines": 906,
-      "bytes": 37657,
+      "lines": 944,
+      "bytes": 39355,
       "doc": "Scanners for the repository index.",
       "symbols": [
         {
@@ -82738,89 +83496,94 @@
           "line": 362
         },
         {
+          "name": "scanStateMachines",
+          "kind": "function",
+          "line": 391
+        },
+        {
           "name": "scanCron",
           "kind": "function",
-          "line": 383
+          "line": 421
         },
         {
           "name": "scanPrisma",
           "kind": "function",
-          "line": 413
+          "line": 451
         },
         {
           "name": "scanMigration",
           "kind": "function",
-          "line": 473
+          "line": 511
         },
         {
           "name": "balancedLiteral",
           "kind": "function",
-          "line": 509
+          "line": 547
         },
         {
           "name": "splitObjectLiterals",
           "kind": "function",
-          "line": 543
+          "line": 581
         },
         {
           "name": "scanPermissionCatalog",
           "kind": "function",
-          "line": 571
+          "line": 609
         },
         {
           "name": "scanRoleSeed",
           "kind": "function",
-          "line": 592
+          "line": 630
         },
         {
           "name": "appRouterPath",
           "kind": "function",
-          "line": 613
+          "line": 651
         },
         {
           "name": "routeKind",
           "kind": "function",
-          "line": 624
+          "line": 662
         },
         {
           "name": "isClientComponent",
           "kind": "function",
-          "line": 639
+          "line": 677
         },
         {
           "name": "scanDescribes",
           "kind": "function",
-          "line": 646
+          "line": 684
         },
         {
           "name": "scanTestNames",
           "kind": "function",
-          "line": 654
+          "line": 692
         },
         {
           "name": "scanHeadings",
           "kind": "function",
-          "line": 663
+          "line": 701
         },
         {
           "name": "classify",
           "kind": "function",
-          "line": 678
+          "line": 716
         },
         {
           "name": "splitSqlStatements",
           "kind": "function",
-          "line": 744
+          "line": 782
         },
         {
           "name": "scanMigrationSql",
           "kind": "function",
-          "line": 785
+          "line": 823
         },
         {
           "name": "schemaMigrationDrift",
           "kind": "function",
-          "line": 864
+          "line": 902
         }
       ]
     },

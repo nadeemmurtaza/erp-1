@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "ce26c7bb05c42b9a",
+  "contentHash": "03438b2b1367c7c3",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -64,6 +64,7 @@
     "docs/index/cross/model-routing.md",
     "docs/index/cross/permissions.md",
     "docs/index/cross/routes.md",
+    "docs/index/cross/state-machines.md",
     "docs/index/cross/tests.md",
     "docs/index/cross/ui-routes.md",
     "docs/index/data/accounting.md",
@@ -75,6 +76,8 @@
     "docs/index/data/content.md",
     "docs/index/data/core.md",
     "docs/index/data/crm.md",
+    "docs/index/data/custom-fields.md",
+    "docs/index/data/embeds.md",
     "docs/index/data/finance.md",
     "docs/index/data/fulfilment.md",
     "docs/index/data/giftcards.md",
@@ -134,6 +137,8 @@
     "docs/index/modules/collections.md",
     "docs/index/modules/content.md",
     "docs/index/modules/crm.md",
+    "docs/index/modules/custom-fields.md",
+    "docs/index/modules/embeds.md",
     "docs/index/modules/finance.md",
     "docs/index/modules/fulfilment.md",
     "docs/index/modules/giftcards.md",
@@ -182,18 +187,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2149,
-    "lines": 329828,
-    "routes": 741,
-    "controllers": 132,
-    "models": 270,
-    "enums": 123,
-    "migrations": 96,
+    "files": 2166,
+    "lines": 331698,
+    "routes": 753,
+    "controllers": 134,
+    "models": 272,
+    "enums": 124,
+    "migrations": 98,
     "events": 63,
-    "permissions": 99,
-    "screens": 244,
+    "permissions": 101,
+    "screens": 245,
     "crons": 23,
-    "specs": 278,
+    "specs": 280,
     "designLaws": 0
   }
 }

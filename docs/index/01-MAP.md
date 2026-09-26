@@ -32,11 +32,11 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 850 | 120,643 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 394 | 63,319 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 375 | 60,412 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 854 | 121,003 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 394 | 63,559 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 378 | 61,139 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,167 | workspace manifests, docker compose/stack files, env templates |
-| `apps/platform` | 139 | 9,360 |  |
+| `apps/platform` | 144 | 9,867 |  |
 | `scripts` | 22 | 9,116 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 62 | 7,368 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
@@ -125,6 +125,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
 | [`extension-points`](core/extension-points.md) | 9 |  |
 | [`health`](core/health.md) | 2 |  |
+| [`intent`](core/intent.md) | 4 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
 | [`notifications`](core/notifications.md) | 23 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |

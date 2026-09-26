@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { BillingController } from './billing.controller';
 import { CustomQuoteController } from './custom-quote.controller';
 import { PlansController } from './plans.controller';
+import { PricingController } from './pricing.controller';
 import { RateCardController } from './rate-card.controller';
 import { BillingService } from './billing.service';
 import { CustomQuoteService } from './custom-quote.service';
@@ -14,7 +15,7 @@ import { UsageMeteringCron } from './usage-metering.cron';
 import { InvoiceDunningCron } from './invoice-dunning.cron';
 
 @Module({
-  controllers: [BillingController, CustomQuoteController, PlansController, RateCardController],
+  controllers: [BillingController, CustomQuoteController, PlansController, PricingController, RateCardController],
   providers: [
     BillingService,
     CustomQuoteService,

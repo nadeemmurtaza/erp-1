@@ -9,6 +9,7 @@ import { AppConfigModule } from './config/config.module';
 import { EventsModule } from './events/events.module';
 import { ExtensionPointsModule } from './extension-points/extension-points.module';
 import { HealthModule } from './health/health.module';
+import { IntentRouterModule } from './intent/intent-router.module';
 import { MetricsModule } from './metrics/metrics.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -35,6 +36,7 @@ import { StorageModule } from './storage/storage.module';
     StorageModule,
     NotificationsModule,
     AiModule,
+    IntentRouterModule,
     ApprovalsModule,
     AuditModule,
     AuthModule,

@@ -1,5 +1,11 @@
 # 154 — Three headline plans: packaging doc 50/153's own existing shapes, never a new pricing mechanism
 
+> **Status: shipped (2026-09-26), WO-154.1–154.4.** `PlatformPlan.isHeadline`/
+> `.headlineOrder` plus public-copy columns, `PlansService.getPlanComparison()`,
+> the public `/pricing` page, and the "talk to us" path for `PER_SEAT` are all
+> built in `apps/platform`. See `docs/implementation/DECISIONS.md`'s ADR-042
+> for where the public-copy fields live and why.
+
 The owner wants exactly three plans on the pricing page — **Lifetime
 License**, **Per Month**, and **Pay As You Grow** — with `PER_SEAT` kept
 available as a fourth option for a client whose own need specifically

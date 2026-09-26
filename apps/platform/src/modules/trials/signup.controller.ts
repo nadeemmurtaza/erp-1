@@ -9,10 +9,12 @@ import { RequestSignupDto, VerifySignupDto } from './dto/signup.dto';
 const SIGNUP_THROTTLE = { default: { limit: 5, ttl: 60_000 } };
 
 /**
- * The ONLY unauthenticated controller in this app — doc 51 §"the principal
- * with no permission key": nobody has an account yet, so this is bounded
- * by rate limiting and email verification, never `OpsAuthGuard`, which is
- * the correct, named exception rather than an oversight.
+ * One of two unauthenticated controllers in this app — the other is doc
+ * 154's `PricingController`, a pure read with no side effect at all. Doc
+ * 51 §"the principal with no permission key": nobody has an account yet
+ * here either, so THIS controller is bounded by rate limiting and email
+ * verification, never `OpsAuthGuard`, which is the correct, named
+ * exception rather than an oversight.
  */
 @Controller('signup')
 export class SignupController {

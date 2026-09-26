@@ -3,7 +3,7 @@
 
 # Tests
 
-**246** spec files, **2,422** cases. What is already pinned down — and what is not.
+**248** spec files, **2,448** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (227)
+## Unit and integration (229)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -80,6 +80,7 @@ regression or an N+1.
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
+| `apps/api/src/core/intent/intent-router.service.spec.ts` | core/intent | 12 | IntentRouterService · routing · permission enforcement — mirrors PermissionsGuard exactly, for a se… |
 | `apps/api/src/core/metrics/metric-registry.service.spec.ts` | core/metrics | 15 | MetricRegistryService · register · collect — permission gating · collect — failure isolation · coll… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
 | `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 30 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
@@ -154,7 +155,7 @@ regression or an N+1.
 | `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 10 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-… |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
 | `apps/api/src/modules/inventory/inventory.metrics.spec.ts` | inventory | 4 | InventoryMetricsProvider · InventoryValuationMetricsProvider |
-| `apps/api/src/modules/inventory/inventory.service.spec.ts` | inventory | 16 | InventoryService — locations (B6) · InventoryService — postUnconditional (R5 oversell) · shift attr… |
+| `apps/api/src/modules/inventory/inventory.service.spec.ts` | inventory | 18 | InventoryService — locations (B6) · check_inventory_chain_status intent (135-intent-router-voice-vi… |
 | `apps/api/src/modules/inventory/markdown-suggestions.service.spec.ts` | inventory | 10 | MarkdownSuggestionsService · list · activate · dismiss |
 | `apps/api/src/modules/inventory/spot-check.service.spec.ts` | inventory | 10 | SpotCheckService — 156-single-employee-branch-loss-prevention.md §3 · dueForRandomCheck — the unpre… |
 | `apps/api/src/modules/inventory/stock-count.service.spec.ts` | inventory | 1 | StockCountService |
@@ -247,7 +248,8 @@ regression or an N+1.
 | `apps/platform/src/modules/billing/billing-period.spec.ts` | root | 2 | currentCalendarMonthPeriod |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | root | 15 | BillingService · issueInvoiceForPeriod · runBillingForPeriod · issueCreditNote · previewInvoice · U… |
 | `apps/platform/src/modules/billing/custom-quote.service.spec.ts` | root | 6 | CustomQuoteService · requestQuote · approve |
-| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 7 | PlansService |
+| `apps/platform/src/modules/billing/headline-plan-signup.integration.spec.ts` | root | 1 | a headline plan hands off to the identical existing provisioning path (doc 154 acceptance) |
+| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 18 | PlansService · update (doc 154) · getPlanComparison (doc 154) |
 | `apps/platform/src/modules/billing/rate-card.service.spec.ts` | root | 9 | RateCardService · proposeChange · approve · apply |
 | `apps/platform/src/modules/billing/seat-counter.service.spec.ts` | root | 3 | SeatCounterService |
 | `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | root | 11 | UsageMeteringService · pollTenant · snapshotAllowances · getMetersForPeriod |

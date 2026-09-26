@@ -2,7 +2,7 @@
 
 import { ApiError, API_URL } from './api';
 import { request, requestWithRefresh } from './api-client';
-import type { AuthResult, AuthUser } from '@/types/api';
+import type { AuthResult, AuthUser, SsoSignInOption } from '@/types/api';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 const ACCESS_KEY = STORAGE_KEYS.admin.access;
@@ -69,6 +69,49 @@ export async function login(identifier: string, password: string): Promise<AuthU
   const result = body as AuthResult;
   if (!hasBackOfficeAccess(result.user.permissions)) {
     throw new ApiError(403, 'This account does not have access to the back office.');
+  }
+
+  storeSession(result);
+  return result.user;
+}
+
+/*
+ * Single sign-on (docs/implementation/access-control-identity/161-sso-identity-federation.md).
+ *
+ * The browser leaves for the identity provider and comes back through the
+ * API, which never puts a token in a URL: it leaves the session it issued in
+ * a sealed, two-minute, httpOnly cookie that only `completeSsoSignIn()` can
+ * redeem — once — for the same AuthResult a password sign-in returns. From
+ * there the session is stored and refreshed exactly as `login()`'s is.
+ */
+
+/** The single sign-on buttons the sign-in screen offers. Empty when none is configured — or when the list cannot be read, since the password form works regardless. */
+export async function listSsoSignInOptions(): Promise<SsoSignInOption[]> {
+  try {
+    return await request<SsoSignInOption[]>('/auth/sso/connections', { fallbackMessage: 'Could not load sign-in options' });
+  } catch {
+    return [];
+  }
+}
+
+/** Where a "Sign in with …" button navigates: the API redirects the browser on to the identity provider. */
+export function ssoStartUrl(connectionId: string): string {
+  return `${API_URL}/auth/sso/${encodeURIComponent(connectionId)}/start`;
+}
+
+/** Redeems a just-completed single sign-on for a session, and stores it the way `login()` does. */
+export async function completeSsoSignIn(): Promise<AuthUser> {
+  const result = await request<AuthResult>('/auth/sso/session', {
+    method: 'POST',
+    credentials: 'include',
+    fallbackMessage: 'Single sign-on did not complete. Try again, or sign in with your password.',
+  });
+
+  if (!hasBackOfficeAccess(result.user.permissions)) {
+    throw new ApiError(
+      403,
+      'You are signed in, but this account has no back-office access yet. Ask an administrator to give it a role in Team & Access.',
+    );
   }
 
   storeSession(result);

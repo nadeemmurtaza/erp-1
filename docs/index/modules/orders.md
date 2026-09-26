@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 19 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (19 · 3,545 lines)
+## Files (19 · 3,547 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -29,7 +29,7 @@ All paths relative to `apps/api/src/modules/orders`.
 | `notification.subscriber.ts` | event subscriber | 259 | 1 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `orders-pos.service.spec.ts` | unit test | 403 | — |  |
+| `orders-pos.service.spec.ts` | unit test | 405 | — |  |
 | `orders.controller.ts` | controller | 145 | 2 |  |
 | `orders.module.ts` | nest module | 53 | 1 |  |
 | `orders.service.ts` | service | 1300 | 4 |  |
@@ -125,6 +125,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `config`
 - core `events`
 - core `extension-points`
+- core `intent`
 - core `notifications`
 - core `prisma`
 - core `replication`

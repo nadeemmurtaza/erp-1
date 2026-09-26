@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 187 tracked files in `repository root files`, by directory.
+All 192 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -112,7 +112,7 @@ All 187 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `platform.prisma` | prisma schema | 767 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
+| `platform.prisma` | prisma schema | 789 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
 | `schema.prisma` | prisma schema | 19 | Datasource and generator only — the control plane's OWN database, never a |
 
 ### `apps/platform/prisma/schema/migrations` (1)
@@ -157,6 +157,12 @@ All 187 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 56 |  |
 
+### `apps/platform/prisma/schema/migrations/20260925094500_wo154_headline_plans` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 27 |  |
+
 ### `apps/platform/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -170,7 +176,7 @@ All 187 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `app-config.service.ts` | service | 25 |  |
 | `config.module.ts` | nest module | 20 |  |
-| `env.validation.ts` | config | 194 |  |
+| `env.validation.ts` | config | 203 |  |
 | `load-env.ts` | config | 13 |  |
 
 ### `apps/platform/src/core/notifications` (2)
@@ -239,7 +245,7 @@ All 187 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `register-agency-client.dto.ts` | dto | 29 |  |
 
-### `apps/platform/src/modules/billing` (22)
+### `apps/platform/src/modules/billing` (24)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -247,16 +253,18 @@ All 187 tracked files in `repository root files`, by directory.
 | `billing-period.ts` | module | 18 | The one place a calendar-month billing period is computed from "now" — shared by `BillingCron` (doc 50 §3) and `UsageMe… |
 | `billing.controller.ts` | controller | 48 |  |
 | `billing.cron.ts` | scheduled job | 25 |  |
-| `billing.module.ts` | nest module | 32 |  |
+| `billing.module.ts` | nest module | 33 |  |
 | `billing.service.spec.ts` | unit test | 285 |  |
 | `billing.service.ts` | service | 275 |  |
 | `custom-quote.controller.ts` | controller | 39 |  |
 | `custom-quote.service.spec.ts` | unit test | 86 |  |
 | `custom-quote.service.ts` | service | 94 |  |
+| `headline-plan-signup.integration.spec.ts` | unit test | 95 |  |
 | `invoice-dunning.cron.ts` | scheduled job | 52 |  |
-| `plans.controller.ts` | controller | 23 |  |
-| `plans.service.spec.ts` | unit test | 88 |  |
-| `plans.service.ts` | service | 48 |  |
+| `plans.controller.ts` | controller | 31 |  |
+| `plans.service.spec.ts` | unit test | 225 |  |
+| `plans.service.ts` | service | 166 |  |
+| `pricing.controller.ts` | controller | 33 |  |
 | `rate-card.controller.ts` | controller | 53 |  |
 | `rate-card.service.spec.ts` | unit test | 127 |  |
 | `rate-card.service.ts` | service | 141 |  |
@@ -266,7 +274,7 @@ All 187 tracked files in `repository root files`, by directory.
 | `usage-metering.service.spec.ts` | unit test | 285 |  |
 | `usage-metering.service.ts` | service | 318 |  |
 
-### `apps/platform/src/modules/billing/dto` (4)
+### `apps/platform/src/modules/billing/dto` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -274,6 +282,7 @@ All 187 tracked files in `repository root files`, by directory.
 | `credit-note.dto.ts` | dto | 20 |  |
 | `rate-card.dto.ts` | dto | 27 |  |
 | `request-quote.dto.ts` | dto | 26 |  |
+| `update-plan.dto.ts` | dto | 46 |  |
 
 ### `apps/platform/src/modules/resource-quotas` (5)
 
@@ -358,7 +367,7 @@ All 187 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `signup.controller.ts` | controller | 33 |  |
+| `signup.controller.ts` | controller | 35 |  |
 | `signup.service.spec.ts` | unit test | 126 |  |
 | `signup.service.ts` | service | 106 |  |
 | `trial-expiry.cron.ts` | scheduled job | 93 |  |
@@ -378,14 +387,15 @@ All 187 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `ui.controller.ts` | controller | 44 |  |
+| `ui.controller.ts` | controller | 53 |  |
 | `ui.module.ts` | nest module | 8 |  |
 
-### `apps/platform/src/modules/ui/pages` (3)
+### `apps/platform/src/modules/ui/pages` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin.html` | html | — |  |
+| `pricing.html` | html | — |  |
 | `signup.html` | html | — |  |
 | `verify.html` | html | — |  |
 

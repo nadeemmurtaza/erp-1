@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **2,022** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,034** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 850 | 120,643 | [files/api.md](../files/api.md) |
-| apps/web | 375 | 60,412 | [files/web.md](../files/web.md) |
+| apps/api | 854 | 121,003 | [files/api.md](../files/api.md) |
+| apps/web | 378 | 61,139 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 2,000 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 79 | 7,950 | [files/packages.md](../files/packages.md) |
-| docs/* | 394 | 63,319 | [files/docs.md](../files/docs.md) |
+| docs/* | 394 | 63,559 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 29,688 | [files/infra.md](../files/infra.md) |
-| repository root files | 187 | 18,817 | [files/root.md](../files/root.md) |
+| repository root files | 192 | 19,324 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,15 +29,15 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 419 |
-| unit test | 227 |
-| page | 185 |
-| service | 155 |
-| module | 146 |
-| controller | 113 |
+| unit test | 229 |
+| page | 188 |
+| service | 156 |
+| module | 147 |
+| controller | 114 |
 | component | 112 |
-| dto | 104 |
-| migration | 86 |
-| nest module | 76 |
+| dto | 105 |
+| migration | 87 |
+| nest module | 77 |
 | prisma schema | 46 |
 | script | 39 |
 | event subscriber | 31 |
@@ -59,10 +59,10 @@ name a new file: the convention is what makes it findable.
 | channel | 5 |
 | types | 5 |
 | toml | 4 |
+| html | 4 |
 | not-found | 4 |
 | example | 3 |
 | driver | 3 |
-| html | 3 |
 | error | 3 |
 | sh | 3 |
 | timer | 3 |

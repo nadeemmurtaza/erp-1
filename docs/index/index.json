@@ -3,26 +3,26 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2022,
-    "lines": 309729,
+    "files": 2034,
+    "lines": 311563,
     "routes": 672,
     "controllers": 123,
     "models": 245,
     "enums": 114,
-    "migrations": 86,
+    "migrations": 87,
     "events": 63,
     "permissions": 85,
-    "screens": 234,
+    "screens": 237,
     "crons": 20,
-    "specs": 246,
+    "specs": 248,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 187,
-      "lines": 18817,
-      "bytes": 1103887,
+      "files": 192,
+      "lines": 19324,
+      "bytes": 1135456,
       "label": "repository root files"
     },
     "infra": {
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 850,
-      "lines": 120643,
-      "bytes": 4587686,
+      "files": 854,
+      "lines": 121003,
+      "bytes": 4605660,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,15 +50,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 375,
-      "lines": 60412,
-      "bytes": 2178171,
+      "files": 378,
+      "lines": 61139,
+      "bytes": 2204929,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 63319,
-      "bytes": 3762463,
+      "lines": 63559,
+      "bytes": 3776934,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1200,6 +1200,16 @@
         "apps/api/src/core/health/health.module.ts"
       ],
       "page": "docs/index/core/health.md"
+    },
+    {
+      "name": "intent",
+      "files": [
+        "apps/api/src/core/intent/intent-router.module.ts",
+        "apps/api/src/core/intent/intent-router.service.spec.ts",
+        "apps/api/src/core/intent/intent-router.service.ts",
+        "apps/api/src/core/intent/intent.types.ts"
+      ],
+      "page": "docs/index/core/intent.md"
     },
     {
       "name": "metrics",
@@ -12646,7 +12656,7 @@
         "POST /admin/sso/connections/:id/suspend",
         "GET /admin/sso/roles"
       ],
-      "uiSites": 1,
+      "uiSites": 3,
       "roles": [
         "ADMIN"
       ],
@@ -13217,7 +13227,7 @@
         "DELETE /admin/users/:id/roles/:roleId",
         "POST /admin/users/:id/roles/:roleId"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "ADMIN"
       ],
@@ -13827,7 +13837,7 @@
       "name": "catalog.product_low_stock",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:385"
+        "apps/api/src/modules/inventory/inventory.service.ts:410"
       ],
       "subscribers": [
         "apps/api/src/modules/inventory/inventory.listener.ts:19 handleLowStock()"
@@ -13838,7 +13848,7 @@
       "name": "catalog.product_reorder_point_reached",
       "doc": "Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder).",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:403"
+        "apps/api/src/modules/inventory/inventory.service.ts:428"
       ],
       "subscribers": [
         "apps/api/src/modules/production/reorder-work-order.listener.ts:19 onReorderPointReached()",
@@ -13887,7 +13897,7 @@
       "name": "inventory.stock_replenished",
       "doc": "Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock.",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:420"
+        "apps/api/src/modules/inventory/inventory.service.ts:445"
       ],
       "subscribers": [
         "apps/api/src/modules/orders/backorder.listener.ts:29 onStockReplenished()",
@@ -13900,7 +13910,7 @@
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:286",
-        "apps/api/src/modules/inventory/inventory.service.ts:371"
+        "apps/api/src/modules/inventory/inventory.service.ts:396"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:284 onStockVarianceRecorded()"
@@ -14616,7 +14626,7 @@
     {
       "name": "AgencyUsageSnapshot",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 743,
+      "line": 765,
       "doc": "One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe to delete and recompute (same discipline as `VariantSalesStat` on the tenant side).",
       "fields": [
         {
@@ -22533,7 +22543,7 @@
     {
       "name": "MeteredOrderFee",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 640,
+      "line": 662,
       "doc": "Doc 153's own \"the reversal document, not the reversal flag\" — one row per order actually metered for the transaction fee, naming the specific order and the exact amount metered for it, so a later `R…",
       "fields": [
         {
@@ -25329,7 +25339,7 @@
     {
       "name": "PlatformCustomQuote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 521,
+      "line": 543,
       "doc": "WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…",
       "fields": [
         {
@@ -25453,7 +25463,7 @@
     {
       "name": "PlatformInvoice",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 411,
+      "line": 433,
       "doc": "",
       "fields": [
         {
@@ -25655,7 +25665,7 @@
     {
       "name": "PlatformInvoiceCreditNote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 497,
+      "line": 519,
       "doc": "A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own \"the reversal document\" lens).",
       "fields": [
         {
@@ -25715,7 +25725,7 @@
     {
       "name": "PlatformOpsClient",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 279,
+      "line": 301,
       "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
       "fields": [
         {
@@ -25877,6 +25887,48 @@
           "relation": false
         },
         {
+          "name": "isHeadline",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "headlineOrder",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "displayName",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceDescription",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bestFor",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ctaLabel",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tenants",
           "type": "PlatformTenant[]",
           "id": false,
@@ -25917,7 +25969,7 @@
     {
       "name": "PlatformRateCardChangeRequest",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 696,
+      "line": 718,
       "doc": "doc 153's own \"the threshold nobody approves alone\" / \"authority and blast radius\" lenses, resolved with the identical create/approve split `PlatformCustomQuote` (doc 50 §4) already established: a ra…",
       "fields": [
         {
@@ -26034,7 +26086,7 @@
     {
       "name": "PlatformSubscription",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 200,
+      "line": 222,
       "doc": "",
       "fields": [
         {
@@ -26373,7 +26425,7 @@
     {
       "name": "PlatformUsageRecord",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 216,
+      "line": 238,
       "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
       "fields": [
         {
@@ -29544,7 +29596,7 @@
     {
       "name": "ResourceQuotaAlert",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 325,
+      "line": 347,
       "doc": "One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.",
       "fields": [
         {
@@ -29626,7 +29678,7 @@
     {
       "name": "ResourceTierQuota",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 300,
+      "line": 322,
       "doc": "--------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…",
       "fields": [
         {
@@ -31645,7 +31697,7 @@
     {
       "name": "SignupVerification",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 556,
+      "line": 578,
       "doc": "A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.",
       "fields": [
         {
@@ -33895,7 +33947,7 @@
     {
       "name": "SupportAccessGrant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 231,
+      "line": 253,
       "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
       "fields": [
         {
@@ -34226,7 +34278,7 @@
     {
       "name": "TenantDataExport",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 369,
+      "line": 391,
       "doc": "",
       "fields": [
         {
@@ -34328,7 +34380,7 @@
     {
       "name": "TenantDeploymentCredential",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 259,
+      "line": 281,
       "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
       "fields": [
         {
@@ -34518,7 +34570,7 @@
     {
       "name": "TrialExtension",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 574,
+      "line": 596,
       "doc": "WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so \"extended more than once\" is a query, not a memory.",
       "fields": [
         {
@@ -34585,7 +34637,7 @@
     {
       "name": "UsageMeter",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 607,
+      "line": 629,
       "doc": "One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` increments off a tenant's own transactional outbox (`transaction_fee_minor`, `messages_sent`) or sets to the late…",
       "fields": [
         {
@@ -34653,7 +34705,7 @@
     {
       "name": "UsageMeteringCursor",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 671,
+      "line": 693,
       "doc": "The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each batch — so a poll reads only the outbox rows it has not already applied, rather than rescanning the whole table…",
       "fields": [
         {
@@ -36657,7 +36709,7 @@
     {
       "name": "InvoiceStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 406,
+      "line": 428,
       "values": [
         "ISSUED",
         "CREDITED"
@@ -36830,7 +36882,7 @@
     {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 269,
+      "line": 291,
       "values": [
         "ACTIVE",
         "REVOKED"
@@ -37034,7 +37086,7 @@
     {
       "name": "QuoteStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 510,
+      "line": 532,
       "values": [
         "PENDING",
         "APPROVED",
@@ -37044,7 +37096,7 @@
     {
       "name": "RateCardChangeStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 681,
+      "line": 703,
       "values": [
         "PENDING",
         "APPROVED",
@@ -37332,7 +37384,7 @@
     {
       "name": "StripeInvoicePaymentStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 730,
+      "line": 752,
       "values": [
         "PENDING",
         "PAID",
@@ -37342,7 +37394,7 @@
     {
       "name": "SubscriptionStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 194,
+      "line": 216,
       "values": [
         "ACTIVE",
         "PAST_DUE",
@@ -37362,7 +37414,7 @@
     {
       "name": "TenantExportStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 349,
+      "line": 371,
       "values": [
         "PENDING",
         "RUNNING",
@@ -37373,7 +37425,7 @@
     {
       "name": "TenantExportTrigger",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 356,
+      "line": 378,
       "values": [
         "MANUAL",
         "DEPROVISION"
@@ -38859,6 +38911,19 @@
         "AgencyUsageSnapshot",
         "PlatformInvoice",
         "PlatformTenant"
+      ]
+    },
+    {
+      "folder": "20260925094500_wo154_headline_plans",
+      "file": "apps/platform/prisma/schema/migrations/20260925094500_wo154_headline_plans/migration.sql",
+      "date": "2026-09-25",
+      "slug": "wo154_headline_plans",
+      "statements": 8,
+      "kinds": [
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "PlatformPlan"
       ]
     },
     {
@@ -40665,6 +40730,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/login/sso-complete",
+      "file": "apps/web/src/app/(admin)/admin/login/sso-complete/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/loyalty",
       "file": "apps/web/src/app/(admin)/admin/(app)/loyalty/page.tsx",
       "client": true,
@@ -41045,6 +41119,24 @@
       "kind": "page",
       "url": "/admin/settings/shipping",
       "file": "apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/settings/sso",
+      "file": "apps/web/src/app/(admin)/admin/(app)/settings/sso/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/settings/sso/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/settings/sso/[id]/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -42126,6 +42218,18 @@
       ]
     },
     {
+      "file": "apps/api/src/core/intent/intent-router.service.spec.ts",
+      "module": "core/intent",
+      "kind": "unit test",
+      "cases": 12,
+      "describes": [
+        "IntentRouterService",
+        "routing",
+        "permission enforcement — mirrors PermissionsGuard exactly, for a session actor",
+        "permission enforcement — an API-key actor, reusing decideApiKeyAccess so it can never drift from the HTTP path"
+      ]
+    },
+    {
       "file": "apps/api/src/core/metrics/metric-registry.service.spec.ts",
       "module": "core/metrics",
       "kind": "unit test",
@@ -42974,9 +43078,10 @@
       "file": "apps/api/src/modules/inventory/inventory.service.spec.ts",
       "module": "inventory",
       "kind": "unit test",
-      "cases": 16,
+      "cases": 18,
       "describes": [
         "InventoryService — locations (B6)",
+        "check_inventory_chain_status intent (135-intent-router-voice-video-agent.md WO-135.1)",
         "InventoryService — postUnconditional (R5 oversell)",
         "shift attribution (156-single-employee-branch-loss-prevention.md)",
         "InventoryService — reorder point and replenishment events",
@@ -44192,12 +44297,23 @@
       ]
     },
     {
+      "file": "apps/platform/src/modules/billing/headline-plan-signup.integration.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 1,
+      "describes": [
+        "a headline plan hands off to the identical existing provisioning path (doc 154 acceptance)"
+      ]
+    },
+    {
       "file": "apps/platform/src/modules/billing/plans.service.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 18,
       "describes": [
-        "PlansService"
+        "PlansService",
+        "update (doc 154)",
+        "getPlanComparison (doc 154)"
       ]
     },
     {
@@ -46296,8 +46412,8 @@
       "path": "apps/api/prisma/seed.ts",
       "area": "api",
       "kind": "module",
-      "lines": 3068,
-      "bytes": 105667,
+      "lines": 3070,
+      "bytes": 105776,
       "doc": "",
       "symbols": []
     },
@@ -47874,14 +47990,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 47,
-      "bytes": 1638,
+      "lines": 49,
+      "bytes": 1730,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 46
+          "line": 48
         }
       ]
     },
@@ -48461,6 +48577,65 @@
           "name": "HealthModule",
           "kind": "class",
           "line": 5
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/intent/intent-router.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 11,
+      "bytes": 417,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IntentRouterModule",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/intent/intent-router.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 142,
+      "bytes": 6927,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/intent/intent-router.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 82,
+      "bytes": 4027,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IntentRouterService",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/intent/intent.types.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 42,
+      "bytes": 2147,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Intent",
+          "kind": "interface",
+          "line": 14
+        },
+        {
+          "name": "IntentHandlerDefinition",
+          "kind": "interface",
+          "line": 32
         }
       ]
     },
@@ -50882,8 +51057,8 @@
       "path": "apps/api/src/modules/bom/bom.metrics.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 202,
-      "bytes": 8645,
+      "lines": 204,
+      "bytes": 8801,
       "doc": "",
       "symbols": []
     },
@@ -50951,8 +51126,8 @@
       "path": "apps/api/src/modules/bom/bom.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 527,
-      "bytes": 23924,
+      "lines": 529,
+      "bytes": 24080,
       "doc": "",
       "symbols": []
     },
@@ -51099,8 +51274,8 @@
       "path": "apps/api/src/modules/bom/production.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 436,
-      "bytes": 18300,
+      "lines": 438,
+      "bytes": 18456,
       "doc": "",
       "symbols": []
     },
@@ -53817,8 +53992,8 @@
       "path": "apps/api/src/modules/inventory/inventory.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 499,
-      "bytes": 21171,
+      "lines": 541,
+      "bytes": 23227,
       "doc": "",
       "symbols": []
     },
@@ -53826,24 +54001,24 @@
       "path": "apps/api/src/modules/inventory/inventory.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 601,
-      "bytes": 23286,
+      "lines": 626,
+      "bytes": 24693,
       "doc": "",
       "symbols": [
         {
           "name": "StockMoveInput",
           "kind": "interface",
-          "line": 21
+          "line": 22
         },
         {
           "name": "InsufficientStockError",
           "kind": "class",
-          "line": 38
+          "line": 39
         },
         {
           "name": "InventoryService",
           "kind": "class",
-          "line": 59
+          "line": 60
         }
       ]
     },
@@ -53954,8 +54129,8 @@
       "path": "apps/api/src/modules/inventory/stock-count.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 95,
-      "bytes": 4312,
+      "lines": 97,
+      "bytes": 4420,
       "doc": "",
       "symbols": []
     },
@@ -54983,8 +55158,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 403,
-      "bytes": 17367,
+      "lines": 405,
+      "bytes": 17475,
       "doc": "",
       "symbols": []
     },
@@ -58470,8 +58645,8 @@
       "path": "apps/api/src/modules/transfers/transfers.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 818,
-      "bytes": 39636,
+      "lines": 820,
+      "bytes": 39744,
       "doc": "",
       "symbols": []
     },
@@ -60625,6 +60800,15 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/migrations/20260925094500_wo154_headline_plans/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 27,
+      "bytes": 1649,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
       "area": "root",
       "kind": "toml",
@@ -60637,8 +60821,8 @@
       "path": "apps/platform/prisma/schema/platform.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 767,
-      "bytes": 34270,
+      "lines": 789,
+      "bytes": 35515,
       "doc": "WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the",
       "symbols": []
     },
@@ -60700,8 +60884,8 @@
       "path": "apps/platform/src/core/config/env.validation.ts",
       "area": "root",
       "kind": "config",
-      "lines": 194,
-      "bytes": 9882,
+      "lines": 203,
+      "bytes": 10353,
       "doc": "",
       "symbols": [
         {
@@ -60712,12 +60896,12 @@
         {
           "name": "PlatformEnv",
           "kind": "type",
-          "line": 185
+          "line": 194
         },
         {
           "name": "validatePlatformEnv",
           "kind": "function",
-          "line": 187
+          "line": 196
         }
       ]
     },
@@ -61322,14 +61506,14 @@
       "path": "apps/platform/src/modules/billing/billing.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 32,
-      "bytes": 1268,
+      "lines": 33,
+      "bytes": 1345,
       "doc": "",
       "symbols": [
         {
           "name": "BillingModule",
           "kind": "class",
-          "line": 31
+          "line": 32
         }
       ]
     },
@@ -61492,6 +61676,30 @@
       ]
     },
     {
+      "path": "apps/platform/src/modules/billing/dto/update-plan.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 46,
+      "bytes": 1306,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UpdatePlanDto",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/headline-plan-signup.integration.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 95,
+      "bytes": 4512,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/src/modules/billing/invoice-dunning.cron.ts",
       "area": "root",
       "kind": "scheduled job",
@@ -61510,14 +61718,14 @@
       "path": "apps/platform/src/modules/billing/plans.controller.ts",
       "area": "root",
       "kind": "controller",
-      "lines": 23,
-      "bytes": 642,
+      "lines": 31,
+      "bytes": 983,
       "doc": "",
       "symbols": [
         {
           "name": "PlansController",
           "kind": "class",
-          "line": 10
+          "line": 11
         }
       ]
     },
@@ -61525,8 +61733,8 @@
       "path": "apps/platform/src/modules/billing/plans.service.spec.ts",
       "area": "root",
       "kind": "unit test",
-      "lines": 88,
-      "bytes": 3857,
+      "lines": 225,
+      "bytes": 10972,
       "doc": "",
       "symbols": []
     },
@@ -61534,14 +61742,34 @@
       "path": "apps/platform/src/modules/billing/plans.service.ts",
       "area": "root",
       "kind": "service",
-      "lines": 48,
-      "bytes": 2489,
+      "lines": 166,
+      "bytes": 7889,
       "doc": "",
       "symbols": [
         {
+          "name": "PlanComparisonRow",
+          "kind": "interface",
+          "line": 29
+        },
+        {
           "name": "PlansService",
           "kind": "class",
-          "line": 9
+          "line": 42
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/pricing.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 33,
+      "bytes": 1244,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PricingController",
+          "kind": "class",
+          "line": 16
         }
       ]
     },
@@ -62253,14 +62481,14 @@
       "path": "apps/platform/src/modules/trials/signup.controller.ts",
       "area": "root",
       "kind": "controller",
-      "lines": 33,
-      "bytes": 1227,
+      "lines": 35,
+      "bytes": 1343,
       "doc": "",
       "symbols": [
         {
           "name": "SignupController",
           "kind": "class",
-          "line": 18
+          "line": 20
         }
       ]
     },
@@ -62362,7 +62590,16 @@
       "area": "root",
       "kind": "html",
       "lines": 0,
-      "bytes": 22807,
+      "bytes": 25422,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/ui/pages/pricing.html",
+      "area": "root",
+      "kind": "html",
+      "lines": 0,
+      "bytes": 4444,
       "doc": "",
       "symbols": []
     },
@@ -62371,7 +62608,7 @@
       "area": "root",
       "kind": "html",
       "lines": 0,
-      "bytes": 4662,
+      "bytes": 5333,
       "doc": "",
       "symbols": []
     },
@@ -62388,14 +62625,14 @@
       "path": "apps/platform/src/modules/ui/ui.controller.ts",
       "area": "root",
       "kind": "controller",
-      "lines": 44,
-      "bytes": 1767,
+      "lines": 53,
+      "bytes": 2130,
       "doc": "",
       "symbols": [
         {
           "name": "UiController",
           "kind": "class",
-          "line": 26
+          "line": 30
         }
       ]
     },
@@ -65089,6 +65326,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/settings/sso/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 549,
+      "bytes": 20318,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SsoConnectionPage",
+          "kind": "default",
+          "line": 69
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/settings/sso/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 122,
+      "bytes": 4493,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SsoConnectionsPage",
+          "kind": "default",
+          "line": 21
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/settlements/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -65435,6 +65702,21 @@
           "name": "AdminLoginPage",
           "kind": "default",
           "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/login/sso-complete/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 62,
+      "bytes": 2209,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SsoCompletePage",
+          "kind": "default",
+          "line": 23
         }
       ]
     },
@@ -68546,8 +68828,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 256,
-      "bytes": 11531,
+      "lines": 250,
+      "bytes": 11269,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -72430,8 +72712,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 3948,
-      "bytes": 226589,
+      "lines": 4182,
+      "bytes": 240394,
       "doc": "",
       "symbols": []
     },
@@ -72467,7 +72749,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 501,
-      "bytes": 66529,
+      "bytes": 66827,
       "doc": "",
       "symbols": []
     },
@@ -73204,8 +73486,8 @@
       "path": "docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 182,
-      "bytes": 10057,
+      "lines": 188,
+      "bytes": 10425,
       "doc": "",
       "symbols": []
     },

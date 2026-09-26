@@ -7,6 +7,7 @@ import { AuditService } from '../../core/audit/audit.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
+import { IntentRouterService } from '../../core/intent/intent-router.service';
 import { InventoryService, InsufficientStockError } from '../inventory/inventory.service';
 import { TransfersService } from './transfers.service';
 
@@ -58,6 +59,7 @@ describe('TransfersService', () => {
         SettingsService,
         StockIntakeRegistry,
         EntityEnrichmentRegistry,
+        IntentRouterService,
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'test-node' } },
         { provide: AuditService, useValue: { record: jest.fn() } },
         { provide: EventBusService, useValue: events },

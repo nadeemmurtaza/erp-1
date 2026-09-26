@@ -58,6 +58,13 @@ const REACHABLE_WITHOUT_A_LINK = [
       'orphan, and this one is not.',
   },
   { match: /^\/favicon\.ico$/, reason: 'requested by the browser, never linked' },
+  {
+    match: /^\/admin\/login\/sso-complete$/,
+    reason:
+      "the API's single sign-on callback (apps/api/src/core/auth/sso.controller.ts) redirects a completed " +
+      'sign-in here, from the identity provider — its entry point is that redirect, not a link in this codebase ' +
+      '(161-sso-identity-federation.md).',
+  },
 ];
 
 /* ── the route inventory ───────────────────────────────────────────────── */

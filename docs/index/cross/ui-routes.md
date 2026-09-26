@@ -3,7 +3,7 @@
 
 # Screens
 
-All **234** routable files across the web app, the till and the mobile app.
+All **237** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (145)
+### admin (148)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -115,6 +115,7 @@ _none_
 | `/admin/invoices` | page | client | `apps/web/src/app/(admin)/admin/(app)/invoices/page.tsx` |
 | `/admin/leads` | page | client | `apps/web/src/app/(admin)/admin/(app)/leads/page.tsx` |
 | `/admin/login` | page | client | `apps/web/src/app/(admin)/admin/login/page.tsx` |
+| `/admin/login/sso-complete` | page | client | `apps/web/src/app/(admin)/admin/login/sso-complete/page.tsx` |
 | `/admin/loyalty` | page | client | `apps/web/src/app/(admin)/admin/(app)/loyalty/page.tsx` |
 | `/admin/managed-services` | page | client | `apps/web/src/app/(admin)/admin/(app)/managed-services/page.tsx` |
 | `/admin/marketing` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/page.tsx` |
@@ -158,6 +159,8 @@ _none_
 | `/admin/seo` | page | client | `apps/web/src/app/(admin)/admin/(app)/seo/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
 | `/admin/settings/shipping` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx` |
+| `/admin/settings/sso` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/sso/page.tsx` |
+| `/admin/settings/sso/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/sso/[id]/page.tsx` |
 | `/admin/settlements` | page | client | `apps/web/src/app/(admin)/admin/(app)/settlements/page.tsx` |
 | `/admin/settlements/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/settlements/[id]/page.tsx` |
 | `/admin/statements` | page | client | `apps/web/src/app/(admin)/admin/(app)/statements/page.tsx` |

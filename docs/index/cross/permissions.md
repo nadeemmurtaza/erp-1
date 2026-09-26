@@ -102,12 +102,12 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `settings.manage` | Access the Settings screen | critical | 18 | 4 | ADMIN |
-| `settings.sso.manage` | Register, edit and suspend single sign-on connections | critical | 8 | 1 | ADMIN |
+| `settings.sso.manage` | Register, edit and suspend single sign-on connections | critical | 8 | 3 | ADMIN |
 | `tax.manage` | Manage tax classes, rates and the pricing mode | medium | 8 | 1 | ADMIN |
 | `marketing.manage` | Turn on automated marketing email and set its timing | low | 3 | 1 | ADMIN |
 | `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | ADMIN |
 | `audit.view` | View the audit log | medium | 1 | — | ADMIN |
-| `users.manage` | Create and manage back-office user accounts | high | 10 | 3 | ADMIN |
+| `users.manage` | Create and manage back-office user accounts | high | 10 | 4 | ADMIN |
 | `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | 1 | ADMIN |
 | `ai.view` | View AI usage, cost and the review queue for AI-generated drafts | low | 2 | 2 | STAFF, ADMIN |
 | `ai.manage` | Configure AI providers and the monthly budget, and approve or reject AI-generat… | medium | 8 | 3 | STAFF, ADMIN |

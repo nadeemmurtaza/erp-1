@@ -730,6 +730,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `ShippingSettingsPage` | default | :40 | WO-6.8's `/admin/settings/shipping` — zones, rates, methods, classes. |
 
+### `apps/web/src/app/(admin)/admin/(app)/settings/sso`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SsoConnectionsPage` | default | :21 | Single sign-on connections (access-control-identity/161-sso-identity-federation.md, WO-161.4) — whi… |
+
+### `apps/web/src/app/(admin)/admin/(app)/settings/sso/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SsoConnectionPage` | default | :69 | One single sign-on connection — or a new one (access-control-identity/161-sso-identity-federation.m… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/settlements`
 
 | File | Symbol | Kind | Line | Doc |
@@ -855,6 +867,12 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `AdminLoginPage` | default | :14 |  |
+
+### `apps/web/src/app/(admin)/admin/login/sso-complete`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SsoCompletePage` | default | :23 | Where the API's single sign-on callback lands a completed sign-in (161-sso-identity-federation.md). |
 
 ### `apps/web/src/app/(storefront)/[locale]`
 

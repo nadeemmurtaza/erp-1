@@ -760,6 +760,16 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'settings',
   },
   {
+    // 161-sso-identity-federation.md — which identity providers may sign
+    // staff in. Its own permission, not settings.manage: critical and
+    // non-delegatable, since a connection's domains decide who gets in.
+    key: 'sso',
+    label: 'Single sign-on',
+    href: '/admin/settings/sso',
+    permissions: ['settings.sso.manage'],
+    group: 'settings',
+  },
+  {
     key: 'tax',
     label: 'Tax',
     href: '/admin/tax',

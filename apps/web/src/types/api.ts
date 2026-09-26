@@ -1479,6 +1479,60 @@ export interface IssuedApiKey {
   secret: string;
 }
 
+// --- Single sign-on (docs/implementation/access-control-identity/161-sso-identity-federation.md) ---
+// Mirrors apps/api's SsoService views. Never carries the client secret —
+// it is write-only, sent on create or when replaced, and never returned.
+
+export type SsoConnectionStatus = 'ACTIVE' | 'SUSPENDED';
+
+export interface SsoConnection {
+  id: string;
+  protocol: 'OIDC';
+  label: string;
+  issuerUrl: string;
+  clientId: string;
+  allowedEmailDomains: string[];
+  defaultRoleName: string;
+  status: SsoConnectionStatus;
+  createdByUserId: string;
+  createdAt: string;
+  updatedAt: string;
+  /** The callback URL to register at the provider; null until the server's API_PUBLIC_URL is set. */
+  redirectUri: string | null;
+}
+
+/** `GET /admin/sso/connections` — the callback URL beside the rows, so it can be registered before the first one. */
+export interface SsoConnectionList {
+  redirectUri: string | null;
+  connections: SsoConnection[];
+}
+
+/** A role, and the access-widening permissions that keep it from being a connection's default — empty when it can be one. */
+export interface SsoDefaultRoleOption {
+  name: string;
+  accessWidening: string[];
+}
+
+/** One account created or linked through a connection, read from its audit trail. */
+export interface SsoAccount {
+  userId: string;
+  /** Null once the account itself has been erased. */
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  isActive: boolean | null;
+  how: 'PROVISIONED' | 'LINKED';
+  at: string;
+  /** Still linked to the identity this connection linked — only then can it be unlinked. */
+  linked: boolean;
+}
+
+/** `GET /auth/sso/connections` — public: what the sign-in screen draws a button for. */
+export interface SsoSignInOption {
+  id: string;
+  label: string;
+}
+
 /** A key on the `users.manage` oversight list — its owner, never its secret. */
 export interface ApiKeyOversightView extends ApiKeyBase {
   owner: {

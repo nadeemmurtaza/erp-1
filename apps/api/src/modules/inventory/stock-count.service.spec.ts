@@ -6,6 +6,7 @@ import { StockCountService } from './stock-count.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AuditService } from '../../core/audit/audit.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
+import { IntentRouterService } from '../../core/intent/intent-router.service';
 import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
 import { AppConfigService } from '../../core/config/app-config.service';
 
@@ -22,6 +23,7 @@ describe('StockCountService', () => {
         PrismaService,
         StockIntakeRegistry,
         EntityEnrichmentRegistry,
+        IntentRouterService,
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: AuditService, useValue: { record: jest.fn() } },
         // The count number's prefix is a Setting now; this test is about the

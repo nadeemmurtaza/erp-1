@@ -39,9 +39,9 @@
     <input id="slug" name="slug" type="text" required pattern="[a-z0-9][a-z0-9-]*[a-z0-9]" placeholder="acme" />
     <small class="hint" id="slug-hint">yoursubdomain.platform-domain</small>
 
-    <input type="hidden" id="planKey" name="planKey" value="" />
     <label for="planKeyVisible">Plan</label>
     <input id="planKeyVisible" name="planKeyVisible" type="text" required placeholder="e.g. solo-shared" />
+    <small class="hint" id="plan-hint" style="display:none">Preselected from the pricing page.</small>
 
     <button type="submit" id="submit-btn">Send verification link</button>
   </form>
@@ -58,6 +58,19 @@
   const form = document.getElementById('signup-form');
   const msg = document.getElementById('msg');
   const submitBtn = document.getElementById('submit-btn');
+
+  // doc 154 §4 — a headline plan's CTA on /ui/pricing links here with
+  // ?plan=<PlatformPlan.key>, reusing this exact same form and its own
+  // /signup POST rather than a second signup mechanism. A visitor who
+  // types this URL directly, with no ?plan, still gets the original
+  // free-typed field untouched.
+  const preselectedPlan = new URLSearchParams(window.location.search).get('plan');
+  if (preselectedPlan) {
+    const planField = document.getElementById('planKeyVisible');
+    planField.value = preselectedPlan;
+    planField.readOnly = true;
+    document.getElementById('plan-hint').style.display = 'block';
+  }
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();

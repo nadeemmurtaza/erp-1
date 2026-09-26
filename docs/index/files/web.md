@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 375 tracked files in `apps/web`, by directory.
+All 378 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -781,6 +781,18 @@ All 375 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 244 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/settings/sso` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 122 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/settings/sso/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 549 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/settlements` (1)
 
 | File | Kind | Lines | Purpose |
@@ -906,6 +918,12 @@ All 375 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 125 |  |
+
+### `apps/web/src/app/(admin)/admin/login/sso-complete` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 62 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]` (5)
 
@@ -1363,7 +1381,7 @@ All 375 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 256 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 250 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)

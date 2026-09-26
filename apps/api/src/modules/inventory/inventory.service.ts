@@ -7,6 +7,7 @@ import { EventBusService } from '../../core/events/event-bus.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
+import { IntentRouterService } from '../../core/intent/intent-router.service';
 
 const variantListInclude = {
   product: {
@@ -63,6 +64,7 @@ export class InventoryService implements OnModuleInit {
     private readonly events: EventBusService,
     private readonly stockIntake: StockIntakeRegistry,
     private readonly enrichment: EntityEnrichmentRegistry,
+    private readonly intents: IntentRouterService,
   ) {}
 
   /**
@@ -74,11 +76,34 @@ export class InventoryService implements OnModuleInit {
    * must commit in the same transaction as its caller (order placement, a
    * purchase-order receipt); this registration only ever backs a
    * best-effort write outside such a transaction.
+   *
+   * Also registers `check_inventory_chain_status` with `IntentRouterService`
+   * (135-intent-router-voice-video-agent.md WO-135.1) — the curated,
+   * explicitly-permissioned proof that routing an `Intent` to this exact
+   * method produces the identical result `GET /admin/inventory/:variantId
+   * /chain` already returns, with zero change to `getChainStatus()` itself.
+   * A blanket "expose every service method" registration is exactly the
+   * speculative capability `CLAUDE.md`'s "no speculative functionality"
+   * rule forbids — this one method is registered because doc 116's own
+   * worked example named inventory lookup as the concrete case, not because
+   * every read method in this service should be reachable this way.
    */
   onModuleInit(): void {
     this.stockIntake.register({
       defaultLocationId: () => this.defaultLocationId(),
       move: (input) => this.move(input).then(() => undefined),
+    });
+
+    this.intents.register({
+      name: 'check_inventory_chain_status',
+      description: "A SKU's full supply-chain status: stock, open POs, open work orders, pending order lines.",
+      requiredPermissions: ['production.view_chain'],
+      handler: (parameters: { variantId?: unknown }) => {
+        if (typeof parameters.variantId !== 'string' || !parameters.variantId) {
+          throw new BadRequestException('variantId is required.');
+        }
+        return this.getChainStatus(parameters.variantId);
+      },
     });
   }
 

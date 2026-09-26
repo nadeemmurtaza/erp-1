@@ -203,7 +203,7 @@ against a real database.
 | [`PlatformInvoice`](../data/platform.md#platforminvoice) | `platform` | 27 | 2 | id |  |
 | [`PlatformInvoiceCreditNote`](../data/platform.md#platforminvoicecreditnote) | `platform` | 7 | 1 | id | A billing dispute is resolved here, against the specific invoice — never an edited invoic… |
 | [`PlatformOpsClient`](../data/platform.md#platformopsclient) | `platform` | 8 | 0 | id | A key-hash principal for internal hosting-ops tooling calling this control plane — the sa… |
-| [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 18 | 0 | id |  |
+| [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 24 | 0 | id |  |
 | [`PlatformRateCardChangeRequest`](../data/platform.md#platformratecardchangerequest) | `platform` | 15 | 1 | id | doc 153's own "the threshold nobody approves alone" / "authority and blast radius" lenses… |
 | [`PlatformSubscription`](../data/platform.md#platformsubscription) | `platform` | 8 | 2 | id |  |
 | [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 37 | 1 | id | One row per hosted client. |

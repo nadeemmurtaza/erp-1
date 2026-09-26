@@ -214,6 +214,10 @@ export const ROUTES = {
     reports: '/admin/reports',
     tax: '/admin/tax',
     settings: '/admin/settings',
+    /** Single sign-on connections (161-sso-identity-federation.md) — `settings.sso.manage`. */
+    ssoConnections: '/admin/settings/sso',
+    /** `new` is a real id here: the editor route handles creating and editing. */
+    ssoConnection: (id: string) => `/admin/settings/sso/${id}`,
     users: '/admin/users',
     user: (id: string) => `/admin/users/${id}`,
     /** Every account's API keys — read and revoke only, `users.manage`. */

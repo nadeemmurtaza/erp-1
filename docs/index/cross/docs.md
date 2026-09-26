@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**422** markdown documents. These explain **why**; this index only says **where**.
+**425** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2877,6 +2877,34 @@ _no second-level headings_
 - Acceptance  <sub>:191</sub>
 - Out of scope  <sub>:204</sub>
 
+### `docs/implementation/finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md`  <sub>78 lines</sub>
+
+- What a real build would need to answer  <sub>:48</sub>
+
+### `docs/implementation/GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md`  <sub>177 lines</sub>
+
+- Setup  <sub>:21</sub>
+- CRM  <sub>:42</sub>
+- Sales Management  <sub>:56</sub>
+- Purchase Management  <sub>:75</sub>
+- Inventory Management  <sub>:91</sub>
+- Production Module  <sub>:116</sub>
+- Financial Management  <sub>:126</sub>
+- What's already covered, not repeated above  <sub>:160</sub>
+
+### `docs/implementation/GAP-ANALYSIS-ODOO-APPS.md`  <sub>164 lines</sub>
+
+- Website / eCommerce  <sub>:20</sub>
+- Sales  <sub>:35</sub>
+- Finance  <sub>:51</sub>
+- Inventory & Manufacturing  <sub>:66</sub>
+- Human Resources  <sub>:80</sub>
+- Marketing  <sub>:91</sub>
+- Services  <sub>:101</sub>
+- Productivity  <sub>:119</sub>
+- Customization  <sub>:142</sub>
+- Bottom line  <sub>:151</sub>
+
 ### `docs/implementation/hr-people-org/164-department-permission-role-duty-control.md`  <sub>327 lines</sub>
 
 - What already exists and is not redesigned here  <sub>:11</sub>
@@ -3386,7 +3414,7 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>528 lines</sub>
+### `docs/implementation/README.md`  <sub>544 lines</sub>
 
 - Read in this order  <sub>:16</sub>
 - Dependency order  <sub>:398</sub>
@@ -3395,6 +3423,7 @@ _no second-level headings_
 - Known gaps not yet owned by a phase  <sub>:482</sub>
 - When a brief is wrong  <sub>:509</sub>
 - Scope, honestly  <sub>:522</sub>
+- Gap-analysis roadmap references  <sub>:529</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 

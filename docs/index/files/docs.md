@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 396 tracked files in `docs/*`, by directory.
+All 399 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -558,16 +558,18 @@ All 396 tracked files in `docs/*`, by directory.
 | `06g-generate-workforce-shifts-jml.md` | doc | 42 |  |
 | `06h-harden-workforce-shifts-jml.md` | doc | 35 |  |
 
-### `docs/implementation` (8)
+### `docs/implementation` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
 | `DECISIONS.md` | doc | 6363 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
+| `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
+| `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 528 |  |
+| `README.md` | doc | 544 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
@@ -719,7 +721,7 @@ All 396 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
 
-### `docs/implementation/finance-accounting` (8)
+### `docs/implementation/finance-accounting` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -731,6 +733,7 @@ All 396 tracked files in `docs/*`, by directory.
 | `49-financial-institution-settlement-partnerships.md` | doc | 330 |  |
 | `56-overdue-invoices-counter.md` | doc | 125 |  |
 | `68-realtime-gross-profit.md` | doc | 213 |  |
+| `GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md` | doc | 78 |  |
 
 ### `docs/implementation/hr-people-org` (19)
 

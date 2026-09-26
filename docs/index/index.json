@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2248,
-    "lines": 342414,
+    "files": 2251,
+    "lines": 342849,
     "routes": 788,
     "controllers": 142,
     "models": 283,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 396,
-      "lines": 68099,
-      "bytes": 4053910,
+      "files": 399,
+      "lines": 68534,
+      "bytes": 4076919,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -82707,6 +82707,24 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 177,
+      "bytes": 9544,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/GAP-ANALYSIS-ODOO-APPS.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 164,
+      "bytes": 8327,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/MULTI-SECTOR.md",
       "area": "docs",
       "kind": "doc",
@@ -82728,8 +82746,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 528,
-      "bytes": 71423,
+      "lines": 544,
+      "bytes": 72279,
       "doc": "",
       "symbols": []
     },
@@ -83657,6 +83675,15 @@
       "kind": "doc",
       "lines": 213,
       "bytes": 12294,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 78,
+      "bytes": 4282,
       "doc": "",
       "symbols": []
     },

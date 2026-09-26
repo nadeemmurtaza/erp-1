@@ -525,3 +525,19 @@ This is nine phases and roughly thirty new modules. It is not one month and it i
 not one engineer. Each phase is independently shippable and independently
 useful — if only Phases 1 and 2 are ever built, the shop is meaningfully better
 off, and nothing later has to be rebuilt because of it.
+
+## Gap-analysis roadmap references
+
+Not work orders — a check of this repository against a third-party
+feature list, recording what is genuinely missing today so a future
+scoping pass starts from an inventory instead of a blank page:
+
+- **[`GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md`](./GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md)**
+  — a generic ERP's own Setup/CRM/Sales/Purchase/Inventory/Production/
+  Financial Management feature list.
+- **[`GAP-ANALYSIS-ODOO-APPS.md`](./GAP-ANALYSIS-ODOO-APPS.md)** — Odoo's
+  own published app catalog.
+- **[`finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md`](./finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md)**
+  — a single capability named as entirely unbuilt in both lists above,
+  written up on its own since it needs a new actor (`Bank`) this
+  repository has no equivalent of today.

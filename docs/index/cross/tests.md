@@ -3,7 +3,7 @@
 
 # Tests
 
-**292** spec files, **2,854** cases. What is already pinned down — and what is not.
+**293** spec files, **2,857** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (272)
+## Unit and integration (273)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -136,6 +136,7 @@ regression or an N+1.
 | `apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts` | bpmn-workflows | 9 | compileBpmnToApprovalSteps — WO-142.1 |
 | `apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts` | bpmn-workflows | 4 | BpmnWorkflowsService — WO-142.3 |
 | `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
+| `apps/api/src/modules/cart/cart.service.spec.ts` | cart | 2 | CartService.getOrCreate — guest cart TTL |
 | `apps/api/src/modules/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
 | `apps/api/src/modules/catalog/bundles.service.spec.ts` | catalog | 16 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create ·… |
 | `apps/api/src/modules/catalog/category-preset.service.spec.ts` | catalog | 6 | CategoryPresetService · preview · apply |
@@ -258,7 +259,7 @@ regression or an N+1.
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
 | `apps/api/src/modules/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |
-| `apps/api/src/modules/tradingpartners/quote.service.spec.ts` | tradingpartners | 4 | QuoteService · send · findOne |
+| `apps/api/src/modules/tradingpartners/quote.service.spec.ts` | tradingpartners | 5 | QuoteService · send · findOne |
 | `apps/api/src/modules/tradingpartners/supplier-digest.listener.spec.ts` | tradingpartners | 3 | SupplierDigestListener |
 | `apps/api/src/modules/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |

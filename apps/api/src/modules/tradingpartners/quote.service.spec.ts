@@ -11,6 +11,7 @@ describe('QuoteService', () => {
   let prisma: any;
   let tx: any;
   let tradingPartners: any;
+  let settings: any;
 
   beforeEach(async () => {
     tx = {
@@ -24,13 +25,14 @@ describe('QuoteService', () => {
       $transaction: jest.fn((fn: any) => fn(tx)),
     };
     tradingPartners = { pushOutbound: jest.fn().mockResolvedValue(undefined) };
+    settings = { get: jest.fn().mockResolvedValue(14) };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         QuoteService,
         { provide: PrismaService, useValue: prisma },
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: '' } },
-        { provide: SettingsService, useValue: { get: jest.fn().mockResolvedValue(null) } },
+        { provide: SettingsService, useValue: settings },
         { provide: TradingPartnersService, useValue: tradingPartners },
       ],
     }).compile();
@@ -58,6 +60,19 @@ describe('QuoteService', () => {
       const daysOut = (createCall.data.validUntil.getTime() - Date.now()) / (24 * 60 * 60 * 1000);
       expect(daysOut).toBeGreaterThan(13.9);
       expect(daysOut).toBeLessThan(14.1);
+    });
+
+    it('reads its default validity from TradingPartnersQuoteDefaultValidityDays, not a hardcoded constant', async () => {
+      settings.get.mockResolvedValue(30);
+      prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1', status: 'ACTIVE' });
+      tx.quote.create.mockResolvedValue({ number: 'QTE-2026-0003', lines: [] });
+
+      await service.send({ tradingPartnerId: 'tp1', lines: [{ sku: 'SKU1', nameEn: 'Shirt', quantity: 1, unitPriceMinor: 1000 }] });
+
+      const createCall = tx.quote.create.mock.calls[0][0];
+      const daysOut = (createCall.data.validUntil.getTime() - Date.now()) / (24 * 60 * 60 * 1000);
+      expect(daysOut).toBeGreaterThan(29.9);
+      expect(daysOut).toBeLessThan(30.1);
     });
 
     it('honors an explicit validUntil and pushes the quote outbound', async () => {

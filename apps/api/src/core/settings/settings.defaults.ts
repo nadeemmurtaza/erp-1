@@ -309,6 +309,19 @@ export const SettingKey = {
    * always does, regardless of amount.
    */
   AttendanceMaxSelfAdjustMinutes: 'attendance.max_self_adjust_minutes',
+  /**
+   * 127-policy-as-data-completeness-sweep.md — how long a `Quote` stays
+   * valid when the caller does not name an expiry explicitly
+   * (`CreateQuoteDto.validUntil`). A hardcoded default before this; a shop
+   * that quotes 30- or 60-day terms should not need a code change to say so.
+   */
+  TradingPartnersQuoteDefaultValidityDays: 'tradingpartners.quote_default_validity_days',
+  /**
+   * 127-policy-as-data-completeness-sweep.md — how long a guest's cart
+   * survives before it expires. A hardcoded default before this; how long
+   * a shop wants to hold a cart open is its own call, not an engineering one.
+   */
+  CartGuestTtlDays: 'cart.guest_ttl_days',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -482,4 +495,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   // tunable," the same posture CodRiskConfirmationCallThreshold above
   // already takes for a threshold nobody should hardcode into a deploy.
   [SettingKey.WalletAdjustmentApprovalThresholdMinor]: 5_000_000,
+
+  [SettingKey.TradingPartnersQuoteDefaultValidityDays]: 14,
+  // "Guest carts live for a month; long enough to come back after payday."
+  [SettingKey.CartGuestTtlDays]: 30,
 };

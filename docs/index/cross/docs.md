@@ -2198,24 +2198,24 @@ _no second-level headings_
 - Acceptance  <sub>:63</sub>
 - Out of scope  <sub>:70</sub>
 
-### `docs/implementation/architecture-patterns/127-policy-as-data-completeness-sweep.md`  <sub>76 lines</sub>
+### `docs/implementation/architecture-patterns/127-policy-as-data-completeness-sweep.md`  <sub>117 lines</sub>
 
-- 1. The sweep, as a repeatable script, not a one-time manual pass  <sub>:12</sub>
-- 2. What "converted" means, and what legitimately stays a constant  <sub>:27</sub>
-- Scope lenses  <sub>:42</sub>
-- Work orders  <sub>:50</sub>
-- Acceptance  <sub>:60</sub>
-- Out of scope  <sub>:69</sub>
+- 1. The sweep, as a repeatable script, not a one-time manual pass  <sub>:53</sub>
+- 2. What "converted" means, and what legitimately stays a constant  <sub>:68</sub>
+- Scope lenses  <sub>:83</sub>
+- Work orders  <sub>:91</sub>
+- Acceptance  <sub>:101</sub>
+- Out of scope  <sub>:110</sub>
 
-### `docs/implementation/architecture-patterns/128-extension-point-coverage-audit.md`  <sub>143 lines</sub>
+### `docs/implementation/architecture-patterns/128-extension-point-coverage-audit.md`  <sub>194 lines</sub>
 
-- What was checked, and what was found missing  <sub>:12</sub>
-- 1. `IdentityProvider` — a login method port, alongside the existing password path  <sub>:32</sub>
-- 2. `ShippingCarrier` — a rate/label/tracking port, alongside `Shipment.cost`  <sub>:51</sub>
-- Scope lenses  <sub>:67</sub>
-- Work orders  <sub>:121</sub>
-- Acceptance  <sub>:130</sub>
-- Out of scope  <sub>:137</sub>
+- What was checked, and what was found missing  <sub>:63</sub>
+- 1. `IdentityProvider` — a login method port, alongside the existing password path  <sub>:83</sub>
+- 2. `ShippingCarrier` — a rate/label/tracking port, alongside `Shipment.cost`  <sub>:102</sub>
+- Scope lenses  <sub>:118</sub>
+- Work orders  <sub>:172</sub>
+- Acceptance  <sub>:181</sub>
+- Out of scope  <sub>:188</sub>
 
 ### `docs/implementation/architecture-patterns/130-machine-readable-capability-manifest.md`  <sub>110 lines</sub>
 
@@ -2251,14 +2251,14 @@ _no second-level headings_
 - Acceptance  <sub>:59</sub>
 - Out of scope  <sub>:68</sub>
 
-### `docs/implementation/architecture-patterns/136-database-cache-portability-audit.md`  <sub>72 lines</sub>
+### `docs/implementation/architecture-patterns/136-database-cache-portability-audit.md`  <sub>126 lines</sub>
 
-- What was checked  <sub>:12</sub>
-- What a future cache substitution would need, named honestly  <sub>:29</sub>
-- Scope lenses  <sub>:44</sub>
-- Work orders  <sub>:51</sub>
-- Acceptance  <sub>:60</sub>
-- Out of scope  <sub>:65</sub>
+- What was checked  <sub>:66</sub>
+- What a future cache substitution would need, named honestly  <sub>:83</sub>
+- Scope lenses  <sub>:98</sub>
+- Work orders  <sub>:105</sub>
+- Acceptance  <sub>:114</sub>
+- Out of scope  <sub>:119</sub>
 
 ### `docs/implementation/architecture-patterns/138-technology-substitution-playbook.md`  <sub>70 lines</sub>
 
@@ -2725,7 +2725,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>5,591 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>5,713 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2782,6 +2782,7 @@ _no second-level headings_
 - ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism  <sub>:4995</sub>
 - ADR-049 — Docs 140–143 (general EAV, metadata-driven UI, BPMN workflow editor, micro-frontend fragments): the four mechanisms `architecture-patterns/00-*` names as explicitly owner-overridden (ADR-026) against this repository's own engineering recommendation, built with the corrections that recommendation still turns out to require  <sub>:5126</sub>
 - ADR-051 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)  <sub>:5485</sub>
+- ADR-052 — Docs 127/128/136 (hardcoded-policy sweep, extension-point coverage audit, database/cache portability audit): two real policy gaps converted; both of doc 128's own "gaps found" turn out to already be closed by prior work it never checked against; 170+ raw-SQL call sites triaged, none rewritten  <sub>:5592</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

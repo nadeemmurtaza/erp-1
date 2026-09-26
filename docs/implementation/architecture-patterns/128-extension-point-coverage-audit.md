@@ -1,5 +1,56 @@
 # 128 — Port-coverage audit: two real gaps found — SSO/identity and shipping carriers
 
+> **Status: corrected (2026-09-26).** Both gaps this document names as
+> "found by grep against the actual codebase" are, on a fresh grep against
+> the codebase as it stands today, **already closed** — this document's
+> own title is stale, not the architecture.
+>
+> - **SSO / identity** — `IdentityProvider` (`core/auth/identity-provider.ts`)
+>   exists, built under `161-sso-identity-federation.md` (`ADR-043`), and
+>   its own doc comment cites this document by name: "Doc 128 sketched one
+>   `verifyAssertion(rawAssertion)` method; a real browser-redirect OIDC
+>   flow has two steps... so the interface has exactly those two" — i.e.
+>   doc 161's build already corrected §1's own sketch on contact with a
+>   real OIDC flow. `SsoConnection` (admin-configured rows, gated
+>   `settings.sso.manage` — already seeded, already a real permission) is
+>   the registration mechanism WO-128.3 asked for.
+> - **Shipping carriers** — `CourierProvider`
+>   (`fulfilment/courier-provider.ts`) exists, built under WO-6.3
+>   (`shipping-fulfilment/06-shipping-fulfilment-returns.md`), predating
+>   this document. It covers `createShipment` (booking + label),
+>   `track()`, `cancel()`, and optional `label()`/`verifyWebhook()` — the
+>   identical "one implementation per protocol/vendor... registered,
+>   selected by an env allowlist" shape this document's own §2 asks for,
+>   down to the same idiom `PaymentProvider`/`StorageDriver` already use.
+>   `manual` (type a tracking number) is the only registered provider
+>   today, exactly this document's own "additive, never a required
+>   dependency" acceptance criterion — proven, not merely asserted, since
+>   it is the literal current state. This document's own claim that
+>   `Shipment.cost` is "populated from whatever process already exists" is
+>   also corrected: it is computed from `ShippingRate` (zone × method,
+>   `FLAT`/`BY_WEIGHT`/`BY_ITEM`), a real, data-driven rate table — not
+>   manual entry.
+>
+> **One narrower gap remains, genuinely open, and stays unbuilt on
+> purpose**: `CourierProvider` has no `getRate()` for a *live* carrier-API
+> rate quote (today's `ShippingRate` table is the shop's own static rate
+> card, not a call to TCS/Leopards/DHL's own pricing endpoint). Per this
+> document's own "Out of scope" (citing doc 36's "write a typed interface
+> once a real, repeated need exists") and `courier-provider.ts`'s own
+> unchanged note — "there is no real courier account to integrate against
+> in this deployment" — adding `getRate()` now would be exactly the
+> speculative interface doc 36 already refuses. Named here so a future
+> pass doesn't have to rediscover it.
+>
+> **WO-128.3's own permission sketch is corrected**, not built:
+> `settings.sso.manage` already exists and already gates `SsoConnection`
+> administration (a real database row a client configures).
+> `settings.carriers.manage` is not needed and not added — `CourierProvider`
+> registration is a `COURIER_PROVIDERS` env allowlist, the identical
+> deployment-time mechanism `PAYMENT_PROVIDERS` already uses with no
+> matching "manage payments" permission either; there is no runtime
+> "carrier" row for a permission to gate.
+
 This repository already has a strong, consistent extension-point pattern
 (`PaymentProvider`, `StorageDriver`, `AiProvider`, `NotificationChannel`,
 `FiscalComplianceProvider`, `EdiTranslator`, `VectorStore`,

@@ -3,13 +3,13 @@
 
 # Module: `cart`
 
-Pack **core** · enabled by the `MODULES` allowlist · 6 files
+Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 
 
 Source: `apps/api/src/modules/cart/`
 
-## Files (6 · 1,257 lines)
+## Files (7 · 1,316 lines)
 
 All paths relative to `apps/api/src/modules/cart`.
 
@@ -18,7 +18,8 @@ All paths relative to `apps/api/src/modules/cart`.
 | `cart.controller.ts` | controller | 217 | 1 | Cart endpoints. |
 | `cart.guest-contact.spec.ts` | unit test | 79 | — |  |
 | `cart.module.ts` | nest module | 22 | 1 |  |
-| `cart.service.ts` | service | 720 | 3 |  |
+| `cart.service.spec.ts` | unit test | 58 | — |  |
+| `cart.service.ts` | service | 721 | 3 |  |
 | `cart.dto.ts` | dto | 150 | 5 |  |
 | `reorder.service.ts` | service | 69 | 2 |  |
 
@@ -87,11 +88,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `cart.guest-contact.spec.ts` | 4 | CartService.updateGuestContact |
+| `cart.service.spec.ts` | 2 | CartService.getOrCreate — guest cart TTL |
 
 
 ## Every export in this unit
@@ -100,9 +102,9 @@ check there before adding another.
 |---|---|---|---|
 | `CartController` | class | `cart.controller.ts:42` | Cart endpoints. |
 | `CartModule` | class | `cart.module.ts:21` |  |
-| `CartLineView` | interface | `cart.service.ts:47` |  |
-| `CartView` | interface | `cart.service.ts:89` |  |
-| `CartService` | class | `cart.service.ts:112` | The cart, including the stitching add-on. |
+| `CartLineView` | interface | `cart.service.ts:45` |  |
+| `CartView` | interface | `cart.service.ts:87` |  |
+| `CartService` | class | `cart.service.ts:110` | The cart, including the stitching add-on. |
 | `StitchingRequestDto` | class | `cart.dto.ts:22` |  |
 | `AddCartItemDto` | class | `cart.dto.ts:89` |  |
 | `UpdateCartItemDto` | class | `cart.dto.ts:112` |  |

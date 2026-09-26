@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { SettingsService } from '../../core/settings/settings.service';
+import { SettingKey } from '../../core/settings/settings.defaults';
 import { documentPrefix } from '../../core/settings/document-prefix';
 import { documentNumber, documentNumberPrefix } from '../../core/settings/document-number';
 import { Prisma } from '../../core/prisma/client';
@@ -10,7 +11,6 @@ import { TradingPartnersService } from './trading-partners.service';
 import { CreateQuoteDto } from './dto/quote.dto';
 
 const QUOTE_NUMBER_LOCK_NAMESPACE = 8_241_131;
-const DEFAULT_VALIDITY_DAYS = 14;
 
 /** Same shape as `nextInvoiceNumber` / `nextPONumber` — see invoice.service.ts. */
 async function nextQuoteNumber(
@@ -51,7 +51,7 @@ export class QuoteService {
 
     const validUntil = dto.validUntil
       ? new Date(dto.validUntil)
-      : new Date(Date.now() + DEFAULT_VALIDITY_DAYS * 24 * 60 * 60 * 1000);
+      : new Date(Date.now() + (await this.settings.get<number>(SettingKey.TradingPartnersQuoteDefaultValidityDays)) * 24 * 60 * 60 * 1000);
 
     const quote = await this.prisma.$transaction(async (tx) => {
       const number = await nextQuoteNumber(tx, this.settings, this.config);

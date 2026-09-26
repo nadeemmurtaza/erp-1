@@ -16,6 +16,7 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,mjs,json,md}\"",
     "boundaries": "node scripts/check-module-boundaries.mjs",
     "check:metadata-renderer": "node scripts/check-metadata-renderer.mjs",
+    "check:hardcoded-policy": "node scripts/check-hardcoded-policy.mjs",
     "check:secrets": "node scripts/check-frontend-secrets.mjs",
     "check:env": "node scripts/check-env-templates.mjs",
     "check:rebrand": "node scripts/check-rebrand.mjs",

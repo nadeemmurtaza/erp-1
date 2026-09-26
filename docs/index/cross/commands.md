@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**83**), plus the repository's own check scripts.
+Every script in every `package.json` (**84**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -126,6 +126,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `format:check` | `prettier --check "**/*.{ts,tsx,js,mjs,json,md}"` |
 | `boundaries` | `node scripts/check-module-boundaries.mjs` |
 | `check:metadata-renderer` | `node scripts/check-metadata-renderer.mjs` |
+| `check:hardcoded-policy` | `node scripts/check-hardcoded-policy.mjs` |
 | `check:secrets` | `node scripts/check-frontend-secrets.mjs` |
 | `check:env` | `node scripts/check-env-templates.mjs` |
 | `check:rebrand` | `node scripts/check-rebrand.mjs` |
@@ -161,6 +162,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
+| `scripts/check-hardcoded-policy.mjs` | 85 |  |
 | `scripts/check-links.mjs` | 409 |  |
 | `scripts/check-metadata-renderer.mjs` | 134 |  |
 | `scripts/check-module-boundaries.mjs` | 592 |  |

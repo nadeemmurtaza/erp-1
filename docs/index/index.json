@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2224,
-    "lines": 338057,
+    "files": 2226,
+    "lines": 338502,
     "routes": 777,
     "controllers": 140,
     "models": 279,
@@ -14,7 +14,7 @@
     "permissions": 108,
     "screens": 247,
     "crons": 23,
-    "specs": 292,
+    "specs": 293,
     "designLaws": 0
   },
   "designLaws": [],
@@ -26,15 +26,15 @@
       "label": "repository root files"
     },
     "infra": {
-      "files": 58,
-      "lines": 30367,
-      "bytes": 1193630,
+      "files": 59,
+      "lines": 30453,
+      "bytes": 1196925,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1004,
-      "lines": 137185,
-      "bytes": 5298975,
+      "files": 1005,
+      "lines": 137276,
+      "bytes": 5303230,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 396,
-      "lines": 66904,
-      "bytes": 3980410,
+      "lines": 67172,
+      "bytes": 3996386,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -228,6 +228,7 @@
         "apps/api/src/modules/cart/cart.controller.ts",
         "apps/api/src/modules/cart/cart.guest-contact.spec.ts",
         "apps/api/src/modules/cart/cart.module.ts",
+        "apps/api/src/modules/cart/cart.service.spec.ts",
         "apps/api/src/modules/cart/cart.service.ts",
         "apps/api/src/modules/cart/dto/cart.dto.ts",
         "apps/api/src/modules/cart/reorder.service.ts"
@@ -47334,6 +47335,12 @@
     {
       "pkg": "yaseenecom",
       "file": "package.json",
+      "name": "check:hardcoded-policy",
+      "cmd": "node scripts/check-hardcoded-policy.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
       "name": "check:secrets",
       "cmd": "node scripts/check-frontend-secrets.mjs"
     },
@@ -48388,6 +48395,15 @@
       "cases": 4,
       "describes": [
         "CartService.updateGuestContact"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/cart/cart.service.spec.ts",
+      "module": "cart",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "CartService.getOrCreate — guest cart TTL"
       ]
     },
     {
@@ -49723,7 +49739,7 @@
       "file": "apps/api/src/modules/tradingpartners/quote.service.spec.ts",
       "module": "tradingpartners",
       "kind": "unit test",
-      "cases": 4,
+      "cases": 5,
       "describes": [
         "QuoteService",
         "send",
@@ -56164,8 +56180,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 486,
-      "bytes": 27212,
+      "lines": 503,
+      "bytes": 28062,
       "doc": "",
       "symbols": [
         {
@@ -56201,12 +56217,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 314
+          "line": 327
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 316
+          "line": 329
         }
       ]
     },
@@ -58163,27 +58179,36 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/cart/cart.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 58,
+      "bytes": 2420,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/cart/cart.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 720,
-      "bytes": 25735,
+      "lines": 721,
+      "bytes": 25853,
       "doc": "",
       "symbols": [
         {
           "name": "CartLineView",
           "kind": "interface",
-          "line": 47
+          "line": 45
         },
         {
           "name": "CartView",
           "kind": "interface",
-          "line": 89
+          "line": 87
         },
         {
           "name": "CartService",
           "kind": "class",
-          "line": 112
+          "line": 110
         }
       ]
     },
@@ -66734,8 +66759,8 @@
       "path": "apps/api/src/modules/tradingpartners/quote.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 96,
-      "bytes": 3803,
+      "lines": 111,
+      "bytes": 4572,
       "doc": "",
       "symbols": []
     },
@@ -66744,7 +66769,7 @@
       "area": "api",
       "kind": "service",
       "lines": 102,
-      "bytes": 3768,
+      "bytes": 3866,
       "doc": "",
       "symbols": [
         {
@@ -81715,8 +81740,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 5591,
-      "bytes": 325331,
+      "lines": 5713,
+      "bytes": 332378,
       "doc": "",
       "symbols": []
     },
@@ -82120,8 +82145,8 @@
       "path": "docs/implementation/architecture-patterns/127-policy-as-data-completeness-sweep.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 76,
-      "bytes": 3792,
+      "lines": 117,
+      "bytes": 6218,
       "doc": "",
       "symbols": []
     },
@@ -82129,8 +82154,8 @@
       "path": "docs/implementation/architecture-patterns/128-extension-point-coverage-audit.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 143,
-      "bytes": 7585,
+      "lines": 194,
+      "bytes": 10776,
       "doc": "",
       "symbols": []
     },
@@ -82174,8 +82199,8 @@
       "path": "docs/implementation/architecture-patterns/136-database-cache-portability-audit.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 72,
-      "bytes": 3488,
+      "lines": 126,
+      "bytes": 6800,
       "doc": "",
       "symbols": []
     },
@@ -83317,8 +83342,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 60,
-      "bytes": 2492,
+      "lines": 61,
+      "bytes": 2565,
       "doc": "",
       "symbols": []
     },
@@ -85520,6 +85545,15 @@
       "kind": "script",
       "lines": 137,
       "bytes": 4804,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "scripts/check-hardcoded-policy.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 85,
+      "bytes": 3222,
       "doc": "",
       "symbols": []
     },

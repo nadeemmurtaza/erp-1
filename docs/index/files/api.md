@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,004 tracked files in `apps/api`, by directory.
+All 1,005 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -986,7 +986,7 @@ All 1,004 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 486 |  |
+| `settings.defaults.ts` | module | 503 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 107 |  |
 
@@ -1169,14 +1169,15 @@ All 1,004 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `bpmn-workflow.dto.ts` | dto | 10 |  |
 
-### `apps/api/src/modules/cart` (5)
+### `apps/api/src/modules/cart` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `cart.controller.ts` | controller | 217 |  |
 | `cart.guest-contact.spec.ts` | unit test | 79 |  |
 | `cart.module.ts` | nest module | 22 |  |
-| `cart.service.ts` | service | 720 |  |
+| `cart.service.spec.ts` | unit test | 58 |  |
+| `cart.service.ts` | service | 721 |  |
 | `reorder.service.ts` | service | 69 |  |
 
 ### `apps/api/src/modules/cart/dto` (1)
@@ -2138,7 +2139,7 @@ All 1,004 tracked files in `apps/api`, by directory.
 | `offers.controller.ts` | controller | 25 |  |
 | `product-alerts.listener.spec.ts` | unit test | 72 |  |
 | `product-alerts.listener.ts` | event subscriber | 44 |  |
-| `quote.service.spec.ts` | unit test | 96 |  |
+| `quote.service.spec.ts` | unit test | 111 |  |
 | `quote.service.ts` | service | 102 |  |
 | `quotes.controller.ts` | controller | 31 |  |
 | `supplier-digest.listener.spec.ts` | unit test | 51 |  |

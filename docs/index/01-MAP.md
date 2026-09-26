@@ -32,12 +32,12 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,004 | 137,185 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 396 | 66,904 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 1,005 | 137,276 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 396 | 67,172 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 399 | 65,731 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 28,608 | workspace manifests, docker compose/stack files, env templates |
+| `(root)` | 42 | 28,609 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 160 | 11,233 |  |
-| `scripts` | 23 | 9,355 | repository checks and generators (lint gates, this index) |
+| `scripts` | 24 | 9,440 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 62 | 7,695 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
 | `apps/pos` | 31 | 2,000 | Next.js PWA — offline-first point of sale |

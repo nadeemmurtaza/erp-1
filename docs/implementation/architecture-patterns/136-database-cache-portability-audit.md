@@ -1,5 +1,59 @@
 # 136 — A portability audit: confirming nothing outside Prisma leans on a Postgres-only feature without a named seam
 
+> **Status: shipped (2026-09-26), WO-136.1/136.2.** The sweep found
+> **170+ `$queryRaw`/`$executeRaw` call sites** across `apps/api/src`
+> (excluding `generated/` and spec files) — far more than this document's
+> own text anticipated. Every one triages into a small number of named,
+> justified categories, each working around a real Prisma capability gap
+> rather than developer convenience; **none are avoidable, none are
+> rewritten**:
+>
+> - **Atomic per-year document numbering** (`purchasing`, `tradingpartners`,
+>   `receivables`, `inventory`, `production`, `stitching`, `transfers`,
+>   `accounting`, `fulfilment`, `payroll` — the majority of hits): a
+>   `pg_advisory_xact_lock` plus a `MAX`-scan, per `core/settings/document-
+>   number.ts`'s own documented mechanism. Advisory locks have no Prisma
+>   equivalent at all.
+> - **Queue/outbox claiming** (`core/events/outbox.dispatcher.ts`):
+>   `SELECT ... FOR UPDATE SKIP LOCKED` — the one correct way to let
+>   multiple dispatcher instances claim disjoint batches; no Prisma builder
+>   primitive exists for it.
+> - **Atomic upsert-and-increment** (`core/replication/replication-log.
+>   service.ts`, `accounting.service.ts`'s `nextJournalNumber`):
+>   `INSERT ... ON CONFLICT ... DO UPDATE ... RETURNING`. Prisma's own
+>   `upsert()` cannot atomically increment an existing value without a
+>   race between the read and the write.
+> - **Columns Prisma cannot read or write at all**: `pg-vector.store.ts`
+>   (`::vector`, `<=>` cosine distance — doc 35/121's own `VectorStore`,
+>   already named covered by doc 128) and `search.service.ts`'s
+>   `to_tsvector`/`setweight` full-text index (`ProductTranslation.
+>   searchVector`) — both are `Unsupported(...)` Prisma column types by
+>   definition; there is no query-builder form to rewrite these into.
+> - **Column-to-column `WHERE` comparisons** (e.g. `analytics.service.ts`'s
+>   `"stock" <= "lowStockThreshold"`): Prisma's filter API compares a
+>   column only to a literal or a variable, never to another column.
+> - **Conditional aggregation in one round trip** (`analytics.service.ts`'s
+>   multiple `SUM(CASE WHEN ...)` figures computed together, `reports.
+>   service.ts`'s dashboard exports): Prisma has no `CASE`/conditional-
+>   aggregate support; expressing this without raw SQL means N separate
+>   round trips per figure instead of one.
+> - **Test-only utilities**: `PrismaService.truncateAll()` reads
+>   `pg_catalog.pg_tables` and issues a dynamic `TRUNCATE`, gated behind
+>   `NODE_ENV=test` and unreachable from a running store — a portability
+>   concern only if the test harness itself changed databases, which is a
+>   separate decision from anything found here.
+>
+> **What a future cache substitution would need**: unchanged from this
+> document's own original text — no caching technology beyond same-database
+> precomputed projections (`OrderEconomics`-shaped) exists in this
+> repository today, so there is nothing to migrate away from.
+>
+> This list is this document's own permanent record of the triage
+> (WO-136.2) — a future portability effort starts here instead of
+> re-discovering these 170+ call sites from scratch. `RETAIL-ERP.md`'s own
+> R2/R7 commitment to Postgres is unchanged; nothing found here proposes or
+> justifies migrating away from it.
+
 Doc 110 already established that a future specialized store (a vector
 database, per doc 121/35) sits behind a named extension point
 (`VectorStore`), never a hardcoded dependency. This document is the audit

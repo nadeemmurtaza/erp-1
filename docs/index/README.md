@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,224 files / 338,057 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,226 files / 338,502 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -55,13 +55,13 @@ single fact — the page is the right tool when you need the shape of something.
 | “Is there already a component for this?” | [cross/components.md](cross/components.md) | ~2.9k | shared primitives and every component, with usage counts |
 | “How should this look / behave / read?” | [cross/design-system.md](cross/design-system.md) | ~850 | the 0 design chapters, and the measured state of the code they govern |
 | “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | ~1.0k | 23 cron jobs and the background dispatchers |
-| “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.8k | every script in every package.json (83) |
+| “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.8k | every script in every package.json (84) |
 | “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~4.6k | 103 migrations, newest last |
-| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~11.4k | 292 spec files → what each one pins down |
+| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~11.4k | 293 spec files → what each one pins down |
 | “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~41.3k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (56) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~578.6k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~578.8k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -119,13 +119,13 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 1,004 | 137,185 | [api](areas/api.md) |
+| apps/api | 1,005 | 137,276 | [api](areas/api.md) |
 | apps/web | 399 | 65,731 | [web](areas/web.md) |
 | apps/pos | 31 | 2,000 | [pos](areas/pos.md) |
 | apps/mobile | 49 | 6,900 | [mobile](areas/mobile.md) |
 | packages/* | 79 | 8,277 | [packages](areas/packages.md) |
-| docs/* | 396 | 66,904 | [docs](areas/docs.md) |
-| scripts, CI, deployment and container configuration | 58 | 30,367 | [infra](areas/infra.md) |
+| docs/* | 396 | 67,172 | [docs](areas/docs.md) |
+| scripts, CI, deployment and container configuration | 59 | 30,453 | [infra](areas/infra.md) |
 | repository root files | 208 | 20,693 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see

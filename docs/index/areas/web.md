@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-382 files · 61,713 lines
+384 files · 61,894 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,15 +31,15 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 209 | 39,033 | page, loading, layout, error |
-| `apps/web/src/components` | 108 | 16,597 | component, unit test, loading |
+| `apps/web/src/app` | 209 | 39,035 | page, loading, layout, error |
+| `apps/web/src/components` | 110 | 16,759 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 5 | 402 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
 | `apps/web/src/lib` | 11 | 1,138 | utility |
 | `apps/web/src/providers` | 2 | 82 | react |
-| `apps/web/src/types` | 5 | 1,965 | types |
+| `apps/web/src/types` | 5 | 1,982 | types |
 | `apps/web/src/utils` | 5 | 306 | utility |
 
 
@@ -64,17 +64,17 @@ through `@newax/shared`'s `BRAND`.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `apps/web/src/types/api.ts` | 1,641 | types |  |
+| `apps/web/src/types/api.ts` | 1,658 | types |  |
 | `apps/web/src/components/admin/product-form.tsx` | 1,434 | component |  |
 | `apps/web/src/components/admin/nav-registry.ts` | 975 | component |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx` | 853 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 774 | page |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 743 | page |  |
+| `apps/web/src/components/admin/analytics/report-registry.ts` | 713 | component |  |
 | `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
 | `apps/web/messages/en.json` | 679 | json |  |
 | `apps/web/messages/ur.json` | 679 | json |  |
-| `apps/web/src/components/admin/analytics/report-registry.ts` | 662 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 658 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/inbox/page.tsx` | 625 | page |  |
 | `apps/web/src/app/globals.css` | 603 | stylesheet |  |

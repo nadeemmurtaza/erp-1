@@ -40,7 +40,7 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `layout.tsx` | `AdminAppLayout` | default | :12 | Wraps every signed-in back-office page in the shell. |
 | `loading.tsx` | `Loading` | default | :14 | The shape of the dashboard, before the dashboard. |
-| `page.tsx` | `AdminDashboardPage` | default | :31 | The dashboard, rebuilt as a grouped card grid driven entirely by data (10-admin-dashboard.md WO-A.4… |
+| `page.tsx` | `AdminDashboardPage` | default | :32 | The dashboard, rebuilt as a grouped card grid driven entirely by data (10-admin-dashboard.md WO-A.4… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/account`
 
@@ -1234,13 +1234,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `analytics-detail-page.tsx` | `AnalyticsDetailPage` | function | :43 | The one detail-page shell every report renders through (D3) — a report is a config object; this is… |
+| `analytics-detail-page.tsx` | `AnalyticsDetailPage` | function | :44 | The one detail-page shell every report renders through (D3) — a report is a config object; this is… |
 | `report-registry.ts` | `FilterSpec` | interface | :11 | 25 detail pages are 25 config objects and one catch-all route (10-admin-dashboard.md D3). |
 | `report-registry.ts` | `ReportBlock` | type | :19 |  |
-| `report-registry.ts` | `AnalyticsReport` | interface | :41 |  |
-| `report-registry.ts` | `REPORT_REGISTRY` | const | :59 |  |
-| `report-registry.ts` | `reportFor` | function | :654 | Looks a slug up — `undefined` for an unregistered one, never a throw (the catch-all route renders `… |
-| `report-registry.ts` | `reportsFor` | function | :659 | Every report whose `module` (when set) is enabled — the report index's own list, same shape as `car… |
+| `report-registry.ts` | `AnalyticsReport` | interface | :51 |  |
+| `report-registry.ts` | `REPORT_REGISTRY` | const | :69 |  |
+| `report-registry.ts` | `reportFor` | function | :705 | Looks a slug up — `undefined` for an unregistered one, never a throw (the catch-all route renders `… |
+| `report-registry.ts` | `reportsFor` | function | :710 | Every report whose `module` (when set) is enabled — the report index's own list, same shape as `car… |
 | `resolve-path.ts` | `resolvePath` | function | :15 | Walks a dot-path into `data`, returning `undefined` for any missing or mistyped segment rather than… |
 | `resolve-path.ts` | `interpolateHref` | function | :42 | Fills a `{key}`-templated href (D3's `href` field on a `ranking`/`table` block) from a row object,… |
 
@@ -1248,6 +1248,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
+| `dynamic-timeseries-block.tsx` | `DynamicTimeSeriesBlock` | function | :14 | WO-57.2 — `TimeSeriesBlock`'s own chart, reused as-is; the only difference is that `series` is read… |
 | `funnel-block.tsx` | `FunnelBlock` | function | :9 | A stepped conversion funnel — `funnel-chart.tsx` predates Recharts (D9's own kept chart) and needs… |
 | `gauge-block.tsx` | `GaugeBlock` | function | :10 | A single percent-of-target figure — `gauge-chart.tsx` predates Recharts (D9's own kept chart). |
 | `kpis-block.tsx` | `KpisBlock` | function | :8 | A row of headline figures — the first thing a detail page shows. |
@@ -1316,6 +1317,7 @@ Every top-level export in `web`, with the line to open.
 | `card-registry.ts` | `cardsFor` | function | :702 | The visible cards for a caller: any card whose `module` (when set) is enabled. |
 | `comparison-panel.tsx` | `ComparisonPanel` | function | :20 | The one comparative chart the owner asked for by name (Phase 10's own "Why"), filling the empty slo… |
 | `gross-profit-today-widget.tsx` | `GrossProfitTodayWidget` | function | :33 | WO-68.3 (68-realtime-gross-profit.md) — a new card on the existing dashboard, not a new page. |
+| `live-feed-widget.tsx` | `LiveFeedWidget` | function | :20 | The live operational feed's dashboard widget (analytics-reporting/58-live-operational-feed.md WO-58… |
 | `metric-card.tsx` | `MetricCardData` | interface | :8 |  |
 | `metric-card.tsx` | `formatValue` | function | :14 |  |
 | `metric-card.tsx` | `MetricCard` | function | :49 | The whole dashboard card grid boils down to this one component (10-admin-dashboard.md D1) — every c… |
@@ -1707,29 +1709,31 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `DashboardCardsResponse` | interface | :1415 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
 | `api.ts` | `ActionItem` | interface | :1429 | `GET /admin/action-hub` (admin-platform/44-manager-action-hub.md D2). |
 | `api.ts` | `ActionHubResponse` | interface | :1440 |  |
-| `api.ts` | `CmsMenuLink` | interface | :1446 |  |
-| `api.ts` | `ProductCrossSellKind` | type | :1454 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
-| `api.ts` | `ProductCrossSellRow` | interface | :1456 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
-| `api.ts` | `MarkdownSuggestionStatus` | type | :1463 |  |
-| `api.ts` | `MarkdownSuggestion` | interface | :1465 |  |
-| `api.ts` | `ApiKeyStatus` | type | :1491 | --- Personal API keys (docs/implementation/access-control-identity/163-personal-api-keys.md) --- Mi… |
-| `api.ts` | `ApiKeyRevocationReason` | type | :1492 |  |
-| `api.ts` | `ApiKeyView` | interface | :1513 | One of your own keys, with what it can do right now. |
-| `api.ts` | `IssuedApiKey` | interface | :1520 |  |
-| `api.ts` | `SsoConnectionStatus` | type | :1530 | --- Single sign-on (docs/implementation/access-control-identity/161-sso-identity-federation.md) ---… |
-| `api.ts` | `SsoConnection` | interface | :1532 |  |
-| `api.ts` | `SsoConnectionList` | interface | :1549 | `GET /admin/sso/connections` — the callback URL beside the rows, so it can be registered before the… |
-| `api.ts` | `SsoDefaultRoleOption` | interface | :1555 | A role, and the access-widening permissions that keep it from being a connection's default — empty… |
-| `api.ts` | `SsoAccount` | interface | :1561 | One account created or linked through a connection, read from its audit trail. |
-| `api.ts` | `SsoSignInOption` | interface | :1575 | `GET /auth/sso/connections` — public: what the sign-in screen draws a button for. |
-| `api.ts` | `ApiKeyOversightView` | interface | :1581 | A key on the `users.manage` oversight list — its owner, never its secret. |
-| `api.ts` | `ManagedServicesUsageSnapshot` | interface | :1602 | doc 14 (commercial-licensing-agency/14-managed-services-module.md) — the "Hosting & Billing" admin… |
-| `api.ts` | `ManagedServicesTenantStatus` | type | :1609 |  |
-| `api.ts` | `ManagedServicesUsageResponse` | interface | :1611 |  |
-| `api.ts` | `ManagedServicesInvoiceStatus` | type | :1618 |  |
-| `api.ts` | `ManagedServicesStripePaymentStatus` | type | :1619 |  |
-| `api.ts` | `ManagedServicesInvoice` | interface | :1621 |  |
-| `api.ts` | `ManagedServicesInvoicesResponse` | interface | :1637 | `currency` travels with every response that carries money — the agency's OWN billing currency (`PLA… |
+| `api.ts` | `FeedEntry` | interface | :1447 | `GET /admin/feed` (analytics-reporting/58-live-operational-feed.md WO-58.3). |
+| `api.ts` | `FeedResponse` | interface | :1457 |  |
+| `api.ts` | `CmsMenuLink` | interface | :1463 |  |
+| `api.ts` | `ProductCrossSellKind` | type | :1471 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
+| `api.ts` | `ProductCrossSellRow` | interface | :1473 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
+| `api.ts` | `MarkdownSuggestionStatus` | type | :1480 |  |
+| `api.ts` | `MarkdownSuggestion` | interface | :1482 |  |
+| `api.ts` | `ApiKeyStatus` | type | :1508 | --- Personal API keys (docs/implementation/access-control-identity/163-personal-api-keys.md) --- Mi… |
+| `api.ts` | `ApiKeyRevocationReason` | type | :1509 |  |
+| `api.ts` | `ApiKeyView` | interface | :1530 | One of your own keys, with what it can do right now. |
+| `api.ts` | `IssuedApiKey` | interface | :1537 |  |
+| `api.ts` | `SsoConnectionStatus` | type | :1547 | --- Single sign-on (docs/implementation/access-control-identity/161-sso-identity-federation.md) ---… |
+| `api.ts` | `SsoConnection` | interface | :1549 |  |
+| `api.ts` | `SsoConnectionList` | interface | :1566 | `GET /admin/sso/connections` — the callback URL beside the rows, so it can be registered before the… |
+| `api.ts` | `SsoDefaultRoleOption` | interface | :1572 | A role, and the access-widening permissions that keep it from being a connection's default — empty… |
+| `api.ts` | `SsoAccount` | interface | :1578 | One account created or linked through a connection, read from its audit trail. |
+| `api.ts` | `SsoSignInOption` | interface | :1592 | `GET /auth/sso/connections` — public: what the sign-in screen draws a button for. |
+| `api.ts` | `ApiKeyOversightView` | interface | :1598 | A key on the `users.manage` oversight list — its owner, never its secret. |
+| `api.ts` | `ManagedServicesUsageSnapshot` | interface | :1619 | doc 14 (commercial-licensing-agency/14-managed-services-module.md) — the "Hosting & Billing" admin… |
+| `api.ts` | `ManagedServicesTenantStatus` | type | :1626 |  |
+| `api.ts` | `ManagedServicesUsageResponse` | interface | :1628 |  |
+| `api.ts` | `ManagedServicesInvoiceStatus` | type | :1635 |  |
+| `api.ts` | `ManagedServicesStripePaymentStatus` | type | :1636 |  |
+| `api.ts` | `ManagedServicesInvoice` | interface | :1638 |  |
+| `api.ts` | `ManagedServicesInvoicesResponse` | interface | :1654 | `currency` travels with every response that carries money — the agency's OWN billing currency (`PLA… |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

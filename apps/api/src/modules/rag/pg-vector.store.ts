@@ -22,6 +22,16 @@ export class PgVectorStore implements VectorStore {
 
     const sourceIds = [...new Set(chunks.map((chunk) => chunk.sourceId))];
     await this.prisma.$transaction(async (tx) => {
+      // M7 (security review) — a row lock per distinct DocumentSource before
+      // the delete+insert below, so two concurrent upsertChunks() calls for
+      // the same source (which `ingestOne()`'s own atomic claim should
+      // prevent, but this is the last line of defense against it) serialize
+      // instead of interleaving their delete-then-insert and leaving a mixed
+      // or doubled chunk set.
+      for (const sourceId of sourceIds) {
+        await tx.$executeRaw`SELECT id FROM "DocumentSource" WHERE id = ${sourceId} FOR UPDATE`;
+      }
+
       // Delete-then-insert, both inside this one transaction — WO-35's own
       // idempotent-re-ingestion rule (§3): a redelivered or retried
       // ingestion job never leaves stale chunks answering alongside fresh
@@ -54,6 +64,23 @@ export class PgVectorStore implements VectorStore {
    * restriction" — so a null-scoped caller never sees a populated-org
    * chunk and vice versa.
    */
+  /**
+   * M11 (security review) — `ef_search` (Postgres/pgvector's own HNSW
+   * candidate-set size, default 40) is applied by the index scan BEFORE
+   * `organizationId`/`corpus` narrow the result, so a scoped query against a
+   * small corpus inside a much larger table can come back with fewer rows
+   * than actually match, or none. `SET LOCAL` inside this method's own
+   * transaction raises it in proportion to `topK` — bounded, cheap, no
+   * schema change — and resets automatically at the end of the transaction,
+   * so it never leaks into any other query on the same connection.
+   *
+   * Per-corpus partial HNSW indexes are a further, larger optimization this
+   * fix deliberately does not build: `.claude/rules/performance.md`'s own
+   * "no index added just because it seems generally useful," and this
+   * repository has no real query-pattern data yet to justify one — see
+   * `rag.prisma`'s header for the doc's own named escalation trigger this
+   * would actually respond to.
+   */
   async query(embedding: number[], filter: VectorQueryFilter, topK: number): Promise<VectorQueryHit[]> {
     const vectorLiteral = toVectorLiteral(embedding);
     const orgFilter =
@@ -63,18 +90,25 @@ export class PgVectorStore implements VectorStore {
     const corpusFilter = filter.corpus
       ? Prisma.sql`AND dc."corpus" = ${filter.corpus}::"DocumentCorpus"`
       : Prisma.empty;
+    const efSearch = Math.max(100, topK * 4);
 
-    return this.prisma.$queryRaw<VectorQueryHit[]>`
-      SELECT dc."id" AS "id", dc."sourceId" AS "sourceId", dc."pageFrom" AS "pageFrom",
-             dc."pageTo" AS "pageTo", dc."text" AS "text",
-             1 - (dc."embedding" <=> ${vectorLiteral}::vector) AS "score"
-      FROM "DocumentChunk" dc
-      WHERE true
-        ${orgFilter}
-        ${corpusFilter}
-      ORDER BY dc."embedding" <=> ${vectorLiteral}::vector ASC
-      LIMIT ${topK};
-    `;
+    return this.prisma.$transaction(async (tx) => {
+      // `ef_search` is an integer GUC — interpolated directly (never as a
+      // bound parameter, which `SET LOCAL` does not accept), but it is
+      // computed above from `topK`, never taken from request input as text.
+      await tx.$executeRawUnsafe(`SET LOCAL hnsw.ef_search = ${efSearch}`);
+      return tx.$queryRaw<VectorQueryHit[]>`
+        SELECT dc."id" AS "id", dc."sourceId" AS "sourceId", dc."pageFrom" AS "pageFrom",
+               dc."pageTo" AS "pageTo", dc."text" AS "text",
+               1 - (dc."embedding" <=> ${vectorLiteral}::vector) AS "score"
+        FROM "DocumentChunk" dc
+        WHERE true
+          ${orgFilter}
+          ${corpusFilter}
+        ORDER BY dc."embedding" <=> ${vectorLiteral}::vector ASC
+        LIMIT ${topK};
+      `;
+    });
   }
 }
 

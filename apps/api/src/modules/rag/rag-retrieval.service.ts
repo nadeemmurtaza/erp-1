@@ -1,4 +1,4 @@
-import { Inject, Injectable, ServiceUnavailableException } from '@nestjs/common';
+import { Inject, Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { AiService } from '../../core/ai/ai.service';
 import { AiFeature, type DocumentCorpus } from '../../core/prisma/client';
 import { VECTOR_STORE, type VectorQueryHit, type VectorStore } from './vector-store';
@@ -8,7 +8,7 @@ export interface RagScope {
   corpus: DocumentCorpus;
 }
 
-const DEFAULT_TOP_K = 8;
+export const DEFAULT_TOP_K = 8;
 
 /**
  * WO-35.4 — `retrieve()`, exactly the doc's own §4 shape. The
@@ -24,6 +24,8 @@ const DEFAULT_TOP_K = 8;
  */
 @Injectable()
 export class RagRetrievalService {
+  private readonly logger = new Logger(RagRetrievalService.name);
+
   constructor(
     private readonly ai: AiService,
     @Inject(VECTOR_STORE) private readonly vectorStore: VectorStore,
@@ -53,6 +55,14 @@ export class RagRetrievalService {
     if (!embedded) {
       throw new ServiceUnavailableException('Retrieval is not available right now — try again shortly.');
     }
-    return this.vectorStore.query(embedded.vectors[0], scope, topK);
+    try {
+      return await this.vectorStore.query(embedded.vectors[0], scope, topK);
+    } catch (error) {
+      // L16 (security review) — a vector-store failure (a bad connection, a
+      // query timeout) must degrade the same documented way every other
+      // retrieval failure mode already does, never surface as a raw 500.
+      this.logger.error(`Vector store query failed: ${error instanceof Error ? error.message : String(error)}`);
+      throw new ServiceUnavailableException('Retrieval is not available right now — try again shortly.');
+    }
   }
 }

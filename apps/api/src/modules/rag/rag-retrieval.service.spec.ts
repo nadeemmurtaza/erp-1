@@ -52,6 +52,15 @@ describe('RagRetrievalService', () => {
       expect(vectorStore.query).not.toHaveBeenCalled();
     });
 
+    it('degrades to ServiceUnavailableException — never a raw 500 — when the vector store itself throws (L16, security review)', async () => {
+      ai.embed.mockResolvedValue({ vectors: [[1, 2, 3]], inputTokens: 5, model: 'x' });
+      vectorStore.query.mockRejectedValue(new Error('connection reset'));
+
+      await expect(service.retrieve('query', { organizationId: null, corpus: 'KNOWLEDGE_BASE' })).rejects.toThrow(
+        ServiceUnavailableException,
+      );
+    });
+
     it('scopes to organizationId: null for a Solo/Chain deployment', async () => {
       ai.embed.mockResolvedValue({ vectors: [[0]], inputTokens: 1, model: 'x' });
       vectorStore.query.mockResolvedValue([]);

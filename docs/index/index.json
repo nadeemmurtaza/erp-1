@@ -3,9 +3,9 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1951,
-    "lines": 297149,
-    "routes": 643,
+    "files": 1956,
+    "lines": 298662,
+    "routes": 645,
     "controllers": 117,
     "models": 231,
     "enums": 107,
@@ -14,7 +14,7 @@
     "permissions": 77,
     "screens": 229,
     "crons": 19,
-    "specs": 231,
+    "specs": 233,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29891,
-      "bytes": 1174500,
+      "lines": 29900,
+      "bytes": 1174833,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 822,
-      "lines": 115286,
-      "bytes": 4367100,
+      "files": 825,
+      "lines": 116667,
+      "bytes": 4438004,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,9 +50,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 369,
-      "lines": 57938,
-      "bytes": 2097098,
+      "files": 371,
+      "lines": 58055,
+      "bytes": 2102063,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -63,8 +63,8 @@
     },
     "packages": {
       "files": 78,
-      "lines": 7791,
-      "bytes": 275128,
+      "lines": 7797,
+      "bytes": 275621,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -738,7 +738,9 @@
         "apps/api/src/modules/rag/pdf-extraction.service.ts",
         "apps/api/src/modules/rag/pg-vector.store.spec.ts",
         "apps/api/src/modules/rag/pg-vector.store.ts",
+        "apps/api/src/modules/rag/rag-admin.controller.spec.ts",
         "apps/api/src/modules/rag/rag-admin.controller.ts",
+        "apps/api/src/modules/rag/rag-corpus-access.ts",
         "apps/api/src/modules/rag/rag-corpus.service.spec.ts",
         "apps/api/src/modules/rag/rag-corpus.service.ts",
         "apps/api/src/modules/rag/rag-generation.service.spec.ts",
@@ -751,7 +753,7 @@
         "apps/api/src/modules/rag/rag.module.ts",
         "apps/api/src/modules/rag/vector-store.ts"
       ],
-      "routes": 9,
+      "routes": 11,
       "page": "docs/index/modules/rag.md"
     },
     {
@@ -1262,6 +1264,7 @@
     {
       "name": "storage",
       "files": [
+        "apps/api/src/core/storage/files.controller.spec.ts",
         "apps/api/src/core/storage/files.controller.ts",
         "apps/api/src/core/storage/local-storage.driver.ts",
         "apps/api/src/core/storage/s3-storage.driver.ts",
@@ -7421,7 +7424,7 @@
       "controller": "RagAdminController",
       "handler": "ask",
       "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
-      "line": 124,
+      "line": 251,
       "access": "rag.query",
       "permissions": [
         "rag.query"
@@ -7437,7 +7440,7 @@
       "controller": "RagAdminController",
       "handler": "query",
       "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
-      "line": 117,
+      "line": 230,
       "access": "rag.query",
       "permissions": [
         "rag.query"
@@ -7453,14 +7456,14 @@
       "controller": "RagAdminController",
       "handler": "listSources",
       "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
-      "line": 51,
+      "line": 96,
       "access": "rag.ingest.manage",
       "permissions": [
         "rag.ingest.manage"
       ],
       "public": false,
       "authOnly": false,
-      "summary": "The ingestion queue: every DocumentSource and its status"
+      "summary": "The ingestion queue: every DocumentSource and its status — constrained to corpora this caller may see (H1)"
     },
     {
       "method": "POST",
@@ -7469,7 +7472,7 @@
       "controller": "RagAdminController",
       "handler": "uploadSource",
       "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
-      "line": 74,
+      "line": 127,
       "access": "rag.ingest.manage",
       "permissions": [
         "rag.ingest.manage"
@@ -7485,7 +7488,7 @@
       "controller": "RagAdminController",
       "handler": "deleteSource",
       "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
-      "line": 107,
+      "line": 216,
       "access": "rag.ingest.manage",
       "permissions": [
         "rag.ingest.manage"
@@ -7501,7 +7504,7 @@
       "controller": "RagAdminController",
       "handler": "getSource",
       "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
-      "line": 62,
+      "line": 105,
       "access": "rag.ingest.manage",
       "permissions": [
         "rag.ingest.manage"
@@ -7511,20 +7514,52 @@
       "summary": "One DocumentSource, with its chunk count"
     },
     {
-      "method": "POST",
-      "path": "/admin/rag/sources/:id/ingest-now",
+      "method": "GET",
+      "path": "/admin/rag/sources/:id/file",
       "module": "rag",
       "controller": "RagAdminController",
-      "handler": "ingestNow",
+      "handler": "downloadSourceFile",
       "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
-      "line": 99,
+      "line": 114,
       "access": "rag.ingest.manage",
       "permissions": [
         "rag.ingest.manage"
       ],
       "public": false,
       "authOnly": false,
-      "summary": "Run ingestion for one QUEUED source immediately, without waiting for the cron"
+      "summary": "Download the original stored PDF — the only authenticated path to its bytes (H2, security review)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources/:id/file",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "replaceSourceFile",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 158,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Replace a source's file — corrects a bad upload without a delete-then-recreate round trip (L20, security review)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources/:id/ingest-now",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "ingestNow",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 195,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Queue immediate, in-background ingestion for one QUEUED source, without waiting for the cron"
     },
     {
       "method": "POST",
@@ -7533,14 +7568,14 @@
       "controller": "RagAdminController",
       "handler": "retry",
       "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
-      "line": 91,
+      "line": 175,
       "access": "rag.ingest.manage",
       "permissions": [
         "rag.ingest.manage"
       ],
       "public": false,
       "authOnly": false,
-      "summary": "Re-queue a FAILED source"
+      "summary": "Re-queue a FAILED source, or one stuck in-flight past the staleness threshold"
     },
     {
       "method": "GET",
@@ -7549,7 +7584,7 @@
       "controller": "RagAdminController",
       "handler": "status",
       "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
-      "line": 39,
+      "line": 84,
       "access": "rag.ingest.manage | rag.query",
       "permissions": [
         "rag.ingest.manage",
@@ -11487,7 +11522,7 @@
         "GET /admin/accounting/reports/profit-and-loss",
         "GET /admin/accounting/reports/trial-balance"
       ],
-      "uiSites": 0,
+      "uiSites": 1,
       "roles": [
         "ADMIN"
       ],
@@ -11949,7 +11984,7 @@
         "POST /admin/suppliers/:id/products",
         "DELETE /admin/suppliers/:id/products/:variantId"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -12463,7 +12498,7 @@
         "GET /admin/payroll/runs",
         "GET /admin/payroll/runs/:id"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "ADMIN"
       ],
@@ -12944,6 +12979,8 @@
         "POST /admin/rag/sources",
         "DELETE /admin/rag/sources/:id",
         "GET /admin/rag/sources/:id",
+        "GET /admin/rag/sources/:id/file",
+        "POST /admin/rag/sources/:id/file",
         "POST /admin/rag/sources/:id/ingest-now",
         "POST /admin/rag/sources/:id/retry",
         "GET /admin/rag/status"
@@ -12959,7 +12996,7 @@
       "key": "rag.query",
       "label": "Run a retrieval or generated-answer query directly against a document corpus",
       "category": "Administration",
-      "sensitivity": "low",
+      "sensitivity": "medium",
       "routes": [
         "POST /admin/rag/ask",
         "POST /admin/rag/query",
@@ -17523,7 +17560,7 @@
     {
       "name": "DocumentChunk",
       "file": "apps/api/prisma/schema/rag.prisma",
-      "line": 111,
+      "line": 129,
       "doc": "One row per chunk, not per document — chunking is what makes retrieval precise instead of \"here's a 40-page PDF, good luck.\" `organizationId` and `corpus` are both denormalized from `DocumentSource`…",
       "fields": [
         {
@@ -17598,7 +17635,8 @@
         }
       ],
       "indexes": [
-        "@@index([organizationId, corpus, sourceId])"
+        "@@index([organizationId, corpus, sourceId])",
+        "@@index([sourceId])"
       ]
     },
     {
@@ -17673,6 +17711,27 @@
         {
           "name": "uploadedById",
           "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "claimedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attempts",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "nextAttemptAt",
+          "type": "DateTime?",
           "id": false,
           "unique": false,
           "relation": false
@@ -36945,7 +37004,7 @@
       "file": "apps/api/prisma/schema/migrations/20260926000000_add_rag_document_retrieval/migration.sql",
       "date": "2026-09-26",
       "slug": "add_rag_document_retrieval",
-      "statements": 13,
+      "statements": 17,
       "kinds": [
         "CREATE TYPE",
         "ALTER TYPE",
@@ -40031,6 +40090,15 @@
       ]
     },
     {
+      "file": "apps/api/src/core/storage/files.controller.spec.ts",
+      "module": "core/storage",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "FilesController"
+      ]
+    },
+    {
       "file": "apps/api/src/core/storage/storage.service.spec.ts",
       "module": "core/storage",
       "kind": "unit test",
@@ -41154,7 +41222,7 @@
       "file": "apps/api/src/modules/rag/chunking.spec.ts",
       "module": "rag",
       "kind": "unit test",
-      "cases": 6,
+      "cases": 7,
       "describes": [
         "chunkPages"
       ]
@@ -41163,10 +41231,12 @@
       "file": "apps/api/src/modules/rag/pdf-extraction.service.spec.ts",
       "module": "rag",
       "kind": "unit test",
-      "cases": 4,
+      "cases": 10,
       "describes": [
         "PdfExtractionService",
-        "the scanned-page (OCR) fallback"
+        "the scanned-page (OCR) fallback",
+        "unpack1BitGrayscale",
+        "withFallbackTimeout / withDeadline"
       ]
     },
     {
@@ -41181,44 +41251,65 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/rag/rag-admin.controller.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 17,
+      "describes": [
+        "RagAdminController",
+        "query (H1, security review)",
+        "ask (H1, security review)",
+        "uploadSource (H1/M4, security review)",
+        "ingestNow (M12, security review)",
+        "permission threading (H1, security review)",
+        "downloadSourceFile (H2, security review)"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/rag/rag-corpus.service.spec.ts",
       "module": "rag",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 18,
       "describes": [
         "RagCorpusService",
         "createSource",
         "retry",
-        "deleteSource"
+        "deleteSource",
+        "findOne (H1, security review)",
+        "list (H1, security review)",
+        "chunkCounts (L18, security review)"
       ]
     },
     {
       "file": "apps/api/src/modules/rag/rag-generation.service.spec.ts",
       "module": "rag",
       "kind": "unit test",
-      "cases": 5,
+      "cases": 9,
       "describes": [
         "RagGenerationService",
         "answer",
-        "isAvailable"
+        "isAvailable",
+        "prompt construction (L14, security review)",
+        "topK clamp (L17, security review)"
       ]
     },
     {
       "file": "apps/api/src/modules/rag/rag-ingestion.service.spec.ts",
       "module": "rag",
       "kind": "unit test",
-      "cases": 6,
+      "cases": 14,
       "describes": [
         "RagIngestionService",
         "processQueued",
-        "ingestOne"
+        "ingestOne",
+        "corpus access (H1, security review)"
       ]
     },
     {
       "file": "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
       "module": "rag",
       "kind": "unit test",
-      "cases": 4,
+      "cases": 5,
       "describes": [
         "RagRetrievalService",
         "isAvailable",
@@ -42752,8 +42843,8 @@
       "path": "apps/api/package.json",
       "area": "api",
       "kind": "json",
-      "lines": 79,
-      "bytes": 2491,
+      "lines": 80,
+      "bytes": 2540,
       "doc": "",
       "symbols": []
     },
@@ -43604,8 +43695,8 @@
       "path": "apps/api/prisma/schema/migrations/20260926000000_add_rag_document_retrieval/migration.sql",
       "area": "api",
       "kind": "migration",
-      "lines": 71,
-      "bytes": 2897,
+      "lines": 86,
+      "bytes": 3714,
       "doc": "",
       "symbols": []
     },
@@ -43721,8 +43812,8 @@
       "path": "apps/api/prisma/schema/rag.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 137,
-      "bytes": 6804,
+      "lines": 159,
+      "bytes": 8184,
       "doc": "WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md).",
       "symbols": []
     },
@@ -46875,11 +46966,20 @@
       ]
     },
     {
+      "path": "apps/api/src/core/storage/files.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 63,
+      "bytes": 2837,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/storage/files.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 58,
-      "bytes": 1934,
+      "lines": 67,
+      "bytes": 2386,
       "doc": "",
       "symbols": [
         {
@@ -46893,8 +46993,8 @@
       "path": "apps/api/src/core/storage/local-storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 72,
-      "bytes": 2513,
+      "lines": 84,
+      "bytes": 2997,
       "doc": "",
       "symbols": [
         {
@@ -46905,7 +47005,7 @@
         {
           "name": "buildKey",
           "kind": "function",
-          "line": 61
+          "line": 73
         }
       ]
     },
@@ -46913,14 +47013,14 @@
       "path": "apps/api/src/core/storage/s3-storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 77,
-      "bytes": 2583,
+      "lines": 92,
+      "bytes": 3434,
       "doc": "",
       "symbols": [
         {
           "name": "S3StorageDriver",
           "kind": "class",
-          "line": 13
+          "line": 14
         }
       ]
     },
@@ -46928,8 +47028,8 @@
       "path": "apps/api/src/core/storage/storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 31,
-      "bytes": 842,
+      "lines": 35,
+      "bytes": 1297,
       "doc": "Extension point: file storage.",
       "symbols": [
         {
@@ -46977,8 +47077,8 @@
       "path": "apps/api/src/core/storage/storage.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 133,
-      "bytes": 4807,
+      "lines": 143,
+      "bytes": 5263,
       "doc": "",
       "symbols": [
         {
@@ -53638,8 +53738,8 @@
       "path": "apps/api/src/modules/rag/chunking.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 54,
-      "bytes": 2279,
+      "lines": 71,
+      "bytes": 3124,
       "doc": "",
       "symbols": []
     },
@@ -53647,19 +53747,19 @@
       "path": "apps/api/src/modules/rag/chunking.ts",
       "area": "api",
       "kind": "module",
-      "lines": 53,
-      "bytes": 2111,
+      "lines": 61,
+      "bytes": 2681,
       "doc": "",
       "symbols": [
         {
           "name": "TextChunk",
           "kind": "interface",
-          "line": 9
+          "line": 11
         },
         {
           "name": "chunkPages",
           "kind": "function",
-          "line": 28
+          "line": 30
         }
       ]
     },
@@ -53667,8 +53767,8 @@
       "path": "apps/api/src/modules/rag/dto/rag.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 78,
-      "bytes": 2255,
+      "lines": 70,
+      "bytes": 2239,
       "doc": "",
       "symbols": [
         {
@@ -53679,12 +53779,12 @@
         {
           "name": "ListSourcesQueryDto",
           "kind": "class",
-          "line": 30
+          "line": 20
         },
         {
           "name": "RagQueryDto",
           "kind": "class",
-          "line": 57
+          "line": 47
         }
       ]
     },
@@ -53692,8 +53792,8 @@
       "path": "apps/api/src/modules/rag/pdf-extraction.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 139,
-      "bytes": 6154,
+      "lines": 196,
+      "bytes": 9749,
       "doc": "",
       "symbols": []
     },
@@ -53701,24 +53801,39 @@
       "path": "apps/api/src/modules/rag/pdf-extraction.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 191,
-      "bytes": 7899,
+      "lines": 341,
+      "bytes": 15518,
       "doc": "Pinned to the last major (3.x) whose \"legacy\" Node build ships as",
       "symbols": [
         {
           "name": "ExtractedPage",
           "kind": "interface",
-          "line": 29
+          "line": 52
         },
         {
           "name": "ExtractionResult",
           "kind": "interface",
-          "line": 36
+          "line": 59
         },
         {
           "name": "PdfExtractionService",
           "kind": "class",
-          "line": 57
+          "line": 83
+        },
+        {
+          "name": "withFallbackTimeout",
+          "kind": "function",
+          "line": 259
+        },
+        {
+          "name": "withDeadline",
+          "kind": "function",
+          "line": 280
+        },
+        {
+          "name": "unpack1BitGrayscale",
+          "kind": "function",
+          "line": 302
         }
       ]
     },
@@ -53735,8 +53850,8 @@
       "path": "apps/api/src/modules/rag/pg-vector.store.ts",
       "area": "api",
       "kind": "module",
-      "lines": 84,
-      "bytes": 3868,
+      "lines": 118,
+      "bytes": 5865,
       "doc": "",
       "symbols": [
         {
@@ -53747,17 +53862,46 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/rag/rag-admin.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 226,
+      "bytes": 11173,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/rag/rag-admin.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 128,
-      "bytes": 5797,
+      "lines": 266,
+      "bytes": 12380,
       "doc": "",
       "symbols": [
         {
           "name": "RagAdminController",
           "kind": "class",
-          "line": 28
+          "line": 70
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-corpus-access.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 52,
+      "bytes": 2664,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "assertCorpusAccess",
+          "kind": "function",
+          "line": 38
+        },
+        {
+          "name": "visibleCorpora",
+          "kind": "function",
+          "line": 46
         }
       ]
     },
@@ -53765,8 +53909,8 @@
       "path": "apps/api/src/modules/rag/rag-corpus.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 106,
-      "bytes": 4838,
+      "lines": 200,
+      "bytes": 10066,
       "doc": "",
       "symbols": []
     },
@@ -53774,19 +53918,29 @@
       "path": "apps/api/src/modules/rag/rag-corpus.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 146,
-      "bytes": 5796,
+      "lines": 273,
+      "bytes": 11626,
       "doc": "",
       "symbols": [
         {
+          "name": "PublicDocumentSource",
+          "kind": "type",
+          "line": 16
+        },
+        {
+          "name": "toPublicSource",
+          "kind": "function",
+          "line": 18
+        },
+        {
           "name": "UploadedSourceFile",
           "kind": "interface",
-          "line": 10
+          "line": 23
         },
         {
           "name": "RagCorpusService",
           "kind": "class",
-          "line": 33
+          "line": 46
         }
       ]
     },
@@ -53794,8 +53948,8 @@
       "path": "apps/api/src/modules/rag/rag-generation.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 86,
-      "bytes": 3789,
+      "lines": 135,
+      "bytes": 6453,
       "doc": "",
       "symbols": []
     },
@@ -53803,8 +53957,8 @@
       "path": "apps/api/src/modules/rag/rag-generation.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 92,
-      "bytes": 3780,
+      "lines": 134,
+      "bytes": 6112,
       "doc": "",
       "symbols": [
         {
@@ -53820,7 +53974,7 @@
         {
           "name": "RagGenerationService",
           "kind": "class",
-          "line": 44
+          "line": 76
         }
       ]
     },
@@ -53843,8 +53997,8 @@
       "path": "apps/api/src/modules/rag/rag-ingestion.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 129,
-      "bytes": 5527,
+      "lines": 236,
+      "bytes": 10945,
       "doc": "",
       "symbols": []
     },
@@ -53852,19 +54006,24 @@
       "path": "apps/api/src/modules/rag/rag-ingestion.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 158,
-      "bytes": 7422,
+      "lines": 276,
+      "bytes": 12988,
       "doc": "",
       "symbols": [
         {
           "name": "INGESTION_BATCH_SIZE",
           "kind": "const",
-          "line": 14
+          "line": 15
+        },
+        {
+          "name": "STALE_CLAIM_MINUTES",
+          "kind": "const",
+          "line": 23
         },
         {
           "name": "RagIngestionService",
           "kind": "class",
-          "line": 34
+          "line": 59
         }
       ]
     },
@@ -53872,8 +54031,8 @@
       "path": "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 65,
-      "bytes": 2731,
+      "lines": 74,
+      "bytes": 3211,
       "doc": "",
       "symbols": []
     },
@@ -53881,14 +54040,19 @@
       "path": "apps/api/src/modules/rag/rag-retrieval.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 59,
-      "bytes": 2619,
+      "lines": 69,
+      "bytes": 3194,
       "doc": "",
       "symbols": [
         {
           "name": "RagScope",
           "kind": "interface",
           "line": 6
+        },
+        {
+          "name": "DEFAULT_TOP_K",
+          "kind": "const",
+          "line": 11
         },
         {
           "name": "RagRetrievalService",
@@ -61445,14 +61609,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/rag/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 226,
-      "bytes": 8364,
+      "lines": 287,
+      "bytes": 10980,
       "doc": "",
       "symbols": [
         {
           "name": "RagSourcesPage",
           "kind": "default",
-          "line": 28
+          "line": 30
         }
       ]
     },
@@ -61460,14 +61624,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/rag/query/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 164,
-      "bytes": 6687,
+      "lines": 168,
+      "bytes": 6947,
       "doc": "",
       "symbols": [
         {
           "name": "RagQueryConsolePage",
           "kind": "default",
-          "line": 29
+          "line": 30
         }
       ]
     },
@@ -65141,8 +65305,8 @@
       "path": "apps/web/src/lib/admin-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 143,
-      "bytes": 4446,
+      "lines": 145,
+      "bytes": 4531,
       "doc": "",
       "symbols": [
         {
@@ -65458,6 +65622,21 @@
       ]
     },
     {
+      "path": "apps/web/src/lib/download-file.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 23,
+      "bytes": 756,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "downloadFile",
+          "kind": "function",
+          "line": 10
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/lib/onsite-messages-client.ts",
       "area": "web",
       "kind": "utility",
@@ -65472,6 +65651,21 @@
         },
         {
           "name": "subscribeToNewsletter",
+          "kind": "function",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/rag-corpus-access.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 27,
+      "bytes": 1248,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "visibleCorpora",
           "kind": "function",
           "line": 21
         }
@@ -70448,8 +70642,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 58,
-      "bytes": 2341,
+      "lines": 59,
+      "bytes": 2373,
       "doc": "",
       "symbols": []
     },
@@ -71720,8 +71914,8 @@
       "path": "packages/shared/src/http-client.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 200,
-      "bytes": 7268,
+      "lines": 201,
+      "bytes": 7388,
       "doc": "The one HTTP layer for a signed-in browser client.",
       "symbols": [
         {
@@ -71752,7 +71946,7 @@
         {
           "name": "requestWithRefresh",
           "kind": "function",
-          "line": 158
+          "line": 159
         }
       ]
     },
@@ -72005,8 +72199,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 832,
-      "bytes": 25032,
+      "lines": 837,
+      "bytes": 25405,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -72027,47 +72221,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 482
+          "line": 487
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 484
+          "line": 489
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 494
+          "line": 499
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 501
+          "line": 506
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 671
+          "line": 676
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 819
+          "line": 824
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 824
+          "line": 829
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 825
+          "line": 830
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 828
+          "line": 833
         }
       ]
     },
@@ -72513,8 +72707,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18795,
-      "bytes": 687120,
+      "lines": 18803,
+      "bytes": 687421,
       "doc": "",
       "symbols": []
     },

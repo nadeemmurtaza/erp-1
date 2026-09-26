@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-78 files · 7,791 lines
+78 files · 7,797 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -23,7 +23,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 9 | 412 | unit test, module |
 | `packages/shared` | 4 | 75 | script, json |
-| `packages/shared/src` | 57 | 7,134 | unit test, module |
+| `packages/shared/src` | 57 | 7,140 | unit test, module |
 
 
 ## Entry points
@@ -42,7 +42,7 @@ file may hard-code one.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `packages/shared/src/permissions.ts` | 832 | module | The permission catalog for PBAC (Permission-Based Access Control). |
+| `packages/shared/src/permissions.ts` | 837 | module | The permission catalog for PBAC (Permission-Based Access Control). |
 | `packages/shared/src/measurements/defaults.ts` | 448 | module |  |
 | `packages/shared/src/brand.ts` | 345 | module | THE BRAND FILE. |
 | `packages/shared/src/discounts.ts` | 322 | module | The discount rules engine. |
@@ -51,7 +51,7 @@ file may hard-code one.
 | `packages/shared/src/pricing.ts` | 275 | module | Order maths. |
 | `packages/shared/src/api-keys.spec.ts` | 231 | unit test |  |
 | `packages/shared/src/discounts.spec.ts` | 215 | unit test |  |
-| `packages/shared/src/http-client.ts` | 200 | module | The one HTTP layer for a signed-in browser client. |
+| `packages/shared/src/http-client.ts` | 201 | module | The one HTTP layer for a signed-in browser client. |
 | `packages/shared/src/cod-risk.spec.ts` | 199 | unit test |  |
 | `packages/shared/src/demand-forecast.spec.ts` | 179 | unit test |  |
 | `packages/shared/src/cod-risk.ts` | 167 | module |  |

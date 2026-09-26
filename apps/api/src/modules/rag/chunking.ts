@@ -5,6 +5,8 @@ const WORDS_PER_CHUNK = 500;
 /** ~10% overlap — a chunk boundary never silently drops the sentence it fell on. */
 const OVERLAP_WORDS = 50;
 const STEP_WORDS = WORDS_PER_CHUNK - OVERLAP_WORDS;
+/** M8 (security review) — a whitespace-only split lets text with no spaces at all (CJK, or one absurdly long token) produce a single unbounded "word" that never trips the word-count chunk boundary below. Any split token longer than this is itself broken into fixed-size pieces first. */
+const MAX_WORD_CHARS = 40;
 
 export interface TextChunk {
   pageFrom: number;
@@ -28,8 +30,14 @@ export interface TextChunk {
 export function chunkPages(pages: readonly ExtractedPage[]): TextChunk[] {
   const words: Array<{ word: string; page: number }> = [];
   for (const page of pages) {
-    for (const word of page.text.split(/\s+/).filter(Boolean)) {
-      words.push({ word, page: page.pageNumber });
+    for (const rawWord of page.text.split(/\s+/).filter(Boolean)) {
+      if (rawWord.length <= MAX_WORD_CHARS) {
+        words.push({ word: rawWord, page: page.pageNumber });
+      } else {
+        for (let i = 0; i < rawWord.length; i += MAX_WORD_CHARS) {
+          words.push({ word: rawWord.slice(i, i + MAX_WORD_CHARS), page: page.pageNumber });
+        }
+      }
     }
   }
   if (words.length === 0) return [];

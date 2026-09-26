@@ -94,6 +94,24 @@ model DocumentSource {
   /// code" idiom as `ProductAiSuggestion.reviewedById` (ai_layer migration):
   /// this row is never joined against `User` in a query, only displayed.
   uploadedById   String?
+  /// Security review M7 — set the instant `RagIngestionService.ingestOne()`
+  /// atomically claims this row (QUEUED -> EXTRACTING), cleared on every exit
+  /// (READY, FAILED, or requeued). A claim older than
+  /// `STALE_CLAIM_MINUTES` with the row still EXTRACTING/CHUNKING/EMBEDDING
+  /// means the worker that claimed it crashed — the cron's own reaper (or a
+  /// manual retry) resets it to QUEUED with this column cleared.
+  claimedAt      DateTime?
+  /// Security review M8 — consecutive embedding failures for this source.
+  /// Reset to 0 on a successful READY transition or a manual retry; past
+  /// `MAX_EMBED_ATTEMPTS` the source moves to FAILED instead of requeueing,
+  /// so a deterministically-broken document (a vendor 4xx on malformed
+  /// input, not a transient outage) stops occupying every ingestion batch
+  /// forever.
+  attempts       Int            @default(0)
+  /// Security review M8 — exponential backoff: `processQueued()` never
+  /// selects a QUEUED source before this time. `null` means eligible
+  /// immediately (never backed off, or just reset by a retry).
+  nextAttemptAt  DateTime?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
@@ -133,4 +151,8 @@ model DocumentChunk {
   // (HNSW, cosine ops) is created by hand in this migration's own .sql —
   // Prisma has no schema syntax for an index method or operator class.
   @@index([organizationId, corpus, sourceId])
+  /// L18 (security review) — the admin sources list's own chunk-count query
+  /// (`RagCorpusService`) reads by `sourceId` alone; the composite index
+  /// above requires `organizationId`/`corpus` too and does not serve it.
+  @@index([sourceId])
 }

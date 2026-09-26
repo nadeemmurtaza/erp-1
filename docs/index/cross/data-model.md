@@ -116,7 +116,7 @@ against a real database.
 | [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
 | [`Discount`](../data/promotions.md#discount) | `promotions` | 27 | 0 | id |  |
 | [`DocumentChunk`](../data/rag.md#documentchunk) | `rag` | 10 | 1 | id | One row per chunk, not per document — chunking is what makes retrieval precise instead of… |
-| [`DocumentSource`](../data/rag.md#documentsource) | `rag` | 13 | 0 | id | A source document — one row per uploaded file. |
+| [`DocumentSource`](../data/rag.md#documentsource) | `rag` | 16 | 0 | id | A source document — one row per uploaded file. |
 | [`DunningEvent`](../data/receivables.md#dunningevent) | `receivables` | 4 | 0 | id | One row per (order, step) a dunning notice has actually gone out for — the idempotency gu… |
 | [`DunningPolicy`](../data/receivables.md#dunningpolicy) | `receivables` | 4 | 0 | id | Days-overdue thresholds and which template fires at each — a client-editable policy row,… |
 | [`EmailAccount`](../data/core.md#emailaccount) | `core` | 25 | 0 | id | A connected mailbox: SMTP to send, optionally IMAP to receive. |

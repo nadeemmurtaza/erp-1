@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 369 tracked files in `apps/web`, by directory.
+All 371 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -695,13 +695,13 @@ All 369 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 226 |  |
+| `page.tsx` | page | 287 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/rag/query` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 164 |  |
+| `page.tsx` | page | 168 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/reports` (1)
 
@@ -1351,18 +1351,20 @@ All 369 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (9)
+### `apps/web/src/lib` (11)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `admin-client.ts` | utility | 143 |  |
+| `admin-client.ts` | utility | 145 |  |
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
 | `api.ts` | utility | 200 |  |
 | `cart-client.ts` | utility | 99 |  |
 | `customer-client.ts` | utility | 217 |  |
 | `download-csv.ts` | utility | 36 |  |
+| `download-file.ts` | utility | 23 |  |
 | `onsite-messages-client.ts` | utility | 24 |  |
+| `rag-corpus-access.ts` | utility | 27 |  |
 | `wishlist.ts` | utility | 192 |  |
 
 ### `apps/web/src/providers` (2)

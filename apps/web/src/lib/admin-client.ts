@@ -110,8 +110,8 @@ interface AdminRequestOptions {
   /** Sent as multipart/form-data; `body` is ignored when this is set. */
   formData?: FormData;
   query?: Record<string, unknown>;
-  /** Set for endpoints that return CSV rather than JSON. */
-  expect?: 'json' | 'text';
+  /** Set for endpoints that return CSV, or a downloadable file, rather than JSON. */
+  expect?: 'json' | 'text' | 'blob';
 }
 
 export async function adminFetch<T>(
@@ -127,7 +127,9 @@ export async function adminFetch<T>(
       query: options.query,
       expect: options.expect ?? 'json',
       credentials: 'include',
-      headers: { Accept: options.expect === 'text' ? 'text/csv' : 'application/json' },
+      headers: {
+        Accept: options.expect === 'text' ? 'text/csv' : options.expect === 'blob' ? '*/*' : 'application/json',
+      },
     },
     {
       token: getAccessToken,

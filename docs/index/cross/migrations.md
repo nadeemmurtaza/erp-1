@@ -110,7 +110,7 @@ nothing here fails a build.
 | 2026-09-25 | `add_review_summary_urdu` | 1 | ALTER TABLE | ProductReviewSummary |
 | 2026-09-25 | `add_wallet_merchant_payable` | 20 | CREATE TYPE, ALTER TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | MerchantPayable, WalletAccount, WalletAdjustmentRequest, WalletEntry |
 | 2026-09-25 | `add_receivables_credit_notes_dunning` | 15 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
-| 2026-09-26 | `add_rag_document_retrieval` | 13 | CREATE TYPE, ALTER TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | DocumentChunk, DocumentSource |
+| 2026-09-26 | `add_rag_document_retrieval` | 17 | CREATE TYPE, ALTER TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | DocumentChunk, DocumentSource |
 
 
 ---

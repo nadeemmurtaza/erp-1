@@ -475,7 +475,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     key: 'rag.query',
     label: 'Run a retrieval or generated-answer query directly against a document corpus',
     category: 'Administration',
-    sensitivity: 'low',
+    // Security review (WO-35 H1): a corpus can hold payroll or accounting
+    // content depending on what an operator uploaded into it, so holding
+    // this key alone can surface confidential content — the actual
+    // per-corpus restriction is `rag-corpus-access.ts`'s own map, not this
+    // sensitivity tier; this only reflects what the base grant can reach.
+    sensitivity: 'medium',
   },
 ] as const;
 

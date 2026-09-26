@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
+import { visibleCorpora } from '@/lib/rag-corpus-access';
 import { DataTable, type DataTableColumn, EmptyState, PageHeader } from '@/components/ui';
 import { ToastStack } from '@/components/admin/toast-stack';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +30,9 @@ const CORPUS_OPTIONS = Object.keys(CORPUS_LABEL) as DocumentCorpus[];
 export default function RagQueryConsolePage() {
   const { can } = useAdminSession();
   const canManageCorpus = can('rag.ingest.manage');
+  // H1 (security review) — only offer a corpus this session can actually
+  // reach; the API is what enforces it either way.
+  const visibleCorpusOptions = visibleCorpora(CORPUS_OPTIONS, can);
   const { toasts, add: addToast, remove: removeToast } = useToast();
 
   const [status, setStatus] = useState<RagStatus | null>(null);
@@ -108,7 +112,7 @@ export default function RagQueryConsolePage() {
             <label className="field-label">
               Corpus
               <select className="field-input" value={corpus} onChange={(event) => setCorpus(event.target.value as DocumentCorpus)}>
-                {CORPUS_OPTIONS.map((option) => (
+                {visibleCorpusOptions.map((option) => (
                   <option key={option} value={option}>
                     {CORPUS_LABEL[option]}
                   </option>

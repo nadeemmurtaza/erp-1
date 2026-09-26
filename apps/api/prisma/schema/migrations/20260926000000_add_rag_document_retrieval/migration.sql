@@ -28,6 +28,16 @@ CREATE TABLE "DocumentSource" (
     "ingestedAt" TIMESTAMP(3),
     "failureReason" TEXT,
     "uploadedById" TEXT,
+    -- Security review M7 — set while this row is atomically claimed by an
+    -- ingestion worker (QUEUED -> EXTRACTING); cleared on every exit. The
+    -- cron reaper resets a claim older than STALE_CLAIM_MINUTES back to
+    -- QUEUED.
+    "claimedAt" TIMESTAMP(3),
+    -- Security review M8 — consecutive embedding failures; backs off
+    -- exponentially via "nextAttemptAt" and moves to FAILED past
+    -- MAX_EMBED_ATTEMPTS instead of requeueing forever.
+    "attempts" INTEGER NOT NULL DEFAULT 0,
+    "nextAttemptAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -57,6 +67,11 @@ CREATE INDEX "DocumentSource_status_idx" ON "DocumentSource"("status");
 
 -- CreateIndex
 CREATE INDEX "DocumentChunk_organizationId_corpus_sourceId_idx" ON "DocumentChunk"("organizationId", "corpus", "sourceId");
+
+-- CreateIndex (L18, security review — the admin sources list's chunk-count
+-- query reads by sourceId alone; the composite index above requires
+-- organizationId/corpus too and does not serve it.)
+CREATE INDEX "DocumentChunk_sourceId_idx" ON "DocumentChunk"("sourceId");
 
 -- CreateIndex (WO-35 §2 — HNSW over ivfflat for the same reason WO-9.5 chose
 -- it: no "lists" tuning, builds fine as chunks arrive incrementally rather

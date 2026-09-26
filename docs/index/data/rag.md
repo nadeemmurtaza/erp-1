@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `DocumentChunk`  <sub>`apps/api/prisma/schema/rag.prisma:111`</sub>
+### `DocumentChunk`  <sub>`apps/api/prisma/schema/rag.prisma:129`</sub>
 
 > One row per chunk, not per document — chunking is what makes retrieval precise instead of "here's a 40-page PDF, good luck." `organizationId` and `corpus` are both denormalized from `DocumentSource`…
 
@@ -37,7 +37,7 @@ against a real database.
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `source` | `DocumentSource` | relation | @relation(fields: [sourceId], references: [id], onDelete: Cascade) |
 
-Indexes: `@@index([organizationId, corpus, sourceId])`
+Indexes: `@@index([organizationId, corpus, sourceId])` · `@@index([sourceId])`
 
 ### `DocumentSource`  <sub>`apps/api/prisma/schema/rag.prisma:76`</sub>
 
@@ -55,6 +55,9 @@ Indexes: `@@index([organizationId, corpus, sourceId])`
 | `ingestedAt` | `DateTime?` | optional |  |
 | `failureReason` | `String?` | optional |  |
 | `uploadedById` | `String?` | optional |  |
+| `claimedAt` | `DateTime?` | optional |  |
+| `attempts` | `Int` |  | @default(0) |
+| `nextAttemptAt` | `DateTime?` | optional |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `chunks` | `DocumentChunk[]` |  |  |

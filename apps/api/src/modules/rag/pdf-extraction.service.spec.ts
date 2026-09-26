@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { AiService } from '../../core/ai/ai.service';
 import { StorageService } from '../../core/storage/storage.service';
-import { PdfExtractionService } from './pdf-extraction.service';
+import { PdfExtractionService, unpack1BitGrayscale, withDeadline, withFallbackTimeout } from './pdf-extraction.service';
 
 /** A minimal, hand-built one-page PDF with a real text layer — no PDF-writing library needed for a fixture this small. */
 function buildTextPdf(text: string): Buffer {
@@ -72,11 +72,15 @@ function assemblePdf(objects: Buffer[]): Buffer {
 describe('PdfExtractionService', () => {
   let service: PdfExtractionService;
   let ai: { isAvailable: jest.Mock; describeImage: jest.Mock };
-  let storage: { putImage: jest.Mock };
+  let storage: { putImage: jest.Mock; signedUrlFor: jest.Mock; delete: jest.Mock };
 
   beforeEach(async () => {
     ai = { isAvailable: jest.fn(), describeImage: jest.fn() };
-    storage = { putImage: jest.fn() };
+    storage = {
+      putImage: jest.fn(),
+      signedUrlFor: jest.fn().mockImplementation((key: string) => Promise.resolve(`https://files.local/${key}?signed=1`)),
+      delete: jest.fn().mockResolvedValue(undefined),
+    };
 
     const module = await Test.createTestingModule({
       providers: [PdfExtractionService, { provide: AiService, useValue: ai }, { provide: StorageService, useValue: storage }],
@@ -108,7 +112,11 @@ describe('PdfExtractionService', () => {
       expect(result.pages[0].text).toBe('Transcribed page text.');
       expect(result.pages[0].fromOcr).toBe(true);
       expect(storage.putImage).toHaveBeenCalledWith(expect.objectContaining({ contentType: 'image/png' }));
-      expect(ai.describeImage).toHaveBeenCalledWith('RAG_INGESTION', 'https://files.local/rag-ocr/page-1.png', expect.stringContaining('Transcribe'));
+      // H2 — a short-lived signed URL, never the permanently-public one.
+      expect(storage.signedUrlFor).toHaveBeenCalledWith('rag-ocr/page-1.png', 300);
+      expect(ai.describeImage).toHaveBeenCalledWith('RAG_INGESTION', 'https://files.local/rag-ocr/page-1.png?signed=1', expect.stringContaining('Transcribe'));
+      // M10 — the OCR scratch image is deleted again immediately after use.
+      expect(storage.delete).toHaveBeenCalledWith('rag-ocr/page-1.png');
     });
 
     it('never calls OCR when no vision-capable provider is configured — the page just has empty text', async () => {
@@ -123,16 +131,65 @@ describe('PdfExtractionService', () => {
       expect(ai.describeImage).not.toHaveBeenCalled();
     });
 
-    it('degrades to empty text (never throws) when the vision call itself fails', async () => {
+    it('propagates the failure (M9, security review) rather than silently dropping the page, when an image was found, vision is configured, but the vision call itself fails', async () => {
       const pdf = buildImageOnlyPdf();
       ai.isAvailable.mockReturnValue(true);
-      storage.putImage.mockResolvedValue({ key: 'k', url: 'https://files.local/k', size: 1, contentType: 'image/png' });
+      storage.putImage.mockResolvedValue({ key: 'rag-ocr/page-1.png', url: 'https://files.local/rag-ocr/page-1.png', size: 1, contentType: 'image/png' });
       ai.describeImage.mockRejectedValue(new Error('vendor timeout'));
 
-      const result = await service.extract(pdf);
-
-      expect(result.pages[0].text).toBe('');
-      expect(result.pages[0].fromOcr).toBe(false);
+      await expect(service.extract(pdf)).rejects.toThrow('vendor timeout');
+      // The scratch image is still cleaned up even though OCR itself failed.
+      expect(storage.delete).toHaveBeenCalledWith('rag-ocr/page-1.png');
     });
   });
 });
+
+describe('unpack1BitGrayscale', () => {
+  it('expands a byte-aligned, MSB-first bit-packed row to one byte per pixel', () => {
+    // width 4 -> 1 byte per row. 0b1010_0000 -> pixels [1,0,1,0] -> [0xFF,0x00,0xFF,0x00].
+    const packed = Buffer.from([0b1010_0000]);
+    const result = unpack1BitGrayscale(packed, 4, 1);
+    expect(Array.from(result)).toEqual([0xff, 0x00, 0xff, 0x00]);
+  });
+
+  it('byte-aligns each row independently, even when width is not a multiple of 8', () => {
+    // width 3 -> still 1 byte per row (Math.ceil(3/8) = 1); two rows.
+    const packed = Buffer.from([0b1000_0000, 0b0110_0000]);
+    const result = unpack1BitGrayscale(packed, 3, 2);
+    expect(Array.from(result)).toEqual([0xff, 0x00, 0x00, 0x00, 0xff, 0xff]);
+  });
+});
+
+describe('withFallbackTimeout / withDeadline', () => {
+  it('withFallbackTimeout resolves to the real value when the promise settles before the deadline', async () => {
+    await expect(withFallbackTimeout(Promise.resolve('real'), 50, 'fallback')).resolves.toBe('real');
+  });
+
+  it('withFallbackTimeout resolves to the fallback when the promise never settles in time', async () => {
+    const neverSettles = new Promise<string>(() => undefined);
+    await expect(withFallbackTimeout(neverSettles, 10, 'fallback')).resolves.toBe('fallback');
+  });
+
+  it('withDeadline resolves to the real value when the promise settles before the deadline', async () => {
+    await expect(withDeadline(Promise.resolve('real'), 50, 'timed out')).resolves.toBe('real');
+  });
+
+  it('withDeadline rejects (never resolves) when the promise never settles in time — H3/M6\'s own reproduction of the original bug class', async () => {
+    const neverSettles = new Promise<string>(() => undefined);
+    await expect(withDeadline(neverSettles, 10, 'timed out')).rejects.toThrow('timed out');
+  });
+});
+
+// H3's own bug — a document-level `commonObjs`-promoted image XObject
+// (pdf.js promotes an image reused across 2+ pages this way) hanging
+// `page.objs.get()` forever — needs a real multi-page PDF where pdf.js's own
+// parser actually decides to promote the shared image, which is an internal
+// pdf.js analysis this test file has no way to force by hand-assembling PDF
+// bytes (unlike `buildTextPdf`/`buildImageOnlyPdf` above, which only need
+// pdf.js to parse a single page's own content stream). `withDeadline`'s own
+// timeout-rejects behavior above is what actually closes this class of bug
+// end to end (`extract()` wraps its whole per-page loop in it), and
+// `withFallbackTimeout`'s resolves-to-null behavior is the same defense
+// applied to the narrower per-image-lookup case inside `extractPageImage()`
+// — both are covered directly above rather than only through a fixture this
+// suite cannot reliably construct.

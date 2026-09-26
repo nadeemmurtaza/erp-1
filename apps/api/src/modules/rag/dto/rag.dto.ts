@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsIn, IsInt, IsOptional, IsString, Max, Min, MinLength } from 'class-validator';
+import { IsIn, IsInt, IsOptional, IsString, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { MAX_PAGE_SIZE } from '../../../core/common/dto/pagination.dto';
 
 const CORPUS_VALUES = ['EMPLOYEE_DOCUMENTS', 'SUPPLIER_CATALOG', 'BUSINESS_DOCUMENTS', 'KNOWLEDGE_BASE'] as const;
@@ -11,20 +11,10 @@ export class UploadSourceDto {
   @IsIn(CORPUS_VALUES)
   corpus!: (typeof CORPUS_VALUES)[number];
 
-  /**
-   * Optional and almost always omitted — see rag.prisma's header comment.
-   * Present only for the Organization-tier context this codebase has not
-   * built a resolver for yet (no cross-tenant user directory exists, the
-   * same honest limit `MerchantPayableService.schedulePayoutRun()`'s own
-   * comment already states for a comparable plain scalar); a caller that
-   * has one supplies it explicitly, exactly like every other
-   * `organizationId` parameter in this codebase (`MerchantPayableService
-   * .createMerchantPayable()`).
-   */
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  organizationId?: string;
+  // `organizationId` is deliberately NOT a field here (M4, security review):
+  // a client-supplied tenant scope on a write is exactly the isolation bug
+  // class doc 35 §4 rules out. See `rag-admin.controller.ts`'s own comment,
+  // next to the literal `null` every call site now passes instead.
 }
 
 export class ListSourcesQueryDto {
@@ -57,15 +47,17 @@ export class ListSourcesQueryDto {
 export class RagQueryDto {
   @IsString()
   @MinLength(1)
+  // L17 (security review) — bounds the text handed to embedding/generation;
+  // this DTO is shared by the cheap `query` debugging route and the far more
+  // expensive `ask` route, so the cap has to hold for both.
+  @MaxLength(2000)
   query!: string;
 
   @IsIn(CORPUS_VALUES)
   corpus!: (typeof CORPUS_VALUES)[number];
 
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  organizationId?: string;
+  // `organizationId` is deliberately NOT a field here (M4, security review)
+  // — see `UploadSourceDto`'s own comment; the server always supplies it.
 
   @ApiPropertyOptional({ minimum: 1, maximum: 50, default: 8 })
   @IsOptional()

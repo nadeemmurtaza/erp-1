@@ -32,12 +32,12 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 822 | 115,286 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 825 | 116,667 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `docs` | 393 | 62,132 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 369 | 57,938 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 28,378 | workspace manifests, docker compose/stack files, env templates |
+| `apps/web` | 371 | 58,055 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 28,387 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 22 | 9,108 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 61 | 7,209 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 61 | 7,215 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
 | `apps/platform` | 104 | 5,880 |  |
 | `apps/pos` | 31 | 1,874 | Next.js PWA — offline-first point of sale |
@@ -87,7 +87,7 @@ Each is independent: no module imports another except through a named
 | [`production`](modules/production.md) | core | MODULES allowlist | 9 | 4 |
 | [`promotions`](modules/promotions.md) | core | MODULES allowlist | 12 | 3 |
 | [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 24 | 9 |
-| [`rag`](modules/rag.md) | core | MODULES allowlist | 9 | 2 |
+| [`rag`](modules/rag.md) | core | MODULES allowlist | 11 | 2 |
 | [`receivables`](modules/receivables.md) | core | MODULES allowlist | 20 | 5 |
 | [`recommendations`](modules/recommendations.md) | core | MODULES allowlist | 7 | — |
 | [`reports`](modules/reports.md) | core | MODULES allowlist | 12 | — |
@@ -129,7 +129,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`replication`](core/replication.md) | 21 |  |
 | [`security`](core/security.md) | 3 |  |
 | [`settings`](core/settings.md) | 6 |  |
-| [`storage`](core/storage.md) | 7 | Extension point: file storage. |
+| [`storage`](core/storage.md) | 8 | Extension point: file storage. |
 | [`time`](core/time.md) | 4 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that… |
 
 

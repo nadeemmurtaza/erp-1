@@ -1,9 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { formatDateTime } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
+import { downloadFile } from '@/lib/download-file';
+import { visibleCorpora } from '@/lib/rag-corpus-access';
 import { DataTable, type DataTableColumn, EmptyState, Loading, Pagination, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import { ToastStack } from '@/components/admin/toast-stack';
@@ -29,6 +31,9 @@ export default function RagSourcesPage() {
   const { can } = useAdminSession();
   const canManage = can('rag.ingest.manage');
   const canQuery = can('rag.query');
+  // H1 (security review) — only offer a corpus this session can actually
+  // reach; the API is what enforces it either way.
+  const visibleCorpusOptions = visibleCorpora(CORPUS_OPTIONS, can);
   const { toasts, add: addToast, remove: removeToast } = useToast();
 
   const [status, setStatus] = useState<RagStatus | null>(null);
@@ -39,6 +44,8 @@ export default function RagSourcesPage() {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [replaceTargetId, setReplaceTargetId] = useState<string | null>(null);
+  const replaceInputRef = useRef<HTMLInputElement | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -105,12 +112,58 @@ export default function RagSourcesPage() {
     }
   }
 
+  async function download(row: DocumentSourceRow) {
+    try {
+      await downloadFile(`/admin/rag/sources/${row.id}/file`, row.originalName);
+    } catch (cause) {
+      addToast(cause instanceof Error ? cause.message : 'Could not download this file', 'error');
+    }
+  }
+
+  function triggerReplace(id: string) {
+    setReplaceTargetId(id);
+    replaceInputRef.current?.click();
+  }
+
+  // L20 (security review) — corrects a bad upload without deleting and
+  // re-uploading; the replaced file re-queues for ingestion on its own.
+  async function handleReplaceFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const chosen = event.target.files?.[0];
+    event.target.value = ''; // lets choosing the same file again still fire onChange
+    const id = replaceTargetId;
+    setReplaceTargetId(null);
+    if (!chosen || !id) return;
+
+    setBusyId(id);
+    try {
+      const formData = new FormData();
+      formData.append('file', chosen);
+      await adminFetch(`/admin/rag/sources/${id}/file`, { method: 'POST', formData });
+      addToast('File replaced — re-queued for ingestion', 'success');
+      await load();
+    } catch (cause) {
+      addToast(cause instanceof Error ? cause.message : 'Could not replace this file', 'error');
+    } finally {
+      setBusyId(null);
+    }
+  }
+
   if (!status || !page) return <Loading label="Loading the document corpus" />;
 
   const columns: DataTableColumn<DocumentSourceRow>[] = [
     { header: 'Document', cell: (row) => row.originalName },
     { header: 'Corpus', cell: (row) => CORPUS_LABEL[row.corpus], muted: true },
-    { header: 'Status', cell: (row) => <StatusBadge status={row.status} /> },
+    {
+      header: 'Status',
+      // L15 (security review) — the failure reason is otherwise invisible
+      // anywhere in this UI; a title attribute is the lightest possible
+      // surface for something an operator only needs on demand.
+      cell: (row) => (
+        <span title={row.status === 'FAILED' && row.failureReason ? row.failureReason : undefined}>
+          <StatusBadge status={row.status} />
+        </span>
+      ),
+    },
     { header: 'Chunks', cell: (row) => row.chunkCount, align: 'end', numeric: true },
     {
       header: 'Uploaded',
@@ -129,6 +182,12 @@ export default function RagSourcesPage() {
               Retry
             </button>
           ) : null}
+          <button type="button" className="btn-text" disabled={busyId === row.id} onClick={() => void download(row)}>
+            Download
+          </button>
+          <button type="button" className="btn-text" disabled={busyId === row.id} onClick={() => triggerReplace(row.id)}>
+            Replace file
+          </button>
           <button type="button" className="btn-text text-feedback-negative" disabled={busyId === row.id} onClick={() => void remove(row.id, row.originalName)}>
             Remove
           </button>
@@ -166,7 +225,7 @@ export default function RagSourcesPage() {
           <label className="field-label">
             Corpus
             <select className="field-input" value={uploadCorpus} onChange={(event) => setUploadCorpus(event.target.value as DocumentCorpus)}>
-              {CORPUS_OPTIONS.map((corpus) => (
+              {visibleCorpusOptions.map((corpus) => (
                 <option key={corpus} value={corpus}>
                   {CORPUS_LABEL[corpus]}
                 </option>
@@ -200,7 +259,7 @@ export default function RagSourcesPage() {
             }}
           >
             <option value="">Every corpus</option>
-            {CORPUS_OPTIONS.map((corpus) => (
+            {visibleCorpusOptions.map((corpus) => (
               <option key={corpus} value={corpus}>
                 {CORPUS_LABEL[corpus]}
               </option>
@@ -208,6 +267,8 @@ export default function RagSourcesPage() {
           </select>
         </label>
       </div>
+
+      <input ref={replaceInputRef} type="file" accept="application/pdf" className="hidden" onChange={(event) => void handleReplaceFileChange(event)} />
 
       {page.data.length === 0 ? (
         <EmptyState

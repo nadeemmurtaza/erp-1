@@ -36,7 +36,7 @@ the *catalogue*, not any particular deployment's grants.
 | `reports.view` | Export CSV reports | low | 11 | 2 | STAFF, ADMIN |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
-| `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | — | ADMIN |
+| `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | 1 | ADMIN |
 
 ### Customers
 
@@ -83,7 +83,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `suppliers.manage` | Manage suppliers | medium | 8 | 1 | STAFF, ADMIN |
+| `suppliers.manage` | Manage suppliers | medium | 8 | 2 | STAFF, ADMIN |
 | `purchasing.manage` | Create and receive purchase orders | medium | 18 | 10 | STAFF, ADMIN |
 | `purchasing.requisitions.create` | Request a purchase (not necessarily raise the PO) | low | 3 | 1 | STAFF, ADMIN |
 | `purchasing.requisitions.approve` | Approve or reject purchase requisitions | medium | 3 | 1 | ADMIN |
@@ -108,8 +108,8 @@ the *catalogue*, not any particular deployment's grants.
 | `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | — | ADMIN |
 | `ai.view` | View AI usage, cost and the review queue for AI-generated drafts | low | 2 | 2 | STAFF, ADMIN |
 | `ai.manage` | Configure AI providers and the monthly budget, and approve or reject AI-generat… | medium | 8 | 3 | STAFF, ADMIN |
-| `rag.ingest.manage` | Upload documents into a RAG corpus, and retry or remove one from the ingestion… | medium | 7 | 3 | STAFF, ADMIN |
-| `rag.query` | Run a retrieval or generated-answer query directly against a document corpus | low | 3 | 2 | STAFF, ADMIN |
+| `rag.ingest.manage` | Upload documents into a RAG corpus, and retry or remove one from the ingestion… | medium | 9 | 3 | STAFF, ADMIN |
+| `rag.query` | Run a retrieval or generated-answer query directly against a document corpus | medium | 3 | 2 | STAFF, ADMIN |
 
 ### Finance
 
@@ -145,7 +145,7 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `payroll.view_own` | View their own compensation, leave balance and payslips | low | 5 | 1 | TAILOR, STAFF, ADMIN |
-| `payroll.view` | View every employee's compensation, leave and pay-run data | medium | 7 | 3 | ADMIN |
+| `payroll.view` | View every employee's compensation, leave and pay-run data | medium | 7 | 4 | ADMIN |
 | `payroll.manage` | Set compensation rates, decide leave requests, and build, approve and post pay… | medium | 7 | 2 | ADMIN |
 
 ### Marketing

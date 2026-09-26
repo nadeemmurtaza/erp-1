@@ -644,13 +644,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RagSourcesPage` | default | :28 | WO-35.1/35.2/35.6 — corpus/source administration: upload a document into a corpus, watch it move th… |
+| `page.tsx` | `RagSourcesPage` | default | :30 | WO-35.1/35.2/35.6 — corpus/source administration: upload a document into a corpus, watch it move th… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/rag/query`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RagQueryConsolePage` | default | :29 | WO-35.4/35.5's own "dry run before live" tool (the doc's own words): run a query against a corpus a… |
+| `page.tsx` | `RagQueryConsolePage` | default | :30 | WO-35.4/35.5's own "dry run before live" tool (the doc's own words): run a query against a corpus a… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/reports`
 
@@ -1478,8 +1478,10 @@ Every top-level export in `web`, with the line to open.
 | `customer-client.ts` | `createReturnRequest` | function | :154 |  |
 | `customer-client.ts` | `customerFetch` | function | :194 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
 | `download-csv.ts` | `downloadCsv` | function | :17 | Pull a CSV from an admin endpoint and hand it to the browser. |
+| `download-file.ts` | `downloadFile` | function | :10 | Pull a binary file (a PDF, here — H2/L20's own RAG source download) from an admin endpoint and hand… |
 | `onsite-messages-client.ts` | `fetchActiveOnsiteMessages` | function | :13 | WO-8.6. |
 | `onsite-messages-client.ts` | `subscribeToNewsletter` | function | :21 |  |
+| `rag-corpus-access.ts` | `visibleCorpora` | function | :21 | Filters a list of corpus options down to the ones `can` may reach — the same convention `reports/pa… |
 | `wishlist.ts` | `toggleWishlist` | function | :62 |  |
 | `wishlist.ts` | `WishlistState` | interface | :157 |  |
 | `wishlist.ts` | `useWishlist` | function | :164 |  |

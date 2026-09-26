@@ -61,8 +61,8 @@ export interface RequestOptions extends Omit<RequestInit, 'body'> {
   formData?: FormData;
   /** Appended as a query string, empties dropped, arrays comma-joined. */
   query?: Record<string, unknown>;
-  /** `json` (default) parses the body; `text` returns it raw; `none` ignores it. */
-  expect?: 'json' | 'text' | 'none';
+  /** `json` (default) parses the body; `text` returns it raw; `blob` returns it as a `Blob` (a file download); `none` ignores it. */
+  expect?: 'json' | 'text' | 'blob' | 'none';
   /** Seconds for Next's fetch cache. 0 or undefined means no caching. Ignored by a non-Next caller. */
   revalidate?: number;
   /**
@@ -141,6 +141,7 @@ export async function request<T>(baseUrl: string, path: string, options: Request
 
   if (expect === 'none' || response.status === 204) return undefined as T;
   if (expect === 'text') return (await response.text()) as T;
+  if (expect === 'blob') return (await response.blob()) as T;
 
   const parsed = await readBody(response);
   return parsed as T;

@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "884ecac5d184fdf9",
+  "contentHash": "62f2b76bcdf9c037",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -69,6 +69,7 @@
     "docs/index/cross/tests.md",
     "docs/index/cross/ui-routes.md",
     "docs/index/data/accounting.md",
+    "docs/index/data/accounts.md",
     "docs/index/data/approvals.md",
     "docs/index/data/attendance.md",
     "docs/index/data/bom.md",
@@ -135,6 +136,7 @@
     "docs/index/files/web.md",
     "docs/index/index.json",
     "docs/index/modules/accounting.md",
+    "docs/index/modules/accounts.md",
     "docs/index/modules/addresses.md",
     "docs/index/modules/analytics.md",
     "docs/index/modules/attendance.md",
@@ -199,18 +201,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2235,
-    "lines": 339361,
-    "routes": 777,
-    "controllers": 140,
-    "models": 280,
-    "enums": 127,
-    "migrations": 104,
+    "files": 2247,
+    "lines": 341742,
+    "routes": 788,
+    "controllers": 142,
+    "models": 283,
+    "enums": 128,
+    "migrations": 105,
     "events": 65,
     "permissions": 108,
-    "screens": 247,
+    "screens": 250,
     "crons": 25,
-    "specs": 296,
+    "specs": 298,
     "designLaws": 0
   }
 }

@@ -3,7 +3,7 @@
 
 # Data model
 
-All **280** Prisma models and **127** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **283** Prisma models and **128** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -26,6 +26,7 @@ against a real database.
 | Schema | Models | Enums | Owner | Contains |
 |---|---|---|---|---|
 | [`accounting.prisma`](../data/accounting.md) | 8 | 4 | [`accounting`](../modules/accounting.md) | Account, AssetDepreciationPosting, AssetDepreciationSchedule, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter,… |
+| [`accounts.prisma`](../data/accounts.md) | 3 | 1 | [`accounts`](../modules/accounts.md) | B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
 | [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
@@ -96,7 +97,7 @@ against a real database.
 | [`AnalyticsEvent`](../data/core.md#analyticsevent) | `core` | 7 | 0 | id | Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started. |
 | [`ApiKey`](../data/core.md#apikey) | `core` | 18 | 2 | id | A personal API key: a credential that acts as `user`, never as anyone more powerful. |
 | [`ApprovalChain`](../data/approvals.md#approvalchain) | `approvals` | 8 | 0 | id |  |
-| [`ApprovalStep`](../data/approvals.md#approvalstep) | `approvals` | 11 | 2 | id |  |
+| [`ApprovalStep`](../data/approvals.md#approvalstep) | `approvals` | 13 | 2 | id |  |
 | [`Asset`](../data/hr.md#asset) | `hr` | 11 | 0 | id |  |
 | [`AssetAssignment`](../data/hr.md#assetassignment) | `hr` | 12 | 4 | id | One row per issue/return cycle — an asset's full custody history, never overwritten. |
 | [`AssetDepreciationPosting`](../data/accounting.md#assetdepreciationposting) | `accounting` | 7 | 1 | id | One row per period posted — the same "snapshot at write time, never re-derived" disciplin… |
@@ -105,6 +106,9 @@ against a real database.
 | [`AttendanceEvent`](../data/attendance.md#attendanceevent) | `attendance` | 15 | 3 | — | Raw, immutable. |
 | [`AttendanceException`](../data/attendance.md#attendanceexception) | `attendance` | 13 | 3 | id | A punch that did not fit. |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
+| [`B2BAccount`](../data/accounts.md#b2baccount) | `accounts` | 8 | 0 | id | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md (b2b-wholes… |
+| [`B2BOrderRequest`](../data/accounts.md#b2borderrequest) | `accounts` | 14 | 1 | id | "Request or record" — an order placed against a B2BAccount under an active B2BPurchaseApp… |
+| [`B2BPurchaseApprovalPolicy`](../data/accounts.md#b2bpurchaseapprovalpolicy) | `accounts` | 7 | 1 | id | The buyer's own internal purchasing control, not this organization's — the seller merely… |
 | [`BackInStockRequest`](../data/wishlist.md#backinstockrequest) | `wishlist` | 6 | 2 | id | One row per customer waiting on one variant. |
 | [`Banner`](../data/content.md#banner) | `content` | 11 | 0 | id |  |
 | [`BannerTranslation`](../data/content.md#bannertranslation) | `content` | 7 | 1 | id |  |
@@ -384,12 +388,13 @@ against a real database.
 | [`ApiKeySurface`](../data/core.md#apikeysurface) | `core` | `ADMIN` `STOREFRONT` |
 | [`ApprovalChainStatus`](../data/approvals.md#approvalchainstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` |
 | [`ApprovalStepStatus`](../data/approvals.md#approvalstepstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` `SKIPPED` |
-| [`ApprovalSubjectType`](../data/approvals.md#approvalsubjecttype) | `approvals` | `PURCHASE_REQUISITION` `WALLET_ADJUSTMENT` |
+| [`ApprovalSubjectType`](../data/approvals.md#approvalsubjecttype) | `approvals` | `PURCHASE_REQUISITION` `WALLET_ADJUSTMENT` `B2B_ORDER` |
 | [`AssetStatus`](../data/hr.md#assetstatus) | `hr` | `AVAILABLE` `ASSIGNED` `RETIRED` `LOST` |
 | [`AttendanceDeviceStatus`](../data/attendance.md#attendancedevicestatus) | `attendance` | `PENDING` `ACTIVE` `SUSPENDED` |
 | [`AttendanceExceptionReason`](../data/attendance.md#attendanceexceptionreason) | `attendance` | `NO_MATCHING_SHIFT` `OUTSIDE_ROSTER` `WRONG_UNIT` `WHILE_ON_LEAVE` `DUPLICATE_SUSPECTED` `MISSING_COUNTERPART` |
 | [`AttendanceKind`](../data/attendance.md#attendancekind) | `attendance` | `IN` `OUT` `BREAK_START` `BREAK_END` `ADJUSTMENT` |
 | [`AttendanceSource`](../data/attendance.md#attendancesource) | `attendance` | `DEVICE` `SELF` `MANAGER` `IMPORT` |
+| [`B2BOrderRequestStatus`](../data/accounts.md#b2borderrequeststatus) | `accounts` | `PENDING` `APPROVED` `REJECTED` `CONVERTED` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |
 | [`CampaignRecipientStatus`](../data/marketing.md#campaignrecipientstatus) | `marketing` | `PENDING` `SENT` `SKIPPED_OPT_OUT` `SKIPPED_NO_CONTACT` `FAILED` `OPENED` `CLICKED` |

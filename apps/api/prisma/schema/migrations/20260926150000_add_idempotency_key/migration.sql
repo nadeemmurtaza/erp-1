@@ -1,7 +1,7 @@
 -- A client-supplied Idempotency-Key, closing the one gap doc 117's own
 -- domain-key strategy structurally cannot reach.
 -- architecture-patterns/157-client-request-idempotency-keys.md (WO-157.1),
--- DECISIONS.md ADR-053.
+-- DECISIONS.md ADR-054.
 --
 -- Hand-written, forward-only (ADR-008). Purely additive. No organizationId
 -- (ADR-044/ADR-040): this deployment IS the tenant.

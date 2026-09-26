@@ -1,5 +1,6 @@
 import { DynamicModule, Logger, Module, type Type } from '@nestjs/common';
 import { AccountingModule } from './accounting/accounting.module';
+import { AccountsModule } from './accounts/accounts.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AnalyticsModule } from './analytics/analytics.module';
 import { BomModule } from './bom/bom.module';
@@ -210,6 +211,13 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // see wallet.module.ts's own header comment for exactly what "off"
   // means here.
   { name: 'wallet', module: WalletModule, offByDefault: true },
+  // Off by default — 149-b2b-accounts-approvals-sector-packs.md. A Solo/
+  // simple deployment has no B2B buyer to open a standing account for
+  // (RETAIL-ERP.md R14's own "invisible until then"); with it off, checkout
+  // is byte-identical to today. Its own AccountsModule doc comment explains
+  // why AccountProvider (payments) needs neither this module nor this
+  // allowlist entry to keep working.
+  { name: 'accounts', module: AccountsModule, offByDefault: true },
   // Off by default for EVERY deployment, always — doc 14
   // (commercial-licensing-agency/14-managed-services-module.md). Requested
   // only for an agency-managed delivery via `scripts/sync-client.mjs

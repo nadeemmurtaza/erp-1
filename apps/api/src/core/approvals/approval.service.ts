@@ -9,9 +9,21 @@ export interface ApprovalStepInput {
    * this service does not re-implement PBAC. */
   approverRoleId?: string;
   approverUserId?: string;
+  /**
+   * doc 149 — any ONE of these Contact ids (never a User of this
+   * deployment) may decide this step; a set, not a sequence. Who is
+   * actually allowed to call decide() with one of these ids is still the
+   * caller's own concern (AccountsService checks membership), same
+   * division of responsibility as approverRoleId above.
+   */
+  approverContactIds?: string[];
 }
 
 export type ApprovalDecision = 'APPROVE' | 'REJECT';
+
+/** Which id column decide()'s actorId is written to. Defaults to 'USER' so
+ * every existing caller (requisitions, wallet adjustments) is unaffected. */
+export type ApprovalActorKind = 'USER' | 'CONTACT';
 
 /**
  * One generic approval chain, referenced by (subjectType, subjectId) rather
@@ -41,8 +53,11 @@ export class ApprovalService {
       throw new BadRequestException('An approval chain needs at least one step.');
     }
     for (const step of steps) {
-      if (!step.approverRoleId && !step.approverUserId) {
-        throw new BadRequestException('Every approval step needs either approverRoleId or approverUserId.');
+      const hasContacts = (step.approverContactIds?.length ?? 0) > 0;
+      if (!step.approverRoleId && !step.approverUserId && !hasContacts) {
+        throw new BadRequestException(
+          'Every approval step needs an approverRoleId, an approverUserId, or at least one approverContactId.',
+        );
       }
     }
 
@@ -60,6 +75,7 @@ export class ApprovalService {
             stepOrder: index + 1,
             approverRoleId: step.approverRoleId ?? null,
             approverUserId: step.approverUserId ?? null,
+            approverContactIds: step.approverContactIds ?? [],
           })),
         },
       },
@@ -91,6 +107,7 @@ export class ApprovalService {
     actorId: string,
     comment?: string,
     tx: Prisma.TransactionClient | PrismaService = this.prisma,
+    actorKind: ApprovalActorKind = 'USER',
   ): Promise<ApprovalChain> {
     const chain = await tx.approvalChain.findUnique({
       where: { id: chainId },
@@ -115,7 +132,12 @@ export class ApprovalService {
       data: {
         status: decision === 'APPROVE' ? 'APPROVED' : 'REJECTED',
         decidedAt: new Date(),
-        decidedById: actorId,
+        // decidedById's own @relation is typed to User, so a Contact's id
+        // (actorKind === 'CONTACT') is written to decidedByContactId
+        // instead — never into a column with a foreign key it cannot
+        // satisfy.
+        decidedById: actorKind === 'USER' ? actorId : null,
+        decidedByContactId: actorKind === 'CONTACT' ? actorId : null,
         comment: comment?.trim() || null,
       },
     });

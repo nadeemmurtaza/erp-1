@@ -3,7 +3,7 @@
 
 # Migrations
 
-**104** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**105** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -137,6 +137,7 @@ nothing here fails a build.
 | 2026-09-26 | `add_bpmn_workflow_definitions` | 2 | CREATE TABLE, CREATE UNIQUE INDEX | BpmnWorkflowDefinition |
 | 2026-09-26 | `wo150_product_bundles` | 5 | CREATE TABLE, CREATE UNIQUE INDEX, ALTER TABLE | BundleComponent, ProductBundle |
 | 2026-09-26 | `add_idempotency_key` | 4 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | IdempotencyKey |
+| 2026-09-26 | `wo149_b2b_accounts_approvals` | 13 | CREATE TYPE, ALTER TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | ApprovalStep, B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
 
 
 ---

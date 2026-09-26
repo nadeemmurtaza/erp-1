@@ -12,14 +12,14 @@ Source: `apps/api/src/core/approvals/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (3 · 291 lines)
+## Files (3 · 351 lines)
 
 All paths relative to `apps/api/src/core/approvals`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `approval.service.spec.ts` | unit test | 138 | — |  |
-| `approval.service.ts` | service | 143 | 3 |  |
+| `approval.service.spec.ts` | unit test | 176 | — |  |
+| `approval.service.ts` | service | 165 | 4 |  |
 | `approvals.module.ts` | nest module | 10 | 1 |  |
 
 
@@ -59,7 +59,7 @@ _none_
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `approval.service.spec.ts` | 11 | ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION · start · decide |
+| `approval.service.spec.ts` | 13 | ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION · start · decide |
 
 
 ## Every export in this unit
@@ -67,8 +67,9 @@ _none_
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `ApprovalStepInput` | interface | `approval.service.ts:5` |  |
-| `ApprovalDecision` | type | `approval.service.ts:14` |  |
-| `ApprovalService` | class | `approval.service.ts:31` | One generic approval chain, referenced by (subjectType, subjectId) rather than a bespoke chain per feature —… |
+| `ApprovalDecision` | type | `approval.service.ts:22` |  |
+| `ApprovalActorKind` | type | `approval.service.ts:26` | Which id column decide()'s actorId is written to. |
+| `ApprovalService` | class | `approval.service.ts:43` | One generic approval chain, referenced by (subjectType, subjectId) rather than a bespoke chain per feature —… |
 | `ApprovalsModule` | class | `approvals.module.ts:9` |  |
 
 

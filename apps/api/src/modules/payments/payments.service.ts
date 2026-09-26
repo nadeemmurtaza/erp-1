@@ -12,6 +12,7 @@ import { EventBusService, type PrismaLike } from '../../core/events/event-bus.se
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { StorageService } from '../../core/storage/storage.service';
 import type { Prisma } from '../../core/prisma/client';
+import { AccountProvider } from './providers/account.provider';
 import { BankTransferProvider } from './providers/bank-transfer.provider';
 import { CodProvider } from './providers/cod.provider';
 import { EasypaisaProvider } from './providers/easypaisa.provider';
@@ -41,8 +42,9 @@ export class PaymentsService {
     jazzCash: JazzCashProvider,
     easypaisa: EasypaisaProvider,
     giftkarta: GiftkartaProvider,
+    account: AccountProvider,
   ) {
-    for (const provider of [cod, bankTransfer, jazzCash, easypaisa, giftkarta]) {
+    for (const provider of [cod, bankTransfer, jazzCash, easypaisa, giftkarta, account]) {
       if (config.isPaymentProviderEnabled(provider.key)) {
         this.providers.set(provider.key, provider);
       }

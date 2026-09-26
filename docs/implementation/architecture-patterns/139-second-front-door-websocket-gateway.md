@@ -16,7 +16,7 @@
 > connect to it, would be exactly the speculative functionality CLAUDE.md's
 > "No speculative functionality" section forbids — the same reasoning
 > already applied to doc 128's deferred `ShippingCarrier.getRate()`. See
-> `DECISIONS.md` ADR-053.
+> `DECISIONS.md` ADR-054.
 
 Doc 135's `IntentRouter` proves the *logical* seam for a new interaction
 paradigm; this document is the one concrete *transport* addition worth

@@ -2495,14 +2495,14 @@ _no second-level headings_
 - Acceptance  <sub>:186</sub>
 - Out of scope  <sub>:196</sub>
 
-### `docs/implementation/b2b-wholesale-multientity/149-b2b-accounts-approvals-sector-packs.md`  <sub>163 lines</sub>
+### `docs/implementation/b2b-wholesale-multientity/149-b2b-accounts-approvals-sector-packs.md`  <sub>212 lines</sub>
 
-- 1. `accounts` — an order settles against credit terms instead of an immediate tender  <sub>:17</sub>
-- 2. `approvals` — a buyer-side purchase-approval gate before an order commits  <sub>:39</sub>
-- Scope lenses  <sub>:61</sub>
-- Work orders  <sub>:132</sub>
-- Acceptance  <sub>:146</sub>
-- Out of scope  <sub>:155</sub>
+- 1. `accounts` — an order settles against credit terms instead of an immediate tender  <sub>:66</sub>
+- 2. `approvals` — a buyer-side purchase-approval gate before an order commits  <sub>:88</sub>
+- Scope lenses  <sub>:110</sub>
+- Work orders  <sub>:181</sub>
+- Acceptance  <sub>:195</sub>
+- Out of scope  <sub>:204</sub>
 
 ### `docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md`  <sub>487 lines</sub>
 
@@ -2725,7 +2725,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>5,838 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>6,038 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2783,7 +2783,8 @@ _no second-level headings_
 - ADR-049 — Docs 140–143 (general EAV, metadata-driven UI, BPMN workflow editor, micro-frontend fragments): the four mechanisms `architecture-patterns/00-*` names as explicitly owner-overridden (ADR-026) against this repository's own engineering recommendation, built with the corrections that recommendation still turns out to require  <sub>:5126</sub>
 - ADR-051 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)  <sub>:5485</sub>
 - ADR-052 — Docs 127/128/136 (hardcoded-policy sweep, extension-point coverage audit, database/cache portability audit): two real policy gaps converted; both of doc 128's own "gaps found" turn out to already be closed by prior work it never checked against; 170+ raw-SQL call sites triaged, none rewritten  <sub>:5592</sub>
-- ADR-053 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected  <sub>:5714</sub>
+- ADR-053 — Doc 149 (`accounts`/`approvals` sector packs): a genuine REQUEST/RECORD split (`B2BOrderRequest`) rather than gating the generic checkout endpoint; the doc's own self-approval-refusal claim corrected against `ApprovalService`'s real behavior; an approval step widened to a Contact set, never a second chain mechanism  <sub>:5714</sub>
+- ADR-054 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected  <sub>:5914</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

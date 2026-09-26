@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **777** endpoints across **140** controllers, with the access rule that actually guards each one.
+All **788** endpoints across **142** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -22,7 +22,15 @@ never authorization.
 
 ## Attention list
 
-- **Undecorated routes: 0** — none.
+- **Undecorated routes: 5**
+
+| Method | Path | Handler | File |
+|---|---|---|---|
+| GET | `/admin/accounts/b2b` | `B2BAccountsAdminController.findAll` | `apps/api/src/modules/accounts/accounts.controller.ts:31` |
+| POST | `/admin/accounts/b2b` | `B2BAccountsAdminController.create` | `apps/api/src/modules/accounts/accounts.controller.ts:45` |
+| GET | `/admin/accounts/b2b/:id` | `B2BAccountsAdminController.findOne` | `apps/api/src/modules/accounts/accounts.controller.ts:38` |
+| POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/accounts/accounts.controller.ts:59` |
+| POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/accounts/accounts.controller.ts:52` |
 
 - **Public routes: 75** — every one is an intentional decision; changing one changes the product's attack surface.
 
@@ -130,6 +138,22 @@ never authorization.
 | GET | `/admin/accounting/reports/cash-flow` | `accounting.view` `finance.view` | `GlReportsController.cashFlow` | Net movement on every bank/cash account for a date range |
 | GET | `/admin/accounting/reports/profit-and-loss` | `accounting.view` `finance.view` | `GlReportsController.profitAndLoss` | Income and expense for a date range, and the net |
 | GET | `/admin/accounting/reports/trial-balance` | `accounting.view` | `GlReportsController.trialBalance` | Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit)… |
+
+### [`accounts`](../modules/accounts.md) (11)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/accounts/mine` | signed-in | `B2BAccountsController.myAccount` | My standing account and its approval policy, if any |
+| POST | `/accounts/mine/approval-policy` | signed-in | `B2BAccountsController.setMyPolicy` | Edit my own account’s approval threshold and approvers — never this organizatio… |
+| GET | `/accounts/mine/order-requests` | signed-in | `B2BAccountsController.myRequests` | My own submitted purchase-approval requests |
+| POST | `/accounts/mine/order-requests` | signed-in | `B2BAccountsController.submit` | Submit my current cart for approval — at or above my account's threshold |
+| POST | `/accounts/mine/order-requests/:id/decide` | signed-in | `B2BAccountsController.decide` | Approve or reject a pending request I am a listed approver for — never my own |
+| GET | `/accounts/mine/pending-approvals` | signed-in | `B2BAccountsController.pendingApprovals` | Orders waiting on my approval as a listed approver |
+| GET | `/admin/accounts/b2b` | **⚠ undecorated** | `B2BAccountsAdminController.findAll` | List every B2B account |
+| POST | `/admin/accounts/b2b` | **⚠ undecorated** | `B2BAccountsAdminController.create` | Open a standing account for a buyer's own contact |
+| GET | `/admin/accounts/b2b/:id` | **⚠ undecorated** | `B2BAccountsAdminController.findOne` | Get a B2B account and its approval policy |
+| POST | `/admin/accounts/b2b/:id/approval-policy` | **⚠ undecorated** | `B2BAccountsAdminController.setPolicy` | Set the order-value threshold and the buyer contacts who may approve above it |
+| POST | `/admin/accounts/b2b/:id/update` | **⚠ undecorated** | `B2BAccountsAdminController.update` | Activate, deactivate, or change the purchase-order requirement |
 
 ### [`addresses`](../modules/addresses.md) (4)
 

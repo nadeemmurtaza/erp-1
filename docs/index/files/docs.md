@@ -563,7 +563,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 5838 |  |
+| `DECISIONS.md` | doc | 6038 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -676,7 +676,7 @@ All 396 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `111-hierarchical-entity-isolation.md` | doc | 81 |  |
 | `146-wholesale-tiered-pricing.md` | doc | 203 |  |
-| `149-b2b-accounts-approvals-sector-packs.md` | doc | 163 |  |
+| `149-b2b-accounts-approvals-sector-packs.md` | doc | 212 |  |
 | `165-cross-tenant-marketplace-directory.md` | doc | 487 |  |
 | `73-multi-entity-multi-company-configuration.md` | doc | 139 |  |
 

@@ -62,14 +62,14 @@ Every top-level export in `packages`, with the line to open.
 | `api-keys.ts` | `refuseApiKeyPermissions` | function | :189 | Why each requested permission may not go into a key right now — empty when every one may. |
 | `api-keys.ts` | `delegatablePermissionsOf` | function | :207 | What this person could put in an admin key right now — the picker's options, in catalogue order. |
 | `api-keys.ts` | `CUSTOMER_SCOPE_RESOURCES` | const | :222 | The resources a storefront key can reach — each one a customer's own rows behind a self-service rou… |
-| `api-keys.ts` | `CustomerScopeResource` | type | :233 |  |
-| `api-keys.ts` | `CustomerScopeAccess` | type | :234 |  |
-| `api-keys.ts` | `CustomerScopeDefinition` | interface | :236 |  |
-| `api-keys.ts` | `CUSTOMER_SCOPE_CATALOG` | const | :260 | The storefront's scope vocabulary. |
-| `api-keys.ts` | `CustomerScopeKey` | type | :289 |  |
-| `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :291 |  |
-| `api-keys.ts` | `expandCustomerScopes` | function | :304 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
-| `api-keys.ts` | `unknownCustomerScopes` | function | :316 | Requested scopes the catalogue does not know — refused at create and edit. |
+| `api-keys.ts` | `CustomerScopeResource` | type | :234 |  |
+| `api-keys.ts` | `CustomerScopeAccess` | type | :235 |  |
+| `api-keys.ts` | `CustomerScopeDefinition` | interface | :237 |  |
+| `api-keys.ts` | `CUSTOMER_SCOPE_CATALOG` | const | :261 | The storefront's scope vocabulary. |
+| `api-keys.ts` | `CustomerScopeKey` | type | :301 |  |
+| `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :303 |  |
+| `api-keys.ts` | `expandCustomerScopes` | function | :316 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
+| `api-keys.ts` | `unknownCustomerScopes` | function | :328 | Requested scopes the catalogue does not know — refused at create and edit. |
 | `brand.ts` | `BRAND` | const | :332 | --------------------------------------------------------------------------- |
 | `brand.ts` | `Brand` | type | :344 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |

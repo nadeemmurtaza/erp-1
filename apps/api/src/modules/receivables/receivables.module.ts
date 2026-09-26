@@ -19,8 +19,15 @@ import { StatementsService } from './statements.service';
  * of their own tables (the same cross-module read `reports.service.ts`
  * already does) or through a published domain event
  * (CreditNoteIssued/DebitNoteIssued -> posting-rules.subscriber.ts) — never
- * a direct import of another module's service, so this module can be
- * dropped from MODULES with nothing else in the API changing.
+ * a direct import of another module's service.
+ *
+ * `payments` is the one exception (149-b2b-accounts-approvals-sector-
+ * packs.md, `payments -> receivables` in KNOWN_MODULE_COUPLINGS):
+ * AccountProvider.initiate() needs CreditTermsService.checkCreditAvailable()
+ * before an on-account checkout can commit — hard-imported the same way
+ * `orders` hard-imports `tax`/`pricing`/`fulfilment`, so this module's own
+ * MODULES allowlist entry only gates its admin nav/UI, never whether
+ * checkout can resolve the service.
  */
 @Module({
   controllers: [CreditNotesController, DebitNotesController, CreditTermsController, DunningController, StatementsController],

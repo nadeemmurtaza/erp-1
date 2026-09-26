@@ -54,7 +54,7 @@ All 79 tracked files in `packages/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `api-keys.spec.ts` | unit test | 231 |  |
-| `api-keys.ts` | module | 319 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
+| `api-keys.ts` | module | 331 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
 | `brand.ts` | module | 345 | THE BRAND FILE. |
 | `cod-risk.spec.ts` | unit test | 199 |  |
 | `cod-risk.ts` | module | 167 |  |

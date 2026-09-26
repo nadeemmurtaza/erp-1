@@ -20,8 +20,29 @@ describe('ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to P
       expect(prisma.approvalChain.create).not.toHaveBeenCalled();
     });
 
-    it('refuses a step naming neither an approverRoleId nor an approverUserId', async () => {
+    it('refuses a step naming neither an approverRoleId, an approverUserId, nor an approverContactId', async () => {
       await expect(service.start('PURCHASE_REQUISITION', 'r1', [{}])).rejects.toBeInstanceOf(BadRequestException);
+      await expect(service.start('PURCHASE_REQUISITION', 'r1', [{ approverContactIds: [] }])).rejects.toBeInstanceOf(
+        BadRequestException,
+      );
+    });
+
+    it('doc 149 — accepts a step naming only approverContactIds, a set any ONE of whom may decide', async () => {
+      prisma.approvalChain.findUnique.mockResolvedValue(null);
+      prisma.approvalChain.create.mockResolvedValue({ id: 'c1', steps: [] });
+
+      await service.start('B2B_ORDER', 'req1', [{ approverContactIds: ['contactA', 'contactB'] }]);
+
+      expect(prisma.approvalChain.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            subjectType: 'B2B_ORDER',
+            steps: {
+              create: [{ stepOrder: 1, approverRoleId: null, approverUserId: null, approverContactIds: ['contactA', 'contactB'] }],
+            },
+          }),
+        }),
+      );
     });
 
     it('refuses a second chain for the same subject', async () => {
@@ -44,7 +65,11 @@ describe('ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to P
           data: expect.objectContaining({
             subjectType: 'PURCHASE_REQUISITION',
             subjectId: 'r1',
-            steps: { create: [{ stepOrder: 1, approverRoleId: 'purchasing.requisitions.approve', approverUserId: null }] },
+            steps: {
+              create: [
+                { stepOrder: 1, approverRoleId: 'purchasing.requisitions.approve', approverUserId: null, approverContactIds: [] },
+              ],
+            },
           }),
         }),
       );
@@ -95,7 +120,7 @@ describe('ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to P
 
       expect(prisma.approvalStep.update).toHaveBeenCalledWith({
         where: { id: 's1' },
-        data: { status: 'APPROVED', decidedAt: expect.any(Date), decidedById: 'u1', comment: 'looks good' },
+        data: { status: 'APPROVED', decidedAt: expect.any(Date), decidedById: 'u1', decidedByContactId: null, comment: 'looks good' },
       });
       expect(prisma.approvalChain.update).toHaveBeenCalledWith(
         expect.objectContaining({ where: { id: 'c1' }, data: { status: 'APPROVED', currentStep: 1 } }),
@@ -132,6 +157,19 @@ describe('ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to P
         data: { status: 'SKIPPED' },
       });
       expect(result.status).toBe('REJECTED');
+    });
+
+    it('doc 149 — a CONTACT decider writes decidedByContactId, never decidedById (typed to User)', async () => {
+      prisma.approvalChain.findUnique.mockResolvedValue(chain());
+      prisma.approvalStep.update.mockResolvedValue({});
+      prisma.approvalChain.update.mockResolvedValue({ id: 'c1', status: 'APPROVED' });
+
+      await service.decide('c1', 's1', 'APPROVE', 'contactA', undefined, prisma, 'CONTACT');
+
+      expect(prisma.approvalStep.update).toHaveBeenCalledWith({
+        where: { id: 's1' },
+        data: { status: 'APPROVED', decidedAt: expect.any(Date), decidedById: null, decidedByContactId: 'contactA', comment: null },
+      });
     });
   });
 });

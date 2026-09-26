@@ -88,6 +88,9 @@ const TONES: Record<string, BadgeTone> = {
   // can still be renewed by rotating it.
   REVOKED: 'danger',
   EXPIRED: 'neutral',
+  // 149-b2b-accounts-approvals-sector-packs.md — B2BOrderRequestStatus: an
+  // approved request that successfully placed its real Order.
+  CONVERTED: 'success',
 };
 
 /** `READY_TO_SHIP` -> `Ready to ship`. */

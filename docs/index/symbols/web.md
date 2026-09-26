@@ -96,6 +96,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `BrandDashboardPage` | default | :124 | The brand-level dashboard (RETAIL-ERP.md R19) — branch chips over that brand's combined figures. |
 
+### `apps/web/src/app/(admin)/admin/(app)/b2b-accounts`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `B2BAccountsPage` | default | :25 | 149-b2b-accounts-approvals-sector-packs.md — staff-side admin screen (WO-149.4). |
+
+### `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `B2BAccountDetailPage` | default | :32 | 149-b2b-accounts-approvals-sector-packs.md (WO-149.4) — the staff side of setting an account's appr… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/bom`
 
 | File | Symbol | Kind | Line | Doc |
@@ -969,7 +981,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AccountApiKeysPage` | default | :75 | A customer's own personal API keys (163-personal-api-keys.md) — for an app, a script or an AI assis… |
+| `page.tsx` | `AccountApiKeysPage` | default | :76 | A customer's own personal API keys (163-personal-api-keys.md) — for an app, a script or an AI assis… |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/b2b`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `B2BAccountPage` | default | :42 | 149-b2b-accounts-approvals-sector-packs.md (WO-149.4) — the buyer's own B2B dashboard: their standi… |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/credit`
 
@@ -1267,8 +1285,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1024 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1039 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1032 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1047 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1397,8 +1415,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | function | :18 | because the storefront's comes from messages .json and the admin's is English (House Rule 6). |
-| `status-badge.tsx` | `statusLabel` | function | :94 | `READY_TO_SHIP` -> `Ready to ship`. |
-| `status-badge.tsx` | `StatusBadge` | function | :98 |  |
+| `status-badge.tsx` | `statusLabel` | function | :97 | `READY_TO_SHIP` -> `Ready to ship`. |
+| `status-badge.tsx` | `StatusBadge` | function | :101 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :11 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :36 | A form split into small, single-purpose steps instead of one long page. |
@@ -1407,7 +1425,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `dashboard-nav.tsx` | `DashboardNav` | function | :56 |  |
+| `dashboard-nav.tsx` | `DashboardNav` | function | :58 |  |
 
 ### `apps/web/src/components/storefront`
 

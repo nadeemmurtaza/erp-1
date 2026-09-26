@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-79 files · 8,277 lines
+79 files · 8,289 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -23,7 +23,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 9 | 412 | unit test, module |
 | `packages/shared` | 4 | 75 | script, json |
-| `packages/shared/src` | 58 | 7,620 | unit test, module |
+| `packages/shared/src` | 58 | 7,632 | unit test, module |
 
 
 ## Entry points
@@ -45,8 +45,8 @@ file may hard-code one.
 | `packages/shared/src/permissions.ts` | 1,215 | module | The permission catalog for PBAC (Permission-Based Access Control). |
 | `packages/shared/src/measurements/defaults.ts` | 448 | module |  |
 | `packages/shared/src/brand.ts` | 345 | module | THE BRAND FILE. |
+| `packages/shared/src/api-keys.ts` | 331 | module | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a… |
 | `packages/shared/src/discounts.ts` | 322 | module | The discount rules engine. |
-| `packages/shared/src/api-keys.ts` | 319 | module | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a… |
 | `packages/shared/src/pricing.spec.ts` | 307 | unit test |  |
 | `packages/shared/src/pricing.ts` | 275 | module | Order maths. |
 | `packages/shared/src/api-keys.spec.ts` | 231 | unit test |  |

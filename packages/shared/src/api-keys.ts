@@ -229,6 +229,7 @@ export const CUSTOMER_SCOPE_RESOURCES = [
   'returns',
   'loyalty',
   'store-credit',
+  'b2b-account',
 ] as const;
 export type CustomerScopeResource = (typeof CUSTOMER_SCOPE_RESOURCES)[number];
 export type CustomerScopeAccess = 'read' | 'write';
@@ -284,6 +285,17 @@ export const CUSTOMER_SCOPE_CATALOG = [
   { key: 'returns:write', resource: 'returns', access: 'write', label: 'Request a return and upload its photos', module: 'fulfilment' },
   { key: 'loyalty:read', resource: 'loyalty', access: 'read', label: 'Read your points, tier, history and referral code', module: 'loyalty' },
   { key: 'store-credit:read', resource: 'store-credit', access: 'read', label: 'Read your store credit balance and history', module: 'giftcards' },
+  // 149-b2b-accounts-approvals-sector-packs.md — the buyer's own portal-side
+  // permission, distinct from this deployment's own PERMISSION_CATALOG: it
+  // governs the buyer's own internal purchasing control (their B2BAccount,
+  // approval policy and pending order requests), never this organization's.
+  // Read-only, on purpose: submitting or deciding a request can end in a
+  // real Order (AccountsService.convertToOrder()), so — same reasoning
+  // 163-personal-api-keys.md §4 already gives for leaving checkout out of
+  // this catalogue entirely ("an order-placement scope is its own work
+  // order") — neither write action is reachable by a personal API key yet;
+  // both stay session-only by the absence of a `write` scope here.
+  { key: 'b2b-account:read', resource: 'b2b-account', access: 'read', label: 'Read your account, its approval policy and your pending orders', module: 'accounts' },
 ] as const satisfies readonly CustomerScopeDefinition[];
 
 export type CustomerScopeKey = (typeof CUSTOMER_SCOPE_CATALOG)[number]['key'];

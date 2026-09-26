@@ -3,7 +3,7 @@
 
 # Screens
 
-All **247** routable files across the web app, the till and the mobile app.
+All **250** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (158)
+### admin (160)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -48,6 +48,8 @@ _none_
 | `/admin/analytics/suspicious-traffic` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic/page.tsx` |
 | `/admin/attendance` | page | client | `apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx` |
 | `/admin/b/[brandId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx` |
+| `/admin/b2b-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/page.tsx` |
+| `/admin/b2b-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/[id]/page.tsx` |
 | `/admin/bom` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/page.tsx` |
 | `/admin/bom/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx` |
 | `/admin/bom/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/new/page.tsx` |
@@ -236,7 +238,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (51)
+### storefront (52)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -250,6 +252,7 @@ _none_
 | `/[locale]/account` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/page.tsx` |
 | `/[locale]/account/addresses` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/addresses/page.tsx` |
 | `/[locale]/account/api-keys` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/api-keys/page.tsx` |
+| `/[locale]/account/b2b` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/b2b/page.tsx` |
 | `/[locale]/account/credit` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/credit/page.tsx` |
 | `/[locale]/account/loyalty` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/loyalty/page.tsx` |
 | `/[locale]/account/measurements` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/measurements/page.tsx` |

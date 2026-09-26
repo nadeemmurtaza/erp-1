@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,014 tracked files in `apps/api`, by directory.
+All 1,023 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,12 +31,13 @@ All 1,014 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (56)
+### `apps/api/prisma/schema` (57)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 285 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
-| `approvals.prisma` | prisma schema | 63 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
+| `accounts.prisma` | prisma schema | 120 | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md |
+| `approvals.prisma` | prisma schema | 76 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
@@ -674,6 +675,12 @@ All 1,014 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 32 |  |
 
+### `apps/api/prisma/schema/migrations/20260926152210_wo149_b2b_accounts_approvals` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 74 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -717,8 +724,8 @@ All 1,014 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `approval.service.spec.ts` | unit test | 138 |  |
-| `approval.service.ts` | service | 143 |  |
+| `approval.service.spec.ts` | unit test | 176 |  |
+| `approval.service.ts` | service | 165 |  |
 | `approvals.module.ts` | nest module | 10 |  |
 
 ### `apps/api/src/core/audit` (2)
@@ -1035,8 +1042,8 @@ All 1,014 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 123 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 277 |  |
+| `module-packs.ts` | module | 128 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 285 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1071,6 +1078,21 @@ All 1,014 tracked files in `apps/api`, by directory.
 | `asset-depreciation.dto.ts` | dto | 53 |  |
 | `fiscal-period.dto.ts` | dto | 38 |  |
 | `gl-reports.dto.ts` | dto | 24 |  |
+
+### `apps/api/src/modules/accounts` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `accounts.controller.ts` | controller | 174 |  |
+| `accounts.module.ts` | nest module | 33 |  |
+| `accounts.service.spec.ts` | unit test | 248 |  |
+| `accounts.service.ts` | service | 428 |  |
+
+### `apps/api/src/modules/accounts/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `accounts.dto.ts` | dto | 49 |  |
 
 ### `apps/api/src/modules/addresses` (3)
 
@@ -1684,7 +1706,7 @@ All 1,014 tracked files in `apps/api`, by directory.
 | `orders-pos.service.spec.ts` | unit test | 416 |  |
 | `orders.controller.ts` | controller | 147 |  |
 | `orders.module.ts` | nest module | 57 |  |
-| `orders.service.ts` | service | 1340 |  |
+| `orders.service.ts` | service | 1370 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (2)
@@ -1692,7 +1714,7 @@ All 1,014 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `instalment-plan.dto.ts` | dto | 16 |  |
-| `order.dto.ts` | dto | 168 |  |
+| `order.dto.ts` | dto | 177 |  |
 
 ### `apps/api/src/modules/organization` (6)
 
@@ -1759,15 +1781,17 @@ All 1,014 tracked files in `apps/api`, by directory.
 | `notification.subscriber.ts` | event subscriber | 168 |  |
 | `payment-feed.source.spec.ts` | unit test | 69 |  |
 | `payment-feed.source.ts` | module | 58 |  |
-| `payment-provider.ts` | module | 99 | Extension point: payment providers. |
+| `payment-provider.ts` | module | 113 | Extension point: payment providers. |
 | `payments.controller.ts` | controller | 135 |  |
-| `payments.module.ts` | nest module | 28 |  |
-| `payments.service.ts` | service | 437 |  |
+| `payments.module.ts` | nest module | 39 |  |
+| `payments.service.ts` | service | 439 |  |
 
-### `apps/api/src/modules/payments/providers` (6)
+### `apps/api/src/modules/payments/providers` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `account.provider.spec.ts` | unit test | 80 |  |
+| `account.provider.ts` | module | 83 |  |
 | `bank-transfer.provider.ts` | module | 54 |  |
 | `callback-verification.spec.ts` | unit test | 159 |  |
 | `cod.provider.ts` | module | 41 |  |
@@ -1964,7 +1988,7 @@ All 1,014 tracked files in `apps/api`, by directory.
 | `dunning.service.ts` | service | 48 |  |
 | `receivables.controller.ts` | controller | 200 |  |
 | `receivables.integration.spec.ts` | unit test | 334 |  |
-| `receivables.module.ts` | nest module | 31 |  |
+| `receivables.module.ts` | nest module | 38 |  |
 | `statements.service.spec.ts` | unit test | 63 |  |
 | `statements.service.ts` | service | 102 |  |
 
@@ -2261,7 +2285,7 @@ All 1,014 tracked files in `apps/api`, by directory.
 | `catalog.e2e-spec.ts` | e2e test | 411 |  |
 | `crm.e2e-spec.ts` | e2e test | 491 |  |
 | `customer-portal.e2e-spec.ts` | e2e test | 256 |  |
-| `customer-scope-routes.spec.ts` | unit test | 230 |  |
+| `customer-scope-routes.spec.ts` | unit test | 237 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |
 | `email-accounts-admin.e2e-spec.ts` | e2e test | 342 |  |
 | `email-channel.behavior.spec.ts` | unit test | 580 | Behavior tests for the email notification channel. |

@@ -41,7 +41,7 @@
 > All 5 guarded routes verified end to end in `orders.e2e-spec.ts`'s own
 > `idempotency (Idempotency-Key)` block, plus the 7 pre-existing e2e suites
 > that place orders, updated to send the now-required header. See
-> `DECISIONS.md` ADR-053.
+> `DECISIONS.md` ADR-054.
 
 **Idempotency**, stated the way it was put to me: an operation that can be
 applied more than once without changing the result beyond the first

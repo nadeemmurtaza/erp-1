@@ -21,6 +21,20 @@ export interface PaymentContext {
   customerName: string;
   customerPhone: string | null;
   customerEmail: string | null;
+  /**
+   * Contact.id of the signed-in buyer placing this order, or null for a
+   * guest — every other provider ignores this. 149-b2b-accounts-approvals-
+   * sector-packs.md's own AccountProvider (providers/account.provider.ts)
+   * is the one consumer: it cannot resolve a B2BAccount or check credit
+   * availability without knowing which Contact is paying.
+   */
+  contactId?: string | null;
+  /**
+   * The buyer's own purchase-order number, required by AccountProvider when
+   * B2BAccount.requiresPurchaseOrder is set — every other provider ignores
+   * this too.
+   */
+  purchaseOrderReference?: string | null;
 }
 
 export interface PaymentInitiation {

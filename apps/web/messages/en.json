@@ -14,6 +14,7 @@
       "credit": "Credit & Gift Cards",
       "loyalty": "Loyalty",
       "wallet": "Wallet",
+      "b2b": "B2B account",
       "notifications": "Notifications",
       "apiKeys": "API keys"
     },
@@ -149,6 +150,34 @@
       "applied": "Referral code applied.",
       "applyFailed": "Could not apply that code."
     },
+    "b2b": {
+      "title": "B2B account",
+      "body": "Your standing account, its approval policy, and any order waiting on your decision.",
+      "myAccount": "My account",
+      "active": "Active",
+      "inactive": "Inactive",
+      "requiresPo": "Requires a purchase-order reference",
+      "thresholdLine": "Orders at or above {amount} need approval",
+      "approversLine": "{count} approver(s)",
+      "noPolicy": "No approval policy configured yet.",
+      "noAccount": "You do not have a B2B account",
+      "noAccountBody": "Ask your account manager to open a standing account if you trade on credit terms.",
+      "pendingApprovals": "Waiting on my approval",
+      "noPending": "Nothing is waiting on your approval.",
+      "requestedBy": "Requested by {name}",
+      "unknown": "someone on your team",
+      "reject": "Reject",
+      "approve": "Approve",
+      "decideFailed": "Could not record your decision.",
+      "myRequests": "My submitted requests",
+      "noRequests": "You have not submitted any orders for approval.",
+      "status": {
+        "PENDING": "Awaiting approval",
+        "APPROVED": "Approved",
+        "REJECTED": "Rejected",
+        "CONVERTED": "Placed"
+      }
+    },
     "notifications": {
       "title": "Notifications",
       "body": "Choose what we contact you about, and how.",
@@ -190,6 +219,7 @@
       "resource_returns": "Returns",
       "resource_loyalty": "Loyalty points",
       "resource_storeCredit": "Store credit",
+      "resource_b2bAccount": "B2B account",
       "status_ACTIVE": "Active",
       "status_EXPIRED": "Expired",
       "status_REVOKED": "Revoked",

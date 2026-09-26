@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **634** endpoints across **116** controllers, with the access rule that actually guards each one.
+All **643** endpoints across **117** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -764,6 +764,20 @@ never authorization.
 | GET | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.getProducts` | Get products for a supplier |
 | POST | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.addProduct` | Add a product to a supplier |
 | DELETE | `/admin/suppliers/:id/products/:variantId` | `suppliers.manage` | `PurchasingController.removeProduct` | Remove a product from a supplier |
+
+### [`rag`](../modules/rag.md) (9)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/admin/rag/ask` | `rag.query` | `RagAdminController.ask` | Retrieval + a generated, cited answer — an internal staff read, no draft-confir… |
+| POST | `/admin/rag/query` | `rag.query` | `RagAdminController.query` | Dry run: the retrieved chunks for a query, with no generation step (the doc's o… |
+| GET | `/admin/rag/sources` | `rag.ingest.manage` | `RagAdminController.listSources` | The ingestion queue: every DocumentSource and its status |
+| POST | `/admin/rag/sources` | `rag.ingest.manage` | `RagAdminController.uploadSource` | Upload a PDF into a corpus — queued for the next ingestion pass |
+| DELETE | `/admin/rag/sources/:id` | `rag.ingest.manage` | `RagAdminController.deleteSource` | Remove a source and its chunks — never indexed again unless re-uploaded |
+| GET | `/admin/rag/sources/:id` | `rag.ingest.manage` | `RagAdminController.getSource` | One DocumentSource, with its chunk count |
+| POST | `/admin/rag/sources/:id/ingest-now` | `rag.ingest.manage` | `RagAdminController.ingestNow` | Run ingestion for one QUEUED source immediately, without waiting for the cron |
+| POST | `/admin/rag/sources/:id/retry` | `rag.ingest.manage` | `RagAdminController.retry` | Re-queue a FAILED source |
+| GET | `/admin/rag/status` | `rag.ingest.manage` `rag.query` | `RagAdminController.status` | Whether retrieval/generation are available — the absent-AiProvider case the que… |
 
 ### [`receivables`](../modules/receivables.md) (20)
 

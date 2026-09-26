@@ -759,6 +759,29 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'settings',
   },
   {
+    // WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md).
+    // Two separate entries, not one nested under the other: a holder of only
+    // `rag.query` (never sees corpus administration) must still reach the
+    // console directly, and a holder of only `rag.ingest.manage` must not be
+    // sent to a query screen its own permission cannot use — PRM-2's "hide a
+    // nav entry... the reason names the permission," not a page that 403s
+    // once clicked.
+    key: 'rag',
+    label: 'Document corpus',
+    href: '/admin/rag',
+    permissions: ['rag.ingest.manage'],
+    group: 'settings',
+    module: 'rag',
+  },
+  {
+    key: 'rag-query',
+    label: 'RAG query console',
+    href: '/admin/rag/query',
+    permissions: ['rag.query'],
+    group: 'settings',
+    module: 'rag',
+  },
+  {
     key: 'marketing',
     label: 'Marketing',
     href: '/admin/marketing',

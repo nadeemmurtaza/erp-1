@@ -589,6 +589,12 @@ enum AiFeature {
   MARKDOWN_SUGGESTION
   REVIEW_SUMMARY
   IMPORT_CLEANUP
+  // WO-35 (rag.prisma) — one AiCallKind each: EMBEDDING for both ingestion
+  // and a retrieval query's own embedding, VISION for the scanned-page OCR
+  // fallback, COMPLETION for generation.
+  RAG_INGESTION
+  RAG_RETRIEVAL
+  RAG_GENERATION
 }
 
 enum AiCallKind {

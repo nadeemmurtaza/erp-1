@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 367 tracked files in `apps/web`, by directory.
+All 369 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -691,6 +691,18 @@ All 367 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 315 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/rag` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 226 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/rag/query` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 164 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/reports` (1)
 
 | File | Kind | Lines | Purpose |
@@ -1155,7 +1167,7 @@ All 367 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 892 |  |
+| `nav-registry.ts` | component | 915 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1364,7 +1376,7 @@ All 367 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1494 |  |
+| `api.ts` | types | 1538 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

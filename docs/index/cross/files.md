@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **1,928** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **1,951** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 801 | 113,191 | [files/api.md](../files/api.md) |
-| apps/web | 367 | 57,481 | [files/web.md](../files/web.md) |
+| apps/api | 822 | 115,286 | [files/api.md](../files/api.md) |
+| apps/web | 369 | 57,938 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 1,874 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 78 | 7,775 | [files/packages.md](../files/packages.md) |
+| packages/* | 78 | 7,791 | [files/packages.md](../files/packages.md) |
 | docs/* | 393 | 62,132 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 57 | 29,609 | [files/infra.md](../files/infra.md) |
+| scripts, CI, deployment and container configuration | 57 | 29,891 | [files/infra.md](../files/infra.md) |
 | repository root files | 152 | 15,337 | [files/root.md](../files/root.md) |
 
 
@@ -29,23 +29,23 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 418 |
-| unit test | 205 |
-| page | 178 |
-| service | 143 |
-| module | 139 |
+| unit test | 212 |
+| page | 180 |
+| service | 148 |
+| module | 142 |
 | component | 111 |
-| controller | 102 |
-| dto | 97 |
-| migration | 77 |
-| nest module | 72 |
-| prisma schema | 42 |
+| controller | 103 |
+| dto | 98 |
+| migration | 78 |
+| nest module | 73 |
+| prisma schema | 43 |
 | script | 39 |
 | event subscriber | 31 |
 | json | 29 |
 | react | 29 |
 | asset | 26 |
 | utility | 22 |
-| scheduled job | 20 |
+| scheduled job | 21 |
 | e2e test | 19 |
 | file | 13 |
 | yaml | 12 |

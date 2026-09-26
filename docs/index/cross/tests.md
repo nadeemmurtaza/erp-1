@@ -3,7 +3,7 @@
 
 # Tests
 
-**224** spec files, **2,178** cases. What is already pinned down — and what is not.
+**231** spec files, **2,215** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (205)
+## Unit and integration (212)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -190,6 +190,13 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/requisition.service.spec.ts` | purchasing | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refus… |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
+| `apps/api/src/modules/rag/chunking.spec.ts` | rag | 6 | chunkPages |
+| `apps/api/src/modules/rag/pdf-extraction.service.spec.ts` | rag | 4 | PdfExtractionService · the scanned-page (OCR) fallback |
+| `apps/api/src/modules/rag/pg-vector.store.spec.ts` | rag | 5 | PgVectorStore · isolation (WO-35.4 acceptance) · idempotent re-ingestion (WO-35.2/35.3 acceptance) |
+| `apps/api/src/modules/rag/rag-corpus.service.spec.ts` | rag | 7 | RagCorpusService · createSource · retry · deleteSource |
+| `apps/api/src/modules/rag/rag-generation.service.spec.ts` | rag | 5 | RagGenerationService · answer · isAvailable |
+| `apps/api/src/modules/rag/rag-ingestion.service.spec.ts` | rag | 6 | RagIngestionService · processQueued · ingestOne |
+| `apps/api/src/modules/rag/rag-retrieval.service.spec.ts` | rag | 4 | RagRetrievalService · isAvailable · retrieve |
 | `apps/api/src/modules/receivables/dunning.cron.spec.ts` | receivables | 6 | DunningCron — WO-145.4 |
 | `apps/api/src/modules/receivables/dunning.service.spec.ts` | receivables | 6 | DunningService — WO-145.4 |
 | `apps/api/src/modules/receivables/receivables.integration.spec.ts` | receivables | 7 | Receivables — CreditNote/DebitNote posting and credit checks (WO-145) |

@@ -3,7 +3,7 @@
 
 # Data model
 
-All **229** Prisma models and **105** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **231** Prisma models and **107** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -54,6 +54,7 @@ against a real database.
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
 | [`purchasing.prisma`](../data/purchasing.md) | 9 | 3 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, PurchaseRequisition, RequisitionLine, Supplier, SupplierBill, S… |
+| [`rag.prisma`](../data/rag.md) | 2 | 2 | [`rag`](../modules/rag.md) | DocumentChunk, DocumentSource |
 | [`receivables.prisma`](../data/receivables.md) | 5 | 1 | [`receivables`](../modules/receivables.md) | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
 | [`reviews.prisma`](../data/reviews.md) | 2 | 1 | [`reviews`](../modules/reviews.md) | ProductReviewSummary, Review |
@@ -114,6 +115,8 @@ against a real database.
 | [`DebitNote`](../data/receivables.md#debitnote) | `receivables` | 12 | 0 | id | The mirror on the supplier side of the ledger — reduces what this organization owes a sup… |
 | [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
 | [`Discount`](../data/promotions.md#discount) | `promotions` | 27 | 0 | id |  |
+| [`DocumentChunk`](../data/rag.md#documentchunk) | `rag` | 10 | 1 | id | One row per chunk, not per document — chunking is what makes retrieval precise instead of… |
+| [`DocumentSource`](../data/rag.md#documentsource) | `rag` | 13 | 0 | id | A source document — one row per uploaded file. |
 | [`DunningEvent`](../data/receivables.md#dunningevent) | `receivables` | 4 | 0 | id | One row per (order, step) a dunning notice has actually gone out for — the idempotency gu… |
 | [`DunningPolicy`](../data/receivables.md#dunningpolicy) | `receivables` | 4 | 0 | id | Days-overdue thresholds and which template fires at each — a client-editable policy row,… |
 | [`EmailAccount`](../data/core.md#emailaccount) | `core` | 25 | 0 | id | A connected mailbox: SMTP to send, optionally IMAP to receive. |
@@ -331,11 +334,13 @@ against a real database.
 | [`DevicePlatform`](../data/core.md#deviceplatform) | `core` | `IOS` `ANDROID` `WEB` |
 | [`DiscountScope`](../data/promotions.md#discountscope) | `promotions` | `ORDER` `PRODUCT` `CATEGORY` `COLLECTION` `SHIPPING` |
 | [`DiscountType`](../data/promotions.md#discounttype) | `promotions` | `PERCENTAGE` `FIXED_AMOUNT` `FREE_SHIPPING` `BUY_X_GET_Y` `TIERED` |
+| [`DocumentCorpus`](../data/rag.md#documentcorpus) | `rag` | `EMPLOYEE_DOCUMENTS` `SUPPLIER_CATALOG` `BUSINESS_DOCUMENTS` `KNOWLEDGE_BASE` |
 | [`EmailAccountPurpose`](../data/core.md#emailaccountpurpose) | `core` | `TRANSACTIONAL` `MARKETING` `SUPPORT` |
 | [`ExpenseRecurrence`](../data/finance.md#expenserecurrence) | `finance` | `NONE` `WEEKLY` `MONTHLY` `QUARTERLY` `YEARLY` |
 | [`FiscalPeriodStatus`](../data/accounting.md#fiscalperiodstatus) | `accounting` | `OPEN` `CLOSED` `LOCKED` |
 | [`GiftCardStatus`](../data/giftcards.md#giftcardstatus) | `giftcards` | `ACTIVE` `REDEEMED` `EXPIRED` `CANCELLED` |
 | [`IdentityVerificationStatus`](../data/identity-verification.md#identityverificationstatus) | `identity-verification` | `NOT_STARTED` `PENDING` `APPROVED` `REJECTED` `EXPIRED` |
+| [`IngestStatus`](../data/rag.md#ingeststatus) | `rag` | `QUEUED` `EXTRACTING` `CHUNKING` `EMBEDDING` `READY` `FAILED` |
 | [`InteractionKind`](../data/crm.md#interactionkind) | `crm` | `CALL` `WHATSAPP` `EMAIL` `SMS` `VISIT` `NOTE` `COMPLAINT` |
 | [`InvoiceStatus`](../data/invoicing.md#invoicestatus) | `invoicing` | `ISSUED` `PAID` `VOID` |
 | [`InvoiceStatus`](../data/platform.md#invoicestatus) | `platform` | `ISSUED` `CREDITED` |

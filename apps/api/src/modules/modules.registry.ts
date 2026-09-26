@@ -27,6 +27,7 @@ import { PosModule } from './pos/pos.module';
 import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
+import { RagModule } from './rag/rag.module';
 import { ReceivablesModule } from './receivables/receivables.module';
 import { RecommendationsModule } from './recommendations/recommendations.module';
 import { ReportsModule } from './reports/reports.module';
@@ -130,6 +131,15 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'recommendations', module: RecommendationsModule },
   { name: 'notification-preferences', module: NotificationPreferencesModule },
   { name: 'tracking', module: TrackingModule },
+  // WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md)
+  // — reads AiService/StorageService directly (both core, global), never
+  // another feature module. Same allowlist tier as recommendations/search:
+  // not offByDefault, since the "absent collaborator" behavior (no
+  // ingestion, no query UI) already comes for free from `AiService
+  // .isAvailable()`, exactly like WO-9.5/9.6 — a second, module-level
+  // toggle on top of that would just be a second way to express the same
+  // "no provider configured" state.
+  { name: 'rag', module: RagModule },
   // Off by default for every deployment today (WO-18.3) — a chain
   // deployment switches it on when it actually has branches or brands to
   // register (RETAIL-ERP.md R14: "every tier concept must be invisible in

@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2035,
-    "lines": 312019,
+    "lines": 312242,
     "routes": 672,
     "controllers": 123,
     "models": 245,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 394,
-      "lines": 63601,
-      "bytes": 3779617,
+      "lines": 63824,
+      "bytes": 3793255,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -72730,8 +72730,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 4182,
-      "bytes": 240394,
+      "lines": 4326,
+      "bytes": 248907,
       "doc": "",
       "symbols": []
     },
@@ -72820,8 +72820,8 @@
       "path": "docs/implementation/access-control-identity/161-sso-identity-federation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 287,
-      "bytes": 15455,
+      "lines": 366,
+      "bytes": 20580,
       "doc": "",
       "symbols": []
     },

@@ -7,16 +7,22 @@
 > `SsoService`, `SsoController`/`SsoAdminController`, and the admin UI
 > (`/admin/settings/sso`, a login-screen button per active connection, a
 > `/admin/login/sso-complete` handoff page) are all built and tested.
-> `assertSafeDefaultRole()` refuses to JIT-provision into any role holding
-> a `NON_DELEGATABLE_PERMISSIONS` entry, so a misconfigured default role
-> can never grant admin capability; `settings.sso.manage` is itself
-> non-delegatable and `@SessionOnly()` — no personal API key can install a
-> client secret. `OidcProvider` refuses a templated or multi-tenant
-> issuer (`/common/`, `/organizations/`, `/consumers/`) outright, and
-> `SsoService.cleanDomains()` refuses an open-signup domain
-> (gmail.com and its siblings) as an allowed domain at configuration —
-> two real misconfigurations this build makes structurally impossible
-> rather than merely documented against.
+> `assertSafeDefaultRole()` refuses, at configuration, any default role
+> holding a `NON_DELEGATABLE_PERMISSIONS` entry (bar
+> `account.change_own_password`, which every seeded role holds and which
+> reaches no one else's account), and `provisioningRole()` re-checks at
+> provisioning — a role that has since gained one is withheld, the account
+> created with no role and the audit row saying why — so a misconfigured
+> default role can never grant admin capability; `settings.sso.manage` is
+> itself non-delegatable and `@SessionOnly()` — no personal API key can
+> install a client secret. Configuration refuses Microsoft's multi-tenant
+> issuer paths (`/common/`, `/organizations/`, `/consumers/` —
+> `cleanIssuerUrl()` in `sso.service.ts`), `OidcProvider` refuses at sign-in
+> any discovery document naming a templated (`{tenantid}`) or different
+> issuer, and `cleanDomains()` refuses an open-signup domain (gmail.com and
+> its siblings) as an allowed domain at configuration — real
+> misconfigurations this build makes structurally impossible rather than
+> merely documented against.
 >
 > **Four deviations from this doc's own schema/interface sketch:**
 > `SsoConnection` carries no `organizationId` — this codebase's real
@@ -41,6 +47,79 @@
 > client has named a SAML-only identity provider yet, per doc 36's own
 > "write it once a real, repeated need exists" rule; `SsoProtocol` is
 > `OIDC`-only today rather than carrying an unused enum value.
+>
+> **Two more deviations the build brief named.** Linking never calls
+> `notifications.send()` inline: it publishes `DomainEvent.SsoAccountLinked`
+> inside its own transaction, and `SecurityNotificationSubscriber
+> .onSsoAccountLinked()` mails the holder from a fresh lookup (template
+> `user.sso_account_linked` — en/ur copy naming no provider and no
+> credential — rendered in `templates.ts` and listed in the email-templates
+> catalog); provisioning publishes `SsoUserProvisioned`, recorded with no
+> subscriber yet, never `UserRegistered`. And every create/edit/suspend/
+> link/provision/unlink is audited with `recordEvidence()` inside the
+> write's own transaction, not `audit.record()` — as
+> `entity: 'SsoConnection'`, so the accounts a connection let in are an
+> index range on `AuditLog(entity, entityId)`; an edit records the old and
+> new value of each changed field (for the secret, only
+> `credentialReplaced: true`). `openid-client` is pinned exactly, `5.7.1`, as
+> every dependency in `apps/api/package.json` is; its
+> `.claude/rules/dependencies.md` record heads `oidc.provider.ts`.
+>
+> **Corrections to §3's sketch — each a defect it would have shipped.** A
+> deactivated account is refused (the sketch never read `isActive`). A JIT
+> account is created `role: 'STAFF'` — the account kind, not its
+> permissions — since the column's `CUSTOMER` default hides an account from
+> Team & Access, where its roles are managed. An account linked to a
+> *different* identity is refused, never re-linked (the sketch fell through
+> to `user.create()` and a unique violation), and an identity linked to one
+> account never lands on a second — the one query the `ssoExternalId` index
+> serves. `ssoExternalId` is `<iss>#<sub>`, since a `sub` is unique only
+> within its issuer (OIDC Core §5.7). "The second copy of the write" is made
+> concrete: linking is predicated on `ssoExternalId: null, isActive: true`,
+> and the loser of two simultaneous first sign-ins resolves once more as the
+> existing account.
+>
+> **Beyond this document's text.** The state/nonce/PKCE cookie is sealed
+> (AES-256-GCM) like the handoff. The callback reads its query without a
+> whitelisting DTO — the global `forbidNonWhitelisted` pipe answers 400 to
+> Google's own `scope`/`authuser`/`hd`/`prompt` — keeping only code-flow
+> parameters, RFC 9207's `iss` included. An `email_verified` that is present
+> and not true is refused; an issuer must be https (http on loopback only);
+> the gate reads the domain after the address's only `@`. Every failure
+> redirects to `/admin/login?sso=failed`, never a JSON dead end, with the
+> reason logged server-side only. The callback URL is `API_PUBLIC_URL`'s
+> origin (single sign-on stays off, and shows no button, until it is set)
+> and the admin app is `STOREFRONT_URL`'s `/admin` — both existing keys.
+> Routes past the brief's list, each for a lens here: `GET
+> /auth/sso/connections` (the buttons), `POST /auth/sso/session` (the
+> handoff), `GET /admin/sso/connections/:id`, `.../accounts` ("Click the
+> number"), `.../accounts/:userId/unlink` ("The reversal document" — it
+> also revokes the account's sessions; a later SSO sign-in links again, so
+> keeping someone out is deactivation or suspension), and `GET
+> /admin/sso/roles` (the default-role picker, without needing
+> `roles.manage_permissions`). `RolesService.assign()` takes an optional
+> transaction client, so a provisioned account never exists without its
+> role.
+>
+> **Still open.** On a fresh deployment the permission reaches a live user
+> (`seedPermissions()` writes `RolePermission(ADMIN)`; the one-time
+> `seedRoles()` copies it into the Admin role's `RoleGrant`). On a database
+> seeded before this change it reaches no one until an admin grants it in
+> the role editor or a backfill runs — the tracked
+> `seedPermissions()`-vs-`seedRoles()` gap; this repository's own dev
+> database was checked and is in exactly that state. Link and provision
+> audit rows carry `externalId`, a pseudonymous identifier, in
+> `AuditLog.data` — doc 20's erasure question for that column. A "link
+> existing accounts only, never provision" mode, for shops whose staff sign
+> in with personal mailboxes, is not built.
+>
+> **Verified by** `sso.service.spec.ts`, `oidc.provider.spec.ts`,
+> `sso.controller.spec.ts`, `security-notification.subscriber.spec.ts`,
+> `templates.spec.ts` and `test/sso.e2e-spec.ts` — the real app, database
+> and guards, with openid-client running discovery, PKCE, the code exchange
+> and ID-token verification against a loopback provider: provisioning,
+> linking, domain refusal, an unverified email, a forged state, the
+> single-use handoff, unlink and suspension.
 
 Doc 128 already confirmed the gap by grep ("no `SsoProvider`, `IdentityProvider`,
 SAML, or OIDC login path exists anywhere in `apps/api/src`") and sketched a

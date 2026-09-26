@@ -1855,16 +1855,16 @@ _no second-level headings_
 - Work orders  <sub>:157</sub>
 - When to actually build this  <sub>:176</sub>
 
-### `docs/implementation/access-control-identity/161-sso-identity-federation.md`  <sub>287 lines</sub>
+### `docs/implementation/access-control-identity/161-sso-identity-federation.md`  <sub>366 lines</sub>
 
-- What already exists, cited exactly  <sub>:55</sub>
-- 1. `SsoConnection` — one row per configured identity provider, per organization  <sub>:70</sub>
-- 2. The domain allowlist is not optional — the one control that makes everything else in this document safe  <sub>:115</sub>
-- 3. JIT provisioning — least privilege by default, never `UserRegistered`  <sub>:138</sub>
-- Scope lenses  <sub>:176</sub>
-- Work orders  <sub>:244</sub>
-- Acceptance  <sub>:265</sub>
-- Out of scope  <sub>:278</sub>
+- What already exists, cited exactly  <sub>:134</sub>
+- 1. `SsoConnection` — one row per configured identity provider, per organization  <sub>:149</sub>
+- 2. The domain allowlist is not optional — the one control that makes everything else in this document safe  <sub>:194</sub>
+- 3. JIT provisioning — least privilege by default, never `UserRegistered`  <sub>:217</sub>
+- Scope lenses  <sub>:255</sub>
+- Work orders  <sub>:323</sub>
+- Acceptance  <sub>:344</sub>
+- Out of scope  <sub>:357</sub>
 
 ### `docs/implementation/access-control-identity/163-personal-api-keys.md`  <sub>625 lines</sub>
 
@@ -2697,7 +2697,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>4,182 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>4,326 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2745,6 +2745,7 @@ _no second-level headings_
 - ADR-039 — Doc 14 (managed services) built in full, overriding its own "not now": `PlatformTenant`/`PlatformInvoice` extended rather than a parallel `AgencyClient` registry and invoice cache, real Stripe collection bridged in decoupled from `BillingService`  <sub>:3771</sub>
 - ADR-041 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call  <sub>:3951</sub>
 - ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:4049</sub>
+- ADR-043 — `access-control-identity` docs 126/161 built; 16/18/163 re-verified; 125 corrected; 21 reported blocked on missing docs 19/20  <sub>:4183</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

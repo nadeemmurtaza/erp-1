@@ -32,8 +32,8 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 801 | 113,191 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 393 | 62,132 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 805 | 113,549 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 393 | 62,230 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 367 | 57,481 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,096 | workspace manifests, docker compose/stack files, env templates |
 | `scripts` | 22 | 9,108 | repository checks and generators (lint gates, this index) |
@@ -122,6 +122,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
 | [`extension-points`](core/extension-points.md) | 8 |  |
 | [`health`](core/health.md) | 2 |  |
+| [`intent`](core/intent.md) | 4 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
 | [`notifications`](core/notifications.md) | 22 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |

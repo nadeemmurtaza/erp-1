@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **1,928 files / 294,299 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **1,932 files / 294,755 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -56,11 +56,11 @@ single fact — the page is the right tool when you need the shape of something.
 | “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | ~865 | 18 cron jobs and the background dispatchers |
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.8k | every script in every package.json (82) |
 | “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~3.6k | 77 migrations, newest last |
-| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~8.7k | 224 spec files → what each one pins down |
-| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~39.7k | every document of record, with its outline |
+| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~8.8k | 225 spec files → what each one pins down |
+| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~39.8k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (42) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~481.8k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~482.3k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -118,12 +118,12 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 801 | 113,191 | [api](areas/api.md) |
+| apps/api | 805 | 113,549 | [api](areas/api.md) |
 | apps/web | 367 | 57,481 | [web](areas/web.md) |
 | apps/pos | 31 | 1,874 | [pos](areas/pos.md) |
 | apps/mobile | 49 | 6,900 | [mobile](areas/mobile.md) |
 | packages/* | 78 | 7,775 | [packages](areas/packages.md) |
-| docs/* | 393 | 62,132 | [docs](areas/docs.md) |
+| docs/* | 393 | 62,230 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 29,609 | [infra](areas/infra.md) |
 | repository root files | 152 | 15,337 | [root](areas/root.md) |
 

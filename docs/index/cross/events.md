@@ -386,7 +386,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:385` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:410` | `inventory` |
 
 
 **Subscribed by**
@@ -403,7 +403,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:403` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:428` | `inventory` |
 
 
 **Subscribed by**
@@ -476,7 +476,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/inventory/inventory.service.ts:420` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:445` | `inventory` |
 
 
 **Subscribed by**
@@ -495,7 +495,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:285` | `accounting` |
-| `apps/api/src/modules/inventory/inventory.service.ts:371` | `inventory` |
+| `apps/api/src/modules/inventory/inventory.service.ts:396` | `inventory` |
 
 
 **Subscribed by**

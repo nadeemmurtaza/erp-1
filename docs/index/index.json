@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 1928,
-    "lines": 294299,
+    "files": 1932,
+    "lines": 294755,
     "routes": 634,
     "controllers": 116,
     "models": 229,
@@ -14,7 +14,7 @@
     "permissions": 75,
     "screens": 227,
     "crons": 18,
-    "specs": 224,
+    "specs": 225,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 801,
-      "lines": 113191,
-      "bytes": 4277503,
+      "files": 805,
+      "lines": 113549,
+      "bytes": 4295368,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 393,
-      "lines": 62132,
-      "bytes": 3688705,
+      "lines": 62230,
+      "bytes": 3694718,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1133,6 +1133,16 @@
         "apps/api/src/core/health/health.module.ts"
       ],
       "page": "docs/index/core/health.md"
+    },
+    {
+      "name": "intent",
+      "files": [
+        "apps/api/src/core/intent/intent-router.module.ts",
+        "apps/api/src/core/intent/intent-router.service.spec.ts",
+        "apps/api/src/core/intent/intent-router.service.ts",
+        "apps/api/src/core/intent/intent.types.ts"
+      ],
+      "page": "docs/index/core/intent.md"
     },
     {
       "name": "metrics",
@@ -12967,7 +12977,7 @@
       "name": "catalog.product_low_stock",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:385"
+        "apps/api/src/modules/inventory/inventory.service.ts:410"
       ],
       "subscribers": [
         "apps/api/src/modules/inventory/inventory.listener.ts:19 handleLowStock()"
@@ -12978,7 +12988,7 @@
       "name": "catalog.product_reorder_point_reached",
       "doc": "Distinct from ProductLowStock: fires against reorderPoint, drives auto-replenishment (PO or WorkOrder).",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:403"
+        "apps/api/src/modules/inventory/inventory.service.ts:428"
       ],
       "subscribers": [
         "apps/api/src/modules/production/reorder-work-order.listener.ts:19 onReorderPointReached()",
@@ -13027,7 +13037,7 @@
       "name": "inventory.stock_replenished",
       "doc": "Any positive-delta stock movement — the one signal that can unblock a waiting order line, whatever replenished the stock.",
       "publishers": [
-        "apps/api/src/modules/inventory/inventory.service.ts:420"
+        "apps/api/src/modules/inventory/inventory.service.ts:445"
       ],
       "subscribers": [
         "apps/api/src/modules/orders/backorder.listener.ts:29 onStockReplenished()",
@@ -13040,7 +13050,7 @@
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:285",
-        "apps/api/src/modules/inventory/inventory.service.ts:371"
+        "apps/api/src/modules/inventory/inventory.service.ts:396"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:283 onStockVarianceRecorded()"
@@ -39407,6 +39417,18 @@
       ]
     },
     {
+      "file": "apps/api/src/core/intent/intent-router.service.spec.ts",
+      "module": "core/intent",
+      "kind": "unit test",
+      "cases": 12,
+      "describes": [
+        "IntentRouterService",
+        "routing",
+        "permission enforcement — mirrors PermissionsGuard exactly, for a session actor",
+        "permission enforcement — an API-key actor, reusing decideApiKeyAccess so it can never drift from the HTTP path"
+      ]
+    },
+    {
       "file": "apps/api/src/core/metrics/metric-registry.service.spec.ts",
       "module": "core/metrics",
       "kind": "unit test",
@@ -40215,9 +40237,10 @@
       "file": "apps/api/src/modules/inventory/inventory.service.spec.ts",
       "module": "inventory",
       "kind": "unit test",
-      "cases": 16,
+      "cases": 18,
       "describes": [
         "InventoryService — locations (B6)",
+        "check_inventory_chain_status intent (135-intent-router-voice-video-agent.md WO-135.1)",
         "InventoryService — postUnconditional (R5 oversell)",
         "shift attribution (156-single-employee-branch-loss-prevention.md)",
         "InventoryService — reorder point and replenishment events",
@@ -44576,14 +44599,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 47,
-      "bytes": 1638,
+      "lines": 49,
+      "bytes": 1730,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 46
+          "line": 48
         }
       ]
     },
@@ -45118,6 +45141,65 @@
           "name": "HealthModule",
           "kind": "class",
           "line": 5
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/intent/intent-router.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 11,
+      "bytes": 417,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IntentRouterModule",
+          "kind": "class",
+          "line": 10
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/intent/intent-router.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 142,
+      "bytes": 6927,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/intent/intent-router.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 82,
+      "bytes": 4027,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IntentRouterService",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/intent/intent.types.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 42,
+      "bytes": 2147,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Intent",
+          "kind": "interface",
+          "line": 14
+        },
+        {
+          "name": "IntentHandlerDefinition",
+          "kind": "interface",
+          "line": 32
         }
       ]
     },
@@ -47426,8 +47508,8 @@
       "path": "apps/api/src/modules/bom/bom.metrics.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 202,
-      "bytes": 8645,
+      "lines": 204,
+      "bytes": 8801,
       "doc": "",
       "symbols": []
     },
@@ -47495,8 +47577,8 @@
       "path": "apps/api/src/modules/bom/bom.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 527,
-      "bytes": 23924,
+      "lines": 529,
+      "bytes": 24080,
       "doc": "",
       "symbols": []
     },
@@ -47643,8 +47725,8 @@
       "path": "apps/api/src/modules/bom/production.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 436,
-      "bytes": 18300,
+      "lines": 438,
+      "bytes": 18456,
       "doc": "",
       "symbols": []
     },
@@ -50267,8 +50349,8 @@
       "path": "apps/api/src/modules/inventory/inventory.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 499,
-      "bytes": 21171,
+      "lines": 541,
+      "bytes": 23227,
       "doc": "",
       "symbols": []
     },
@@ -50276,24 +50358,24 @@
       "path": "apps/api/src/modules/inventory/inventory.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 601,
-      "bytes": 23286,
+      "lines": 626,
+      "bytes": 24693,
       "doc": "",
       "symbols": [
         {
           "name": "StockMoveInput",
           "kind": "interface",
-          "line": 21
+          "line": 22
         },
         {
           "name": "InsufficientStockError",
           "kind": "class",
-          "line": 38
+          "line": 39
         },
         {
           "name": "InventoryService",
           "kind": "class",
-          "line": 59
+          "line": 60
         }
       ]
     },
@@ -50404,8 +50486,8 @@
       "path": "apps/api/src/modules/inventory/stock-count.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 95,
-      "bytes": 4312,
+      "lines": 97,
+      "bytes": 4420,
       "doc": "",
       "symbols": []
     },
@@ -51325,8 +51407,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 275,
-      "bytes": 11697,
+      "lines": 277,
+      "bytes": 11805,
       "doc": "",
       "symbols": []
     },
@@ -54688,8 +54770,8 @@
       "path": "apps/api/src/modules/transfers/transfers.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 818,
-      "bytes": 39636,
+      "lines": 820,
+      "bytes": 39744,
       "doc": "",
       "symbols": []
     },
@@ -67936,8 +68018,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 3447,
-      "bytes": 195781,
+      "lines": 3545,
+      "bytes": 201496,
       "doc": "",
       "symbols": []
     },
@@ -67973,7 +68055,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 500,
-      "bytes": 65845,
+      "bytes": 66143,
       "doc": "",
       "symbols": []
     },

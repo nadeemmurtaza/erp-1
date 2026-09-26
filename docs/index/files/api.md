@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 801 tracked files in `apps/api`, by directory.
+All 805 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -531,7 +531,7 @@ All 801 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 47 |  |
+| `core.module.ts` | nest module | 49 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -699,6 +699,15 @@ All 801 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `health.controller.ts` | controller | 52 |  |
 | `health.module.ts` | nest module | 6 |  |
+
+### `apps/api/src/core/intent` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `intent-router.module.ts` | nest module | 11 |  |
+| `intent-router.service.spec.ts` | unit test | 142 |  |
+| `intent-router.service.ts` | service | 82 |  |
+| `intent.types.ts` | module | 42 |  |
 
 ### `apps/api/src/core/metrics` (4)
 
@@ -914,14 +923,14 @@ All 801 tracked files in `apps/api`, by directory.
 | `bom.controller.ts` | controller | 228 |  |
 | `bom.listener.spec.ts` | unit test | 88 |  |
 | `bom.listener.ts` | event subscriber | 49 |  |
-| `bom.metrics.spec.ts` | unit test | 202 |  |
+| `bom.metrics.spec.ts` | unit test | 204 |  |
 | `bom.metrics.ts` | module | 131 |  |
 | `bom.module.ts` | nest module | 29 |  |
 | `bom.service.ts` | service | 47 |  |
-| `bom.spec.ts` | unit test | 527 |  |
+| `bom.spec.ts` | unit test | 529 |  |
 | `cost-rollup.spec.ts` | unit test | 124 | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
-| `production.service.spec.ts` | unit test | 436 |  |
+| `production.service.spec.ts` | unit test | 438 |  |
 | `production.service.ts` | service | 265 |  |
 | `raw-material.service.ts` | service | 218 |  |
 | `recipe.service.ts` | service | 501 |  |
@@ -1186,8 +1195,8 @@ All 801 tracked files in `apps/api`, by directory.
 | `inventory.metrics.spec.ts` | unit test | 70 |  |
 | `inventory.metrics.ts` | module | 135 |  |
 | `inventory.module.ts` | nest module | 44 |  |
-| `inventory.service.spec.ts` | unit test | 499 |  |
-| `inventory.service.ts` | service | 601 |  |
+| `inventory.service.spec.ts` | unit test | 541 |  |
+| `inventory.service.ts` | service | 626 |  |
 | `markdown-suggestions.controller.ts` | controller | 37 |  |
 | `markdown-suggestions.service.spec.ts` | unit test | 160 |  |
 | `markdown-suggestions.service.ts` | service | 116 |  |
@@ -1195,7 +1204,7 @@ All 801 tracked files in `apps/api`, by directory.
 | `spot-check.service.spec.ts` | unit test | 150 |  |
 | `spot-check.service.ts` | service | 228 |  |
 | `stock-count.controller.ts` | controller | 62 | JwtAuthGuard is registered globally (see core/auth/decorators.ts), so a |
-| `stock-count.service.spec.ts` | unit test | 95 |  |
+| `stock-count.service.spec.ts` | unit test | 97 |  |
 | `stock-count.service.ts` | service | 233 |  |
 | `stock-variance.controller.ts` | controller | 36 |  |
 | `stock-variance.service.spec.ts` | unit test | 109 |  |
@@ -1312,7 +1321,7 @@ All 801 tracked files in `apps/api`, by directory.
 | `notification.subscriber.ts` | event subscriber | 259 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 275 |  |
+| `orders-pos.service.spec.ts` | unit test | 277 |  |
 | `orders.controller.ts` | controller | 145 |  |
 | `orders.module.ts` | nest module | 50 |  |
 | `orders.service.ts` | service | 1226 |  |
@@ -1704,7 +1713,7 @@ All 801 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `transfers.controller.ts` | controller | 44 |  |
 | `transfers.module.ts` | nest module | 22 |  |
-| `transfers.service.spec.ts` | unit test | 818 |  |
+| `transfers.service.spec.ts` | unit test | 820 |  |
 | `transfers.service.ts` | service | 510 |  |
 
 ### `apps/api/src/modules/transfers/dto` (1)

@@ -1,3 +1,4 @@
+import { ForbiddenException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { InventoryService, InsufficientStockError } from './inventory.service';
@@ -5,6 +6,8 @@ import { EventBusService } from '../../core/events/event-bus.service';
 import { AuditService } from '../../core/audit/audit.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
+import { IntentRouterService } from '../../core/intent/intent-router.service';
+import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 
 /**
  * B6 (17-inventory-locations.md) — the riskiest of the scoped blockers,
@@ -18,6 +21,7 @@ import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enr
 describe('InventoryService — locations (B6)', () => {
   let inventory: InventoryService;
   let prisma: PrismaService;
+  let intentRouter: IntentRouterService;
   let events: { publish: jest.Mock };
   let defaultLocationId: string;
   let secondLocationId: string;
@@ -32,13 +36,16 @@ describe('InventoryService — locations (B6)', () => {
         PrismaService,
         StockIntakeRegistry,
         EntityEnrichmentRegistry,
+        IntentRouterService,
         { provide: EventBusService, useValue: events },
         { provide: AuditService, useValue: { record: jest.fn() } },
       ],
     }).compile();
+    await module.init(); // onModuleInit() runs on bootstrap, not on compile() — this is what registers check_inventory_chain_status.
 
     inventory = module.get(InventoryService);
     prisma = module.get(PrismaService);
+    intentRouter = module.get(IntentRouterService);
 
     defaultLocationId = await inventory.defaultLocationId();
 
@@ -140,6 +147,38 @@ describe('InventoryService — locations (B6)', () => {
     expect(after.stock).toBe(4);
     expect(await totalAcrossLocations(variant.id)).toBe(4);
   });
+
+  describe('check_inventory_chain_status intent (135-intent-router-voice-video-agent.md WO-135.1)', () => {
+    it("IntentRouter.route() produces byte-identical results to calling getChainStatus() directly, with equivalent parameters (the doc's own acceptance criterion)", async () => {
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 3, reason: 'ADJUSTMENT' });
+      const actor: AuthenticatedUser = { id: 'u1', roles: ['STAFF'], permissions: ['production.view_chain'], email: null, phone: null };
+
+      const direct = await inventory.getChainStatus(variant.id);
+      const routed = await intentRouter.route({
+        name: 'check_inventory_chain_status',
+        parameters: { variantId: variant.id },
+        actor,
+        sourceModality: 'mcp_agent',
+      });
+
+      expect(routed).toEqual(direct);
+    });
+
+    it('refuses an actor without production.view_chain, exactly as the equivalent HTTP route would', async () => {
+      const variant = await freshVariant();
+      const actor: AuthenticatedUser = { id: 'u2', roles: ['STAFF'], permissions: [], email: null, phone: null };
+
+      await expect(
+        intentRouter.route({
+          name: 'check_inventory_chain_status',
+          parameters: { variantId: variant.id },
+          actor,
+          sourceModality: 'mcp_agent',
+        }),
+      ).rejects.toBeInstanceOf(ForbiddenException);
+    });
+  });
 });
 
 /**
@@ -165,6 +204,7 @@ describe('InventoryService — postUnconditional (R5 oversell)', () => {
         PrismaService,
         StockIntakeRegistry,
         EntityEnrichmentRegistry,
+        IntentRouterService,
         { provide: EventBusService, useValue: events },
         { provide: AuditService, useValue: { record: jest.fn() } },
       ],
@@ -339,6 +379,7 @@ describe('InventoryService — reorder point and replenishment events', () => {
         PrismaService,
         StockIntakeRegistry,
         EntityEnrichmentRegistry,
+        IntentRouterService,
         { provide: EventBusService, useValue: events },
         { provide: AuditService, useValue: { record: jest.fn() } },
       ],
@@ -438,6 +479,7 @@ describe('InventoryService — getChainStatus', () => {
         { provide: PrismaService, useValue: mockPrisma },
         { provide: StockIntakeRegistry, useValue: { register: jest.fn() } },
         { provide: EntityEnrichmentRegistry, useValue: enrichment },
+        { provide: IntentRouterService, useValue: { register: jest.fn() } },
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: AuditService, useValue: { record: jest.fn() } },
       ],

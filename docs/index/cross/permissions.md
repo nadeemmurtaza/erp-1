@@ -123,7 +123,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `finance.view` | View expenses and finance reports | medium | 25 | 23 | STAFF, ADMIN |
+| `finance.view` | View expenses and finance reports | medium | 25 | 24 | STAFF, ADMIN |
 | `finance.manage` | Record and edit expenses | medium | 11 | 1 | ADMIN |
 | `finance.wallets.adjust` | Issue a manual wallet balance correction, below the auto-approval threshold | medium | 3 | — | STAFF, ADMIN |
 | `finance.wallets.adjust.approve` | Approve a wallet adjustment at or above the auto-approval threshold — never the… | high | 2 | — | ADMIN |

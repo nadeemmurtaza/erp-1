@@ -36,7 +36,9 @@ import { ShippingService } from '../fulfilment/shipping.service';
 import { PromotionsService } from '../promotions/promotions.service';
 import { GiftCardsService } from '../giftcards/giftcards.service';
 import { StoreCreditService } from '../giftcards/store-credit.service';
-import type { PlaceOrderDto } from './dto/order.dto';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
+import { PlaceOrderDto } from './dto/order.dto';
 
 export interface PosSaleLineInput {
   variantId: string;
@@ -145,6 +147,29 @@ export class OrdersService {
       }
     }
     return orderOrOrders;
+  }
+
+  /**
+   * Validates a raw, untyped payload against PlaceOrderDto's own decorators
+   * — the identical rules main.ts's global ValidationPipe already applies
+   * to POST /orders — and returns the typed, whitelisted result or throws.
+   *
+   * The one way another module (AccountsService.submitOrderRequest(),
+   * 149-b2b-accounts-approvals-sector-packs.md) can accept an order's own
+   * shape without importing PlaceOrderDto/ShippingAddressDto directly:
+   * `scripts/check-module-boundaries.mjs` only allows a cross-module import
+   * of a `.module` or a top-level `.service`, never a DTO file, so this is
+   * the DTO's own public surface for a caller that needs it validated but
+   * does not place the order itself.
+   */
+  async validatePlaceOrderDto(raw: unknown): Promise<PlaceOrderDto> {
+    const dto = plainToInstance(PlaceOrderDto, raw);
+    const errors = await validate(dto, { whitelist: true, forbidNonWhitelisted: true });
+    if (errors.length > 0) {
+      const messages = errors.flatMap((error) => Object.values(error.constraints ?? {}));
+      throw new BadRequestException(messages.length > 0 ? messages : 'Invalid order payload.');
+    }
+    return dto;
   }
 
   /**
@@ -480,6 +505,11 @@ export class OrdersService {
         customerName: dto.shippingAddress.fullName,
         customerPhone: phone,
         customerEmail: dto.email ?? null,
+        // 149-b2b-accounts-approvals-sector-packs.md — AccountProvider's own
+        // credit check needs the buyer's Contact.id; every other provider
+        // ignores both fields.
+        contactId: priced.customerId,
+        purchaseOrderReference: dto.purchaseOrderReference ?? null,
       });
 
       await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
@@ -1202,7 +1232,7 @@ export class OrdersService {
       })),
     });
 
-    return { lines, totals };
+    return { lines, totals, customerId };
   }
 
   /**

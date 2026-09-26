@@ -2495,14 +2495,14 @@ _no second-level headings_
 - Acceptance  <sub>:186</sub>
 - Out of scope  <sub>:196</sub>
 
-### `docs/implementation/b2b-wholesale-multientity/149-b2b-accounts-approvals-sector-packs.md`  <sub>163 lines</sub>
+### `docs/implementation/b2b-wholesale-multientity/149-b2b-accounts-approvals-sector-packs.md`  <sub>212 lines</sub>
 
-- 1. `accounts` — an order settles against credit terms instead of an immediate tender  <sub>:17</sub>
-- 2. `approvals` — a buyer-side purchase-approval gate before an order commits  <sub>:39</sub>
-- Scope lenses  <sub>:61</sub>
-- Work orders  <sub>:132</sub>
-- Acceptance  <sub>:146</sub>
-- Out of scope  <sub>:155</sub>
+- 1. `accounts` — an order settles against credit terms instead of an immediate tender  <sub>:66</sub>
+- 2. `approvals` — a buyer-side purchase-approval gate before an order commits  <sub>:88</sub>
+- Scope lenses  <sub>:110</sub>
+- Work orders  <sub>:181</sub>
+- Acceptance  <sub>:195</sub>
+- Out of scope  <sub>:204</sub>
 
 ### `docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md`  <sub>487 lines</sub>
 
@@ -2725,7 +2725,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>5,151 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>5,351 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2780,6 +2780,7 @@ _no second-level headings_
 - ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo  <sub>:4804</sub>
 - ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism  <sub>:4914</sub>
 - ADR-049 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)  <sub>:5045</sub>
+- ADR-050 — Doc 149 (`accounts`/`approvals` sector packs): a genuine REQUEST/RECORD split (`B2BOrderRequest`) rather than gating the generic checkout endpoint; the doc's own self-approval-refusal claim corrected against `ApprovalService`'s real behavior; an approval step widened to a Contact set, never a second chain mechanism  <sub>:5152</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

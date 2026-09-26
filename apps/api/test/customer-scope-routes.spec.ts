@@ -6,6 +6,7 @@ import { Reflector } from '@nestjs/core';
 import { CUSTOMER_SCOPE_CATALOG, CUSTOMER_SCOPE_KEYS } from '@newax/shared';
 import { readRouteRequirements } from '../src/core/auth/api-keys/api-key-access';
 import { CustomerScope } from '../src/core/auth/decorators';
+import { B2BAccountsController } from '../src/modules/accounts/accounts.controller';
 import { AuthController } from '../src/core/auth/auth.controller';
 import { DevicesController } from '../src/core/notifications/devices.controller';
 import { AddressesController } from '../src/modules/addresses/addresses.controller';
@@ -61,6 +62,9 @@ const SCOPED_ROUTES: Array<[Controller, string, string]> = [
   [LoyaltyController, 'myReferrals', 'loyalty:read'],
   [StoreCreditAccountController, 'balance', 'store-credit:read'],
   [StoreCreditAccountController, 'ledger', 'store-credit:read'],
+  [B2BAccountsController, 'myAccount', 'b2b-account:read'],
+  [B2BAccountsController, 'myRequests', 'b2b-account:read'],
+  [B2BAccountsController, 'pendingApprovals', 'b2b-account:read'],
 ];
 
 /** Customer routes deliberately left to a signed-in session — each with its reason in doc 163 §4. */
@@ -80,6 +84,9 @@ const SESSION_ONLY_BY_OMISSION: Array<[Controller, string]> = [
   [IdentityVerificationController, 'submitOtp'],
   [IdentityVerificationController, 'me'],
   [OrdersController, 'place'],
+  [B2BAccountsController, 'submit'],
+  [B2BAccountsController, 'decide'],
+  [B2BAccountsController, 'setMyPolicy'],
 ];
 
 const reflector = new Reflector();

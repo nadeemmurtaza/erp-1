@@ -51,6 +51,11 @@ export const MODULE_PACKS: Record<string, PackName> = {
   // The universal commerce core — what clothing, grocery, medicine, hardware
   // and electronics all need. None of these may name a sector concept.
   accounting: 'core',
+  // 149-b2b-accounts-approvals-sector-packs.md — a B2B/wholesale capability
+  // module, not a sector pack, per this file's own "Business models... cut
+  // across every sector" rule above (the same reasoning `pricing`'s own
+  // entry below states).
+  accounts: 'core',
   settlements: 'core',
   addresses: 'core',
   analytics: 'core',

@@ -219,6 +219,24 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // ReturnRequestItem write it belongs to — same same-transaction
   // reasoning as fulfilment -> inventory above.
   'fulfilment -> catalog',
+  // 149-b2b-accounts-approvals-sector-packs.md — AccountProvider.initiate()
+  // (payments/providers/account.provider.ts) needs CreditTermsService.
+  // checkCreditAvailable() before checkout can commit — a pure read, the
+  // same "checkout cannot commit without this number" reasoning as
+  // `orders -> tax`/`cart -> pricing` above, not a stock/ledger write.
+  'payments -> receivables',
+  // AccountsService.convertToOrder() hands an approved B2BOrderRequest to
+  // OrdersService.place() itself — "a channel that funnels into the normal
+  // order-creation path," the same reasoning `pos -> orders` already
+  // establishes, not a same-transaction write (place() runs its own,
+  // separate transaction, sequentially after the approval already
+  // committed).
+  'accounts -> orders',
+  // AccountsService.submitOrderRequest() needs the buyer's own resolved
+  // price before it can decide whether a cart is at or above the account's
+  // approval threshold — the identical PricingService.resolvePrices() pure
+  // read `cart -> pricing`/`orders -> pricing` already establish.
+  'accounts -> pricing',
 ]);
 
 function walk(dir) {

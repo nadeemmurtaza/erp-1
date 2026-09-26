@@ -405,6 +405,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'receivables',
   },
   {
+    key: 'b2b-accounts',
+    label: 'B2B Accounts',
+    href: '/admin/b2b-accounts',
+    permissions: ['finance.view', 'finance.credit-terms.manage'],
+    group: 'finance',
+    module: 'accounts',
+  },
+  {
     key: 'dunning-policy',
     label: 'Dunning Policy',
     href: '/admin/dunning-policy',

@@ -1,5 +1,54 @@
 # 149 — The `accounts`/`approvals` sector packs `MULTI-SECTOR.md` already names, never scoped as their own work order
 
+> **Status (2026-09-26): built.** `B2BAccount`/`B2BPurchaseApprovalPolicy`/
+> `B2BOrderRequest` (new `accounts.prisma`, no `organizationId` column —
+> same deviation doc 146's own `pricing.prisma` already documents), plus
+> `ApprovalSubjectType.B2B_ORDER` and two new additive `ApprovalStep`
+> columns (`approverContactIds String[]`, `decidedByContactId`) on doc 63's
+> existing `ApprovalChain`/`ApprovalStep` — never a second approval-chain
+> implementation, and both existing callers (`PURCHASE_REQUISITION`,
+> `WALLET_ADJUSTMENT`) untouched. `AccountProvider` (new `payments`
+> provider, key `account`, off the `PAYMENT_PROVIDERS` allowlist by
+> default) is the checkout integration: it reuses doc 145's own
+> `CreditTermsService.checkCreditAvailable()` unchanged (`payments ->
+> receivables` in `KNOWN_MODULE_COUPLINGS`, hard-imported the same way
+> `tax`/`pricing`/`fulfilment` already are) and refuses outright, with no
+> side effect, an order at or above the account's own threshold — the
+> generic `POST /orders` endpoint never completes one. A new `accounts`
+> module (off by default in `MODULES`, same tier as `wallet`/`settlements`)
+> owns the buyer-side workflow: `AccountsService.submitOrderRequest()`
+> creates a `B2BOrderRequest` (a REQUEST, never an Order, never a stock or
+> ledger write) and starts a single-tier chain naming every listed
+> approver contact; `.decide()` enforces the toxic-pair refusal explicitly
+> at the calling layer exactly as `RequisitionService.decide()` already
+> does (`ApprovalService` itself deliberately does not — this document's
+> own earlier claim that `ApprovalService.start()` "already enforces" self-
+> approval refusal was wrong against the real code and is corrected here);
+> an APPROVE that closes the chain calls `.convertToOrder()`, which claims
+> the request via a race-safe `updateMany` (mirroring
+> `RequisitionService.convertToPurchaseOrder()`) and replays the stored
+> payload through the identical, unmodified `OrdersService.place()`.
+> Settlement reuses `PaymentsService.approve()` unchanged — no bespoke
+> settlement path exists. `OrdersService.validatePlaceOrderDto()` is the
+> one new public method on `orders`: the accounts module never imports
+> `PlaceOrderDto` directly (`scripts/check-module-boundaries.mjs` only
+> allows a cross-module import of a `.module`/`.service`, never a DTO
+> file), so it validates the buyer's raw submission through this instead.
+> `PaymentContext` gained two additive, optional fields
+> (`contactId`, `purchaseOrderReference`) every other provider ignores.
+> `CUSTOMER_SCOPE_CATALOG` gained `b2b-account:read` only — no `:write`:
+> submitting or deciding a request can end in a real Order, the same
+> reasoning `163-personal-api-keys.md` §4 already gives for leaving
+> checkout out of that catalogue entirely, so both actions stay session-
+> only by the absence of a write scope, reachable only by
+> `@AuthenticatedOnly()`. Staff admin (`finance.credit-terms.manage`,
+> reused unchanged) and buyer-portal API + a minimal admin/portal UI
+> ship together (WO-149.4). 27 new tests across
+> `approval.service.spec.ts` (additive), `account.provider.spec.ts`, and
+> `accounts.service.spec.ts`, including both acceptance-criteria specs
+> (threshold refusal, self-approval refusal). Full `apps/api` suite
+> passing with no regression.
+
 `MULTI-SECTOR.md`'s own `MODULES` example line lists a full B2B-capable
 deployment: `catalog,cart,orders,payments,inventory,purchasing,crm,
 analytics,reports,tracking,finance,serials,warranty,fitment,dimensions,

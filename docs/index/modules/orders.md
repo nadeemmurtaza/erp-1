@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 21 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (21 · 3,752 lines)
+## Files (21 · 3,791 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -22,7 +22,7 @@ All paths relative to `apps/api/src/modules/orders`.
 | `cod-risk.service.spec.ts` | unit test | 105 | — |  |
 | `cod-risk.service.ts` | service | 86 | 3 |  |
 | `instalment-plan.dto.ts` | dto | 16 | 1 |  |
-| `order.dto.ts` | dto | 168 | 6 |  |
+| `order.dto.ts` | dto | 177 | 6 |  |
 | `instalment-plan.controller.ts` | controller | 52 | 1 | finance-accounting/151-layby-installment-sales.md — a plan is created at the point of sale (POS's own sell() endpoint);… |
 | `instalment-plan.service.spec.ts` | unit test | 239 | — |  |
 | `instalment-plan.service.ts` | service | 228 | 1 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md). |
@@ -34,7 +34,7 @@ All paths relative to `apps/api/src/modules/orders`.
 | `orders-pos.service.spec.ts` | unit test | 416 | — |  |
 | `orders.controller.ts` | controller | 145 | 2 |  |
 | `orders.module.ts` | nest module | 57 | 1 |  |
-| `orders.service.ts` | service | 1340 | 4 |  |
+| `orders.service.ts` | service | 1370 | 4 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
@@ -61,10 +61,10 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `orders.service.ts:488`, `orders.service.ts:746` |
-| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:773`, `orders.service.ts:958` |
-| `OrderCancelled` | `order.cancelled` | `orders.service.ts:958` |
-| `PaymentSucceeded` | `payment.succeeded` | `instalment-plan.service.ts:90`, `orders.service.ts:717` |
+| `OrderPlaced` | `order.placed` | `orders.service.ts:518`, `orders.service.ts:776` |
+| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:803`, `orders.service.ts:988` |
+| `OrderCancelled` | `order.cancelled` | `orders.service.ts:988` |
+| `PaymentSucceeded` | `payment.succeeded` | `instalment-plan.service.ts:90`, `orders.service.ts:747` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -168,10 +168,10 @@ check there before adding another.
 | `RecordInstalmentPaymentDto` | class | `instalment-plan.dto.ts:4` |  |
 | `ShippingAddressDto` | class | `order.dto.ts:29` |  |
 | `PlaceOrderDto` | class | `order.dto.ts:73` |  |
-| `TrackOrderDto` | class | `order.dto.ts:118` |  |
-| `ChangeOrderStatusDto` | class | `order.dto.ts:125` |  |
-| `AdminOrderQueryDto` | class | `order.dto.ts:137` |  |
-| `OrderHistoryQueryDto` | class | `order.dto.ts:153` |  |
+| `TrackOrderDto` | class | `order.dto.ts:127` |  |
+| `ChangeOrderStatusDto` | class | `order.dto.ts:134` |  |
+| `AdminOrderQueryDto` | class | `order.dto.ts:146` |  |
+| `OrderHistoryQueryDto` | class | `order.dto.ts:162` |  |
 | `InstalmentPlanController` | class | `instalment-plan.controller.ts:17` | finance-accounting/151-layby-installment-sales.md — a plan is created at the point of sale (POS's own sell()… |
 | `InstalmentPlanService` | class | `instalment-plan.service.ts:22` | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md). |
 | `OrderNotificationSubscriber` | class | `notification.subscriber.ts:53` |  |
@@ -180,10 +180,10 @@ check there before adding another.
 | `OrdersController` | class | `orders.controller.ts:32` |  |
 | `OrdersAdminController` | class | `orders.controller.ts:97` |  |
 | `OrdersModule` | class | `orders.module.ts:56` |  |
-| `PosSaleLineInput` | interface | `orders.service.ts:41` |  |
-| `PlaceFromPosInstalmentInput` | interface | `orders.service.ts:53` | finance-accounting/151-layby-installment-sales.md — a layby/instalment plan requested at the point of sale. |
-| `PlaceFromPosInput` | interface | `orders.service.ts:59` |  |
-| `OrdersService` | class | `orders.service.ts:108` |  |
+| `PosSaleLineInput` | interface | `orders.service.ts:43` |  |
+| `PlaceFromPosInstalmentInput` | interface | `orders.service.ts:55` | finance-accounting/151-layby-installment-sales.md — a layby/instalment plan requested at the point of sale. |
+| `PlaceFromPosInput` | interface | `orders.service.ts:61` |  |
+| `OrdersService` | class | `orders.service.ts:110` |  |
 | `ShipmentStatusListener` | class | `shipment-status.listener.ts:28` | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 

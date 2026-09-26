@@ -3,7 +3,7 @@
 
 # Tests
 
-**280** spec files, **2,772** cases. What is already pinned down — and what is not.
+**282** spec files, **2,794** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,13 +57,13 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (260)
+## Unit and integration (262)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
 | `apps/api/src/core/action-hub/action-hub-registry.service.spec.ts` | core/action-hub | 6 | ActionHubRegistryService |
 | `apps/api/src/core/ai/ai.service.spec.ts` | core/ai | 16 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpen… |
-| `apps/api/src/core/approvals/approval.service.spec.ts` | core/approvals | 11 | ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION · start · d… |
+| `apps/api/src/core/approvals/approval.service.spec.ts` | core/approvals | 13 | ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION · start · d… |
 | `apps/api/src/core/auth/api-keys/api-key-access.spec.ts` | core/auth | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements —… |
 | `apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts` | core/auth | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says wh… |
 | `apps/api/src/core/auth/api-keys/api-keys.service.spec.ts` | core/auth | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do righ… |
@@ -110,6 +110,7 @@ regression or an N+1.
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 52 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
 | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts` | accounting | 7 | WalletPostingRulesSubscriber — doc 155 §3 · onWalletCreditPurchased · onWalletCreditRedeemed · onWa… |
+| `apps/api/src/modules/accounts/accounts.service.spec.ts` | accounts | 13 | AccountsService — 149-b2b-accounts-approvals-sector-packs.md · submitOrderRequest · decide — the to… |
 | `apps/api/src/modules/analytics/analytics.category-velocity.spec.ts` | analytics | 4 | AnalyticsService.categoryVelocity — WO-57.1 |
 | `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/analytics.customers.spec.ts` | analytics | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention… |
@@ -196,6 +197,7 @@ regression or an N+1.
 | `apps/api/src/modules/orgstructure/org-unit.service.spec.ts` | orgstructure | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
 | `apps/api/src/modules/payments/payment-feed.source.spec.ts` | payments | 5 | PaymentFeedSource — WO-58.2 |
+| `apps/api/src/modules/payments/providers/account.provider.spec.ts` | payments | 7 | AccountProvider — 149-b2b-accounts-approvals-sector-packs.md |
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
 | `apps/api/src/modules/payroll/leave-accrual.cron.spec.ts` | payroll | 3 | LeaveAccrualCron |
 | `apps/api/src/modules/payroll/leave-request-action.source.spec.ts` | payroll | 5 | LeaveRequestActionSource |

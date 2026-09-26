@@ -113,6 +113,15 @@ export class PlaceOrderDto {
   @IsInt()
   @Min(1)
   storeCreditAmount?: number;
+
+  @ApiPropertyOptional({
+    description:
+      "The buyer's own purchase-order number — required when paying on account against a B2BAccount with requiresPurchaseOrder set (149-b2b-accounts-approvals-sector-packs.md).",
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  purchaseOrderReference?: string;
 }
 
 export class TrackOrderDto {

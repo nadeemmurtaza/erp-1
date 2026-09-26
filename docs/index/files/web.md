@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 392 tracked files in `apps/web`, by directory.
+All 395 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -26,8 +26,8 @@ All 392 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 679 |  |
-| `ur.json` | json | 679 |  |
+| `en.json` | json | 709 |  |
+| `ur.json` | json | 709 |  |
 
 ### `apps/web/public` (1)
 
@@ -146,6 +146,18 @@ All 392 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 182 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/b2b-accounts` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 195 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 199 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom` (1)
 
@@ -1005,7 +1017,13 @@ All 392 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 466 |  |
+| `page.tsx` | page | 467 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/b2b` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 172 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/credit` (1)
 
@@ -1265,7 +1283,7 @@ All 392 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 1031 |  |
+| `nav-registry.ts` | component | 1039 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1344,7 +1362,7 @@ All 392 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `secret-once.tsx` | component | 100 |  |
-| `status-badge.tsx` | component | 94 |  |
+| `status-badge.tsx` | component | 97 |  |
 | `toast-container.tsx` | component | 60 |  |
 | `wizard.tsx` | component | 146 |  |
 
@@ -1352,7 +1370,7 @@ All 392 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `dashboard-nav.tsx` | component | 101 |  |
+| `dashboard-nav.tsx` | component | 103 |  |
 
 ### `apps/web/src/components/storefront` (37)
 
@@ -1433,7 +1451,7 @@ All 392 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 264 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 268 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)

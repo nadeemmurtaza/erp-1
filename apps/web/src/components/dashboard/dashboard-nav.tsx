@@ -46,6 +46,8 @@ const TABS: Tab[] = [
   { href: ROUTES.storefront.accountLoyalty, key: 'loyalty' },
   // doc 155 — off by default (`wallet` module); see DECISIONS.md.
   { href: ROUTES.storefront.accountWallet, key: 'wallet', module: 'wallet' },
+  // 149-b2b-accounts-approvals-sector-packs.md — off by default (`accounts` module).
+  { href: ROUTES.storefront.accountB2B, key: 'b2b', module: 'accounts' },
   { href: ROUTES.storefront.accountNotifications, key: 'notifications' },
   // Personal API keys (163-personal-api-keys.md) — the same place, under the
   // person's own account, as the admin's own "My API keys" (NAV-12).

@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 13 files
 
 Source: `apps/api/src/modules/receivables/`
 
-## Files (13 · 1,658 lines)
+## Files (13 · 1,665 lines)
 
 All paths relative to `apps/api/src/modules/receivables`.
 
@@ -27,7 +27,7 @@ All paths relative to `apps/api/src/modules/receivables`.
 | `dunning.service.ts` | service | 48 | 2 |  |
 | `receivables.controller.ts` | controller | 200 | 5 |  |
 | `receivables.integration.spec.ts` | unit test | 334 | — |  |
-| `receivables.module.ts` | nest module | 31 | 1 |  |
+| `receivables.module.ts` | nest module | 38 | 1 |  |
 | `statements.service.spec.ts` | unit test | 63 | — |  |
 | `statements.service.ts` | service | 102 | 3 |  |
 
@@ -159,7 +159,7 @@ check there before adding another.
 | `CreditTermsController` | class | `receivables.controller.ts:119` |  |
 | `DunningController` | class | `receivables.controller.ts:154` |  |
 | `StatementsController` | class | `receivables.controller.ts:181` |  |
-| `ReceivablesModule` | class | `receivables.module.ts:30` |  |
+| `ReceivablesModule` | class | `receivables.module.ts:37` |  |
 | `StatementLine` | interface | `statements.service.ts:4` |  |
 | `CustomerStatement` | interface | `statements.service.ts:12` |  |
 | `StatementsService` | class | `statements.service.ts:41` | 145-receivables-credit-limits-dunning.md (WO-145.5) — a read-model over rows that already exist: `Order` (the… |

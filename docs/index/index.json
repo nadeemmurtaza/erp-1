@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2166,
-    "lines": 331698,
-    "routes": 753,
-    "controllers": 134,
-    "models": 272,
-    "enums": 124,
-    "migrations": 98,
+    "files": 2178,
+    "lines": 334079,
+    "routes": 764,
+    "controllers": 136,
+    "models": 275,
+    "enums": 125,
+    "migrations": 99,
     "events": 63,
     "permissions": 101,
-    "screens": 245,
+    "screens": 248,
     "crons": 23,
-    "specs": 280,
+    "specs": 282,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 57,
-      "lines": 30073,
-      "bytes": 1183108,
+      "lines": 30094,
+      "bytes": 1184507,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 954,
-      "lines": 133524,
-      "bytes": 5140252,
+      "files": 963,
+      "lines": 134979,
+      "bytes": 5204301,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 392,
-      "lines": 64048,
-      "bytes": 2309002,
+      "files": 395,
+      "lines": 64692,
+      "bytes": 2332758,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 396,
-      "lines": 66287,
-      "bytes": 3942886,
+      "lines": 66536,
+      "bytes": 3958655,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8173,
-      "bytes": 291426,
+      "lines": 8185,
+      "bytes": 292359,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -102,6 +102,21 @@
       ],
       "routes": 19,
       "page": "docs/index/modules/accounting.md"
+    },
+    {
+      "name": "accounts",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/accounts/accounts.controller.ts",
+        "apps/api/src/modules/accounts/accounts.module.ts",
+        "apps/api/src/modules/accounts/accounts.service.spec.ts",
+        "apps/api/src/modules/accounts/accounts.service.ts",
+        "apps/api/src/modules/accounts/dto/accounts.dto.ts"
+      ],
+      "routes": 11,
+      "page": "docs/index/modules/accounts.md"
     },
     {
       "name": "addresses",
@@ -716,6 +731,8 @@
         "apps/api/src/modules/payments/payments.controller.ts",
         "apps/api/src/modules/payments/payments.module.ts",
         "apps/api/src/modules/payments/payments.service.ts",
+        "apps/api/src/modules/payments/providers/account.provider.spec.ts",
+        "apps/api/src/modules/payments/providers/account.provider.ts",
         "apps/api/src/modules/payments/providers/bank-transfer.provider.ts",
         "apps/api/src/modules/payments/providers/callback-verification.spec.ts",
         "apps/api/src/modules/payments/providers/cod.provider.ts",
@@ -1484,6 +1501,90 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/accounts/mine",
+      "module": "accounts",
+      "controller": "B2BAccountsController",
+      "handler": "myAccount",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 83,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My standing account and its approval policy, if any"
+    },
+    {
+      "method": "POST",
+      "path": "/accounts/mine/approval-policy",
+      "module": "accounts",
+      "controller": "B2BAccountsController",
+      "handler": "setMyPolicy",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 104,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Edit my own account’s approval threshold and approvers — never this organization’s staff choosing them"
+    },
+    {
+      "method": "GET",
+      "path": "/accounts/mine/order-requests",
+      "module": "accounts",
+      "controller": "B2BAccountsController",
+      "handler": "myRequests",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 92,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "My own submitted purchase-approval requests"
+    },
+    {
+      "method": "POST",
+      "path": "/accounts/mine/order-requests",
+      "module": "accounts",
+      "controller": "B2BAccountsController",
+      "handler": "submit",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 132,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Submit my current cart for approval — at or above my account's threshold"
+    },
+    {
+      "method": "POST",
+      "path": "/accounts/mine/order-requests/:id/decide",
+      "module": "accounts",
+      "controller": "B2BAccountsController",
+      "handler": "decide",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 147,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Approve or reject a pending request I am a listed approver for — never my own"
+    },
+    {
+      "method": "GET",
+      "path": "/accounts/mine/pending-approvals",
+      "module": "accounts",
+      "controller": "B2BAccountsController",
+      "handler": "pendingApprovals",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 113,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Orders waiting on my approval as a listed approver"
+    },
+    {
+      "method": "GET",
       "path": "/addresses",
       "module": "addresses",
       "controller": "AddressesController",
@@ -1844,6 +1945,76 @@
       "public": false,
       "authOnly": false,
       "summary": "Every account, cumulative debit/credit as of a date — SUM(debit) = SUM(credit) or something is wrong"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/accounts/b2b",
+      "module": "accounts",
+      "controller": "B2BAccountsAdminController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 31,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": "List every B2B account"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/accounts/b2b",
+      "module": "accounts",
+      "controller": "B2BAccountsAdminController",
+      "handler": "create",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 45,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": "Open a standing account for a buyer's own contact"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/accounts/b2b/:id",
+      "module": "accounts",
+      "controller": "B2BAccountsAdminController",
+      "handler": "findOne",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 38,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": "Get a B2B account and its approval policy"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/accounts/b2b/:id/approval-policy",
+      "module": "accounts",
+      "controller": "B2BAccountsAdminController",
+      "handler": "setPolicy",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 59,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": "Set the order-value threshold and the buyer contacts who may approve above it"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/accounts/b2b/:id/update",
+      "module": "accounts",
+      "controller": "B2BAccountsAdminController",
+      "handler": "update",
+      "file": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "line": 52,
+      "access": "UNDECORATED (authenticated, unrestricted)",
+      "permissions": [],
+      "public": false,
+      "authOnly": false,
+      "summary": "Activate, deactivate, or change the purchase-order requirement"
     },
     {
       "method": "GET",
@@ -14253,7 +14424,7 @@
         "GET /admin/wallet/accounts/:accountId/ledger",
         "GET /admin/wallet/customers/:customerId"
       ],
-      "uiSites": 23,
+      "uiSites": 24,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -15355,8 +15526,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:55",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:162",
-        "apps/api/src/modules/orders/orders.service.ts:488",
-        "apps/api/src/modules/orders/orders.service.ts:746"
+        "apps/api/src/modules/orders/orders.service.ts:518",
+        "apps/api/src/modules/orders/orders.service.ts:776"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
@@ -15372,8 +15543,8 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:773",
-        "apps/api/src/modules/orders/orders.service.ts:958"
+        "apps/api/src/modules/orders/orders.service.ts:803",
+        "apps/api/src/modules/orders/orders.service.ts:988"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -15388,7 +15559,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:958"
+        "apps/api/src/modules/orders/orders.service.ts:988"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -15403,10 +15574,10 @@
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:122",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:159",
         "apps/api/src/modules/orders/instalment-plan.service.ts:90",
-        "apps/api/src/modules/orders/orders.service.ts:717",
-        "apps/api/src/modules/payments/payments.service.ts:191",
-        "apps/api/src/modules/payments/payments.service.ts:293",
-        "apps/api/src/modules/payments/payments.service.ts:341"
+        "apps/api/src/modules/orders/orders.service.ts:747",
+        "apps/api/src/modules/payments/payments.service.ts:193",
+        "apps/api/src/modules/payments/payments.service.ts:295",
+        "apps/api/src/modules/payments/payments.service.ts:343"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:120 onPaymentSucceeded()",
@@ -15418,8 +15589,8 @@
       "name": "payment.failed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/payments/payments.service.ts:191",
-        "apps/api/src/modules/payments/payments.service.ts:293"
+        "apps/api/src/modules/payments/payments.service.ts:193",
+        "apps/api/src/modules/payments/payments.service.ts:295"
       ],
       "subscribers": [
         "apps/api/src/modules/payments/notification.subscriber.ts:79 onPaymentFailed()"
@@ -15430,7 +15601,7 @@
       "name": "payment.awaiting_approval",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/payments/payments.service.ts:116"
+        "apps/api/src/modules/payments/payments.service.ts:118"
       ],
       "subscribers": []
     },
@@ -15439,7 +15610,7 @@
       "name": "payment.refunded",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/payments/payments.service.ts:400"
+        "apps/api/src/modules/payments/payments.service.ts:402"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:157 onPaymentRefunded()",
@@ -16720,7 +16891,7 @@
     {
       "name": "ApprovalChain",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 29,
+      "line": 32,
       "doc": "",
       "fields": [
         {
@@ -16788,7 +16959,7 @@
     {
       "name": "ApprovalStep",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 44,
+      "line": 47,
       "doc": "",
       "fields": [
         {
@@ -16827,6 +16998,13 @@
           "relation": false
         },
         {
+          "name": "approverContactIds",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "status",
           "type": "ApprovalStepStatus",
           "id": false,
@@ -16842,6 +17020,13 @@
         },
         {
           "name": "decidedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "decidedByContactId",
           "type": "String?",
           "id": false,
           "unique": false,
@@ -17616,6 +17801,240 @@
         "@@index([actorId])",
         "@@index([createdAt])"
       ]
+    },
+    {
+      "name": "B2BAccount",
+      "file": "apps/api/prisma/schema/accounts.prisma",
+      "line": 25,
+      "doc": "The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md (b2b-wholesale-multientity/149-b2b-accounts-approvals-sector-packs.md).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customerId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requiresPurchaseOrder",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvalPolicy",
+          "type": "B2BPurchaseApprovalPolicy?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderRequests",
+          "type": "B2BOrderRequest[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([isActive])"
+      ]
+    },
+    {
+      "name": "B2BOrderRequest",
+      "file": "apps/api/prisma/schema/accounts.prisma",
+      "line": 85,
+      "doc": "\"Request or record\" — an order placed against a B2BAccount under an active B2BPurchaseApprovalPolicy, at or above its thresholdMinor, is a REQUEST until approved (refusable by the buyer's own approve…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "b2bAccountId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestedByContactId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "cartToken",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "paymentDto",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "B2BOrderRequestStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "rejectionNote",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "b2bAccount",
+          "type": "B2BAccount",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([b2bAccountId, status])"
+      ]
+    },
+    {
+      "name": "B2BPurchaseApprovalPolicy",
+      "file": "apps/api/prisma/schema/accounts.prisma",
+      "line": 50,
+      "doc": "The buyer's own internal purchasing control, not this organization's — the seller merely holds and enforces the buyer's stated policy, the way a corporate card program enforces a cardholder's own spe…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "b2bAccountId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "thresholdMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approverContactIds",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "b2bAccount",
+          "type": "B2BAccount",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "BackInStockRequest",
@@ -40295,7 +40714,7 @@
     {
       "name": "ApprovalChainStatus",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 16,
+      "line": 19,
       "values": [
         "PENDING",
         "APPROVED",
@@ -40305,7 +40724,7 @@
     {
       "name": "ApprovalStepStatus",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 22,
+      "line": 25,
       "values": [
         "PENDING",
         "APPROVED",
@@ -40319,7 +40738,8 @@
       "line": 10,
       "values": [
         "PURCHASE_REQUISITION",
-        "WALLET_ADJUSTMENT"
+        "WALLET_ADJUSTMENT",
+        "B2B_ORDER"
       ]
     },
     {
@@ -40377,6 +40797,17 @@
         "SELF",
         "MANAGER",
         "IMPORT"
+      ]
+    },
+    {
+      "name": "B2BOrderRequestStatus",
+      "file": "apps/api/prisma/schema/accounts.prisma",
+      "line": 67,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED",
+        "CONVERTED"
       ]
     },
     {
@@ -43365,6 +43796,27 @@
         "BundleComponent",
         "ProductBundle"
       ]
+    },
+    {
+      "folder": "20260926152210_wo149_b2b_accounts_approvals",
+      "file": "apps/api/prisma/schema/migrations/20260926152210_wo149_b2b_accounts_approvals/migration.sql",
+      "date": "2026-09-26",
+      "slug": "wo149_b2b_accounts_approvals",
+      "statements": 13,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "ApprovalStep",
+        "B2BAccount",
+        "B2BOrderRequest",
+        "B2BPurchaseApprovalPolicy"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -43815,6 +44267,15 @@
       "kind": "page",
       "url": "/[locale]/account/api-keys",
       "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/api-keys/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/b2b",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/b2b/page.tsx",
       "client": true,
       "surface": "storefront",
       "doc": ""
@@ -44319,6 +44780,24 @@
       "kind": "page",
       "url": "/admin/b/[brandId]",
       "file": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/b2b-accounts",
+      "file": "apps/web/src/app/(admin)/admin/(app)/b2b-accounts/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/b2b-accounts/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/b2b-accounts/[id]/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -46298,7 +46777,7 @@
       "file": "apps/api/src/core/approvals/approval.service.spec.ts",
       "module": "core/approvals",
       "kind": "unit test",
-      "cases": 11,
+      "cases": 13,
       "describes": [
         "ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION",
         "start",
@@ -46846,6 +47325,18 @@
         "onWalletCreditPurchased",
         "onWalletCreditRedeemed",
         "onWalletCreditRefunded"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/accounts/accounts.service.spec.ts",
+      "module": "accounts",
+      "kind": "unit test",
+      "cases": 13,
+      "describes": [
+        "AccountsService — 149-b2b-accounts-approvals-sector-packs.md",
+        "submitOrderRequest",
+        "decide — the toxic-pair refusal",
+        "convertToOrder — race safety"
       ]
     },
     {
@@ -47810,6 +48301,15 @@
       "cases": 5,
       "describes": [
         "PaymentFeedSource — WO-58.2"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payments/providers/account.provider.spec.ts",
+      "module": "payments",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "AccountProvider — 149-b2b-accounts-approvals-sector-packs.md"
       ]
     },
     {
@@ -49636,7 +50136,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5368,
+      "bytes": 5385,
       "doc": "",
       "symbols": []
     },
@@ -49644,8 +50144,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 177,
-      "bytes": 9032,
+      "lines": 180,
+      "bytes": 9281,
       "doc": "",
       "symbols": []
     },
@@ -49654,7 +50154,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5813,
+      "bytes": 5830,
       "doc": "",
       "symbols": []
     },
@@ -49953,11 +50453,20 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/accounts.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 120,
+      "bytes": 5910,
+      "doc": "The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/approvals.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 63,
-      "bytes": 2043,
+      "lines": 76,
+      "bytes": 2813,
       "doc": "Approvals: one generic, subject-agnostic approval chain, referenced by a",
       "symbols": []
     },
@@ -50952,6 +51461,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926152210_wo149_b2b_accounts_approvals/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 74,
+      "bytes": 2579,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -51432,8 +51950,8 @@
       "path": "apps/api/src/core/approvals/approval.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 138,
-      "bytes": 6015,
+      "lines": 176,
+      "bytes": 7717,
       "doc": "",
       "symbols": []
     },
@@ -51441,8 +51959,8 @@
       "path": "apps/api/src/core/approvals/approval.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 143,
-      "bytes": 5334,
+      "lines": 165,
+      "bytes": 6504,
       "doc": "",
       "symbols": [
         {
@@ -51453,12 +51971,17 @@
         {
           "name": "ApprovalDecision",
           "kind": "type",
-          "line": 14
+          "line": 22
+        },
+        {
+          "name": "ApprovalActorKind",
+          "kind": "type",
+          "line": 26
         },
         {
           "name": "ApprovalService",
           "kind": "class",
-          "line": 31
+          "line": 43
         }
       ]
     },
@@ -55380,6 +55903,95 @@
           "name": "WalletPostingRulesSubscriber",
           "kind": "class",
           "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounts/accounts.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 174,
+      "bytes": 7209,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "B2BAccountsAdminController",
+          "kind": "class",
+          "line": 25
+        },
+        {
+          "name": "B2BAccountsController",
+          "kind": "class",
+          "line": 73
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounts/accounts.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 33,
+      "bytes": 1666,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AccountsModule",
+          "kind": "class",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounts/accounts.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 248,
+      "bytes": 10360,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/accounts/accounts.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 428,
+      "bytes": 19019,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AccountsService",
+          "kind": "class",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/accounts/dto/accounts.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 49,
+      "bytes": 1131,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateB2BAccountDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "UpdateB2BAccountDto",
+          "kind": "class",
+          "line": 18
+        },
+        {
+          "name": "SetApprovalPolicyDto",
+          "kind": "class",
+          "line": 30
+        },
+        {
+          "name": "DecideB2BOrderRequestDto",
+          "kind": "class",
+          "line": 41
         }
       ]
     },
@@ -60245,8 +60857,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 115,
-      "bytes": 3770,
+      "lines": 120,
+      "bytes": 4044,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -60265,24 +60877,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 253,
-      "bytes": 14115,
+      "lines": 261,
+      "bytes": 14654,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 54
+          "line": 55
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 85
+          "line": 86
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 229
+          "line": 237
         }
       ]
     },
@@ -60526,8 +61138,8 @@
       "path": "apps/api/src/modules/orders/dto/order.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 168,
-      "bytes": 4588,
+      "lines": 177,
+      "bytes": 4900,
       "doc": "",
       "symbols": [
         {
@@ -60543,22 +61155,22 @@
         {
           "name": "TrackOrderDto",
           "kind": "class",
-          "line": 118
+          "line": 127
         },
         {
           "name": "ChangeOrderStatusDto",
           "kind": "class",
-          "line": 125
+          "line": 134
         },
         {
           "name": "AdminOrderQueryDto",
           "kind": "class",
-          "line": 137
+          "line": 146
         },
         {
           "name": "OrderHistoryQueryDto",
           "kind": "class",
-          "line": 153
+          "line": 162
         }
       ]
     },
@@ -60712,29 +61324,29 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1340,
-      "bytes": 53868,
+      "lines": 1370,
+      "bytes": 55452,
       "doc": "",
       "symbols": [
         {
           "name": "PosSaleLineInput",
           "kind": "interface",
-          "line": 41
+          "line": 43
         },
         {
           "name": "PlaceFromPosInstalmentInput",
           "kind": "interface",
-          "line": 53
+          "line": 55
         },
         {
           "name": "PlaceFromPosInput",
           "kind": "interface",
-          "line": 59
+          "line": 61
         },
         {
           "name": "OrdersService",
           "kind": "class",
-          "line": 108
+          "line": 110
         }
       ]
     },
@@ -61261,8 +61873,8 @@
       "path": "apps/api/src/modules/payments/payment-provider.ts",
       "area": "api",
       "kind": "module",
-      "lines": 99,
-      "bytes": 4242,
+      "lines": 113,
+      "bytes": 4865,
       "doc": "Extension point: payment providers.",
       "symbols": [
         {
@@ -61273,17 +61885,17 @@
         {
           "name": "PaymentInitiation",
           "kind": "interface",
-          "line": 26
+          "line": 40
         },
         {
           "name": "PaymentCallbackResult",
           "kind": "interface",
-          "line": 40
+          "line": 54
         },
         {
           "name": "PaymentProvider",
           "kind": "interface",
-          "line": 59
+          "line": 73
         }
       ]
     },
@@ -61311,14 +61923,14 @@
       "path": "apps/api/src/modules/payments/payments.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 28,
-      "bytes": 1073,
+      "lines": 39,
+      "bytes": 1760,
       "doc": "",
       "symbols": [
         {
           "name": "PaymentsModule",
           "kind": "class",
-          "line": 27
+          "line": 38
         }
       ]
     },
@@ -61326,14 +61938,38 @@
       "path": "apps/api/src/modules/payments/payments.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 437,
-      "bytes": 15273,
+      "lines": 439,
+      "bytes": 15376,
       "doc": "",
       "symbols": [
         {
           "name": "PaymentsService",
           "kind": "class",
-          "line": 29
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/payments/providers/account.provider.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 3762,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payments/providers/account.provider.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 83,
+      "bytes": 3868,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AccountProvider",
+          "kind": "class",
+          "line": 25
         }
       ]
     },
@@ -63346,14 +63982,14 @@
       "path": "apps/api/src/modules/receivables/receivables.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 31,
-      "bytes": 1365,
+      "lines": 38,
+      "bytes": 1757,
       "doc": "",
       "symbols": [
         {
           "name": "ReceivablesModule",
           "kind": "class",
-          "line": 30
+          "line": 37
         }
       ]
     },
@@ -65423,8 +66059,8 @@
       "path": "apps/api/test/customer-scope-routes.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 230,
-      "bytes": 11049,
+      "lines": 237,
+      "bytes": 11438,
       "doc": "",
       "symbols": []
     },
@@ -69800,8 +70436,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 679,
-      "bytes": 27275,
+      "lines": 709,
+      "bytes": 28559,
       "doc": "",
       "symbols": []
     },
@@ -69809,8 +70445,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 679,
-      "bytes": 37559,
+      "lines": 709,
+      "bytes": 39452,
       "doc": "",
       "symbols": []
     },
@@ -70117,6 +70753,36 @@
           "name": "BrandDashboardPage",
           "kind": "default",
           "line": 124
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/b2b-accounts/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 199,
+      "bytes": 7048,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "B2BAccountDetailPage",
+          "kind": "default",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/b2b-accounts/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 195,
+      "bytes": 6624,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "B2BAccountsPage",
+          "kind": "default",
+          "line": 25
         }
       ]
     },
@@ -72349,14 +73015,29 @@
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/api-keys/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 466,
-      "bytes": 16273,
+      "lines": 467,
+      "bytes": 16313,
       "doc": "",
       "symbols": [
         {
           "name": "AccountApiKeysPage",
           "kind": "default",
-          "line": 75
+          "line": 76
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/b2b/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 172,
+      "bytes": 6112,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "B2BAccountPage",
+          "kind": "default",
+          "line": 42
         }
       ]
     },
@@ -74185,8 +74866,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1031,
-      "bytes": 28440,
+      "lines": 1039,
+      "bytes": 28646,
       "doc": "",
       "symbols": [
         {
@@ -74217,12 +74898,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1001
+          "line": 1009
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1016
+          "line": 1024
         }
       ]
     },
@@ -74415,19 +75096,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 94,
-      "bytes": 3648,
+      "lines": 97,
+      "bytes": 3813,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 87
+          "line": 90
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 91
+          "line": 94
         }
       ]
     },
@@ -74470,14 +75151,14 @@
       "path": "apps/web/src/components/dashboard/dashboard-nav.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 101,
-      "bytes": 3919,
+      "lines": 103,
+      "bytes": 4081,
       "doc": "",
       "symbols": [
         {
           "name": "DashboardNav",
           "kind": "function",
-          "line": 56
+          "line": 58
         }
       ]
     },
@@ -75483,8 +76164,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 264,
-      "bytes": 12121,
+      "lines": 268,
+      "bytes": 12343,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -79472,8 +80153,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 5151,
-      "bytes": 299020,
+      "lines": 5351,
+      "bytes": 311223,
       "doc": "",
       "symbols": []
     },
@@ -79509,7 +80190,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 528,
-      "bytes": 70904,
+      "bytes": 71130,
       "doc": "",
       "symbols": []
     },
@@ -80174,8 +80855,8 @@
       "path": "docs/implementation/b2b-wholesale-multientity/149-b2b-accounts-approvals-sector-packs.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 163,
-      "bytes": 8913,
+      "lines": 212,
+      "bytes": 12253,
       "doc": "",
       "symbols": []
     },
@@ -81391,8 +82072,8 @@
       "path": "packages/shared/src/api-keys.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 319,
-      "bytes": 14087,
+      "lines": 331,
+      "bytes": 15020,
       "doc": "Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request.",
       "symbols": [
         {
@@ -81488,42 +82169,42 @@
         {
           "name": "CustomerScopeResource",
           "kind": "type",
-          "line": 233
+          "line": 234
         },
         {
           "name": "CustomerScopeAccess",
           "kind": "type",
-          "line": 234
+          "line": 235
         },
         {
           "name": "CustomerScopeDefinition",
           "kind": "interface",
-          "line": 236
+          "line": 237
         },
         {
           "name": "CUSTOMER_SCOPE_CATALOG",
           "kind": "const",
-          "line": 260
+          "line": 261
         },
         {
           "name": "CustomerScopeKey",
           "kind": "type",
-          "line": 289
+          "line": 301
         },
         {
           "name": "CUSTOMER_SCOPE_KEYS",
           "kind": "const",
-          "line": 291
+          "line": 303
         },
         {
           "name": "expandCustomerScopes",
           "kind": "function",
-          "line": 304
+          "line": 316
         },
         {
           "name": "unknownCustomerScopes",
           "kind": "function",
-          "line": 316
+          "line": 328
         }
       ]
     },
@@ -83324,8 +84005,8 @@
       "path": "scripts/check-module-boundaries.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 592,
-      "bytes": 25919,
+      "lines": 610,
+      "bytes": 27035,
       "doc": "",
       "symbols": []
     },

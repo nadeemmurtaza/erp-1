@@ -31,6 +31,7 @@ const RESOURCE_MESSAGE: Record<CustomerScopeResource, string> = {
   returns: 'resource_returns',
   loyalty: 'resource_loyalty',
   'store-credit': 'resource_storeCredit',
+  'b2b-account': 'resource_b2bAccount',
 };
 
 /** Whether a resource offers a write scope at all — profile, orders, loyalty and store credit are read-only. */

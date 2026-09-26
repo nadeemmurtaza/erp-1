@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `ApprovalChain`  <sub>`apps/api/prisma/schema/approvals.prisma:29`</sub>
+### `ApprovalChain`  <sub>`apps/api/prisma/schema/approvals.prisma:32`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -35,7 +35,7 @@ against a real database.
 
 Indexes: `@@unique([subjectType, subjectId])` · `@@index([subjectType, status])`
 
-### `ApprovalStep`  <sub>`apps/api/prisma/schema/approvals.prisma:44`</sub>
+### `ApprovalStep`  <sub>`apps/api/prisma/schema/approvals.prisma:47`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -44,9 +44,11 @@ Indexes: `@@unique([subjectType, subjectId])` · `@@index([subjectType, status])
 | `stepOrder` | `Int` |  |  |
 | `approverRoleId` | `String?` | optional |  |
 | `approverUserId` | `String?` | optional |  |
+| `approverContactIds` | `String[]` |  | @default([]) |
 | `status` | `ApprovalStepStatus` |  | @default(PENDING) |
 | `decidedAt` | `DateTime?` | optional |  |
 | `decidedById` | `String?` | optional |  |
+| `decidedByContactId` | `String?` | optional |  |
 | `comment` | `String?` | optional |  |
 | `chain` | `ApprovalChain` | relation | @relation(fields: [chainId], references: [id], onDelete: Cascade) |
 | `decidedBy` | `User?` | relation, optional | @relation("ApprovalStepDecider", fields: [decidedById], references: [id], onDelete: SetNu… |
@@ -56,7 +58,7 @@ Indexes: `@@unique([chainId, stepOrder])` · `@@index([approverUserId, status])`
 
 ## Enums
 
-### `ApprovalChainStatus`  <sub>`apps/api/prisma/schema/approvals.prisma:16`</sub>
+### `ApprovalChainStatus`  <sub>`apps/api/prisma/schema/approvals.prisma:19`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -64,7 +66,7 @@ Indexes: `@@unique([chainId, stepOrder])` · `@@index([approverUserId, status])`
 | `APPROVED` |  |
 | `REJECTED` |  |
 
-### `ApprovalStepStatus`  <sub>`apps/api/prisma/schema/approvals.prisma:22`</sub>
+### `ApprovalStepStatus`  <sub>`apps/api/prisma/schema/approvals.prisma:25`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -81,6 +83,7 @@ Indexes: `@@unique([chainId, stepOrder])` · `@@index([approverUserId, status])`
 |---|---|
 | `PURCHASE_REQUISITION` |  |
 | `WALLET_ADJUSTMENT` |  |
+| `B2B_ORDER` |  |
 
 
 ---

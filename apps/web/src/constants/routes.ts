@@ -46,6 +46,8 @@ export const ROUTES = {
     accountLoyalty: '/account/loyalty',
     /** doc 155 — off by default (module: 'wallet'); see dashboard-nav.tsx's own module gate. */
     accountWallet: '/account/wallet',
+    /** 149-b2b-accounts-approvals-sector-packs.md — off by default (module: 'accounts'). */
+    accountB2B: '/account/b2b',
     accountNotifications: '/account/notifications',
     /** Personal API keys for the customer's own data (163-personal-api-keys.md). */
     accountApiKeys: '/account/api-keys',
@@ -126,6 +128,8 @@ export const ROUTES = {
     creditTerms: '/admin/credit-terms',
     dunningPolicy: '/admin/dunning-policy',
     statements: '/admin/statements',
+    /** 149-b2b-accounts-approvals-sector-packs.md. */
+    b2bAccounts: '/admin/b2b-accounts',
 
     /** 49-financial-institution-settlement-partnerships.md. */
     settlements: '/admin/settlements',

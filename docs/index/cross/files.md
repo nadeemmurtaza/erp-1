@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **2,119** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,135** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -15,9 +15,9 @@ Split by area so you load one, not all of them.
 | apps/pos | 31 | 2,000 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 79 | 8,108 | [files/packages.md](../files/packages.md) |
-| docs/* | 396 | 65,731 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 57 | 29,964 | [files/infra.md](../files/infra.md) |
-| repository root files | 192 | 19,324 | [files/root.md](../files/root.md) |
+| docs/* | 396 | 65,920 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 57 | 29,967 | [files/infra.md](../files/infra.md) |
+| repository root files | 208 | 20,690 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,16 +29,16 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 421 |
-| unit test | 251 |
+| unit test | 255 |
 | page | 195 |
-| service | 167 |
-| module | 156 |
-| controller | 122 |
+| service | 169 |
+| module | 158 |
+| controller | 124 |
 | component | 114 |
-| dto | 111 |
-| migration | 92 |
-| nest module | 81 |
-| prisma schema | 49 |
+| dto | 112 |
+| migration | 93 |
+| nest module | 82 |
+| prisma schema | 50 |
 | script | 39 |
 | event subscriber | 31 |
 | json | 29 |
@@ -52,10 +52,10 @@ name a new file: the convention is what makes it findable.
 | config | 11 |
 | loading | 11 |
 | registry | 10 |
+| guard | 7 |
 | constants | 7 |
 | layout | 6 |
 | hook | 5 |
-| guard | 5 |
 | channel | 5 |
 | types | 5 |
 | toml | 4 |

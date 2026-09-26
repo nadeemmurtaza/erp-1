@@ -3,7 +3,7 @@
 
 # Tests
 
-**271** spec files, **2,682** cases. What is already pinned down — and what is not.
+**275** spec files, **2,714** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (251)
+## Unit and integration (255)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -276,6 +276,10 @@ regression or an N+1.
 | `apps/platform/src/modules/billing/rate-card.service.spec.ts` | root | 9 | RateCardService · proposeChange · approve · apply |
 | `apps/platform/src/modules/billing/seat-counter.service.spec.ts` | root | 3 | SeatCounterService |
 | `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | root | 11 | UsageMeteringService · pollTenant · snapshotAllowances · getMetersForPeriod |
+| `apps/platform/src/modules/product-reference/marketplace-credential.guard.spec.ts` | root | 5 | MarketplaceCredentialGuard |
+| `apps/platform/src/modules/product-reference/marketplace-credentials.service.spec.ts` | root | 7 | MarketplaceCredentialsService · issue · rotate · revoke |
+| `apps/platform/src/modules/product-reference/product-reference-key.spec.ts` | root | 4 | product-reference-key |
+| `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | root | 16 | ProductReferenceService · lookup · bulkLookup · register · update · link · flag · exportSince |
 | `apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts` | root | 4 | ResourceQuotasService · upsertQuota |
 | `apps/platform/src/modules/routing/hostname-resolver.service.spec.ts` | root | 8 | HostnameResolverService |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | root | 14 | SupportAccessService · issue · approve · recordAccess · markExpiredInert · findByTicketReference |

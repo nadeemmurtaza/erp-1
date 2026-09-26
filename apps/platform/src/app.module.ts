@@ -13,6 +13,7 @@ import { BillingModule } from './modules/billing/billing.module';
 import { TrialsModule } from './modules/trials/trials.module';
 import { UiModule } from './modules/ui/ui.module';
 import { AgencyModule } from './modules/agency/agency.module';
+import { ProductReferenceModule } from './modules/product-reference/product-reference.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { AgencyModule } from './modules/agency/agency.module';
     TrialsModule,
     UiModule,
     AgencyModule,
+    ProductReferenceModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

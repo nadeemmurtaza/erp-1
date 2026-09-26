@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 192 tracked files in `repository root files`, by directory.
+All 208 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -108,11 +108,12 @@ All 192 tracked files in `repository root files`, by directory.
 | `tsconfig.build.json` | json | 5 |  |
 | `tsconfig.json` | json | 22 |  |
 
-### `apps/platform/prisma/schema` (2)
+### `apps/platform/prisma/schema` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `platform.prisma` | prisma schema | 789 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
+| `marketplace.prisma` | prisma schema | 145 | The cross-tenant marketplace/product-reference network — doc 165 |
+| `platform.prisma` | prisma schema | 801 | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the |
 | `schema.prisma` | prisma schema | 19 | Datasource and generator only — the control plane's OWN database, never a |
 
 ### `apps/platform/prisma/schema/migrations` (1)
@@ -163,11 +164,17 @@ All 192 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 27 |  |
 
+### `apps/platform/prisma/schema/migrations/20260926125941_wo166_product_reference_registry` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 127 |  |
+
 ### `apps/platform/src` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app.module.ts` | nest module | 46 |  |
+| `app.module.ts` | nest module | 48 |  |
 | `main.ts` | module | 52 |  |
 
 ### `apps/platform/src/core/config` (4)
@@ -176,7 +183,7 @@ All 192 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `app-config.service.ts` | service | 25 |  |
 | `config.module.ts` | nest module | 20 |  |
-| `env.validation.ts` | config | 203 |  |
+| `env.validation.ts` | config | 215 |  |
 | `load-env.ts` | config | 13 |  |
 
 ### `apps/platform/src/core/notifications` (2)
@@ -203,7 +210,7 @@ All 192 tracked files in `repository root files`, by directory.
 | `ops-auth.guard.ts` | guard | 61 |  |
 | `ops-key.spec.ts` | unit test | 25 |  |
 | `ops-key.ts` | module | 21 |  |
-| `ops-permissions.ts` | module | 45 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
+| `ops-permissions.ts` | module | 55 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps… |
 
 ### `apps/platform/src/core/tenant-credentials` (2)
 
@@ -283,6 +290,30 @@ All 192 tracked files in `repository root files`, by directory.
 | `rate-card.dto.ts` | dto | 27 |  |
 | `request-quote.dto.ts` | dto | 26 |  |
 | `update-plan.dto.ts` | dto | 46 |  |
+
+### `apps/platform/src/modules/product-reference` (13)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `decorators.ts` | module | 13 |  |
+| `marketplace-credential.guard.spec.ts` | unit test | 86 |  |
+| `marketplace-credential.guard.ts` | guard | 57 |  |
+| `marketplace-credentials.controller.ts` | controller | 40 |  |
+| `marketplace-credentials.service.spec.ts` | unit test | 79 |  |
+| `marketplace-credentials.service.ts` | service | 83 |  |
+| `marketplace-key-throttler.guard.ts` | guard | 23 |  |
+| `product-reference-key.spec.ts` | unit test | 27 |  |
+| `product-reference-key.ts` | module | 22 |  |
+| `product-reference.controller.ts` | controller | 89 |  |
+| `product-reference.module.ts` | nest module | 25 |  |
+| `product-reference.service.spec.ts` | unit test | 195 |  |
+| `product-reference.service.ts` | service | 176 |  |
+
+### `apps/platform/src/modules/product-reference/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `product-reference.dto.ts` | dto | 142 |  |
 
 ### `apps/platform/src/modules/resource-quotas` (5)
 
@@ -403,7 +434,7 @@ All 192 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `setup-env.ts` | module | 10 |  |
+| `setup-env.ts` | module | 11 |  |
 
 
 ---

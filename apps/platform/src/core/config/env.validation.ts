@@ -147,6 +147,18 @@ export const envSchema = z.object({
   PLATFORM_AGENCY_KEY_PEPPER: z.string().min(32, 'PLATFORM_AGENCY_KEY_PEPPER must be at least 32 characters'),
 
   /**
+   * Docs 165/166 (marketplace.prisma) — server-side pepper mixed into a
+   * tenant's `MarketplacePublisherCredential` key hashing
+   * (`product-reference-key.ts`), the identical defence-in-depth shape
+   * `PLATFORM_AGENCY_KEY_PEPPER` already establishes for a different
+   * credential type. Kept separate rather than reused: this key
+   * authenticates any tenant opting into the cross-tenant marketplace/
+   * product-reference network, a different blast radius than the
+   * agency-managed-services key.
+   */
+  PLATFORM_MARKETPLACE_KEY_PEPPER: z.string().min(32, 'PLATFORM_MARKETPLACE_KEY_PEPPER must be at least 32 characters'),
+
+  /**
    * doc 14 — the ISO 4217 currency this control plane invoices its
    * agency-managed clients in (Newax's OWN billing currency, unrelated to
    * any one tenant's own storefront `BRAND.currency`, which can differ per

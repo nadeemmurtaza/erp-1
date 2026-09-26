@@ -2324,16 +2324,17 @@ _no second-level headings_
 - Acceptance  <sub>:254</sub>
 - Out of scope  <sub>:266</sub>
 
-### `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md`  <sub>395 lines</sub>
+### `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md`  <sub>545 lines</sub>
 
-- The principle, named honestly  <sub>:14</sub>
-- Where the real storage cost is, and where it is not  <sub>:67</sub>
-- 1. Schema — extends the platform module doc 165 already introduced  <sub>:100</sub>
-- 2. The two moments this actually runs  <sub>:192</sub>
-- Scope lenses  <sub>:223</sub>
-- Work orders  <sub>:323</sub>
-- Acceptance  <sub>:350</sub>
-- Out of scope  <sub>:369</sub>
+- The principle, named honestly  <sub>:37</sub>
+- Where the real storage cost is, and where it is not  <sub>:90</sub>
+- 1. Schema — extends the platform module doc 165 already introduced  <sub>:141</sub>
+- 2. The two moments this actually runs  <sub>:243</sub>
+- What's built  <sub>:293</sub>
+- Scope lenses  <sub>:359</sub>
+- Work orders  <sub>:459</sub>
+- Acceptance  <sub>:495</sub>
+- Out of scope  <sub>:519</sub>
 
 ### `docs/implementation/architecture-patterns/92-microservices-module-decoupling.md`  <sub>89 lines</sub>
 
@@ -2722,7 +2723,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>5,005 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>5,044 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

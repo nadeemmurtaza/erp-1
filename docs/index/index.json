@@ -3,32 +3,32 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2119,
-    "lines": 326168,
+    "files": 2135,
+    "lines": 327726,
     "routes": 726,
     "controllers": 131,
-    "models": 258,
-    "enums": 122,
-    "migrations": 92,
+    "models": 264,
+    "enums": 123,
+    "migrations": 93,
     "events": 63,
     "permissions": 96,
     "screens": 244,
     "crons": 23,
-    "specs": 271,
+    "specs": 275,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 192,
-      "lines": 19324,
-      "bytes": 1135456,
+      "files": 208,
+      "lines": 20690,
+      "bytes": 1194527,
       "label": "repository root files"
     },
     "infra": {
       "files": 57,
-      "lines": 29964,
-      "bytes": 1177472,
+      "lines": 29967,
+      "bytes": 1177729,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 396,
-      "lines": 65731,
-      "bytes": 3907976,
+      "lines": 65920,
+      "bytes": 3920038,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -15797,7 +15797,7 @@
     {
       "name": "AgencyUsageSnapshot",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 765,
+      "line": 777,
       "doc": "One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe to delete and recompute (same discipline as `VariantSalesStat` on the tenant side).",
       "fields": [
         {
@@ -21646,6 +21646,343 @@
       ]
     },
     {
+      "name": "GlobalProductReference",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 46,
+      "doc": "One row per physical product, keyed by the one fact that is unambiguously true regardless of who is selling it: its barcode.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "barcode",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "registeredByTenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reviewStatus",
+          "type": "ProductReferenceReviewStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attributes",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "registeredByTenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "translations",
+          "type": "GlobalProductReferenceTranslation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "images",
+          "type": "GlobalProductReferenceImage[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "links",
+          "type": "GlobalProductReferenceLink[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "flags",
+          "type": "GlobalProductReferenceFlag[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([registeredByTenantId])"
+      ]
+    },
+    {
+      "name": "GlobalProductReferenceFlag",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 132,
+      "doc": "A non-owning tenant's report that a shared reference is wrong — reviewed by platform staff, never auto-applied.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referenceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "flaggedByTenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "GlobalProductReference",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "flaggedByTenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([referenceId])"
+      ]
+    },
+    {
+      "name": "GlobalProductReferenceImage",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 95,
+      "doc": "The shared image itself, stored once in the platform app's own storage driver — never copied into a linking tenant's bucket for a cloud-connected tenant (an offline-capable deployment's own local sna…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referenceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "url",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "altText",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "GlobalProductReference",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([referenceId])"
+      ]
+    },
+    {
+      "name": "GlobalProductReferenceLink",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 111,
+      "doc": "One row per tenant that has linked one of their own ProductVariants to this shared reference.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referenceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantRef",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "linkedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "GlobalProductReference",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tenantId, variantRef])",
+        "@@index([referenceId])",
+        "@@index([tenantId])"
+      ]
+    },
+    {
+      "name": "GlobalProductReferenceTranslation",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 76,
+      "doc": "Mirrors ProductTranslation's own locale-keyed shape exactly (en/ur) — the identical structure a linked tenant's own table is synced into.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "referenceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "locale",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "careInstructions",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "GlobalProductReference",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([referenceId, locale])"
+      ]
+    },
+    {
       "name": "GoodsReceipt",
       "file": "apps/api/prisma/schema/purchasing.prisma",
       "line": 163,
@@ -23863,6 +24200,57 @@
       ]
     },
     {
+      "name": "MarketplacePublisherCredential",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 24,
+      "doc": "One row per tenant that has opted into the cross-tenant network (either capability this file offers).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenantId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "apiKeyHash",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "rotatedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tenant",
+          "type": "PlatformTenant",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "MeasurementField",
       "file": "apps/api/prisma/schema/measurements.prisma",
       "line": 50,
@@ -24307,7 +24695,7 @@
     {
       "name": "MeteredOrderFee",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 662,
+      "line": 674,
       "doc": "Doc 153's own \"the reversal document, not the reversal flag\" — one row per order actually metered for the transaction fee, naming the specific order and the exact amount metered for it, so a later `R…",
       "fields": [
         {
@@ -27453,7 +27841,7 @@
     {
       "name": "PlatformCustomQuote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 543,
+      "line": 555,
       "doc": "WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…",
       "fields": [
         {
@@ -27577,7 +27965,7 @@
     {
       "name": "PlatformInvoice",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 433,
+      "line": 445,
       "doc": "",
       "fields": [
         {
@@ -27779,7 +28167,7 @@
     {
       "name": "PlatformInvoiceCreditNote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 519,
+      "line": 531,
       "doc": "A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own \"the reversal document\" lens).",
       "fields": [
         {
@@ -27839,7 +28227,7 @@
     {
       "name": "PlatformOpsClient",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 301,
+      "line": 313,
       "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
       "fields": [
         {
@@ -27906,7 +28294,7 @@
     {
       "name": "PlatformPlan",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 143,
+      "line": 155,
       "doc": "",
       "fields": [
         {
@@ -28083,7 +28471,7 @@
     {
       "name": "PlatformRateCardChangeRequest",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 718,
+      "line": 730,
       "doc": "doc 153's own \"the threshold nobody approves alone\" / \"authority and blast radius\" lenses, resolved with the identical create/approve split `PlatformCustomQuote` (doc 50 §4) already established: a ra…",
       "fields": [
         {
@@ -28200,7 +28588,7 @@
     {
       "name": "PlatformSubscription",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 222,
+      "line": 234,
       "doc": "",
       "fields": [
         {
@@ -28528,6 +28916,34 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "marketplacePublisherCredential",
+          "type": "MarketplacePublisherCredential?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "registeredProductReferences",
+          "type": "GlobalProductReference[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productReferenceLinks",
+          "type": "GlobalProductReferenceLink[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "productReferenceFlags",
+          "type": "GlobalProductReferenceFlag[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -28539,7 +28955,7 @@
     {
       "name": "PlatformUsageRecord",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 238,
+      "line": 250,
       "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
       "fields": [
         {
@@ -31904,7 +32320,7 @@
     {
       "name": "ResourceQuotaAlert",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 347,
+      "line": 359,
       "doc": "One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.",
       "fields": [
         {
@@ -31986,7 +32402,7 @@
     {
       "name": "ResourceTierQuota",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 322,
+      "line": 334,
       "doc": "--------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…",
       "fields": [
         {
@@ -34080,7 +34496,7 @@
     {
       "name": "SignupVerification",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 578,
+      "line": 590,
       "doc": "A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.",
       "fields": [
         {
@@ -36330,7 +36746,7 @@
     {
       "name": "SupportAccessGrant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 253,
+      "line": 265,
       "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
       "fields": [
         {
@@ -36661,7 +37077,7 @@
     {
       "name": "TenantDataExport",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 391,
+      "line": 403,
       "doc": "",
       "fields": [
         {
@@ -36763,7 +37179,7 @@
     {
       "name": "TenantDeploymentCredential",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 281,
+      "line": 293,
       "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
       "fields": [
         {
@@ -36953,7 +37369,7 @@
     {
       "name": "TrialExtension",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 596,
+      "line": 608,
       "doc": "WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so \"extended more than once\" is a query, not a memory.",
       "fields": [
         {
@@ -37020,7 +37436,7 @@
     {
       "name": "UsageMeter",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 629,
+      "line": 641,
       "doc": "One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` increments off a tenant's own transactional outbox (`transaction_fee_minor`, `messages_sent`) or sets to the late…",
       "fields": [
         {
@@ -37088,7 +37504,7 @@
     {
       "name": "UsageMeteringCursor",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 693,
+      "line": 705,
       "doc": "The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each batch — so a poll reads only the outbox rows it has not already applied, rather than rescanning the whole table…",
       "fields": [
         {
@@ -39248,7 +39664,7 @@
     {
       "name": "InvoiceStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 428,
+      "line": 440,
       "values": [
         "ISSUED",
         "CREDITED"
@@ -39421,7 +39837,7 @@
     {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 291,
+      "line": 303,
       "values": [
         "ACTIVE",
         "REVOKED"
@@ -39558,7 +39974,7 @@
     {
       "name": "PricingModel",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 129,
+      "line": 141,
       "values": [
         "PER_SEAT",
         "FLAT_MONTHLY",
@@ -39587,6 +40003,16 @@
         "STITCHED",
         "UNSTITCHED",
         "STITCHING_SERVICE"
+      ]
+    },
+    {
+      "name": "ProductReferenceReviewStatus",
+      "file": "apps/platform/prisma/schema/marketplace.prisma",
+      "line": 34,
+      "values": [
+        "UNREVIEWED",
+        "CONFIRMED",
+        "FLAGGED"
       ]
     },
     {
@@ -39625,7 +40051,7 @@
     {
       "name": "QuoteStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 532,
+      "line": 544,
       "values": [
         "PENDING",
         "APPROVED",
@@ -39635,7 +40061,7 @@
     {
       "name": "RateCardChangeStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 703,
+      "line": 715,
       "values": [
         "PENDING",
         "APPROVED",
@@ -39923,7 +40349,7 @@
     {
       "name": "StripeInvoicePaymentStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 752,
+      "line": 764,
       "values": [
         "PENDING",
         "PAID",
@@ -39933,7 +40359,7 @@
     {
       "name": "SubscriptionStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 216,
+      "line": 228,
       "values": [
         "ACTIVE",
         "PAST_DUE",
@@ -39953,7 +40379,7 @@
     {
       "name": "TenantExportStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 371,
+      "line": 383,
       "values": [
         "PENDING",
         "RUNNING",
@@ -39964,7 +40390,7 @@
     {
       "name": "TenantExportTrigger",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 378,
+      "line": 390,
       "values": [
         "MANUAL",
         "DEPROVISION"
@@ -41796,6 +42222,28 @@
         "AttendanceEvent_default",
         "AttendanceException",
         "Shift"
+      ]
+    },
+    {
+      "folder": "20260926125941_wo166_product_reference_registry",
+      "file": "apps/platform/prisma/schema/migrations/20260926125941_wo166_product_reference_registry/migration.sql",
+      "date": "2026-09-26",
+      "slug": "wo166_product_reference_registry",
+      "statements": 25,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "GlobalProductReference",
+        "GlobalProductReferenceFlag",
+        "GlobalProductReferenceImage",
+        "GlobalProductReferenceLink",
+        "GlobalProductReferenceTranslation",
+        "MarketplacePublisherCredential"
       ]
     }
   ],
@@ -47327,6 +47775,52 @@
       ]
     },
     {
+      "file": "apps/platform/src/modules/product-reference/marketplace-credential.guard.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "MarketplaceCredentialGuard"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/product-reference/marketplace-credentials.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "MarketplaceCredentialsService",
+        "issue",
+        "rotate",
+        "revoke"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/product-reference/product-reference-key.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "product-reference-key"
+      ]
+    },
+    {
+      "file": "apps/platform/src/modules/product-reference/product-reference.service.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "ProductReferenceService",
+        "lookup",
+        "bulkLookup",
+        "register",
+        "update",
+        "link",
+        "flag",
+        "exportSince"
+      ]
+    },
+    {
       "file": "apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -47961,8 +48455,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 174,
-      "bytes": 8775,
+      "lines": 177,
+      "bytes": 9032,
       "doc": "",
       "symbols": []
     },
@@ -64902,6 +65396,15 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/marketplace.prisma",
+      "area": "root",
+      "kind": "prisma schema",
+      "lines": 145,
+      "bytes": 6428,
+      "doc": "The cross-tenant marketplace/product-reference network — doc 165",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql",
       "area": "root",
       "kind": "migration",
@@ -64965,6 +65468,15 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/migrations/20260926125941_wo166_product_reference_registry/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 127,
+      "bytes": 5267,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
       "area": "root",
       "kind": "toml",
@@ -64977,8 +65489,8 @@
       "path": "apps/platform/prisma/schema/platform.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 789,
-      "bytes": 35515,
+      "lines": 801,
+      "bytes": 36782,
       "doc": "WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the",
       "symbols": []
     },
@@ -64995,14 +65507,14 @@
       "path": "apps/platform/src/app.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 46,
-      "bytes": 2027,
+      "lines": 48,
+      "bytes": 2150,
       "doc": "",
       "symbols": [
         {
           "name": "AppModule",
           "kind": "class",
-          "line": 45
+          "line": 47
         }
       ]
     },
@@ -65040,8 +65552,8 @@
       "path": "apps/platform/src/core/config/env.validation.ts",
       "area": "root",
       "kind": "config",
-      "lines": 203,
-      "bytes": 10353,
+      "lines": 215,
+      "bytes": 11000,
       "doc": "",
       "symbols": [
         {
@@ -65052,12 +65564,12 @@
         {
           "name": "PlatformEnv",
           "kind": "type",
-          "line": 194
+          "line": 206
         },
         {
           "name": "validatePlatformEnv",
           "kind": "function",
-          "line": 196
+          "line": 208
         }
       ]
     },
@@ -65226,8 +65738,8 @@
       "path": "apps/platform/src/core/security/ops-permissions.ts",
       "area": "root",
       "kind": "module",
-      "lines": 45,
-      "bytes": 2170,
+      "lines": 55,
+      "bytes": 2682,
       "doc": "The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permissions.ts`, which is apps/api's tenant-facing PBAC catalog, seeded against that app's own User/Role/RolePermission tables.",
       "symbols": [
         {
@@ -65238,7 +65750,7 @@
         {
           "name": "PlatformPermission",
           "kind": "type",
-          "line": 44
+          "line": 54
         }
       ]
     },
@@ -66042,6 +66554,232 @@
       ]
     },
     {
+      "path": "apps/platform/src/modules/product-reference/decorators.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 13,
+      "bytes": 671,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CurrentPublisherTenant",
+          "kind": "const",
+          "line": 9
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/dto/product-reference.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 142,
+      "bytes": 4019,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductReferenceTranslationDto",
+          "kind": "class",
+          "line": 18
+        },
+        {
+          "name": "ProductReferenceImageDto",
+          "kind": "class",
+          "line": 35
+        },
+        {
+          "name": "RegisterProductReferenceDto",
+          "kind": "class",
+          "line": 58
+        },
+        {
+          "name": "UpdateProductReferenceDto",
+          "kind": "class",
+          "line": 94
+        },
+        {
+          "name": "LinkProductReferenceDto",
+          "kind": "class",
+          "line": 116
+        },
+        {
+          "name": "FlagProductReferenceDto",
+          "kind": "class",
+          "line": 125
+        },
+        {
+          "name": "BulkLookupProductReferenceDto",
+          "kind": "class",
+          "line": 135
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credential.guard.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 86,
+      "bytes": 3220,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credential.guard.ts",
+      "area": "root",
+      "kind": "guard",
+      "lines": 57,
+      "bytes": 2397,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestWithPublisherTenant",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "MarketplaceCredentialGuard",
+          "kind": "class",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credentials.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 40,
+      "bytes": 1662,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceCredentialsController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credentials.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 79,
+      "bytes": 3622,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-credentials.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 83,
+      "bytes": 3888,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceCredentialsService",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/marketplace-key-throttler.guard.ts",
+      "area": "root",
+      "kind": "guard",
+      "lines": 23,
+      "bytes": 1144,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MarketplaceKeyThrottlerGuard",
+          "kind": "class",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference-key.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 27,
+      "bytes": 1140,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference-key.ts",
+      "area": "root",
+      "kind": "module",
+      "lines": 22,
+      "bytes": 1013,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "generateMarketplaceApiKey",
+          "kind": "function",
+          "line": 15
+        },
+        {
+          "name": "hashMarketplaceApiKey",
+          "kind": "function",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 89,
+      "bytes": 3677,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductReferenceController",
+          "kind": "class",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference.module.ts",
+      "area": "root",
+      "kind": "nest module",
+      "lines": 25,
+      "bytes": 1426,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductReferenceModule",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference.service.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 195,
+      "bytes": 8718,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/product-reference/product-reference.service.ts",
+      "area": "root",
+      "kind": "service",
+      "lines": 176,
+      "bytes": 8128,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProductReferenceService",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/platform/src/modules/resource-quotas/dto/upsert-quota.dto.ts",
       "area": "root",
       "kind": "dto",
@@ -66811,8 +67549,8 @@
       "path": "apps/platform/test/setup-env.ts",
       "area": "root",
       "kind": "module",
-      "lines": 10,
-      "bytes": 451,
+      "lines": 11,
+      "bytes": 553,
       "doc": "",
       "symbols": []
     },
@@ -77078,8 +77816,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 5005,
-      "bytes": 290143,
+      "lines": 5044,
+      "bytes": 292643,
       "doc": "",
       "symbols": []
     },
@@ -77115,7 +77853,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 528,
-      "bytes": 70432,
+      "bytes": 70573,
       "doc": "",
       "symbols": []
     },
@@ -77609,8 +78347,8 @@
       "path": "docs/implementation/architecture-patterns/166-unified-product-reference-registry.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 395,
-      "bytes": 21593,
+      "lines": 545,
+      "bytes": 31014,
       "doc": "",
       "symbols": []
     },

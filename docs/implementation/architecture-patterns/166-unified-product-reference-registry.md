@@ -1,6 +1,15 @@
 # 166 — Unified product reference registry: write once, reference everywhere
 
-> **Status: not built — designed (2026-09-26).** Written at the owner's own
+> **Status: platform-side schema + API built (2026-09-26); erp-1-side
+> consumer not yet built.** WO-166.1 (schema/migration), WO-166.2 (lookup +
+> registration API), and WO-166.6 (bulk-lookup + export/pull) are built,
+> migrated against a real Postgres, and passing lint/typecheck/test.
+> WO-166.3 (barcode-autofill UI), WO-166.4 (`ProductReferenceSyncService`
+> push consumer) and WO-166.5 (moderation screen) remain unbuilt — see
+> "What's built" below for the exact file list and every deviation from
+> this document's own original sketch. ADR-048 records the decisions.
+>
+> **Original status note (2026-09-26).** Written at the owner's own
 > request: adopt Apple Silicon's unified-memory principle to stop the same
 > physical product being entered into a database from scratch by every
 > business that touches it — *"why single product is being added to
@@ -10,6 +19,20 @@
 > explicitly, and the buildable registry behind it. Builds directly on
 > `165-cross-tenant-marketplace-directory.md` — same app, same tenant-trust
 > boundary — rather than inventing a second cross-tenant mechanism.
+>
+> **Revised (same day), per a direct follow-up.** The original text below
+> centralized images but only cached descriptive text locally, reasoning
+> that text is cheap enough not to matter. The owner's own follow-up
+> corrected the scope: centralize *everything* non-commercial — text,
+> images and every other descriptive attribute — and draw the cloud/offline
+> line somewhere else: a normally-connected ("cloud") deployment stays
+> synced to the canonical registry in near-real time and never re-types or
+> re-uploads anything; a deployment that must keep working while genuinely
+> disconnected (an offline-capable branch/POS instance) pulls a full local
+> snapshot — text, attributes, *and* the image bytes themselves, since an
+> offline instance cannot fetch a live URL — on every reconnect. §"Where the
+> real storage cost is" and §1/§2 below reflect this; WO-166.6 is the
+> resulting addition.
 
 ## The principle, named honestly
 
@@ -66,36 +89,54 @@ GTIN service that no client here has asked for.
 
 ## Where the real storage cost is, and where it is not
 
-Text is cheap. A product's name, description and care instructions total a
-few hundred bytes — caching that text locally in every tenant that stocks
-the product costs, at real scale, kilobytes, not the "100 times the
-storage" the owner is rightly pointing at. **Photographs are the actual
-cost** — a product image is measured in hundreds of kilobytes to low
-megabytes, and today each tenant uploads its own separate copy to its own
-storage driver (`STORAGE_DRIVER` — local disk or S3/R2, per
-`README.md`'s own known-gaps note). A hundred businesses stocking the same
-manufacturer's product today means a hundred independent uploads of the
-identical photograph. This is where the design below actually saves the
-"100 times" the owner named, and it does it by keeping text and images on
-two different sides of the resilience/storage tradeoff, stated honestly
-rather than treated as one problem:
+**Everything descriptive is centralized — text, attributes and images
+alike.** `GlobalProductReference` is the one authored copy of a product's
+name, description, care instructions, and every other sector-varying
+descriptive detail (fabric, season, dimensions, safety notes — see the
+`attributes` field in §1), plus its photographs. No tenant hand-enters any
+of it a second time, regardless of how their own deployment stays synced.
+What differs between a "cloud" and an "offline" deployment is not *what* is
+centralized — it is *how* a linked tenant's own local copy is kept current,
+because a normally-connected deployment and one that must keep working
+while genuinely disconnected have different constraints:
 
-- **Text is synced and cached locally**, inside each linked tenant's own
-  `ProductTranslation`/`ProductVariant` rows, so a storefront page render
-  never depends on the platform app being reachable — restated from doc
-  39's own "no application code inside a tenant's own instance needs to
-  know a shared tier exists above it." The storage cost of this repetition
-  is real but negligible next to the alternative of a live cross-database
-  dependency on every page view.
-- **Images are referenced, never re-uploaded.** A linked tenant's
-  `ProductImage.imageUrl` points directly at the platform's own shared,
-  immutable storage bucket — the same URL every other tenant linked to that
-  reference uses. This is the literal unified-memory move: one buffer, many
-  readers, each through a pointer (a URL) rather than a copy. If the
-  platform's storage is briefly unreachable, an `<img>` tag 404s and
-  reloads once it's back — a strictly better failure mode than a broken
-  cross-database sync, and the actual mechanism that removes the
-  hundred-fold image storage duplication the owner asked about.
+- **A cloud-connected tenant** (the ordinary case — this app's own hosted
+  deployment, reachable at all times) stays synced by **push**: the
+  outbox-driven fan-out in §2 delivers a canonical edit to every linked
+  tenant within one delivery cycle. From that tenant's own point of view
+  this *is* centralized management — they never touch this data again once
+  linked — even though a small local cache still exists, for the same
+  reason doc 39 already gives: a storefront page render must never depend
+  on a live cross-app call, so the cache is what makes centralization safe
+  to build without weakening that rule. For text and attributes this local
+  cache is cheap (kilobytes). For images, the cloud case still avoids the
+  real cost the owner named: `ProductImage.imageUrl` points straight at the
+  platform's own shared storage bucket rather than a re-uploaded copy — a
+  pointer, not a duplicate, exactly Apple's own "one buffer, many readers."
+  A hundred cloud-connected businesses stocking the same product still
+  means one uploaded photograph, not a hundred.
+- **An offline-capable deployment** (a branch or POS instance built to keep
+  operating with no connectivity at all — this repository's existing
+  offline-sync story, `48-...` / `157-client-request-idempotency-keys.md`'s
+  own "offline-sync-replay" reference) cannot receive a push while
+  disconnected, and cannot fetch a live image URL either. It genuinely
+  needs **its own physical copy of everything** — text, attributes, and the
+  image bytes — pulled from the registry in one shot before it goes
+  offline or the moment it reconnects (§2's new export/bulk-lookup
+  endpoints), then served from that local copy until the next pull. This is
+  not a design compromise; it is what "offline" means, stated honestly
+  rather than papered over — the storage saving for *this* class of
+  deployment comes from replacing a hundred independently-authored copies
+  with a hundred identical, centrally-sourced ones (no re-entry effort, no
+  divergence), not from eliminating the copy entirely the way the
+  always-connected case can.
+
+The "100 times" the owner asked to eliminate is fully addressed either way:
+nobody re-types or re-uploads a product's descriptive facts a second time.
+A cloud deployment additionally avoids the image storage duplication
+outright; an offline deployment trades that specific saving for the
+ability to keep selling with no connection at all, which is the whole
+reason it exists.
 
 ## 1. Schema — extends the platform module doc 165 already introduced
 
@@ -118,6 +159,16 @@ model GlobalProductReference {
   barcode            String   @unique
   registeredByTenantId String
   reviewStatus       ProductReferenceReviewStatus @default(UNREVIEWED)
+  /// Every other descriptive "small detail" beyond name/description/care
+  /// instructions/images — fabric, season, dimensions, weight, safety
+  /// notes, whatever a sector pack cares about. Deliberately a plain JSON
+  /// bag, not a hardcoded column per attribute: MULTI-SECTOR.md's own
+  /// "sector = configuration" rule means an apparel pack's keys (fabric,
+  /// fit) and a grocery pack's keys (expiryMonths, storageTemp) must never
+  /// force a schema change on this universal, sector-agnostic table. Each
+  /// sector pack owns its own namespace inside it; this table enforces
+  /// nothing about its shape.
+  attributes         Json     @default("{}")
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
@@ -206,19 +257,104 @@ one, `registeredByTenantId` set to this tenant, and the form behaves
 exactly as it does today: this document is purely additive, and a shop
 that never encounters a shared barcode sees no change at all.
 
-**Update fan-out (keeping every linked copy current).** When the
-registering tenant edits their reference's text, the platform publishes one
-outbound sync to every tenant in that reference's own
-`GlobalProductReferenceLink` list — the identical at-least-once, backed-off
-outbox delivery doc 18.3 already built for an outbound PO, pointed at each
-linked tenant's own sync endpoint. Each tenant's own
-`ProductReferenceSyncService.apply()` upserts the cached
+**Update fan-out — push, for a cloud-connected tenant (keeping every linked
+copy current).** When the registering tenant edits their reference's text,
+attributes or images, the platform publishes one outbound sync to every
+tenant in that reference's own `GlobalProductReferenceLink` list — the
+identical at-least-once, backed-off outbox delivery doc 18.3 already built
+for an outbound PO, pointed at each linked tenant's own sync endpoint. Each
+tenant's own `ProductReferenceSyncService.apply()` upserts the cached
 `ProductTranslation` row, stamped `sourcedFromGlobalReferenceId` so a staff
 member's own later local edit is recognized as a deliberate override on the
 next sync, never silently clobbered — the identical "second copy of the
 write" discipline as everywhere else in this codebase: comparing the
 incoming `updatedAt` against the locally stored one makes a redelivered
 sync a no-op, not a redundant rewrite.
+
+**Bulk pull — for an offline-capable deployment (a full snapshot, not a
+per-edit push).** An instance that spends real time disconnected cannot
+rely on the push above arriving at all. `POST
+/marketplace/v1/product-references/bulk-lookup` (body: a list of barcodes)
+returns the complete record — text, `attributes`, and image bytes streamed
+through the platform's own storage, not just a URL — for each match, so an
+offline instance can pre-warm its local cache before going offline (e.g.
+ahead of an expected delivery) with no dependency on having linked those
+barcodes yet. `GET /marketplace/v1/product-references/export?since=<cursor>`
+does the same for every barcode the calling tenant has *already* linked,
+scoped by `GlobalProductReferenceLink.tenantId` and filtered to
+`updatedAt > since` — the one call an offline instance makes on reconnect
+to catch up on every canonical edit it missed while it was down, in one
+round trip instead of waiting for individually-redelivered push events that
+may never arrive. Both endpoints are authenticated by the same
+`MarketplacePublisherCredential` as lookup; neither requires a link to
+exist first for `bulk-lookup`, since pre-warming a cache is explicitly a
+"not linked yet" moment.
+
+## What's built
+
+- `apps/platform/prisma/schema/marketplace.prisma` (new file) —
+  `MarketplacePublisherCredential`, `GlobalProductReference` (+
+  `attributes Json`), `GlobalProductReferenceTranslation`/`Image`/`Link`/
+  `Flag`, `ProductReferenceReviewStatus`. Migration
+  `20260926125941_wo166_product_reference_registry`, applied against a real
+  Postgres. `apps/platform/prisma/schema/platform.prisma` gained the
+  matching back-relations on `PlatformTenant` (Prisma requires both sides
+  of a relation) — the schema's own header note records that this file
+  currently ships only doc 166's registry plus the credential doc 165 first
+  named; doc 165's own `MarketplaceListing`/`ViewerProfile`/`Engagement`
+  are not yet built and will extend this same file.
+- `apps/platform/src/modules/product-reference/` — `product-reference-key.ts`
+  (hash/generate, mirroring `agency-key.ts` exactly, its own
+  `PLATFORM_MARKETPLACE_KEY_PEPPER`), `marketplace-credential.guard.ts` +
+  `marketplace-key-throttler.guard.ts` (mirroring `AgencyApiKeyGuard`'s
+  shape for `X-Marketplace-Api-Key`), `decorators.ts`
+  (`CurrentPublisherTenant`), `product-reference.service.ts` (lookup,
+  bulkLookup, register, update, link, unlink, flag, exportSince),
+  `product-reference.controller.ts` (the tenant-facing API, guarded by the
+  credential), `marketplace-credentials.service.ts` +
+  `marketplace-credentials.controller.ts` (ops-gated issue/rotate/revoke),
+  `product-reference.module.ts`, registered in `app.module.ts`. Six spec
+  files, 32 tests, all passing.
+- `PLATFORM_MARKETPLACE_KEY_PEPPER` added to `env.validation.ts`,
+  `.env.example`, and `apps/platform/test/setup-env.ts`.
+  `platform.marketplace.manage` added to `ops-permissions.ts`.
+
+**Four deviations from this document's own sketch, each a real decision
+made while building, not a silent drift:**
+
+1. **Credential issuance is ops-gated, not self-service.** §"Lookup at
+   creation" originally said a tenant simply "calls" the lookup endpoint
+   with a credential doc 165 "already issues," but doc 165 itself was never
+   built — there was no self-service path to mint one. Built to mirror
+   `AgencyClientsService.register()`'s own exact precedent instead: an ops
+   principal (`OpsAuthGuard`, the new `platform.marketplace.manage` scope)
+   issues/rotates/revokes a `MarketplacePublisherCredential` on an existing
+   `PlatformTenant` — the same ADR-039 "never creates a new entity"
+   convention. A tenant's own erp-1-side admin screen (WO-165.2/WO-166.3,
+   not yet built) will call through to this same ops-issued credential,
+   never a second issuance mechanism.
+2. **A `revoke()` method this document never named.** Built because "The
+   grant that ends itself" lens below needs an actual answer, not just a
+   description — deletes the credential row entirely rather than a status
+   flag, since nothing else on that row needs to be preserved once a tenant
+   stops authenticating with it.
+3. **`unlink()` added.** Needed for the "reversal document, not the
+   reversal flag" lens to have a real method behind it — removes a
+   `GlobalProductReferenceLink` by `(tenantId, variantRef)`, leaving the
+   tenant's own already-cached copy untouched, exactly as that lens
+   describes.
+4. **`link()` upserts rather than only creating.** The schema's own
+   `@@unique([tenantId, variantRef])` makes a second link call for the same
+   variant a natural re-point (a corrected barcode scan) rather than a
+   constraint violation — built as an upsert from the start rather than
+   discovering the need for one after a test failure.
+
+**Explicitly not built in this pass:** WO-166.3 (the erp-1-side barcode
+autofill UI), WO-166.4 (the erp-1-side `ProductReferenceSyncService` that
+consumes a push delivery), and WO-166.5 (the platform-staff moderation
+screen for `GlobalProductReferenceFlag`). All three require erp-1-side
+work or a UI, sequenced separately from the platform-side schema/API this
+pass covers.
 
 ## Scope lenses
 
@@ -347,6 +483,15 @@ comparison), never blindly overwritten.
 `GlobalProductReferenceFlag` rows for a human to review and, if warranted,
 correct the canonical record — never automatic.
 
+**WO-166.6 — bulk pull for offline deployments.** `POST
+.../product-references/bulk-lookup` and `GET
+.../product-references/export?since=` (§2's "Bulk pull" mechanism); the
+offline-side consumer that writes a full local snapshot (text, attributes,
+and the image bytes themselves, not just a URL) is erp-1/offline-instance
+work, sequenced after WO-166.4 since it reuses the same
+`ProductReferenceSyncService.apply()` write path with a different, larger
+input.
+
 ## Acceptance
 
 - A tenant creating a `ProductVariant` whose barcode matches an existing
@@ -365,6 +510,11 @@ correct the canonical record — never automatic.
   by a spec.
 - With no barcode match ever attempted, a tenant's product creation flow is
   byte-identical to today — proven by the absent-collaborator lens above.
+- `bulk-lookup` returns a match for any registered barcode regardless of
+  whether the calling tenant has ever linked it, proven by a spec.
+- `export?since=` returns only the calling tenant's own linked references
+  updated after the given cursor, never another tenant's links or an
+  unlinked reference — proven by a spec.
 
 ## Out of scope
 

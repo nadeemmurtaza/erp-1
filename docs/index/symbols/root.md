@@ -12,7 +12,7 @@ Every top-level export in `root`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `app.module.ts` | `AppModule` | class | :45 |  |
+| `app.module.ts` | `AppModule` | class | :47 |  |
 
 ### `apps/platform/src/core/config`
 
@@ -21,8 +21,8 @@ Every top-level export in `root`, with the line to open.
 | `app-config.service.ts` | `AppConfigService` | class | :10 | Typed accessor over ConfigService — one place an env var name is spelled out, mirroring apps/api's… |
 | `config.module.ts` | `AppConfigModule` | class | :19 |  |
 | `env.validation.ts` | `envSchema` | const | :14 |  |
-| `env.validation.ts` | `PlatformEnv` | type | :194 |  |
-| `env.validation.ts` | `validatePlatformEnv` | function | :196 |  |
+| `env.validation.ts` | `PlatformEnv` | type | :206 |  |
+| `env.validation.ts` | `validatePlatformEnv` | function | :208 |  |
 
 ### `apps/platform/src/core/notifications`
 
@@ -51,7 +51,7 @@ Every top-level export in `root`, with the line to open.
 | `ops-key.ts` | `generateOpsKey` | function | :14 | A bearer credential for internal hosting-ops tooling calling the control plane — same shape as apps… |
 | `ops-key.ts` | `hashOpsKey` | function | :18 |  |
 | `ops-permissions.ts` | `PLATFORM_PERMISSIONS` | const | :16 | The control plane's own small permission catalog — deliberately NOT `packages/shared/src/permission… |
-| `ops-permissions.ts` | `PlatformPermission` | type | :44 |  |
+| `ops-permissions.ts` | `PlatformPermission` | type | :54 |  |
 
 ### `apps/platform/src/core/tenant-credentials`
 
@@ -130,6 +130,34 @@ Every top-level export in `root`, with the line to open.
 | `request-quote.dto.ts` | `RequestQuoteDto` | class | :3 |  |
 | `request-quote.dto.ts` | `RejectQuoteDto` | class | :21 |  |
 | `update-plan.dto.ts` | `UpdatePlanDto` | class | :12 | WO-154.1/154.3 — the entire admin-facing surface doc 154 adds on top of doc 50/153's own `PlatformP… |
+
+### `apps/platform/src/modules/product-reference`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `decorators.ts` | `CurrentPublisherTenant` | const | :9 | The `PlatformTenant` `MarketplaceCredentialGuard` resolved from the presented `X-Marketplace-Api-Ke… |
+| `marketplace-credential.guard.ts` | `RequestWithPublisherTenant` | interface | :8 |  |
+| `marketplace-credential.guard.ts` | `MarketplaceCredentialGuard` | class | :28 | Docs 165/166's own tenant-trust boundary for the cross-tenant network, mirroring `AgencyApiKeyGuard… |
+| `marketplace-credentials.controller.ts` | `MarketplaceCredentialsController` | class | :18 | `POST /marketplace/tenants/:tenantId/credential{,/rotate}`, `DELETE /marketplace/tenants/:tenantId/… |
+| `marketplace-credentials.service.ts` | `MarketplaceCredentialsService` | class | :18 | The ops-facing half of docs 165/166, mirroring `AgencyClientsService`'s own shape exactly: an ops p… |
+| `marketplace-key-throttler.guard.ts` | `MarketplaceKeyThrottlerGuard` | class | :15 | Same rationale as `AgencyKeyThrottlerGuard`: the global `ThrottlerGuard` (`app.module.ts`) already… |
+| `product-reference-key.ts` | `generateMarketplaceApiKey` | function | :15 | The `MarketplacePublisherCredential.apiKeyHash` credential docs 165/166 describe. |
+| `product-reference-key.ts` | `hashMarketplaceApiKey` | function | :19 |  |
+| `product-reference.controller.ts` | `ProductReferenceController` | class | :33 | Doc 166's own tenant-facing API — `X-Marketplace-Api-Key` (`MarketplaceCredentialGuard`), the ident… |
+| `product-reference.module.ts` | `ProductReferenceModule` | class | :24 |  |
+| `product-reference.service.ts` | `ProductReferenceService` | class | :20 | Doc 166's own registry service. |
+
+### `apps/platform/src/modules/product-reference/dto`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `product-reference.dto.ts` | `ProductReferenceTranslationDto` | class | :18 |  |
+| `product-reference.dto.ts` | `ProductReferenceImageDto` | class | :35 |  |
+| `product-reference.dto.ts` | `RegisterProductReferenceDto` | class | :58 | `POST /marketplace/v1/product-references` — registers a brand-new barcode. |
+| `product-reference.dto.ts` | `UpdateProductReferenceDto` | class | :94 | `PATCH /marketplace/v1/product-references/:id` — the registering tenant only (`ProductReferenceServ… |
+| `product-reference.dto.ts` | `LinkProductReferenceDto` | class | :116 | `POST /marketplace/v1/product-references/:id/link` — the calling tenant links one of their own `Pro… |
+| `product-reference.dto.ts` | `FlagProductReferenceDto` | class | :125 | `POST /marketplace/v1/product-references/:id/flags` — any tenant reporting a canonical record as wr… |
+| `product-reference.dto.ts` | `BulkLookupProductReferenceDto` | class | :135 | `POST /marketplace/v1/product-references/bulk-lookup` — an offline deployment pre-warming its local… |
 
 ### `apps/platform/src/modules/resource-quotas`
 

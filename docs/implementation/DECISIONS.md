@@ -5000,5 +5000,44 @@ existing shared-vs-private line, not a new one invented for this decision.
 - WO-166.1–166.5 are unblocked and buildable today — unlike doc 165's own
   nID-login half, this document has no external cross-repo dependency.
 
+### Build-time follow-up (2026-09-26) — WO-166.1, WO-166.2 and the new WO-166.6 built; four decisions the original sketch left open
+
+A same-day follow-up from the owner sharpened the design before any code
+was written — "centralize everything, not just images... cloud stays
+synced, offline gets a full copy" — recorded in doc 166's own revision note
+and reflected in the schema (`attributes Json` for every other descriptive
+detail) and a new bulk-lookup/export pull path (WO-166.6) before the build
+started. Building WO-166.1/166.2/166.6 against a real Postgres then
+required four decisions the doc's own text had left implicit:
+
+1. **Credential issuance is ops-gated (`OpsAuthGuard`,
+   `platform.marketplace.manage`), not self-service**, mirroring
+   `AgencyClientsService.register()`'s exact precedent — doc 165, which was
+   to have "already issued" this credential, does not exist yet, so there
+   was no self-service path to build against. `MarketplaceCredentialsService.
+   issue()/rotate()/revoke()` mint/replace/delete a `MarketplacePublisherCredential`
+   on an existing `PlatformTenant`, never creating a new entity (ADR-039's
+   own convention).
+2. **`revoke()`** — deletes the credential row outright; nothing on it
+   needs preserving once a tenant stops authenticating with it.
+3. **`unlink()`** — removes a `GlobalProductReferenceLink` by
+   `(tenantId, variantRef)`, giving the "reversal document, not the
+   reversal flag" lens a real method rather than only a description.
+4. **`link()` upserts on `(tenantId, variantRef)`** rather than only
+   inserting, so a corrected barcode scan re-points the existing link
+   instead of hitting the unique constraint doc 166's own schema already
+   relies on for "the second copy of the write."
+
+`PlatformTenant` (`platform.prisma`) gained the back-relations Prisma
+requires for `marketplace.prisma`'s new relations (`MarketplacePublisherCredential`,
+`GlobalProductReference.registeredByTenant`, `GlobalProductReferenceLink.tenant`,
+`GlobalProductReferenceFlag.flaggedByTenant`) — additive, no existing
+column touched. Migration `20260926125941_wo166_product_reference_registry`
+applied cleanly against the real `newax_platform` database. 32 new tests
+across six spec files; `pnpm lint`/`typecheck`/`test` for `apps/platform`
+all pass. WO-166.3 (erp-1-side autofill UI), WO-166.4 (erp-1-side sync
+consumer) and WO-166.5 (moderation screen) remain unbuilt — see doc 166's
+own "What's built" section for the exact file list.
+
 ### Status
 **Accepted.**

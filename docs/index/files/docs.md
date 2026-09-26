@@ -563,7 +563,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 5005 |  |
+| `DECISIONS.md` | doc | 5044 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -647,7 +647,7 @@ All 396 tracked files in `docs/*`, by directory.
 | `142-bpmn-visual-workflow-engine.md` | doc | 109 |  |
 | `143-micro-frontend-architecture.md` | doc | 160 |  |
 | `157-client-request-idempotency-keys.md` | doc | 276 |  |
-| `166-unified-product-reference-registry.md` | doc | 395 |  |
+| `166-unified-product-reference-registry.md` | doc | 545 |  |
 | `92-microservices-module-decoupling.md` | doc | 89 |  |
 | `93-headless-frontend-architecture.md` | doc | 66 |  |
 | `94-cloud-native-container-scalability.md` | doc | 70 |  |

@@ -3,7 +3,7 @@
 
 # Data model
 
-All **258** Prisma models and **122** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **264** Prisma models and **123** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -44,6 +44,7 @@ against a real database.
 | [`invoicing.prisma`](../data/invoicing.md) | 4 | 2 | core platform | Invoice, InvoiceLine, Quote, QuoteLine |
 | [`loyalty.prisma`](../data/loyalty.md) | 3 | 1 | [`loyalty`](../modules/loyalty.md) | LoyaltyTier, LoyaltyTransaction, Referral |
 | [`marketing.prisma`](../data/marketing.md) | 3 | 3 | [`marketing`](../modules/marketing.md) | Campaign, CampaignRecipient, PhoneOptOut |
+| [`marketplace.prisma`](../data/marketplace.md) | 6 | 1 | core platform | GlobalProductReference, GlobalProductReferenceFlag, GlobalProductReferenceImage, GlobalProductReferenceLink, GlobalProductReferen… |
 | [`measurements.prisma`](../data/measurements.md) | 4 | 1 | [`measurements`](../modules/measurements.md) | GarmentSizeChart, GarmentType, MeasurementField, MeasurementProfile |
 | [`notification-preferences.prisma`](../data/notification-preferences.md) | 1 | 2 | [`notification-preferences`](../modules/notification-preferences.md) | NotificationPreference |
 | [`onsite-messaging.prisma`](../data/onsite-messaging.md) | 3 | 2 | core platform | NewsletterSubscriber, OnsiteMessage, OnsiteMessageTranslation |
@@ -145,6 +146,11 @@ against a real database.
 | [`GarmentType`](../data/measurements.md#garmenttype) | `measurements` | 18 | 0 | id |  |
 | [`GiftCard`](../data/giftcards.md#giftcard) | `giftcards` | 19 | 2 | id |  |
 | [`GiftCardTransaction`](../data/giftcards.md#giftcardtransaction) | `giftcards` | 10 | 2 | id |  |
+| [`GlobalProductReference`](../data/marketplace.md#globalproductreference) | `marketplace` | 12 | 1 | id | One row per physical product, keyed by the one fact that is unambiguously true regardless… |
+| [`GlobalProductReferenceFlag`](../data/marketplace.md#globalproductreferenceflag) | `marketplace` | 8 | 2 | id | A non-owning tenant's report that a shared reference is wrong — reviewed by platform staf… |
+| [`GlobalProductReferenceImage`](../data/marketplace.md#globalproductreferenceimage) | `marketplace` | 6 | 1 | id | The shared image itself, stored once in the platform app's own storage driver — never cop… |
+| [`GlobalProductReferenceLink`](../data/marketplace.md#globalproductreferencelink) | `marketplace` | 7 | 2 | id | One row per tenant that has linked one of their own ProductVariants to this shared refere… |
+| [`GlobalProductReferenceTranslation`](../data/marketplace.md#globalproductreferencetranslation) | `marketplace` | 7 | 1 | id | Mirrors ProductTranslation's own locale-keyed shape exactly (en/ur) — the identical struc… |
 | [`GoodsReceipt`](../data/purchasing.md#goodsreceipt) | `purchasing` | 14 | 2 | id |  |
 | [`GoodsReceiptItem`](../data/purchasing.md#goodsreceiptitem) | `purchasing` | 10 | 3 | id |  |
 | [`IdentityVerification`](../data/identity-verification.md#identityverification) | `identity-verification` | 12 | 1 | id |  |
@@ -172,6 +178,7 @@ against a real database.
 | [`Manifest`](../data/fulfilment.md#manifest) | `fulfilment` | 9 | 1 | id | A day's pickup, grouped by courier — WO-6.4's printable handover sheet. |
 | [`ManifestNumberCounter`](../data/fulfilment.md#manifestnumbercounter) | `fulfilment` | 2 | 0 | year |  |
 | [`MarkdownSuggestion`](../data/inventory.md#markdownsuggestion) | `inventory` | 12 | 1 | id |  |
+| [`MarketplacePublisherCredential`](../data/marketplace.md#marketplacepublishercredential) | `marketplace` | 6 | 1 | id | One row per tenant that has opted into the cross-tenant network (either capability this f… |
 | [`MeasurementField`](../data/measurements.md#measurementfield) | `measurements` | 14 | 1 | id |  |
 | [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
 | [`MenuItem`](../data/content.md#menuitem) | `content` | 11 | 2 | id | A tree per named slot (`menuKey`: "footer_help", "footer_about", …) — see MENU_KEYS in pa… |
@@ -218,7 +225,7 @@ against a real database.
 | [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 24 | 0 | id |  |
 | [`PlatformRateCardChangeRequest`](../data/platform.md#platformratecardchangerequest) | `platform` | 15 | 1 | id | doc 153's own "the threshold nobody approves alone" / "authority and blast radius" lenses… |
 | [`PlatformSubscription`](../data/platform.md#platformsubscription) | `platform` | 8 | 2 | id |  |
-| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 37 | 1 | id | One row per hosted client. |
+| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 41 | 1 | id | One row per hosted client. |
 | [`PlatformUsageRecord`](../data/platform.md#platformusagerecord) | `platform` | 6 | 1 | id | Metered usage a tenant's own deployment reports about itself — never a source of business… |
 | [`PolicyQuarantine`](../data/replication.md#policyquarantine) | `replication` | 14 | 1 | id | R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for rev… |
 | [`Position`](../data/hr.md#position) | `hr` | 10 | 4 | id | A post in the org chart: "Finance Manager, North Region". |
@@ -419,6 +426,7 @@ against a real database.
 | [`PricingModel`](../data/platform.md#pricingmodel) | `platform` | `PER_SEAT` `FLAT_MONTHLY` `ONE_TIME_LICENSE` `USAGE_BASED` |
 | [`ProductCrossSellKind`](../data/catalog.md#productcrosssellkind) | `catalog` | `MANUAL` `CO_OCCURRENCE` `EMBEDDING` |
 | [`ProductKind`](../data/catalog.md#productkind) | `catalog` | `GOODS` `SERVICE` `DIGITAL` `STITCHED` `UNSTITCHED` `STITCHING_SERVICE` |
+| [`ProductReferenceReviewStatus`](../data/marketplace.md#productreferencereviewstatus) | `marketplace` | `UNREVIEWED` `CONFIRMED` `FLAGGED` |
 | [`ProductStatus`](../data/catalog.md#productstatus) | `catalog` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`PurchaseOrderStatus`](../data/purchasing.md#purchaseorderstatus) | `purchasing` | `DRAFT` `SENT` `PARTIAL` `RECEIVED` `CANCELLED` |
 | [`QuoteStatus`](../data/invoicing.md#quotestatus) | `invoicing` | `SENT` `ACCEPTED` `REJECTED` `EXPIRED` |

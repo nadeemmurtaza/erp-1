@@ -563,7 +563,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 6038 |  |
+| `DECISIONS.md` | doc | 6144 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -629,9 +629,9 @@ All 396 tracked files in `docs/*`, by directory.
 | `110-cqrs-read-write-separation.md` | doc | 99 |  |
 | `113-micro-frontend-embedding.md` | doc | 129 |  |
 | `114-sandboxed-scripting-runtime.md` | doc | 119 |  |
-| `115-hexagonal-architecture-ports-adapters.md` | doc | 81 |  |
-| `117-event-driven-choreography-immutability.md` | doc | 82 |  |
-| `118-headless-composable-api-capabilities.md` | doc | 87 |  |
+| `115-hexagonal-architecture-ports-adapters.md` | doc | 85 |  |
+| `117-event-driven-choreography-immutability.md` | doc | 97 |  |
+| `118-headless-composable-api-capabilities.md` | doc | 117 |  |
 | `122-data-lake-cold-storage-architecture.md` | doc | 75 |  |
 | `127-policy-as-data-completeness-sweep.md` | doc | 117 |  |
 | `128-extension-point-coverage-audit.md` | doc | 194 |  |

@@ -2162,32 +2162,32 @@ _no second-level headings_
 - Acceptance  <sub>:100</sub>
 - Out of scope  <sub>:109</sub>
 
-### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>81 lines</sub>
+### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>85 lines</sub>
 
-- The mapping, made explicit  <sub>:30</sub>
-- What this document adds: naming, not architecture  <sub>:47</sub>
-- Scope lenses  <sub>:58</sub>
-- Work orders  <sub>:65</sub>
-- Acceptance  <sub>:70</sub>
-- Out of scope  <sub>:76</sub>
-
-### `docs/implementation/architecture-patterns/117-event-driven-choreography-immutability.md`  <sub>82 lines</sub>
-
-- What already exists: choreography and immutability  <sub>:15</sub>
-- Why idempotency here is domain-keyed, not generic event-ID deduplication  <sub>:26</sub>
-- Scope lenses  <sub>:56</sub>
-- Work orders  <sub>:63</sub>
-- Acceptance  <sub>:69</sub>
-- Out of scope  <sub>:75</sub>
-
-### `docs/implementation/architecture-patterns/118-headless-composable-api-capabilities.md`  <sub>87 lines</sub>
-
-- What already answers each clause  <sub>:13</sub>
-- The one thing this document adds: naming the risk of "acting on behalf of a human"  <sub>:41</sub>
-- Scope lenses  <sub>:57</sub>
-- Work orders  <sub>:65</sub>
+- The mapping, made explicit  <sub>:34</sub>
+- What this document adds: naming, not architecture  <sub>:51</sub>
+- Scope lenses  <sub>:62</sub>
+- Work orders  <sub>:69</sub>
 - Acceptance  <sub>:74</sub>
 - Out of scope  <sub>:80</sub>
+
+### `docs/implementation/architecture-patterns/117-event-driven-choreography-immutability.md`  <sub>97 lines</sub>
+
+- What already exists: choreography and immutability  <sub>:30</sub>
+- Why idempotency here is domain-keyed, not generic event-ID deduplication  <sub>:41</sub>
+- Scope lenses  <sub>:71</sub>
+- Work orders  <sub>:78</sub>
+- Acceptance  <sub>:84</sub>
+- Out of scope  <sub>:90</sub>
+
+### `docs/implementation/architecture-patterns/118-headless-composable-api-capabilities.md`  <sub>117 lines</sub>
+
+- What already answers each clause  <sub>:33</sub>
+- The one thing this document adds: naming the risk of "acting on behalf of a human"  <sub>:67</sub>
+- Scope lenses  <sub>:86</sub>
+- Work orders  <sub>:94</sub>
+- Acceptance  <sub>:103</sub>
+- Out of scope  <sub>:109</sub>
 
 ### `docs/implementation/architecture-patterns/122-data-lake-cold-storage-architecture.md`  <sub>75 lines</sub>
 
@@ -2725,7 +2725,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,038 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>6,144 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2785,6 +2785,7 @@ _no second-level headings_
 - ADR-052 — Docs 127/128/136 (hardcoded-policy sweep, extension-point coverage audit, database/cache portability audit): two real policy gaps converted; both of doc 128's own "gaps found" turn out to already be closed by prior work it never checked against; 170+ raw-SQL call sites triaged, none rewritten  <sub>:5592</sub>
 - ADR-053 — Doc 149 (`accounts`/`approvals` sector packs): a genuine REQUEST/RECORD split (`B2BOrderRequest`) rather than gating the generic checkout endpoint; the doc's own self-approval-refusal claim corrected against `ApprovalService`'s real behavior; an approval step widened to a Contact set, never a second chain mechanism  <sub>:5714</sub>
 - ADR-054 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected  <sub>:5914</sub>
+- ADR-055 — Doc 117 (choreography and idempotency) and doc 118 (headless, composable, agent-consumable capabilities): both theses stand, but doc 117's own worked-example table was three-quarters fabricated, and doc 118 (plus doc 115, its own source) cite a deferred model as already shipped  <sub>:6039</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

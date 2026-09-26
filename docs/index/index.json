@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2247,
-    "lines": 341742,
+    "lines": 341897,
     "routes": 788,
     "controllers": 142,
     "models": 283,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 396,
-      "lines": 67607,
-      "bytes": 4023440,
+      "lines": 67762,
+      "bytes": 4033507,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -82686,8 +82686,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 6038,
-      "bytes": 351810,
+      "lines": 6144,
+      "bytes": 358075,
       "doc": "",
       "symbols": []
     },
@@ -83055,8 +83055,8 @@
       "path": "docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 81,
-      "bytes": 4968,
+      "lines": 85,
+      "bytes": 5186,
       "doc": "",
       "symbols": []
     },
@@ -83064,8 +83064,8 @@
       "path": "docs/implementation/architecture-patterns/117-event-driven-choreography-immutability.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 82,
-      "bytes": 4329,
+      "lines": 97,
+      "bytes": 5835,
       "doc": "",
       "symbols": []
     },
@@ -83073,8 +83073,8 @@
       "path": "docs/implementation/architecture-patterns/118-headless-composable-api-capabilities.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 87,
-      "bytes": 4553,
+      "lines": 117,
+      "bytes": 6631,
       "doc": "",
       "symbols": []
     },

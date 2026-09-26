@@ -2277,42 +2277,42 @@ _no second-level headings_
 - Acceptance  <sub>:92</sub>
 - Out of scope  <sub>:100</sub>
 
-### `docs/implementation/architecture-patterns/140-general-eav-extensibility-model.md`  <sub>148 lines</sub>
+### `docs/implementation/architecture-patterns/140-general-eav-extensibility-model.md`  <sub>184 lines</sub>
 
-- 1. A true EAV model: any entity, any attribute, no code-known list  <sub>:13</sub>
-- 2. The mitigations doc 104 named as the real risk, applied rather than removed  <sub>:44</sub>
-- Scope lenses  <sub>:71</sub>
-- Work orders  <sub>:125</sub>
-- Acceptance  <sub>:132</sub>
-- Out of scope  <sub>:142</sub>
+- 1. A true EAV model: any entity, any attribute, no code-known list  <sub>:49</sub>
+- 2. The mitigations doc 104 named as the real risk, applied rather than removed  <sub>:80</sub>
+- Scope lenses  <sub>:107</sub>
+- Work orders  <sub>:161</sub>
+- Acceptance  <sub>:168</sub>
+- Out of scope  <sub>:178</sub>
 
-### `docs/implementation/architecture-patterns/141-general-metadata-driven-ui-engine.md`  <sub>147 lines</sub>
+### `docs/implementation/architecture-patterns/141-general-metadata-driven-ui-engine.md`  <sub>192 lines</sub>
 
-- 1. A metadata payload describes a form; the renderer is built from the same primitives every hand-authored screen already uses  <sub>:13</sub>
-- 2. The mandatory guardrail, stated once so it cannot be silently dropped under time pressure  <sub>:44</sub>
-- 3. Where this engine is used, and where it deliberately is not  <sub>:61</sub>
-- Scope lenses  <sub>:76</sub>
-- Work orders  <sub>:115</sub>
-- Acceptance  <sub>:128</sub>
-- Out of scope  <sub>:141</sub>
+- 1. A metadata payload describes a form; the renderer is built from the same primitives every hand-authored screen already uses  <sub>:58</sub>
+- 2. The mandatory guardrail, stated once so it cannot be silently dropped under time pressure  <sub>:89</sub>
+- 3. Where this engine is used, and where it deliberately is not  <sub>:106</sub>
+- Scope lenses  <sub>:121</sub>
+- Work orders  <sub>:160</sub>
+- Acceptance  <sub>:173</sub>
+- Out of scope  <sub>:186</sub>
 
-### `docs/implementation/architecture-patterns/142-bpmn-visual-workflow-engine.md`  <sub>109 lines</sub>
+### `docs/implementation/architecture-patterns/142-bpmn-visual-workflow-engine.md`  <sub>166 lines</sub>
 
-- 1. BPMN as a view over `ApprovalChain`, not a competing engine  <sub>:13</sub>
-- 2. What this buys, and what it deliberately still refuses  <sub>:44</sub>
-- Scope lenses  <sub>:62</sub>
-- Work orders  <sub>:77</sub>
-- Acceptance  <sub>:90</sub>
-- Out of scope  <sub>:101</sub>
+- 1. BPMN as a view over `ApprovalChain`, not a competing engine  <sub>:70</sub>
+- 2. What this buys, and what it deliberately still refuses  <sub>:101</sub>
+- Scope lenses  <sub>:119</sub>
+- Work orders  <sub>:134</sub>
+- Acceptance  <sub>:147</sub>
+- Out of scope  <sub>:158</sub>
 
-### `docs/implementation/architecture-patterns/143-micro-frontend-architecture.md`  <sub>160 lines</sub>
+### `docs/implementation/architecture-patterns/143-micro-frontend-architecture.md`  <sub>199 lines</sub>
 
-- 1. Module federation as an addition, not a rewrite  <sub>:18</sub>
-- 2. What doc 93's own reasoning still governs, and what this document adds on top  <sub>:52</sub>
-- Scope lenses  <sub>:83</sub>
-- Work orders  <sub>:133</sub>
-- Acceptance  <sub>:143</sub>
-- Out of scope  <sub>:153</sub>
+- 1. Module federation as an addition, not a rewrite  <sub>:57</sub>
+- 2. What doc 93's own reasoning still governs, and what this document adds on top  <sub>:91</sub>
+- Scope lenses  <sub>:122</sub>
+- Work orders  <sub>:172</sub>
+- Acceptance  <sub>:182</sub>
+- Out of scope  <sub>:192</sub>
 
 ### `docs/implementation/architecture-patterns/157-client-request-idempotency-keys.md`  <sub>276 lines</sub>
 
@@ -2725,7 +2725,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>5,044 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>5,407 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2779,6 +2779,7 @@ _no second-level headings_
 - ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify  <sub>:4612</sub>
 - ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo  <sub>:4804</sub>
 - ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism  <sub>:4914</sub>
+- ADR-049 — Docs 140–143 (general EAV, metadata-driven UI, BPMN workflow editor, micro-frontend fragments): the four mechanisms `architecture-patterns/00-*` names as explicitly owner-overridden (ADR-026) against this repository's own engineering recommendation, built with the corrections that recommendation still turns out to require  <sub>:5045</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

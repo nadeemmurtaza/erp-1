@@ -20,6 +20,11 @@ Every top-level export in `infra`, with the line to open.
 | `check-links.mjs` | `matches` | function | :133 | Does `link` land on `route`? |
 | `check-links.mjs` | `resolve1` | function | :174 | The route Next.js would pick for this link, or null. |
 | `check-links.mjs` | `scanLinks` | function | :219 | Every internal path a file refers to, with the line it is on. |
+| `check-metadata-renderer.mjs` | `TARGET_FILE` | const | :31 |  |
+| `check-metadata-renderer.mjs` | `findViolations` | function | :38 |  |
+| `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :63 |  |
+| `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :71 |  |
+| `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :78 |  |
 | `check-rebrand.mjs` | `scan` | function | :160 | Every violation on one file's contents. |
 
 ### `scripts/lib`

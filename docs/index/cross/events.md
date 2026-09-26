@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **63** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **64** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -62,6 +62,7 @@ order" is a new file, not an edit to checkout.
 | `bom.production_completed` | `BomProductionCompleted` | `bom` | `bom` |
 | `purchasing.supplier_bill_raised` | `SupplierBillRaised` | `accounting`, `purchasing` | `accounting` |
 | `purchasing.supplier_bill_paid` | `SupplierBillPaid` | `accounting`, `purchasing` | `accounting` |
+| `purchasing.supplier_deleted` | `SupplierDeleted` | `purchasing` | `entity-attributes` |
 | `transfers.inter_branch_invoiced` | `InterBranchTransferInvoiced` | `accounting`, `transfers` | `accounting` |
 | `analytics.supplier_digest_ready` | `SupplierDigestReady` | `analytics` | `tradingpartners` |
 | `production.work_order_created` | `WorkOrderCreated` | `production` | _none_ |
@@ -549,7 +550,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/purchasing.service.ts:441` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:448` | `purchasing` |
 
 
 **Subscribed by**
@@ -566,7 +567,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/requisition.service.ts:59` | `purchasing` |
+| `apps/api/src/modules/purchasing/requisition.service.ts:72` | `purchasing` |
 
 
 **Subscribed by**
@@ -580,7 +581,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/requisition.service.ts:192` | `purchasing` |
+| `apps/api/src/modules/purchasing/requisition.service.ts:205` | `purchasing` |
 
 
 **Subscribed by**
@@ -612,7 +613,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:183` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:592` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:599` | `purchasing` |
 
 
 **Subscribed by**
@@ -629,7 +630,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:233` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:656` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:663` | `purchasing` |
 
 
 **Subscribed by**
@@ -637,6 +638,23 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:231` | `accounting` |
+
+### `purchasing.supplier_deleted`
+
+> PurchasingService.remove() — fired so any module holding data keyed to this supplier (e.g.
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/purchasing/purchasing.service.ts:182` | `purchasing` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onSupplierDeleted()` | `apps/api/src/modules/entity-attributes/supplier-deleted.listener.ts:23` | `entity-attributes` |
 
 ### `transfers.inter_branch_invoiced`
 

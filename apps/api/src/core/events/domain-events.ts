@@ -56,6 +56,8 @@ export const DomainEvent = {
   BomProductionCompleted: 'bom.production_completed',
   SupplierBillRaised: 'purchasing.supplier_bill_raised',
   SupplierBillPaid: 'purchasing.supplier_bill_paid',
+  /** PurchasingService.remove() — fired so any module holding data keyed to this supplier (e.g. entity-attributes' own EntityAttribute rows, which carry no real foreign key) can clean up without purchasing importing that module directly (140-general-eav-extensibility-model.md, WO-140.3). */
+  SupplierDeleted: 'purchasing.supplier_deleted',
   /** An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3). Never fired for NONE/INTERNAL_PL. */
   InterBranchTransferInvoiced: 'transfers.inter_branch_invoiced',
   /** SupplyChainDigestCron's own nightly per-supplier stock/velocity computation, republished as an event so a connected TradingPartner can receive it structured, not only as the email it already sends. */
@@ -388,6 +390,10 @@ export interface GoodsReceivedPayload {
   receivedAtIso: string;
 }
 
+export interface SupplierDeletedPayload {
+  supplierId: string;
+}
+
 export interface BomProductionCompletedPayload {
   runId: string;
   number: string;
@@ -606,6 +612,7 @@ export interface DomainEventPayloads {
   [DomainEvent.WorkOrderCompleted]: WorkOrderPayload;
   [DomainEvent.SupplierBillRaised]: SupplierBillRaisedPayload;
   [DomainEvent.SupplierBillPaid]: SupplierBillPaidPayload;
+  [DomainEvent.SupplierDeleted]: SupplierDeletedPayload;
   [DomainEvent.InterBranchTransferInvoiced]: InterBranchTransferInvoicedPayload;
   [DomainEvent.SupplierDigestReady]: SupplierDigestReadyPayload;
   [DomainEvent.EmailReplyReceived]: EmailReplyReceivedPayload;

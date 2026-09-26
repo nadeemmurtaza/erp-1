@@ -1,5 +1,50 @@
 # 141 — A general metadata-driven UI engine, built by explicit owner override (ADR-026), scoped to stay inside the design system's own enforcement
 
+> **Status: shipped (2026-09-26), WO-141.1/141.2/141.3/141.4.** `Form
+> Metadata` (`metadata-forms.prisma`) + `MetadataFormsService` are live.
+> Two corrections against this document's own sketch, recorded in
+> `DECISIONS.md` ADR-049:
+>
+> - **No `organizationId`** — the same ADR-044/ADR-040 correction already
+>   applied to docs 104/140/143.
+> - **The document's own literal premise — "compose entirely from
+>   `@newax/shared`'s own primitive components" — is factually wrong about
+>   this codebase.** Checked directly: `@newax/shared` (`packages/shared/
+>   src`) has no React components at all; it is a pure logic/constants/
+>   types package. This repository's real, already-shipped, already-swept
+>   form idiom is plain semantic HTML elements styled through
+>   `.field-label`/`.field-input`/`.field-check` (`apps/web/src/app/
+>   globals.css`), exactly what `custom-field-form-section.tsx` (doc 105)
+>   already does. `MetadataDrivenForm` (`metadata-driven-form.tsx`) is
+>   built against that real idiom, not the sketched-but-nonexistent one.
+>   The mandatory guardrail itself is **not** weakened by this correction
+>   — it is retargeted at the real risk (a second, uninspected component
+>   library entering this one file), enforced by
+>   `scripts/check-metadata-renderer.mjs` (WO-141.3, wired into `pnpm
+>   lint`, with a `--self-test`): the renderer may import nothing beyond
+>   `@/types/api`'s own types, and may never use an inline `style` prop.
+>
+> `entityType` is validated against `Prisma.ModelName` at definition time
+> (`MetadataFormsService.defineForm()`), the same mitigation doc 140
+> already established for the identical typo risk. The one real, wired-up
+> screen (WO-141.4): `MetadataDrivenEntityForm` reuses doc 140's own
+> `EntityAttribute` rows as its value storage, never a second write path,
+> embedded on the Supplier detail screen (already one of `pnpm
+> check:overflow`'s own swept dynamic routes, `/admin/suppliers/[id]` —
+> extending that existing check's coverage to reach a metadata-driven form
+> needed no change to the check itself, per doc 66's own convention of
+> extending an existing check rather than assuming it). The admin editor
+> for a form's own field shape is at Settings > Metadata forms
+> (`settings.metadata-forms.manage`).
+>
+> One acceptance criterion below is narrowed by the same correction: "a
+> test that deliberately introduces a raw `<input>`" is not what the
+> self-test proves, because a raw `<input>` styled with `.field-input` is
+> this codebase's own correct idiom, not a violation. The self-test instead
+> proves the check catches (a) an import outside the approved set and (b)
+> an inline `style` prop — the two ways the real risk (a second component
+> library, or a design-law bypass) would actually enter this file.
+
 Doc 105 declined a general server-metadata-driven rendering engine for
 every screen, because it would need its own parallel implementation of
 design-system compliance (Law 4's seven widths, the 48×48 touch target,

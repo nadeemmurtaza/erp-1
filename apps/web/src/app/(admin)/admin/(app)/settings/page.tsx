@@ -3,7 +3,21 @@
 import { useCallback, useEffect, useState } from 'react';
 import { formatDateTime } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { AuditLogPage, CustomFieldDefinition, CustomFieldEntityType, CustomFieldValueType, EmbeddedWidget, RoleSummary } from '@/types/api';
+import type {
+  ApprovalSubjectType,
+  AuditLogPage,
+  BpmnWorkflowDefinition,
+  CustomFieldDefinition,
+  CustomFieldEntityType,
+  CustomFieldValueType,
+  EmbeddedWidget,
+  FieldMetadata,
+  FieldMetadataValueType,
+  FormMetadata,
+  MicroFrontendFragment,
+  RoleSummary,
+} from '@/types/api';
+import { BpmnEditor } from '@/components/admin/bpmn-editor';
 import { DataTable, EmptyState, Loading, PageHeader, Pagination, Tabs } from '@/components/ui';
 import { RoleWizard } from '@/components/admin/role-wizard';
 import { useAdminSession } from '@/components/admin/session';
@@ -202,6 +216,21 @@ export default function AdminSettingsPage() {
             key: 'embeds',
             label: 'Embeds',
             content: <EmbedsSettingsPanel />,
+          },
+          {
+            key: 'fragments',
+            label: 'Fragments',
+            content: <FragmentsSettingsPanel />,
+          },
+          {
+            key: 'metadata-forms',
+            label: 'Metadata forms',
+            content: <MetadataFormsSettingsPanel />,
+          },
+          {
+            key: 'approval-workflows',
+            label: 'Approval workflows',
+            content: <BpmnWorkflowsSettingsPanel />,
           },
           {
             key: 'audit',
@@ -962,3 +991,433 @@ function EmbedsSettingsPanel() {
   );
 }
 
+/**
+ * architecture-patterns/143-micro-frontend-architecture.md (WO-143.3) —
+ * registration UI + the design-law attestation flow. Suspend/activate is
+ * the kill switch, never a delete: a fragment always keeps its history of
+ * having been registered.
+ */
+function FragmentsSettingsPanel() {
+  const { can } = useAdminSession();
+  const canManage = can('settings.fragments.manage');
+
+  const [fragments, setFragments] = useState<MicroFrontendFragment[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [newFragment, setNewFragment] = useState({ key: '', label: '', remoteUrl: '', mountPoints: '' });
+  const [attested, setAttested] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const loadFragments = useCallback(async () => {
+    try {
+      setFragments(await adminFetch<MicroFrontendFragment[]>('/admin/fragments'));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not load fragments');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!canManage) return;
+    void loadFragments();
+  }, [canManage, loadFragments]);
+
+  async function registerFragment() {
+    const mountPoints = newFragment.mountPoints
+      .split(',')
+      .map((point) => point.trim())
+      .filter(Boolean);
+    if (!newFragment.key || !newFragment.label || !newFragment.remoteUrl || mountPoints.length === 0 || !attested) return;
+    setSaving(true);
+    setError(null);
+    try {
+      await adminFetch('/admin/fragments', {
+        method: 'POST',
+        body: { key: newFragment.key, label: newFragment.label, remoteUrl: newFragment.remoteUrl, mountPoints, attestationConfirmed: attested },
+      });
+      setNewFragment({ key: '', label: '', remoteUrl: '', mountPoints: '' });
+      setAttested(false);
+      await loadFragments();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not register the fragment');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function toggleStatus(fragment: MicroFrontendFragment) {
+    setError(null);
+    try {
+      const updated = await adminFetch<MicroFrontendFragment>(`/admin/fragments/${fragment.id}/${fragment.status === 'ACTIVE' ? 'suspend' : 'activate'}`, {
+        method: 'POST',
+      });
+      setFragments((prev) => prev?.map((f) => (f.id === fragment.id ? updated : f)) ?? null);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not update the fragment');
+    }
+  }
+
+  if (!canManage) {
+    return (
+      <EmptyState
+        title="Fragments are set up by an administrator"
+        description="Registering a micro-frontend fragment needs the settings.fragments.manage permission. Ask an administrator who holds it."
+      />
+    );
+  }
+
+  if (!fragments) {
+    return error ? (
+      <p role="alert" className="notice notice-error">
+        {error}
+      </p>
+    ) : (
+      <Loading />
+    );
+  }
+
+  return (
+    <section className="max-w-prose">
+      <p className="mb-4 text-sm text-neutral-900/60">
+        Register a specialized tool as its own independently-deployed fragment, mounted into
+        one or more named admin screens. Each viewer gets their own short-lived, scoped link —
+        the same mechanism embeds already use. Suspending a fragment stops it being served
+        immediately, with no deploy.
+      </p>
+
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+
+      <div className="overflow-hidden">
+        <DataTable
+          rows={fragments}
+          emptyLabel="No fragments registered yet."
+          rowKey={(fragment) => fragment.id}
+          columns={[
+            {
+              header: 'Fragment',
+              cell: (fragment) => (
+                <>
+                  <span className="font-medium text-neutral-900">{fragment.label}</span>
+                  <span className="mt-0.5 block break-all text-xs text-neutral-900/60">{fragment.remoteUrl}</span>
+                </>
+              ),
+            },
+            { header: 'Key', muted: true, cell: (fragment) => <span className="font-mono text-xs">{fragment.key}</span> },
+            {
+              header: 'Mount points',
+              muted: true,
+              cell: (fragment) => fragment.mountPoints.join(', '),
+            },
+            {
+              header: 'State',
+              cell: (fragment) => (
+                <button type="button" onClick={() => void toggleStatus(fragment)} className="btn-text">
+                  {fragment.status === 'ACTIVE' ? 'Active' : 'Suspended'}
+                </button>
+              ),
+            },
+          ]}
+        />
+      </div>
+
+      <h3 className="eyebrow mb-3 mt-8">Register a fragment</h3>
+      <div className="grid gap-3 fold:grid-cols-2">
+        <label className="block">
+          <span className="field-label">Key</span>
+          <input
+            value={newFragment.key}
+            onChange={(event) => setNewFragment({ ...newFragment, key: event.target.value })}
+            placeholder="predictive-analytics-widget"
+            className="field-input"
+          />
+        </label>
+        <label className="block">
+          <span className="field-label">Label</span>
+          <input
+            value={newFragment.label}
+            onChange={(event) => setNewFragment({ ...newFragment, label: event.target.value })}
+            placeholder="Predictive analytics"
+            className="field-input"
+          />
+        </label>
+        <label className="block fold:col-span-2">
+          <span className="field-label">Remote URL</span>
+          <input
+            value={newFragment.remoteUrl}
+            onChange={(event) => setNewFragment({ ...newFragment, remoteUrl: event.target.value })}
+            placeholder="https://vendor.example/fragment"
+            className="field-input"
+          />
+        </label>
+        <label className="block fold:col-span-2">
+          <span className="field-label">Mount points</span>
+          <input
+            value={newFragment.mountPoints}
+            onChange={(event) => setNewFragment({ ...newFragment, mountPoints: event.target.value })}
+            placeholder="supplier-detail, order-detail"
+            className="field-input"
+          />
+        </label>
+      </div>
+      <label className="mt-4 flex items-start gap-2">
+        <input type="checkbox" checked={attested} onChange={(event) => setAttested(event.target.checked)} className="field-check mt-0.5" />
+        <span className="text-sm text-neutral-900">
+          I confirm this fragment&rsquo;s own remote deployment has been checked against the seven
+          screen widths for overflow and contrast before being registered — this repository&rsquo;s
+          own automated checks cannot reach across a fragment&rsquo;s own deployment boundary.
+        </span>
+      </label>
+      <button
+        type="button"
+        onClick={() => void registerFragment()}
+        disabled={saving || !newFragment.key || !newFragment.label || !newFragment.remoteUrl || !newFragment.mountPoints || !attested}
+        className="btn-primary mt-4"
+      >
+        {saving ? 'Registering…' : 'Register fragment'}
+      </button>
+    </section>
+  );
+}
+
+const FIELD_VALUE_TYPES: FieldMetadataValueType[] = ['TEXT', 'NUMBER', 'BOOLEAN', 'DATE', 'SELECT'];
+const EMPTY_FIELD: FieldMetadata = { key: '', label: '', valueType: 'TEXT', isRequired: false };
+
+/**
+ * architecture-patterns/141-general-metadata-driven-ui-engine.md (WO-141.1)
+ * — the admin editor for a `FormMetadata` definition's own field shape.
+ * `MetadataDrivenEntityForm` (on the Supplier detail screen) is what
+ * actually renders whatever is saved here, with no frontend deploy.
+ */
+function MetadataFormsSettingsPanel() {
+  const { can } = useAdminSession();
+  const canManage = can('settings.metadata-forms.manage');
+
+  const [entityType, setEntityType] = useState('Supplier');
+  const [fields, setFields] = useState<FieldMetadata[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  async function load() {
+    setLoaded(false);
+    setError(null);
+    try {
+      const form = await adminFetch<FormMetadata | null>(`/admin/metadata-forms/${entityType}`);
+      setFields(form?.fields ?? []);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not load the form definition');
+    } finally {
+      setLoaded(true);
+    }
+  }
+
+  useEffect(() => {
+    if (!canManage || !entityType) return;
+    void load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canManage, entityType]);
+
+  function updateField(index: number, patch: Partial<FieldMetadata>) {
+    setFields((prev) => prev.map((field, i) => (i === index ? { ...field, ...patch } : field)));
+    setSaved(false);
+  }
+
+  async function save() {
+    setSaving(true);
+    setError(null);
+    setSaved(false);
+    try {
+      await adminFetch(`/admin/metadata-forms/${entityType}`, { method: 'PUT', body: { fields } });
+      setSaved(true);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not save the form definition');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  if (!canManage) {
+    return (
+      <EmptyState
+        title="Metadata forms are set up by an administrator"
+        description="Defining a metadata-driven form needs the settings.metadata-forms.manage permission. Ask an administrator who holds it."
+      />
+    );
+  }
+
+  return (
+    <section className="max-w-prose">
+      <p className="mb-4 text-sm text-neutral-900/60">
+        Define which fields render on a metadata-driven screen, with no frontend deploy. Today
+        this reaches the Supplier detail screen&rsquo;s own &ldquo;Additional details&rdquo; section;
+        values are stored as ordinary entity attributes.
+      </p>
+
+      <label className="mb-4 block max-w-xs">
+        <span className="field-label">Entity type</span>
+        <input value={entityType} onChange={(event) => setEntityType(event.target.value)} placeholder="Supplier" className="field-input" />
+      </label>
+
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+
+      {!loaded ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="space-y-4">
+            {fields.map((field, index) => (
+              <div key={index} className="grid gap-3 fold:grid-cols-[1fr_1fr_auto_auto_auto]">
+                <label className="block">
+                  <span className="field-label">Key</span>
+                  <input value={field.key} onChange={(event) => updateField(index, { key: event.target.value })} className="field-input" />
+                </label>
+                <label className="block">
+                  <span className="field-label">Label</span>
+                  <input value={field.label} onChange={(event) => updateField(index, { label: event.target.value })} className="field-input" />
+                </label>
+                <label className="block">
+                  <span className="field-label">Type</span>
+                  <select
+                    value={field.valueType}
+                    onChange={(event) => updateField(index, { valueType: event.target.value as FieldMetadataValueType })}
+                    className="field-input"
+                  >
+                    {FIELD_VALUE_TYPES.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="flex items-center gap-2 self-end pb-2">
+                  <input type="checkbox" checked={field.isRequired ?? false} onChange={(event) => updateField(index, { isRequired: event.target.checked })} className="field-check" />
+                  <span className="text-sm text-neutral-900">Required</span>
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setFields((prev) => prev.filter((_, i) => i !== index))}
+                  className="btn-text self-end pb-2 text-feedback-negative"
+                >
+                  Remove
+                </button>
+                {field.valueType === 'SELECT' ? (
+                  <label className="block fold:col-span-5">
+                    <span className="field-label">Options (comma-separated)</span>
+                    <input
+                      value={(field.options ?? []).join(', ')}
+                      onChange={(event) =>
+                        updateField(index, {
+                          options: event.target.value
+                            .split(',')
+                            .map((option) => option.trim())
+                            .filter(Boolean),
+                        })
+                      }
+                      className="field-input"
+                    />
+                  </label>
+                ) : null}
+              </div>
+            ))}
+          </div>
+
+          <button type="button" onClick={() => setFields((prev) => [...prev, { ...EMPTY_FIELD }])} className="btn-secondary mt-4">
+            Add field
+          </button>
+
+          <div className="mt-6 flex items-center gap-3 border-t border-neutral-100 pt-4">
+            <button type="button" onClick={() => void save()} disabled={saving} className="btn-primary">
+              {saving ? 'Saving…' : 'Save form definition'}
+            </button>
+            {saved ? <span className="text-sm text-green-700">Saved.</span> : null}
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
+const APPROVAL_SUBJECT_TYPES: Array<{ value: ApprovalSubjectType; label: string }> = [
+  { value: 'PURCHASE_REQUISITION', label: 'Purchase requisitions' },
+  { value: 'WALLET_ADJUSTMENT', label: 'Wallet adjustments' },
+];
+
+/**
+ * architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.2) — the
+ * BPMN diagram IS the editor for `ApprovalChain`'s own existing steps;
+ * saving compiles it into the identical rows a form-based admin screen
+ * would produce (`ApprovalService` remains the only thing that executes
+ * one). Name each task node after the approver's own permission key, or
+ * "user:<userId>" for a specific approver.
+ */
+function BpmnWorkflowsSettingsPanel() {
+  const { can } = useAdminSession();
+  const canManage = can('settings.bpmn-workflows.manage');
+
+  const [subjectType, setSubjectType] = useState<ApprovalSubjectType>('PURCHASE_REQUISITION');
+  const [definition, setDefinition] = useState<BpmnWorkflowDefinition | null | undefined>(undefined);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!canManage) return;
+    setDefinition(undefined);
+    setError(null);
+    adminFetch<BpmnWorkflowDefinition | null>(`/admin/bpmn-workflows/${subjectType}`)
+      .then(setDefinition)
+      .catch((cause: unknown) => setError(cause instanceof Error ? cause.message : 'Could not load the workflow'));
+  }, [canManage, subjectType]);
+
+  async function save(diagramXml: string) {
+    const saved = await adminFetch<BpmnWorkflowDefinition>(`/admin/bpmn-workflows/${subjectType}`, { method: 'PUT', body: { diagramXml } });
+    setDefinition(saved);
+  }
+
+  if (!canManage) {
+    return (
+      <EmptyState
+        title="Approval workflows are set up by an administrator"
+        description="Redrawing an approval workflow needs the settings.bpmn-workflows.manage permission. Ask an administrator who holds it."
+      />
+    );
+  }
+
+  return (
+    <section>
+      <p className="mb-4 max-w-prose text-sm text-neutral-900/60">
+        Redraw an approval chain&rsquo;s own shape — add a tier, change who approves a
+        step — with no engineering deploy. This compiles into the same rows the
+        typed approval engine already executes; it never runs the diagram itself.
+      </p>
+
+      <label className="mb-4 block max-w-xs">
+        <span className="field-label">Subject type</span>
+        <select value={subjectType} onChange={(event) => setSubjectType(event.target.value as ApprovalSubjectType)} className="field-input">
+          {APPROVAL_SUBJECT_TYPES.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+
+      {definition === undefined ? (
+        <Loading />
+      ) : (
+        <BpmnEditor key={subjectType} initialXml={definition?.diagramXml ?? null} onSave={save} />
+      )}
+    </section>
+  );
+}

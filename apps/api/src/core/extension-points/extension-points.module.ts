@@ -7,6 +7,7 @@ import { CameraPeopleCountRegistry } from './camera-people-count.registry';
 import { IdentityVerificationStatusRegistry } from './identity-verification-status.registry';
 import { EmployeeOffboardingRegistry } from './employee-offboarding.registry';
 import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.registry';
+import { WorkflowStepsRegistry } from './workflow-steps.registry';
 
 /**
  * The seams a module uses to reach another module without importing it
@@ -29,6 +30,7 @@ import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.regist
     CameraPeopleCountRegistry,
     IdentityVerificationStatusRegistry,
     EmployeeOffboardingRegistry,
+    WorkflowStepsRegistry,
   ],
   exports: [
     EntityEnrichmentRegistry,
@@ -39,6 +41,7 @@ import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.regist
     CameraPeopleCountRegistry,
     IdentityVerificationStatusRegistry,
     EmployeeOffboardingRegistry,
+    WorkflowStepsRegistry,
   ],
 })
 export class ExtensionPointsModule {}

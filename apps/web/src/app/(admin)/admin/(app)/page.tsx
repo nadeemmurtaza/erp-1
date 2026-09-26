@@ -11,6 +11,7 @@ import { DASHBOARD_GROUPS, cardsFor, type DashboardCard } from '@/components/adm
 import { CardGroup } from '@/components/admin/dashboard/card-group';
 import { NeedsAttentionStrip } from '@/components/admin/dashboard/needs-attention-strip';
 import { ActionHubWidget } from '@/components/admin/dashboard/action-hub-widget';
+import { LiveFeedWidget } from '@/components/admin/dashboard/live-feed-widget';
 import { GrossProfitTodayWidget } from '@/components/admin/dashboard/gross-profit-today-widget';
 import { ComparisonPanel } from '@/components/admin/dashboard/comparison-panel';
 import { useDashboardMetrics } from '@/components/admin/dashboard/use-dashboard-metrics';
@@ -57,6 +58,7 @@ export default function AdminDashboardPage() {
 
       <NeedsAttentionStrip />
       <ActionHubWidget />
+      <LiveFeedWidget />
       <GrossProfitTodayWidget />
 
       <div className="mb-4 flex justify-end">

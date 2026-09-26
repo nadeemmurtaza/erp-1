@@ -3,13 +3,13 @@
 
 # Module: `purchasing`
 
-Pack **core** · enabled by the `MODULES` allowlist · 20 files
+Pack **core** · enabled by the `MODULES` allowlist · 22 files
 
 
 
 Source: `apps/api/src/modules/purchasing/`
 
-## Files (20 · 3,018 lines)
+## Files (22 · 3,151 lines)
 
 All paths relative to `apps/api/src/modules/purchasing/dto`.
 
@@ -21,12 +21,14 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | `supplier.dto.ts` | dto | 104 | 3 |  |
 | `goods-receipt-replication.listener.spec.ts` | unit test | 127 | — |  |
 | `goods-receipt-replication.listener.ts` | event subscriber | 82 | 1 | WO-23.3c/e (RETAIL-ERP.md R2/R9/R13, ADR-021/ADR-023) — `GoodsReceipt` is one of R2's own named FACT examples ("goods r… |
+| `purchase-order-feed.source.spec.ts` | unit test | 69 | — |  |
+| `purchase-order-feed.source.ts` | module | 62 | 1 | The live feed's purchasing source (analytics-reporting/58-live-operational-feed.md). |
 | `purchasing.controller.ts` | controller | 151 | 3 |  |
 | `purchasing.cron.spec.ts` | unit test | 144 | — |  |
 | `purchasing.cron.ts` | scheduled job | 118 | 1 | The nightly safety-net sweep for reorder drafting. |
 | `purchasing.metrics.spec.ts` | unit test | 74 | — |  |
 | `purchasing.metrics.ts` | module | 135 | 2 | The Purchasing group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
-| `purchasing.module.ts` | nest module | 30 | 1 |  |
+| `purchasing.module.ts` | nest module | 32 | 1 |  |
 | `purchasing.service.ts` | service | 673 | 1 |  |
 | `purchasing.spec.ts` | unit test | 233 | — |  |
 | `reorder.listener.spec.ts` | unit test | 146 | — |  |
@@ -120,7 +122,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`PurchasingModule`** (`purchasing.module.ts`)
 - imports: `InventoryModule`, `PartiesModule`, `SettingsModule`
 - controllers: `PurchasingController`, `PurchaseOrderAdminController`, `SupplierBillAdminController`, `RequisitionController`
-- providers: `PurchasingService`, `RequisitionService`, `PurchasingCron`, `PurchasingReorderListener`, `GoodsReceiptReplicationListener`, `PurchasingMetricsProvider`, `PurchasingSpendMetricsProvider`
+- providers: `PurchasingService`, `RequisitionService`, `PurchasingCron`, `PurchasingReorderListener`, `GoodsReceiptReplicationListener`, `PurchasingMetricsProvider`, `PurchasingSpendMetricsProvider`, `PurchaseOrderFeedSource`
 - exports: `PurchasingService`, `RequisitionService`
 
 
@@ -133,6 +135,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `config`
 - core `events`
 - core `extension-points`
+- core `feed`
 - core `metrics`
 - core `prisma`
 - core `replication`
@@ -144,11 +147,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (7)
+## Tests (8)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `goods-receipt-replication.listener.spec.ts` | 5 | GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023 · onModuleInit · onGoodsReceived |
+| `purchase-order-feed.source.spec.ts` | 5 | PurchaseOrderFeedSource — WO-58.2 |
 | `purchasing.cron.spec.ts` | 5 | PurchasingCron |
 | `purchasing.metrics.spec.ts` | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |
 | `purchasing.spec.ts` | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
@@ -175,13 +179,14 @@ check there before adding another.
 | `UpdateSupplierDto` | class | `supplier.dto.ts:57` |  |
 | `AddSupplierProductDto` | class | `supplier.dto.ts:70` |  |
 | `GoodsReceiptReplicationListener` | class | `goods-receipt-replication.listener.ts:30` | WO-23.3c/e (RETAIL-ERP.md R2/R9/R13, ADR-021/ADR-023) — `GoodsReceipt` is one of R2's own named FACT examples… |
+| `PurchaseOrderFeedSource` | class | `purchase-order-feed.source.ts:22` | The live feed's purchasing source (analytics-reporting/58-live-operational-feed.md). |
 | `PurchasingController` | class | `purchasing.controller.ts:9` |  |
 | `PurchaseOrderAdminController` | class | `purchasing.controller.ts:78` |  |
 | `SupplierBillAdminController` | class | `purchasing.controller.ts:119` |  |
 | `PurchasingCron` | class | `purchasing.cron.ts:27` | The nightly safety-net sweep for reorder drafting. |
 | `PurchasingMetricsProvider` | class | `purchasing.metrics.ts:17` | The Purchasing group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
 | `PurchasingSpendMetricsProvider` | class | `purchasing.metrics.ts:102` | `purchasing.spend` alone — see the class doc above for why it is split out. |
-| `PurchasingModule` | class | `purchasing.module.ts:29` |  |
+| `PurchasingModule` | class | `purchasing.module.ts:31` |  |
 | `PurchasingService` | class | `purchasing.service.ts:70` |  |
 | `PurchasingReorderListener` | class | `reorder.listener.ts:24` | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an extern… |
 | `RequisitionController` | class | `requisition.controller.ts:11` |  |

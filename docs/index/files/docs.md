@@ -608,11 +608,11 @@ All 394 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `45-order-count-tracking-coverage-note.md` | doc | 63 |  |
-| `57-multiday-category-velocity.md` | doc | 117 |  |
-| `58-live-operational-feed.md` | doc | 141 |  |
-| `69-order-lifecycle-status-dashboard.md` | doc | 107 |  |
-| `77-sales-category-breakdown-coverage-note.md` | doc | 52 |  |
+| `45-order-count-tracking-coverage-note.md` | doc | 73 |  |
+| `57-multiday-category-velocity.md` | doc | 130 |  |
+| `58-live-operational-feed.md` | doc | 161 |  |
+| `69-order-lifecycle-status-dashboard.md` | doc | 121 |  |
+| `77-sales-category-breakdown-coverage-note.md` | doc | 70 |  |
 
 ### `docs/implementation/architecture-patterns` (37)
 

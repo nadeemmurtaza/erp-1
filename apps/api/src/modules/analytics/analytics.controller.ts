@@ -83,6 +83,12 @@ export class AnalyticsController {
     return this.analytics.ordersOverview();
   }
 
+  @Get('orders/lifecycle-breakdown')
+  @ApiOperation({ summary: 'Every order, right now, grouped by status into Pending/Completed/Voided' })
+  orderLifecycleBreakdown(@Query('locationId') locationId?: string) {
+    return this.analytics.orderLifecycleBreakdown(locationId);
+  }
+
   @Get('orders/fulfilment')
   @ApiOperation({ summary: 'Average and median time spent in each order-status transition' })
   ordersFulfilment(
@@ -142,6 +148,12 @@ export class AnalyticsController {
     @Query('days', new DefaultValuePipe(30), ParseIntPipe) days: number,
   ) {
     return this.analytics.productsCategories(Math.min(Math.max(days, 7), 365));
+  }
+
+  @Get('products/category-velocity')
+  @ApiOperation({ summary: "The top categories' own revenue, broken out day by day" })
+  categoryVelocity(@Query('days', new DefaultValuePipe(14), ParseIntPipe) days: number) {
+    return this.analytics.categoryVelocity(Math.min(Math.max(days, 7), 90));
   }
 
   @Get('inventory/valuation')

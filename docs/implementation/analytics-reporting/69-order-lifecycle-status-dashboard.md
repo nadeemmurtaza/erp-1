@@ -1,5 +1,19 @@
 # 69 — A status-count tile: the one dashboard `Order.status` never got
 
+> **Status: shipped (2026-09-26), WO-69.1/69.2.**
+> `AnalyticsService.orderLifecycleBreakdown(locationId?)` is live at
+> `GET /admin/analytics/orders/lifecycle-breakdown`, registered as report
+> `orders/lifecycle` (a child of `orders/overview`), tested against a real
+> database including the `locationId` scoping case in
+> `analytics.lifecycle.spec.ts`. Clicking a bucket needed a real fix, not
+> just a link: the admin order list only ever accepted one `status` value,
+> so "Voided" (`CANCELLED`+`RETURNED`) had no URL that could show both at
+> once. `AdminOrderQueryDto.status` now accepts a comma-separated list
+> (the same `csvToArray` pattern `product-query.dto.ts` already
+> established), `OrdersService.adminList()` filters with `{ in: [...] }`
+> for more than one value, and a single value still works exactly as
+> before — covered end-to-end in `orders.e2e-spec.ts`.
+
 `Order.status` already carries the full lifecycle
 (`PENDING`/`CONFIRMED`/`PROCESSING`/`READY_TO_SHIP`/`SHIPPED`/`DELIVERED`/
 `CANCELLED`/`RETURNED`, `orders.service.ts` lines 58-66) and every

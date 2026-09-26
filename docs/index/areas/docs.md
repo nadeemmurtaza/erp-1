@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-394 files · 63,837 lines
+394 files · 63,912 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -88,7 +88,7 @@ has a bug.
 | `docs/implementation/access-control-identity` | 7 | 1,830 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
-| `docs/implementation/analytics-reporting` | 5 | 480 | doc |
+| `docs/implementation/analytics-reporting` | 5 | 555 | doc |
 | `docs/implementation/architecture-patterns` | 37 | 3,568 | doc |
 | `docs/implementation/attendance-workforce` | 8 | 1,010 | doc |
 | `docs/implementation/b2b-wholesale-multientity` | 4 | 540 | doc |

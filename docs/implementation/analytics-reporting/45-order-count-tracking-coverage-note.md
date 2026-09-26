@@ -1,5 +1,15 @@
 # 45 — Order count tracking: already built, not a gap
 
+> **Status: shipped (2026-09-26), WO-45.1.** `DashboardSummary.today`/
+> `.month`/`.allTime` each now carry `totalUnits`, summed from
+> `OrderItem.quantity` under the identical `countsAsSale` (`status NOT IN
+> VOID_STATUSES`) population `orders`/`revenue` already use for that same
+> window — one added query in `summary()`, no new service or table.
+> `allTime` itself is exposed on the response for the first time (the
+> order count and revenue it reports were already computed internally for
+> `averageOrderValue`, just never returned as their own object) — see
+> `analytics.summary.spec.ts`.
+
 Unlike the other documents in this set, this one exists to say plainly
 that the promotional claim it answers — "dedicated metrics tracking total
 order volume alongside gross revenue and total item volume" — **already

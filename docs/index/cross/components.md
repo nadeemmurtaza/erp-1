@@ -3,7 +3,7 @@
 
 # Components
 
-All **105** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **107** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 201 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 203 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -69,17 +69,18 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `analytics-detail-page.tsx` | `AnalyticsDetailPage` | client | 1 |  |
 
-### `apps/web/src/components/admin/analytics/blocks` (7)
+### `apps/web/src/components/admin/analytics/blocks` (8)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
+| `dynamic-timeseries-block.tsx` | `DynamicTimeSeriesBlock` | server | 1 |  |
 | `funnel-block.tsx` | `FunnelBlock` | server | 1 |  |
 | `gauge-block.tsx` | `GaugeBlock` | server | 1 |  |
 | `kpis-block.tsx` | `KpisBlock` | server | 1 |  |
 | `ranking-block.tsx` | `RankingBlock` | server | 1 |  |
 | `share-block.tsx` | `ShareBlock` | server | 1 |  |
 | `table-block.tsx` | `TableBlock` | server | 1 |  |
-| `timeseries-block.tsx` | `TimeSeriesBlock` | server | 1 |  |
+| `timeseries-block.tsx` | `TimeSeriesBlock` | server | 2 |  |
 
 ### `apps/web/src/components/admin/bom` (2)
 
@@ -100,7 +101,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `sparkline-chart.tsx` | `SparklineChart` | client | 1 |  |
 | `time-series-chart.tsx` | `TimeSeriesSeriesDef` `TimeSeriesChart` | client | 1 |  |
 
-### `apps/web/src/components/admin/dashboard` (6)
+### `apps/web/src/components/admin/dashboard` (7)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -108,6 +109,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `card-group.tsx` | `CardGroup` | client | 1 |  |
 | `comparison-panel.tsx` | `ComparisonPanel` | client | 1 |  |
 | `gross-profit-today-widget.tsx` | `GrossProfitTodayWidget` | client | 1 |  |
+| `live-feed-widget.tsx` | `LiveFeedWidget` | client | 1 |  |
 | `metric-card.tsx` | `MetricCardData` `formatValue` `MetricCard` `MetricCardWithSparkline` | client | 4 |  |
 | `needs-attention-strip.tsx` | `NeedsAttentionStrip` | client | 1 |  |
 

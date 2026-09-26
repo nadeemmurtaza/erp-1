@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **672** endpoints across **123** controllers, with the access rule that actually guards each one.
+All **675** endpoints across **124** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -139,7 +139,7 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (24)
+### [`analytics`](../modules/analytics.md) (26)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -154,8 +154,10 @@ never authorization.
 | GET | `/admin/analytics/inventory/valuation` | `analytics.view` | `AnalyticsController.inventoryValuation` | What the stock on hand is worth right now, by category, kind and age |
 | PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` | Set the monthly revenue target shown on the dashboard |
 | GET | `/admin/analytics/orders/fulfilment` | `analytics.view` | `AnalyticsController.ordersFulfilment` | Average and median time spent in each order-status transition |
+| GET | `/admin/analytics/orders/lifecycle-breakdown` | `analytics.view` | `AnalyticsController.orderLifecycleBreakdown` | Every order, right now, grouped by status into Pending/Completed/Voided |
 | GET | `/admin/analytics/orders/overview` | `analytics.view` | `AnalyticsController.ordersOverview` | Open orders right now — ageing buckets, the oldest worklist, by-city and by-pay… |
 | GET | `/admin/analytics/products/categories` | `analytics.view` | `AnalyticsController.productsCategories` | Revenue, units and product count by category, with a daily trend |
+| GET | `/admin/analytics/products/category-velocity` | `analytics.view` | `AnalyticsController.categoryVelocity` | The top categories' own revenue, broken out day by day |
 | GET | `/admin/analytics/products/slow-sellers` | `analytics.view` | `AnalyticsController.productsSlowSellers` | In-stock, active variants flagged as slow movers, oldest first |
 | GET | `/admin/analytics/products/top-sellers` | `analytics.view` | `AnalyticsController.productsTopSellers` | Best-selling products by revenue, with units and margin |
 | GET | `/admin/analytics/purchasing/spend` | `analytics.view` | `AnalyticsController.purchasingSpend` | What was ordered, received, billed and is still owed to suppliers |
@@ -355,6 +357,12 @@ never authorization.
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/meta` | **PUBLIC** | `MetaController.get` | Which optional modules and sector packs this deployment has enabled |
+
+### [`core/feed`](../core/feed.md) (1)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/feed` | `analytics.view` | `FeedController.collect` | Recent order, purchase-order and payment activity, merged and capped, newest fi… |
 
 ### [`core/health`](../core/health.md) (2)
 

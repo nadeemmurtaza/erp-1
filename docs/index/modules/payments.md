@@ -3,22 +3,24 @@
 
 # Module: `payments`
 
-Pack **core** · enabled by the `MODULES` allowlist · 11 files
+Pack **core** · enabled by the `MODULES` allowlist · 13 files
 
 
 
 Source: `apps/api/src/modules/payments/`
 
-## Files (11 · 1,672 lines)
+## Files (13 · 1,801 lines)
 
 All paths relative to `apps/api/src/modules/payments`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `notification.subscriber.ts` | event subscriber | 168 | 1 | Tells the customer their money arrived. |
+| `payment-feed.source.spec.ts` | unit test | 69 | — |  |
+| `payment-feed.source.ts` | module | 58 | 1 | The live feed's payment source (analytics-reporting/58-live-operational-feed.md). |
 | `payment-provider.ts` | module | 99 | 4 | Extension point: payment providers. |
 | `payments.controller.ts` | controller | 135 | 2 |  |
-| `payments.module.ts` | nest module | 26 | 1 |  |
+| `payments.module.ts` | nest module | 28 | 1 |  |
 | `payments.service.ts` | service | 437 | 1 | Payments, behind one interface. |
 | `bank-transfer.provider.ts` | module | 54 | 1 | Bank transfer: the customer pays into the shop's account and uploads the receipt, and staff approve it from the dashboa… |
 | `callback-verification.spec.ts` | unit test | 159 | — |  |
@@ -81,7 +83,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`PaymentsModule`** (`payments.module.ts`)
 - imports: —
 - controllers: `PaymentsController`, `PaymentsAdminController`
-- providers: `PaymentsService`, `CodProvider`, `BankTransferProvider`, `JazzCashProvider`, `EasypaisaProvider`, `GiftkartaProvider`, `PaymentNotificationSubscriber`
+- providers: `PaymentsService`, `CodProvider`, `BankTransferProvider`, `JazzCashProvider`, `EasypaisaProvider`, `GiftkartaProvider`, `PaymentNotificationSubscriber`, `PaymentFeedSource`
 - exports: `PaymentsService`
 
 
@@ -91,6 +93,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `auth`
 - core `config`
 - core `events`
+- core `feed`
 - core `notifications`
 - core `prisma`
 - core `settings`
@@ -102,10 +105,11 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `payment-feed.source.spec.ts` | 5 | PaymentFeedSource — WO-58.2 |
 | `callback-verification.spec.ts` | 8 | Easypaisa callback verification · JazzCash callback verification |
 
 
@@ -114,13 +118,14 @@ check there before adding another.
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `PaymentNotificationSubscriber` | class | `notification.subscriber.ts:26` | Tells the customer their money arrived. |
+| `PaymentFeedSource` | class | `payment-feed.source.ts:16` | The live feed's payment source (analytics-reporting/58-live-operational-feed.md). |
 | `PaymentContext` | interface | `payment-provider.ts:16` | Extension point: payment providers. |
 | `PaymentInitiation` | interface | `payment-provider.ts:26` |  |
 | `PaymentCallbackResult` | interface | `payment-provider.ts:40` |  |
 | `PaymentProvider` | interface | `payment-provider.ts:59` |  |
 | `PaymentsController` | class | `payments.controller.ts:53` |  |
 | `PaymentsAdminController` | class | `payments.controller.ts:106` |  |
-| `PaymentsModule` | class | `payments.module.ts:25` |  |
+| `PaymentsModule` | class | `payments.module.ts:27` |  |
 | `PaymentsService` | class | `payments.service.ts:29` | Payments, behind one interface. |
 | `BankTransferProvider` | class | `bank-transfer.provider.ts:26` | Bank transfer: the customer pays into the shop's account and uploads the receipt, and staff approve it from t… |
 | `CodProvider` | class | `cod.provider.ts:19` | Cash on delivery — how most of Pakistan pays online. |

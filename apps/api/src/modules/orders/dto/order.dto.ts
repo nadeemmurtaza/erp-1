@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsEmail,
   IsIn,
@@ -12,6 +12,18 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { COD_RISK_ACTIONS, ORDER_STATUSES } from '@newax/shared';
+
+/** `product-query.dto.ts`'s own comma-separated-list transform, reused
+ *  rather than reinvented — WO-69.2's "Voided" segment is CANCELLED +
+ *  RETURNED, which a single-value `status` filter cannot express. */
+const csvToArray = ({ value }: { value: unknown }): string[] | undefined => {
+  if (typeof value !== 'string') return value as string[] | undefined;
+  const parts = value
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+  return parts.length > 0 ? parts : undefined;
+};
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
 
 export class ShippingAddressDto {
@@ -123,10 +135,14 @@ export class ChangeOrderStatusDto {
 }
 
 export class AdminOrderQueryDto extends PaginationQueryDto {
-  @ApiPropertyOptional({ enum: ORDER_STATUSES })
+  @ApiPropertyOptional({
+    enum: ORDER_STATUSES,
+    description: 'Comma-separated for more than one, e.g. "CANCELLED,RETURNED" — WO-69.2\'s own "Voided" bucket.',
+  })
   @IsOptional()
-  @IsIn([...ORDER_STATUSES])
-  status?: (typeof ORDER_STATUSES)[number];
+  @Transform(csvToArray)
+  @IsIn([...ORDER_STATUSES], { each: true })
+  status?: (typeof ORDER_STATUSES)[number][];
 
   @ApiPropertyOptional({ enum: COD_RISK_ACTIONS, description: 'WO-9.4 — filter the queue to orders CodRiskService flagged for this action.' })
   @IsOptional()

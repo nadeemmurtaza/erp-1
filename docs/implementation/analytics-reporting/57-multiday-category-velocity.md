@@ -1,5 +1,18 @@
 # 57 — Category velocity across days, not just within one window
 
+> **Status: shipped (2026-09-26), WO-57.1/57.2.**
+> `AnalyticsService.categoryVelocity(days)` (top 5 categories by revenue
+> plus an "Other" bucket, one daily point per category, zero-filled — never
+> a gap that misaligns the day axis) is live at
+> `GET /admin/analytics/products/category-velocity`, tested against a real
+> database in `analytics.category-velocity.spec.ts`. The UI reuses the
+> existing generic report-block system rather than a bespoke chart: a new
+> `dynamic-timeseries` block kind (`report-registry.ts`) resolves its
+> `TimeSeriesChart` series from the response itself, since which categories
+> appear is a client's own data, not static config — registered as
+> `products/category-velocity`, a child of `products/categories`, reachable
+> from the Analytics index page like every other report.
+
 `AnalyticsService.productsCategories(days)` already computes two things: a
 top-10-category revenue snapshot for the whole window, and a
 category-agnostic daily revenue series. Neither is "historical category

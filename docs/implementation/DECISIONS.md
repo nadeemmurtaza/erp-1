@@ -4316,6 +4316,19 @@ own future work order instead.
   before any lookup, JIT provisioning never publishing `UserRegistered`,
   linking audited and mailed, CSRF refused, an unverified email refused,
   a suspended connection refusing outright.
+- `settings.sso.manage` hit this codebase's own already-tracked
+  `seedPermissions()`-vs-`seedRoles()` trap on this repository's local
+  scratch database specifically: `seedRoles()`'s one-time `RolePermission`
+  → `RoleGrant` migration had already run here (2026-09-25, before this
+  permission existed), so a fresh `RolePermission(ADMIN)` row from
+  `seedPermissions()` never reached a real `RoleGrant` — confirmed by
+  querying both tables directly. Backfilled with the one `RoleGrant` row
+  `seedRoles()` itself would have written had it run after this permission
+  existed, per ADR-031 §2's own accepted "one-time, never re-synced"
+  design — no seed-script or architecture change. A fresh deployment, or
+  one whose `seedRoles()` migration has not yet fired, needs no such step;
+  an already-migrated one adding any new permission always will, which is
+  this trap working exactly as ADR-031 §2 already decided it should.
 - Docs 19/20/21 remain a named, scoped-but-unbuilt HR-org-tree body of
   work — this ADR does not close that gap, it documents why this batch
   could not close it without silently absorbing a much larger, separately

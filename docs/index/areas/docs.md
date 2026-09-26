@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-394 files · 63,824 lines
+394 files · 63,837 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 8 | 8,093 | doc, file |
+| `docs/implementation` | 8 | 8,106 | doc, file |
 | `docs/implementation/access-control-identity` | 7 | 1,830 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -116,7 +116,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 4,326 | doc |  |
+| `docs/implementation/DECISIONS.md` | 4,339 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |

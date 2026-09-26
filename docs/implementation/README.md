@@ -381,6 +381,20 @@ that reading out:
 |---|---|
 | [`165-cross-tenant-marketplace-directory.md`](./b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md) | **Not built — designed.** A new `apps/platform` module (`MarketplaceListing`/`MarketplacePublisherCredential`/`MarketplaceViewerProfile`/`MarketplaceEngagement`), never a shared `Product` table — a tenant explicitly publishes a listing, tagged with the audience (retailer/distributor/supplier/direct customer) allowed to see it and a per-listing discovery-only-or-transact mode. A chosen transaction reuses doc 18's own inbound trading-partner API unchanged — the marketplace registers as one more `TradingPartner` from the selling tenant's own side, zero new inbound-order code. Login-centralization splits in two: an additive `SsoConnection.enforceSso` column makes doc 161's existing SSO actually mandatory for erp-1 staff; a marketplace viewer (who may hold no `User` anywhere) authenticates through a new, narrower, hardcoded-to-nID OIDC client in `apps/platform`, sharing a newly-extracted `packages/shared/src/oidc-client.ts` with doc 161's own provider rather than duplicating OIDC a second time. Blocked, honestly: nID exposing an OIDC surface at all cannot be confirmed or built from this repository — `nadeemmurtaza/nID` is a separate repo not attached to this session. ADR-047 |
 
+**Number 166** answers the owner's direct follow-up, naming Apple's
+unified-memory principle by request: the same physical product's name,
+description and photographs are re-entered from scratch by every business
+in a supply chain — manufacturer, then each distributor, supplier and
+retailer — because nothing reads `ProductVariant.barcode` as proof two
+tenants describe the same object. Lives in `architecture-patterns/`, not
+`b2b-wholesale-multientity/`, because it is a general write-once/
+reference-many pattern applied to product data, built on the same platform
+module doc 165 introduced rather than a second cross-tenant mechanism:
+
+| File | What it is |
+|---|---|
+| [`166-unified-product-reference-registry.md`](./architecture-patterns/166-unified-product-reference-registry.md) | **Not built — designed.** `GlobalProductReference`, keyed by barcode, additive to doc 165's own `marketplace.prisma`: a tenant creating a product looks it up and autofills name/description/photographs instead of re-typing them, exactly GS1's own GTIN-registry pattern sized to this codebase. The actual storage saving is deliberate and stated honestly: descriptive text is cached locally in each linked tenant's own database for render-time resilience (doc 39's own "no instance needs to know a shared tier exists above it"), but images are never re-uploaded — a linked tenant's `ProductImage.imageUrl` points straight at the platform's own shared storage, one buffer read by every consumer instead of a hundred separate uploads of the identical photograph. Only the registering tenant may edit the canonical record; every other tenant's only write path is a reviewed flag, closing the obvious vandalism risk. ADR-048 |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

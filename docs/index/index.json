@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2118,
-    "lines": 325667,
+    "files": 2119,
+    "lines": 326168,
     "routes": 726,
     "controllers": 131,
     "models": 258,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 395,
-      "lines": 65230,
-      "bytes": 3879330,
+      "files": 396,
+      "lines": 65731,
+      "bytes": 3907976,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -77078,8 +77078,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 4913,
-      "bytes": 284808,
+      "lines": 5005,
+      "bytes": 290143,
       "doc": "",
       "symbols": []
     },
@@ -77114,8 +77114,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 514,
-      "bytes": 68714,
+      "lines": 528,
+      "bytes": 70432,
       "doc": "",
       "symbols": []
     },
@@ -77602,6 +77602,15 @@
       "kind": "doc",
       "lines": 276,
       "bytes": 13572,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/architecture-patterns/166-unified-product-reference-registry.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 395,
+      "bytes": 21593,
       "doc": "",
       "symbols": []
     },

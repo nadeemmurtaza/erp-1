@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**421** markdown documents. These explain **why**; this index only says **where**.
+**422** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2324,6 +2324,17 @@ _no second-level headings_
 - Acceptance  <sub>:254</sub>
 - Out of scope  <sub>:266</sub>
 
+### `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md`  <sub>395 lines</sub>
+
+- The principle, named honestly  <sub>:14</sub>
+- Where the real storage cost is, and where it is not  <sub>:67</sub>
+- 1. Schema — extends the platform module doc 165 already introduced  <sub>:100</sub>
+- 2. The two moments this actually runs  <sub>:192</sub>
+- Scope lenses  <sub>:223</sub>
+- Work orders  <sub>:323</sub>
+- Acceptance  <sub>:350</sub>
+- Out of scope  <sub>:369</sub>
+
 ### `docs/implementation/architecture-patterns/92-microservices-module-decoupling.md`  <sub>89 lines</sub>
 
 - 1. What the bullet actually wants, and what already delivers it  <sub>:16</sub>
@@ -2711,7 +2722,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>4,913 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>5,005 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2764,6 +2775,7 @@ _no second-level headings_
 - ADR-045 — Doc 21 (access over the org tree): `OrgUnitGrant` built exactly as specified; `MAX_GRANT_DAYS` as a plain Setting, not a `BrandPolicy` column; `org.access.grant` seeded to no role by default; the granter's own reach treats "no posting" as unrestricted; existing list endpoints are NOT retrofitted to scope by `OrgUnit`  <sub>:4476</sub>
 - ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify  <sub>:4612</sub>
 - ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo  <sub>:4804</sub>
+- ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism  <sub>:4914</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3361,15 +3373,15 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>514 lines</sub>
+### `docs/implementation/README.md`  <sub>528 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:384</sub>
-- The two module groups  <sub>:413</sub>
-- How a work order runs  <sub>:450</sub>
-- Known gaps not yet owned by a phase  <sub>:468</sub>
-- When a brief is wrong  <sub>:495</sub>
-- Scope, honestly  <sub>:508</sub>
+- Dependency order  <sub>:398</sub>
+- The two module groups  <sub>:427</sub>
+- How a work order runs  <sub>:464</sub>
+- Known gaps not yet owned by a phase  <sub>:482</sub>
+- When a brief is wrong  <sub>:509</sub>
+- Scope, honestly  <sub>:522</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 

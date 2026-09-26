@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 395 tracked files in `docs/*`, by directory.
+All 396 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,11 +563,11 @@ All 395 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 4913 |  |
+| `DECISIONS.md` | doc | 5005 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 514 |  |
+| `README.md` | doc | 528 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
@@ -614,7 +614,7 @@ All 395 tracked files in `docs/*`, by directory.
 | `69-order-lifecycle-status-dashboard.md` | doc | 121 |  |
 | `77-sales-category-breakdown-coverage-note.md` | doc | 70 |  |
 
-### `docs/implementation/architecture-patterns` (37)
+### `docs/implementation/architecture-patterns` (38)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -647,6 +647,7 @@ All 395 tracked files in `docs/*`, by directory.
 | `142-bpmn-visual-workflow-engine.md` | doc | 109 |  |
 | `143-micro-frontend-architecture.md` | doc | 160 |  |
 | `157-client-request-idempotency-keys.md` | doc | 276 |  |
+| `166-unified-product-reference-registry.md` | doc | 395 |  |
 | `92-microservices-module-decoupling.md` | doc | 89 |  |
 | `93-headless-frontend-architecture.md` | doc | 66 |  |
 | `94-cloud-native-container-scalability.md` | doc | 70 |  |

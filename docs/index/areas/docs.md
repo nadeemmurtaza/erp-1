@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-395 files · 65,230 lines
+396 files · 65,731 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,12 +84,12 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 8 | 8,693 | doc, file |
+| `docs/implementation` | 8 | 8,799 | doc, file |
 | `docs/implementation/access-control-identity` | 7 | 1,896 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
 | `docs/implementation/analytics-reporting` | 5 | 555 | doc |
-| `docs/implementation/architecture-patterns` | 37 | 3,568 | doc |
+| `docs/implementation/architecture-patterns` | 38 | 3,963 | doc |
 | `docs/implementation/attendance-workforce` | 8 | 1,072 | doc |
 | `docs/implementation/b2b-wholesale-multientity` | 5 | 1,027 | doc |
 | `docs/implementation/catalog-variants-pricing` | 3 | 904 | doc |
@@ -116,7 +116,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 4,913 | doc |  |
+| `docs/implementation/DECISIONS.md` | 5,005 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
@@ -130,7 +130,7 @@ has a bug.
 | `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md` | 566 | doc |  |
 | `docs/erp-lenses/_meta/_index.md` | 550 | doc |  |
 | `docs/implementation/WO-22-lens-workflow-results.md` | 539 | doc |  |
-| `docs/implementation/payroll/19-payroll.md` | 522 | doc |  |
+| `docs/implementation/README.md` | 528 | doc |  |
 
 
 ---

@@ -4910,3 +4910,95 @@ everywhere else.
 
 ### Status
 **Accepted.**
+
+## ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism
+
+### Context
+
+The owner's follow-up named a concrete, real cost this document set had not
+yet addressed: the identical product's name, description and photographs
+are re-entered from scratch by every business in a supply chain —
+manufacturer, then each distributor, supplier and retailer who stocks the
+same physical item — because nothing in this codebase reads
+`ProductVariant.barcode` (already unique per tenant, `03-variants-sku-seo.md`)
+as proof that two tenants are describing the same object. The owner asked
+for this to be designed using Apple's unified-memory principle by name: one
+shared copy, read by every consumer through a reference, instead of a
+copy per consumer.
+
+### Options considered
+
+1. **Do nothing / leave it as tenant-private duplication** — rejected: the
+   owner named a real, measurable cost (a hundred-fold repeated upload of
+   identical photographs across a real supply chain) that doc 39's own
+   isolation, correct for commercial data, was never meant to force onto
+   purely descriptive facts.
+2. **Fully centralize the `Product`/`ProductVariant` tables themselves**
+   (the literal "one shared product table" reading) — rejected for the
+   same reason ADR-047 rejected it for the marketplace: it would erase the
+   commercial data (price, stock, SKU, cost) that must stay private per
+   tenant, conflating two different kinds of fact doc 39 already
+   separates.
+3. **A shared reference table for descriptive facts only, joined by
+   barcode, living in the same `apps/platform` module doc 165 already
+   introduced** — selected. Reuses the one tenant-trust boundary this
+   codebase has already built for cross-tenant, opt-in, non-commercial data,
+   rather than standing up a second one.
+4. **Sync images as local copies alongside the text** (treat images and
+   text identically) — rejected specifically for images: a locally-copied
+   image defeats the entire storage-saving purpose the owner asked for. The
+   correct application of the unified-memory principle is that images are
+   *referenced* by shared URL, never copied, which is where the actual
+   "100 times" storage cost lives; text is cheap enough that caching it
+   locally for storefront-render resilience is a reasoned, explicit
+   exception, not an oversight.
+
+### Decision
+
+`GlobalProductReference` (keyed by barcode) plus its
+`Translation`/`Image`/`Link`/`Flag` tables, additive to the same
+`apps/platform/prisma/schema/marketplace.prisma` doc 165 introduced. A
+tenant creating a product looks up its barcode; a match autofills text and
+images without a manual re-entry. Text is synced into the tenant's own
+`ProductTranslation` for render-time resilience (doc 39's own "no
+application code inside a tenant's own instance needs to know a shared
+tier exists above it" restated). Images are never re-uploaded — a linked
+tenant's own `ProductImage.imageUrl` points directly at the platform's own
+shared storage, the literal "one buffer, many readers" move that actually
+removes the duplicated storage cost. Only the registering tenant may edit
+the canonical record; every other tenant's write path is a reviewed flag,
+closing the toxic-pair risk of one tenant vandalizing another's shared data.
+
+### Reasoning
+
+The Apple unified-memory analogy is exact, not decorative: the traditional
+GPU-has-its-own-VRAM design pays a real copy-and-sync cost for data the CPU
+already holds, precisely mirroring a hundred tenants each holding their own
+copy of one manufacturer's product description. The fix in both cases is
+the same — stop copying, start referencing — applied here only to the half
+of a product record that is objectively, physically true regardless of who
+is selling it, never to the half that is true only for one business's own
+commercial relationship to it. That boundary is exactly doc 39's own
+existing shared-vs-private line, not a new one invented for this decision.
+
+### Consequences
+
+- `apps/platform`'s marketplace module now holds two related but distinct
+  cross-tenant capabilities — doc 165's publish/discover listings and this
+  document's shared reference registry — sharing one tenant credential
+  rather than two, and any future addition to that module should be
+  checked against the same "opt-in, non-commercial, tenant-explicit" test
+  before being added there.
+- The real, measurable storage saving this document delivers is on image
+  storage specifically, not on the schema row count — a future review of
+  "did this actually save 100x" should look at the storage driver's own
+  bucket size for shared vs. duplicated images, not at Postgres row counts.
+- `GlobalProductReferenceFlag`'s manual-review path is a deliberate
+  slower-but-safer choice; if flag volume ever becomes a real moderation
+  burden, an automatic resolution heuristic is a named future refinement
+  (doc 166's own "Out of scope"), not something to build ahead of that need.
+- WO-166.1–166.5 are unblocked and buildable today — unlike doc 165's own
+  nID-login half, this document has no external cross-repo dependency.
+
+### Status
+**Accepted.**

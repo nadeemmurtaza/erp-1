@@ -3,7 +3,7 @@
 
 # Tests
 
-**260** spec files, **2,575** cases. What is already pinned down — and what is not.
+**267** spec files, **2,608** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -48,7 +48,7 @@ regression or an N+1.
 | `apps/api/test/email-templates-admin.e2e-spec.ts` | 4 | Admin email template catalog (e2e) |
 | `apps/api/test/giftkarta-checkout.e2e-spec.ts` | 6 | Giftkarta third-party gift card checkout (e2e) |
 | `apps/api/test/meta.e2e-spec.ts` | 2 | Meta (e2e) |
-| `apps/api/test/orders.e2e-spec.ts` | 33 | Orders (e2e) · payment methods · placing an order · stitched orders · bank transfer · order status · tracking · admin a… |
+| `apps/api/test/orders.e2e-spec.ts` | 34 | Orders (e2e) · payment methods · placing an order · stitched orders · bank transfer · order status · tracking · admin a… |
 | `apps/api/test/payments-gateway.e2e-spec.ts` | 4 | JazzCash checkout redirect (e2e) |
 | `apps/api/test/payments-refund.e2e-spec.ts` | 5 | Payment refunds (e2e) |
 | `apps/api/test/promotions-checkout.e2e-spec.ts` | 8 | Promotions & gift cards at checkout (e2e) · automatic discounts · promo codes · gift cards · store credit |
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (240)
+## Unit and integration (247)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -81,6 +81,7 @@ regression or an N+1.
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
+| `apps/api/src/core/feed/feed-registry.service.spec.ts` | core/feed | 6 | FeedRegistryService — WO-58.2 |
 | `apps/api/src/core/intent/intent-router.service.spec.ts` | core/intent | 12 | IntentRouterService · routing · permission enforcement — mirrors PermissionsGuard exactly, for a se… |
 | `apps/api/src/core/metrics/metric-registry.service.spec.ts` | core/metrics | 15 | MetricRegistryService · register · collect — permission gating · collect — failure isolation · coll… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
@@ -109,14 +110,17 @@ regression or an N+1.
 | `apps/api/src/modules/accounting/gl-reports.service.spec.ts` | accounting | 9 | GlReportsService — WO-19.4 · trialBalance · profitAndLoss · balanceSheet · cashFlow · agedReceivabl… |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | accounting | 52 | PostingRulesSubscriber — WO-19.2 · onOrderPlaced · onPaymentSucceeded · onPaymentRefunded · onSuppl… |
 | `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts` | accounting | 7 | WalletPostingRulesSubscriber — doc 155 §3 · onWalletCreditPurchased · onWalletCreditRedeemed · onWa… |
+| `apps/api/src/modules/analytics/analytics.category-velocity.spec.ts` | analytics | 4 | AnalyticsService.categoryVelocity — WO-57.1 |
 | `apps/api/src/modules/analytics/analytics.comparison.spec.ts` | analytics | 8 | AnalyticsService.comparison |
 | `apps/api/src/modules/analytics/analytics.customers.spec.ts` | analytics | 7 | AnalyticsService — WO-D.5 customers overview/retention/top · customersOverview · customersRetention… |
 | `apps/api/src/modules/analytics/analytics.inventory.spec.ts` | analytics | 9 | AnalyticsService — WO-D.4 inventory valuation/movements · inventoryValuation · inventoryMovements |
+| `apps/api/src/modules/analytics/analytics.lifecycle.spec.ts` | analytics | 4 | AnalyticsService.orderLifecycleBreakdown — WO-69.1 |
 | `apps/api/src/modules/analytics/analytics.metrics.spec.ts` | analytics | 14 | SalesMetricsProvider · SalesCostMetricsProvider · OrdersMetricsProvider · ProductsMetricsProvider ·… |
 | `apps/api/src/modules/analytics/analytics.orders.spec.ts` | analytics | 8 | AnalyticsService — WO-D.1 orders overview/fulfilment · ordersOverview · ordersFulfilment |
 | `apps/api/src/modules/analytics/analytics.products.spec.ts` | analytics | 9 | AnalyticsService — WO-D.3 products top/slow-sellers, categories · productsTopSellers · productsSlow… |
 | `apps/api/src/modules/analytics/analytics.purchasing.spec.ts` | analytics | 13 | AnalyticsService — WO-D.2 purchasing spend/suppliers · purchasingSpend · purchasingSuppliers · WO-9… |
 | `apps/api/src/modules/analytics/analytics.sales.spec.ts` | analytics | 6 | AnalyticsService — WO-A.5 sales revenue/aov/profit/funnel · salesRevenue · salesAov · salesProfit ·… |
+| `apps/api/src/modules/analytics/analytics.summary.spec.ts` | analytics | 2 | AnalyticsService.summary — WO-45.1 totalUnits |
 | `apps/api/src/modules/analytics/analytics.workshop.spec.ts` | analytics | 7 | AnalyticsService — WO-D.6 workshop output · series · byStage · byTailor |
 | `apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts` | analytics | 11 | SupplyChainDigestCron · sendSupplierDigests · sendSupplierScorecards · sendDemandAlerts |
 | `apps/api/src/modules/bom/bom-cards.metrics.spec.ts` | bom | 4 | BomCardsMetricsProvider · BomValueMetricsProvider |
@@ -176,12 +180,14 @@ regression or an N+1.
 | `apps/api/src/modules/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |
 | `apps/api/src/modules/orders/cod-risk.service.spec.ts` | orders | 7 | CodRiskService |
 | `apps/api/src/modules/orders/instalment-plan.service.spec.ts` | orders | 16 | InstalmentPlanService · recordInstalmentPayment · cancel · markDefaulted |
+| `apps/api/src/modules/orders/order-feed.source.spec.ts` | orders | 6 | OrderFeedSource — WO-58.2 |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
 | `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 12 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
 | `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
 | `apps/api/src/modules/orgstructure/org-unit.service.spec.ts` | orgstructure | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
+| `apps/api/src/modules/payments/payment-feed.source.spec.ts` | payments | 5 | PaymentFeedSource — WO-58.2 |
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
 | `apps/api/src/modules/payroll/leave-accrual.cron.spec.ts` | payroll | 3 | LeaveAccrualCron |
 | `apps/api/src/modules/payroll/leave-request-action.source.spec.ts` | payroll | 5 | LeaveRequestActionSource |
@@ -198,6 +204,7 @@ regression or an N+1.
 | `apps/api/src/modules/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |
 | `apps/api/src/modules/production/work-orders.service.spec.ts` | production | 11 | WorkOrdersService · create · release · complete · cancel |
 | `apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts` | purchasing | 5 | GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023 · onModuleInit · onG… |
+| `apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts` | purchasing | 5 | PurchaseOrderFeedSource — WO-58.2 |
 | `apps/api/src/modules/purchasing/purchasing.cron.spec.ts` | purchasing | 5 | PurchasingCron |
 | `apps/api/src/modules/purchasing/purchasing.metrics.spec.ts` | purchasing | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |
 | `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |

@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 384 tracked files in `apps/web`, by directory.
+All 386 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.

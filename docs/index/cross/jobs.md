@@ -3,7 +3,7 @@
 
 # Background work
 
-**23** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
+**25** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
 
 
 Background work is invisible in the UI and easy to forget exists. Anything here
@@ -13,6 +13,8 @@ runs on every node that has its module enabled.
 
 | Schedule (UTC) | Handler | Module | Where | What it does |
 |---|---|---|---|---|
+| `0 3 * * *` | `purgeExpiredIdempotencyKeys()` | core/`idempotency` | `apps/api/src/core/idempotency/idempotency.cron.ts:23` |  |
+| `*/5 * * * *` | `reapStuckInProgressKeys()` | core/`idempotency` | `apps/api/src/core/idempotency/idempotency.cron.ts:39` | A narrower sweep than the nightly purge above — reaps only rows stuck `IN_PROGRESS` well past any r… |
 | `0 2 1 * *` | `run()` | `accounting` | `apps/api/src/modules/accounting/asset-depreciation.cron.ts:18` |  |
 | `0 1 * * *` | `sendSupplierDigests()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:36` | --- 1. |
 | `0 7 * * 1` | `sendSupplierScorecards()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:124` | --- 2. |

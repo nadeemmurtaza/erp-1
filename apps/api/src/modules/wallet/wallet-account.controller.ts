@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthenticatedOnly, CurrentUser } from '../../core/auth/decorators';
+import { IdempotentWrite } from '../../core/idempotency/idempotent-write.decorator';
 import { PaginationQueryDto } from '../../core/common/dto/pagination.dto';
 import { WalletService } from './wallet.service';
 import { PurchaseCreditDto } from './dto/wallet.dto';
@@ -31,6 +32,7 @@ export class WalletAccountController {
   }
 
   @Post('purchase')
+  @IdempotentWrite('wallet.purchase')
   @ApiOperation({ summary: 'Buy wallet credit — settles into an existing Payment, never a new tender of its own' })
   async purchase(@CurrentUser('id') userId: string, @Body() dto: PurchaseCreditDto) {
     return this.wallet.purchaseCredit(userId, dto);

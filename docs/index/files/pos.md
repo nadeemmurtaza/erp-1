@@ -78,7 +78,7 @@ All 31 tracked files in `apps/pos`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 406 |  |
+| `page.tsx` | page | 413 |  |
 
 ### `apps/pos/src/components` (2)
 
@@ -101,8 +101,8 @@ All 31 tracked files in `apps/pos`, by directory.
 | `api-client.ts` | utility | 67 |  |
 | `auth-client.ts` | utility | 80 |  |
 | `outbox-db.ts` | utility | 55 |  |
-| `outbox-sync.ts` | utility | 39 |  |
-| `pos-client.ts` | utility | 203 |  |
+| `outbox-sync.ts` | utility | 44 |  |
+| `pos-client.ts` | utility | 214 |  |
 
 
 ---

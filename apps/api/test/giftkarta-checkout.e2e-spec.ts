@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common
 import { Test } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
 import request from 'supertest';
+import { randomUUID } from 'node:crypto';
 import { toMinor } from '@newax/shared';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
@@ -93,6 +94,7 @@ describe('Giftkarta third-party gift card checkout (e2e)', () => {
     await agent.post('/api/v1/cart/items').send({ variantId: readyVariantId, quantity: 1 }).expect(201);
     const response = await agent
       .post('/api/v1/orders')
+      .set('Idempotency-Key', randomUUID())
       .send({ shippingAddress: KARACHI, paymentMethod: 'giftkarta' })
       .expect(201);
     createdOrderIds.push(response.body.id);

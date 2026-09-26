@@ -32,15 +32,15 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,005 | 137,276 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 396 | 67,172 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 399 | 65,731 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 1,014 | 137,895 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 396 | 67,358 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 399 | 65,762 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,609 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 160 | 11,233 |  |
 | `scripts` | 24 | 9,440 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 62 | 7,695 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `apps/pos` | 31 | 2,000 | Next.js PWA — offline-first point of sale |
+| `apps/pos` | 31 | 2,023 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,046 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
@@ -137,6 +137,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`extension-points`](core/extension-points.md) | 11 |  |
 | [`feed`](core/feed.md) | 5 |  |
 | [`health`](core/health.md) | 2 |  |
+| [`idempotency`](core/idempotency.md) | 7 |  |
 | [`intent`](core/intent.md) | 4 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
 | [`notifications`](core/notifications.md) | 23 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |

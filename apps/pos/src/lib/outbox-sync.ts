@@ -24,7 +24,12 @@ export async function syncOutbox(shiftId: string): Promise<{ synced: number; fai
     await putOutboxEntry(syncing);
 
     try {
-      await sell(shiftId, syncing.payload);
+      // architecture-patterns/157 — the outbox entry's own id IS this sale's
+      // Idempotency-Key (assigned once, in till/page.tsx, at the moment the
+      // sale was first attempted): resending it unchanged on every sync
+      // retry means a sale already recorded server-side replays instead of
+      // posting a second stock decrement.
+      await sell(shiftId, syncing.payload, syncing.id);
       await deleteOutboxEntry(syncing.id);
       synced += 1;
     } catch (cause) {

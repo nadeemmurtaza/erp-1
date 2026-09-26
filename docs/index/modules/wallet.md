@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 11 files
 
 Source: `apps/api/src/modules/wallet/`
 
-## Files (11 · 1,876 lines)
+## Files (11 · 1,878 lines)
 
 All paths relative to `apps/api/src/modules/wallet/dto`.
 
@@ -21,7 +21,7 @@ All paths relative to `apps/api/src/modules/wallet/dto`.
 | `merchant-payable.controller.ts` | controller | 73 | 1 | doc 155 (WO-155.5) — a merchant's own payable/payout screen, generalizing doc 145's own supplier-bill-style screen (§3). |
 | `merchant-payable.service.spec.ts` | unit test | 203 | — |  |
 | `merchant-payable.service.ts` | service | 237 | 1 | doc 155 §3 (WO-155.3) — the exact mirror of doc 145's own AP side (`SupplierBill`): a merchant selling through this pla… |
-| `wallet-account.controller.ts` | controller | 39 | 1 | doc 155 (WO-155.5) — the customer's own balance, purchase and history screen. |
+| `wallet-account.controller.ts` | controller | 41 | 1 | doc 155 (WO-155.5) — the customer's own balance, purchase and history screen. |
 | `wallet-admin.controller.ts` | controller | 72 | 1 | doc 155 (WO-155.4/155.5) — staff-side wallet administration: manual adjustments (below/at-or-above the auto-approval th… |
 | `wallet-credit-note.port.spec.ts` | unit test | 50 | — |  |
 | `wallet-credit-note.port.ts` | module | 110 | 5 |  |
@@ -48,9 +48,9 @@ All paths relative to `apps/api/src/modules/wallet/dto`.
 | GET | `/admin/wallet/customers/:customerId` | `finance.view` | `WalletAdminController.findAccount` :22 | A customer's own wallet account — the id a staff screen starts from |
 | POST | `/admin/wallet/customers/:customerId/refund/purchase` | `finance.wallets.adjust` | `WalletAdminController.refundPurchase` :61 | Refund an unredeemed wallet purchase |
 | POST | `/admin/wallet/orders/:orderId/refund/redeemed` | `finance.wallets.adjust` | `WalletAdminController.refundRedeemedOrder` :68 | Refund an order already redeemed from a customer's wallet — corrects the merchant's own p… |
-| GET | `/wallet` | signed-in | `WalletAccountController.balance` :23 | My wallet balance |
-| GET | `/wallet/ledger` | signed-in | `WalletAccountController.ledger` :29 | My wallet history |
-| POST | `/wallet/purchase` | signed-in | `WalletAccountController.purchase` :35 | Buy wallet credit — settles into an existing Payment, never a new tender of its own |
+| GET | `/wallet` | signed-in | `WalletAccountController.balance` :24 | My wallet balance |
+| GET | `/wallet/ledger` | signed-in | `WalletAccountController.ledger` :30 | My wallet history |
+| POST | `/wallet/purchase` | signed-in | `WalletAccountController.purchase` :37 | Buy wallet credit — settles into an existing Payment, never a new tender of its own |
 
 
 ## Domain events
@@ -105,6 +105,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `common`
 - core `events`
 - core `extension-points`
+- core `idempotency`
 - core `prisma`
 - core `settings`
 - package `@newax/shared`
@@ -138,7 +139,7 @@ check there before adding another.
 | `SchedulePayoutRunDto` | class | `wallet.dto.ts:81` |  |
 | `MerchantPayableController` | class | `merchant-payable.controller.ts:17` | doc 155 (WO-155.5) — a merchant's own payable/payout screen, generalizing doc 145's own supplier-bill-style s… |
 | `MerchantPayableService` | class | `merchant-payable.service.ts:17` | doc 155 §3 (WO-155.3) — the exact mirror of doc 145's own AP side (`SupplierBill`): a merchant selling throug… |
-| `WalletAccountController` | class | `wallet-account.controller.ts:18` | doc 155 (WO-155.5) — the customer's own balance, purchase and history screen. |
+| `WalletAccountController` | class | `wallet-account.controller.ts:19` | doc 155 (WO-155.5) — the customer's own balance, purchase and history screen. |
 | `WalletAdminController` | class | `wallet-admin.controller.ts:16` | doc 155 (WO-155.4/155.5) — staff-side wallet administration: manual adjustments (below/at-or-above the auto-a… |
 | `CreditNoteInput` | interface | `wallet-credit-note.port.ts:6` |  |
 | `CreditNoteResult` | interface | `wallet-credit-note.port.ts:14` |  |

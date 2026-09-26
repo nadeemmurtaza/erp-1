@@ -1,5 +1,23 @@
 # 139 — A second real front door: proving the port model with a WebSocket/SSE gateway, for agent and voice sessions specifically
 
+> **Status: verified, 2026-09-26.** This document's own factual premises
+> hold today: `IntentRouterService` (`core/intent/intent-router.service.ts`)
+> exists exactly as doc 135 and this document both assume — a
+> `register()`/`route()`/`list()` API that reuses `decideApiKeyAccess` for
+> its permission checks, so it can never drift from `PermissionsGuard`'s own
+> HTTP-path enforcement. No WebSocket or SSE dependency
+> (`@nestjs/websockets`, `@nestjs/platform-ws`, `socket.io`, `ws`) appears
+> in `apps/api/package.json`, and no gateway file exists anywhere in
+> `apps/api/src` — confirming this document's own premise ("not yet built")
+> remains true. WO-139.1 is left unbuilt on purpose: it is this document's
+> own named future work, explicitly scoped only for "once a real agent/voice
+> integration requirement exists," and no such requirement exists in this
+> codebase today. Building `AgentSessionGateway` now, with no real caller to
+> connect to it, would be exactly the speculative functionality CLAUDE.md's
+> "No speculative functionality" section forbids — the same reasoning
+> already applied to doc 128's deferred `ShippingCarrier.getRate()`. See
+> `DECISIONS.md` ADR-053.
+
 Doc 135's `IntentRouter` proves the *logical* seam for a new interaction
 paradigm; this document is the one concrete *transport* addition worth
 building alongside it — a persistent, bidirectional channel (WebSocket or

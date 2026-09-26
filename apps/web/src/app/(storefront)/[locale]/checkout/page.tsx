@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/utils/cn';
 import { BRAND, formatMoney, type Locale } from '@newax/shared';
 import { Wizard, type WizardStep } from '@/components/common/wizard';
@@ -79,6 +79,14 @@ export default function CheckoutPage() {
   });
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
+  // architecture-patterns/157 — one key for the whole lifetime of this
+  // "place an order" attempt: generated once, resent unchanged on every
+  // retry (a declined-then-retried payment, a flaky network), so a resend
+  // collapses to the SAME order instead of a second one. A fresh checkout
+  // attempt only exists once this page remounts (new cart, new mount).
+  const idempotencyKey = useRef<string | null>(null);
+  if (idempotencyKey.current === null) idempotencyKey.current = crypto.randomUUID();
 
   // Phase 5 (WO-5.3/5.4/5.5): promo code, gift card and store credit — all
   // validated authoritatively at order placement; the promo preview here is
@@ -190,7 +198,10 @@ export default function CheckoutPage() {
         method: 'POST',
         credentials: 'include',
         query: { locale },
-        ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+        headers: {
+          'Idempotency-Key': idempotencyKey.current!,
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         fallbackMessage: t('failed'),
         body: {
           shippingAddress: {

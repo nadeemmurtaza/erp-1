@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2226,
-    "lines": 338502,
+    "files": 2235,
+    "lines": 339361,
     "routes": 777,
     "controllers": 140,
-    "models": 279,
-    "enums": 126,
-    "migrations": 103,
+    "models": 280,
+    "enums": 127,
+    "migrations": 104,
     "events": 65,
     "permissions": 108,
     "screens": 247,
-    "crons": 23,
-    "specs": 293,
+    "crons": 25,
+    "specs": 296,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1005,
-      "lines": 137276,
-      "bytes": 5303230,
+      "files": 1014,
+      "lines": 137895,
+      "bytes": 5330127,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -45,20 +45,20 @@
     },
     "pos": {
       "files": 31,
-      "lines": 2000,
-      "bytes": 68220,
+      "lines": 2023,
+      "bytes": 69435,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
       "files": 399,
-      "lines": 65731,
-      "bytes": 2371214,
+      "lines": 65762,
+      "bytes": 2372753,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 396,
-      "lines": 67172,
-      "bytes": 3996386,
+      "lines": 67358,
+      "bytes": 4007671,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1439,6 +1439,19 @@
         "apps/api/src/core/health/health.module.ts"
       ],
       "page": "docs/index/core/health.md"
+    },
+    {
+      "name": "idempotency",
+      "files": [
+        "apps/api/src/core/idempotency/idempotency-key.constraint.spec.ts",
+        "apps/api/src/core/idempotency/idempotency.cron.spec.ts",
+        "apps/api/src/core/idempotency/idempotency.cron.ts",
+        "apps/api/src/core/idempotency/idempotency.interceptor.spec.ts",
+        "apps/api/src/core/idempotency/idempotency.interceptor.ts",
+        "apps/api/src/core/idempotency/idempotency.module.ts",
+        "apps/api/src/core/idempotency/idempotent-write.decorator.ts"
+      ],
+      "page": "docs/index/core/idempotency.md"
     },
     {
       "name": "intent",
@@ -6048,7 +6061,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "listCouriers",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 29,
+      "line": 30,
       "access": "fulfilment.view | fulfilment.manage",
       "permissions": [
         "fulfilment.view",
@@ -6065,7 +6078,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "listManifests",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 61,
+      "line": 63,
       "access": "fulfilment.view | fulfilment.manage",
       "permissions": [
         "fulfilment.view",
@@ -6082,7 +6095,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "createManifest",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 66,
+      "line": 68,
       "access": "fulfilment.manage",
       "permissions": [
         "fulfilment.manage"
@@ -6098,7 +6111,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "dispatchManifest",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 80,
+      "line": 82,
       "access": "fulfilment.manage",
       "permissions": [
         "fulfilment.manage"
@@ -6114,7 +6127,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "addToManifest",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 71,
+      "line": 73,
       "access": "fulfilment.manage",
       "permissions": [
         "fulfilment.manage"
@@ -6293,7 +6306,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "rtoStats",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 86,
+      "line": 88,
       "access": "fulfilment.view | fulfilment.manage",
       "permissions": [
         "fulfilment.view",
@@ -6310,7 +6323,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "listShipments",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 35,
+      "line": 36,
       "access": "fulfilment.view | fulfilment.manage",
       "permissions": [
         "fulfilment.view",
@@ -6327,7 +6340,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "createShipment",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 46,
+      "line": 48,
       "access": "fulfilment.manage",
       "permissions": [
         "fulfilment.manage"
@@ -6343,7 +6356,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "getShipment",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 41,
+      "line": 42,
       "access": "fulfilment.view | fulfilment.manage",
       "permissions": [
         "fulfilment.view",
@@ -6360,7 +6373,7 @@
       "controller": "FulfilmentAdminController",
       "handler": "recordStatus",
       "file": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
-      "line": 51,
+      "line": 53,
       "access": "fulfilment.manage",
       "permissions": [
         "fulfilment.manage"
@@ -7578,7 +7591,7 @@
       "controller": "OrdersAdminController",
       "handler": "list",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 102,
+      "line": 104,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -7594,7 +7607,7 @@
       "controller": "OrdersAdminController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 118,
+      "line": 120,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -7610,7 +7623,7 @@
       "controller": "OrdersAdminController",
       "handler": "changeStatus",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 124,
+      "line": 126,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -7626,7 +7639,7 @@
       "controller": "InstalmentPlanController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
-      "line": 23,
+      "line": 24,
       "access": "pos.operate",
       "permissions": [
         "pos.operate"
@@ -7642,7 +7655,7 @@
       "controller": "InstalmentPlanController",
       "handler": "cancel",
       "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
-      "line": 41,
+      "line": 43,
       "access": "pos.instalments.cancel",
       "permissions": [
         "pos.instalments.cancel"
@@ -7658,7 +7671,7 @@
       "controller": "InstalmentPlanController",
       "handler": "markDefaulted",
       "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
-      "line": 48,
+      "line": 50,
       "access": "pos.instalments.default",
       "permissions": [
         "pos.instalments.default"
@@ -7674,7 +7687,7 @@
       "controller": "InstalmentPlanController",
       "handler": "recordPayment",
       "file": "apps/api/src/modules/orders/instalment-plan.controller.ts",
-      "line": 30,
+      "line": 32,
       "access": "pos.operate",
       "permissions": [
         "pos.operate"
@@ -8548,7 +8561,7 @@
       "controller": "PosSalesController",
       "handler": "sell",
       "file": "apps/api/src/modules/pos/pos-sales.controller.ts",
-      "line": 16,
+      "line": 18,
       "access": "pos.operate",
       "permissions": [
         "pos.operate"
@@ -12968,7 +12981,7 @@
       "controller": "OrdersController",
       "handler": "place",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 38,
+      "line": 40,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -12982,7 +12995,7 @@
       "controller": "OrdersController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 74,
+      "line": 76,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -12996,7 +13009,7 @@
       "controller": "OrdersController",
       "handler": "track",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 83,
+      "line": 85,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -13010,7 +13023,7 @@
       "controller": "OrdersController",
       "handler": "mine",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 60,
+      "line": 62,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -13670,7 +13683,7 @@
       "controller": "WalletAccountController",
       "handler": "balance",
       "file": "apps/api/src/modules/wallet/wallet-account.controller.ts",
-      "line": 23,
+      "line": 24,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -13684,7 +13697,7 @@
       "controller": "WalletAccountController",
       "handler": "ledger",
       "file": "apps/api/src/modules/wallet/wallet-account.controller.ts",
-      "line": 29,
+      "line": 30,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -13698,7 +13711,7 @@
       "controller": "WalletAccountController",
       "handler": "purchase",
       "file": "apps/api/src/modules/wallet/wallet-account.controller.ts",
-      "line": 35,
+      "line": 37,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -23724,6 +23737,81 @@
       "indexes": [
         "@@index([goodsReceiptId])",
         "@@index([variantId])"
+      ]
+    },
+    {
+      "name": "IdempotencyKey",
+      "file": "apps/api/prisma/schema/idempotency.prisma",
+      "line": 15,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "scope",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "requestHash",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "IdempotencyKeyStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "responseStatus",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "responseBody",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "completedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([scope, key])",
+        "@@index([createdAt])"
       ]
     },
     {
@@ -41762,6 +41850,15 @@
       ]
     },
     {
+      "name": "IdempotencyKeyStatus",
+      "file": "apps/api/prisma/schema/idempotency.prisma",
+      "line": 10,
+      "values": [
+        "IN_PROGRESS",
+        "COMPLETED"
+      ]
+    },
+    {
       "name": "IdentityVerificationStatus",
       "file": "apps/api/prisma/schema/identity-verification.prisma",
       "line": 8,
@@ -44585,6 +44682,22 @@
         "BundleComponent",
         "ProductBundle"
       ]
+    },
+    {
+      "folder": "20260926150000_add_idempotency_key",
+      "file": "apps/api/prisma/schema/migrations/20260926150000_add_idempotency_key/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_idempotency_key",
+      "statements": 4,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "IdempotencyKey"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -46852,6 +46965,20 @@
   "nav": [],
   "crons": [
     {
+      "schedule": "0 3 * * *",
+      "file": "apps/api/src/core/idempotency/idempotency.cron.ts",
+      "line": 23,
+      "handler": "purgeExpiredIdempotencyKeys",
+      "doc": ""
+    },
+    {
+      "schedule": "*/5 * * * *",
+      "file": "apps/api/src/core/idempotency/idempotency.cron.ts",
+      "line": 39,
+      "handler": "reapStuckInProgressKeys",
+      "doc": "A narrower sweep than the nightly purge above — reaps only rows stuck `IN_PROGRESS` well past any real request's own duration, so a crashed handler does not permanently block retries under the same k…"
+    },
+    {
       "schedule": "0 2 1 * *",
       "file": "apps/api/src/modules/accounting/asset-depreciation.cron.ts",
       "line": 18,
@@ -47769,6 +47896,33 @@
       "cases": 6,
       "describes": [
         "FeedRegistryService — WO-58.2"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/idempotency/idempotency-key.constraint.spec.ts",
+      "module": "core/idempotency",
+      "kind": "unit test",
+      "cases": 1,
+      "describes": [
+        "IdempotencyKey — @@unique([scope, key]) race guard"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/idempotency/idempotency.cron.spec.ts",
+      "module": "core/idempotency",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "IdempotencyCron — WO-157.4"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/idempotency/idempotency.interceptor.spec.ts",
+      "module": "core/idempotency",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "IdempotencyInterceptor — WO-157.2"
       ]
     },
     {
@@ -50046,11 +50200,12 @@
       "file": "apps/api/test/orders.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
-      "cases": 34,
+      "cases": 39,
       "describes": [
         "Orders (e2e)",
         "payment methods",
         "placing an order",
+        "idempotency (Idempotency-Key)",
         "stitched orders",
         "bank transfer",
         "order status",
@@ -51482,6 +51637,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/idempotency.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 34,
+      "bytes": 1335,
+      "doc": "A client-supplied Idempotency-Key, closing the one gap doc 117's own",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/identity-verification.prisma",
       "area": "api",
       "kind": "prisma schema",
@@ -52409,6 +52573,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926150000_add_idempotency_key/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 32,
+      "bytes": 1079,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -52700,14 +52873,14 @@
       "path": "apps/api/src/app.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 30,
-      "bytes": 1215,
+      "lines": 35,
+      "bytes": 1616,
       "doc": "",
       "symbols": [
         {
           "name": "AppModule",
           "kind": "class",
-          "line": 29
+          "line": 34
         }
       ]
     },
@@ -54270,14 +54443,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 51,
-      "bytes": 1795,
+      "lines": 53,
+      "bytes": 1888,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 50
+          "line": 52
         }
       ]
     },
@@ -54991,6 +55164,98 @@
           "name": "HealthModule",
           "kind": "class",
           "line": 5
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/idempotency/idempotency-key.constraint.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 40,
+      "bytes": 1571,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/idempotency/idempotency.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 42,
+      "bytes": 1483,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/idempotency/idempotency.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 48,
+      "bytes": 2164,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IdempotencyCron",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/idempotency/idempotency.interceptor.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 161,
+      "bytes": 6885,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/idempotency/idempotency.interceptor.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 90,
+      "bytes": 4405,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IdempotencyInterceptor",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/idempotency/idempotency.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 607,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IdempotencyModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/idempotency/idempotent-write.decorator.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 13,
+      "bytes": 540,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IDEMPOTENCY_SCOPE_KEY",
+          "kind": "const",
+          "line": 10
+        },
+        {
+          "name": "IdempotentWrite",
+          "kind": "const",
+          "line": 12
         }
       ]
     },
@@ -60487,14 +60752,14 @@
       "path": "apps/api/src/modules/fulfilment/fulfilment.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 92,
-      "bytes": 3050,
+      "lines": 94,
+      "bytes": 3184,
       "doc": "",
       "symbols": [
         {
           "name": "FulfilmentAdminController",
           "kind": "class",
-          "line": 24
+          "line": 25
         }
       ]
     },
@@ -62455,14 +62720,14 @@
       "path": "apps/api/src/modules/orders/instalment-plan.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 52,
-      "bytes": 2270,
+      "lines": 54,
+      "bytes": 2403,
       "doc": "",
       "symbols": [
         {
           "name": "InstalmentPlanController",
           "kind": "class",
-          "line": 17
+          "line": 18
         }
       ]
     },
@@ -62566,19 +62831,19 @@
       "path": "apps/api/src/modules/orders/orders.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 145,
-      "bytes": 4356,
+      "lines": 147,
+      "bytes": 4476,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersController",
           "kind": "class",
-          "line": 32
+          "line": 33
         },
         {
           "name": "OrdersAdminController",
           "kind": "class",
-          "line": 97
+          "line": 99
         }
       ]
     },
@@ -63757,14 +64022,14 @@
       "path": "apps/api/src/modules/pos/pos-sales.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 30,
-      "bytes": 1069,
+      "lines": 32,
+      "bytes": 1192,
       "doc": "",
       "symbols": [
         {
           "name": "PosSalesController",
           "kind": "class",
-          "line": 11
+          "line": 12
         }
       ]
     },
@@ -67241,14 +67506,14 @@
       "path": "apps/api/src/modules/wallet/wallet-account.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 39,
-      "bytes": 1592,
+      "lines": 41,
+      "bytes": 1715,
       "doc": "",
       "symbols": [
         {
           "name": "WalletAccountController",
           "kind": "class",
-          "line": 18
+          "line": 19
         }
       ]
     },
@@ -67513,8 +67778,8 @@
       "path": "apps/api/test/crm.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 489,
-      "bytes": 17519,
+      "lines": 491,
+      "bytes": 17605,
       "doc": "",
       "symbols": []
     },
@@ -67522,8 +67787,8 @@
       "path": "apps/api/test/customer-portal.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 255,
-      "bytes": 10885,
+      "lines": 256,
+      "bytes": 10964,
       "doc": "",
       "symbols": []
     },
@@ -67585,8 +67850,8 @@
       "path": "apps/api/test/giftkarta-checkout.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 215,
-      "bytes": 9176,
+      "lines": 217,
+      "bytes": 9262,
       "doc": "",
       "symbols": []
     },
@@ -67603,8 +67868,8 @@
       "path": "apps/api/test/orders.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 981,
-      "bytes": 37117,
+      "lines": 1088,
+      "bytes": 41825,
       "doc": "",
       "symbols": []
     },
@@ -67612,8 +67877,8 @@
       "path": "apps/api/test/payments-gateway.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 214,
-      "bytes": 8613,
+      "lines": 217,
+      "bytes": 8757,
       "doc": "",
       "symbols": []
     },
@@ -67630,8 +67895,8 @@
       "path": "apps/api/test/promotions-checkout.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 327,
-      "bytes": 13944,
+      "lines": 334,
+      "bytes": 14410,
       "doc": "",
       "symbols": []
     },
@@ -67684,8 +67949,8 @@
       "path": "apps/api/test/stitching.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 590,
-      "bytes": 20775,
+      "lines": 593,
+      "bytes": 20907,
       "doc": "",
       "symbols": []
     },
@@ -71518,8 +71783,8 @@
       "path": "apps/pos/src/app/till/page.tsx",
       "area": "pos",
       "kind": "page",
-      "lines": 406,
-      "bytes": 16455,
+      "lines": 413,
+      "bytes": 16845,
       "doc": "",
       "symbols": [
         {
@@ -71698,8 +71963,8 @@
       "path": "apps/pos/src/lib/outbox-sync.ts",
       "area": "pos",
       "kind": "utility",
-      "lines": 39,
-      "bytes": 1432,
+      "lines": 44,
+      "bytes": 1793,
       "doc": "",
       "symbols": [
         {
@@ -71713,8 +71978,8 @@
       "path": "apps/pos/src/lib/pos-client.ts",
       "area": "pos",
       "kind": "utility",
-      "lines": 203,
-      "bytes": 5786,
+      "lines": 214,
+      "bytes": 6250,
       "doc": "",
       "symbols": [
         {
@@ -71825,37 +72090,37 @@
         {
           "name": "sell",
           "kind": "function",
-          "line": 168
+          "line": 175
         },
         {
           "name": "getReceipt",
           "kind": "function",
-          "line": 172
+          "line": 183
         },
         {
           "name": "printReceipt",
           "kind": "function",
-          "line": 177
+          "line": 188
         },
         {
           "name": "searchOrders",
           "kind": "function",
-          "line": 188
+          "line": 199
         },
         {
           "name": "getOrder",
           "kind": "function",
-          "line": 192
+          "line": 203
         },
         {
           "name": "returnOrder",
           "kind": "function",
-          "line": 196
+          "line": 207
         },
         {
           "name": "refundPayment",
           "kind": "function",
-          "line": 200
+          "line": 211
         }
       ]
     },
@@ -73552,8 +73817,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 774,
-      "bytes": 27965,
+      "lines": 791,
+      "bytes": 28757,
       "doc": "",
       "symbols": [
         {
@@ -74932,8 +75197,8 @@
       "path": "apps/web/src/app/(storefront)/[locale]/checkout/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 743,
-      "bytes": 28566,
+      "lines": 754,
+      "bytes": 29156,
       "doc": "",
       "symbols": [
         {
@@ -77808,8 +78073,8 @@
       "path": "apps/web/src/lib/admin-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 188,
-      "bytes": 6364,
+      "lines": 191,
+      "bytes": 6521,
       "doc": "",
       "symbols": [
         {
@@ -77855,7 +78120,7 @@
         {
           "name": "adminFetch",
           "kind": "function",
-          "line": 160
+          "line": 162
         }
       ]
     },
@@ -81740,8 +82005,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 5713,
-      "bytes": 332378,
+      "lines": 5838,
+      "bytes": 339607,
       "doc": "",
       "symbols": []
     },
@@ -82217,8 +82482,8 @@
       "path": "docs/implementation/architecture-patterns/139-second-front-door-websocket-gateway.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 106,
-      "bytes": 5425,
+      "lines": 124,
+      "bytes": 6620,
       "doc": "",
       "symbols": []
     },
@@ -82262,8 +82527,8 @@
       "path": "docs/implementation/architecture-patterns/157-client-request-idempotency-keys.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 276,
-      "bytes": 13572,
+      "lines": 319,
+      "bytes": 16433,
       "doc": "",
       "symbols": []
     },

@@ -2269,13 +2269,13 @@ _no second-level headings_
 - Acceptance  <sub>:62</sub>
 - Out of scope  <sub>:67</sub>
 
-### `docs/implementation/architecture-patterns/139-second-front-door-websocket-gateway.md`  <sub>106 lines</sub>
+### `docs/implementation/architecture-patterns/139-second-front-door-websocket-gateway.md`  <sub>124 lines</sub>
 
-- 1. A second transport, the identical authorization and service layer  <sub>:11</sub>
-- Scope lenses  <sub>:40</sub>
-- Work orders  <sub>:84</sub>
-- Acceptance  <sub>:92</sub>
-- Out of scope  <sub>:100</sub>
+- 1. A second transport, the identical authorization and service layer  <sub>:29</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:102</sub>
+- Acceptance  <sub>:110</sub>
+- Out of scope  <sub>:118</sub>
 
 ### `docs/implementation/architecture-patterns/140-general-eav-extensibility-model.md`  <sub>184 lines</sub>
 
@@ -2314,17 +2314,17 @@ _no second-level headings_
 - Acceptance  <sub>:182</sub>
 - Out of scope  <sub>:192</sub>
 
-### `docs/implementation/architecture-patterns/157-client-request-idempotency-keys.md`  <sub>276 lines</sub>
+### `docs/implementation/architecture-patterns/157-client-request-idempotency-keys.md`  <sub>319 lines</sub>
 
-- What already exists — and exactly why it can't cover this case  <sub>:10</sub>
-- The mechanism: a client-supplied key, checked before the write ever runs  <sub>:35</sub>
-- 1. Named allowlist, not a global behaviour change  <sub>:132</sub>
-- 2. The offline case is the sharpest version of the same problem  <sub>:151</sub>
-- 3. Cleanup — a key only needs to live as long as a client might retry  <sub>:164</sub>
-- Scope lenses  <sub>:184</sub>
-- Work orders  <sub>:241</sub>
-- Acceptance  <sub>:254</sub>
-- Out of scope  <sub>:266</sub>
+- What already exists — and exactly why it can't cover this case  <sub>:53</sub>
+- The mechanism: a client-supplied key, checked before the write ever runs  <sub>:78</sub>
+- 1. Named allowlist, not a global behaviour change  <sub>:175</sub>
+- 2. The offline case is the sharpest version of the same problem  <sub>:194</sub>
+- 3. Cleanup — a key only needs to live as long as a client might retry  <sub>:207</sub>
+- Scope lenses  <sub>:227</sub>
+- Work orders  <sub>:284</sub>
+- Acceptance  <sub>:297</sub>
+- Out of scope  <sub>:309</sub>
 
 ### `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md`  <sub>545 lines</sub>
 
@@ -2725,7 +2725,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>5,713 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>5,838 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2783,6 +2783,7 @@ _no second-level headings_
 - ADR-049 — Docs 140–143 (general EAV, metadata-driven UI, BPMN workflow editor, micro-frontend fragments): the four mechanisms `architecture-patterns/00-*` names as explicitly owner-overridden (ADR-026) against this repository's own engineering recommendation, built with the corrections that recommendation still turns out to require  <sub>:5126</sub>
 - ADR-051 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)  <sub>:5485</sub>
 - ADR-052 — Docs 127/128/136 (hardcoded-policy sweep, extension-point coverage audit, database/cache portability audit): two real policy gaps converted; both of doc 128's own "gaps found" turn out to already be closed by prior work it never checked against; 170+ raw-SQL call sites triaged, none rewritten  <sub>:5592</sub>
+- ADR-053 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected  <sub>:5714</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

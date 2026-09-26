@@ -563,7 +563,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 5713 |  |
+| `DECISIONS.md` | doc | 5838 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -641,12 +641,12 @@ All 396 tracked files in `docs/*`, by directory.
 | `134-hexagonal-purity-ci-check.md` | doc | 71 |  |
 | `136-database-cache-portability-audit.md` | doc | 126 |  |
 | `138-technology-substitution-playbook.md` | doc | 70 |  |
-| `139-second-front-door-websocket-gateway.md` | doc | 106 |  |
+| `139-second-front-door-websocket-gateway.md` | doc | 124 |  |
 | `140-general-eav-extensibility-model.md` | doc | 184 |  |
 | `141-general-metadata-driven-ui-engine.md` | doc | 192 |  |
 | `142-bpmn-visual-workflow-engine.md` | doc | 166 |  |
 | `143-micro-frontend-architecture.md` | doc | 199 |  |
-| `157-client-request-idempotency-keys.md` | doc | 276 |  |
+| `157-client-request-idempotency-keys.md` | doc | 319 |  |
 | `166-unified-product-reference-registry.md` | doc | 545 |  |
 | `92-microservices-module-decoupling.md` | doc | 94 |  |
 | `93-headless-frontend-architecture.md` | doc | 73 |  |

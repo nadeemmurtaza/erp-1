@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "22565397e9e1b9a1",
+  "contentHash": "884ecac5d184fdf9",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -43,6 +43,7 @@
     "docs/index/core/extension-points.md",
     "docs/index/core/feed.md",
     "docs/index/core/health.md",
+    "docs/index/core/idempotency.md",
     "docs/index/core/intent.md",
     "docs/index/core/metrics.md",
     "docs/index/core/notifications.md",
@@ -85,6 +86,7 @@
     "docs/index/data/fulfilment.md",
     "docs/index/data/giftcards.md",
     "docs/index/data/hr.md",
+    "docs/index/data/idempotency.md",
     "docs/index/data/identity-verification.md",
     "docs/index/data/instalments.md",
     "docs/index/data/inventory.md",
@@ -197,18 +199,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2226,
-    "lines": 338502,
+    "files": 2235,
+    "lines": 339361,
     "routes": 777,
     "controllers": 140,
-    "models": 279,
-    "enums": 126,
-    "migrations": 103,
+    "models": 280,
+    "enums": 127,
+    "migrations": 104,
     "events": 65,
     "permissions": 108,
     "screens": 247,
-    "crons": 23,
-    "specs": 293,
+    "crons": 25,
+    "specs": 296,
     "designLaws": 0
   }
 }

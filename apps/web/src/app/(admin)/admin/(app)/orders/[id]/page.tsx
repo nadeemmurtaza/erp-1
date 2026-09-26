@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { use, useCallback, useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { formatDate, formatDateTime, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useAdminSession } from '@/components/admin/session';
@@ -157,6 +157,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
       // context, same UX as before.
       await adminFetch(`/admin/fulfilment/shipments`, {
         method: 'POST',
+        headers: { 'Idempotency-Key': crypto.randomUUID() },
         body: { orderId: id, courier, trackingNumber },
       });
       await load();
@@ -596,6 +597,12 @@ function InstalmentPlanSection({ orderId, onOrderChanged }: { orderId: string; o
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [payOpen, setPayOpen] = useState(false);
+  // architecture-patterns/157 — one key per open of this dialog, resent
+  // unchanged on every retry, so a staff member re-clicking "record
+  // payment" after a timeout replays the same payment instead of posting
+  // it twice; a fresh dialog open (a genuinely new payment) gets a fresh
+  // key.
+  const paymentIdempotencyKey = useRef<string | null>(null);
   const [amountRupees, setAmountRupees] = useState('');
 
   const load = useCallback(() => {
@@ -616,11 +623,14 @@ function InstalmentPlanSection({ orderId, onOrderChanged }: { orderId: string; o
     if (amountMinor <= 0) return;
     setBusy(true);
     setError(null);
+    if (paymentIdempotencyKey.current === null) paymentIdempotencyKey.current = crypto.randomUUID();
     try {
       await adminFetch(`/admin/orders/${orderId}/instalments/payments`, {
         method: 'POST',
+        headers: { 'Idempotency-Key': paymentIdempotencyKey.current },
         body: { amountMinor, provider: 'cash' },
       });
+      paymentIdempotencyKey.current = null;
       setPayOpen(false);
       setAmountRupees('');
       load();
@@ -712,7 +722,14 @@ function InstalmentPlanSection({ orderId, onOrderChanged }: { orderId: string; o
       {plan.status === 'ACTIVE' ? (
         <div className="mt-4 flex flex-wrap gap-2">
           {canOperate ? (
-            <Button variant="secondary" onClick={() => setPayOpen(true)} disabled={busy}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                paymentIdempotencyKey.current = null;
+                setPayOpen(true);
+              }}
+              disabled={busy}
+            >
               Record payment
             </Button>
           ) : null}

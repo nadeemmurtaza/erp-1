@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 17 files
 
 Source: `apps/api/src/modules/fulfilment/`
 
-## Files (17 · 2,819 lines)
+## Files (17 · 2,821 lines)
 
 All paths relative to `apps/api/src/modules/fulfilment`.
 
@@ -21,7 +21,7 @@ All paths relative to `apps/api/src/modules/fulfilment`.
 | `fulfilment.dto.ts` | dto | 93 | 4 |  |
 | `returns.dto.ts` | dto | 124 | 5 |  |
 | `shipping.dto.ts` | dto | 331 | 10 |  |
-| `fulfilment.controller.ts` | controller | 92 | 1 | WO-6.8's `/admin/fulfilment/shipments`, `/manifests`, `/tracking`, `/rto`. |
+| `fulfilment.controller.ts` | controller | 94 | 1 | WO-6.8's `/admin/fulfilment/shipments`, `/manifests`, `/tracking`, `/rto`. |
 | `fulfilment.cron.ts` | scheduled job | 80 | 1 | WO-6.5 — polls every non-terminal shipment's courier every 30 minutes and feeds the result through FulfilmentService.ap… |
 | `fulfilment.module.ts` | nest module | 48 | 1 |  |
 | `fulfilment.service.ts` | service | 470 | 1 | WO-6.2/6.4/6.5/6.7 — shipment lifecycle, manifests, tracking automation and RTO. |
@@ -40,11 +40,11 @@ All paths relative to `apps/api/src/modules/fulfilment`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/fulfilment/couriers` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listCouriers` :29 |  |
-| GET | `/admin/fulfilment/manifests` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listManifests` :61 |  |
-| POST | `/admin/fulfilment/manifests` | `fulfilment.manage` | `FulfilmentAdminController.createManifest` :66 |  |
-| POST | `/admin/fulfilment/manifests/:id/dispatch` | `fulfilment.manage` | `FulfilmentAdminController.dispatchManifest` :80 |  |
-| POST | `/admin/fulfilment/manifests/:id/shipments` | `fulfilment.manage` | `FulfilmentAdminController.addToManifest` :71 |  |
+| GET | `/admin/fulfilment/couriers` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listCouriers` :30 |  |
+| GET | `/admin/fulfilment/manifests` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listManifests` :63 |  |
+| POST | `/admin/fulfilment/manifests` | `fulfilment.manage` | `FulfilmentAdminController.createManifest` :68 |  |
+| POST | `/admin/fulfilment/manifests/:id/dispatch` | `fulfilment.manage` | `FulfilmentAdminController.dispatchManifest` :82 |  |
+| POST | `/admin/fulfilment/manifests/:id/shipments` | `fulfilment.manage` | `FulfilmentAdminController.addToManifest` :73 |  |
 | GET | `/admin/fulfilment/returns` | `fulfilment.view` `fulfilment.manage` | `ReturnsAdminController.list` :53 |  |
 | GET | `/admin/fulfilment/returns/:id` | `fulfilment.view` `fulfilment.manage` | `ReturnsAdminController.get` :59 |  |
 | POST | `/admin/fulfilment/returns/:id/approve` | `fulfilment.manage` | `ReturnsAdminController.approve` :64 |  |
@@ -55,11 +55,11 @@ All paths relative to `apps/api/src/modules/fulfilment`.
 | POST | `/admin/fulfilment/returns/:id/resolve` | `fulfilment.manage` | `ReturnsAdminController.resolve` :93 |  |
 | GET | `/admin/fulfilment/returns/reasons` | `fulfilment.view` `fulfilment.manage` | `ReturnsAdminController.listReasons` :42 |  |
 | POST | `/admin/fulfilment/returns/reasons` | `fulfilment.manage` | `ReturnsAdminController.createReason` :47 |  |
-| GET | `/admin/fulfilment/rto` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.rtoStats` :86 |  |
-| GET | `/admin/fulfilment/shipments` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listShipments` :35 |  |
-| POST | `/admin/fulfilment/shipments` | `fulfilment.manage` | `FulfilmentAdminController.createShipment` :46 |  |
-| GET | `/admin/fulfilment/shipments/:id` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.getShipment` :41 |  |
-| POST | `/admin/fulfilment/shipments/:id/status` | `fulfilment.manage` | `FulfilmentAdminController.recordStatus` :51 |  |
+| GET | `/admin/fulfilment/rto` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.rtoStats` :88 |  |
+| GET | `/admin/fulfilment/shipments` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.listShipments` :36 |  |
+| POST | `/admin/fulfilment/shipments` | `fulfilment.manage` | `FulfilmentAdminController.createShipment` :48 |  |
+| GET | `/admin/fulfilment/shipments/:id` | `fulfilment.view` `fulfilment.manage` | `FulfilmentAdminController.getShipment` :42 |  |
+| POST | `/admin/fulfilment/shipments/:id/status` | `fulfilment.manage` | `FulfilmentAdminController.recordStatus` :53 |  |
 | GET | `/admin/settings/shipping/classes` | `fulfilment.view` `fulfilment.manage` | `ShippingAdminController.listClasses` :84 |  |
 | POST | `/admin/settings/shipping/classes` | `fulfilment.manage` | `ShippingAdminController.createClass` :89 |  |
 | PATCH | `/admin/settings/shipping/classes/:id` | `fulfilment.manage` | `ShippingAdminController.updateClass` :94 |  |
@@ -151,6 +151,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `auth`
 - core `config`
 - core `events`
+- core `idempotency`
 - core `notifications`
 - core `prisma`
 - core `settings`
@@ -198,7 +199,7 @@ check there before adding another.
 | `CreateShippingClassDto` | class | `shipping.dto.ts:266` |  |
 | `UpdateShippingClassDto` | class | `shipping.dto.ts:286` |  |
 | `ShippingQuoteQueryDto` | class | `shipping.dto.ts:299` |  |
-| `FulfilmentAdminController` | class | `fulfilment.controller.ts:24` | WO-6.8's `/admin/fulfilment/shipments`, `/manifests`, `/tracking`, `/rto`. |
+| `FulfilmentAdminController` | class | `fulfilment.controller.ts:25` | WO-6.8's `/admin/fulfilment/shipments`, `/manifests`, `/tracking`, `/rto`. |
 | `FulfilmentCron` | class | `fulfilment.cron.ts:22` | WO-6.5 — polls every non-terminal shipment's courier every 30 minutes and feeds the result through Fulfilment… |
 | `FulfilmentModule` | class | `fulfilment.module.ts:47` |  |
 | `FulfilmentService` | class | `fulfilment.service.ts:45` | WO-6.2/6.4/6.5/6.7 — shipment lifecycle, manifests, tracking automation and RTO. |

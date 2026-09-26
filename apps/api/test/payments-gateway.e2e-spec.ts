@@ -1,4 +1,4 @@
-import { createHmac } from 'node:crypto';
+import { createHmac, randomUUID } from 'node:crypto';
 import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
@@ -128,6 +128,7 @@ describe('JazzCash checkout redirect (e2e)', () => {
 
     const response = await agent
       .post('/api/v1/orders')
+      .set('Idempotency-Key', randomUUID())
       .send({ shippingAddress: KARACHI, paymentMethod: 'jazzcash' })
       .expect(201);
 
@@ -150,6 +151,7 @@ describe('JazzCash checkout redirect (e2e)', () => {
 
     const placed = await agent
       .post('/api/v1/orders')
+      .set('Idempotency-Key', randomUUID())
       .send({ shippingAddress: KARACHI, paymentMethod: 'jazzcash' })
       .expect(201);
     createdOrderIds.push(placed.body.id);
@@ -192,6 +194,7 @@ describe('JazzCash checkout redirect (e2e)', () => {
 
     const placed = await agent
       .post('/api/v1/orders')
+      .set('Idempotency-Key', randomUUID())
       .send({ shippingAddress: KARACHI, paymentMethod: 'jazzcash' })
       .expect(201);
     createdOrderIds.push(placed.body.id);

@@ -3,7 +3,7 @@
 
 # Data model
 
-All **279** Prisma models and **126** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **280** Prisma models and **127** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -43,6 +43,7 @@ against a real database.
 | [`fulfilment.prisma`](../data/fulfilment.md) | 16 | 4 | [`fulfilment`](../modules/fulfilment.md) | Manifest, ManifestNumberCounter, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest, ReturnRequestItem, ReturnRequestNumber… |
 | [`giftcards.prisma`](../data/giftcards.md) | 3 | 1 | [`giftcards`](../modules/giftcards.md) | GiftCard, GiftCardTransaction, StoreCreditTransaction |
 | [`hr.prisma`](../data/hr.md) | 6 | 2 | [`hr`](../modules/hr.md) | Asset, AssetAssignment, EmployeeProfile, Position, Posting, Rank |
+| [`idempotency.prisma`](../data/idempotency.md) | 1 | 1 | core platform | IdempotencyKey |
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
 | [`instalments.prisma`](../data/instalments.md) | 3 | 2 | core platform | InstalmentPayment, InstalmentPlan, InstalmentScheduleLine |
 | [`inventory.prisma`](../data/inventory.md) | 12 | 6 | [`inventory`](../modules/inventory.md) | Location, MarkdownSuggestion, SpotCheck, SpotCheckLine, SpotCheckPolicy, StockCount, StockCountLine, StockMovement, StockVariance… |
@@ -168,6 +169,7 @@ against a real database.
 | [`GlobalProductReferenceTranslation`](../data/marketplace.md#globalproductreferencetranslation) | `marketplace` | 7 | 1 | id | Mirrors ProductTranslation's own locale-keyed shape exactly (en/ur) — the identical struc… |
 | [`GoodsReceipt`](../data/purchasing.md#goodsreceipt) | `purchasing` | 14 | 2 | id |  |
 | [`GoodsReceiptItem`](../data/purchasing.md#goodsreceiptitem) | `purchasing` | 10 | 3 | id |  |
+| [`IdempotencyKey`](../data/idempotency.md#idempotencykey) | `idempotency` | 9 | 0 | id |  |
 | [`IdentityVerification`](../data/identity-verification.md#identityverification) | `identity-verification` | 12 | 1 | id |  |
 | [`InboundEmail`](../data/crm.md#inboundemail) | `crm` | 17 | 3 | id | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-i… |
 | [`InboundEmailReply`](../data/crm.md#inboundemailreply) | `crm` | 7 | 2 | id | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original m… |
@@ -412,6 +414,7 @@ against a real database.
 | [`FragmentStatus`](../data/fragments.md#fragmentstatus) | `fragments` | `ACTIVE` `SUSPENDED` |
 | [`GiftCardStatus`](../data/giftcards.md#giftcardstatus) | `giftcards` | `ACTIVE` `REDEEMED` `EXPIRED` `CANCELLED` |
 | [`GrantMode`](../data/org-structure.md#grantmode) | `org-structure` | `READ` `ACTING` |
+| [`IdempotencyKeyStatus`](../data/idempotency.md#idempotencykeystatus) | `idempotency` | `IN_PROGRESS` `COMPLETED` |
 | [`IdentityVerificationStatus`](../data/identity-verification.md#identityverificationstatus) | `identity-verification` | `NOT_STARTED` `PENDING` `APPROVED` `REJECTED` `EXPIRED` |
 | [`IngestStatus`](../data/rag.md#ingeststatus) | `rag` | `QUEUED` `EXTRACTING` `CHUNKING` `EMBEDDING` `READY` `FAILED` |
 | [`InstalmentPlanStatus`](../data/instalments.md#instalmentplanstatus) | `instalments` | `ACTIVE` `COMPLETED` `DEFAULTED` `CANCELLED` |

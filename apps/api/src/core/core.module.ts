@@ -10,6 +10,7 @@ import { EventsModule } from './events/events.module';
 import { ExtensionPointsModule } from './extension-points/extension-points.module';
 import { FeedModule } from './feed/feed.module';
 import { HealthModule } from './health/health.module';
+import { IdempotencyModule } from './idempotency/idempotency.module';
 import { IntentRouterModule } from './intent/intent-router.module';
 import { MetricsModule } from './metrics/metrics.module';
 import { NotificationsModule } from './notifications/notifications.module';
@@ -42,6 +43,7 @@ import { StorageModule } from './storage/storage.module';
     AuditModule,
     AuthModule,
     HealthModule,
+    IdempotencyModule,
     MetricsModule,
     ActionHubModule,
     FeedModule,

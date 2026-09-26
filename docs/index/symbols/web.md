@@ -1555,7 +1555,7 @@ Every top-level export in `web`, with the line to open.
 | `admin-client.ts` | `ssoStartUrl` | function | :98 | Where a "Sign in with …" button navigates: the API redirects the browser on to the identity provide… |
 | `admin-client.ts` | `completeSsoSignIn` | function | :103 | Redeems a just-completed single sign-on for a session, and stores it the way `login()` does. |
 | `admin-client.ts` | `logout` | function | :121 |  |
-| `admin-client.ts` | `adminFetch` | function | :160 |  |
+| `admin-client.ts` | `adminFetch` | function | :162 |  |
 | `analytics-client.ts` | `getSessionId` | function | :27 | Reads (or mints and persists) this browser's opaque analytics session id. |
 | `analytics-client.ts` | `TrackedEventType` | type | :44 |  |
 | `analytics-client.ts` | `trackEvent` | function | :58 | Fires one tracking event. |

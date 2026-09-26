@@ -664,7 +664,7 @@ All 399 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 774 |  |
+| `page.tsx` | page | 791 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/org-structure` (1)
 
@@ -1157,7 +1157,7 @@ All 399 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `loading.tsx` | loading | 47 |  |
-| `page.tsx` | page | 743 |  |
+| `page.tsx` | page | 754 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/collections/[slug]` (1)
 
@@ -1473,7 +1473,7 @@ All 399 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `admin-client.ts` | utility | 188 |  |
+| `admin-client.ts` | utility | 191 |  |
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
 | `api.ts` | utility | 200 |  |

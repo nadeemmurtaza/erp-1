@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { JwtAuthGuard, PermissionsGuard } from './core/auth/guards';
 import { AllExceptionsFilter } from './core/common/filters/all-exceptions.filter';
 import { CoreModule } from './core/core.module';
+import { IdempotencyInterceptor } from './core/idempotency/idempotency.interceptor';
 import { FeatureModulesModule } from './modules/modules.registry';
 
 @Module({
@@ -24,6 +25,10 @@ import { FeatureModulesModule } from './modules/modules.registry';
     { provide: APP_GUARD, useClass: PermissionsGuard },
     { provide: APP_GUARD, useClass: ThrottlerGuard },
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
+    // 157-client-request-idempotency-keys.md — a no-op on any route without
+    // @IdempotentWrite(scope); runs after every APP_GUARD above (Nest's own
+    // guards-before-interceptors order), never in place of authorization.
+    { provide: APP_INTERCEPTOR, useClass: IdempotencyInterceptor },
   ],
 })
 export class AppModule {}

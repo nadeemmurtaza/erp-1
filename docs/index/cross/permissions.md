@@ -22,8 +22,8 @@ the *catalogue*, not any particular deployment's grants.
 | `Roles granted at seed` = none | `ROLE_PERMISSION_SEED` gives it to no role, so no live user holds it unless an admin grants it by hand — the `seedPermissions()` vs `seedRoles()` trap CLAUDE.md names |
 | `UI call sites` = — | nothing in the admin UI gates on it; if a screen needs it, the screen is missing |
 
-- Permissions enforcing **no route**: **2** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`
-- Permissions **no seeded role grants**: **3** — `hr.attendance.view`, `hr.attendance.record`, `hr.attendance.reconcile`
+- Permissions enforcing **no route**: **3** — `pricing.price-lists.approve`, `stitching.jobs.manage_own`, `stitching.jobs.manage_all`
+- Permissions **no seeded role grants**: **4** — `pricing.price-lists.approve`, `hr.attendance.view`, `hr.attendance.record`, `hr.attendance.reconcile`
 - Keys required by a route but **not in the catalogue**: **0**
 
 ## The catalogue
@@ -49,6 +49,9 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `orders.manage` | Manage orders and shipments | medium | 12 | 2 | STAFF, ADMIN |
+| `pricing.price-lists.manage` | Create and edit wholesale price lists and quantity breaks | medium | 5 | — | STAFF, ADMIN |
+| `pricing.price-lists.approve` | Set a wholesale price below a variant's own base price | high | **0 — enforces nothing** | — | **none — no live user holds it** |
+| `pricing.assignments.manage` | Assign a price list to a customer or a customer tag | medium | 2 | — | STAFF, ADMIN |
 | `pos.manage` | Register till terminals and issue their device credentials | high | 6 | — | ADMIN |
 | `pos.operate` | Open and close till shifts, and record cash movements | medium | 11 | 2 | STAFF, ADMIN |
 | `pos.instalments.cancel` | Cancel a layby/instalment plan — may forfeit or refund its deposit, per policy | high | 1 | 1 | ADMIN |
@@ -73,7 +76,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `catalog.manage` | Manage products, categories and import | medium | 42 | 18 | STAFF, ADMIN |
+| `catalog.manage` | Manage products, categories and import | medium | 50 | 18 | STAFF, ADMIN |
 | `inventory.manage` | Adjust and view stock levels | medium | 12 | 12 | STAFF, ADMIN |
 | `inventory.view_cost` | See cost prices and margins | medium | 2 | 15 | ADMIN |
 | `inventory.count` | Run stock counts | low | 12 | 4 | STAFF, ADMIN |
@@ -88,7 +91,7 @@ the *catalogue*, not any particular deployment's grants.
 | `suppliers.manage` | Manage suppliers | medium | 8 | 2 | STAFF, ADMIN |
 | `purchasing.manage` | Create and receive purchase orders | medium | 18 | 10 | STAFF, ADMIN |
 | `purchasing.requisitions.create` | Request a purchase (not necessarily raise the PO) | low | 3 | 1 | STAFF, ADMIN |
-| `purchasing.requisitions.approve` | Approve or reject purchase requisitions | medium | 3 | 2 | ADMIN |
+| `purchasing.requisitions.approve` | Approve or reject purchase requisitions | medium | 3 | 1 | ADMIN |
 | `parties.manage` | Manage the shared counterparty (supplier/retailer/distributor/manufacturer) pro… | medium | 3 | — | STAFF, ADMIN |
 
 ### Account
@@ -105,9 +108,6 @@ the *catalogue*, not any particular deployment's grants.
 | `settings.sso.manage` | Register, edit and suspend single sign-on connections | critical | 8 | 3 | ADMIN |
 | `settings.custom-fields.manage` | Define custom fields on Suppliers and other wired entities | medium | 4 | — | ADMIN |
 | `settings.embeds.manage` | Register and configure embeddable third-party widgets | medium | 4 | 1 | ADMIN |
-| `settings.fragments.manage` | Register and suspend micro-frontend fragments | critical | 5 | 1 | ADMIN |
-| `settings.metadata-forms.manage` | Define metadata-driven form field shapes | medium | 1 | — | ADMIN |
-| `settings.bpmn-workflows.manage` | Redraw approval workflow diagrams | critical | 1 | — | ADMIN |
 | `tax.manage` | Manage tax classes, rates and the pricing mode | medium | 8 | 1 | ADMIN |
 | `marketing.manage` | Turn on automated marketing email and set its timing | low | 3 | 1 | ADMIN |
 | `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | ADMIN |
@@ -217,8 +217,8 @@ their own `UserPermission` GRANT/REVOKE overrides applied on top
 |---|---|---|
 | `CUSTOMER` | 1 | `account.change_own_password` |
 | `TAILOR` | 5 | `account.change_own_password` `payroll.view_own` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` |
-| `STAFF` | 52 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.wallets.adjust` `finance.credit-notes.create` `finance.debit-notes.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` `promotions.view` `promotions.manage` `giftcards.view` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `ai.view` `ai.manage` `rag.ingest.manage` `rag.query` |
-| `ADMIN` | 109 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `hr.assets.manage` `hr.assets.writeoff` `hr.people.view` `hr.people.manage` `org.structure.view` `org.structure.manage` `org.access.view` `org.access.grant` `org.structure.manage` `hr.people.manage` `org.access.grant` `Access Reviewer` `s own     // ` ` silhouette.     ` `,     ` `,     // ` ` is deliberately NOT seeded here, the     // identical reasoning as ` ` just above: ADMIN already     // holds ` `, and TOXIC_PERMISSION_PAIRS refuses the two     // together (attendance-workforce/22-attendance-shifts-leave.md` `clearing your own exception and then paying it` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `purchasing.requisitions.approve` `inventory.spot_checks.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `finance.wallets.adjust` `finance.wallets.adjust.approve` `finance.merchant-payables.dispute` `finance.credit-notes.create` `finance.credit-notes.approve` `finance.debit-notes.manage` `finance.credit-terms.manage` `finance.assets.depreciate` `finance.assets.dispose` `finance.settlement.view` `finance.settlement.reconcile` `finance.settlement.approve_writeoff` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `settings.sso.manage` `settings.custom-fields.manage` `settings.embeds.manage` `settings.fragments.manage` `settings.metadata-forms.manage` `settings.bpmn-workflows.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `pos.instalments.cancel` `pos.instalments.default` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `campaigns.manage` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `loyalty.manage` `ai.view` `ai.manage` `rag.ingest.manage` `rag.query` |
+| `STAFF` | 54 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `pricing.price-lists.manage` `pricing.assignments.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.wallets.adjust` `finance.credit-notes.create` `finance.debit-notes.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` `promotions.view` `promotions.manage` `giftcards.view` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `ai.view` `ai.manage` `rag.ingest.manage` `rag.query` |
+| `ADMIN` | 108 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `hr.assets.manage` `hr.assets.writeoff` `hr.people.view` `hr.people.manage` `org.structure.view` `org.structure.manage` `org.access.view` `org.access.grant` `org.structure.manage` `hr.people.manage` `org.access.grant` `Access Reviewer` `s own     // ` ` silhouette.     ` `,     ` `,     // ` ` is deliberately NOT seeded here, the     // identical reasoning as ` ` just above: ADMIN already     // holds ` `, and TOXIC_PERMISSION_PAIRS refuses the two     // together (attendance-workforce/22-attendance-shifts-leave.md` `clearing your own exception and then paying it` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `pricing.price-lists.manage` `pricing.assignments.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `purchasing.requisitions.approve` `inventory.spot_checks.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `finance.wallets.adjust` `finance.wallets.adjust.approve` `finance.merchant-payables.dispute` `finance.credit-notes.create` `finance.credit-notes.approve` `finance.debit-notes.manage` `finance.credit-terms.manage` `finance.assets.depreciate` `finance.assets.dispose` `finance.settlement.view` `finance.settlement.reconcile` `finance.settlement.approve_writeoff` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `settings.sso.manage` `settings.custom-fields.manage` `settings.embeds.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `pos.instalments.cancel` `pos.instalments.default` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `campaigns.manage` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `loyalty.manage` `ai.view` `ai.manage` `rag.ingest.manage` `rag.query` |
 
 
 ## Admin nav → permission

@@ -2,6 +2,8 @@ import { Test } from '@nestjs/testing';
 import { CartLineValidatorRegistry } from '../../core/extension-points/cart-line-validator.registry';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
+import { AuditService } from '../../core/audit/audit.service';
+import { PricingService } from '../pricing/pricing.service';
 import { CartService } from './cart.service';
 
 /** WO-8.5 — the guest phone/consent capture endpoint abandoned-cart recovery depends on. */
@@ -11,7 +13,7 @@ describe('CartService.updateGuestContact', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      providers: [CartService, PrismaService, SettingsService, CartLineValidatorRegistry],
+      providers: [CartService, PrismaService, SettingsService, CartLineValidatorRegistry, AuditService, PricingService],
     }).compile();
     service = module.get(CartService);
     prisma = module.get(PrismaService);

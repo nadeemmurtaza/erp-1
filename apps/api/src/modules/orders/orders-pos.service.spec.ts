@@ -18,6 +18,8 @@ import { PromotionsService } from '../promotions/promotions.service';
 import { GiftCardsService } from '../giftcards/giftcards.service';
 import { StoreCreditService } from '../giftcards/store-credit.service';
 import { CodRiskService } from './cod-risk.service';
+import { PricingService } from '../pricing/pricing.service';
+import { BundlesService } from '../catalog/bundles.service';
 import { OrdersService } from './orders.service';
 
 /**
@@ -66,6 +68,15 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
         // web-checkout path (WO-9.4); a till sale is DELIVERED/paid at
         // creation, so RTO risk does not apply to it.
         { provide: CodRiskService, useValue: {} },
+        // 146-wholesale-tiered-pricing.md — placeFromPos() has no
+        // resolvable Contact (PosSaleLineInput carries no customerId, only
+        // free-text name/phone/email), so it never calls PricingService;
+        // that gap is named honestly in pricing.service.ts's own header
+        // comment, not silently faked here.
+        { provide: PricingService, useValue: {} },
+        // 150-product-kitting-bundles.md — placeFromPos() is not wired to
+        // bundles in this pass (WO-150.2 covers place() only); a plain stub.
+        { provide: BundlesService, useValue: {} },
       ],
     }).compile();
 

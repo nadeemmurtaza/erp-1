@@ -17,6 +17,8 @@ import { TaxModule } from '../tax/tax.module';
 import { FulfilmentModule } from '../fulfilment/fulfilment.module';
 import { PromotionsModule } from '../promotions/promotions.module';
 import { GiftCardsModule } from '../giftcards/giftcards.module';
+import { PricingModule } from '../pricing/pricing.module';
+import { CatalogModule } from '../catalog/catalog.module';
 
 @Module({
   // Payments is the one module orders depends on directly: the payment record
@@ -31,7 +33,7 @@ import { GiftCardsModule } from '../giftcards/giftcards.module';
   // `orders -> promotions`/`orders -> giftcards` in KNOWN_MODULE_COUPLINGS):
   // usage-count/balance conditional updates must land in the same
   // transaction as the order they belong to.
-  imports: [PaymentsModule, InventoryModule, TaxModule, FulfilmentModule, PromotionsModule, GiftCardsModule],
+  imports: [PaymentsModule, InventoryModule, TaxModule, FulfilmentModule, PromotionsModule, GiftCardsModule, PricingModule, CatalogModule],
   controllers: [OrdersController, OrdersAdminController, InstalmentPlanController],
   // The subscribers listen to the same events this module publishes (or, for
   // ShipmentStatusListener, events fulfilment publishes) — separate

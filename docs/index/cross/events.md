@@ -107,8 +107,8 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:55` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:162` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:463` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:721` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:488` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:746` | `orders` |
 
 
 **Subscribed by**
@@ -129,8 +129,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:748` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:933` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:773` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:958` | `orders` |
 
 
 **Subscribed by**
@@ -150,7 +150,7 @@ order" is a new file, not an edit to checkout.
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:933` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:958` | `orders` |
 
 
 **Subscribed by**
@@ -170,7 +170,7 @@ order" is a new file, not an edit to checkout.
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:122` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:159` | `accounting` |
 | `apps/api/src/modules/orders/instalment-plan.service.ts:90` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:692` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:717` | `orders` |
 | `apps/api/src/modules/payments/payments.service.ts:191` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:293` | `payments` |
 | `apps/api/src/modules/payments/payments.service.ts:341` | `payments` |
@@ -904,9 +904,9 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/fulfilment/returns.service.ts:145` | `fulfilment` |
-| `apps/api/src/modules/fulfilment/returns.service.ts:194` | `fulfilment` |
-| `apps/api/src/modules/fulfilment/returns.service.ts:284` | `fulfilment` |
+| `apps/api/src/modules/fulfilment/returns.service.ts:147` | `fulfilment` |
+| `apps/api/src/modules/fulfilment/returns.service.ts:196` | `fulfilment` |
+| `apps/api/src/modules/fulfilment/returns.service.ts:307` | `fulfilment` |
 
 
 **Subscribed by**
@@ -924,7 +924,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/fulfilment/returns.service.ts:370` | `fulfilment` |
+| `apps/api/src/modules/fulfilment/returns.service.ts:393` | `fulfilment` |
 
 
 **Subscribed by**

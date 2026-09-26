@@ -1,5 +1,21 @@
 # 47 — Pre-configured category taxonomy per sector
 
+> **Status (2026-09-26): built.** `CategoryPreset` (`catalog.prisma`),
+> `CategoryPresetService` (`preview()`/`apply()`), five seeded starter trees
+> (apparel, pharmacy, grocery, paint-shop, beverages —
+> `seedCategoryPresets()` in `seed.ts`), and three admin routes on the
+> existing `CatalogAdminController` (`GET category-presets`, `GET
+> category-presets/:key/preview`, `POST category-presets/:key/apply`).
+> Verified against a real, seeded Postgres: applying a preset creates its
+> full tree, re-applying creates zero duplicates, and a collision reuses
+> the existing category as the parent for the preset's own children rather
+> than overwriting it. One deviation from this document's own text: gated
+> by the real `catalog.manage` permission, not the `catalog.categories.manage`
+> key this document names, which does not exist in this codebase's actual
+> permission catalogue (`CatalogAdminController`'s own class-level
+> `@RequirePermission`). WO-47.4 (a dedicated "start from a template" UI
+> button, distinct from calling the API directly) is not yet built. ADR-049.
+
 `Category`/`CategoryTranslation` (`catalog.prisma`) already carry a full
 parent/child tree with bilingual names — the schema this document needs
 already exists, and correctly, per `MULTI-SECTOR.md`'s own ruling that a

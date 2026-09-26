@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2191,
-    "lines": 333331,
-    "routes": 751,
-    "controllers": 137,
-    "models": 270,
-    "enums": 125,
-    "migrations": 99,
-    "events": 64,
+    "files": 2166,
+    "lines": 331698,
+    "routes": 753,
+    "controllers": 134,
+    "models": 272,
+    "enums": 124,
+    "migrations": 98,
+    "events": 63,
     "permissions": 101,
     "screens": 245,
     "crons": 23,
-    "specs": 283,
+    "specs": 280,
     "designLaws": 0
   },
   "designLaws": [],
@@ -26,15 +26,15 @@
       "label": "repository root files"
     },
     "infra": {
-      "files": 58,
-      "lines": 30347,
-      "bytes": 1192413,
+      "files": 57,
+      "lines": 30073,
+      "bytes": 1183108,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 973,
-      "lines": 133341,
-      "bytes": 5136716,
+      "files": 954,
+      "lines": 133524,
+      "bytes": 5140252,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 397,
-      "lines": 65238,
-      "bytes": 2352538,
+      "files": 392,
+      "lines": 64048,
+      "bytes": 2309002,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 396,
-      "lines": 66631,
-      "bytes": 3962854,
+      "lines": 66287,
+      "bytes": 3942886,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8181,
-      "bytes": 292013,
+      "lines": 8173,
+      "bytes": 291426,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -203,23 +203,6 @@
       "page": "docs/index/modules/bom.md"
     },
     {
-      "name": "bpmn-workflows",
-      "pack": "core",
-      "alwaysOn": true,
-      "inRegistry": true,
-      "files": [
-        "apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts",
-        "apps/api/src/modules/bpmn-workflows/bpmn-compiler.ts",
-        "apps/api/src/modules/bpmn-workflows/bpmn-workflows.controller.ts",
-        "apps/api/src/modules/bpmn-workflows/bpmn-workflows.module.ts",
-        "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts",
-        "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.ts",
-        "apps/api/src/modules/bpmn-workflows/dto/bpmn-workflow.dto.ts"
-      ],
-      "routes": 2,
-      "page": "docs/index/modules/bpmn-workflows.md"
-    },
-    {
       "name": "cart",
       "pack": "core",
       "alwaysOn": false,
@@ -245,13 +228,18 @@
         "apps/api/src/modules/catalog/ai-suggestions.service.spec.ts",
         "apps/api/src/modules/catalog/ai-suggestions.service.ts",
         "apps/api/src/modules/catalog/brand-admin.service.ts",
+        "apps/api/src/modules/catalog/bundles.service.spec.ts",
+        "apps/api/src/modules/catalog/bundles.service.ts",
         "apps/api/src/modules/catalog/catalog-admin.controller.ts",
         "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
         "apps/api/src/modules/catalog/catalog.controller.ts",
         "apps/api/src/modules/catalog/catalog.module.ts",
         "apps/api/src/modules/catalog/catalog.service.ts",
         "apps/api/src/modules/catalog/category-admin.service.ts",
+        "apps/api/src/modules/catalog/category-preset.service.spec.ts",
+        "apps/api/src/modules/catalog/category-preset.service.ts",
         "apps/api/src/modules/catalog/dto/brand.dto.ts",
+        "apps/api/src/modules/catalog/dto/bundle.dto.ts",
         "apps/api/src/modules/catalog/dto/category.dto.ts",
         "apps/api/src/modules/catalog/dto/option.dto.ts",
         "apps/api/src/modules/catalog/dto/product-query.dto.ts",
@@ -274,7 +262,7 @@
         "apps/api/src/modules/catalog/seo-health.service.ts",
         "apps/api/src/modules/catalog/sync-option-model.ts"
       ],
-      "routes": 50,
+      "routes": 58,
       "page": "docs/index/modules/catalog.md"
     },
     {
@@ -376,23 +364,6 @@
       "page": "docs/index/modules/embeds.md"
     },
     {
-      "name": "entity-attributes",
-      "pack": "core",
-      "alwaysOn": true,
-      "inRegistry": true,
-      "files": [
-        "apps/api/src/modules/entity-attributes/dto/entity-attribute.dto.ts",
-        "apps/api/src/modules/entity-attributes/entity-attributes.controller.ts",
-        "apps/api/src/modules/entity-attributes/entity-attributes.module.ts",
-        "apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts",
-        "apps/api/src/modules/entity-attributes/entity-attributes.service.ts",
-        "apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts",
-        "apps/api/src/modules/entity-attributes/supplier-deleted.listener.ts"
-      ],
-      "routes": 2,
-      "page": "docs/index/modules/entity-attributes.md"
-    },
-    {
       "name": "finance",
       "pack": "core",
       "alwaysOn": false,
@@ -421,21 +392,6 @@
       ],
       "routes": 17,
       "page": "docs/index/modules/finance.md"
-    },
-    {
-      "name": "fragments",
-      "pack": "core",
-      "alwaysOn": true,
-      "inRegistry": true,
-      "files": [
-        "apps/api/src/modules/fragments/dto/fragment.dto.ts",
-        "apps/api/src/modules/fragments/fragments.controller.ts",
-        "apps/api/src/modules/fragments/fragments.module.ts",
-        "apps/api/src/modules/fragments/fragments.service.spec.ts",
-        "apps/api/src/modules/fragments/fragments.service.ts"
-      ],
-      "routes": 7,
-      "page": "docs/index/modules/fragments.md"
     },
     {
       "name": "fulfilment",
@@ -629,21 +585,6 @@
       ],
       "routes": 13,
       "page": "docs/index/modules/measurements.md"
-    },
-    {
-      "name": "metadata-forms",
-      "pack": "core",
-      "alwaysOn": true,
-      "inRegistry": true,
-      "files": [
-        "apps/api/src/modules/metadata-forms/dto/form-metadata.dto.ts",
-        "apps/api/src/modules/metadata-forms/metadata-forms.controller.ts",
-        "apps/api/src/modules/metadata-forms/metadata-forms.module.ts",
-        "apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts",
-        "apps/api/src/modules/metadata-forms/metadata-forms.service.ts"
-      ],
-      "routes": 2,
-      "page": "docs/index/modules/metadata-forms.md"
     },
     {
       "name": "notification-preferences",
@@ -841,6 +782,21 @@
       ],
       "routes": 15,
       "page": "docs/index/modules/pos.md"
+    },
+    {
+      "name": "pricing",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/pricing/dto/pricing.dto.ts",
+        "apps/api/src/modules/pricing/pricing.controller.ts",
+        "apps/api/src/modules/pricing/pricing.module.ts",
+        "apps/api/src/modules/pricing/pricing.service.spec.ts",
+        "apps/api/src/modules/pricing/pricing.service.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/pricing.md"
     },
     {
       "name": "production",
@@ -1370,8 +1326,7 @@
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
         "apps/api/src/core/extension-points/extension-points.module.ts",
         "apps/api/src/core/extension-points/identity-verification-status.registry.ts",
-        "apps/api/src/core/extension-points/stock-intake.registry.ts",
-        "apps/api/src/core/extension-points/workflow-steps.registry.ts"
+        "apps/api/src/core/extension-points/stock-intake.registry.ts"
       ],
       "page": "docs/index/core/extension-points.md"
     },
@@ -2928,36 +2883,6 @@
     },
     {
       "method": "GET",
-      "path": "/admin/bpmn-workflows/:subjectType",
-      "module": "bpmn-workflows",
-      "controller": "BpmnWorkflowsController",
-      "handler": "get",
-      "file": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.controller.ts",
-      "line": 24,
-      "access": "any signed-in user",
-      "permissions": [],
-      "public": false,
-      "authOnly": true,
-      "summary": "The saved BPMN diagram (and its compiled steps) for one approval subject type, or null if none is defined"
-    },
-    {
-      "method": "PUT",
-      "path": "/admin/bpmn-workflows/:subjectType",
-      "module": "bpmn-workflows",
-      "controller": "BpmnWorkflowsController",
-      "handler": "save",
-      "file": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.controller.ts",
-      "line": 31,
-      "access": "settings.bpmn-workflows.manage",
-      "permissions": [
-        "settings.bpmn-workflows.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Compile and save a BPMN diagram for one approval subject type"
-    },
-    {
-      "method": "GET",
       "path": "/admin/campaigns",
       "module": "marketing",
       "controller": "CampaignsAdminController",
@@ -3158,7 +3083,7 @@
       "controller": "CatalogAdminController",
       "handler": "listBrands",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 229,
+      "line": 283,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3174,7 +3099,7 @@
       "controller": "CatalogAdminController",
       "handler": "createBrand",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 234,
+      "line": 288,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3190,7 +3115,7 @@
       "controller": "CatalogAdminController",
       "handler": "deleteBrand",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 249,
+      "line": 303,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3206,7 +3131,87 @@
       "controller": "CatalogAdminController",
       "handler": "updateBrand",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 239,
+      "line": 293,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/bundles",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "listBundles",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 254,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/bundles",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "createBundle",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 265,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Sell N existing variants together as one purchasable unit — never a new physical item"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/catalog/bundles/:id",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "removeBundle",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 276,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/bundles/:id",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "getBundle",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 259,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/catalog/bundles/:id",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "updateBundle",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 270,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3222,7 +3227,7 @@
       "controller": "CatalogAdminController",
       "handler": "listCategories",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 202,
+      "line": 207,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3238,7 +3243,7 @@
       "controller": "CatalogAdminController",
       "handler": "createCategory",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 207,
+      "line": 212,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3254,7 +3259,7 @@
       "controller": "CatalogAdminController",
       "handler": "deleteCategory",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 222,
+      "line": 227,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3270,7 +3275,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateCategory",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 212,
+      "line": 217,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3280,13 +3285,61 @@
       "summary": ""
     },
     {
+      "method": "GET",
+      "path": "/admin/catalog/category-presets",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "listCategoryPresets",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 235,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Starter category tree templates, one per vertical"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/category-presets/:key/apply",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "applyCategoryPreset",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 247,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Apply a starter category tree — additive only, never renames or overwrites an existing category"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/category-presets/:key/preview",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "previewCategoryPreset",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 241,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What applying this preset would create and what it would skip — nothing written"
+    },
+    {
       "method": "DELETE",
       "path": "/admin/catalog/images/:imageId",
       "module": "catalog",
       "controller": "CatalogAdminController",
       "handler": "deleteImage",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 183,
+      "line": 188,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3302,7 +3355,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateImage",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 173,
+      "line": 178,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3318,7 +3371,7 @@
       "controller": "CatalogAdminController",
       "handler": "import",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 293,
+      "line": 347,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3334,7 +3387,7 @@
       "controller": "CatalogAdminController",
       "handler": "assistImport",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 276,
+      "line": 330,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3350,7 +3403,7 @@
       "controller": "CatalogAdminController",
       "handler": "importTemplate",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 262,
+      "line": 316,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3494,7 +3547,7 @@
       "controller": "CatalogAdminController",
       "handler": "listProducts",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 93,
+      "line": 98,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3510,7 +3563,7 @@
       "controller": "CatalogAdminController",
       "handler": "createProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 119,
+      "line": 124,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3526,7 +3579,7 @@
       "controller": "CatalogAdminController",
       "handler": "archiveProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 134,
+      "line": 139,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3542,7 +3595,7 @@
       "controller": "CatalogAdminController",
       "handler": "getProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 113,
+      "line": 118,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3558,7 +3611,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 124,
+      "line": 129,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3638,7 +3691,7 @@
       "controller": "CatalogAdminController",
       "handler": "addImage",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 153,
+      "line": 158,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3654,7 +3707,7 @@
       "controller": "CatalogAdminController",
       "handler": "reorderImages",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 167,
+      "line": 172,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3670,7 +3723,7 @@
       "controller": "CatalogAdminController",
       "handler": "publishGate",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 108,
+      "line": 113,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3734,7 +3787,7 @@
       "controller": "CatalogAdminController",
       "handler": "seoHealthList",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 102,
+      "line": 107,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3814,7 +3867,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateStock",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 191,
+      "line": 196,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -5445,34 +5498,6 @@
     },
     {
       "method": "GET",
-      "path": "/admin/entity-attributes",
-      "module": "entity-attributes",
-      "controller": "EntityAttributesController",
-      "handler": "list",
-      "file": "apps/api/src/modules/entity-attributes/entity-attributes.controller.ts",
-      "line": 29,
-      "access": "any signed-in user",
-      "permissions": [],
-      "public": false,
-      "authOnly": true,
-      "summary": "One entity's own attributes, gated by that entity's own edit permission"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/entity-attributes",
-      "module": "entity-attributes",
-      "controller": "EntityAttributesController",
-      "handler": "set",
-      "file": "apps/api/src/modules/entity-attributes/entity-attributes.controller.ts",
-      "line": 37,
-      "access": "any signed-in user",
-      "permissions": [],
-      "public": false,
-      "authOnly": true,
-      "summary": "Set one attribute on one entity, gated by that entity's own edit permission"
-    },
-    {
-      "method": "GET",
       "path": "/admin/feed",
       "module": "core/feed",
       "controller": "FeedController",
@@ -5758,114 +5783,6 @@
       "public": false,
       "authOnly": false,
       "summary": "Contribution per order, paginated, plus the average by product/category (WO-4.2)"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/fragments",
-      "module": "fragments",
-      "controller": "FragmentsController",
-      "handler": "list",
-      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
-      "line": 26,
-      "access": "settings.fragments.manage",
-      "permissions": [
-        "settings.fragments.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Every registered fragment, active or suspended — for the management screen"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/fragments",
-      "module": "fragments",
-      "controller": "FragmentsController",
-      "handler": "register",
-      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
-      "line": 40,
-      "access": "settings.fragments.manage",
-      "permissions": [
-        "settings.fragments.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Register a new micro-frontend fragment, with the required design-law attestation"
-    },
-    {
-      "method": "PATCH",
-      "path": "/admin/fragments/:id",
-      "module": "fragments",
-      "controller": "FragmentsController",
-      "handler": "update",
-      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
-      "line": 47,
-      "access": "settings.fragments.manage",
-      "permissions": [
-        "settings.fragments.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Edit a fragment’s label, remote URL, mount points or status"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/fragments/:id/activate",
-      "module": "fragments",
-      "controller": "FragmentsController",
-      "handler": "activate",
-      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
-      "line": 61,
-      "access": "settings.fragments.manage",
-      "permissions": [
-        "settings.fragments.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Resume serving a previously suspended fragment"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/fragments/:id/suspend",
-      "module": "fragments",
-      "controller": "FragmentsController",
-      "handler": "suspend",
-      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
-      "line": 54,
-      "access": "settings.fragments.manage",
-      "permissions": [
-        "settings.fragments.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "The kill switch — stop serving a fragment with no deploy"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/fragments/:key/token",
-      "module": "fragments",
-      "controller": "FragmentsController",
-      "handler": "issueToken",
-      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
-      "line": 68,
-      "access": "any signed-in user",
-      "permissions": [],
-      "public": false,
-      "authOnly": true,
-      "summary": "A short-lived token scoped to one fragment and one mount point — never a raw session credential"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/fragments/for-mount-point",
-      "module": "fragments",
-      "controller": "FragmentsController",
-      "handler": "listForMountPoint",
-      "file": "apps/api/src/modules/fragments/fragments.controller.ts",
-      "line": 33,
-      "access": "any signed-in user",
-      "permissions": [],
-      "public": false,
-      "authOnly": true,
-      "summary": "Every active fragment registered for one named mount point"
     },
     {
       "method": "GET",
@@ -7205,36 +7122,6 @@
     },
     {
       "method": "GET",
-      "path": "/admin/metadata-forms/:entityType",
-      "module": "metadata-forms",
-      "controller": "MetadataFormsController",
-      "handler": "get",
-      "file": "apps/api/src/modules/metadata-forms/metadata-forms.controller.ts",
-      "line": 23,
-      "access": "any signed-in user",
-      "permissions": [],
-      "public": false,
-      "authOnly": true,
-      "summary": "The defined form shape for one entity type, or null if none is defined"
-    },
-    {
-      "method": "PUT",
-      "path": "/admin/metadata-forms/:entityType",
-      "module": "metadata-forms",
-      "controller": "MetadataFormsController",
-      "handler": "define",
-      "file": "apps/api/src/modules/metadata-forms/metadata-forms.controller.ts",
-      "line": 30,
-      "access": "settings.metadata-forms.manage",
-      "permissions": [
-        "settings.metadata-forms.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Define (or replace) the form shape for one entity type"
-    },
-    {
-      "method": "GET",
       "path": "/admin/offers",
       "module": "tradingpartners",
       "controller": "OffersController",
@@ -8526,6 +8413,118 @@
       "public": false,
       "authOnly": false,
       "summary": "Suspend a terminal — never deletes it, its history stays put"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/pricing/price-lists",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 22,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List every price list with its entries and assignments"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pricing/price-lists",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "create",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 29,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a price list — an entry below the variant's base price requires pricing.price-lists.approve"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/pricing/price-lists/:id",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "update",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 36,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Update a price list's entries — same margin-decision gate as create"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pricing/price-lists/:id/assignments",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "assign",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 43,
+      "access": "pricing.assignments.manage",
+      "permissions": [
+        "pricing.assignments.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Assign a price list to a customer or a customer tag"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/pricing/price-lists/assignments/:assignmentId",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "unassign",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 51,
+      "access": "pricing.assignments.manage",
+      "permissions": [
+        "pricing.assignments.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove a price-list assignment"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pricing/price-lists/preview",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "preview",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 59,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Preview one variant's resolved price for a customer at a quantity — a pure read, nothing written"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pricing/price-lists/preview/batch",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "previewBatch",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 67,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Preview several variants at once — the same batched path checkout itself uses"
     },
     {
       "method": "DELETE",
@@ -13524,6 +13523,51 @@
       "inSeed": true
     },
     {
+      "key": "pricing.price-lists.manage",
+      "label": "Create and edit wholesale price lists and quantity breaks",
+      "category": "Sales",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/pricing/price-lists",
+        "POST /admin/pricing/price-lists",
+        "PATCH /admin/pricing/price-lists/:id",
+        "POST /admin/pricing/price-lists/preview",
+        "POST /admin/pricing/price-lists/preview/batch"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "pricing.price-lists.approve",
+      "label": "Set a wholesale price below a variant's own base price",
+      "category": "Sales",
+      "sensitivity": "high",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [],
+      "inSeed": false
+    },
+    {
+      "key": "pricing.assignments.manage",
+      "label": "Assign a price list to a customer or a customer tag",
+      "category": "Sales",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/pricing/price-lists/:id/assignments",
+        "DELETE /admin/pricing/price-lists/assignments/:assignmentId"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "pos.manage",
       "label": "Register till terminals and issue their device credentials",
       "category": "Sales",
@@ -13774,10 +13818,18 @@
         "POST /admin/catalog/brands",
         "DELETE /admin/catalog/brands/:id",
         "PATCH /admin/catalog/brands/:id",
+        "GET /admin/catalog/bundles",
+        "POST /admin/catalog/bundles",
+        "DELETE /admin/catalog/bundles/:id",
+        "GET /admin/catalog/bundles/:id",
+        "PATCH /admin/catalog/bundles/:id",
         "GET /admin/catalog/categories",
         "POST /admin/catalog/categories",
         "DELETE /admin/catalog/categories/:id",
         "PATCH /admin/catalog/categories/:id",
+        "GET /admin/catalog/category-presets",
+        "POST /admin/catalog/category-presets/:key/apply",
+        "GET /admin/catalog/category-presets/:key/preview",
         "DELETE /admin/catalog/images/:imageId",
         "PATCH /admin/catalog/images/:imageId",
         "POST /admin/catalog/import",
@@ -14006,7 +14058,7 @@
         "POST /admin/requisitions/:id/approve",
         "POST /admin/requisitions/:id/reject"
       ],
-      "uiSites": 2,
+      "uiSites": 1,
       "roles": [
         "ADMIN"
       ],
@@ -14143,52 +14195,6 @@
         "GET /admin/embeds/all"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
-      "key": "settings.fragments.manage",
-      "label": "Register and suspend micro-frontend fragments",
-      "category": "Administration",
-      "sensitivity": "critical",
-      "routes": [
-        "GET /admin/fragments",
-        "POST /admin/fragments",
-        "PATCH /admin/fragments/:id",
-        "POST /admin/fragments/:id/activate",
-        "POST /admin/fragments/:id/suspend"
-      ],
-      "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
-      "key": "settings.metadata-forms.manage",
-      "label": "Define metadata-driven form field shapes",
-      "category": "Administration",
-      "sensitivity": "medium",
-      "routes": [
-        "PUT /admin/metadata-forms/:entityType"
-      ],
-      "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
-      "key": "settings.bpmn-workflows.manage",
-      "label": "Redraw approval workflow diagrams",
-      "category": "Administration",
-      "sensitivity": "critical",
-      "routes": [
-        "PUT /admin/bpmn-workflows/:subjectType"
-      ],
-      "uiSites": 0,
       "roles": [
         "ADMIN"
       ],
@@ -15349,8 +15355,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:55",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:162",
-        "apps/api/src/modules/orders/orders.service.ts:463",
-        "apps/api/src/modules/orders/orders.service.ts:721"
+        "apps/api/src/modules/orders/orders.service.ts:488",
+        "apps/api/src/modules/orders/orders.service.ts:746"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
@@ -15366,8 +15372,8 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:748",
-        "apps/api/src/modules/orders/orders.service.ts:933"
+        "apps/api/src/modules/orders/orders.service.ts:773",
+        "apps/api/src/modules/orders/orders.service.ts:958"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -15382,7 +15388,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:933"
+        "apps/api/src/modules/orders/orders.service.ts:958"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -15397,7 +15403,7 @@
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:122",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:159",
         "apps/api/src/modules/orders/instalment-plan.service.ts:90",
-        "apps/api/src/modules/orders/orders.service.ts:692",
+        "apps/api/src/modules/orders/orders.service.ts:717",
         "apps/api/src/modules/payments/payments.service.ts:191",
         "apps/api/src/modules/payments/payments.service.ts:293",
         "apps/api/src/modules/payments/payments.service.ts:341"
@@ -15653,7 +15659,7 @@
       "name": "purchasing.goods_received",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/purchasing/purchasing.service.ts:448"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:441"
       ],
       "subscribers": [
         "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()",
@@ -15665,7 +15671,7 @@
       "name": "purchasing.requisition_created",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/purchasing/requisition.service.ts:72"
+        "apps/api/src/modules/purchasing/requisition.service.ts:59"
       ],
       "subscribers": []
     },
@@ -15674,7 +15680,7 @@
       "name": "purchasing.requisition_converted",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/purchasing/requisition.service.ts:205"
+        "apps/api/src/modules/purchasing/requisition.service.ts:192"
       ],
       "subscribers": []
     },
@@ -15695,7 +15701,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:183",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:599"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:592"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:181 onSupplierBillRaised()"
@@ -15707,21 +15713,10 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:233",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:663"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:656"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:231 onSupplierBillPaid()"
-      ]
-    },
-    {
-      "symbol": "SupplierDeleted",
-      "name": "purchasing.supplier_deleted",
-      "doc": "PurchasingService.remove() — fired so any module holding data keyed to this supplier (e.g.",
-      "publishers": [
-        "apps/api/src/modules/purchasing/purchasing.service.ts:182"
-      ],
-      "subscribers": [
-        "apps/api/src/modules/entity-attributes/supplier-deleted.listener.ts:23 onSupplierDeleted()"
       ]
     },
     {
@@ -15886,9 +15881,9 @@
       "name": "fulfilment.return_status_changed",
       "doc": "ReturnsService's own status-machine writes (WO-6.6) — the customer notification subscriber (fulfilment/return-notification.subscriber.ts) is the only one today.",
       "publishers": [
-        "apps/api/src/modules/fulfilment/returns.service.ts:145",
-        "apps/api/src/modules/fulfilment/returns.service.ts:194",
-        "apps/api/src/modules/fulfilment/returns.service.ts:284"
+        "apps/api/src/modules/fulfilment/returns.service.ts:147",
+        "apps/api/src/modules/fulfilment/returns.service.ts:196",
+        "apps/api/src/modules/fulfilment/returns.service.ts:307"
       ],
       "subscribers": [
         "apps/api/src/modules/fulfilment/return-notification.subscriber.ts:24 onStatusChanged()",
@@ -15900,7 +15895,7 @@
       "name": "fulfilment.return_fully_refunded",
       "doc": "A ReturnRequest resolved REFUND and covers the order's full returnable quantity (WO-6.6) — orders/shipment-status.listener.ts is the only subscriber, calling changeStatus(..., {skipStockRelease: true…",
       "publishers": [
-        "apps/api/src/modules/fulfilment/returns.service.ts:370"
+        "apps/api/src/modules/fulfilment/returns.service.ts:393"
       ],
       "subscribers": [
         "apps/api/src/modules/orders/shipment-status.listener.ts:61 onReturnFullyRefunded()"
@@ -16178,7 +16173,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 324,
+      "line": 323,
       "doc": "",
       "fields": [
         {
@@ -16437,7 +16432,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 647,
+      "line": 646,
       "doc": "",
       "fields": [
         {
@@ -16526,7 +16521,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 602,
+      "line": 601,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -16587,7 +16582,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 274,
+      "line": 273,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -17549,7 +17544,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 414,
+      "line": 413,
       "doc": "",
       "fields": [
         {
@@ -18592,60 +18587,9 @@
       ]
     },
     {
-      "name": "BpmnWorkflowDefinition",
-      "file": "apps/api/prisma/schema/bpmn-workflows.prisma",
-      "line": 10,
-      "doc": "A BPMN visual workflow engine, built by explicit owner override (ADR-026) — architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.3).",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "subjectType",
-          "type": "ApprovalSubjectType",
-          "id": false,
-          "unique": true,
-          "relation": false
-        },
-        {
-          "name": "diagramXml",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "compiledSteps",
-          "type": "Json",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "createdAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "updatedAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        }
-      ],
-      "indexes": []
-    },
-    {
       "name": "Brand",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 49,
+      "line": 65,
       "doc": "A label a product is sold under.",
       "fields": [
         {
@@ -18784,7 +18728,7 @@
     {
       "name": "BrandTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 68,
+      "line": 84,
       "doc": "House Rule 6: a customer-facing name is a translation row, not a column.",
       "fields": [
         {
@@ -18832,6 +18776,52 @@
       ],
       "indexes": [
         "@@unique([brandId, locale])"
+      ]
+    },
+    {
+      "name": "BundleComponent",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 732,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bundleId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "componentVariantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bundle",
+          "type": "ProductBundle",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([bundleId, componentVariantId])"
       ]
     },
     {
@@ -19504,9 +19494,53 @@
       ]
     },
     {
+      "name": "CategoryPreset",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 51,
+      "doc": "47-preconfigured-sector-taxonomy.md — a named, versioned starter category tree for one vertical, seeded (never user-created through the admin UI).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "treeJson",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "CategoryTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 80,
+      "line": 96,
       "doc": "",
       "fields": [
         {
@@ -19603,7 +19637,7 @@
     {
       "name": "Collection",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 552,
+      "line": 568,
       "doc": "",
       "fields": [
         {
@@ -19684,7 +19718,7 @@
     {
       "name": "CollectionProduct",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 592,
+      "line": 608,
       "doc": "Manual membership and manual sort order.",
       "fields": [
         {
@@ -19731,7 +19765,7 @@
     {
       "name": "CollectionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 575,
+      "line": 591,
       "doc": "",
       "fields": [
         {
@@ -20525,7 +20559,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 582,
+      "line": 581,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -21082,7 +21116,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 369,
+      "line": 368,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -21268,7 +21302,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 230,
+      "line": 229,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -21470,74 +21504,6 @@
       ],
       "indexes": [
         "@@index([status])"
-      ]
-    },
-    {
-      "name": "EntityAttribute",
-      "file": "apps/api/prisma/schema/entity-attributes.prisma",
-      "line": 17,
-      "doc": "A general EAV model, built by explicit owner override (ADR-026).",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "entityType",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "entityId",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "attributeKey",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "attributeValue",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "valueType",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "createdAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "updatedAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        }
-      ],
-      "indexes": [
-        "@@unique([entityType, entityId, attributeKey])",
-        "@@index([entityType, entityId])"
       ]
     },
     {
@@ -22043,50 +22009,6 @@
         "@@index([isDone, dueAt])",
         "@@index([assigneeId, isDone])"
       ]
-    },
-    {
-      "name": "FormMetadata",
-      "file": "apps/api/prisma/schema/metadata-forms.prisma",
-      "line": 15,
-      "doc": "A general metadata-driven UI engine, built by explicit owner override (ADR-026) — architecture-patterns/141-general-metadata-driven-ui-engine.md (WO-141.1).",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "entityType",
-          "type": "String",
-          "id": false,
-          "unique": true,
-          "relation": false
-        },
-        {
-          "name": "fields",
-          "type": "Json",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "createdAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "updatedAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        }
-      ],
-      "indexes": []
     },
     {
       "name": "GarmentSizeChart",
@@ -25650,92 +25572,6 @@
       ]
     },
     {
-      "name": "MicroFrontendFragment",
-      "file": "apps/api/prisma/schema/fragments.prisma",
-      "line": 15,
-      "doc": "Micro-frontend fragments, built by explicit owner override (ADR-026), added alongside doc 93's single-app convention rather than replacing it (architecture-patterns/143-micro-frontend-architecture.md…",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "key",
-          "type": "String",
-          "id": false,
-          "unique": true,
-          "relation": false
-        },
-        {
-          "name": "label",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "remoteUrl",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "mountPoints",
-          "type": "String[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "status",
-          "type": "FragmentStatus",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "attestedAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "attestedByUserId",
-          "type": "String?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "attestedBy",
-          "type": "User?",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "createdAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "updatedAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        }
-      ],
-      "indexes": []
-    },
-    {
       "name": "NewsletterSubscriber",
       "file": "apps/api/prisma/schema/onsite-messaging.prisma",
       "line": 62,
@@ -26199,7 +26035,7 @@
     {
       "name": "OptionTemplate",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 463,
+      "line": 479,
       "doc": "Store-level, reusable option axis — \"Size: XS/S/M/L/XL/XXL\" typed once under Catalogue -> Options & attributes instead of on every product.",
       "fields": [
         {
@@ -26259,7 +26095,7 @@
     {
       "name": "OptionTemplateTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 476,
+      "line": 492,
       "doc": "",
       "fields": [
         {
@@ -26305,7 +26141,7 @@
     {
       "name": "OptionTemplateValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 487,
+      "line": 503,
       "doc": "",
       "fields": [
         {
@@ -26373,7 +26209,7 @@
     {
       "name": "OptionTemplateValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 502,
+      "line": 518,
       "doc": "",
       "fields": [
         {
@@ -27772,7 +27608,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 555,
+      "line": 554,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -28159,7 +27995,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 213,
+      "line": 212,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -28714,7 +28550,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 435,
+      "line": 434,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -30453,9 +30289,175 @@
       ]
     },
     {
+      "name": "PriceList",
+      "file": "apps/api/prisma/schema/pricing.prisma",
+      "line": 15,
+      "doc": "The `pricing` module — 146-wholesale-tiered-pricing.md (b2b-wholesale-multientity/146-wholesale-tiered-pricing.md).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entries",
+          "type": "PriceListEntry[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assignments",
+          "type": "PriceListAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "PriceListAssignment",
+      "file": "apps/api/prisma/schema/pricing.prisma",
+      "line": 47,
+      "doc": "Which price list applies to which buyer — a customer, or a customer's tag (a segment/channel).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceListId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customerId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tagId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceList",
+          "type": "PriceList",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([customerId])",
+        "@@index([tagId])"
+      ]
+    },
+    {
+      "name": "PriceListEntry",
+      "file": "apps/api/prisma/schema/pricing.prisma",
+      "line": 30,
+      "doc": "A quantity break OR a flat override — never both meaninglessly: a row with minQuantity=1 IS the flat override case, so this is one shape, not two competing mechanisms.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceListId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "minQuantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "unitPriceMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceList",
+          "type": "PriceList",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([priceListId, variantId, minQuantity])",
+        "@@index([variantId])"
+      ]
+    },
+    {
       "name": "Product",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 92,
+      "line": 108,
       "doc": "",
       "fields": [
         {
@@ -30777,7 +30779,7 @@
     {
       "name": "ProductAiSuggestion",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 628,
+      "line": 644,
       "doc": "WO-9.1.",
       "fields": [
         {
@@ -30871,9 +30873,60 @@
       ]
     },
     {
+      "name": "ProductBundle",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 719,
+      "doc": "150-product-kitting-bundles.md — a sellable shell over existing variants, never a new physical item: selling one is entirely expressed as decrementing its components (BundlesService.sellBundle()), an…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "components",
+          "type": "BundleComponent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "ProductCrossSell",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 679,
+      "line": 695,
       "doc": "",
       "fields": [
         {
@@ -30941,7 +30994,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 364,
+      "line": 380,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -30973,7 +31026,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 329,
+      "line": 345,
       "doc": "",
       "fields": [
         {
@@ -31068,7 +31121,7 @@
     {
       "name": "ProductImageTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 352,
+      "line": 368,
       "doc": "Alt text per locale.",
       "fields": [
         {
@@ -31114,7 +31167,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 385,
+      "line": 401,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -31189,7 +31242,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 402,
+      "line": 418,
       "doc": "",
       "fields": [
         {
@@ -31235,7 +31288,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 414,
+      "line": 430,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -31310,7 +31363,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 432,
+      "line": 448,
       "doc": "",
       "fields": [
         {
@@ -31428,7 +31481,7 @@
     {
       "name": "ProductSizeBias",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 651,
+      "line": 667,
       "doc": "WO-9.2.",
       "fields": [
         {
@@ -31493,7 +31546,7 @@
     {
       "name": "ProductTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 184,
+      "line": 200,
       "doc": "",
       "fields": [
         {
@@ -31589,7 +31642,7 @@
     {
       "name": "ProductVariant",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 222,
+      "line": 238,
       "doc": "",
       "fields": [
         {
@@ -31958,7 +32011,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 446,
+      "line": 462,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -32764,7 +32817,7 @@
     {
       "name": "Redirect",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 516,
+      "line": 532,
       "doc": "A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).",
       "fields": [
         {
@@ -32892,7 +32945,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 192,
+      "line": 191,
       "doc": "",
       "fields": [
         {
@@ -34019,7 +34072,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 501,
+      "line": 500,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -34077,7 +34130,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 515,
+      "line": 514,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -34131,7 +34184,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 451,
+      "line": 450,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -34358,7 +34411,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 347,
+      "line": 346,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -36488,7 +36541,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 311,
+      "line": 327,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -38835,13 +38888,6 @@
           "relation": true
         },
         {
-          "name": "microFrontendFragmentsRegistered",
-          "type": "MicroFrontendFragment[]",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
           "name": "goodsReceiptsReceived",
           "type": "GoodsReceipt[]",
           "id": false,
@@ -39201,7 +39247,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 472,
+      "line": 471,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -39262,7 +39308,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 530,
+      "line": 529,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -40176,7 +40222,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 641,
+      "line": 640,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -40186,7 +40232,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 620,
+      "line": 619,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -40208,7 +40254,7 @@
     {
       "name": "AiSuggestionKind",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 610,
+      "line": 626,
       "values": [
         "ALT_TEXT",
         "META_TITLE",
@@ -40220,7 +40266,7 @@
     {
       "name": "AiSuggestionStatus",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 618,
+      "line": 634,
       "values": [
         "PENDING",
         "APPROVED",
@@ -40230,7 +40276,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 255,
+      "line": 254,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -40240,7 +40286,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 248,
+      "line": 247,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -40404,7 +40450,7 @@
     {
       "name": "CollectionSortStrategy",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 541,
+      "line": 557,
       "values": [
         "MANUAL",
         "BEST_SELLING",
@@ -40480,7 +40526,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 570,
+      "line": 569,
       "values": [
         "IOS",
         "ANDROID",
@@ -40525,7 +40571,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 358,
+      "line": 357,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -40563,15 +40609,6 @@
         "OPEN",
         "CLOSED",
         "LOCKED"
-      ]
-    },
-    {
-      "name": "FragmentStatus",
-      "file": "apps/api/prisma/schema/fragments.prisma",
-      "line": 37,
-      "values": [
-        "ACTIVE",
-        "SUSPENDED"
       ]
     },
     {
@@ -40848,7 +40885,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 373,
+      "line": 389,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -40893,7 +40930,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 544,
+      "line": 543,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -40948,7 +40985,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 463,
+      "line": 462,
       "values": [
         "GRANT",
         "REVOKE"
@@ -40987,7 +41024,7 @@
     {
       "name": "ProductCrossSellKind",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 673,
+      "line": 689,
       "values": [
         "MANUAL",
         "CO_OCCURRENCE",
@@ -43260,37 +43297,6 @@
       ]
     },
     {
-      "folder": "20260926110000_add_entity_attributes",
-      "file": "apps/api/prisma/schema/migrations/20260926110000_add_entity_attributes/migration.sql",
-      "date": "2026-09-26",
-      "slug": "add_entity_attributes",
-      "statements": 3,
-      "kinds": [
-        "CREATE TABLE",
-        "CREATE UNIQUE INDEX",
-        "CREATE INDEX"
-      ],
-      "tables": [
-        "EntityAttribute"
-      ]
-    },
-    {
-      "folder": "20260926120000_add_micro_frontend_fragments",
-      "file": "apps/api/prisma/schema/migrations/20260926120000_add_micro_frontend_fragments/migration.sql",
-      "date": "2026-09-26",
-      "slug": "add_micro_frontend_fragments",
-      "statements": 4,
-      "kinds": [
-        "CREATE TYPE",
-        "CREATE TABLE",
-        "CREATE UNIQUE INDEX",
-        "ALTER TABLE"
-      ],
-      "tables": [
-        "MicroFrontendFragment"
-      ]
-    },
-    {
       "folder": "20260926125941_wo166_product_reference_registry",
       "file": "apps/platform/prisma/schema/migrations/20260926125941_wo166_product_reference_registry/migration.sql",
       "date": "2026-09-26",
@@ -43313,31 +43319,51 @@
       ]
     },
     {
-      "folder": "20260926130000_add_form_metadata",
-      "file": "apps/api/prisma/schema/migrations/20260926130000_add_form_metadata/migration.sql",
+      "folder": "20260926134514_wo146_pricing_module",
+      "file": "apps/api/prisma/schema/migrations/20260926134514_wo146_pricing_module/migration.sql",
       "date": "2026-09-26",
-      "slug": "add_form_metadata",
-      "statements": 2,
+      "slug": "wo146_pricing_module",
+      "statements": 10,
       "kinds": [
         "CREATE TABLE",
-        "CREATE UNIQUE INDEX"
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
       ],
       "tables": [
-        "FormMetadata"
+        "PriceList",
+        "PriceListAssignment",
+        "PriceListEntry"
       ]
     },
     {
-      "folder": "20260926140000_add_bpmn_workflow_definitions",
-      "file": "apps/api/prisma/schema/migrations/20260926140000_add_bpmn_workflow_definitions/migration.sql",
+      "folder": "20260926135636_wo47_category_presets",
+      "file": "apps/api/prisma/schema/migrations/20260926135636_wo47_category_presets/migration.sql",
       "date": "2026-09-26",
-      "slug": "add_bpmn_workflow_definitions",
+      "slug": "wo47_category_presets",
       "statements": 2,
       "kinds": [
         "CREATE TABLE",
         "CREATE UNIQUE INDEX"
       ],
       "tables": [
-        "BpmnWorkflowDefinition"
+        "CategoryPreset"
+      ]
+    },
+    {
+      "folder": "20260926140325_wo150_product_bundles",
+      "file": "apps/api/prisma/schema/migrations/20260926140325_wo150_product_bundles/migration.sql",
+      "date": "2026-09-26",
+      "slug": "wo150_product_bundles",
+      "statements": 5,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "BundleComponent",
+        "ProductBundle"
       ]
     }
   ],
@@ -46030,7 +46056,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-chart-imports.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -46061,12 +46087,6 @@
       "file": "package.json",
       "name": "boundaries",
       "cmd": "node scripts/check-module-boundaries.mjs"
-    },
-    {
-      "pkg": "yaseenecom",
-      "file": "package.json",
-      "name": "check:metadata-renderer",
-      "cmd": "node scripts/check-metadata-renderer.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -47101,24 +47121,6 @@
       ]
     },
     {
-      "file": "apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts",
-      "module": "bpmn-workflows",
-      "kind": "unit test",
-      "cases": 9,
-      "describes": [
-        "compileBpmnToApprovalSteps — WO-142.1"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts",
-      "module": "bpmn-workflows",
-      "kind": "unit test",
-      "cases": 4,
-      "describes": [
-        "BpmnWorkflowsService — WO-142.3"
-      ]
-    },
-    {
       "file": "apps/api/src/modules/cart/cart.guest-contact.spec.ts",
       "module": "cart",
       "kind": "unit test",
@@ -47140,6 +47142,33 @@
         "approve",
         "reject",
         "approveBulk"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/catalog/bundles.service.spec.ts",
+      "module": "catalog",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "BundlesService",
+        "bundlesByVariantId",
+        "sellBundle",
+        "restockBundle",
+        "bundleAvailableStock",
+        "create",
+        "update",
+        "remove"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/catalog/category-preset.service.spec.ts",
+      "module": "catalog",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "CategoryPresetService",
+        "preview",
+        "apply"
       ]
     },
     {
@@ -47305,24 +47334,6 @@
       ]
     },
     {
-      "file": "apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts",
-      "module": "entity-attributes",
-      "kind": "unit test",
-      "cases": 6,
-      "describes": [
-        "EntityAttributeService — WO-140.2"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts",
-      "module": "entity-attributes",
-      "kind": "unit test",
-      "cases": 1,
-      "describes": [
-        "EntityAttributeSupplierDeletedListener — WO-140.3"
-      ]
-    },
-    {
       "file": "apps/api/src/modules/finance/expense-import.service.spec.ts",
       "module": "finance",
       "kind": "unit test",
@@ -47401,15 +47412,6 @@
       "describes": [
         "OrderEconomicsService",
         "grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md)"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/fragments/fragments.service.spec.ts",
-      "module": "fragments",
-      "kind": "unit test",
-      "cases": 9,
-      "describes": [
-        "FragmentsService — WO-143.2/143.3"
       ]
     },
     {
@@ -47646,15 +47648,6 @@
       "cases": 8,
       "describes": [
         "SizeRecommendationService"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts",
-      "module": "metadata-forms",
-      "kind": "unit test",
-      "cases": 5,
-      "describes": [
-        "MetadataFormsService — WO-141.1"
       ]
     },
     {
@@ -47942,6 +47935,21 @@
         "update",
         "rotateDeviceKey",
         "verifyDeviceKey"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/pricing/pricing.service.spec.ts",
+      "module": "pricing",
+      "kind": "unit test",
+      "cases": 19,
+      "describes": [
+        "PricingService",
+        "resolvePrices",
+        "resolvePrice",
+        "createPriceList",
+        "updatePriceList",
+        "setAssignment",
+        "removeAssignment"
       ]
     },
     {
@@ -49940,7 +49948,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 285,
-      "bytes": 12311,
+      "bytes": 12342,
       "doc": "The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a",
       "symbols": []
     },
@@ -49958,7 +49966,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 198,
-      "bytes": 8387,
+      "bytes": 8407,
       "doc": "Attendance, shifts and leave —",
       "symbols": []
     },
@@ -49969,15 +49977,6 @@
       "lines": 228,
       "bytes": 8880,
       "doc": "BOM: which raw materials go into a finished product, how much of each, and",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/prisma/schema/bpmn-workflows.prisma",
-      "area": "api",
-      "kind": "prisma schema",
-      "lines": 21,
-      "bytes": 1026,
-      "doc": "A BPMN visual workflow engine, built by explicit owner override (ADR-026)",
       "symbols": []
     },
     {
@@ -49993,8 +49992,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 693,
-      "bytes": 26272,
+      "lines": 742,
+      "bytes": 28304,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -50011,8 +50010,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 667,
-      "bytes": 28047,
+      "lines": 666,
+      "bytes": 28577,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -50044,30 +50043,12 @@
       "symbols": []
     },
     {
-      "path": "apps/api/prisma/schema/entity-attributes.prisma",
-      "area": "api",
-      "kind": "prisma schema",
-      "lines": 36,
-      "bytes": 1751,
-      "doc": "A general EAV model, built by explicit owner override (ADR-026).",
-      "symbols": []
-    },
-    {
       "path": "apps/api/prisma/schema/finance.prisma",
       "area": "api",
       "kind": "prisma schema",
       "lines": 133,
       "bytes": 5692,
       "doc": "Finance: operational expenses and per-order economics (RETAIL-ERP.md",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/prisma/schema/fragments.prisma",
-      "area": "api",
-      "kind": "prisma schema",
-      "lines": 41,
-      "bytes": 1971,
-      "doc": "Micro-frontend fragments, built by explicit owner override (ADR-026),",
       "symbols": []
     },
     {
@@ -50093,7 +50074,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 171,
-      "bytes": 7045,
+      "bytes": 7051,
       "doc": "Employee assets: which physical equipment (laptop, phone, uniform) is",
       "symbols": []
     },
@@ -50158,15 +50139,6 @@
       "lines": 107,
       "bytes": 3811,
       "doc": "Measurements: garment types, their measurement fields, and saved customer",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/prisma/schema/metadata-forms.prisma",
-      "area": "api",
-      "kind": "prisma schema",
-      "lines": 26,
-      "bytes": 1319,
-      "doc": "A general metadata-driven UI engine, built by explicit owner override",
       "symbols": []
     },
     {
@@ -50953,38 +50925,29 @@
       "symbols": []
     },
     {
-      "path": "apps/api/prisma/schema/migrations/20260926110000_add_entity_attributes/migration.sql",
+      "path": "apps/api/prisma/schema/migrations/20260926134514_wo146_pricing_module/migration.sql",
       "area": "api",
       "kind": "migration",
-      "lines": 28,
-      "bytes": 1213,
+      "lines": 67,
+      "bytes": 2576,
       "doc": "",
       "symbols": []
     },
     {
-      "path": "apps/api/prisma/schema/migrations/20260926120000_add_micro_frontend_fragments/migration.sql",
-      "area": "api",
-      "kind": "migration",
-      "lines": 32,
-      "bytes": 1225,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/prisma/schema/migrations/20260926130000_add_form_metadata/migration.sql",
+      "path": "apps/api/prisma/schema/migrations/20260926135636_wo47_category_presets/migration.sql",
       "area": "api",
       "kind": "migration",
       "lines": 21,
-      "bytes": 711,
+      "bytes": 717,
       "doc": "",
       "symbols": []
     },
     {
-      "path": "apps/api/prisma/schema/migrations/20260926140000_add_bpmn_workflow_definitions/migration.sql",
+      "path": "apps/api/prisma/schema/migrations/20260926140325_wo150_product_bundles/migration.sql",
       "area": "api",
       "kind": "migration",
-      "lines": 22,
-      "bytes": 798,
+      "lines": 36,
+      "bytes": 1319,
       "doc": "",
       "symbols": []
     },
@@ -51029,7 +50992,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 132,
-      "bytes": 5825,
+      "bytes": 5959,
       "doc": "The org tree: offices, regions, departments — whatever shape a client's",
       "symbols": []
     },
@@ -51056,7 +51019,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 55,
-      "bytes": 1867,
+      "bytes": 1922,
       "doc": "Payments. `provider` is a plain string key, not an enum, so a new gateway is",
       "symbols": []
     },
@@ -51076,6 +51039,15 @@
       "lines": 139,
       "bytes": 5672,
       "doc": "The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/pricing.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 58,
+      "bytes": 2406,
+      "doc": "The `pricing` module — 146-wholesale-tiered-pricing.md",
       "symbols": []
     },
     {
@@ -51110,7 +51082,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 159,
-      "bytes": 8184,
+      "bytes": 8210,
       "doc": "WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md).",
       "symbols": []
     },
@@ -51119,7 +51091,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 142,
-      "bytes": 6349,
+      "bytes": 6528,
       "doc": "Receivables: CreditNote/DebitNote, customer credit limits, and dunning —",
       "symbols": []
     },
@@ -51164,7 +51136,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 77,
-      "bytes": 3142,
+      "bytes": 3151,
       "doc": "Financial institution settlement partnerships",
       "symbols": []
     },
@@ -51218,7 +51190,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 185,
-      "bytes": 8074,
+      "bytes": 8182,
       "doc": "155-wallet-stored-value-merchant-escrow.md",
       "symbols": []
     },
@@ -51244,8 +51216,8 @@
       "path": "apps/api/prisma/seed.ts",
       "area": "api",
       "kind": "module",
-      "lines": 3100,
-      "bytes": 107115,
+      "lines": 3199,
+      "bytes": 111977,
       "doc": "",
       "symbols": []
     },
@@ -52862,8 +52834,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 693,
-      "bytes": 28537,
+      "lines": 686,
+      "bytes": 28068,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -52874,287 +52846,282 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 150
+          "line": 148
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 152
+          "line": 150
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 165
+          "line": 163
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 173
+          "line": 171
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 181
+          "line": 179
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 201
+          "line": 199
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 207
+          "line": 205
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 214
+          "line": 212
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 221
+          "line": 219
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 225
+          "line": 223
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 231
+          "line": 229
         },
         {
           "name": "ApiKeyIssuedPayload",
           "kind": "interface",
-          "line": 242
+          "line": 240
         },
         {
           "name": "SsoAccountLinkedPayload",
           "kind": "interface",
-          "line": 255
+          "line": 253
         },
         {
           "name": "SsoUserProvisionedPayload",
           "kind": "interface",
-          "line": 260
+          "line": 258
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 265
+          "line": 263
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 272
+          "line": 270
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 282
+          "line": 280
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 291
+          "line": 289
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 300
+          "line": 298
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 308
+          "line": 306
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 316
+          "line": 314
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 327
+          "line": 325
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 334
+          "line": 332
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 343
+          "line": 341
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 351
+          "line": 349
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 356
+          "line": 354
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 364
+          "line": 362
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 369
+          "line": 367
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 375
+          "line": 373
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 381
-        },
-        {
-          "name": "SupplierDeletedPayload",
-          "kind": "interface",
-          "line": 393
+          "line": 379
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 397
+          "line": 391
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 412
+          "line": 406
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 420
+          "line": 414
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 434
+          "line": 428
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 447
+          "line": 441
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 460
+          "line": 454
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 476
+          "line": 470
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 484
+          "line": 478
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 496
+          "line": 490
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 507
+          "line": 501
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 518
+          "line": 512
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 525
+          "line": 519
         },
         {
           "name": "WalletCreditPurchasedPayload",
           "kind": "interface",
-          "line": 531
+          "line": 525
         },
         {
           "name": "WalletCreditRedeemedPayload",
           "kind": "interface",
-          "line": 539
+          "line": 533
         },
         {
           "name": "WalletCreditRefundedPayload",
           "kind": "interface",
-          "line": 548
+          "line": 542
         },
         {
           "name": "MerchantPayableCreatedPayload",
           "kind": "interface",
-          "line": 559
+          "line": 553
         },
         {
           "name": "MerchantPayablePaidPayload",
           "kind": "interface",
-          "line": 566
+          "line": 560
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 573
+          "line": 567
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 579
+          "line": 573
         },
         {
           "name": "CreditNoteIssuedPayload",
           "kind": "interface",
-          "line": 646
+          "line": 639
         },
         {
           "name": "CreditNoteVoidedPayload",
           "kind": "interface",
-          "line": 655
+          "line": 648
         },
         {
           "name": "DebitNoteIssuedPayload",
           "kind": "interface",
-          "line": 659
+          "line": 652
         },
         {
           "name": "DebitNoteVoidedPayload",
           "kind": "interface",
-          "line": 667
+          "line": 660
         },
         {
           "name": "CreditHoldAppliedPayload",
           "kind": "interface",
-          "line": 671
+          "line": 664
         },
         {
           "name": "NotificationSentPayload",
           "kind": "interface",
-          "line": 676
+          "line": 669
         },
         {
           "name": "SettlementShortfallWrittenOffPayload",
           "kind": "interface",
-          "line": 687
+          "line": 680
         }
       ]
     },
@@ -53341,14 +53308,14 @@
       "path": "apps/api/src/core/extension-points/extension-points.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 48,
-      "bytes": 1968,
+      "lines": 45,
+      "bytes": 1847,
       "doc": "",
       "symbols": [
         {
           "name": "ExtensionPointsModule",
           "kind": "class",
-          "line": 47
+          "line": 44
         }
       ]
     },
@@ -53394,31 +53361,6 @@
           "name": "StockIntakeRegistry",
           "kind": "class",
           "line": 52
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/extension-points/workflow-steps.registry.ts",
-      "area": "api",
-      "kind": "registry",
-      "lines": 39,
-      "bytes": 1617,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "CompiledApprovalStep",
-          "kind": "interface",
-          "line": 4
-        },
-        {
-          "name": "WorkflowStepsHandler",
-          "kind": "interface",
-          "line": 9
-        },
-        {
-          "name": "WorkflowStepsRegistry",
-          "kind": "class",
-          "line": 26
         }
       ]
     },
@@ -56579,99 +56521,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 108,
-      "bytes": 4655,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/bpmn-workflows/bpmn-compiler.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 120,
-      "bytes": 5835,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "compileBpmnToApprovalSteps",
-          "kind": "function",
-          "line": 25
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 42,
-      "bytes": 1979,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "BpmnWorkflowsController",
-          "kind": "class",
-          "line": 18
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.module.ts",
-      "area": "api",
-      "kind": "nest module",
-      "lines": 19,
-      "bytes": 743,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "BpmnWorkflowsModule",
-          "kind": "class",
-          "line": 18
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 74,
-      "bytes": 3605,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 52,
-      "bytes": 2422,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "BpmnWorkflowsService",
-          "kind": "class",
-          "line": 16
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/bpmn-workflows/dto/bpmn-workflow.dto.ts",
-      "area": "api",
-      "kind": "dto",
-      "lines": 10,
-      "bytes": 269,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "SaveBpmnWorkflowDto",
-          "kind": "class",
-          "line": 4
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/cart/cart.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -56690,8 +56539,8 @@
       "path": "apps/api/src/modules/cart/cart.guest-contact.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 77,
-      "bytes": 3061,
+      "lines": 79,
+      "bytes": 3215,
       "doc": "",
       "symbols": []
     },
@@ -56699,14 +56548,14 @@
       "path": "apps/api/src/modules/cart/cart.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 18,
-      "bytes": 710,
+      "lines": 22,
+      "bytes": 1003,
       "doc": "",
       "symbols": [
         {
           "name": "CartModule",
           "kind": "class",
-          "line": 17
+          "line": 21
         }
       ]
     },
@@ -56714,24 +56563,24 @@
       "path": "apps/api/src/modules/cart/cart.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 704,
-      "bytes": 24792,
+      "lines": 720,
+      "bytes": 25735,
       "doc": "",
       "symbols": [
         {
           "name": "CartLineView",
           "kind": "interface",
-          "line": 46
+          "line": 47
         },
         {
           "name": "CartView",
           "kind": "interface",
-          "line": 88
+          "line": 89
         },
         {
           "name": "CartService",
           "kind": "class",
-          "line": 111
+          "line": 112
         }
       ]
     },
@@ -56845,17 +56694,41 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/catalog/bundles.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 201,
+      "bytes": 8336,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/catalog/bundles.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 224,
+      "bytes": 8427,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BundlesService",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 304,
-      "bytes": 9213,
+      "lines": 358,
+      "bytes": 11247,
       "doc": "",
       "symbols": [
         {
           "name": "CatalogAdminController",
           "kind": "class",
-          "line": 79
+          "line": 82
         }
       ]
     },
@@ -56893,14 +56766,14 @@
       "path": "apps/api/src/modules/catalog/catalog.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 57,
-      "bytes": 2562,
+      "lines": 64,
+      "bytes": 2928,
       "doc": "",
       "symbols": [
         {
           "name": "CatalogModule",
           "kind": "class",
-          "line": 56
+          "line": 63
         }
       ]
     },
@@ -56945,6 +56818,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/catalog/category-preset.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 100,
+      "bytes": 4242,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/catalog/category-preset.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 137,
+      "bytes": 4901,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CategoryPresetService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/catalog/dto/brand.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -56961,6 +56858,31 @@
           "name": "UpsertBrandDto",
           "kind": "class",
           "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/dto/bundle.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 37,
+      "bytes": 750,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BundleComponentDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "CreateBundleDto",
+          "kind": "class",
+          "line": 14
+        },
+        {
+          "name": "UpdateBundleDto",
+          "kind": "class",
+          "line": 25
         }
       ]
     },
@@ -58275,109 +58197,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/entity-attributes/dto/entity-attribute.dto.ts",
-      "area": "api",
-      "kind": "dto",
-      "lines": 30,
-      "bytes": 1006,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "SetEntityAttributeDto",
-          "kind": "class",
-          "line": 5
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/entity-attributes/entity-attributes.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 49,
-      "bytes": 2251,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "EntityAttributesController",
-          "kind": "class",
-          "line": 23
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/entity-attributes/entity-attributes.module.ts",
-      "area": "api",
-      "kind": "nest module",
-      "lines": 20,
-      "bytes": 940,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "EntityAttributesModule",
-          "kind": "class",
-          "line": 19
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 82,
-      "bytes": 3394,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/entity-attributes/entity-attributes.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 80,
-      "bytes": 3405,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ENTITY_ATTRIBUTE_VALUE_TYPES",
-          "kind": "const",
-          "line": 6
-        },
-        {
-          "name": "EntityAttributeValueType",
-          "kind": "type",
-          "line": 7
-        },
-        {
-          "name": "EntityAttributeService",
-          "kind": "class",
-          "line": 25
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 14,
-      "bytes": 673,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/entity-attributes/supplier-deleted.listener.ts",
-      "area": "api",
-      "kind": "event subscriber",
-      "lines": 29,
-      "bytes": 1437,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "EntityAttributeSupplierDeletedListener",
-          "kind": "class",
-          "line": 18
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/finance/dto/expense-category.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -58705,80 +58524,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/fragments/dto/fragment.dto.ts",
-      "area": "api",
-      "kind": "dto",
-      "lines": 60,
-      "bytes": 1885,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "RegisterFragmentDto",
-          "kind": "class",
-          "line": 7
-        },
-        {
-          "name": "UpdateFragmentDto",
-          "kind": "class",
-          "line": 36
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/fragments/fragments.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 72,
-      "bytes": 3302,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FragmentsController",
-          "kind": "class",
-          "line": 20
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/fragments/fragments.module.ts",
-      "area": "api",
-      "kind": "nest module",
-      "lines": 19,
-      "bytes": 642,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FragmentsModule",
-          "kind": "class",
-          "line": 18
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/fragments/fragments.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 133,
-      "bytes": 5984,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/fragments/fragments.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 119,
-      "bytes": 5336,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FragmentsService",
-          "kind": "class",
-          "line": 23
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/fulfilment/courier-provider.ts",
       "area": "api",
       "kind": "module",
@@ -58967,14 +58712,14 @@
       "path": "apps/api/src/modules/fulfilment/fulfilment.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 44,
-      "bytes": 1792,
+      "lines": 48,
+      "bytes": 2082,
       "doc": "",
       "symbols": [
         {
           "name": "FulfilmentModule",
           "kind": "class",
-          "line": 43
+          "line": 47
         }
       ]
     },
@@ -59056,14 +58801,14 @@
       "path": "apps/api/src/modules/fulfilment/returns.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 382,
-      "bytes": 14048,
+      "lines": 405,
+      "bytes": 15086,
       "doc": "",
       "symbols": [
         {
           "name": "ReturnsService",
           "kind": "class",
-          "line": 46
+          "line": 47
         }
       ]
     },
@@ -59071,8 +58816,8 @@
       "path": "apps/api/src/modules/fulfilment/returns.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 178,
-      "bytes": 6639,
+      "lines": 182,
+      "bytes": 6953,
       "doc": "",
       "symbols": []
     },
@@ -60497,95 +60242,11 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/metadata-forms/dto/form-metadata.dto.ts",
-      "area": "api",
-      "kind": "dto",
-      "lines": 45,
-      "bytes": 1341,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FieldMetadataDto",
-          "kind": "class",
-          "line": 6
-        },
-        {
-          "name": "DefineFormMetadataDto",
-          "kind": "class",
-          "line": 37
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/metadata-forms/metadata-forms.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 34,
-      "bytes": 1516,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "MetadataFormsController",
-          "kind": "class",
-          "line": 17
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/metadata-forms/metadata-forms.module.ts",
-      "area": "api",
-      "kind": "nest module",
-      "lines": 17,
-      "bytes": 606,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "MetadataFormsModule",
-          "kind": "class",
-          "line": 16
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 70,
-      "bytes": 2605,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/metadata-forms/metadata-forms.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 53,
-      "bytes": 2320,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FIELD_METADATA_VALUE_TYPES",
-          "kind": "const",
-          "line": 7
-        },
-        {
-          "name": "FieldMetadataValueType",
-          "kind": "type",
-          "line": 8
-        },
-        {
-          "name": "MetadataFormsService",
-          "kind": "class",
-          "line": 17
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
       "lines": 115,
-      "bytes": 3677,
+      "bytes": 3770,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -60604,24 +60265,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 264,
-      "bytes": 14953,
+      "lines": 253,
+      "bytes": 14115,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 57
+          "line": 54
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 88
+          "line": 85
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 240
+          "line": 229
         }
       ]
     },
@@ -61007,8 +60668,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 405,
-      "bytes": 17475,
+      "lines": 416,
+      "bytes": 18191,
       "doc": "",
       "symbols": []
     },
@@ -61036,14 +60697,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 55,
-      "bytes": 2818,
+      "lines": 57,
+      "bytes": 2966,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 54
+          "line": 56
         }
       ]
     },
@@ -61051,8 +60712,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1304,
-      "bytes": 51883,
+      "lines": 1340,
+      "bytes": 53868,
       "doc": "",
       "symbols": [
         {
@@ -61073,7 +60734,7 @@
         {
           "name": "OrdersService",
           "kind": "class",
-          "line": 106
+          "line": 108
         }
       ]
     },
@@ -62341,6 +62002,105 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/pricing/dto/pricing.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 93,
+      "bytes": 1733,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PriceListEntryDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "CreatePriceListDto",
+          "kind": "class",
+          "line": 18
+        },
+        {
+          "name": "UpdatePriceListDto",
+          "kind": "class",
+          "line": 33
+        },
+        {
+          "name": "SetPriceListAssignmentDto",
+          "kind": "class",
+          "line": 50
+        },
+        {
+          "name": "PreviewPriceDto",
+          "kind": "class",
+          "line": 60
+        },
+        {
+          "name": "PriceListEntryQuantityDto",
+          "kind": "class",
+          "line": 73
+        },
+        {
+          "name": "BatchPreviewPriceDto",
+          "kind": "class",
+          "line": 82
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 72,
+      "bytes": 3227,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PricingController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/pricing/pricing.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 22,
+      "bytes": 920,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PricingModule",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/pricing/pricing.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 212,
+      "bytes": 9381,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/pricing/pricing.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 255,
+      "bytes": 10989,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PricingService",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/production/bom.service.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -62916,8 +62676,8 @@
       "path": "apps/api/src/modules/purchasing/purchasing.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 680,
-      "bytes": 25771,
+      "lines": 673,
+      "bytes": 25275,
       "doc": "",
       "symbols": [
         {
@@ -62979,8 +62739,8 @@
       "path": "apps/api/src/modules/purchasing/requisition.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 207,
-      "bytes": 9670,
+      "lines": 203,
+      "bytes": 9428,
       "doc": "",
       "symbols": []
     },
@@ -62988,14 +62748,14 @@
       "path": "apps/api/src/modules/purchasing/requisition.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 214,
-      "bytes": 9086,
+      "lines": 201,
+      "bytes": 8280,
       "doc": "",
       "symbols": [
         {
           "name": "RequisitionService",
           "kind": "class",
-          "line": 25
+          "line": 23
         }
       ]
     },
@@ -70067,8 +69827,8 @@
       "path": "apps/web/package.json",
       "area": "web",
       "kind": "json",
-      "lines": 44,
-      "bytes": 1117,
+      "lines": 43,
+      "bytes": 1091,
       "doc": "",
       "symbols": []
     },
@@ -72134,14 +71894,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/settings/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 1424,
-      "bytes": 51106,
+      "lines": 965,
+      "bytes": 33647,
       "doc": "",
       "symbols": [
         {
           "name": "AdminSettingsPage",
           "kind": "default",
-          "line": 30
+          "line": 16
         }
       ]
     },
@@ -72299,14 +72059,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/suppliers/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 195,
-      "bytes": 7402,
+      "lines": 189,
+      "bytes": 6952,
       "doc": "No clsx import needed",
       "symbols": [
         {
           "name": "SupplierDetailPage",
           "kind": "default",
-          "line": 35
+          "line": 32
         }
       ]
     },
@@ -73818,21 +73578,6 @@
       ]
     },
     {
-      "path": "apps/web/src/components/admin/bpmn-editor.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 118,
-      "bytes": 4701,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "BpmnEditor",
-          "kind": "function",
-          "line": 46
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/components/admin/charts/category-bar-chart.tsx",
       "area": "web",
       "kind": "component",
@@ -74332,36 +74077,6 @@
       ]
     },
     {
-      "path": "apps/web/src/components/admin/entity-attribute-editor.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 160,
-      "bytes": 6173,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "EntityAttributeEditor",
-          "kind": "function",
-          "line": 19
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/components/admin/fragment-mount-point.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 98,
-      "bytes": 3310,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FragmentMountPoint",
-          "kind": "function",
-          "line": 18
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/components/admin/funnel-chart.tsx",
       "area": "web",
       "kind": "component",
@@ -74463,41 +74178,6 @@
           "name": "DiscountForm",
           "kind": "function",
           "line": 97
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/components/admin/metadata-driven-entity-form.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 120,
-      "bytes": 4199,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "MetadataDrivenEntityForm",
-          "kind": "function",
-          "line": 17
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/components/admin/metadata-driven-form.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 147,
-      "bytes": 4763,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "MetadataFieldValue",
-          "kind": "type",
-          "line": 5
-        },
-        {
-          "name": "MetadataDrivenForm",
-          "kind": "function",
-          "line": 25
         }
       ]
     },
@@ -76370,8 +76050,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1770,
-      "bytes": 47983,
+      "lines": 1689,
+      "bytes": 45528,
       "doc": "",
       "symbols": [
         {
@@ -77258,56 +76938,6 @@
           "name": "EmbedToken",
           "kind": "interface",
           "line": 1684
-        },
-        {
-          "name": "EntityAttribute",
-          "kind": "interface",
-          "line": 1697
-        },
-        {
-          "name": "EntityAttributeValueType",
-          "kind": "type",
-          "line": 1706
-        },
-        {
-          "name": "MicroFrontendFragment",
-          "kind": "interface",
-          "line": 1714
-        },
-        {
-          "name": "FragmentStatus",
-          "kind": "type",
-          "line": 1724
-        },
-        {
-          "name": "FragmentToken",
-          "kind": "interface",
-          "line": 1727
-        },
-        {
-          "name": "FormMetadata",
-          "kind": "interface",
-          "line": 1739
-        },
-        {
-          "name": "FieldMetadata",
-          "kind": "interface",
-          "line": 1745
-        },
-        {
-          "name": "FieldMetadataValueType",
-          "kind": "type",
-          "line": 1754
-        },
-        {
-          "name": "BpmnWorkflowDefinition",
-          "kind": "interface",
-          "line": 1762
-        },
-        {
-          "name": "ApprovalSubjectType",
-          "kind": "type",
-          "line": 1769
         }
       ]
     },
@@ -79842,8 +79472,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 5407,
-      "bytes": 314339,
+      "lines": 5151,
+      "bytes": 299020,
       "doc": "",
       "symbols": []
     },
@@ -79879,7 +79509,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 528,
-      "bytes": 70573,
+      "bytes": 70904,
       "doc": "",
       "symbols": []
     },
@@ -80328,8 +79958,8 @@
       "path": "docs/implementation/architecture-patterns/140-general-eav-extensibility-model.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 184,
-      "bytes": 10406,
+      "lines": 148,
+      "bytes": 8241,
       "doc": "",
       "symbols": []
     },
@@ -80337,8 +79967,8 @@
       "path": "docs/implementation/architecture-patterns/141-general-metadata-driven-ui-engine.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 192,
-      "bytes": 10530,
+      "lines": 147,
+      "bytes": 7726,
       "doc": "",
       "symbols": []
     },
@@ -80346,8 +79976,8 @@
       "path": "docs/implementation/architecture-patterns/142-bpmn-visual-workflow-engine.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 166,
-      "bytes": 9332,
+      "lines": 109,
+      "bytes": 5867,
       "doc": "",
       "symbols": []
     },
@@ -80355,8 +79985,8 @@
       "path": "docs/implementation/architecture-patterns/143-micro-frontend-architecture.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 199,
-      "bytes": 10666,
+      "lines": 160,
+      "bytes": 8180,
       "doc": "",
       "symbols": []
     },
@@ -80526,8 +80156,8 @@
       "path": "docs/implementation/b2b-wholesale-multientity/111-hierarchical-entity-isolation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 68,
-      "bytes": 3431,
+      "lines": 81,
+      "bytes": 4256,
       "doc": "",
       "symbols": []
     },
@@ -80535,8 +80165,8 @@
       "path": "docs/implementation/b2b-wholesale-multientity/146-wholesale-tiered-pricing.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 182,
-      "bytes": 8682,
+      "lines": 203,
+      "bytes": 10049,
       "doc": "",
       "symbols": []
     },
@@ -80562,8 +80192,8 @@
       "path": "docs/implementation/b2b-wholesale-multientity/73-multi-entity-multi-company-configuration.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 127,
-      "bytes": 7599,
+      "lines": 139,
+      "bytes": 8401,
       "doc": "",
       "symbols": []
     },
@@ -80580,8 +80210,8 @@
       "path": "docs/implementation/catalog-variants-pricing/150-product-kitting-bundles.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 184,
-      "bytes": 8894,
+      "lines": 211,
+      "bytes": 10760,
       "doc": "",
       "symbols": []
     },
@@ -80589,8 +80219,8 @@
       "path": "docs/implementation/catalog-variants-pricing/47-preconfigured-sector-taxonomy.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 154,
-      "bytes": 8084,
+      "lines": 170,
+      "bytes": 9164,
       "doc": "",
       "symbols": []
     },
@@ -81444,8 +81074,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 60,
-      "bytes": 2492,
+      "lines": 59,
+      "bytes": 2373,
       "doc": "",
       "symbols": []
     },
@@ -83040,8 +82670,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1119,
-      "bytes": 37214,
+      "lines": 1111,
+      "bytes": 36627,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -83062,52 +82692,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 675
+          "line": 669
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 677
+          "line": 671
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 687
+          "line": 681
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 694
+          "line": 688
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 895
+          "line": 886
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1083
+          "line": 1075
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1102
+          "line": 1094
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1111
+          "line": 1103
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1112
+          "line": 1104
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1115
+          "line": 1107
         }
       ]
     },
@@ -83553,8 +83183,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 19006,
-      "bytes": 693853,
+      "lines": 18847,
+      "bytes": 688741,
       "doc": "",
       "symbols": []
     },
@@ -83691,46 +83321,11 @@
       ]
     },
     {
-      "path": "scripts/check-metadata-renderer.mjs",
-      "area": "infra",
-      "kind": "script",
-      "lines": 134,
-      "bytes": 5249,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "TARGET_FILE",
-          "kind": "const",
-          "line": 31
-        },
-        {
-          "name": "findViolations",
-          "kind": "function",
-          "line": 38
-        },
-        {
-          "name": "MetadataDrivenForm",
-          "kind": "function",
-          "line": 63
-        },
-        {
-          "name": "MetadataDrivenForm",
-          "kind": "function",
-          "line": 71
-        },
-        {
-          "name": "MetadataDrivenForm",
-          "kind": "function",
-          "line": 78
-        }
-      ]
-    },
-    {
       "path": "scripts/check-module-boundaries.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 572,
-      "bytes": 24744,
+      "lines": 592,
+      "bytes": 25919,
       "doc": "",
       "symbols": []
     },

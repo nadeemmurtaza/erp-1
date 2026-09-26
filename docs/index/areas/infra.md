@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-58 files · 30,347 lines
+57 files · 30,073 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,13 +19,13 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 20,275 | file, example, json, yaml |
+| `.` | 20 | 20,115 | file, example, json, yaml |
 | `.github` | 1 | 81 | doc |
 | `.github/workflows` | 2 | 255 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 20 | 7,691 | script, py |
+| `scripts` | 19 | 7,577 | script, py |
 | `scripts/lib` | 3 | 1,644 | utility |
 
 
@@ -40,12 +40,12 @@ on them.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `pnpm-lock.yaml` | 19,006 | yaml |  |
+| `pnpm-lock.yaml` | 18,847 | yaml |  |
 | `scripts/build-index.mjs` | 2,558 | script |  |
 | `scripts/lib/index-scan.mjs` | 944 | utility | Scanners for the repository index. |
 | `scripts/sync-client.mjs` | 701 | script | scripts/sync-client.mjs — the Extractor. |
 | `scripts/check-overflow.mjs` | 644 | script |  |
-| `scripts/check-module-boundaries.mjs` | 572 | script |  |
+| `scripts/check-module-boundaries.mjs` | 592 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
 | `scripts/check-contrast.mjs` | 425 | script |  |
 | `scripts/check-links.mjs` | 409 | script |  |

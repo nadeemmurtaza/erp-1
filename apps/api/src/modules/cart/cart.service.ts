@@ -21,6 +21,7 @@ import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { Prisma } from '../../core/prisma/client';
 import { CartLineValidatorRegistry } from '../../core/extension-points/cart-line-validator.registry';
+import { PricingService } from '../pricing/pricing.service';
 import type { AddCartItemDto, UpdateCartItemDto, UpdateGuestContactDto } from './dto/cart.dto';
 
 /** Guest carts live for a month; long enough to come back after payday. */
@@ -113,6 +114,7 @@ export class CartService {
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
     private readonly validators: CartLineValidatorRegistry,
+    private readonly pricing: PricingService,
   ) {}
 
   /** Finds a cart by token, or creates one. Used on every storefront request. */
@@ -571,8 +573,22 @@ export class CartService {
           });
     const profileById = new Map(profiles.map((profile) => [profile.id, profile]));
 
+    // 146-wholesale-tiered-pricing.md — a logged-in cart's own Contact
+    // (never a guest's, who has none) may have an assigned PriceList; batch
+    // resolved once for the whole cart, never per line (the N+1 rule this
+    // repository's own performance rules forbid). A variant absent from the
+    // resolved map falls through to today's unchanged expression, so a cart
+    // with no pricing pack configured renders byte-identically to before.
+    const customerId = cart.userId
+      ? (await this.prisma.contact.findUnique({ where: { userId: cart.userId }, select: { id: true } }))?.id ?? null
+      : null;
+    const resolvedPrices = await this.pricing.resolvePrices(
+      cart.items.map((item) => ({ variantId: item.variantId, quantity: item.quantity })),
+      customerId,
+    );
+
     const lines: CartLineView[] = cart.items.map((item) => {
-      const unitPrice = item.variant.priceOverride ?? item.product.basePrice;
+      const unitPrice = resolvedPrices.get(item.variantId) ?? item.variant.priceOverride ?? item.product.basePrice;
 
       const options = item.stitchingOptions.map((selection) => ({
         id: selection.option.id,

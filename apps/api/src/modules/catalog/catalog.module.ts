@@ -8,6 +8,8 @@ import { CatalogController } from './catalog.controller';
 import { CatalogService } from './catalog.service';
 import { BrandAdminService } from './brand-admin.service';
 import { CategoryAdminService } from './category-admin.service';
+import { CategoryPresetService } from './category-preset.service';
+import { BundlesService } from './bundles.service';
 import { OptionTemplateAdminService } from './option-template-admin.service';
 import { ProductOptionAdminService } from './product-option-admin.service';
 import { ProductAdminService } from './product-admin.service';
@@ -40,6 +42,8 @@ import { InventoryModule } from '../inventory/inventory.module';
     CatalogService,
     ProductAdminService,
     CategoryAdminService,
+    CategoryPresetService,
+    BundlesService,
     BrandAdminService,
     ProductImportService,
     ImportAssistantService,
@@ -51,6 +55,9 @@ import { InventoryModule } from '../inventory/inventory.module';
     AiSuggestionsService,
   ],
   // Exported for cart/orders, which need to price a variant and check stock.
-  exports: [CatalogService],
+  // BundlesService also exported for orders (sellBundle() at order placement)
+  // and fulfilment (restockBundle() on a returned bundle line) —
+  // 150-product-kitting-bundles.md.
+  exports: [CatalogService, BundlesService],
 })
 export class CatalogModule {}

@@ -127,7 +127,7 @@ model DocumentSource {
 /// file's header comment for why `corpus` joins `organizationId` here even
 /// though the doc's own sketch only denormalizes the latter.
 model DocumentChunk {
-  id             String         @id @default(cuid())
+  id             String                      @id @default(cuid())
   sourceId       String
   organizationId String?
   corpus         DocumentCorpus
@@ -142,7 +142,7 @@ model DocumentChunk {
   /// constraint `search.service.ts` already documents for
   /// `ProductTranslation.embedding`.
   embedding      Unsupported("vector(1536)")
-  createdAt      DateTime       @default(now())
+  createdAt      DateTime                    @default(now())
 
   source DocumentSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
 

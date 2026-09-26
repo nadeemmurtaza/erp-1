@@ -3,7 +3,7 @@
 
 # Data model
 
-All **270** Prisma models and **125** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **272** Prisma models and **124** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -29,17 +29,14 @@ against a real database.
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
 | [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
-| [`bpmn-workflows.prisma`](../data/bpmn-workflows.md) | 1 | 0 | [`bpmn-workflows`](../modules/bpmn-workflows.md) | BpmnWorkflowDefinition |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
-| [`catalog.prisma`](../data/catalog.md) | 27 | 7 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, Collection, CollectionProduct, CollectionTranslation, OptionTemplate, Opt… |
+| [`catalog.prisma`](../data/catalog.md) | 30 | 7 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, BundleComponent, Category, CategoryPreset, CategoryTranslation, Collection, CollectionProduct, Collectio… |
 | [`content.prisma`](../data/content.md) | 8 | 1 | [`content`](../modules/content.md) | Banner, BannerTranslation, BlogPost, BlogPostTranslation, MenuItem, MenuItemTranslation, Page, PageTranslation |
 | [`core.prisma`](../data/core.md) | 19 | 10 | foundational | Address, AiUsageLog, AnalyticsEvent, ApiKey, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordRe… |
 | [`crm.prisma`](../data/crm.md) | 9 | 3 | [`crm`](../modules/crm.md) | Contact, ContactTag, FollowUpTask, InboundEmail, InboundEmailReply, Interaction, Lead, Segment, Tag |
 | [`custom-fields.prisma`](../data/custom-fields.md) | 1 | 1 | [`custom-fields`](../modules/custom-fields.md) | CustomFieldDefinition |
 | [`embeds.prisma`](../data/embeds.md) | 1 | 0 | [`embeds`](../modules/embeds.md) | EmbeddedWidget |
-| [`entity-attributes.prisma`](../data/entity-attributes.md) | 1 | 0 | [`entity-attributes`](../modules/entity-attributes.md) | EntityAttribute |
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
-| [`fragments.prisma`](../data/fragments.md) | 1 | 1 | [`fragments`](../modules/fragments.md) | MicroFrontendFragment |
 | [`fulfilment.prisma`](../data/fulfilment.md) | 16 | 4 | [`fulfilment`](../modules/fulfilment.md) | Manifest, ManifestNumberCounter, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest, ReturnRequestItem, ReturnRequestNumber… |
 | [`giftcards.prisma`](../data/giftcards.md) | 3 | 1 | [`giftcards`](../modules/giftcards.md) | GiftCard, GiftCardTransaction, StoreCreditTransaction |
 | [`hr.prisma`](../data/hr.md) | 6 | 2 | [`hr`](../modules/hr.md) | Asset, AssetAssignment, EmployeeProfile, Position, Posting, Rank |
@@ -51,7 +48,6 @@ against a real database.
 | [`marketing.prisma`](../data/marketing.md) | 3 | 3 | [`marketing`](../modules/marketing.md) | Campaign, CampaignRecipient, PhoneOptOut |
 | [`marketplace.prisma`](../data/marketplace.md) | 6 | 1 | core platform | GlobalProductReference, GlobalProductReferenceFlag, GlobalProductReferenceImage, GlobalProductReferenceLink, GlobalProductReferen… |
 | [`measurements.prisma`](../data/measurements.md) | 4 | 1 | [`measurements`](../modules/measurements.md) | GarmentSizeChart, GarmentType, MeasurementField, MeasurementProfile |
-| [`metadata-forms.prisma`](../data/metadata-forms.md) | 1 | 0 | [`metadata-forms`](../modules/metadata-forms.md) | FormMetadata |
 | [`notification-preferences.prisma`](../data/notification-preferences.md) | 1 | 2 | [`notification-preferences`](../modules/notification-preferences.md) | NotificationPreference |
 | [`onsite-messaging.prisma`](../data/onsite-messaging.md) | 3 | 2 | core platform | NewsletterSubscriber, OnsiteMessage, OnsiteMessageTranslation |
 | [`orders.prisma`](../data/orders.md) | 6 | 5 | [`orders`](../modules/orders.md) | CityCodRiskStat, Order, OrderItem, OrderNumberCounter, OrderStatusEvent, Shipment |
@@ -62,6 +58,7 @@ against a real database.
 | [`payroll.prisma`](../data/payroll.md) | 9 | 5 | [`payroll`](../modules/payroll.md) | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLine, PayRunNumberCount… |
 | [`platform.prisma`](../data/platform.md) | 20 | 11 | core platform | AgencyUsageSnapshot, MeteredOrderFee, PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformOpsClient, Platfor… |
 | [`pos.prisma`](../data/pos.md) | 4 | 3 | [`pos`](../modules/pos.md) | CashMovement, PosReceipt, PosShift, PosTerminal |
+| [`pricing.prisma`](../data/pricing.md) | 3 | 0 | [`pricing`](../modules/pricing.md) | PriceList, PriceListAssignment, PriceListEntry |
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
 | [`purchasing.prisma`](../data/purchasing.md) | 9 | 3 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, PurchaseRequisition, RequisitionLine, Supplier, SupplierBill, S… |
@@ -113,10 +110,10 @@ against a real database.
 | [`BomProductionLine`](../data/bom.md#bomproductionline) | `bom` | 9 | 2 | id | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the… |
 | [`BomProductionRun`](../data/bom.md#bomproductionrun) | `bom` | 21 | 3 | id | One production run: the recipe was run N times, consuming raw stock and crediting finishe… |
 | [`BomRecipe`](../data/bom.md#bomrecipe) | `bom` | 19 | 2 | id | The recipe for one finished ProductVariant: which raw materials, how much of each, and th… |
-| [`BpmnWorkflowDefinition`](../data/bpmn-workflows.md#bpmnworkflowdefinition) | `bpmn-workflows` | 6 | 0 | id | A BPMN visual workflow engine, built by explicit owner override (ADR-026) — architecture-… |
 | [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | A label a product is sold under. |
 | [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and… |
 | [`BrandTranslation`](../data/catalog.md#brandtranslation) | `catalog` | 6 | 1 | id | House Rule 6: a customer-facing name is a translation row, not a column. |
+| [`BundleComponent`](../data/catalog.md#bundlecomponent) | `catalog` | 5 | 1 | id |  |
 | [`Campaign`](../data/marketing.md#campaign) | `marketing` | 14 | 2 | id |  |
 | [`CampaignRecipient`](../data/marketing.md#campaignrecipient) | `marketing` | 10 | 2 | id |  |
 | [`Cart`](../data/cart.md#cart) | `cart` | 16 | 2 | id | Cart. |
@@ -124,6 +121,7 @@ against a real database.
 | [`CartItemStitchingOption`](../data/cart.md#cartitemstitchingoption) | `cart` | 4 | 2 | — |  |
 | [`CashMovement`](../data/pos.md#cashmovement) | `pos` | 8 | 1 | id | One physical cash movement at the drawer during a shift — always a positive `amountMinor`… |
 | [`Category`](../data/catalog.md#category) | `catalog` | 13 | 2 | id |  |
+| [`CategoryPreset`](../data/catalog.md#categorypreset) | `catalog` | 5 | 0 | id | 47-preconfigured-sector-taxonomy.md — a named, versioned starter category tree for one ve… |
 | [`CategoryTranslation`](../data/catalog.md#categorytranslation) | `catalog` | 6 | 1 | id |  |
 | [`CityCodRiskStat`](../data/orders.md#citycodriskstat) | `orders` | 5 | 0 | city | WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "… |
 | [`Collection`](../data/catalog.md#collection) | `catalog` | 10 | 0 | id |  |
@@ -146,13 +144,11 @@ against a real database.
 | [`EmailVerificationToken`](../data/core.md#emailverificationtoken) | `core` | 7 | 1 | id | A one-time token mailed to confirm an email address. |
 | [`EmbeddedWidget`](../data/embeds.md#embeddedwidget) | `embeds` | 9 | 1 | id | Embedding a third-party dashboard: a narrow iframe pattern, not a micro-frontend architec… |
 | [`EmployeeProfile`](../data/hr.md#employeeprofile) | `hr` | 9 | 1 | id | Optional HR-specific metadata about a User who works here. |
-| [`EntityAttribute`](../data/entity-attributes.md#entityattribute) | `entity-attributes` | 8 | 0 | id | A general EAV model, built by explicit owner override (ADR-026). |
 | [`Expense`](../data/finance.md#expense) | `finance` | 24 | 5 | id |  |
 | [`ExpenseCategory`](../data/finance.md#expensecategory) | `finance` | 9 | 0 | id | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 —… |
 | [`FiscalPeriod`](../data/accounting.md#fiscalperiod) | `accounting` | 10 | 1 | id | What a `JournalEntry` posts into. |
 | [`FiscalYear`](../data/accounting.md#fiscalyear) | `accounting` | 7 | 0 | id | A trading year. |
 | [`FollowUpTask`](../data/crm.md#followuptask) | `crm` | 13 | 3 | id |  |
-| [`FormMetadata`](../data/metadata-forms.md#formmetadata) | `metadata-forms` | 5 | 0 | id | A general metadata-driven UI engine, built by explicit owner override (ADR-026) — archite… |
 | [`GarmentSizeChart`](../data/measurements.md#garmentsizechart) | `measurements` | 8 | 1 | id | A standard RTW size row (XS-XXL) for a garment, offered as a shortcut alongside the "type… |
 | [`GarmentType`](../data/measurements.md#garmenttype) | `measurements` | 18 | 0 | id |  |
 | [`GiftCard`](../data/giftcards.md#giftcard) | `giftcards` | 19 | 2 | id |  |
@@ -196,7 +192,6 @@ against a real database.
 | [`MenuItemTranslation`](../data/content.md#menuitemtranslation) | `content` | 5 | 1 | id |  |
 | [`MerchantPayable`](../data/wallet.md#merchantpayable) | `wallet` | 15 | 0 | id | The exact mirror of doc 145's own AP side (`SupplierBill`) — a merchant selling through t… |
 | [`MeteredOrderFee`](../data/platform.md#meteredorderfee) | `platform` | 10 | 1 | id | Doc 153's own "the reversal document, not the reversal flag" — one row per order actually… |
-| [`MicroFrontendFragment`](../data/fragments.md#microfrontendfragment) | `fragments` | 11 | 1 | id | Micro-frontend fragments, built by explicit owner override (ADR-026), added alongside doc… |
 | [`NewsletterSubscriber`](../data/onsite-messaging.md#newslettersubscriber) | `onsite-messaging` | 6 | 0 | id | A distinct, lightweight capture list — not folded into Contact. |
 | [`Node`](../data/organization.md#node) | `organization` | 14 | 1 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
 | [`NotificationPreference`](../data/notification-preferences.md#notificationpreference) | `notification-preferences` | 8 | 1 | id |  |
@@ -245,8 +240,12 @@ against a real database.
 | [`PosShift`](../data/pos.md#posshift) | `pos` | 12 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
 | [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | A physical till. |
 | [`Posting`](../data/hr.md#posting) | `hr` | 8 | 2 | id | Who holds which post, when. |
+| [`PriceList`](../data/pricing.md#pricelist) | `pricing` | 8 | 0 | id | The `pricing` module — 146-wholesale-tiered-pricing.md (b2b-wholesale-multientity/146-who… |
+| [`PriceListAssignment`](../data/pricing.md#pricelistassignment) | `pricing` | 5 | 1 | id | Which price list applies to which buyer — a customer, or a customer's tag (a segment/chan… |
+| [`PriceListEntry`](../data/pricing.md#pricelistentry) | `pricing` | 6 | 1 | id | A quantity break OR a flat override — never both meaninglessly: a row with minQuantity=1… |
 | [`Product`](../data/catalog.md#product) | `catalog` | 44 | 7 | id |  |
 | [`ProductAiSuggestion`](../data/catalog.md#productaisuggestion) | `catalog` | 12 | 2 | id | WO-9.1. |
+| [`ProductBundle`](../data/catalog.md#productbundle) | `catalog` | 6 | 0 | id | 150-product-kitting-bundles.md — a sellable shell over existing variants, never a new phy… |
 | [`ProductCrossSell`](../data/catalog.md#productcrosssell) | `catalog` | 8 | 2 | id |  |
 | [`ProductGarmentType`](../data/catalog.md#productgarmenttype) | `catalog` | 3 | 1 | — | Which garments a given unstitched fabric can be made into. |
 | [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 12 | 2 | id |  |
@@ -341,7 +340,7 @@ against a real database.
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
 | [`UsageMeter`](../data/platform.md#usagemeter) | `platform` | 8 | 1 | id | One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` inc… |
 | [`UsageMeteringCursor`](../data/platform.md#usagemeteringcursor) | `platform` | 6 | 1 | id | The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each ba… |
-| [`User`](../data/core.md#user) | `core` | 95 | 38 | id |  |
+| [`User`](../data/core.md#user) | `core` | 94 | 37 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
@@ -398,7 +397,6 @@ against a real database.
 | [`EmploymentStatus`](../data/hr.md#employmentstatus) | `hr` | `ACTIVE` `ON_LEAVE` `SUSPENDED` `LEFT` |
 | [`ExpenseRecurrence`](../data/finance.md#expenserecurrence) | `finance` | `NONE` `WEEKLY` `MONTHLY` `QUARTERLY` `YEARLY` |
 | [`FiscalPeriodStatus`](../data/accounting.md#fiscalperiodstatus) | `accounting` | `OPEN` `CLOSED` `LOCKED` |
-| [`FragmentStatus`](../data/fragments.md#fragmentstatus) | `fragments` | `ACTIVE` `SUSPENDED` |
 | [`GiftCardStatus`](../data/giftcards.md#giftcardstatus) | `giftcards` | `ACTIVE` `REDEEMED` `EXPIRED` `CANCELLED` |
 | [`GrantMode`](../data/org-structure.md#grantmode) | `org-structure` | `READ` `ACTING` |
 | [`IdentityVerificationStatus`](../data/identity-verification.md#identityverificationstatus) | `identity-verification` | `NOT_STARTED` `PENDING` `APPROVED` `REJECTED` `EXPIRED` |

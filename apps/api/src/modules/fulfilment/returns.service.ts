@@ -8,6 +8,7 @@ import { documentNumber } from '../../core/settings/document-number';
 import { documentPrefix } from '../../core/settings/document-prefix';
 import { SettingsService } from '../../core/settings/settings.service';
 import { InventoryService } from '../inventory/inventory.service';
+import { BundlesService } from '../catalog/bundles.service';
 import type { Prisma, ReturnStatus } from '../../core/prisma/client';
 import type {
   CreateReturnReasonDto,
@@ -51,6 +52,7 @@ export class ReturnsService {
     private readonly settings: SettingsService,
     private readonly config: AppConfigService,
     private readonly inventory: InventoryService,
+    private readonly bundles: BundlesService,
   ) {}
 
   listReasons() {
@@ -252,10 +254,31 @@ export class ReturnsService {
 
     const locationId = request.order.locationId ?? (await this.inventory.defaultLocationId());
 
+    // 150-product-kitting-bundles.md — a returned bundle line restocks
+    // every component individually, never a single opaque "bundle
+    // returned" adjustment (this document's own "The reversal document"
+    // lens). Batched once, mirroring orders.service.ts's own
+    // bundlesByVariantId() call before its stock loop.
+    const bundlesByVariantId = await this.bundles.bundlesByVariantId(
+      dto.items.map((line) => byId.get(line.itemId)!.orderItem.variantId).filter((id): id is string => id !== null),
+      this.prisma,
+    );
+
     await this.prisma.$transaction(async (tx) => {
       for (const line of dto.items) {
         const item = byId.get(line.itemId)!;
-        if (item.orderItem.variantId) {
+        const bundle = item.orderItem.variantId ? bundlesByVariantId.get(item.orderItem.variantId) : undefined;
+        if (bundle) {
+          await this.bundles.restockBundle(
+            bundle,
+            item.quantity,
+            line.restockable ? 'RETURN' : 'WRITE_OFF',
+            request.id,
+            locationId,
+            actorId,
+            tx,
+          );
+        } else if (item.orderItem.variantId) {
           await this.inventory.move(
             {
               variantId: item.orderItem.variantId,

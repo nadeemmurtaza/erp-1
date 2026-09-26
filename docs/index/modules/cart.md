@@ -9,16 +9,16 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 Source: `apps/api/src/modules/cart/`
 
-## Files (6 · 1,235 lines)
+## Files (6 · 1,257 lines)
 
 All paths relative to `apps/api/src/modules/cart`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `cart.controller.ts` | controller | 217 | 1 | Cart endpoints. |
-| `cart.guest-contact.spec.ts` | unit test | 77 | — |  |
-| `cart.module.ts` | nest module | 18 | 1 |  |
-| `cart.service.ts` | service | 704 | 3 |  |
+| `cart.guest-contact.spec.ts` | unit test | 79 | — |  |
+| `cart.module.ts` | nest module | 22 | 1 |  |
+| `cart.service.ts` | service | 720 | 3 |  |
 | `cart.dto.ts` | dto | 150 | 5 |  |
 | `reorder.service.ts` | service | 69 | 2 |  |
 
@@ -66,7 +66,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 ## Nest wiring
 
 **`CartModule`** (`cart.module.ts`)
-- imports: —
+- imports: `PricingModule`
 - controllers: `CartController`
 - providers: `CartService`, `ReorderService`
 - exports: `CartService`
@@ -74,6 +74,8 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
+- **module `pricing`** ⚠ direct import
+- core `audit`
 - core `auth`
 - core `extension-points`
 - core `prisma`
@@ -97,10 +99,10 @@ check there before adding another.
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `CartController` | class | `cart.controller.ts:42` | Cart endpoints. |
-| `CartModule` | class | `cart.module.ts:17` |  |
-| `CartLineView` | interface | `cart.service.ts:46` |  |
-| `CartView` | interface | `cart.service.ts:88` |  |
-| `CartService` | class | `cart.service.ts:111` | The cart, including the stitching add-on. |
+| `CartModule` | class | `cart.module.ts:21` |  |
+| `CartLineView` | interface | `cart.service.ts:47` |  |
+| `CartView` | interface | `cart.service.ts:89` |  |
+| `CartService` | class | `cart.service.ts:112` | The cart, including the stitching add-on. |
 | `StitchingRequestDto` | class | `cart.dto.ts:22` |  |
 | `AddCartItemDto` | class | `cart.dto.ts:89` |  |
 | `UpdateCartItemDto` | class | `cart.dto.ts:112` |  |

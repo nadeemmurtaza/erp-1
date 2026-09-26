@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 21 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (21 · 3,703 lines)
+## Files (21 · 3,752 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -31,10 +31,10 @@ All paths relative to `apps/api/src/modules/orders`.
 | `order-feed.source.ts` | module | 57 | 1 | The live feed's own worked example (analytics-reporting/58-live-operational-feed.md) — an order placement, newest first. |
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `orders-pos.service.spec.ts` | unit test | 405 | — |  |
+| `orders-pos.service.spec.ts` | unit test | 416 | — |  |
 | `orders.controller.ts` | controller | 145 | 2 |  |
-| `orders.module.ts` | nest module | 55 | 1 |  |
-| `orders.service.ts` | service | 1304 | 4 |  |
+| `orders.module.ts` | nest module | 57 | 1 |  |
+| `orders.service.ts` | service | 1340 | 4 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
@@ -61,10 +61,10 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `orders.service.ts:463`, `orders.service.ts:721` |
-| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:748`, `orders.service.ts:933` |
-| `OrderCancelled` | `order.cancelled` | `orders.service.ts:933` |
-| `PaymentSucceeded` | `payment.succeeded` | `instalment-plan.service.ts:90`, `orders.service.ts:692` |
+| `OrderPlaced` | `order.placed` | `orders.service.ts:488`, `orders.service.ts:746` |
+| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:773`, `orders.service.ts:958` |
+| `OrderCancelled` | `order.cancelled` | `orders.service.ts:958` |
+| `PaymentSucceeded` | `payment.succeeded` | `instalment-plan.service.ts:90`, `orders.service.ts:717` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -106,7 +106,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 ## Nest wiring
 
 **`OrdersModule`** (`orders.module.ts`)
-- imports: `PaymentsModule`, `InventoryModule`, `TaxModule`, `FulfilmentModule`, `PromotionsModule`, `GiftCardsModule`
+- imports: `PaymentsModule`, `InventoryModule`, `TaxModule`, `FulfilmentModule`, `PromotionsModule`, `GiftCardsModule`, `PricingModule`, `CatalogModule`
 - controllers: `OrdersController`, `OrdersAdminController`, `InstalmentPlanController`
 - providers: `OrdersService`, `OrderNotificationSubscriber`, `BackorderListener`, `OrderReplicationListener`, `ShipmentStatusListener`, `CodRiskService`, `CodRiskCron`, `InstalmentPlanService`, `OrderFeedSource`
 - exports: `OrdersService`
@@ -114,10 +114,12 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
+- **module `catalog`** ⚠ direct import
 - **module `fulfilment`** ⚠ direct import
 - **module `giftcards`** ⚠ direct import
 - **module `inventory`** ⚠ direct import
 - **module `payments`** ⚠ direct import
+- **module `pricing`** ⚠ direct import
 - **module `promotions`** ⚠ direct import
 - **module `tax`** ⚠ direct import
 - core `audit`
@@ -177,11 +179,11 @@ check there before adding another.
 | `OrderReplicationListener` | class | `order-replication.listener.ts:30` | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
 | `OrdersController` | class | `orders.controller.ts:32` |  |
 | `OrdersAdminController` | class | `orders.controller.ts:97` |  |
-| `OrdersModule` | class | `orders.module.ts:54` |  |
+| `OrdersModule` | class | `orders.module.ts:56` |  |
 | `PosSaleLineInput` | interface | `orders.service.ts:41` |  |
 | `PlaceFromPosInstalmentInput` | interface | `orders.service.ts:53` | finance-accounting/151-layby-installment-sales.md — a layby/instalment plan requested at the point of sale. |
 | `PlaceFromPosInput` | interface | `orders.service.ts:59` |  |
-| `OrdersService` | class | `orders.service.ts:106` |  |
+| `OrdersService` | class | `orders.service.ts:108` |  |
 | `ShipmentStatusListener` | class | `shipment-status.listener.ts:28` | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 

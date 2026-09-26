@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 973 tracked files in `apps/api`, by directory.
+All 954 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -29,9 +29,9 @@ All 973 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `backfill-parties.ts` | module | 69 |  |
 | `backfill-product-options.ts` | module | 26 |  |
-| `seed.ts` | module | 3100 |  |
+| `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (53)
+### `apps/api/prisma/schema` (50)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -39,17 +39,14 @@ All 973 tracked files in `apps/api`, by directory.
 | `approvals.prisma` | prisma schema | 63 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
-| `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
+| `catalog.prisma` | prisma schema | 742 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 667 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 666 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `custom-fields.prisma` | prisma schema | 33 | Custom fields: a narrow, bounded JSONB overlay, never a general EAV model |
 | `embeds.prisma` | prisma schema | 19 | Embedding a third-party dashboard: a narrow iframe pattern, not a |
-| `entity-attributes.prisma` | prisma schema | 36 | A general EAV model, built by explicit owner override (ADR-026). |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
-| `fragments.prisma` | prisma schema | 41 | Micro-frontend fragments, built by explicit owner override (ADR-026), |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `hr.prisma` | prisma schema | 171 | Employee assets: which physical equipment (laptop, phone, uniform) is |
@@ -60,7 +57,6 @@ All 973 tracked files in `apps/api`, by directory.
 | `loyalty.prisma` | prisma schema | 85 | Phase 7 WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `marketing.prisma` | prisma schema | 87 | Campaigns and broadcasts. WO-8.4, |
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
-| `metadata-forms.prisma` | prisma schema | 26 | A general metadata-driven UI engine, built by explicit owner override |
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
 | `orders.prisma` | prisma schema | 361 | Orders and shipments. |
@@ -70,6 +66,7 @@ All 973 tracked files in `apps/api`, by directory.
 | `payments.prisma` | prisma schema | 55 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
 | `payroll.prisma` | prisma schema | 229 | Payroll: compensation rates, leave balances and pay runs |
 | `pos.prisma` | prisma schema | 139 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
+| `pricing.prisma` | prisma schema | 58 | The `pricing` module — 146-wholesale-tiered-pricing.md |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
 | `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `purchasing.prisma` | prisma schema | 308 |  |
@@ -617,29 +614,23 @@ All 973 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 148 |  |
 
-### `apps/api/prisma/schema/migrations/20260926110000_add_entity_attributes` (1)
+### `apps/api/prisma/schema/migrations/20260926134514_wo146_pricing_module` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `migration.sql` | migration | 28 |  |
+| `migration.sql` | migration | 67 |  |
 
-### `apps/api/prisma/schema/migrations/20260926120000_add_micro_frontend_fragments` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `migration.sql` | migration | 32 |  |
-
-### `apps/api/prisma/schema/migrations/20260926130000_add_form_metadata` (1)
+### `apps/api/prisma/schema/migrations/20260926135636_wo47_category_presets` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `migration.sql` | migration | 21 |  |
 
-### `apps/api/prisma/schema/migrations/20260926140000_add_bpmn_workflow_definitions` (1)
+### `apps/api/prisma/schema/migrations/20260926140325_wo150_product_bundles` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `migration.sql` | migration | 22 |  |
+| `migration.sql` | migration | 36 |  |
 
 ### `apps/api/src` (2)
 
@@ -810,13 +801,13 @@ All 973 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 693 | The catalogue of domain events. |
+| `domain-events.ts` | module | 686 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
 | `outbox.dispatcher.ts` | dispatcher | 120 |  |
 
-### `apps/api/src/core/extension-points` (10)
+### `apps/api/src/core/extension-points` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -826,10 +817,9 @@ All 973 tracked files in `apps/api`, by directory.
 | `cart-line-validator.registry.ts` | registry | 64 |  |
 | `employee-offboarding.registry.ts` | registry | 39 |  |
 | `entity-enrichment.registry.ts` | registry | 45 |  |
-| `extension-points.module.ts` | nest module | 48 |  |
+| `extension-points.module.ts` | nest module | 45 |  |
 | `identity-verification-status.registry.ts` | registry | 36 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
-| `workflow-steps.registry.ts` | registry | 39 |  |
 
 ### `apps/api/src/core/feed` (5)
 
@@ -990,7 +980,7 @@ All 973 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `module-packs.ts` | module | 115 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 264 |  |
+| `modules.registry.ts` | registry | 253 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1125,31 +1115,14 @@ All 973 tracked files in `apps/api`, by directory.
 | `raw-usage.dto.ts` | dto | 30 |  |
 | `recipe.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/bpmn-workflows` (6)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `bpmn-compiler.spec.ts` | unit test | 108 |  |
-| `bpmn-compiler.ts` | module | 120 |  |
-| `bpmn-workflows.controller.ts` | controller | 42 |  |
-| `bpmn-workflows.module.ts` | nest module | 19 |  |
-| `bpmn-workflows.service.spec.ts` | unit test | 74 |  |
-| `bpmn-workflows.service.ts` | service | 52 |  |
-
-### `apps/api/src/modules/bpmn-workflows/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `bpmn-workflow.dto.ts` | dto | 10 |  |
-
 ### `apps/api/src/modules/cart` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `cart.controller.ts` | controller | 217 |  |
-| `cart.guest-contact.spec.ts` | unit test | 77 |  |
-| `cart.module.ts` | nest module | 18 |  |
-| `cart.service.ts` | service | 704 |  |
+| `cart.guest-contact.spec.ts` | unit test | 79 |  |
+| `cart.module.ts` | nest module | 22 |  |
+| `cart.service.ts` | service | 720 |  |
 | `reorder.service.ts` | service | 69 |  |
 
 ### `apps/api/src/modules/cart/dto` (1)
@@ -1158,7 +1131,7 @@ All 973 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `cart.dto.ts` | dto | 150 |  |
 
-### `apps/api/src/modules/catalog` (26)
+### `apps/api/src/modules/catalog` (30)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1166,12 +1139,16 @@ All 973 tracked files in `apps/api`, by directory.
 | `ai-suggestions.service.spec.ts` | unit test | 314 |  |
 | `ai-suggestions.service.ts` | service | 352 |  |
 | `brand-admin.service.ts` | service | 170 |  |
-| `catalog-admin.controller.ts` | controller | 304 |  |
+| `bundles.service.spec.ts` | unit test | 201 |  |
+| `bundles.service.ts` | service | 224 |  |
+| `catalog-admin.controller.ts` | controller | 358 |  |
 | `catalog-options-admin.controller.ts` | controller | 105 |  |
 | `catalog.controller.ts` | controller | 51 |  |
-| `catalog.module.ts` | nest module | 57 |  |
+| `catalog.module.ts` | nest module | 64 |  |
 | `catalog.service.ts` | service | 379 |  |
 | `category-admin.service.ts` | service | 192 |  |
+| `category-preset.service.spec.ts` | unit test | 100 |  |
+| `category-preset.service.ts` | service | 137 |  |
 | `import-assistant.service.spec.ts` | unit test | 387 |  |
 | `import-assistant.service.ts` | service | 392 |  |
 | `option-template-admin.service.ts` | service | 125 |  |
@@ -1189,11 +1166,12 @@ All 973 tracked files in `apps/api`, by directory.
 | `seo-health.service.ts` | service | 64 |  |
 | `sync-option-model.ts` | module | 168 |  |
 
-### `apps/api/src/modules/catalog/dto` (6)
+### `apps/api/src/modules/catalog/dto` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `brand.dto.ts` | dto | 63 |  |
+| `bundle.dto.ts` | dto | 37 |  |
 | `category.dto.ts` | dto | 68 |  |
 | `option.dto.ts` | dto | 103 |  |
 | `product-query.dto.ts` | dto | 88 |  |
@@ -1308,23 +1286,6 @@ All 973 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `embedded-widget.dto.ts` | dto | 37 |  |
 
-### `apps/api/src/modules/entity-attributes` (6)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `entity-attributes.controller.ts` | controller | 49 |  |
-| `entity-attributes.module.ts` | nest module | 20 |  |
-| `entity-attributes.service.spec.ts` | unit test | 82 |  |
-| `entity-attributes.service.ts` | service | 80 |  |
-| `supplier-deleted.listener.spec.ts` | unit test | 14 |  |
-| `supplier-deleted.listener.ts` | event subscriber | 29 |  |
-
-### `apps/api/src/modules/entity-attributes/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `entity-attribute.dto.ts` | dto | 30 |  |
-
 ### `apps/api/src/modules/finance` (18)
 
 | File | Kind | Lines | Purpose |
@@ -1355,21 +1316,6 @@ All 973 tracked files in `apps/api`, by directory.
 | `expense-category.dto.ts` | dto | 35 |  |
 | `expense.dto.ts` | dto | 130 |  |
 
-### `apps/api/src/modules/fragments` (4)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `fragments.controller.ts` | controller | 72 |  |
-| `fragments.module.ts` | nest module | 19 |  |
-| `fragments.service.spec.ts` | unit test | 133 |  |
-| `fragments.service.ts` | service | 119 |  |
-
-### `apps/api/src/modules/fragments/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `fragment.dto.ts` | dto | 60 |  |
-
 ### `apps/api/src/modules/fulfilment` (13)
 
 | File | Kind | Lines | Purpose |
@@ -1377,13 +1323,13 @@ All 973 tracked files in `apps/api`, by directory.
 | `courier-provider.ts` | module | 59 | Extension point: courier providers. |
 | `fulfilment.controller.ts` | controller | 92 |  |
 | `fulfilment.cron.ts` | scheduled job | 80 |  |
-| `fulfilment.module.ts` | nest module | 44 |  |
+| `fulfilment.module.ts` | nest module | 48 |  |
 | `fulfilment.service.ts` | service | 470 |  |
 | `fulfilment.spec.ts` | unit test | 125 |  |
 | `return-notification.subscriber.ts` | event subscriber | 69 |  |
 | `returns.controller.ts` | controller | 160 |  |
-| `returns.service.ts` | service | 382 |  |
-| `returns.spec.ts` | unit test | 178 |  |
+| `returns.service.ts` | service | 405 |  |
+| `returns.spec.ts` | unit test | 182 |  |
 | `shipping-migration.spec.ts` | unit test | 90 |  |
 | `shipping.controller.ts` | controller | 114 |  |
 | `shipping.service.ts` | service | 328 |  |
@@ -1568,21 +1514,6 @@ All 973 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `measurements.dto.ts` | dto | 233 |  |
 
-### `apps/api/src/modules/metadata-forms` (4)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `metadata-forms.controller.ts` | controller | 34 |  |
-| `metadata-forms.module.ts` | nest module | 17 |  |
-| `metadata-forms.service.spec.ts` | unit test | 70 |  |
-| `metadata-forms.service.ts` | service | 53 |  |
-
-### `apps/api/src/modules/metadata-forms/dto` (1)
-
-| File | Kind | Lines | Purpose |
-|---|---|---|---|
-| `form-metadata.dto.ts` | dto | 45 |  |
-
 ### `apps/api/src/modules/notification-preferences` (2)
 
 | File | Kind | Lines | Purpose |
@@ -1629,10 +1560,10 @@ All 973 tracked files in `apps/api`, by directory.
 | `order-feed.source.ts` | module | 57 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 405 |  |
+| `orders-pos.service.spec.ts` | unit test | 416 |  |
 | `orders.controller.ts` | controller | 145 |  |
-| `orders.module.ts` | nest module | 55 |  |
-| `orders.service.ts` | service | 1304 |  |
+| `orders.module.ts` | nest module | 57 |  |
+| `orders.service.ts` | service | 1340 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (2)
@@ -1780,6 +1711,21 @@ All 973 tracked files in `apps/api`, by directory.
 | `pos-shift.dto.ts` | dto | 44 |  |
 | `pos-terminal.dto.ts` | dto | 27 |  |
 
+### `apps/api/src/modules/pricing` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `pricing.controller.ts` | controller | 72 |  |
+| `pricing.module.ts` | nest module | 22 |  |
+| `pricing.service.spec.ts` | unit test | 212 |  |
+| `pricing.service.ts` | service | 255 |  |
+
+### `apps/api/src/modules/pricing/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `pricing.dto.ts` | dto | 93 |  |
+
 ### `apps/api/src/modules/production` (10)
 
 | File | Kind | Lines | Purpose |
@@ -1833,13 +1779,13 @@ All 973 tracked files in `apps/api`, by directory.
 | `purchasing.metrics.spec.ts` | unit test | 74 |  |
 | `purchasing.metrics.ts` | module | 135 |  |
 | `purchasing.module.ts` | nest module | 32 |  |
-| `purchasing.service.ts` | service | 680 |  |
+| `purchasing.service.ts` | service | 673 |  |
 | `purchasing.spec.ts` | unit test | 233 |  |
 | `reorder.listener.spec.ts` | unit test | 146 |  |
 | `reorder.listener.ts` | event subscriber | 83 |  |
 | `requisition.controller.ts` | controller | 63 |  |
-| `requisition.service.spec.ts` | unit test | 207 |  |
-| `requisition.service.ts` | service | 214 |  |
+| `requisition.service.spec.ts` | unit test | 203 |  |
+| `requisition.service.ts` | service | 201 |  |
 | `supplier-bill.spec.ts` | unit test | 230 |  |
 
 ### `apps/api/src/modules/purchasing/dto` (4)

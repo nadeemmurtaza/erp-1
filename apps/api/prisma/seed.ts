@@ -61,6 +61,7 @@ async function main(): Promise<void> {
   await retireOldOptionGroups();
   const categories = await seedCategories();
   await seedRawMaterialCategory();
+  await seedCategoryPresets();
   const locationId = await inventoryService.defaultLocationId();
   await seedProducts(categories, garments, locationId);
   await seedStitchingServices(categories, garments, locationId);
@@ -2407,6 +2408,104 @@ async function seedCategories() {
   }
 
   return byslug;
+}
+
+/**
+ * 47-preconfigured-sector-taxonomy.md — five starter category trees, one
+ * per named vertical (`MULTI-SECTOR.md`'s own taxonomy table). Upserted on
+ * `key`, never overwriting `treeJson` once a deployment may have started
+ * customizing what applying the preset already created — re-running this
+ * seed only refreshes the label/description, exactly `seedCategories()`'s
+ * own upsert-on-slug discipline applied to the preset row instead.
+ */
+async function seedCategoryPresets(): Promise<void> {
+  const presets: { key: string; label: string; description: string; treeJson: Prisma.InputJsonValue }[] = [
+    {
+      key: 'apparel',
+      label: 'Apparel & Clothing',
+      description: 'Menswear, womenswear, kidswear, footwear and accessories.',
+      treeJson: [
+        {
+          name: "Men's Wear",
+          nameUr: 'مردانہ لباس',
+          children: [{ name: 'Shirts' }, { name: 'Trousers' }, { name: 'Kurta & Shalwar' }],
+        },
+        {
+          name: "Women's Wear",
+          nameUr: 'زنانہ لباس',
+          children: [{ name: 'Unstitched', nameUr: 'اَن سلا' }, { name: 'Ready to Wear', nameUr: 'سلا ہوا' }, { name: 'Dupattas' }],
+        },
+        { name: 'Kids Wear', nameUr: 'بچوں کے کپڑے', children: [{ name: 'Boys' }, { name: 'Girls' }] },
+        { name: 'Footwear', children: [{ name: "Men's Shoes" }, { name: "Women's Shoes" }, { name: "Kids' Shoes" }] },
+        { name: 'Accessories', children: [{ name: 'Bags' }, { name: 'Jewellery' }, { name: 'Belts' }] },
+      ],
+    },
+    {
+      key: 'pharmacy',
+      label: 'Pharmacy & Medicine',
+      description: 'Prescription and over-the-counter medicine, personal care, baby care and medical supplies.',
+      treeJson: [
+        {
+          name: 'Prescription Medicines',
+          children: [{ name: 'Tablets & Capsules' }, { name: 'Syrups' }, { name: 'Injections' }],
+        },
+        {
+          name: 'OTC Medicines',
+          children: [{ name: 'Pain Relief' }, { name: 'Cold & Flu' }, { name: 'Digestive Health' }],
+        },
+        { name: 'Personal Care', children: [{ name: 'Skin Care' }, { name: 'Oral Care' }, { name: 'Hair Care' }] },
+        { name: 'Baby Care', children: [{ name: 'Diapers' }, { name: 'Baby Food' }, { name: 'Baby Skin Care' }] },
+        { name: 'Medical Devices & Supplies', children: [{ name: 'Diagnostic Devices' }, { name: 'First Aid' }] },
+      ],
+    },
+    {
+      key: 'grocery',
+      label: 'Grocery & Supermarket',
+      description: 'Fresh produce, dairy, bakery, pantry staples and household essentials.',
+      treeJson: [
+        { name: 'Fresh Produce', children: [{ name: 'Fruits' }, { name: 'Vegetables' }] },
+        { name: 'Dairy & Eggs', children: [{ name: 'Milk' }, { name: 'Cheese & Butter' }, { name: 'Eggs' }] },
+        { name: 'Bakery', children: [{ name: 'Bread' }, { name: 'Rusk & Biscuits' }] },
+        {
+          name: 'Pantry Staples',
+          children: [{ name: 'Rice & Grains' }, { name: 'Cooking Oil & Ghee' }, { name: 'Spices' }, { name: 'Pulses' }],
+        },
+        { name: 'Household Essentials', children: [{ name: 'Cleaning Supplies' }, { name: 'Paper Products' }] },
+      ],
+    },
+    {
+      key: 'paint-shop',
+      label: 'Paint & Hardware',
+      description: 'Interior and exterior paints, wood finishes, tools and waterproofing.',
+      treeJson: [
+        { name: 'Interior Paints', children: [{ name: 'Emulsion' }, { name: 'Primer & Undercoat' }] },
+        { name: 'Exterior Paints', children: [{ name: 'Weatherproof Paint' }, { name: 'Textured Paint' }] },
+        { name: 'Wood Finishes', children: [{ name: 'Varnish' }, { name: 'Wood Stain' }] },
+        { name: 'Tools & Accessories', children: [{ name: 'Brushes & Rollers' }, { name: "Painter's Tape" }] },
+        { name: 'Waterproofing', children: [{ name: 'Roof Waterproofing' }, { name: 'Wall Waterproofing' }] },
+      ],
+    },
+    {
+      key: 'beverages',
+      label: 'Beverages',
+      description: 'Soft drinks, juices, water, tea and coffee.',
+      treeJson: [
+        { name: 'Soft Drinks', children: [{ name: 'Carbonated Drinks' }, { name: 'Energy Drinks' }] },
+        { name: 'Juices & Nectars', children: [{ name: 'Fresh Juice' }, { name: 'Packaged Juice' }] },
+        { name: 'Water', children: [{ name: 'Mineral Water' }, { name: 'Sparkling Water' }] },
+        { name: 'Tea & Coffee', nameUr: 'چائے اور کافی', children: [{ name: 'Tea' }, { name: 'Coffee' }] },
+        { name: 'Dairy Beverages', children: [{ name: 'Flavoured Milk' }, { name: 'Lassi & Yogurt Drinks' }] },
+      ],
+    },
+  ];
+
+  for (const preset of presets) {
+    await prisma.categoryPreset.upsert({
+      where: { key: preset.key },
+      update: { label: preset.label, description: preset.description },
+      create: preset,
+    });
+  }
 }
 
 /**

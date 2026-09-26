@@ -563,7 +563,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 5407 |  |
+| `DECISIONS.md` | doc | 5151 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -642,10 +642,10 @@ All 396 tracked files in `docs/*`, by directory.
 | `136-database-cache-portability-audit.md` | doc | 72 |  |
 | `138-technology-substitution-playbook.md` | doc | 70 |  |
 | `139-second-front-door-websocket-gateway.md` | doc | 106 |  |
-| `140-general-eav-extensibility-model.md` | doc | 184 |  |
-| `141-general-metadata-driven-ui-engine.md` | doc | 192 |  |
-| `142-bpmn-visual-workflow-engine.md` | doc | 166 |  |
-| `143-micro-frontend-architecture.md` | doc | 199 |  |
+| `140-general-eav-extensibility-model.md` | doc | 148 |  |
+| `141-general-metadata-driven-ui-engine.md` | doc | 147 |  |
+| `142-bpmn-visual-workflow-engine.md` | doc | 109 |  |
+| `143-micro-frontend-architecture.md` | doc | 160 |  |
 | `157-client-request-idempotency-keys.md` | doc | 276 |  |
 | `166-unified-product-reference-registry.md` | doc | 545 |  |
 | `92-microservices-module-decoupling.md` | doc | 94 |  |
@@ -674,19 +674,19 @@ All 396 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `111-hierarchical-entity-isolation.md` | doc | 68 |  |
-| `146-wholesale-tiered-pricing.md` | doc | 182 |  |
+| `111-hierarchical-entity-isolation.md` | doc | 81 |  |
+| `146-wholesale-tiered-pricing.md` | doc | 203 |  |
 | `149-b2b-accounts-approvals-sector-packs.md` | doc | 163 |  |
 | `165-cross-tenant-marketplace-directory.md` | doc | 487 |  |
-| `73-multi-entity-multi-company-configuration.md` | doc | 127 |  |
+| `73-multi-entity-multi-company-configuration.md` | doc | 139 |  |
 
 ### `docs/implementation/catalog-variants-pricing` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `03-variants-sku-seo.md` | doc | 566 |  |
-| `150-product-kitting-bundles.md` | doc | 184 |  |
-| `47-preconfigured-sector-taxonomy.md` | doc | 154 |  |
+| `150-product-kitting-bundles.md` | doc | 211 |  |
+| `47-preconfigured-sector-taxonomy.md` | doc | 170 |  |
 
 ### `docs/implementation/commercial-licensing-agency` (14)
 

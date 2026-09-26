@@ -2575,16 +2575,16 @@ _no second-level headings_
 - Acceptance  <sub>:275</sub>
 - Out of scope  <sub>:289</sub>
 
-### `docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md`  <sub>182 lines</sub>
+### `docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md`  <sub>188 lines</sub>
 
-- 1. The three headline plans, each an existing `PricingModel` under a customer-facing name  <sub>:14</sub>
-- 2. Why these three specific shapes cover the real span of a merchant's own risk appetite  <sub>:29</sub>
-- 3. The pricing screen itself — a customer-facing surface that doesn't exist yet  <sub>:43</sub>
-- 4. Selecting a plan routes to the identical provisioning path every plan already uses  <sub>:86</sub>
-- Scope lenses  <sub>:97</sub>
-- Work orders  <sub>:148</sub>
-- Acceptance  <sub>:164</sub>
-- Out of scope  <sub>:176</sub>
+- 1. The three headline plans, each an existing `PricingModel` under a customer-facing name  <sub>:20</sub>
+- 2. Why these three specific shapes cover the real span of a merchant's own risk appetite  <sub>:35</sub>
+- 3. The pricing screen itself — a customer-facing surface that doesn't exist yet  <sub>:49</sub>
+- 4. Selecting a plan routes to the identical provisioning path every plan already uses  <sub>:92</sub>
+- Scope lenses  <sub>:103</sub>
+- Work orders  <sub>:154</sub>
+- Acceptance  <sub>:170</sub>
+- Out of scope  <sub>:182</sub>
 
 ### `docs/implementation/commercial-licensing-agency/155-wallet-stored-value-merchant-escrow.md`  <sub>385 lines</sub>
 
@@ -2742,7 +2742,7 @@ _no second-level headings_
 - ADR-037 — Personal API keys: a user-bound token capped live by its owner, an explicit non-delegatable list, and no service account yet  <sub>:3374</sub>
 - ADR-038 — Doc 153 (usage-based pricing): metering reads a tenant's own transactional outbox through `apps/platform`'s existing connection-per-call mechanism, never a new tenant→platform push credential; dunning reuses doc 145's shape only, not its code  <sub>:3450</sub>
 - ADR-039 — Doc 14 (managed services) built in full, overriding its own "not now": `PlatformTenant`/`PlatformInvoice` extended rather than a parallel `AgencyClient` registry and invoice cache, real Stripe collection bridged in decoupled from `BillingService`  <sub>:3607</sub>
-- ADR-040 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:3785</sub>
+- ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:3785</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

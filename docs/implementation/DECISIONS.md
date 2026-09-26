@@ -3782,7 +3782,7 @@ ops-side `platform.agency.manage` scope gates the master-side admin actions.
 ### Status
 **Accepted.**
 
-## ADR-040 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one
+## ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one
 
 ### Context — what problem required a decision?
 

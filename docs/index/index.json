@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2002,
-    "lines": 305138,
+    "lines": 305144,
     "routes": 652,
     "controllers": 120,
     "models": 241,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 394,
-      "lines": 63145,
-      "bytes": 3751327,
+      "lines": 63151,
+      "bytes": 3751695,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -71856,8 +71856,8 @@
       "path": "docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 182,
-      "bytes": 10057,
+      "lines": 188,
+      "bytes": 10425,
       "doc": "",
       "symbols": []
     },

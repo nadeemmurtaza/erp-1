@@ -90,6 +90,10 @@ export const MODULE_PACKS: Record<string, PackName> = {
   hr: 'core',
   orgstructure: 'core',
   attendance: 'core',
+  // tasks-notifications-support/23-tasks-allotment-tracking.md — imports no
+  // other module (event-intake goes through core/extension-points/
+  // task-source.registry.ts) and no other module imports it.
+  tasks: 'core',
   promotions: 'core',
   giftcards: 'core',
   search: 'core',

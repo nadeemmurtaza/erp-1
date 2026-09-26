@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 392 tracked files in `apps/web`, by directory.
+All 394 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -611,6 +611,12 @@ All 392 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 138 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/my-tasks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 79 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/o` (1)
 
 | File | Kind | Lines | Purpose |
@@ -894,6 +900,12 @@ All 392 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 189 | No clsx import needed |
+
+### `apps/web/src/app/(admin)/admin/(app)/tasks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 384 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/tax` (1)
 
@@ -1265,7 +1277,7 @@ All 392 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 1031 |  |
+| `nav-registry.ts` | component | 1054 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1344,7 +1356,7 @@ All 392 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `secret-once.tsx` | component | 100 |  |
-| `status-badge.tsx` | component | 94 |  |
+| `status-badge.tsx` | component | 101 |  |
 | `toast-container.tsx` | component | 60 |  |
 | `wizard.tsx` | component | 146 |  |
 

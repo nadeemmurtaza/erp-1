@@ -6,6 +6,7 @@ import { BranchPolicyRegistry } from './branch-policy.registry';
 import { CameraPeopleCountRegistry } from './camera-people-count.registry';
 import { IdentityVerificationStatusRegistry } from './identity-verification-status.registry';
 import { EmployeeOffboardingRegistry } from './employee-offboarding.registry';
+import { TaskSourceRegistry } from './task-source.registry';
 import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.registry';
 
 /**
@@ -13,10 +14,11 @@ import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.regist
  * directly — see EntityEnrichmentRegistry, CheckoutValidatorRegistry,
  * CartLineValidatorRegistry, StockIntakeRegistry and BranchPolicyRegistry
  * for what each is for. Most of these decouple core from a sector pack;
- * StockIntakeRegistry, BranchPolicyRegistry and EmployeeOffboardingRegistry
- * decouple two core modules from each other, but the mechanism and the
- * reason are the same. Global, like every other core module, so any module
- * injects any of them directly rather than importing this module.
+ * StockIntakeRegistry, BranchPolicyRegistry, EmployeeOffboardingRegistry and
+ * TaskSourceRegistry decouple two core modules from each other, but the
+ * mechanism and the reason are the same. Global, like every other core
+ * module, so any module injects any of them directly rather than importing
+ * this module.
  */
 @Global()
 @Module({
@@ -29,6 +31,7 @@ import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.regist
     CameraPeopleCountRegistry,
     IdentityVerificationStatusRegistry,
     EmployeeOffboardingRegistry,
+    TaskSourceRegistry,
   ],
   exports: [
     EntityEnrichmentRegistry,
@@ -39,6 +42,7 @@ import { CheckoutValidatorRegistry } from '../checkout/checkout-validator.regist
     CameraPeopleCountRegistry,
     IdentityVerificationStatusRegistry,
     EmployeeOffboardingRegistry,
+    TaskSourceRegistry,
   ],
 })
 export class ExtensionPointsModule {}

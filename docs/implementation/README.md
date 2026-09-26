@@ -52,7 +52,7 @@ filename for these four, never "doc 18" or "doc 19" alone.
 | [`20-people-positions-ranks.md`](./hr-people-org/20-people-positions-ranks.md) | The employee record, `Position`, and the rank ladder — everything after this needs all three |
 | [`21-access-over-the-org-tree.md`](./access-control-identity/21-access-over-the-org-tree.md) | Who may see and do what, scoped to an office or department in the org tree, extending the existing `PermissionsGuard` |
 | [`22-attendance-shifts-leave.md`](./attendance-workforce/22-attendance-shifts-leave.md) | Attendance as a record, not a request — shifts and leave, the first "the system does not get a vote" module |
-| [`23-tasks-allotment-tracking.md`](./tasks-notifications-support/23-tasks-allotment-tracking.md) | Task assignment, status and tracking that survives a person leaving the org |
+| [`23-tasks-allotment-tracking.md`](./tasks-notifications-support/23-tasks-allotment-tracking.md) | **Built.** Task assignment, status and tracking that survives a person leaving the org — `Task`/`TaskTransition`/`TaskStageDefinition`, assigned to a `Position` with an optional `User` assignee, a generic event-intake registry (`purchasing.requisition_created` wired as the proof), and unclaiming (never auto-reassigning) on the new `hr.posting_ended` event. ADR-050 |
 | [`24-internal-notifications-meetings-escalation.md`](./tasks-notifications-support/24-internal-notifications-meetings-escalation.md) | Meetings and escalation over the existing `NotificationChannel` interface |
 | [`25-advance-salary-and-payroll-posting.md`](./payroll/25-advance-salary-and-payroll-posting.md) | An advance against salary is a loan to the employee, never a wage payment — the GL posting that keeps that distinction |
 

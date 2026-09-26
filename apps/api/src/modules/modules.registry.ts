@@ -16,6 +16,7 @@ import { FulfilmentModule } from './fulfilment/fulfilment.module';
 import { GiftCardsModule } from './giftcards/giftcards.module';
 import { HrModule } from './hr/hr.module';
 import { OrgStructureModule } from './orgstructure/orgstructure.module';
+import { TasksModule } from './tasks/tasks.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { LoyaltyModule } from './loyalty/loyalty.module';
@@ -137,6 +138,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // query, no dependency on either module being on (see AttendanceService's
   // own header comment).
   { name: 'attendance', module: AttendanceModule },
+  // tasks-notifications-support/23-tasks-allotment-tracking.md — imports no
+  // other module (event-intake goes through TaskSourceRegistry, WO-23.3);
+  // reads hr's/orgstructure's Position table directly by Prisma query, same
+  // no-dependency-on-either-being-on shape as `attendance` just above.
+  { name: 'tasks', module: TasksModule },
   // Same allowlist tier as payments/finance (not offByDefault): checkout
   // couples to both directly, in the same transaction as order creation
   // (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE_COUPLINGS)

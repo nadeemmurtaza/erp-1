@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 954 tracked files in `apps/api`, by directory.
+All 971 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 954 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (50)
+### `apps/api/prisma/schema` (51)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -49,7 +49,7 @@ All 954 tracked files in `apps/api`, by directory.
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
-| `hr.prisma` | prisma schema | 171 | Employee assets: which physical equipment (laptop, phone, uniform) is |
+| `hr.prisma` | prisma schema | 176 | Employee assets: which physical equipment (laptop, phone, uniform) is |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `instalments.prisma` | prisma schema | 76 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md) |
 | `inventory.prisma` | prisma schema | 369 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
@@ -79,6 +79,7 @@ All 954 tracked files in `apps/api`, by directory.
 | `settlements.prisma` | prisma schema | 77 | Financial institution settlement partnerships |
 | `sso.prisma` | prisma schema | 63 | SSO / identity federation |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
+| `tasks.prisma` | prisma schema | 134 | Task allotment, status and tracking |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
 | `transfers.prisma` | prisma schema | 167 | Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default |
@@ -614,6 +615,12 @@ All 954 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 148 |  |
 
+### `apps/api/prisma/schema/migrations/20260926110000_add_tasks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 84 |  |
+
 ### `apps/api/prisma/schema/migrations/20260926134514_wo146_pricing_module` (1)
 
 | File | Kind | Lines | Purpose |
@@ -801,13 +808,13 @@ All 954 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 686 | The catalogue of domain events. |
+| `domain-events.ts` | module | 707 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
 | `outbox.dispatcher.ts` | dispatcher | 120 |  |
 
-### `apps/api/src/core/extension-points` (9)
+### `apps/api/src/core/extension-points` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -817,9 +824,10 @@ All 954 tracked files in `apps/api`, by directory.
 | `cart-line-validator.registry.ts` | registry | 64 |  |
 | `employee-offboarding.registry.ts` | registry | 39 |  |
 | `entity-enrichment.registry.ts` | registry | 45 |  |
-| `extension-points.module.ts` | nest module | 45 |  |
+| `extension-points.module.ts` | nest module | 49 |  |
 | `identity-verification-status.registry.ts` | registry | 36 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
+| `task-source.registry.ts` | registry | 63 |  |
 
 ### `apps/api/src/core/feed` (5)
 
@@ -979,8 +987,8 @@ All 954 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 115 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 253 |  |
+| `module-packs.ts` | module | 119 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 259 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1376,8 +1384,8 @@ All 954 tracked files in `apps/api`, by directory.
 | `assets.service.ts` | service | 149 |  |
 | `hr.module.ts` | nest module | 21 |  |
 | `people.controller.ts` | controller | 87 |  |
-| `people.service.spec.ts` | unit test | 171 |  |
-| `people.service.ts` | service | 254 |  |
+| `people.service.spec.ts` | unit test | 188 |  |
+| `people.service.ts` | service | 272 |  |
 
 ### `apps/api/src/modules/hr/dto` (2)
 
@@ -1765,7 +1773,7 @@ All 954 tracked files in `apps/api`, by directory.
 | `preview-checkout.dto.ts` | dto | 57 |  |
 | `promo-code.dto.ts` | dto | 82 |  |
 
-### `apps/api/src/modules/purchasing` (18)
+### `apps/api/src/modules/purchasing` (20)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1778,11 +1786,13 @@ All 954 tracked files in `apps/api`, by directory.
 | `purchasing.cron.ts` | scheduled job | 118 |  |
 | `purchasing.metrics.spec.ts` | unit test | 74 |  |
 | `purchasing.metrics.ts` | module | 135 |  |
-| `purchasing.module.ts` | nest module | 32 |  |
+| `purchasing.module.ts` | nest module | 34 |  |
 | `purchasing.service.ts` | service | 673 |  |
 | `purchasing.spec.ts` | unit test | 233 |  |
 | `reorder.listener.spec.ts` | unit test | 146 |  |
 | `reorder.listener.ts` | event subscriber | 83 |  |
+| `requisition-task-source.spec.ts` | unit test | 59 |  |
+| `requisition-task-source.ts` | module | 61 |  |
 | `requisition.controller.ts` | controller | 63 |  |
 | `requisition.service.spec.ts` | unit test | 203 |  |
 | `requisition.service.ts` | service | 201 |  |
@@ -1972,6 +1982,28 @@ All 954 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `stitching.dto.ts` | dto | 401 |  |
+
+### `apps/api/src/modules/tasks` (11)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `task-event-intake.service.spec.ts` | unit test | 81 |  |
+| `task-event-intake.service.ts` | service | 58 |  |
+| `task-leaver.listener.spec.ts` | unit test | 77 |  |
+| `task-leaver.listener.ts` | event subscriber | 62 |  |
+| `task-stage.service.spec.ts` | unit test | 54 |  |
+| `task-stage.service.ts` | service | 70 |  |
+| `task.controller.ts` | controller | 108 |  |
+| `task.service.spec.ts` | unit test | 350 |  |
+| `task.service.ts` | service | 480 |  |
+| `tasks.module.spec.ts` | unit test | 59 |  |
+| `tasks.module.ts` | nest module | 30 |  |
+
+### `apps/api/src/modules/tasks/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `task.dto.ts` | dto | 80 |  |
 
 ### `apps/api/src/modules/tax` (3)
 

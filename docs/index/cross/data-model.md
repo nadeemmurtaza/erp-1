@@ -3,7 +3,7 @@
 
 # Data model
 
-All **272** Prisma models and **124** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **275** Prisma models and **125** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -70,6 +70,7 @@ against a real database.
 | [`settlements.prisma`](../data/settlements.md) | 3 | 1 | [`settlements`](../modules/settlements.md) | SettlementBatch, SettlementBatchLine, SettlementProvider |
 | [`sso.prisma`](../data/sso.md) | 1 | 2 | core platform | SsoConnection |
 | [`stitching.prisma`](../data/stitching.md) | 8 | 3 | [`stitching`](../modules/stitching.md) | StitchingJob, StitchingJobEvent, StitchingJobNumberCounter, StitchingOption, StitchingOptionGroup, StitchingOrder, StitchingOrder… |
+| [`tasks.prisma`](../data/tasks.md) | 3 | 1 | [`tasks`](../modules/tasks.md) | Task, TaskStageDefinition, TaskTransition |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
 | [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
 | [`transfers.prisma`](../data/transfers.md) | 5 | 2 | [`transfers`](../modules/transfers.md) | InterBranchInvoice, InterBranchInvoiceNumberCounter, StockTransfer, StockTransferLine, TransferNumberCounter |
@@ -235,7 +236,7 @@ against a real database.
 | [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 41 | 1 | id | One row per hosted client. |
 | [`PlatformUsageRecord`](../data/platform.md#platformusagerecord) | `platform` | 6 | 1 | id | Metered usage a tenant's own deployment reports about itself — never a source of business… |
 | [`PolicyQuarantine`](../data/replication.md#policyquarantine) | `replication` | 14 | 1 | id | R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for rev… |
-| [`Position`](../data/hr.md#position) | `hr` | 10 | 4 | id | A post in the org chart: "Finance Manager, North Region". |
+| [`Position`](../data/hr.md#position) | `hr` | 11 | 4 | id | A post in the org chart: "Finance Manager, North Region". |
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
 | [`PosShift`](../data/pos.md#posshift) | `pos` | 12 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
 | [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | A physical till. |
@@ -331,6 +332,9 @@ against a real database.
 | [`SupportAccessGrant`](../data/platform.md#supportaccessgrant) | `platform` | 11 | 1 | id | The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3. |
 | [`Tag`](../data/crm.md#tag) | `crm` | 5 | 0 | id |  |
 | [`TailorProfile`](../data/stitching.md#tailorprofile) | `stitching` | 9 | 0 | id |  |
+| [`Task`](../data/tasks.md#task) | `tasks` | 19 | 1 | id |  |
+| [`TaskStageDefinition`](../data/tasks.md#taskstagedefinition) | `tasks` | 4 | 0 | id | A client's own workflow stages inside IN_PROGRESS — rows, not an enum, exactly as OrgUnit… |
+| [`TaskTransition`](../data/tasks.md#tasktransition) | `tasks` | 10 | 1 | id | The history TaskService.transition() writes on every state change — see this file's heade… |
 | [`TaxClass`](../data/tax.md#taxclass) | `tax` | 8 | 0 | id | Tax: rate/class definitions and the pricing-mode setting. |
 | [`TaxRate`](../data/tax.md#taxrate) | `tax` | 7 | 1 | id | One row per rate that has ever applied to a class. |
 | [`TenantDataExport`](../data/platform.md#tenantdataexport) | `platform` | 13 | 1 | id |  |
@@ -472,6 +476,7 @@ against a real database.
 | [`StripeInvoicePaymentStatus`](../data/platform.md#stripeinvoicepaymentstatus) | `platform` | `PENDING` `PAID` `FAILED` |
 | [`SubscriptionStatus`](../data/platform.md#subscriptionstatus) | `platform` | `ACTIVE` `PAST_DUE` `CANCELLED` |
 | [`SupplierBillStatus`](../data/purchasing.md#supplierbillstatus) | `purchasing` | `UNPAID` `PARTIAL` `PAID` |
+| [`TaskState`](../data/tasks.md#taskstate) | `tasks` | `OPEN` `IN_PROGRESS` `BLOCKED` `DONE` `CANCELLED` |
 | [`TenantExportStatus`](../data/platform.md#tenantexportstatus) | `platform` | `PENDING` `RUNNING` `COMPLETE` `FAILED` |
 | [`TenantExportTrigger`](../data/platform.md#tenantexporttrigger) | `platform` | `MANUAL` `DEPROVISION` |
 | [`TenantStatus`](../data/platform.md#tenantstatus) | `platform` | `PROVISIONING` `TRIAL` `ACTIVE` `SUSPENDED` `DEPROVISIONED` |

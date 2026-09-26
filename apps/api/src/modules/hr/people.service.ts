@@ -1,6 +1,8 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { EventBusService } from '../../core/events/event-bus.service';
+import { DomainEvent } from '../../core/events/domain-events';
 import type { Position, Prisma, Rank } from '../../core/prisma/client';
 
 export interface PostingView {
@@ -46,6 +48,7 @@ export class PeopleService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly eventBus: EventBusService,
   ) {}
 
   // ─── ranks ───────────────────────────────────────────────────────────────
@@ -182,7 +185,12 @@ export class PeopleService {
     }
   }
 
-  /** Ends a posting — REQUEST for a routine change; the write itself never fails silently on "already ended" (idempotent). */
+  /**
+   * Ends a posting — REQUEST for a routine change; the write itself never
+   * fails silently on "already ended" (idempotent: the early return below
+   * means a retried call publishes PostingEnded at most once, never a
+   * second time for the same posting — DECISIONS.md ADR-050).
+   */
   async end(postingId: string, endedOn: Date | undefined, actorId: string): Promise<PostingView> {
     const existing = await this.prisma.posting.findUnique({ where: { id: postingId }, select: POSTING_SELECT });
     if (!existing) throw new NotFoundException('That posting does not exist.');
@@ -198,6 +206,16 @@ export class PeopleService {
         entityId: postingId,
         data: { endedOn: at },
       });
+      // Published in the SAME transaction as the endedOn write (the
+      // transactional outbox, EventBusService/OutboxDispatcher) — either
+      // the posting is ended and the event is queued, or neither happens.
+      // tasks/task-leaver.listener.ts is the intended subscriber
+      // (ADR-050); nothing breaks if it is the only one.
+      await this.eventBus.publish(
+        DomainEvent.PostingEnded,
+        { postingId, userId: row.userId, positionId: row.positionId, endedOn: at.toISOString() },
+        tx,
+      );
       return row;
     });
 

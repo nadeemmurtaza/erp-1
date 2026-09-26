@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2166,
-    "lines": 331698,
-    "routes": 753,
-    "controllers": 134,
-    "models": 272,
-    "enums": 124,
-    "migrations": 98,
-    "events": 63,
-    "permissions": 101,
-    "screens": 245,
+    "files": 2185,
+    "lines": 334325,
+    "routes": 764,
+    "controllers": 136,
+    "models": 275,
+    "enums": 125,
+    "migrations": 99,
+    "events": 64,
+    "permissions": 105,
+    "screens": 247,
     "crons": 23,
-    "specs": 280,
+    "specs": 286,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 57,
       "lines": 30073,
-      "bytes": 1183108,
+      "bytes": 1183150,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 954,
-      "lines": 133524,
-      "bytes": 5140252,
+      "files": 971,
+      "lines": 135511,
+      "bytes": 5225549,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 392,
-      "lines": 64048,
-      "bytes": 2309002,
+      "files": 394,
+      "lines": 64541,
+      "bytes": 2327678,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 396,
-      "lines": 66287,
-      "bytes": 3942886,
+      "lines": 66368,
+      "bytes": 3947821,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8173,
-      "bytes": 291426,
+      "lines": 8239,
+      "bytes": 294078,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -861,6 +861,8 @@
         "apps/api/src/modules/purchasing/purchasing.spec.ts",
         "apps/api/src/modules/purchasing/reorder.listener.spec.ts",
         "apps/api/src/modules/purchasing/reorder.listener.ts",
+        "apps/api/src/modules/purchasing/requisition-task-source.spec.ts",
+        "apps/api/src/modules/purchasing/requisition-task-source.ts",
         "apps/api/src/modules/purchasing/requisition.controller.ts",
         "apps/api/src/modules/purchasing/requisition.service.spec.ts",
         "apps/api/src/modules/purchasing/requisition.service.ts",
@@ -1044,6 +1046,28 @@
       ],
       "routes": 21,
       "page": "docs/index/modules/stitching.md"
+    },
+    {
+      "name": "tasks",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/tasks/dto/task.dto.ts",
+        "apps/api/src/modules/tasks/task-event-intake.service.spec.ts",
+        "apps/api/src/modules/tasks/task-event-intake.service.ts",
+        "apps/api/src/modules/tasks/task-leaver.listener.spec.ts",
+        "apps/api/src/modules/tasks/task-leaver.listener.ts",
+        "apps/api/src/modules/tasks/task-stage.service.spec.ts",
+        "apps/api/src/modules/tasks/task-stage.service.ts",
+        "apps/api/src/modules/tasks/task.controller.ts",
+        "apps/api/src/modules/tasks/task.service.spec.ts",
+        "apps/api/src/modules/tasks/task.service.ts",
+        "apps/api/src/modules/tasks/tasks.module.spec.ts",
+        "apps/api/src/modules/tasks/tasks.module.ts"
+      ],
+      "routes": 11,
+      "page": "docs/index/modules/tasks.md"
     },
     {
       "name": "tax",
@@ -1326,7 +1350,8 @@
         "apps/api/src/core/extension-points/entity-enrichment.registry.ts",
         "apps/api/src/core/extension-points/extension-points.module.ts",
         "apps/api/src/core/extension-points/identity-verification-status.registry.ts",
-        "apps/api/src/core/extension-points/stock-intake.registry.ts"
+        "apps/api/src/core/extension-points/stock-intake.registry.ts",
+        "apps/api/src/core/extension-points/task-source.registry.ts"
       ],
       "page": "docs/index/core/extension-points.md"
     },
@@ -10698,6 +10723,181 @@
       "summary": "Remove a product from a supplier"
     },
     {
+      "method": "POST",
+      "path": "/admin/tasks",
+      "module": "tasks",
+      "controller": "TasksController",
+      "handler": "create",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 52,
+      "access": "tasks.assign",
+      "permissions": [
+        "tasks.assign"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a task at a post"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/tasks/:id",
+      "module": "tasks",
+      "controller": "TasksController",
+      "handler": "get",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 45,
+      "access": "tasks.view",
+      "permissions": [
+        "tasks.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One task, with its full transition history"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/tasks/:id/assign",
+      "module": "tasks",
+      "controller": "TasksController",
+      "handler": "assign",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 62,
+      "access": "tasks.assign",
+      "permissions": [
+        "tasks.assign"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Assign a task to a person, or clear it (null) to unclaim"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/tasks/:id/close",
+      "module": "tasks",
+      "controller": "TasksController",
+      "handler": "close",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 76,
+      "access": "tasks.close",
+      "permissions": [
+        "tasks.close"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Mark a task DONE or CANCELLED"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/tasks/:id/transition",
+      "module": "tasks",
+      "controller": "TasksController",
+      "handler": "transition",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 69,
+      "access": "tasks.assign",
+      "permissions": [
+        "tasks.assign"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Move a task between OPEN/IN_PROGRESS/BLOCKED, or change its stage. Use /close to reach DONE or CANCELLED."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/tasks/my",
+      "module": "tasks",
+      "controller": "TasksController",
+      "handler": "myTasks",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 24,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Tasks currently assigned to me"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/tasks/post/:positionId",
+      "module": "tasks",
+      "controller": "TasksController",
+      "handler": "postQueue",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 31,
+      "access": "tasks.view",
+      "permissions": [
+        "tasks.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every task at a post — the post queue"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/tasks/reports/:positionId/unclaimed",
+      "module": "tasks",
+      "controller": "TasksController",
+      "handler": "unclaimedForReports",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 38,
+      "access": "tasks.view",
+      "permissions": [
+        "tasks.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Unclaimed open tasks at every post reporting to this one — the leaver-handling screen (WO-23.4)"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/tasks/stages",
+      "module": "tasks",
+      "controller": "TaskStagesController",
+      "handler": "list",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 90,
+      "access": "tasks.view | tasks.admin",
+      "permissions": [
+        "tasks.view",
+        "tasks.admin"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every workflow stage, in order"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/tasks/stages",
+      "module": "tasks",
+      "controller": "TaskStagesController",
+      "handler": "create",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 97,
+      "access": "tasks.admin",
+      "permissions": [
+        "tasks.admin"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Add a stage"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/tasks/stages/:id/reorder",
+      "module": "tasks",
+      "controller": "TaskStagesController",
+      "handler": "reorder",
+      "file": "apps/api/src/modules/tasks/task.controller.ts",
+      "line": 104,
+      "access": "tasks.admin",
+      "permissions": [
+        "tasks.admin"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Reorder a stage — does not rewrite the history of tasks that already moved through it"
+    },
+    {
       "method": "GET",
       "path": "/admin/tax/classes",
       "module": "tax",
@@ -14862,6 +15062,67 @@
       "inSeed": true
     },
     {
+      "key": "tasks.view",
+      "label": "View tasks — my work, a post queue, and a task's transition history",
+      "category": "Organization",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/tasks/:id",
+        "GET /admin/tasks/post/:positionId",
+        "GET /admin/tasks/reports/:positionId/unclaimed",
+        "GET /admin/tasks/stages"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "tasks.assign",
+      "label": "Create tasks, assign them to a person, and move them between OPEN/IN_PROGRESS/BLOCKED",
+      "category": "Organization",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/tasks",
+        "POST /admin/tasks/:id/assign",
+        "POST /admin/tasks/:id/transition"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "STAFF"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "tasks.close",
+      "label": "Mark a task DONE or CANCELLED",
+      "category": "Organization",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/tasks/:id/close"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "STAFF"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "tasks.admin",
+      "label": "Add or reorder a task workflow stage",
+      "category": "Organization",
+      "sensitivity": "high",
+      "routes": [
+        "GET /admin/tasks/stages",
+        "POST /admin/tasks/stages",
+        "POST /admin/tasks/stages/:id/reorder"
+      ],
+      "uiSites": 1,
+      "roles": [],
+      "inSeed": false
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -15671,6 +15932,7 @@
       "name": "purchasing.requisition_created",
       "doc": "",
       "publishers": [
+        "apps/api/src/modules/purchasing/requisition-task-source.ts:38",
         "apps/api/src/modules/purchasing/requisition.service.ts:59"
       ],
       "subscribers": []
@@ -15804,6 +16066,17 @@
         "apps/api/src/modules/identity-verification/identity-verification.service.ts:161"
       ],
       "subscribers": []
+    },
+    {
+      "symbol": "PostingEnded",
+      "name": "hr.posting_ended",
+      "doc": "PostingService.end() (hr-people-org/20-people-positions-ranks.md) — added for tasks-notifications-support/23-tasks-allotment-tracking.md (DECISIONS.md ADR-050): doc 20's own build never needed a doma…",
+      "publishers": [
+        "apps/api/src/modules/hr/people.service.ts:215"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/tasks/task-leaver.listener.ts:29 onPostingEnded()"
+      ]
     },
     {
       "symbol": "ExpenseRecorded",
@@ -16877,7 +17150,7 @@
     {
       "name": "Asset",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 123,
+      "line": 128,
       "doc": "",
       "fields": [
         {
@@ -16965,7 +17238,7 @@
     {
       "name": "AssetAssignment",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 152,
+      "line": 157,
       "doc": "One row per issue/return cycle — an asset's full custody history, never overwritten.",
       "fields": [
         {
@@ -29989,6 +30262,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "tasks",
+          "type": "Task[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -30223,7 +30503,7 @@
     {
       "name": "Posting",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 97,
+      "line": 102,
       "doc": "Who holds which post, when.",
       "fields": [
         {
@@ -37969,6 +38249,272 @@
       "indexes": []
     },
     {
+      "name": "Task",
+      "file": "apps/api/prisma/schema/tasks.prisma",
+      "line": 36,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reference",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "detail",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "positionId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assigneeUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "state",
+          "type": "TaskState",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stageId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priority",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "dueAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceType",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceRef",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "closedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "position",
+          "type": "Position",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "transitions",
+          "type": "TaskTransition[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([sourceType, sourceRef])",
+        "@@index([positionId, state])",
+        "@@index([assigneeUserId, state])",
+        "@@index([orgUnitId, state])",
+        "@@index([dueAt])"
+      ]
+    },
+    {
+      "name": "TaskStageDefinition",
+      "file": "apps/api/prisma/schema/tasks.prisma",
+      "line": 128,
+      "doc": "A client's own workflow stages inside IN_PROGRESS — rows, not an enum, exactly as OrgUnitType and Rank are rows (this file's header, decision 2).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "order",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "TaskTransition",
+      "file": "apps/api/prisma/schema/tasks.prisma",
+      "line": 106,
+      "doc": "The history TaskService.transition() writes on every state change — see this file's header, decision 3.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "taskId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "fromState",
+          "type": "TaskState?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "toState",
+          "type": "TaskState",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "fromStageId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "toStageId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "byUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "occurredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "task",
+          "type": "Task",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([taskId, occurredAt])"
+      ]
+    },
+    {
       "name": "TaxClass",
       "file": "apps/api/prisma/schema/tax.prisma",
       "line": 7,
@@ -40325,7 +40871,7 @@
     {
       "name": "AssetStatus",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 116,
+      "line": 121,
       "values": [
         "AVAILABLE",
         "ASSIGNED",
@@ -41413,6 +41959,18 @@
         "UNPAID",
         "PARTIAL",
         "PAID"
+      ]
+    },
+    {
+      "name": "TaskState",
+      "file": "apps/api/prisma/schema/tasks.prisma",
+      "line": 28,
+      "values": [
+        "OPEN",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "DONE",
+        "CANCELLED"
       ]
     },
     {
@@ -43297,6 +43855,25 @@
       ]
     },
     {
+      "folder": "20260926110000_add_tasks",
+      "file": "apps/api/prisma/schema/migrations/20260926110000_add_tasks/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_tasks",
+      "statements": 14,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "Task",
+        "TaskStageDefinition",
+        "TaskTransition"
+      ]
+    },
+    {
       "folder": "20260926125941_wo166_product_reference_registry",
       "file": "apps/platform/prisma/schema/migrations/20260926125941_wo166_product_reference_registry/migration.sql",
       "date": "2026-09-26",
@@ -45055,6 +45632,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/my-tasks",
+      "file": "apps/web/src/app/(admin)/admin/(app)/my-tasks/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/o",
       "file": "apps/web/src/app/(admin)/admin/(app)/o/page.tsx",
       "client": true,
@@ -45492,6 +46078,15 @@
       "client": true,
       "surface": "admin",
       "doc": "No clsx import needed"
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/tasks",
+      "file": "apps/web/src/app/(admin)/admin/(app)/tasks/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
     },
     {
       "app": "web",
@@ -48055,6 +48650,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/purchasing/requisition-task-source.spec.ts",
+      "module": "purchasing",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "RequisitionTaskSource"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/purchasing/requisition.service.spec.ts",
       "module": "purchasing",
       "kind": "unit test",
@@ -48325,6 +48929,60 @@
         "pollExpectedBatches",
         "requestWriteoff / approveWriteoff — the maker-checker pair",
         "writeOffShortfall"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/tasks/task-event-intake.service.spec.ts",
+      "module": "tasks",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "TaskEventIntakeService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/tasks/task-leaver.listener.spec.ts",
+      "module": "tasks",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "TaskLeaverListener"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/tasks/task-stage.service.spec.ts",
+      "module": "tasks",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "TaskStageService — WO-23.1: stages seeded empty, added by a client without a migration"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/tasks/task.service.spec.ts",
+      "module": "tasks",
+      "kind": "unit test",
+      "cases": 29,
+      "describes": [
+        "canTransitionTask — PURE, no I/O (the exact function the UI calls to disable a button)",
+        "cycleTimeMs — cycle time reconstructed from TaskTransition ALONE, never Task.state (doc 23\\",
+        "TaskService",
+        "create",
+        "createFromSource — idempotent on a redelivered domain event",
+        "assign",
+        "transition — the sole writer of Task.state",
+        "close — the toxic-pair check (tasks.assign + tasks.close, DECISIONS.md ADR-050)",
+        "allowedTransitions on the view — the SAME function that refuses an illegal transition() call",
+        "postQueue / myTasks / unclaimedForReports"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/tasks/tasks.module.spec.ts",
+      "module": "tasks",
+      "kind": "unit test",
+      "cases": 1,
+      "describes": [
+        "TasksModule — pack-absence"
       ]
     },
     {
@@ -49636,7 +50294,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5368,
+      "bytes": 5382,
       "doc": "",
       "symbols": []
     },
@@ -49645,7 +50303,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 177,
-      "bytes": 9032,
+      "bytes": 9046,
       "doc": "",
       "symbols": []
     },
@@ -49654,7 +50312,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5813,
+      "bytes": 5827,
       "doc": "",
       "symbols": []
     },
@@ -50073,8 +50731,8 @@
       "path": "apps/api/prisma/schema/hr.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 171,
-      "bytes": 7051,
+      "lines": 176,
+      "bytes": 7352,
       "doc": "Employee assets: which physical equipment (laptop, phone, uniform) is",
       "symbols": []
     },
@@ -50925,6 +51583,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926110000_add_tasks/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 84,
+      "bytes": 3101,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/20260926134514_wo146_pricing_module/migration.sql",
       "area": "api",
       "kind": "migration",
@@ -51156,6 +51823,15 @@
       "lines": 202,
       "bytes": 6849,
       "doc": "Stitching: the style options a customer picks, standalone stitching orders",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/tasks.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 134,
+      "bytes": 5833,
+      "doc": "Task allotment, status and tracking",
       "symbols": []
     },
     {
@@ -52834,8 +53510,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 686,
-      "bytes": 28068,
+      "lines": 707,
+      "bytes": 29045,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -52846,282 +53522,287 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 148
+          "line": 159
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 150
+          "line": 161
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 163
+          "line": 174
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 171
+          "line": 182
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 179
+          "line": 190
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 199
+          "line": 210
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 205
+          "line": 216
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 212
+          "line": 223
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 219
+          "line": 230
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 223
+          "line": 234
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 229
+          "line": 240
         },
         {
           "name": "ApiKeyIssuedPayload",
           "kind": "interface",
-          "line": 240
+          "line": 251
         },
         {
           "name": "SsoAccountLinkedPayload",
           "kind": "interface",
-          "line": 253
+          "line": 264
         },
         {
           "name": "SsoUserProvisionedPayload",
           "kind": "interface",
-          "line": 258
+          "line": 269
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 263
+          "line": 274
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 270
+          "line": 281
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 280
+          "line": 291
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 289
+          "line": 300
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 298
+          "line": 309
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 306
+          "line": 317
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 314
+          "line": 325
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 325
+          "line": 336
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 332
+          "line": 343
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 341
+          "line": 352
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 349
+          "line": 360
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 354
+          "line": 365
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 362
+          "line": 373
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 367
+          "line": 378
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 373
+          "line": 384
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 379
+          "line": 390
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 391
+          "line": 402
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 406
+          "line": 417
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 414
+          "line": 425
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 428
+          "line": 439
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 441
+          "line": 452
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 454
+          "line": 465
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 470
+          "line": 481
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 478
+          "line": 489
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 490
+          "line": 501
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 501
+          "line": 512
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 512
+          "line": 523
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 519
+          "line": 530
         },
         {
           "name": "WalletCreditPurchasedPayload",
           "kind": "interface",
-          "line": 525
+          "line": 536
         },
         {
           "name": "WalletCreditRedeemedPayload",
           "kind": "interface",
-          "line": 533
+          "line": 544
         },
         {
           "name": "WalletCreditRefundedPayload",
           "kind": "interface",
-          "line": 542
+          "line": 553
         },
         {
           "name": "MerchantPayableCreatedPayload",
           "kind": "interface",
-          "line": 553
+          "line": 564
         },
         {
           "name": "MerchantPayablePaidPayload",
           "kind": "interface",
-          "line": 560
+          "line": 571
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 567
+          "line": 578
+        },
+        {
+          "name": "PostingEndedPayload",
+          "kind": "interface",
+          "line": 585
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 573
+          "line": 593
         },
         {
           "name": "CreditNoteIssuedPayload",
           "kind": "interface",
-          "line": 639
+          "line": 660
         },
         {
           "name": "CreditNoteVoidedPayload",
           "kind": "interface",
-          "line": 648
+          "line": 669
         },
         {
           "name": "DebitNoteIssuedPayload",
           "kind": "interface",
-          "line": 652
+          "line": 673
         },
         {
           "name": "DebitNoteVoidedPayload",
           "kind": "interface",
-          "line": 660
+          "line": 681
         },
         {
           "name": "CreditHoldAppliedPayload",
           "kind": "interface",
-          "line": 664
+          "line": 685
         },
         {
           "name": "NotificationSentPayload",
           "kind": "interface",
-          "line": 669
+          "line": 690
         },
         {
           "name": "SettlementShortfallWrittenOffPayload",
           "kind": "interface",
-          "line": 680
+          "line": 701
         }
       ]
     },
@@ -53308,14 +53989,14 @@
       "path": "apps/api/src/core/extension-points/extension-points.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 45,
-      "bytes": 1847,
+      "lines": 49,
+      "bytes": 1979,
       "doc": "",
       "symbols": [
         {
           "name": "ExtensionPointsModule",
           "kind": "class",
-          "line": 44
+          "line": 48
         }
       ]
     },
@@ -53361,6 +54042,31 @@
           "name": "StockIntakeRegistry",
           "kind": "class",
           "line": 52
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/extension-points/task-source.registry.ts",
+      "area": "api",
+      "kind": "registry",
+      "lines": 63,
+      "bytes": 2795,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TaskSourceCreateInput",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "TaskSourceMapping",
+          "kind": "interface",
+          "line": 18
+        },
+        {
+          "name": "TaskSourceRegistry",
+          "kind": "class",
+          "line": 51
         }
       ]
     },
@@ -59168,8 +59874,8 @@
       "path": "apps/api/src/modules/hr/people.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 171,
-      "bytes": 7848,
+      "lines": 188,
+      "bytes": 8674,
       "doc": "",
       "symbols": []
     },
@@ -59177,24 +59883,24 @@
       "path": "apps/api/src/modules/hr/people.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 254,
-      "bytes": 10667,
+      "lines": 272,
+      "bytes": 11552,
       "doc": "",
       "symbols": [
         {
           "name": "PostingView",
           "kind": "interface",
-          "line": 6
+          "line": 8
         },
         {
           "name": "PreviewAssignResult",
           "kind": "interface",
-          "line": 19
+          "line": 21
         },
         {
           "name": "PeopleService",
           "kind": "class",
-          "line": 45
+          "line": 47
         }
       ]
     },
@@ -60245,8 +60951,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 115,
-      "bytes": 3770,
+      "lines": 119,
+      "bytes": 3996,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -60265,24 +60971,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 253,
-      "bytes": 14115,
+      "lines": 259,
+      "bytes": 14512,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 54
+          "line": 55
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 85
+          "line": 86
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 229
+          "line": 235
         }
       ]
     },
@@ -62661,14 +63367,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 32,
-      "bytes": 1449,
+      "lines": 34,
+      "bytes": 1543,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingModule",
           "kind": "class",
-          "line": 31
+          "line": 33
         }
       ]
     },
@@ -62717,6 +63423,30 @@
           "name": "PurchasingReorderListener",
           "kind": "class",
           "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/purchasing/requisition-task-source.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 59,
+      "bytes": 2529,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/purchasing/requisition-task-source.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 61,
+      "bytes": 2870,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequisitionTaskSource",
+          "kind": "class",
+          "line": 30
         }
       ]
     },
@@ -64277,6 +65007,201 @@
           "name": "StitchingService",
           "kind": "class",
           "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/tasks/dto/task.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 80,
+      "bytes": 1421,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateTaskDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "AssignTaskDto",
+          "kind": "class",
+          "line": 29
+        },
+        {
+          "name": "TransitionTaskDto",
+          "kind": "class",
+          "line": 36
+        },
+        {
+          "name": "CloseTaskDto",
+          "kind": "class",
+          "line": 51
+        },
+        {
+          "name": "CreateTaskStageDto",
+          "kind": "class",
+          "line": 61
+        },
+        {
+          "name": "ReorderTaskStageDto",
+          "kind": "class",
+          "line": 76
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/tasks/task-event-intake.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 81,
+      "bytes": 4097,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/tasks/task-event-intake.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 58,
+      "bytes": 2877,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TaskEventIntakeService",
+          "kind": "class",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/tasks/task-leaver.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 77,
+      "bytes": 3158,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/tasks/task-leaver.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 62,
+      "bytes": 2427,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TaskLeaverListener",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/tasks/task-stage.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 54,
+      "bytes": 2524,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/tasks/task-stage.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 70,
+      "bytes": 2596,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TaskStageService",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/tasks/task.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 108,
+      "bytes": 4484,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TasksController",
+          "kind": "class",
+          "line": 18
+        },
+        {
+          "name": "TaskStagesController",
+          "kind": "class",
+          "line": 84
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/tasks/task.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 350,
+      "bytes": 17633,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/tasks/task.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 480,
+      "bytes": 19118,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "canTransitionTask",
+          "kind": "function",
+          "line": 44
+        },
+        {
+          "name": "cycleTimeMs",
+          "kind": "function",
+          "line": 63
+        },
+        {
+          "name": "TaskView",
+          "kind": "interface",
+          "line": 76
+        },
+        {
+          "name": "TaskService",
+          "kind": "class",
+          "line": 129
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/tasks/tasks.module.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 59,
+      "bytes": 2515,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/tasks/tasks.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 30,
+      "bytes": 1481,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TasksModule",
+          "kind": "class",
+          "line": 29
         }
       ]
     },
@@ -71336,6 +72261,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/my-tasks/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 79,
+      "bytes": 2501,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyTasksPage",
+          "kind": "default",
+          "line": 26
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx",
       "area": "web",
       "kind": "page",
@@ -72082,6 +73022,21 @@
           "name": "SuppliersListPage",
           "kind": "default",
           "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/tasks/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 384,
+      "bytes": 14969,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TasksPage",
+          "kind": "default",
+          "line": 53
         }
       ]
     },
@@ -74185,8 +75140,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1031,
-      "bytes": 28440,
+      "lines": 1054,
+      "bytes": 29302,
       "doc": "",
       "symbols": [
         {
@@ -74217,12 +75172,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1001
+          "line": 1024
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1016
+          "line": 1039
         }
       ]
     },
@@ -74415,19 +75370,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 94,
-      "bytes": 3648,
+      "lines": 101,
+      "bytes": 3992,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 87
+          "line": 94
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 91
+          "line": 98
         }
       ]
     },
@@ -79472,8 +80427,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 5151,
-      "bytes": 299020,
+      "lines": 5232,
+      "bytes": 303662,
       "doc": "",
       "symbols": []
     },
@@ -79509,7 +80464,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 528,
-      "bytes": 70904,
+      "bytes": 71197,
       "doc": "",
       "symbols": []
     },
@@ -82670,8 +83625,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1111,
-      "bytes": 36627,
+      "lines": 1177,
+      "bytes": 39279,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -82692,52 +83647,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 669
+          "line": 702
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 671
+          "line": 704
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 681
+          "line": 714
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 688
+          "line": 721
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 886
+          "line": 937
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1075
+          "line": 1141
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1094
+          "line": 1160
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1103
+          "line": 1169
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1104
+          "line": 1170
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1107
+          "line": 1173
         }
       ]
     },

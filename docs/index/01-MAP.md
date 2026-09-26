@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 954 | 133,524 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 396 | 66,287 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 392 | 64,048 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 971 | 135,511 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 396 | 66,368 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 394 | 64,541 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,448 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 160 | 11,233 |  |
 | `scripts` | 22 | 9,221 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 62 | 7,591 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 62 | 7,657 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
 | `apps/pos` | 31 | 2,000 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,046 |  |
@@ -103,6 +103,7 @@ Each is independent: no module imports another except through a named
 | [`settings`](modules/settings.md) | core | always on | 8 | — |
 | [`settlements`](modules/settlements.md) | core | MODULES allowlist | 8 | 3 |
 | [`stitching`](modules/stitching.md) | apparel | MODULES allowlist | 21 | 8 |
+| [`tasks`](modules/tasks.md) | core | MODULES allowlist | 11 | 3 |
 | [`tax`](modules/tax.md) | core | MODULES allowlist | 8 | 2 |
 | [`tracking`](modules/tracking.md) | core | MODULES allowlist | 1 | — |
 | [`tradingpartners`](modules/tradingpartners.md) | core | MODULES allowlist | 19 | — |
@@ -129,7 +130,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`config`](core/config.md) | 6 |  |
 | [`crm`](core/crm.md) | 1 |  |
 | [`events`](core/events.md) | 5 | The catalogue of domain events. |
-| [`extension-points`](core/extension-points.md) | 9 |  |
+| [`extension-points`](core/extension-points.md) | 10 |  |
 | [`feed`](core/feed.md) | 5 |  |
 | [`health`](core/health.md) | 2 |  |
 | [`intent`](core/intent.md) | 4 |  |

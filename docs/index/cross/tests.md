@@ -3,7 +3,7 @@
 
 # Tests
 
-**280** spec files, **2,772** cases. What is already pinned down — and what is not.
+**286** spec files, **2,820** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (260)
+## Unit and integration (266)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -218,6 +218,7 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/purchasing.metrics.spec.ts` | purchasing | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |
 | `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
+| `apps/api/src/modules/purchasing/requisition-task-source.spec.ts` | purchasing | 4 | RequisitionTaskSource |
 | `apps/api/src/modules/purchasing/requisition.service.spec.ts` | purchasing | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refus… |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 | `apps/api/src/modules/rag/chunking.spec.ts` | rag | 7 | chunkPages |
@@ -243,6 +244,11 @@ regression or an N+1.
 | `apps/api/src/modules/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
 | `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
 | `apps/api/src/modules/settlements/settlements.service.spec.ts` | settlements | 22 | SettlementsService · createExpectedBatch · reconcile · pollExpectedBatches · requestWriteoff / appr… |
+| `apps/api/src/modules/tasks/task-event-intake.service.spec.ts` | tasks | 6 | TaskEventIntakeService |
+| `apps/api/src/modules/tasks/task-leaver.listener.spec.ts` | tasks | 4 | TaskLeaverListener |
+| `apps/api/src/modules/tasks/task-stage.service.spec.ts` | tasks | 4 | TaskStageService — WO-23.1: stages seeded empty, added by a client without a migration |
+| `apps/api/src/modules/tasks/task.service.spec.ts` | tasks | 29 | canTransitionTask — PURE, no I/O (the exact function the UI calls to disable a button) · cycleTimeM… |
+| `apps/api/src/modules/tasks/tasks.module.spec.ts` | tasks | 1 | TasksModule — pack-absence |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
 | `apps/api/src/modules/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |

@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "03438b2b1367c7c3",
+  "contentHash": "6a427a4e487d67c4",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -112,6 +112,7 @@
     "docs/index/data/settlements.md",
     "docs/index/data/sso.md",
     "docs/index/data/stitching.md",
+    "docs/index/data/tasks.md",
     "docs/index/data/tax.md",
     "docs/index/data/trading-partners.md",
     "docs/index/data/transfers.md",
@@ -171,6 +172,7 @@
     "docs/index/modules/settings.md",
     "docs/index/modules/settlements.md",
     "docs/index/modules/stitching.md",
+    "docs/index/modules/tasks.md",
     "docs/index/modules/tax.md",
     "docs/index/modules/tracking.md",
     "docs/index/modules/tradingpartners.md",
@@ -187,18 +189,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2166,
-    "lines": 331698,
-    "routes": 753,
-    "controllers": 134,
-    "models": 272,
-    "enums": 124,
-    "migrations": 98,
-    "events": 63,
-    "permissions": 101,
-    "screens": 245,
+    "files": 2185,
+    "lines": 334325,
+    "routes": 764,
+    "controllers": 136,
+    "models": 275,
+    "enums": 125,
+    "migrations": 99,
+    "events": 64,
+    "permissions": 105,
+    "screens": 247,
     "crons": 23,
-    "specs": 280,
+    "specs": 286,
     "designLaws": 0
   }
 }

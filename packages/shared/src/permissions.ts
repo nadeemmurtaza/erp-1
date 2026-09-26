@@ -509,6 +509,39 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'high',
   },
   {
+    // tasks-notifications-support/23-tasks-allotment-tracking.md.
+    key: 'tasks.view',
+    label: 'View tasks — my work, a post queue, and a task\'s transition history',
+    category: 'Organization',
+    sensitivity: 'low',
+  },
+  {
+    key: 'tasks.assign',
+    label: 'Create tasks, assign them to a person, and move them between OPEN/IN_PROGRESS/BLOCKED',
+    category: 'Organization',
+    sensitivity: 'medium',
+  },
+  {
+    // Paired with tasks.assign as a PER-INSTANCE check inside
+    // TaskService.close(), never TOXIC_PERMISSION_PAIRS — see that method's
+    // own header comment and DECISIONS.md ADR-050 for why: the risk this
+    // key's own toxic pairing guards against ("assigning yourself work and
+    // marking it done unobserved") only exists for a task whose sourceType
+    // names a money-adjacent module, not for an ordinary task, so refusing
+    // a ROLE from ever holding both keys would break the common case
+    // (most STAFF legitimately holds both and self-closes routine work).
+    key: 'tasks.close',
+    label: 'Mark a task DONE or CANCELLED',
+    category: 'Organization',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'tasks.admin',
+    label: 'Add or reorder a task workflow stage',
+    category: 'Organization',
+    sensitivity: 'high',
+  },
+  {
     key: 'marketing.manage',
     label: 'Turn on automated marketing email and set its timing',
     category: 'Administration',
@@ -747,6 +780,15 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     permissions: ['catalog.manage', 'measurements.manage_blueprints'],
   },
   {
+    // 146-wholesale-tiered-pricing.md — missing from every PERMISSION_GROUPS
+    // entry when this group was added; permissions.spec.ts's own "no
+    // permission left off the wizard" test catches exactly this.
+    key: 'pricing',
+    label: 'Wholesale pricing',
+    description: 'Price lists, quantity breaks, below-base-price approval, and which customers a list applies to.',
+    permissions: ['pricing.price-lists.manage', 'pricing.price-lists.approve', 'pricing.assignments.manage'],
+  },
+  {
     key: 'inventory',
     label: 'Inventory',
     description: 'Stock levels, stock counts, inter-branch transfers, spot checks, and — separately — cost prices and margins.',
@@ -851,8 +893,17 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'organization',
     label: 'Organization structure',
-    description: 'Offices, regions and departments — the tree everything else scopes access and reporting to — plus who is granted access over which unit.',
-    permissions: ['org.structure.view', 'org.structure.manage', 'org.access.view', 'org.access.grant'],
+    description: 'Offices, regions and departments — the tree everything else scopes access and reporting to — plus who is granted access over which unit, and the tasks assigned across it.',
+    permissions: [
+      'org.structure.view',
+      'org.structure.manage',
+      'org.access.view',
+      'org.access.grant',
+      'tasks.view',
+      'tasks.assign',
+      'tasks.close',
+      'tasks.admin',
+    ],
   },
   {
     key: 'system-admin',
@@ -898,6 +949,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'analytics.view',
     'reports.view',
     'organization.view',
+    'tasks.view',
+    'tasks.assign',
+    'tasks.close',
     'crm.manage',
     'orders.manage',
     'pricing.price-lists.manage',
@@ -971,6 +1025,18 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     // existing custom-roles screen — the access screen renders read-only
     // for ADMIN (org.access.view) until then, matching this document's own
     // "Solo: the grant screen never rendered" silhouette.
+    'tasks.view',
+    'tasks.assign',
+    // Unlike org.access.grant/hr.attendance.reconcile above, tasks.close IS
+    // seeded onto ADMIN alongside tasks.assign — the toxic pair the two
+    // form (DECISIONS.md ADR-050) is a PER-INSTANCE check inside
+    // TaskService.close(), scoped to a task whose sourceType names a
+    // money-adjacent module, not a role-level refusal TOXIC_PERMISSION_PAIRS
+    // would catch here. Holding both is the ordinary, safe case for every
+    // other task; the instance check still refuses the one risky case
+    // (self-assign, then self-close, on a money-adjacent task).
+    'tasks.close',
+    'tasks.admin',
     'hr.attendance.view',
     'hr.attendance.record',
     // 'hr.attendance.reconcile' is deliberately NOT seeded here, the

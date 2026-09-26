@@ -563,7 +563,7 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 4611 |  |
+| `DECISIONS.md` | doc | 4803 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -660,7 +660,7 @@ All 394 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `22-attendance-shifts-leave.md` | doc | 230 |  |
+| `22-attendance-shifts-leave.md` | doc | 292 |  |
 | `30-field-attendance-biometric-geofencing.md` | doc | 289 |  |
 | `43-visual-attendance-heatmap.md` | doc | 132 |  |
 | `55-anti-proxy-verification-coverage-note.md` | doc | 56 |  |

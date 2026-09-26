@@ -136,6 +136,14 @@ model User {
   orgUnitGrantsHeld         OrgUnitGrant[]           @relation("OrgUnitGrantHolder")
   orgUnitGrantsIssued       OrgUnitGrant[]           @relation("OrgUnitGrantGranter")
   orgUnitGrantsCountersigned OrgUnitGrant[]          @relation("OrgUnitGrantCountersigner")
+  /// attendance.prisma (attendance-workforce/22-attendance-shifts-leave.md)
+  /// — this User's own punches and shifts, plus, for someone who reconciles
+  /// exceptions, the exceptions they resolved; three relation names for
+  /// three distinct roles on the same model, same idiom as the blocks above.
+  attendanceEvents          AttendanceEvent[]
+  shifts                    Shift[]
+  attendanceExceptions      AttendanceException[]    @relation("AttendanceExceptionUser")
+  attendanceExceptionsResolved AttendanceException[] @relation("AttendanceExceptionResolver")
   /// accounting.prisma (finance-accounting/147-fixed-asset-depreciation.md)
   /// — who set up a depreciation schedule, a real accounting-policy decision.
   assetDepreciationSchedulesCreated AssetDepreciationSchedule[]

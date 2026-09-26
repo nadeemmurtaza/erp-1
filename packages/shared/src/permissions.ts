@@ -409,6 +409,34 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    // attendance-workforce/22-attendance-shifts-leave.md.
+    key: 'hr.attendance.view',
+    label: 'View attendance events, shifts and exceptions',
+    category: 'Human Resources',
+    sensitivity: 'low',
+  },
+  {
+    // Recording a punch on someone else's behalf (MANAGER source) or
+    // importing paper sign-in sheets (IMPORT source) — never refusing the
+    // write itself, only who may perform it on another person's behalf.
+    key: 'hr.attendance.record',
+    label: 'Record a punch for someone else, or import paper sign-in sheets',
+    category: 'Human Resources',
+    sensitivity: 'medium',
+  },
+  {
+    // Deliberately seeded to no role by default — see this key's own note
+    // next to ROLE_PERMISSION_SEED.ADMIN below, and DECISIONS.md ADR-046.
+    // Toxic paired with payroll.manage (TOXIC_PERMISSION_PAIRS below): the
+    // doc's own text names 'hr.payroll.run', which does not exist in this
+    // codebase — running a pay run is gated by payroll.manage, so that is
+    // the key this pair actually names.
+    key: 'hr.attendance.reconcile',
+    label: 'Clear an attendance exception — link it to a shift or accept it as-is',
+    category: 'Human Resources',
+    sensitivity: 'medium',
+  },
+  {
     // hr-people-org/19-org-structure-offices-departments.md.
     key: 'org.structure.view',
     label: 'View the organization tree — offices, regions and departments',
@@ -765,8 +793,16 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'hr',
     label: 'Human resources',
-    description: 'Which physical equipment is issued to which employee, the people list, positions and the rank ladder.',
-    permissions: ['hr.assets.manage', 'hr.assets.writeoff', 'hr.people.view', 'hr.people.manage'],
+    description: 'Which physical equipment is issued to which employee, the people list, positions and the rank ladder, and attendance.',
+    permissions: [
+      'hr.assets.manage',
+      'hr.assets.writeoff',
+      'hr.people.view',
+      'hr.people.manage',
+      'hr.attendance.view',
+      'hr.attendance.record',
+      'hr.attendance.reconcile',
+    ],
   },
   {
     key: 'organization',
@@ -887,6 +923,15 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     // existing custom-roles screen — the access screen renders read-only
     // for ADMIN (org.access.view) until then, matching this document's own
     // "Solo: the grant screen never rendered" silhouette.
+    'hr.attendance.view',
+    'hr.attendance.record',
+    // 'hr.attendance.reconcile' is deliberately NOT seeded here, the
+    // identical reasoning as 'org.access.grant' just above: ADMIN already
+    // holds 'payroll.manage', and TOXIC_PERMISSION_PAIRS refuses the two
+    // together (attendance-workforce/22-attendance-shifts-leave.md's own
+    // "clearing your own exception and then paying it" — DECISIONS.md
+    // ADR-046). A deployment that needs to reconcile attendance creates a
+    // dedicated role holding hr.attendance.reconcile without payroll.manage.
     'analytics.view',
     'reports.view',
     'organization.view',
@@ -990,12 +1035,17 @@ export const ADMIN_LOCKED_PERMISSIONS: readonly PermissionKey[] = [
  * outright, the same "generalisation, not a one-off special case" RolesService
  * already applies to ADMIN_LOCKED_PERMISSIONS above.
  *
- * This is why `org.access.grant` is seeded to no role by default — see its
- * own note next to ROLE_PERMISSION_SEED.ADMIN below.
+ * This is why `org.access.grant` and `hr.attendance.reconcile` are each
+ * seeded to no role by default — see their own notes next to
+ * ROLE_PERMISSION_SEED.ADMIN below.
  */
 export const TOXIC_PERMISSION_PAIRS: readonly (readonly [PermissionKey, PermissionKey])[] = [
   ['org.structure.manage', 'org.access.grant'],
   ['hr.people.manage', 'org.access.grant'],
+  // attendance-workforce/22-attendance-shifts-leave.md: "clearing your own
+  // exception and then paying it." payroll.manage, not the doc's own
+  // 'hr.payroll.run' — see hr.attendance.reconcile's own catalogue note.
+  ['hr.attendance.reconcile', 'payroll.manage'],
 ];
 
 export const PERMISSION_EFFECTS = ['GRANT', 'REVOKE'] as const;

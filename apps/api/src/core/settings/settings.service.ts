@@ -86,4 +86,21 @@ export class SettingsService implements OnModuleInit {
   async getOrgAccessMaxGrantDays(): Promise<number> {
     return this.get<number>(SettingKey.OrgAccessMaxGrantDays);
   }
+
+  /** attendance-workforce/22-attendance-shifts-leave.md — see attendance-time.ts. */
+  async getAttendanceWorkingDayCutoverHour(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceWorkingDayCutoverHour);
+  }
+
+  async getAttendanceShiftGraceMinutes(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceShiftGraceMinutes);
+  }
+
+  async getAttendanceDuplicateWindowMinutes(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceDuplicateWindowMinutes);
+  }
+
+  async getAttendanceMaxSelfAdjustMinutes(): Promise<number> {
+    return this.get<number>(SettingKey.AttendanceMaxSelfAdjustMinutes);
+  }
 }

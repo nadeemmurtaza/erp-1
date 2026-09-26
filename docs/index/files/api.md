@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 911 tracked files in `apps/api`, by directory.
+All 926 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,17 +31,18 @@ All 911 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3100 |  |
 
-### `apps/api/prisma/schema` (46)
+### `apps/api/prisma/schema` (47)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 285 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
 | `approvals.prisma` | prisma schema | 63 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
+| `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 657 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 665 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
@@ -57,7 +58,7 @@ All 911 tracked files in `apps/api`, by directory.
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
 | `orders.prisma` | prisma schema | 361 | Orders and shipments. |
-| `org-structure.prisma` | prisma schema | 127 | The org tree: offices, regions, departments — whatever shape a client's |
+| `org-structure.prisma` | prisma schema | 132 | The org tree: offices, regions, departments — whatever shape a client's |
 | `organization.prisma` | prisma schema | 188 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 55 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
@@ -592,6 +593,12 @@ All 911 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 38 |  |
 
+### `apps/api/prisma/schema/migrations/20260926100000_add_attendance` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 148 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -909,9 +916,9 @@ All 911 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 450 |  |
+| `settings.defaults.ts` | module | 486 |  |
 | `settings.module.ts` | nest module | 10 |  |
-| `settings.service.ts` | service | 90 |  |
+| `settings.service.ts` | service | 107 |  |
 
 ### `apps/api/src/core/storage` (8)
 
@@ -939,8 +946,8 @@ All 911 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 108 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 233 |  |
+| `module-packs.ts` | module | 109 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 239 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1019,6 +1026,29 @@ All 911 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `analytics.dto.ts` | dto | 10 |  |
 | `cards.dto.ts` | dto | 44 |  |
+
+### `apps/api/src/modules/attendance` (11)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `attendance-device-punch.controller.ts` | controller | 50 |  |
+| `attendance-device.controller.ts` | controller | 57 |  |
+| `attendance-device.service.spec.ts` | unit test | 146 |  |
+| `attendance-device.service.ts` | service | 116 |  |
+| `attendance-partition.cron.ts` | scheduled job | 57 |  |
+| `attendance-time.spec.ts` | unit test | 80 |  |
+| `attendance-time.ts` | module | 50 |  |
+| `attendance.controller.ts` | controller | 130 |  |
+| `attendance.module.ts` | nest module | 25 |  |
+| `attendance.service.spec.ts` | unit test | 324 |  |
+| `attendance.service.ts` | service | 507 |  |
+
+### `apps/api/src/modules/attendance/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `attendance-device.dto.ts` | dto | 34 |  |
+| `attendance.dto.ts` | dto | 83 |  |
 
 ### `apps/api/src/modules/bom` (18)
 

@@ -7,6 +7,7 @@ import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { CollectionsModule } from './collections/collections.module';
 import { ContentModule } from './content/content.module';
+import { AttendanceModule } from './attendance/attendance.module';
 import { CrmModule } from './crm/crm.module';
 import { FinanceModule } from './finance/finance.module';
 import { FulfilmentModule } from './fulfilment/fulfilment.module';
@@ -122,6 +123,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // dependency on any other optional module.
   { name: 'hr', module: HrModule },
   { name: 'orgstructure', module: OrgStructureModule },
+  // attendance-workforce/22-attendance-shifts-leave.md — reads hr's
+  // Posting/Rank/Position and payroll's LeaveRequest directly by Prisma
+  // query, no dependency on either module being on (see AttendanceService's
+  // own header comment).
+  { name: 'attendance', module: AttendanceModule },
   // Same allowlist tier as payments/finance (not offByDefault): checkout
   // couples to both directly, in the same transaction as order creation
   // (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE_COUPLINGS)

@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2100,
-    "lines": 322343,
-    "routes": 709,
-    "controllers": 128,
-    "models": 254,
-    "enums": 118,
-    "migrations": 91,
+    "files": 2117,
+    "lines": 325057,
+    "routes": 726,
+    "controllers": 131,
+    "models": 258,
+    "enums": 122,
+    "migrations": 92,
     "events": 63,
-    "permissions": 93,
-    "screens": 242,
-    "crons": 22,
-    "specs": 268,
+    "permissions": 96,
+    "screens": 244,
+    "crons": 23,
+    "specs": 271,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 57,
       "lines": 29964,
-      "bytes": 1177439,
+      "bytes": 1177472,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 911,
-      "lines": 128761,
-      "bytes": 4944432,
+      "files": 926,
+      "lines": 130839,
+      "bytes": 5029827,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 387,
-      "lines": 62970,
-      "bytes": 2271804,
+      "files": 389,
+      "lines": 63302,
+      "bytes": 2283339,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 64366,
-      "bytes": 3827359,
+      "lines": 64620,
+      "bytes": 3843281,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8058,
-      "bytes": 286446,
+      "lines": 8108,
+      "bytes": 288698,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -146,6 +146,29 @@
       ],
       "routes": 26,
       "page": "docs/index/modules/analytics.md"
+    },
+    {
+      "name": "attendance",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/attendance/attendance-device-punch.controller.ts",
+        "apps/api/src/modules/attendance/attendance-device.controller.ts",
+        "apps/api/src/modules/attendance/attendance-device.service.spec.ts",
+        "apps/api/src/modules/attendance/attendance-device.service.ts",
+        "apps/api/src/modules/attendance/attendance-partition.cron.ts",
+        "apps/api/src/modules/attendance/attendance-time.spec.ts",
+        "apps/api/src/modules/attendance/attendance-time.ts",
+        "apps/api/src/modules/attendance/attendance.controller.ts",
+        "apps/api/src/modules/attendance/attendance.module.ts",
+        "apps/api/src/modules/attendance/attendance.service.spec.ts",
+        "apps/api/src/modules/attendance/attendance.service.ts",
+        "apps/api/src/modules/attendance/dto/attendance-device.dto.ts",
+        "apps/api/src/modules/attendance/dto/attendance.dto.ts"
+      ],
+      "routes": 17,
+      "page": "docs/index/modules/attendance.md"
     },
     {
       "name": "bom",
@@ -2235,6 +2258,258 @@
       "public": false,
       "authOnly": false,
       "summary": "Revoke anyone's API key — final; its next request is refused"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/adjust",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "adjust",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 103,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Correct an event — never mutates the original row"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/adjust/preview",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "previewAdjust",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 93,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Which refusals an adjustment would hit, without writing anything"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/devices",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 21,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List enrolled attendance devices"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/devices",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "register",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 33,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Enrol a device at an org unit"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/devices/:id",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "findOne",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 27,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Get a device"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/attendance/devices/:id",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "update",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 39,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Update a device"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/devices/:id/rotate-device-key",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "rotateDeviceKey",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 53,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue a fresh device credential — shown once, never retrievable again"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/devices/:id/suspend",
+      "module": "attendance",
+      "controller": "AttendanceDeviceController",
+      "handler": "suspend",
+      "file": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "line": 45,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Suspend a device — never deletes it, its punch history stays put"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/events",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "listOwnEvents",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 62,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Your own attendance events in a date range"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/events/:userId",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "listEvents",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 69,
+      "access": "hr.attendance.view | hr.attendance.reconcile",
+      "permissions": [
+        "hr.attendance.view",
+        "hr.attendance.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Someone else's attendance events in a date range"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/exceptions",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "listExceptions",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 76,
+      "access": "hr.attendance.view | hr.attendance.reconcile",
+      "permissions": [
+        "hr.attendance.view",
+        "hr.attendance.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Attendance exceptions — the reconcile queue"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/exceptions/:id/resolve",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "resolve",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 86,
+      "access": "hr.attendance.reconcile",
+      "permissions": [
+        "hr.attendance.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Clear an exception"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/punch",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "punch",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 26,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Punch yourself in/out — never refused"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/punch/manager",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "punchManager",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 44,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Record a punch on someone else’s behalf — never refused"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/attendance/shifts",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "listShifts",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 113,
+      "access": "hr.attendance.view | hr.attendance.record | hr.attendance.reconcile",
+      "permissions": [
+        "hr.attendance.view",
+        "hr.attendance.record",
+        "hr.attendance.reconcile"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Shifts for one person"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/attendance/shifts",
+      "module": "attendance",
+      "controller": "AttendanceController",
+      "handler": "createShift",
+      "file": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "line": 120,
+      "access": "hr.attendance.record",
+      "permissions": [
+        "hr.attendance.record"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a planned shift"
     },
     {
       "method": "GET",
@@ -10608,6 +10883,20 @@
     },
     {
       "method": "POST",
+      "path": "/attendance/punch",
+      "module": "attendance",
+      "controller": "AttendanceDevicePunchController",
+      "handler": "punch",
+      "file": "apps/api/src/modules/attendance/attendance-device-punch.controller.ts",
+      "line": 32,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Record a punch from an enrolled device — never refused"
+    },
+    {
+      "method": "POST",
       "path": "/auth/change-password",
       "module": "core/auth",
       "controller": "AuthController",
@@ -12587,7 +12876,8 @@
       ],
       "uiSites": 11,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12611,7 +12901,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12629,7 +12920,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12651,8 +12943,10 @@
         "POST /organization/replication/resync"
       ],
       "uiSites": 3,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "accounting.view",
@@ -12672,8 +12966,10 @@
         "GET /admin/accounting/reports/trial-balance"
       ],
       "uiSites": 2,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "crm.manage",
@@ -12715,7 +13011,8 @@
       ],
       "uiSites": 15,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12740,7 +13037,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12758,8 +13056,10 @@
         "POST /admin/pos/terminals/:id/suspend"
       ],
       "uiSites": 0,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "pos.operate",
@@ -12781,7 +13081,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12794,8 +13095,10 @@
         "POST /admin/orders/:orderId/instalments/cancel"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "pos.instalments.default",
@@ -12806,8 +13109,10 @@
         "POST /admin/orders/:orderId/instalments/default"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "payments.approve",
@@ -12821,7 +13126,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12838,7 +13144,8 @@
       "uiSites": 8,
       "roles": [
         "TAILOR",
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12853,7 +13160,8 @@
       "uiSites": 0,
       "roles": [
         "TAILOR",
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12877,7 +13185,8 @@
       "routes": [],
       "uiSites": 0,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12891,7 +13200,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12909,7 +13219,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12929,7 +13240,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12951,7 +13263,8 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -12965,7 +13278,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13020,7 +13334,8 @@
       ],
       "uiSites": 18,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13045,7 +13360,8 @@
       ],
       "uiSites": 12,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13059,8 +13375,10 @@
         "GET /admin/reports/export/stock-valuation"
       ],
       "uiSites": 15,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "inventory.count",
@@ -13083,7 +13401,8 @@
       ],
       "uiSites": 4,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13101,7 +13420,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13119,7 +13439,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13140,7 +13461,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13171,7 +13493,8 @@
       ],
       "uiSites": 10,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13187,7 +13510,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13202,8 +13526,10 @@
         "POST /admin/requisitions/:id/reject"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "inventory.spot_checks.manage",
@@ -13216,8 +13542,10 @@
         "PATCH /admin/inventory/spot-check-policies/:id"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "parties.manage",
@@ -13231,7 +13559,8 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13278,8 +13607,10 @@
         "GET /managed-services/usage"
       ],
       "uiSites": 4,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "settings.sso.manage",
@@ -13297,8 +13628,10 @@
         "GET /admin/sso/roles"
       ],
       "uiSites": 3,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "tax.manage",
@@ -13316,8 +13649,10 @@
         "PUT /admin/tax/settings"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.view",
@@ -13353,7 +13688,8 @@
       ],
       "uiSites": 23,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13376,8 +13712,10 @@
         "POST /admin/merchant-payables/organizations/:organizationId/schedule-payout"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.wallets.adjust",
@@ -13391,7 +13729,8 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13405,8 +13744,10 @@
         "POST /admin/wallet/adjustment-requests/:requestId/decide"
       ],
       "uiSites": 0,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.merchant-payables.dispute",
@@ -13418,8 +13759,10 @@
         "POST /admin/merchant-payables/:id/resolve-dispute"
       ],
       "uiSites": 0,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.credit-notes.create",
@@ -13433,7 +13776,8 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13447,8 +13791,10 @@
         "POST /admin/credit-notes/:id/void"
       ],
       "uiSites": 0,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.debit-notes.manage",
@@ -13462,7 +13808,8 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13476,8 +13823,10 @@
         "PUT /admin/dunning/policy"
       ],
       "uiSites": 0,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.assets.depreciate",
@@ -13489,8 +13838,10 @@
         "POST /admin/accounting/assets/:assetId/depreciation-schedule"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.assets.dispose",
@@ -13501,8 +13852,10 @@
         "POST /admin/accounting/assets/:assetId/dispose"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.settlement.view",
@@ -13515,8 +13868,10 @@
         "GET /admin/settlements/providers"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.settlement.reconcile",
@@ -13533,8 +13888,10 @@
         "GET /admin/settlements/providers"
       ],
       "uiSites": 3,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "finance.settlement.approve_writeoff",
@@ -13545,8 +13902,10 @@
         "POST /admin/settlements/batches/:id/approve-writeoff"
       ],
       "uiSites": 2,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "fulfilment.view",
@@ -13569,7 +13928,8 @@
       ],
       "uiSites": 5,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13615,7 +13975,8 @@
       ],
       "uiSites": 6,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13638,7 +13999,8 @@
       ],
       "uiSites": 10,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13659,8 +14021,10 @@
         "POST /admin/bom/recipes/:id/seed-cost-price"
       ],
       "uiSites": 4,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "bom.produce",
@@ -13672,7 +14036,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13811,6 +14176,55 @@
       "inSeed": true
     },
     {
+      "key": "hr.attendance.view",
+      "label": "View attendance events, shifts and exceptions",
+      "category": "Human Resources",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/attendance/events/:userId",
+        "GET /admin/attendance/exceptions",
+        "GET /admin/attendance/shifts"
+      ],
+      "uiSites": 1,
+      "roles": [],
+      "inSeed": false
+    },
+    {
+      "key": "hr.attendance.record",
+      "label": "Record a punch for someone else, or import paper sign-in sheets",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/attendance/devices",
+        "POST /admin/attendance/devices",
+        "GET /admin/attendance/devices/:id",
+        "PATCH /admin/attendance/devices/:id",
+        "POST /admin/attendance/devices/:id/rotate-device-key",
+        "POST /admin/attendance/devices/:id/suspend",
+        "POST /admin/attendance/punch/manager",
+        "GET /admin/attendance/shifts",
+        "POST /admin/attendance/shifts"
+      ],
+      "uiSites": 0,
+      "roles": [],
+      "inSeed": false
+    },
+    {
+      "key": "hr.attendance.reconcile",
+      "label": "Clear an attendance exception — link it to a shift or accept it as-is",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/attendance/events/:userId",
+        "GET /admin/attendance/exceptions",
+        "POST /admin/attendance/exceptions/:id/resolve",
+        "GET /admin/attendance/shifts"
+      ],
+      "uiSites": 2,
+      "roles": [],
+      "inSeed": false
+    },
+    {
       "key": "org.structure.view",
       "label": "View the organization tree — offices, regions and departments",
       "category": "Organization",
@@ -13891,8 +14305,10 @@
         "PUT /admin/marketing/settings"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "roles.manage_permissions",
@@ -13906,8 +14322,10 @@
         "PATCH /admin/roles/:id"
       ],
       "uiSites": 0,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "audit.view",
@@ -13918,8 +14336,10 @@
         "GET /admin/settings/audit-log"
       ],
       "uiSites": 0,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "users.manage",
@@ -13939,8 +14359,10 @@
         "POST /admin/users/:id/roles/:roleId"
       ],
       "uiSites": 4,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "accounting.manage_periods",
@@ -13956,8 +14378,10 @@
         "POST /admin/accounting/fiscal-years/:id/close"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "promotions.view",
@@ -13971,7 +14395,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -13992,7 +14417,8 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14008,7 +14434,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14023,8 +14450,10 @@
         "PATCH /admin/gift-cards/:id/cancel"
       ],
       "uiSites": 0,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "content.view",
@@ -14041,7 +14470,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14072,7 +14502,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14087,7 +14518,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14108,7 +14540,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14123,7 +14556,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14140,7 +14574,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14155,7 +14590,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14173,8 +14609,10 @@
         "POST /admin/campaigns/:id/schedule"
       ],
       "uiSites": 1,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "onsitemessages.view",
@@ -14189,7 +14627,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14210,7 +14649,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14225,7 +14665,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14239,7 +14680,8 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14254,8 +14696,10 @@
         "PATCH /admin/loyalty/tiers/:id"
       ],
       "uiSites": 0,
-      "roles": [],
-      "inSeed": false
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     },
     {
       "key": "ai.view",
@@ -14268,7 +14712,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14289,7 +14734,8 @@
       ],
       "uiSites": 3,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14311,7 +14757,8 @@
       ],
       "uiSites": 3,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     },
@@ -14327,7 +14774,8 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF"
+        "STAFF",
+        "ADMIN"
       ],
       "inSeed": true
     }
@@ -15158,7 +15606,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 314,
+      "line": 322,
       "doc": "",
       "fields": [
         {
@@ -15417,7 +15865,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 637,
+      "line": 645,
       "doc": "",
       "fields": [
         {
@@ -15506,7 +15954,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 592,
+      "line": 600,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -15567,7 +16015,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 264,
+      "line": 272,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -16214,9 +16662,322 @@
       ]
     },
     {
+      "name": "AttendanceDevice",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 78,
+      "doc": "A biometric terminal or kiosk that punches on behalf of employees at one unit.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deviceKeyHash",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "AttendanceDeviceStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lastSeenAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "events",
+          "type": "AttendanceEvent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([orgUnitId])",
+        "@@index([status])"
+      ]
+    },
+    {
+      "name": "AttendanceEvent",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 102,
+      "doc": "Raw, immutable.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "AttendanceKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "occurredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "timezone",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "source",
+          "type": "AttendanceSource",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "deviceId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "correctsId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "externalRef",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "device",
+          "type": "AttendanceDevice?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "exceptions",
+          "type": "AttendanceException[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@id([id, occurredAt])",
+        "@@unique([userId, source, externalRef, occurredAt])",
+        "@@index([userId, occurredAt])",
+        "@@index([orgUnitId, occurredAt])",
+        "@@index([id])"
+      ]
+    },
+    {
+      "name": "AttendanceException",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 178,
+      "doc": "A punch that did not fit.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "eventId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "eventOccurredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "AttendanceExceptionReason",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "note",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "event",
+          "type": "AttendanceEvent",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "resolvedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([resolvedAt])",
+        "@@index([userId])",
+        "@@index([orgUnitId])"
+      ]
+    },
+    {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 404,
+      "line": 412,
       "doc": "",
       "fields": [
         {
@@ -19073,7 +19834,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 572,
+      "line": 580,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -19630,7 +20391,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 359,
+      "line": 367,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -19816,7 +20577,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 220,
+      "line": 228,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -25461,6 +26222,27 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "attendanceDevices",
+          "type": "AttendanceDevice[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attendanceEvents",
+          "type": "AttendanceEvent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shifts",
+          "type": "Shift[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -25473,7 +26255,7 @@
     {
       "name": "OrgUnitGrant",
       "file": "apps/api/prisma/schema/org-structure.prisma",
-      "line": 90,
+      "line": 95,
       "doc": "access-control-identity/21-access-over-the-org-tree.md — an explicit, time-boxed grant of authority over a subtree.",
       "fields": [
         {
@@ -25641,7 +26423,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 545,
+      "line": 553,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -26028,7 +26810,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 203,
+      "line": 211,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -26583,7 +27365,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 425,
+      "line": 433,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -30733,7 +31515,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 182,
+      "line": 190,
       "doc": "",
       "fields": [
         {
@@ -31860,7 +32642,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 491,
+      "line": 499,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -31918,7 +32700,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 505,
+      "line": 513,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -31972,7 +32754,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 441,
+      "line": 449,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -32199,7 +32981,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 337,
+      "line": 345,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -32439,6 +33221,74 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "Shift",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 148,
+      "doc": "A planned shift.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startsAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endsAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "timezone",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, startsAt])",
+        "@@index([orgUnitId, startsAt])"
+      ]
     },
     {
       "name": "Shipment",
@@ -36790,6 +37640,34 @@
           "relation": true
         },
         {
+          "name": "attendanceEvents",
+          "type": "AttendanceEvent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shifts",
+          "type": "Shift[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attendanceExceptions",
+          "type": "AttendanceException[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "attendanceExceptionsResolved",
+          "type": "AttendanceException[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "assetDepreciationSchedulesCreated",
           "type": "AssetDepreciationSchedule[]",
           "id": false,
@@ -36925,7 +37803,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 462,
+      "line": 470,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -36986,7 +37864,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 520,
+      "line": 528,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -37900,7 +38778,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 631,
+      "line": 639,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -37910,7 +38788,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 610,
+      "line": 618,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -37954,7 +38832,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 245,
+      "line": 253,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -37964,7 +38842,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 238,
+      "line": 246,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -38009,6 +38887,52 @@
         "ASSIGNED",
         "RETIRED",
         "LOST"
+      ]
+    },
+    {
+      "name": "AttendanceDeviceStatus",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 68,
+      "values": [
+        "PENDING",
+        "ACTIVE",
+        "SUSPENDED"
+      ]
+    },
+    {
+      "name": "AttendanceExceptionReason",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 163,
+      "values": [
+        "NO_MATCHING_SHIFT",
+        "OUTSIDE_ROSTER",
+        "WRONG_UNIT",
+        "WHILE_ON_LEAVE",
+        "DUPLICATE_SUSPECTED",
+        "MISSING_COUNTERPART"
+      ]
+    },
+    {
+      "name": "AttendanceKind",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 53,
+      "values": [
+        "IN",
+        "OUT",
+        "BREAK_START",
+        "BREAK_END",
+        "ADJUSTMENT"
+      ]
+    },
+    {
+      "name": "AttendanceSource",
+      "file": "apps/api/prisma/schema/attendance.prisma",
+      "line": 61,
+      "values": [
+        "DEVICE",
+        "SELF",
+        "MANAGER",
+        "IMPORT"
       ]
     },
     {
@@ -38147,7 +39071,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 560,
+      "line": 568,
       "values": [
         "IOS",
         "ANDROID",
@@ -38192,7 +39116,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 348,
+      "line": 356,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -38246,7 +39170,7 @@
     {
       "name": "GrantMode",
       "file": "apps/api/prisma/schema/org-structure.prisma",
-      "line": 123,
+      "line": 128,
       "values": [
         "READ",
         "ACTING"
@@ -38551,7 +39475,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 534,
+      "line": 542,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -38606,7 +39530,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 453,
+      "line": 461,
       "values": [
         "GRANT",
         "REVOKE"
@@ -40852,6 +41776,27 @@
       "tables": [
         "OrgUnitGrant"
       ]
+    },
+    {
+      "folder": "20260926100000_add_attendance",
+      "file": "apps/api/prisma/schema/migrations/20260926100000_add_attendance/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_attendance",
+      "statements": 44,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "AttendanceDevice",
+        "AttendanceEvent",
+        "AttendanceEvent_default",
+        "AttendanceException",
+        "Shift"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -41795,6 +42740,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/attendance",
+      "file": "apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/b/[brandId]",
       "file": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "client": true,
@@ -42515,6 +43469,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/my-attendance",
+      "file": "apps/web/src/app/(admin)/admin/(app)/my-attendance/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/o",
       "file": "apps/web/src/app/(admin)/admin/(app)/o/page.tsx",
       "client": true,
@@ -43100,6 +44063,13 @@
       "line": 190,
       "handler": "sendDemandAlerts",
       "doc": "--- 3."
+    },
+    {
+      "schedule": "0 5 1 * *",
+      "file": "apps/api/src/modules/attendance/attendance-partition.cron.ts",
+      "line": 31,
+      "handler": "ensureFuturePartitions",
+      "doc": ""
     },
     {
       "schedule": "EVERY_DAY_AT_",
@@ -44445,6 +45415,43 @@
         "sendSupplierDigests",
         "sendSupplierScorecards",
         "sendDemandAlerts"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/attendance/attendance-device.service.spec.ts",
+      "module": "attendance",
+      "kind": "unit test",
+      "cases": 13,
+      "describes": [
+        "AttendanceDeviceService",
+        "register",
+        "findOne / update / suspend — the not-found guard",
+        "update",
+        "rotateDeviceKey",
+        "verifyDeviceKey"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/attendance/attendance-time.spec.ts",
+      "module": "attendance",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "workingDayOf",
+        "workedMinutesBetween"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/attendance/attendance.service.spec.ts",
+      "module": "attendance",
+      "kind": "unit test",
+      "cases": 22,
+      "describes": [
+        "AttendanceService",
+        "record — the unconditional path",
+        "reconcile",
+        "adjust / previewAdjust — never mutates the original row",
+        "minutesBetween"
       ]
     },
     {
@@ -46946,7 +47953,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5357,
+      "bytes": 5368,
       "doc": "",
       "symbols": []
     },
@@ -46955,7 +47962,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 174,
-      "bytes": 8764,
+      "bytes": 8775,
       "doc": "",
       "symbols": []
     },
@@ -46964,7 +47971,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5802,
+      "bytes": 5813,
       "doc": "",
       "symbols": []
     },
@@ -47272,6 +48279,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/attendance.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 198,
+      "bytes": 8387,
+      "doc": "Attendance, shifts and leave —",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/bom.prisma",
       "area": "api",
       "kind": "prisma schema",
@@ -47311,8 +48327,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 657,
-      "bytes": 27280,
+      "lines": 665,
+      "bytes": 27853,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -48181,6 +49197,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926100000_add_attendance/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 148,
+      "bytes": 7289,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -48220,8 +49245,8 @@
       "path": "apps/api/prisma/schema/org-structure.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 127,
-      "bytes": 5604,
+      "lines": 132,
+      "bytes": 5825,
       "doc": "The org tree: offices, regions, departments — whatever shape a client's",
       "symbols": []
     },
@@ -51874,8 +52899,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 450,
-      "bytes": 25292,
+      "lines": 486,
+      "bytes": 27212,
       "doc": "",
       "symbols": [
         {
@@ -51911,12 +52936,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 287
+          "line": 314
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 289
+          "line": 316
         }
       ]
     },
@@ -51939,8 +52964,8 @@
       "path": "apps/api/src/core/settings/settings.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 90,
-      "bytes": 3292,
+      "lines": 107,
+      "bytes": 3940,
       "doc": "",
       "symbols": [
         {
@@ -53112,6 +54137,258 @@
           "name": "SupplyChainDigestCron",
           "kind": "class",
           "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-device-punch.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 50,
+      "bytes": 1956,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceDevicePunchController",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-device.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 57,
+      "bytes": 2128,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceDeviceController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-device.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 146,
+      "bytes": 6054,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-device.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 116,
+      "bytes": 4917,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceDeviceService",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-partition.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 57,
+      "bytes": 2572,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendancePartitionCron",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-time.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 3838,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance-time.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 50,
+      "bytes": 2561,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "workingDayOf",
+          "kind": "function",
+          "line": 32
+        },
+        {
+          "name": "workedMinutesBetween",
+          "kind": "function",
+          "line": 47
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 130,
+      "bytes": 5072,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceController",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 25,
+      "bytes": 1357,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendanceModule",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 324,
+      "bytes": 14726,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/attendance/attendance.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 507,
+      "bytes": 18848,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RecordPunchInput",
+          "kind": "interface",
+          "line": 9
+        },
+        {
+          "name": "AttendanceEventView",
+          "kind": "interface",
+          "line": 20
+        },
+        {
+          "name": "AttendanceExceptionView",
+          "kind": "interface",
+          "line": 32
+        },
+        {
+          "name": "ShiftView",
+          "kind": "type",
+          "line": 44
+        },
+        {
+          "name": "RecordPunchResult",
+          "kind": "interface",
+          "line": 46
+        },
+        {
+          "name": "AdjustRefusalCode",
+          "kind": "type",
+          "line": 52
+        },
+        {
+          "name": "AdjustRefusal",
+          "kind": "interface",
+          "line": 54
+        },
+        {
+          "name": "AdjustInput",
+          "kind": "interface",
+          "line": 59
+        },
+        {
+          "name": "PreviewAdjustResult",
+          "kind": "interface",
+          "line": 68
+        },
+        {
+          "name": "AttendanceService",
+          "kind": "class",
+          "line": 114
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/dto/attendance-device.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 34,
+      "bytes": 586,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RegisterAttendanceDeviceDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "UpdateAttendanceDeviceDto",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/attendance/dto/attendance.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 83,
+      "bytes": 1354,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PunchDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "ManagerPunchDto",
+          "kind": "class",
+          "line": 27
+        },
+        {
+          "name": "ResolveExceptionDto",
+          "kind": "class",
+          "line": 33
+        },
+        {
+          "name": "AdjustDto",
+          "kind": "class",
+          "line": 40
+        },
+        {
+          "name": "CreateShiftDto",
+          "kind": "class",
+          "line": 64
         }
       ]
     },
@@ -56992,8 +58269,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 108,
-      "bytes": 3502,
+      "lines": 109,
+      "bytes": 3524,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -57012,24 +58289,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 233,
-      "bytes": 12879,
+      "lines": 239,
+      "bytes": 13245,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 50
+          "line": 51
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 81
+          "line": 82
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 209
+          "line": 215
         }
       ]
     },
@@ -66495,6 +67772,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 170,
+      "bytes": 5928,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AttendancePage",
+          "kind": "default",
+          "line": 42
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -67691,6 +68983,21 @@
           "name": "MyActionsPage",
           "kind": "default",
           "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/my-attendance/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 138,
+      "bytes": 4646,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MyAttendancePage",
+          "kind": "default",
+          "line": 30
         }
       ]
     },
@@ -70514,8 +71821,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1001,
-      "bytes": 27386,
+      "lines": 1020,
+      "bytes": 28032,
       "doc": "",
       "symbols": [
         {
@@ -70546,12 +71853,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 971
+          "line": 990
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 986
+          "line": 1005
         }
       ]
     },
@@ -71812,8 +73119,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 257,
-      "bytes": 11683,
+      "lines": 262,
+      "bytes": 11998,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -75771,8 +77078,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 4611,
-      "bytes": 266438,
+      "lines": 4803,
+      "bytes": 278304,
       "doc": "",
       "symbols": []
     },
@@ -76374,8 +77681,8 @@
       "path": "docs/implementation/attendance-workforce/22-attendance-shifts-leave.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 230,
-      "bytes": 11040,
+      "lines": 292,
+      "bytes": 15096,
       "doc": "",
       "symbols": []
     },
@@ -78931,8 +80238,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1009,
-      "bytes": 32332,
+      "lines": 1059,
+      "bytes": 34584,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -78953,52 +80260,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 597
+          "line": 625
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 599
+          "line": 627
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 609
+          "line": 637
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 616
+          "line": 644
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 804
+          "line": 840
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 978
+          "line": 1023
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 996
+          "line": 1042
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1001
+          "line": 1051
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1002
+          "line": 1052
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1005
+          "line": 1055
         }
       ]
     },

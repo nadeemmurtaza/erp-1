@@ -282,6 +282,33 @@ export const SettingKey = {
    * Setting." See DECISIONS.md ADR-045.
    */
   OrgAccessMaxGrantDays: 'org_access.max_grant_days',
+  /**
+   * attendance-workforce/22-attendance-shifts-leave.md — "the working day is
+   * not a date." The local hour at which a new working day begins; an
+   * instant before this hour belongs to the PREVIOUS calendar day's working
+   * day, so a night shift ending after midnight resolves to the same
+   * working day as the clock-in before it. See `attendance-time.ts`.
+   */
+  AttendanceWorkingDayCutoverHour: 'attendance.working_day_cutover_hour',
+  /**
+   * How far a punch may fall outside its matching Shift's own start/end
+   * before it is classified OUTSIDE_ROSTER rather than linked cleanly — a
+   * few minutes early or late is normal, not an exception.
+   */
+  AttendanceShiftGraceMinutes: 'attendance.shift_grace_minutes',
+  /**
+   * Two punches of the same kind for the same person inside this many
+   * minutes are DUPLICATE_SUSPECTED — a device double-scan or a network
+   * retry, not two genuine punches.
+   */
+  AttendanceDuplicateWindowMinutes: 'attendance.duplicate_window_minutes',
+  /**
+   * An ADJUSTMENT that changes worked time by more than this many minutes
+   * needs a second approver who outranks the employee (this document's own
+   * "threshold nobody approves alone" lens) — adjusting your own attendance
+   * always does, regardless of amount.
+   */
+  AttendanceMaxSelfAdjustMinutes: 'attendance.max_self_adjust_minutes',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -404,6 +431,15 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.FinanceSettlementWriteoffApprovalThresholdMinor]: toMinor(10_000),
   /** 90 days — long enough to cover a real leave or a seasonal audit, short enough that a grant nobody renewed is gone within a quarter. */
   [SettingKey.OrgAccessMaxGrantDays]: 90,
+
+  /** 6am — after most night shifts have ended, before most day shifts have started. */
+  [SettingKey.AttendanceWorkingDayCutoverHour]: 6,
+  /** 15 minutes either side of a shift's own start/end. */
+  [SettingKey.AttendanceShiftGraceMinutes]: 15,
+  /** 2 minutes — long enough to catch a double-scan, short enough never to merge two real punches. */
+  [SettingKey.AttendanceDuplicateWindowMinutes]: 2,
+  /** 30 minutes — a small correction is routine; anything larger needs a second signature. */
+  [SettingKey.AttendanceMaxSelfAdjustMinutes]: 30,
 
   [SettingKey.MarketingAutomationEnabled]: false,
   [SettingKey.MarketingAbandonedCartFirstTouchHours]: 1,

@@ -84,6 +84,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `SuspiciousTrafficPage` | default | :16 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/attendance`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `AttendancePage` | default | :42 | attendance-workforce/22-attendance-shifts-leave.md WO-22.5 — the queue that makes "a punch is never… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
 | File | Symbol | Kind | Line | Doc |
@@ -541,6 +547,12 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `MyActionsPage` | default | :15 | The manager action hub's full screen (admin-platform/44-manager-action-hub.md WO-44.4) — the overfl… |
+
+### `apps/web/src/app/(admin)/admin/(app)/my-attendance`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MyAttendancePage` | default | :30 | attendance-workforce/22-attendance-shifts-leave.md — "Solo: self punch on one screen, no devices, n… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/o`
 
@@ -1229,8 +1241,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :971 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :986 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :990 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1005 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

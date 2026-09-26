@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **709** endpoints across **128** controllers, with the access rule that actually guards each one.
+All **726** endpoints across **131** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -24,10 +24,11 @@ never authorization.
 
 - **Undecorated routes: 0** — none.
 
-- **Public routes: 74** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 75** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
+| POST | `/attendance/punch` | `AttendanceDevicePunchController.punch` |
 | POST | `/auth/forgot-password` | `AuthController.forgotPassword` |
 | POST | `/auth/login` | `AuthController.login` |
 | POST | `/auth/logout` | `AuthController.logout` |
@@ -169,6 +170,28 @@ never authorization.
 | GET | `/admin/analytics/stitching` | `analytics.view` | `AnalyticsController.stitching` | Which garments and style options drive the stitching business |
 | GET | `/admin/analytics/visitors` | `analytics.view` | `AnalyticsController.visitors` | Visitor counts, view-to-order funnel and traffic sources |
 | GET | `/admin/analytics/workshop/output` | `analytics.view` | `AnalyticsController.workshopOutput` | Workshop throughput — started/completed per day, time in each stage, output by… |
+
+### [`attendance`](../modules/attendance.md) (17)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/admin/attendance/adjust` | signed-in | `AttendanceController.adjust` | Correct an event — never mutates the original row |
+| POST | `/admin/attendance/adjust/preview` | signed-in | `AttendanceController.previewAdjust` | Which refusals an adjustment would hit, without writing anything |
+| GET | `/admin/attendance/devices` | `hr.attendance.record` | `AttendanceDeviceController.findAll` | List enrolled attendance devices |
+| POST | `/admin/attendance/devices` | `hr.attendance.record` | `AttendanceDeviceController.register` | Enrol a device at an org unit |
+| GET | `/admin/attendance/devices/:id` | `hr.attendance.record` | `AttendanceDeviceController.findOne` | Get a device |
+| PATCH | `/admin/attendance/devices/:id` | `hr.attendance.record` | `AttendanceDeviceController.update` | Update a device |
+| POST | `/admin/attendance/devices/:id/rotate-device-key` | `hr.attendance.record` | `AttendanceDeviceController.rotateDeviceKey` | Issue a fresh device credential — shown once, never retrievable again |
+| POST | `/admin/attendance/devices/:id/suspend` | `hr.attendance.record` | `AttendanceDeviceController.suspend` | Suspend a device — never deletes it, its punch history stays put |
+| GET | `/admin/attendance/events` | signed-in | `AttendanceController.listOwnEvents` | Your own attendance events in a date range |
+| GET | `/admin/attendance/events/:userId` | `hr.attendance.view` `hr.attendance.reconcile` | `AttendanceController.listEvents` | Someone else's attendance events in a date range |
+| GET | `/admin/attendance/exceptions` | `hr.attendance.view` `hr.attendance.reconcile` | `AttendanceController.listExceptions` | Attendance exceptions — the reconcile queue |
+| POST | `/admin/attendance/exceptions/:id/resolve` | `hr.attendance.reconcile` | `AttendanceController.resolve` | Clear an exception |
+| POST | `/admin/attendance/punch` | signed-in | `AttendanceController.punch` | Punch yourself in/out — never refused |
+| POST | `/admin/attendance/punch/manager` | `hr.attendance.record` | `AttendanceController.punchManager` | Record a punch on someone else’s behalf — never refused |
+| GET | `/admin/attendance/shifts` | `hr.attendance.view` `hr.attendance.record` `hr.attendance.reconcile` | `AttendanceController.listShifts` | Shifts for one person |
+| POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
+| POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
 
 ### [`bom`](../modules/bom.md) (20)
 

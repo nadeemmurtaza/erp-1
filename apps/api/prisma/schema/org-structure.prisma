@@ -73,6 +73,11 @@ model OrgUnit {
   retailBrand RetailBrand? @relation(fields: [retailBrandId], references: [id])
   positions   Position[]
   grants      OrgUnitGrant[]
+  /// attendance-workforce/22-attendance-shifts-leave.md — devices, punches
+  /// and shifts scoped to this unit.
+  attendanceDevices AttendanceDevice[]
+  attendanceEvents  AttendanceEvent[]
+  shifts            Shift[]
 
   @@unique([retailBrandId, code])
   @@index([parentId])

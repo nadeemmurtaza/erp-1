@@ -44,10 +44,13 @@ against a real database.
 | `retailBrand` | `RetailBrand?` | relation, optional | @relation(fields: [retailBrandId], references: [id]) |
 | `positions` | `Position[]` |  |  |
 | `grants` | `OrgUnitGrant[]` |  |  |
+| `attendanceDevices` | `AttendanceDevice[]` |  |  |
+| `attendanceEvents` | `AttendanceEvent[]` |  |  |
+| `shifts` | `Shift[]` |  |  |
 
 Indexes: `@@unique([retailBrandId, code])` · `@@index([parentId])` · `@@index([path])` · `@@index([nodeId])`
 
-### `OrgUnitGrant`  <sub>`apps/api/prisma/schema/org-structure.prisma:90`</sub>
+### `OrgUnitGrant`  <sub>`apps/api/prisma/schema/org-structure.prisma:95`</sub>
 
 > access-control-identity/21-access-over-the-org-tree.md — an explicit, time-boxed grant of authority over a subtree.
 
@@ -87,7 +90,7 @@ Indexes: `@@index([userId, expiresAt])` · `@@index([orgUnitId])`
 
 ## Enums
 
-### `GrantMode`  <sub>`apps/api/prisma/schema/org-structure.prisma:123`</sub>
+### `GrantMode`  <sub>`apps/api/prisma/schema/org-structure.prisma:128`</sub>
 
 | Value | Meaning |
 |---|---|

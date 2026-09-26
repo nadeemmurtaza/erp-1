@@ -2394,15 +2394,15 @@ _no second-level headings_
 - Acceptance  <sub>:48</sub>
 - Out of scope  <sub>:53</sub>
 
-### `docs/implementation/attendance-workforce/22-attendance-shifts-leave.md`  <sub>230 lines</sub>
+### `docs/implementation/attendance-workforce/22-attendance-shifts-leave.md`  <sub>292 lines</sub>
 
-- The unconditional path  <sub>:13</sub>
-- Schema — append to `hr.prisma`  <sub>:31</sub>
-- The working day is not a date  <sub>:126</sub>
-- Scope lenses  <sub>:135</sub>
-- Work orders  <sub>:204</sub>
-- Acceptance  <sub>:216</sub>
-- Out of scope  <sub>:226</sub>
+- The unconditional path  <sub>:75</sub>
+- Schema — append to `hr.prisma`  <sub>:93</sub>
+- The working day is not a date  <sub>:188</sub>
+- Scope lenses  <sub>:197</sub>
+- Work orders  <sub>:266</sub>
+- Acceptance  <sub>:278</sub>
+- Out of scope  <sub>:288</sub>
 
 ### `docs/implementation/attendance-workforce/30-field-attendance-biometric-geofencing.md`  <sub>289 lines</sub>
 
@@ -2697,7 +2697,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>4,611 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>4,803 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2748,6 +2748,7 @@ _no second-level headings_
 - ADR-043 — `access-control-identity` docs 126/161 built; 16/18/163 re-verified; 125 corrected; 21 reported blocked on missing docs 19/20  <sub>:4183</sub>
 - ADR-044 — Docs 19/20 (org tree, positions and ranks): `OrgUnit` kept orthogonal to `Node` exactly as specified; no separate `Employee` model — every posting keys to `User`, matching payroll's and doc 79's own precedent  <sub>:4340</sub>
 - ADR-045 — Doc 21 (access over the org tree): `OrgUnitGrant` built exactly as specified; `MAX_GRANT_DAYS` as a plain Setting, not a `BrandPolicy` column; `org.access.grant` seeded to no role by default; the granter's own reach treats "no posting" as unrestricted; existing list endpoints are NOT retrofitted to scope by `OrgUnit`  <sub>:4476</sub>
+- ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify  <sub>:4612</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

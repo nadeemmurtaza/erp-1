@@ -3,7 +3,7 @@
 
 # Background work
 
-**22** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
+**23** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
 
 
 Background work is invisible in the UI and easy to forget exists. Anything here
@@ -17,6 +17,7 @@ runs on every node that has its module enabled.
 | `0 1 * * *` | `sendSupplierDigests()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:36` | --- 1. |
 | `0 7 * * 1` | `sendSupplierScorecards()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:124` | --- 2. |
 | `0 8 * * 1` | `sendDemandAlerts()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:190` | --- 3. |
+| `0 5 1 * *` | `ensureFuturePartitions()` | `attendance` | `apps/api/src/modules/attendance/attendance-partition.cron.ts:31` |  |
 | `EVERY_DAY_AT_` | `run()` | `crm` | `apps/api/src/modules/crm/rfm-scoring.cron.ts:22` |  |
 | `0 3 * * *` | `generateRecurringInstances()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:13` |  |
 | `0 * * * *` | `generateRecurringExpenses()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:27` |  |

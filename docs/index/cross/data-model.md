@@ -3,7 +3,7 @@
 
 # Data model
 
-All **254** Prisma models and **118** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **258** Prisma models and **122** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -27,6 +27,7 @@ against a real database.
 |---|---|---|---|---|
 | [`accounting.prisma`](../data/accounting.md) | 8 | 4 | [`accounting`](../modules/accounting.md) | Account, AssetDepreciationPosting, AssetDepreciationSchedule, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter,… |
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
+| [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
 | [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
 | [`catalog.prisma`](../data/catalog.md) | 27 | 7 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, Collection, CollectionProduct, CollectionTranslation, OptionTemplate, Opt… |
@@ -90,6 +91,9 @@ against a real database.
 | [`AssetAssignment`](../data/hr.md#assetassignment) | `hr` | 12 | 4 | id | One row per issue/return cycle — an asset's full custody history, never overwritten. |
 | [`AssetDepreciationPosting`](../data/accounting.md#assetdepreciationposting) | `accounting` | 7 | 1 | id | One row per period posted — the same "snapshot at write time, never re-derived" disciplin… |
 | [`AssetDepreciationSchedule`](../data/accounting.md#assetdepreciationschedule) | `accounting` | 14 | 2 | id |  |
+| [`AttendanceDevice`](../data/attendance.md#attendancedevice) | `attendance` | 11 | 1 | id | A biometric terminal or kiosk that punches on behalf of employees at one unit. |
+| [`AttendanceEvent`](../data/attendance.md#attendanceevent) | `attendance` | 15 | 3 | — | Raw, immutable. |
+| [`AttendanceException`](../data/attendance.md#attendanceexception) | `attendance` | 13 | 3 | id | A punch that did not fit. |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
 | [`BackInStockRequest`](../data/wishlist.md#backinstockrequest) | `wishlist` | 6 | 2 | id | One row per customer waiting on one variant. |
 | [`Banner`](../data/content.md#banner) | `content` | 11 | 0 | id |  |
@@ -191,7 +195,7 @@ against a real database.
 | [`OrderNumberCounter`](../data/orders.md#ordernumbercounter) | `orders` | 2 | 0 | year | Backing store for sequential per-year order numbers (YSN-2026-0001). |
 | [`OrderStatusEvent`](../data/orders.md#orderstatusevent) | `orders` | 9 | 2 | id |  |
 | [`Organization`](../data/organization.md#organization) | `organization` | 6 | 0 | id | The top tier — the owner's group, run by a super admin from one dashboard (Part 1). |
-| [`OrgUnit`](../data/org-structure.md#orgunit) | `org-structure` | 20 | 5 | id |  |
+| [`OrgUnit`](../data/org-structure.md#orgunit) | `org-structure` | 23 | 5 | id |  |
 | [`OrgUnitGrant`](../data/org-structure.md#orgunitgrant) | `org-structure` | 15 | 4 | id | access-control-identity/21-access-over-the-org-tree.md — an explicit, time-boxed grant of… |
 | [`OrgUnitType`](../data/org-structure.md#orgunittype) | `org-structure` | 6 | 0 | id | What kinds of unit this deployment's org chart has. |
 | [`OutboxEvent`](../data/core.md#outboxevent) | `core` | 9 | 0 | id | Transactional outbox. |
@@ -272,6 +276,7 @@ against a real database.
 | [`SettlementBatch`](../data/settlements.md#settlementbatch) | `settlements` | 14 | 1 | id |  |
 | [`SettlementBatchLine`](../data/settlements.md#settlementbatchline) | `settlements` | 6 | 2 | id | Which of our own Payment rows this settlement batch is meant to cover — the join a reconc… |
 | [`SettlementProvider`](../data/settlements.md#settlementprovider) | `settlements` | 5 | 0 | id | Financial institution settlement partnerships (finance-accounting/49-financial-institutio… |
+| [`Shift`](../data/attendance.md#shift) | `attendance` | 8 | 2 | id | A planned shift. |
 | [`Shipment`](../data/orders.md#shipment) | `orders` | 26 | 3 | id |  |
 | [`ShipmentEvent`](../data/fulfilment.md#shipmentevent) | `fulfilment` | 7 | 1 | id | The tracking timeline — one row per status change, courier's raw string kept in `meta` fo… |
 | [`ShipmentItem`](../data/fulfilment.md#shipmentitem) | `fulfilment` | 6 | 2 | id | A shipment may cover only part of an order (WO-6.4's partial-shipment note) — the shipmen… |
@@ -317,7 +322,7 @@ against a real database.
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
 | [`UsageMeter`](../data/platform.md#usagemeter) | `platform` | 8 | 1 | id | One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` inc… |
 | [`UsageMeteringCursor`](../data/platform.md#usagemeteringcursor) | `platform` | 6 | 1 | id | The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each ba… |
-| [`User`](../data/core.md#user) | `core` | 89 | 34 | id |  |
+| [`User`](../data/core.md#user) | `core` | 93 | 36 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
@@ -349,6 +354,10 @@ against a real database.
 | [`ApprovalStepStatus`](../data/approvals.md#approvalstepstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` `SKIPPED` |
 | [`ApprovalSubjectType`](../data/approvals.md#approvalsubjecttype) | `approvals` | `PURCHASE_REQUISITION` `WALLET_ADJUSTMENT` |
 | [`AssetStatus`](../data/hr.md#assetstatus) | `hr` | `AVAILABLE` `ASSIGNED` `RETIRED` `LOST` |
+| [`AttendanceDeviceStatus`](../data/attendance.md#attendancedevicestatus) | `attendance` | `PENDING` `ACTIVE` `SUSPENDED` |
+| [`AttendanceExceptionReason`](../data/attendance.md#attendanceexceptionreason) | `attendance` | `NO_MATCHING_SHIFT` `OUTSIDE_ROSTER` `WRONG_UNIT` `WHILE_ON_LEAVE` `DUPLICATE_SUSPECTED` `MISSING_COUNTERPART` |
+| [`AttendanceKind`](../data/attendance.md#attendancekind) | `attendance` | `IN` `OUT` `BREAK_START` `BREAK_END` `ADJUSTMENT` |
+| [`AttendanceSource`](../data/attendance.md#attendancesource) | `attendance` | `DEVICE` `SELF` `MANAGER` `IMPORT` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |
 | [`CampaignRecipientStatus`](../data/marketing.md#campaignrecipientstatus) | `marketing` | `PENDING` `SENT` `SKIPPED_OPT_OUT` `SKIPPED_NO_CONTACT` `FAILED` `OPENED` `CLICKED` |

@@ -563,7 +563,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 6254 |  |
+| `DECISIONS.md` | doc | 6363 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -637,10 +637,10 @@ All 396 tracked files in `docs/*`, by directory.
 | `128-extension-point-coverage-audit.md` | doc | 194 |  |
 | `130-machine-readable-capability-manifest.md` | doc | 135 |  |
 | `131-versioned-domain-events.md` | doc | 84 |  |
-| `133-reusable-dry-run-harness.md` | doc | 59 |  |
-| `134-hexagonal-purity-ci-check.md` | doc | 71 |  |
+| `133-reusable-dry-run-harness.md` | doc | 77 |  |
+| `134-hexagonal-purity-ci-check.md` | doc | 82 |  |
 | `136-database-cache-portability-audit.md` | doc | 126 |  |
-| `138-technology-substitution-playbook.md` | doc | 70 |  |
+| `138-technology-substitution-playbook.md` | doc | 91 |  |
 | `139-second-front-door-websocket-gateway.md` | doc | 124 |  |
 | `140-general-eav-extensibility-model.md` | doc | 184 |  |
 | `141-general-metadata-driven-ui-engine.md` | doc | 192 |  |

@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2247,
-    "lines": 342069,
+    "files": 2248,
+    "lines": 342396,
     "routes": 788,
     "controllers": 142,
     "models": 283,
@@ -21,14 +21,14 @@
   "areas": {
     "root": {
       "files": 208,
-      "lines": 20693,
-      "bytes": 1195019,
+      "lines": 20711,
+      "bytes": 1195996,
       "label": "repository root files"
     },
     "infra": {
-      "files": 59,
-      "lines": 30474,
-      "bytes": 1198308,
+      "files": 60,
+      "lines": 30624,
+      "bytes": 1205160,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 396,
-      "lines": 67922,
-      "bytes": 4043097,
+      "lines": 68081,
+      "bytes": 4052727,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -47900,7 +47900,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -47931,6 +47931,12 @@
       "file": "package.json",
       "name": "boundaries",
       "cmd": "node scripts/check-module-boundaries.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:hexagonal-purity",
+      "cmd": "node scripts/check-hexagonal-purity.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -51603,8 +51609,8 @@
       "path": ".claude/rules/services.md",
       "area": "root",
       "kind": "doc",
-      "lines": 31,
-      "bytes": 1250,
+      "lines": 49,
+      "bytes": 2227,
       "doc": "",
       "symbols": []
     },
@@ -82686,8 +82692,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 6254,
-      "bytes": 364428,
+      "lines": 6363,
+      "bytes": 370803,
       "doc": "",
       "symbols": []
     },
@@ -83127,8 +83133,8 @@
       "path": "docs/implementation/architecture-patterns/133-reusable-dry-run-harness.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 59,
-      "bytes": 2568,
+      "lines": 77,
+      "bytes": 3797,
       "doc": "",
       "symbols": []
     },
@@ -83136,8 +83142,8 @@
       "path": "docs/implementation/architecture-patterns/134-hexagonal-purity-ci-check.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 71,
-      "bytes": 3213,
+      "lines": 82,
+      "bytes": 3878,
       "doc": "",
       "symbols": []
     },
@@ -83154,8 +83160,8 @@
       "path": "docs/implementation/architecture-patterns/138-technology-substitution-playbook.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 70,
-      "bytes": 3576,
+      "lines": 91,
+      "bytes": 4937,
       "doc": "",
       "symbols": []
     },
@@ -84288,8 +84294,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 61,
-      "bytes": 2565,
+      "lines": 62,
+      "bytes": 2681,
       "doc": "",
       "symbols": []
     },
@@ -86500,6 +86506,15 @@
       "kind": "script",
       "lines": 85,
       "bytes": 3222,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "scripts/check-hexagonal-purity.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 149,
+      "bytes": 6736,
       "doc": "",
       "symbols": []
     },

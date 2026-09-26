@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **2,247** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,248** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -15,9 +15,9 @@ Split by area so you load one, not all of them.
 | apps/pos | 31 | 2,023 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 79 | 8,289 | [files/packages.md](../files/packages.md) |
-| docs/* | 396 | 67,922 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 59 | 30,474 | [files/infra.md](../files/infra.md) |
-| repository root files | 208 | 20,693 | [files/root.md](../files/root.md) |
+| docs/* | 396 | 68,081 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 60 | 30,624 | [files/infra.md](../files/infra.md) |
+| repository root files | 208 | 20,711 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -39,7 +39,7 @@ name a new file: the convention is what makes it findable.
 | migration | 105 |
 | nest module | 92 |
 | prisma schema | 60 |
-| script | 41 |
+| script | 42 |
 | event subscriber | 33 |
 | scheduled job | 30 |
 | json | 29 |

@@ -86,10 +86,11 @@ _no second-level headings_
 - Security engineering  <sub>:12</sub>
 - Personal API keys  <sub>:24</sub>
 
-### `.claude/rules/services.md`  <sub>31 lines</sub>
+### `.claude/rules/services.md`  <sub>49 lines</sub>
 
 - Error handling  <sub>:14</sub>
 - Observability  <sub>:23</sub>
+- Dry run before live  <sub>:35</sub>
 
 ### `.claude/rules/testing.md`  <sub>20 lines</sub>
 
@@ -2234,22 +2235,22 @@ _no second-level headings_
 - Acceptance  <sub>:72</sub>
 - Out of scope  <sub>:78</sub>
 
-### `docs/implementation/architecture-patterns/133-reusable-dry-run-harness.md`  <sub>59 lines</sub>
+### `docs/implementation/architecture-patterns/133-reusable-dry-run-harness.md`  <sub>77 lines</sub>
 
-- The convention: every policy-as-data mechanism exposes a pure `preview()` alongside its `apply()`  <sub>:11</sub>
-- Scope lenses  <sub>:32</sub>
-- Work orders  <sub>:39</sub>
-- Acceptance  <sub>:47</sub>
-- Out of scope  <sub>:54</sub>
+- The convention: every policy-as-data mechanism exposes a pure `preview()` alongside its `apply()`  <sub>:29</sub>
+- Scope lenses  <sub>:50</sub>
+- Work orders  <sub>:57</sub>
+- Acceptance  <sub>:65</sub>
+- Out of scope  <sub>:72</sub>
 
-### `docs/implementation/architecture-patterns/134-hexagonal-purity-ci-check.md`  <sub>71 lines</sub>
+### `docs/implementation/architecture-patterns/134-hexagonal-purity-ci-check.md`  <sub>82 lines</sub>
 
-- 1. The specific violation this check catches  <sub>:11</sub>
-- 2. Why this is worth building even though the audit found zero violations today  <sub>:33</sub>
-- Scope lenses  <sub>:45</sub>
-- Work orders  <sub>:50</sub>
-- Acceptance  <sub>:59</sub>
-- Out of scope  <sub>:68</sub>
+- 1. The specific violation this check catches  <sub>:22</sub>
+- 2. Why this is worth building even though the audit found zero violations today  <sub>:44</sub>
+- Scope lenses  <sub>:56</sub>
+- Work orders  <sub>:61</sub>
+- Acceptance  <sub>:70</sub>
+- Out of scope  <sub>:79</sub>
 
 ### `docs/implementation/architecture-patterns/136-database-cache-portability-audit.md`  <sub>126 lines</sub>
 
@@ -2260,14 +2261,14 @@ _no second-level headings_
 - Acceptance  <sub>:114</sub>
 - Out of scope  <sub>:119</sub>
 
-### `docs/implementation/architecture-patterns/138-technology-substitution-playbook.md`  <sub>70 lines</sub>
+### `docs/implementation/architecture-patterns/138-technology-substitution-playbook.md`  <sub>91 lines</sub>
 
-- The playbook, one entry per core dependency  <sub>:11</sub>
-- Why this is worth writing down explicitly, even where the answer is short  <sub>:38</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:54</sub>
-- Acceptance  <sub>:62</sub>
-- Out of scope  <sub>:67</sub>
+- The playbook, one entry per core dependency  <sub>:26</sub>
+- Why this is worth writing down explicitly, even where the answer is short  <sub>:59</sub>
+- Scope lenses  <sub>:70</sub>
+- Work orders  <sub>:75</sub>
+- Acceptance  <sub>:83</sub>
+- Out of scope  <sub>:88</sub>
 
 ### `docs/implementation/architecture-patterns/139-second-front-door-websocket-gateway.md`  <sub>124 lines</sub>
 
@@ -2725,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,254 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>6,363 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2787,6 +2788,7 @@ _no second-level headings_
 - ADR-054 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected  <sub>:5914</sub>
 - ADR-055 — Doc 117 (choreography and idempotency) and doc 118 (headless, composable, agent-consumable capabilities): both theses stand, but doc 117's own worked-example table was three-quarters fabricated, and doc 118 (plus doc 115, its own source) cite a deferred model as already shipped  <sub>:6039</sub>
 - ADR-056 — Docs 122 (data lake), 130 (capability manifest) and 131 (versioned domain events): one more fabricated citation, one more deferred-model repeat, one small real work order actually shipped  <sub>:6145</sub>
+- ADR-057 — Docs 133 (dry-run harness), 134 (hexagonal-purity CI check) and 138 (technology substitution playbook): a naming convention shipped with better evidence than it cited, a real static check built and wired into `pnpm lint`, one CI overclaim corrected  <sub>:6255</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

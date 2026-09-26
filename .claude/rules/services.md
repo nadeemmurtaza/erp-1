@@ -28,3 +28,21 @@ monitoring, external-integration monitoring. A log should answer: what
 happened, when, which operation, which organization/context, what was the
 result, what failed. Never log passwords, tokens, secrets, or unnecessary
 personal data.
+
+<!-- Added per architecture-patterns/133-reusable-dry-run-harness.md
+     (WO-133.1) — not moved from CLAUDE.md, a new addition. -->
+
+## Dry run before live
+
+A policy-as-data mechanism a caller can preview before committing —
+`CategoryPresetService.preview()`/`.apply()`, `OrgUnitGrantService
+.previewIssue()`/`.issue()`, `AttendanceService.previewAdjust()`/`.adjust()`,
+`MerchantPayableService.previewPayoutRun()`/`.processPayoutRun()` are this
+repository's own existing instances — follows the same naming convention
+rather than inventing a new shape each time: a `preview*()` method that is
+pure (no `prisma.*.create/update/delete`, no `publish()`) and computes
+exactly what the corresponding write method would do, without doing it.
+This is a naming convention, not a shared base class or generic runtime —
+each mechanism's own preview method stays specific to its own inputs and
+outcome shape, checked by review, never forced into an artificial common
+interface.

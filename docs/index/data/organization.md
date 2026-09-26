@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `AdminScope`  <sub>`apps/api/prisma/schema/organization.prisma:107`</sub>
+### `AdminScope`  <sub>`apps/api/prisma/schema/organization.prisma:110`</sub>
 
 > What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids `if (user.role === 'SUPER_ADMIN')`).
 
@@ -38,7 +38,7 @@ against a real database.
 
 Indexes: `@@unique([userId, level, retailBrandId, branchNodeId])` · `@@index([userId])`
 
-### `BrandPolicy`  <sub>`apps/api/prisma/schema/organization.prisma:71`</sub>
+### `BrandPolicy`  <sub>`apps/api/prisma/schema/organization.prisma:74`</sub>
 
 > Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and its siblings, generalised from a single Setting row (House Rule 4, still the answer while a deployment has onl…
 
@@ -53,7 +53,7 @@ Indexes: `@@unique([userId, level, retailBrandId, branchNodeId])` · `@@index([u
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `retailBrand` | `RetailBrand` | relation | @relation(fields: [retailBrandId], references: [id], onDelete: Cascade) |
 
-### `Node`  <sub>`apps/api/prisma/schema/organization.prisma:143`</sub>
+### `Node`  <sub>`apps/api/prisma/schema/organization.prisma:146`</sub>
 
 > A child node this deployment knows about — a brand's branches, or an organization's brands (R1, R14; WO-18.1, moved here from core.prisma in WO-18.3 once it had siblings to live beside — Part 5 owns…
 
@@ -72,6 +72,7 @@ Indexes: `@@unique([userId, level, retailBrandId, branchNodeId])` · `@@index([u
 | `retailBrandId` | `String?` | optional |  |
 | `adminScopes` | `AdminScope[]` |  |  |
 | `retailBrand` | `RetailBrand?` | relation, optional | @relation(fields: [retailBrandId], references: [id], onDelete: SetNull) |
+| `orgUnits` | `OrgUnit[]` |  |  |
 
 Indexes: `@@index([role])` · `@@index([status])` · `@@index([retailBrandId])`
 
@@ -109,13 +110,14 @@ Indexes: `@@index([role])` · `@@index([status])` · `@@index([retailBrandId])`
 | `locations` | `Location[]` |  |  |
 | `adminScopes` | `AdminScope[]` |  |  |
 | `nodes` | `Node[]` |  |  |
+| `orgUnits` | `OrgUnit[]` |  |  |
 
 Indexes: `@@index([organizationId])` · `@@index([parentId])`
 
 
 ## Enums
 
-### `AdminScopeLevel`  <sub>`apps/api/prisma/schema/organization.prisma:83`</sub>
+### `AdminScopeLevel`  <sub>`apps/api/prisma/schema/organization.prisma:86`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -123,14 +125,14 @@ Indexes: `@@index([organizationId])` · `@@index([parentId])`
 | `BRAND` |  |
 | `BRANCH` |  |
 
-### `NodeRole`  <sub>`apps/api/prisma/schema/organization.prisma:123`</sub>
+### `NodeRole`  <sub>`apps/api/prisma/schema/organization.prisma:126`</sub>
 
 | Value | Meaning |
 |---|---|
 | `BRANCH` |  |
 | `BRAND` |  |
 
-### `NodeStatus`  <sub>`apps/api/prisma/schema/organization.prisma:128`</sub>
+### `NodeStatus`  <sub>`apps/api/prisma/schema/organization.prisma:131`</sub>
 
 | Value | Meaning |
 |---|---|

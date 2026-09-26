@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "990dbca6a4d11cfe",
+  "contentHash": "edb71c133c321274",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -87,6 +87,7 @@
     "docs/index/data/notification-preferences.md",
     "docs/index/data/onsite-messaging.md",
     "docs/index/data/orders.md",
+    "docs/index/data/org-structure.md",
     "docs/index/data/organization.md",
     "docs/index/data/parties.md",
     "docs/index/data/payments.md",
@@ -141,6 +142,7 @@
     "docs/index/modules/onsitemessages.md",
     "docs/index/modules/orders.md",
     "docs/index/modules/organization.md",
+    "docs/index/modules/orgstructure.md",
     "docs/index/modules/parties.md",
     "docs/index/modules/payments.md",
     "docs/index/modules/payroll.md",
@@ -172,18 +174,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2035,
-    "lines": 312255,
-    "routes": 672,
-    "controllers": 123,
-    "models": 245,
-    "enums": 114,
-    "migrations": 87,
+    "files": 2049,
+    "lines": 314866,
+    "routes": 691,
+    "controllers": 125,
+    "models": 251,
+    "enums": 115,
+    "migrations": 89,
     "events": 63,
-    "permissions": 85,
-    "screens": 237,
+    "permissions": 89,
+    "screens": 239,
     "crons": 20,
-    "specs": 249,
+    "specs": 251,
     "designLaws": 0
   }
 }

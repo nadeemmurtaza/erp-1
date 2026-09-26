@@ -15,6 +15,7 @@ import {
   Landmark,
   Truck,
   TrendingUp,
+  Building2,
 } from 'lucide-react';
 
 export const ICON_MAP = {
@@ -31,6 +32,7 @@ export const ICON_MAP = {
   Landmark,
   Truck,
   TrendingUp,
+  Building2,
 } as const;
 
 export interface AdminNavGroup {
@@ -61,6 +63,11 @@ export const NAV_GROUPS: readonly AdminNavGroup[] = [
   { key: 'stock',     label: 'Stock',     icon: 'Boxes' },
   { key: 'manufacturing', label: 'Manufacturing', icon: 'Factory' },
   { key: 'payroll', label: 'Payroll', icon: 'Wallet' },
+  // hr-people-org/19-org-structure-offices-departments.md — "a new
+  // organization nav group," the doc's own explicit instruction: offices,
+  // regions and departments are not payroll, and every later hr-people-org
+  // document (postings, attendance, tasks) hangs off this same tree.
+  { key: 'organization', label: 'Organization', icon: 'Building2' },
   // Reinstated (WO-4.5, 04-finance.md) — removed in the eleven-to-eight-group
   // cut above for having zero items, not for being wrong in principle. It
   // now has six: P&L, expenses (+ its own two children), margins, cash flow,
@@ -91,6 +98,7 @@ export interface AdminNavItem {
     | 'stock'
     | 'manufacturing'
     | 'payroll'
+    | 'organization'
     | 'finance'
     | 'fulfilment'
     | 'insights'
@@ -720,6 +728,24 @@ export const ADMIN_NAV: AdminNavItem[] = [
     href: '/admin/hr/assets',
     permissions: ['hr.assets.manage'],
     group: 'payroll',
+    module: 'hr',
+  },
+
+  // Group: Organization
+  {
+    key: 'org-structure',
+    label: 'Structure',
+    href: '/admin/org-structure',
+    permissions: ['org.structure.view', 'org.structure.manage'],
+    group: 'organization',
+    module: 'orgstructure',
+  },
+  {
+    key: 'people',
+    label: 'People',
+    href: '/admin/people',
+    permissions: ['hr.people.view', 'hr.people.manage'],
+    group: 'organization',
     module: 'hr',
   },
 

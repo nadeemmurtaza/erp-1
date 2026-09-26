@@ -3,7 +3,7 @@
 
 # Screens
 
-All **237** routable files across the web app, the till and the mobile app.
+All **239** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (148)
+### admin (150)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -135,12 +135,14 @@ _none_
 | `/admin/orders` | loading | server | `apps/web/src/app/(admin)/admin/(app)/orders/loading.tsx` |
 | `/admin/orders` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/page.tsx` |
 | `/admin/orders/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` |
+| `/admin/org-structure` | page | client | `apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx` |
 | `/admin/payments` | page | client | `apps/web/src/app/(admin)/admin/(app)/payments/page.tsx` |
 | `/admin/payroll/compensation` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx` |
 | `/admin/payroll/leave` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/leave/page.tsx` |
 | `/admin/payroll/me` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx` |
 | `/admin/payroll/runs` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx` |
 | `/admin/payroll/runs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx` |
+| `/admin/people` | page | client | `apps/web/src/app/(admin)/admin/(app)/people/page.tsx` |
 | `/admin/products` | loading | server | `apps/web/src/app/(admin)/admin/(app)/products/loading.tsx` |
 | `/admin/products` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/page.tsx` |
 | `/admin/products/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/products/[id]/page.tsx` |

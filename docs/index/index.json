@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2035,
-    "lines": 312255,
-    "routes": 672,
-    "controllers": 123,
-    "models": 245,
-    "enums": 114,
-    "migrations": 87,
+    "files": 2049,
+    "lines": 314866,
+    "routes": 691,
+    "controllers": 125,
+    "models": 251,
+    "enums": 115,
+    "migrations": 89,
     "events": 63,
-    "permissions": 85,
-    "screens": 237,
+    "permissions": 89,
+    "screens": 239,
     "crons": 20,
-    "specs": 249,
+    "specs": 251,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 57,
       "lines": 29688,
-      "bytes": 1169052,
+      "bytes": 1169091,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 855,
-      "lines": 121417,
-      "bytes": 4624907,
+      "files": 867,
+      "lines": 123008,
+      "bytes": 4686803,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 378,
-      "lines": 61139,
-      "bytes": 2204929,
+      "files": 380,
+      "lines": 61883,
+      "bytes": 2230862,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 63837,
-      "bytes": 3794190,
+      "lines": 64072,
+      "bytes": 3808754,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 7950,
-      "bytes": 281433,
+      "lines": 7991,
+      "bytes": 283036,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -388,9 +388,13 @@
         "apps/api/src/modules/hr/assets.service.spec.ts",
         "apps/api/src/modules/hr/assets.service.ts",
         "apps/api/src/modules/hr/dto/asset.dto.ts",
-        "apps/api/src/modules/hr/hr.module.ts"
+        "apps/api/src/modules/hr/dto/people.dto.ts",
+        "apps/api/src/modules/hr/hr.module.ts",
+        "apps/api/src/modules/hr/people.controller.ts",
+        "apps/api/src/modules/hr/people.service.spec.ts",
+        "apps/api/src/modules/hr/people.service.ts"
       ],
-      "routes": 7,
+      "routes": 17,
       "page": "docs/index/modules/hr.md"
     },
     {
@@ -599,6 +603,21 @@
       ],
       "routes": 15,
       "page": "docs/index/modules/organization.md"
+    },
+    {
+      "name": "orgstructure",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/orgstructure/dto/org-unit.dto.ts",
+        "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+        "apps/api/src/modules/orgstructure/org-unit.service.spec.ts",
+        "apps/api/src/modules/orgstructure/org-unit.service.ts",
+        "apps/api/src/modules/orgstructure/orgstructure.module.ts"
+      ],
+      "routes": 9,
+      "page": "docs/index/modules/orgstructure.md"
     },
     {
       "name": "parties",
@@ -6633,6 +6652,154 @@
     },
     {
       "method": "POST",
+      "path": "/admin/org-structure",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "create",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 47,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a unit — root if parentId is omitted"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/org-structure/:id",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "get",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 34,
+      "access": "org.structure.view | org.structure.manage",
+      "permissions": [
+        "org.structure.view",
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One unit"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:id/close",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "close",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 75,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Close a unit — never deleted"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:id/move",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "move",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 68,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Re-parent a unit, rewriting its whole subtree"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:id/move/preview",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "previewMove",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 61,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What a move would touch, without writing anything"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/org-structure/:id/rename",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "rename",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 54,
+      "access": "org.structure.manage",
+      "permissions": [
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Rename a unit"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/org-structure/:id/subtree",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "subtree",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 40,
+      "access": "org.structure.view | org.structure.manage",
+      "permissions": [
+        "org.structure.view",
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One unit and everything under it"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/org-structure/tree",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "tree",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 28,
+      "access": "org.structure.view | org.structure.manage",
+      "permissions": [
+        "org.structure.view",
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The whole org tree"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/org-structure/types",
+      "module": "orgstructure",
+      "controller": "OrgUnitController",
+      "handler": "listTypes",
+      "file": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "line": 22,
+      "access": "org.structure.view | org.structure.manage",
+      "permissions": [
+        "org.structure.view",
+        "org.structure.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every configured unit type"
+    },
+    {
+      "method": "POST",
       "path": "/admin/parties",
       "module": "parties",
       "controller": "PartiesController",
@@ -7030,6 +7197,171 @@
       "public": false,
       "authOnly": false,
       "summary": "Recompute every line on a still-DRAFT pay run, replacing them."
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "list",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 21,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Everyone who holds at least one posting"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people/:userId/postings",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "postings",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 53,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One person's postings, open and past"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people/:userId/ranks",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "ranksOf",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 83,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every rank level this person currently holds, across all open postings"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people/positions",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "listPositions",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 40,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every position"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/positions",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "createPosition",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 47,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a position"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/postings/:id/end",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "end",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 77,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "End a posting"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/postings/assign",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "assign",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 67,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Assign a posting — refused if it would create a second open primary posting"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/postings/assign/preview",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "previewAssign",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 60,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What assigning this posting would do, without writing anything"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/people/ranks",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "listRanks",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 27,
+      "access": "hr.people.view | hr.people.manage",
+      "permissions": [
+        "hr.people.view",
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The rank ladder"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/people/ranks",
+      "module": "hr",
+      "controller": "PeopleController",
+      "handler": "createRank",
+      "file": "apps/api/src/modules/hr/people.controller.ts",
+      "line": 34,
+      "access": "hr.people.manage",
+      "permissions": [
+        "hr.people.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Add a rank"
     },
     {
       "method": "GET",
@@ -13164,6 +13496,86 @@
       "inSeed": true
     },
     {
+      "key": "hr.people.view",
+      "label": "View the people list, positions and the rank ladder",
+      "category": "Human Resources",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/people",
+        "GET /admin/people/:userId/postings",
+        "GET /admin/people/:userId/ranks",
+        "GET /admin/people/positions",
+        "GET /admin/people/ranks"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "hr.people.manage",
+      "label": "Create positions, assign and end postings, manage the rank ladder",
+      "category": "Human Resources",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/people",
+        "GET /admin/people/:userId/postings",
+        "GET /admin/people/:userId/ranks",
+        "GET /admin/people/positions",
+        "POST /admin/people/positions",
+        "POST /admin/people/postings/:id/end",
+        "POST /admin/people/postings/assign",
+        "POST /admin/people/postings/assign/preview",
+        "GET /admin/people/ranks",
+        "POST /admin/people/ranks"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "org.structure.view",
+      "label": "View the organization tree — offices, regions and departments",
+      "category": "Organization",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/org-structure/:id",
+        "GET /admin/org-structure/:id/subtree",
+        "GET /admin/org-structure/tree",
+        "GET /admin/org-structure/types"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "org.structure.manage",
+      "label": "Create, rename, move and close units in the organization tree",
+      "category": "Organization",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/org-structure",
+        "GET /admin/org-structure/:id",
+        "POST /admin/org-structure/:id/close",
+        "POST /admin/org-structure/:id/move",
+        "POST /admin/org-structure/:id/move/preview",
+        "PATCH /admin/org-structure/:id/rename",
+        "GET /admin/org-structure/:id/subtree",
+        "GET /admin/org-structure/tree",
+        "GET /admin/org-structure/types"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -14435,7 +14847,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 301,
+      "line": 307,
       "doc": "",
       "fields": [
         {
@@ -14551,7 +14963,7 @@
     {
       "name": "AdminScope",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 107,
+      "line": 110,
       "doc": "What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids `if (user.role === 'SUPER_ADMIN')`).",
       "fields": [
         {
@@ -14694,7 +15106,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 618,
+      "line": 624,
       "doc": "",
       "fields": [
         {
@@ -14783,7 +15195,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 579,
+      "line": 585,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -14844,7 +15256,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 251,
+      "line": 257,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -15139,7 +15551,7 @@
     {
       "name": "Asset",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 21,
+      "line": 123,
       "doc": "",
       "fields": [
         {
@@ -15227,7 +15639,7 @@
     {
       "name": "AssetAssignment",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 50,
+      "line": 152,
       "doc": "One row per issue/return cycle — an asset's full custody history, never overwritten.",
       "fields": [
         {
@@ -15493,7 +15905,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 391,
+      "line": 397,
       "doc": "",
       "fields": [
         {
@@ -16612,7 +17024,7 @@
     {
       "name": "BrandPolicy",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 71,
+      "line": 74,
       "doc": "Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and its siblings, generalised from a single Setting row (House Rule 4, still the answer while a deployment has onl…",
       "fields": [
         {
@@ -18350,7 +18762,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 559,
+      "line": 565,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -18701,7 +19113,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 346,
+      "line": 352,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -18887,7 +19299,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 207,
+      "line": 213,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -18943,6 +19355,80 @@
       "indexes": [
         "@@index([userId])",
         "@@index([expiresAt])"
+      ]
+    },
+    {
+      "name": "EmployeeProfile",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 38,
+      "doc": "Optional HR-specific metadata about a User who works here.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "employeeCode",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "EmploymentStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "joinedOn",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leftOn",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([status])"
       ]
     },
     {
@@ -22678,7 +23164,7 @@
     {
       "name": "Node",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 143,
+      "line": 146,
       "doc": "A child node this deployment knows about — a brand's branches, or an organization's brands (R1, R14; WO-18.1, moved here from core.prisma in WO-18.3 once it had siblings to live beside — Part 5 owns…",
       "fields": [
         {
@@ -22771,6 +23257,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "orgUnits",
+          "type": "OrgUnit[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -24307,9 +24800,207 @@
       "indexes": []
     },
     {
+      "name": "OrgUnit",
+      "file": "apps/api/prisma/schema/org-structure.prisma",
+      "line": 33,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "code",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "typeId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "parentId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "path",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "depth",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "nodeId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "retailBrandId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "closedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "OrgUnitType",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "parent",
+          "type": "OrgUnit?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "children",
+          "type": "OrgUnit[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "node",
+          "type": "Node?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "retailBrand",
+          "type": "RetailBrand?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "positions",
+          "type": "Position[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([retailBrandId, code])",
+        "@@index([parentId])",
+        "@@index([path])",
+        "@@index([nodeId])"
+      ]
+    },
+    {
+      "name": "OrgUnitType",
+      "file": "apps/api/prisma/schema/org-structure.prisma",
+      "line": 20,
+      "doc": "What kinds of unit this deployment's org chart has.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rank",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isOffice",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "units",
+          "type": "OrgUnit[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 532,
+      "line": 538,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -24696,7 +25387,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 190,
+      "line": 196,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -25251,7 +25942,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 412,
+      "line": 418,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -26588,6 +27279,88 @@
       ]
     },
     {
+      "name": "Position",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 74,
+      "doc": "A post in the org chart: \"Finance Manager, North Region\".",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rankId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reportsToId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "rank",
+          "type": "Rank",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "reportsTo",
+          "type": "Position?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "reports",
+          "type": "Position[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "postings",
+          "type": "Posting[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([orgUnitId])",
+        "@@index([reportsToId])"
+      ]
+    },
+    {
       "name": "PosReceipt",
       "file": "apps/api/prisma/schema/pos.prisma",
       "line": 130,
@@ -26809,6 +27582,74 @@
       "indexes": [
         "@@index([locationId])",
         "@@index([status])"
+      ]
+    },
+    {
+      "name": "Posting",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 97,
+      "doc": "Who holds which post, when.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "positionId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isPrimary",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startedOn",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endedOn",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "position",
+          "type": "Position",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, endedOn])",
+        "@@index([positionId, endedOn])"
       ]
     },
     {
@@ -28974,6 +29815,50 @@
       ]
     },
     {
+      "name": "Rank",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 60,
+      "doc": "A rank is a rung.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "level",
+          "type": "Int",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "positions",
+          "type": "Position[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "RawMaterial",
       "file": "apps/api/prisma/schema/bom.prisma",
       "line": 32,
@@ -29207,7 +30092,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 169,
+      "line": 175,
       "doc": "",
       "fields": [
         {
@@ -29845,6 +30730,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "orgUnits",
+          "type": "OrgUnit[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -30327,7 +31219,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 478,
+      "line": 484,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -30385,7 +31277,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 492,
+      "line": 498,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -30439,7 +31331,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 428,
+      "line": 434,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -30666,7 +31558,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 324,
+      "line": 330,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -35222,6 +36114,20 @@
           "relation": true
         },
         {
+          "name": "employeeProfile",
+          "type": "EmployeeProfile?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "postings",
+          "type": "Posting[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "assetDepreciationSchedulesCreated",
           "type": "AssetDepreciationSchedule[]",
           "id": false,
@@ -35357,7 +36263,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 449,
+      "line": 455,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -35418,7 +36324,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 507,
+      "line": 513,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -36322,7 +37228,7 @@
     {
       "name": "AdminScopeLevel",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 83,
+      "line": 86,
       "values": [
         "ORG",
         "BRAND",
@@ -36332,7 +37238,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 612,
+      "line": 618,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -36342,7 +37248,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 597,
+      "line": 603,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -36383,7 +37289,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 232,
+      "line": 238,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -36393,7 +37299,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 225,
+      "line": 231,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -36432,7 +37338,7 @@
     {
       "name": "AssetStatus",
       "file": "apps/api/prisma/schema/hr.prisma",
-      "line": 14,
+      "line": 116,
       "values": [
         "AVAILABLE",
         "ASSIGNED",
@@ -36576,7 +37482,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 547,
+      "line": 553,
       "values": [
         "IOS",
         "ANDROID",
@@ -36610,11 +37516,22 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 335,
+      "line": 341,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
         "SUPPORT"
+      ]
+    },
+    {
+      "name": "EmploymentStatus",
+      "file": "apps/api/prisma/schema/hr.prisma",
+      "line": 28,
+      "values": [
+        "ACTIVE",
+        "ON_LEAVE",
+        "SUSPENDED",
+        "LEFT"
       ]
     },
     {
@@ -36822,7 +37739,7 @@
     {
       "name": "NodeRole",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 123,
+      "line": 126,
       "values": [
         "BRANCH",
         "BRAND"
@@ -36831,7 +37748,7 @@
     {
       "name": "NodeStatus",
       "file": "apps/api/prisma/schema/organization.prisma",
-      "line": 128,
+      "line": 131,
       "values": [
         "ACTIVE",
         "SUSPENDED"
@@ -36936,7 +37853,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 521,
+      "line": 527,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -36991,7 +37908,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 440,
+      "line": 446,
       "values": [
         "GRANT",
         "REVOKE"
@@ -39166,6 +40083,43 @@
         "SsoConnection",
         "User"
       ]
+    },
+    {
+      "folder": "20260926080000_add_org_structure",
+      "file": "apps/api/prisma/schema/migrations/20260926080000_add_org_structure/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_org_structure",
+      "statements": 12,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "OrgUnit",
+        "OrgUnitType"
+      ]
+    },
+    {
+      "folder": "20260926083000_add_positions_ranks",
+      "file": "apps/api/prisma/schema/migrations/20260926083000_add_positions_ranks/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_positions_ranks",
+      "statements": 22,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "EmployeeProfile",
+        "Position",
+        "Posting",
+        "Rank"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -40910,6 +41864,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/org-structure",
+      "file": "apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/payments",
       "file": "apps/web/src/app/(admin)/admin/(app)/payments/page.tsx",
       "client": true,
@@ -40957,6 +41920,15 @@
       "kind": "page",
       "url": "/admin/payroll/runs/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/people",
+      "file": "apps/web/src/app/(admin)/admin/(app)/people/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -43036,6 +44008,21 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/hr/people.service.spec.ts",
+      "module": "hr",
+      "kind": "unit test",
+      "cases": 17,
+      "describes": [
+        "PeopleService",
+        "createRank",
+        "createPosition",
+        "primaryFor / postingsFor",
+        "ranksOf / outranks — the maximum rule, never first-found",
+        "previewAssign / assign — refuses a second open primary rather than silently ending the first",
+        "end"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts",
       "module": "identity-verification",
       "kind": "unit test",
@@ -43314,6 +44301,19 @@
         "allowsBranchLocalPurchasing (BranchPolicyRegistry handler) — WO-23.3b",
         "allowsBranchLocalPurchasingForNode (BranchPolicyRegistry handler) — WO-23.3c/e, ADR-023",
         "revokeScope"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/orgstructure/org-unit.service.spec.ts",
+      "module": "orgstructure",
+      "kind": "unit test",
+      "cases": 13,
+      "describes": [
+        "OrgUnitService",
+        "create",
+        "close",
+        "move / previewMove — the single-writer discipline",
+        "get / findRow"
       ]
     },
     {
@@ -44985,7 +45985,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5340,
+      "bytes": 5353,
       "doc": "",
       "symbols": []
     },
@@ -44994,7 +45994,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 174,
-      "bytes": 8747,
+      "bytes": 8760,
       "doc": "",
       "symbols": []
     },
@@ -45003,7 +46003,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5785,
+      "bytes": 5798,
       "doc": "",
       "symbols": []
     },
@@ -45350,8 +46350,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 638,
-      "bytes": 26118,
+      "lines": 644,
+      "bytes": 26469,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -45395,8 +46395,8 @@
       "path": "apps/api/prisma/schema/hr.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 69,
-      "bytes": 2845,
+      "lines": 171,
+      "bytes": 7045,
       "doc": "Employee assets: which physical equipment (laptop, phone, uniform) is",
       "symbols": []
     },
@@ -46184,6 +47184,24 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926080000_add_org_structure/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 72,
+      "bytes": 2776,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260926083000_add_positions_ranks/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 94,
+      "bytes": 3782,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -46220,11 +47238,20 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/org-structure.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 81,
+      "bytes": 3581,
+      "doc": "The org tree: offices, regions, departments — whatever shape a client's",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/organization.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 182,
-      "bytes": 8737,
+      "lines": 188,
+      "bytes": 9039,
       "doc": "The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier",
       "symbols": []
     },
@@ -46421,8 +47448,8 @@
       "path": "apps/api/prisma/seed.ts",
       "area": "api",
       "kind": "module",
-      "lines": 3070,
-      "bytes": 105776,
+      "lines": 3100,
+      "bytes": 107115,
       "doc": "",
       "symbols": []
     },
@@ -53707,17 +54734,96 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/hr/dto/people.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 60,
+      "bytes": 949,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateRankDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "CreatePositionDto",
+          "kind": "class",
+          "line": 17
+        },
+        {
+          "name": "AssignPostingDto",
+          "kind": "class",
+          "line": 36
+        },
+        {
+          "name": "EndPostingDto",
+          "kind": "class",
+          "line": 54
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/hr/hr.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 16,
-      "bytes": 448,
+      "lines": 21,
+      "bytes": 870,
       "doc": "",
       "symbols": [
         {
           "name": "HrModule",
           "kind": "class",
-          "line": 15
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/people.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 87,
+      "bytes": 3178,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PeopleController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/hr/people.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 171,
+      "bytes": 7848,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/hr/people.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 254,
+      "bytes": 10667,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PostingView",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "PreviewAssignResult",
+          "kind": "interface",
+          "line": 19
+        },
+        {
+          "name": "PeopleService",
+          "kind": "class",
+          "line": 45
         }
       ]
     },
@@ -54768,8 +55874,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 106,
-      "bytes": 3463,
+      "lines": 107,
+      "bytes": 3487,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -54788,24 +55894,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 221,
-      "bytes": 12114,
+      "lines": 223,
+      "bytes": 12243,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 48
+          "line": 49
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 79
+          "line": 80
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 197
+          "line": 199
         }
       ]
     },
@@ -55437,6 +56543,95 @@
           "name": "OrganizationService",
           "kind": "class",
           "line": 50
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/dto/org-unit.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 45,
+      "bytes": 784,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateOrgUnitDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "RenameOrgUnitDto",
+          "kind": "class",
+          "line": 33
+        },
+        {
+          "name": "MoveOrgUnitDto",
+          "kind": "class",
+          "line": 39
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 79,
+      "bytes": 2860,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgUnitController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 185,
+      "bytes": 8155,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 300,
+      "bytes": 10251,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgUnitView",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "MovePreview",
+          "kind": "interface",
+          "line": 22
+        },
+        {
+          "name": "OrgUnitService",
+          "kind": "class",
+          "line": 56
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/orgstructure.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 11,
+      "bytes": 298,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgStructureModule",
+          "kind": "class",
+          "line": 10
         }
       ]
     },
@@ -64969,6 +66164,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 316,
+      "bytes": 11027,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgStructurePage",
+          "kind": "default",
+          "line": 31
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
@@ -65070,6 +66280,21 @@
           "name": "PayrollRunsPage",
           "kind": "default",
           "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/people/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 397,
+      "bytes": 13889,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PeoplePage",
+          "kind": "default",
+          "line": 53
         }
       ]
     },
@@ -67548,44 +68773,44 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 952,
-      "bytes": 25744,
+      "lines": 978,
+      "bytes": 26568,
       "doc": "",
       "symbols": [
         {
           "name": "ICON_MAP",
           "kind": "const",
-          "line": 20
+          "line": 21
         },
         {
           "name": "AdminNavGroup",
           "kind": "interface",
-          "line": 36
+          "line": 38
         },
         {
           "name": "NAV_GROUPS",
           "kind": "const",
-          "line": 55
+          "line": 57
         },
         {
           "name": "AdminNavItem",
           "kind": "interface",
-          "line": 78
+          "line": 85
         },
         {
           "name": "ADMIN_NAV",
           "kind": "const",
-          "line": 118
+          "line": 126
         },
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 922
+          "line": 948
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 937
+          "line": 963
         }
       ]
     },
@@ -68846,8 +70071,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 250,
-      "bytes": 11269,
+      "lines": 255,
+      "bytes": 11462,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -72730,8 +73955,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 4339,
-      "bytes": 249842,
+      "lines": 4475,
+      "bytes": 257966,
       "doc": "",
       "symbols": []
     },
@@ -73693,8 +74918,8 @@
       "path": "docs/implementation/hr-people-org/19-org-structure-offices-departments.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 250,
-      "bytes": 12823,
+      "lines": 291,
+      "bytes": 15504,
       "doc": "",
       "symbols": []
     },
@@ -73702,8 +74927,8 @@
       "path": "docs/implementation/hr-people-org/20-people-positions-ranks.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 239,
-      "bytes": 11471,
+      "lines": 297,
+      "bytes": 15230,
       "doc": "",
       "symbols": []
     },
@@ -75890,8 +77115,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 902,
-      "bytes": 27439,
+      "lines": 943,
+      "bytes": 29042,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -75912,47 +77137,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 534
+          "line": 565
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 536
+          "line": 567
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 546
+          "line": 577
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 553
+          "line": 584
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 735
+          "line": 772
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 889
+          "line": 930
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 894
+          "line": 935
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 895
+          "line": 936
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 898
+          "line": 939
         }
       ]
     },

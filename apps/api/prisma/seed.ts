@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import { hash } from 'bcryptjs';
 import {
+  BRAND,
   DEFAULT_GARMENT_TYPES,
   DEFAULT_LOCALE,
   PERMISSION_CATALOG,
@@ -50,6 +51,7 @@ async function main(): Promise<void> {
   await seedPermissions();
   const users = await seedUsers();
   await seedRoles();
+  await seedOrgStructure();
   await seedChartOfAccounts();
   await seedExpenseCategories();
   await seedReturnReasons();
@@ -168,6 +170,34 @@ async function seedRoles(): Promise<void> {
   }
 
   console.warn(`  Migrated ${users.length} user(s) onto the new Role system.`);
+}
+
+/**
+ * hr-people-org/19-org-structure-offices-departments.md WO-19.1 — every
+ * deployment gets exactly one root `OrgUnit`, named from `brand.ts`, so a
+ * Solo shop that never opens the org-structure screen still has a real
+ * tree underneath it (one row) rather than an empty table later code has
+ * to special-case. Idempotent: does nothing once any `OrgUnit` exists —
+ * once a real admin has built out a tree, a later seed run must never
+ * re-assert its own idea of "the root," the same "never re-sync past the
+ * first run" discipline `seedRoles()` already applies just above.
+ */
+async function seedOrgStructure(): Promise<void> {
+  const headOfficeType = await prisma.orgUnitType.upsert({
+    where: { key: 'head_office' },
+    update: { label: 'Head Office', rank: 0, isOffice: true },
+    create: { key: 'head_office', label: 'Head Office', rank: 0, isOffice: true },
+  });
+
+  const alreadySeeded = await prisma.orgUnit.count();
+  if (alreadySeeded > 0) return;
+
+  const root = await prisma.orgUnit.create({
+    data: { code: 'hq', name: BRAND.identity.name, typeId: headOfficeType.id, path: [], depth: 0 },
+  });
+  await prisma.orgUnit.update({ where: { id: root.id }, data: { path: [root.id] } });
+
+  console.warn(`  Seeded the org tree's one root unit: "${BRAND.identity.name}".`);
 }
 
 /**

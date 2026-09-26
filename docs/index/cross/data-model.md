@@ -3,7 +3,7 @@
 
 # Data model
 
-All **245** Prisma models and **114** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **251** Prisma models and **115** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -36,7 +36,7 @@ against a real database.
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
 | [`fulfilment.prisma`](../data/fulfilment.md) | 16 | 4 | [`fulfilment`](../modules/fulfilment.md) | Manifest, ManifestNumberCounter, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest, ReturnRequestItem, ReturnRequestNumber… |
 | [`giftcards.prisma`](../data/giftcards.md) | 3 | 1 | [`giftcards`](../modules/giftcards.md) | GiftCard, GiftCardTransaction, StoreCreditTransaction |
-| [`hr.prisma`](../data/hr.md) | 2 | 1 | [`hr`](../modules/hr.md) | Asset, AssetAssignment |
+| [`hr.prisma`](../data/hr.md) | 6 | 2 | [`hr`](../modules/hr.md) | Asset, AssetAssignment, EmployeeProfile, Position, Posting, Rank |
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
 | [`instalments.prisma`](../data/instalments.md) | 3 | 2 | core platform | InstalmentPayment, InstalmentPlan, InstalmentScheduleLine |
 | [`inventory.prisma`](../data/inventory.md) | 12 | 6 | [`inventory`](../modules/inventory.md) | Location, MarkdownSuggestion, SpotCheck, SpotCheckLine, SpotCheckPolicy, StockCount, StockCountLine, StockMovement, StockVariance… |
@@ -47,6 +47,7 @@ against a real database.
 | [`notification-preferences.prisma`](../data/notification-preferences.md) | 1 | 2 | [`notification-preferences`](../modules/notification-preferences.md) | NotificationPreference |
 | [`onsite-messaging.prisma`](../data/onsite-messaging.md) | 3 | 2 | core platform | NewsletterSubscriber, OnsiteMessage, OnsiteMessageTranslation |
 | [`orders.prisma`](../data/orders.md) | 6 | 5 | [`orders`](../modules/orders.md) | CityCodRiskStat, Order, OrderItem, OrderNumberCounter, OrderStatusEvent, Shipment |
+| [`org-structure.prisma`](../data/org-structure.md) | 2 | 0 | core platform | OrgUnit, OrgUnitType |
 | [`organization.prisma`](../data/organization.md) | 5 | 3 | [`organization`](../modules/organization.md) | AdminScope, BrandPolicy, Node, Organization, RetailBrand |
 | [`parties.prisma`](../data/parties.md) | 2 | 1 | [`parties`](../modules/parties.md) | Party, PartyRoleAssignment |
 | [`payments.prisma`](../data/payments.md) | 1 | 1 | [`payments`](../modules/payments.md) | Payment |
@@ -127,6 +128,7 @@ against a real database.
 | [`DunningPolicy`](../data/receivables.md#dunningpolicy) | `receivables` | 4 | 0 | id | Days-overdue thresholds and which template fires at each — a client-editable policy row,… |
 | [`EmailAccount`](../data/core.md#emailaccount) | `core` | 25 | 0 | id | A connected mailbox: SMTP to send, optionally IMAP to receive. |
 | [`EmailVerificationToken`](../data/core.md#emailverificationtoken) | `core` | 7 | 1 | id | A one-time token mailed to confirm an email address. |
+| [`EmployeeProfile`](../data/hr.md#employeeprofile) | `hr` | 9 | 1 | id | Optional HR-specific metadata about a User who works here. |
 | [`Expense`](../data/finance.md#expense) | `finance` | 24 | 5 | id |  |
 | [`ExpenseCategory`](../data/finance.md#expensecategory) | `finance` | 9 | 0 | id | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 —… |
 | [`FiscalPeriod`](../data/accounting.md#fiscalperiod) | `accounting` | 10 | 1 | id | What a `JournalEntry` posts into. |
@@ -170,7 +172,7 @@ against a real database.
 | [`MerchantPayable`](../data/wallet.md#merchantpayable) | `wallet` | 15 | 0 | id | The exact mirror of doc 145's own AP side (`SupplierBill`) — a merchant selling through t… |
 | [`MeteredOrderFee`](../data/platform.md#meteredorderfee) | `platform` | 10 | 1 | id | Doc 153's own "the reversal document, not the reversal flag" — one row per order actually… |
 | [`NewsletterSubscriber`](../data/onsite-messaging.md#newslettersubscriber) | `onsite-messaging` | 6 | 0 | id | A distinct, lightweight capture list — not folded into Contact. |
-| [`Node`](../data/organization.md#node) | `organization` | 13 | 1 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
+| [`Node`](../data/organization.md#node) | `organization` | 14 | 1 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
 | [`NotificationPreference`](../data/notification-preferences.md#notificationpreference) | `notification-preferences` | 8 | 1 | id |  |
 | [`Offer`](../data/trading-partners.md#offer) | `trading-partners` | 7 | 0 | id | A marketing push to the retail end of the chain (WO-18.3's third "forth" document, alongs… |
 | [`OnsiteMessage`](../data/onsite-messaging.md#onsitemessage) | `onsite-messaging` | 14 | 1 | id |  |
@@ -186,6 +188,8 @@ against a real database.
 | [`OrderNumberCounter`](../data/orders.md#ordernumbercounter) | `orders` | 2 | 0 | year | Backing store for sequential per-year order numbers (YSN-2026-0001). |
 | [`OrderStatusEvent`](../data/orders.md#orderstatusevent) | `orders` | 9 | 2 | id |  |
 | [`Organization`](../data/organization.md#organization) | `organization` | 6 | 0 | id | The top tier — the owner's group, run by a super admin from one dashboard (Part 1). |
+| [`OrgUnit`](../data/org-structure.md#orgunit) | `org-structure` | 19 | 5 | id |  |
+| [`OrgUnitType`](../data/org-structure.md#orgunittype) | `org-structure` | 6 | 0 | id | What kinds of unit this deployment's org chart has. |
 | [`OutboxEvent`](../data/core.md#outboxevent) | `core` | 9 | 0 | id | Transactional outbox. |
 | [`Page`](../data/content.md#page) | `content` | 9 | 0 | id |  |
 | [`PageTranslation`](../data/content.md#pagetranslation) | `content` | 9 | 1 | id |  |
@@ -209,9 +213,11 @@ against a real database.
 | [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 37 | 1 | id | One row per hosted client. |
 | [`PlatformUsageRecord`](../data/platform.md#platformusagerecord) | `platform` | 6 | 1 | id | Metered usage a tenant's own deployment reports about itself — never a source of business… |
 | [`PolicyQuarantine`](../data/replication.md#policyquarantine) | `replication` | 14 | 1 | id | R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for rev… |
+| [`Position`](../data/hr.md#position) | `hr` | 10 | 4 | id | A post in the org chart: "Finance Manager, North Region". |
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
 | [`PosShift`](../data/pos.md#posshift) | `pos` | 12 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
 | [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | A physical till. |
+| [`Posting`](../data/hr.md#posting) | `hr` | 8 | 2 | id | Who holds which post, when. |
 | [`Product`](../data/catalog.md#product) | `catalog` | 44 | 7 | id |  |
 | [`ProductAiSuggestion`](../data/catalog.md#productaisuggestion) | `catalog` | 12 | 2 | id | WO-9.1. |
 | [`ProductCrossSell`](../data/catalog.md#productcrosssell) | `catalog` | 8 | 2 | id |  |
@@ -233,6 +239,7 @@ against a real database.
 | [`PurchaseRequisition`](../data/purchasing.md#purchaserequisition) | `purchasing` | 12 | 2 | id |  |
 | [`Quote`](../data/invoicing.md#quote) | `invoicing` | 9 | 0 | id |  |
 | [`QuoteLine`](../data/invoicing.md#quoteline) | `invoicing` | 7 | 1 | id |  |
+| [`Rank`](../data/hr.md#rank) | `hr` | 5 | 0 | id | A rank is a rung. |
 | [`RawMaterial`](../data/bom.md#rawmaterial) | `bom` | 13 | 1 | id |  |
 | [`Redirect`](../data/catalog.md#redirect) | `catalog` | 7 | 0 | id | A storefront path that now 301s somewhere else — created automatically when a live produc… |
 | [`Referral`](../data/loyalty.md#referral) | `loyalty` | 8 | 2 | id | One referee can be referred exactly once (`@@unique([refereeId])`) — the actual guard aga… |
@@ -244,7 +251,7 @@ against a real database.
 | [`RequisitionLine`](../data/purchasing.md#requisitionline) | `purchasing` | 7 | 2 | id |  |
 | [`ResourceQuotaAlert`](../data/platform.md#resourcequotaalert) | `platform` | 10 | 1 | id | One row per (tenant, metric, window) that crossed its tier's quota threshold — the record… |
 | [`ResourceTierQuota`](../data/platform.md#resourcetierquota) | `platform` | 7 | 0 | id | --------------------------------------------------------------------------- WO-39.6 — res… |
-| [`RetailBrand`](../data/organization.md#retailbrand) | `organization` | 15 | 3 | id | A retail brand — the business entity a branch belongs to. |
+| [`RetailBrand`](../data/organization.md#retailbrand) | `organization` | 16 | 3 | id | A retail brand — the business entity a branch belongs to. |
 | [`ReturnReasonCode`](../data/fulfilment.md#returnreasoncode) | `fulfilment` | 6 | 0 | id | Seeded, editable — WO-6.6's own rule: reason codes are the fit-feedback input for Phase 9… |
 | [`ReturnReasonTranslation`](../data/fulfilment.md#returnreasontranslation) | `fulfilment` | 5 | 1 | id |  |
 | [`ReturnRequest`](../data/fulfilment.md#returnrequest) | `fulfilment` | 18 | 2 | id |  |
@@ -306,7 +313,7 @@ against a real database.
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
 | [`UsageMeter`](../data/platform.md#usagemeter) | `platform` | 8 | 1 | id | One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` inc… |
 | [`UsageMeteringCursor`](../data/platform.md#usagemeteringcursor) | `platform` | 6 | 1 | id | The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each ba… |
-| [`User`](../data/core.md#user) | `core` | 84 | 31 | id |  |
+| [`User`](../data/core.md#user) | `core` | 86 | 31 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
@@ -354,6 +361,7 @@ against a real database.
 | [`DiscountScope`](../data/promotions.md#discountscope) | `promotions` | `ORDER` `PRODUCT` `CATEGORY` `COLLECTION` `SHIPPING` |
 | [`DiscountType`](../data/promotions.md#discounttype) | `promotions` | `PERCENTAGE` `FIXED_AMOUNT` `FREE_SHIPPING` `BUY_X_GET_Y` `TIERED` |
 | [`EmailAccountPurpose`](../data/core.md#emailaccountpurpose) | `core` | `TRANSACTIONAL` `MARKETING` `SUPPORT` |
+| [`EmploymentStatus`](../data/hr.md#employmentstatus) | `hr` | `ACTIVE` `ON_LEAVE` `SUSPENDED` `LEFT` |
 | [`ExpenseRecurrence`](../data/finance.md#expenserecurrence) | `finance` | `NONE` `WEEKLY` `MONTHLY` `QUARTERLY` `YEARLY` |
 | [`FiscalPeriodStatus`](../data/accounting.md#fiscalperiodstatus) | `accounting` | `OPEN` `CLOSED` `LOCKED` |
 | [`GiftCardStatus`](../data/giftcards.md#giftcardstatus) | `giftcards` | `ACTIVE` `REDEEMED` `EXPIRED` `CANCELLED` |

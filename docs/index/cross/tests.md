@@ -3,7 +3,7 @@
 
 # Tests
 
-**249** spec files, **2,457** cases. What is already pinned down — and what is not.
+**251** spec files, **2,487** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (229)
+## Unit and integration (231)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -152,6 +152,7 @@ regression or an N+1.
 | `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
 | `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
 | `apps/api/src/modules/hr/assets.service.spec.ts` | hr | 14 | AssetsService · createAsset · issue — WO-79 acceptance: an already-ASSIGNED asset cannot be issued… |
+| `apps/api/src/modules/hr/people.service.spec.ts` | hr | 17 | PeopleService · createRank · createPosition · primaryFor / postingsFor · ranksOf / outranks — the m… |
 | `apps/api/src/modules/identity-verification/providers/nid-callback-verification.spec.ts` | identity-verification | 6 | nID webhook signature verification |
 | `apps/api/src/modules/inventory/inventory.cron.spec.ts` | inventory | 10 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-… |
 | `apps/api/src/modules/inventory/inventory.listener.spec.ts` | inventory | 1 | InventoryListener |
@@ -178,6 +179,7 @@ regression or an N+1.
 | `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 12 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
 | `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
+| `apps/api/src/modules/orgstructure/org-unit.service.spec.ts` | orgstructure | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
 | `apps/api/src/modules/payroll/leave-accrual.cron.spec.ts` | payroll | 3 | LeaveAccrualCron |

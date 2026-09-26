@@ -391,6 +391,37 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    // hr-people-org/20-people-positions-ranks.md.
+    key: 'hr.people.view',
+    label: 'View the people list, positions and the rank ladder',
+    category: 'Human Resources',
+    sensitivity: 'low',
+  },
+  {
+    // Creating a Position at or above the creator's own rank, or ending a
+    // posting, is refused server-side; raising a rank needs the second
+    // signature doc 21 (once built) adds — medium here reflects a real but
+    // bounded blast radius, not "high", since the org's own rank ladder
+    // already caps what one holder of this key can promote someone into.
+    key: 'hr.people.manage',
+    label: 'Create positions, assign and end postings, manage the rank ladder',
+    category: 'Human Resources',
+    sensitivity: 'medium',
+  },
+  {
+    // hr-people-org/19-org-structure-offices-departments.md.
+    key: 'org.structure.view',
+    label: 'View the organization tree — offices, regions and departments',
+    category: 'Organization',
+    sensitivity: 'low',
+  },
+  {
+    key: 'org.structure.manage',
+    label: 'Create, rename, move and close units in the organization tree',
+    category: 'Organization',
+    sensitivity: 'high',
+  },
+  {
     key: 'marketing.manage',
     label: 'Turn on automated marketing email and set its timing',
     category: 'Administration',
@@ -702,8 +733,14 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'hr',
     label: 'Human resources',
-    description: 'Which physical equipment is issued to which employee.',
-    permissions: ['hr.assets.manage', 'hr.assets.writeoff'],
+    description: 'Which physical equipment is issued to which employee, the people list, positions and the rank ladder.',
+    permissions: ['hr.assets.manage', 'hr.assets.writeoff', 'hr.people.view', 'hr.people.manage'],
+  },
+  {
+    key: 'organization',
+    label: 'Organization structure',
+    description: 'Offices, regions and departments — the tree everything else scopes access and reporting to.',
+    permissions: ['org.structure.view', 'org.structure.manage'],
   },
   {
     key: 'system-admin',
@@ -800,6 +837,10 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'payroll.manage',
     'hr.assets.manage',
     'hr.assets.writeoff',
+    'hr.people.view',
+    'hr.people.manage',
+    'org.structure.view',
+    'org.structure.manage',
     'analytics.view',
     'reports.view',
     'organization.view',

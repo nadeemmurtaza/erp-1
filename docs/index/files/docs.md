@@ -563,7 +563,7 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 4339 |  |
+| `DECISIONS.md` | doc | 4475 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -735,8 +735,8 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `164-department-permission-role-duty-control.md` | doc | 327 |  |
-| `19-org-structure-offices-departments.md` | doc | 250 |  |
-| `20-people-positions-ranks.md` | doc | 239 |  |
+| `19-org-structure-offices-departments.md` | doc | 291 |  |
+| `20-people-positions-ranks.md` | doc | 297 |  |
 | `26-performance-reviews.md` | doc | 247 |  |
 | `27-training-skill-development.md` | doc | 246 |  |
 | `28-recruitment-onboarding-document-vault.md` | doc | 335 |  |

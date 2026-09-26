@@ -131,6 +131,11 @@ export const ROUTES = {
     settlements: '/admin/settlements',
     settlementBatch: (id: string) => `/admin/settlements/${id}`,
 
+    /** hr-people-org/19-org-structure-offices-departments.md. */
+    orgStructure: '/admin/org-structure',
+    /** hr-people-org/20-people-positions-ranks.md. */
+    people: '/admin/people',
+
     bom: '/admin/bom',
 
     /** The card registry's own detail tree (10-admin-dashboard.md D3) — one catch-all route, 25 config objects, not 25 hand-rolled pages. */

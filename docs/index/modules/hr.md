@@ -3,7 +3,7 @@
 
 # Module: `hr`
 
-Pack **core** · enabled by the `MODULES` allowlist · 5 files
+Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 
 
@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 Source: `apps/api/src/modules/hr/`
 
-## Files (5 · 498 lines)
+## Files (9 · 1,075 lines)
 
 All paths relative to `apps/api/src/modules/hr`.
 
@@ -21,10 +21,14 @@ All paths relative to `apps/api/src/modules/hr`.
 | `assets.service.spec.ts` | unit test | 211 | — |  |
 | `assets.service.ts` | service | 149 | 1 | Which physical equipment is issued to which employee, and whether it came back (hr-people-org/79-employee-asset-managem… |
 | `asset.dto.ts` | dto | 49 | 4 |  |
-| `hr.module.ts` | nest module | 16 | 1 |  |
+| `people.dto.ts` | dto | 60 | 4 |  |
+| `hr.module.ts` | nest module | 21 | 1 |  |
+| `people.controller.ts` | controller | 87 | 1 | hr-people-org/20-people-positions-ranks.md — reads sit behind `hr.people.view`; every write additionally needs `hr.peop… |
+| `people.service.spec.ts` | unit test | 171 | — |  |
+| `people.service.ts` | service | 254 | 3 |  |
 
 
-## HTTP routes (7)
+## HTTP routes (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -35,6 +39,16 @@ All paths relative to `apps/api/src/modules/hr`.
 | POST | `/admin/hr/assets/:id/write-off` | `hr.assets.writeoff` | `AssetsController.writeOff` :62 | Mark an asset RETIRED or LOST |
 | POST | `/admin/hr/assets/assignments/:assignmentId/return` | `hr.assets.manage` | `AssetsController.returnAsset` :51 | Return an issued asset |
 | GET | `/admin/hr/assets/employees/:userId/unreturned` | `hr.assets.manage` | `AssetsController.unreturnedFor` :69 | An employee's unreturned assets — the offboarding gate's own check |
+| GET | `/admin/people` | `hr.people.view` `hr.people.manage` | `PeopleController.list` :21 | Everyone who holds at least one posting |
+| GET | `/admin/people/:userId/postings` | `hr.people.view` `hr.people.manage` | `PeopleController.postings` :53 | One person's postings, open and past |
+| GET | `/admin/people/:userId/ranks` | `hr.people.view` `hr.people.manage` | `PeopleController.ranksOf` :83 | Every rank level this person currently holds, across all open postings |
+| GET | `/admin/people/positions` | `hr.people.view` `hr.people.manage` | `PeopleController.listPositions` :40 | Every position |
+| POST | `/admin/people/positions` | `hr.people.manage` | `PeopleController.createPosition` :47 | Create a position |
+| POST | `/admin/people/postings/:id/end` | `hr.people.manage` | `PeopleController.end` :77 | End a posting |
+| POST | `/admin/people/postings/assign` | `hr.people.manage` | `PeopleController.assign` :67 | Assign a posting — refused if it would create a second open primary posting |
+| POST | `/admin/people/postings/assign/preview` | `hr.people.manage` | `PeopleController.previewAssign` :60 | What assigning this posting would do, without writing anything |
+| GET | `/admin/people/ranks` | `hr.people.view` `hr.people.manage` | `PeopleController.listRanks` :27 | The rank ladder |
+| POST | `/admin/people/ranks` | `hr.people.manage` | `PeopleController.createRank` :34 | Add a rank |
 
 
 ## Domain events
@@ -53,11 +67,15 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Asset` | 11 | :21 |  |
-| `AssetAssignment` | 12 | :50 | One row per issue/return cycle — an asset's full custody history, never overwritten. |
+| `Asset` | 11 | :123 |  |
+| `AssetAssignment` | 12 | :152 | One row per issue/return cycle — an asset's full custody history, never overwritten. |
+| `EmployeeProfile` | 9 | :38 | Optional HR-specific metadata about a User who works here. |
+| `Position` | 10 | :74 | A post in the org chart: "Finance Manager, North Region". |
+| `Posting` | 8 | :97 | Who holds which post, when. |
+| `Rank` | 5 | :60 | A rank is a rung. |
 
 
-Enums: `AssetStatus` (4)
+Enums: `AssetStatus` (4) · `EmploymentStatus` (4)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
@@ -68,13 +86,14 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`HrModule`** (`hr.module.ts`)
 - imports: —
-- controllers: `AssetsController`
-- providers: `AssetsService`
-- exports: `AssetsService`
+- controllers: `AssetsController`, `PeopleController`
+- providers: `AssetsService`, `PeopleService`
+- exports: `AssetsService`, `PeopleService`
 
 
 ## Reaches out to
 
+- core `audit`
 - core `auth`
 - core `extension-points`
 - core `prisma`
@@ -84,11 +103,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `assets.service.spec.ts` | 14 | AssetsService · createAsset · issue — WO-79 acceptance: an already-ASSIGNED asset cannot be issued again · returnAsset… |
+| `people.service.spec.ts` | 17 | PeopleService · createRank · createPosition · primaryFor / postingsFor · ranksOf / outranks — the maximum rule, never f… |
 
 
 ## Every export in this unit
@@ -101,7 +121,15 @@ check there before adding another.
 | `IssueAssetDto` | class | `asset.dto.ts:31` |  |
 | `ReturnAssetDto` | class | `asset.dto.ts:37` |  |
 | `WriteOffAssetDto` | class | `asset.dto.ts:44` |  |
-| `HrModule` | class | `hr.module.ts:15` |  |
+| `CreateRankDto` | class | `people.dto.ts:4` |  |
+| `CreatePositionDto` | class | `people.dto.ts:17` |  |
+| `AssignPostingDto` | class | `people.dto.ts:36` |  |
+| `EndPostingDto` | class | `people.dto.ts:54` |  |
+| `HrModule` | class | `hr.module.ts:20` |  |
+| `PeopleController` | class | `people.controller.ts:16` | hr-people-org/20-people-positions-ranks.md — reads sit behind `hr.people.view`; every write additionally need… |
+| `PostingView` | interface | `people.service.ts:6` |  |
+| `PreviewAssignResult` | interface | `people.service.ts:19` |  |
+| `PeopleService` | class | `people.service.ts:45` | `PostingService` (hr-people-org/20-people-positions-ranks.md, WO-20.2): the sole writer of `Posting`. |
 
 
 ---

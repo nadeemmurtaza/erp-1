@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 855 tracked files in `apps/api`, by directory.
+All 867 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -29,9 +29,9 @@ All 855 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `backfill-parties.ts` | module | 69 |  |
 | `backfill-product-options.ts` | module | 26 |  |
-| `seed.ts` | module | 3070 |  |
+| `seed.ts` | module | 3100 |  |
 
-### `apps/api/prisma/schema` (44)
+### `apps/api/prisma/schema` (45)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -41,12 +41,12 @@ All 855 tracked files in `apps/api`, by directory.
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 638 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 644 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
-| `hr.prisma` | prisma schema | 69 | Employee assets: which physical equipment (laptop, phone, uniform) is |
+| `hr.prisma` | prisma schema | 171 | Employee assets: which physical equipment (laptop, phone, uniform) is |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `instalments.prisma` | prisma schema | 76 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md) |
 | `inventory.prisma` | prisma schema | 369 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
@@ -57,7 +57,8 @@ All 855 tracked files in `apps/api`, by directory.
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
 | `orders.prisma` | prisma schema | 361 | Orders and shipments. |
-| `organization.prisma` | prisma schema | 182 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
+| `org-structure.prisma` | prisma schema | 81 | The org tree: offices, regions, departments — whatever shape a client's |
+| `organization.prisma` | prisma schema | 188 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 55 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
 | `payroll.prisma` | prisma schema | 229 | Payroll: compensation rates, leave balances and pay runs |
@@ -566,6 +567,18 @@ All 855 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 50 |  |
 
+### `apps/api/prisma/schema/migrations/20260926080000_add_org_structure` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 72 |  |
+
+### `apps/api/prisma/schema/migrations/20260926083000_add_positions_ranks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 94 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -902,8 +915,8 @@ All 855 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 106 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 221 |  |
+| `module-packs.ts` | module | 107 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 223 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1229,20 +1242,24 @@ All 855 tracked files in `apps/api`, by directory.
 | `gift-card.dto.ts` | dto | 62 |  |
 | `store-credit.dto.ts` | dto | 21 |  |
 
-### `apps/api/src/modules/hr` (4)
+### `apps/api/src/modules/hr` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `assets.controller.ts` | controller | 73 |  |
 | `assets.service.spec.ts` | unit test | 211 |  |
 | `assets.service.ts` | service | 149 |  |
-| `hr.module.ts` | nest module | 16 |  |
+| `hr.module.ts` | nest module | 21 |  |
+| `people.controller.ts` | controller | 87 |  |
+| `people.service.spec.ts` | unit test | 171 |  |
+| `people.service.ts` | service | 254 |  |
 
-### `apps/api/src/modules/hr/dto` (1)
+### `apps/api/src/modules/hr/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `asset.dto.ts` | dto | 49 |  |
+| `people.dto.ts` | dto | 60 |  |
 
 ### `apps/api/src/modules/identity-verification` (4)
 
@@ -1450,6 +1467,21 @@ All 855 tracked files in `apps/api`, by directory.
 | `node.dto.ts` | dto | 25 |  |
 | `organization-policy.dto.ts` | dto | 10 |  |
 | `policy-quarantine.dto.ts` | dto | 11 |  |
+
+### `apps/api/src/modules/orgstructure` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `org-unit.controller.ts` | controller | 79 |  |
+| `org-unit.service.spec.ts` | unit test | 185 |  |
+| `org-unit.service.ts` | service | 300 |  |
+| `orgstructure.module.ts` | nest module | 11 |  |
+
+### `apps/api/src/modules/orgstructure/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `org-unit.dto.ts` | dto | 45 |  |
 
 ### `apps/api/src/modules/parties` (4)
 

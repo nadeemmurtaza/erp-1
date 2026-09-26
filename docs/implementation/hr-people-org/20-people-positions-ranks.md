@@ -1,5 +1,63 @@
 # 20 — The employee record, positions, and the rank ladder
 
+> **Status (2026-09-26): built, WO-20.1–20.5, with one deliberate
+> departure from this document's own schema — no `Employee` model — decided
+> and recorded in `DECISIONS.md` ADR-044 before any schema file was
+> written.** This document's own justification for a separate `Employee`
+> ("a tailor may never sign in") does not require a fourth actor table:
+> `User.email`/`.phone`/`.passwordHash` are already all nullable in
+> `core.prisma`, so a login-less worker is already representable as a
+> `User` row with all three null, and `AuthService.login()` cannot locate
+> such a row by identifier or pass its hash check — it is structurally
+> unable to authenticate. This is not a new call: `payroll.prisma`'s own
+> header ("every actor here is a `User`") and `hr.prisma`'s own header from
+> `79-employee-assets.md` both already answered this exact question the
+> same way, months before this document was written. `Position`/`Posting`
+> (`apps/api/prisma/schema/hr.prisma`) key directly to `User.id`, not to an
+> `Employee.employeeId`; a thin, optional 1:1 `EmployeeProfile` sidecar
+> (`employeeCode`, `status`, `joinedOn`, `leftOn`) holds the HR-specific
+> fields that have no home on the universal `User` — a `User` with no
+> `EmployeeProfile` row can still hold a `Posting`, the profile only ever
+> adds detail. `Rank.organizationId` is likewise dropped (`key`/`level`
+> each `@unique` alone), the same single-tenant reasoning as doc 19's
+> `OrgUnitType`. Every later hr-people-org document that says "Employee"
+> now means "a `User` holding a `Posting`, optionally with an
+> `EmployeeProfile` row" — ADR-044 states this for docs 28/42/53 by name.
+>
+> **`PeopleService.assign()` (`apps/api/src/modules/hr/people.service.ts`)
+> refuses a second open primary posting rather than silently ending the
+> first** — this document's own acceptance criterion ("rejected by the
+> index") and its "undo fan-out" answer ("reassigns nothing... needs a
+> human, named screen and permission") both rule out automatic
+> supersession. The partial unique index
+> (`posting_one_primary_open`) is the real enforcement point; the
+> application-level pre-check is only the friendly fast path, and a
+> database-level `P2002` race is converted to the identical
+> `ConflictException`, proven by `people.service.spec.ts`'s 17 specs.
+> `outranks(ranksA, ranksB)` is a genuinely pure function over already-
+> loaded rank-level arrays (`Math.max`, empty array unrankable), exactly as
+> WO-20.3 specifies, so doc 24's escalation logic can replay it without a
+> fresh query.
+>
+> **WO-20.5's admin UI ships as one people list plus inline actions**
+> (`apps/web/src/app/(admin)/admin/(app)/people/page.tsx|
+> /admin/people`), not the "person drawer, org-chart view reusing doc 19's
+> tree" this document names — a live preview of the block reason
+> (`previewAssign()`) surfaces inline in the assign dialog instead. This is
+> a smaller but complete instance of Law 5 ("one main job per page"): the
+> list already shows every person's name, email, primary posting and rank,
+> with assign/end actions and position/rank management, satisfying this
+> document's acceptance criteria without a second page. A drawer or an
+> org-chart visualisation is not required by any acceptance criterion here
+> and is left for a future document if the list proves insufficient — not
+> built speculatively. `hr.people.view`/`.manage` are seeded to `ADMIN`.
+>
+> **The toxic pair named in this document's own scope lens**
+> (`hr.people.manage` + `org.access.grant`) is not enforced yet, for the
+> same reason doc 19's status note gives: `org.access.grant` does not
+> exist until doc 21, and `RolesService` has no generic toxic-pair
+> mechanism today. ADR-044 records this as doc 21's to close.
+
 This repository has a `User` (`core.prisma:11`) and it has `Role`
 (`core.prisma:307`). It has no employee, no post, and no notion that one person
 outranks another. Every document after this one needs all three: attendance

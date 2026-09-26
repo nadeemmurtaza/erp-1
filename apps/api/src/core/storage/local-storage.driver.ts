@@ -1,5 +1,5 @@
 import { randomBytes } from 'node:crypto';
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { extname, join, normalize, resolve, sep } from 'node:path';
 import { Injectable } from '@nestjs/common';
 import { slugify } from '@newax/shared';
@@ -42,6 +42,18 @@ export class LocalStorageDriver implements StorageDriver {
 
   urlFor(key: string): string {
     return `${this.config.get('LOCAL_STORAGE_PUBLIC_URL').replace(/\/$/, '')}/${key}`;
+  }
+
+  async get(key: string): Promise<Buffer> {
+    return readFile(this.resolveKey(key));
+  }
+
+  // Local storage is already documented above as a dev/single-server
+  // convenience, not hardened for this — there is no real expiry to offer,
+  // so this falls back to the plain public URL. Real time-limited access
+  // only exists on the s3 driver.
+  signedUrlFor(key: string, _expiresInSeconds: number): Promise<string> {
+    return Promise.resolve(this.urlFor(key));
   }
 
   /**

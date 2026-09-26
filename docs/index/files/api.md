@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 855 tracked files in `apps/api`, by directory.
+All 879 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -16,7 +16,7 @@ All 855 tracked files in `apps/api`, by directory.
 | `eslint.config.mjs` | script | 36 | Nest resolves constructor parameter types at runtime through decorator |
 | `jest.config.js` | script | 26 | @type {import('jest').Config} |
 | `nest-cli.json` | json | 18 |  |
-| `package.json` | json | 79 |  |
+| `package.json` | json | 81 |  |
 | `prisma.config.ts` | module | 19 | A Prisma config file switches OFF Prisma's automatic .env loading, so we do |
 | `report.20260921.035047.1334.0.001.json` | json | 548 |  |
 | `tsconfig.build.json` | json | 5 |  |
@@ -31,7 +31,7 @@ All 855 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3070 |  |
 
-### `apps/api/prisma/schema` (44)
+### `apps/api/prisma/schema` (45)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -41,7 +41,7 @@ All 855 tracked files in `apps/api`, by directory.
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 638 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 644 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
@@ -65,6 +65,7 @@ All 855 tracked files in `apps/api`, by directory.
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
 | `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `purchasing.prisma` | prisma schema | 303 |  |
+| `rag.prisma` | prisma schema | 159 | WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md). |
 | `receivables.prisma` | prisma schema | 142 | Receivables: CreditNote/DebitNote, customer credit limits, and dunning — |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
 | `reviews.prisma` | prisma schema | 79 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
@@ -566,6 +567,12 @@ All 855 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 50 |  |
 
+### `apps/api/prisma/schema/migrations/20260926000000_add_rag_document_retrieval` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 86 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -877,17 +884,18 @@ All 855 tracked files in `apps/api`, by directory.
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 85 |  |
 
-### `apps/api/src/core/storage` (7)
+### `apps/api/src/core/storage` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `files.controller.ts` | controller | 58 |  |
-| `local-storage.driver.ts` | driver | 72 |  |
-| `s3-storage.driver.ts` | driver | 77 |  |
-| `storage.driver.ts` | driver | 31 | Extension point: file storage. |
+| `files.controller.spec.ts` | unit test | 63 |  |
+| `files.controller.ts` | controller | 67 |  |
+| `local-storage.driver.ts` | driver | 84 |  |
+| `s3-storage.driver.ts` | driver | 92 |  |
+| `storage.driver.ts` | driver | 35 | Extension point: file storage. |
 | `storage.module.ts` | nest module | 14 |  |
 | `storage.service.spec.ts` | unit test | 186 |  |
-| `storage.service.ts` | service | 133 |  |
+| `storage.service.ts` | service | 143 |  |
 
 ### `apps/api/src/core/time` (4)
 
@@ -902,8 +910,8 @@ All 855 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 106 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 221 |  |
+| `module-packs.ts` | module | 107 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 231 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1613,6 +1621,37 @@ All 855 tracked files in `apps/api`, by directory.
 | `requisition.dto.ts` | dto | 50 |  |
 | `supplier-bill.dto.ts` | dto | 67 |  |
 | `supplier.dto.ts` | dto | 104 |  |
+
+### `apps/api/src/modules/rag` (20)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `chunking.spec.ts` | unit test | 71 |  |
+| `chunking.ts` | module | 61 |  |
+| `pdf-extraction.service.spec.ts` | unit test | 196 |  |
+| `pdf-extraction.service.ts` | service | 341 | Pinned to the last major (3.x) whose "legacy" Node build ships as |
+| `pg-vector.store.spec.ts` | unit test | 170 |  |
+| `pg-vector.store.ts` | module | 118 |  |
+| `rag-admin.controller.spec.ts` | unit test | 226 |  |
+| `rag-admin.controller.ts` | controller | 266 |  |
+| `rag-corpus-access.ts` | module | 52 |  |
+| `rag-corpus.service.spec.ts` | unit test | 200 |  |
+| `rag-corpus.service.ts` | service | 273 |  |
+| `rag-generation.service.spec.ts` | unit test | 135 |  |
+| `rag-generation.service.ts` | service | 134 |  |
+| `rag-ingestion.cron.ts` | scheduled job | 27 |  |
+| `rag-ingestion.service.spec.ts` | unit test | 236 |  |
+| `rag-ingestion.service.ts` | service | 276 |  |
+| `rag-retrieval.service.spec.ts` | unit test | 74 |  |
+| `rag-retrieval.service.ts` | service | 69 |  |
+| `rag.module.ts` | nest module | 34 |  |
+| `vector-store.ts` | module | 70 |  |
+
+### `apps/api/src/modules/rag/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `rag.dto.ts` | dto | 70 |  |
 
 ### `apps/api/src/modules/receivables` (12)
 

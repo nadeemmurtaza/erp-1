@@ -276,6 +276,50 @@ export interface AiStatus {
   monthToDateSpendPaisa: number;
 }
 
+// WO-35, docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md.
+export type DocumentCorpus = 'EMPLOYEE_DOCUMENTS' | 'SUPPLIER_CATALOG' | 'BUSINESS_DOCUMENTS' | 'KNOWLEDGE_BASE';
+export type IngestStatus = 'QUEUED' | 'EXTRACTING' | 'CHUNKING' | 'EMBEDDING' | 'READY' | 'FAILED';
+
+export interface DocumentSourceRow {
+  id: string;
+  organizationId: string | null;
+  originalName: string;
+  corpus: DocumentCorpus;
+  status: IngestStatus;
+  pageCount: number | null;
+  ingestedAt: string | null;
+  failureReason: string | null;
+  uploadedById: string | null;
+  createdAt: string;
+  chunkCount: number;
+}
+
+export interface RagStatus {
+  retrievalAvailable: boolean;
+  generationAvailable: boolean;
+}
+
+export interface RagQueryHit {
+  id: string;
+  sourceId: string;
+  pageFrom: number;
+  pageTo: number;
+  text: string;
+  score: number;
+}
+
+export interface RagCitation {
+  sourceId: string;
+  originalName: string;
+  pageFrom: number;
+  pageTo: number;
+}
+
+export interface RagAnswer {
+  text: string;
+  citations: RagCitation[];
+}
+
 export interface MeasurementFieldRow {
   id: string;
   key: string;

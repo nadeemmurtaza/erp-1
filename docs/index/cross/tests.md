@@ -3,7 +3,7 @@
 
 # Tests
 
-**249** spec files, **2,457** cases. What is already pinned down — and what is not.
+**258** spec files, **2,545** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (229)
+## Unit and integration (238)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -98,6 +98,7 @@ regression or an N+1.
 | `apps/api/src/core/replication/replication.registry.spec.ts` | core/replication | 5 | ReplicationRegistry — WO-20.1 |
 | `apps/api/src/core/security/unsubscribe-token.spec.ts` | core/security | 6 | unsubscribeToken / isValidUnsubscribeToken |
 | `apps/api/src/core/settings/document-number.spec.ts` | core/settings | 5 | documentNumber |
+| `apps/api/src/core/storage/files.controller.spec.ts` | core/storage | 3 | FilesController |
 | `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 11 | StorageService.putImage · StorageService.putDocument |
 | `apps/api/src/core/time/metric-window.spec.ts` | core/time | 18 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays · previousWindow |
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 19 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · shopLocalHour · asse… |
@@ -201,6 +202,14 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
 | `apps/api/src/modules/purchasing/requisition.service.spec.ts` | purchasing | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refus… |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
+| `apps/api/src/modules/rag/chunking.spec.ts` | rag | 7 | chunkPages |
+| `apps/api/src/modules/rag/pdf-extraction.service.spec.ts` | rag | 10 | PdfExtractionService · the scanned-page (OCR) fallback · unpack1BitGrayscale · withFallbackTimeout… |
+| `apps/api/src/modules/rag/pg-vector.store.spec.ts` | rag | 5 | PgVectorStore · isolation (WO-35.4 acceptance) · idempotent re-ingestion (WO-35.2/35.3 acceptance) |
+| `apps/api/src/modules/rag/rag-admin.controller.spec.ts` | rag | 17 | RagAdminController · query (H1, security review) · ask (H1, security review) · uploadSource (H1/M4,… |
+| `apps/api/src/modules/rag/rag-corpus.service.spec.ts` | rag | 18 | RagCorpusService · createSource · retry · deleteSource · findOne (H1, security review) · list (H1,… |
+| `apps/api/src/modules/rag/rag-generation.service.spec.ts` | rag | 9 | RagGenerationService · answer · isAvailable · prompt construction (L14, security review) · topK cla… |
+| `apps/api/src/modules/rag/rag-ingestion.service.spec.ts` | rag | 14 | RagIngestionService · processQueued · ingestOne · corpus access (H1, security review) |
+| `apps/api/src/modules/rag/rag-retrieval.service.spec.ts` | rag | 5 | RagRetrievalService · isAvailable · retrieve |
 | `apps/api/src/modules/receivables/dunning.cron.spec.ts` | receivables | 6 | DunningCron — WO-145.4 |
 | `apps/api/src/modules/receivables/dunning.service.spec.ts` | receivables | 6 | DunningService — WO-145.4 |
 | `apps/api/src/modules/receivables/receivables.integration.spec.ts` | receivables | 7 | Receivables — CreditNote/DebitNote posting and credit checks (WO-145) |

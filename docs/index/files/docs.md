@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 394 tracked files in `docs/*`, by directory.
+All 395 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,11 +563,11 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 4803 |  |
+| `DECISIONS.md` | doc | 4913 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 501 |  |
+| `README.md` | doc | 514 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
@@ -669,13 +669,14 @@ All 394 tracked files in `docs/*`, by directory.
 | `85-ai-face-detection-proxy-attendance.md` | doc | 51 |  |
 | `87-corporate-attendance-automation.md` | doc | 71 |  |
 
-### `docs/implementation/b2b-wholesale-multientity` (4)
+### `docs/implementation/b2b-wholesale-multientity` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `111-hierarchical-entity-isolation.md` | doc | 68 |  |
 | `146-wholesale-tiered-pricing.md` | doc | 182 |  |
 | `149-b2b-accounts-approvals-sector-packs.md` | doc | 163 |  |
+| `165-cross-tenant-marketplace-directory.md` | doc | 487 |  |
 | `73-multi-entity-multi-company-configuration.md` | doc | 127 |  |
 
 ### `docs/implementation/catalog-variants-pricing` (3)

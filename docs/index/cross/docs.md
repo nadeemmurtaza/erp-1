@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**420** markdown documents. These explain **why**; this index only says **where**.
+**421** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2490,6 +2490,20 @@ _no second-level headings_
 - Acceptance  <sub>:146</sub>
 - Out of scope  <sub>:155</sub>
 
+### `docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md`  <sub>487 lines</sub>
+
+- What this actually is, and what it is not  <sub>:12</sub>
+- Where it lives: a new module in the existing platform app, not a new repo  <sub>:51</sub>
+- 1. Schema  <sub>:68</sub>
+- 2. Publish, and the transactional path — reusing doc 18, not duplicating it  <sub>:173</sub>
+- 3. Login stays nID-only — two distinct pieces, not one  <sub>:219</sub>
+- 4. Cross-repo dependency — honestly out of this repo's reach  <sub>:256</sub>
+- 5. Phase 2, named and deferred: nID-verified audience, not self-declared  <sub>:272</sub>
+- Scope lenses  <sub>:286</sub>
+- Work orders  <sub>:406</sub>
+- Acceptance  <sub>:446</sub>
+- Out of scope  <sub>:461</sub>
+
 ### `docs/implementation/b2b-wholesale-multientity/73-multi-entity-multi-company-configuration.md`  <sub>127 lines</sub>
 
 - 1. What already exists, in the promotional list's own words  <sub>:21</sub>
@@ -2697,7 +2711,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>4,803 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>4,913 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2749,6 +2763,7 @@ _no second-level headings_
 - ADR-044 — Docs 19/20 (org tree, positions and ranks): `OrgUnit` kept orthogonal to `Node` exactly as specified; no separate `Employee` model — every posting keys to `User`, matching payroll's and doc 79's own precedent  <sub>:4340</sub>
 - ADR-045 — Doc 21 (access over the org tree): `OrgUnitGrant` built exactly as specified; `MAX_GRANT_DAYS` as a plain Setting, not a `BrandPolicy` column; `org.access.grant` seeded to no role by default; the granter's own reach treats "no posting" as unrestricted; existing list endpoints are NOT retrofitted to scope by `OrgUnit`  <sub>:4476</sub>
 - ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify  <sub>:4612</sub>
+- ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo  <sub>:4804</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3346,15 +3361,15 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>501 lines</sub>
+### `docs/implementation/README.md`  <sub>514 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:371</sub>
-- The two module groups  <sub>:400</sub>
-- How a work order runs  <sub>:437</sub>
-- Known gaps not yet owned by a phase  <sub>:455</sub>
-- When a brief is wrong  <sub>:482</sub>
-- Scope, honestly  <sub>:495</sub>
+- Dependency order  <sub>:384</sub>
+- The two module groups  <sub>:413</sub>
+- How a work order runs  <sub>:450</sub>
+- Known gaps not yet owned by a phase  <sub>:468</sub>
+- When a brief is wrong  <sub>:495</sub>
+- Scope, honestly  <sub>:508</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 

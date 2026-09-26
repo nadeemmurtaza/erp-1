@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2117,
-    "lines": 325057,
+    "files": 2118,
+    "lines": 325667,
     "routes": 726,
     "controllers": 131,
     "models": 258,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 394,
-      "lines": 64620,
-      "bytes": 3843281,
+      "files": 395,
+      "lines": 65230,
+      "bytes": 3879330,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -77078,8 +77078,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 4803,
-      "bytes": 278304,
+      "lines": 4913,
+      "bytes": 284808,
       "doc": "",
       "symbols": []
     },
@@ -77114,8 +77114,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 501,
-      "bytes": 66827,
+      "lines": 514,
+      "bytes": 68714,
       "doc": "",
       "symbols": []
     },
@@ -77773,6 +77773,15 @@
       "kind": "doc",
       "lines": 163,
       "bytes": 8913,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 487,
+      "bytes": 27658,
       "doc": "",
       "symbols": []
     },

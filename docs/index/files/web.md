@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 380 tracked files in `apps/web`, by directory.
+All 384 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -733,6 +733,18 @@ All 380 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 315 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/rag` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 287 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/rag/query` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 168 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/reports` (1)
 
 | File | Kind | Lines | Purpose |
@@ -1227,7 +1239,7 @@ All 380 tracked files in `apps/web`, by directory.
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 978 |  |
+| `nav-registry.ts` | component | 1001 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1412,18 +1424,20 @@ All 380 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (9)
+### `apps/web/src/lib` (11)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `admin-client.ts` | utility | 186 |  |
+| `admin-client.ts` | utility | 188 |  |
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
 | `api.ts` | utility | 200 |  |
 | `cart-client.ts` | utility | 99 |  |
 | `customer-client.ts` | utility | 217 |  |
 | `download-csv.ts` | utility | 36 |  |
+| `download-file.ts` | utility | 23 |  |
 | `onsite-messages-client.ts` | utility | 24 |  |
+| `rag-corpus-access.ts` | utility | 27 |  |
 | `wishlist.ts` | utility | 192 |  |
 
 ### `apps/web/src/providers` (2)
@@ -1437,7 +1451,7 @@ All 380 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1597 |  |
+| `api.ts` | types | 1641 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

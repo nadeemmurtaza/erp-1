@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2049,
-    "lines": 314866,
-    "routes": 691,
-    "controllers": 125,
-    "models": 251,
-    "enums": 115,
-    "migrations": 89,
+    "files": 2077,
+    "lines": 319214,
+    "routes": 702,
+    "controllers": 126,
+    "models": 253,
+    "enums": 117,
+    "migrations": 90,
     "events": 63,
-    "permissions": 89,
-    "screens": 239,
-    "crons": 20,
-    "specs": 251,
+    "permissions": 91,
+    "screens": 241,
+    "crons": 21,
+    "specs": 260,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29688,
-      "bytes": 1169091,
+      "lines": 29964,
+      "bytes": 1177439,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 867,
-      "lines": 123008,
-      "bytes": 4686803,
+      "files": 891,
+      "lines": 126484,
+      "bytes": 4847304,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,9 +50,9 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 380,
-      "lines": 61883,
-      "bytes": 2230862,
+      "files": 384,
+      "lines": 62457,
+      "bytes": 2252739,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -63,8 +63,8 @@
     },
     "packages": {
       "files": 79,
-      "lines": 7991,
-      "bytes": 283036,
+      "lines": 8013,
+      "bytes": 284084,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -783,6 +783,37 @@
       "page": "docs/index/modules/purchasing.md"
     },
     {
+      "name": "rag",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/rag/chunking.spec.ts",
+        "apps/api/src/modules/rag/chunking.ts",
+        "apps/api/src/modules/rag/dto/rag.dto.ts",
+        "apps/api/src/modules/rag/pdf-extraction.service.spec.ts",
+        "apps/api/src/modules/rag/pdf-extraction.service.ts",
+        "apps/api/src/modules/rag/pg-vector.store.spec.ts",
+        "apps/api/src/modules/rag/pg-vector.store.ts",
+        "apps/api/src/modules/rag/rag-admin.controller.spec.ts",
+        "apps/api/src/modules/rag/rag-admin.controller.ts",
+        "apps/api/src/modules/rag/rag-corpus-access.ts",
+        "apps/api/src/modules/rag/rag-corpus.service.spec.ts",
+        "apps/api/src/modules/rag/rag-corpus.service.ts",
+        "apps/api/src/modules/rag/rag-generation.service.spec.ts",
+        "apps/api/src/modules/rag/rag-generation.service.ts",
+        "apps/api/src/modules/rag/rag-ingestion.cron.ts",
+        "apps/api/src/modules/rag/rag-ingestion.service.spec.ts",
+        "apps/api/src/modules/rag/rag-ingestion.service.ts",
+        "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
+        "apps/api/src/modules/rag/rag-retrieval.service.ts",
+        "apps/api/src/modules/rag/rag.module.ts",
+        "apps/api/src/modules/rag/vector-store.ts"
+      ],
+      "routes": 11,
+      "page": "docs/index/modules/rag.md"
+    },
+    {
       "name": "receivables",
       "pack": "core",
       "alwaysOn": false,
@@ -1330,6 +1361,7 @@
     {
       "name": "storage",
       "files": [
+        "apps/api/src/core/storage/files.controller.spec.ts",
         "apps/api/src/core/storage/files.controller.ts",
         "apps/api/src/core/storage/local-storage.driver.ts",
         "apps/api/src/core/storage/s3-storage.driver.ts",
@@ -8052,6 +8084,183 @@
       "summary": "Get a quote"
     },
     {
+      "method": "POST",
+      "path": "/admin/rag/ask",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "ask",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 251,
+      "access": "rag.query",
+      "permissions": [
+        "rag.query"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Retrieval + a generated, cited answer — an internal staff read, no draft-confirm gate (09-ai-layer.md §5)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/query",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "query",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 230,
+      "access": "rag.query",
+      "permissions": [
+        "rag.query"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Dry run: the retrieved chunks for a query, with no generation step (the doc's own tuning tool)"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/rag/sources",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "listSources",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 96,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The ingestion queue: every DocumentSource and its status — constrained to corpora this caller may see (H1)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "uploadSource",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 127,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Upload a PDF into a corpus — queued for the next ingestion pass"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/rag/sources/:id",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "deleteSource",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 216,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove a source and its chunks — never indexed again unless re-uploaded"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/rag/sources/:id",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "getSource",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 105,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One DocumentSource, with its chunk count"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/rag/sources/:id/file",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "downloadSourceFile",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 114,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Download the original stored PDF — the only authenticated path to its bytes (H2, security review)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources/:id/file",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "replaceSourceFile",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 158,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Replace a source's file — corrects a bad upload without a delete-then-recreate round trip (L20, security review)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources/:id/ingest-now",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "ingestNow",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 195,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Queue immediate, in-background ingestion for one QUEUED source, without waiting for the cron"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources/:id/retry",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "retry",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 175,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Re-queue a FAILED source, or one stuck in-flight past the staleness threshold"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/rag/status",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "status",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 84,
+      "access": "rag.ingest.manage | rag.query",
+      "permissions": [
+        "rag.ingest.manage",
+        "rag.query"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Whether retrieval/generation are available — the absent-AiProvider case the query console hides itself for"
+    },
+    {
       "method": "GET",
       "path": "/admin/reports/export/expense-register",
       "module": "reports",
@@ -12326,7 +12535,7 @@
         "GET /admin/accounting/reports/profit-and-loss",
         "GET /admin/accounting/reports/trial-balance"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "ADMIN"
       ],
@@ -12820,7 +13029,7 @@
         "POST /admin/suppliers/:id/products",
         "DELETE /admin/suppliers/:id/products/:variantId"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -13436,7 +13645,7 @@
         "GET /admin/payroll/runs",
         "GET /admin/payroll/runs/:id"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "ADMIN"
       ],
@@ -14014,6 +14223,46 @@
         "PUT /admin/settings/ai"
       ],
       "uiSites": 3,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "rag.ingest.manage",
+      "label": "Upload documents into a RAG corpus, and retry or remove one from the ingestion queue",
+      "category": "Administration",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/rag/sources",
+        "POST /admin/rag/sources",
+        "DELETE /admin/rag/sources/:id",
+        "GET /admin/rag/sources/:id",
+        "GET /admin/rag/sources/:id/file",
+        "POST /admin/rag/sources/:id/file",
+        "POST /admin/rag/sources/:id/ingest-now",
+        "POST /admin/rag/sources/:id/retry",
+        "GET /admin/rag/status"
+      ],
+      "uiSites": 3,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "rag.query",
+      "label": "Run a retrieval or generated-answer query directly against a document corpus",
+      "category": "Administration",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/rag/ask",
+        "POST /admin/rag/query",
+        "GET /admin/rag/status"
+      ],
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -15106,7 +15355,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 624,
+      "line": 630,
       "doc": "",
       "fields": [
         {
@@ -19031,6 +19280,212 @@
       ],
       "indexes": [
         "@@index([isActive, startsAt, endsAt])"
+      ]
+    },
+    {
+      "name": "DocumentChunk",
+      "file": "apps/api/prisma/schema/rag.prisma",
+      "line": 129,
+      "doc": "One row per chunk, not per document — chunking is what makes retrieval precise instead of \"here's a 40-page PDF, good luck.\" `organizationId` and `corpus` are both denormalized from `DocumentSource`…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "organizationId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "corpus",
+          "type": "DocumentCorpus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "pageFrom",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "pageTo",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "text",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "embedding",
+          "type": "Unsupported(\"vector(1536)\")",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "source",
+          "type": "DocumentSource",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([organizationId, corpus, sourceId])",
+        "@@index([sourceId])"
+      ]
+    },
+    {
+      "name": "DocumentSource",
+      "file": "apps/api/prisma/schema/rag.prisma",
+      "line": 76,
+      "doc": "A source document — one row per uploaded file.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "organizationId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "storageKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "originalName",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "corpus",
+          "type": "DocumentCorpus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "IngestStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "pageCount",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ingestedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "failureReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "uploadedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "claimedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attempts",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "nextAttemptAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "chunks",
+          "type": "DocumentChunk[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([organizationId, corpus, status])",
+        "@@index([status])"
       ]
     },
     {
@@ -37238,7 +37693,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 618,
+      "line": 624,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -37261,7 +37716,10 @@
         "WHATSAPP_ASSISTANT",
         "MARKDOWN_SUGGESTION",
         "REVIEW_SUMMARY",
-        "IMPORT_CLEANUP"
+        "IMPORT_CLEANUP",
+        "RAG_INGESTION",
+        "RAG_RETRIEVAL",
+        "RAG_GENERATION"
       ]
     },
     {
@@ -37514,6 +37972,17 @@
       ]
     },
     {
+      "name": "DocumentCorpus",
+      "file": "apps/api/prisma/schema/rag.prisma",
+      "line": 48,
+      "values": [
+        "EMPLOYEE_DOCUMENTS",
+        "SUPPLIER_CATALOG",
+        "BUSINESS_DOCUMENTS",
+        "KNOWLEDGE_BASE"
+      ]
+    },
+    {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 341,
@@ -37577,6 +38046,19 @@
         "APPROVED",
         "REJECTED",
         "EXPIRED"
+      ]
+    },
+    {
+      "name": "IngestStatus",
+      "file": "apps/api/prisma/schema/rag.prisma",
+      "line": 64,
+      "values": [
+        "QUEUED",
+        "EXTRACTING",
+        "CHUNKING",
+        "EMBEDDING",
+        "READY",
+        "FAILED"
       ]
     },
     {
@@ -40085,6 +40567,24 @@
       ]
     },
     {
+      "folder": "20260926000000_add_rag_document_retrieval",
+      "file": "apps/api/prisma/schema/migrations/20260926000000_add_rag_document_retrieval/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_rag_document_retrieval",
+      "statements": 17,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "DocumentChunk",
+        "DocumentSource"
+      ]
+    },
+    {
       "folder": "20260926080000_add_org_structure",
       "file": "apps/api/prisma/schema/migrations/20260926080000_add_org_structure/migration.sql",
       "date": "2026-09-26",
@@ -42008,6 +42508,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/rag",
+      "file": "apps/web/src/app/(admin)/admin/(app)/rag/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/rag/query",
+      "file": "apps/web/src/app/(admin)/admin/(app)/rag/query/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/reports",
       "file": "apps/web/src/app/(admin)/admin/(app)/reports/page.tsx",
       "client": true,
@@ -42424,6 +42942,13 @@
       "file": "apps/api/src/modules/purchasing/purchasing.cron.ts",
       "line": 36,
       "handler": "sweepReorderCandidates",
+      "doc": ""
+    },
+    {
+      "schedule": "*/5 * * * *",
+      "file": "apps/api/src/modules/rag/rag-ingestion.cron.ts",
+      "line": 19,
+      "handler": "run",
       "doc": ""
     },
     {
@@ -43366,6 +43891,15 @@
       "cases": 5,
       "describes": [
         "documentNumber"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/storage/files.controller.spec.ts",
+      "module": "core/storage",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "FilesController"
       ]
     },
     {
@@ -44568,6 +45102,104 @@
         "PurchasingService — supplier bills",
         "createSupplierBill",
         "recordSupplierBillPayment"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/chunking.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "chunkPages"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/pdf-extraction.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "PdfExtractionService",
+        "the scanned-page (OCR) fallback",
+        "unpack1BitGrayscale",
+        "withFallbackTimeout / withDeadline"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/pg-vector.store.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "PgVectorStore",
+        "isolation (WO-35.4 acceptance)",
+        "idempotent re-ingestion (WO-35.2/35.3 acceptance)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-admin.controller.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 17,
+      "describes": [
+        "RagAdminController",
+        "query (H1, security review)",
+        "ask (H1, security review)",
+        "uploadSource (H1/M4, security review)",
+        "ingestNow (M12, security review)",
+        "permission threading (H1, security review)",
+        "downloadSourceFile (H2, security review)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-corpus.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 18,
+      "describes": [
+        "RagCorpusService",
+        "createSource",
+        "retry",
+        "deleteSource",
+        "findOne (H1, security review)",
+        "list (H1, security review)",
+        "chunkCounts (L18, security review)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-generation.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "RagGenerationService",
+        "answer",
+        "isAvailable",
+        "prompt construction (L14, security review)",
+        "topK clamp (L17, security review)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-ingestion.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "RagIngestionService",
+        "processQueued",
+        "ingestOne",
+        "corpus access (H1, security review)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "RagRetrievalService",
+        "isAvailable",
+        "retrieve"
       ]
     },
     {
@@ -45985,7 +46617,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5353,
+      "bytes": 5357,
       "doc": "",
       "symbols": []
     },
@@ -45994,7 +46626,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 174,
-      "bytes": 8760,
+      "bytes": 8764,
       "doc": "",
       "symbols": []
     },
@@ -46003,7 +46635,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5798,
+      "bytes": 5802,
       "doc": "",
       "symbols": []
     },
@@ -46254,8 +46886,8 @@
       "path": "apps/api/package.json",
       "area": "api",
       "kind": "json",
-      "lines": 79,
-      "bytes": 2491,
+      "lines": 81,
+      "bytes": 2570,
       "doc": "",
       "symbols": []
     },
@@ -46350,8 +46982,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 644,
-      "bytes": 26469,
+      "lines": 650,
+      "bytes": 26714,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -47184,6 +47816,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926000000_add_rag_document_retrieval/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 86,
+      "bytes": 3714,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/20260926080000_add_org_structure/migration.sql",
       "area": "api",
       "kind": "migration",
@@ -47316,6 +47957,15 @@
       "lines": 303,
       "bytes": 12379,
       "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/rag.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 159,
+      "bytes": 8184,
+      "doc": "WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md).",
       "symbols": []
     },
     {
@@ -50879,11 +51529,20 @@
       ]
     },
     {
+      "path": "apps/api/src/core/storage/files.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 63,
+      "bytes": 2837,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/storage/files.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 58,
-      "bytes": 1934,
+      "lines": 67,
+      "bytes": 2386,
       "doc": "",
       "symbols": [
         {
@@ -50897,8 +51556,8 @@
       "path": "apps/api/src/core/storage/local-storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 72,
-      "bytes": 2513,
+      "lines": 84,
+      "bytes": 2997,
       "doc": "",
       "symbols": [
         {
@@ -50909,7 +51568,7 @@
         {
           "name": "buildKey",
           "kind": "function",
-          "line": 61
+          "line": 73
         }
       ]
     },
@@ -50917,14 +51576,14 @@
       "path": "apps/api/src/core/storage/s3-storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 77,
-      "bytes": 2583,
+      "lines": 92,
+      "bytes": 3434,
       "doc": "",
       "symbols": [
         {
           "name": "S3StorageDriver",
           "kind": "class",
-          "line": 13
+          "line": 14
         }
       ]
     },
@@ -50932,8 +51591,8 @@
       "path": "apps/api/src/core/storage/storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 31,
-      "bytes": 842,
+      "lines": 35,
+      "bytes": 1297,
       "doc": "Extension point: file storage.",
       "symbols": [
         {
@@ -50981,8 +51640,8 @@
       "path": "apps/api/src/core/storage/storage.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 133,
-      "bytes": 4807,
+      "lines": 143,
+      "bytes": 5263,
       "doc": "",
       "symbols": [
         {
@@ -55874,8 +56533,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 107,
-      "bytes": 3487,
+      "lines": 108,
+      "bytes": 3502,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -55894,24 +56553,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 223,
-      "bytes": 12243,
+      "lines": 233,
+      "bytes": 12879,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 49
+          "line": 50
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 80
+          "line": 81
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 199
+          "line": 209
         }
       ]
     },
@@ -58126,6 +58785,383 @@
       "bytes": 8558,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/chunking.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 71,
+      "bytes": 3124,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/chunking.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 61,
+      "bytes": 2681,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TextChunk",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "chunkPages",
+          "kind": "function",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/dto/rag.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 70,
+      "bytes": 2239,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UploadSourceDto",
+          "kind": "class",
+          "line": 9
+        },
+        {
+          "name": "ListSourcesQueryDto",
+          "kind": "class",
+          "line": 20
+        },
+        {
+          "name": "RagQueryDto",
+          "kind": "class",
+          "line": 47
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/pdf-extraction.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 196,
+      "bytes": 9749,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/pdf-extraction.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 341,
+      "bytes": 15518,
+      "doc": "Pinned to the last major (3.x) whose \"legacy\" Node build ships as",
+      "symbols": [
+        {
+          "name": "ExtractedPage",
+          "kind": "interface",
+          "line": 52
+        },
+        {
+          "name": "ExtractionResult",
+          "kind": "interface",
+          "line": 59
+        },
+        {
+          "name": "PdfExtractionService",
+          "kind": "class",
+          "line": 83
+        },
+        {
+          "name": "withFallbackTimeout",
+          "kind": "function",
+          "line": 259
+        },
+        {
+          "name": "withDeadline",
+          "kind": "function",
+          "line": 280
+        },
+        {
+          "name": "unpack1BitGrayscale",
+          "kind": "function",
+          "line": 302
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/pg-vector.store.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 170,
+      "bytes": 6644,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/pg-vector.store.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 118,
+      "bytes": 5865,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PgVectorStore",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-admin.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 226,
+      "bytes": 11173,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 266,
+      "bytes": 12380,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagAdminController",
+          "kind": "class",
+          "line": 70
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-corpus-access.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 52,
+      "bytes": 2664,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "assertCorpusAccess",
+          "kind": "function",
+          "line": 38
+        },
+        {
+          "name": "visibleCorpora",
+          "kind": "function",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-corpus.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 200,
+      "bytes": 10066,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-corpus.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 273,
+      "bytes": 11626,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PublicDocumentSource",
+          "kind": "type",
+          "line": 16
+        },
+        {
+          "name": "toPublicSource",
+          "kind": "function",
+          "line": 18
+        },
+        {
+          "name": "UploadedSourceFile",
+          "kind": "interface",
+          "line": 23
+        },
+        {
+          "name": "RagCorpusService",
+          "kind": "class",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-generation.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 135,
+      "bytes": 6453,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-generation.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 134,
+      "bytes": 6112,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagCitation",
+          "kind": "interface",
+          "line": 7
+        },
+        {
+          "name": "RagAnswer",
+          "kind": "interface",
+          "line": 14
+        },
+        {
+          "name": "RagGenerationService",
+          "kind": "class",
+          "line": 76
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-ingestion.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 27,
+      "bytes": 1086,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagIngestionCron",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-ingestion.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 236,
+      "bytes": 10945,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-ingestion.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 276,
+      "bytes": 12988,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "INGESTION_BATCH_SIZE",
+          "kind": "const",
+          "line": 15
+        },
+        {
+          "name": "STALE_CLAIM_MINUTES",
+          "kind": "const",
+          "line": 23
+        },
+        {
+          "name": "RagIngestionService",
+          "kind": "class",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 74,
+      "bytes": 3211,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-retrieval.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 69,
+      "bytes": 3194,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagScope",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "DEFAULT_TOP_K",
+          "kind": "const",
+          "line": 11
+        },
+        {
+          "name": "RagRetrievalService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 34,
+      "bytes": 1303,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagModule",
+          "kind": "class",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/vector-store.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 70,
+      "bytes": 3072,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DocumentChunkInput",
+          "kind": "interface",
+          "line": 25
+        },
+        {
+          "name": "VectorQueryFilter",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "VectorQueryHit",
+          "kind": "interface",
+          "line": 43
+        },
+        {
+          "name": "VectorStore",
+          "kind": "interface",
+          "line": 53
+        },
+        {
+          "name": "VECTOR_STORE",
+          "kind": "const",
+          "line": 69
+        }
+      ]
     },
     {
       "path": "apps/api/src/modules/receivables/credit-notes.service.ts",
@@ -66419,6 +67455,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/rag/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 287,
+      "bytes": 10980,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagSourcesPage",
+          "kind": "default",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/rag/query/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 168,
+      "bytes": 6947,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagQueryConsolePage",
+          "kind": "default",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/reports/page.tsx",
       "area": "web",
       "kind": "page",
@@ -68773,8 +69839,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 978,
-      "bytes": 26568,
+      "lines": 1001,
+      "bytes": 27386,
       "doc": "",
       "symbols": [
         {
@@ -68805,12 +69871,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 948
+          "line": 971
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 963
+          "line": 986
         }
       ]
     },
@@ -70178,8 +71244,8 @@
       "path": "apps/web/src/lib/admin-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 186,
-      "bytes": 6279,
+      "lines": 188,
+      "bytes": 6364,
       "doc": "",
       "symbols": [
         {
@@ -70510,6 +71576,21 @@
       ]
     },
     {
+      "path": "apps/web/src/lib/download-file.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 23,
+      "bytes": 756,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "downloadFile",
+          "kind": "function",
+          "line": 10
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/lib/onsite-messages-client.ts",
       "area": "web",
       "kind": "utility",
@@ -70524,6 +71605,21 @@
         },
         {
           "name": "subscribeToNewsletter",
+          "kind": "function",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/rag-corpus-access.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 27,
+      "bytes": 1248,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "visibleCorpora",
           "kind": "function",
           "line": 21
         }
@@ -70608,8 +71704,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1597,
-      "bytes": 43147,
+      "lines": 1641,
+      "bytes": 44190,
       "doc": "",
       "symbols": [
         {
@@ -70723,704 +71819,739 @@
           "line": 271
         },
         {
+          "name": "DocumentCorpus",
+          "kind": "type",
+          "line": 280
+        },
+        {
+          "name": "IngestStatus",
+          "kind": "type",
+          "line": 281
+        },
+        {
+          "name": "DocumentSourceRow",
+          "kind": "interface",
+          "line": 283
+        },
+        {
+          "name": "RagStatus",
+          "kind": "interface",
+          "line": 297
+        },
+        {
+          "name": "RagQueryHit",
+          "kind": "interface",
+          "line": 302
+        },
+        {
+          "name": "RagCitation",
+          "kind": "interface",
+          "line": 311
+        },
+        {
+          "name": "RagAnswer",
+          "kind": "interface",
+          "line": 318
+        },
+        {
           "name": "MeasurementFieldRow",
-          "kind": "interface",
-          "line": 279
-        },
-        {
-          "name": "GarmentType",
-          "kind": "interface",
-          "line": 294
-        },
-        {
-          "name": "AdminGarmentSizeChartRow",
-          "kind": "interface",
-          "line": 314
-        },
-        {
-          "name": "SizeRecommendation",
           "kind": "interface",
           "line": 323
         },
         {
+          "name": "GarmentType",
+          "kind": "interface",
+          "line": 338
+        },
+        {
+          "name": "AdminGarmentSizeChartRow",
+          "kind": "interface",
+          "line": 358
+        },
+        {
+          "name": "SizeRecommendation",
+          "kind": "interface",
+          "line": 367
+        },
+        {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 335
+          "line": 379
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 348
+          "line": 392
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 361
+          "line": 405
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 381
+          "line": 425
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 388
+          "line": 432
         },
         {
           "name": "ColumnMappingSuggestion",
           "kind": "interface",
-          "line": 397
+          "line": 441
         },
         {
           "name": "ValueNormalizationSuggestion",
           "kind": "interface",
-          "line": 402
+          "line": 446
         },
         {
           "name": "DuplicateFlag",
           "kind": "interface",
-          "line": 408
+          "line": 452
         },
         {
           "name": "CategorySuggestion",
           "kind": "interface",
-          "line": 414
+          "line": 458
         },
         {
           "name": "TranslationSuggestion",
           "kind": "interface",
-          "line": 419
+          "line": 463
         },
         {
           "name": "ImportAssistanceResult",
           "kind": "interface",
-          "line": 425
+          "line": 469
         },
         {
           "name": "CsvImportRowResult",
           "kind": "interface",
-          "line": 440
+          "line": 484
         },
         {
           "name": "CsvImportSummary",
           "kind": "interface",
-          "line": 447
+          "line": 491
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 455
+          "line": 499
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 473
+          "line": 517
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 481
+          "line": 525
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 491
+          "line": 535
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 500
+          "line": 544
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 511
+          "line": 555
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 526
+          "line": 570
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 541
+          "line": 585
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 557
+          "line": 601
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 570
+          "line": 614
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 577
+          "line": 621
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 586
+          "line": 630
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 596
+          "line": 640
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 608
+          "line": 652
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 621
+          "line": 665
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 627
+          "line": 671
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 638
+          "line": 682
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 645
+          "line": 689
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 651
+          "line": 695
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 660
+          "line": 704
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 668
+          "line": 712
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 673
+          "line": 717
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 680
+          "line": 724
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 688
+          "line": 732
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 694
+          "line": 738
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 700
+          "line": 744
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 713
+          "line": 757
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 719
+          "line": 763
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 731
+          "line": 775
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 735
+          "line": 779
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 744
+          "line": 788
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 748
+          "line": 792
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 757
+          "line": 801
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 764
+          "line": 808
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 771
+          "line": 815
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 778
+          "line": 822
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 788
+          "line": 832
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 796
+          "line": 840
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 803
+          "line": 847
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 809
+          "line": 853
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 814
+          "line": 858
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 824
+          "line": 868
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 830
+          "line": 874
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 836
+          "line": 880
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 843
+          "line": 887
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 852
+          "line": 896
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 854
+          "line": 898
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 865
+          "line": 909
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 870
+          "line": 914
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 876
+          "line": 920
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 878
+          "line": 922
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 887
+          "line": 931
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 896
+          "line": 940
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 898
+          "line": 942
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 915
+          "line": 959
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 920
+          "line": 964
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 922
+          "line": 966
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 936
+          "line": 980
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 938
+          "line": 982
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 949
+          "line": 993
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 964
+          "line": 1008
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 971
+          "line": 1015
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 973
+          "line": 1017
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 998
+          "line": 1042
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 1006
+          "line": 1050
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 1014
+          "line": 1058
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 1021
+          "line": 1065
         },
         {
           "name": "WhatsAppMessage",
           "kind": "interface",
-          "line": 1038
+          "line": 1082
         },
         {
           "name": "WhatsAppConversation",
           "kind": "interface",
-          "line": 1046
+          "line": 1090
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 1061
+          "line": 1105
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 1068
+          "line": 1112
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 1080
+          "line": 1124
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 1089
+          "line": 1133
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 1091
+          "line": 1135
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1103
+          "line": 1147
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 1109
+          "line": 1153
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 1116
+          "line": 1160
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 1121
+          "line": 1165
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1133
+          "line": 1177
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1142
+          "line": 1186
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1149
+          "line": 1193
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1163
+          "line": 1207
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1174
+          "line": 1218
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1178
+          "line": 1222
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1187
+          "line": 1231
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1195
+          "line": 1239
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1226
+          "line": 1270
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1259
+          "line": 1303
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1265
+          "line": 1309
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1283
+          "line": 1327
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1298
+          "line": 1342
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1307
+          "line": 1351
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1316
+          "line": 1360
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1332
+          "line": 1376
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1339
+          "line": 1383
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1347
+          "line": 1391
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1354
+          "line": 1398
         },
         {
           "name": "DashboardCardsResponse",
           "kind": "interface",
-          "line": 1371
+          "line": 1415
         },
         {
           "name": "ActionItem",
           "kind": "interface",
-          "line": 1385
+          "line": 1429
         },
         {
           "name": "ActionHubResponse",
           "kind": "interface",
-          "line": 1396
+          "line": 1440
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1402
+          "line": 1446
         },
         {
           "name": "ProductCrossSellKind",
           "kind": "type",
-          "line": 1410
+          "line": 1454
         },
         {
           "name": "ProductCrossSellRow",
           "kind": "interface",
-          "line": 1412
+          "line": 1456
         },
         {
           "name": "MarkdownSuggestionStatus",
           "kind": "type",
-          "line": 1419
+          "line": 1463
         },
         {
           "name": "MarkdownSuggestion",
           "kind": "interface",
-          "line": 1421
+          "line": 1465
         },
         {
           "name": "ApiKeyStatus",
           "kind": "type",
-          "line": 1447
+          "line": 1491
         },
         {
           "name": "ApiKeyRevocationReason",
           "kind": "type",
-          "line": 1448
+          "line": 1492
         },
         {
           "name": "ApiKeyView",
           "kind": "interface",
-          "line": 1469
+          "line": 1513
         },
         {
           "name": "IssuedApiKey",
           "kind": "interface",
-          "line": 1476
+          "line": 1520
         },
         {
           "name": "SsoConnectionStatus",
           "kind": "type",
-          "line": 1486
+          "line": 1530
         },
         {
           "name": "SsoConnection",
           "kind": "interface",
-          "line": 1488
+          "line": 1532
         },
         {
           "name": "SsoConnectionList",
           "kind": "interface",
-          "line": 1505
+          "line": 1549
         },
         {
           "name": "SsoDefaultRoleOption",
           "kind": "interface",
-          "line": 1511
+          "line": 1555
         },
         {
           "name": "SsoAccount",
           "kind": "interface",
-          "line": 1517
+          "line": 1561
         },
         {
           "name": "SsoSignInOption",
           "kind": "interface",
-          "line": 1531
+          "line": 1575
         },
         {
           "name": "ApiKeyOversightView",
           "kind": "interface",
-          "line": 1537
+          "line": 1581
         },
         {
           "name": "ManagedServicesUsageSnapshot",
           "kind": "interface",
-          "line": 1558
+          "line": 1602
         },
         {
           "name": "ManagedServicesTenantStatus",
           "kind": "type",
-          "line": 1565
+          "line": 1609
         },
         {
           "name": "ManagedServicesUsageResponse",
           "kind": "interface",
-          "line": 1567
+          "line": 1611
         },
         {
           "name": "ManagedServicesInvoiceStatus",
           "kind": "type",
-          "line": 1574
+          "line": 1618
         },
         {
           "name": "ManagedServicesStripePaymentStatus",
           "kind": "type",
-          "line": 1575
+          "line": 1619
         },
         {
           "name": "ManagedServicesInvoice",
           "kind": "interface",
-          "line": 1577
+          "line": 1621
         },
         {
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
-          "line": 1593
+          "line": 1637
         }
       ]
     },
@@ -75539,8 +76670,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 58,
-      "bytes": 2341,
+      "lines": 59,
+      "bytes": 2373,
       "doc": "",
       "symbols": []
     },
@@ -76830,8 +77961,8 @@
       "path": "packages/shared/src/http-client.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 200,
-      "bytes": 7268,
+      "lines": 201,
+      "bytes": 7388,
       "doc": "The one HTTP layer for a signed-in browser client.",
       "symbols": [
         {
@@ -76862,7 +77993,7 @@
         {
           "name": "requestWithRefresh",
           "kind": "function",
-          "line": 158
+          "line": 159
         }
       ]
     },
@@ -77115,8 +78246,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 943,
-      "bytes": 29042,
+      "lines": 964,
+      "bytes": 29970,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -77137,47 +78268,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 565
+          "line": 582
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 567
+          "line": 584
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 577
+          "line": 594
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 584
+          "line": 601
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 772
+          "line": 789
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 930
+          "line": 951
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 935
+          "line": 956
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 936
+          "line": 957
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 939
+          "line": 960
         }
       ]
     },
@@ -77623,8 +78754,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18572,
-      "bytes": 680437,
+      "lines": 18847,
+      "bytes": 688741,
       "doc": "",
       "symbols": []
     },

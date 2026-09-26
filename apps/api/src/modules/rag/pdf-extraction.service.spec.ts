@@ -1,0 +1,195 @@
+import { Test } from '@nestjs/testing';
+import { AiService } from '../../core/ai/ai.service';
+import { StorageService } from '../../core/storage/storage.service';
+import { PdfExtractionService, unpack1BitGrayscale, withDeadline, withFallbackTimeout } from './pdf-extraction.service';
+
+/** A minimal, hand-built one-page PDF with a real text layer — no PDF-writing library needed for a fixture this small. */
+function buildTextPdf(text: string): Buffer {
+  const objects: Buffer[] = [
+    Buffer.from('<< /Type /Catalog /Pages 2 0 R >>'),
+    Buffer.from('<< /Type /Pages /Kids [3 0 R] /Count 1 >>'),
+    Buffer.from('<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R >> >> /MediaBox [0 0 612 792] /Contents 5 0 R >>'),
+    Buffer.from('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>'),
+  ];
+  const content = Buffer.from(`BT /F1 24 Tf 72 700 Td (${text}) Tj ET`, 'latin1');
+  objects.push(Buffer.concat([Buffer.from(`<< /Length ${content.length} >>\nstream\n`), content, Buffer.from('\nendstream')]));
+  return assemblePdf(objects);
+}
+
+/** A minimal one-page PDF whose only content is a tiny embedded raster image — no text layer at all, standing in for a scanned page. */
+function buildImageOnlyPdf(): Buffer {
+  const width = 4;
+  const height = 4;
+  const pixels = Buffer.alloc(width * height * 3);
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const offset = (y * width + x) * 3;
+      pixels[offset] = (x * 60) % 256;
+      pixels[offset + 1] = (y * 60) % 256;
+      pixels[offset + 2] = 128;
+    }
+  }
+
+  const objects: Buffer[] = [
+    Buffer.from('<< /Type /Catalog /Pages 2 0 R >>'),
+    Buffer.from('<< /Type /Pages /Kids [3 0 R] /Count 1 >>'),
+    Buffer.from('<< /Type /Page /Parent 2 0 R /Resources << /XObject << /Im1 4 0 R >> >> /MediaBox [0 0 100 100] /Contents 5 0 R >>'),
+  ];
+  const imageDict = Buffer.from(
+    `<< /Type /XObject /Subtype /Image /Width ${width} /Height ${height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Length ${pixels.length} >>\nstream\n`,
+  );
+  objects.push(Buffer.concat([imageDict, pixels, Buffer.from('\nendstream')]));
+  const content = Buffer.from('q 100 0 0 100 0 0 cm /Im1 Do Q');
+  objects.push(Buffer.concat([Buffer.from(`<< /Length ${content.length} >>\nstream\n`), content, Buffer.from('\nendstream')]));
+  return assemblePdf(objects);
+}
+
+function assemblePdf(objects: Buffer[]): Buffer {
+  const chunks: Buffer[] = [Buffer.from('%PDF-1.4\n')];
+  const offsets: number[] = [];
+  let position = chunks[0].length;
+
+  objects.forEach((obj, index) => {
+    offsets.push(position);
+    const header = Buffer.from(`${index + 1} 0 obj\n`);
+    const footer = Buffer.from('\nendobj\n');
+    chunks.push(header, obj, footer);
+    position += header.length + obj.length + footer.length;
+  });
+
+  const xrefOffset = position;
+  const n = objects.length + 1;
+  let xref = `xref\n0 ${n}\n0000000000 65535 f \n`;
+  for (const offset of offsets) {
+    xref += `${String(offset).padStart(10, '0')} 00000 n \n`;
+  }
+  chunks.push(Buffer.from(xref));
+  chunks.push(Buffer.from(`trailer\n<< /Size ${n} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`));
+
+  return Buffer.concat(chunks);
+}
+
+describe('PdfExtractionService', () => {
+  let service: PdfExtractionService;
+  let ai: { isAvailable: jest.Mock; describeImage: jest.Mock };
+  let storage: { putImage: jest.Mock; signedUrlFor: jest.Mock; delete: jest.Mock };
+
+  beforeEach(async () => {
+    ai = { isAvailable: jest.fn(), describeImage: jest.fn() };
+    storage = {
+      putImage: jest.fn(),
+      signedUrlFor: jest.fn().mockImplementation((key: string) => Promise.resolve(`https://files.local/${key}?signed=1`)),
+      delete: jest.fn().mockResolvedValue(undefined),
+    };
+
+    const module = await Test.createTestingModule({
+      providers: [PdfExtractionService, { provide: AiService, useValue: ai }, { provide: StorageService, useValue: storage }],
+    }).compile();
+    service = module.get(PdfExtractionService);
+  });
+
+  it('extracts a real text layer without calling OCR at all', async () => {
+    const pdf = buildTextPdf('Hello RAG World, this is a real text layer.');
+
+    const result = await service.extract(pdf);
+
+    expect(result.pageCount).toBe(1);
+    expect(result.pages).toHaveLength(1);
+    expect(result.pages[0].text).toBe('Hello RAG World, this is a real text layer.');
+    expect(result.pages[0].fromOcr).toBe(false);
+    expect(ai.isAvailable).not.toHaveBeenCalled();
+  });
+
+  describe('the scanned-page (OCR) fallback', () => {
+    it('falls back to describeImage() when the page has no text layer, and returns its transcription', async () => {
+      const pdf = buildImageOnlyPdf();
+      ai.isAvailable.mockReturnValue(true);
+      storage.putImage.mockResolvedValue({ key: 'rag-ocr/page-1.png', url: 'https://files.local/rag-ocr/page-1.png', size: 100, contentType: 'image/png' });
+      ai.describeImage.mockResolvedValue({ text: 'Transcribed page text.', inputTokens: 20, outputTokens: 10, model: 'x' });
+
+      const result = await service.extract(pdf);
+
+      expect(result.pages[0].text).toBe('Transcribed page text.');
+      expect(result.pages[0].fromOcr).toBe(true);
+      expect(storage.putImage).toHaveBeenCalledWith(expect.objectContaining({ contentType: 'image/png' }));
+      // H2 — a short-lived signed URL, never the permanently-public one.
+      expect(storage.signedUrlFor).toHaveBeenCalledWith('rag-ocr/page-1.png', 300);
+      expect(ai.describeImage).toHaveBeenCalledWith('RAG_INGESTION', 'https://files.local/rag-ocr/page-1.png?signed=1', expect.stringContaining('Transcribe'));
+      // M10 — the OCR scratch image is deleted again immediately after use.
+      expect(storage.delete).toHaveBeenCalledWith('rag-ocr/page-1.png');
+    });
+
+    it('never calls OCR when no vision-capable provider is configured — the page just has empty text', async () => {
+      const pdf = buildImageOnlyPdf();
+      ai.isAvailable.mockReturnValue(false);
+
+      const result = await service.extract(pdf);
+
+      expect(result.pages[0].text).toBe('');
+      expect(result.pages[0].fromOcr).toBe(false);
+      expect(storage.putImage).not.toHaveBeenCalled();
+      expect(ai.describeImage).not.toHaveBeenCalled();
+    });
+
+    it('propagates the failure (M9, security review) rather than silently dropping the page, when an image was found, vision is configured, but the vision call itself fails', async () => {
+      const pdf = buildImageOnlyPdf();
+      ai.isAvailable.mockReturnValue(true);
+      storage.putImage.mockResolvedValue({ key: 'rag-ocr/page-1.png', url: 'https://files.local/rag-ocr/page-1.png', size: 1, contentType: 'image/png' });
+      ai.describeImage.mockRejectedValue(new Error('vendor timeout'));
+
+      await expect(service.extract(pdf)).rejects.toThrow('vendor timeout');
+      // The scratch image is still cleaned up even though OCR itself failed.
+      expect(storage.delete).toHaveBeenCalledWith('rag-ocr/page-1.png');
+    });
+  });
+});
+
+describe('unpack1BitGrayscale', () => {
+  it('expands a byte-aligned, MSB-first bit-packed row to one byte per pixel', () => {
+    // width 4 -> 1 byte per row. 0b1010_0000 -> pixels [1,0,1,0] -> [0xFF,0x00,0xFF,0x00].
+    const packed = Buffer.from([0b1010_0000]);
+    const result = unpack1BitGrayscale(packed, 4, 1);
+    expect(Array.from(result)).toEqual([0xff, 0x00, 0xff, 0x00]);
+  });
+
+  it('byte-aligns each row independently, even when width is not a multiple of 8', () => {
+    // width 3 -> still 1 byte per row (Math.ceil(3/8) = 1); two rows.
+    const packed = Buffer.from([0b1000_0000, 0b0110_0000]);
+    const result = unpack1BitGrayscale(packed, 3, 2);
+    expect(Array.from(result)).toEqual([0xff, 0x00, 0x00, 0x00, 0xff, 0xff]);
+  });
+});
+
+describe('withFallbackTimeout / withDeadline', () => {
+  it('withFallbackTimeout resolves to the real value when the promise settles before the deadline', async () => {
+    await expect(withFallbackTimeout(Promise.resolve('real'), 50, 'fallback')).resolves.toBe('real');
+  });
+
+  it('withFallbackTimeout resolves to the fallback when the promise never settles in time', async () => {
+    const neverSettles = new Promise<string>(() => undefined);
+    await expect(withFallbackTimeout(neverSettles, 10, 'fallback')).resolves.toBe('fallback');
+  });
+
+  it('withDeadline resolves to the real value when the promise settles before the deadline', async () => {
+    await expect(withDeadline(Promise.resolve('real'), 50, 'timed out')).resolves.toBe('real');
+  });
+
+  it('withDeadline rejects (never resolves) when the promise never settles in time — H3/M6\'s own reproduction of the original bug class', async () => {
+    const neverSettles = new Promise<string>(() => undefined);
+    await expect(withDeadline(neverSettles, 10, 'timed out')).rejects.toThrow('timed out');
+  });
+});
+
+// H3's own bug — a document-level `commonObjs`-promoted image XObject
+// (pdf.js promotes an image reused across 2+ pages this way) hanging
+// `page.objs.get()` forever — needs a real multi-page PDF where pdf.js's own
+// parser actually decides to promote the shared image, which is an internal
+// pdf.js analysis this test file has no way to force by hand-assembling PDF
+// bytes (unlike `buildTextPdf`/`buildImageOnlyPdf` above, which only need
+// pdf.js to parse a single page's own content stream). `withDeadline`'s own
+// timeout-rejects behavior above is what actually closes this class of bug
+// end to end (`extract()` wraps its whole per-page loop in it), and
+// `withFallbackTimeout`'s resolves-to-null behavior is the same defense
+// applied to the narrower per-image-lookup case inside `extractPageImage()`
+// — both are covered directly above rather than only through a fixture this
+// suite cannot reliably construct.

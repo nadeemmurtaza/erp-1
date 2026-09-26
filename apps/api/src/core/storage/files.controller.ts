@@ -39,6 +39,15 @@ export class FilesController {
       throw new NotFoundException();
     }
 
+    // Security review H2 — RAG source PDFs (potentially HR/payroll
+    // documents) must never be reachable through this public, unauthenticated
+    // route, on local storage any more than on S3. The only authenticated
+    // path to one is `RagAdminController`'s own `/admin/rag/sources/:id/file`
+    // download route.
+    if ((Array.isArray(path) ? path[0] : path.split('/')[0]) === 'rag-sources') {
+      throw new NotFoundException();
+    }
+
     const info = await stat(target).catch(() => null);
     if (!info?.isFile()) {
       throw new NotFoundException();

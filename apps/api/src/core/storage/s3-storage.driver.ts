@@ -1,4 +1,5 @@
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { Injectable } from '@nestjs/common';
 import { AppConfigService } from '../config/app-config.service';
 import { buildKey } from './local-storage.driver';
@@ -72,5 +73,19 @@ export class S3StorageDriver implements StorageDriver {
     }
     const endpoint = (this.config.get('S3_ENDPOINT') ?? '').replace(/\/$/, '');
     return `${endpoint}/${this.bucket}/${key}`;
+  }
+
+  async get(key: string): Promise<Buffer> {
+    const response = await this.getClient().send(new GetObjectCommand({ Bucket: this.bucket, Key: key }));
+    const bytes = await response.Body?.transformToByteArray();
+    if (!bytes) {
+      throw new Error(`Object "${key}" in bucket "${this.bucket}" returned no body.`);
+    }
+    return Buffer.from(bytes);
+  }
+
+  /** A real presigned GET, expiring in `expiresInSeconds` — unlike `urlFor()`'s permanently-public URL, this one stops working once it expires even if the object itself is never deleted. */
+  async signedUrlFor(key: string, expiresInSeconds: number): Promise<string> {
+    return getSignedUrl(this.getClient(), new GetObjectCommand({ Bucket: this.bucket, Key: key }), { expiresIn: expiresInSeconds });
   }
 }

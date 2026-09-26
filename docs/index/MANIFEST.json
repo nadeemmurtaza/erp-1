@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "edb71c133c321274",
+  "contentHash": "c1464e63e9d1a622",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -97,6 +97,7 @@
     "docs/index/data/production.md",
     "docs/index/data/promotions.md",
     "docs/index/data/purchasing.md",
+    "docs/index/data/rag.md",
     "docs/index/data/receivables.md",
     "docs/index/data/replication.md",
     "docs/index/data/reviews.md",
@@ -150,6 +151,7 @@
     "docs/index/modules/production.md",
     "docs/index/modules/promotions.md",
     "docs/index/modules/purchasing.md",
+    "docs/index/modules/rag.md",
     "docs/index/modules/receivables.md",
     "docs/index/modules/recommendations.md",
     "docs/index/modules/reports.md",
@@ -174,18 +176,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2049,
-    "lines": 314866,
-    "routes": 691,
-    "controllers": 125,
-    "models": 251,
-    "enums": 115,
-    "migrations": 89,
+    "files": 2077,
+    "lines": 319214,
+    "routes": 702,
+    "controllers": 126,
+    "models": 253,
+    "enums": 117,
+    "migrations": 90,
     "events": 63,
-    "permissions": 89,
-    "screens": 239,
-    "crons": 20,
-    "specs": 251,
+    "permissions": 91,
+    "screens": 241,
+    "crons": 21,
+    "specs": 260,
     "designLaws": 0
   }
 }

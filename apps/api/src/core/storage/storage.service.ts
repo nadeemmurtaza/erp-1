@@ -129,4 +129,14 @@ export class StorageService {
   urlFor(key: string): string {
     return this.driver.urlFor(key);
   }
+
+  /** Reads an object's bytes back into this process — for a stored file that is never meant to be publicly fetchable. */
+  get(key: string): Promise<Buffer> {
+    return this.driver.get(key);
+  }
+
+  /** A time-limited URL an external service (e.g. a vision API) may fetch — see `StorageDriver.signedUrlFor()`. */
+  signedUrlFor(key: string, expiresInSeconds: number): Promise<string> {
+    return this.driver.signedUrlFor(key, expiresInSeconds);
+  }
 }

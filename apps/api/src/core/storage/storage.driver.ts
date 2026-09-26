@@ -27,4 +27,8 @@ export interface StorageDriver {
   put(input: PutFileInput): Promise<StoredFile>;
   delete(key: string): Promise<void>;
   urlFor(key: string): string;
+  /** Reads an object's bytes back into this process — for a stored file that is never meant to be publicly fetchable (security review H2), unlike `urlFor()`. */
+  get(key: string): Promise<Buffer>;
+  /** A time-limited URL an external service may fetch. Real presigning where the driver supports it; falls back to the plain public URL where it doesn't (documented per-driver). */
+  signedUrlFor(key: string, expiresInSeconds: number): Promise<string>;
 }

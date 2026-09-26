@@ -12,6 +12,28 @@
 > by a spec asserting the exact `OutboxEvent` row
 > (`orders-pos.service.spec.ts`). This was the explicit, named prerequisite
 > for doc 153's transaction-fee metering.
+>
+> **Status (2026-09-25): WO-68.2–68.4 also shipped.**
+> `OrderEconomicsService.grossProfitToday(locationId?)` reads today's
+> `OrderEconomics` rows joined to `Order`, reusing `shopDayExpr`'s
+> `startOfShopDay()` and the identical `VOID_ORDER_STATUSES` filter
+> `AnalyticsService.summary()` already uses — served at `GET
+> /admin/finance/gross-profit-today`, gated by `inventory.view_cost`
+> (the whole endpoint, not a per-field redaction — a gross-profit figure
+> with the cost half hidden is not a smaller version of the feature, it is
+> a meaningless one). **One deviation**: this doc's own WO-68.3 named "the
+> existing POS shift/sales-history screen" as the per-transaction UI's
+> home — verified by search, no such screen exists anywhere in
+> `apps/pos` or the admin app (the POS app has only shift open/close and a
+> cash Z-report, neither of which lists individual transactions). Rather
+> than inventing that screen speculatively, the per-transaction list ships
+> where a real, already-built surface exists: `GrossProfitTodayWidget`
+> (`apps/web/src/components/admin/dashboard/`), a new card on the existing
+> admin dashboard, each row linking through to its own order — the
+> identical "click the number" pattern `ActionHubWidget` already
+> establishes. WO-68.4's reconciliation is proven by a spec comparing
+> `grossProfitToday()`'s revenue against an independent `Order.aggregate()`
+> over the same rows (`order-economics.service.spec.ts`).
 
 `OrderEconomics` (`apps/api/prisma/schema/finance.prisma`, lines 102-132)
 already stores exactly what "instant gross margin and net profit

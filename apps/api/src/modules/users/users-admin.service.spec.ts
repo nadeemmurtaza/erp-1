@@ -4,6 +4,7 @@ import { AuditService } from '../../core/audit/audit.service';
 import { ApiKeysService } from '../../core/auth/api-keys/api-keys.service';
 import { PermissionsResolverService } from '../../core/auth/permissions.service';
 import { RolesService } from '../../core/auth/roles.service';
+import { EmployeeOffboardingRegistry } from '../../core/extension-points/employee-offboarding.registry';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { UsersAdminService } from './users-admin.service';
 
@@ -54,6 +55,7 @@ describe('UsersAdminService.create — role selection at creation time', () => {
         { provide: RolesService, useValue: roles },
         { provide: AuditService, useValue: audit },
         { provide: ApiKeysService, useValue: { revokeAllForUserInTransaction: jest.fn() } },
+        { provide: EmployeeOffboardingRegistry, useValue: { unreturnedAssetsFor: jest.fn().mockResolvedValue([]) } },
       ],
     }).compile();
 
@@ -94,6 +96,7 @@ describe('UsersAdminService.update — deactivation ends every personal API key 
   let tx: any;
   let apiKeys: any;
   let audit: any;
+  let offboarding: any;
 
   const target = { id: 'u2', role: 'STAFF', isActive: true };
 
@@ -108,6 +111,7 @@ describe('UsersAdminService.update — deactivation ends every personal API key 
     };
     apiKeys = { revokeAllForUserInTransaction: jest.fn().mockResolvedValue(3) };
     audit = { record: jest.fn().mockResolvedValue(undefined) };
+    offboarding = { unreturnedAssetsFor: jest.fn().mockResolvedValue([]) };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -117,6 +121,7 @@ describe('UsersAdminService.update — deactivation ends every personal API key 
         { provide: RolesService, useValue: {} },
         { provide: AuditService, useValue: audit },
         { provide: ApiKeysService, useValue: apiKeys },
+        { provide: EmployeeOffboardingRegistry, useValue: offboarding },
       ],
     }).compile();
 
@@ -131,6 +136,19 @@ describe('UsersAdminService.update — deactivation ends every personal API key 
     expect(audit.record).toHaveBeenCalledWith(
       expect.objectContaining({ action: 'user.updated', data: expect.objectContaining({ apiKeysRevoked: 3 }) }),
     );
+  });
+
+  it('refuses to deactivate someone who still holds an unreturned asset (WO-79.4)', async () => {
+    offboarding.unreturnedAssetsFor.mockResolvedValueOnce([{ assetTag: 'LT-001', category: 'laptop' }]);
+
+    await expect(service.update('admin1', 'u2', { isActive: false })).rejects.toThrow(/LT-001/);
+    expect(prisma.$transaction).not.toHaveBeenCalled();
+    expect(apiKeys.revokeAllForUserInTransaction).not.toHaveBeenCalled();
+  });
+
+  it('does not consult the offboarding gate for a role change or a plain edit', async () => {
+    await service.update('admin1', 'u2', { role: 'TAILOR' });
+    expect(offboarding.unreturnedAssetsFor).not.toHaveBeenCalled();
   });
 
   it('does not revoke API keys on a role change — they shrink with the live permissions instead', async () => {
@@ -184,6 +202,7 @@ describe('UsersAdminService.resetPassword — "sign them out everywhere" means k
         { provide: RolesService, useValue: {} },
         { provide: AuditService, useValue: audit },
         { provide: ApiKeysService, useValue: apiKeys },
+        { provide: EmployeeOffboardingRegistry, useValue: { unreturnedAssetsFor: jest.fn().mockResolvedValue([]) } },
       ],
     }).compile();
 

@@ -74,6 +74,38 @@ model PlatformTenant {
   /// with `dataDeletedAt: null` still has a live, recoverable database.
   dataDeletedAt   DateTime?
 
+  /// doc 14 (commercial-licensing-agency/14-managed-services-module.md) —
+  /// the agency-hosted "managed services" tier reuses THIS row rather than
+  /// a second `AgencyClient` table (see DECISIONS.md ADR-039): a
+  /// self-hosted client has no `PlatformTenant` row at all, so
+  /// "SELF_HOSTED vs MANAGED" is a fact about whether this row exists, not
+  /// a stored enum. The four fields below are the only genuinely new state
+  /// doc 14 needs; everything else it asked for (status, which database)
+  /// already lives above.
+  ///
+  /// The mail domain this tenant's transactional mail sends from on the
+  /// agency's own shared Stalwart instance (docs/email.md) — null until an
+  /// agency-managed client's mailbox is actually provisioned there.
+  mailDomain      String?
+  /// SHA-256(pepper + key) of the `AGENCY_API_KEY` `scripts/sync-client.mjs`
+  /// generates for this client's extracted `managed-services` module (doc
+  /// 12's own extractor). The plaintext key is never stored here — see
+  /// `agency-key.ts`. Null until `AgencyClientsService.register()` runs;
+  /// that nullability IS "has this tenant been onboarded to the agency
+  /// managed-services dashboard yet", read by every nightly-snapshot and
+  /// reporting-API query below as the "is this an agency client" predicate.
+  apiKeyHash      String?  @unique
+  /// Null until `apiKeyHash` is first set; refreshed on every rotation.
+  /// There is no endpoint that recovers the plaintext key — only rotates
+  /// the hash (doc 14's own security note).
+  apiKeyRotatedAt DateTime?
+  /// Set once at onboarding (`AgencyClientsService.register()`), read by
+  /// `AgencyStripeChargeCron` to decide whether an issued `PlatformInvoice`
+  /// gets a real Stripe charge, and by the webhook to resolve which tenant
+  /// an incoming Stripe event is about.
+  stripeCustomerId     String?  @unique
+  stripeSubscriptionId String?  @unique
+
   plan               PlatformPlan          @relation(fields: [planId], references: [id])
   subscriptions      PlatformSubscription[]
   usageRecords       PlatformUsageRecord[]
@@ -84,6 +116,10 @@ model PlatformTenant {
   invoices            PlatformInvoice[]
   customQuotes        PlatformCustomQuote[]
   trialExtensions     TrialExtension[]
+  usageMeters         UsageMeter[]
+  meteredOrderFees    MeteredOrderFee[]
+  usageMeteringCursor UsageMeteringCursor?
+  agencyUsageSnapshots AgencyUsageSnapshot[]
 
   @@index([status])
   @@index([status, trialExpiresAt])
@@ -94,6 +130,14 @@ enum PricingModel {
   PER_SEAT
   FLAT_MONTHLY
   ONE_TIME_LICENSE
+  /// doc 153 — a fourth shape: a per-sale transaction fee (the anchor line
+  /// item) plus a per-unit rate card for genuinely consumed actions
+  /// (messages sent), with count-at-rest dimensions (products, seats)
+  /// behind a generous banded allowance rather than a strict per-unit
+  /// multiplier. Optional and additive alongside the other three (doc
+  /// 153's own "never a replacement" — doc 81's flat-rate positioning
+  /// still holds for every tenant not on this model).
+  USAGE_BASED
 }
 
 model PlatformPlan {
@@ -118,11 +162,33 @@ model PlatformPlan {
   /// at the DTO layer against these two literals rather than promoted to
   /// its own enum, matching doc 50 §1's own schema exactly.
   licenseDeploymentMode String?
+  /// USAGE_BASED only. The anchor line item — a rate in basis points
+  /// applied to every DELIVERED order's grandTotal, regardless of tender
+  /// (card, wallet, COD, cash) — doc 153 §1. 100 bps = 1%. Stored as bps,
+  /// never a float percentage, so a future graduated step-down at volume
+  /// (doc 153 §4, named, not built) is a data edit under the same column,
+  /// never a new one.
+  transactionFeeBps    Int?
+  /// USAGE_BASED only. Per-unit rates for genuinely consumed actions, in
+  /// paisa-per-unit — `{"messages_sent": 100}` today; a JSON rate card
+  /// (never one column per metered dimension) so a new metered action is a
+  /// rate-card key, not a migration. Also carries this plan's own
+  /// `"<dimension>_over_limit"` flat step-up fees for a count-at-rest
+  /// dimension in `includedAllowances` below — e.g. `"products_over_limit":
+  /// 50000` — doc 153 §1's own "stored in the same rate card" instruction.
+  usageRateCardMinor   Json?
+  /// USAGE_BASED only. Banded allowances for count-at-rest dimensions
+  /// (never metered per unit) — `{"products": 1000, "seats": 10}` meaning
+  /// the first N are included free; crossing the allowance charges the
+  /// matching `"<dimension>_over_limit"` flat fee from `usageRateCardMinor`
+  /// above, once per period, never per unit over.
+  includedAllowances   Json?
 
   tenants       PlatformTenant[]
   subscriptions PlatformSubscription[]
   invoices      PlatformInvoice[]
   customQuotes  PlatformCustomQuote[]
+  rateCardChangeRequests PlatformRateCardChangeRequest[]
 }
 
 enum SubscriptionStatus {
@@ -364,7 +430,19 @@ model PlatformInvoice {
   flatPriceMinorSnapshot Int?
   /// ONE_TIME_LICENSE only — PlatformPlan.oneTimeLicenseMinor AT issue time.
   oneTimePriceMinorSnapshot Int?
-  /// The actual charge — always traceable to exactly one of the three
+  /// USAGE_BASED only — the transaction-fee line, read directly from that
+  /// period's `UsageMeter('transaction_fee_minor')` row at issue time.
+  transactionFeeMinorSnapshot Int?
+  /// USAGE_BASED only — the exact rate card + allowances this invoice was
+  /// computed from (doc 153's own "the version stamp": a later plan-rate
+  /// edit never reprices a past invoice, exactly like the other three
+  /// snapshot fields above).
+  usageRateCardSnapshot Json?
+  /// USAGE_BASED only — the computed per-metric breakdown ("click the
+  /// number": messages-sent line, and any allowance-overage line, each
+  /// traceable back to the exact `UsageMeter` period it summed from).
+  usageLinesSnapshot   Json?
+  /// The actual charge — always traceable to exactly one of the four
   /// snapshot fields above via `pricingModel`.
   amountMinor         Int
   status              InvoiceStatus @default(ISSUED)
@@ -372,6 +450,36 @@ model PlatformInvoice {
   /// When the seat count / amount was actually computed — may differ
   /// slightly from `issuedAt` under retry, but never from a stale read.
   computedAt           DateTime
+  /// doc 153's own "AR from tenants" — when this invoice is due, computed
+  /// at issuance from `PLATFORM_INVOICE_NET_TERMS_DAYS`. Set for every
+  /// invoice regardless of pricing model (a real due date is meaningful AR
+  /// modeling for any of the four shapes, not only USAGE_BASED's COD/cash
+  /// gap), never used to recompute a CLOSED period's own amount.
+  dueAt                DateTime?
+  /// One overdue reminder per invoice — doc 145's own dunning shape reused
+  /// at the minimal scope this control plane needs today (a single
+  /// reminder, not a multi-stage escalation ladder; see ADR-037).
+  dunningReminderSentAt DateTime?
+
+  /// doc 14 / ADR-039 — real money collection for an agency-managed
+  /// tenant's own hosting invoice, bridged onto this ALREADY-authoritative
+  /// row rather than a second "local invoice cache" table (doc 14's own
+  /// words) that would compete with it. Null for any invoice whose tenant
+  /// has no `stripeCustomerId` (self-hosted-adjacent or pre-Stripe-linkage
+  /// tenants) — `AgencyStripeChargeCron` is the only writer, and only
+  /// picks up rows where this is still null on a Stripe-linked tenant, so
+  /// a redelivered/rerun sweep never double-charges the same invoice
+  /// (doc's own "second copy of the write").
+  stripeInvoiceId       String?    @unique
+  /// The Stripe-hosted invoice page — what `GET /agency/clients/me/invoices`
+  /// links to; never a PDF this control plane generates itself.
+  stripeHostedInvoiceUrl String?
+  stripePaymentStatus   StripeInvoicePaymentStatus?
+  /// Set when a `invoice.payment_failed` webhook lands for this invoice —
+  /// distinct from `dunningReminderSentAt` (this control plane's own
+  /// unpaid-ISSUED-invoice reminder), which fires independent of whether a
+  /// Stripe charge was ever attempted.
+  stripePaymentFailedAt DateTime?
 
   tenant      PlatformTenant          @relation(fields: [tenantId], references: [id])
   plan        PlatformPlan            @relation(fields: [planId], references: [id])
@@ -381,6 +489,7 @@ model PlatformInvoice {
   /// already-billed period issues no second invoice for the same tenant.
   @@unique([tenantId, periodStart, periodEnd])
   @@index([tenantId, issuedAt])
+  @@index([status, dueAt])
 }
 
 /// A billing dispute is resolved here, against the specific invoice — never
@@ -474,4 +583,184 @@ model TrialExtension {
   tenant PlatformTenant @relation(fields: [tenantId], references: [id])
 
   @@index([tenantId, createdAt])
+}
+
+// ---------------------------------------------------------------------------
+// doc 153 (commercial-licensing-agency/153-usage-based-pricing-model.md) —
+// usage-based pricing's own metering ledger. Every model below lives in
+// THIS control-plane database only, never a tenant's own isolated one (doc
+// 39's shared-infrastructure/isolated-data boundary, restated by doc 153's
+// own Scope lenses). No new actor/principal is introduced anywhere in this
+// section — metering is read by this app FROM a tenant's own database
+// through the identical connection-per-call mechanism `SeatCounterService`
+// already established (see ADR-037), never a new credential calling in.
+// ---------------------------------------------------------------------------
+
+/// One row per (tenant, metric, billing period) — the accumulator
+/// `UsageMeteringService` increments off a tenant's own transactional
+/// outbox (`transaction_fee_minor`, `messages_sent`) or sets to the latest
+/// observed count (`products_count`, `seats_count` — count-at-rest
+/// dimensions are a snapshot, never an accumulation; see the service's own
+/// doc comment). Doc 153's own "the hundred-thousandth row" answer: a
+/// handful of rows per tenant per month, never one row per event — the
+/// increment happens in place.
+model UsageMeter {
+  id          String   @id @default(cuid())
+  tenantId    String
+  /// "transaction_fee_minor" | "messages_sent" | "products_count" |
+  /// "seats_count" — doc 153 §2's own vocabulary for the first two; the
+  /// banded-allowance dimensions follow the same `"<dimension>_count"`
+  /// shape so `BillingService.computeCharge()` can derive the metric name
+  /// from `PlatformPlan.includedAllowances`'s own keys without a second
+  /// mapping table.
+  metric      String
+  periodStart DateTime
+  periodEnd   DateTime
+  quantity    Int      @default(0)
+  updatedAt   DateTime @updatedAt
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+
+  /// Doc 153's own "second copy of the write": a redelivered/rescanned
+  /// outbox row increments this same row again, never a duplicate period.
+  @@unique([tenantId, metric, periodStart])
+  @@index([tenantId, periodStart])
+}
+
+/// Doc 153's own "the reversal document, not the reversal flag" — one row
+/// per order actually metered for the transaction fee, naming the specific
+/// order and the exact amount metered for it, so a later `RETURNED` event
+/// reverses precisely that amount (never a blind "percentage of the return
+/// total", which could double-reverse a partial return this repo's own
+/// Order model cannot even express below the whole-order granularity).
+/// `periodStart`/`periodEnd` are copied from the `UsageMeter` row this fee
+/// was originally folded into, so a reversal arriving after that period's
+/// own invoice was already issued knows to credit-note the invoice instead
+/// of mutating a closed period's own meter (doc 153's own "undo fan-out").
+model MeteredOrderFee {
+  id                  String    @id @default(cuid())
+  tenantId            String
+  /// The tenant's own `Order.id` — never dereferenced by this database,
+  /// only carried as the traceability key doc 153's own "click the number"
+  /// lens names.
+  orderId             String
+  feeMinor            Int
+  periodStart         DateTime
+  periodEnd           DateTime
+  meteredAt           DateTime  @default(now())
+  reversedAt          DateTime?
+  /// Set when the reversal landed as a `PlatformInvoiceCreditNote` against
+  /// an already-issued invoice, rather than as a same-period meter
+  /// decrement — which of the two happened is otherwise not reconstructible
+  /// from `UsageMeter` alone once the period has closed.
+  reversalCreditNoteId String?
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+
+  /// A redelivered/rescanned DELIVERED outbox row for the same order metres
+  /// no second fee.
+  @@unique([tenantId, orderId])
+  @@index([tenantId, periodStart])
+}
+
+/// The per-tenant high-water mark `UsageMeteringService.pollTenant()`
+/// advances after each batch — so a poll reads only the outbox rows it has
+/// not already applied, rather than rescanning the whole table (doc 153
+/// §2's own "never a slow end-of-month aggregate scan", generalized to
+/// every poll, not only the monthly one).
+model UsageMeteringCursor {
+  id                 String    @id @default(cuid())
+  tenantId           String    @unique
+  lastEventId        String?
+  lastEventCreatedAt DateTime?
+  updatedAt          DateTime  @updatedAt
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id])
+}
+
+enum RateCardChangeStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  APPLIED
+}
+
+/// doc 153's own "the threshold nobody approves alone" / "authority and
+/// blast radius" lenses, resolved with the identical create/approve split
+/// `PlatformCustomQuote` (doc 50 §4) already established: a rate-card
+/// change to a live `PlatformPlan` above
+/// `PLATFORM_RATE_CARD_APPROVAL_THRESHOLD_BPS` needs a second approver —
+/// never the ops client who proposed it (the same "toxic pair" refusal
+/// `CustomQuoteService.approve()` already enforces, reused, not
+/// reinvented).
+model PlatformRateCardChangeRequest {
+  id                          String              @id @default(cuid())
+  planId                      String
+  proposedTransactionFeeBps   Int?
+  proposedUsageRateCardMinor  Json?
+  proposedIncludedAllowances  Json?
+  requiresApproval            Boolean
+  status                      RateCardChangeStatus @default(PENDING)
+  requestedByOpsClientId      String
+  approvedByOpsClientId       String?
+  approvedAt                  DateTime?
+  rejectedAt                  DateTime?
+  rejectionReason             String?
+  /// When `approve()` actually wrote the proposed values onto
+  /// `PlatformPlan` — distinct from `approvedAt` so a request that was
+  /// approved but not yet (or never) applied is visible as such.
+  appliedAt                   DateTime?
+  createdAt                   DateTime            @default(now())
+
+  plan PlatformPlan @relation(fields: [planId], references: [id])
+
+  @@index([planId])
+  @@index([status])
+}
+
+// ---------------------------------------------------------------------------
+// doc 14 (commercial-licensing-agency/14-managed-services-module.md), ADR-039
+// — the agency's own managed-services billing/hosting dashboard. See the
+// `PlatformTenant`/`PlatformInvoice` doc comments above for why this reuses
+// those rows instead of a parallel `AgencyClient` registry and a parallel
+// invoice cache. `AgencyUsageSnapshot` below is the one genuinely new table
+// doc 14 needs — no existing equivalent anywhere in this schema.
+// ---------------------------------------------------------------------------
+
+enum StripeInvoicePaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+/// One row per agency-managed tenant per calendar day — a cache, not a
+/// source of truth, safe to delete and recompute (same discipline as
+/// `VariantSalesStat` on the tenant side). `AgencyUsageCron` is the only
+/// writer, upserting on `(tenantId, snapshotDate)` so a job rerun on the
+/// same day is a no-op, never a second row (doc 14's own acceptance
+/// criterion: "the nightly job run twice in one day produces one snapshot
+/// per tenant, not two").
+model AgencyUsageSnapshot {
+  id             String   @id @default(cuid())
+  tenantId       String
+  /// The UTC calendar day this snapshot represents — truncated to
+  /// midnight, distinct from `capturedAt` (when the job actually ran),
+  /// which is what the unique constraint below is keyed on.
+  snapshotDate   DateTime
+  capturedAt     DateTime @default(now())
+  /// `pg_database_size()` against the tenant's own isolated database, read
+  /// through the same connection-per-call mechanism `SeatCounterService`
+  /// already uses — never a second, pooled connection to a tenant's data.
+  databaseBytes  BigInt
+  /// Null when `PlatformTenant.mailDomain` is unset, or when Stalwart's
+  /// admin API could not be reached that night — "the absent collaborator"
+  /// lens: the database-size half of this row is still recorded even when
+  /// the mail half is not.
+  emailsSent30d  Int?
+  activeUsers30d Int
+
+  tenant PlatformTenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, snapshotDate])
+  @@index([tenantId, snapshotDate])
 }

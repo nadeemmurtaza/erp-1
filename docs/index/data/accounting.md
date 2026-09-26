@@ -3,7 +3,7 @@
 
 # Schema: `accounting.prisma`
 
-6 models · 3 enums. Owned by module [`accounting`](../modules/accounting.md).
+8 models · 4 enums. Owned by module [`accounting`](../modules/accounting.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -42,6 +42,43 @@ against a real database.
 | `lines` | `JournalLine[]` |  |  |
 
 Indexes: `@@index([type])` · `@@index([parentId])`
+
+### `AssetDepreciationPosting`  <sub>`apps/api/prisma/schema/accounting.prisma:272`</sub>
+
+> One row per period posted — the same "snapshot at write time, never re-derived" discipline PayRunLine/OrderEconomics already establish.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `scheduleId` | `String` |  |  |
+| `periodStart` | `DateTime` |  |  |
+| `periodEnd` | `DateTime` |  |  |
+| `amountMinor` | `Int` |  |  |
+| `postedAt` | `DateTime` |  | @default(now()) |
+| `schedule` | `AssetDepreciationSchedule` | relation | @relation(fields: [scheduleId], references: [id]) |
+
+Indexes: `@@unique([scheduleId, periodStart])` · `@@index([scheduleId])`
+
+### `AssetDepreciationSchedule`  <sub>`apps/api/prisma/schema/accounting.prisma:236`</sub>
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `assetId` | `String` | unique | @unique |
+| `method` | `DepreciationMethod` |  |  |
+| `acquisitionCostMinor` | `Int` |  |  |
+| `salvageValueMinor` | `Int` |  | @default(0) |
+| `usefulLifeMonths` | `Int` |  |  |
+| `decliningRateBps` | `Int?` | optional |  |
+| `startDate` | `DateTime` |  |  |
+| `createdById` | `String` |  |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `closedAt` | `DateTime?` | optional |  |
+| `asset` | `Asset` | relation | @relation(fields: [assetId], references: [id], onDelete: Cascade) |
+| `createdBy` | `User` | relation | @relation(fields: [createdById], references: [id]) |
+| `postings` | `AssetDepreciationPosting[]` |  |  |
+
+Indexes: `@@index([closedAt])`
 
 ### `FiscalPeriod`  <sub>`apps/api/prisma/schema/accounting.prisma:91`</sub>
 
@@ -151,6 +188,15 @@ Indexes: `@@index([entryId])` · `@@index([accountId])` · `@@index([retailBrand
 | `EQUITY` |  |
 | `INCOME` |  |
 | `EXPENSE` |  |
+
+### `DepreciationMethod`  <sub>`apps/api/prisma/schema/accounting.prisma:231`</sub>
+
+> Book depreciation for an `Asset` (hr.prisma, doc 79) — the "separately- scoped fixed-asset accounting capability" doc 79's own status note deferred.
+
+| Value | Meaning |
+|---|---|
+| `STRAIGHT_LINE` |  |
+| `DECLINING_BALANCE` |  |
 
 ### `FiscalPeriodStatus`  <sub>`apps/api/prisma/schema/accounting.prisma:80`</sub>
 

@@ -11,9 +11,11 @@ import { CrmModule } from './crm/crm.module';
 import { FinanceModule } from './finance/finance.module';
 import { FulfilmentModule } from './fulfilment/fulfilment.module';
 import { GiftCardsModule } from './giftcards/giftcards.module';
+import { HrModule } from './hr/hr.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { LoyaltyModule } from './loyalty/loyalty.module';
+import { ManagedServicesModule } from './managed-services/managed-services.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
 import { NotificationPreferencesModule } from './notification-preferences/notification-preferences.module';
@@ -28,6 +30,7 @@ import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { ReceivablesModule } from './receivables/receivables.module';
+import { SettlementsModule } from './settlements/settlements.module';
 import { RecommendationsModule } from './recommendations/recommendations.module';
 import { ReportsModule } from './reports/reports.module';
 import { ReviewsModule } from './reviews/reviews.module';
@@ -103,12 +106,19 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // credit terms still work as records, they just post nothing (same "absent
   // collaborator" shape as every other event-only coupling in this file).
   { name: 'receivables', module: ReceivablesModule },
+  // 49-financial-institution-settlement-partnerships.md — off by default,
+  // same tier as accounting: no real FinancialInstitutionConnector exists
+  // yet, so a deployment gains nothing by enabling this until one does.
+  { name: 'settlements', module: SettlementsModule, offByDefault: true },
   // Hard-imported by orders.module.ts directly (same reasoning as tax
   // above — checkout always needs ShippingService.quote()), but still
   // listed here so its own admin routes/nav follow the allowlist like
   // every other module's.
   { name: 'fulfilment', module: FulfilmentModule },
   { name: 'payroll', module: PayrollModule },
+  // hr-people-org/79-employee-asset-management.md — standalone, no
+  // dependency on any other optional module.
+  { name: 'hr', module: HrModule },
   // Same allowlist tier as payments/finance (not offByDefault): checkout
   // couples to both directly, in the same transaction as order creation
   // (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE_COUPLINGS)
@@ -163,6 +173,13 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // see wallet.module.ts's own header comment for exactly what "off"
   // means here.
   { name: 'wallet', module: WalletModule, offByDefault: true },
+  // Off by default for EVERY deployment, always — doc 14
+  // (commercial-licensing-agency/14-managed-services-module.md). Requested
+  // only for an agency-managed delivery via `scripts/sync-client.mjs
+  // --modules=...,managed-services`; never present in a self-hosted
+  // client's own `.env.example`/MODULES allowlist (that structural
+  // absence is doc 14's own "impossible for self-hosted clients" point).
+  { name: 'managed-services', module: ManagedServicesModule, offByDefault: true },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

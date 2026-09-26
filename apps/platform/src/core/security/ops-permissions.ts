@@ -19,7 +19,26 @@ export const PLATFORM_PERMISSIONS = [
   'platform.support.grant_access',
   'platform.support.approve_dedicated_access',
   'platform.billing.manage',
+  /**
+   * doc 153 WO-153.4 — approving a rate-card change on a live USAGE_BASED
+   * plan above `PLATFORM_RATE_CARD_APPROVAL_THRESHOLD_BPS`. Deliberately
+   * narrower than `platform.billing.manage` (which can propose a change,
+   * issue invoices, credit-note one) so proposing and approving a rate
+   * change are two different keys, matching doc 145's own credit-limit
+   * create/approve split and doc 50's own custom-quote one.
+   */
+  'platform.billing.approve',
   'platform.trials.extend',
+  /**
+   * doc 14 (commercial-licensing-agency/14-managed-services-module.md) —
+   * registering an existing `PlatformTenant` for the agency managed-
+   * services dashboard (issuing its `AGENCY_API_KEY`, rotating it, linking
+   * a Stripe customer/subscription). Deliberately narrower than
+   * `platform.tenants.manage`: suspending/reactivating/deprovisioning a
+   * tenant is unchanged and stays gated by that key — this one only
+   * governs the agency-onboarding fields ADR-039 added to that same row.
+   */
+  'platform.agency.manage',
 ] as const;
 
 export type PlatformPermission = (typeof PLATFORM_PERMISSIONS)[number];

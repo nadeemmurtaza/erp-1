@@ -99,7 +99,9 @@ Every top-level export in `packages`, with the line to open.
 | `constants.ts` | `formatDateShort` | function | :109 | A chart axis tick — "7 Sept". |
 | `constants.ts` | `formatNumber` | function | :132 | A plain count, grouped for the locale — 6017 -> "6,017". |
 | `constants.ts` | `formatMoney` | function | :137 | Formats integer paisa as a display string, e.g. |
-| `constants.ts` | `IMPORT_ROW_CAP` | const | :156 | The row cap every CSV importer enforces (admin-platform/72-fragmented-tool-consolidation-import.md… |
+| `constants.ts` | `formatMoneyIn` | function | :160 | Formats a minor-unit amount in an EXPLICITLY given currency, e.g. |
+| `constants.ts` | `formatBytes` | function | :177 | A byte count as a human-readable size, e.g. |
+| `constants.ts` | `IMPORT_ROW_CAP` | const | :198 | The row cap every CSV importer enforces (admin-platform/72-fragmented-tool-consolidation-import.md… |
 | `content-blocks.ts` | `ContentBlock` | type | :10 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
 | `content-blocks.ts` | `CONTENT_BLOCK_TYPES` | const | :18 |  |
 | `content-blocks.ts` | `ContentBlockType` | type | :27 |  |
@@ -199,15 +201,15 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :470 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :472 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :482 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :489 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :659 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :803 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :808 |  |
-| `permissions.ts` | `PermissionEffect` | type | :809 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :812 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :524 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :526 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :536 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :543 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :724 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :877 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :882 |  |
+| `permissions.ts` | `PermissionEffect` | type | :883 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :886 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

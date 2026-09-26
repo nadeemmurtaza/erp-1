@@ -43,6 +43,19 @@ export interface PosSaleLineInput {
   quantity: number;
 }
 
+/**
+ * finance-accounting/151-layby-installment-sales.md — a layby/instalment
+ * plan requested at the point of sale. LAYBY holds the order at PENDING and
+ * leaves stock un-decremented until the plan reaches COMPLETED; INSTALMENT
+ * releases the goods immediately (an ordinary DELIVERED sale) and this
+ * schedule only tracks what remains owed.
+ */
+export interface PlaceFromPosInstalmentInput {
+  type: 'LAYBY' | 'INSTALMENT';
+  depositMinor: number;
+  schedule: { dueDate: Date; amountMinor: number }[];
+}
+
 export interface PlaceFromPosInput {
   locationId: string;
   terminalId: string;
@@ -52,6 +65,7 @@ export interface PlaceFromPosInput {
   customerName?: string;
   customerPhone?: string;
   customerEmail?: string;
+  instalmentPlan?: PlaceFromPosInstalmentInput;
 }
 
 /**
@@ -550,13 +564,30 @@ export class OrdersService {
       taxAmount: 0,
     });
 
+    const instalmentPlan = input.instalmentPlan;
+    if (instalmentPlan) {
+      if (instalmentPlan.depositMinor < 0 || instalmentPlan.depositMinor > totals.grandTotal) {
+        throw new BadRequestException('depositMinor must be between 0 and the order total.');
+      }
+      if (instalmentPlan.schedule.length === 0) {
+        throw new BadRequestException('An instalment plan needs at least one scheduled payment.');
+      }
+      const scheduledTotal = instalmentPlan.schedule.reduce((sum, line) => sum + line.amountMinor, 0);
+      if (scheduledTotal + instalmentPlan.depositMinor !== totals.grandTotal) {
+        throw new BadRequestException(
+          `The deposit (${instalmentPlan.depositMinor}) plus the schedule (${scheduledTotal}) must equal the order total (${totals.grandTotal}).`,
+        );
+      }
+    }
+    const isLayby = instalmentPlan?.type === 'LAYBY';
+
     const orderNumber = await nextOrderNumber(this.prisma, this.settings, this.config);
 
     const order = await this.prisma.$transaction(async (tx) => {
       const created = await tx.order.create({
         data: {
           number: orderNumber,
-          status: 'DELIVERED',
+          status: isLayby ? 'PENDING' : 'DELIVERED',
           channel: 'POS',
           locationId: input.locationId,
           terminalId: input.terminalId,
@@ -573,7 +604,7 @@ export class OrdersService {
           codFee: totals.codFee,
           taxAmount: totals.taxAmount,
           grandTotal: totals.grandTotal,
-          deliveredAt: new Date(),
+          deliveredAt: isLayby ? null : new Date(),
           items: {
             create: lines.map((line) => ({
               productId: line.productId,
@@ -590,32 +621,44 @@ export class OrdersService {
             })),
           },
           statusEvents: {
-            create: { toStatus: 'DELIVERED', note: 'POS sale', actorId: input.cashierUserId },
+            create: {
+              toStatus: isLayby ? 'PENDING' : 'DELIVERED',
+              note: isLayby ? 'POS layby sale' : 'POS sale',
+              actorId: input.cashierUserId,
+            },
           },
         },
         include: orderInclude,
       });
 
-      // Sorted the same way moveMany() locks — see place()'s own comment on
-      // sortedItems for why this matters under concurrent tills at the same
-      // location.
-      const sortedItems = [...created.items].sort((a, b) => (a.variantId ?? '').localeCompare(b.variantId ?? ''));
-      for (const item of sortedItems) {
-        if (!item.variantId) continue;
-        const variant = variantMap.get(item.variantId)!;
-        await this.inventory.postUnconditional(
-          {
-            variantId: item.variantId,
-            locationId: input.locationId,
-            delta: -item.quantity,
-            reason: 'POS_SALE',
-            refType: 'Order',
-            refId: created.id,
-            unitCost: variant.costPrice,
-            actorId: input.cashierUserId,
-          },
-          tx,
-        );
+      // A LAYBY sale reserves nothing — stock stays available for another
+      // sale until the plan is paid in full (151-layby-installment-sales.md's
+      // own "movement with no address" lens, a deliberate trade-off, not an
+      // oversight): decremented later, through the checked InventoryService
+      // .move() at InstalmentPlanService.recordInstalmentPayment()'s own
+      // COMPLETED branch, never here and never via postUnconditional().
+      if (!isLayby) {
+        // Sorted the same way moveMany() locks — see place()'s own comment on
+        // sortedItems for why this matters under concurrent tills at the same
+        // location.
+        const sortedItems = [...created.items].sort((a, b) => (a.variantId ?? '').localeCompare(b.variantId ?? ''));
+        for (const item of sortedItems) {
+          if (!item.variantId) continue;
+          const variant = variantMap.get(item.variantId)!;
+          await this.inventory.postUnconditional(
+            {
+              variantId: item.variantId,
+              locationId: input.locationId,
+              delta: -item.quantity,
+              reason: 'POS_SALE',
+              refType: 'Order',
+              refId: created.id,
+              unitCost: variant.costPrice,
+              actorId: input.cashierUserId,
+            },
+            tx,
+          );
+        }
       }
 
       // A till's cash tender has no gateway callback to route through
@@ -626,27 +669,53 @@ export class OrdersService {
       // posting-rules.subscriber.ts's Dr Cash & Bank / Cr AR only fires off
       // that event, and a cash sale must not sit in the books as an
       // uncollected receivable forever.
-      const payment = await tx.payment.create({
-        data: {
-          orderId: created.id,
-          provider: 'cash',
-          amount: created.grandTotal,
-          status: 'PAID',
-          paidAt: new Date(),
-        },
-      });
+      //
+      // For an instalment plan, only the deposit (which may be zero) is
+      // collected now — the rest is recorded later, one Payment row per
+      // instalment, through InstalmentPlanService.recordInstalmentPayment().
+      const amountDueNow = instalmentPlan ? instalmentPlan.depositMinor : created.grandTotal;
+      const payment =
+        amountDueNow > 0
+          ? await tx.payment.create({
+              data: {
+                orderId: created.id,
+                provider: 'cash',
+                amount: amountDueNow,
+                status: 'PAID',
+                paidAt: new Date(),
+              },
+            })
+          : null;
 
-      await this.events.publish(
-        DomainEvent.PaymentSucceeded,
-        {
-          paymentId: payment.id,
-          orderId: created.id,
-          provider: payment.provider,
-          amount: payment.amount,
-          status: payment.status,
-        },
-        tx,
-      );
+      if (payment) {
+        await this.events.publish(
+          DomainEvent.PaymentSucceeded,
+          {
+            paymentId: payment.id,
+            orderId: created.id,
+            provider: payment.provider,
+            amount: payment.amount,
+            status: payment.status,
+          },
+          tx,
+        );
+      }
+
+      const plan = instalmentPlan
+        ? await tx.instalmentPlan.create({
+            data: {
+              orderId: created.id,
+              type: instalmentPlan.type,
+              totalMinor: created.grandTotal,
+              depositMinor: instalmentPlan.depositMinor,
+              schedule: { create: instalmentPlan.schedule },
+              ...(payment
+                ? { payments: { create: { paymentId: payment.id, isDeposit: true } } }
+                : {}),
+            },
+            include: { schedule: true },
+          })
+        : null;
 
       await this.events.publish(
         DomainEvent.OrderPlaced,
@@ -670,20 +739,25 @@ export class OrdersService {
       // notification.subscriber.ts's delivery email all silently never fired
       // for a till sale. fromStatus is null (not a transition — the order
       // never existed at any other status), which every subscriber already
-      // tolerates since each keys off toStatus alone.
-      await this.events.publish(
-        DomainEvent.OrderStatusChanged,
-        {
-          orderId: created.id,
-          orderNumber: created.number,
-          fromStatus: null,
-          toStatus: 'DELIVERED',
-          actorId: input.cashierUserId,
-        },
-        tx,
-      );
+      // tolerates since each keys off toStatus alone. A LAYBY order is
+      // created at PENDING, not DELIVERED — this never fires for one; it
+      // fires later, from an ordinary changeStatus() call, once the plan
+      // completes and the order actually moves.
+      if (!isLayby) {
+        await this.events.publish(
+          DomainEvent.OrderStatusChanged,
+          {
+            orderId: created.id,
+            orderNumber: created.number,
+            fromStatus: null,
+            toStatus: 'DELIVERED',
+            actorId: input.cashierUserId,
+          },
+          tx,
+        );
+      }
 
-      return { ...created, payment };
+      return { ...created, payment, instalmentPlan: plan };
     });
 
     this.logger.log(`POS sale ${order.number} placed for ${order.grandTotal} paisa at terminal ${input.terminalId}`);

@@ -1491,3 +1491,52 @@ export interface ApiKeyOversightView extends ApiKeyBase {
     isActive: boolean;
   };
 }
+
+/**
+ * doc 14 (commercial-licensing-agency/14-managed-services-module.md) — the
+ * "Hosting & Billing" admin page's own data, as `GET /managed-services/usage`
+ * and `GET /managed-services/invoices` return it (a thin server-side proxy
+ * to the agency's Master Platform). `databaseBytes` is a numeric STRING —
+ * the Master Platform's own `BigInt.prototype.toJSON` polyfill, never a
+ * plain `number` (Postgres database sizes can exceed
+ * `Number.MAX_SAFE_INTEGER` at scale).
+ */
+export interface ManagedServicesUsageSnapshot {
+  snapshotDate: string;
+  databaseBytes: string;
+  emailsSent30d: number | null;
+  activeUsers30d: number;
+}
+
+export type ManagedServicesTenantStatus = 'PROVISIONING' | 'TRIAL' | 'ACTIVE' | 'SUSPENDED' | 'DEPROVISIONED';
+
+export interface ManagedServicesUsageResponse {
+  status: ManagedServicesTenantStatus;
+  planKey: string;
+  resourceTier: string;
+  snapshots: ManagedServicesUsageSnapshot[];
+}
+
+export type ManagedServicesInvoiceStatus = 'ISSUED' | 'CREDITED';
+export type ManagedServicesStripePaymentStatus = 'PENDING' | 'PAID' | 'FAILED';
+
+export interface ManagedServicesInvoice {
+  id: string;
+  periodStart: string;
+  periodEnd: string;
+  amountMinor: number;
+  status: ManagedServicesInvoiceStatus;
+  issuedAt: string;
+  dueAt: string | null;
+  stripeHostedInvoiceUrl: string | null;
+  stripePaymentStatus: ManagedServicesStripePaymentStatus | null;
+}
+
+/** `currency` travels with every response that carries money — the
+ *  agency's OWN billing currency (`PLATFORM_BILLING_CURRENCY`), which can
+ *  differ from this shop's own storefront `BRAND.currency` — never
+ *  assumed by the page, always read from here. */
+export interface ManagedServicesInvoicesResponse {
+  currency: string;
+  invoices: ManagedServicesInvoice[];
+}

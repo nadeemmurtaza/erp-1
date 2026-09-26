@@ -33,6 +33,7 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
   let prisma: PrismaService;
   let defaultLocationId: string;
   let productId: string;
+  let unitPrice: number;
   let cashierUserId: string;
   const createdVariantIds: string[] = [];
   const createdOrderIds: string[] = [];
@@ -73,8 +74,9 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
     prisma = module.get(PrismaService);
     defaultLocationId = await inventory.defaultLocationId();
 
-    const product = await prisma.product.findFirstOrThrow({ select: { id: true } });
+    const product = await prisma.product.findFirstOrThrow({ select: { id: true, basePrice: true } });
     productId = product.id;
+    unitPrice = product.basePrice;
 
     const user = await prisma.user.findFirstOrThrow({ select: { id: true } });
     cashierUserId = user.id;
@@ -271,6 +273,132 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
         where: { variantId_locationId: { variantId: variant.id, locationId: defaultLocationId } },
       });
       expect(defaultLocationStock.quantity).toBe(5);
+    });
+  });
+
+  // finance-accounting/151-layby-installment-sales.md
+  describe('placeFromPos — instalmentPlan (WO-151.3)', () => {
+    it('LAYBY: creates the order PENDING, decrements no stock, and takes only the deposit', async () => {
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 10, reason: 'ADJUSTMENT' });
+
+      const total = unitPrice * 2;
+      const depositMinor = Math.floor(total * 0.2);
+      const order = await orders.placeFromPos({
+        locationId: defaultLocationId,
+        terminalId: 'terminal-1',
+        shiftId: 'shift-1',
+        cashierUserId,
+        lines: [{ variantId: variant.id, quantity: 2 }],
+        instalmentPlan: {
+          type: 'LAYBY',
+          depositMinor,
+          schedule: [{ dueDate: new Date('2026-11-01'), amountMinor: total - depositMinor }],
+        },
+      });
+      createdOrderIds.push(order.id);
+
+      expect(order.status).toBe('PENDING');
+      expect(order.deliveredAt).toBeNull();
+      expect(order.grandTotal).toBe(total);
+      expect(order.payment).toEqual(expect.objectContaining({ amount: depositMinor, status: 'PAID' }));
+
+      const stock = await prisma.variantLocationStock.findUniqueOrThrow({
+        where: { variantId_locationId: { variantId: variant.id, locationId: defaultLocationId } },
+      });
+      expect(stock.quantity).toBe(10); // unchanged — nothing reserved or decremented
+
+      const plan = await prisma.instalmentPlan.findUniqueOrThrow({ where: { orderId: order.id } });
+      expect(plan).toEqual(expect.objectContaining({ type: 'LAYBY', totalMinor: total, depositMinor, status: 'ACTIVE' }));
+
+      const link = await prisma.instalmentPayment.findFirstOrThrow({ where: { planId: plan.id } });
+      expect(link).toEqual(expect.objectContaining({ isDeposit: true }));
+    });
+
+    it('LAYBY: never publishes order.status_changed(DELIVERED) at creation — the order is not delivered', async () => {
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 5, reason: 'ADJUSTMENT' });
+
+      const order = await orders.placeFromPos({
+        locationId: defaultLocationId,
+        terminalId: 'terminal-1',
+        shiftId: 'shift-1',
+        cashierUserId,
+        lines: [{ variantId: variant.id, quantity: 1 }],
+        instalmentPlan: { type: 'LAYBY', depositMinor: 0, schedule: [{ dueDate: new Date('2026-11-01'), amountMinor: unitPrice }] },
+      });
+      createdOrderIds.push(order.id);
+
+      const outboxRow = await prisma.outboxEvent.findFirst({
+        where: { name: 'order.status_changed', payload: { path: ['orderId'], equals: order.id } },
+      });
+      expect(outboxRow).toBeNull();
+      expect(order.payment).toBeNull(); // depositMinor: 0 — no Payment row at all
+    });
+
+    it('INSTALMENT: releases goods immediately (DELIVERED, stock decremented) despite the schedule', async () => {
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 10, reason: 'ADJUSTMENT' });
+
+      const total = unitPrice * 2;
+      const depositMinor = Math.floor(total * 0.3);
+      const order = await orders.placeFromPos({
+        locationId: defaultLocationId,
+        terminalId: 'terminal-1',
+        shiftId: 'shift-1',
+        cashierUserId,
+        lines: [{ variantId: variant.id, quantity: 2 }],
+        instalmentPlan: {
+          type: 'INSTALMENT',
+          depositMinor,
+          schedule: [{ dueDate: new Date('2026-11-01'), amountMinor: total - depositMinor }],
+        },
+      });
+      createdOrderIds.push(order.id);
+
+      expect(order.status).toBe('DELIVERED');
+      expect(order.deliveredAt).not.toBeNull();
+
+      const stock = await prisma.variantLocationStock.findUniqueOrThrow({
+        where: { variantId_locationId: { variantId: variant.id, locationId: defaultLocationId } },
+      });
+      expect(stock.quantity).toBe(8); // decremented immediately, unlike LAYBY
+
+      const plan = await prisma.instalmentPlan.findUniqueOrThrow({ where: { orderId: order.id } });
+      expect(plan.type).toBe('INSTALMENT');
+    });
+
+    it('refuses a plan whose deposit + schedule does not equal the order total', async () => {
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 5, reason: 'ADJUSTMENT' });
+
+      await expect(
+        orders.placeFromPos({
+          locationId: defaultLocationId,
+          terminalId: 'terminal-1',
+          shiftId: 'shift-1',
+          cashierUserId,
+          lines: [{ variantId: variant.id, quantity: 1 }],
+          // deposit + schedule deliberately exceeds the real total (unitPrice) by 1.
+          instalmentPlan: { type: 'LAYBY', depositMinor: 1, schedule: [{ dueDate: new Date(), amountMinor: unitPrice }] },
+        }),
+      ).rejects.toBeInstanceOf(BadRequestException);
+    });
+
+    it('refuses a plan with an empty schedule', async () => {
+      const variant = await freshVariant();
+      await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 5, reason: 'ADJUSTMENT' });
+
+      await expect(
+        orders.placeFromPos({
+          locationId: defaultLocationId,
+          terminalId: 'terminal-1',
+          shiftId: 'shift-1',
+          cashierUserId,
+          lines: [{ variantId: variant.id, quantity: 1 }],
+          instalmentPlan: { type: 'LAYBY', depositMinor: 500, schedule: [] },
+        }),
+      ).rejects.toBeInstanceOf(BadRequestException);
     });
   });
 });

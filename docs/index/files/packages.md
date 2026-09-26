@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 78 tracked files in `packages/*`, by directory.
+All 79 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -49,7 +49,7 @@ All 78 tracked files in `packages/*`, by directory.
 | `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (40)
+### `packages/shared/src` (41)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -59,7 +59,8 @@ All 78 tracked files in `packages/*`, by directory.
 | `cod-risk.spec.ts` | unit test | 199 |  |
 | `cod-risk.ts` | module | 167 |  |
 | `collection-rules.ts` | module | 16 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually cu… |
-| `constants.ts` | module | 157 |  |
+| `constants.spec.ts` | unit test | 42 |  |
+| `constants.ts` | module | 199 |  |
 | `content-blocks.ts` | module | 48 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
 | `demand-forecast.spec.ts` | unit test | 179 |  |
 | `demand-forecast.ts` | module | 112 |  |
@@ -75,7 +76,7 @@ All 78 tracked files in `packages/*`, by directory.
 | `markdown-suggestion.ts` | module | 85 | WO-9.8 (09-ai-layer.md) — "recommend the discount that clears [ageing stock] at the least margin loss, showing the trad… |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
 | `permissions.spec.ts` | unit test | 68 |  |
-| `permissions.ts` | module | 816 | The permission catalog for PBAC (Permission-Based Access Control). |
+| `permissions.ts` | module | 890 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |

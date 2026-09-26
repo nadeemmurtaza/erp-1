@@ -13,7 +13,7 @@ import {
   type Basket,
 } from '@newax/pos-core';
 import { formatMoney } from '@newax/shared';
-import { searchProducts, sell, type PosSaleRequest, type PosVariant } from '@/lib/pos-client';
+import { searchProducts, sell, type PosInstalmentPlanRequest, type PosSaleRequest, type PosVariant } from '@/lib/pos-client';
 import { ApiError } from '@/lib/api-client';
 import { putOutboxEntry, listOutboxEntries } from '@/lib/outbox-db';
 import { syncOutbox } from '@/lib/outbox-sync';
@@ -21,6 +21,23 @@ import { STORAGE_KEYS } from '@/constants/storage';
 import { ROUTES } from '@/constants/routes';
 
 type Screen = 'basket' | 'tender' | 'done';
+type SaleType = 'CASH' | 'LAYBY' | 'INSTALMENT';
+
+/**
+ * finance-accounting/151-layby-installment-sales.md WO-151.5 — an equal
+ * split of what remains after the deposit, one line per month, the
+ * remainder folded into the last line so the sum always matches the order
+ * total exactly (the backend refuses anything that does not).
+ */
+function buildInstalmentSchedule(remainingMinor: number, count: number): { dueDate: string; amountMinor: number }[] {
+  const base = Math.floor(remainingMinor / count);
+  const now = new Date();
+  return Array.from({ length: count }, (_, i) => {
+    const dueDate = new Date(now.getFullYear(), now.getMonth() + i + 1, now.getDate()).toISOString();
+    const amountMinor = i === count - 1 ? remainingMinor - base * (count - 1) : base;
+    return { dueDate, amountMinor };
+  });
+}
 
 export default function TillPage() {
   const router = useRouter();
@@ -32,6 +49,9 @@ export default function TillPage() {
   const [results, setResults] = useState<PosVariant[]>([]);
   const [screen, setScreen] = useState<Screen>('basket');
   const [tenderRupees, setTenderRupees] = useState('');
+  const [saleType, setSaleType] = useState<SaleType>('CASH');
+  const [depositRupees, setDepositRupees] = useState('');
+  const [instalmentsCount, setInstalmentsCount] = useState('1');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [lastResult, setLastResult] = useState<{
@@ -39,6 +59,7 @@ export default function TillPage() {
     orderId?: string;
     orderNumber?: string;
     changeMinor: number;
+    isLayby: boolean;
   } | null>(null);
   const [pendingCount, setPendingCount] = useState(0);
 
@@ -77,6 +98,12 @@ export default function TillPage() {
   const tenderedMinor = Math.round((Number(tenderRupees) || 0) * 100);
   const tender = computeTender(totals.grandTotal, tenderedMinor);
 
+  const depositMinor = Math.round((Number(depositRupees) || 0) * 100);
+  const instalmentCountNum = Math.max(1, parseInt(instalmentsCount, 10) || 1);
+  const remainingAfterDepositMinor = totals.grandTotal - depositMinor;
+  const depositValid = saleType === 'CASH' || (depositMinor >= 0 && depositMinor <= totals.grandTotal);
+  const canComplete = saleType === 'CASH' ? tender.sufficient : depositValid;
+
   function addToBasket(variant: PosVariant) {
     setBasket((b) => addLine(b, { variantId: variant.variantId, sku: variant.sku, nameEn: variant.nameEn, unitPrice: variant.unitPrice }));
     setQuery('');
@@ -88,11 +115,29 @@ export default function TillPage() {
     setError(null);
     setBusy(true);
 
-    const payload: PosSaleRequest = { lines: basket.map((l) => ({ variantId: l.variantId, quantity: l.quantity })) };
+    const instalmentPlan: PosInstalmentPlanRequest | undefined =
+      saleType === 'CASH'
+        ? undefined
+        : {
+            type: saleType,
+            depositMinor,
+            schedule: buildInstalmentSchedule(remainingAfterDepositMinor, instalmentCountNum),
+          };
+
+    const payload: PosSaleRequest = {
+      lines: basket.map((l) => ({ variantId: l.variantId, quantity: l.quantity })),
+      instalmentPlan,
+    };
 
     try {
       const order = await sell(shiftId, payload);
-      setLastResult({ queued: false, orderId: order.id, orderNumber: order.number, changeMinor: tender.changeMinor });
+      setLastResult({
+        queued: false,
+        orderId: order.id,
+        orderNumber: order.number,
+        changeMinor: saleType === 'CASH' ? tender.changeMinor : 0,
+        isLayby: order.status === 'PENDING',
+      });
       setBasket(clearBasket());
       setScreen('done');
     } catch (cause) {
@@ -106,7 +151,7 @@ export default function TillPage() {
       } else {
         await putOutboxEntry(createOutboxEntry(crypto.randomUUID(), payload));
         await refreshPendingCount();
-        setLastResult({ queued: true, changeMinor: tender.changeMinor });
+        setLastResult({ queued: true, changeMinor: saleType === 'CASH' ? tender.changeMinor : 0, isLayby: saleType === 'LAYBY' });
         setBasket(clearBasket());
         setScreen('done');
       }
@@ -126,6 +171,9 @@ export default function TillPage() {
   function newSale() {
     setLastResult(null);
     setTenderRupees('');
+    setSaleType('CASH');
+    setDepositRupees('');
+    setInstalmentsCount('1');
     setScreen('basket');
   }
 
@@ -133,12 +181,18 @@ export default function TillPage() {
     return (
       <main className="mx-auto max-w-sm p-6 text-center">
         <h1 className="mb-2 text-2xl font-semibold text-neutral-900">
-          {lastResult.queued ? 'Sale saved — will sync' : 'Sale complete'}
+          {lastResult.queued ? 'Sale saved — will sync' : lastResult.isLayby ? 'Layby started — goods on hold' : 'Sale complete'}
         </h1>
         {lastResult.orderNumber && <p className="text-neutral-500">{lastResult.orderNumber}</p>}
         {lastResult.queued && (
           <p className="mt-2 rounded-lg bg-amber-50 px-4 py-3 text-amber-800">
             No connection — this sale is queued and will sync automatically the next time this till is online.
+          </p>
+        )}
+        {!lastResult.queued && lastResult.isLayby && (
+          <p className="mt-2 rounded-lg bg-amber-50 px-4 py-3 text-amber-800">
+            Stock is not held — record each instalment from the order&apos;s own page, and hand over the goods once
+            it&apos;s paid in full.
           </p>
         )}
         {lastResult.changeMinor > 0 && (
@@ -253,29 +307,93 @@ export default function TillPage() {
           <p className="text-center text-neutral-500">Total due</p>
           <p className="text-center text-4xl font-semibold text-neutral-900">{formatMoney(totals.grandTotal)}</p>
 
-          <input
-            className="field-input text-center text-2xl"
-            type="number"
-            inputMode="decimal"
-            min="0"
-            step="0.01"
-            placeholder="Cash tendered (Rs)"
-            value={tenderRupees}
-            onChange={(e) => setTenderRupees(e.target.value)}
-            // eslint-disable-next-line jsx-a11y/no-autofocus -- the tender field appears when the operator opens payment, with a customer waiting. Typing the amount is the next action every time.
-            autoFocus
-          />
+          {/* finance-accounting/151-layby-installment-sales.md WO-151.5 */}
+          <div className="flex justify-center gap-1 rounded-lg border border-neutral-200 p-1" role="group" aria-label="Sale type">
+            {(['CASH', 'LAYBY', 'INSTALMENT'] as const).map((type) => (
+              <button
+                key={type}
+                type="button"
+                aria-pressed={saleType === type}
+                className={saleType === type ? 'tap-btn flex-1 !py-2 text-sm' : 'tap-btn-secondary flex-1 !py-2 text-sm'}
+                onClick={() => setSaleType(type)}
+              >
+                {type === 'CASH' ? 'Cash' : type === 'LAYBY' ? 'Layby' : 'Instalment'}
+              </button>
+            ))}
+          </div>
 
-          {tenderedMinor > 0 && (
-            <p className="text-center text-lg text-neutral-700">
-              {tender.sufficient ? `Change: ${formatMoney(tender.changeMinor)}` : `Still due: ${formatMoney(tender.amountDueMinor)}`}
-            </p>
+          {saleType === 'CASH' ? (
+            <>
+              <input
+                className="field-input text-center text-2xl"
+                type="number"
+                inputMode="decimal"
+                min="0"
+                step="0.01"
+                placeholder="Cash tendered (Rs)"
+                value={tenderRupees}
+                onChange={(e) => setTenderRupees(e.target.value)}
+                // eslint-disable-next-line jsx-a11y/no-autofocus -- the tender field appears when the operator opens payment, with a customer waiting. Typing the amount is the next action every time.
+                autoFocus
+              />
+              {tenderedMinor > 0 && (
+                <p className="text-center text-lg text-neutral-700">
+                  {tender.sufficient
+                    ? `Change: ${formatMoney(tender.changeMinor)}`
+                    : `Still due: ${formatMoney(tender.amountDueMinor)}`}
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              <p className="text-center text-sm text-neutral-500">
+                {saleType === 'LAYBY'
+                  ? 'Goods stay on hold until paid in full.'
+                  : 'Goods go home today; the rest is collected over time.'}
+              </p>
+              <input
+                className="field-input text-center text-2xl"
+                type="number"
+                inputMode="decimal"
+                min="0"
+                max={totals.grandTotal / 100}
+                step="0.01"
+                placeholder="Deposit (Rs)"
+                value={depositRupees}
+                onChange={(e) => setDepositRupees(e.target.value)}
+                // eslint-disable-next-line jsx-a11y/no-autofocus -- see the CASH field's own note above; same moment, same reason.
+                autoFocus
+              />
+              <div className="flex items-center justify-center gap-3">
+                <label htmlFor="instalments-count" className="text-sm text-neutral-500">
+                  Months to pay
+                </label>
+                <input
+                  id="instalments-count"
+                  className="field-input w-20 text-center"
+                  type="number"
+                  inputMode="numeric"
+                  min="1"
+                  value={instalmentsCount}
+                  onChange={(e) => setInstalmentsCount(e.target.value)}
+                />
+              </div>
+              {depositValid && (
+                <p className="text-center text-sm text-neutral-700">
+                  Collect {formatMoney(depositMinor)} now, then {formatMoney(Math.floor(remainingAfterDepositMinor / instalmentCountNum))}
+                  /month for {instalmentCountNum} month{instalmentCountNum === 1 ? '' : 's'}.
+                </p>
+              )}
+              {!depositValid && (
+                <p className="text-center text-sm text-red-600">Deposit cannot exceed the total.</p>
+              )}
+            </>
           )}
 
           {error && <p className="rounded-lg bg-red-50 px-4 py-3 text-center text-red-700">{error}</p>}
 
-          <button className="tap-btn" disabled={!tender.sufficient || busy} onClick={completeSale}>
-            {busy ? 'Completing…' : 'Complete sale'}
+          <button className="tap-btn" disabled={!canComplete || busy} onClick={completeSale}>
+            {busy ? 'Completing…' : saleType === 'CASH' ? 'Complete sale' : saleType === 'LAYBY' ? 'Start layby' : 'Start instalment plan'}
           </button>
           <button className="tap-btn-secondary" onClick={() => setScreen('basket')} disabled={busy}>
             Back

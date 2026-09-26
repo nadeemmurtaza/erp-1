@@ -61,7 +61,7 @@ Every top-level export in `pos`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `TillPage` | default | :25 |  |
+| `page.tsx` | `TillPage` | default | :42 |  |
 
 ### `apps/pos/src/components`
 
@@ -105,25 +105,26 @@ Every top-level export in `pos`, with the line to open.
 | `pos-client.ts` | `PosOrderItem` | interface | :49 |  |
 | `pos-client.ts` | `PosOrder` | interface | :57 |  |
 | `pos-client.ts` | `PosSaleLine` | interface | :72 |  |
-| `pos-client.ts` | `PosSaleRequest` | interface | :77 |  |
-| `pos-client.ts` | `PosReceiptData` | interface | :84 |  |
-| `pos-client.ts` | `AdminOrderSummary` | interface | :99 |  |
-| `pos-client.ts` | `AdminOrderPayment` | interface | :109 |  |
-| `pos-client.ts` | `AdminOrderDetail` | interface | :116 |  |
-| `pos-client.ts` | `listTerminals` | function | :127 | Terminal setup is a one-time, admin-tier action (`pos.manage`, not `pos.operate`) — a plain cashier… |
-| `pos-client.ts` | `searchProducts` | function | :131 |  |
-| `pos-client.ts` | `openShift` | function | :135 |  |
-| `pos-client.ts` | `closeShift` | function | :139 |  |
-| `pos-client.ts` | `xReport` | function | :143 |  |
-| `pos-client.ts` | `zReport` | function | :147 |  |
-| `pos-client.ts` | `recordCashMovement` | function | :151 |  |
-| `pos-client.ts` | `sell` | function | :160 |  |
-| `pos-client.ts` | `getReceipt` | function | :164 |  |
-| `pos-client.ts` | `printReceipt` | function | :169 | Marks the receipt printed and returns its data — call right before `window.print()`. |
-| `pos-client.ts` | `searchOrders` | function | :180 | Order lookup and the return path reuse the EXISTING admin/orders and admin/payments endpoints direc… |
-| `pos-client.ts` | `getOrder` | function | :184 |  |
-| `pos-client.ts` | `returnOrder` | function | :188 |  |
-| `pos-client.ts` | `refundPayment` | function | :192 |  |
+| `pos-client.ts` | `PosInstalmentPlanRequest` | interface | :78 | finance-accounting/151-layby-installment-sales.md — requested at the point of sale. |
+| `pos-client.ts` | `PosSaleRequest` | interface | :84 |  |
+| `pos-client.ts` | `PosReceiptData` | interface | :92 |  |
+| `pos-client.ts` | `AdminOrderSummary` | interface | :107 |  |
+| `pos-client.ts` | `AdminOrderPayment` | interface | :117 |  |
+| `pos-client.ts` | `AdminOrderDetail` | interface | :124 |  |
+| `pos-client.ts` | `listTerminals` | function | :135 | Terminal setup is a one-time, admin-tier action (`pos.manage`, not `pos.operate`) — a plain cashier… |
+| `pos-client.ts` | `searchProducts` | function | :139 |  |
+| `pos-client.ts` | `openShift` | function | :143 |  |
+| `pos-client.ts` | `closeShift` | function | :147 |  |
+| `pos-client.ts` | `xReport` | function | :151 |  |
+| `pos-client.ts` | `zReport` | function | :155 |  |
+| `pos-client.ts` | `recordCashMovement` | function | :159 |  |
+| `pos-client.ts` | `sell` | function | :168 |  |
+| `pos-client.ts` | `getReceipt` | function | :172 |  |
+| `pos-client.ts` | `printReceipt` | function | :177 | Marks the receipt printed and returns its data — call right before `window.print()`. |
+| `pos-client.ts` | `searchOrders` | function | :188 | Order lookup and the return path reuse the EXISTING admin/orders and admin/payments endpoints direc… |
+| `pos-client.ts` | `getOrder` | function | :192 |  |
+| `pos-client.ts` | `returnOrder` | function | :196 |  |
+| `pos-client.ts` | `refundPayment` | function | :200 |  |
 
 
 ---

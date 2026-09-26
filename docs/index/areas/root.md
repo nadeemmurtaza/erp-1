@@ -3,7 +3,7 @@
 
 # repository root files
 
-152 files · 15,337 lines
+187 files · 18,817 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -25,10 +25,10 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `.cursor/rules` | 1 | 0 | mdc |
 | `.githooks` | 2 | 0 | file |
 | `.junie` | 1 | 80 | doc |
-| `apps/platform` | 7 | 154 | script, json, module |
-| `apps/platform/prisma` | 7 | 930 | migration, toml, prisma schema |
-| `apps/platform/src` | 89 | 4,787 | nest module, service, config, module |
-| `apps/platform/test` | 1 | 9 | module |
+| `apps/platform` | 7 | 155 | script, json, module |
+| `apps/platform/prisma` | 9 | 1,401 | migration, toml, prisma schema |
+| `apps/platform/src` | 122 | 7,794 | nest module, service, config, module |
+| `apps/platform/test` | 1 | 10 | module |
 
 
 ## Entry points
@@ -46,19 +46,19 @@ Workspace manifests, Docker compose and stack files, environment templates.
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
 | `CLAUDE.md` | 978 | doc |  |
+| `apps/platform/prisma/schema/platform.prisma` | 767 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `DEPLOYMENT.md` | 492 | doc |  |
-| `apps/platform/prisma/schema/platform.prisma` | 478 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `README.md` | 349 | doc |  |
+| `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
+| `apps/platform/src/modules/billing/billing.service.spec.ts` | 285 | unit test |  |
+| `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | 285 | unit test |  |
+| `apps/platform/src/modules/billing/billing.service.ts` | 275 | service |  |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
-| `apps/platform/src/modules/billing/billing.service.ts` | 196 | service |  |
-| `apps/platform/src/modules/billing/billing.service.spec.ts` | 189 | unit test |  |
+| `apps/platform/src/core/config/env.validation.ts` | 194 | config |  |
+| `apps/platform/src/modules/agency/agency-stripe.service.ts` | 180 | service |  |
 | `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | 178 | unit test |  |
 | `apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql` | 166 | migration |  |
 | `apps/platform/src/modules/tenants/provisioning.service.ts` | 165 | service |  |
-| `.claude/rules/ui.md` | 151 | doc |  |
-| `apps/platform/src/modules/resource-quotas/resource-quotas.service.ts` | 143 | service |  |
-| `PRD.md` | 137 | doc |  |
-| `.claude/rules/design.md` | 136 | doc |  |
 
 
 ---

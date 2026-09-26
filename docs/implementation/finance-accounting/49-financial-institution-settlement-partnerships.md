@@ -11,6 +11,71 @@ document is the merchant-settlement mirror of `PaymentProvider`, built the
 identical two-layer way doc 15/36 already establish: a generic contract,
 one real integration per financial institution.
 
+> **Status (2026-09-25): built, WO-49.1–49.6.** `SettlementProvider`/
+> `SettlementBatch`/`SettlementBatchLine` (`settlements.prisma`) live in a
+> new `settlements` module, `core`-packed but `offByDefault: true` like
+> `receivables`/`wallet` — a real capability every deployment can reach, off
+> until a client actually has a settlement partnership to reconcile.
+> `SettlementsService.createExpectedBatch()`/`reconcile()`/
+> `pollExpectedBatches()`/`requestWriteoff()`/`approveWriteoff()`/
+> `writeOffShortfall()` are all built and tested. The write-off's maker-
+> checker pair mirrors `CreditNotesService.approve()`/`.issue()` exactly:
+> below `FinanceSettlementWriteoffApprovalThresholdMinor` (a `Setting`,
+> default Rs 10,000) a single actor's own request posts; above it,
+> `writeOffShortfall()` refuses without a prior `approveWriteoff()` call by
+> someone other than the requester, checked again at write-off time, never
+> trusted from the request step alone. The write-off posts Dr `5700
+> Settlement Shortfall Expense` / Cr `1000 Cash & Bank` through
+> `SettlementShortfallWrittenOff`, a new domain event —
+> `settlements` never imports `accounting`, matching every other posting
+> rule in this repository. Permissions `finance.settlement.view`
+> (read-only), `.reconcile` (the routine actions), `.approve_writeoff`
+> (the checker half) are seeded to `ADMIN` and enforced per-route, `view`
+> alone reaching every `GET`. WO-49.6's UI is a settlements list
+> (`/admin/settlements`, status filter, record-expected-batch dialog) and a
+> batch detail screen (`/admin/settlements/:id`, reconcile/request-writeoff/
+> approve-writeoff/write-off actions gated the identical way
+> credit-notes/[id] gates approve/issue), reachable from the Finance nav
+> group.
+>
+> **Two honest deviations from this doc's own text.** First, §"Acceptance"
+> says "with no connector registered, no `SettlementBatch` rows are ever
+> created" — this build's `createExpectedBatch()` does allow recording an
+> expected batch with zero connectors registered (which is this codebase's
+> permanent state today, per WO-49.7 below): an admin naming which payments
+> a bank round-up should cover is a real, connector-independent operational
+> need, and nothing about it requires reconciliation to already work. What
+> the doc's own sentence protects — a batch is never silently marked
+> `CONFIRMED`/`SHORT` without a connector actually confirming it — still
+> holds exactly: `reconcile()` and the polling cron both refuse outright
+> when no connector is registered for the batch's provider, proven by
+> spec. Second, `SettlementProvider` carries no `organizationId` — the
+> doc's own schema sketch has one, but no sibling model this document
+> mirrors (`Payment`, `Order`, `CreditNote`/`DebitNote`) carries one either;
+> `receivables.prisma`'s own file header already states why for the
+> identical reason (this codebase's real multi-tenancy boundary is the
+> deployment itself, not a column on every table — see `RETAIL-ERP.md` R7).
+>
+> **WO-49.2 (`FinancialInstitutionConnector` + webhook verification) and
+> WO-49.7 (payroll disbursement via the same connector) are deliberately
+> not built.** No real financial institution's API contract exists to
+> integrate against — the identical "stays dark until credentials exist"
+> shape `PaymentProvider`'s own gateway classes already follow. The
+> interface (`settlement-connector.ts`) is written and typed so a real
+> connector is a new class plus an env entry, no migration, the moment one
+> is needed; `this.connectors` is a permanently empty map until then, which
+> is why `reconcile()`/`pollExpectedBatches()` have nothing to reconcile
+> against in this deployment today — proven, not assumed, by a test that
+> registers a fake connector directly into that map and confirms the
+> `CONFIRMED`/`SHORT` classification actually works the moment one exists.
+> A webhook-delivery path (the doc's own "a redelivered settlement webhook
+> updates one batch, never creates a second") is likewise deferred to
+> WO-49.2 alongside the connector it would carry — the polling fallback
+> (WO-49.3, built) is this build's only reconciliation path today, and
+> `@@unique([settlementProviderId, externalBatchRef])` already makes a
+> second delivery of the same batch idempotent whenever a webhook path is
+> added.
+
 ## 1. A settlement batch is a reconciliation target, not a payment record
 
 `Payment`/`PosShift`/`CashMovement` already record what the business

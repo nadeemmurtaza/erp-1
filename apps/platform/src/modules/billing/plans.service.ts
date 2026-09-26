@@ -19,6 +19,9 @@ export class PlansService {
     if (dto.pricingModel === 'ONE_TIME_LICENSE' && (dto.oneTimeLicenseMinor == null || !dto.licenseDeploymentMode)) {
       throw new BadRequestException('oneTimeLicenseMinor and licenseDeploymentMode are required for a ONE_TIME_LICENSE plan.');
     }
+    if (dto.pricingModel === 'USAGE_BASED' && dto.transactionFeeBps == null) {
+      throw new BadRequestException('transactionFeeBps is required for a USAGE_BASED plan.');
+    }
 
     return this.prisma.platformPlan.create({
       data: {
@@ -30,6 +33,9 @@ export class PlansService {
         perSeatPriceMinor: dto.pricingModel === 'PER_SEAT' ? dto.perSeatPriceMinor : null,
         oneTimeLicenseMinor: dto.pricingModel === 'ONE_TIME_LICENSE' ? dto.oneTimeLicenseMinor : null,
         licenseDeploymentMode: dto.pricingModel === 'ONE_TIME_LICENSE' ? dto.licenseDeploymentMode : null,
+        transactionFeeBps: dto.pricingModel === 'USAGE_BASED' ? dto.transactionFeeBps : null,
+        usageRateCardMinor: dto.pricingModel === 'USAGE_BASED' ? (dto.usageRateCardMinor ?? {}) : undefined,
+        includedAllowances: dto.pricingModel === 'USAGE_BASED' ? (dto.includedAllowances ?? {}) : undefined,
         isActive: dto.isActive ?? true,
       },
     });

@@ -113,6 +113,9 @@ export const ROUTES = {
     /** Bulk expense onboarding (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.4). */
     financeExpensesImport: '/admin/finance/expenses/import',
 
+    /** 04-finance.md WO-4.6. */
+    fiscalPeriods: '/admin/accounting/fiscal-periods',
+
     /** 145-receivables-credit-limits-dunning.md. */
     creditNotes: '/admin/credit-notes',
     creditNoteNew: '/admin/credit-notes/new',
@@ -123,6 +126,10 @@ export const ROUTES = {
     creditTerms: '/admin/credit-terms',
     dunningPolicy: '/admin/dunning-policy',
     statements: '/admin/statements',
+
+    /** 49-financial-institution-settlement-partnerships.md. */
+    settlements: '/admin/settlements',
+    settlementBatch: (id: string) => `/admin/settlements/${id}`,
 
     bom: '/admin/bom',
 
@@ -145,6 +152,11 @@ export const ROUTES = {
     purchasingSpend: '/admin/analytics/purchasing/spend',
     suppliers: '/admin/suppliers',
     supplier: (id: string) => `/admin/suppliers/${id}`,
+    tradingPartners: '/admin/trading-partners',
+    tradingPartner: (id: string) => `/admin/trading-partners/${id}`,
+    /** 56-overdue-invoices-counter.md WO-56.2 — invoices issued to trading partners. */
+    invoices: '/admin/invoices',
+    invoicesOverdue: '/admin/invoices?overdue=true',
 
     /** 152-purchase-requisition.md. A request to buy, distinct from the PO it may become. */
     requisitions: '/admin/requisitions',
@@ -210,6 +222,9 @@ export const ROUTES = {
     emailAccounts: '/admin/email-accounts',
     /** `new` is a real id here: the editor route handles creating and editing. */
     emailAccount: (id: string) => `/admin/email-accounts/${id}`,
+    /** doc 14 — invisible unless this deployment's `managed-services` module
+     *  is on (an agency-managed delivery only; gated in nav-registry.ts). */
+    managedServices: '/admin/managed-services',
 
     /**
      * The three-level admin shell (RETAIL-ERP.md R19, WO-18.5) — invisible

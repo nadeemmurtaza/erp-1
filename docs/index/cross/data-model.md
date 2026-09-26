@@ -3,7 +3,7 @@
 
 # Data model
 
-All **229** Prisma models and **105** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **244** Prisma models and **112** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -25,7 +25,7 @@ against a real database.
 
 | Schema | Models | Enums | Owner | Contains |
 |---|---|---|---|---|
-| [`accounting.prisma`](../data/accounting.md) | 6 | 3 | [`accounting`](../modules/accounting.md) | Account, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter, JournalLine |
+| [`accounting.prisma`](../data/accounting.md) | 8 | 4 | [`accounting`](../modules/accounting.md) | Account, AssetDepreciationPosting, AssetDepreciationSchedule, FiscalPeriod, FiscalYear, JournalEntry, JournalEntryNumberCounter,… |
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
@@ -36,7 +36,9 @@ against a real database.
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
 | [`fulfilment.prisma`](../data/fulfilment.md) | 16 | 4 | [`fulfilment`](../modules/fulfilment.md) | Manifest, ManifestNumberCounter, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest, ReturnRequestItem, ReturnRequestNumber… |
 | [`giftcards.prisma`](../data/giftcards.md) | 3 | 1 | [`giftcards`](../modules/giftcards.md) | GiftCard, GiftCardTransaction, StoreCreditTransaction |
+| [`hr.prisma`](../data/hr.md) | 2 | 1 | [`hr`](../modules/hr.md) | Asset, AssetAssignment |
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
+| [`instalments.prisma`](../data/instalments.md) | 3 | 2 | core platform | InstalmentPayment, InstalmentPlan, InstalmentScheduleLine |
 | [`inventory.prisma`](../data/inventory.md) | 12 | 6 | [`inventory`](../modules/inventory.md) | Location, MarkdownSuggestion, SpotCheck, SpotCheckLine, SpotCheckPolicy, StockCount, StockCountLine, StockMovement, StockVariance… |
 | [`invoicing.prisma`](../data/invoicing.md) | 4 | 2 | core platform | Invoice, InvoiceLine, Quote, QuoteLine |
 | [`loyalty.prisma`](../data/loyalty.md) | 3 | 1 | [`loyalty`](../modules/loyalty.md) | LoyaltyTier, LoyaltyTransaction, Referral |
@@ -49,7 +51,7 @@ against a real database.
 | [`parties.prisma`](../data/parties.md) | 2 | 1 | [`parties`](../modules/parties.md) | Party, PartyRoleAssignment |
 | [`payments.prisma`](../data/payments.md) | 1 | 1 | [`payments`](../modules/payments.md) | Payment |
 | [`payroll.prisma`](../data/payroll.md) | 9 | 5 | [`payroll`](../modules/payroll.md) | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLine, PayRunNumberCount… |
-| [`platform.prisma`](../data/platform.md) | 15 | 9 | core platform | PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformOpsClient, PlatformPlan, PlatformSubscription, PlatformT… |
+| [`platform.prisma`](../data/platform.md) | 20 | 11 | core platform | AgencyUsageSnapshot, MeteredOrderFee, PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformOpsClient, Platfor… |
 | [`pos.prisma`](../data/pos.md) | 4 | 3 | [`pos`](../modules/pos.md) | CashMovement, PosReceipt, PosShift, PosTerminal |
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
@@ -58,6 +60,7 @@ against a real database.
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
 | [`reviews.prisma`](../data/reviews.md) | 2 | 1 | [`reviews`](../modules/reviews.md) | ProductReviewSummary, Review |
 | [`search.prisma`](../data/search.md) | 2 | 0 | [`search`](../modules/search.md) | SearchQueryLog, SearchSynonym |
+| [`settlements.prisma`](../data/settlements.md) | 3 | 1 | [`settlements`](../modules/settlements.md) | SettlementBatch, SettlementBatchLine, SettlementProvider |
 | [`stitching.prisma`](../data/stitching.md) | 8 | 3 | [`stitching`](../modules/stitching.md) | StitchingJob, StitchingJobEvent, StitchingJobNumberCounter, StitchingOption, StitchingOptionGroup, StitchingOrder, StitchingOrder… |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
 | [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
@@ -74,11 +77,16 @@ against a real database.
 | [`Account`](../data/accounting.md#account) | `accounting` | 14 | 2 | id | The chart of accounts. |
 | [`Address`](../data/core.md#address) | `core` | 15 | 1 | id |  |
 | [`AdminScope`](../data/organization.md#adminscope) | `organization` | 9 | 3 | id | What a user's admin access is scoped to (R10) — never a role check (House Rule 9 forbids… |
+| [`AgencyUsageSnapshot`](../data/platform.md#agencyusagesnapshot) | `platform` | 8 | 1 | id | One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe… |
 | [`AiUsageLog`](../data/core.md#aiusagelog) | `core` | 11 | 0 | id |  |
 | [`AnalyticsEvent`](../data/core.md#analyticsevent) | `core` | 7 | 0 | id | Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started. |
 | [`ApiKey`](../data/core.md#apikey) | `core` | 18 | 2 | id | A personal API key: a credential that acts as `user`, never as anyone more powerful. |
 | [`ApprovalChain`](../data/approvals.md#approvalchain) | `approvals` | 8 | 0 | id |  |
 | [`ApprovalStep`](../data/approvals.md#approvalstep) | `approvals` | 11 | 2 | id |  |
+| [`Asset`](../data/hr.md#asset) | `hr` | 11 | 0 | id |  |
+| [`AssetAssignment`](../data/hr.md#assetassignment) | `hr` | 12 | 4 | id | One row per issue/return cycle — an asset's full custody history, never overwritten. |
+| [`AssetDepreciationPosting`](../data/accounting.md#assetdepreciationposting) | `accounting` | 7 | 1 | id | One row per period posted — the same "snapshot at write time, never re-derived" disciplin… |
+| [`AssetDepreciationSchedule`](../data/accounting.md#assetdepreciationschedule) | `accounting` | 14 | 2 | id |  |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
 | [`BackInStockRequest`](../data/wishlist.md#backinstockrequest) | `wishlist` | 6 | 2 | id | One row per customer waiting on one variant. |
 | [`Banner`](../data/content.md#banner) | `content` | 11 | 0 | id |  |
@@ -132,6 +140,9 @@ against a real database.
 | [`IdentityVerification`](../data/identity-verification.md#identityverification) | `identity-verification` | 12 | 1 | id |  |
 | [`InboundEmail`](../data/crm.md#inboundemail) | `crm` | 17 | 3 | id | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-i… |
 | [`InboundEmailReply`](../data/crm.md#inboundemailreply) | `crm` | 7 | 2 | id | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original m… |
+| [`InstalmentPayment`](../data/instalments.md#instalmentpayment) | `instalments` | 7 | 2 | id | One row per actual payment received — never assumed to match the schedule exactly; a cust… |
+| [`InstalmentPlan`](../data/instalments.md#instalmentplan) | `instalments` | 12 | 1 | id |  |
+| [`InstalmentScheduleLine`](../data/instalments.md#instalmentscheduleline) | `instalments` | 5 | 1 | id |  |
 | [`Interaction`](../data/crm.md#interaction) | `crm` | 11 | 3 | id |  |
 | [`InterBranchInvoice`](../data/transfers.md#interbranchinvoice) | `transfers` | 9 | 1 | id | R12/R17's settlement document for an INVOICED transfer (WO-22.3) — the `transfers` module… |
 | [`InterBranchInvoiceNumberCounter`](../data/transfers.md#interbranchinvoicenumbercounter) | `transfers` | 2 | 0 | year | Same shape as TransferNumberCounter, one counter per InterBranchInvoice rather than shari… |
@@ -156,6 +167,7 @@ against a real database.
 | [`MenuItem`](../data/content.md#menuitem) | `content` | 11 | 2 | id | A tree per named slot (`menuKey`: "footer_help", "footer_about", …) — see MENU_KEYS in pa… |
 | [`MenuItemTranslation`](../data/content.md#menuitemtranslation) | `content` | 5 | 1 | id |  |
 | [`MerchantPayable`](../data/wallet.md#merchantpayable) | `wallet` | 15 | 0 | id | The exact mirror of doc 145's own AP side (`SupplierBill`) — a merchant selling through t… |
+| [`MeteredOrderFee`](../data/platform.md#meteredorderfee) | `platform` | 10 | 1 | id | Doc 153's own "the reversal document, not the reversal flag" — one row per order actually… |
 | [`NewsletterSubscriber`](../data/onsite-messaging.md#newslettersubscriber) | `onsite-messaging` | 6 | 0 | id | A distinct, lightweight capture list — not folded into Contact. |
 | [`Node`](../data/organization.md#node) | `organization` | 13 | 1 | id | A child node this deployment knows about — a brand's branches, or an organization's brand… |
 | [`NotificationPreference`](../data/notification-preferences.md#notificationpreference) | `notification-preferences` | 8 | 1 | id |  |
@@ -166,7 +178,7 @@ against a real database.
 | [`OptionTemplateTranslation`](../data/catalog.md#optiontemplatetranslation) | `catalog` | 5 | 1 | id |  |
 | [`OptionTemplateValue`](../data/catalog.md#optiontemplatevalue) | `catalog` | 8 | 1 | id |  |
 | [`OptionTemplateValueTranslation`](../data/catalog.md#optiontemplatevaluetranslation) | `catalog` | 5 | 1 | id |  |
-| [`Order`](../data/orders.md#order) | `orders` | 55 | 5 | id |  |
+| [`Order`](../data/orders.md#order) | `orders` | 56 | 5 | id |  |
 | [`OrderDiscount`](../data/promotions.md#orderdiscount) | `promotions` | 10 | 2 | id | Which discounts an order actually received, so it can explain itself. |
 | [`OrderEconomics`](../data/finance.md#ordereconomics) | `finance` | 12 | 1 | orderId | One row per order, written when it reaches DELIVERED and recomputed if it is later RETURN… |
 | [`OrderItem`](../data/orders.md#orderitem) | `orders` | 38 | 4 | id |  |
@@ -179,7 +191,7 @@ against a real database.
 | [`Party`](../data/parties.md#party) | `parties` | 16 | 0 | id |  |
 | [`PartyRoleAssignment`](../data/parties.md#partyroleassignment) | `parties` | 4 | 1 | id |  |
 | [`PasswordResetToken`](../data/core.md#passwordresettoken) | `core` | 7 | 1 | id | A one-time token mailed to reset a forgotten password. |
-| [`Payment`](../data/payments.md#payment) | `payments` | 19 | 2 | id |  |
+| [`Payment`](../data/payments.md#payment) | `payments` | 21 | 2 | id |  |
 | [`PayRun`](../data/payroll.md#payrun) | `payroll` | 16 | 2 | id | The pay-run document (erp-lenses/38: "the pay run is a document, not a report"). |
 | [`PayRunAdjustment`](../data/payroll.md#payrunadjustment) | `payroll` | 11 | 3 | id | erp-lenses/38's "the overpayment has no way back": a line-level correction keyed to the o… |
 | [`PayRunLine`](../data/payroll.md#payrunline) | `payroll` | 13 | 3 | id | One line per employee per run. |
@@ -187,12 +199,13 @@ against a real database.
 | [`Permission`](../data/core.md#permission) | `core` | 8 | 0 | id | A single grantable capability, e.g. |
 | [`PhoneOptOut`](../data/marketing.md#phoneoptout) | `marketing` | 2 | 0 | phoneE164 | The phone-number equivalent of User.marketingEmailOptOut's unsubscribe link. |
 | [`PlatformCustomQuote`](../data/platform.md#platformcustomquote) | `platform` | 16 | 2 | id | WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_T… |
-| [`PlatformInvoice`](../data/platform.md#platforminvoice) | `platform` | 18 | 2 | id |  |
+| [`PlatformInvoice`](../data/platform.md#platforminvoice) | `platform` | 27 | 2 | id |  |
 | [`PlatformInvoiceCreditNote`](../data/platform.md#platforminvoicecreditnote) | `platform` | 7 | 1 | id | A billing dispute is resolved here, against the specific invoice — never an edited invoic… |
 | [`PlatformOpsClient`](../data/platform.md#platformopsclient) | `platform` | 8 | 0 | id | A key-hash principal for internal hosting-ops tooling calling this control plane — the sa… |
-| [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 14 | 0 | id |  |
+| [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 18 | 0 | id |  |
+| [`PlatformRateCardChangeRequest`](../data/platform.md#platformratecardchangerequest) | `platform` | 15 | 1 | id | doc 153's own "the threshold nobody approves alone" / "authority and blast radius" lenses… |
 | [`PlatformSubscription`](../data/platform.md#platformsubscription) | `platform` | 8 | 2 | id |  |
-| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 28 | 1 | id | One row per hosted client. |
+| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 37 | 1 | id | One row per hosted client. |
 | [`PlatformUsageRecord`](../data/platform.md#platformusagerecord) | `platform` | 6 | 1 | id | Metered usage a tenant's own deployment reports about itself — never a source of business… |
 | [`PolicyQuarantine`](../data/replication.md#policyquarantine) | `replication` | 14 | 1 | id | R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for rev… |
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
@@ -244,6 +257,9 @@ against a real database.
 | [`SearchSynonym`](../data/search.md#searchsynonym) | `search` | 5 | 0 | id | Search. |
 | [`Segment`](../data/crm.md#segment) | `crm` | 10 | 1 | id | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filt… |
 | [`Setting`](../data/core.md#setting) | `core` | 4 | 0 | key | Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fe… |
+| [`SettlementBatch`](../data/settlements.md#settlementbatch) | `settlements` | 14 | 1 | id |  |
+| [`SettlementBatchLine`](../data/settlements.md#settlementbatchline) | `settlements` | 6 | 2 | id | Which of our own Payment rows this settlement batch is meant to cover — the join a reconc… |
+| [`SettlementProvider`](../data/settlements.md#settlementprovider) | `settlements` | 5 | 0 | id | Financial institution settlement partnerships (finance-accounting/49-financial-institutio… |
 | [`Shipment`](../data/orders.md#shipment) | `orders` | 26 | 3 | id |  |
 | [`ShipmentEvent`](../data/fulfilment.md#shipmentevent) | `fulfilment` | 7 | 1 | id | The tracking timeline — one row per status change, courier's raw string kept in `meta` fo… |
 | [`ShipmentItem`](../data/fulfilment.md#shipmentitem) | `fulfilment` | 6 | 2 | id | A shipment may cover only part of an order (WO-6.4's partial-shipment note) — the shipmen… |
@@ -286,7 +302,9 @@ against a real database.
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
-| [`User`](../data/core.md#user) | `core` | 79 | 28 | id |  |
+| [`UsageMeter`](../data/platform.md#usagemeter) | `platform` | 8 | 1 | id | One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` inc… |
+| [`UsageMeteringCursor`](../data/platform.md#usagemeteringcursor) | `platform` | 6 | 1 | id | The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each ba… |
+| [`User`](../data/core.md#user) | `core` | 83 | 31 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
@@ -317,6 +335,7 @@ against a real database.
 | [`ApprovalChainStatus`](../data/approvals.md#approvalchainstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` |
 | [`ApprovalStepStatus`](../data/approvals.md#approvalstepstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` `SKIPPED` |
 | [`ApprovalSubjectType`](../data/approvals.md#approvalsubjecttype) | `approvals` | `PURCHASE_REQUISITION` `WALLET_ADJUSTMENT` |
+| [`AssetStatus`](../data/hr.md#assetstatus) | `hr` | `AVAILABLE` `ASSIGNED` `RETIRED` `LOST` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |
 | [`CampaignRecipientStatus`](../data/marketing.md#campaignrecipientstatus) | `marketing` | `PENDING` `SENT` `SKIPPED_OPT_OUT` `SKIPPED_NO_CONTACT` `FAILED` `OPENED` `CLICKED` |
@@ -328,6 +347,7 @@ against a real database.
 | [`ContactStatus`](../data/crm.md#contactstatus) | `crm` | `LEAD` `ACTIVE` `REPEAT` `DORMANT` `BLOCKED` |
 | [`ContentStatus`](../data/content.md#contentstatus) | `content` | `DRAFT` `PUBLISHED` `ARCHIVED` |
 | [`CreditDebitNoteStatus`](../data/receivables.md#creditdebitnotestatus) | `receivables` | `DRAFT` `ISSUED` `APPLIED` `VOID` |
+| [`DepreciationMethod`](../data/accounting.md#depreciationmethod) | `accounting` | `STRAIGHT_LINE` `DECLINING_BALANCE` |
 | [`DevicePlatform`](../data/core.md#deviceplatform) | `core` | `IOS` `ANDROID` `WEB` |
 | [`DiscountScope`](../data/promotions.md#discountscope) | `promotions` | `ORDER` `PRODUCT` `CATEGORY` `COLLECTION` `SHIPPING` |
 | [`DiscountType`](../data/promotions.md#discounttype) | `promotions` | `PERCENTAGE` `FIXED_AMOUNT` `FREE_SHIPPING` `BUY_X_GET_Y` `TIERED` |
@@ -336,6 +356,8 @@ against a real database.
 | [`FiscalPeriodStatus`](../data/accounting.md#fiscalperiodstatus) | `accounting` | `OPEN` `CLOSED` `LOCKED` |
 | [`GiftCardStatus`](../data/giftcards.md#giftcardstatus) | `giftcards` | `ACTIVE` `REDEEMED` `EXPIRED` `CANCELLED` |
 | [`IdentityVerificationStatus`](../data/identity-verification.md#identityverificationstatus) | `identity-verification` | `NOT_STARTED` `PENDING` `APPROVED` `REJECTED` `EXPIRED` |
+| [`InstalmentPlanStatus`](../data/instalments.md#instalmentplanstatus) | `instalments` | `ACTIVE` `COMPLETED` `DEFAULTED` `CANCELLED` |
+| [`InstalmentPlanType`](../data/instalments.md#instalmentplantype) | `instalments` | `LAYBY` `INSTALMENT` |
 | [`InteractionKind`](../data/crm.md#interactionkind) | `crm` | `CALL` `WHATSAPP` `EMAIL` `SMS` `VISIT` `NOTE` `COMPLAINT` |
 | [`InvoiceStatus`](../data/invoicing.md#invoicestatus) | `invoicing` | `ISSUED` `PAID` `VOID` |
 | [`InvoiceStatus`](../data/platform.md#invoicestatus) | `platform` | `ISSUED` `CREDITED` |
@@ -368,13 +390,14 @@ against a real database.
 | [`PermissionEffect`](../data/core.md#permissioneffect) | `core` | `GRANT` `REVOKE` |
 | [`PosShiftStatus`](../data/pos.md#posshiftstatus) | `pos` | `OPEN` `CLOSED` |
 | [`PosTerminalStatus`](../data/pos.md#posterminalstatus) | `pos` | `PENDING` `ACTIVE` `SUSPENDED` |
-| [`PricingModel`](../data/platform.md#pricingmodel) | `platform` | `PER_SEAT` `FLAT_MONTHLY` `ONE_TIME_LICENSE` |
+| [`PricingModel`](../data/platform.md#pricingmodel) | `platform` | `PER_SEAT` `FLAT_MONTHLY` `ONE_TIME_LICENSE` `USAGE_BASED` |
 | [`ProductCrossSellKind`](../data/catalog.md#productcrosssellkind) | `catalog` | `MANUAL` `CO_OCCURRENCE` `EMBEDDING` |
 | [`ProductKind`](../data/catalog.md#productkind) | `catalog` | `GOODS` `SERVICE` `DIGITAL` `STITCHED` `UNSTITCHED` `STITCHING_SERVICE` |
 | [`ProductStatus`](../data/catalog.md#productstatus) | `catalog` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`PurchaseOrderStatus`](../data/purchasing.md#purchaseorderstatus) | `purchasing` | `DRAFT` `SENT` `PARTIAL` `RECEIVED` `CANCELLED` |
 | [`QuoteStatus`](../data/invoicing.md#quotestatus) | `invoicing` | `SENT` `ACCEPTED` `REJECTED` `EXPIRED` |
 | [`QuoteStatus`](../data/platform.md#quotestatus) | `platform` | `PENDING` `APPROVED` `REJECTED` |
+| [`RateCardChangeStatus`](../data/platform.md#ratecardchangestatus) | `platform` | `PENDING` `APPROVED` `REJECTED` `APPLIED` |
 | [`RawMaterialUnit`](../data/bom.md#rawmaterialunit) | `bom` | `GAZ` `METRE` `PIECE` `SPOOL` `GRAM` `MILLILITRE` |
 | [`ReplicationClass`](../data/replication.md#replicationclass) | `replication` | `FACT` `POLICY` |
 | [`ReplicationDirection`](../data/replication.md#replicationdirection) | `replication` | `UP` `DOWN` |
@@ -386,6 +409,7 @@ against a real database.
 | [`ReturnStatus`](../data/fulfilment.md#returnstatus) | `fulfilment` | `REQUESTED` `APPROVED` `REJECTED` `IN_TRANSIT` `RECEIVED` `INSPECTED` `REFUNDED` `CLOSED` |
 | [`ReviewStatus`](../data/reviews.md#reviewstatus) | `reviews` | `PENDING` `PUBLISHED` `REJECTED` |
 | [`ScopeLevel`](../data/core.md#scopelevel) | `core` | `ORG` `BRAND` `BRANCH` |
+| [`SettlementBatchStatus`](../data/settlements.md#settlementbatchstatus) | `settlements` | `EXPECTED` `CONFIRMED` `SHORT` `DISPUTED` |
 | [`SettlementMode`](../data/transfers.md#settlementmode) | `transfers` | `NONE` `INTERNAL_PL` `INVOICED` |
 | [`ShipmentStatus`](../data/orders.md#shipmentstatus) | `orders` | `PENDING` `DISPATCHED` `IN_TRANSIT` `DELIVERED` `RETURNED` `LOST` |
 | [`ShippingRateType`](../data/fulfilment.md#shippingratetype) | `fulfilment` | `FLAT` `BY_WEIGHT` `BY_PRICE` `BY_ITEM` |
@@ -397,6 +421,7 @@ against a real database.
 | [`StockMovementReason`](../data/inventory.md#stockmovementreason) | `inventory` | `PURCHASE_RECEIPT` `SALE` `CANCELLATION` `RETURN` `ADJUSTMENT` `DAMAGE` `COUNT` `WRITE_OFF` `PRODUCTION_CONSUMPTION` `PRODUCTION_RECEIPT` `POS_SALE`… |
 | [`StockTransferStatus`](../data/transfers.md#stocktransferstatus) | `transfers` | `IN_TRANSIT` `RECEIVED` `CANCELLED` |
 | [`StockVarianceStatus`](../data/inventory.md#stockvariancestatus) | `inventory` | `OPEN` `RESOLVED` |
+| [`StripeInvoicePaymentStatus`](../data/platform.md#stripeinvoicepaymentstatus) | `platform` | `PENDING` `PAID` `FAILED` |
 | [`SubscriptionStatus`](../data/platform.md#subscriptionstatus) | `platform` | `ACTIVE` `PAST_DUE` `CANCELLED` |
 | [`SupplierBillStatus`](../data/purchasing.md#supplierbillstatus) | `purchasing` | `UNPAID` `PARTIAL` `PAID` |
 | [`TenantExportStatus`](../data/platform.md#tenantexportstatus) | `platform` | `PENDING` `RUNNING` `COMPLETE` `FAILED` |

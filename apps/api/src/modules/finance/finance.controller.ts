@@ -17,6 +17,7 @@ import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import { ExpenseImportService } from './expense-import.service';
 import { FinanceService } from './finance.service';
+import { OrderEconomicsService } from './order-economics.service';
 import { CreateExpenseCategoryDto, UpdateExpenseCategoryDto } from './dto/expense-category.dto';
 import {
   CreateExpenseDto,
@@ -41,7 +42,17 @@ export class FinanceController {
   constructor(
     private readonly finance: FinanceService,
     private readonly expenseImporter: ExpenseImportService,
+    private readonly orderEconomics: OrderEconomicsService,
   ) {}
+
+  // --- Gross profit (68-realtime-gross-profit.md WO-68.2) -------------------
+
+  @Get('gross-profit-today')
+  @RequirePermission('inventory.view_cost')
+  @ApiOperation({ summary: 'Per-transaction and day-total gross profit for orders placed today, every channel' })
+  async grossProfitToday(@Query('locationId') locationId?: string) {
+    return this.orderEconomics.grossProfitToday(locationId);
+  }
 
   @Get('expense-categories')
   @RequirePermission('finance.view')

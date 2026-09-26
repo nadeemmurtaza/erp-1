@@ -11,6 +11,58 @@ doc 63's payment-schedule shape (from doc 145's own `paymentTermDays`)
 generalized to multiple instalments, and the existing `Payment` model's
 own multi-tender-per-order capability.
 
+> **Status (2026-09-25): built, WO-151.1–151.5.** `InstalmentPlan`/
+> `InstalmentScheduleLine`/`InstalmentPayment` (`instalments.prisma`) live
+> inside `orders` (`InstalmentPlanService`/`Controller`) rather than a new
+> module — a variant of the order/payment lifecycle, not a separate
+> business domain; `orders` already hard-imports `payments`/`inventory`
+> (its own module comment), so this adds no new coupling. `OrdersService.
+> placeFromPos()` gained the branch doc 151's own pseudocode called for:
+> LAYBY creates the order `PENDING` with no stock decrement (an unpaid
+> layby reserves nothing, the doc's own named trade-off) and takes only
+> the deposit; INSTALMENT releases goods immediately, unaffected. Every
+> instalment payment is an ordinary `Payment` row, created the identical
+> way the till's own cash tender already is.
+>
+> **One deviation from this doc's own pseudocode**: `recordInstalmentPayment
+> (planId, amountMinor, tender: PaymentMethod)` names a `PaymentMethod` enum
+> that does not exist anywhere in this schema — `Payment.provider` is a
+> plain string by design (`payments.prisma`'s own header: "a new gateway is
+> a new class plus an env entry, no migration"). The real method takes
+> `provider: string`.
+>
+> **The payment/fulfilment split, made explicit**: recording a payment is a
+> RECORD once validated (it always commits); releasing a completed LAYBY's
+> stock and advancing the order is a separate REQUEST that can fail
+> independently — the shelf may genuinely no longer hold the goods, since
+> an unpaid layby reserved nothing. A stock failure there surfaces as a
+> message (`fulfilmentError`) and never rolls back the payment already
+> received, proven by a spec. Cancelling a plan applies the deposit-
+> forfeiture policy (`PosInstalmentForfeitDepositOnCancel`, a `Setting`,
+> default `false` — refund, never forfeit, until a client states
+> otherwise) only to the deposit specifically (`InstalmentPayment.
+> isDeposit`), refunding through the existing `PaymentsService.refund()`
+> path; every later instalment payment is untouched either way.
+>
+> **`pos.instalments.cancel`/`.default`** are seeded to `ADMIN` only (doc
+> 151 did not specify a role, and both are real, sensitive policy
+> decisions per its own "threshold nobody approves alone" lens); recording
+> an ordinary instalment payment sits behind the existing `pos.operate`
+> STAFF already holds. **Doc 54's own `ExpiringRecordSource`** (named in
+> this doc's own "Audience is a capability" lens) does not exist anywhere
+> in this codebase (confirmed by search — `dunning.cron.ts`'s own comment
+> already documents the same finding) — due-date reminders did not ship;
+> named here as a real, deferred gap rather than invented against a
+> registry that isn't there.
+>
+> WO-151.5's UI ships as a sale-type toggle (Cash/Layby/Instalment) on the
+> POS till (`apps/pos/src/app/till/page.tsx`), computing an equal-split
+> monthly schedule with the remainder folded into the last line so it
+> always matches the backend's own strict validation exactly, and an
+> "Instalment plan" section on the existing admin order detail screen
+> (never a second page) with the schedule and every payment side by side,
+> record-payment/cancel/default actions gated by permission.
+
 ## 1. A layby/instalment plan is a schedule of expected payments against one order, fulfilment gated on completion
 
 ```prisma

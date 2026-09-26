@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **634** endpoints across **116** controllers, with the access rule that actually guards each one.
+All **660** endpoints across **121** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -102,10 +102,13 @@ never authorization.
 
 ## By module
 
-### [`accounting`](../modules/accounting.md) (16)
+### [`accounting`](../modules/accounting.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/accounting/assets/:assetId/depreciation-schedule` | `finance.assets.depreciate` | `AssetDepreciationController.getSchedule` | An asset's depreciation schedule and every period posted so far |
+| POST | `/admin/accounting/assets/:assetId/depreciation-schedule` | `finance.assets.depreciate` | `AssetDepreciationController.createSchedule` | Put an asset on a monthly depreciation schedule |
+| POST | `/admin/accounting/assets/:assetId/dispose` | `finance.assets.dispose` | `AssetDepreciationController.dispose` | Dispose an asset — posts the remaining book value as a loss and any sale procee… |
 | GET | `/admin/accounting/consolidation/profit-and-loss` | `accounting.view` | `ConsolidationController.groupProfitAndLoss` | Group P&L across every brand, with matched intercompany pairs eliminated |
 | GET | `/admin/accounting/consolidation/unmatched-intercompany` | `accounting.view` | `ConsolidationController.unmatchedIntercompany` | Brand pairs whose intercompany volume did not net to zero — the exception repor… |
 | GET | `/admin/accounting/fiscal-periods` | `accounting.view` | `FiscalPeriodsController.listPeriods` | List fiscal periods, optionally filtered by fiscal year |
@@ -414,7 +417,7 @@ never authorization.
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 | POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` | Inbound WhatsApp message (signature-verified, not session-authenticated) |
 
-### [`finance`](../modules/finance.md) (16)
+### [`finance`](../modules/finance.md) (17)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -432,6 +435,7 @@ never authorization.
 | GET | `/admin/finance/expenses/import/template` | `finance.manage` | `FinanceController.expenseImportTemplate` | Download the CSV template for bulk expense upload |
 | GET | `/admin/finance/expenses/summary` | `finance.view` | `FinanceController.summary` | Totals, per-category breakdown and a daily series |
 | GET | `/admin/finance/expenses/trend` | `finance.view` | `FinanceController.trend` | Expense totals over time, bucketed by day or month |
+| GET | `/admin/finance/gross-profit-today` | `inventory.view_cost` | `FinanceController.grossProfitToday` | Per-transaction and day-total gross profit for orders placed today, every chann… |
 | GET | `/admin/finance/margins` | `finance.view` | `FinanceController.margins` | Margin by product, category or variant (WO-4.3, 04-finance.md) |
 | GET | `/admin/finance/unit-economics` | `finance.view` | `FinanceController.unitEconomics` | Contribution per order, paginated, plus the average by product/category (WO-4.2) |
 
@@ -494,6 +498,18 @@ never authorization.
 | GET | `/store-credit` | signed-in | `StoreCreditAccountController.balance` | My store credit balance |
 | GET | `/store-credit/ledger` | signed-in | `StoreCreditAccountController.ledger` | My store credit history |
 
+### [`hr`](../modules/hr.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/hr/assets` | `hr.assets.manage` | `AssetsController.list` | List assets, optionally filtered by status |
+| POST | `/admin/hr/assets` | `hr.assets.manage` | `AssetsController.create` | Register a new asset |
+| GET | `/admin/hr/assets/:id` | `hr.assets.manage` | `AssetsController.get` | One asset's detail and full assignment history |
+| POST | `/admin/hr/assets/:id/issue` | `hr.assets.manage` | `AssetsController.issue` | Issue an AVAILABLE asset to an employee |
+| POST | `/admin/hr/assets/:id/write-off` | `hr.assets.writeoff` | `AssetsController.writeOff` | Mark an asset RETIRED or LOST |
+| POST | `/admin/hr/assets/assignments/:assignmentId/return` | `hr.assets.manage` | `AssetsController.returnAsset` | Return an issued asset |
+| GET | `/admin/hr/assets/employees/:userId/unreturned` | `hr.assets.manage` | `AssetsController.unreturnedFor` | An employee's unreturned assets — the offboarding gate's own check |
+
 ### [`identity-verification`](../modules/identity-verification.md) (4)
 
 | Method | Path | Access | Handler | Summary |
@@ -553,6 +569,13 @@ never authorization.
 | GET | `/loyalty/referrals` | signed-in | `LoyaltyController.myReferrals` | Customers I have referred |
 | GET | `/loyalty/tiers` | **PUBLIC** | `LoyaltyController.tiers` | Loyalty tiers and their benefits |
 
+### [`managed-services`](../modules/managed-services.md) (2)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/managed-services/invoices` | `settings.manage` | `ManagedServicesController.invoices` |  |
+| GET | `/managed-services/usage` | `settings.manage` | `ManagedServicesController.usage` |  |
+
 ### [`marketing`](../modules/marketing.md) (11)
 
 | Method | Path | Access | Handler | Summary |
@@ -609,13 +632,17 @@ never authorization.
 | GET | `/onsite-messages/active` | **PUBLIC** | `OnsiteMessagesController.active` |  |
 | POST | `/onsite-messages/newsletter` | **PUBLIC** | `OnsiteMessagesController.subscribe` |  |
 
-### [`orders`](../modules/orders.md) (7)
+### [`orders`](../modules/orders.md) (11)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` | All orders, filterable by status |
 | GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` |  |
 | POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` | Move the order along; cancelling restores stock |
+| GET | `/admin/orders/:orderId/instalments` | `pos.operate` | `InstalmentPlanController.get` | An order's instalment plan, its schedule, and every payment received so far |
+| POST | `/admin/orders/:orderId/instalments/cancel` | `pos.instalments.cancel` | `InstalmentPlanController.cancel` | Cancel an active plan — refunds or forfeits the deposit per the configured poli… |
+| POST | `/admin/orders/:orderId/instalments/default` | `pos.instalments.default` | `InstalmentPlanController.markDefaulted` | Mark an active plan defaulted — writes off the unpaid balance |
+| POST | `/admin/orders/:orderId/instalments/payments` | `pos.operate` | `InstalmentPlanController.recordPayment` | Record one instalment payment against the plan |
 | POST | `/orders` | **PUBLIC** | `OrdersController.place` | Place the order in the current cart |
 | GET | `/orders/:number` | signed-in | `OrdersController.get` | One order, for its owner |
 | POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` |  |
@@ -855,6 +882,19 @@ never authorization.
 | PUT | `/admin/settings/media` | `settings.manage` | `SettingsAdminController.updateMedia` | Turn WebP conversion on or off for new uploads |
 | GET | `/admin/settings/permissions` | `settings.manage` | `SettingsAdminController.listPermissions` | The full permission catalog, grouped by category |
 
+### [`settlements`](../modules/settlements.md) (8)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/settlements/batches` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.listBatches` | Every settlement batch, optionally filtered by status |
+| POST | `/admin/settlements/batches` | `finance.settlement.reconcile` | `SettlementsController.createExpectedBatch` | Record which of our own payments a settlement batch is expected to cover |
+| GET | `/admin/settlements/batches/:id` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.getBatch` | One batch's detail, with every Payment line it covers |
+| POST | `/admin/settlements/batches/:id/approve-writeoff` | `finance.settlement.approve_writeoff` | `SettlementsController.approveWriteoff` | Approve a requested write-off — the checker half, never the same person as the… |
+| POST | `/admin/settlements/batches/:id/reconcile` | `finance.settlement.reconcile` | `SettlementsController.reconcile` | Ask the batch's own connector to confirm what actually settled |
+| POST | `/admin/settlements/batches/:id/request-writeoff` | `finance.settlement.reconcile` | `SettlementsController.requestWriteoff` | Request writing off a SHORT batch — the maker half of the maker-checker pair |
+| POST | `/admin/settlements/batches/:id/write-off` | `finance.settlement.reconcile` | `SettlementsController.writeOff` | Post the write-off — refused above the configured threshold without a prior, di… |
+| GET | `/admin/settlements/providers` | `finance.settlement.view` `finance.settlement.reconcile` | `SettlementsController.listProviders` | Every registered settlement provider |
+
 ### [`stitching`](../modules/stitching.md) (21)
 
 | Method | Path | Access | Handler | Summary |
@@ -900,13 +940,14 @@ never authorization.
 |---|---|---|---|---|
 | POST | `/track/event` | **PUBLIC** | `TrackingController.track` | Record one page_view / add_to_cart / checkout_started event |
 
-### [`tradingpartners`](../modules/tradingpartners.md) (18)
+### [`tradingpartners`](../modules/tradingpartners.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/admin/invoices` | `orders.manage` | `InvoicesController.findAll` | List invoices issued to trading partners |
 | POST | `/admin/invoices` | `orders.manage` | `InvoicesController.issue` | Issue an invoice — auto-pushed to the trading partner immediately |
 | GET | `/admin/invoices/:id` | `orders.manage` | `InvoicesController.findOne` | Get an invoice |
+| GET | `/admin/invoices/overdue-summary` | `orders.manage` | `InvoicesController.overdueSummary` | Count, total and oldest due date of ISSUED invoices past their due date |
 | GET | `/admin/offers` | `orders.manage` | `OffersController.findAll` | List offers broadcast to trading partners |
 | POST | `/admin/offers` | `orders.manage` | `OffersController.publish` | Publish an offer — broadcast to every connected CUSTOMER/BOTH trading partner |
 | GET | `/admin/quotes` | `orders.manage` | `QuotesController.findAll` | List quotes sent to trading partners |

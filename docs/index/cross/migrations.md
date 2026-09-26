@@ -3,7 +3,7 @@
 
 # Migrations
 
-**77** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**85** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -103,6 +103,8 @@ nothing here fails a build.
 | 2026-09-25 | `wo39_quotas_export_routing` | 18 | ALTER TABLE, CREATE TABLE, CREATE TYPE, CREATE UNIQUE INDEX, CREATE INDEX | PlatformTenant, ResourceQuotaAlert, ResourceTierQuota, SupportAccessGrant, TenantDataExport |
 | 2026-09-25 | `wo50_pricing_billing` | 20 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformPlan |
 | 2026-09-25 | `wo51_trials` | 11 | ALTER TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | PlatformTenant, SignupVerification, TrialExtension |
+| 2026-09-25 | `wo153_usage_based_pricing` | 27 | ALTER TYPE, ALTER TABLE, CREATE INDEX, CREATE TABLE, CREATE TYPE, CREATE UNIQUE INDEX | MeteredOrderFee, PlatformInvoice, PlatformPlan, PlatformRateCardChangeRequest, UsageMeter, UsageMeteringCursor |
+| 2026-09-25 | `wo14_agency_managed_services` | 19 | ALTER TABLE, CREATE UNIQUE INDEX, CREATE TYPE, CREATE TABLE, CREATE INDEX | AgencyUsageSnapshot, PlatformInvoice, PlatformTenant |
 | 2026-09-25 | `add_personal_api_keys` | 18 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | ApiKey |
 | 2026-09-25 | `add_cod_risk_reason_and_city_stats` | 3 | ALTER TABLE, CREATE TABLE | CityCodRiskStat, Order |
 | 2026-09-25 | `add_requisitions_approvals_and_loss_prevention` | 40 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX | ApprovalChain, ApprovalStep, PurchaseRequisition, RequisitionLine, SpotCheck, SpotCheckLine, SpotCheckPolicy,… |
@@ -110,6 +112,12 @@ nothing here fails a build.
 | 2026-09-25 | `add_review_summary_urdu` | 1 | ALTER TABLE | ProductReviewSummary |
 | 2026-09-25 | `add_wallet_merchant_payable` | 20 | CREATE TYPE, ALTER TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | MerchantPayable, WalletAccount, WalletAdjustmentRequest, WalletEntry |
 | 2026-09-25 | `add_receivables_credit_notes_dunning` | 15 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
+| 2026-09-25 | `add_hr_assets` | 12 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Asset, AssetAssignment |
+| 2026-09-25 | `add_asset_depreciation` | 10 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | AssetDepreciationPosting, AssetDepreciationSchedule |
+| 2026-09-25 | `add_instalment_plans` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | InstalmentPayment, InstalmentPlan, InstalmentScheduleLine |
+| 2026-09-25 | `add_instalment_payment_is_deposit` | 1 | ALTER TABLE | InstalmentPayment |
+| 2026-09-25 | `add_settlements` | 11 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | SettlementBatch, SettlementBatchLine, SettlementProvider |
+| 2026-09-25 | `add_settlement_writeoff_approval` | 4 | ALTER TABLE | SettlementBatch |
 
 
 ---

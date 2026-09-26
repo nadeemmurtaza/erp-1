@@ -2,17 +2,22 @@
 
 **Read `00-HOUSE-RULES.md` and `11-client-handover-model.md` first.**
 
-> **Status: scoped, not built.** `11-client-handover-model.md` §5.2 and
-> `12-extractor-script-spec.md` both name a `managed-services` module as the
-> reason an agency-managed client pays monthly instead of self-hosting. It
-> does not exist — no module folder, no Master-Platform-side API, no
-> registry. `scripts/sync-client.mjs` (now fully built per
-> `12-extractor-script-spec.md`'s own status note) still only generates an
-> `AGENCY_API_KEY` when `managed-services` is requested, and still only
-> prints a reminder to register it — there is nowhere to register it yet.
-> This brief exists so that work has a shape before the first agency-managed
-> client is sold, not because it should be built now — see "When to
-> actually build this" at the end.
+> **Status: built.** Built in full, by explicit owner override of this
+> brief's own "When to actually build this: Not now" (the section still
+> below, kept as a record of the original brief). See
+> [DECISIONS.md](../DECISIONS.md) ADR-039 for what changed against this
+> brief's own proposed design and why: `AgencyClient` was never built as a
+> separate table — the Master Platform side reuses and extends
+> `apps/platform`'s existing `PlatformTenant`/`PlatformInvoice` models
+> instead (a real control plane this brief predates), and real Stripe
+> collection is bridged onto that already-authoritative invoice row rather
+> than a second "local invoice cache." `scripts/sync-client.mjs`'s
+> `managed-services` gating — believed correct when this brief was
+> written — was checked against the actual script during this build and
+> found incomplete (the module was never registered in
+> `apps/api/src/modules/module-packs.ts`/`modules.registry.ts`, so
+> `--modules=managed-services` would have failed validation); both
+> registrations now exist, `offByDefault: true`.
 
 ## Why this is two modules, not one
 
@@ -235,37 +240,59 @@ is one page, not a new capability surface.
 
 ## Work orders
 
-| WO | Title | Depends on |
-|---|---|---|
-| 14.1 | `agency` module: `AgencyClient` schema, manual registration, `agency.manage` permission | — |
-| 14.2 | Nightly usage snapshot job (Postgres size + Stalwart send count per client) | 14.1 |
-| 14.3 | Read-only reporting API + API-key auth guard | 14.1 |
-| 14.4 | Stripe customer/subscription linkage + webhook listener | 14.1 |
-| 14.5 | `managed-services` module: the client-side Hosting & Billing page | 14.3 |
+| WO | Title | Depends on | Status |
+|---|---|---|---|
+| 14.1 | `agency` module (`apps/platform`): `PlatformTenant`/`PlatformInvoice` extended (ADR-039, not a new `AgencyClient` table), manual registration/rotation, `platform.agency.manage` permission | — | Built |
+| 14.2 | Nightly usage snapshot job (Postgres size + Stalwart send count per client) | 14.1 | Built — Stalwart leg unverified against a live instance, see ADR-039 |
+| 14.3 | Read-only reporting API + API-key auth guard | 14.1 | Built |
+| 14.4 | Stripe customer/subscription linkage + webhook listener | 14.1 | Built — bridged onto `PlatformInvoice`, see ADR-039 |
+| 14.5 | `managed-services` module: the client-side Hosting & Billing page | 14.3 | Built |
 
 ### Acceptance
 
-- [ ] A client's `X-Agency-Api-Key` can only ever read that client's own
+- [x] A client's `X-Agency-Api-Key` can only ever read that client's own
       `usage`/`invoices` — verified by presenting client A's key and
-      confirming client B's data is unreachable by any parameter.
-- [ ] The nightly job run twice in one day produces one snapshot per client,
-      not two.
-- [ ] `pnpm lint` passes with `agency` classified in `module-packs.ts`, and
-      `agency` does not appear in any fixture `--modules` list the extractor
-      script's own tests use.
-- [ ] A self-hosted client's extracted repo has no `managed-services` folder
-      and no `AGENCY_API_KEY` in its `.env.example` — already true today,
-      keep it true.
-- [ ] Suspending a client in the admin (`agency.manage`) is reflected in
-      their own dashboard's status within one nightly cycle; it does not
-      take their app offline.
+      confirming client B's data is unreachable by any parameter. Proven
+      against a real Postgres database in
+      `apps/platform/src/modules/agency/agency-cross-tenant.integration.spec.ts`.
+- [x] The nightly job run twice in one day produces one snapshot per client,
+      not two. `AgencyUsageSnapshot`'s own `@@unique([tenantId,
+      snapshotDate])` is the enforcement; proven at the real-constraint
+      level in the same integration spec and at the call-shape level in
+      `agency-usage.service.spec.ts`.
+- [x] `pnpm lint` passes with `managed-services` (the client-side module —
+      the ONLY one of the two doc 14 names that a module-pack system
+      applies to; `agency` is core to `apps/platform` itself, which has no
+      module-pack allowlist) classified `core` in `module-packs.ts`, and
+      never enabled by default (`offByDefault: true` in
+      `modules.registry.ts`).
+- [x] A self-hosted client's extracted repo has no `managed-services` folder
+      and no `AGENCY_API_KEY` in its `.env.example` — was already true
+      (the module ships only when `--modules` names it), and this build
+      also fixed the real gap ADR-039 found: `managed-services` was never
+      actually registered in `module-packs.ts`/`modules.registry.ts`, so
+      requesting it would have failed the Extractor's own validation
+      before ever reaching that point.
+- [x] Suspending a client in the admin is reflected in their own
+      dashboard's status within one nightly cycle; it does not take their
+      app offline. `platform.agency.manage` gates registration/Stripe
+      linkage; suspending an already-registered tenant reuses the
+      pre-existing `platform.tenants.manage`-gated
+      `PATCH /tenants/:id/suspend` (`TenantsService.suspend()`) rather than
+      a second suspend path, since ADR-039 makes an agency client and a
+      `PlatformTenant` the same row.
 
 ## When to actually build this
 
-Not now. This is infrastructure for a business model with zero clients on
-it today. Build WO-14.1–14.3 when there is an actual agency-managed client
-about to be signed — enough to register them and show them real numbers —
-and treat 14.4 (Stripe) and 14.5 (their own dashboard) as the thing that
-ships before their first invoice is due, not before. Scoping it now means
-the shape is decided before the pressure of an actual deadline, not that
-the folder should exist yet.
+Built (ADR-039), by explicit owner override of this section's own original
+"Not now." Kept below verbatim as the record of what was decided when this
+brief was first written, per this repository's own documentation
+discipline of not silently erasing a superseded decision.
+
+> Not now. This is infrastructure for a business model with zero clients on
+> it today. Build WO-14.1–14.3 when there is an actual agency-managed client
+> about to be signed — enough to register them and show them real numbers —
+> and treat 14.4 (Stripe) and 14.5 (their own dashboard) as the thing that
+> ships before their first invoice is due, not before. Scoping it now means
+> the shape is decided before the pressure of an actual deadline, not that
+> the folder should exist yet.

@@ -3447,7 +3447,508 @@ when an integration must outlive the person who set it up.
 
 ---
 
-## ADR-038 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call
+## ADR-038 — Doc 153 (usage-based pricing): metering reads a tenant's own transactional outbox through `apps/platform`'s existing connection-per-call mechanism, never a new tenant→platform push credential; dunning reuses doc 145's shape only, not its code
+
+### Context — what problem required a decision?
+
+Doc 153 (`commercial-licensing-agency/153-usage-based-pricing-model.md`)
+asks for event-driven metering: its own §2 pseudocode shows a listener
+decorated `@OnDomainEvent(DomainEvent.OrderStatusChanged)` calling
+`this.usageMeters.increment(...)` directly, and its own Scope lenses
+require every `UsageMeter`/`PlatformInvoice` row to live in
+`apps/platform`'s own control-plane database, "never inside a tenant's own
+isolated database." Those two statements are only reconcilable if
+something crosses the app boundary between a tenant's `apps/api` deployment
+(where `OrderStatusChanged` actually fires, confirmed still firing for a
+POS sale — WO-68.1 — before starting this work) and `apps/platform` (a
+separate process, separate database, no code import possible either way).
+Taken literally, the pseudocode would need a brand-new tenant→platform
+authenticated push channel: an endpoint, a per-tenant credential, and a
+guard resolving that credential back to a `PlatformTenant`. But doc 153's
+own Scope lenses, in the very same document, answer "the actor with three
+tables / the principal with no permission key / the grant that ends itself"
+with "n/a — not a new actor." A key-hash principal is explicitly one of
+this codebase's own three canonical actor tables (CLAUDE.md's "actor with
+three tables" lens lists it alongside `User`/`Party`/`Contact`), so a new
+tenant-reporting credential would itself be exactly the new actor the same
+document says not to introduce. Separately, WO-153.3 asks to reuse doc
+145's "Invoice/aging/dunning design pattern... in `apps/platform`" — but
+doc 145's actual `CreditNote`/`DunningCron`/`CustomerCreditTerm` code lives
+in `apps/api/src/modules/receivables/`, a different app with a different
+Prisma schema; importing it into `apps/platform` is not merely undesirable,
+it is impossible (two separate `package.json`s, two separate generated
+Prisma clients, no shared runtime).
+
+### Options Considered
+
+1. **Build a new tenant→platform push channel**: a `TenantUsageCredential`
+   model (key-hash, one per tenant), a guard resolving it, an
+   apps/api-side `@OnDomainEvent` listener calling out over HTTP on every
+   `OrderStatusChanged`/notification-send. Rejected: introduces exactly the
+   new actor/principal doc 153's own Scope lenses rule out, opens a new,
+   unreviewed trust boundary (tenant deployments now write financial facts
+   into the control plane, the opposite direction from every existing
+   cross-app connection), and is a separable, materially larger capability
+   (a general tenant-facing reporting/webhook mechanism, complete with key
+   provisioning and rotation) that doc 39/50/51 themselves left unbuilt for
+   `PlatformUsageRecord` — verified: zero ingestion endpoint exists for it
+   anywhere in this codebase today, and zero `PLATFORM_*`-aware code exists
+   in `apps/api` at all.
+2. **Import doc 145's actual receivables code into `apps/platform`.**
+   Rejected outright — not a design tradeoff but a category error: the two
+   apps have separate Prisma clients, separate schemas, and this repository
+   has no shared-runtime mechanism between them; the two "PlatformInvoice
+   dunning" and "tenant AR CreditNote" concepts do not even share a
+   `customerId`/`Contact` vocabulary to key against.
+3. **`apps/platform` reads a tenant's own `OutboxEvent` table directly**,
+   through the identical connection-per-call mechanism
+   `SeatCounterService.countBillableSeats()` already established and this
+   same doc's WO-153.2 explicitly names for reuse ("this exact pattern...
+   for other snapshot dimensions"): open a short-lived, read-only Postgres
+   connection via `TenantCredentialResolverService`, run a narrow query,
+   close it, cache nothing. A per-tenant `UsageMeteringCursor` checkpoint
+   (a new row in `apps/platform`'s own database, not a new actor) tracks
+   how far each tenant's outbox has been read. For dunning, build only the
+   minimal shape doc 153's own acceptance criteria actually require (a
+   `dueAt`/`dunningReminderSentAt` pair and one reminder cron) rather than
+   any of doc 145's own code. Selected.
+
+### Decision — what was selected?
+
+Option 3, on both halves of the problem:
+
+- **Metering.** `UsageMeteringService` (`apps/platform/src/modules/
+  billing/usage-metering.service.ts`) opens one scoped connection per
+  tenant per poll (via the existing `TenantCredentialResolverService`),
+  reads `OutboxEvent` rows named `order.status_changed` /
+  `notification.sent` created after that tenant's own
+  `UsageMeteringCursor`, batches an `Order.grandTotal` lookup for the
+  `DELIVERED` rows over that same connection, closes it, and applies every
+  increment/reversal to `UsageMeter`/`MeteredOrderFee` inside a single
+  `apps/platform`-local transaction that also advances the cursor. The only
+  live cross-database connection this introduces runs in the same
+  direction, with the same narrowness (connection-per-call, read-only nothing cached),
+  that doc 39 already reviewed and shipped for `SeatCounterService` — never
+  a new one in the opposite direction. The one `apps/api` change this
+  requires is a single new domain event, `DomainEvent.NotificationSent`,
+  published from `NotificationsService.send()`'s already-consolidated call
+  site (doc 153 §2's own "one meter, not three") — not a new mechanism,
+  one more row shape flowing through the outbox `apps/api` already has and
+  already durably retries via `OutboxDispatcher`.
+- **Dunning.** `PlatformInvoice` gains `dueAt` (computed at issuance for
+  every pricing model, from `PLATFORM_INVOICE_NET_TERMS_DAYS`) and
+  `dunningReminderSentAt`; `InvoiceDunningCron` sends exactly one reminder
+  per overdue, unreminded invoice. A multi-stage escalation ladder,
+  automatic suspension for non-payment, and a tenant-facing statement page
+  are doc 145's own further shape and are named here as a future extension
+  of this same pattern, not built now — doc 153's own acceptance criteria
+  test none of them.
+- **A `RETURNED` reversal that lands after its period's own invoice was
+  already issued** credits that invoice via the *existing*
+  `PlatformInvoiceCreditNote` model (doc 50) instead of mutating a closed
+  period's `UsageMeter` row — doc 153's own "undo fan-out" scope lens
+  answered literally: "doc 145's own `CreditNote` mechanism... is the
+  correct tool," read here as apps/platform's own already-shipped
+  credit-note model, since that is the CreditNote mechanism this database
+  actually has.
+- `UsageMeter.tenantId` (not the doc's own literal `organizationId`
+  spelling) — apps/platform's schema names this identity `tenantId`
+  everywhere else (`PlatformInvoice`, `PlatformSubscription`,
+  `PlatformUsageRecord`, ...); `apps/api`'s own `Organization` model is an
+  unrelated, optional, Organization-edition-only B2B concept with no
+  relationship to a `PlatformTenant`. Matching this schema's own existing
+  vocabulary is not a deviation in shape, only in spelling.
+
+### Reasoning — why?
+
+Every rejected option either introduced the new actor doc 153's own Scope
+lenses explicitly disclaim, or asked for something structurally
+impossible (importing one Nest app's Prisma-bound service code into a
+second app with its own separate schema). Reading a tenant's own outbox is
+not a new mechanism invented for this doc — it is the SAME mechanism this
+repository already trusted enough to ship for seat counting, applied to one
+more read. This keeps every cross-app data flow in this codebase flowing
+in exactly one direction (`apps/platform` reaches into a tenant's database,
+narrowly and briefly, never the reverse), which is the actual security
+property doc 39's shared-infrastructure/isolated-data boundary is
+protecting, not merely a coincidence of today's feature set.
+
+### Consequences
+
+- A tenant on `FLAT_MONTHLY`/`PER_SEAT`/`ONE_TIME_LICENSE` is never polled
+  and accrues zero `UsageMeter` rows (`pollTenant`/`snapshotAllowances`
+  both return immediately for a non-`USAGE_BASED` plan) — doc 153's own
+  first acceptance criterion, satisfied structurally rather than by a
+  filter that could be forgotten later.
+- Metering freshness is bounded by the cron's own cadence (every 5 minutes
+  for the fee/messages meter, daily for the allowance snapshot), not
+  instantaneous — an explicit, acceptable tradeoff for "never a slow
+  end-of-month aggregate scan," not "always real-time."
+- If a future capability genuinely needs a tenant to push a fact into the
+  control plane in real time (not just usage metering), that is the
+  separable, larger capability named in Option 1 above — a proper
+  tenant-reporting credential/principal, its own security review, its own
+  provisioning story — sequenced as its own work order if and when a real
+  requirement forces it, never retrofitted quietly onto this one.
+- `PlatformOpsClient` provisioning itself remains exactly the pre-existing,
+  already-tracked gap it was before this work order (no seed/bootstrap
+  script exists for ANY of this app's ops scopes, `platform.billing.manage`
+  included) — `platform.billing.approve` is added to the
+  `PLATFORM_PERMISSIONS` catalogue by this work order, but, like every
+  scope before it, reaches a live `PlatformOpsClient` only when hosting-ops
+  provisions one by hand today; this is named honestly rather than claimed
+  fixed by a work order that did not touch it.
+
+### Status
+**Accepted.**
+
+---
+
+## ADR-040 — `finance-accounting` docs 04/56/68/79/137/147/151/49 completed; a department-permission planning doc (164) added, deliberately not built
+
+### Context
+
+The remaining unverified documents in `docs/implementation/finance-
+accounting/` were pulled and checked against the running codebase, one by
+one, in the discipline this file's own ADR-025/ADR-033 already established:
+never trust a doc's own prose or a prior status note, verify by reading the
+actual source and running the actual tests before writing anything. Three
+turned out to be small, real gaps needing code (`56`, `68`'s remaining
+work orders, `04`'s remaining WO-4.6 UI); one was a clean audit needing
+only re-verification (`137`); three named genuinely unbuilt capabilities
+this repository's schema had no model for at all (`79` employee assets —
+a real prerequisite doc 147 depends on, `147` fixed-asset depreciation,
+`151` layby/instalment sales); one named a merchant-settlement capability
+with no schema, service or connector anywhere (`49`). Mid-session, the
+owner separately asked for a design document — not an implementation — on
+making departments and their permission/duty/role control fully dynamic,
+answered as doc 164 in `hr-people-org/`, built on top of docs 19/20/21/23's
+own existing, still-unbuilt specs rather than duplicating them.
+
+### Decision
+
+Built, this session:
+
+- **Doc 56 (overdue-invoices counter)** — `overdueInvoicesSummary()`
+  (`tradingpartners/invoice.service.ts`), `GET
+  /admin/invoices/overdue-summary`, a counter tile on the trading-partners
+  dashboard. The mobile tile WO-56.2 also named was not built — doc 52's
+  mobile shell has no trading-partner surface to host it on, named as a
+  separate capability rather than silently skipped.
+- **Doc 68 (real-time gross profit), WO-68.2–68.4** — `OrderEconomicsService.
+  grossProfitToday()`, `GET /admin/finance/gross-profit-today` gated by
+  `inventory.view_cost` (WO-68.1's own `OrderStatusChanged` publish fix
+  had already shipped in an earlier session).
+- **Doc 04, the remaining WO-4.6 gap** — a fiscal-period close admin screen
+  at `/admin/accounting/fiscal-periods`.
+- **Doc 137** — re-verified, not rebuilt: `PaymentContext`/
+  `PaymentInitiation` (`payments/payment-provider.ts`) still carry no card-
+  or wallet-specific field, confirmed by reading the current interface
+  rather than trusting the doc's own two-session-old text.
+- **Doc 79 (employee assets, built as doc 147's own named prerequisite)**
+  — `Asset`/`AssetAssignment` (`hr.prisma`, a new `hr` core module, on by
+  default), `AssetsService` (issue/return/write-off), and an
+  `EmployeeOffboardingRegistry` extension point so `users.update()` can ask
+  "does this person hold equipment?" without importing `hr` — the same
+  registry shape `BranchPolicyRegistry`/`StockIntakeRegistry` already
+  establish for a core↔core question neither side may import the other for.
+- **Doc 147 (fixed-asset depreciation)** — `AssetDepreciationSchedule`/
+  `AssetDepreciationPosting` (`accounting.prisma`), a real Prisma
+  `@relation` to `hr.prisma`'s `Asset` — a schema-level FK, never a
+  TypeScript import across the module line, so `check-module-boundaries.
+  mjs` (which only scans `.ts` imports) reports no coupling and none
+  exists at the code layer. `monthlyDepreciation()` is a pure function
+  (straight-line and declining-balance, clamped at the salvage floor);
+  posting and disposal both go through `AccountingService.postEntry()`
+  with `findPostedEntry` idempotency. Two chart-of-accounts entries beyond
+  the doc's own named two (`4300 Gain on Asset Disposal`, `5600 Loss on
+  Asset Disposal`) were added of necessity — this chart carries no gross
+  "Fixed Assets" debit account, so a disposal cannot "remove cost, remove
+  depreciation" the textbook way and instead writes off remaining book
+  value as a final loss.
+- **Doc 151 (layby/instalment sales)** — `InstalmentPlan`/
+  `InstalmentScheduleLine`/`InstalmentPayment` (`instalments.prisma`)
+  live inside the `orders` module, not a new one — `orders` already
+  hard-imports `payments`/`inventory` for same-transaction writes, so this
+  adds no new coupling. `placeFromPos()` gained a LAYBY branch (order
+  created `PENDING`, no stock decrement, deposit-only `Payment`) beside the
+  existing immediate-sale path, now also usable for INSTALMENT (identical
+  to an ordinary sale, schedule purely informational). Recording a payment
+  is a RECORD (always commits once validated); releasing a completed
+  layby's stock is a separate REQUEST in its own transaction, whose
+  failure surfaces as a message and never rolls back the payment already
+  received — proven by a spec.
+- **Doc 49 (financial institution settlement)** — `SettlementProvider`/
+  `SettlementBatch`/`SettlementBatchLine` (`settlements.prisma`) in a new
+  `settlements` module, `core`-packed but off by default like
+  `receivables`/`wallet`. `SettlementsService` implements the full
+  reconcile → classify (`CONFIRMED`/`SHORT`) → write-off maker-checker
+  flow, publishing `SettlementShortfallWrittenOff` for
+  `posting-rules.subscriber.ts` to post — `settlements` never imports
+  `accounting`, the identical domain-event decoupling every other posting
+  rule in this repository already uses. A second, separate extension
+  point (`FinancialInstitutionConnector`) mirrors `PaymentProvider`'s own
+  shape rather than reusing it — collection and settlement are different
+  trust boundaries. UI: a settlement list (status filter, record-expected-
+  batch dialog) and a batch detail screen with the write-off flow,
+  mirroring `credit-notes/[id]`'s own approve/issue shape.
+
+Written, not built (by design):
+
+- **Doc 164 (department permission/role/duty dynamics)** — a planning
+  document only, per the owner's own explicit words ("make .md for that").
+  It sketches `OrgUnitControlProfile`/`OrgUnitDuty` on top of docs
+  19/20/21/23's own existing, still-unbuilt org-unit specs, scoped through
+  all 27 lenses with named work orders, and ships no schema, service or
+  UI change in this ADR.
+
+### Deviations, stated here so an agent that reaches these docs next does not re-discover them by trial and error
+
+- **Doc 49's own "with no connector registered, no `SettlementBatch` rows
+  are ever created"** is narrower in this build than the doc's own
+  sentence: `createExpectedBatch()` works with zero connectors registered
+  (this codebase's permanent state today) because recording which
+  payments a bank round-up should cover is a real, connector-independent
+  operational need. What the sentence actually protects — a batch is
+  never silently marked `CONFIRMED`/`SHORT` without a connector
+  confirming it — holds exactly: `reconcile()`/`pollExpectedBatches()`
+  both refuse outright with no connector, proven by spec.
+- **`SettlementProvider`/`SettlementBatch` carry no `organizationId`**,
+  though doc 49's own schema sketch has one — matching
+  `receivables.prisma`'s own already-documented reasoning (no sibling
+  model this document mirrors carries one either; this codebase's real
+  multi-tenancy boundary is the deployment itself, not a column on every
+  table).
+- **Doc 151's `recordInstalmentPayment` takes `provider: string`**, not
+  the doc's own named `PaymentMethod` enum — `Payment.provider` has never
+  been an enum anywhere in this schema (`payments.prisma`'s own header:
+  "a new gateway is a new class plus an env entry, no migration").
+- **WO-49.2 (a real `FinancialInstitutionConnector`) and WO-49.7 (payroll
+  disbursement through it) are not built**, matching the identical, already
+  -accepted shape `PaymentProvider`'s own gateway classes follow: no real
+  institution's API contract exists to integrate against yet, so the
+  interface is written and typed, `this.connectors` stays a permanently
+  empty map, and a fake connector registered directly into that map in
+  `settlements.service.spec.ts` proves the mechanism works the moment a
+  real one is added.
+
+### Consequences
+
+- `hr` and `settlements` are two new modules in `MODULE_PACKS`/
+  `modules.registry.ts` (`hr` on by default, `settlements` off) — both
+  `.env*.example` templates' `MODULES=`/`# Available:` lines were updated
+  in the same change, closing the exact drift `check-env-templates.mjs`
+  exists to catch (and did catch, on the first `pnpm lint` run against
+  this batch). Every permission this batch added (`hr.assets.*`,
+  `finance.assets.*`, `pos.instalments.*`, `finance.settlement.*`) is
+  seeded through to a real `ADMIN` grant in `ROLE_PERMISSION_SEED`, not
+  left as a catalogue-only row — the exact `seedPermissions()`-vs-
+  `seedRoles()` trap CLAUDE.md names, not repeated here.
+- `finance.settlement.view` is a genuinely reachable, separately-enforced
+  permission (`@RequirePermission('finance.settlement.view',
+  'finance.settlement.reconcile')` on every read route), not scaffolding
+  that exists only in the catalogue — a design correction made while
+  wiring the controller, before this ADR was written, rather than shipped
+  and found later.
+- Doc 147's cross-schema Prisma `@relation` (accounting → hr) is invisible
+  to `check-module-boundaries.mjs`, which only scans `.ts` imports under
+  `apps/api/src/modules/<name>/` — a real, named gap in what that script
+  enforces, not a violation it missed by accident. It is the correct tool
+  here specifically because no TypeScript service imports across the
+  module line; a future case that needs `accounting`'s own service logic
+  triggered from another module (as doc 49 does) still goes through a
+  domain event, never a Prisma relation, exactly as doc 49 does it.
+- Doc 164 is design-only. Nothing in `PERMISSION_CATALOG`, `nav-registry.ts`,
+  or any Prisma schema changed on its account; a future work order building
+  it starts from a written brief, not a blank page, and is not to be
+  reported complete by this ADR.
+
+### Status
+**Accepted.**
+
+---
+
+## ADR-039 — Doc 14 (managed services) built in full, overriding its own "not now": `PlatformTenant`/`PlatformInvoice` extended rather than a parallel `AgencyClient` registry and invoice cache, real Stripe collection bridged in decoupled from `BillingService`
+
+### Context — what problem required a decision?
+
+`commercial-licensing-agency/14-managed-services-module.md` scopes a
+Master-Platform-side `agency` module and a client-side `managed-services`
+module for the agency's own hosting/billing dashboard, and ends with "when
+to actually build this: Not now." The owner overrode that line directly and
+asked for the full capability built now. The doc's own proposed schema
+(`AgencyClient` — id, status, tier, databaseName, apiKeyHash,
+stripeCustomerId/stripeSubscriptionId) predates this repository's actual
+`apps/platform` control plane (`39-shared-cross-tenant-hosting-tier.md`,
+built since), which already has a `PlatformTenant` model carrying every
+fact `AgencyClient` proposes to duplicate — a superset `TenantStatus`
+enum, a real per-tenant database via `TenantDeploymentCredential` +
+`TenantCredentialResolverService.resolveConnectionString()`, a real
+`resourceTier`. Two questions had to be settled before writing any schema:
+whether `AgencyClient` should be a new table at all, and — discovered only
+while inspecting `apps/platform`'s existing billing engine (docs 50/153) —
+whether doc 14's own "small local invoice cache" for
+`GET /agency/clients/me/invoices` should be a second table alongside the
+`PlatformInvoice` model that ALREADY implements "one row per tenant per
+billing period, flat monthly price per tier, issued and reminded
+automatically" (`BillingService`, `BillingCron`, `InvoiceDunningCron`) —
+doc 14's entire commercial shape, minus a real Stripe charge.
+
+### Options Considered
+
+1. **Registry.** (a) Doc 14's own new `AgencyClient` table; (b) extend the
+   existing `PlatformTenant` with only the columns it genuinely lacks
+   (`mailDomain`, `apiKeyHash`/`apiKeyRotatedAt`, `stripeCustomerId`/
+   `stripeSubscriptionId`), treating "self-hosted vs. managed" as "does a
+   `PlatformTenant` row exist for this client's deployment at all" rather
+   than a stored enum value.
+2. **Invoicing.** (a) A new, Stripe-subscription-driven invoice cache,
+   decoupled from `BillingService`, matching the doc's literal words
+   ("delegate billing math to Stripe entirely"); (b) extend the existing
+   `PlatformInvoice` row with Stripe linkage columns
+   (`stripeInvoiceId`/`stripeHostedInvoiceUrl`/`stripePaymentStatus`) and
+   bridge to Stripe for actual collection only, keeping `BillingService`'s
+   already-built, already-tested amount computation as the one authority.
+3. **Where the Stripe bridge lives.** (a) Inside
+   `BillingService.issueInvoiceForPeriod()` itself; (b) a separate,
+   decoupled cron in the new `agency` module, selecting
+   `PlatformInvoice` rows by `stripeInvoiceId: null` for a
+   Stripe-linked tenant — the same "read `PlatformInvoice`/tenant tables
+   from outside `BillingService`" pattern `InvoiceDunningCron` and
+   `UsageMeteringCron` already establish.
+4. **Stalwart's admin API.** (a) Guess a plausible-sounding endpoint and
+   present it as verified; (b) build one narrow, swappable client against
+   a stated, honestly-flagged assumption, degrading to `null` (never
+   throwing) on any failure, and say in the delivered report that this
+   leg is unverified against a live instance — this sandbox's outbound
+   network has no route to Stalwart's own docs to confirm the path, the
+   same category of constraint `docs/email.md` already documents for this
+   integration's setup side.
+
+### Decision
+
+**1(b), 2(b), 3(b), 4(b).** `PlatformTenant` gained exactly four columns
+(`mailDomain`, `apiKeyHash` + `apiKeyRotatedAt`, `stripeCustomerId`,
+`stripeSubscriptionId`); no new `AgencyClientStatus`/`AgencyClientTier`
+enum exists — `PlatformTenant.status` and `apiKeyHash`'s own nullability
+already carry that information. `PlatformInvoice` gained
+`stripeInvoiceId`/`stripeHostedInvoiceUrl`/`stripePaymentStatus`/
+`stripePaymentFailedAt`; `AgencyUsageSnapshot` is the one genuinely new
+table (no existing equivalent). A new `agency` module in `apps/platform`
+(`AgencyClientsService`/`.Controller` for manual registration/rotation,
+`AgencyApiKeyGuard` + `AgencyReportingController` for the read-only
+`X-Agency-Api-Key` surface, `AgencyUsageService`/`.Cron` for the nightly
+snapshot, `AgencyStripeService`/`AgencyStripeChargeCron`/
+`AgencyStripeWebhookController` for real collection) imports
+`TenantsModule` to reuse `TenantsService.suspend()`/`.reactivate()` rather
+than writing a second status-transition path. A new, small `managed-services`
+module in `apps/api` (`offByDefault`, never in a client's default
+`MODULES`) proxies the two read-only endpoints server-side. `settings.manage`
+is reused for the client-side page (already seeded to real roles); a new
+ops-side `platform.agency.manage` scope gates the master-side admin actions.
+
+### Reasoning
+
+- **A parallel `AgencyClient` table would have created exactly the
+  two-competing-truths failure mode CLAUDE.md's own money/scale lenses
+  name** — a second "is this client active" and "which database" answer
+  alongside `PlatformTenant`'s already-authoritative one. The `apiKeyHash`
+  nullability trick makes "agency-managed and onboarded to this dashboard"
+  a real, queryable fact (`listRegisteredTenantIds()`,
+  `AgencyClientsService.list()`) with zero new enum to keep in sync.
+- **The same reasoning, applied a second time to invoicing, was the
+  session's own load-bearing discovery**: `PlatformInvoice` already IS
+  "the agency's own hosting invoice to this tenant" (doc 50's
+  `FLAT_MONTHLY` pricing model, built before doc 14 was read this
+  closely). Doc 14's "small local invoice cache" would have been a THIRD
+  parallel invoice concept in this schema (after `Order` and
+  `JournalEntry`/`PosShift` on the tenant side) with no stated
+  reconciliation rule — the exact anti-pattern the money lens's "click the
+  number" / "which surface is authoritative" language exists to catch.
+  Bridging Stripe onto the existing row keeps one authority for the
+  amount (`BillingService`) and delegates only what doc 14 actually needs
+  delegated: real payment collection and a hosted, shareable invoice page.
+- **A decoupled charge cron, not a `BillingService` edit**, is
+  change-minimization applied to a stable, already-tested billing engine:
+  `AgencyStripeChargeCron` can be added, changed, or removed without
+  touching `billing.service.ts`'s own tested computation at all, and its
+  `stripeInvoiceId: null` selector is itself the idempotency guarantee (a
+  rerun never double-charges) — no new coordination is needed between the
+  two modules beyond a shared Prisma table both already read.
+- **`customer.subscription.updated` is logged, never acted on** — the
+  session declined to let a webhook auto-cancel or auto-deprovision a
+  paying tenant, matching CLAUDE.md's own no-destructive-action-without-a-
+  human discipline extended to the platform's own customers, not only to
+  git branches and database rows. `invoice.paid`/`invoice.payment_failed`
+  already cover doc 14's own concrete "updates
+  AgencyClientStatus" requirement, reusing `TenantsService.suspend()`/
+  `.reactivate()` rather than writing a bespoke status mutation — and
+  `onInvoicePaid` reactivates only a tenant it can prove `suspend()`
+  itself suspended for non-payment (`suspendedReason` is checked, not just
+  `status === SUSPENDED`), so it can never undo an unrelated ops
+  suspension.
+- **The Stalwart leg is honestly unverified, not confidently wrong.** This
+  sandbox's outbound network reaches `registry.npmjs.org` but not
+  Stalwart's own documentation host, so `StalwartAdminClient`'s one
+  endpoint path is stated as this integration's own assumption, in the
+  file's own header comment, rather than presented as a confirmed
+  contract — and its failure mode (return `null`, log, never throw) means
+  a wrong path degrades to "this tenant's email count is blank tonight,"
+  never a failed nightly sweep for every other tenant or metric.
+- **`agency.manage`'s own real-grant gap is named, not hidden**, matching
+  ADR-038's own honest note about `platform.billing.approve`: this control
+  plane has no seed/bootstrap script for ANY `PlatformOpsClient` scope
+  today (confirmed absent before this ADR, not merely assumed), so
+  `platform.agency.manage` reaches a live ops key only when hosting-ops
+  provisions one by hand — the same pre-existing, already-tracked
+  characteristic every sibling scope in `PLATFORM_PERMISSIONS` shares, not
+  a gap this work order introduced or is pretending to have closed.
+- **`scripts/sync-client.mjs`'s doc-14-cited claim was checked, not
+  trusted**: `--modules=managed-services` would have failed the
+  Extractor's own "Unknown module(s) requested" validation before this
+  work order, because `managed-services` was never in
+  `apps/api/src/modules/module-packs.ts`/`modules.registry.ts` — only the
+  `.env.example` key-generation branch existed. Both registrations are
+  added here, `offByDefault: true`, discoverable per
+  `check-env-templates.mjs`'s own two rules, never enabled by default.
+
+### Consequences
+
+- A client's own `AGENCY_API_KEY` can only ever resolve to its own
+  `PlatformTenant` row (`AgencyApiKeyGuard` hashes the presented key and
+  looks up `apiKeyHash` directly — no route anywhere accepts a tenant id
+  as a parameter), proven against a real Postgres database in
+  `agency-cross-tenant.integration.spec.ts`, not mocks alone.
+- `AgencyUsageSnapshot`'s `@@unique([tenantId, snapshotDate])` is the
+  literal mechanism behind doc 14's "run twice in a day -> one row"
+  acceptance criterion — proven both against the real constraint (same
+  integration spec) and at the service's own call-shape level (mocked
+  unit spec).
+- `apps/platform`'s own `pnpm test` step is not wired to a Postgres
+  service in `.github/workflows/ci.yml` today (a pre-existing
+  characteristic of every prior `apps/platform` work order, not introduced
+  here) — the new real-Postgres integration spec is written to skip
+  honestly (`describe.skip`) rather than fail when `PLATFORM_DATABASE_URL`
+  is unset, so it strengthens local/future-CI verification without
+  breaking today's CI run. Wiring a `PLATFORM_DATABASE_URL`-backed
+  Postgres service into that workflow is named here as a real, valuable
+  follow-up, not executed as a silent side effect of this feature.
+- A self-hosted client's extracted repo carries no `managed-services`
+  folder and no `AGENCY_API_KEY` in its `.env.example` — structurally, by
+  the Extractor's existing per-module copy step, exactly as doc 14 itself
+  requires; there is no `agency` module or route reachable from any
+  extracted client repo at all.
+- Real per-message Stalwart send counts remain unverified against a live
+  instance until someone with real network access to that admin API
+  confirms `StalwartAdminClient`'s one endpoint path — named as an open
+  item here rather than closed by assumption.
+
+### Status
+**Accepted.**
+
+---
+
+## ADR-041 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call
 
 ### Context
 Doc 135 (`ai-layer/135-intent-router-voice-video-agent.md`) asks the direct

@@ -5,6 +5,22 @@ import { SettingKey, type FinanceGatewayFeeBpsSettings } from '../../core/settin
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService } from '../../core/events/event-bus.service';
 import type { OrderEconomics } from '../../core/prisma/client';
+import { startOfShopDay } from '../../core/time/shop-time';
+import { VOID_ORDER_STATUSES } from '../../core/common/sales-revenue';
+
+export interface GrossProfitTransaction {
+  orderId: string;
+  orderNumber: string;
+  revenue: number;
+  cogs: number;
+  contribution: number;
+  marginBps: number;
+}
+
+export interface GrossProfitToday {
+  transactions: GrossProfitTransaction[];
+  dayTotal: { revenue: number; cogs: number; contribution: number; marginBps: number };
+}
 
 interface Computed {
   revenue: number;
@@ -129,6 +145,58 @@ export class OrderEconomicsService {
 
     this.logger.log(`OrderEconomics computed for order ${orderId}: contribution=${contribution}`);
   }
+
+  /**
+   * WO-68.2 (68-realtime-gross-profit.md). A read over today's
+   * `OrderEconomics` rows, joined to `Order` for the shop-day boundary and
+   * the same void-status filter `AnalyticsService.summary()` already uses
+   * — never a second definition of "counts as a sale" or "today."
+   * `marginBps` is basis points (House Rule 5), 0 when revenue is 0 rather
+   * than a division-by-zero NaN.
+   */
+  async grossProfitToday(locationId?: string): Promise<GrossProfitToday> {
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const startOfToday = startOfShopDay(new Date(), timeZone);
+
+    const orders = await this.prisma.order.findMany({
+      where: {
+        placedAt: { gte: startOfToday },
+        status: { notIn: VOID_ORDER_STATUSES },
+        ...(locationId ? { locationId } : {}),
+        economics: { isNot: null },
+      },
+      select: {
+        id: true,
+        number: true,
+        placedAt: true,
+        economics: { select: { revenue: true, cogs: true, contribution: true } },
+      },
+      orderBy: { placedAt: 'desc' },
+    });
+
+    const transactions: GrossProfitTransaction[] = orders.map((order) => ({
+      orderId: order.id,
+      orderNumber: order.number,
+      revenue: order.economics!.revenue,
+      cogs: order.economics!.cogs,
+      contribution: order.economics!.contribution,
+      marginBps: marginBps(order.economics!.revenue, order.economics!.contribution),
+    }));
+
+    const dayTotal = transactions.reduce(
+      (sum, t) => ({ revenue: sum.revenue + t.revenue, cogs: sum.cogs + t.cogs, contribution: sum.contribution + t.contribution }),
+      { revenue: 0, cogs: 0, contribution: 0 },
+    );
+
+    return {
+      transactions,
+      dayTotal: { ...dayTotal, marginBps: marginBps(dayTotal.revenue, dayTotal.contribution) },
+    };
+  }
+}
+
+function marginBps(revenue: number, contribution: number): number {
+  return revenue > 0 ? Math.round((contribution / revenue) * 10_000) : 0;
 }
 
 function unchanged(existing: OrderEconomics, computed: Computed): boolean {

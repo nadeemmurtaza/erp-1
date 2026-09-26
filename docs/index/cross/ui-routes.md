@@ -3,7 +3,7 @@
 
 # Screens
 
-All **227** routable files across the web app, the till and the mobile app.
+All **234** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (138)
+### admin (145)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -41,6 +41,7 @@ _none_
 | `/admin` | page | client | `apps/web/src/app/(admin)/admin/(app)/page.tsx` |
 | `/admin/account` | page | client | `apps/web/src/app/(admin)/admin/(app)/account/page.tsx` |
 | `/admin/account/api-keys` | page | client | `apps/web/src/app/(admin)/admin/(app)/account/api-keys/page.tsx` |
+| `/admin/accounting/fiscal-periods` | page | client | `apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods/page.tsx` |
 | `/admin/ai` | page | client | `apps/web/src/app/(admin)/admin/(app)/ai/page.tsx` |
 | `/admin/analytics` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/page.tsx` |
 | `/admin/analytics/[...slug]` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx` |
@@ -96,6 +97,8 @@ _none_
 | `/admin/fulfilment/tracking` | page | client | `apps/web/src/app/(admin)/admin/(app)/fulfilment/tracking/page.tsx` |
 | `/admin/garments` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/page.tsx` |
 | `/admin/garments/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx` |
+| `/admin/hr/assets` | page | client | `apps/web/src/app/(admin)/admin/(app)/hr/assets/page.tsx` |
+| `/admin/hr/assets/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx` |
 | `/admin/import` | page | client | `apps/web/src/app/(admin)/admin/(app)/import/page.tsx` |
 | `/admin/inbox` | page | client | `apps/web/src/app/(admin)/admin/(app)/inbox/page.tsx` |
 | `/admin/inventory` | loading | server | `apps/web/src/app/(admin)/admin/(app)/inventory/loading.tsx` |
@@ -109,9 +112,11 @@ _none_
 | `/admin/inventory/spot-checks/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]/page.tsx` |
 | `/admin/inventory/variances/by-shift` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/variances/by-shift/page.tsx` |
 | `/admin/inventory/wishlisted` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx` |
+| `/admin/invoices` | page | client | `apps/web/src/app/(admin)/admin/(app)/invoices/page.tsx` |
 | `/admin/leads` | page | client | `apps/web/src/app/(admin)/admin/(app)/leads/page.tsx` |
 | `/admin/login` | page | client | `apps/web/src/app/(admin)/admin/login/page.tsx` |
 | `/admin/loyalty` | page | client | `apps/web/src/app/(admin)/admin/(app)/loyalty/page.tsx` |
+| `/admin/managed-services` | page | client | `apps/web/src/app/(admin)/admin/(app)/managed-services/page.tsx` |
 | `/admin/marketing` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/page.tsx` |
 | `/admin/marketing/discounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/page.tsx` |
 | `/admin/marketing/discounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/marketing/discounts/[id]/page.tsx` |
@@ -153,6 +158,8 @@ _none_
 | `/admin/seo` | page | client | `apps/web/src/app/(admin)/admin/(app)/seo/page.tsx` |
 | `/admin/settings` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` |
 | `/admin/settings/shipping` | page | client | `apps/web/src/app/(admin)/admin/(app)/settings/shipping/page.tsx` |
+| `/admin/settlements` | page | client | `apps/web/src/app/(admin)/admin/(app)/settlements/page.tsx` |
+| `/admin/settlements/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/settlements/[id]/page.tsx` |
 | `/admin/statements` | page | client | `apps/web/src/app/(admin)/admin/(app)/statements/page.tsx` |
 | `/admin/stitching` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx` |
 | `/admin/stitching/bookings` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/bookings/page.tsx` |

@@ -8,6 +8,8 @@ import { OrderReplicationListener } from './order-replication.listener';
 import { ShipmentStatusListener } from './shipment-status.listener';
 import { CodRiskService } from './cod-risk.service';
 import { CodRiskCron } from './cod-risk.cron';
+import { InstalmentPlanController } from './instalment-plan.controller';
+import { InstalmentPlanService } from './instalment-plan.service';
 
 import { InventoryModule } from '../inventory/inventory.module';
 import { TaxModule } from '../tax/tax.module';
@@ -29,7 +31,7 @@ import { GiftCardsModule } from '../giftcards/giftcards.module';
   // usage-count/balance conditional updates must land in the same
   // transaction as the order they belong to.
   imports: [PaymentsModule, InventoryModule, TaxModule, FulfilmentModule, PromotionsModule, GiftCardsModule],
-  controllers: [OrdersController, OrdersAdminController],
+  controllers: [OrdersController, OrdersAdminController, InstalmentPlanController],
   // The subscribers listen to the same events this module publishes (or, for
   // ShipmentStatusListener, events fulfilment publishes) — separate
   // providers rather than methods on OrdersService so that what the customer
@@ -43,6 +45,7 @@ import { GiftCardsModule } from '../giftcards/giftcards.module';
     ShipmentStatusListener,
     CodRiskService,
     CodRiskCron,
+    InstalmentPlanService,
   ],
   exports: [OrdersService],
 })

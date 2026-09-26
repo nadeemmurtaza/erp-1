@@ -118,6 +118,27 @@ export const DomainEvent = {
   DebitNoteVoided: 'receivables.debit_note_voided',
   /** CreditTermsService.setTerm() the moment isOnHold turns true — "Audience is a capability" lens: resolves its recipients from finance.credit-terms.manage, never a hardcoded address. */
   CreditHoldApplied: 'receivables.credit_hold_applied',
+
+  /**
+   * NotificationsService.send() (doc 153, commercial-licensing-agency/
+   * 153-usage-based-pricing-model.md, WO-153.2) — fires once per logical
+   * message, at the SAME consolidated call site every channel (email, SMS,
+   * WhatsApp, push, log) already fans out from, never once per channel:
+   * doc 153 §2's own "a merchant does not care whether a message left as
+   * email, SMS or WhatsApp" is why this is one event, not three. Fires only
+   * when at least one enabled channel actually matched the message (an app
+   * with zero channels enabled sends nothing to meter). No in-repo
+   * subscriber today — this exists so the fact reaches this tenant's own
+   * transactional outbox at all; apps/platform's UsageMeteringService (a
+   * separate deployment, a separate database) reads it back out of
+   * OutboxEvent through the same connection-per-call mechanism
+   * SeatCounterService already uses, never a new push/pull channel of its
+   * own (see ADR-037).
+   */
+  NotificationSent: 'notification.sent',
+
+  /** 49-financial-institution-settlement-partnerships.md (WO-49.4) — SettlementService.writeOffShortfall() on an accepted SHORT batch. posting-rules.subscriber.ts's own handler posts the write-off through findPostedEntry(source, batchId), never a second posting mechanism; `settlements` never imports `accounting`. */
+  SettlementShortfallWrittenOff: 'settlement.shortfall_written_off',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -590,6 +611,8 @@ export interface DomainEventPayloads {
   [DomainEvent.DebitNoteIssued]: DebitNoteIssuedPayload;
   [DomainEvent.DebitNoteVoided]: DebitNoteVoidedPayload;
   [DomainEvent.CreditHoldApplied]: CreditHoldAppliedPayload;
+  [DomainEvent.NotificationSent]: NotificationSentPayload;
+  [DomainEvent.SettlementShortfallWrittenOff]: SettlementShortfallWrittenOffPayload;
 }
 
 export interface CreditNoteIssuedPayload {
@@ -620,4 +643,22 @@ export interface DebitNoteVoidedPayload {
 export interface CreditHoldAppliedPayload {
   customerId: string;
   appliedByUserId: string;
+}
+
+export interface NotificationSentPayload {
+  /** The template name — kept for observability only; usage metering
+   *  counts events, never inspects this field. */
+  template: string;
+  /** How many enabled channels actually matched this message — always
+   *  >= 1 (NotificationsService only publishes when at least one channel
+   *  matched); never how many succeeded, since a channel-level failure is
+   *  logged and swallowed by design (send() must never fail an order). */
+  channelsAttempted: number;
+}
+
+export interface SettlementShortfallWrittenOffPayload {
+  batchId: string;
+  shortfallMinor: number;
+  /** ISO — the decision's own time, so a late post still resolves the currently open period (R15). */
+  writtenOffAt: string;
 }

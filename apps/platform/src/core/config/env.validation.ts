@@ -116,6 +116,70 @@ export const envSchema = z.object({
    *  unbounded: a caller cannot set `expiresAt` further out than this many
    *  hours from issuance, whatever value they request. */
   PLATFORM_SUPPORT_GRANT_MAX_HOURS: z.coerce.number().int().min(1).default(72),
+
+  /**
+   * doc 153 WO-153.4 — the same create/approve split doc 50 §4 already
+   * established for a custom-quote discount, applied here to a rate-card
+   * change on a live USAGE_BASED plan: a proposed `transactionFeeBps`
+   * change larger than this many basis points away from the plan's
+   * current value needs a second approver, never the ops client who
+   * proposed it. A business policy number, resolved through config, never
+   * a literal in `RateCardService`.
+   */
+  PLATFORM_RATE_CARD_APPROVAL_THRESHOLD_BPS: z.coerce.number().int().min(0).default(50),
+
+  /**
+   * doc 153 §3 — how many days after issuance a `PlatformInvoice` is due;
+   * set on every invoice at issue time regardless of pricing model. Feeds
+   * `PlatformInvoiceDunningCron`'s own single-reminder sweep.
+   */
+  PLATFORM_INVOICE_NET_TERMS_DAYS: z.coerce.number().int().min(1).default(15),
+
+  /**
+   * doc 14 (commercial-licensing-agency/14-managed-services-module.md) —
+   * server-side pepper mixed into an agency client's `AGENCY_API_KEY`
+   * hashing (`agency-key.ts`), the same defence-in-depth
+   * `PLATFORM_OPS_KEY_PEPPER` already provides for ops keys. A separate
+   * secret because the two are different credential types (a whole other
+   * deployment authenticating vs. internal ops tooling) with different
+   * blast radii — rotating one never has to rotate the other.
+   */
+  PLATFORM_AGENCY_KEY_PEPPER: z.string().min(32, 'PLATFORM_AGENCY_KEY_PEPPER must be at least 32 characters'),
+
+  /**
+   * doc 14 — the ISO 4217 currency this control plane invoices its
+   * agency-managed clients in (Newax's OWN billing currency, unrelated to
+   * any one tenant's own storefront `BRAND.currency`, which can differ per
+   * deployment). Resolved through config rather than hardcoded in
+   * `AgencyStripeService`, per Law 1 / `.claude/rules/configuration.md`.
+   */
+  PLATFORM_BILLING_CURRENCY: z.string().length(3).default('usd'),
+
+  /**
+   * Stripe secret key for this control plane's OWN Stripe account (the
+   * agency's hosting-fee billing, doc 14 WO-14.4) — optional. Unset means
+   * `AgencyStripeService` degrades honestly: invoices are still issued and
+   * tracked internally by `BillingService` exactly as before, just never
+   * charged through Stripe, the same "absent collaborator" degrade
+   * `PLATFORM_SMTP_HOST` already documents above.
+   */
+  PLATFORM_STRIPE_SECRET_KEY: z.string().optional(),
+  /** Verifies `POST /agency/stripe/webhook`'s signature — required for that
+   *  route to accept anything; unset means every webhook call is rejected
+   *  unverified, never waved through (same fail-closed idiom as
+   *  `NID_WEBHOOK_SECRET` on the tenant side). */
+  PLATFORM_STRIPE_WEBHOOK_SECRET: z.string().optional(),
+
+  /**
+   * doc 14 WO-14.2 — this agency's own shared Stalwart mail server's admin
+   * API (docs/email.md), read for a tenant's 30-day sent count. Both
+   * optional: unset means `AgencyUsageCron` still records
+   * `databaseBytes`/`activeUsers30d` every night and leaves
+   * `emailsSent30d` null for that tenant rather than failing the whole
+   * snapshot (see `AgencyUsageSnapshot.emailsSent30d`'s own doc comment).
+   */
+  PLATFORM_STALWART_API_URL: z.string().optional(),
+  PLATFORM_STALWART_API_KEY: z.string().optional(),
 });
 
 export type PlatformEnv = z.infer<typeof envSchema>;

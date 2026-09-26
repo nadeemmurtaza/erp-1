@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   ArrayMinSize,
   IsArray,
+  IsBoolean,
   IsDateString,
   IsInt,
   IsNotEmpty,
@@ -11,7 +12,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class InvoiceLineDto {
   @ApiProperty()
@@ -63,4 +64,13 @@ export class CreateInvoiceDto {
   @ValidateNested({ each: true })
   @Type(() => InvoiceLineDto)
   lines!: InvoiceLineDto[];
+}
+
+export class InvoiceQueryDto {
+  /** 56-overdue-invoices-counter.md — the same `ISSUED` + past-`dueDate` filter `overdueInvoicesSummary()` computes, so the tile's own link lands on this exact filtered set. */
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true' || value === true)
+  overdue?: boolean;
 }

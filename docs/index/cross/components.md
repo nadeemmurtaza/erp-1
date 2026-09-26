@@ -3,7 +3,7 @@
 
 # Components
 
-All **104** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **105** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 191 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 199 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -59,7 +59,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `range-picker.tsx` | `RANGES` `DASHBOARD_RANGES` `RangeDays` `RangePicker` | client | 3 |  |
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
-| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 43 |  |
+| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 48 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 | `toast-stack.tsx` | `ToastStack` | client | 16 |  |
 
@@ -100,13 +100,14 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `sparkline-chart.tsx` | `SparklineChart` | client | 1 |  |
 | `time-series-chart.tsx` | `TimeSeriesSeriesDef` `TimeSeriesChart` | client | 1 |  |
 
-### `apps/web/src/components/admin/dashboard` (5)
+### `apps/web/src/components/admin/dashboard` (6)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `action-hub-widget.tsx` | `ActionHubWidget` | client | 1 |  |
 | `card-group.tsx` | `CardGroup` | client | 1 |  |
 | `comparison-panel.tsx` | `ComparisonPanel` | client | 1 |  |
+| `gross-profit-today-widget.tsx` | `GrossProfitTodayWidget` | client | 1 |  |
 | `metric-card.tsx` | `MetricCardData` `formatValue` `MetricCard` `MetricCardWithSparkline` | client | 4 |  |
 | `needs-attention-strip.tsx` | `NeedsAttentionStrip` | client | 1 |  |
 
@@ -121,7 +122,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | client | 2 |  |
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 40 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 46 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -177,7 +178,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 45 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 51 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 7 |  |

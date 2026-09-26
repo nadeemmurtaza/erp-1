@@ -52,6 +52,32 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   // by that doc's own "Every column or none" lens.
   { code: '4200', name: 'Sales Returns & Allowances', type: 'INCOME' },
   { code: '5400', name: 'Purchase Returns & Allowances', type: 'EXPENSE' },
+  // Fixed-asset depreciation (finance-accounting/147-fixed-asset-depreciation.md
+  // WO-147.1). This chart carries no gross "Fixed Assets" account — doc 79's
+  // Asset never posts at acquisition — so AccumulatedDepreciation is the only
+  // asset-side account this document needs, netting to a credit balance
+  // within its own ASSET type exactly as this flat five-type chart already
+  // handles every other contra case.
+  { code: '1400', name: 'Accumulated Depreciation', type: 'ASSET' },
+  { code: '5500', name: 'Depreciation Expense', type: 'EXPENSE' },
+  // Disposal (WO-147.4). This chart has no gross "Fixed Assets" debit
+  // account (acquisition cost is never itself posted, per the comment
+  // above), so a disposal cannot "remove cost, remove accumulated
+  // depreciation" the textbook way. Instead it writes off whatever book
+  // value remains as a final loss (bringing AccumulatedDepreciation up to
+  // the full acquisition cost, exactly as a monthly posting would have,
+  // eventually) and recognises any sale proceeds as a separate gain — two
+  // accounts, never one signed account, the same INCOME/EXPENSE split this
+  // chart already uses for Realised FX Gain (4900) / Realised FX Loss (5900).
+  { code: '4300', name: 'Gain on Asset Disposal', type: 'INCOME' },
+  { code: '5600', name: 'Loss on Asset Disposal', type: 'EXPENSE' },
+  // Settlement reconciliation (finance-accounting/
+  // 49-financial-institution-settlement-partnerships.md WO-49.4). The
+  // Payment side already debited Cash & Bank in full when the payment
+  // succeeded (onPaymentSucceeded); a bank's SHORT settlement means less of
+  // that actually arrived, so the write-off credits Cash & Bank back down
+  // by the shortfall and recognises the loss — no new asset account needed.
+  { code: '5700', name: 'Settlement Shortfall Expense', type: 'EXPENSE' },
 ];
 
 /** The codes above, named — so a posting rule never hand-types a magic string. */
@@ -77,4 +103,9 @@ export const ACCOUNT_CODE = {
   DEFERRED_REVENUE_WALLET: '2400',
   SALES_RETURNS: '4200',
   PURCHASE_RETURNS: '5400',
+  ACCUMULATED_DEPRECIATION: '1400',
+  DEPRECIATION_EXPENSE: '5500',
+  GAIN_ON_DISPOSAL: '4300',
+  LOSS_ON_DISPOSAL: '5600',
+  SETTLEMENT_SHORTFALL_EXPENSE: '5700',
 } as const;

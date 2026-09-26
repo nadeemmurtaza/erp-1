@@ -49,8 +49,25 @@
 > `cash-flow`/`aged-payables` now additionally accept `finance.view`; the
 > ledger's raw detail (trial balance, balance sheet, aged receivables,
 > consolidation) stays `accounting.view`-only.
-
-## Scope decision, already taken
+>
+> **Status (2026-09-25): the remaining WO-4.6 gap is closed.** A dedicated
+> admin screen (`/admin/accounting/fiscal-periods`,
+> `apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods/page.tsx`)
+> now sits over the eight `FiscalPeriodsController` routes that already
+> existed with no UI: list/open a fiscal year, year-end close, and per-period
+> list/open/close/reopen/lock, filtered by fiscal year. Reads are gated
+> `accounting.view`; every write additionally requires
+> `accounting.manage_periods` — both already existed in
+> `packages/shared/src/permissions.ts` and both are already granted to the
+> `ADMIN` role, so this is reachable to a real user today, not scaffolding.
+> Year-end close and period lock use the shared `ConfirmDialog`'s
+> `typeToConfirm` (the design system's own ACT-6 top tier — irreversible and
+> financial), since both are stated as permanent by
+> `FiscalPeriodsService`'s own comments; close/reopen are the plain
+> confirm tier, since `FiscalPeriodsService.reopenPeriod` explicitly keeps
+> CLOSED reversible. A nav entry (`fiscal-periods`, `finance` group) makes it
+> findable by clicking, not only by typing the URL — no module gate, since
+> `accounting` is core.
 
 **Operational P&L, not double-entry.** No chart of accounts, no journals, no
 debits and credits, no trial balance. The output reads like a shopkeeper's books

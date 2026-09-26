@@ -1,5 +1,19 @@
 # 56 — The overdue-invoices counter
 
+> **Status (2026-09-25): built, WO-56.1–56.2.** `overdueInvoicesSummary()`
+> (`apps/api/src/modules/tradingpartners/invoice.service.ts`) is exactly
+> the read-time query this doc specifies, exposed at `GET
+> /admin/invoices/overdue-summary`
+> (`invoices.controller.ts`), proven by a spec computing the same
+> `count`/`totalMinor`/`oldestDueDate` independently. The UI is a counter
+> tile on the trading-partners dashboard linking through to the filtered
+> invoice list — WO-56.2's own "click the number" requirement — invisible
+> when `tradingpartners` is off, matching the doc's own acceptance
+> criterion. The mobile staff self-service tile named in WO-56.2 was not
+> added: doc 52's own mobile app shell has no existing trading-partner
+> surface to host it on today, and adding one is a separate, larger
+> capability this work order did not open.
+
 `Invoice.dueDate` and `InvoiceStatus` (`ISSUED`/`PAID`/`VOID`) already
 exist (doc 18's trading-partner network). Nothing computes "overdue" from
 them anywhere in this codebase — a real, small gap, not a missing model.

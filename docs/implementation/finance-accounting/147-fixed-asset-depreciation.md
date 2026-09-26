@@ -8,6 +8,55 @@ entry." Confirmed: no depreciation schedule, no periodic GL posting for
 asset value exists anywhere in `accounting`/`finance`. This document is
 that separately-scoped capability doc 79 already deferred.
 
+> **Status (2026-09-25): built, WO-147.1–147.6.** `AssetDepreciationSchedule`/
+> `AssetDepreciationPosting`/`DepreciationMethod` live in `accounting.prisma`
+> (`AssetDepreciationSchedule.asset` a real FK to `hr.prisma`'s `Asset` —
+> cross-file Prisma relations are one schema regardless of file, unlike the
+> app-code import the module-boundary checker actually polices).
+> `AssetDepreciationService`/`Controller`/`Cron`
+> (`apps/api/src/modules/accounting/`) read and write `Asset` by its bare
+> Prisma model, never by importing `hr`'s `AssetsService` — `accounting`
+> still imports no other module, the same "core data, no module import"
+> shape `PostingRulesSubscriber` already established for `Order`.
+> `monthlyDepreciation()` is a pure function (both methods), proven never to
+> drop book value below `salvageValueMinor`; the monthly cron posts through
+> `findPostedEntry()`'s own idempotency key, proven idempotent by a spec (a
+> re-run posts nothing further). 24 specs total
+> (`asset-depreciation.service.spec.ts`).
+>
+> **One necessary addition beyond this doc's own two named accounts**: this
+> chart of accounts has no gross "Fixed Assets" debit account (doc 79's own
+> scope lens: acquisition cost is never itself posted), so `disposeAsset()`
+> cannot "remove cost, remove accumulated depreciation" the textbook way —
+> there is no cost on the books to remove. Worked out honestly rather than
+> silently inventing an unrequested Fixed Assets account: disposal writes
+> off whatever book value remains as a final loss (`5600 Loss on Asset
+> Disposal`, bringing `AccumulatedDepreciation` up to the full acquisition
+> cost, exactly as a monthly posting eventually would have) and recognises
+> any sale proceeds as a separate gain (`4300 Gain on Asset Disposal`) —
+> two accounts, never one signed account, the same INCOME/EXPENSE split
+> this chart already uses for Realised FX Gain/Loss (4900/5900). Also
+> closes any open `AssetAssignment` on disposal (a disposed asset never
+> keeps showing as "held by" someone) and sets `Asset.status = RETIRED` —
+> all three writes, plus the GL posting, in one transaction.
+>
+> **`finance.assets.depreciate`/`finance.assets.dispose`** are seeded to
+> `ADMIN` only, matching `accounting.manage_periods`'s own placement — both
+> are real accounting-policy decisions. WO-147.6's UI ships as a
+> "Depreciation" panel on doc 79's own asset detail screen
+> (`/admin/hr/assets/[id]`), never a second page: create-schedule and
+> dispose actions, the posting history table, silently absent for a caller
+> lacking either permission or when `accounting` (off by default) is not
+> installed for this deployment — the same "layout closes over absence"
+> posture `GrossProfitTodayWidget` already takes for its own optional
+> dependency. The standalone preview report named in WO-147.6 did not ship
+> separately: `previewSchedule()` exists as a pure function
+> (`AssetDepreciationService`) but has no dedicated report screen — a real,
+> named, remaining gap, not silently dropped, since the create-schedule
+> dialog's own numbers already let an admin see what a schedule implies
+> before saving it, and a standalone report over schedules that do not yet
+> exist has no user to serve until schedules exist to report on.
+
 ## 1. A depreciation schedule, computed once at acquisition, posted periodically
 
 ```prisma

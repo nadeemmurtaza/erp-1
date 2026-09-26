@@ -3,7 +3,7 @@
 
 # Tests
 
-**286** spec files, **2,820** cases. What is already pinned down — and what is not.
+**292** spec files, **2,854** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (266)
+## Unit and integration (272)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -133,6 +133,8 @@ regression or an N+1.
 | `apps/api/src/modules/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
 | `apps/api/src/modules/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
 | `apps/api/src/modules/bom/production.service.spec.ts` | bom | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
+| `apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts` | bpmn-workflows | 9 | compileBpmnToApprovalSteps — WO-142.1 |
+| `apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts` | bpmn-workflows | 4 | BpmnWorkflowsService — WO-142.3 |
 | `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
 | `apps/api/src/modules/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
 | `apps/api/src/modules/catalog/bundles.service.spec.ts` | catalog | 16 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create ·… |
@@ -152,6 +154,8 @@ regression or an N+1.
 | `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.spec.ts` | crm | 5 | whatsapp-copy · detectWhatsAppLocale · whatsAppAssistantCopy |
 | `apps/api/src/modules/custom-fields/custom-fields.service.spec.ts` | custom-fields | 9 | CustomFieldsService — WO-104.2 |
 | `apps/api/src/modules/embeds/embed-widgets.service.spec.ts` | embeds | 8 | EmbedWidgetsService — WO-113.1 |
+| `apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts` | entity-attributes | 6 | EntityAttributeService — WO-140.2 |
+| `apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts` | entity-attributes | 1 | EntityAttributeSupplierDeletedListener — WO-140.3 |
 | `apps/api/src/modules/finance/expense-import.service.spec.ts` | finance | 5 | ExpenseImportService |
 | `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
 | `apps/api/src/modules/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
@@ -160,6 +164,7 @@ regression or an N+1.
 | `apps/api/src/modules/finance/finance.metrics.spec.ts` | finance | 2 | FinanceMetricsProvider |
 | `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
 | `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 13 | OrderEconomicsService · grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md) |
+| `apps/api/src/modules/fragments/fragments.service.spec.ts` | fragments | 9 | FragmentsService — WO-143.2/143.3 |
 | `apps/api/src/modules/fulfilment/fulfilment.spec.ts` | fulfilment | 4 | FulfilmentService.applyStatusChange |
 | `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
 | `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
@@ -182,6 +187,7 @@ regression or an N+1.
 | `apps/api/src/modules/measurements/size-bias.listener.spec.ts` | measurements | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
 | `apps/api/src/modules/measurements/size-bias.service.spec.ts` | measurements | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |
 | `apps/api/src/modules/measurements/size-recommendation.service.spec.ts` | measurements | 8 | SizeRecommendationService |
+| `apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts` | metadata-forms | 5 | MetadataFormsService — WO-141.1 |
 | `apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts` | onsitemessages | 8 | OnsiteMessagesService |
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
 | `apps/api/src/modules/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |

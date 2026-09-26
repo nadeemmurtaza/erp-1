@@ -11,6 +11,10 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { CrmModule } from './crm/crm.module';
 import { CustomFieldsModule } from './custom-fields/custom-fields.module';
 import { EmbedsModule } from './embeds/embeds.module';
+import { EntityAttributesModule } from './entity-attributes/entity-attributes.module';
+import { FragmentsModule } from './fragments/fragments.module';
+import { MetadataFormsModule } from './metadata-forms/metadata-forms.module';
+import { BpmnWorkflowsModule } from './bpmn-workflows/bpmn-workflows.module';
 import { FinanceModule } from './finance/finance.module';
 import { FulfilmentModule } from './fulfilment/fulfilment.module';
 import { GiftCardsModule } from './giftcards/giftcards.module';
@@ -222,6 +226,20 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'custom-fields', module: CustomFieldsModule, alwaysOn: true },
   // 113-micro-frontend-embedding.md — a narrow iframe embed pattern.
   { name: 'embeds', module: EmbedsModule, alwaysOn: true },
+  // 140-general-eav-extensibility-model.md — a general EAV model, built by
+  // explicit owner override (ADR-026).
+  { name: 'entity-attributes', module: EntityAttributesModule, alwaysOn: true },
+  // 143-micro-frontend-architecture.md — micro-frontend fragments, built by
+  // explicit owner override (ADR-026); the mount mechanism is doc 113's own
+  // iframe + embed-token pattern (see DECISIONS.md ADR-049), not literal
+  // module federation.
+  { name: 'fragments', module: FragmentsModule, alwaysOn: true },
+  // 141-general-metadata-driven-ui-engine.md — a general metadata-driven UI
+  // engine, built by explicit owner override (ADR-026).
+  { name: 'metadata-forms', module: MetadataFormsModule, alwaysOn: true },
+  // 142-bpmn-visual-workflow-engine.md — a BPMN visual workflow engine over
+  // doc 63's own ApprovalChain, built by explicit owner override (ADR-026).
+  { name: 'bpmn-workflows', module: BpmnWorkflowsModule, alwaysOn: true },
 ];
 
 /**

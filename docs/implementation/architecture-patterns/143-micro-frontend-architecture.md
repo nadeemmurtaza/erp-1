@@ -1,5 +1,44 @@
 # 143 — Micro-frontend architecture, built by explicit owner override (ADR-026), added alongside doc 93's single-app convention rather than replacing it
 
+> **Status: shipped (2026-09-26), WO-143.2/143.3/143.4 — WO-143.1 (literal
+> module federation) substituted, not built as sketched.** `MicroFrontend
+> Fragment` + `FragmentStatus` (`fragments.prisma`) and `FragmentsService`
+> are live. Two corrections against this document's own sketch, recorded in
+> `DECISIONS.md` ADR-049:
+>
+> - **No `organizationId`** — corrected against this repository's own
+>   ADR-044/ADR-040 (this deployment IS the tenant), the same correction
+>   already applied to docs 104/140.
+> - **WO-143.1's literal `next.config.js` `@module-federation/nextjs-mf`
+>   build is not built.** Checked against this repository's own actual
+>   Next.js version (15.5.23, `apps/web/package.json`): that package's own
+>   GitHub issue tracker names Next.js 15 support as open and unresolved,
+>   with stated doubt about the package's maintenance past 2026, against
+>   an App Router/RSC/`'use client'`-heavy admin app already committed to
+>   Turbopack. Building it would mean pinning this repository's own
+>   framework version to an unmaintained wrapper's own compatibility
+>   window — a worse trade than the mechanism it exists to enable. **The
+>   mount mechanism doc 143 itself already asks for at WO-143.4 (doc 113's
+>   own iframe + short-lived embed-token pattern) is used as the actual
+>   composition layer instead of literal module federation** — the same
+>   iframe sandbox, the same scoped, short-lived token, reused unchanged.
+>   `FragmentMountPoint`/`FragmentFrame` (`fragment-mount-point.tsx`) is the
+>   reusable mount-point component; `FragmentsController`'s `/for-mount-
+>   point` and `/:key/token` routes are its own doc-113-shaped
+>   endpoints. The trade-off this document's own reasoning already named —
+>   real fragment independence at the cost of a federation build — is kept
+>   honest rather than half-built: this repository gets the opt-in,
+>   registered, suspendable mount-point mechanism the document asks for,
+>   without a framework-version lock this codebase cannot safely accept
+>   today.
+>
+> Registration UI + the design-law attestation checkbox is at Settings >
+> Fragments (`settings.fragments.manage`); `FragmentMountPoint` is embedded
+> on the Supplier detail screen as the first real, reachable mount point
+> (`mountPoint="supplier-detail"`). Suspend/activate is the kill switch, as
+> specified; there is no delete endpoint, since a fragment's own history of
+> having been registered is never erased by suspending it.
+
 Doc 93 committed this repository to one frontend framework (Next.js/React)
 across every web surface, for real reasons: one component library, one
 build pipeline, one place `pnpm check:overflow` needs to reach. Doc 113

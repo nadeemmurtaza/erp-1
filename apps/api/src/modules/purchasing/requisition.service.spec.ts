@@ -4,6 +4,7 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { ApprovalService } from '../../core/approvals/approval.service';
 import { PurchasingService } from './purchasing.service';
 import { EventBusService } from '../../core/events/event-bus.service';
+import { WorkflowStepsRegistry } from '../../core/extension-points/workflow-steps.registry';
 
 describe('RequisitionService — 152-purchase-requisition.md', () => {
   let service: RequisitionService;
@@ -12,6 +13,7 @@ describe('RequisitionService — 152-purchase-requisition.md', () => {
   let approvals: any;
   let purchasing: any;
   let events: any;
+  let workflowSteps: any;
 
   beforeEach(() => {
     tx = {
@@ -22,12 +24,14 @@ describe('RequisitionService — 152-purchase-requisition.md', () => {
     approvals = { start: jest.fn(), getChain: jest.fn(), decide: jest.fn() };
     purchasing = { createPurchaseOrder: jest.fn() };
     events = { publish: jest.fn() };
+    workflowSteps = { getCompiledSteps: jest.fn().mockResolvedValue(null) };
 
     service = new RequisitionService(
       prisma as PrismaService,
       approvals as ApprovalService,
       purchasing as PurchasingService,
       events as EventBusService,
+      workflowSteps as WorkflowStepsRegistry,
     );
   });
 

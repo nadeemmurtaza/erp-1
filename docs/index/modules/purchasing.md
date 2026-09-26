@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 24 files
 
 Source: `apps/api/src/modules/purchasing/`
 
-## Files (24 · 3,273 lines)
+## Files (24 · 3,297 lines)
 
 All paths relative to `apps/api/src/modules/purchasing/dto`.
 
@@ -29,15 +29,15 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | `purchasing.metrics.spec.ts` | unit test | 74 | — |  |
 | `purchasing.metrics.ts` | module | 135 | 2 | The Purchasing group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
 | `purchasing.module.ts` | nest module | 34 | 1 |  |
-| `purchasing.service.ts` | service | 673 | 1 |  |
+| `purchasing.service.ts` | service | 680 | 1 |  |
 | `purchasing.spec.ts` | unit test | 233 | — |  |
 | `reorder.listener.spec.ts` | unit test | 146 | — |  |
 | `reorder.listener.ts` | event subscriber | 83 | 1 | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an external supplie… |
 | `requisition-task-source.spec.ts` | unit test | 59 | — |  |
 | `requisition-task-source.ts` | module | 61 | 1 | WO-23.3's own real, single demonstration registration: `purchasing. |
 | `requisition.controller.ts` | controller | 63 | 1 |  |
-| `requisition.service.spec.ts` | unit test | 203 | — |  |
-| `requisition.service.ts` | service | 201 | 1 | 152-purchase-requisition.md. |
+| `requisition.service.spec.ts` | unit test | 207 | — |  |
+| `requisition.service.ts` | service | 214 | 1 | 152-purchase-requisition.md. |
 | `supplier-bill.spec.ts` | unit test | 230 | — |  |
 
 
@@ -77,11 +77,12 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:441` |
-| `RequisitionCreated` | `purchasing.requisition_created` | `requisition-task-source.ts:38`, `requisition.service.ts:59` |
-| `RequisitionConverted` | `purchasing.requisition_converted` | `requisition.service.ts:192` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:592` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:656` |
+| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:448` |
+| `RequisitionCreated` | `purchasing.requisition_created` | `requisition-task-source.ts:38`, `requisition.service.ts:72` |
+| `RequisitionConverted` | `purchasing.requisition_converted` | `requisition.service.ts:205` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:599` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:663` |
+| `SupplierDeleted` | `purchasing.supplier_deleted` | `purchasing.service.ts:182` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -194,7 +195,7 @@ check there before adding another.
 | `PurchasingReorderListener` | class | `reorder.listener.ts:24` | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an extern… |
 | `RequisitionTaskSource` | class | `requisition-task-source.ts:30` | WO-23.3's own real, single demonstration registration: `purchasing. |
 | `RequisitionController` | class | `requisition.controller.ts:11` |  |
-| `RequisitionService` | class | `requisition.service.ts:23` | 152-purchase-requisition.md. |
+| `RequisitionService` | class | `requisition.service.ts:25` | 152-purchase-requisition.md. |
 
 
 ---

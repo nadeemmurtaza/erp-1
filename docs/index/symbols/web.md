@@ -776,7 +776,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminSettingsPage` | default | :16 |  |
+| `page.tsx` | `AdminSettingsPage` | default | :30 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/settings/shipping`
 
@@ -848,7 +848,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SupplierDetailPage` | default | :32 |  |
+| `page.tsx` | `SupplierDetailPage` | default | :35 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/tasks`
 
@@ -1241,6 +1241,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | function | :34 | The back office frame: role guard, sidebar and header. |
+| `bpmn-editor.tsx` | `BpmnEditor` | function | :46 | architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.2) — a thin React wrapper mounting… |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |
 | `csv-import-card.tsx` | `CsvImportCard` | function | :29 | Shared upload/preview/commit card for the CSV importers (admin-platform/72-fragmented-tool-consolid… |
@@ -1248,6 +1249,8 @@ Every top-level export in `web`, with the line to open.
 | `deployment-modules.tsx` | `EnabledModulesProvider` | const | :7 |  |
 | `deployment-modules.tsx` | `useEnabledModules` | function | :18 | Which API modules `GET /meta` reported for this deployment — the same value `AdminShell` already fe… |
 | `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | function | :15 | architecture-patterns/113-micro-frontend-embedding.md (WO-113.2) — a narrow, reusable iframe contai… |
+| `entity-attribute-editor.tsx` | `EntityAttributeEditor` | function | :19 | architecture-patterns/140-general-eav-extensibility-model.md (WO-140.4) — the general fallback edit… |
+| `fragment-mount-point.tsx` | `FragmentMountPoint` | function | :18 | architecture-patterns/143-micro-frontend-architecture.md (WO-143.4) — the actual mount mechanism fo… |
 | `funnel-chart.tsx` | `FunnelStage` | interface | :23 |  |
 | `funnel-chart.tsx` | `FunnelChart` | function | :28 |  |
 | `gauge-chart.tsx` | `GaugeChart` | function | :32 |  |
@@ -1256,6 +1259,9 @@ Every top-level export in `web`, with the line to open.
 | `image-manager.tsx` | `ImageStager` | function | :344 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
 | `image-manager.tsx` | `StagedImageUploadResult` | interface | :492 |  |
 | `image-manager.tsx` | `uploadStagedImages` | function | :510 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
+| `metadata-driven-entity-form.tsx` | `MetadataDrivenEntityForm` | function | :17 | architecture-patterns/141-general-metadata-driven-ui-engine.md (WO-141.4) — the one real, wired-up… |
+| `metadata-driven-form.tsx` | `MetadataFieldValue` | type | :5 |  |
+| `metadata-driven-form.tsx` | `MetadataDrivenForm` | function | :25 | architecture-patterns/141-general-metadata-driven-ui-engine.md (WO-141.2). |
 | `nav-registry.ts` | `ICON_MAP` | const | :21 |  |
 | `nav-registry.ts` | `AdminNavGroup` | interface | :38 |  |
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
@@ -1790,6 +1796,16 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `CustomFieldValue` | type | :1672 |  |
 | `api.ts` | `EmbeddedWidget` | interface | :1675 | `GET/POST /admin/embeds` (architecture-patterns/113-micro-frontend-embedding.md, WO-113). |
 | `api.ts` | `EmbedToken` | interface | :1684 | `POST /admin/embeds/:key/token`. |
+| `api.ts` | `EntityAttribute` | interface | :1697 | `GET/POST /admin/entity-attributes` (architecture-patterns/140-general-eav-extensibility-model.md,… |
+| `api.ts` | `EntityAttributeValueType` | type | :1706 |  |
+| `api.ts` | `MicroFrontendFragment` | interface | :1714 | `GET/POST /admin/fragments` (architecture-patterns/143-micro-frontend- architecture.md, WO-143.2). |
+| `api.ts` | `FragmentStatus` | type | :1724 |  |
+| `api.ts` | `FragmentToken` | interface | :1727 | `POST /admin/fragments/:key/token?mountPoint=...`. |
+| `api.ts` | `FormMetadata` | interface | :1739 | `GET/PUT /admin/metadata-forms/:entityType` (architecture-patterns/141-general-metadata-driven-ui-e… |
+| `api.ts` | `FieldMetadata` | interface | :1745 |  |
+| `api.ts` | `FieldMetadataValueType` | type | :1754 |  |
+| `api.ts` | `BpmnWorkflowDefinition` | interface | :1762 | `GET/PUT /admin/bpmn-workflows/:subjectType` (architecture-patterns/142-bpmn-visual-workflow-engine… |
+| `api.ts` | `ApprovalSubjectType` | type | :1769 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

@@ -93,6 +93,7 @@ model User {
   roleAssignments                   UserRoleAssignment[]
   purchaseOrdersCreated             PurchaseOrder[]             @relation("PurchaseOrderCreator")
   embeddedWidgetsCreated            EmbeddedWidget[]            @relation("EmbeddedWidgetCreator")
+  microFrontendFragmentsRegistered  MicroFrontendFragment[]     @relation("MicroFrontendFragmentRegisteredBy")
   goodsReceiptsReceived             GoodsReceipt[]              @relation("GoodsReceiptReceiver")
   requisitionsRequested             PurchaseRequisition[]       @relation("RequisitionRequester")
   approvalStepsDecided              ApprovalStep[]              @relation("ApprovalStepDecider")

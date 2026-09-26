@@ -6,6 +6,8 @@ import { DomainEvent } from '../../core/events/domain-events';
 import { PurchasingService } from './purchasing.service';
 import { CreateRequisitionDto, ConvertRequisitionDto } from './dto/requisition.dto';
 import type { PurchaseRequisition, RequisitionApprovalStatus } from '../../core/prisma/client';
+import { WorkflowStepsRegistry } from '../../core/extension-points/workflow-steps.registry';
+import type { ApprovalStepInput } from '../../core/approvals/approval.service';
 
 const APPROVER_PERMISSION = 'purchasing.requisitions.approve';
 
@@ -26,12 +28,24 @@ export class RequisitionService {
     private readonly approvals: ApprovalService,
     private readonly purchasing: PurchasingService,
     private readonly events: EventBusService,
+    private readonly workflowSteps: WorkflowStepsRegistry,
   ) {}
 
   async create(dto: CreateRequisitionDto, requestedById: string): Promise<PurchaseRequisition> {
     if (dto.lines.length === 0) {
       throw new BadRequestException('A requisition needs at least one line.');
     }
+
+    // 142-bpmn-visual-workflow-engine.md — a manager may have redrawn this
+    // chain's own shape in the BPMN editor; WorkflowStepsRegistry answers
+    // null when none exists (no `bpmn-workflows` module, or nobody has
+    // drawn one yet), and the hardcoded single-step default below is the
+    // safe fallback either way.
+    const compiledSteps = await this.workflowSteps.getCompiledSteps('PURCHASE_REQUISITION');
+    const steps: ApprovalStepInput[] =
+      compiledSteps && compiledSteps.length > 0
+        ? compiledSteps.map((step) => ({ approverRoleId: step.approverRoleId, approverUserId: step.approverUserId }))
+        : [{ approverRoleId: APPROVER_PERMISSION }];
 
     return this.prisma.$transaction(async (tx) => {
       const requisition = await tx.purchaseRequisition.create({
@@ -50,10 +64,9 @@ export class RequisitionService {
         include: { lines: true },
       });
 
-      // Single-step chain: any user holding purchasing.requisitions.approve
-      // may decide it — who specifically is a route-level PBAC concern
+      // Who specifically may decide each step is a route-level PBAC concern
       // (RequisitionController's @RequirePermission), never resolved here.
-      await this.approvals.start('PURCHASE_REQUISITION', requisition.id, [{ approverRoleId: APPROVER_PERMISSION }], tx);
+      await this.approvals.start('PURCHASE_REQUISITION', requisition.id, steps, tx);
 
       await this.events.publish(
         DomainEvent.RequisitionCreated,

@@ -1,5 +1,62 @@
 # 142 — A BPMN visual workflow engine, built by explicit owner override (ADR-026), as a diagram layer over the existing typed engine, never a replacement for it
 
+> **Status: shipped (2026-09-26), WO-142.1/142.2/142.3.** `Bpmn
+> WorkflowDefinition` (`bpmn-workflows.prisma`) + `compileBpmnToApprovalSteps()`
+> + `BpmnWorkflowsService` are live. No `organizationId` (the same
+> ADR-044/ADR-040 correction already applied to docs 104/140/141/143;
+> recorded in `DECISIONS.md` ADR-049 alongside the other corrections
+> below).
+>
+> **`ApprovalChain`/`ApprovalStep`/`ApprovalSubjectType`/`ApprovalService.
+> decide()` were verified to exist exactly as this document assumes**
+> (`apps/api/prisma/schema/approvals.prisma`, `core/approvals/approval.
+> service.ts`) before any code was written — `ApprovalService.start()` is
+> the one existing entry point this document's compiler now feeds.
+>
+> **The compiler (WO-142.1) is a hand-written, dependency-free parser for
+> the narrow supported subset** (extraction via regex over the `<process>`
+> element's own children, an explicit tag allowlist, a directed-graph walk
+> over `sequenceFlow`), not a general XML/BPMN library — this repository
+> already had no XML parsing dependency, and the supported subset is
+> narrow enough that adding one was not justified. Any element outside
+> `{process, startEvent, endEvent, sequenceFlow, task, userTask,
+> extensionElements, documentation, incoming, outgoing}` is rejected by
+> name — a gateway of any kind, a timer or message event, a script/service
+> task, a sub-process. **"Simple branching," named in this document's own
+> §1, is narrowed to strictly linear**: a real approve/reject branch
+> already exists inside `ApprovalService.decide()` itself (a REJECT skips
+> every remaining step automatically), so a workflow author never needs a
+> visual gateway to express one — supporting a real BPMN gateway would
+> mean building exactly the second interpreter this document's own §1
+> refuses to become.
+>
+> **A task node's approver is its own `name` attribute** — the permission
+> key a step is expected to be decided under (e.g.
+> `"purchasing.requisitions.approve"`, matching `RequisitionService`'s own
+> existing hardcoded convention for `approverRoleId`), or `"user:<userId>"`
+> for one specific approver. This is a pragmatic reading of doc 142's own
+> "change the approver role for a step," not a BPMN-native concept — BPMN
+> has no standard "approver" attribute, and adding a custom moddle
+> extension plus a properties panel was judged unjustified complexity for
+> what a plain task name already expresses cleanly.
+>
+> **Reached by `purchasing`'s `RequisitionService` through a new
+> `WorkflowStepsRegistry` extension point** (`core/extension-points/
+> workflow-steps.registry.ts`), never a direct cross-module import — the
+> identical seam `BranchPolicyRegistry` already uses between `purchasing`
+> and `organization`. A subject type with no saved diagram (or the
+> `bpmn-workflows` module absent) falls back to `RequisitionService`'s own
+> existing hardcoded single-step default, unchanged; a diagram is
+> additive, never load-bearing.
+>
+> **`bpmn-js` (18.30.1) is a new dependency, added to `apps/web` only**,
+> per `.claude/rules/dependencies.md`'s own justification (recorded next to
+> `BpmnEditor`'s own import in `bpmn-editor.tsx`): the well-established
+> open-source BPMN.js-shaped editor this document's own WO-142.2 requires,
+> mounted via `useRef`/`useEffect` as a vanilla-JS widget, never a
+> controlled React tree. The admin editor is at Settings > Approval
+> workflows (`settings.bpmn-workflows.manage`).
+
 Doc 63 built `ApprovalChain`/`ApprovalStep` as typed, reviewed TypeScript;
 doc 107 declined a BPMN engine on top of it three times, because a second,
 interpreted way to express the same class of logic means two mechanisms

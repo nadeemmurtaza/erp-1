@@ -285,6 +285,37 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    // 143-micro-frontend-architecture.md — registering a fragment introduces
+    // third-party runtime code (loaded here as an iframe + embed-token, per
+    // the doc's own WO-143.4/DECISIONS.md ADR-049 substitution) into the
+    // admin shell; a real trust decision, gated separately from
+    // settings.embeds.manage since it carries the design-law attestation
+    // requirement doc 143 names, not shared with doc 113's own widgets.
+    key: 'settings.fragments.manage',
+    label: 'Register and suspend micro-frontend fragments',
+    category: 'Administration',
+    sensitivity: 'critical',
+  },
+  {
+    // 141-general-metadata-driven-ui-engine.md — defining a metadata-driven
+    // form's own field shape is a settings-level action; reading an
+    // already-defined shape is open to any authenticated admin (it grants
+    // no access to any entity's own values).
+    key: 'settings.metadata-forms.manage',
+    label: 'Define metadata-driven form field shapes',
+    category: 'Administration',
+    sensitivity: 'medium',
+  },
+  {
+    // 142-bpmn-visual-workflow-engine.md — redrawing an approval chain's own
+    // shape changes who approves what for every future subject of that
+    // type; a settings-level trust decision, not a day-to-day action.
+    key: 'settings.bpmn-workflows.manage',
+    label: 'Redraw approval workflow diagrams',
+    category: 'Administration',
+    sensitivity: 'critical',
+  },
+  {
     key: 'tax.manage',
     label: 'Manage tax classes, rates and the pricing mode',
     category: 'Administration',
@@ -746,8 +777,18 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'sales',
     label: 'Sales & payments',
-    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, and registering terminals.',
-    permissions: ['orders.manage', 'payments.approve', 'pos.manage', 'pos.operate', 'pos.instalments.cancel', 'pos.instalments.default'],
+    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, registering terminals, and wholesale pricing.',
+    permissions: [
+      'orders.manage',
+      'payments.approve',
+      'pos.manage',
+      'pos.operate',
+      'pos.instalments.cancel',
+      'pos.instalments.default',
+      'pricing.price-lists.manage',
+      'pricing.price-lists.approve',
+      'pricing.assignments.manage',
+    ],
   },
   {
     key: 'fulfilment',
@@ -778,15 +819,6 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     label: 'Catalogue & garments',
     description: 'Products, categories, bulk import, garment types and size charts.',
     permissions: ['catalog.manage', 'measurements.manage_blueprints'],
-  },
-  {
-    // 146-wholesale-tiered-pricing.md — missing from every PERMISSION_GROUPS
-    // entry when this group was added; permissions.spec.ts's own "no
-    // permission left off the wizard" test catches exactly this.
-    key: 'pricing',
-    label: 'Wholesale pricing',
-    description: 'Price lists, quantity breaks, below-base-price approval, and which customers a list applies to.',
-    permissions: ['pricing.price-lists.manage', 'pricing.price-lists.approve', 'pricing.assignments.manage'],
   },
   {
     key: 'inventory',
@@ -914,6 +946,9 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'settings.sso.manage',
       'settings.custom-fields.manage',
       'settings.embeds.manage',
+      'settings.fragments.manage',
+      'settings.metadata-forms.manage',
+      'settings.bpmn-workflows.manage',
       'roles.manage_permissions',
       'users.manage',
       'audit.view',
@@ -1099,6 +1134,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'settings.sso.manage',
     'settings.custom-fields.manage',
     'settings.embeds.manage',
+    'settings.fragments.manage',
+    'settings.metadata-forms.manage',
+    'settings.bpmn-workflows.manage',
     'roles.manage_permissions',
     'audit.view',
     'users.manage',

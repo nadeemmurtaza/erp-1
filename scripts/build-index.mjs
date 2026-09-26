@@ -35,7 +35,7 @@ import {
   readText, trackedFiles, fileDoc, docAbove, clip, cell,
   scanSymbols, scanReExports, scanImports,
   scanController, accessOf, scanNestModule,
-  scanEventCatalog, scanEventUsage, scanCron,
+  scanEventCatalog, scanEventUsage, scanCron, scanStateMachines,
   scanPrisma, scanMigration, scanMigrationSql, schemaMigrationDrift,
   scanPermissionCatalog, scanRoleSeed,
   appRouterPath, routeKind, isClientComponent,
@@ -149,6 +149,7 @@ const nestModules = [];
 const crons = [];
 const eventSubscribers = [];
 const eventReferences = [];
+const stateMachines = [];
 
 for (const r of records) {
   if (!r.rel.startsWith('apps/api/src/') || !isTs(r) || isSpec(r)) continue;
@@ -158,6 +159,7 @@ for (const r of records) {
     if (m) nestModules.push(m);
   }
   if (/@Cron\(/.test(r.source)) crons.push(...scanCron(r.source, r.rel));
+  if (/Record<\s*\w+\s*,\s*\w+\[\]\s*>/.test(r.source)) stateMachines.push(...scanStateMachines(r.source, r.rel));
   if (/DomainEvent\./.test(r.source)) {
     const { subscribes, references } = scanEventUsage(r.source, r.rel);
     eventSubscribers.push(...subscribes);
@@ -461,6 +463,7 @@ const areaFile = (name) => `docs/index/areas/${name}.md`;
     ['“What permission do I need / who has it?”', `[cross/permissions.md](${link(self, 'docs/index/cross/permissions.md')})`, `all ${permissionCatalog.length} permissions → routes, UI call sites, seed`],
     ['“Which table/column holds X?”', `[cross/data-model.md](${link(self, 'docs/index/cross/data-model.md')})`, `all ${prismaModels.length} Prisma models and ${prismaEnums.length} enums, field by field`],
     ['“How do modules talk to each other?”', `[cross/events.md](${link(self, 'docs/index/cross/events.md')})`, `all ${eventCatalog.length} domain events → publishers and subscribers`],
+    ["“What are the valid status transitions for this entity?”", `[cross/state-machines.md](${link(self, 'docs/index/cross/state-machines.md')})`, `every named \`Record<XStatus, XStatus[]>\` transition table (${stateMachines.length})`],
     ['“What screen serves this URL?”', `[cross/ui-routes.md](${link(self, 'docs/index/cross/ui-routes.md')})`, `all ${uiRoutes.length} screens across web, POS and mobile`],
     ['“Is there already a component for this?”', `[cross/components.md](${link(self, 'docs/index/cross/components.md')})`, 'shared primitives and every component, with usage counts'],
     ['“How should this look / behave / read?”', `[cross/design-system.md](${link(self, 'docs/index/cross/design-system.md')})`, `the ${designChapterCount} design chapters, and the measured state of the code they govern`],
@@ -813,6 +816,7 @@ ${BACK(self)}`);
     ['a permission: what enforces it, which roles hold it', 'docs/index/cross/permissions.md'],
     ['a table, column or enum', 'docs/index/cross/data-model.md'],
     ['how two modules talk (domain events)', 'docs/index/cross/events.md'],
+    ['an entity’s valid status transitions', 'docs/index/cross/state-machines.md'],
     ['a screen, URL or nav entry', 'docs/index/cross/ui-routes.md'],
     ['whether a component already exists', 'docs/index/cross/components.md'],
     ['how something should look, behave or read', 'docs/index/cross/design-system.md'],
@@ -1823,6 +1827,49 @@ function moduleLabel(file) {
   const c = apiCoreOf(file);
   if (c) return `core/\`${c}\``;
   return `\`${basename(file)}\``;
+}
+
+/* ── ⊗ cross/state-machines.md ─────────────────────────────────────────── */
+
+{
+  const self = 'docs/index/cross/state-machines.md';
+  const rows = stateMachines.map((s) => [`\`${s.name}\``, `\`${s.typeParam}\``, moduleLabel(s.file), `\`${s.file}:${s.line}\``]);
+
+  const detail = stateMachines.map((s) => `### \`${s.name}\` (${moduleLabel(s.file)})
+
+${s.doc ? `> ${s.doc}\n` : ''}\`${s.file}:${s.line}\`
+
+\`\`\`ts
+${s.body}
+\`\`\``);
+
+  emit(self, `${head(self, 'State machines', `Every **${stateMachines.length}** \`Record<XStatus, XStatus[]>\`-shaped transition table in the codebase — a read-only, generated inventory (architecture-patterns/106-finite-state-machines-registry.md, WO-106.1), never a second enforcement path and never runtime-editable.`)}
+
+## What this page is, and is not
+
+Each table below is the **sole authority** for its own entity's valid state
+transitions, checked before every write in the module that owns it. This page
+only *lists* them for operator visibility — it changes nothing, and an
+administrator cannot edit a transition here. A structural transition (can a
+\`PENDING\` order become \`DELIVERED\` directly?) is a code-level invariant other
+code depends on, never a client-configurable policy.
+
+**What this scanner cannot see.** It matches one literal shape: a named
+\`Record<XStatus, XStatus[]>\` constant. A status enum whose valid transitions
+are instead enforced by scattered inline checks per method (no single named
+table) is real, and just as authoritative, but structurally invisible to a
+line-based scanner — it is not "missing," it is a different, equally valid
+enforcement shape this page cannot enumerate. Read the owning service's own
+methods for those.
+
+## Summary
+
+${table(['Table', 'Entity status type', 'Module', 'Where'], rows)}
+
+## Detail
+
+${detail.join('\n\n')}
+${BACK(self)}`);
 }
 
 /* ── ⊗ cross/jobs.md ───────────────────────────────────────────────────── */

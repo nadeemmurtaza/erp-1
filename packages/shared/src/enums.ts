@@ -105,3 +105,16 @@ export function previousStage(stage: StitchingStage): StitchingStage | null {
   const index = STITCHING_STAGES.indexOf(stage);
   return index > 0 ? (STITCHING_STAGES[index - 1] as StitchingStage) : null;
 }
+
+/**
+ * architecture-patterns/104-jsonb-eav-extensibility.md — the closed,
+ * code-known list of entities `CustomFieldDefinition.entityType` may name.
+ * Adding one is a small, reviewed code change (a Prisma column, a service
+ * branch, an admin-form-rendering branch), never an arbitrary string a
+ * client could point at a table this mechanism was never wired into.
+ */
+export const CUSTOM_FIELD_ENTITY_TYPES = ['Supplier'] as const;
+export type CustomFieldEntityType = (typeof CUSTOM_FIELD_ENTITY_TYPES)[number];
+
+export const CUSTOM_FIELD_VALUE_TYPES = ['TEXT', 'NUMBER', 'BOOLEAN', 'DATE'] as const;
+export type CustomFieldValueType = (typeof CUSTOM_FIELD_VALUE_TYPES)[number];

@@ -241,6 +241,25 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'critical',
   },
   {
+    // 104-jsonb-eav-extensibility.md — defining what custom fields exist on
+    // a wired entity (e.g. Supplier) is a settings-level action, distinct
+    // from suppliers.manage's own day-to-day editing of a supplier's values.
+    key: 'settings.custom-fields.manage',
+    label: 'Define custom fields on Suppliers and other wired entities',
+    category: 'Administration',
+    sensitivity: 'medium',
+  },
+  {
+    // 113-micro-frontend-embedding.md — which third-party tool may be
+    // embedded is a settings-level decision; viewing an already-configured
+    // one is analytics.view's own job (the class-level gate on the widgets
+    // list/token routes).
+    key: 'settings.embeds.manage',
+    label: 'Register and configure embeddable third-party widgets',
+    category: 'Administration',
+    sensitivity: 'medium',
+  },
+  {
     key: 'tax.manage',
     label: 'Manage tax classes, rates and the pricing mode',
     category: 'Administration',
@@ -766,6 +785,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     permissions: [
       'settings.manage',
       'settings.sso.manage',
+      'settings.custom-fields.manage',
+      'settings.embeds.manage',
       'roles.manage_permissions',
       'users.manage',
       'audit.view',
@@ -909,6 +930,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'bom.produce',
     'settings.manage',
     'settings.sso.manage',
+    'settings.custom-fields.manage',
+    'settings.embeds.manage',
     'roles.manage_permissions',
     'audit.view',
     'users.manage',

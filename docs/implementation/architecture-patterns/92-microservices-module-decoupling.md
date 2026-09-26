@@ -1,5 +1,10 @@
 # 92 — "Microservices-based modules": the decision is already made, and it is not this
 
+> **Status: verified (2026-09-26).** Every citation checked against the
+> actual codebase: `scripts/check-module-boundaries.mjs` exists and runs in
+> `pnpm lint`, enforcing module independence at build time. No code or
+> schema change — this document is a decision record, exactly as written.
+
 `CLAUDE.md`'s own words, unedited: **"This repository is a deliberate
 modular monolith (`ENTERPRISE-SCALE.md`, `RETAIL-ERP.md`): one NestJS
 process per node, not a microservice mesh. That choice is already made

@@ -1,5 +1,11 @@
 # 99 — API Gateway: `CLAUDE.md` already answers this, verbatim
 
+> **Status: verified (2026-09-26).** `JwtAuthGuard`/`PermissionsGuard`
+> (global `APP_GUARD` providers, `app.module.ts`), the global
+> `ValidationPipe` and `CORS_ORIGINS` (`main.ts`), and
+> `scripts/check-route-permissions.mjs` all confirmed real. No code or
+> schema change.
+
 "Route all external and internal microservice requests through a single
 gateway that handles authentication, rate-limiting, and payload routing to
 abstract complex security away from individual services" is answered,

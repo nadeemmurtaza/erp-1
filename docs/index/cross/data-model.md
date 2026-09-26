@@ -3,7 +3,7 @@
 
 # Data model
 
-All **253** Prisma models and **117** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **255** Prisma models and **118** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -33,6 +33,8 @@ against a real database.
 | [`content.prisma`](../data/content.md) | 8 | 1 | [`content`](../modules/content.md) | Banner, BannerTranslation, BlogPost, BlogPostTranslation, MenuItem, MenuItemTranslation, Page, PageTranslation |
 | [`core.prisma`](../data/core.md) | 19 | 10 | foundational | Address, AiUsageLog, AnalyticsEvent, ApiKey, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordRe… |
 | [`crm.prisma`](../data/crm.md) | 9 | 3 | [`crm`](../modules/crm.md) | Contact, ContactTag, FollowUpTask, InboundEmail, InboundEmailReply, Interaction, Lead, Segment, Tag |
+| [`custom-fields.prisma`](../data/custom-fields.md) | 1 | 1 | [`custom-fields`](../modules/custom-fields.md) | CustomFieldDefinition |
+| [`embeds.prisma`](../data/embeds.md) | 1 | 0 | [`embeds`](../modules/embeds.md) | EmbeddedWidget |
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
 | [`fulfilment.prisma`](../data/fulfilment.md) | 16 | 4 | [`fulfilment`](../modules/fulfilment.md) | Manifest, ManifestNumberCounter, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest, ReturnRequestItem, ReturnRequestNumber… |
 | [`giftcards.prisma`](../data/giftcards.md) | 3 | 1 | [`giftcards`](../modules/giftcards.md) | GiftCard, GiftCardTransaction, StoreCreditTransaction |
@@ -122,6 +124,7 @@ against a real database.
 | [`ContactTag`](../data/crm.md#contacttag) | `crm` | 4 | 2 | — |  |
 | [`CreditNote`](../data/receivables.md#creditnote) | `receivables` | 14 | 0 | id | Reduces what a customer owes — a return, a pricing correction, a goodwill credit. |
 | [`CustomerCreditTerm`](../data/receivables.md#customercreditterm) | `receivables` | 7 | 0 | id | A policy row, checked at the one place a sale can be refused for it — never inferred, alw… |
+| [`CustomFieldDefinition`](../data/custom-fields.md#customfielddefinition) | `custom-fields` | 8 | 0 | id |  |
 | [`DebitNote`](../data/receivables.md#debitnote) | `receivables` | 12 | 0 | id | The mirror on the supplier side of the ledger — reduces what this organization owes a sup… |
 | [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
 | [`Discount`](../data/promotions.md#discount) | `promotions` | 27 | 0 | id |  |
@@ -131,6 +134,7 @@ against a real database.
 | [`DunningPolicy`](../data/receivables.md#dunningpolicy) | `receivables` | 4 | 0 | id | Days-overdue thresholds and which template fires at each — a client-editable policy row,… |
 | [`EmailAccount`](../data/core.md#emailaccount) | `core` | 25 | 0 | id | A connected mailbox: SMTP to send, optionally IMAP to receive. |
 | [`EmailVerificationToken`](../data/core.md#emailverificationtoken) | `core` | 7 | 1 | id | A one-time token mailed to confirm an email address. |
+| [`EmbeddedWidget`](../data/embeds.md#embeddedwidget) | `embeds` | 9 | 1 | id | Embedding a third-party dashboard: a narrow iframe pattern, not a micro-frontend architec… |
 | [`EmployeeProfile`](../data/hr.md#employeeprofile) | `hr` | 9 | 1 | id | Optional HR-specific metadata about a User who works here. |
 | [`Expense`](../data/finance.md#expense) | `finance` | 24 | 5 | id |  |
 | [`ExpenseCategory`](../data/finance.md#expensecategory) | `finance` | 9 | 0 | id | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 —… |
@@ -301,7 +305,7 @@ against a real database.
 | [`StockTransferLine`](../data/transfers.md#stocktransferline) | `transfers` | 7 | 1 | id |  |
 | [`StockVariance`](../data/inventory.md#stockvariance) | `inventory` | 16 | 3 | id | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale tha… |
 | [`StoreCreditTransaction`](../data/giftcards.md#storecredittransaction) | `giftcards` | 11 | 2 | id | Same ledger shape, attached to a User rather than a code — refunds, RTO goodwill and serv… |
-| [`Supplier`](../data/purchasing.md#supplier) | `purchasing` | 27 | 3 | id |  |
+| [`Supplier`](../data/purchasing.md#supplier) | `purchasing` | 28 | 3 | id |  |
 | [`SupplierBill`](../data/purchasing.md#supplierbill) | `purchasing` | 18 | 2 | id |  |
 | [`SupplierProduct`](../data/purchasing.md#supplierproduct) | `purchasing` | 10 | 2 | id | What a given supplier charges for a given variant, and under what terms. |
 | [`SupportAccessGrant`](../data/platform.md#supportaccessgrant) | `platform` | 11 | 1 | id | The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3. |
@@ -316,7 +320,7 @@ against a real database.
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
 | [`UsageMeter`](../data/platform.md#usagemeter) | `platform` | 8 | 1 | id | One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` inc… |
 | [`UsageMeteringCursor`](../data/platform.md#usagemeteringcursor) | `platform` | 6 | 1 | id | The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each ba… |
-| [`User`](../data/core.md#user) | `core` | 86 | 31 | id |  |
+| [`User`](../data/core.md#user) | `core` | 87 | 32 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
@@ -359,6 +363,7 @@ against a real database.
 | [`ContactStatus`](../data/crm.md#contactstatus) | `crm` | `LEAD` `ACTIVE` `REPEAT` `DORMANT` `BLOCKED` |
 | [`ContentStatus`](../data/content.md#contentstatus) | `content` | `DRAFT` `PUBLISHED` `ARCHIVED` |
 | [`CreditDebitNoteStatus`](../data/receivables.md#creditdebitnotestatus) | `receivables` | `DRAFT` `ISSUED` `APPLIED` `VOID` |
+| [`CustomFieldValueType`](../data/custom-fields.md#customfieldvaluetype) | `custom-fields` | `TEXT` `NUMBER` `BOOLEAN` `DATE` |
 | [`DepreciationMethod`](../data/accounting.md#depreciationmethod) | `accounting` | `STRAIGHT_LINE` `DECLINING_BALANCE` |
 | [`DevicePlatform`](../data/core.md#deviceplatform) | `core` | `IOS` `ANDROID` `WEB` |
 | [`DiscountScope`](../data/promotions.md#discountscope) | `promotions` | `ORDER` `PRODUCT` `CATEGORY` `COLLECTION` `SHIPPING` |

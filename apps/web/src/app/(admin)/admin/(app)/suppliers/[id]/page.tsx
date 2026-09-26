@@ -4,6 +4,7 @@ import { useEffect, useState, use } from 'react';
 // No clsx import needed
 import { adminFetch } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
+import { CustomFieldFormSection } from '@/components/admin/custom-field-form-section';
 
 interface SupplierDetail {
   id: string;
@@ -180,6 +181,8 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
           {linkSaved ? <p className="mt-2 text-sm text-green-700">Saved.</p> : null}
         </div>
       ) : null}
+
+      <CustomFieldFormSection entityType="Supplier" entityId={id} />
     </>
   );
 }

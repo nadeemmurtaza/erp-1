@@ -8,6 +8,8 @@ import { CatalogModule } from './catalog/catalog.module';
 import { CollectionsModule } from './collections/collections.module';
 import { ContentModule } from './content/content.module';
 import { CrmModule } from './crm/crm.module';
+import { CustomFieldsModule } from './custom-fields/custom-fields.module';
+import { EmbedsModule } from './embeds/embeds.module';
 import { FinanceModule } from './finance/finance.module';
 import { FulfilmentModule } from './fulfilment/fulfilment.module';
 import { GiftCardsModule } from './giftcards/giftcards.module';
@@ -196,6 +198,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },
   { name: 'addresses', module: AddressesModule, alwaysOn: true },
+  // 104-jsonb-eav-extensibility.md — a bounded custom-field overlay, not a
+  // sector-specific pack.
+  { name: 'custom-fields', module: CustomFieldsModule, alwaysOn: true },
+  // 113-micro-frontend-embedding.md — a narrow iframe embed pattern.
+  { name: 'embeds', module: EmbedsModule, alwaysOn: true },
 ];
 
 /**

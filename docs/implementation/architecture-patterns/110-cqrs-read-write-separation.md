@@ -1,5 +1,11 @@
 # 110 — CQRS: this repository already runs its pragmatic middle ground; the bullet's own example does not exist here
 
+> **Status: verified (2026-09-26).** `VariantSalesStat`
+> (`inventory.prisma`) and `OrderEconomics`/`FinanceListener`
+> (`apps/api/src/modules/finance/`) both confirmed real. No MongoDB or
+> other secondary database exists anywhere in this stack. No code or
+> schema change.
+
 "Separate complex write/transaction logic from high-performance read
 logic. This allows you to project the exact same core event data into
 highly optimized secondary databases — such as seamlessly syncing live

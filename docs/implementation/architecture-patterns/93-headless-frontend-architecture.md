@@ -1,5 +1,12 @@
 # 93 — Headless UI: already the shape of this repository, with one framework, not "any"
 
+> **Status: verified (2026-09-26).** `apps/api/src/main.ts`'s API
+> versioning and the four separate frontend surfaces (`apps/web`,
+> `apps/pos`, `apps/mobile`, plus doc 52's own staff PWA proposal — see
+> doc 58's own correction: doc 52 itself is unbuilt, so today it is really
+> three shipped surfaces, not four) all checked against the actual
+> codebase. No code or schema change.
+
 "Separate backend logic from the frontend presentation to enable highly
 customized, context-specific interfaces... rapidly deploy tailored UIs
 using frameworks like Vue.js or Next.js for various stakeholder portals

@@ -1,5 +1,13 @@
 # 98 — Contract-first vs. code-first: this repository is code-first, deliberately, and that is a distinction worth stating plainly
 
+> **Status: corrected (2026-09-26).** This document's third bullet cited
+> doc 18's `EdiTranslator` as an already-real external-contract boundary —
+> verified false: `EdiTranslator` does not exist in code, and doc 18 (and
+> doc 36, the connectivity framework it would sit on) carries no `Status:`
+> note — both are unbuilt. The corrected bullet is below; this document's
+> own core claim (code-first via `@nestjs/swagger`/`class-validator`/API
+> versioning) is unaffected and verified real.
+
 "Define APIs as standardized contracts before writing backend logic,
 allowing frontend and third-party developers to build against stable,
 predictable interfaces" names a specific development *sequence*
@@ -28,13 +36,14 @@ predictable interface" true here instead.
   route, never a silent behavior change under the same path, so a
   third-party integrator's existing calls do not break out from under
   them.
-- **Doc 18's own canonical-JSON boundary for trading partners** — the one
-  place this repository already treats external contract stability as a
-  first-class concern beyond its own frontends: a trading partner
-  integrates against a canonical JSON shape, translated by an
-  `EdiTranslator`, insulated from this repository's own internal DTO or
-  database changes (doc 18's own "vendor lock-in" reasoning, restated in
-  doc 103 below for the bullet that names it directly).
+- **The trading-partners module** (`apps/api/src/modules/tradingpartners/`)
+  — the closest real external-contract surface this repository has:
+  offers, quotes and invoices exposed to a linked `TradingPartner` through
+  their own DTO-validated endpoints, insulated from internal schema
+  changes the same way any other consumer's DTO contract is. Doc 18's own
+  `EdiTranslator`/canonical-JSON design (a per-partner wire-format
+  translator on top of this) is not built — see doc 103's own correction
+  below.
 
 ## The one honest gap: no automated contract-diff / backward-compatibility check
 

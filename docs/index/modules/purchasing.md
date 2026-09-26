@@ -94,15 +94,15 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `GoodsReceipt` | 14 | :163 |  |
-| `GoodsReceiptItem` | 10 | :191 |  |
-| `PurchaseOrder` | 26 | :97 |  |
-| `PurchaseOrderItem` | 11 | :145 |  |
-| `PurchaseRequisition` | 12 | :264 |  |
-| `RequisitionLine` | 7 | :288 |  |
-| `Supplier` | 27 | :1 |  |
-| `SupplierBill` | 18 | :214 |  |
-| `SupplierProduct` | 10 | :69 | What a given supplier charges for a given variant, and under what terms. |
+| `GoodsReceipt` | 14 | :168 |  |
+| `GoodsReceiptItem` | 10 | :196 |  |
+| `PurchaseOrder` | 26 | :102 |  |
+| `PurchaseOrderItem` | 11 | :150 |  |
+| `PurchaseRequisition` | 12 | :269 |  |
+| `RequisitionLine` | 7 | :293 |  |
+| `Supplier` | 28 | :1 |  |
+| `SupplierBill` | 18 | :219 |  |
+| `SupplierProduct` | 10 | :74 | What a given supplier charges for a given variant, and under what terms. |
 
 
 Enums: `PurchaseOrderStatus` (5) · `RequisitionApprovalStatus` (4) · `SupplierBillStatus` (3)

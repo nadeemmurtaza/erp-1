@@ -92,6 +92,7 @@ model User {
   /// Which named `Role` rows this user holds — plural, unioned (roles.ts).
   roleAssignments           UserRoleAssignment[]
   purchaseOrdersCreated     PurchaseOrder[]          @relation("PurchaseOrderCreator")
+  embeddedWidgetsCreated    EmbeddedWidget[]         @relation("EmbeddedWidgetCreator")
   goodsReceiptsReceived     GoodsReceipt[]           @relation("GoodsReceiptReceiver")
   requisitionsRequested     PurchaseRequisition[]    @relation("RequisitionRequester")
   approvalStepsDecided      ApprovalStep[]           @relation("ApprovalStepDecider")

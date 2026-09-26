@@ -16,7 +16,7 @@ All 192 tracked files in `repository root files`, by directory.
 | `.gitattributes` | file | — |  |
 | `.prettierignore` | file | — |  |
 | `.windsurfrules` | file | — |  |
-| `AGENTS.md` | doc | 80 |  |
+| `AGENTS.md` | doc | 81 |  |
 | `Architecture.md` | doc | 32 |  |
 | `check_output.txt` | txt | — |  |
 | `CLAUDE.md` | doc | 978 |  |
@@ -26,7 +26,7 @@ All 192 tracked files in `repository root files`, by directory.
 | `fix-all.js` | script | 15 | Get all files from git grep |
 | `fix-db.js` | script | 15 |  |
 | `fix.js` | script | 9 | Use regex to remove duplicate users block |
-| `GEMINI.md` | doc | 80 |  |
+| `GEMINI.md` | doc | 81 |  |
 | `Memory.md` | doc | 28 |  |
 | `Phases.md` | doc | 48 |  |
 | `PRD.md` | doc | 137 |  |
@@ -94,7 +94,7 @@ All 192 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `guidelines.md` | doc | 80 |  |
+| `guidelines.md` | doc | 81 |  |
 
 ### `apps/platform` (7)
 

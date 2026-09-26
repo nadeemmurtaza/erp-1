@@ -56,6 +56,11 @@ model Supplier {
   expenses Expense[]
   // Note: purchaseOrders and bills are for WO-1.5, not included yet.
 
+  /// architecture-patterns/104-jsonb-eav-extensibility.md, WO-104.1 — a
+  /// bounded, admin-defined overlay (CustomFieldDefinition), never a
+  /// business-logic input; application code never branches on a value here.
+  customFields Json @default("{}")
+
   tradingPartner    TradingPartner?  @relation(fields: [tradingPartnerId], references: [id], onDelete: SetNull)
   preferredVariants ProductVariant[] @relation("PreferredSupplier")
   purchaseOrders    PurchaseOrder[]

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **705** endpoints across **127** controllers, with the access rule that actually guards each one.
+All **717** endpoints across **129** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -440,6 +440,28 @@ never authorization.
 | POST | `/admin/crm/whatsapp/conversations/:id/reply` | `crm.manage` | `WhatsAppAssistantAdminController.reply` | Staff reply — hands the conversation off if it was not already |
 | POST | `/crm/enquiries` | **PUBLIC** | `CrmPublicController.createEnquiry` | Contact-form enquiry — becomes a lead in the CRM |
 | POST | `/whatsapp/webhook` | **PUBLIC** | `WhatsAppWebhookController.webhook` | Inbound WhatsApp message (signature-verified, not session-authenticated) |
+
+### [`custom-fields`](../modules/custom-fields.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/custom-fields/definitions` | `settings.custom-fields.manage` | `CustomFieldsController.definitions` | Every custom-field definition for one entity type |
+| POST | `/admin/custom-fields/definitions` | `settings.custom-fields.manage` | `CustomFieldsController.define` | Define a new custom field on one entity type |
+| DELETE | `/admin/custom-fields/definitions/:id` | `settings.custom-fields.manage` | `CustomFieldsController.remove` | Remove a custom-field definition |
+| GET | `/admin/custom-fields/entity-types` | `settings.custom-fields.manage` | `CustomFieldsController.entityTypes` | Every entity type this mechanism is wired up for |
+| GET | `/admin/custom-fields/values` | signed-in | `CustomFieldsController.values` | One entity's own custom-field values, gated by that entity's own edit permission |
+| POST | `/admin/custom-fields/values` | signed-in | `CustomFieldsController.setValues` | Set one entity's own custom-field values, gated by that entity's own edit permi… |
+
+### [`embeds`](../modules/embeds.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/embeds` | `analytics.view` | `EmbedWidgetsController.list` | Every active embedded widget |
+| POST | `/admin/embeds` | `settings.embeds.manage` | `EmbedWidgetsController.create` | Register a new embeddable widget |
+| DELETE | `/admin/embeds/:id` | `settings.embeds.manage` | `EmbedWidgetsController.remove` | Remove an embedded widget |
+| PATCH | `/admin/embeds/:id` | `settings.embeds.manage` | `EmbedWidgetsController.update` | Edit or deactivate an embedded widget |
+| POST | `/admin/embeds/:key/token` | `analytics.view` | `EmbedWidgetsController.issueToken` | A short-lived, scoped token for one active widget — never a raw session credent… |
+| GET | `/admin/embeds/all` | `settings.embeds.manage` | `EmbedWidgetsController.listAll` | Every embedded widget, active or not — for the configuration screen |
 
 ### [`finance`](../modules/finance.md) (17)
 

@@ -1,5 +1,10 @@
 # 94 — Docker: already real, at every deployment shape this repository ships
 
+> **Status: verified (2026-09-26).** `apps/api/Dockerfile`,
+> `apps/web/Dockerfile`, and every named `docker-compose.*.yml` file
+> confirmed present at the repository root. No autoscaling exists, exactly
+> as this document states honestly. No code or schema change.
+
 "Utilize containerized environments, such as Docker, to allow modular
 services to provision resources automatically based on demand spikes,
 optimizing infrastructure costs" is, for the containerization half,

@@ -141,6 +141,8 @@ export const ROUTES = {
     /** The card registry's own detail tree (10-admin-dashboard.md D3) — one catch-all route, 25 config objects, not 25 hand-rolled pages. */
     analytics: '/admin/analytics',
     analyticsReport: (slug: string) => `/admin/analytics/${slug}`,
+    /** 113-micro-frontend-embedding.md — every active EmbeddedWidget, `analytics.view`. */
+    embeds: '/admin/embeds',
 
     inventory: '/admin/inventory',
     inventoryCounts: '/admin/inventory/counts',

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 905 tracked files in `apps/api`, by directory.
+All 919 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 905 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3100 |  |
 
-### `apps/api/prisma/schema` (46)
+### `apps/api/prisma/schema` (48)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -41,8 +41,10 @@ All 905 tracked files in `apps/api`, by directory.
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 650 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 651 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
+| `custom-fields.prisma` | prisma schema | 33 | Custom fields: a narrow, bounded JSONB overlay, never a general EAV model |
+| `embeds.prisma` | prisma schema | 19 | Embedding a third-party dashboard: a narrow iframe pattern, not a |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
@@ -65,7 +67,7 @@ All 905 tracked files in `apps/api`, by directory.
 | `pos.prisma` | prisma schema | 139 | The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
 | `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
-| `purchasing.prisma` | prisma schema | 303 |  |
+| `purchasing.prisma` | prisma schema | 308 |  |
 | `rag.prisma` | prisma schema | 159 | WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md). |
 | `receivables.prisma` | prisma schema | 142 | Receivables: CreditNote/DebitNote, customer credit limits, and dunning — |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
@@ -586,6 +588,18 @@ All 905 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 94 |  |
 
+### `apps/api/prisma/schema/migrations/20260926090000_add_custom_fields` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 31 |  |
+
+### `apps/api/prisma/schema/migrations/20260926093000_add_embedded_widgets` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 27 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -933,8 +947,8 @@ All 905 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 108 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 233 |  |
+| `module-packs.ts` | module | 110 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 240 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1181,6 +1195,36 @@ All 905 tracked files in `apps/api`, by directory.
 | `whatsapp-assistant.service.ts` | service | 427 |  |
 | `whatsapp-copy.spec.ts` | unit test | 31 |  |
 | `whatsapp-copy.ts` | module | 48 |  |
+
+### `apps/api/src/modules/custom-fields` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `custom-fields.controller.ts` | controller | 76 |  |
+| `custom-fields.module.ts` | nest module | 18 |  |
+| `custom-fields.service.spec.ts` | unit test | 118 |  |
+| `custom-fields.service.ts` | service | 146 |  |
+
+### `apps/api/src/modules/custom-fields/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `custom-field.dto.ts` | dto | 44 |  |
+
+### `apps/api/src/modules/embeds` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `embed-widgets.controller.ts` | controller | 63 |  |
+| `embed-widgets.service.spec.ts` | unit test | 110 |  |
+| `embed-widgets.service.ts` | service | 73 |  |
+| `embeds.module.ts` | nest module | 18 |  |
+
+### `apps/api/src/modules/embeds/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `embedded-widget.dto.ts` | dto | 37 |  |
 
 ### `apps/api/src/modules/finance` (18)
 

@@ -6,6 +6,21 @@
 > opt-in, per-fragment composition layer alongside — not replacing — doc
 > 93's single-app convention and this document's own embed-token design,
 > which it reuses directly.
+>
+> **Status: shipped (2026-09-26), WO-113.1/113.2.**
+> `EmbedWidgetsService.issueEmbedToken()` signs a short-lived (5-minute)
+> JWT under the existing `JWT_ACCESS_SECRET` with a distinct `aud:
+> "embed-widget"` claim and `sub` set to the widget's own key, never a
+> user id — it cannot be mistaken for, or replayed as, a real session
+> token by `JwtStrategy.validate()`. One correction to this document's own
+> sketch: no `AuthenticatedUser` in this codebase carries an
+> `organizationId`/`locationId` today (ADR-044/ADR-040 — this deployment
+> IS the tenant), so the token's real, honest scope is the caller's own
+> `userId`, not an invented org/location claim. `EmbeddedWidget` rows
+> (`settings.embeds.manage`) are configured under Settings > Embeds; every
+> active one renders in its own `EmbeddedWidgetFrame` iframe at
+> `/admin/embeds` (`analytics.view`), reachable from the Insights nav
+> group.
 
 "Break the monolithic web application into distinct, independently
 deployable UI fragments. Specialized third-party tools, such as an

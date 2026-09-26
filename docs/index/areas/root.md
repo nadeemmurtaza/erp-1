@@ -3,7 +3,7 @@
 
 # repository root files
 
-192 files · 19,324 lines
+192 files · 19,327 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,14 +17,14 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 22 | 8,331 | file, doc, txt, script |
+| `.` | 22 | 8,333 | file, doc, txt, script |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 8 | 341 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
 | `.claude/rules` | 10 | 517 | doc |
 | `.cursor/rules` | 1 | 0 | mdc |
 | `.githooks` | 2 | 0 | file |
-| `.junie` | 1 | 80 | doc |
+| `.junie` | 1 | 81 | doc |
 | `apps/platform` | 7 | 155 | script, json, module |
 | `apps/platform/prisma` | 10 | 1,450 | migration, toml, prisma schema |
 | `apps/platform/src` | 126 | 8,252 | nest module, service, config, module |

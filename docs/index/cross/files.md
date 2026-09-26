@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **2,093** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,110** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 905 | 127,734 | [files/api.md](../files/api.md) |
-| apps/web | 386 | 62,638 | [files/web.md](../files/web.md) |
+| apps/api | 919 | 128,562 | [files/api.md](../files/api.md) |
+| apps/web | 389 | 63,384 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 2,000 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 79 | 8,013 | [files/packages.md](../files/packages.md) |
-| docs/* | 394 | 64,147 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 57 | 29,964 | [files/infra.md](../files/infra.md) |
-| repository root files | 192 | 19,324 | [files/root.md](../files/root.md) |
+| packages/* | 79 | 8,049 | [files/packages.md](../files/packages.md) |
+| docs/* | 394 | 64,300 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 57 | 30,050 | [files/infra.md](../files/infra.md) |
+| repository root files | 192 | 19,327 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,16 +29,16 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 419 |
-| unit test | 247 |
-| page | 192 |
-| service | 164 |
+| unit test | 249 |
+| page | 193 |
+| service | 166 |
 | module | 155 |
-| controller | 118 |
-| component | 114 |
-| dto | 108 |
-| migration | 90 |
-| nest module | 80 |
-| prisma schema | 48 |
+| controller | 120 |
+| component | 116 |
+| dto | 110 |
+| migration | 92 |
+| nest module | 82 |
+| prisma schema | 50 |
 | script | 39 |
 | event subscriber | 31 |
 | json | 29 |

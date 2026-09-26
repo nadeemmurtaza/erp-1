@@ -1,5 +1,9 @@
 # 96 — No-deploy policy changes: already real for tax and approval chains; a visual designer is doc 63's own named, deferred boundary
 
+> **Status: verified (2026-09-26).** `TaxRate` (doc 15) and
+> `ApprovalChain`/`ApprovalStep` (doc 63) both confirmed real in
+> `apps/api/prisma/schema/`. No code or schema change.
+
 "Enable administrators to update approval chains or business rules via a
 visual interface without requiring engineering deployments or manual code
 commits" names its own example — approval chains — which is doc 63's

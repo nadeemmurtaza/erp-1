@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **726** endpoints across **131** controllers, with the access rule that actually guards each one.
+All **741** endpoints across **132** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -231,7 +231,7 @@ never authorization.
 | POST | `/cart/merge` | **PUBLIC** | `CartController.merge` | Fold a guest cart into the signed-in account |
 | POST | `/cart/reorder/:orderNumber` | **PUBLIC** | `CartController.reorderFromOrder` | Add every still-available line from a past order to the cart |
 
-### [`catalog`](../modules/catalog.md) (50)
+### [`catalog`](../modules/catalog.md) (58)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -245,10 +245,18 @@ never authorization.
 | POST | `/admin/catalog/brands` | `catalog.manage` | `CatalogAdminController.createBrand` |  |
 | DELETE | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.deleteBrand` |  |
 | PATCH | `/admin/catalog/brands/:id` | `catalog.manage` | `CatalogAdminController.updateBrand` |  |
+| GET | `/admin/catalog/bundles` | `catalog.manage` | `CatalogAdminController.listBundles` |  |
+| POST | `/admin/catalog/bundles` | `catalog.manage` | `CatalogAdminController.createBundle` | Sell N existing variants together as one purchasable unit — never a new physica… |
+| DELETE | `/admin/catalog/bundles/:id` | `catalog.manage` | `CatalogAdminController.removeBundle` |  |
+| GET | `/admin/catalog/bundles/:id` | `catalog.manage` | `CatalogAdminController.getBundle` |  |
+| PATCH | `/admin/catalog/bundles/:id` | `catalog.manage` | `CatalogAdminController.updateBundle` |  |
 | GET | `/admin/catalog/categories` | `catalog.manage` | `CatalogAdminController.listCategories` |  |
 | POST | `/admin/catalog/categories` | `catalog.manage` | `CatalogAdminController.createCategory` |  |
 | DELETE | `/admin/catalog/categories/:id` | `catalog.manage` | `CatalogAdminController.deleteCategory` |  |
 | PATCH | `/admin/catalog/categories/:id` | `catalog.manage` | `CatalogAdminController.updateCategory` |  |
+| GET | `/admin/catalog/category-presets` | `catalog.manage` | `CatalogAdminController.listCategoryPresets` | Starter category tree templates, one per vertical |
+| POST | `/admin/catalog/category-presets/:key/apply` | `catalog.manage` | `CatalogAdminController.applyCategoryPreset` | Apply a starter category tree — additive only, never renames or overwrites an e… |
+| GET | `/admin/catalog/category-presets/:key/preview` | `catalog.manage` | `CatalogAdminController.previewCategoryPreset` | What applying this preset would create and what it would skip — nothing written |
 | DELETE | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.deleteImage` |  |
 | PATCH | `/admin/catalog/images/:imageId` | `catalog.manage` | `CatalogAdminController.updateImage` | Edit an image's alt text |
 | POST | `/admin/catalog/import` | `catalog.manage` | `CatalogAdminController.import` | Bulk create or update products from a CSV file |
@@ -806,6 +814,18 @@ never authorization.
 | PATCH | `/admin/pos/terminals/:id` | `pos.manage` | `PosTerminalsController.update` | Update a terminal |
 | POST | `/admin/pos/terminals/:id/rotate-device-key` | `pos.manage` | `PosTerminalsController.rotateDeviceKey` | Issue a fresh device credential for this terminal — shown once, never retrievab… |
 | POST | `/admin/pos/terminals/:id/suspend` | `pos.manage` | `PosTerminalsController.suspend` | Suspend a terminal — never deletes it, its history stays put |
+
+### [`pricing`](../modules/pricing.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/pricing/price-lists` | `pricing.price-lists.manage` | `PricingController.findAll` | List every price list with its entries and assignments |
+| POST | `/admin/pricing/price-lists` | `pricing.price-lists.manage` | `PricingController.create` | Create a price list — an entry below the variant's base price requires pricing.… |
+| PATCH | `/admin/pricing/price-lists/:id` | `pricing.price-lists.manage` | `PricingController.update` | Update a price list's entries — same margin-decision gate as create |
+| POST | `/admin/pricing/price-lists/:id/assignments` | `pricing.assignments.manage` | `PricingController.assign` | Assign a price list to a customer or a customer tag |
+| DELETE | `/admin/pricing/price-lists/assignments/:assignmentId` | `pricing.assignments.manage` | `PricingController.unassign` | Remove a price-list assignment |
+| POST | `/admin/pricing/price-lists/preview` | `pricing.price-lists.manage` | `PricingController.preview` | Preview one variant's resolved price for a customer at a quantity — a pure read… |
+| POST | `/admin/pricing/price-lists/preview/batch` | `pricing.price-lists.manage` | `PricingController.previewBatch` | Preview several variants at once — the same batched path checkout itself uses |
 
 ### [`production`](../modules/production.md) (9)
 

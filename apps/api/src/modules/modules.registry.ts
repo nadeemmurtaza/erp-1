@@ -27,6 +27,7 @@ import { OrganizationModule } from './organization/organization.module';
 import { PartiesModule } from './parties/parties.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PayrollModule } from './payroll/payroll.module';
+import { PricingModule } from './pricing/pricing.module';
 import { PosModule } from './pos/pos.module';
 import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
@@ -109,6 +110,12 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // credit terms still work as records, they just post nothing (same "absent
   // collaborator" shape as every other event-only coupling in this file).
   { name: 'receivables', module: ReceivablesModule },
+  // 146-wholesale-tiered-pricing.md — the pricing module MULTI-SECTOR.md
+  // already named as not built. Hard-imported by cart/orders directly (same
+  // shape as tax below) so checkout can always resolve PricingService; this
+  // allowlist entry only gates the admin nav/UI, per pricing.module.ts's
+  // own doc comment.
+  { name: 'pricing', module: PricingModule },
   // 49-financial-institution-settlement-partnerships.md — off by default,
   // same tier as accounting: no real FinancialInstitutionConnector exists
   // yet, so a deployment gains nothing by enabling this until one does.

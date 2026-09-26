@@ -101,6 +101,8 @@ const orderInclude = {
 
 import { InventoryService, InsufficientStockError } from '../inventory/inventory.service';
 import { CodRiskService } from './cod-risk.service';
+import { PricingService } from '../pricing/pricing.service';
+import { BundlesService } from '../catalog/bundles.service';
 
 @Injectable()
 export class OrdersService {
@@ -122,6 +124,8 @@ export class OrdersService {
     private readonly giftCards: GiftCardsService,
     private readonly storeCredit: StoreCreditService,
     private readonly codRisk: CodRiskService,
+    private readonly pricing: PricingService,
+    private readonly bundles: BundlesService,
   ) {}
 
   /**
@@ -351,23 +355,44 @@ export class OrdersService {
         const byVariant = (a.variantId ?? '').localeCompare(b.variantId ?? '');
         return byVariant !== 0 ? byVariant : a.id.localeCompare(b.id);
       });
+      // 150-product-kitting-bundles.md — a bundle's own variantId carries
+      // no stock row of its own; selling one decrements every component
+      // instead (BundlesService.sellBundle()). Batched once, never one
+      // query per line, exactly the discipline costMap/producedInHouseMap
+      // above already establish.
+      const bundlesByVariantId = await this.bundles.bundlesByVariantId(
+        sortedItems.map((item) => item.variantId).filter((id): id is string => id !== null),
+        tx,
+      );
+
       const backorderedStockIds: string[] = [];
       const backorderedProductionIds: string[] = [];
       for (const item of sortedItems) {
         if (!item.variantId) continue; // a stitching-service line has no stock to move
+        const bundle = bundlesByVariantId.get(item.variantId);
         try {
-          await this.inventory.move({
-            variantId: item.variantId,
-            locationId,
-            delta: -item.quantity,
-            reason: 'SALE',
-            refType: 'Order',
-            refId: created.id,
-            unitCost: costMap.get(item.variantId) ?? 0,
-          }, tx);
+          if (bundle) {
+            await this.bundles.sellBundle(bundle, item.quantity, created.id, locationId, tx);
+          } else {
+            await this.inventory.move({
+              variantId: item.variantId,
+              locationId,
+              delta: -item.quantity,
+              reason: 'SALE',
+              refType: 'Order',
+              refId: created.id,
+              unitCost: costMap.get(item.variantId) ?? 0,
+            }, tx);
+          }
         } catch (error) {
           if (error instanceof InsufficientStockError) {
-            if (!allowBackorder) {
+            // A bundle is never backorder-eligible, per this document's own
+            // "The failure path" — there is no single variant to allocate a
+            // backorder against when a bundle's shortfall could be any one
+            // of several components, so this refuses outright regardless of
+            // the checkout.allow_backorder setting, rather than guessing
+            // which component to park.
+            if (!allowBackorder || bundle) {
               throw new BadRequestException(`${item.nameEn} sold out while you were checking out. Please adjust your cart.`);
             }
             // Ship-safe default keeps today's behavior (the throw above);
@@ -1032,8 +1057,19 @@ export class OrdersService {
       ? await Promise.all([this.tax.activeRatesByClassId(), this.tax.defaultClassId()])
       : [new Map<string, number>(), null];
 
+    // 146-wholesale-tiered-pricing.md — identical batched resolution
+    // cart.service.ts's own toView() already uses, so a cart's own price
+    // preview and its eventual order snapshot never disagree.
+    const customerId = cart.userId
+      ? (await this.prisma.contact.findUnique({ where: { userId: cart.userId }, select: { id: true } }))?.id ?? null
+      : null;
+    const resolvedPrices = await this.pricing.resolvePrices(
+      cart.items.map((item) => ({ variantId: item.variantId, quantity: item.quantity })),
+      customerId,
+    );
+
     const lines = cart.items.map((item) => {
-      const unitPrice = item.variant.priceOverride ?? item.product.basePrice;
+      const unitPrice = resolvedPrices.get(item.variantId) ?? item.variant.priceOverride ?? item.product.basePrice;
 
       const options = item.stitchingOptions.map((selection) => ({
         groupKey: selection.option.group.key,

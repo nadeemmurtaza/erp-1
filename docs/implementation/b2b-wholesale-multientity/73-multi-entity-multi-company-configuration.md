@@ -1,5 +1,17 @@
 # 73 — Multi-entity configuration: the organization/brand/branch axes, already this repository's foundation
 
+> **Status (2026-09-26): re-verified, no code change.** `Organization`
+> (`organization.prisma:15`) and `RetailBrand` (`organization.prisma:40`)
+> still exist exactly as cited; `RETAIL-ERP.md`'s R14 three-edition model is
+> unchanged. Confirmed alongside doc 165/166's own build (this repository's
+> new cross-tenant marketplace/product-reference layer): those two
+> documents operate one axis further OUT than this one — a *tenant* (one
+> `PlatformTenant`, one whole deployment) — and never touch or reinterpret
+> the `Organization`/`RetailBrand`/`Location` axes this document describes.
+> A tenant may itself be a Solo, Chain, or Organization-edition deployment
+> internally; doc 165/166's own cross-tenant layer is agnostic to which.
+> This document's own "Work orders: None" stands unchanged.
+
 "Native setup controls within a single account to manage separate
 corporate profiles, branches, or legal business units" is, structurally,
 `CLAUDE.md`'s own three-axes model — **Organization**, **RetailBrand**,

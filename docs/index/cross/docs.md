@@ -2476,22 +2476,22 @@ _no second-level headings_
 - Acceptance  <sub>:57</sub>
 - Out of scope  <sub>:65</sub>
 
-### `docs/implementation/b2b-wholesale-multientity/111-hierarchical-entity-isolation.md`  <sub>68 lines</sub>
+### `docs/implementation/b2b-wholesale-multientity/111-hierarchical-entity-isolation.md`  <sub>81 lines</sub>
 
-- What already exists, mapped onto the bullet's own three-tier example  <sub>:13</sub>
-- The cascade-with-override mechanism, already built, not hypothetical  <sub>:27</sub>
-- Scope lenses  <sub>:40</sub>
-- Work orders  <sub>:47</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:63</sub>
+- What already exists, mapped onto the bullet's own three-tier example  <sub>:26</sub>
+- The cascade-with-override mechanism, already built, not hypothetical  <sub>:40</sub>
+- Scope lenses  <sub>:53</sub>
+- Work orders  <sub>:60</sub>
+- Acceptance  <sub>:70</sub>
+- Out of scope  <sub>:76</sub>
 
-### `docs/implementation/b2b-wholesale-multientity/146-wholesale-tiered-pricing.md`  <sub>182 lines</sub>
+### `docs/implementation/b2b-wholesale-multientity/146-wholesale-tiered-pricing.md`  <sub>203 lines</sub>
 
-- 1. Price resolution becomes a chain, never a second hardcoded fallback  <sub>:13</sub>
-- Scope lenses  <sub>:79</sub>
-- Work orders  <sub>:148</sub>
-- Acceptance  <sub>:165</sub>
-- Out of scope  <sub>:175</sub>
+- 1. Price resolution becomes a chain, never a second hardcoded fallback  <sub>:34</sub>
+- Scope lenses  <sub>:100</sub>
+- Work orders  <sub>:169</sub>
+- Acceptance  <sub>:186</sub>
+- Out of scope  <sub>:196</sub>
 
 ### `docs/implementation/b2b-wholesale-multientity/149-b2b-accounts-approvals-sector-packs.md`  <sub>163 lines</sub>
 
@@ -2516,14 +2516,14 @@ _no second-level headings_
 - Acceptance  <sub>:446</sub>
 - Out of scope  <sub>:461</sub>
 
-### `docs/implementation/b2b-wholesale-multientity/73-multi-entity-multi-company-configuration.md`  <sub>127 lines</sub>
+### `docs/implementation/b2b-wholesale-multientity/73-multi-entity-multi-company-configuration.md`  <sub>139 lines</sub>
 
-- 1. What already exists, in the promotional list's own words  <sub>:21</sub>
-- 2. The one honest gap: brand/branch creation is an admin operation today, not self-service onboarding  <sub>:30</sub>
-- Scope lenses  <sub>:51</sub>
-- Work orders  <sub>:102</sub>
-- Acceptance  <sub>:112</sub>
-- Out of scope  <sub>:120</sub>
+- 1. What already exists, in the promotional list's own words  <sub>:33</sub>
+- 2. The one honest gap: brand/branch creation is an admin operation today, not self-service onboarding  <sub>:42</sub>
+- Scope lenses  <sub>:63</sub>
+- Work orders  <sub>:114</sub>
+- Acceptance  <sub>:124</sub>
+- Out of scope  <sub>:132</sub>
 
 ### `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md`  <sub>566 lines</sub>
 
@@ -2540,24 +2540,24 @@ _no second-level headings_
 - WO-3.9 — Redirects  <sub>:521</sub>
 - Phase 3 exit criteria  <sub>:555</sub>
 
-### `docs/implementation/catalog-variants-pricing/150-product-kitting-bundles.md`  <sub>184 lines</sub>
+### `docs/implementation/catalog-variants-pricing/150-product-kitting-bundles.md`  <sub>211 lines</sub>
 
-- 1. A bundle is a sellable shell over existing variants, never a new physical item  <sub>:16</sub>
-- 2. Selling a bundle decrements every component, atomically, through the one existing writer  <sub>:44</sub>
-- 3. Bundle "stock" is computed, never stored — the same discipline R26 already establishes for online allotment  <sub>:73</sub>
-- Scope lenses  <sub>:84</sub>
-- Work orders  <sub>:151</sub>
-- Acceptance  <sub>:167</sub>
-- Out of scope  <sub>:177</sub>
+- 1. A bundle is a sellable shell over existing variants, never a new physical item  <sub>:43</sub>
+- 2. Selling a bundle decrements every component, atomically, through the one existing writer  <sub>:71</sub>
+- 3. Bundle "stock" is computed, never stored — the same discipline R26 already establishes for online allotment  <sub>:100</sub>
+- Scope lenses  <sub>:111</sub>
+- Work orders  <sub>:178</sub>
+- Acceptance  <sub>:194</sub>
+- Out of scope  <sub>:204</sub>
 
-### `docs/implementation/catalog-variants-pricing/47-preconfigured-sector-taxonomy.md`  <sub>154 lines</sub>
+### `docs/implementation/catalog-variants-pricing/47-preconfigured-sector-taxonomy.md`  <sub>170 lines</sub>
 
-- 1. A taxonomy preset is a named, versioned tree template  <sub>:20</sub>
-- 2. Applying a preset is one action, and it is undoable the honest way  <sub>:44</sub>
-- Scope lenses  <sub>:69</sub>
-- Work orders  <sub>:123</sub>
-- Acceptance  <sub>:136</sub>
-- Out of scope  <sub>:146</sub>
+- 1. A taxonomy preset is a named, versioned tree template  <sub>:36</sub>
+- 2. Applying a preset is one action, and it is undoable the honest way  <sub>:60</sub>
+- Scope lenses  <sub>:85</sub>
+- Work orders  <sub>:139</sub>
+- Acceptance  <sub>:152</sub>
+- Out of scope  <sub>:162</sub>
 
 ### `docs/implementation/commercial-licensing-agency/11-client-handover-model.md`  <sub>131 lines</sub>
 
@@ -2723,7 +2723,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>5,044 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>5,151 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2777,6 +2777,7 @@ _no second-level headings_
 - ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify  <sub>:4612</sub>
 - ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo  <sub>:4804</sub>
 - ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism  <sub>:4914</sub>
+- ADR-049 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)  <sub>:5045</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

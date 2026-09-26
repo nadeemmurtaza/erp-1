@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 17 files
 
 Source: `apps/api/src/modules/fulfilment/`
 
-## Files (17 · 2,788 lines)
+## Files (17 · 2,819 lines)
 
 All paths relative to `apps/api/src/modules/fulfilment`.
 
@@ -23,14 +23,14 @@ All paths relative to `apps/api/src/modules/fulfilment`.
 | `shipping.dto.ts` | dto | 331 | 10 |  |
 | `fulfilment.controller.ts` | controller | 92 | 1 | WO-6.8's `/admin/fulfilment/shipments`, `/manifests`, `/tracking`, `/rto`. |
 | `fulfilment.cron.ts` | scheduled job | 80 | 1 | WO-6.5 — polls every non-terminal shipment's courier every 30 minutes and feeds the result through FulfilmentService.ap… |
-| `fulfilment.module.ts` | nest module | 44 | 1 |  |
+| `fulfilment.module.ts` | nest module | 48 | 1 |  |
 | `fulfilment.service.ts` | service | 470 | 1 | WO-6.2/6.4/6.5/6.7 — shipment lifecycle, manifests, tracking automation and RTO. |
 | `fulfilment.spec.ts` | unit test | 125 | — |  |
 | `manual.provider.ts` | module | 49 | 1 | "Type a tracking number" — what every shop on this platform does today. |
 | `return-notification.subscriber.ts` | event subscriber | 69 | 1 |  |
 | `returns.controller.ts` | controller | 160 | 2 | WO-6.8's `/admin/sales/returns` + `/[id]` — the inspection sheet. |
-| `returns.service.ts` | service | 382 | 1 | WO-6.6 — request -> approve/reject -> receive -> inspect -> resolve. |
-| `returns.spec.ts` | unit test | 178 | — |  |
+| `returns.service.ts` | service | 405 | 1 | WO-6.6 — request -> approve/reject -> receive -> inspect -> resolve. |
+| `returns.spec.ts` | unit test | 182 | — |  |
 | `shipping-migration.spec.ts` | unit test | 90 | — |  |
 | `shipping.controller.ts` | controller | 114 | 2 | WO-6.8's `/admin/settings/shipping` (zones, rates, methods, classes) plus the storefront's own live quote — the "delive… |
 | `shipping.service.ts` | service | 328 | 3 |  |
@@ -89,8 +89,8 @@ All paths relative to `apps/api/src/modules/fulfilment`.
 |---|---|---|
 | `ShipmentStatusChanged` | `fulfilment.shipment_status_changed` | `fulfilment.service.ts:153`, `fulfilment.service.ts:246` |
 | `ShipmentReturnedToOrigin` | `fulfilment.shipment_rto` | `fulfilment.service.ts:261` |
-| `ReturnRequestStatusChanged` | `fulfilment.return_status_changed` | `returns.service.ts:145`, `returns.service.ts:194`, `returns.service.ts:284` |
-| `ReturnRequestFullyRefunded` | `fulfilment.return_fully_refunded` | `returns.service.ts:370` |
+| `ReturnRequestStatusChanged` | `fulfilment.return_status_changed` | `returns.service.ts:147`, `returns.service.ts:196`, `returns.service.ts:307` |
+| `ReturnRequestFullyRefunded` | `fulfilment.return_fully_refunded` | `returns.service.ts:393` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -137,7 +137,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 ## Nest wiring
 
 **`FulfilmentModule`** (`fulfilment.module.ts`)
-- imports: `InventoryModule`
+- imports: `InventoryModule`, `CatalogModule`
 - controllers: `ShippingAdminController`, `ShippingController`, `FulfilmentAdminController`, `ReturnsAdminController`, `ReturnsController`
 - providers: `ShippingService`, `FulfilmentService`, `FulfilmentCron`, `ManualCourierProvider`, `ReturnsService`, `ReturnNotificationSubscriber`
 - exports: `ShippingService`
@@ -145,6 +145,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 ## Reaches out to
 
+- **module `catalog`** ⚠ direct import
 - **module `inventory`** ⚠ direct import
 - core `audit`
 - core `auth`
@@ -199,13 +200,13 @@ check there before adding another.
 | `ShippingQuoteQueryDto` | class | `shipping.dto.ts:299` |  |
 | `FulfilmentAdminController` | class | `fulfilment.controller.ts:24` | WO-6.8's `/admin/fulfilment/shipments`, `/manifests`, `/tracking`, `/rto`. |
 | `FulfilmentCron` | class | `fulfilment.cron.ts:22` | WO-6.5 — polls every non-terminal shipment's courier every 30 minutes and feeds the result through Fulfilment… |
-| `FulfilmentModule` | class | `fulfilment.module.ts:43` |  |
+| `FulfilmentModule` | class | `fulfilment.module.ts:47` |  |
 | `FulfilmentService` | class | `fulfilment.service.ts:45` | WO-6.2/6.4/6.5/6.7 — shipment lifecycle, manifests, tracking automation and RTO. |
 | `ManualCourierProvider` | class | `manual.provider.ts:21` | "Type a tracking number" — what every shop on this platform does today. |
 | `ReturnNotificationSubscriber` | class | `return-notification.subscriber.ts:16` |  |
 | `ReturnsAdminController` | class | `returns.controller.ts:37` | WO-6.8's `/admin/sales/returns` + `/[id]` — the inspection sheet. |
 | `ReturnsController` | class | `returns.controller.ts:101` | The customer's own side of WO-6.6 — request a return, track it, attach photos. |
-| `ReturnsService` | class | `returns.service.ts:46` | WO-6.6 — request -> approve/reject -> receive -> inspect -> resolve. |
+| `ReturnsService` | class | `returns.service.ts:47` | WO-6.6 — request -> approve/reject -> receive -> inspect -> resolve. |
 | `ShippingAdminController` | class | `shipping.controller.ts:26` | WO-6.8's `/admin/settings/shipping` (zones, rates, methods, classes) plus the storefront's own live quote — t… |
 | `ShippingController` | class | `shipping.controller.ts:101` |  |
 | `ShippingQuote` | interface | `shipping.service.ts:15` |  |

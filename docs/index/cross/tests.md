@@ -3,7 +3,7 @@
 
 # Tests
 
-**275** spec files, **2,714** cases. What is already pinned down — and what is not.
+**278** spec files, **2,755** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (255)
+## Unit and integration (258)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -135,6 +135,8 @@ regression or an N+1.
 | `apps/api/src/modules/bom/production.service.spec.ts` | bom | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
 | `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
 | `apps/api/src/modules/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
+| `apps/api/src/modules/catalog/bundles.service.spec.ts` | catalog | 16 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create ·… |
+| `apps/api/src/modules/catalog/category-preset.service.spec.ts` | catalog | 6 | CategoryPresetService · preview · apply |
 | `apps/api/src/modules/catalog/import-assistant.service.spec.ts` | catalog | 21 | ImportAssistantService · column mapping · value normalization · duplicate flagging (pure arithmetic… |
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |
 | `apps/api/src/modules/catalog/product-import.service.spec.ts` | catalog | 3 | ProductImportService — dry run |
@@ -203,6 +205,7 @@ regression or an N+1.
 | `apps/api/src/modules/pos/pos-sales.service.spec.ts` | pos | 4 | PosSalesService — WO-21.3 |
 | `apps/api/src/modules/pos/pos-shifts.service.spec.ts` | pos | 16 | PosShiftsService — WO-21.2 · openShift · recordCashMovement · closeShift · xReport · zReport |
 | `apps/api/src/modules/pos/pos-terminals.service.spec.ts` | pos | 13 | PosTerminalsService — WO-21.1 · register · findOne / update / suspend — the not-found guard · updat… |
+| `apps/api/src/modules/pricing/pricing.service.spec.ts` | pricing | 19 | PricingService · resolvePrices · resolvePrice · createPriceList · updatePriceList · setAssignment ·… |
 | `apps/api/src/modules/production/bom.service.spec.ts` | production | 4 | BomService |
 | `apps/api/src/modules/production/reorder-work-order.listener.spec.ts` | production | 5 | ReorderWorkOrderListener |
 | `apps/api/src/modules/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |

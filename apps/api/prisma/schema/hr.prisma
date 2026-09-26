@@ -72,10 +72,10 @@ model Rank {
 /// carries the rank and the unit; the person occupying it is a `Posting`. A
 /// post outlives its occupant, which is what makes a vacancy expressible.
 model Position {
-  id        String  @id @default(cuid())
-  title     String
-  orgUnitId String
-  rankId    String
+  id          String  @id @default(cuid())
+  title       String
+  orgUnitId   String
+  rankId      String
   /// The post this one reports to. The reporting line lives on the POST,
   /// not on the person, so a leaver does not sever the chain — a later
   /// escalation document walks this edge.
@@ -135,7 +135,7 @@ model Asset {
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
 
-  assignments        AssetAssignment[]
+  assignments          AssetAssignment[]
   /// finance-accounting/147-fixed-asset-depreciation.md — at most one
   /// active schedule, per that document's own @@unique.
   depreciationSchedule AssetDepreciationSchedule?
@@ -160,10 +160,10 @@ model AssetAssignment {
   /// Free-text note at return ("scratched screen"), never required.
   condition    String?
 
-  asset      Asset  @relation(fields: [assetId], references: [id])
-  user       User   @relation("AssetAssignmentHolder", fields: [userId], references: [id])
-  issuedBy   User   @relation("AssetAssignmentIssuer", fields: [issuedById], references: [id])
-  returnedBy User?  @relation("AssetAssignmentReturner", fields: [returnedById], references: [id], onDelete: SetNull)
+  asset      Asset @relation(fields: [assetId], references: [id])
+  user       User  @relation("AssetAssignmentHolder", fields: [userId], references: [id])
+  issuedBy   User  @relation("AssetAssignmentIssuer", fields: [issuedById], references: [id])
+  returnedBy User? @relation("AssetAssignmentReturner", fields: [returnedById], references: [id], onDelete: SetNull)
 
   @@index([assetId])
   @@index([userId, returnedAt])

@@ -57,109 +57,109 @@ model User {
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
 
-  addresses                 Address[]
-  refreshTokens             RefreshToken[]
-  passwordResetTokens       PasswordResetToken[]
-  emailVerificationTokens   EmailVerificationToken[]
+  addresses                         Address[]
+  refreshTokens                     RefreshToken[]
+  passwordResetTokens               PasswordResetToken[]
+  emailVerificationTokens           EmailVerificationToken[]
   /// Personal API keys this person issued — each one acts as them, capped
   /// live by their permissions (access-control-identity/163-personal-api-keys.md).
-  apiKeys                   ApiKey[]                 @relation("ApiKeyOwner")
+  apiKeys                           ApiKey[]                    @relation("ApiKeyOwner")
   /// Keys this person revoked as someone else's administrator, or by
   /// deactivating their owner.
-  apiKeysRevoked            ApiKey[]                 @relation("ApiKeyRevoker")
-  carts                     Cart[]
-  orders                    Order[]
-  orderStatusEvents         OrderStatusEvent[]
-  auditLogs                 AuditLog[]
-  contact                   Contact?                 @relation("ContactUser")
-  identityVerification      IdentityVerification?
-  ownedContacts             Contact[]                @relation("ContactOwner")
-  ownedLeads                Lead[]                   @relation("LeadOwner")
-  interactions              Interaction[]
-  inboundEmailReplies       InboundEmailReply[]
-  assignedFollowUps         FollowUpTask[]           @relation("FollowUpAssignee")
-  approvedPayments          Payment[]                @relation("PaymentApprover")
-  segments                  Segment[]
-  devices                   DeviceToken[]
-  stockAdjustments          StockAdjustment[]
-  stockMovements            StockMovement[]          @relation("StockMovementActor")
-  permissionOverrides       UserPermission[]
+  apiKeysRevoked                    ApiKey[]                    @relation("ApiKeyRevoker")
+  carts                             Cart[]
+  orders                            Order[]
+  orderStatusEvents                 OrderStatusEvent[]
+  auditLogs                         AuditLog[]
+  contact                           Contact?                    @relation("ContactUser")
+  identityVerification              IdentityVerification?
+  ownedContacts                     Contact[]                   @relation("ContactOwner")
+  ownedLeads                        Lead[]                      @relation("LeadOwner")
+  interactions                      Interaction[]
+  inboundEmailReplies               InboundEmailReply[]
+  assignedFollowUps                 FollowUpTask[]              @relation("FollowUpAssignee")
+  approvedPayments                  Payment[]                   @relation("PaymentApprover")
+  segments                          Segment[]
+  devices                           DeviceToken[]
+  stockAdjustments                  StockAdjustment[]
+  stockMovements                    StockMovement[]             @relation("StockMovementActor")
+  permissionOverrides               UserPermission[]
   /// What this user's admin access is scoped to (RETAIL-ERP.md R10, WO-18.3)
   /// — empty for every deployment today. Model lives in organization.prisma
   /// (a togglable module), not here: this back-relation is the only mention
   /// of it core.prisma needs.
-  adminScopes               AdminScope[]
+  adminScopes                       AdminScope[]
   /// Which named `Role` rows this user holds — plural, unioned (roles.ts).
-  roleAssignments           UserRoleAssignment[]
-  purchaseOrdersCreated     PurchaseOrder[]          @relation("PurchaseOrderCreator")
-  goodsReceiptsReceived     GoodsReceipt[]           @relation("GoodsReceiptReceiver")
-  requisitionsRequested     PurchaseRequisition[]    @relation("RequisitionRequester")
-  approvalStepsDecided      ApprovalStep[]           @relation("ApprovalStepDecider")
-  stockCountsCreated        StockCount[]             @relation("StockCountCreator")
-  stockCountsAssigned       StockCount[]             @relation("StockCountAssignee")
-  workOrdersCreated         WorkOrder[]              @relation("WorkOrderCreator")
-  expensesCreated           Expense[]                @relation("ExpenseCreator")
-  bomRecipesCreated         BomRecipe[]              @relation("BomRecipeCreator")
-  bomProductionRuns         BomProductionRun[]       @relation("BomProductionOperator")
-  policyQuarantinesResolved PolicyQuarantine[]       @relation("PolicyQuarantineResolver")
+  roleAssignments                   UserRoleAssignment[]
+  purchaseOrdersCreated             PurchaseOrder[]             @relation("PurchaseOrderCreator")
+  goodsReceiptsReceived             GoodsReceipt[]              @relation("GoodsReceiptReceiver")
+  requisitionsRequested             PurchaseRequisition[]       @relation("RequisitionRequester")
+  approvalStepsDecided              ApprovalStep[]              @relation("ApprovalStepDecider")
+  stockCountsCreated                StockCount[]                @relation("StockCountCreator")
+  stockCountsAssigned               StockCount[]                @relation("StockCountAssignee")
+  workOrdersCreated                 WorkOrder[]                 @relation("WorkOrderCreator")
+  expensesCreated                   Expense[]                   @relation("ExpenseCreator")
+  bomRecipesCreated                 BomRecipe[]                 @relation("BomRecipeCreator")
+  bomProductionRuns                 BomProductionRun[]          @relation("BomProductionOperator")
+  policyQuarantinesResolved         PolicyQuarantine[]          @relation("PolicyQuarantineResolver")
   /// Payroll (docs/implementation/payroll/19-payroll.md) — one User is both the
   /// payee (compensationRates, leaveBalances, ...) and, for an ADMIN,
   /// possibly the actor who set a rate or decided a leave request; the two
   /// relation names below keep those two roles distinct on the same model.
-  compensationRates         CompensationRate[]
-  compensationRatesCreated  CompensationRate[]       @relation("CompensationRateCreator")
-  leaveBalances             LeaveBalance[]
-  leaveRequests             LeaveRequest[]           @relation("LeaveRequestUser")
-  leaveRequestsDecided      LeaveRequest[]           @relation("LeaveRequestDecider")
-  payRunsApproved           PayRun[]                 @relation("PayRunApprover")
-  payRunsCreated            PayRun[]                 @relation("PayRunCreator")
-  payRunLines               PayRunLine[]
-  payRunAdjustments         PayRunAdjustment[]
-  payRunAdjustmentsCreated  PayRunAdjustment[]       @relation("PayRunAdjustmentCreator")
+  compensationRates                 CompensationRate[]
+  compensationRatesCreated          CompensationRate[]          @relation("CompensationRateCreator")
+  leaveBalances                     LeaveBalance[]
+  leaveRequests                     LeaveRequest[]              @relation("LeaveRequestUser")
+  leaveRequestsDecided              LeaveRequest[]              @relation("LeaveRequestDecider")
+  payRunsApproved                   PayRun[]                    @relation("PayRunApprover")
+  payRunsCreated                    PayRun[]                    @relation("PayRunCreator")
+  payRunLines                       PayRunLine[]
+  payRunAdjustments                 PayRunAdjustment[]
+  payRunAdjustmentsCreated          PayRunAdjustment[]          @relation("PayRunAdjustmentCreator")
   /// hr.prisma (hr-people-org/79-employee-asset-management.md) — one User is
   /// both a possible asset holder and, for an ADMIN, the actor who issued or
   /// took back someone else's asset; three relation names for three distinct
   /// roles on the same model, same idiom as the payroll block above.
-  assetAssignments          AssetAssignment[]        @relation("AssetAssignmentHolder")
-  assetAssignmentsIssued    AssetAssignment[]        @relation("AssetAssignmentIssuer")
-  assetAssignmentsReturned  AssetAssignment[]        @relation("AssetAssignmentReturner")
+  assetAssignments                  AssetAssignment[]           @relation("AssetAssignmentHolder")
+  assetAssignmentsIssued            AssetAssignment[]           @relation("AssetAssignmentIssuer")
+  assetAssignmentsReturned          AssetAssignment[]           @relation("AssetAssignmentReturner")
   /// hr.prisma (hr-people-org/20-people-positions-ranks.md, ADR-044) — no
   /// separate Employee model; this User IS the employee when it holds a
   /// Posting. employeeProfile is optional supplementary detail, never a
   /// gate on whether a posting is possible.
-  employeeProfile           EmployeeProfile?
-  postings                  Posting[]
+  employeeProfile                   EmployeeProfile?
+  postings                          Posting[]
   /// org-structure.prisma (access-control-identity/21-access-over-the-org-tree.md)
   /// — one User can hold a grant, issue one, and countersign a third at
   /// once; three relation names for three distinct roles on the same model,
   /// same idiom as the payroll and asset-assignment blocks above.
-  orgUnitGrantsHeld         OrgUnitGrant[]           @relation("OrgUnitGrantHolder")
-  orgUnitGrantsIssued       OrgUnitGrant[]           @relation("OrgUnitGrantGranter")
-  orgUnitGrantsCountersigned OrgUnitGrant[]          @relation("OrgUnitGrantCountersigner")
+  orgUnitGrantsHeld                 OrgUnitGrant[]              @relation("OrgUnitGrantHolder")
+  orgUnitGrantsIssued               OrgUnitGrant[]              @relation("OrgUnitGrantGranter")
+  orgUnitGrantsCountersigned        OrgUnitGrant[]              @relation("OrgUnitGrantCountersigner")
   /// attendance.prisma (attendance-workforce/22-attendance-shifts-leave.md)
   /// — this User's own punches and shifts, plus, for someone who reconciles
   /// exceptions, the exceptions they resolved; three relation names for
   /// three distinct roles on the same model, same idiom as the blocks above.
-  attendanceEvents          AttendanceEvent[]
-  shifts                    Shift[]
-  attendanceExceptions      AttendanceException[]    @relation("AttendanceExceptionUser")
-  attendanceExceptionsResolved AttendanceException[] @relation("AttendanceExceptionResolver")
+  attendanceEvents                  AttendanceEvent[]
+  shifts                            Shift[]
+  attendanceExceptions              AttendanceException[]       @relation("AttendanceExceptionUser")
+  attendanceExceptionsResolved      AttendanceException[]       @relation("AttendanceExceptionResolver")
   /// accounting.prisma (finance-accounting/147-fixed-asset-depreciation.md)
   /// — who set up a depreciation schedule, a real accounting-policy decision.
   assetDepreciationSchedulesCreated AssetDepreciationSchedule[]
   /// fulfilment.prisma (WO-6.4/6.6) — both core, same idiom as auditLogs above.
-  manifestsCreated          Manifest[]
-  returnRequests            ReturnRequest[]
+  manifestsCreated                  Manifest[]
+  returnRequests                    ReturnRequest[]
   /// content.prisma (WO-8.1) — a staff account authoring a blog post.
-  blogPosts                 BlogPost[]
+  blogPosts                         BlogPost[]
   /// marketing.prisma (WO-8.4) — a staff account authoring a campaign.
-  campaignsCreated          Campaign[]
+  campaignsCreated                  Campaign[]
   /// giftcards.prisma (WO-5.5). SUM(StoreCreditTransaction.delta) — a cache,
   /// never written outside StoreCreditService's own conditional update; the
   /// ledger is the source of truth (see StoreCreditTransaction's own note).
-  storeCreditBalance        Int                      @default(0)
-  storeCreditTransactions   StoreCreditTransaction[]
-  giftCardsPurchased        GiftCard[]               @relation("GiftCardPurchaser")
+  storeCreditBalance                Int                         @default(0)
+  storeCreditTransactions           StoreCreditTransaction[]
+  giftCardsPurchased                GiftCard[]                  @relation("GiftCardPurchaser")
 
   /// wallet.prisma (doc 155) — 1:1, distinct from storeCreditBalance above:
   /// a Wallet is Newax-issued PURCHASED credit with its own RESERVE/REDEEM

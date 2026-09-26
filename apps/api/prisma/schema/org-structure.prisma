@@ -43,21 +43,21 @@ model OrgUnit {
   /// "this unit and everything under it", and an adjacency list alone
   /// cannot answer that without a recursive CTE per request. Maintained by
   /// `OrgUnitService.move()` and nothing else — see the single-writer rule.
-  path String[]
+  path  String[]
   /// Depth from the root, 0-based. Derived from `path.length - 1`, stored
   /// so a list screen can indent without loading ancestors.
-  depth Int @default(0)
+  depth Int      @default(0)
 
   /// Where this unit's data physically lives, when that is a separate
   /// deployment. NULL is the common case and means "the deployment reading
   /// this row" — a Solo shop, or a head-office department in the same
   /// database. Never assume one unit per node or one node per unit.
-  nodeId String?
+  nodeId        String?
   /// The brand this unit belongs to, when the group runs several. NULL
   /// means group-wide — a head office serving every brand.
   retailBrandId String?
 
-  isActive Boolean @default(true)
+  isActive Boolean   @default(true)
   /// Closed, not deleted. An org unit is referenced by attendance rows,
   /// journal lines and completed tasks that must still explain themselves
   /// years later; deleting one rewrites history.
@@ -66,13 +66,13 @@ model OrgUnit {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  type        OrgUnitType  @relation(fields: [typeId], references: [id])
-  parent      OrgUnit?     @relation("OrgUnitTree", fields: [parentId], references: [id])
-  children    OrgUnit[]    @relation("OrgUnitTree")
-  node        Node?        @relation(fields: [nodeId], references: [id])
-  retailBrand RetailBrand? @relation(fields: [retailBrandId], references: [id])
-  positions   Position[]
-  grants      OrgUnitGrant[]
+  type              OrgUnitType        @relation(fields: [typeId], references: [id])
+  parent            OrgUnit?           @relation("OrgUnitTree", fields: [parentId], references: [id])
+  children          OrgUnit[]          @relation("OrgUnitTree")
+  node              Node?              @relation(fields: [nodeId], references: [id])
+  retailBrand       RetailBrand?       @relation(fields: [retailBrandId], references: [id])
+  positions         Position[]
+  grants            OrgUnitGrant[]
   /// attendance-workforce/22-attendance-shifts-leave.md — devices, punches
   /// and shifts scoped to this unit.
   attendanceDevices AttendanceDevice[]
@@ -93,25 +93,25 @@ model OrgUnit {
 /// access review finds three years later, held by someone who changed jobs
 /// twice. A permanent need is a posting, not a grant — change the org chart.
 model OrgUnitGrant {
-  id        String @id @default(cuid())
+  id             String    @id @default(cuid())
   /// The principal receiving it. A User, because this is an access grant and
   /// only a principal can hold one — an employee with no login gets nothing
   /// here (hr-people-org/20-people-positions-ranks.md).
-  userId    String
-  orgUnitId String
+  userId         String
+  orgUnitId      String
   /// What the grant confers, as PERMISSION_CATALOG keys — a subset, never a
   /// role name: roles change membership underneath a grant and would
   /// silently widen it.
   permissionKeys String[]
   /// READ or ACTING. ACTING additionally lets the holder approve at the
   /// target post's rank, which is why it needs the countersignature below.
-  mode      GrantMode @default(READ)
+  mode           GrantMode @default(READ)
 
-  expiresAt DateTime
+  expiresAt             DateTime
   /// Who granted it, and — when `mode` is ACTING — who countersigned.
   grantedByUserId       String
   countersignedByUserId String?
-  reason    String
+  reason                String
 
   revokedAt DateTime?
   createdAt DateTime  @default(now())

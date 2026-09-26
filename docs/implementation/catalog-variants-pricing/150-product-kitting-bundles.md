@@ -1,5 +1,32 @@
 # 150 — Kitting and bundles: a genuinely new, previously-unnamed gap
 
+> **Status (2026-09-26): core mechanism + web checkout + returns built;
+> POS and storefront display not yet wired.** `ProductBundle`/
+> `BundleComponent` (`catalog.prisma`), `BundlesService`
+> (`sellBundle()`/`restockBundle()`/`bundleAvailableStock()` + admin CRUD),
+> wired into `orders.service.ts#place()`'s existing stock loop (a bundle
+> line decrements every component atomically, in the same transaction, via
+> the unchanged `InventoryService.move()`) and `returns.service.ts#inspect()`
+> (a returned bundle line restocks every component individually). New
+> `orders -> catalog`/`fulfilment -> catalog` entries in
+> `KNOWN_MODULE_COUPLINGS`. A bundle is deliberately never backorder-eligible
+> regardless of `checkout.allow_backorder` — there is no single component to
+> park a backorder against. Three deviations from this document's own
+> sketch: no `organizationId` column (same reasoning as doc 146's identical
+> deviation); reuses the existing `SALE`/`RETURN`/`WRITE_OFF` reasons rather
+> than a new `BUNDLE_SALE` reason, so a sales report by reason already
+> includes bundle-driven decrements without needing to know bundles exist;
+> gated by the existing `catalog.manage` permission, not a new
+> `catalog.bundles.manage` key. **Not built in this pass**: `placeFromPos()`
+> (a till sale uses `postUnconditional()`'s oversell-tolerant R5 path, which
+> `sellBundle()` does not support — extending it is a real, separate design
+> question, not assumed away) and the storefront's own "in stock" display
+> (`catalog.service.ts#localise()` is a widely-shared, non-location-aware
+> function; wiring `bundleAvailableStock()` into it needs a location
+> parameter that function does not have today). A bundle-builder admin
+> screen (WO-150.6) is not built. 16 new tests (`bundles.service.spec.ts`);
+> full apps/api suite passing with no regression. ADR-049.
+
 Checked against `catalog.prisma` and `bom.prisma`: nothing models "sell
 these N distinct SKUs together as one purchasable unit, at one price,
 tracked as a set." `bom`'s own `BomRecipe`/`BomProductionRun` (docs

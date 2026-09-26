@@ -1,5 +1,26 @@
 # 146 — The `pricing` module `MULTI-SECTOR.md` already named as not built
 
+> **Status (2026-09-26): built.** `PriceList`/`PriceListEntry`/
+> `PriceListAssignment` (new `pricing.prisma`), the `pricing` module
+> (`PricingService.resolvePrices()` batched, `resolvePrice()` single-item),
+> wired as a hard import into `cart`/`orders` (mirroring `tax`'s own
+> precedent — `cart -> pricing`/`orders -> pricing` in
+> `KNOWN_MODULE_COUPLINGS`, `pricing` classified `core` in
+> `module-packs.ts`). Every existing `priceOverride ?? basePrice` call site
+> in `cart.service.ts#toView()` and `orders.service.ts#priceCart()` now
+> resolves through `PricingService` first, falling through unchanged when
+> no price list is assigned. `pos-catalog.service.ts` and
+> `placeFromPos()` are deliberately untouched — named honestly in
+> `pricing.service.ts`'s own header comment: neither has a resolvable
+> `Contact` to price against. Admin CRUD + a "preview price" endpoint on a
+> new `PricingController`. Two deviations from this document's own schema
+> sketch: no `organizationId` column (this codebase is one Organization
+> per deployment — `Category`/`Product`, what the sketch claims to mirror,
+> carry none either) and `PriceListAssignment.tagId` is a real FK to `Tag`,
+> not the sketch's own loose `customerTag` string. 19 new tests
+> (`pricing.service.spec.ts`); full apps/api suite (216 suites, 2343+ tests)
+> passing with no regression. ADR-049.
+
 `MULTI-SECTOR.md`'s own module table states the gap directly: **"`pricing`
 | B2B, B2G, B2B2C | Resolve 'what does THIS buyer pay for THIS variant in
 THIS context'. Price lists and quantity breaks. Today price is

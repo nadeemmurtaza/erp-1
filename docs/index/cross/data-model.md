@@ -3,7 +3,7 @@
 
 # Data model
 
-All **264** Prisma models and **123** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **270** Prisma models and **123** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -30,7 +30,7 @@ against a real database.
 | [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
 | [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
-| [`catalog.prisma`](../data/catalog.md) | 27 | 7 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, Category, CategoryTranslation, Collection, CollectionProduct, CollectionTranslation, OptionTemplate, Opt… |
+| [`catalog.prisma`](../data/catalog.md) | 30 | 7 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, BundleComponent, Category, CategoryPreset, CategoryTranslation, Collection, CollectionProduct, Collectio… |
 | [`content.prisma`](../data/content.md) | 8 | 1 | [`content`](../modules/content.md) | Banner, BannerTranslation, BlogPost, BlogPostTranslation, MenuItem, MenuItemTranslation, Page, PageTranslation |
 | [`core.prisma`](../data/core.md) | 19 | 10 | foundational | Address, AiUsageLog, AnalyticsEvent, ApiKey, AuditLog, DeviceToken, EmailAccount, EmailVerificationToken, OutboxEvent, PasswordRe… |
 | [`crm.prisma`](../data/crm.md) | 9 | 3 | [`crm`](../modules/crm.md) | Contact, ContactTag, FollowUpTask, InboundEmail, InboundEmailReply, Interaction, Lead, Segment, Tag |
@@ -56,6 +56,7 @@ against a real database.
 | [`payroll.prisma`](../data/payroll.md) | 9 | 5 | [`payroll`](../modules/payroll.md) | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLine, PayRunNumberCount… |
 | [`platform.prisma`](../data/platform.md) | 20 | 11 | core platform | AgencyUsageSnapshot, MeteredOrderFee, PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformOpsClient, Platfor… |
 | [`pos.prisma`](../data/pos.md) | 4 | 3 | [`pos`](../modules/pos.md) | CashMovement, PosReceipt, PosShift, PosTerminal |
+| [`pricing.prisma`](../data/pricing.md) | 3 | 0 | [`pricing`](../modules/pricing.md) | PriceList, PriceListAssignment, PriceListEntry |
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
 | [`purchasing.prisma`](../data/purchasing.md) | 9 | 3 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, PurchaseRequisition, RequisitionLine, Supplier, SupplierBill, S… |
@@ -110,6 +111,7 @@ against a real database.
 | [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | A label a product is sold under. |
 | [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and… |
 | [`BrandTranslation`](../data/catalog.md#brandtranslation) | `catalog` | 6 | 1 | id | House Rule 6: a customer-facing name is a translation row, not a column. |
+| [`BundleComponent`](../data/catalog.md#bundlecomponent) | `catalog` | 5 | 1 | id |  |
 | [`Campaign`](../data/marketing.md#campaign) | `marketing` | 14 | 2 | id |  |
 | [`CampaignRecipient`](../data/marketing.md#campaignrecipient) | `marketing` | 10 | 2 | id |  |
 | [`Cart`](../data/cart.md#cart) | `cart` | 16 | 2 | id | Cart. |
@@ -117,6 +119,7 @@ against a real database.
 | [`CartItemStitchingOption`](../data/cart.md#cartitemstitchingoption) | `cart` | 4 | 2 | — |  |
 | [`CashMovement`](../data/pos.md#cashmovement) | `pos` | 8 | 1 | id | One physical cash movement at the drawer during a shift — always a positive `amountMinor`… |
 | [`Category`](../data/catalog.md#category) | `catalog` | 13 | 2 | id |  |
+| [`CategoryPreset`](../data/catalog.md#categorypreset) | `catalog` | 5 | 0 | id | 47-preconfigured-sector-taxonomy.md — a named, versioned starter category tree for one ve… |
 | [`CategoryTranslation`](../data/catalog.md#categorytranslation) | `catalog` | 6 | 1 | id |  |
 | [`CityCodRiskStat`](../data/orders.md#citycodriskstat) | `orders` | 5 | 0 | city | WO-9.4 (09-ai-layer.md) — nightly-cached inputs to CodRiskService's "city RTO rate" and "… |
 | [`Collection`](../data/catalog.md#collection) | `catalog` | 10 | 0 | id |  |
@@ -233,8 +236,12 @@ against a real database.
 | [`PosShift`](../data/pos.md#posshift) | `pos` | 12 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
 | [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | A physical till. |
 | [`Posting`](../data/hr.md#posting) | `hr` | 8 | 2 | id | Who holds which post, when. |
+| [`PriceList`](../data/pricing.md#pricelist) | `pricing` | 8 | 0 | id | The `pricing` module — 146-wholesale-tiered-pricing.md (b2b-wholesale-multientity/146-who… |
+| [`PriceListAssignment`](../data/pricing.md#pricelistassignment) | `pricing` | 5 | 1 | id | Which price list applies to which buyer — a customer, or a customer's tag (a segment/chan… |
+| [`PriceListEntry`](../data/pricing.md#pricelistentry) | `pricing` | 6 | 1 | id | A quantity break OR a flat override — never both meaninglessly: a row with minQuantity=1… |
 | [`Product`](../data/catalog.md#product) | `catalog` | 44 | 7 | id |  |
 | [`ProductAiSuggestion`](../data/catalog.md#productaisuggestion) | `catalog` | 12 | 2 | id | WO-9.1. |
+| [`ProductBundle`](../data/catalog.md#productbundle) | `catalog` | 6 | 0 | id | 150-product-kitting-bundles.md — a sellable shell over existing variants, never a new phy… |
 | [`ProductCrossSell`](../data/catalog.md#productcrosssell) | `catalog` | 8 | 2 | id |  |
 | [`ProductGarmentType`](../data/catalog.md#productgarmenttype) | `catalog` | 3 | 1 | — | Which garments a given unstitched fabric can be made into. |
 | [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 12 | 2 | id |  |

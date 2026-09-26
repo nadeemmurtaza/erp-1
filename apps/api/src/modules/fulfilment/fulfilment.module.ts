@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { InventoryModule } from '../inventory/inventory.module';
+import { CatalogModule } from '../catalog/catalog.module';
 import { FulfilmentAdminController } from './fulfilment.controller';
 import { FulfilmentCron } from './fulfilment.cron';
 import { FulfilmentService } from './fulfilment.service';
@@ -16,10 +17,13 @@ import { ShippingService } from './shipping.service';
  * import for the same reason orders.module.ts imports it directly (WO-1.2):
  * returns.service.ts#inspect() restocks or writes off a returned item in the
  * same transaction as the ReturnRequestItem write it belongs to
- * (`fulfilment -> inventory` in KNOWN_MODULE_COUPLINGS).
+ * (`fulfilment -> inventory` in KNOWN_MODULE_COUPLINGS). CatalogModule is
+ * the same shape for BundlesService.restockBundle() — a returned bundle
+ * line restocks every component inside that same transaction
+ * (`fulfilment -> catalog`, 150-product-kitting-bundles.md).
  */
 @Module({
-  imports: [InventoryModule],
+  imports: [InventoryModule, CatalogModule],
   controllers: [
     ShippingAdminController,
     ShippingController,

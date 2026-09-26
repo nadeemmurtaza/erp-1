@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 926 | 130,839 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 396 | 65,920 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 940 | 132,696 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 396 | 66,116 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 389 | 63,302 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,446 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 160 | 11,233 |  |
-| `scripts` | 22 | 9,116 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 62 | 7,526 | brand, money, permissions, measurements, entities |
+| `scripts` | 22 | 9,136 | repository checks and generators (lint gates, this index) |
+| `packages/shared` | 62 | 7,555 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
 | `apps/pos` | 31 | 2,000 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,046 |  |
@@ -65,7 +65,7 @@ Each is independent: no module imports another except through a named
 | [`attendance`](modules/attendance.md) | core | MODULES allowlist | 17 | 4 |
 | [`bom`](modules/bom.md) | core | MODULES allowlist | 20 | 5 |
 | [`cart`](modules/cart.md) | core | MODULES allowlist | 8 | 3 |
-| [`catalog`](modules/catalog.md) | core | MODULES allowlist | 50 | 27 |
+| [`catalog`](modules/catalog.md) | core | MODULES allowlist | 58 | 30 |
 | [`collections`](modules/collections.md) | core | MODULES allowlist | 10 | — |
 | [`content`](modules/content.md) | core | MODULES allowlist | 24 | 8 |
 | [`crm`](modules/crm.md) | core | MODULES allowlist | 33 | 9 |
@@ -88,6 +88,7 @@ Each is independent: no module imports another except through a named
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 7 | 1 |
 | [`payroll`](modules/payroll.md) | core | MODULES allowlist | 19 | 9 |
 | [`pos`](modules/pos.md) | core | MODULES allowlist | 15 | 4 |
+| [`pricing`](modules/pricing.md) | core | MODULES allowlist | 7 | 3 |
 | [`production`](modules/production.md) | core | MODULES allowlist | 9 | 4 |
 | [`promotions`](modules/promotions.md) | core | MODULES allowlist | 12 | 3 |
 | [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 24 | 9 |

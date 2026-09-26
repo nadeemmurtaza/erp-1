@@ -1,5 +1,18 @@
 # 111 — Holding Company → Subsidiary → Franchise: already `RETAIL-ERP.md`'s own three axes, with cascade-and-override already built once
 
+> **Status (2026-09-26): re-verified, no code change.** `BrandPolicy`
+> (`organization.prisma:74`) still exists; `OrganizationService.getBrandPolicy()`/
+> `.setBrandPolicy()` and the fail-closed
+> `policy?.allowBranchLocalPurchasing ?? false` read
+> (`organization.service.ts`) confirm the cascade-with-default mechanism
+> this document cites is real, not aspirational. Confirmed alongside doc
+> 165/166's own build: that cross-tenant layer sits one level ABOVE
+> `Organization` (a *tenant* is a whole deployment, per doc 39), so it
+> introduces no new nesting tier inside the Organization→RetailBrand→
+> Location hierarchy this document maps — the "fourth tier" this document's
+> own "Out of scope" names remains exactly as undecided and unbuilt as
+> before. This document's own "Work orders: None" stands unchanged.
+
 "Design the data architecture with strict `tenant_id` and
 `organization_node` lineage. This supports deep corporate nesting (Holding
 Company → Regional Subsidiary → Local Franchise), allowing global

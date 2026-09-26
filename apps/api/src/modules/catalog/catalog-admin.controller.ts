@@ -22,6 +22,9 @@ import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import { BrandAdminService } from './brand-admin.service';
 import { CategoryAdminService } from './category-admin.service';
+import { CategoryPresetService } from './category-preset.service';
+import { BundlesService } from './bundles.service';
+import { CreateBundleDto, UpdateBundleDto } from './dto/bundle.dto';
 import { AdminProductQueryDto } from './dto/product-query.dto';
 import { UpsertBrandDto } from './dto/brand.dto';
 import { UpsertCategoryDto } from './dto/category.dto';
@@ -80,6 +83,8 @@ export class CatalogAdminController {
   constructor(
     private readonly products: ProductAdminService,
     private readonly categories: CategoryAdminService,
+    private readonly categoryPresets: CategoryPresetService,
+    private readonly bundles: BundlesService,
     private readonly brands: BrandAdminService,
     private readonly importer: ProductImportService,
     private readonly importAssistant: ImportAssistantService,
@@ -221,6 +226,55 @@ export class CatalogAdminController {
   @HttpCode(HttpStatus.NO_CONTENT)
   deleteCategory(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
     return this.categories.remove(user.id, id);
+  }
+
+  // --- Category presets (47-preconfigured-sector-taxonomy.md) ---------------
+
+  @Get('category-presets')
+  @ApiOperation({ summary: 'Starter category tree templates, one per vertical' })
+  listCategoryPresets() {
+    return this.categoryPresets.list();
+  }
+
+  @Get('category-presets/:key/preview')
+  @ApiOperation({ summary: 'What applying this preset would create and what it would skip — nothing written' })
+  previewCategoryPreset(@Param('key') key: string) {
+    return this.categoryPresets.preview(key);
+  }
+
+  @Post('category-presets/:key/apply')
+  @ApiOperation({ summary: 'Apply a starter category tree — additive only, never renames or overwrites an existing category' })
+  applyCategoryPreset(@CurrentUser() user: AuthenticatedUser, @Param('key') key: string) {
+    return this.categoryPresets.apply(user, key);
+  }
+
+  // --- Bundles (150-product-kitting-bundles.md) ------------------------------
+
+  @Get('bundles')
+  listBundles() {
+    return this.bundles.list();
+  }
+
+  @Get('bundles/:id')
+  getBundle(@Param('id') id: string) {
+    return this.bundles.get(id);
+  }
+
+  @Post('bundles')
+  @ApiOperation({ summary: 'Sell N existing variants together as one purchasable unit — never a new physical item' })
+  createBundle(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateBundleDto) {
+    return this.bundles.create(user, dto);
+  }
+
+  @Patch('bundles/:id')
+  updateBundle(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string, @Body() dto: UpdateBundleDto) {
+    return this.bundles.update(user, id, dto);
+  }
+
+  @Delete('bundles/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  removeBundle(@CurrentUser() user: AuthenticatedUser, @Param('id') id: string) {
+    return this.bundles.remove(user, id);
   }
 
   // --- Brands ---------------------------------------------------------------

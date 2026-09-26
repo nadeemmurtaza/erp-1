@@ -199,6 +199,26 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // Phase 7 WO-7.7's own words, "reusing the Phase 5 ledger rather than
   // inventing a second balance." A lost race must roll back both sides.
   'loyalty -> giftcards',
+  // 146-wholesale-tiered-pricing.md — cart.service.ts's toView() and
+  // orders.service.ts's place() both need a customer's own resolved
+  // wholesale price before a line can render or commit. PricingService.
+  // resolvePrices() is a pure read (no write of its own) — the same
+  // "checkout cannot commit without this number" dependency orders -> tax
+  // already establishes above, not a stock/ledger write.
+  'cart -> pricing',
+  'orders -> pricing',
+  // 150-product-kitting-bundles.md — orders.service.ts's place() calls
+  // BundlesService.sellBundle() to decrement every component
+  // (InventoryService.move()) inside the SAME transaction as the order
+  // write itself, so a bundle sale is one atomic unit — the same
+  // same-transaction-write reasoning as orders -> inventory above, one
+  // level removed through catalog's own bundle service.
+  'orders -> catalog',
+  // returns.service.ts's inspect() calls BundlesService.restockBundle() to
+  // restock every component inside the SAME transaction as the
+  // ReturnRequestItem write it belongs to — same same-transaction
+  // reasoning as fulfilment -> inventory above.
+  'fulfilment -> catalog',
 ]);
 
 function walk(dir) {

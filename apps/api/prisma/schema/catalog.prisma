@@ -42,6 +42,22 @@ model Category {
   @@index([isActive])
 }
 
+/// 47-preconfigured-sector-taxonomy.md — a named, versioned starter
+/// category tree for one vertical, seeded (never user-created through the
+/// admin UI). Applying one creates ordinary Category rows; this row itself
+/// is never referenced by the categories it produces, per this document's
+/// own "undoing a preset is deleting the categories it created, like any
+/// other category deletion" position.
+model CategoryPreset {
+  id          String  @id @default(cuid())
+  key         String  @unique
+  label       String
+  /// { name, nameUr?, children: [...] } recursively — never compiled into
+  /// application code, so a tenth vertical's preset is a seed-data change.
+  treeJson    Json
+  description String?
+}
+
 /// A label a product is sold under. Managed from /admin/brands rather than
 /// typed per product: `Product.brand` used to be free text, so "Gul Ahmed",
 /// "gul ahmed" and "Gul  Ahmed" were three different brands as far as any
@@ -689,4 +705,37 @@ model ProductCrossSell {
 
   @@unique([productId, relatedProductId])
   @@index([relatedProductId])
+}
+
+/// 150-product-kitting-bundles.md — a sellable shell over existing
+/// variants, never a new physical item: selling one is entirely expressed
+/// as decrementing its components (BundlesService.sellBundle()), and its
+/// own "stock" is definitionally computed, never stored (see
+/// bundleAvailableStock()). No `organizationId` column, the same deviation
+/// from this document's own sketch pricing.prisma already made for the
+/// same reason: `Category`/`Product` (what the doc claims this mirrors)
+/// carry no such column either — this codebase is one Organization per
+/// deployment.
+model ProductBundle {
+  id        String   @id @default(cuid())
+  /// The bundle's own sellable identity — has its own SKU, its own listing,
+  /// its own price via resolvePrice() (doc 146) — but produces NO stock row
+  /// of its own.
+  variantId String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  components BundleComponent[]
+}
+
+model BundleComponent {
+  id                 String @id @default(cuid())
+  bundleId           String
+  componentVariantId String
+  quantity           Int    @default(1)
+
+  bundle ProductBundle @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+
+  @@unique([bundleId, componentVariantId])
 }

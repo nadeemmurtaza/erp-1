@@ -68,6 +68,10 @@ export const MODULE_PACKS: Record<string, PackName> = {
   organization: 'core',
   parties: 'core',
   payments: 'core',
+  // 146-wholesale-tiered-pricing.md — a B2B/wholesale capability module,
+  // not a sector pack, per this file's own "Business models... cut across
+  // every sector" rule above.
+  pricing: 'core',
   pos: 'core',
   production: 'core',
   purchasing: 'core',

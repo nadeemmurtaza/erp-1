@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2135,
-    "lines": 327726,
-    "routes": 726,
-    "controllers": 131,
-    "models": 264,
+    "files": 2149,
+    "lines": 329828,
+    "routes": 741,
+    "controllers": 132,
+    "models": 270,
     "enums": 123,
-    "migrations": 93,
+    "migrations": 96,
     "events": 63,
-    "permissions": 96,
+    "permissions": 99,
     "screens": 244,
     "crons": 23,
-    "specs": 275,
+    "specs": 278,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29967,
-      "bytes": 1177729,
+      "lines": 29987,
+      "bytes": 1178904,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 926,
-      "lines": 130839,
-      "bytes": 5029827,
+      "files": 940,
+      "lines": 132696,
+      "bytes": 5106750,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -57,14 +57,14 @@
     },
     "docs": {
       "files": 396,
-      "lines": 65920,
-      "bytes": 3920038,
+      "lines": 66116,
+      "bytes": 3932686,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8108,
-      "bytes": 288698,
+      "lines": 8137,
+      "bytes": 289765,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -228,13 +228,18 @@
         "apps/api/src/modules/catalog/ai-suggestions.service.spec.ts",
         "apps/api/src/modules/catalog/ai-suggestions.service.ts",
         "apps/api/src/modules/catalog/brand-admin.service.ts",
+        "apps/api/src/modules/catalog/bundles.service.spec.ts",
+        "apps/api/src/modules/catalog/bundles.service.ts",
         "apps/api/src/modules/catalog/catalog-admin.controller.ts",
         "apps/api/src/modules/catalog/catalog-options-admin.controller.ts",
         "apps/api/src/modules/catalog/catalog.controller.ts",
         "apps/api/src/modules/catalog/catalog.module.ts",
         "apps/api/src/modules/catalog/catalog.service.ts",
         "apps/api/src/modules/catalog/category-admin.service.ts",
+        "apps/api/src/modules/catalog/category-preset.service.spec.ts",
+        "apps/api/src/modules/catalog/category-preset.service.ts",
         "apps/api/src/modules/catalog/dto/brand.dto.ts",
+        "apps/api/src/modules/catalog/dto/bundle.dto.ts",
         "apps/api/src/modules/catalog/dto/category.dto.ts",
         "apps/api/src/modules/catalog/dto/option.dto.ts",
         "apps/api/src/modules/catalog/dto/product-query.dto.ts",
@@ -257,7 +262,7 @@
         "apps/api/src/modules/catalog/seo-health.service.ts",
         "apps/api/src/modules/catalog/sync-option-model.ts"
       ],
-      "routes": 50,
+      "routes": 58,
       "page": "docs/index/modules/catalog.md"
     },
     {
@@ -747,6 +752,21 @@
       ],
       "routes": 15,
       "page": "docs/index/modules/pos.md"
+    },
+    {
+      "name": "pricing",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/pricing/dto/pricing.dto.ts",
+        "apps/api/src/modules/pricing/pricing.controller.ts",
+        "apps/api/src/modules/pricing/pricing.module.ts",
+        "apps/api/src/modules/pricing/pricing.service.spec.ts",
+        "apps/api/src/modules/pricing/pricing.service.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/pricing.md"
     },
     {
       "name": "production",
@@ -3033,7 +3053,7 @@
       "controller": "CatalogAdminController",
       "handler": "listBrands",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 229,
+      "line": 283,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3049,7 +3069,7 @@
       "controller": "CatalogAdminController",
       "handler": "createBrand",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 234,
+      "line": 288,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3065,7 +3085,7 @@
       "controller": "CatalogAdminController",
       "handler": "deleteBrand",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 249,
+      "line": 303,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3081,7 +3101,87 @@
       "controller": "CatalogAdminController",
       "handler": "updateBrand",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 239,
+      "line": 293,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/bundles",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "listBundles",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 254,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/bundles",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "createBundle",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 265,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Sell N existing variants together as one purchasable unit — never a new physical item"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/catalog/bundles/:id",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "removeBundle",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 276,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/bundles/:id",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "getBundle",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 259,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/catalog/bundles/:id",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "updateBundle",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 270,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3097,7 +3197,7 @@
       "controller": "CatalogAdminController",
       "handler": "listCategories",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 202,
+      "line": 207,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3113,7 +3213,7 @@
       "controller": "CatalogAdminController",
       "handler": "createCategory",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 207,
+      "line": 212,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3129,7 +3229,7 @@
       "controller": "CatalogAdminController",
       "handler": "deleteCategory",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 222,
+      "line": 227,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3145,7 +3245,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateCategory",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 212,
+      "line": 217,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3155,13 +3255,61 @@
       "summary": ""
     },
     {
+      "method": "GET",
+      "path": "/admin/catalog/category-presets",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "listCategoryPresets",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 235,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Starter category tree templates, one per vertical"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/catalog/category-presets/:key/apply",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "applyCategoryPreset",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 247,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Apply a starter category tree — additive only, never renames or overwrites an existing category"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/catalog/category-presets/:key/preview",
+      "module": "catalog",
+      "controller": "CatalogAdminController",
+      "handler": "previewCategoryPreset",
+      "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
+      "line": 241,
+      "access": "catalog.manage",
+      "permissions": [
+        "catalog.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "What applying this preset would create and what it would skip — nothing written"
+    },
+    {
       "method": "DELETE",
       "path": "/admin/catalog/images/:imageId",
       "module": "catalog",
       "controller": "CatalogAdminController",
       "handler": "deleteImage",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 183,
+      "line": 188,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3177,7 +3325,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateImage",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 173,
+      "line": 178,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3193,7 +3341,7 @@
       "controller": "CatalogAdminController",
       "handler": "import",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 293,
+      "line": 347,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3209,7 +3357,7 @@
       "controller": "CatalogAdminController",
       "handler": "assistImport",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 276,
+      "line": 330,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3225,7 +3373,7 @@
       "controller": "CatalogAdminController",
       "handler": "importTemplate",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 262,
+      "line": 316,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3369,7 +3517,7 @@
       "controller": "CatalogAdminController",
       "handler": "listProducts",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 93,
+      "line": 98,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3385,7 +3533,7 @@
       "controller": "CatalogAdminController",
       "handler": "createProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 119,
+      "line": 124,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3401,7 +3549,7 @@
       "controller": "CatalogAdminController",
       "handler": "archiveProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 134,
+      "line": 139,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3417,7 +3565,7 @@
       "controller": "CatalogAdminController",
       "handler": "getProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 113,
+      "line": 118,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3433,7 +3581,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateProduct",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 124,
+      "line": 129,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3513,7 +3661,7 @@
       "controller": "CatalogAdminController",
       "handler": "addImage",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 153,
+      "line": 158,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3529,7 +3677,7 @@
       "controller": "CatalogAdminController",
       "handler": "reorderImages",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 167,
+      "line": 172,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3545,7 +3693,7 @@
       "controller": "CatalogAdminController",
       "handler": "publishGate",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 108,
+      "line": 113,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3609,7 +3757,7 @@
       "controller": "CatalogAdminController",
       "handler": "seoHealthList",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 102,
+      "line": 107,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -3689,7 +3837,7 @@
       "controller": "CatalogAdminController",
       "handler": "updateStock",
       "file": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
-      "line": 191,
+      "line": 196,
       "access": "catalog.manage",
       "permissions": [
         "catalog.manage"
@@ -8047,6 +8195,118 @@
       "public": false,
       "authOnly": false,
       "summary": "Suspend a terminal — never deletes it, its history stays put"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/pricing/price-lists",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "findAll",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 22,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List every price list with its entries and assignments"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pricing/price-lists",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "create",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 29,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a price list — an entry below the variant's base price requires pricing.price-lists.approve"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/pricing/price-lists/:id",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "update",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 36,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Update a price list's entries — same margin-decision gate as create"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pricing/price-lists/:id/assignments",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "assign",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 43,
+      "access": "pricing.assignments.manage",
+      "permissions": [
+        "pricing.assignments.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Assign a price list to a customer or a customer tag"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/pricing/price-lists/assignments/:assignmentId",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "unassign",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 51,
+      "access": "pricing.assignments.manage",
+      "permissions": [
+        "pricing.assignments.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove a price-list assignment"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pricing/price-lists/preview",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "preview",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 59,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Preview one variant's resolved price for a customer at a quantity — a pure read, nothing written"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pricing/price-lists/preview/batch",
+      "module": "pricing",
+      "controller": "PricingController",
+      "handler": "previewBatch",
+      "file": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "line": 67,
+      "access": "pricing.price-lists.manage",
+      "permissions": [
+        "pricing.price-lists.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Preview several variants at once — the same batched path checkout itself uses"
     },
     {
       "method": "DELETE",
@@ -13043,6 +13303,51 @@
       "inSeed": true
     },
     {
+      "key": "pricing.price-lists.manage",
+      "label": "Create and edit wholesale price lists and quantity breaks",
+      "category": "Sales",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/pricing/price-lists",
+        "POST /admin/pricing/price-lists",
+        "PATCH /admin/pricing/price-lists/:id",
+        "POST /admin/pricing/price-lists/preview",
+        "POST /admin/pricing/price-lists/preview/batch"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "pricing.price-lists.approve",
+      "label": "Set a wholesale price below a variant's own base price",
+      "category": "Sales",
+      "sensitivity": "high",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [],
+      "inSeed": false
+    },
+    {
+      "key": "pricing.assignments.manage",
+      "label": "Assign a price list to a customer or a customer tag",
+      "category": "Sales",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/pricing/price-lists/:id/assignments",
+        "DELETE /admin/pricing/price-lists/assignments/:assignmentId"
+      ],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "pos.manage",
       "label": "Register till terminals and issue their device credentials",
       "category": "Sales",
@@ -13293,10 +13598,18 @@
         "POST /admin/catalog/brands",
         "DELETE /admin/catalog/brands/:id",
         "PATCH /admin/catalog/brands/:id",
+        "GET /admin/catalog/bundles",
+        "POST /admin/catalog/bundles",
+        "DELETE /admin/catalog/bundles/:id",
+        "GET /admin/catalog/bundles/:id",
+        "PATCH /admin/catalog/bundles/:id",
         "GET /admin/catalog/categories",
         "POST /admin/catalog/categories",
         "DELETE /admin/catalog/categories/:id",
         "PATCH /admin/catalog/categories/:id",
+        "GET /admin/catalog/category-presets",
+        "POST /admin/catalog/category-presets/:key/apply",
+        "GET /admin/catalog/category-presets/:key/preview",
         "DELETE /admin/catalog/images/:imageId",
         "PATCH /admin/catalog/images/:imageId",
         "POST /admin/catalog/import",
@@ -14788,8 +15101,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:55",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:162",
-        "apps/api/src/modules/orders/orders.service.ts:463",
-        "apps/api/src/modules/orders/orders.service.ts:721"
+        "apps/api/src/modules/orders/orders.service.ts:488",
+        "apps/api/src/modules/orders/orders.service.ts:746"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
@@ -14805,8 +15118,8 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:748",
-        "apps/api/src/modules/orders/orders.service.ts:933"
+        "apps/api/src/modules/orders/orders.service.ts:773",
+        "apps/api/src/modules/orders/orders.service.ts:958"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -14821,7 +15134,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:933"
+        "apps/api/src/modules/orders/orders.service.ts:958"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -14836,7 +15149,7 @@
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:122",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:159",
         "apps/api/src/modules/orders/instalment-plan.service.ts:90",
-        "apps/api/src/modules/orders/orders.service.ts:692",
+        "apps/api/src/modules/orders/orders.service.ts:717",
         "apps/api/src/modules/payments/payments.service.ts:191",
         "apps/api/src/modules/payments/payments.service.ts:293",
         "apps/api/src/modules/payments/payments.service.ts:341"
@@ -15314,9 +15627,9 @@
       "name": "fulfilment.return_status_changed",
       "doc": "ReturnsService's own status-machine writes (WO-6.6) — the customer notification subscriber (fulfilment/return-notification.subscriber.ts) is the only one today.",
       "publishers": [
-        "apps/api/src/modules/fulfilment/returns.service.ts:145",
-        "apps/api/src/modules/fulfilment/returns.service.ts:194",
-        "apps/api/src/modules/fulfilment/returns.service.ts:284"
+        "apps/api/src/modules/fulfilment/returns.service.ts:147",
+        "apps/api/src/modules/fulfilment/returns.service.ts:196",
+        "apps/api/src/modules/fulfilment/returns.service.ts:307"
       ],
       "subscribers": [
         "apps/api/src/modules/fulfilment/return-notification.subscriber.ts:24 onStatusChanged()",
@@ -15328,7 +15641,7 @@
       "name": "fulfilment.return_fully_refunded",
       "doc": "A ReturnRequest resolved REFUND and covers the order's full returnable quantity (WO-6.6) — orders/shipment-status.listener.ts is the only subscriber, calling changeStatus(..., {skipStockRelease: true…",
       "publishers": [
-        "apps/api/src/modules/fulfilment/returns.service.ts:370"
+        "apps/api/src/modules/fulfilment/returns.service.ts:393"
       ],
       "subscribers": [
         "apps/api/src/modules/orders/shipment-status.listener.ts:61 onReturnFullyRefunded()"
@@ -18022,7 +18335,7 @@
     {
       "name": "Brand",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 49,
+      "line": 65,
       "doc": "A label a product is sold under.",
       "fields": [
         {
@@ -18161,7 +18474,7 @@
     {
       "name": "BrandTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 68,
+      "line": 84,
       "doc": "House Rule 6: a customer-facing name is a translation row, not a column.",
       "fields": [
         {
@@ -18209,6 +18522,52 @@
       ],
       "indexes": [
         "@@unique([brandId, locale])"
+      ]
+    },
+    {
+      "name": "BundleComponent",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 732,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bundleId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "componentVariantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bundle",
+          "type": "ProductBundle",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([bundleId, componentVariantId])"
       ]
     },
     {
@@ -18881,9 +19240,53 @@
       ]
     },
     {
+      "name": "CategoryPreset",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 51,
+      "doc": "47-preconfigured-sector-taxonomy.md — a named, versioned starter category tree for one vertical, seeded (never user-created through the admin UI).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "treeJson",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "CategoryTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 80,
+      "line": 96,
       "doc": "",
       "fields": [
         {
@@ -18980,7 +19383,7 @@
     {
       "name": "Collection",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 552,
+      "line": 568,
       "doc": "",
       "fields": [
         {
@@ -19061,7 +19464,7 @@
     {
       "name": "CollectionProduct",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 592,
+      "line": 608,
       "doc": "Manual membership and manual sort order.",
       "fields": [
         {
@@ -19108,7 +19511,7 @@
     {
       "name": "CollectionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 575,
+      "line": 591,
       "doc": "",
       "fields": [
         {
@@ -25238,7 +25641,7 @@
     {
       "name": "OptionTemplate",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 463,
+      "line": 479,
       "doc": "Store-level, reusable option axis — \"Size: XS/S/M/L/XL/XXL\" typed once under Catalogue -> Options & attributes instead of on every product.",
       "fields": [
         {
@@ -25298,7 +25701,7 @@
     {
       "name": "OptionTemplateTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 476,
+      "line": 492,
       "doc": "",
       "fields": [
         {
@@ -25344,7 +25747,7 @@
     {
       "name": "OptionTemplateValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 487,
+      "line": 503,
       "doc": "",
       "fields": [
         {
@@ -25412,7 +25815,7 @@
     {
       "name": "OptionTemplateValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 502,
+      "line": 518,
       "doc": "",
       "fields": [
         {
@@ -29492,9 +29895,175 @@
       ]
     },
     {
+      "name": "PriceList",
+      "file": "apps/api/prisma/schema/pricing.prisma",
+      "line": 15,
+      "doc": "The `pricing` module — 146-wholesale-tiered-pricing.md (b2b-wholesale-multientity/146-wholesale-tiered-pricing.md).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "entries",
+          "type": "PriceListEntry[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assignments",
+          "type": "PriceListAssignment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "PriceListAssignment",
+      "file": "apps/api/prisma/schema/pricing.prisma",
+      "line": 47,
+      "doc": "Which price list applies to which buyer — a customer, or a customer's tag (a segment/channel).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceListId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "customerId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tagId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceList",
+          "type": "PriceList",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([customerId])",
+        "@@index([tagId])"
+      ]
+    },
+    {
+      "name": "PriceListEntry",
+      "file": "apps/api/prisma/schema/pricing.prisma",
+      "line": 30,
+      "doc": "A quantity break OR a flat override — never both meaninglessly: a row with minQuantity=1 IS the flat override case, so this is one shape, not two competing mechanisms.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceListId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "minQuantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "unitPriceMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceList",
+          "type": "PriceList",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([priceListId, variantId, minQuantity])",
+        "@@index([variantId])"
+      ]
+    },
+    {
       "name": "Product",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 92,
+      "line": 108,
       "doc": "",
       "fields": [
         {
@@ -29816,7 +30385,7 @@
     {
       "name": "ProductAiSuggestion",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 628,
+      "line": 644,
       "doc": "WO-9.1.",
       "fields": [
         {
@@ -29910,9 +30479,60 @@
       ]
     },
     {
+      "name": "ProductBundle",
+      "file": "apps/api/prisma/schema/catalog.prisma",
+      "line": 719,
+      "doc": "150-product-kitting-bundles.md — a sellable shell over existing variants, never a new physical item: selling one is entirely expressed as decrementing its components (BundlesService.sellBundle()), an…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "variantId",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "components",
+          "type": "BundleComponent[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
       "name": "ProductCrossSell",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 679,
+      "line": 695,
       "doc": "",
       "fields": [
         {
@@ -29980,7 +30600,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 364,
+      "line": 380,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -30012,7 +30632,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 329,
+      "line": 345,
       "doc": "",
       "fields": [
         {
@@ -30107,7 +30727,7 @@
     {
       "name": "ProductImageTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 352,
+      "line": 368,
       "doc": "Alt text per locale.",
       "fields": [
         {
@@ -30153,7 +30773,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 385,
+      "line": 401,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -30228,7 +30848,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 402,
+      "line": 418,
       "doc": "",
       "fields": [
         {
@@ -30274,7 +30894,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 414,
+      "line": 430,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -30349,7 +30969,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 432,
+      "line": 448,
       "doc": "",
       "fields": [
         {
@@ -30467,7 +31087,7 @@
     {
       "name": "ProductSizeBias",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 651,
+      "line": 667,
       "doc": "WO-9.2.",
       "fields": [
         {
@@ -30532,7 +31152,7 @@
     {
       "name": "ProductTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 184,
+      "line": 200,
       "doc": "",
       "fields": [
         {
@@ -30628,7 +31248,7 @@
     {
       "name": "ProductVariant",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 222,
+      "line": 238,
       "doc": "",
       "fields": [
         {
@@ -30997,7 +31617,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 446,
+      "line": 462,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -31803,7 +32423,7 @@
     {
       "name": "Redirect",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 516,
+      "line": 532,
       "doc": "A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).",
       "fields": [
         {
@@ -35527,7 +36147,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 311,
+      "line": 327,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -39226,7 +39846,7 @@
     {
       "name": "AiSuggestionKind",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 610,
+      "line": 626,
       "values": [
         "ALT_TEXT",
         "META_TITLE",
@@ -39238,7 +39858,7 @@
     {
       "name": "AiSuggestionStatus",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 618,
+      "line": 634,
       "values": [
         "PENDING",
         "APPROVED",
@@ -39422,7 +40042,7 @@
     {
       "name": "CollectionSortStrategy",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 541,
+      "line": 557,
       "values": [
         "MANUAL",
         "BEST_SELLING",
@@ -39846,7 +40466,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 373,
+      "line": 389,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -39985,7 +40605,7 @@
     {
       "name": "ProductCrossSellKind",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 673,
+      "line": 689,
       "values": [
         "MANUAL",
         "CO_OCCURRENCE",
@@ -42244,6 +42864,54 @@
         "GlobalProductReferenceLink",
         "GlobalProductReferenceTranslation",
         "MarketplacePublisherCredential"
+      ]
+    },
+    {
+      "folder": "20260926134514_wo146_pricing_module",
+      "file": "apps/api/prisma/schema/migrations/20260926134514_wo146_pricing_module/migration.sql",
+      "date": "2026-09-26",
+      "slug": "wo146_pricing_module",
+      "statements": 10,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "PriceList",
+        "PriceListAssignment",
+        "PriceListEntry"
+      ]
+    },
+    {
+      "folder": "20260926135636_wo47_category_presets",
+      "file": "apps/api/prisma/schema/migrations/20260926135636_wo47_category_presets/migration.sql",
+      "date": "2026-09-26",
+      "slug": "wo47_category_presets",
+      "statements": 2,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX"
+      ],
+      "tables": [
+        "CategoryPreset"
+      ]
+    },
+    {
+      "folder": "20260926140325_wo150_product_bundles",
+      "file": "apps/api/prisma/schema/migrations/20260926140325_wo150_product_bundles/migration.sql",
+      "date": "2026-09-26",
+      "slug": "wo150_product_bundles",
+      "statements": 5,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "BundleComponent",
+        "ProductBundle"
       ]
     }
   ],
@@ -46016,6 +46684,33 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/catalog/bundles.service.spec.ts",
+      "module": "catalog",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "BundlesService",
+        "bundlesByVariantId",
+        "sellBundle",
+        "restockBundle",
+        "bundleAvailableStock",
+        "create",
+        "update",
+        "remove"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/catalog/category-preset.service.spec.ts",
+      "module": "catalog",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "CategoryPresetService",
+        "preview",
+        "apply"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/catalog/import-assistant.service.spec.ts",
       "module": "catalog",
       "kind": "unit test",
@@ -46761,6 +47456,21 @@
         "update",
         "rotateDeviceKey",
         "verifyDeviceKey"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/pricing/pricing.service.spec.ts",
+      "module": "pricing",
+      "kind": "unit test",
+      "cases": 19,
+      "describes": [
+        "PricingService",
+        "resolvePrices",
+        "resolvePrice",
+        "createPriceList",
+        "updatePriceList",
+        "setAssignment",
+        "removeAssignment"
       ]
     },
     {
@@ -48759,7 +49469,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 285,
-      "bytes": 12311,
+      "bytes": 12342,
       "doc": "The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a",
       "symbols": []
     },
@@ -48777,7 +49487,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 198,
-      "bytes": 8387,
+      "bytes": 8407,
       "doc": "Attendance, shifts and leave —",
       "symbols": []
     },
@@ -48803,8 +49513,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 693,
-      "bytes": 26272,
+      "lines": 742,
+      "bytes": 28304,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -48822,7 +49532,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 665,
-      "bytes": 27853,
+      "bytes": 28478,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -48867,7 +49577,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 171,
-      "bytes": 7045,
+      "bytes": 7051,
       "doc": "Employee assets: which physical equipment (laptop, phone, uniform) is",
       "symbols": []
     },
@@ -49700,6 +50410,33 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926134514_wo146_pricing_module/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 67,
+      "bytes": 2576,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260926135636_wo47_category_presets/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 21,
+      "bytes": 717,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260926140325_wo150_product_bundles/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 36,
+      "bytes": 1319,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -49740,7 +50477,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 132,
-      "bytes": 5825,
+      "bytes": 5959,
       "doc": "The org tree: offices, regions, departments — whatever shape a client's",
       "symbols": []
     },
@@ -49767,7 +50504,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 55,
-      "bytes": 1867,
+      "bytes": 1922,
       "doc": "Payments. `provider` is a plain string key, not an enum, so a new gateway is",
       "symbols": []
     },
@@ -49787,6 +50524,15 @@
       "lines": 139,
       "bytes": 5672,
       "doc": "The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/pricing.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 58,
+      "bytes": 2406,
+      "doc": "The `pricing` module — 146-wholesale-tiered-pricing.md",
       "symbols": []
     },
     {
@@ -49821,7 +50567,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 159,
-      "bytes": 8184,
+      "bytes": 8210,
       "doc": "WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md).",
       "symbols": []
     },
@@ -49830,7 +50576,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 142,
-      "bytes": 6349,
+      "bytes": 6528,
       "doc": "Receivables: CreditNote/DebitNote, customer credit limits, and dunning —",
       "symbols": []
     },
@@ -49875,7 +50621,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 77,
-      "bytes": 3142,
+      "bytes": 3151,
       "doc": "Financial institution settlement partnerships",
       "symbols": []
     },
@@ -49929,7 +50675,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 185,
-      "bytes": 8074,
+      "bytes": 8182,
       "doc": "155-wallet-stored-value-merchant-escrow.md",
       "symbols": []
     },
@@ -49955,8 +50701,8 @@
       "path": "apps/api/prisma/seed.ts",
       "area": "api",
       "kind": "module",
-      "lines": 3100,
-      "bytes": 107115,
+      "lines": 3199,
+      "bytes": 111977,
       "doc": "",
       "symbols": []
     },
@@ -55278,8 +56024,8 @@
       "path": "apps/api/src/modules/cart/cart.guest-contact.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 77,
-      "bytes": 3061,
+      "lines": 79,
+      "bytes": 3215,
       "doc": "",
       "symbols": []
     },
@@ -55287,14 +56033,14 @@
       "path": "apps/api/src/modules/cart/cart.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 18,
-      "bytes": 710,
+      "lines": 22,
+      "bytes": 1003,
       "doc": "",
       "symbols": [
         {
           "name": "CartModule",
           "kind": "class",
-          "line": 17
+          "line": 21
         }
       ]
     },
@@ -55302,24 +56048,24 @@
       "path": "apps/api/src/modules/cart/cart.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 704,
-      "bytes": 24792,
+      "lines": 720,
+      "bytes": 25735,
       "doc": "",
       "symbols": [
         {
           "name": "CartLineView",
           "kind": "interface",
-          "line": 46
+          "line": 47
         },
         {
           "name": "CartView",
           "kind": "interface",
-          "line": 88
+          "line": 89
         },
         {
           "name": "CartService",
           "kind": "class",
-          "line": 111
+          "line": 112
         }
       ]
     },
@@ -55433,17 +56179,41 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/catalog/bundles.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 201,
+      "bytes": 8336,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/catalog/bundles.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 224,
+      "bytes": 8427,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BundlesService",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/catalog/catalog-admin.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 304,
-      "bytes": 9213,
+      "lines": 358,
+      "bytes": 11247,
       "doc": "",
       "symbols": [
         {
           "name": "CatalogAdminController",
           "kind": "class",
-          "line": 79
+          "line": 82
         }
       ]
     },
@@ -55481,14 +56251,14 @@
       "path": "apps/api/src/modules/catalog/catalog.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 57,
-      "bytes": 2562,
+      "lines": 64,
+      "bytes": 2928,
       "doc": "",
       "symbols": [
         {
           "name": "CatalogModule",
           "kind": "class",
-          "line": 56
+          "line": 63
         }
       ]
     },
@@ -55533,6 +56303,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/catalog/category-preset.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 100,
+      "bytes": 4242,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/catalog/category-preset.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 137,
+      "bytes": 4901,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CategoryPresetService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/catalog/dto/brand.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -55549,6 +56343,31 @@
           "name": "UpsertBrandDto",
           "kind": "class",
           "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/catalog/dto/bundle.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 37,
+      "bytes": 750,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BundleComponentDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "CreateBundleDto",
+          "kind": "class",
+          "line": 14
+        },
+        {
+          "name": "UpdateBundleDto",
+          "kind": "class",
+          "line": 25
         }
       ]
     },
@@ -57230,14 +58049,14 @@
       "path": "apps/api/src/modules/fulfilment/fulfilment.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 44,
-      "bytes": 1792,
+      "lines": 48,
+      "bytes": 2082,
       "doc": "",
       "symbols": [
         {
           "name": "FulfilmentModule",
           "kind": "class",
-          "line": 43
+          "line": 47
         }
       ]
     },
@@ -57319,14 +58138,14 @@
       "path": "apps/api/src/modules/fulfilment/returns.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 382,
-      "bytes": 14048,
+      "lines": 405,
+      "bytes": 15086,
       "doc": "",
       "symbols": [
         {
           "name": "ReturnsService",
           "kind": "class",
-          "line": 46
+          "line": 47
         }
       ]
     },
@@ -57334,8 +58153,8 @@
       "path": "apps/api/src/modules/fulfilment/returns.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 178,
-      "bytes": 6639,
+      "lines": 182,
+      "bytes": 6953,
       "doc": "",
       "symbols": []
     },
@@ -58763,8 +59582,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 109,
-      "bytes": 3524,
+      "lines": 113,
+      "bytes": 3725,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -58783,24 +59602,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 239,
-      "bytes": 13245,
+      "lines": 246,
+      "bytes": 13675,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 51
+          "line": 52
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 82
+          "line": 83
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 215
+          "line": 222
         }
       ]
     },
@@ -59186,8 +60005,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 405,
-      "bytes": 17475,
+      "lines": 416,
+      "bytes": 18191,
       "doc": "",
       "symbols": []
     },
@@ -59215,14 +60034,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 55,
-      "bytes": 2818,
+      "lines": 57,
+      "bytes": 2966,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 54
+          "line": 56
         }
       ]
     },
@@ -59230,8 +60049,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1304,
-      "bytes": 51883,
+      "lines": 1340,
+      "bytes": 53868,
       "doc": "",
       "symbols": [
         {
@@ -59252,7 +60071,7 @@
         {
           "name": "OrdersService",
           "kind": "class",
-          "line": 106
+          "line": 108
         }
       ]
     },
@@ -60516,6 +61335,105 @@
           "name": "PosModule",
           "kind": "class",
           "line": 43
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/pricing/dto/pricing.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 93,
+      "bytes": 1733,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PriceListEntryDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "CreatePriceListDto",
+          "kind": "class",
+          "line": 18
+        },
+        {
+          "name": "UpdatePriceListDto",
+          "kind": "class",
+          "line": 33
+        },
+        {
+          "name": "SetPriceListAssignmentDto",
+          "kind": "class",
+          "line": 50
+        },
+        {
+          "name": "PreviewPriceDto",
+          "kind": "class",
+          "line": 60
+        },
+        {
+          "name": "PriceListEntryQuantityDto",
+          "kind": "class",
+          "line": 73
+        },
+        {
+          "name": "BatchPreviewPriceDto",
+          "kind": "class",
+          "line": 82
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/pricing/pricing.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 72,
+      "bytes": 3227,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PricingController",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/pricing/pricing.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 22,
+      "bytes": 920,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PricingModule",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/pricing/pricing.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 212,
+      "bytes": 9381,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/pricing/pricing.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 255,
+      "bytes": 10989,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PricingService",
+          "kind": "class",
+          "line": 23
         }
       ]
     },
@@ -77816,8 +78734,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 5044,
-      "bytes": 292643,
+      "lines": 5151,
+      "bytes": 299020,
       "doc": "",
       "symbols": []
     },
@@ -77853,7 +78771,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 528,
-      "bytes": 70573,
+      "bytes": 70904,
       "doc": "",
       "symbols": []
     },
@@ -78500,8 +79418,8 @@
       "path": "docs/implementation/b2b-wholesale-multientity/111-hierarchical-entity-isolation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 68,
-      "bytes": 3431,
+      "lines": 81,
+      "bytes": 4256,
       "doc": "",
       "symbols": []
     },
@@ -78509,8 +79427,8 @@
       "path": "docs/implementation/b2b-wholesale-multientity/146-wholesale-tiered-pricing.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 182,
-      "bytes": 8682,
+      "lines": 203,
+      "bytes": 10049,
       "doc": "",
       "symbols": []
     },
@@ -78536,8 +79454,8 @@
       "path": "docs/implementation/b2b-wholesale-multientity/73-multi-entity-multi-company-configuration.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 127,
-      "bytes": 7599,
+      "lines": 139,
+      "bytes": 8401,
       "doc": "",
       "symbols": []
     },
@@ -78554,8 +79472,8 @@
       "path": "docs/implementation/catalog-variants-pricing/150-product-kitting-bundles.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 184,
-      "bytes": 8894,
+      "lines": 211,
+      "bytes": 10760,
       "doc": "",
       "symbols": []
     },
@@ -78563,8 +79481,8 @@
       "path": "docs/implementation/catalog-variants-pricing/47-preconfigured-sector-taxonomy.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 154,
-      "bytes": 8084,
+      "lines": 170,
+      "bytes": 9164,
       "doc": "",
       "symbols": []
     },
@@ -80994,8 +81912,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1059,
-      "bytes": 34584,
+      "lines": 1088,
+      "bytes": 35651,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -81016,52 +81934,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 625
+          "line": 650
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 627
+          "line": 652
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 637
+          "line": 662
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 644
+          "line": 669
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 840
+          "line": 865
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1023
+          "line": 1052
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1042
+          "line": 1071
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1051
+          "line": 1080
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1052
+          "line": 1081
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1055
+          "line": 1084
         }
       ]
     },
@@ -81648,8 +82566,8 @@
       "path": "scripts/check-module-boundaries.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 572,
-      "bytes": 24744,
+      "lines": 592,
+      "bytes": 25919,
       "doc": "",
       "symbols": []
     },

@@ -563,7 +563,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 5044 |  |
+| `DECISIONS.md` | doc | 5151 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -674,19 +674,19 @@ All 396 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `111-hierarchical-entity-isolation.md` | doc | 68 |  |
-| `146-wholesale-tiered-pricing.md` | doc | 182 |  |
+| `111-hierarchical-entity-isolation.md` | doc | 81 |  |
+| `146-wholesale-tiered-pricing.md` | doc | 203 |  |
 | `149-b2b-accounts-approvals-sector-packs.md` | doc | 163 |  |
 | `165-cross-tenant-marketplace-directory.md` | doc | 487 |  |
-| `73-multi-entity-multi-company-configuration.md` | doc | 127 |  |
+| `73-multi-entity-multi-company-configuration.md` | doc | 139 |  |
 
 ### `docs/implementation/catalog-variants-pricing` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `03-variants-sku-seo.md` | doc | 566 |  |
-| `150-product-kitting-bundles.md` | doc | 184 |  |
-| `47-preconfigured-sector-taxonomy.md` | doc | 154 |  |
+| `150-product-kitting-bundles.md` | doc | 211 |  |
+| `47-preconfigured-sector-taxonomy.md` | doc | 170 |  |
 
 ### `docs/implementation/commercial-licensing-agency` (14)
 

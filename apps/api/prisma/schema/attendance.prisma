@@ -118,21 +118,21 @@ model AttendanceEvent {
 
   /// What produced it — a device, a self-service punch, a manager's screen,
   /// or an import. Needed to judge trust when two sources disagree.
-  source     AttendanceSource
-  deviceId   String?
+  source   AttendanceSource
+  deviceId String?
 
   /// Set when this row corrects an earlier one. The earlier row stays.
   /// Bare scalar, no relation — see this file's own header for why.
-  correctsId String?
+  correctsId  String?
   /// Idempotency key from the device or import, so a replayed punch is a
   /// no-op rather than a second day's pay.
   externalRef String?
 
-  createdAt  DateTime @default(now())
+  createdAt DateTime @default(now())
 
-  user      User              @relation(fields: [userId], references: [id])
-  orgUnit   OrgUnit           @relation(fields: [orgUnitId], references: [id])
-  device    AttendanceDevice? @relation(fields: [deviceId], references: [id])
+  user       User                  @relation(fields: [userId], references: [id])
+  orgUnit    OrgUnit               @relation(fields: [orgUnitId], references: [id])
+  device     AttendanceDevice?     @relation(fields: [deviceId], references: [id])
   exceptions AttendanceException[]
 
   @@id([id, occurredAt])
@@ -176,16 +176,16 @@ enum AttendanceExceptionReason {
 /// query never has to reach back into the (much larger, partitioned)
 /// `AttendanceEvent` table just to filter by the caller's subtree.
 model AttendanceException {
-  id              String                    @id @default(cuid())
-  eventId         String
-  eventOccurredAt DateTime
-  userId          String
-  orgUnitId       String
-  reason          AttendanceExceptionReason
-  resolvedAt      DateTime?
+  id               String                    @id @default(cuid())
+  eventId          String
+  eventOccurredAt  DateTime
+  userId           String
+  orgUnitId        String
+  reason           AttendanceExceptionReason
+  resolvedAt       DateTime?
   resolvedByUserId String?
-  note            String?
-  createdAt       DateTime                  @default(now())
+  note             String?
+  createdAt        DateTime                  @default(now())
 
   event      AttendanceEvent @relation(fields: [eventId, eventOccurredAt], references: [id, occurredAt])
   user       User            @relation("AttendanceExceptionUser", fields: [userId], references: [id])

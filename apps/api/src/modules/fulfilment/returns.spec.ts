@@ -6,6 +6,7 @@ import { EventBusService } from '../../core/events/event-bus.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { InventoryService } from '../inventory/inventory.service';
+import { BundlesService } from '../catalog/bundles.service';
 import { ReturnsService } from './returns.service';
 
 /**
@@ -31,6 +32,9 @@ describe('ReturnsService', () => {
         { provide: EventBusService, useValue: { publish } },
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'main' } },
         { provide: InventoryService, useValue: { move, defaultLocationId: jest.fn().mockResolvedValue('loc-test') } },
+        // 150-product-kitting-bundles.md — no line in this suite returns a
+        // bundle, so an empty map is the correct, honest stub.
+        { provide: BundlesService, useValue: { bundlesByVariantId: jest.fn().mockResolvedValue(new Map()) } },
       ],
     }).compile();
 

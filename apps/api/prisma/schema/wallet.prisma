@@ -67,8 +67,8 @@ model WalletAccount {
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
 
-  customer User          @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  entries  WalletEntry[]
+  customer           User                      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  entries            WalletEntry[]
   adjustmentRequests WalletAdjustmentRequest[]
 
   @@index([organizationId])
@@ -88,16 +88,16 @@ model WalletEntry {
   orderId     String?
   /// Idempotency key — a Payment.id, an Order.id, a WalletAdjustmentRequest.id.
   /// Never a re-derived string (House Rule 11).
-  sourceRef String
+  sourceRef   String
   /// Set only for ADJUSTMENT — who is recorded as having caused the write:
   /// the requester for a below-threshold self-serve adjustment, or the
   /// approver's own decision for an above-threshold one (WalletAdjustmentRequest
   /// carries the requester in that case).
-  actorId String?
+  actorId     String?
   /// Required, human-readable, for ADJUSTMENT only — "a manual, always-
   /// reasoned correction" (§1's own words).
-  reason    String?
-  createdAt DateTime @default(now())
+  reason      String?
+  createdAt   DateTime        @default(now())
 
   account WalletAccount @relation(fields: [accountId], references: [id])
 
@@ -134,9 +134,9 @@ model WalletAdjustmentRequest {
   /// Set once APPROVED and the resulting WalletEntry is written —
   /// `@unique` is this table's own half of "the second copy of the write":
   /// a retried approve() call finds this already set and no-ops.
-  walletEntryId String?  @unique
-  createdAt     DateTime @default(now())
-  decidedAt     DateTime?
+  walletEntryId     String?                       @unique
+  createdAt         DateTime                      @default(now())
+  decidedAt         DateTime?
 
   account WalletAccount @relation(fields: [accountId], references: [id])
 
@@ -159,15 +159,15 @@ enum MerchantPayableStatus {
 /// hosting control plane, hence a plain scalar with no `@relation`,
 /// exactly as the doc's own Prisma snippet declares it.
 model MerchantPayable {
-  id               String                 @id @default(cuid())
-  organizationId   String
-  orderId          String                 @unique
-  grossMinor       Int
-  platformFeeMinor Int
-  netPayableMinor  Int
-  status           MerchantPayableStatus  @default(OPEN)
+  id                String                @id @default(cuid())
+  organizationId    String
+  orderId           String                @unique
+  grossMinor        Int
+  platformFeeMinor  Int
+  netPayableMinor   Int
+  status            MerchantPayableStatus @default(OPEN)
   scheduledPayoutAt DateTime?
-  paidAt           DateTime?
+  paidAt            DateTime?
 
   /// Set only while DISPUTED — the toxic-pair partner `resolve()` checks
   /// against, the same "never its own approver" shape

@@ -45,29 +45,29 @@ enum CreditDebitNoteStatus {
 /// created" discipline every other financial document in this repository
 /// already follows.
 model CreditNote {
-  id          String @id @default(cuid())
+  id               String                @id @default(cuid())
   /// Gapless per fiscal year within this node — documentNumber()'s own
   /// convention (document-number.ts), collapsing to the identical
   /// PREFIX-YEAR-SEQ a Solo deployment has always seen.
-  number      String @unique
-  customerId  String // Contact.id — bare scalar, see file header
+  number           String                @unique
+  customerId       String // Contact.id — bare scalar, see file header
   /// The Order this credits, if any — nullable: a goodwill credit may cite
   /// none. Renamed from the doc's own `invoiceId`; see file header.
-  orderId     String?
+  orderId          String?
   /// Set only once APPLIED against an Order OTHER than `orderId` — e.g. a
   /// return credited against invoice A later applied to invoice B.
   appliedToOrderId String?
-  amountMinor Int
-  reason      String
-  status      CreditDebitNoteStatus @default(DRAFT)
+  amountMinor      Int
+  reason           String
+  status           CreditDebitNoteStatus @default(DRAFT)
   /// The "threshold nobody approves alone" lens: who created this note —
   /// never its own approver (CreditNotesService.approve()).
-  createdById String
-  approvedById String?
-  issuedAt    DateTime?
-  voidedAt    DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdById      String
+  approvedById     String?
+  issuedAt         DateTime?
+  voidedAt         DateTime?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
 
   @@index([customerId, status])
   @@index([orderId])
@@ -78,8 +78,8 @@ model CreditNote {
 /// conflated with CreditNote: the two sit on opposite sides of the same
 /// double-entry system (R15).
 model DebitNote {
-  id             String @id @default(cuid())
-  number         String @unique
+  id             String                @id @default(cuid())
+  number         String                @unique
   supplierId     String // Supplier.id — bare scalar
   supplierBillId String? // SupplierBill.id — bare scalar, nullable
   amountMinor    Int
@@ -88,8 +88,8 @@ model DebitNote {
   createdById    String
   issuedAt       DateTime?
   voidedAt       DateTime?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
 
   @@index([supplierId, status])
 }
@@ -131,10 +131,10 @@ model DunningPolicy {
 /// step already sent, the same discipline every other registered source
 /// against a nightly watcher already requires.
 model DunningEvent {
-  id       String   @id @default(cuid())
-  orderId  String // Order.id — bare scalar
+  id        String   @id @default(cuid())
+  orderId   String // Order.id — bare scalar
   stepIndex Int
-  sentAt   DateTime @default(now())
+  sentAt    DateTime @default(now())
 
   @@unique([orderId, stepIndex])
   @@index([orderId])

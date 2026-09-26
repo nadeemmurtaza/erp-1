@@ -234,9 +234,9 @@ enum DepreciationMethod {
 }
 
 model AssetDepreciationSchedule {
-  id     String @id @default(cuid())
+  id      String             @id @default(cuid())
   /// hr.prisma's Asset.id — one active schedule per asset at a time.
-  assetId String @unique
+  assetId String             @unique
   method  DepreciationMethod
 
   /// Snapshotted from Asset.purchaseCostMinor at schedule creation — never
@@ -244,14 +244,14 @@ model AssetDepreciationSchedule {
   /// silently reshape an in-progress schedule (the version-stamp discipline
   /// this document's own scope lenses require).
   acquisitionCostMinor Int
-  salvageValueMinor    Int @default(0)
+  salvageValueMinor    Int      @default(0)
   usefulLifeMonths     Int
   /// DECLINING_BALANCE only; null for STRAIGHT_LINE.
   decliningRateBps     Int?
   startDate            DateTime
 
   createdById String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime  @default(now())
   /// Set when disposeAsset() closes this schedule out. A closed schedule's
   /// own postings are never deleted — the reversal document lens.
   closedAt    DateTime?

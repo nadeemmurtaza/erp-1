@@ -68,6 +68,31 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
 
   { key: 'orders.manage', label: 'Manage orders and shipments', category: 'Sales', sensitivity: 'medium' },
   {
+    // 146-wholesale-tiered-pricing.md.
+    key: 'pricing.price-lists.manage',
+    label: 'Create and edit wholesale price lists and quantity breaks',
+    category: 'Sales',
+    sensitivity: 'medium',
+  },
+  {
+    // Deliberately seeded to no role by default — the same "threshold
+    // nobody approves alone" discipline org.access.grant/hr.attendance.reconcile
+    // already establish (ADR-045/046). A price-list entry meaningfully
+    // below the variant's own basePrice is a real margin decision;
+    // PricingService.assertEntriesNeedNoApproval() refuses the write
+    // without this key.
+    key: 'pricing.price-lists.approve',
+    label: 'Set a wholesale price below a variant\'s own base price',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
+  {
+    key: 'pricing.assignments.manage',
+    label: 'Assign a price list to a customer or a customer tag',
+    category: 'Sales',
+    sensitivity: 'medium',
+  },
+  {
     key: 'pos.manage',
     label: 'Register till terminals and issue their device credentials',
     category: 'Sales',
@@ -854,6 +879,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'organization.view',
     'crm.manage',
     'orders.manage',
+    'pricing.price-lists.manage',
+    'pricing.assignments.manage',
     'payments.approve',
     'pos.operate',
     'stitching.jobs.view_queue',
@@ -939,6 +966,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'accounting.view',
     'crm.manage',
     'orders.manage',
+    'pricing.price-lists.manage',
+    'pricing.assignments.manage',
     'payments.approve',
     'stitching.jobs.view_queue',
     'stitching.jobs.change_stage',

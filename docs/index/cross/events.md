@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **63** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **64** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -71,6 +71,7 @@ order" is a new file, not an edit to checkout.
 | `identity_verification.approved` | `IdentityVerificationApproved` | `identity-verification` | _none_ |
 | `identity_verification.rejected` | `IdentityVerificationRejected` | `identity-verification` | _none_ |
 | `identity_verification.expired` | `IdentityVerificationExpired` | `identity-verification` | _none_ |
+| `hr.posting_ended` | `PostingEnded` | `hr` | `tasks` |
 | `finance.expense_recorded` | `ExpenseRecorded` | `accounting`, `finance` | `accounting`, `finance` |
 | `finance.order_economics_computed` | `OrderEconomicsComputed` | `finance` | _none_ |
 | `payroll.run_posted` | `PayrollRunPosted` | `accounting`, `payroll` | `accounting` |
@@ -566,6 +567,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
+| `apps/api/src/modules/purchasing/requisition-task-source.ts:38` | `purchasing` |
 | `apps/api/src/modules/purchasing/requisition.service.ts:59` | `purchasing` |
 
 
@@ -770,6 +772,23 @@ _Nothing subscribes. Publishing it is a no-op today._
 **Subscribed by**
 
 _Nothing subscribes. Publishing it is a no-op today._
+
+### `hr.posting_ended`
+
+> PostingService.end() (hr-people-org/20-people-positions-ranks.md) — added for tasks-notifications-support/23-tasks-allotment-tracking.md (DECISIONS.md ADR-049): doc 20's own build never needed a doma…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/hr/people.service.ts:215` | `hr` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onPostingEnded()` | `apps/api/src/modules/tasks/task-leaver.listener.ts:29` | `tasks` |
 
 ### `finance.expense_recorded`
 

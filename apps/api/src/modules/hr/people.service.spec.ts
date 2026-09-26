@@ -2,6 +2,8 @@ import { BadRequestException, ConflictException, NotFoundException } from '@nest
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { EventBusService } from '../../core/events/event-bus.service';
+import { DomainEvent } from '../../core/events/domain-events';
 import { PeopleService } from './people.service';
 
 /**
@@ -12,6 +14,7 @@ describe('PeopleService', () => {
   let service: PeopleService;
   let prisma: any;
   let audit: any;
+  let eventBus: any;
 
   const posting = (over: Partial<any> = {}) => ({
     id: 'p1',
@@ -34,9 +37,15 @@ describe('PeopleService', () => {
       $transaction: jest.fn((fn: any) => fn(prisma)),
     };
     audit = { recordEvidence: jest.fn() };
+    eventBus = { publish: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PeopleService, { provide: PrismaService, useValue: prisma }, { provide: AuditService, useValue: audit }],
+      providers: [
+        PeopleService,
+        { provide: PrismaService, useValue: prisma },
+        { provide: AuditService, useValue: audit },
+        { provide: EventBusService, useValue: eventBus },
+      ],
     }).compile();
 
     service = module.get(PeopleService);
@@ -154,17 +163,25 @@ describe('PeopleService', () => {
       await expect(service.end('missing', undefined, 'admin1')).rejects.toBeInstanceOf(NotFoundException);
     });
 
-    it('is idempotent — ending an already-ended posting does nothing', async () => {
+    it('is idempotent — ending an already-ended posting does nothing, and never re-publishes PostingEnded', async () => {
       prisma.posting.findUnique.mockResolvedValue(posting({ endedOn: new Date('2026-02-01') }));
       await service.end('p1', undefined, 'admin1');
       expect(prisma.posting.update).not.toHaveBeenCalled();
+      expect(eventBus.publish).not.toHaveBeenCalled();
     });
 
-    it('ends an open posting and audits it', async () => {
+    it('ends an open posting, audits it, and publishes PostingEnded exactly once in the same transaction', async () => {
       prisma.posting.findUnique.mockResolvedValue(posting());
-      prisma.posting.update.mockResolvedValue(posting({ endedOn: new Date() }));
-      await service.end('p1', undefined, 'admin1');
+      const endedOn = new Date('2026-03-01T00:00:00.000Z');
+      prisma.posting.update.mockResolvedValue(posting({ endedOn }));
+      await service.end('p1', endedOn, 'admin1');
       expect(audit.recordEvidence).toHaveBeenCalledWith(prisma, expect.objectContaining({ action: 'posting.ended' }));
+      expect(eventBus.publish).toHaveBeenCalledTimes(1);
+      expect(eventBus.publish).toHaveBeenCalledWith(
+        DomainEvent.PostingEnded,
+        { postingId: 'p1', userId: 'u1', positionId: 'pos1', endedOn: endedOn.toISOString() },
+        prisma, // the tx client — same transaction as the endedOn write and the audit row
+      );
     });
   });
 });

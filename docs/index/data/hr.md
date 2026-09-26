@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Asset`  <sub>`apps/api/prisma/schema/hr.prisma:123`</sub>
+### `Asset`  <sub>`apps/api/prisma/schema/hr.prisma:128`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -38,7 +38,7 @@ against a real database.
 
 Indexes: `@@index([status])`
 
-### `AssetAssignment`  <sub>`apps/api/prisma/schema/hr.prisma:152`</sub>
+### `AssetAssignment`  <sub>`apps/api/prisma/schema/hr.prisma:157`</sub>
 
 > One row per issue/return cycle — an asset's full custody history, never overwritten.
 
@@ -93,10 +93,11 @@ Indexes: `@@index([status])`
 | `reportsTo` | `Position?` | relation, optional | @relation("Reporting", fields: [reportsToId], references: [id]) |
 | `reports` | `Position[]` | relation | @relation("Reporting") |
 | `postings` | `Posting[]` |  |  |
+| `tasks` | `Task[]` |  |  |
 
 Indexes: `@@index([orgUnitId])` · `@@index([reportsToId])`
 
-### `Posting`  <sub>`apps/api/prisma/schema/hr.prisma:97`</sub>
+### `Posting`  <sub>`apps/api/prisma/schema/hr.prisma:102`</sub>
 
 > Who holds which post, when.
 
@@ -128,7 +129,7 @@ Indexes: `@@index([userId, endedOn])` · `@@index([positionId, endedOn])`
 
 ## Enums
 
-### `AssetStatus`  <sub>`apps/api/prisma/schema/hr.prisma:116`</sub>
+### `AssetStatus`  <sub>`apps/api/prisma/schema/hr.prisma:121`</sub>
 
 | Value | Meaning |
 |---|---|

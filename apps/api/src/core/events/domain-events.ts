@@ -71,6 +71,17 @@ export const DomainEvent = {
   IdentityVerificationRejected: 'identity_verification.rejected',
   IdentityVerificationExpired: 'identity_verification.expired',
 
+  /**
+   * PostingService.end() (hr-people-org/20-people-positions-ranks.md) —
+   * added for tasks-notifications-support/23-tasks-allotment-tracking.md
+   * (DECISIONS.md ADR-049): doc 20's own build never needed a domain event,
+   * so nobody added one until doc 23's leaver-handling subscriber
+   * (tasks/task-leaver.listener.ts) needed something to react to. Fires
+   * once per posting actually ended — never on the idempotent "already
+   * ended" no-op path of end(), so a retried call cannot double-fire it.
+   */
+  PostingEnded: 'hr.posting_ended',
+
   /** FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today. */
   ExpenseRecorded: 'finance.expense_recorded',
   /** OrderEconomicsService's own derived-row write (WO-23.1's WO-B.3) — not a GL posting, just notice that a fresh contribution-per-order figure exists. */
@@ -570,6 +581,15 @@ export interface IdentityVerificationPayload {
   method: string | null;
 }
 
+/** PostingService.end() — the exact shape tasks/task-leaver.listener.ts needs to unclaim a post's open tasks and surface them to reportsTo (ADR-049). */
+export interface PostingEndedPayload {
+  postingId: string;
+  userId: string;
+  positionId: string;
+  /** ISO — the posting's own endedOn, never `new Date()` at publish time (R2). */
+  endedOn: string;
+}
+
 export interface DomainEventPayloads {
   [DomainEvent.OrderPlaced]: OrderPlacedPayload;
   [DomainEvent.OrderStatusChanged]: OrderStatusChangedPayload;
@@ -612,6 +632,7 @@ export interface DomainEventPayloads {
   [DomainEvent.IdentityVerificationApproved]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationRejected]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationExpired]: IdentityVerificationPayload;
+  [DomainEvent.PostingEnded]: PostingEndedPayload;
   [DomainEvent.ExpenseRecorded]: ExpenseRecordedPayload;
   [DomainEvent.OrderEconomicsComputed]: OrderEconomicsComputedPayload;
   [DomainEvent.PayrollRunPosted]: PayrollRunPostedPayload;

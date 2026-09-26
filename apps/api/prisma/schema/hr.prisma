@@ -86,6 +86,11 @@ model Position {
   reportsTo Position?  @relation("Reporting", fields: [reportsToId], references: [id])
   reports   Position[] @relation("Reporting")
   postings  Posting[]
+  /// tasks-notifications-support/23-tasks-allotment-tracking.md (ADR-049) —
+  /// the durable address work is assigned to. Cross-schema relation into
+  /// tasks.prisma, same pack ('core'), no TypeScript coupling: `tasks`
+  /// never imports `hr` and `hr` never imports `tasks`.
+  tasks     Task[]
 
   @@index([orgUnitId])
   @@index([reportsToId])

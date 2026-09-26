@@ -6,6 +6,7 @@ import { RequisitionService } from './requisition.service';
 import { PurchasingCron } from './purchasing.cron';
 import { PurchasingReorderListener } from './reorder.listener';
 import { GoodsReceiptReplicationListener } from './goods-receipt-replication.listener';
+import { RequisitionTaskSource } from './requisition-task-source';
 import { PurchasingMetricsProvider, PurchasingSpendMetricsProvider } from './purchasing.metrics';
 import { PurchaseOrderFeedSource } from './purchase-order-feed.source';
 
@@ -22,6 +23,7 @@ import { SettingsModule } from '../../core/settings/settings.module';
     PurchasingCron,
     PurchasingReorderListener,
     GoodsReceiptReplicationListener,
+    RequisitionTaskSource,
     PurchasingMetricsProvider,
     PurchasingSpendMetricsProvider,
     PurchaseOrderFeedSource,

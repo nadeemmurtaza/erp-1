@@ -3,18 +3,18 @@
 
 # Every tracked file
 
-All **2,152** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,171** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 940 | 131,667 | [files/api.md](../files/api.md) |
-| apps/web | 392 | 64,048 | [files/web.md](../files/web.md) |
+| apps/api | 957 | 133,654 | [files/api.md](../files/api.md) |
+| apps/web | 394 | 64,541 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 2,000 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 79 | 8,144 | [files/packages.md](../files/packages.md) |
+| packages/* | 79 | 8,201 | [files/packages.md](../files/packages.md) |
 | docs/* | 396 | 66,172 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 30,053 | [files/infra.md](../files/infra.md) |
 | repository root files | 208 | 20,693 | [files/root.md](../files/root.md) |
@@ -29,18 +29,18 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 421 |
-| unit test | 257 |
-| page | 196 |
-| service | 171 |
-| module | 158 |
-| controller | 126 |
+| unit test | 263 |
+| page | 198 |
+| service | 174 |
+| module | 159 |
+| controller | 127 |
 | component | 116 |
-| dto | 114 |
-| migration | 95 |
-| nest module | 84 |
-| prisma schema | 52 |
+| dto | 115 |
+| migration | 96 |
+| nest module | 85 |
+| prisma schema | 53 |
 | script | 39 |
-| event subscriber | 31 |
+| event subscriber | 32 |
 | json | 29 |
 | scheduled job | 29 |
 | react | 29 |
@@ -49,9 +49,9 @@ name a new file: the convention is what makes it findable.
 | e2e test | 20 |
 | file | 13 |
 | yaml | 12 |
+| registry | 11 |
 | config | 11 |
 | loading | 11 |
-| registry | 10 |
 | guard | 7 |
 | constants | 7 |
 | layout | 6 |

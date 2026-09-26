@@ -3,7 +3,7 @@
 
 # Migrations
 
-**95** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**96** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -127,6 +127,7 @@ nothing here fails a build.
 | 2026-09-26 | `add_org_unit_grant` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | OrgUnitGrant |
 | 2026-09-26 | `add_embedded_widgets` | 3 | CREATE TABLE, CREATE UNIQUE INDEX, ALTER TABLE | EmbeddedWidget |
 | 2026-09-26 | `add_attendance` | 44 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | AttendanceDevice, AttendanceEvent, AttendanceEvent_default, AttendanceException, Shift |
+| 2026-09-26 | `add_tasks` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Task, TaskStageDefinition, TaskTransition |
 | 2026-09-26 | `wo166_product_reference_registry` | 25 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | GlobalProductReference, GlobalProductReferenceFlag, GlobalProductReferenceImage, GlobalProductReferenceLink,… |
 
 

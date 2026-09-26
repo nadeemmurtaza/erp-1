@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **738** endpoints across **133** controllers, with the access rule that actually guards each one.
+All **749** endpoints across **135** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -1033,6 +1033,22 @@ never authorization.
 | POST | `/stitching/bookings/:number/track` | **PUBLIC** | `StitchingController.track` | Track a booking with the phone number it was made with |
 | GET | `/stitching/garments` | **PUBLIC** | `StitchingController.garments` |  |
 | GET | `/stitching/option-groups` | **PUBLIC** | `StitchingController.optionGroups` | Style options for a garment, with their price deltas |
+
+### [`tasks`](../modules/tasks.md) (11)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/admin/tasks` | `tasks.assign` | `TasksController.create` | Create a task at a post |
+| GET | `/admin/tasks/:id` | `tasks.view` | `TasksController.get` | One task, with its full transition history |
+| POST | `/admin/tasks/:id/assign` | `tasks.assign` | `TasksController.assign` | Assign a task to a person, or clear it (null) to unclaim |
+| POST | `/admin/tasks/:id/close` | `tasks.close` | `TasksController.close` | Mark a task DONE or CANCELLED |
+| POST | `/admin/tasks/:id/transition` | `tasks.assign` | `TasksController.transition` | Move a task between OPEN/IN_PROGRESS/BLOCKED, or change its stage. Use /close t… |
+| GET | `/admin/tasks/my` | signed-in | `TasksController.myTasks` | Tasks currently assigned to me |
+| GET | `/admin/tasks/post/:positionId` | `tasks.view` | `TasksController.postQueue` | Every task at a post — the post queue |
+| GET | `/admin/tasks/reports/:positionId/unclaimed` | `tasks.view` | `TasksController.unclaimedForReports` | Unclaimed open tasks at every post reporting to this one — the leaver-handling… |
+| GET | `/admin/tasks/stages` | `tasks.view` `tasks.admin` | `TaskStagesController.list` | Every workflow stage, in order |
+| POST | `/admin/tasks/stages` | `tasks.admin` | `TaskStagesController.create` | Add a stage |
+| POST | `/admin/tasks/stages/:id/reorder` | `tasks.admin` | `TaskStagesController.reorder` | Reorder a stage — does not rewrite the history of tasks that already moved thro… |
 
 ### [`tax`](../modules/tax.md) (8)
 

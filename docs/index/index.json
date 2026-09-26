@@ -3,10 +3,10 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2084,
-    "lines": 320837,
-    "routes": 706,
-    "controllers": 127,
+    "files": 2100,
+    "lines": 322343,
+    "routes": 709,
+    "controllers": 128,
     "models": 254,
     "enums": 118,
     "migrations": 91,
@@ -14,7 +14,7 @@
     "permissions": 93,
     "screens": 242,
     "crons": 22,
-    "specs": 261,
+    "specs": 268,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 897,
-      "lines": 127511,
-      "bytes": 4890789,
+      "files": 911,
+      "lines": 128761,
+      "bytes": 4944432,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,15 +50,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 385,
-      "lines": 62789,
-      "bytes": 2264953,
+      "files": 387,
+      "lines": 62970,
+      "bytes": 2271804,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 64291,
-      "bytes": 3822558,
+      "lines": 64366,
+      "bytes": 3827359,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -123,10 +123,12 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/analytics/analytics.category-velocity.spec.ts",
         "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
         "apps/api/src/modules/analytics/analytics.controller.ts",
         "apps/api/src/modules/analytics/analytics.customers.spec.ts",
         "apps/api/src/modules/analytics/analytics.inventory.spec.ts",
+        "apps/api/src/modules/analytics/analytics.lifecycle.spec.ts",
         "apps/api/src/modules/analytics/analytics.metrics.spec.ts",
         "apps/api/src/modules/analytics/analytics.metrics.ts",
         "apps/api/src/modules/analytics/analytics.module.ts",
@@ -135,13 +137,14 @@
         "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
         "apps/api/src/modules/analytics/analytics.sales.spec.ts",
         "apps/api/src/modules/analytics/analytics.service.ts",
+        "apps/api/src/modules/analytics/analytics.summary.spec.ts",
         "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
         "apps/api/src/modules/analytics/dto/analytics.dto.ts",
         "apps/api/src/modules/analytics/dto/cards.dto.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.ts"
       ],
-      "routes": 24,
+      "routes": 26,
       "page": "docs/index/modules/analytics.md"
     },
     {
@@ -571,6 +574,8 @@
         "apps/api/src/modules/orders/instalment-plan.service.spec.ts",
         "apps/api/src/modules/orders/instalment-plan.service.ts",
         "apps/api/src/modules/orders/notification.subscriber.ts",
+        "apps/api/src/modules/orders/order-feed.source.spec.ts",
+        "apps/api/src/modules/orders/order-feed.source.ts",
         "apps/api/src/modules/orders/order-replication.listener.spec.ts",
         "apps/api/src/modules/orders/order-replication.listener.ts",
         "apps/api/src/modules/orders/orders-pos.service.spec.ts",
@@ -647,6 +652,8 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/payments/notification.subscriber.ts",
+        "apps/api/src/modules/payments/payment-feed.source.spec.ts",
+        "apps/api/src/modules/payments/payment-feed.source.ts",
         "apps/api/src/modules/payments/payment-provider.ts",
         "apps/api/src/modules/payments/payments.controller.ts",
         "apps/api/src/modules/payments/payments.module.ts",
@@ -769,6 +776,8 @@
         "apps/api/src/modules/purchasing/dto/supplier.dto.ts",
         "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
         "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts",
+        "apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts",
+        "apps/api/src/modules/purchasing/purchase-order-feed.source.ts",
         "apps/api/src/modules/purchasing/purchasing.controller.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.spec.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.ts",
@@ -1247,6 +1256,17 @@
         "apps/api/src/core/extension-points/stock-intake.registry.ts"
       ],
       "page": "docs/index/core/extension-points.md"
+    },
+    {
+      "name": "feed",
+      "files": [
+        "apps/api/src/core/feed/feed-registry.service.spec.ts",
+        "apps/api/src/core/feed/feed-registry.service.ts",
+        "apps/api/src/core/feed/feed-source.ts",
+        "apps/api/src/core/feed/feed.controller.ts",
+        "apps/api/src/core/feed/feed.module.ts"
+      ],
+      "page": "docs/index/core/feed.md"
     },
     {
       "name": "health",
@@ -1791,7 +1811,7 @@
       "controller": "AnalyticsController",
       "handler": "comparison",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 220,
+      "line": 232,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1807,7 +1827,7 @@
       "controller": "AnalyticsController",
       "handler": "customersOverview",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 173,
+      "line": 185,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1823,7 +1843,7 @@
       "controller": "AnalyticsController",
       "handler": "customersRetention",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 182,
+      "line": 194,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1839,7 +1859,7 @@
       "controller": "AnalyticsController",
       "handler": "customersTop",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 191,
+      "line": 203,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1887,7 +1907,7 @@
       "controller": "AnalyticsController",
       "handler": "inventoryMovements",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 161,
+      "line": 173,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1903,7 +1923,7 @@
       "controller": "AnalyticsController",
       "handler": "inventoryValuation",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 149,
+      "line": 161,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1919,7 +1939,7 @@
       "controller": "AnalyticsController",
       "handler": "setMonthlyTarget",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 237,
+      "line": 249,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1935,7 +1955,7 @@
       "controller": "AnalyticsController",
       "handler": "ordersFulfilment",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 88,
+      "line": 94,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1943,6 +1963,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Average and median time spent in each order-status transition"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/analytics/orders/lifecycle-breakdown",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "orderLifecycleBreakdown",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 88,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every order, right now, grouped by status into Pending/Completed/Voided"
     },
     {
       "method": "GET",
@@ -1967,7 +2003,7 @@
       "controller": "AnalyticsController",
       "handler": "productsCategories",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 141,
+      "line": 147,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1978,12 +2014,28 @@
     },
     {
       "method": "GET",
+      "path": "/admin/analytics/products/category-velocity",
+      "module": "analytics",
+      "controller": "AnalyticsController",
+      "handler": "categoryVelocity",
+      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
+      "line": 155,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The top categories' own revenue, broken out day by day"
+    },
+    {
+      "method": "GET",
       "path": "/admin/analytics/products/slow-sellers",
       "module": "analytics",
       "controller": "AnalyticsController",
       "handler": "productsSlowSellers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 135,
+      "line": 141,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1999,7 +2051,7 @@
       "controller": "AnalyticsController",
       "handler": "productsTopSellers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 125,
+      "line": 131,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2015,7 +2067,7 @@
       "controller": "AnalyticsController",
       "handler": "purchasingSpend",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 96,
+      "line": 102,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2031,7 +2083,7 @@
       "controller": "AnalyticsController",
       "handler": "purchasingSuppliers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 113,
+      "line": 119,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2127,7 +2179,7 @@
       "controller": "AnalyticsController",
       "handler": "visitors",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 212,
+      "line": 224,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2143,7 +2195,7 @@
       "controller": "AnalyticsController",
       "handler": "workshopOutput",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 200,
+      "line": 212,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -4802,6 +4854,22 @@
       "public": false,
       "authOnly": false,
       "summary": "Render a template against sample data"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/feed",
+      "module": "core/feed",
+      "controller": "FeedController",
+      "handler": "collect",
+      "file": "apps/api/src/core/feed/feed.controller.ts",
+      "line": 23,
+      "access": "analytics.view",
+      "permissions": [
+        "analytics.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Recent order, purchase-order and payment activity, merged and capped, newest first"
     },
     {
       "method": "GET",
@@ -12498,8 +12566,10 @@
         "GET /admin/analytics/inventory/valuation",
         "PATCH /admin/analytics/monthly-target",
         "GET /admin/analytics/orders/fulfilment",
+        "GET /admin/analytics/orders/lifecycle-breakdown",
         "GET /admin/analytics/orders/overview",
         "GET /admin/analytics/products/categories",
+        "GET /admin/analytics/products/category-velocity",
         "GET /admin/analytics/products/slow-sellers",
         "GET /admin/analytics/products/top-sellers",
         "GET /admin/analytics/purchasing/spend",
@@ -12511,6 +12581,7 @@
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors",
         "GET /admin/analytics/workshop/output",
+        "GET /admin/feed",
         "GET /admin/inventory/suspicious-traffic",
         "GET /admin/wishlist/out-of-stock-report"
       ],
@@ -12947,7 +13018,7 @@
         "POST /admin/catalog/redirects/import",
         "PATCH /admin/catalog/variants/:variantId/stock"
       ],
-      "uiSites": 17,
+      "uiSites": 18,
       "roles": [
         "STAFF"
       ],
@@ -14287,7 +14358,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/orders/orders.service.ts:748",
-        "apps/api/src/modules/orders/orders.service.ts:929"
+        "apps/api/src/modules/orders/orders.service.ts:933"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -14302,7 +14373,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:929"
+        "apps/api/src/modules/orders/orders.service.ts:933"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -43895,6 +43966,15 @@
       ]
     },
     {
+      "file": "apps/api/src/core/feed/feed-registry.service.spec.ts",
+      "module": "core/feed",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "FeedRegistryService — WO-58.2"
+      ]
+    },
+    {
       "file": "apps/api/src/core/intent/intent-router.service.spec.ts",
       "module": "core/intent",
       "kind": "unit test",
@@ -44222,6 +44302,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/analytics/analytics.category-velocity.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "AnalyticsService.categoryVelocity — WO-57.1"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
       "module": "analytics",
       "kind": "unit test",
@@ -44251,6 +44340,15 @@
         "AnalyticsService — WO-D.4 inventory valuation/movements",
         "inventoryValuation",
         "inventoryMovements"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.lifecycle.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "AnalyticsService.orderLifecycleBreakdown — WO-69.1"
       ]
     },
     {
@@ -44314,6 +44412,15 @@
         "salesAov",
         "salesProfit",
         "salesFunnel"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/analytics/analytics.summary.spec.ts",
+      "module": "analytics",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "AnalyticsService.summary — WO-45.1 totalUnits"
       ]
     },
     {
@@ -44963,6 +45070,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/orders/order-feed.source.spec.ts",
+      "module": "orders",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "OrderFeedSource — WO-58.2"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/orders/order-replication.listener.spec.ts",
       "module": "orders",
       "kind": "unit test",
@@ -45056,6 +45172,15 @@
         "dedupeCandidate",
         "findOrCreateForRole",
         "search"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/payments/payment-feed.source.spec.ts",
+      "module": "payments",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "PaymentFeedSource — WO-58.2"
       ]
     },
     {
@@ -45234,6 +45359,15 @@
         "GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023",
         "onModuleInit",
         "onGoodsReceived"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts",
+      "module": "purchasing",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "PurchaseOrderFeedSource — WO-58.2"
       ]
     },
     {
@@ -45892,7 +46026,7 @@
       "file": "apps/api/test/orders.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
-      "cases": 33,
+      "cases": 34,
       "describes": [
         "Orders (e2e)",
         "payment methods",
@@ -49890,14 +50024,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 49,
-      "bytes": 1730,
+      "lines": 51,
+      "bytes": 1795,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 48
+          "line": 50
         }
       ]
     },
@@ -50447,6 +50581,80 @@
           "name": "StockIntakeRegistry",
           "kind": "class",
           "line": 52
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/feed/feed-registry.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 83,
+      "bytes": 4391,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/feed/feed-registry.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 89,
+      "bytes": 3495,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeedRegistryService",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/feed/feed-source.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 39,
+      "bytes": 1954,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeedEntry",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "FeedSource",
+          "kind": "interface",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/feed/feed.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 32,
+      "bytes": 1310,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeedController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/feed/feed.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 19,
+      "bytes": 635,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeedModule",
+          "kind": "class",
+          "line": 18
         }
       ]
     },
@@ -52461,6 +52669,15 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/analytics/analytics.category-velocity.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 136,
+      "bytes": 5563,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -52473,8 +52690,8 @@
       "path": "apps/api/src/modules/analytics/analytics.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 241,
-      "bytes": 10781,
+      "lines": 253,
+      "bytes": 11356,
       "doc": "",
       "symbols": [
         {
@@ -52499,6 +52716,15 @@
       "kind": "unit test",
       "lines": 196,
       "bytes": 9094,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.lifecycle.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 115,
+      "bytes": 4285,
       "doc": "",
       "symbols": []
     },
@@ -52611,8 +52837,8 @@
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 2410,
-      "bytes": 100672,
+      "lines": 2590,
+      "bytes": 109766,
       "doc": "",
       "symbols": [
         {
@@ -52648,159 +52874,178 @@
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 77
+          "line": 80
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 86
+          "line": 89
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 107
+          "line": 110
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 112
+          "line": 115
+        },
+        {
+          "name": "OrderLifecycleBreakdown",
+          "kind": "interface",
+          "line": 124
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 121
+          "line": 143
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 129
+          "line": 151
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 134
+          "line": 156
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 149
+          "line": 171
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 172
+          "line": 194
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 176
+          "line": 198
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 188
+          "line": 210
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 192
+          "line": 214
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 201
+          "line": 223
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 205
+          "line": 227
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 216
+          "line": 238
+        },
+        {
+          "name": "CategoryVelocitySeries",
+          "kind": "interface",
+          "line": 245
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 221
+          "line": 252
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 234
+          "line": 265
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 241
+          "line": 272
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 251
+          "line": 282
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 257
+          "line": 288
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 264
+          "line": 295
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 272
+          "line": 303
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 277
+          "line": 308
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 287
+          "line": 318
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 291
+          "line": 322
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 297
+          "line": 328
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 304
+          "line": 335
         },
         {
           "name": "ComparisonBucket",
           "kind": "interface",
-          "line": 311
+          "line": 342
         },
         {
           "name": "ComparisonAnalytics",
           "kind": "interface",
-          "line": 321
+          "line": 352
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 336
+          "line": 367
         },
         {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 358
+          "line": 389
         }
       ]
+    },
+    {
+      "path": "apps/api/src/modules/analytics/analytics.summary.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 94,
+      "bytes": 3402,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
@@ -57028,39 +57273,39 @@
       "path": "apps/api/src/modules/orders/dto/order.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 152,
-      "bytes": 3901,
+      "lines": 168,
+      "bytes": 4588,
       "doc": "",
       "symbols": [
         {
           "name": "ShippingAddressDto",
           "kind": "class",
-          "line": 17
+          "line": 29
         },
         {
           "name": "PlaceOrderDto",
           "kind": "class",
-          "line": 61
+          "line": 73
         },
         {
           "name": "TrackOrderDto",
           "kind": "class",
-          "line": 106
+          "line": 118
         },
         {
           "name": "ChangeOrderStatusDto",
           "kind": "class",
-          "line": 113
+          "line": 125
         },
         {
           "name": "AdminOrderQueryDto",
           "kind": "class",
-          "line": 125
+          "line": 137
         },
         {
           "name": "OrderHistoryQueryDto",
           "kind": "class",
-          "line": 137
+          "line": 153
         }
       ]
     },
@@ -57115,6 +57360,30 @@
           "name": "OrderNotificationSubscriber",
           "kind": "class",
           "line": 53
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orders/order-feed.source.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 77,
+      "bytes": 3222,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/orders/order-feed.source.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 57,
+      "bytes": 2159,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrderFeedSource",
+          "kind": "class",
+          "line": 16
         }
       ]
     },
@@ -57175,14 +57444,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 53,
-      "bytes": 2742,
+      "lines": 55,
+      "bytes": 2818,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 52
+          "line": 54
         }
       ]
     },
@@ -57190,8 +57459,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1300,
-      "bytes": 51573,
+      "lines": 1304,
+      "bytes": 51883,
       "doc": "",
       "symbols": [
         {
@@ -57712,6 +57981,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/payments/payment-feed.source.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 69,
+      "bytes": 2953,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/payments/payment-feed.source.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 58,
+      "bytes": 2296,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PaymentFeedSource",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/payments/payment-provider.ts",
       "area": "api",
       "kind": "module",
@@ -57765,14 +58058,14 @@
       "path": "apps/api/src/modules/payments/payments.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 26,
-      "bytes": 991,
+      "lines": 28,
+      "bytes": 1073,
       "doc": "",
       "symbols": [
         {
           "name": "PaymentsModule",
           "kind": "class",
-          "line": 25
+          "line": 27
         }
       ]
     },
@@ -58911,6 +59204,30 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 69,
+      "bytes": 2984,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/purchasing/purchase-order-feed.source.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 62,
+      "bytes": 2599,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PurchaseOrderFeedSource",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/purchasing/purchasing.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -58992,14 +59309,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 30,
-      "bytes": 1348,
+      "lines": 32,
+      "bytes": 1449,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingModule",
           "kind": "class",
-          "line": 29
+          "line": 31
         }
       ]
     },
@@ -61826,8 +62143,8 @@
       "path": "apps/api/test/orders.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 950,
-      "bytes": 35712,
+      "lines": 981,
+      "bytes": 37117,
       "doc": "",
       "symbols": []
     },
@@ -67546,14 +67863,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 104,
-      "bytes": 3920,
+      "lines": 106,
+      "bytes": 4025,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDashboardPage",
           "kind": "default",
-          "line": 31
+          "line": 32
         }
       ]
     },
@@ -69389,14 +69706,29 @@
       "path": "apps/web/src/components/admin/analytics/analytics-detail-page.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 149,
-      "bytes": 5609,
+      "lines": 152,
+      "bytes": 5816,
       "doc": "",
       "symbols": [
         {
           "name": "AnalyticsDetailPage",
           "kind": "function",
-          "line": 43
+          "line": 44
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/analytics/blocks/dynamic-timeseries-block.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 29,
+      "bytes": 1267,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DynamicTimeSeriesBlock",
+          "kind": "function",
+          "line": 14
         }
       ]
     },
@@ -69509,8 +69841,8 @@
       "path": "apps/web/src/components/admin/analytics/report-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 662,
-      "bytes": 23615,
+      "lines": 713,
+      "bytes": 25494,
       "doc": "",
       "symbols": [
         {
@@ -69526,22 +69858,22 @@
         {
           "name": "AnalyticsReport",
           "kind": "interface",
-          "line": 41
+          "line": 51
         },
         {
           "name": "REPORT_REGISTRY",
           "kind": "const",
-          "line": 59
+          "line": 69
         },
         {
           "name": "reportFor",
           "kind": "function",
-          "line": 654
+          "line": 705
         },
         {
           "name": "reportsFor",
           "kind": "function",
-          "line": 659
+          "line": 710
         }
       ]
     },
@@ -69970,6 +70302,21 @@
           "name": "GrossProfitTodayWidget",
           "kind": "function",
           "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/dashboard/live-feed-widget.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 79,
+      "bytes": 2901,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LiveFeedWidget",
+          "kind": "function",
+          "line": 20
         }
       ]
     },
@@ -72032,8 +72379,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1641,
-      "bytes": 44190,
+      "lines": 1658,
+      "bytes": 44682,
       "doc": "",
       "symbols": [
         {
@@ -72767,119 +73114,129 @@
           "line": 1440
         },
         {
+          "name": "FeedEntry",
+          "kind": "interface",
+          "line": 1447
+        },
+        {
+          "name": "FeedResponse",
+          "kind": "interface",
+          "line": 1457
+        },
+        {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1446
+          "line": 1463
         },
         {
           "name": "ProductCrossSellKind",
           "kind": "type",
-          "line": 1454
+          "line": 1471
         },
         {
           "name": "ProductCrossSellRow",
           "kind": "interface",
-          "line": 1456
+          "line": 1473
         },
         {
           "name": "MarkdownSuggestionStatus",
           "kind": "type",
-          "line": 1463
+          "line": 1480
         },
         {
           "name": "MarkdownSuggestion",
           "kind": "interface",
-          "line": 1465
+          "line": 1482
         },
         {
           "name": "ApiKeyStatus",
           "kind": "type",
-          "line": 1491
+          "line": 1508
         },
         {
           "name": "ApiKeyRevocationReason",
           "kind": "type",
-          "line": 1492
+          "line": 1509
         },
         {
           "name": "ApiKeyView",
           "kind": "interface",
-          "line": 1513
+          "line": 1530
         },
         {
           "name": "IssuedApiKey",
           "kind": "interface",
-          "line": 1520
+          "line": 1537
         },
         {
           "name": "SsoConnectionStatus",
           "kind": "type",
-          "line": 1530
+          "line": 1547
         },
         {
           "name": "SsoConnection",
           "kind": "interface",
-          "line": 1532
+          "line": 1549
         },
         {
           "name": "SsoConnectionList",
           "kind": "interface",
-          "line": 1549
+          "line": 1566
         },
         {
           "name": "SsoDefaultRoleOption",
           "kind": "interface",
-          "line": 1555
+          "line": 1572
         },
         {
           "name": "SsoAccount",
           "kind": "interface",
-          "line": 1561
+          "line": 1578
         },
         {
           "name": "SsoSignInOption",
           "kind": "interface",
-          "line": 1575
+          "line": 1592
         },
         {
           "name": "ApiKeyOversightView",
           "kind": "interface",
-          "line": 1581
+          "line": 1598
         },
         {
           "name": "ManagedServicesUsageSnapshot",
           "kind": "interface",
-          "line": 1602
+          "line": 1619
         },
         {
           "name": "ManagedServicesTenantStatus",
           "kind": "type",
-          "line": 1609
+          "line": 1626
         },
         {
           "name": "ManagedServicesUsageResponse",
           "kind": "interface",
-          "line": 1611
+          "line": 1628
         },
         {
           "name": "ManagedServicesInvoiceStatus",
           "kind": "type",
-          "line": 1618
+          "line": 1635
         },
         {
           "name": "ManagedServicesStripePaymentStatus",
           "kind": "type",
-          "line": 1619
+          "line": 1636
         },
         {
           "name": "ManagedServicesInvoice",
           "kind": "interface",
-          "line": 1621
+          "line": 1638
         },
         {
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
-          "line": 1637
+          "line": 1654
         }
       ]
     },
@@ -75639,8 +75996,8 @@
       "path": "docs/implementation/analytics-reporting/45-order-count-tracking-coverage-note.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 63,
-      "bytes": 3243,
+      "lines": 73,
+      "bytes": 3843,
       "doc": "",
       "symbols": []
     },
@@ -75648,8 +76005,8 @@
       "path": "docs/implementation/analytics-reporting/57-multiday-category-velocity.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 117,
-      "bytes": 5772,
+      "lines": 130,
+      "bytes": 6590,
       "doc": "",
       "symbols": []
     },
@@ -75657,8 +76014,8 @@
       "path": "docs/implementation/analytics-reporting/58-live-operational-feed.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 141,
-      "bytes": 7387,
+      "lines": 161,
+      "bytes": 8699,
       "doc": "",
       "symbols": []
     },
@@ -75666,8 +76023,8 @@
       "path": "docs/implementation/analytics-reporting/69-order-lifecycle-status-dashboard.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 107,
-      "bytes": 5532,
+      "lines": 121,
+      "bytes": 6412,
       "doc": "",
       "symbols": []
     },
@@ -75675,8 +76032,8 @@
       "path": "docs/implementation/analytics-reporting/77-sales-category-breakdown-coverage-note.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 52,
-      "bytes": 2382,
+      "lines": 70,
+      "bytes": 3573,
       "doc": "",
       "symbols": []
     },

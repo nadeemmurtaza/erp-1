@@ -36,7 +36,17 @@ export type ReportBlock =
     }
   | { kind: 'funnel'; title: string; path: string; label: string; value: string }
   | { kind: 'gauge'; title: string; path: string; value: string; target: string }
-  | { kind: 'note'; text: string };
+  | { kind: 'note'; text: string }
+  /**
+   * Like `timeseries`, but the series themselves are data, not static
+   * config — WO-57.2 (57-multiday-category-velocity.md): a client's own
+   * `Category` rows decide how many lines a category-velocity chart draws
+   * and what each is called, which a build-time `series` array cannot
+   * express. `seriesPath` points to the response's own `{key, label}[]`
+   * list; `path` points to the row array `TimeSeriesChart` already
+   * expects, keyed by those same `key`s.
+   */
+  | { kind: 'dynamic-timeseries'; title: string; path: string; seriesPath: string; x: string; chart: 'line' | 'area'; format: ValueFormat };
 
 export interface AnalyticsReport {
   /** `'sales/revenue'`, no leading slash. */
@@ -226,6 +236,26 @@ export const REPORT_REGISTRY: readonly AnalyticsReport[] = [
     ],
   },
   {
+    slug: 'orders/lifecycle',
+    group: 'orders',
+    title: 'Order lifecycle',
+    description: 'Every order, right now, grouped into Pending, Completed and Voided.',
+    permissions: [],
+    endpoint: '/admin/analytics/orders/lifecycle-breakdown',
+    parent: 'orders/overview',
+    blocks: [
+      {
+        kind: 'table',
+        title: 'By status',
+        path: 'rows',
+        columns: [
+          { key: 'label', header: 'Status', format: 'text' },
+          { key: 'count', header: 'Orders', format: 'integer', align: 'right', href: '/admin/orders?status={statusFilter}' },
+        ],
+      },
+    ],
+  },
+  {
     slug: 'orders/fulfilment',
     group: 'orders',
     title: 'Fulfilment timing',
@@ -369,6 +399,27 @@ export const REPORT_REGISTRY: readonly AnalyticsReport[] = [
         x: 'date',
         chart: 'area',
         series: [{ key: 'revenue', label: 'Revenue', format: 'money' }],
+      },
+    ],
+  },
+  {
+    slug: 'products/category-velocity',
+    group: 'products',
+    title: 'Category velocity',
+    description: 'The top 5 categories, broken out day by day, so a shift in what is selling shows up before month-end.',
+    permissions: ['catalog.manage'],
+    endpoint: '/admin/analytics/products/category-velocity',
+    parent: 'products/categories',
+    ranges: [7, 14, 30, 60, 90],
+    blocks: [
+      {
+        kind: 'dynamic-timeseries',
+        title: 'Revenue by category, per day',
+        path: 'days',
+        seriesPath: 'series',
+        x: 'date',
+        chart: 'line',
+        format: 'money',
       },
     ],
   },

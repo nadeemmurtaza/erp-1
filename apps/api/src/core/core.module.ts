@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppConfigModule } from './config/config.module';
 import { EventsModule } from './events/events.module';
 import { ExtensionPointsModule } from './extension-points/extension-points.module';
+import { FeedModule } from './feed/feed.module';
 import { HealthModule } from './health/health.module';
 import { IntentRouterModule } from './intent/intent-router.module';
 import { MetricsModule } from './metrics/metrics.module';
@@ -43,6 +44,7 @@ import { StorageModule } from './storage/storage.module';
     HealthModule,
     MetricsModule,
     ActionHubModule,
+    FeedModule,
   ],
 })
 export class CoreModule {}

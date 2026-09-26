@@ -17,6 +17,7 @@ import { RankingBlock } from './blocks/ranking-block';
 import { TableBlock } from './blocks/table-block';
 import { FunnelBlock } from './blocks/funnel-block';
 import { GaugeBlock } from './blocks/gauge-block';
+import { DynamicTimeSeriesBlock } from './blocks/dynamic-timeseries-block';
 
 /** Walks a report's own `parent` chain up to its group index, for the breadcrumb — the report-registry's own tree (D3), independent of the sidebar's nav tree. */
 function breadcrumbFor(report: AnalyticsReport): Array<{ label: string; href: string }> {
@@ -131,6 +132,8 @@ export function AnalyticsDetailPage({ report }: { report: AnalyticsReport }) {
                 return <FunnelBlock key={index} config={block} data={data} />;
               case 'gauge':
                 return <GaugeBlock key={index} config={block} data={data} />;
+              case 'dynamic-timeseries':
+                return <DynamicTimeSeriesBlock key={index} config={block} data={data} />;
               case 'note':
                 return (
                   <p key={index} className="text-sm text-neutral-900/60">

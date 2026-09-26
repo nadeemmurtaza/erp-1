@@ -7,6 +7,7 @@ import { PurchasingCron } from './purchasing.cron';
 import { PurchasingReorderListener } from './reorder.listener';
 import { GoodsReceiptReplicationListener } from './goods-receipt-replication.listener';
 import { PurchasingMetricsProvider, PurchasingSpendMetricsProvider } from './purchasing.metrics';
+import { PurchaseOrderFeedSource } from './purchase-order-feed.source';
 
 import { InventoryModule } from '../inventory/inventory.module';
 import { PartiesModule } from '../parties/parties.module';
@@ -23,6 +24,7 @@ import { SettingsModule } from '../../core/settings/settings.module';
     GoodsReceiptReplicationListener,
     PurchasingMetricsProvider,
     PurchasingSpendMetricsProvider,
+    PurchaseOrderFeedSource,
   ],
   exports: [PurchasingService, RequisitionService],
 })

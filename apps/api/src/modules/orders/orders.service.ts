@@ -814,11 +814,15 @@ export class OrdersService {
     skip: number;
     take: number;
     q?: string;
-    status?: OrderStatus;
+    status?: OrderStatus[];
     codRiskAction?: CodRiskAction;
   }) {
     const where: Prisma.OrderWhereInput = {};
-    if (query.status) where.status = query.status;
+    // WO-69.2 — a single-status link stays an exact match; a multi-status
+    // one (the "Voided" tile's CANCELLED+RETURNED) becomes an `in`, never a
+    // second query path for the plural case.
+    if (query.status?.length === 1) where.status = query.status[0];
+    else if (query.status && query.status.length > 1) where.status = { in: query.status };
     if (query.codRiskAction) where.codRiskAction = query.codRiskAction;
 
     if (query.q?.trim()) {

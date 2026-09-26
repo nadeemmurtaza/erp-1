@@ -32,7 +32,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 27 | 11 | STAFF |
+| `analytics.view` | View dashboard analytics | low | 30 | 11 | STAFF |
 | `reports.view` | Export CSV reports | low | 11 | 2 | STAFF |
 | `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | **none — no live user holds it** |
@@ -73,7 +73,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `catalog.manage` | Manage products, categories and import | medium | 42 | 17 | STAFF |
+| `catalog.manage` | Manage products, categories and import | medium | 42 | 18 | STAFF |
 | `inventory.manage` | Adjust and view stock levels | medium | 12 | 12 | STAFF |
 | `inventory.view_cost` | See cost prices and margins | medium | 2 | 15 | **none — no live user holds it** |
 | `inventory.count` | Run stock counts | low | 12 | 4 | STAFF |

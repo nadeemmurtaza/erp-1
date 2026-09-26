@@ -846,6 +846,37 @@ describe('Orders (e2e)', () => {
       expect(response.body.data.length).toBeGreaterThan(0);
       expect(response.body.meta.total).toBeGreaterThan(0);
     });
+
+    it('WO-69.2 — a comma-separated status list filters to exactly that set, the "Voided" tile\'s own link shape', async () => {
+      const agent = await cartWithReadyItem(1);
+      const order = await agent
+        .post('/api/v1/orders')
+        .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
+        .expect(201);
+      createdOrderIds.push(order.body.id);
+
+      await api()
+        .post(`/api/v1/admin/orders/${order.body.id}/status`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ status: 'CANCELLED', note: 'wo-69.2 spec' })
+        .expect(201);
+
+      const single = await api()
+        .get('/api/v1/admin/orders?status=CANCELLED&pageSize=100')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+      expect(single.body.data.every((row: { status: string }) => row.status === 'CANCELLED')).toBe(true);
+      expect(single.body.data.some((row: { id: string }) => row.id === order.body.id)).toBe(true);
+
+      const multi = await api()
+        .get('/api/v1/admin/orders?status=CANCELLED,RETURNED&pageSize=100')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+      expect(
+        multi.body.data.every((row: { status: string }) => row.status === 'CANCELLED' || row.status === 'RETURNED'),
+      ).toBe(true);
+      expect(multi.body.data.length).toBeGreaterThanOrEqual(single.body.data.length);
+    });
   });
 
   describe('backorder (checkout.allow_backorder)', () => {

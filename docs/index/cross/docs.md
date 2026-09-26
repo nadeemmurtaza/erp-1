@@ -2022,45 +2022,45 @@ _no second-level headings_
 - Acceptance  <sub>:42</sub>
 - Out of scope  <sub>:47</sub>
 
-### `docs/implementation/analytics-reporting/45-order-count-tracking-coverage-note.md`  <sub>63 lines</sub>
+### `docs/implementation/analytics-reporting/45-order-count-tracking-coverage-note.md`  <sub>73 lines</sub>
 
-- Where it already lives  <sub>:9</sub>
-- The one real gap, scoped narrowly  <sub>:42</sub>
-- Acceptance  <sub>:50</sub>
-- Out of scope  <sub>:59</sub>
+- Where it already lives  <sub>:19</sub>
+- The one real gap, scoped narrowly  <sub>:52</sub>
+- Acceptance  <sub>:60</sub>
+- Out of scope  <sub>:69</sub>
 
-### `docs/implementation/analytics-reporting/57-multiday-category-velocity.md`  <sub>117 lines</sub>
+### `docs/implementation/analytics-reporting/57-multiday-category-velocity.md`  <sub>130 lines</sub>
 
-- 1. A velocity series is category × day, not category OR day  <sub>:14</sub>
-- Scope lenses  <sub>:42</sub>
-- Work orders  <sub>:86</sub>
-- Acceptance  <sub>:98</sub>
-- Out of scope  <sub>:110</sub>
+- 1. A velocity series is category × day, not category OR day  <sub>:27</sub>
+- Scope lenses  <sub>:55</sub>
+- Work orders  <sub>:99</sub>
+- Acceptance  <sub>:111</sub>
+- Out of scope  <sub>:123</sub>
 
-### `docs/implementation/analytics-reporting/58-live-operational-feed.md`  <sub>141 lines</sub>
+### `docs/implementation/analytics-reporting/58-live-operational-feed.md`  <sub>161 lines</sub>
 
-- 1. "Near-real-time," stated honestly, is short-interval polling  <sub>:15</sub>
-- 2. A feed entry is a normalized shape over three different sources  <sub>:28</sub>
-- Scope lenses  <sub>:54</sub>
-- Work orders  <sub>:111</sub>
-- Acceptance  <sub>:122</sub>
-- Out of scope  <sub>:133</sub>
+- 1. "Near-real-time," stated honestly, is short-interval polling  <sub>:35</sub>
+- 2. A feed entry is a normalized shape over three different sources  <sub>:48</sub>
+- Scope lenses  <sub>:74</sub>
+- Work orders  <sub>:131</sub>
+- Acceptance  <sub>:142</sub>
+- Out of scope  <sub>:153</sub>
 
-### `docs/implementation/analytics-reporting/69-order-lifecycle-status-dashboard.md`  <sub>107 lines</sub>
+### `docs/implementation/analytics-reporting/69-order-lifecycle-status-dashboard.md`  <sub>121 lines</sub>
 
-- 1. A status breakdown is a single `GROUP BY`, mapped to the promotional list's own three buckets  <sub>:14</sub>
-- Scope lenses  <sub>:41</sub>
-- Work orders  <sub>:81</sub>
-- Acceptance  <sub>:92</sub>
-- Out of scope  <sub>:101</sub>
+- 1. A status breakdown is a single `GROUP BY`, mapped to the promotional list's own three buckets  <sub>:28</sub>
+- Scope lenses  <sub>:55</sub>
+- Work orders  <sub>:95</sub>
+- Acceptance  <sub>:106</sub>
+- Out of scope  <sub>:115</sub>
 
-### `docs/implementation/analytics-reporting/77-sales-category-breakdown-coverage-note.md`  <sub>52 lines</sub>
+### `docs/implementation/analytics-reporting/77-sales-category-breakdown-coverage-note.md`  <sub>70 lines</sub>
 
-- What already exists  <sub>:17</sub>
-- Scope lenses  <sub>:30</sub>
-- Work orders  <sub>:36</sub>
-- Acceptance  <sub>:43</sub>
-- Out of scope  <sub>:48</sub>
+- What already exists  <sub>:30</sub>
+- Scope lenses  <sub>:45</sub>
+- Work orders  <sub>:52</sub>
+- Acceptance  <sub>:60</sub>
+- Out of scope  <sub>:66</sub>
 
 ### `docs/implementation/architecture-patterns/100-event-driven-architecture.md`  <sub>75 lines</sub>
 

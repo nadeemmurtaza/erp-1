@@ -1443,6 +1443,23 @@ export interface ActionHubResponse {
   unavailableKinds: string[];
 }
 
+/** `GET /admin/feed` (analytics-reporting/58-live-operational-feed.md WO-58.3). */
+export interface FeedEntry {
+  id: string;
+  kind: 'ORDER' | 'PURCHASE_ORDER' | 'PAYMENT';
+  summary: string;
+  /** ISO string. */
+  occurredAt: string;
+  href: string;
+  locationId: string | null;
+}
+
+export interface FeedResponse {
+  items: FeedEntry[];
+  /** `kind`s whose source threw — the UI renders these as "temporarily unavailable", never a silently quiet feed. */
+  unavailableKinds: string[];
+}
+
 export interface CmsMenuLink {
   id: string;
   parentId: string | null;

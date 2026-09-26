@@ -10,6 +10,7 @@ import { CodRiskService } from './cod-risk.service';
 import { CodRiskCron } from './cod-risk.cron';
 import { InstalmentPlanController } from './instalment-plan.controller';
 import { InstalmentPlanService } from './instalment-plan.service';
+import { OrderFeedSource } from './order-feed.source';
 
 import { InventoryModule } from '../inventory/inventory.module';
 import { TaxModule } from '../tax/tax.module';
@@ -46,6 +47,7 @@ import { GiftCardsModule } from '../giftcards/giftcards.module';
     CodRiskService,
     CodRiskCron,
     InstalmentPlanService,
+    OrderFeedSource,
   ],
   exports: [OrdersService],
 })

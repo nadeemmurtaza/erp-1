@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 897 tracked files in `apps/api`, by directory.
+All 911 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -603,7 +603,7 @@ All 897 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 49 |  |
+| `core.module.ts` | nest module | 51 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -780,6 +780,16 @@ All 897 tracked files in `apps/api`, by directory.
 | `extension-points.module.ts` | nest module | 45 |  |
 | `identity-verification-status.registry.ts` | registry | 36 |  |
 | `stock-intake.registry.ts` | registry | 71 |  |
+
+### `apps/api/src/core/feed` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `feed-registry.service.spec.ts` | unit test | 83 |  |
+| `feed-registry.service.ts` | service | 89 |  |
+| `feed-source.ts` | module | 39 |  |
+| `feed.controller.ts` | controller | 32 |  |
+| `feed.module.ts` | nest module | 19 |  |
 
 ### `apps/api/src/core/health` (2)
 
@@ -980,14 +990,16 @@ All 897 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `address.dto.ts` | dto | 113 |  |
 
-### `apps/api/src/modules/analytics` (15)
+### `apps/api/src/modules/analytics` (18)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `analytics.category-velocity.spec.ts` | unit test | 136 |  |
 | `analytics.comparison.spec.ts` | unit test | 311 |  |
-| `analytics.controller.ts` | controller | 241 |  |
+| `analytics.controller.ts` | controller | 253 |  |
 | `analytics.customers.spec.ts` | unit test | 168 |  |
 | `analytics.inventory.spec.ts` | unit test | 196 |  |
+| `analytics.lifecycle.spec.ts` | unit test | 115 |  |
 | `analytics.metrics.spec.ts` | unit test | 210 |  |
 | `analytics.metrics.ts` | module | 454 |  |
 | `analytics.module.ts` | nest module | 30 |  |
@@ -995,7 +1007,8 @@ All 897 tracked files in `apps/api`, by directory.
 | `analytics.products.spec.ts` | unit test | 262 |  |
 | `analytics.purchasing.spec.ts` | unit test | 385 |  |
 | `analytics.sales.spec.ts` | unit test | 151 |  |
-| `analytics.service.ts` | service | 2410 |  |
+| `analytics.service.ts` | service | 2590 |  |
+| `analytics.summary.spec.ts` | unit test | 94 |  |
 | `analytics.workshop.spec.ts` | unit test | 182 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
@@ -1431,7 +1444,7 @@ All 897 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `onsite-message.dto.ts` | dto | 155 |  |
 
-### `apps/api/src/modules/orders` (17)
+### `apps/api/src/modules/orders` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1445,12 +1458,14 @@ All 897 tracked files in `apps/api`, by directory.
 | `instalment-plan.service.spec.ts` | unit test | 239 |  |
 | `instalment-plan.service.ts` | service | 228 |  |
 | `notification.subscriber.ts` | event subscriber | 259 |  |
+| `order-feed.source.spec.ts` | unit test | 77 |  |
+| `order-feed.source.ts` | module | 57 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
 | `orders-pos.service.spec.ts` | unit test | 405 |  |
 | `orders.controller.ts` | controller | 145 |  |
-| `orders.module.ts` | nest module | 53 |  |
-| `orders.service.ts` | service | 1300 |  |
+| `orders.module.ts` | nest module | 55 |  |
+| `orders.service.ts` | service | 1304 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (2)
@@ -1458,7 +1473,7 @@ All 897 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `instalment-plan.dto.ts` | dto | 16 |  |
-| `order.dto.ts` | dto | 152 |  |
+| `order.dto.ts` | dto | 168 |  |
 
 ### `apps/api/src/modules/organization` (6)
 
@@ -1518,14 +1533,16 @@ All 897 tracked files in `apps/api`, by directory.
 | `party-role.const.ts` | dto | 3 | Mirrors the Prisma PartyRoleName enum — kept as a plain array so DTOs can validate against it without importing the gen… |
 | `party.dto.ts` | dto | 44 |  |
 
-### `apps/api/src/modules/payments` (5)
+### `apps/api/src/modules/payments` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `notification.subscriber.ts` | event subscriber | 168 |  |
+| `payment-feed.source.spec.ts` | unit test | 69 |  |
+| `payment-feed.source.ts` | module | 58 |  |
 | `payment-provider.ts` | module | 99 | Extension point: payment providers. |
 | `payments.controller.ts` | controller | 135 |  |
-| `payments.module.ts` | nest module | 26 |  |
+| `payments.module.ts` | nest module | 28 |  |
 | `payments.service.ts` | service | 437 |  |
 
 ### `apps/api/src/modules/payments/providers` (6)
@@ -1635,18 +1652,20 @@ All 897 tracked files in `apps/api`, by directory.
 | `preview-checkout.dto.ts` | dto | 57 |  |
 | `promo-code.dto.ts` | dto | 82 |  |
 
-### `apps/api/src/modules/purchasing` (16)
+### `apps/api/src/modules/purchasing` (18)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `goods-receipt-replication.listener.spec.ts` | unit test | 127 |  |
 | `goods-receipt-replication.listener.ts` | event subscriber | 82 |  |
+| `purchase-order-feed.source.spec.ts` | unit test | 69 |  |
+| `purchase-order-feed.source.ts` | module | 62 |  |
 | `purchasing.controller.ts` | controller | 151 |  |
 | `purchasing.cron.spec.ts` | unit test | 144 |  |
 | `purchasing.cron.ts` | scheduled job | 118 |  |
 | `purchasing.metrics.spec.ts` | unit test | 74 |  |
 | `purchasing.metrics.ts` | module | 135 |  |
-| `purchasing.module.ts` | nest module | 30 |  |
+| `purchasing.module.ts` | nest module | 32 |  |
 | `purchasing.service.ts` | service | 673 |  |
 | `purchasing.spec.ts` | unit test | 233 |  |
 | `reorder.listener.spec.ts` | unit test | 146 |  |
@@ -1992,7 +2011,7 @@ All 897 tracked files in `apps/api`, by directory.
 | `email-templates-admin.e2e-spec.ts` | e2e test | 86 |  |
 | `giftkarta-checkout.e2e-spec.ts` | e2e test | 215 |  |
 | `meta.e2e-spec.ts` | e2e test | 65 |  |
-| `orders.e2e-spec.ts` | e2e test | 950 |  |
+| `orders.e2e-spec.ts` | e2e test | 981 |  |
 | `payments-gateway.e2e-spec.ts` | e2e test | 214 |  |
 | `payments-refund.e2e-spec.ts` | e2e test | 164 |  |
 | `promotions-checkout.e2e-spec.ts` | e2e test | 327 |  |

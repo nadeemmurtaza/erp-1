@@ -1,5 +1,25 @@
 # 58 — The live operational feed: a read-model over rows that already exist
 
+> **Status: shipped (2026-09-26), WO-58.1/58.2/58.3.**
+> `GET /admin/feed` (`core/feed/`) merges `OrderFeedSource`,
+> `PurchaseOrderFeedSource` and `PaymentFeedSource` — the identical
+> `ActionHubSource`-shaped registration pattern doc 44 established, so a
+> fourth source is additive, never a rewrite. `PurchaseOrderFeedSource`
+> gates on `purchasing.manage` (the same permission `purchasingSpend()`
+> already requires for these figures) and returns nothing for a
+> location-scoped call, since `PurchaseOrder` itself carries no
+> `locationId` column — only `GoodsReceipt` does, once goods land
+> somewhere; `null` is honest here, never a guessed default.
+> `PaymentFeedSource` resolves `locationId` from its own order. The client
+> widget (`live-feed-widget.tsx`) polls every 8s with a `sinceId` cursor
+> and shows a visible retry state on a failed poll — it ships on the admin
+> dashboard home. It does **not** ship on doc 52's own "staff self-service
+> mobile app shell" — verified doc 52 carries no `Status:` note and no
+> corresponding code exists anywhere in this repository, so there is no
+> such shell to add a widget to. Building doc 52 itself is a separate,
+> much larger feature and is explicitly out of scope for this work order;
+> the honest gap is named here rather than silently skipped.
+
 "Embedded home-screen transaction logs displaying recent sales, purchases,
 and order statuses in real time without opening separate ledgers" is,
 underneath the phrase "in real time," a request for **one unified,

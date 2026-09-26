@@ -7,6 +7,7 @@ import { CodProvider } from './providers/cod.provider';
 import { EasypaisaProvider } from './providers/easypaisa.provider';
 import { GiftkartaProvider } from './providers/giftkarta.provider';
 import { JazzCashProvider } from './providers/jazzcash.provider';
+import { PaymentFeedSource } from './payment-feed.source';
 
 @Module({
   controllers: [PaymentsController, PaymentsAdminController],
@@ -18,6 +19,7 @@ import { JazzCashProvider } from './providers/jazzcash.provider';
     EasypaisaProvider,
     GiftkartaProvider,
     PaymentNotificationSubscriber,
+    PaymentFeedSource,
   ],
   // Exported for the orders module, which creates the payment with the order.
   exports: [PaymentsService],

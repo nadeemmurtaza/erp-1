@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 385 tracked files in `apps/web`, by directory.
+All 387 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -91,7 +91,7 @@ All 385 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `layout.tsx` | layout | 15 |  |
 | `loading.tsx` | loading | 59 | The shape of the dashboard, before the dashboard. |
-| `page.tsx` | page | 104 |  |
+| `page.tsx` | page | 106 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/account` (1)
 
@@ -1260,15 +1260,16 @@ All 385 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `analytics-detail-page.tsx` | component | 149 |  |
-| `report-registry.ts` | component | 662 |  |
+| `analytics-detail-page.tsx` | component | 152 |  |
+| `report-registry.ts` | component | 713 |  |
 | `resolve-path.spec.ts` | unit test | 67 |  |
 | `resolve-path.ts` | component | 48 | The declarative glue every report block reads through (10-admin-dashboard.md D3): a block config names a dot-path into… |
 
-### `apps/web/src/components/admin/analytics/blocks` (7)
+### `apps/web/src/components/admin/analytics/blocks` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `dynamic-timeseries-block.tsx` | component | 29 |  |
 | `funnel-block.tsx` | component | 24 |  |
 | `gauge-block.tsx` | component | 21 |  |
 | `kpis-block.tsx` | component | 26 |  |
@@ -1298,7 +1299,7 @@ All 385 tracked files in `apps/web`, by directory.
 | `sparkline-chart.tsx` | component | 39 |  |
 | `time-series-chart.tsx` | component | 149 |  |
 
-### `apps/web/src/components/admin/dashboard` (8)
+### `apps/web/src/components/admin/dashboard` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1307,6 +1308,7 @@ All 385 tracked files in `apps/web`, by directory.
 | `card-registry.ts` | component | 705 |  |
 | `comparison-panel.tsx` | component | 46 |  |
 | `gross-profit-today-widget.tsx` | component | 95 |  |
+| `live-feed-widget.tsx` | component | 79 |  |
 | `metric-card.tsx` | component | 140 |  |
 | `needs-attention-strip.tsx` | component | 74 |  |
 | `use-dashboard-metrics.ts` | component | 71 |  |
@@ -1457,7 +1459,7 @@ All 385 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1641 |  |
+| `api.ts` | types | 1658 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

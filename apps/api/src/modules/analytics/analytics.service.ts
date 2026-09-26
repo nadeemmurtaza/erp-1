@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { PermissionKey } from '@newax/shared';
+import { ORDER_STATUSES, type PermissionKey } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { Prisma } from '../../core/prisma/client';
 import type { OrderStatus } from '../../core/prisma/client';
@@ -55,8 +55,11 @@ export interface SalesFunnelReport {
 }
 
 export interface DashboardSummary {
-  today: { orders: number; revenue: number };
-  month: { orders: number; revenue: number };
+  today: { orders: number; revenue: number; totalUnits: number };
+  month: { orders: number; revenue: number; totalUnits: number };
+  /** WO-45.1 — the same order population `today`/`month` already count,
+   *  with no window applied; not exposed anywhere before this field. */
+  allTime: { orders: number; revenue: number; totalUnits: number };
   averageOrderValue: number;
   needsAttention: {
     pendingOrders: number;
@@ -116,6 +119,25 @@ export interface OrdersOverview {
   oldestOpen: Array<{ id: string; number: string; status: string; placedAt: string; ageDays: number }>;
   byCity: Array<{ city: string; count: number; avgAgeDays: number }>;
   byPayment: Array<{ provider: string; count: number; avgAgeDays: number }>;
+}
+
+export interface OrderLifecycleBreakdown {
+  /** Every real `Order.status` value, zero-filled — the single source of truth this tile only ever displays a grouping of. */
+  counts: Record<OrderStatus, number>;
+  /** PENDING + CONFIRMED + PROCESSING + READY_TO_SHIP + SHIPPED. */
+  pending: number;
+  /** DELIVERED. */
+  completed: number;
+  /** CANCELLED + RETURNED. */
+  voided: number;
+  /**
+   * The same three figures, shaped for the report-registry's own generic
+   * `table` block — `statusFilter` is a ready-made value for
+   * `AdminOrderQueryDto.status`'s own comma-separated list (WO-69.2), so
+   * "click the number" is a real link to the order list pre-filtered to
+   * exactly this bucket's underlying statuses, never a dead-end count.
+   */
+  rows: Array<{ label: 'Pending' | 'Completed' | 'Voided'; count: number; statusFilter: string }>;
 }
 
 export interface OrderTransitionTiming {
@@ -216,6 +238,15 @@ export interface ProductCategoryRow {
 export interface ProductsCategories {
   rows: ProductCategoryRow[];
   series: Array<{ date: string; revenue: number }>;
+}
+
+/** WO-57.1 — one category's own revenue, broken out day by day, for the
+ *  top categories in the window plus one "Other" bucket. */
+export interface CategoryVelocitySeries {
+  /** Which series key names which category — `report-registry.ts`'s new `dynamic-timeseries` block reads this to build its own chart legend, since the actual categories are data, not static config. */
+  series: Array<{ key: string; label: string }>;
+  /** One row per shop-day in the window, oldest first, zero-filled — never a gap the day axis would misalign against. */
+  days: Array<{ date: string } & Record<string, number>>;
 }
 
 export interface InventoryValuation {
@@ -731,6 +762,7 @@ export class AnalyticsService {
       stitchingRows,
       lowStockVariants,
       monthlyTargetAmount,
+      unitTotals,
     ] = await Promise.all([
       this.prisma.order.aggregate({
         where: { placedAt: { gte: startOfToday }, ...countsAsSale },
@@ -821,6 +853,23 @@ export class AnalyticsService {
       `,
 
       this.settings.get<number>(SettingKey.MonthlyRevenueTarget),
+
+      // WO-45.1 (45-order-count-tracking-coverage-note.md) — "total item
+      // volume" alongside the order-count/revenue figures above. One
+      // conditional-aggregation pass under the SAME countsAsSale filter
+      // those figures already use, rather than three separate round trips
+      // or a second, possibly-drifting definition of the order population.
+      this.prisma.$queryRawUnsafe<Array<{ todayUnits: bigint; monthUnits: bigint; allTimeUnits: bigint }>>(
+        `SELECT
+           COALESCE(SUM(CASE WHEN o."placedAt" >= $1 THEN oi.quantity ELSE 0 END), 0) AS "todayUnits",
+           COALESCE(SUM(CASE WHEN o."placedAt" >= $2 THEN oi.quantity ELSE 0 END), 0) AS "monthUnits",
+           COALESCE(SUM(oi.quantity), 0) AS "allTimeUnits"
+         FROM "OrderItem" oi
+         JOIN "Order" o ON o.id = oi."orderId"
+         WHERE o.status NOT IN (${VOID_STATUSES.map((s) => `'${s}'`).join(',')})`,
+        startOfToday,
+        startOfMonth,
+      ),
     ]);
 
     const orderCount = allTime._count._all;
@@ -830,12 +879,16 @@ export class AnalyticsService {
 
     const monthRevenue = (month._sum.grandTotal ?? 0) + (stitchingMonth._sum.quotedFee ?? 0);
 
+    const units = unitTotals[0];
+
     return {
       today: {
         orders: today._count._all,
         revenue: (today._sum.grandTotal ?? 0) + (stitchingToday._sum.quotedFee ?? 0),
+        totalUnits: Number(units?.todayUnits ?? 0),
       },
-      month: { orders: month._count._all, revenue: monthRevenue },
+      month: { orders: month._count._all, revenue: monthRevenue, totalUnits: Number(units?.monthUnits ?? 0) },
+      allTime: { orders: orderCount, revenue: allTimeOrderRevenue, totalUnits: Number(units?.allTimeUnits ?? 0) },
       // Rounded to whole rupees: an average quoted to the paisa is false
       // precision and reads as noise on a stat tile.
       averageOrderValue:
@@ -1334,6 +1387,45 @@ export class AnalyticsService {
         count: Number(row.count),
         avgAgeDays: round1(row.avg_age_days ?? 0),
       })),
+    };
+  }
+
+  /**
+   * WO-69.1 (69-order-lifecycle-status-dashboard.md) — the one status
+   * aggregate this repository's own dashboard never got: a single
+   * `GROUP BY status`, mapped onto the promotional list's own three
+   * buckets. `Order.status` remains the one source of truth; the three
+   * buckets are a read-time display grouping, never a second column.
+   * `locationId`, when given, scopes to that branch exactly like every
+   * other order-based read in this repository already is — restated here
+   * rather than defaulted, since an unscoped "all locations" read is
+   * exactly the implicit cross-branch read `CLAUDE.md`'s own three-axes
+   * table forbids.
+   */
+  async orderLifecycleBreakdown(locationId?: string): Promise<OrderLifecycleBreakdown> {
+    const rows = await this.prisma.order.groupBy({
+      by: ['status'],
+      where: locationId ? { locationId } : undefined,
+      _count: { _all: true },
+    });
+
+    const counts = Object.fromEntries(ORDER_STATUSES.map((status) => [status, 0])) as Record<OrderStatus, number>;
+    for (const row of rows) counts[row.status] = row._count._all;
+
+    const pending = OPEN_ORDER_STATUSES.reduce((sum, status) => sum + counts[status], 0);
+    const completed = counts.DELIVERED;
+    const voided = counts.CANCELLED + counts.RETURNED;
+
+    return {
+      counts,
+      pending,
+      completed,
+      voided,
+      rows: [
+        { label: 'Pending', count: pending, statusFilter: OPEN_ORDER_STATUSES.join(',') },
+        { label: 'Completed', count: completed, statusFilter: 'DELIVERED' },
+        { label: 'Voided', count: voided, statusFilter: 'CANCELLED,RETURNED' },
+      ],
     };
   }
 
@@ -1840,6 +1932,94 @@ export class AnalyticsService {
         };
       }),
       series: dayKeys.map((day) => ({ date: day, revenue: revenueByDay.get(day) ?? 0 })),
+    };
+  }
+
+  /**
+   * WO-57.1 (57-multiday-category-velocity.md) — category × day, not
+   * category OR day: `productsCategories()` above already computes a
+   * top-10 revenue snapshot and a category-agnostic daily series, but
+   * neither is "one category's own revenue broken out day by day," which
+   * this is. Reuses the identical join chain, `VOID_STATUSES` exclusion
+   * and shop-day boundary `productsCategories()` already established —
+   * never a second, possibly-drifting definition of "a day's sales."
+   *
+   * The top 5 categories by revenue in the window get their own named
+   * series; every other category (including a genuinely uncategorised
+   * product, `categoryId IS NULL`) is folded into one "Other" series —
+   * doc 57's own "never more than a legible handful of lines" acceptance
+   * criterion, enforced here rather than left to the chart to truncate.
+   * Response rows are zero-filled for every day in the window (never a
+   * sparse array a caller has to re-align against its own day axis), and
+   * shaped as `{date, [seriesKey]: number}` rows plus a `series` list
+   * naming each key — the exact shape `TimeSeriesChart`/`TimeSeriesBlock`
+   * already render for a report's own static series, extended here to a
+   * per-request, data-driven series list (report-registry.ts's new
+   * `dynamic-timeseries` block kind) rather than inventing a second chart
+   * component for what is otherwise an identical rendering job.
+   */
+  async categoryVelocity(days: number = 14): Promise<CategoryVelocitySeries> {
+    const start = this.windowStart(days);
+    const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    const voidStatusList = VOID_STATUSES.map((status) => `'${status}'`).join(', ');
+    const TOP_N = 5;
+
+    const [totalsRows, dailyRows] = await Promise.all([
+      this.prisma.$queryRawUnsafe<Array<{ categoryId: string | null; name: string; revenue: bigint }>>(
+        `SELECT c.id AS "categoryId", COALESCE(ct.name, 'Uncategorised') AS name,
+                COALESCE(SUM(oi."lineTotal"), 0) AS revenue
+         FROM "OrderItem" oi
+         JOIN "Order" o ON o.id = oi."orderId"
+         LEFT JOIN "Product" p ON p.id = oi."productId"
+         LEFT JOIN "Category" c ON c.id = p."categoryId"
+         LEFT JOIN "CategoryTranslation" ct ON ct."categoryId" = c.id AND ct.locale = 'en'
+         WHERE o."placedAt" >= $1 AND o.status NOT IN (${voidStatusList})
+         GROUP BY c.id, ct.name
+         ORDER BY revenue DESC
+         LIMIT ${TOP_N}`,
+        start,
+      ),
+
+      this.prisma.$queryRawUnsafe<Array<{ categoryId: string | null; day: string; revenue: bigint }>>(
+        `SELECT c.id AS "categoryId", ${shopDayExpr('o."placedAt"', timeZone)} AS day,
+                COALESCE(SUM(oi."lineTotal"), 0) AS revenue
+         FROM "OrderItem" oi
+         JOIN "Order" o ON o.id = oi."orderId"
+         LEFT JOIN "Product" p ON p.id = oi."productId"
+         LEFT JOIN "Category" c ON c.id = p."categoryId"
+         WHERE o."placedAt" >= $1 AND o.status NOT IN (${voidStatusList})
+         GROUP BY c.id, day`,
+        start,
+      ),
+    ]);
+
+    // A stable, synthetic key per top category — never the category's own
+    // name, which can carry characters/spaces unsafe as an object key a
+    // chart's own dataKey reads by exact string match.
+    const topCategoryIds = new Set(totalsRows.map((row) => row.categoryId));
+    const series = [
+      ...totalsRows.map((row, index) => ({ key: `cat_${index}`, label: row.name })),
+      { key: 'other', label: 'Other' },
+    ];
+    const keyByCategoryId = new Map(totalsRows.map((row, index) => [row.categoryId, `cat_${index}`]));
+
+    const dayKeys = shopDayKeys(start, days, timeZone);
+    const byDay = new Map<string, Record<string, number>>(dayKeys.map((day) => [day, {}]));
+    for (const row of dailyRows) {
+      const bucket = byDay.get(row.day);
+      if (!bucket) continue; // outside the requested window's own day keys
+      const key = topCategoryIds.has(row.categoryId) ? keyByCategoryId.get(row.categoryId)! : 'other';
+      bucket[key] = (bucket[key] ?? 0) + Number(row.revenue);
+    }
+
+    return {
+      series,
+      days: dayKeys.map((day) => {
+        const bucket = byDay.get(day) ?? {};
+        const point: Record<string, string | number> = { date: day };
+        for (const s of series) point[s.key] = bucket[s.key] ?? 0;
+        return point as { date: string } & Record<string, number>;
+      }),
     };
   }
 

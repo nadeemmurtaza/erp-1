@@ -3,7 +3,7 @@
 
 # Components
 
-All **109** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **114** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 216 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 222 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
 
 ### `apps/pos/src/components` (2)
@@ -41,27 +41,32 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `receipt-view.tsx` | `ReceiptView` | server | 1 |  |
 | `service-worker-registration.tsx` | `ServiceWorkerRegistration` | client | 1 |  |
 
-### `apps/web/src/components/admin` (19)
+### `apps/web/src/components/admin` (24)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | client | 1 |  |
+| `bpmn-editor.tsx` | `BpmnEditor` | client | 1 |  |
 | `command-palette.tsx` | `CommandPalette` | client | 1 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | client | 1 |  |
 | `csv-import-card.tsx` | `CsvImportCard` | client | 2 |  |
 | `custom-field-form-section.tsx` | `CustomFieldFormSection` | client | 1 |  |
 | `deployment-modules.tsx` | `EnabledModulesProvider` `useEnabledModules` | client | 5 |  |
 | `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | client | 1 |  |
+| `entity-attribute-editor.tsx` | `EntityAttributeEditor` | client | 1 |  |
+| `fragment-mount-point.tsx` | `FragmentMountPoint` | client | 1 |  |
 | `funnel-chart.tsx` | `FunnelStage` `FunnelChart` | client | 1 |  |
 | `gauge-chart.tsx` | `GaugeChart` | client | 2 |  |
 | `image-manager.tsx` | `ImageManager` `StagedImage` `ImageStager` `StagedImageUploadResult` `uploadStagedImages` | client | 1 |  |
+| `metadata-driven-entity-form.tsx` | `MetadataDrivenEntityForm` | client | 1 |  |
+| `metadata-driven-form.tsx` | `MetadataFieldValue` `MetadataDrivenForm` | client | 1 |  |
 | `party-picker.tsx` | `PartySearchResult` `PartyPicker` | client | 3 |  |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | client | 2 |  |
 | `product-form.tsx` | `ProductForm` | client | 1 |  |
 | `range-picker.tsx` | `RANGES` `DASHBOARD_RANGES` `RangeDays` `RangePicker` | client | 3 |  |
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
-| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 57 |  |
+| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 58 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 | `toast-stack.tsx` | `ToastStack` | client | 18 |  |
 
@@ -126,7 +131,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | client | 2 |  |
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 52 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 54 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
 
@@ -182,7 +187,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 57 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 59 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 7 |  |

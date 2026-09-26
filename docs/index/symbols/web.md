@@ -572,6 +572,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `MyAttendancePage` | default | :30 | attendance-workforce/22-attendance-shifts-leave.md — "Solo: self punch on one screen, no devices, n… |
 
+### `apps/web/src/app/(admin)/admin/(app)/my-tasks`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MyTasksPage` | default | :26 | tasks-notifications-support/23-tasks-allotment-tracking.md WO-23.6 — "my-work list." No permission… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/o`
 
 | File | Symbol | Kind | Line | Doc |
@@ -782,7 +788,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminSettingsPage` | default | :16 |  |
+| `page.tsx` | `AdminSettingsPage` | default | :30 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/settings/shipping`
 
@@ -854,7 +860,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SupplierDetailPage` | default | :32 |  |
+| `page.tsx` | `SupplierDetailPage` | default | :35 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/tasks`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `TasksPage` | default | :53 | tasks-notifications-support/23-tasks-allotment-tracking.md WO-23.6 — the post queue, and one task d… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/tax`
 
@@ -1247,6 +1259,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | function | :34 | The back office frame: role guard, sidebar and header. |
+| `bpmn-editor.tsx` | `BpmnEditor` | function | :46 | architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.2) — a thin React wrapper mounting… |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |
 | `csv-import-card.tsx` | `CsvImportCard` | function | :29 | Shared upload/preview/commit card for the CSV importers (admin-platform/72-fragmented-tool-consolid… |
@@ -1254,6 +1267,8 @@ Every top-level export in `web`, with the line to open.
 | `deployment-modules.tsx` | `EnabledModulesProvider` | const | :7 |  |
 | `deployment-modules.tsx` | `useEnabledModules` | function | :18 | Which API modules `GET /meta` reported for this deployment — the same value `AdminShell` already fe… |
 | `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | function | :15 | architecture-patterns/113-micro-frontend-embedding.md (WO-113.2) — a narrow, reusable iframe contai… |
+| `entity-attribute-editor.tsx` | `EntityAttributeEditor` | function | :19 | architecture-patterns/140-general-eav-extensibility-model.md (WO-140.4) — the general fallback edit… |
+| `fragment-mount-point.tsx` | `FragmentMountPoint` | function | :18 | architecture-patterns/143-micro-frontend-architecture.md (WO-143.4) — the actual mount mechanism fo… |
 | `funnel-chart.tsx` | `FunnelStage` | interface | :23 |  |
 | `funnel-chart.tsx` | `FunnelChart` | function | :28 |  |
 | `gauge-chart.tsx` | `GaugeChart` | function | :32 |  |
@@ -1262,13 +1277,16 @@ Every top-level export in `web`, with the line to open.
 | `image-manager.tsx` | `ImageStager` | function | :344 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
 | `image-manager.tsx` | `StagedImageUploadResult` | interface | :492 |  |
 | `image-manager.tsx` | `uploadStagedImages` | function | :510 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
+| `metadata-driven-entity-form.tsx` | `MetadataDrivenEntityForm` | function | :17 | architecture-patterns/141-general-metadata-driven-ui-engine.md (WO-141.4) — the one real, wired-up… |
+| `metadata-driven-form.tsx` | `MetadataFieldValue` | type | :5 |  |
+| `metadata-driven-form.tsx` | `MetadataDrivenForm` | function | :25 | architecture-patterns/141-general-metadata-driven-ui-engine.md (WO-141.2). |
 | `nav-registry.ts` | `ICON_MAP` | const | :21 |  |
 | `nav-registry.ts` | `AdminNavGroup` | interface | :38 |  |
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1009 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1024 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1032 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1047 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1397,8 +1415,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | function | :18 | because the storefront's comes from messages .json and the admin's is English (House Rule 6). |
-| `status-badge.tsx` | `statusLabel` | function | :90 | `READY_TO_SHIP` -> `Ready to ship`. |
-| `status-badge.tsx` | `StatusBadge` | function | :94 |  |
+| `status-badge.tsx` | `statusLabel` | function | :97 | `READY_TO_SHIP` -> `Ready to ship`. |
+| `status-badge.tsx` | `StatusBadge` | function | :101 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :11 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :36 | A form split into small, single-purpose steps instead of one long page. |
@@ -1796,6 +1814,16 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `CustomFieldValue` | type | :1672 |  |
 | `api.ts` | `EmbeddedWidget` | interface | :1675 | `GET/POST /admin/embeds` (architecture-patterns/113-micro-frontend-embedding.md, WO-113). |
 | `api.ts` | `EmbedToken` | interface | :1684 | `POST /admin/embeds/:key/token`. |
+| `api.ts` | `EntityAttribute` | interface | :1697 | `GET/POST /admin/entity-attributes` (architecture-patterns/140-general-eav-extensibility-model.md,… |
+| `api.ts` | `EntityAttributeValueType` | type | :1706 |  |
+| `api.ts` | `MicroFrontendFragment` | interface | :1714 | `GET/POST /admin/fragments` (architecture-patterns/143-micro-frontend- architecture.md, WO-143.2). |
+| `api.ts` | `FragmentStatus` | type | :1724 |  |
+| `api.ts` | `FragmentToken` | interface | :1727 | `POST /admin/fragments/:key/token?mountPoint=...`. |
+| `api.ts` | `FormMetadata` | interface | :1739 | `GET/PUT /admin/metadata-forms/:entityType` (architecture-patterns/141-general-metadata-driven-ui-e… |
+| `api.ts` | `FieldMetadata` | interface | :1745 |  |
+| `api.ts` | `FieldMetadataValueType` | type | :1754 |  |
+| `api.ts` | `BpmnWorkflowDefinition` | interface | :1762 | `GET/PUT /admin/bpmn-workflows/:subjectType` (architecture-patterns/142-bpmn-visual-workflow-engine… |
+| `api.ts` | `ApprovalSubjectType` | type | :1769 |  |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

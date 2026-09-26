@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 Source: `apps/api/src/modules/hr/`
 
-## Files (9 · 1,075 lines)
+## Files (9 · 1,110 lines)
 
 All paths relative to `apps/api/src/modules/hr`.
 
@@ -24,8 +24,8 @@ All paths relative to `apps/api/src/modules/hr`.
 | `people.dto.ts` | dto | 60 | 4 |  |
 | `hr.module.ts` | nest module | 21 | 1 |  |
 | `people.controller.ts` | controller | 87 | 1 | hr-people-org/20-people-positions-ranks.md — reads sit behind `hr.people.view`; every write additionally needs `hr.peop… |
-| `people.service.spec.ts` | unit test | 171 | — |  |
-| `people.service.ts` | service | 254 | 3 |  |
+| `people.service.spec.ts` | unit test | 188 | — |  |
+| `people.service.ts` | service | 272 | 3 |  |
 
 
 ## HTTP routes (17)
@@ -55,7 +55,9 @@ All paths relative to `apps/api/src/modules/hr`.
 
 **Publishes** — written to the outbox inside the same transaction as the state change:
 
-_none_
+| Event | Name | Published at |
+|---|---|---|
+| `PostingEnded` | `hr.posting_ended` | `people.service.ts:215` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -67,11 +69,11 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Asset` | 11 | :123 |  |
-| `AssetAssignment` | 12 | :152 | One row per issue/return cycle — an asset's full custody history, never overwritten. |
+| `Asset` | 11 | :128 |  |
+| `AssetAssignment` | 12 | :157 | One row per issue/return cycle — an asset's full custody history, never overwritten. |
 | `EmployeeProfile` | 9 | :38 | Optional HR-specific metadata about a User who works here. |
-| `Position` | 10 | :74 | A post in the org chart: "Finance Manager, North Region". |
-| `Posting` | 8 | :97 | Who holds which post, when. |
+| `Position` | 11 | :74 | A post in the org chart: "Finance Manager, North Region". |
+| `Posting` | 8 | :102 | Who holds which post, when. |
 | `Rank` | 5 | :60 | A rank is a rung. |
 
 
@@ -95,6 +97,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 - core `audit`
 - core `auth`
+- core `events`
 - core `extension-points`
 - core `prisma`
 
@@ -127,9 +130,9 @@ check there before adding another.
 | `EndPostingDto` | class | `people.dto.ts:54` |  |
 | `HrModule` | class | `hr.module.ts:20` |  |
 | `PeopleController` | class | `people.controller.ts:16` | hr-people-org/20-people-positions-ranks.md — reads sit behind `hr.people.view`; every write additionally need… |
-| `PostingView` | interface | `people.service.ts:6` |  |
-| `PreviewAssignResult` | interface | `people.service.ts:19` |  |
-| `PeopleService` | class | `people.service.ts:45` | `PostingService` (hr-people-org/20-people-positions-ranks.md, WO-20.2): the sole writer of `Posting`. |
+| `PostingView` | interface | `people.service.ts:8` |  |
+| `PreviewAssignResult` | interface | `people.service.ts:21` |  |
+| `PeopleService` | class | `people.service.ts:47` | `PostingService` (hr-people-org/20-people-positions-ranks.md, WO-20.2): the sole writer of `Posting`. |
 
 
 ---

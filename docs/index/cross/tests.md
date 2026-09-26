@@ -3,7 +3,7 @@
 
 # Tests
 
-**282** spec files, **2,794** cases. What is already pinned down — and what is not.
+**295** spec files, **2,879** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (262)
+## Unit and integration (275)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -134,7 +134,10 @@ regression or an N+1.
 | `apps/api/src/modules/bom/bom.spec.ts` | bom | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · lis… |
 | `apps/api/src/modules/bom/cost-rollup.spec.ts` | bom | 7 | computeRecipeCost |
 | `apps/api/src/modules/bom/production.service.spec.ts` | bom | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/loca… |
+| `apps/api/src/modules/bpmn-workflows/bpmn-compiler.spec.ts` | bpmn-workflows | 9 | compileBpmnToApprovalSteps — WO-142.1 |
+| `apps/api/src/modules/bpmn-workflows/bpmn-workflows.service.spec.ts` | bpmn-workflows | 4 | BpmnWorkflowsService — WO-142.3 |
 | `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
+| `apps/api/src/modules/cart/cart.service.spec.ts` | cart | 2 | CartService.getOrCreate — guest cart TTL |
 | `apps/api/src/modules/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
 | `apps/api/src/modules/catalog/bundles.service.spec.ts` | catalog | 16 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create ·… |
 | `apps/api/src/modules/catalog/category-preset.service.spec.ts` | catalog | 6 | CategoryPresetService · preview · apply |
@@ -153,6 +156,8 @@ regression or an N+1.
 | `apps/api/src/modules/crm/whatsapp-assistant/whatsapp-copy.spec.ts` | crm | 5 | whatsapp-copy · detectWhatsAppLocale · whatsAppAssistantCopy |
 | `apps/api/src/modules/custom-fields/custom-fields.service.spec.ts` | custom-fields | 9 | CustomFieldsService — WO-104.2 |
 | `apps/api/src/modules/embeds/embed-widgets.service.spec.ts` | embeds | 8 | EmbedWidgetsService — WO-113.1 |
+| `apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts` | entity-attributes | 6 | EntityAttributeService — WO-140.2 |
+| `apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts` | entity-attributes | 1 | EntityAttributeSupplierDeletedListener — WO-140.3 |
 | `apps/api/src/modules/finance/expense-import.service.spec.ts` | finance | 5 | ExpenseImportService |
 | `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
 | `apps/api/src/modules/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |
@@ -161,6 +166,7 @@ regression or an N+1.
 | `apps/api/src/modules/finance/finance.metrics.spec.ts` | finance | 2 | FinanceMetricsProvider |
 | `apps/api/src/modules/finance/finance.spec.ts` | finance | 26 | FinanceService · generateRecurringInstances — WO-B.2 · attachReceipt — WO-B.2 · byCategory — WO-B.4… |
 | `apps/api/src/modules/finance/order-economics.service.spec.ts` | finance | 13 | OrderEconomicsService · grossProfitToday — WO-68.2/68.4 (68-realtime-gross-profit.md) |
+| `apps/api/src/modules/fragments/fragments.service.spec.ts` | fragments | 9 | FragmentsService — WO-143.2/143.3 |
 | `apps/api/src/modules/fulfilment/fulfilment.spec.ts` | fulfilment | 4 | FulfilmentService.applyStatusChange |
 | `apps/api/src/modules/fulfilment/returns.spec.ts` | fulfilment | 4 | ReturnsService |
 | `apps/api/src/modules/fulfilment/shipping-migration.spec.ts` | fulfilment | 9 | ShippingService — migrated zones produce the old fees · computeRateFee — pure logic |
@@ -183,6 +189,7 @@ regression or an N+1.
 | `apps/api/src/modules/measurements/size-bias.listener.spec.ts` | measurements | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
 | `apps/api/src/modules/measurements/size-bias.service.spec.ts` | measurements | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |
 | `apps/api/src/modules/measurements/size-recommendation.service.spec.ts` | measurements | 8 | SizeRecommendationService |
+| `apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts` | metadata-forms | 5 | MetadataFormsService — WO-141.1 |
 | `apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts` | onsitemessages | 8 | OnsiteMessagesService |
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
 | `apps/api/src/modules/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |
@@ -220,6 +227,7 @@ regression or an N+1.
 | `apps/api/src/modules/purchasing/purchasing.metrics.spec.ts` | purchasing | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |
 | `apps/api/src/modules/purchasing/purchasing.spec.ts` | purchasing | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR… |
 | `apps/api/src/modules/purchasing/reorder.listener.spec.ts` | purchasing | 9 | PurchasingReorderListener |
+| `apps/api/src/modules/purchasing/requisition-task-source.spec.ts` | purchasing | 4 | RequisitionTaskSource |
 | `apps/api/src/modules/purchasing/requisition.service.spec.ts` | purchasing | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refus… |
 | `apps/api/src/modules/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
 | `apps/api/src/modules/rag/chunking.spec.ts` | rag | 7 | chunkPages |
@@ -245,10 +253,15 @@ regression or an N+1.
 | `apps/api/src/modules/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
 | `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
 | `apps/api/src/modules/settlements/settlements.service.spec.ts` | settlements | 22 | SettlementsService · createExpectedBatch · reconcile · pollExpectedBatches · requestWriteoff / appr… |
+| `apps/api/src/modules/tasks/task-event-intake.service.spec.ts` | tasks | 6 | TaskEventIntakeService |
+| `apps/api/src/modules/tasks/task-leaver.listener.spec.ts` | tasks | 4 | TaskLeaverListener |
+| `apps/api/src/modules/tasks/task-stage.service.spec.ts` | tasks | 4 | TaskStageService — WO-23.1: stages seeded empty, added by a client without a migration |
+| `apps/api/src/modules/tasks/task.service.spec.ts` | tasks | 29 | canTransitionTask — PURE, no I/O (the exact function the UI calls to disable a button) · cycleTimeM… |
+| `apps/api/src/modules/tasks/tasks.module.spec.ts` | tasks | 1 | TasksModule — pack-absence |
 | `apps/api/src/modules/tradingpartners/invoice.service.spec.ts` | tradingpartners | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `apps/api/src/modules/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
 | `apps/api/src/modules/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |
-| `apps/api/src/modules/tradingpartners/quote.service.spec.ts` | tradingpartners | 4 | QuoteService · send · findOne |
+| `apps/api/src/modules/tradingpartners/quote.service.spec.ts` | tradingpartners | 5 | QuoteService · send · findOne |
 | `apps/api/src/modules/tradingpartners/supplier-digest.listener.spec.ts` | tradingpartners | 3 | SupplierDigestListener |
 | `apps/api/src/modules/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |

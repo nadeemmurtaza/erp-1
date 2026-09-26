@@ -1,5 +1,41 @@
 # 140 — A general EAV model, built by explicit owner override (ADR-026), narrowed to stay queryable
 
+> **Status: shipped (2026-09-26), WO-140.1/140.2/140.3/140.4.**
+> `EntityAttribute` (`entity-attributes.prisma`) + `EntityAttributeService`
+> are live. Two corrections against this document's own sketch:
+>
+> - **No `organizationId`** — corrected against this repository's own
+>   ADR-044/ADR-040 (this deployment IS the tenant), the same correction
+>   already applied to doc 104's own `CustomFieldDefinition`. See
+>   `DECISIONS.md` ADR-049.
+> - **The "runtime-checked list of known Prisma model names" this document
+>   asks for is `Prisma.ModelName`** — the client's own auto-generated
+>   registry, always in sync with the schema on every `prisma generate`,
+>   never a hand-maintained array that could drift. The acceptance
+>   criterion below asking for "a clear error naming the valid options" is
+>   narrowed in practice: `Prisma.ModelName` lists 260+ models today, so
+>   `setAttribute()` names the *rejected* value, not an enumeration of
+>   every valid one — the same trade-off a 400 on an invalid enum value
+>   makes anywhere else in this codebase.
+>
+> `deleteAll()` is wired into `PurchasingService.remove()` for `Supplier`
+> — the same first worked example doc 104 used — and nowhere else yet;
+> the next entity to adopt this mechanism must wire its own deletion path,
+> per this document's own "real, standing maintenance obligation" above.
+> Wired through a new `SupplierDeleted` domain event, not a direct
+> cross-module call: `purchasing` publishes it, and
+> `EntityAttributeSupplierDeletedListener` (inside `entity-attributes`
+> itself) subscribes — `check-module-boundaries.mjs` refuses a module
+> importing another module directly, and this is exactly the "publish a
+> domain event" escape hatch it names.
+> `EntityAttributeEditor` (generic key/value UI) is embedded on the
+> Supplier detail screen alongside doc 104/105's own bounded
+> `CustomFieldFormSection`. Access is gated per-entity-type via a
+> maintained `ENTITY_TYPE_EDIT_PERMISSION` map in
+> `EntityAttributesController` (currently `{ Supplier: 'suppliers.manage'
+> }`) — an entity type not on that map is refused, never defaulted to "any
+> signed-in user may edit."
+
 Doc 104 scoped a bounded, code-known custom-field overlay instead of a
 general EAV (Entity-Attribute-Value) model, for a specific reason: an EAV
 table with no entity allowlist produces untyped, unindexable, unreviewable

@@ -12,11 +12,16 @@ import { AttendanceModule } from './attendance/attendance.module';
 import { CrmModule } from './crm/crm.module';
 import { CustomFieldsModule } from './custom-fields/custom-fields.module';
 import { EmbedsModule } from './embeds/embeds.module';
+import { EntityAttributesModule } from './entity-attributes/entity-attributes.module';
+import { FragmentsModule } from './fragments/fragments.module';
+import { MetadataFormsModule } from './metadata-forms/metadata-forms.module';
+import { BpmnWorkflowsModule } from './bpmn-workflows/bpmn-workflows.module';
 import { FinanceModule } from './finance/finance.module';
 import { FulfilmentModule } from './fulfilment/fulfilment.module';
 import { GiftCardsModule } from './giftcards/giftcards.module';
 import { HrModule } from './hr/hr.module';
 import { OrgStructureModule } from './orgstructure/orgstructure.module';
+import { TasksModule } from './tasks/tasks.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { LoyaltyModule } from './loyalty/loyalty.module';
@@ -138,6 +143,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // query, no dependency on either module being on (see AttendanceService's
   // own header comment).
   { name: 'attendance', module: AttendanceModule },
+  // tasks-notifications-support/23-tasks-allotment-tracking.md — imports no
+  // other module (event-intake goes through TaskSourceRegistry, WO-23.3);
+  // reads hr's/orgstructure's Position table directly by Prisma query, same
+  // no-dependency-on-either-being-on shape as `attendance` just above.
+  { name: 'tasks', module: TasksModule },
   // Same allowlist tier as payments/finance (not offByDefault): checkout
   // couples to both directly, in the same transaction as order creation
   // (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE_COUPLINGS)
@@ -224,6 +234,20 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'custom-fields', module: CustomFieldsModule, alwaysOn: true },
   // 113-micro-frontend-embedding.md — a narrow iframe embed pattern.
   { name: 'embeds', module: EmbedsModule, alwaysOn: true },
+  // 140-general-eav-extensibility-model.md — a general EAV model, built by
+  // explicit owner override (ADR-026).
+  { name: 'entity-attributes', module: EntityAttributesModule, alwaysOn: true },
+  // 143-micro-frontend-architecture.md — micro-frontend fragments, built by
+  // explicit owner override (ADR-026); the mount mechanism is doc 113's own
+  // iframe + embed-token pattern (see DECISIONS.md ADR-049), not literal
+  // module federation.
+  { name: 'fragments', module: FragmentsModule, alwaysOn: true },
+  // 141-general-metadata-driven-ui-engine.md — a general metadata-driven UI
+  // engine, built by explicit owner override (ADR-026).
+  { name: 'metadata-forms', module: MetadataFormsModule, alwaysOn: true },
+  // 142-bpmn-visual-workflow-engine.md — a BPMN visual workflow engine over
+  // doc 63's own ApprovalChain, built by explicit owner override (ADR-026).
+  { name: 'bpmn-workflows', module: BpmnWorkflowsModule, alwaysOn: true },
 ];
 
 /**

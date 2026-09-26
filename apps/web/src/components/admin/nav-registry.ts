@@ -786,6 +786,29 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'organization',
     module: 'attendance',
   },
+  {
+    // tasks-notifications-support/23-tasks-allotment-tracking.md — this
+    // doc's own explicit instruction, in org-structure.prisma's own header
+    // comment: "every later hr-people-org document (postings, attendance,
+    // tasks) hangs off this same tree." Joins the Organization group rather
+    // than inventing a ninth for two screens.
+    key: 'tasks',
+    label: 'Tasks',
+    href: '/admin/tasks',
+    permissions: ['tasks.view', 'tasks.assign'],
+    group: 'organization',
+    module: 'tasks',
+  },
+  {
+    // No `permissions` — "my work" needs only `tasks.view`'s OWN endpoint
+    // (GET /admin/tasks/my is @AuthenticatedOnly, same shape as
+    // my-attendance just above): everyone signed in has tasks to do.
+    key: 'my-tasks',
+    label: 'My tasks',
+    href: '/admin/my-tasks',
+    group: 'organization',
+    module: 'tasks',
+  },
 
   // Group: Settings
   {

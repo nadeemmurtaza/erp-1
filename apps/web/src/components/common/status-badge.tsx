@@ -51,6 +51,9 @@ const TONES: Record<string, BadgeTone> = {
   SENT: 'success',
   OPENED: 'success',
   CLICKED: 'success',
+  // TaskState (tasks-notifications-support/23-tasks-allotment-tracking.md) —
+  // DONE shares COMPLETED's tone; OPEN/BLOCKED below.
+  DONE: 'success',
   // CreditDebitNoteStatus (145-receivables-credit-limits-dunning.md)
   ISSUED: 'success',
   APPLIED: 'success',
@@ -60,6 +63,10 @@ const TONES: Record<string, BadgeTone> = {
   AWAITING_APPROVAL: 'warning',
   QUOTED: 'warning',
   IN_PROGRESS: 'info',
+  // TaskState — unclaimed/new work; not yet a "waiting on someone" state.
+  OPEN: 'neutral',
+  // TaskState — waiting on something outside the assignee's control.
+  BLOCKED: 'warning',
   // WO-9.4 — CodRiskAction, shown only when not AUTO_CONFIRM (that case
   // renders no badge at all; a clean order needs no flag).
   CONFIRMATION_CALL: 'warning',

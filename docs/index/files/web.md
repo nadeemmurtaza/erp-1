@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 395 tracked files in `apps/web`, by directory.
+All 402 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -16,7 +16,7 @@ All 395 tracked files in `apps/web`, by directory.
 | `Dockerfile` | file | 52 |  |
 | `eslint.config.mjs` | script | 29 |  |
 | `next.config.mjs` | script | 62 |  |
-| `package.json` | json | 43 |  |
+| `package.json` | json | 44 |  |
 | `postcss.config.mjs` | script | 8 | @type {import('postcss-load-config').Config} |
 | `tailwind.config.ts` | module | 188 |  |
 | `tsconfig.json` | json | 25 |  |
@@ -623,6 +623,12 @@ All 395 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 138 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/my-tasks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 79 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/o` (1)
 
 | File | Kind | Lines | Purpose |
@@ -833,7 +839,7 @@ All 395 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 965 |  |
+| `page.tsx` | page | 1424 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/settings/shipping` (1)
 
@@ -905,7 +911,13 @@ All 395 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 189 | No clsx import needed |
+| `page.tsx` | page | 195 | No clsx import needed |
+
+### `apps/web/src/app/(admin)/admin/(app)/tasks` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 384 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/tax` (1)
 
@@ -1269,21 +1281,26 @@ All 395 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (20)
+### `apps/web/src/components/admin` (25)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin-shell.tsx` | component | 469 |  |
+| `bpmn-editor.tsx` | component | 118 |  |
 | `command-palette.tsx` | component | 285 |  |
 | `cross-sell-manager.tsx` | component | 256 |  |
 | `csv-import-card.tsx` | component | 209 |  |
 | `custom-field-form-section.tsx` | component | 179 |  |
 | `deployment-modules.tsx` | component | 21 |  |
 | `embedded-widget-frame.tsx` | component | 64 |  |
+| `entity-attribute-editor.tsx` | component | 160 |  |
+| `fragment-mount-point.tsx` | component | 98 |  |
 | `funnel-chart.tsx` | component | 81 |  |
 | `gauge-chart.tsx` | component | 69 |  |
 | `image-manager.tsx` | component | 543 |  |
-| `nav-registry.ts` | component | 1039 |  |
+| `metadata-driven-entity-form.tsx` | component | 120 |  |
+| `metadata-driven-form.tsx` | component | 147 |  |
+| `nav-registry.ts` | component | 1062 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1434 |  |
@@ -1362,7 +1379,7 @@ All 395 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `secret-once.tsx` | component | 100 |  |
-| `status-badge.tsx` | component | 97 |  |
+| `status-badge.tsx` | component | 104 |  |
 | `toast-container.tsx` | component | 60 |  |
 | `wizard.tsx` | component | 146 |  |
 
@@ -1497,7 +1514,7 @@ All 395 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1689 |  |
+| `api.ts` | types | 1770 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

@@ -24,8 +24,6 @@ import { CartLineValidatorRegistry } from '../../core/extension-points/cart-line
 import { PricingService } from '../pricing/pricing.service';
 import type { AddCartItemDto, UpdateCartItemDto, UpdateGuestContactDto } from './dto/cart.dto';
 
-/** Guest carts live for a month; long enough to come back after payday. */
-const CART_TTL_DAYS = 30;
 
 const cartInclude = {
   items: {
@@ -372,11 +370,14 @@ export class CartService {
       }
     }
 
+    // 127-policy-as-data-completeness-sweep.md — "how long a shop wants to
+    // hold a cart open is its own call, not an engineering one."
+    const ttlDays = await this.settings.get<number>(SettingKey.CartGuestTtlDays);
     return this.prisma.cart.create({
       data: {
         token: randomBytes(24).toString('base64url'),
         userId: userId ?? null,
-        expiresAt: new Date(Date.now() + CART_TTL_DAYS * 86_400_000),
+        expiresAt: new Date(Date.now() + ttlDays * 86_400_000),
       },
       include: cartInclude,
     });

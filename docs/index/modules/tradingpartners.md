@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 23 files
 
 Source: `apps/api/src/modules/tradingpartners/`
 
-## Files (23 · 2,046 lines)
+## Files (23 · 2,061 lines)
 
 All paths relative to `apps/api/src/modules/tradingpartners/dto`.
 
@@ -27,7 +27,7 @@ All paths relative to `apps/api/src/modules/tradingpartners/dto`.
 | `offers.controller.ts` | controller | 25 | 1 |  |
 | `product-alerts.listener.spec.ts` | unit test | 72 | — |  |
 | `product-alerts.listener.ts` | event subscriber | 44 | 1 | The "forth" direction: a new product going live, or a price changing, pushed to every connected CUSTOMER (or BOTH) part… |
-| `quote.service.spec.ts` | unit test | 96 | — |  |
+| `quote.service.spec.ts` | unit test | 111 | — |  |
 | `quote.service.ts` | service | 102 | 1 | The "forth" direction's price-quotation document (WO-18.3) — issuing one auto-pushes it to the linked TradingPartner im… |
 | `quotes.controller.ts` | controller | 31 | 1 |  |
 | `supplier-digest.listener.spec.ts` | unit test | 51 | — |  |
@@ -117,7 +117,7 @@ check there before adding another.
 | `invoice.service.spec.ts` | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `offer.service.spec.ts` | 3 | OfferService · publish |
 | `product-alerts.listener.spec.ts` | 4 | ProductAlertsListener |
-| `quote.service.spec.ts` | 4 | QuoteService · send · findOne |
+| `quote.service.spec.ts` | 5 | QuoteService · send · findOne |
 | `supplier-digest.listener.spec.ts` | 3 | SupplierDigestListener |
 | `trading-partner-portal.controller.spec.ts` | 6 | TradingPartnerPortalController · accept |
 | `trading-partners.service.spec.ts` | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKey · setOutboundApiKe… |

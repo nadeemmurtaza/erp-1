@@ -3,7 +3,7 @@
 
 # Migrations
 
-**99** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**104** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -127,9 +127,14 @@ nothing here fails a build.
 | 2026-09-26 | `add_org_unit_grant` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | OrgUnitGrant |
 | 2026-09-26 | `add_embedded_widgets` | 3 | CREATE TABLE, CREATE UNIQUE INDEX, ALTER TABLE | EmbeddedWidget |
 | 2026-09-26 | `add_attendance` | 44 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | AttendanceDevice, AttendanceEvent, AttendanceEvent_default, AttendanceException, Shift |
+| 2026-09-26 | `add_entity_attributes` | 3 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | EntityAttribute |
+| 2026-09-26 | `add_tasks` | 14 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Task, TaskStageDefinition, TaskTransition |
+| 2026-09-26 | `add_micro_frontend_fragments` | 4 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, ALTER TABLE | MicroFrontendFragment |
 | 2026-09-26 | `wo166_product_reference_registry` | 25 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | GlobalProductReference, GlobalProductReferenceFlag, GlobalProductReferenceImage, GlobalProductReferenceLink,… |
+| 2026-09-26 | `add_form_metadata` | 2 | CREATE TABLE, CREATE UNIQUE INDEX | FormMetadata |
 | 2026-09-26 | `wo146_pricing_module` | 10 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | PriceList, PriceListAssignment, PriceListEntry |
 | 2026-09-26 | `wo47_category_presets` | 2 | CREATE TABLE, CREATE UNIQUE INDEX | CategoryPreset |
+| 2026-09-26 | `add_bpmn_workflow_definitions` | 2 | CREATE TABLE, CREATE UNIQUE INDEX | BpmnWorkflowDefinition |
 | 2026-09-26 | `wo150_product_bundles` | 5 | CREATE TABLE, CREATE UNIQUE INDEX, ALTER TABLE | BundleComponent, ProductBundle |
 | 2026-09-26 | `wo149_b2b_accounts_approvals` | 13 | CREATE TYPE, ALTER TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | ApprovalStep, B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
 

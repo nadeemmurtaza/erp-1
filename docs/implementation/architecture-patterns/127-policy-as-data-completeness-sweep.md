@@ -1,5 +1,46 @@
 # 127 — Finding what's still hardcoded: a systematic sweep, not a one-off fix
 
+> **Status: shipped (2026-09-26), WO-127.1/127.2.**
+> `scripts/check-hardcoded-policy.mjs` runs the sweep (three heuristics —
+> the document's own two, plus a `DAYS`/`PERCENT`/`RATE`/`GRACE`-shaped
+> pattern that surfaced two real findings the original two missed).
+> **Not added to `pnpm lint`**, exactly as WO-127.1 cautions — a
+> heuristic-driven check with no way to distinguish an engineering
+> constant from a policy value would be permanently noisy.
+>
+> The triage (WO-127.2), one full pass against the current codebase:
+>
+> **Genuine policy gaps, converted** — both now read from a `Setting`,
+> the exact sibling pattern `InventorySlowMoverDays`/`DemandForecastSafetyStockDays`
+> already establish:
+> - `QuoteService`'s hardcoded `DEFAULT_VALIDITY_DAYS = 14` → `SettingKey.
+>   TradingPartnersQuoteDefaultValidityDays` (`tradingpartners.quote_default_validity_days`,
+>   default 14) — a shop's own default quote-validity term, not an
+>   engineering bound.
+> - `CartService`'s hardcoded `CART_TTL_DAYS = 30` → `SettingKey.
+>   CartGuestTtlDays` (`cart.guest_ttl_days`, default 30) — "how long a
+>   shop wants to hold a cart open is its own call, not an engineering one."
+>
+> **Already correctly a constant (no action)** — every other candidate the
+> sweep surfaced, each checked against its own call site rather than
+> assumed: `API_KEY_FAILURE_LIMIT`/`API_KEY_FAILURE_WINDOW_MS` (an
+> in-memory, per-process DoS-prevention bound — never a business rule a
+> tenant configures), `DUPLICATE_SIMILARITY_THRESHOLD` (a Jaccard-similarity
+> algorithm calibration, not a client-varying figure), `CANDIDATE_LIMIT`/
+> `VISUAL_SEARCH_LIMIT` (search ranking-pass bounds), `RELATED_LIMIT`/
+> `FREQUENTLY_BOUGHT_LIMIT`/`PERSONALIZED_LIMIT` (recommendation
+> display-count caps — a UI capacity bound, not a computed or owed figure),
+> `CO_OCCURRENCE_FILL_LIMIT`/`EMBEDDING_FILL_LIMIT`/
+> `CO_OCCURRENCE_WINDOW_DAYS`/`MIN_CO_OCCURRENCE_ORDERS` (recommendation
+> cron algorithm tuning), `LOOKBACK_DAYS` (a risk-scoring statistical
+> sampling window), `MAX_RANGE_DAYS`/`DEFAULT_RANGE_DAYS`
+> (`reports.service.ts`'s own query-safety bound against an unbounded
+> export — distinct from, and narrower than, the already-Setting-backed
+> `AnalyticsDefaultRangeDays` the dashboard cards use).
+>
+> **Ambiguous** — none; every candidate resolved to one of the two buckets
+> above on inspection of its own call site.
+
 This repository's own "rows over enums" discipline has already converted
 tax rates (doc 15), pricing tiers (doc 50), deduction types (doc 40),
 leave types, and approval-chain tier counts (doc 63) from hardcoded logic

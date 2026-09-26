@@ -1686,3 +1686,84 @@ export interface EmbedToken {
   /** ISO string. */
   expiresAt: string;
 }
+
+/**
+ * `GET/POST /admin/entity-attributes`
+ * (architecture-patterns/140-general-eav-extensibility-model.md, WO-140.2).
+ * The general fallback for an entity type doc 104's own bounded
+ * `CustomFieldDefinition` allowlist does not (yet) name — no defined-fields
+ * step, just an ad hoc key/value the caller invents on the spot.
+ */
+export interface EntityAttribute {
+  id: string;
+  entityType: string;
+  entityId: string;
+  attributeKey: string;
+  attributeValue: string;
+  valueType: EntityAttributeValueType;
+}
+
+export type EntityAttributeValueType = 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE';
+
+/**
+ * `GET/POST /admin/fragments` (architecture-patterns/143-micro-frontend-
+ * architecture.md, WO-143.2). Mounted via doc 113's own iframe + embed-token
+ * pattern (`FragmentMountPoint`), not literal module federation — see
+ * DECISIONS.md ADR-049.
+ */
+export interface MicroFrontendFragment {
+  id: string;
+  key: string;
+  label: string;
+  remoteUrl: string;
+  mountPoints: string[];
+  status: FragmentStatus;
+  attestedAt: string;
+}
+
+export type FragmentStatus = 'ACTIVE' | 'SUSPENDED';
+
+/** `POST /admin/fragments/:key/token?mountPoint=...`. */
+export interface FragmentToken {
+  token: string;
+  /** ISO string. */
+  expiresAt: string;
+}
+
+/**
+ * `GET/PUT /admin/metadata-forms/:entityType`
+ * (architecture-patterns/141-general-metadata-driven-ui-engine.md,
+ * WO-141.1). Describes a form's own shape only — values live wherever the
+ * rendering screen decides (the one built here reuses `EntityAttribute`).
+ */
+export interface FormMetadata {
+  id: string;
+  entityType: string;
+  fields: FieldMetadata[];
+}
+
+export interface FieldMetadata {
+  key: string;
+  label: string;
+  valueType: FieldMetadataValueType;
+  isRequired?: boolean;
+  options?: string[];
+  helpText?: string;
+}
+
+export type FieldMetadataValueType = 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE' | 'SELECT';
+
+/**
+ * `GET/PUT /admin/bpmn-workflows/:subjectType`
+ * (architecture-patterns/142-bpmn-visual-workflow-engine.md, WO-142.3). A
+ * view over `ApprovalChain`/`ApprovalStep`, never a second execution
+ * runtime — `compiledSteps` is the only thing `ApprovalService` ever reads.
+ */
+export interface BpmnWorkflowDefinition {
+  id: string;
+  subjectType: ApprovalSubjectType;
+  diagramXml: string;
+  compiledSteps: Array<{ stepOrder: number; approverRoleId?: string; approverUserId?: string }>;
+}
+
+export type ApprovalSubjectType = 'PURCHASE_REQUISITION' | 'WALLET_ADJUSTMENT';

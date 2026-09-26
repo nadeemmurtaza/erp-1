@@ -56,6 +56,8 @@ export const DomainEvent = {
   BomProductionCompleted: 'bom.production_completed',
   SupplierBillRaised: 'purchasing.supplier_bill_raised',
   SupplierBillPaid: 'purchasing.supplier_bill_paid',
+  /** PurchasingService.remove() — fired so any module holding data keyed to this supplier (e.g. entity-attributes' own EntityAttribute rows, which carry no real foreign key) can clean up without purchasing importing that module directly (140-general-eav-extensibility-model.md, WO-140.3). */
+  SupplierDeleted: 'purchasing.supplier_deleted',
   /** An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3). Never fired for NONE/INTERNAL_PL. */
   InterBranchTransferInvoiced: 'transfers.inter_branch_invoiced',
   /** SupplyChainDigestCron's own nightly per-supplier stock/velocity computation, republished as an event so a connected TradingPartner can receive it structured, not only as the email it already sends. */
@@ -70,6 +72,17 @@ export const DomainEvent = {
   IdentityVerificationApproved: 'identity_verification.approved',
   IdentityVerificationRejected: 'identity_verification.rejected',
   IdentityVerificationExpired: 'identity_verification.expired',
+
+  /**
+   * PostingService.end() (hr-people-org/20-people-positions-ranks.md) —
+   * added for tasks-notifications-support/23-tasks-allotment-tracking.md
+   * (DECISIONS.md ADR-050): doc 20's own build never needed a domain event,
+   * so nobody added one until doc 23's leaver-handling subscriber
+   * (tasks/task-leaver.listener.ts) needed something to react to. Fires
+   * once per posting actually ended — never on the idempotent "already
+   * ended" no-op path of end(), so a retried call cannot double-fire it.
+   */
+  PostingEnded: 'hr.posting_ended',
 
   /** FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today. */
   ExpenseRecorded: 'finance.expense_recorded',
@@ -388,6 +401,10 @@ export interface GoodsReceivedPayload {
   receivedAtIso: string;
 }
 
+export interface SupplierDeletedPayload {
+  supplierId: string;
+}
+
 export interface BomProductionCompletedPayload {
   runId: string;
   number: string;
@@ -570,6 +587,15 @@ export interface IdentityVerificationPayload {
   method: string | null;
 }
 
+/** PostingService.end() — the exact shape tasks/task-leaver.listener.ts needs to unclaim a post's open tasks and surface them to reportsTo (ADR-050). */
+export interface PostingEndedPayload {
+  postingId: string;
+  userId: string;
+  positionId: string;
+  /** ISO — the posting's own endedOn, never `new Date()` at publish time (R2). */
+  endedOn: string;
+}
+
 export interface DomainEventPayloads {
   [DomainEvent.OrderPlaced]: OrderPlacedPayload;
   [DomainEvent.OrderStatusChanged]: OrderStatusChangedPayload;
@@ -606,12 +632,14 @@ export interface DomainEventPayloads {
   [DomainEvent.WorkOrderCompleted]: WorkOrderPayload;
   [DomainEvent.SupplierBillRaised]: SupplierBillRaisedPayload;
   [DomainEvent.SupplierBillPaid]: SupplierBillPaidPayload;
+  [DomainEvent.SupplierDeleted]: SupplierDeletedPayload;
   [DomainEvent.InterBranchTransferInvoiced]: InterBranchTransferInvoicedPayload;
   [DomainEvent.SupplierDigestReady]: SupplierDigestReadyPayload;
   [DomainEvent.EmailReplyReceived]: EmailReplyReceivedPayload;
   [DomainEvent.IdentityVerificationApproved]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationRejected]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationExpired]: IdentityVerificationPayload;
+  [DomainEvent.PostingEnded]: PostingEndedPayload;
   [DomainEvent.ExpenseRecorded]: ExpenseRecordedPayload;
   [DomainEvent.OrderEconomicsComputed]: OrderEconomicsComputedPayload;
   [DomainEvent.PayrollRunPosted]: PayrollRunPostedPayload;

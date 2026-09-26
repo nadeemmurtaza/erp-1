@@ -5,6 +5,9 @@ import { useEffect, useState, use } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
 import { CustomFieldFormSection } from '@/components/admin/custom-field-form-section';
+import { EntityAttributeEditor } from '@/components/admin/entity-attribute-editor';
+import { FragmentMountPoint } from '@/components/admin/fragment-mount-point';
+import { MetadataDrivenEntityForm } from '@/components/admin/metadata-driven-entity-form';
 
 interface SupplierDetail {
   id: string;
@@ -183,6 +186,9 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
       ) : null}
 
       <CustomFieldFormSection entityType="Supplier" entityId={id} />
+      <EntityAttributeEditor entityType="Supplier" entityId={id} />
+      <FragmentMountPoint mountPoint="supplier-detail" />
+      <MetadataDrivenEntityForm entityType="Supplier" entityId={id} />
     </>
   );
 }

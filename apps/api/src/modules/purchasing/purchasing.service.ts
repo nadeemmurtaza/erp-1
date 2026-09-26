@@ -173,7 +173,14 @@ export class PurchasingService {
   async remove(id: string) {
     const supplier = await this.prisma.supplier.findUnique({ where: { id } });
     if (!supplier) throw new NotFoundException('Supplier not found');
-    return this.prisma.supplier.delete({ where: { id } });
+    const deleted = await this.prisma.supplier.delete({ where: { id } });
+    // 140-general-eav-extensibility-model.md (WO-140.3) — EntityAttribute rows
+    // are not a real foreign key to Supplier, so nothing cascades them.
+    // Published as an event, never a direct cross-module call, so purchasing
+    // stays independent of entity-attributes (check-module-boundaries.mjs);
+    // EntityAttributeSupplierDeletedListener does the actual cleanup.
+    await this.events.publish(DomainEvent.SupplierDeleted, { supplierId: id });
+    return deleted;
   }
 
   async getProducts(supplierId: string) {

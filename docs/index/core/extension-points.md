@@ -3,7 +3,7 @@
 
 # Core: `extension-points`
 
-Shared platform — available to every module, part of no feature · 9 files
+Shared platform — available to every module, part of no feature · 11 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/extension-points/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (9 · 446 lines)
+## Files (11 · 555 lines)
 
 All paths relative to `apps/api/src/core/extension-points`.
 
@@ -24,9 +24,11 @@ All paths relative to `apps/api/src/core/extension-points`.
 | `cart-line-validator.registry.ts` | registry | 64 | 2 | What a validator is: given a garment's field definitions and the values a customer supplied, either return the values i… |
 | `employee-offboarding.registry.ts` | registry | 39 | 3 |  |
 | `entity-enrichment.registry.ts` | registry | 45 | 2 | Lets a pack attach its own data onto a core entity's API response without core ever importing the pack, or even knowing… |
-| `extension-points.module.ts` | nest module | 45 | 1 |  |
+| `extension-points.module.ts` | nest module | 52 | 1 |  |
 | `identity-verification-status.registry.ts` | registry | 36 | 2 |  |
 | `stock-intake.registry.ts` | registry | 71 | 3 |  |
+| `task-source.registry.ts` | registry | 63 | 3 | What a registered event turns into, once its mapping resolves it. |
+| `workflow-steps.registry.ts` | registry | 39 | 3 |  |
 
 
 ## HTTP routes (0)
@@ -55,8 +57,8 @@ _none_
 **`ExtensionPointsModule`** (`extension-points.module.ts`)
 - imports: —
 - controllers: —
-- providers: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`, `IdentityVerificationStatusRegistry`, `EmployeeOffboardingRegistry`
-- exports: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`, `IdentityVerificationStatusRegistry`, `EmployeeOffboardingRegistry`
+- providers: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`, `IdentityVerificationStatusRegistry`, `EmployeeOffboardingRegistry`, `TaskSourceRegistry`, `WorkflowStepsRegistry`
+- exports: `EntityEnrichmentRegistry`, `CheckoutValidatorRegistry`, `CartLineValidatorRegistry`, `StockIntakeRegistry`, `BranchPolicyRegistry`, `CameraPeopleCountRegistry`, `IdentityVerificationStatusRegistry`, `EmployeeOffboardingRegistry`, `TaskSourceRegistry`, `WorkflowStepsRegistry`
 
 
 
@@ -83,12 +85,18 @@ _none_
 | `EmployeeOffboardingRegistry` | class | `employee-offboarding.registry.ts:26` | Lets `users` (core, always-on) ask "does this person still hold company equipment?" before deactivating their… |
 | `EntityEnricher` | interface | `entity-enrichment.registry.ts:19` | Lets a pack attach its own data onto a core entity's API response without core ever importing the pack, or ev… |
 | `EntityEnrichmentRegistry` | class | `entity-enrichment.registry.ts:24` |  |
-| `ExtensionPointsModule` | class | `extension-points.module.ts:44` |  |
+| `ExtensionPointsModule` | class | `extension-points.module.ts:51` |  |
 | `IdentityVerificationStatusProvider` | interface | `identity-verification-status.registry.ts:3` |  |
 | `IdentityVerificationStatusRegistry` | class | `identity-verification-status.registry.ts:24` | Lets a module ask "is this user verified?" without importing `identity-verification` — a module switched off… |
 | `StockIntakeMove` | interface | `stock-intake.registry.ts:4` |  |
 | `StockIntakeHandler` | interface | `stock-intake.registry.ts:15` |  |
 | `StockIntakeRegistry` | class | `stock-intake.registry.ts:52` | Lets a module record a stock movement — set a newly-imported product's opening stock, say — without importing… |
+| `TaskSourceCreateInput` | interface | `task-source.registry.ts:5` | What a registered event turns into, once its mapping resolves it. |
+| `TaskSourceMapping` | interface | `task-source.registry.ts:18` |  |
+| `TaskSourceRegistry` | class | `task-source.registry.ts:51` | Lets any module turn one of its own domain events into a Task, without `tasks` importing that module and with… |
+| `CompiledApprovalStep` | interface | `workflow-steps.registry.ts:4` |  |
+| `WorkflowStepsHandler` | interface | `workflow-steps.registry.ts:9` |  |
+| `WorkflowStepsRegistry` | class | `workflow-steps.registry.ts:26` | Lets a subject module (`purchasing`'s `RequisitionService`, doc 63's own consumer) ask "has a manager redrawn… |
 
 
 ---

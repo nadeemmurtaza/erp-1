@@ -67,6 +67,10 @@ export const MODULE_PACKS: Record<string, PackName> = {
   crm: 'core',
   'custom-fields': 'core',
   embeds: 'core',
+  'entity-attributes': 'core',
+  fragments: 'core',
+  'metadata-forms': 'core',
+  'bpmn-workflows': 'core',
   'identity-verification': 'core',
   inventory: 'core',
   marketing: 'core',
@@ -95,6 +99,10 @@ export const MODULE_PACKS: Record<string, PackName> = {
   hr: 'core',
   orgstructure: 'core',
   attendance: 'core',
+  // tasks-notifications-support/23-tasks-allotment-tracking.md — imports no
+  // other module (event-intake goes through core/extension-points/
+  // task-source.registry.ts) and no other module imports it.
+  tasks: 'core',
   promotions: 'core',
   giftcards: 'core',
   search: 'core',

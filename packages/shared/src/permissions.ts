@@ -285,6 +285,37 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    // 143-micro-frontend-architecture.md — registering a fragment introduces
+    // third-party runtime code (loaded here as an iframe + embed-token, per
+    // the doc's own WO-143.4/DECISIONS.md ADR-049 substitution) into the
+    // admin shell; a real trust decision, gated separately from
+    // settings.embeds.manage since it carries the design-law attestation
+    // requirement doc 143 names, not shared with doc 113's own widgets.
+    key: 'settings.fragments.manage',
+    label: 'Register and suspend micro-frontend fragments',
+    category: 'Administration',
+    sensitivity: 'critical',
+  },
+  {
+    // 141-general-metadata-driven-ui-engine.md — defining a metadata-driven
+    // form's own field shape is a settings-level action; reading an
+    // already-defined shape is open to any authenticated admin (it grants
+    // no access to any entity's own values).
+    key: 'settings.metadata-forms.manage',
+    label: 'Define metadata-driven form field shapes',
+    category: 'Administration',
+    sensitivity: 'medium',
+  },
+  {
+    // 142-bpmn-visual-workflow-engine.md — redrawing an approval chain's own
+    // shape changes who approves what for every future subject of that
+    // type; a settings-level trust decision, not a day-to-day action.
+    key: 'settings.bpmn-workflows.manage',
+    label: 'Redraw approval workflow diagrams',
+    category: 'Administration',
+    sensitivity: 'critical',
+  },
+  {
     key: 'tax.manage',
     label: 'Manage tax classes, rates and the pricing mode',
     category: 'Administration',
@@ -509,6 +540,39 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'high',
   },
   {
+    // tasks-notifications-support/23-tasks-allotment-tracking.md.
+    key: 'tasks.view',
+    label: 'View tasks — my work, a post queue, and a task\'s transition history',
+    category: 'Organization',
+    sensitivity: 'low',
+  },
+  {
+    key: 'tasks.assign',
+    label: 'Create tasks, assign them to a person, and move them between OPEN/IN_PROGRESS/BLOCKED',
+    category: 'Organization',
+    sensitivity: 'medium',
+  },
+  {
+    // Paired with tasks.assign as a PER-INSTANCE check inside
+    // TaskService.close(), never TOXIC_PERMISSION_PAIRS — see that method's
+    // own header comment and DECISIONS.md ADR-050 for why: the risk this
+    // key's own toxic pairing guards against ("assigning yourself work and
+    // marking it done unobserved") only exists for a task whose sourceType
+    // names a money-adjacent module, not for an ordinary task, so refusing
+    // a ROLE from ever holding both keys would break the common case
+    // (most STAFF legitimately holds both and self-closes routine work).
+    key: 'tasks.close',
+    label: 'Mark a task DONE or CANCELLED',
+    category: 'Organization',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'tasks.admin',
+    label: 'Add or reorder a task workflow stage',
+    category: 'Organization',
+    sensitivity: 'high',
+  },
+  {
     key: 'marketing.manage',
     label: 'Turn on automated marketing email and set its timing',
     category: 'Administration',
@@ -713,8 +777,18 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'sales',
     label: 'Sales & payments',
-    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, and registering terminals.',
-    permissions: ['orders.manage', 'payments.approve', 'pos.manage', 'pos.operate', 'pos.instalments.cancel', 'pos.instalments.default'],
+    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, registering terminals, and wholesale pricing.',
+    permissions: [
+      'orders.manage',
+      'payments.approve',
+      'pos.manage',
+      'pos.operate',
+      'pos.instalments.cancel',
+      'pos.instalments.default',
+      'pricing.price-lists.manage',
+      'pricing.price-lists.approve',
+      'pricing.assignments.manage',
+    ],
   },
   {
     key: 'fulfilment',
@@ -851,8 +925,17 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'organization',
     label: 'Organization structure',
-    description: 'Offices, regions and departments — the tree everything else scopes access and reporting to — plus who is granted access over which unit.',
-    permissions: ['org.structure.view', 'org.structure.manage', 'org.access.view', 'org.access.grant'],
+    description: 'Offices, regions and departments — the tree everything else scopes access and reporting to — plus who is granted access over which unit, and the tasks assigned across it.',
+    permissions: [
+      'org.structure.view',
+      'org.structure.manage',
+      'org.access.view',
+      'org.access.grant',
+      'tasks.view',
+      'tasks.assign',
+      'tasks.close',
+      'tasks.admin',
+    ],
   },
   {
     key: 'system-admin',
@@ -863,6 +946,9 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'settings.sso.manage',
       'settings.custom-fields.manage',
       'settings.embeds.manage',
+      'settings.fragments.manage',
+      'settings.metadata-forms.manage',
+      'settings.bpmn-workflows.manage',
       'roles.manage_permissions',
       'users.manage',
       'audit.view',
@@ -898,6 +984,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'analytics.view',
     'reports.view',
     'organization.view',
+    'tasks.view',
+    'tasks.assign',
+    'tasks.close',
     'crm.manage',
     'orders.manage',
     'pricing.price-lists.manage',
@@ -971,6 +1060,18 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     // existing custom-roles screen — the access screen renders read-only
     // for ADMIN (org.access.view) until then, matching this document's own
     // "Solo: the grant screen never rendered" silhouette.
+    'tasks.view',
+    'tasks.assign',
+    // Unlike org.access.grant/hr.attendance.reconcile above, tasks.close IS
+    // seeded onto ADMIN alongside tasks.assign — the toxic pair the two
+    // form (DECISIONS.md ADR-050) is a PER-INSTANCE check inside
+    // TaskService.close(), scoped to a task whose sourceType names a
+    // money-adjacent module, not a role-level refusal TOXIC_PERMISSION_PAIRS
+    // would catch here. Holding both is the ordinary, safe case for every
+    // other task; the instance check still refuses the one risky case
+    // (self-assign, then self-close, on a money-adjacent task).
+    'tasks.close',
+    'tasks.admin',
     'hr.attendance.view',
     'hr.attendance.record',
     // 'hr.attendance.reconcile' is deliberately NOT seeded here, the
@@ -1033,6 +1134,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'settings.sso.manage',
     'settings.custom-fields.manage',
     'settings.embeds.manage',
+    'settings.fragments.manage',
+    'settings.metadata-forms.manage',
+    'settings.bpmn-workflows.manage',
     'roles.manage_permissions',
     'audit.view',
     'users.manage',

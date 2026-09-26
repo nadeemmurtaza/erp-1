@@ -563,7 +563,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 5351 |  |
+| `DECISIONS.md` | doc | 5913 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -633,19 +633,19 @@ All 396 tracked files in `docs/*`, by directory.
 | `117-event-driven-choreography-immutability.md` | doc | 82 |  |
 | `118-headless-composable-api-capabilities.md` | doc | 87 |  |
 | `122-data-lake-cold-storage-architecture.md` | doc | 75 |  |
-| `127-policy-as-data-completeness-sweep.md` | doc | 76 |  |
-| `128-extension-point-coverage-audit.md` | doc | 143 |  |
+| `127-policy-as-data-completeness-sweep.md` | doc | 117 |  |
+| `128-extension-point-coverage-audit.md` | doc | 194 |  |
 | `130-machine-readable-capability-manifest.md` | doc | 110 |  |
 | `131-versioned-domain-events.md` | doc | 70 |  |
 | `133-reusable-dry-run-harness.md` | doc | 59 |  |
 | `134-hexagonal-purity-ci-check.md` | doc | 71 |  |
-| `136-database-cache-portability-audit.md` | doc | 72 |  |
+| `136-database-cache-portability-audit.md` | doc | 126 |  |
 | `138-technology-substitution-playbook.md` | doc | 70 |  |
 | `139-second-front-door-websocket-gateway.md` | doc | 106 |  |
-| `140-general-eav-extensibility-model.md` | doc | 148 |  |
-| `141-general-metadata-driven-ui-engine.md` | doc | 147 |  |
-| `142-bpmn-visual-workflow-engine.md` | doc | 109 |  |
-| `143-micro-frontend-architecture.md` | doc | 160 |  |
+| `140-general-eav-extensibility-model.md` | doc | 184 |  |
+| `141-general-metadata-driven-ui-engine.md` | doc | 192 |  |
+| `142-bpmn-visual-workflow-engine.md` | doc | 166 |  |
+| `143-micro-frontend-architecture.md` | doc | 199 |  |
 | `157-client-request-idempotency-keys.md` | doc | 276 |  |
 | `166-unified-product-reference-registry.md` | doc | 545 |  |
 | `92-microservices-module-decoupling.md` | doc | 94 |  |

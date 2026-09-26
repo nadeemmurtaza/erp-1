@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@newax/shared": "workspace:*",
+    "bpmn-js": "18.30.1",
     "clsx": "2.1.1",
     "framer-motion": "^13.1.1",
     "lenis": "^1.3.26",

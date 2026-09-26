@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `AgencyUsageSnapshot`  <sub>`apps/platform/prisma/schema/platform.prisma:743`</sub>
+### `AgencyUsageSnapshot`  <sub>`apps/platform/prisma/schema/platform.prisma:765`</sub>
 
 > One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe to delete and recompute (same discipline as `VariantSalesStat` on the tenant side).
 
@@ -37,7 +37,7 @@ against a real database.
 
 Indexes: `@@unique([tenantId, snapshotDate])` · `@@index([tenantId, snapshotDate])`
 
-### `MeteredOrderFee`  <sub>`apps/platform/prisma/schema/platform.prisma:640`</sub>
+### `MeteredOrderFee`  <sub>`apps/platform/prisma/schema/platform.prisma:662`</sub>
 
 > Doc 153's own "the reversal document, not the reversal flag" — one row per order actually metered for the transaction fee, naming the specific order and the exact amount metered for it, so a later `R…
 
@@ -56,7 +56,7 @@ Indexes: `@@unique([tenantId, snapshotDate])` · `@@index([tenantId, snapshotDat
 
 Indexes: `@@unique([tenantId, orderId])` · `@@index([tenantId, periodStart])`
 
-### `PlatformCustomQuote`  <sub>`apps/platform/prisma/schema/platform.prisma:521`</sub>
+### `PlatformCustomQuote`  <sub>`apps/platform/prisma/schema/platform.prisma:543`</sub>
 
 > WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…
 
@@ -81,7 +81,7 @@ Indexes: `@@unique([tenantId, orderId])` · `@@index([tenantId, periodStart])`
 
 Indexes: `@@index([tenantId])` · `@@index([status])`
 
-### `PlatformInvoice`  <sub>`apps/platform/prisma/schema/platform.prisma:411`</sub>
+### `PlatformInvoice`  <sub>`apps/platform/prisma/schema/platform.prisma:433`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -115,7 +115,7 @@ Indexes: `@@index([tenantId])` · `@@index([status])`
 
 Indexes: `@@unique([tenantId, periodStart, periodEnd])` · `@@index([tenantId, issuedAt])` · `@@index([status, dueAt])`
 
-### `PlatformInvoiceCreditNote`  <sub>`apps/platform/prisma/schema/platform.prisma:497`</sub>
+### `PlatformInvoiceCreditNote`  <sub>`apps/platform/prisma/schema/platform.prisma:519`</sub>
 
 > A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own "the reversal document" lens).
 
@@ -131,7 +131,7 @@ Indexes: `@@unique([tenantId, periodStart, periodEnd])` · `@@index([tenantId, i
 
 Indexes: `@@index([invoiceId])`
 
-### `PlatformOpsClient`  <sub>`apps/platform/prisma/schema/platform.prisma:279`</sub>
+### `PlatformOpsClient`  <sub>`apps/platform/prisma/schema/platform.prisma:301`</sub>
 
 > A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.
 
@@ -165,13 +165,19 @@ Indexes: `@@index([status])`
 | `transactionFeeBps` | `Int?` | optional |  |
 | `usageRateCardMinor` | `Json?` | optional |  |
 | `includedAllowances` | `Json?` | optional |  |
+| `isHeadline` | `Boolean` |  | @default(false) |
+| `headlineOrder` | `Int?` | optional |  |
+| `displayName` | `String?` | optional |  |
+| `priceDescription` | `String?` | optional |  |
+| `bestFor` | `String?` | optional |  |
+| `ctaLabel` | `String?` | optional |  |
 | `tenants` | `PlatformTenant[]` |  |  |
 | `subscriptions` | `PlatformSubscription[]` |  |  |
 | `invoices` | `PlatformInvoice[]` |  |  |
 | `customQuotes` | `PlatformCustomQuote[]` |  |  |
 | `rateCardChangeRequests` | `PlatformRateCardChangeRequest[]` |  |  |
 
-### `PlatformRateCardChangeRequest`  <sub>`apps/platform/prisma/schema/platform.prisma:696`</sub>
+### `PlatformRateCardChangeRequest`  <sub>`apps/platform/prisma/schema/platform.prisma:718`</sub>
 
 > doc 153's own "the threshold nobody approves alone" / "authority and blast radius" lenses, resolved with the identical create/approve split `PlatformCustomQuote` (doc 50 §4) already established: a ra…
 
@@ -195,7 +201,7 @@ Indexes: `@@index([status])`
 
 Indexes: `@@index([planId])` · `@@index([status])`
 
-### `PlatformSubscription`  <sub>`apps/platform/prisma/schema/platform.prisma:200`</sub>
+### `PlatformSubscription`  <sub>`apps/platform/prisma/schema/platform.prisma:222`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -256,7 +262,7 @@ Indexes: `@@index([tenantId, status])`
 
 Indexes: `@@index([status])` · `@@index([status, trialExpiresAt])` · `@@index([status, retentionExpiresAt])`
 
-### `PlatformUsageRecord`  <sub>`apps/platform/prisma/schema/platform.prisma:216`</sub>
+### `PlatformUsageRecord`  <sub>`apps/platform/prisma/schema/platform.prisma:238`</sub>
 
 > Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.
 
@@ -271,7 +277,7 @@ Indexes: `@@index([status])` · `@@index([status, trialExpiresAt])` · `@@index(
 
 Indexes: `@@unique([tenantId, metric, windowStart])` · `@@index([tenantId, windowStart])`
 
-### `ResourceQuotaAlert`  <sub>`apps/platform/prisma/schema/platform.prisma:325`</sub>
+### `ResourceQuotaAlert`  <sub>`apps/platform/prisma/schema/platform.prisma:347`</sub>
 
 > One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.
 
@@ -290,7 +296,7 @@ Indexes: `@@unique([tenantId, metric, windowStart])` · `@@index([tenantId, wind
 
 Indexes: `@@unique([tenantId, metric, windowStart])` · `@@index([tenantId, createdAt])`
 
-### `ResourceTierQuota`  <sub>`apps/platform/prisma/schema/platform.prisma:300`</sub>
+### `ResourceTierQuota`  <sub>`apps/platform/prisma/schema/platform.prisma:322`</sub>
 
 > --------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…
 
@@ -306,7 +312,7 @@ Indexes: `@@unique([tenantId, metric, windowStart])` · `@@index([tenantId, crea
 
 Indexes: `@@unique([resourceTier, metric])`
 
-### `SignupVerification`  <sub>`apps/platform/prisma/schema/platform.prisma:556`</sub>
+### `SignupVerification`  <sub>`apps/platform/prisma/schema/platform.prisma:578`</sub>
 
 > A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.
 
@@ -325,7 +331,7 @@ Indexes: `@@unique([resourceTier, metric])`
 
 Indexes: `@@index([email, createdAt])`
 
-### `SupportAccessGrant`  <sub>`apps/platform/prisma/schema/platform.prisma:231`</sub>
+### `SupportAccessGrant`  <sub>`apps/platform/prisma/schema/platform.prisma:253`</sub>
 
 > The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.
 
@@ -345,7 +351,7 @@ Indexes: `@@index([email, createdAt])`
 
 Indexes: `@@index([tenantId, expiresAt])`
 
-### `TenantDataExport`  <sub>`apps/platform/prisma/schema/platform.prisma:369`</sub>
+### `TenantDataExport`  <sub>`apps/platform/prisma/schema/platform.prisma:391`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -365,7 +371,7 @@ Indexes: `@@index([tenantId, expiresAt])`
 
 Indexes: `@@index([tenantId, requestedAt])`
 
-### `TenantDeploymentCredential`  <sub>`apps/platform/prisma/schema/platform.prisma:259`</sub>
+### `TenantDeploymentCredential`  <sub>`apps/platform/prisma/schema/platform.prisma:281`</sub>
 
 > The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…
 
@@ -378,7 +384,7 @@ Indexes: `@@index([tenantId, requestedAt])`
 | `rotatedAt` | `DateTime?` | optional |  |
 | `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
 
-### `TrialExtension`  <sub>`apps/platform/prisma/schema/platform.prisma:574`</sub>
+### `TrialExtension`  <sub>`apps/platform/prisma/schema/platform.prisma:596`</sub>
 
 > WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so "extended more than once" is a query, not a memory.
 
@@ -395,7 +401,7 @@ Indexes: `@@index([tenantId, requestedAt])`
 
 Indexes: `@@index([tenantId, createdAt])`
 
-### `UsageMeter`  <sub>`apps/platform/prisma/schema/platform.prisma:607`</sub>
+### `UsageMeter`  <sub>`apps/platform/prisma/schema/platform.prisma:629`</sub>
 
 > One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` increments off a tenant's own transactional outbox (`transaction_fee_minor`, `messages_sent`) or sets to the late…
 
@@ -412,7 +418,7 @@ Indexes: `@@index([tenantId, createdAt])`
 
 Indexes: `@@unique([tenantId, metric, periodStart])` · `@@index([tenantId, periodStart])`
 
-### `UsageMeteringCursor`  <sub>`apps/platform/prisma/schema/platform.prisma:671`</sub>
+### `UsageMeteringCursor`  <sub>`apps/platform/prisma/schema/platform.prisma:693`</sub>
 
 > The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each batch — so a poll reads only the outbox rows it has not already applied, rather than rescanning the whole table…
 
@@ -428,7 +434,7 @@ Indexes: `@@unique([tenantId, metric, periodStart])` · `@@index([tenantId, peri
 
 ## Enums
 
-### `InvoiceStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:406`</sub>
+### `InvoiceStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:428`</sub>
 
 > --------------------------------------------------------------------------- WO-50.1 / WO-50.3 / WO-50.4 — billing: an issued invoice per tenant per billing period, a credit note for a wrongly-compute…
 
@@ -437,7 +443,7 @@ Indexes: `@@unique([tenantId, metric, periodStart])` · `@@index([tenantId, peri
 | `ISSUED` |  |
 | `CREDITED` |  |
 
-### `OpsClientStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:269`</sub>
+### `OpsClientStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:291`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -453,7 +459,7 @@ Indexes: `@@unique([tenantId, metric, periodStart])` · `@@index([tenantId, peri
 | `ONE_TIME_LICENSE` |  |
 | `USAGE_BASED` |  |
 
-### `QuoteStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:510`</sub>
+### `QuoteStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:532`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -461,7 +467,7 @@ Indexes: `@@unique([tenantId, metric, periodStart])` · `@@index([tenantId, peri
 | `APPROVED` |  |
 | `REJECTED` |  |
 
-### `RateCardChangeStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:681`</sub>
+### `RateCardChangeStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:703`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -478,7 +484,7 @@ Indexes: `@@unique([tenantId, metric, periodStart])` · `@@index([tenantId, peri
 | `PLUS` |  |
 | `DEDICATED` |  |
 
-### `StripeInvoicePaymentStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:730`</sub>
+### `StripeInvoicePaymentStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:752`</sub>
 
 > --------------------------------------------------------------------------- doc 14 (commercial-licensing-agency/14-managed-services-module.md), ADR-039 — the agency's own managed-services billing/hos…
 
@@ -488,7 +494,7 @@ Indexes: `@@unique([tenantId, metric, periodStart])` · `@@index([tenantId, peri
 | `PAID` |  |
 | `FAILED` |  |
 
-### `SubscriptionStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:194`</sub>
+### `SubscriptionStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:216`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -496,7 +502,7 @@ Indexes: `@@unique([tenantId, metric, periodStart])` · `@@index([tenantId, peri
 | `PAST_DUE` |  |
 | `CANCELLED` |  |
 
-### `TenantExportStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:349`</sub>
+### `TenantExportStatus`  <sub>`apps/platform/prisma/schema/platform.prisma:371`</sub>
 
 > --------------------------------------------------------------------------- WO-39.7 — data export + deprovisioning.
 
@@ -507,7 +513,7 @@ Indexes: `@@unique([tenantId, metric, periodStart])` · `@@index([tenantId, peri
 | `COMPLETE` |  |
 | `FAILED` |  |
 
-### `TenantExportTrigger`  <sub>`apps/platform/prisma/schema/platform.prisma:356`</sub>
+### `TenantExportTrigger`  <sub>`apps/platform/prisma/schema/platform.prisma:378`</sub>
 
 | Value | Meaning |
 |---|---|

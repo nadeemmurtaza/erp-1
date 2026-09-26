@@ -12,6 +12,10 @@ import type { Response } from 'express';
  * dependency-free HTML pages served directly by this API, not a new build
  * pipeline.
  *
+ * - `/ui/pricing` — doc 154 §3's own public pricing-comparison page, the
+ *   one genuinely new screen that document adds; its plan cards link into
+ *   `/ui/signup` below with a `plan` query param, never a second signup
+ *   mechanism.
  * - `/ui/signup` — WO-51.2's own public self-service form.
  * - `/ui/verify` — the landing page the emailed verification link opens
  *   (a GET-safe page that itself POSTs the token, so an email-scanning
@@ -25,6 +29,11 @@ import type { Response } from 'express';
 @Controller('ui')
 export class UiController {
   private readonly pagesDir = join(__dirname, 'pages');
+
+  @Get('pricing')
+  pricing(@Res() res: Response): void {
+    res.sendFile('pricing.html', { root: this.pagesDir });
+  }
 
   @Get('signup')
   signup(@Res() res: Response): void {

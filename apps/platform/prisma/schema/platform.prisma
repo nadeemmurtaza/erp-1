@@ -184,6 +184,28 @@ model PlatformPlan {
   /// above, once per period, never per unit over.
   includedAllowances   Json?
 
+  /// doc 154 §3 — "shown on the pricing comparison page." An admin flips
+  /// exactly the three headline `PricingModel` rows (ONE_TIME_LICENSE,
+  /// FLAT_MONTHLY, USAGE_BASED) true through `PlansService.update()`,
+  /// gated by the same `platform.billing.manage` scope as any other
+  /// PlatformPlan field change (doc 153). PER_SEAT is refused at that same
+  /// write boundary — doc 154 §1's "never a fourth tile," enforced, not
+  /// left to admin discipline alone.
+  isHeadline    Boolean @default(false)
+  /// Display order among headline plans (ascending); null for every plan
+  /// this doesn't apply to. `getPlanComparison()` sorts by this column, so
+  /// an unmarked plan carrying a stale order can never affect what renders.
+  headlineOrder Int?
+  /// ADR-040 — public-facing pricing-page copy, additive and nullable
+  /// because most plans (PER_SEAT, anything not headline) need none. Never
+  /// hardcoded in a frontend template (Law 1): the actual price this copy
+  /// describes lives in this same row's own pricing fields above, and must
+  /// never be free to drift from what billing actually charges.
+  displayName       String?
+  priceDescription  String?
+  bestFor           String?
+  ctaLabel          String?
+
   tenants       PlatformTenant[]
   subscriptions PlatformSubscription[]
   invoices      PlatformInvoice[]

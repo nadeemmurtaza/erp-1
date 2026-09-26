@@ -3,7 +3,7 @@
 
 # Tests
 
-**240** spec files, **2,334** cases. What is already pinned down — and what is not.
+**241** spec files, **2,346** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -56,7 +56,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (221)
+## Unit and integration (222)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -241,7 +241,8 @@ regression or an N+1.
 | `apps/platform/src/modules/billing/billing-period.spec.ts` | root | 2 | currentCalendarMonthPeriod |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | root | 15 | BillingService · issueInvoiceForPeriod · runBillingForPeriod · issueCreditNote · previewInvoice · U… |
 | `apps/platform/src/modules/billing/custom-quote.service.spec.ts` | root | 6 | CustomQuoteService · requestQuote · approve |
-| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 7 | PlansService |
+| `apps/platform/src/modules/billing/headline-plan-signup.integration.spec.ts` | root | 1 | a headline plan hands off to the identical existing provisioning path (doc 154 acceptance) |
+| `apps/platform/src/modules/billing/plans.service.spec.ts` | root | 18 | PlansService · update (doc 154) · getPlanComparison (doc 154) |
 | `apps/platform/src/modules/billing/rate-card.service.spec.ts` | root | 9 | RateCardService · proposeChange · approve · apply |
 | `apps/platform/src/modules/billing/seat-counter.service.spec.ts` | root | 3 | SeatCounterService |
 | `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | root | 11 | UsageMeteringService · pollTenant · snapshotAllowances · getMetersForPeriod |

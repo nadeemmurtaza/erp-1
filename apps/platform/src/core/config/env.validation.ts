@@ -180,6 +180,15 @@ export const envSchema = z.object({
    */
   PLATFORM_STALWART_API_URL: z.string().optional(),
   PLATFORM_STALWART_API_KEY: z.string().optional(),
+
+  /**
+   * doc 154 §4 — the "need something else? talk to us" contact the public
+   * pricing-comparison page shows for PER_SEAT and any other non-headline
+   * plan. Resolved through config, never a literal in `pricing.html`
+   * (`.claude/rules/configuration.md`) — the same reason `PLATFORM_SMTP_FROM`
+   * below is a var and not a string a listener writes to a template.
+   */
+  PLATFORM_SALES_CONTACT_EMAIL: z.string().email().default('sales@platform.local'),
 });
 
 export type PlatformEnv = z.infer<typeof envSchema>;

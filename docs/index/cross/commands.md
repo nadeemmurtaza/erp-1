@@ -153,7 +153,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 2511 |  |
+| `scripts/build-index.mjs` | 2558 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
 | `scripts/check-chart-imports.mjs` | 72 |  |
 | `scripts/check-contrast.mjs` | 425 |  |
@@ -170,7 +170,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check.mjs` | 164 |  |
 | `scripts/idx.mjs` | 486 |  |
 | `scripts/install-git-hooks.mjs` | 94 |  |
-| `scripts/lib/index-scan.mjs` | 906 | Scanners for the repository index. |
+| `scripts/lib/index-scan.mjs` | 944 | Scanners for the repository index. |
 | `scripts/lib/model-routing.mjs` | 363 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastruct… |
 | `scripts/nested-borders.py` | 0 |  |

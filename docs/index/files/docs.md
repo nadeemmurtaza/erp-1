@@ -618,18 +618,18 @@ All 396 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `100-event-driven-architecture.md` | doc | 75 |  |
-| `103-semantic-data-contracts.md` | doc | 69 |  |
-| `104-jsonb-eav-extensibility.md` | doc | 159 |  |
-| `105-metadata-driven-ui-rendering.md` | doc | 101 |  |
-| `106-finite-state-machines-registry.md` | doc | 98 |  |
-| `107-visual-bpmn-workflow-modeling.md` | doc | 77 |  |
-| `108-event-triggered-side-effects.md` | doc | 61 |  |
-| `109-immutable-event-ledger.md` | doc | 98 |  |
-| `110-cqrs-read-write-separation.md` | doc | 93 |  |
-| `113-micro-frontend-embedding.md` | doc | 114 |  |
+| `100-event-driven-architecture.md` | doc | 82 |  |
+| `103-semantic-data-contracts.md` | doc | 83 |  |
+| `104-jsonb-eav-extensibility.md` | doc | 169 |  |
+| `105-metadata-driven-ui-rendering.md` | doc | 109 |  |
+| `106-finite-state-machines-registry.md` | doc | 119 |  |
+| `107-visual-bpmn-workflow-modeling.md` | doc | 81 |  |
+| `108-event-triggered-side-effects.md` | doc | 79 |  |
+| `109-immutable-event-ledger.md` | doc | 102 |  |
+| `110-cqrs-read-write-separation.md` | doc | 99 |  |
+| `113-micro-frontend-embedding.md` | doc | 129 |  |
 | `114-sandboxed-scripting-runtime.md` | doc | 119 |  |
-| `115-hexagonal-architecture-ports-adapters.md` | doc | 69 |  |
+| `115-hexagonal-architecture-ports-adapters.md` | doc | 81 |  |
 | `117-event-driven-choreography-immutability.md` | doc | 82 |  |
 | `118-headless-composable-api-capabilities.md` | doc | 87 |  |
 | `122-data-lake-cold-storage-architecture.md` | doc | 75 |  |
@@ -648,14 +648,14 @@ All 396 tracked files in `docs/*`, by directory.
 | `143-micro-frontend-architecture.md` | doc | 160 |  |
 | `157-client-request-idempotency-keys.md` | doc | 276 |  |
 | `166-unified-product-reference-registry.md` | doc | 545 |  |
-| `92-microservices-module-decoupling.md` | doc | 89 |  |
-| `93-headless-frontend-architecture.md` | doc | 66 |  |
-| `94-cloud-native-container-scalability.md` | doc | 70 |  |
-| `95-externalized-rule-logic.md` | doc | 78 |  |
-| `96-version-controlled-policy-execution.md` | doc | 68 |  |
-| `97-realtime-validation-single-source-of-truth.md` | doc | 63 |  |
-| `98-contract-first-api-development.md` | doc | 80 |  |
-| `99-centralized-api-gateway.md` | doc | 60 |  |
+| `92-microservices-module-decoupling.md` | doc | 94 |  |
+| `93-headless-frontend-architecture.md` | doc | 73 |  |
+| `94-cloud-native-container-scalability.md` | doc | 75 |  |
+| `95-externalized-rule-logic.md` | doc | 89 |  |
+| `96-version-controlled-policy-execution.md` | doc | 72 |  |
+| `97-realtime-validation-single-source-of-truth.md` | doc | 68 |  |
+| `98-contract-first-api-development.md` | doc | 89 |  |
+| `99-centralized-api-gateway.md` | doc | 66 |  |
 
 ### `docs/implementation/attendance-workforce` (8)
 

@@ -1655,3 +1655,34 @@ export interface ManagedServicesInvoicesResponse {
   currency: string;
   invoices: ManagedServicesInvoice[];
 }
+
+/** `GET/POST /admin/custom-fields/definitions` (architecture-patterns/104-jsonb-eav-extensibility.md, WO-104.3). */
+export interface CustomFieldDefinition {
+  id: string;
+  entityType: CustomFieldEntityType;
+  key: string;
+  label: string;
+  valueType: CustomFieldValueType;
+  isRequired: boolean;
+}
+
+export type CustomFieldEntityType = 'Supplier';
+export type CustomFieldValueType = 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE';
+
+export type CustomFieldValue = string | number | boolean | null;
+
+/** `GET/POST /admin/embeds` (architecture-patterns/113-micro-frontend-embedding.md, WO-113). */
+export interface EmbeddedWidget {
+  id: string;
+  key: string;
+  label: string;
+  targetUrl: string;
+  isActive: boolean;
+}
+
+/** `POST /admin/embeds/:key/token`. */
+export interface EmbedToken {
+  token: string;
+  /** ISO string. */
+  expiresAt: string;
+}

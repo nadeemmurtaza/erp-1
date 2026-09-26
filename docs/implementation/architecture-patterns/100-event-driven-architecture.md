@@ -1,5 +1,12 @@
 # 100 — Event-driven architecture: the transactional outbox, already this repository's own "Stable & reliable" pillar
 
+> **Status: verified (2026-09-26).** `EventBusService`/`OutboxDispatcher`
+> (`apps/api/src/core/events/`) and `OrderStatusChanged` both confirmed
+> real. This document's own "39 domain events" figure has since grown as
+> later work orders added more — `docs/index/cross/events.md` carries the
+> current count rather than a number this note would itself go stale
+> restating. No code or schema change.
+
 "Publish asynchronous events (e.g., 'Order Confirmed') to a message broker
 rather than relying on tightly coupled point-to-point database
 connections, preventing downstream systems from creating performance

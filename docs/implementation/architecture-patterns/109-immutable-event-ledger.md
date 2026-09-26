@@ -1,5 +1,9 @@
 # 109 — Immutable audit trail: already real via `AuditLog` and the outbox; full event sourcing is a different, larger commitment not made here
 
+> **Status: verified (2026-09-26).** `AuditLog` (`core.prisma`) confirmed
+> real. Event sourcing is not adopted, exactly as this document states.
+> No code or schema change.
+
 "Instead of destructively updating database records (overwriting old
 states), store every action as an append-only event (e.g.,
 'SupplierAddressUpdated', 'TaxRateChanged'). This ensures a mathematically

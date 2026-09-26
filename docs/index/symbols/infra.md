@@ -42,23 +42,24 @@ Every top-level export in `infra`, with the line to open.
 | `index-scan.mjs` | `scanNestModule` | function | :323 | A NestJS `@Module({...})` wiring block. |
 | `index-scan.mjs` | `scanEventCatalog` | function | :349 | The event catalogue itself: `Name: 'event.name'` inside `DomainEvent`. |
 | `index-scan.mjs` | `scanEventUsage` | function | :362 | Subscribers (`@OnDomainEvent`) and publishers (every other `DomainEvent.X`). |
-| `index-scan.mjs` | `scanCron` | function | :383 | `@Cron('expr')` — the background work nothing in the UI reveals. |
-| `index-scan.mjs` | `scanPrisma` | function | :413 | Models and enums of one `.prisma` file, with every field. |
-| `index-scan.mjs` | `scanMigration` | function | :473 | One migration folder: when it ran, what it was for, what it touched. |
-| `index-scan.mjs` | `balancedLiteral` | function | :509 | The source of the bracketed literal that follows `declaration`, matched by counting brackets rather… |
-| `index-scan.mjs` | `splitObjectLiterals` | function | :543 | Splits `{...}, {...}` object literals at depth 1, quote-aware. |
-| `index-scan.mjs` | `scanPermissionCatalog` | function | :571 | `PERMISSION_CATALOG` — the compile-time list every guard is checked against. |
-| `index-scan.mjs` | `scanRoleSeed` | function | :592 | `ROLE_PERMISSION_SEED` — which role is granted what at seed time. |
-| `index-scan.mjs` | `appRouterPath` | function | :613 | The URL a `page.tsx` / `route.ts` actually serves. |
-| `index-scan.mjs` | `routeKind` | function | :624 |  |
-| `index-scan.mjs` | `isClientComponent` | function | :639 | `'use client'` decides where a component can run — worth one column. |
-| `index-scan.mjs` | `scanDescribes` | function | :646 | Top-level `describe(...)` titles — what a spec file claims to cover. |
-| `index-scan.mjs` | `scanTestNames` | function | :654 | Every `it(...)` title — the behaviours actually pinned down. |
-| `index-scan.mjs` | `scanHeadings` | function | :663 | A doc's heading outline — enough to route a question to the right section. |
-| `index-scan.mjs` | `classify` | function | :678 | What kind of thing a file is, from the conventions this repo actually uses. |
-| `index-scan.mjs` | `splitSqlStatements` | function | :744 | Splits SQL into statements, ignoring semicolons inside strings, identifiers, dollar-quoted bodies a… |
-| `index-scan.mjs` | `scanMigrationSql` | function | :785 |  |
-| `index-scan.mjs` | `schemaMigrationDrift` | function | :864 | Which models, fields and enums the schema declares that no migration builds. |
+| `index-scan.mjs` | `scanStateMachines` | function | :391 | A named `Record<XStatus, XStatus[]>` constant — this repository's own explicit, checked-before-ever… |
+| `index-scan.mjs` | `scanCron` | function | :421 | `@Cron('expr')` — the background work nothing in the UI reveals. |
+| `index-scan.mjs` | `scanPrisma` | function | :451 | Models and enums of one `.prisma` file, with every field. |
+| `index-scan.mjs` | `scanMigration` | function | :511 | One migration folder: when it ran, what it was for, what it touched. |
+| `index-scan.mjs` | `balancedLiteral` | function | :547 | The source of the bracketed literal that follows `declaration`, matched by counting brackets rather… |
+| `index-scan.mjs` | `splitObjectLiterals` | function | :581 | Splits `{...}, {...}` object literals at depth 1, quote-aware. |
+| `index-scan.mjs` | `scanPermissionCatalog` | function | :609 | `PERMISSION_CATALOG` — the compile-time list every guard is checked against. |
+| `index-scan.mjs` | `scanRoleSeed` | function | :630 | `ROLE_PERMISSION_SEED` — which role is granted what at seed time. |
+| `index-scan.mjs` | `appRouterPath` | function | :651 | The URL a `page.tsx` / `route.ts` actually serves. |
+| `index-scan.mjs` | `routeKind` | function | :662 |  |
+| `index-scan.mjs` | `isClientComponent` | function | :677 | `'use client'` decides where a component can run — worth one column. |
+| `index-scan.mjs` | `scanDescribes` | function | :684 | Top-level `describe(...)` titles — what a spec file claims to cover. |
+| `index-scan.mjs` | `scanTestNames` | function | :692 | Every `it(...)` title — the behaviours actually pinned down. |
+| `index-scan.mjs` | `scanHeadings` | function | :701 | A doc's heading outline — enough to route a question to the right section. |
+| `index-scan.mjs` | `classify` | function | :716 | What kind of thing a file is, from the conventions this repo actually uses. |
+| `index-scan.mjs` | `splitSqlStatements` | function | :782 | Splits SQL into statements, ignoring semicolons inside strings, identifiers, dollar-quoted bodies a… |
+| `index-scan.mjs` | `scanMigrationSql` | function | :823 |  |
+| `index-scan.mjs` | `schemaMigrationDrift` | function | :902 | Which models, fields and enums the schema declares that no migration builds. |
 | `index-scan.mjs` | `a` `b` | re-export |  | from `./x` |
 | `index-scan.mjs` | `*` | re-export |  | from `./x` |
 | `model-routing.mjs` | `ROUTING_POLICY` | const | :54 | @typedef {'low'\|'medium'\|'high'\|'xhigh'\|'max'} EffortLevel |

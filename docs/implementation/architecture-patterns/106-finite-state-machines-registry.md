@@ -1,5 +1,24 @@
 # 106 — Finite state machines: already the pattern, per-module today; a shared registry is the one real improvement
 
+> **Status: shipped (2026-09-26), WO-106.1.** `docs/index/cross/state-
+> machines.md` is a new generated page, built by a new `scanStateMachines()`
+> scanner (`scripts/lib/index-scan.mjs`) wired into `scripts/build-index.mjs`
+> — it walks every TypeScript file in `apps/api/src`, finds every named
+> `Record<XStatus, XStatus[]>`-shaped constant (the type parameter must be
+> PascalCase and end in `Status`/`State`, which is what actually
+> distinguishes a real transition table from an unrelated same-shaped map
+> like a plain `Record<string, string[]>`), and quotes its literal source —
+> never a second, hand-copied enforcement path, and never runtime-editable.
+> One correction to this document's own claim, found while building it:
+> `PayRunStatus` and `TicketStatus` do **not** "follow the identical shape."
+> `PayRunService` enforces its own transitions (`DRAFT`→`APPROVED`→`POSTED`)
+> through scattered inline checks per method (`if (run.status !== 'DRAFT')
+> throw ...` in `approve()`, `post()`, …), never a single named table — a
+> different, equally valid enforcement shape, just not this one. `doc 64`
+> and `TicketStatus` do not exist in this codebase at all. The generated
+> page states this limitation honestly in its own text rather than
+> claiming a completeness the scanner cannot have.
+
 "Abstract the lifecycle of core operational entities (Invoices, Shipments,
 Purchase Orders) into configurable state machines. Instead of hardcoding
 transitions, define valid paths... in a centralized registry that
@@ -7,13 +26,11 @@ administrators can modify" describes exactly the shape
 `OrdersService`'s own `ALLOWED_TRANSITIONS` (`orders.service.ts`, lines
 58-66) already is: a named, explicit map of `OrderStatus` to its valid
 next states, checked before every transition, never an implicit or
-inferred jump. `PayRunStatus` (`DRAFT`→`APPROVED`→`POSTED`) and
-`TicketStatus` (doc 64) follow the identical shape. What does not exist is
-a **shared, cross-module registry** naming every entity's own FSM in one
-place — each module defines its own transition table today, correctly
-scoped to its own module (per module independence), but with no single
-inventory of "every state machine in this system" for an operator to
-audit at once.
+inferred jump. What does not exist is a **shared, cross-module registry**
+naming every entity's own FSM in one place — each module defines its own
+transition table today, correctly scoped to its own module (per module
+independence), but with no single inventory of "every state machine in
+this system" for an operator to audit at once.
 
 ## What already exists, cited rather than re-derived
 
@@ -70,9 +87,10 @@ interface StateMachineRegistryEntry {
 
 ## Scope lenses
 
-Not repeated — no new schema or write path; each cited transition table
-(`orders.service.ts`, `PayRunStatus`, doc 64's `TicketStatus`) already
-carries its own scope-lens treatment in its own originating document.
+Not repeated — no new schema or write path; the one real named transition
+table this document builds on (`orders.service.ts`'s own
+`ALLOWED_TRANSITIONS`) already carries its own scope-lens treatment in its
+originating document.
 
 ## Work orders
 
@@ -86,9 +104,12 @@ runtime-editable.
 
 - No schema or enforcement change — every existing `ALLOWED_TRANSITIONS`-
   shaped table remains the sole authority for its own entity.
-- The registry, once built, lists every state machine currently in this
-  repository, generated from the code (per the existing `docs/index/`
-  convention) rather than hand-maintained and liable to drift.
+- The registry, once built, lists every state machine expressed as a named
+  `Record<XStatus, XStatus[]>` table, generated from the code (per the
+  existing `docs/index/` convention) rather than hand-maintained and liable
+  to drift — and says so honestly for the enforcement shape it structurally
+  cannot see (scattered inline checks with no single named table), rather
+  than silently omitting those entities with no explanation.
 
 ## Out of scope
 

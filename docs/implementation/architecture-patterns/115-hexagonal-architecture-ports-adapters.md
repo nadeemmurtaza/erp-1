@@ -1,5 +1,18 @@
 # 115 — Ports and adapters: already the shape of every extension point this repository has, named formally for the first time
 
+> **Status: corrected (2026-09-26).** This document's own mapping table
+> cited `FiscalComplianceProvider`, `EdiTranslator` and `OutboundConnector`
+> (with its `OAuth2TokenProvider`) as already-real ports, and
+> `FbrProvider`/`PraProvider` as their adapters — verified false: none of
+> these five exist anywhere in `apps/api/src`, and their originating
+> documents (15, 18, 36) carry no `Status:` note — all are unbuilt
+> proposals. `PaymentProvider`, `StorageDriver`, `AiProvider`,
+> `NotificationChannel`, `VectorStore` and their adapters
+> (`StripeProvider`, an `S3StorageDriver`, `EmailChannel`/`SmsChannel`)
+> are all verified real. The corrected table below cites only what
+> exists; this document's own thesis (the repository already has the
+> hexagonal shape, informally) stands on those five ports alone.
+
 "Separate your core domain and business logic entirely from the
 presentation layer and the external infrastructure layer. Define explicit
 contracts (Ports) that dictate what the application can do, and utilize
@@ -18,8 +31,8 @@ exists."**
 
 | Hexagonal term | This repository's own equivalent |
 |---|---|
-| **Port** (a contract the domain defines) | `PaymentProvider`, `StorageDriver`, `AiProvider`, `NotificationChannel`, `VectorStore`, `FiscalComplianceProvider`, `EdiTranslator`, `OutboundConnector`'s `OAuth2TokenProvider` — every one of these is a TypeScript interface the *domain* (a service) defines and calls, never a concrete implementation the service imports directly |
-| **Adapter** (a concrete implementation at the edge) | `StripeProvider`, an `S3StorageDriver`, `FbrProvider`/`PraProvider`, `EmailChannel`/`SmsChannel` — each a class implementing its own port, registered rather than hardcoded, exactly `MULTI-SECTOR.md`'s own "adding a provider is a new class, never a rewrite of a caller" |
+| **Port** (a contract the domain defines) | `PaymentProvider`, `StorageDriver`, `AiProvider`, `NotificationChannel`, `VectorStore` — every one of these is a TypeScript interface the *domain* (a service) defines and calls, never a concrete implementation the service imports directly |
+| **Adapter** (a concrete implementation at the edge) | `StripeProvider`, an `S3StorageDriver`, `EmailChannel`/`SmsChannel` — each a class implementing its own port, registered rather than hardcoded, exactly `MULTI-SECTOR.md`'s own "adding a provider is a new class, never a rewrite of a caller" |
 | **The application core, trigger-agnostic** | A NestJS service method — `OrdersService.createFromPos()`, `AnalyticsService.summary()` — is called identically whether the caller is `OrdersController` (HTTP), a domain-event subscriber, or a future MCP tool adapter (doc 116) — the service itself never branches on "who called me" |
 | **Driving vs. driven adapters** | A NestJS `Controller` (HTTP in) and a `PaymentProvider` implementation (payment gateway out) are exactly hexagonal architecture's own "driving" (primary) and "driven" (secondary) adapter kinds, already structurally separate in this codebase's own `controller`/`service`/`provider` layering |
 
@@ -44,10 +57,10 @@ rediscovering it module by module.
 
 ## Scope lenses
 
-Not repeated — every cited port/adapter pair already carries its own
-complete scope-lens treatment in its own originating document (doc 15,
-18, 33, 35, 36, and the payment/storage/AI provider interfaces cited
-throughout).
+Not repeated — every cited port/adapter pair that actually exists already
+carries its own complete scope-lens treatment in its own originating
+document (the payment/storage/AI/notification/vector-store provider
+interfaces cited above).
 
 ## Work orders
 
@@ -56,10 +69,9 @@ already fully built.
 
 ## Acceptance
 
-- No schema or code change — verified by citation to the existing
-  provider/adapter interfaces across doc 15/18/33/35/36 and the
-  controller/service/provider layering already used throughout
-  `apps/api`.
+- No schema or code change — verified by citation to the five existing
+  provider/adapter interfaces above and the controller/service/provider
+  layering already used throughout `apps/api`.
 
 ## Out of scope
 

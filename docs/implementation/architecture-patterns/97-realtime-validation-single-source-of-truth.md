@@ -1,5 +1,10 @@
 # 97 — Real-time validation against one source of truth: already the standing discipline, not a new gate
 
+> **Status: verified (2026-09-26).** The global `ValidationPipe`,
+> `JwtAuthGuard`/`PermissionsGuard`, and `InventoryService.move()` (the
+> predicate-on-write writer) all confirmed real in `apps/api/src`. No code
+> or schema change.
+
 "Ensure all internal modules and external API calls validate against this
 single source of truth before finalizing transactions or state changes"
 describes a discipline this repository already enforces at three

@@ -37,7 +37,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `copilot-instructions.md` | doc | 80 |  |
+| `copilot-instructions.md` | doc | 81 |  |
 
 ### `.github/workflows` (2)
 
@@ -77,7 +77,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2511 |  |
+| `build-index.mjs` | script | 2558 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-chart-imports.mjs` | script | 72 |  |
 | `check-contrast.mjs` | script | 425 |  |
@@ -101,7 +101,7 @@ All 57 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `index-scan.mjs` | utility | 906 | Scanners for the repository index. |
+| `index-scan.mjs` | utility | 944 | Scanners for the repository index. |
 | `model-routing.mjs` | utility | 363 | Which model and how much effort each kind of job in this repository deserves. |
 | `render-harness.mjs` | utility | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — th… |
 

@@ -60,6 +60,8 @@ export const MODULE_PACKS: Record<string, PackName> = {
   collections: 'core',
   content: 'core',
   crm: 'core',
+  'custom-fields': 'core',
+  embeds: 'core',
   'identity-verification': 'core',
   inventory: 'core',
   marketing: 'core',

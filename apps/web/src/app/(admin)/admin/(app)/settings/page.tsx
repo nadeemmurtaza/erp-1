@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { formatDateTime } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
-import type { AuditLogPage, RoleSummary } from '@/types/api';
-import { DataTable, Loading, PageHeader, Pagination, Tabs } from '@/components/ui';
+import type { AuditLogPage, CustomFieldDefinition, CustomFieldEntityType, CustomFieldValueType, EmbeddedWidget, RoleSummary } from '@/types/api';
+import { DataTable, EmptyState, Loading, PageHeader, Pagination, Tabs } from '@/components/ui';
 import { RoleWizard } from '@/components/admin/role-wizard';
+import { useAdminSession } from '@/components/admin/session';
 import { useEnabledModules } from '@/components/admin/deployment-modules';
 import { isModuleEnabled } from '@/utils/module-gate';
 
@@ -191,6 +192,16 @@ export default function AdminSettingsPage() {
                 <MediaSettings />
               </>
             ),
+          },
+          {
+            key: 'custom-fields',
+            label: 'Custom fields',
+            content: <CustomFieldsSettingsPanel />,
+          },
+          {
+            key: 'embeds',
+            label: 'Embeds',
+            content: <EmbedsSettingsPanel />,
           },
           {
             key: 'audit',
@@ -564,6 +575,389 @@ function MediaSettings() {
           </span>
         </span>
       </label>
+    </section>
+  );
+}
+
+const VALUE_TYPE_LABELS: Record<CustomFieldValueType, string> = {
+  TEXT: 'Text',
+  NUMBER: 'Number',
+  BOOLEAN: 'Yes/No',
+  DATE: 'Date',
+};
+
+/**
+ * architecture-patterns/104-jsonb-eav-extensibility.md (WO-104.3) — define
+ * a bounded set of extra fields per wired entity type (Supplier, today).
+ * Application logic never reads a value defined here to make a decision;
+ * this is a display/reporting overlay only, embedded on the entity's own
+ * detail screen via `CustomFieldFormSection` (doc 105, WO-105.1).
+ */
+function CustomFieldsSettingsPanel() {
+  const { can } = useAdminSession();
+  const canManage = can('settings.custom-fields.manage');
+
+  const [entityTypes, setEntityTypes] = useState<CustomFieldEntityType[] | null>(null);
+  const [entityType, setEntityType] = useState<CustomFieldEntityType | ''>('');
+  const [definitions, setDefinitions] = useState<CustomFieldDefinition[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [newField, setNewField] = useState<{ key: string; label: string; valueType: CustomFieldValueType; isRequired: boolean }>({
+    key: '',
+    label: '',
+    valueType: 'TEXT',
+    isRequired: false,
+  });
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (!canManage) return;
+    adminFetch<{ entityTypes: CustomFieldEntityType[] }>('/admin/custom-fields/entity-types')
+      .then((res) => {
+        setEntityTypes(res.entityTypes);
+        setEntityType(res.entityTypes[0] ?? '');
+      })
+      .catch((cause: unknown) => setError(cause instanceof Error ? cause.message : 'Could not load entity types'));
+  }, [canManage]);
+
+  const loadDefinitions = useCallback(async () => {
+    if (!entityType) return;
+    try {
+      setDefinitions(await adminFetch<CustomFieldDefinition[]>('/admin/custom-fields/definitions', { query: { entityType } }));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not load custom fields');
+    }
+  }, [entityType]);
+
+  useEffect(() => {
+    void loadDefinitions();
+  }, [loadDefinitions]);
+
+  async function addField() {
+    if (!entityType || !newField.key || !newField.label) return;
+    setSaving(true);
+    setError(null);
+    try {
+      await adminFetch('/admin/custom-fields/definitions', { method: 'POST', body: { entityType, ...newField } });
+      setNewField({ key: '', label: '', valueType: 'TEXT', isRequired: false });
+      await loadDefinitions();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not add the field');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function removeField(id: string) {
+    setError(null);
+    try {
+      await adminFetch(`/admin/custom-fields/definitions/${id}`, { method: 'DELETE' });
+      setDefinitions((prev) => prev?.filter((definition) => definition.id !== id) ?? null);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not remove the field');
+    }
+  }
+
+  if (!canManage) {
+    return (
+      <EmptyState
+        title="Custom fields are set up by an administrator"
+        description="Defining custom fields needs the settings.custom-fields.manage permission. Ask an administrator who holds it."
+      />
+    );
+  }
+
+  if (!entityTypes) {
+    return error ? (
+      <p role="alert" className="notice notice-error">
+        {error}
+      </p>
+    ) : (
+      <Loading />
+    );
+  }
+
+  return (
+    <section className="max-w-prose">
+      <p className="mb-4 text-sm text-neutral-900/60">
+        Add your own fields to a Supplier — a certification number, a carbon-footprint figure —
+        with no code change. These are for your own reference and reporting; nothing here ever
+        drives a pricing, compliance or business decision.
+      </p>
+
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+
+      <label className="mb-4 block max-w-xs">
+        <span className="field-label">Entity type</span>
+        <select
+          value={entityType}
+          onChange={(event) => setEntityType(event.target.value as CustomFieldEntityType)}
+          className="field-input"
+        >
+          {entityTypes.map((type) => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <div className="overflow-hidden">
+        <DataTable
+          rows={definitions ?? undefined}
+          loading={!definitions}
+          emptyLabel="No custom fields defined yet for this entity type."
+          rowKey={(definition) => definition.id}
+          columns={[
+            {
+              header: 'Field',
+              cell: (definition) => (
+                <>
+                  <span className="font-medium text-neutral-900">{definition.label}</span>
+                  <span className="ml-2 font-mono text-xs text-neutral-900/60">{definition.key}</span>
+                </>
+              ),
+            },
+            { header: 'Type', muted: true, cell: (definition) => VALUE_TYPE_LABELS[definition.valueType] },
+            { header: 'Required', muted: true, cell: (definition) => (definition.isRequired ? 'Yes' : 'No') },
+            {
+              header: '',
+              align: 'end',
+              cell: (definition) => (
+                <button type="button" onClick={() => void removeField(definition.id)} className="btn-text text-feedback-negative">
+                  Delete
+                </button>
+              ),
+            },
+          ]}
+        />
+      </div>
+
+      <h3 className="eyebrow mb-3 mt-8">Add a field</h3>
+      <div className="grid gap-3 fold:grid-cols-2">
+        <label className="block">
+          <span className="field-label">Key</span>
+          <input
+            value={newField.key}
+            onChange={(event) => setNewField({ ...newField, key: event.target.value })}
+            placeholder="carbon_footprint_kg"
+            className="field-input"
+          />
+        </label>
+        <label className="block">
+          <span className="field-label">Label</span>
+          <input
+            value={newField.label}
+            onChange={(event) => setNewField({ ...newField, label: event.target.value })}
+            placeholder="Carbon footprint (kg)"
+            className="field-input"
+          />
+        </label>
+        <label className="block">
+          <span className="field-label">Type</span>
+          <select
+            value={newField.valueType}
+            onChange={(event) => setNewField({ ...newField, valueType: event.target.value as CustomFieldValueType })}
+            className="field-input"
+          >
+            {Object.entries(VALUE_TYPE_LABELS).map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex items-center gap-2 self-end pb-2">
+          <input
+            type="checkbox"
+            checked={newField.isRequired}
+            onChange={(event) => setNewField({ ...newField, isRequired: event.target.checked })}
+            className="field-check"
+          />
+          <span className="text-sm text-neutral-900">Required</span>
+        </label>
+      </div>
+      <button type="button" onClick={() => void addField()} disabled={saving || !newField.key || !newField.label} className="btn-primary mt-4">
+        {saving ? 'Adding…' : 'Add field'}
+      </button>
+    </section>
+  );
+}
+
+/**
+ * architecture-patterns/113-micro-frontend-embedding.md (WO-113.2) — define
+ * which third-party tools may be embedded. Viewing an already-configured
+ * one is a separate screen (`/admin/embeds`, `analytics.view`) — this tab
+ * only ever changes which widgets exist, never renders one.
+ */
+function EmbedsSettingsPanel() {
+  const { can } = useAdminSession();
+  const canManage = can('settings.embeds.manage');
+
+  const [widgets, setWidgets] = useState<EmbeddedWidget[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [newWidget, setNewWidget] = useState({ key: '', label: '', targetUrl: '' });
+  const [saving, setSaving] = useState(false);
+
+  const loadWidgets = useCallback(async () => {
+    try {
+      setWidgets(await adminFetch<EmbeddedWidget[]>('/admin/embeds/all'));
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not load embedded widgets');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!canManage) return;
+    void loadWidgets();
+  }, [canManage, loadWidgets]);
+
+  async function addWidget() {
+    if (!newWidget.key || !newWidget.label || !newWidget.targetUrl) return;
+    setSaving(true);
+    setError(null);
+    try {
+      await adminFetch('/admin/embeds', { method: 'POST', body: newWidget });
+      setNewWidget({ key: '', label: '', targetUrl: '' });
+      await loadWidgets();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not add the widget');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function toggleActive(widget: EmbeddedWidget) {
+    setError(null);
+    try {
+      const updated = await adminFetch<EmbeddedWidget>(`/admin/embeds/${widget.id}`, { method: 'PATCH', body: { isActive: !widget.isActive } });
+      setWidgets((prev) => prev?.map((w) => (w.id === widget.id ? updated : w)) ?? null);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not update the widget');
+    }
+  }
+
+  async function removeWidget(id: string) {
+    setError(null);
+    try {
+      await adminFetch(`/admin/embeds/${id}`, { method: 'DELETE' });
+      setWidgets((prev) => prev?.filter((w) => w.id !== id) ?? null);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not remove the widget');
+    }
+  }
+
+  if (!canManage) {
+    return (
+      <EmptyState
+        title="Embeds are set up by an administrator"
+        description="Registering an embeddable tool needs the settings.embeds.manage permission. Ask an administrator who holds it."
+      />
+    );
+  }
+
+  if (!widgets) {
+    return error ? (
+      <p role="alert" className="notice notice-error">
+        {error}
+      </p>
+    ) : (
+      <Loading />
+    );
+  }
+
+  return (
+    <section className="max-w-prose">
+      <p className="mb-4 text-sm text-neutral-900/60">
+        Embed a third-party tool — an analytics dashboard, a specialized reporting
+        widget — directly alongside the rest of the ERP. Each viewer gets their own
+        short-lived, scoped link; nobody&rsquo;s session credential is ever shared with it.
+      </p>
+
+      {error ? (
+        <p role="alert" className="notice notice-error mb-4">
+          {error}
+        </p>
+      ) : null}
+
+      <div className="overflow-hidden">
+        <DataTable
+          rows={widgets}
+          emptyLabel="No embedded tools yet."
+          rowKey={(widget) => widget.id}
+          columns={[
+            {
+              header: 'Widget',
+              cell: (widget) => (
+                <>
+                  <span className="font-medium text-neutral-900">{widget.label}</span>
+                  <span className="mt-0.5 block break-all text-xs text-neutral-900/60">{widget.targetUrl}</span>
+                </>
+              ),
+            },
+            { header: 'Key', muted: true, cell: (widget) => <span className="font-mono text-xs">{widget.key}</span> },
+            {
+              header: 'State',
+              cell: (widget) => (
+                <button type="button" onClick={() => void toggleActive(widget)} className="btn-text">
+                  {widget.isActive ? 'Active' : 'Inactive'}
+                </button>
+              ),
+            },
+            {
+              header: '',
+              align: 'end',
+              cell: (widget) => (
+                <button type="button" onClick={() => void removeWidget(widget.id)} className="btn-text text-feedback-negative">
+                  Delete
+                </button>
+              ),
+            },
+          ]}
+        />
+      </div>
+
+      <h3 className="eyebrow mb-3 mt-8">Add an embedded tool</h3>
+      <div className="grid gap-3 fold:grid-cols-2">
+        <label className="block">
+          <span className="field-label">Key</span>
+          <input
+            value={newWidget.key}
+            onChange={(event) => setNewWidget({ ...newWidget, key: event.target.value })}
+            placeholder="predictive-analytics"
+            className="field-input"
+          />
+        </label>
+        <label className="block">
+          <span className="field-label">Label</span>
+          <input
+            value={newWidget.label}
+            onChange={(event) => setNewWidget({ ...newWidget, label: event.target.value })}
+            placeholder="Predictive analytics"
+            className="field-input"
+          />
+        </label>
+        <label className="block fold:col-span-2">
+          <span className="field-label">Target URL</span>
+          <input
+            value={newWidget.targetUrl}
+            onChange={(event) => setNewWidget({ ...newWidget, targetUrl: event.target.value })}
+            placeholder="https://vendor.example/embed"
+            className="field-input"
+          />
+        </label>
+      </div>
+      <button
+        type="button"
+        onClick={() => void addWidget()}
+        disabled={saving || !newWidget.key || !newWidget.label || !newWidget.targetUrl}
+        className="btn-primary mt-4"
+      >
+        {saving ? 'Adding…' : 'Add widget'}
+      </button>
     </section>
   );
 }

@@ -285,6 +285,17 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'reports',
   },
   {
+    // 113-micro-frontend-embedding.md — a narrow iframe pattern, never a
+    // full micro-frontend architecture. Every ACTIVE EmbeddedWidget renders
+    // here; defining which widgets exist is settings.embeds.manage's own
+    // job, under Settings > Embeds.
+    key: 'embeds',
+    label: 'Embedded tools',
+    href: '/admin/embeds',
+    permissions: ['analytics.view'],
+    group: 'insights',
+  },
+  {
     key: 'finance-pnl',
     label: 'Profit & loss',
     href: '/admin/finance',

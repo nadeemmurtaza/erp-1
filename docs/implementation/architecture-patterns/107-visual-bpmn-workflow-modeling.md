@@ -7,6 +7,10 @@
 > `ApprovalChain`/`ApprovalStep` rows — never a second execution runtime —
 > keeping this document's own "two mechanisms for one job" risk closed by
 > construction rather than by declining to build.
+>
+> **Status: verified (2026-09-26).** `ApprovalChain`/`ApprovalStep`
+> confirmed real in `apps/api/prisma/schema/approvals.prisma`. This
+> document's own reasoning stands on that verified mechanism.
 
 "Allow non-technical operational managers to redraw approval workflows,
 document routing, and decision logic using a low-code drag-and-drop

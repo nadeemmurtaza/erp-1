@@ -101,26 +101,26 @@ _no second-level headings_
 - Borders and boxes  <sub>:64</sub>
 - No dead ends  <sub>:104</sub>
 
-### `.github/copilot-instructions.md`  <sub>80 lines</sub>
+### `.github/copilot-instructions.md`  <sub>81 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:55</sub>
-- Commands  <sub>:67</sub>
+- Three rules about the index  <sub>:56</sub>
+- Commands  <sub>:68</sub>
 
-### `.junie/guidelines.md`  <sub>80 lines</sub>
-
-- Read the rules first  <sub>:9</sub>
-- Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:55</sub>
-- Commands  <sub>:67</sub>
-
-### `AGENTS.md`  <sub>80 lines</sub>
+### `.junie/guidelines.md`  <sub>81 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:55</sub>
-- Commands  <sub>:67</sub>
+- Three rules about the index  <sub>:56</sub>
+- Commands  <sub>:68</sub>
+
+### `AGENTS.md`  <sub>81 lines</sub>
+
+- Read the rules first  <sub>:9</sub>
+- Look it up before you search  <sub>:19</sub>
+- Three rules about the index  <sub>:56</sub>
+- Commands  <sub>:68</sub>
 
 ### `Architecture.md`  <sub>32 lines</sub>
 
@@ -2062,21 +2062,22 @@ _no second-level headings_
 - Acceptance  <sub>:60</sub>
 - Out of scope  <sub>:66</sub>
 
-### `docs/implementation/architecture-patterns/100-event-driven-architecture.md`  <sub>75 lines</sub>
+### `docs/implementation/architecture-patterns/100-event-driven-architecture.md`  <sub>82 lines</sub>
 
-- What already exists, mapped onto the bullet's own example  <sub>:17</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:55</sub>
-- Acceptance  <sub>:62</sub>
-- Out of scope  <sub>:67</sub>
+- What already exists, mapped onto the bullet's own example  <sub>:24</sub>
+- Scope lenses  <sub>:56</sub>
+- Work orders  <sub>:62</sub>
+- Acceptance  <sub>:69</sub>
+- Out of scope  <sub>:74</sub>
 
-### `docs/implementation/architecture-patterns/103-semantic-data-contracts.md`  <sub>69 lines</sub>
+### `docs/implementation/architecture-patterns/103-semantic-data-contracts.md`  <sub>83 lines</sub>
 
-- What already enforces this, at two layers  <sub>:15</sub>
-- Scope lenses  <sub>:41</sub>
-- Work orders  <sub>:48</sub>
-- Acceptance  <sub>:54</sub>
-- Out of scope  <sub>:60</sub>
+- What already enforces this, at one real layer  <sub>:28</sub>
+- What is not built: a per-partner wire-format translator  <sub>:41</sub>
+- Scope lenses  <sub>:51</sub>
+- Work orders  <sub>:58</sub>
+- Acceptance  <sub>:65</sub>
+- Out of scope  <sub>:73</sub>
 
 ### `docs/implementation/architecture-patterns/104-jsonb-eav-extensibility.md`  <sub>159 lines</sub>
 
@@ -2096,59 +2097,60 @@ _no second-level headings_
 - Acceptance  <sub>:84</sub>
 - Out of scope  <sub>:94</sub>
 
-### `docs/implementation/architecture-patterns/106-finite-state-machines-registry.md`  <sub>98 lines</sub>
+### `docs/implementation/architecture-patterns/106-finite-state-machines-registry.md`  <sub>119 lines</sub>
 
-- What already exists, cited rather than re-derived  <sub>:18</sub>
-- The one real improvement: a read-only cross-module registry, never a runtime-editable one  <sub>:41</sub>
-- Scope lenses  <sub>:71</sub>
-- Work orders  <sub>:77</sub>
-- Acceptance  <sub>:85</sub>
-- Out of scope  <sub>:93</sub>
-
-### `docs/implementation/architecture-patterns/107-visual-bpmn-workflow-modeling.md`  <sub>77 lines</sub>
-
-- Why this remains declined, restated once more for this specific framing  <sub>:22</sub>
-- What already answers the bullet's own three named use cases  <sub>:41</sub>
-- Scope lenses  <sub>:53</sub>
-- Work orders  <sub>:59</sub>
-- Acceptance  <sub>:67</sub>
-- Out of scope  <sub>:72</sub>
-
-### `docs/implementation/architecture-patterns/108-event-triggered-side-effects.md`  <sub>61 lines</sub>
-
-- The mapping, stated once  <sub>:18</sub>
-- Scope lenses  <sub>:32</sub>
-- Work orders  <sub>:37</sub>
-- Acceptance  <sub>:45</sub>
-- Out of scope  <sub>:53</sub>
-
-### `docs/implementation/architecture-patterns/109-immutable-event-ledger.md`  <sub>98 lines</sub>
-
-- What already exists: a real, append-only audit trail  <sub>:14</sub>
-- Why full event sourcing (state derived by replaying events) is not adopted here, stated plainly  <sub>:37</sub>
-- Scope lenses  <sub>:69</sub>
-- Work orders  <sub>:75</sub>
-- Acceptance  <sub>:83</sub>
-- Out of scope  <sub>:91</sub>
-
-### `docs/implementation/architecture-patterns/110-cqrs-read-write-separation.md`  <sub>93 lines</sub>
-
-- What already exists: precomputed read-optimized projections, without a second database  <sub>:16</sub>
-- The bullet's own example, named honestly  <sub>:33</sub>
-- When literal CQRS (a separate read-side store) would become the right call  <sub>:49</sub>
-- Scope lenses  <sub>:66</sub>
-- Work orders  <sub>:72</sub>
-- Acceptance  <sub>:79</sub>
-- Out of scope  <sub>:85</sub>
-
-### `docs/implementation/architecture-patterns/113-micro-frontend-embedding.md`  <sub>114 lines</sub>
-
-- Why full micro-frontend architecture is declined here  <sub>:22</sub>
-- What the bullet's own concrete example actually needs: an embed, not a framework  <sub>:39</sub>
-- Scope lenses  <sub>:58</sub>
+- What already exists, cited rather than re-derived  <sub>:35</sub>
+- The one real improvement: a read-only cross-module registry, never a runtime-editable one  <sub>:58</sub>
+- Scope lenses  <sub>:88</sub>
 - Work orders  <sub>:95</sub>
 - Acceptance  <sub>:103</sub>
-- Out of scope  <sub>:109</sub>
+- Out of scope  <sub>:114</sub>
+
+### `docs/implementation/architecture-patterns/107-visual-bpmn-workflow-modeling.md`  <sub>81 lines</sub>
+
+- Why this remains declined, restated once more for this specific framing  <sub>:26</sub>
+- What already answers the bullet's own three named use cases  <sub>:45</sub>
+- Scope lenses  <sub>:57</sub>
+- Work orders  <sub>:63</sub>
+- Acceptance  <sub>:71</sub>
+- Out of scope  <sub>:76</sub>
+
+### `docs/implementation/architecture-patterns/108-event-triggered-side-effects.md`  <sub>79 lines</sub>
+
+- What is real today  <sub>:28</sub>
+- What is not built  <sub>:39</sub>
+- Scope lenses  <sub>:50</sub>
+- Work orders  <sub>:58</sub>
+- Acceptance  <sub>:67</sub>
+- Out of scope  <sub>:74</sub>
+
+### `docs/implementation/architecture-patterns/109-immutable-event-ledger.md`  <sub>102 lines</sub>
+
+- What already exists: a real, append-only audit trail  <sub>:18</sub>
+- Why full event sourcing (state derived by replaying events) is not adopted here, stated plainly  <sub>:41</sub>
+- Scope lenses  <sub>:73</sub>
+- Work orders  <sub>:79</sub>
+- Acceptance  <sub>:87</sub>
+- Out of scope  <sub>:95</sub>
+
+### `docs/implementation/architecture-patterns/110-cqrs-read-write-separation.md`  <sub>99 lines</sub>
+
+- What already exists: precomputed read-optimized projections, without a second database  <sub>:22</sub>
+- The bullet's own example, named honestly  <sub>:39</sub>
+- When literal CQRS (a separate read-side store) would become the right call  <sub>:55</sub>
+- Scope lenses  <sub>:72</sub>
+- Work orders  <sub>:78</sub>
+- Acceptance  <sub>:85</sub>
+- Out of scope  <sub>:91</sub>
+
+### `docs/implementation/architecture-patterns/113-micro-frontend-embedding.md`  <sub>129 lines</sub>
+
+- Why full micro-frontend architecture is declined here  <sub>:37</sub>
+- What the bullet's own concrete example actually needs: an embed, not a framework  <sub>:54</sub>
+- Scope lenses  <sub>:73</sub>
+- Work orders  <sub>:110</sub>
+- Acceptance  <sub>:118</sub>
+- Out of scope  <sub>:124</sub>
 
 ### `docs/implementation/architecture-patterns/114-sandboxed-scripting-runtime.md`  <sub>119 lines</sub>
 
@@ -2160,14 +2162,14 @@ _no second-level headings_
 - Acceptance  <sub>:100</sub>
 - Out of scope  <sub>:109</sub>
 
-### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>69 lines</sub>
+### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>81 lines</sub>
 
-- The mapping, made explicit  <sub>:17</sub>
-- What this document adds: naming, not architecture  <sub>:34</sub>
-- Scope lenses  <sub>:45</sub>
-- Work orders  <sub>:52</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:64</sub>
+- The mapping, made explicit  <sub>:30</sub>
+- What this document adds: naming, not architecture  <sub>:47</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:65</sub>
+- Acceptance  <sub>:70</sub>
+- Out of scope  <sub>:76</sub>
 
 ### `docs/implementation/architecture-patterns/117-event-driven-choreography-immutability.md`  <sub>82 lines</sub>
 
@@ -2336,75 +2338,75 @@ _no second-level headings_
 - Acceptance  <sub>:495</sub>
 - Out of scope  <sub>:519</sub>
 
-### `docs/implementation/architecture-patterns/92-microservices-module-decoupling.md`  <sub>89 lines</sub>
+### `docs/implementation/architecture-patterns/92-microservices-module-decoupling.md`  <sub>94 lines</sub>
 
-- 1. What the bullet actually wants, and what already delivers it  <sub>:16</sub>
-- 2. Why literal microservices would be the wrong trade here, not just an unbuilt feature  <sub>:39</sub>
-- Scope lenses  <sub>:61</sub>
-- Work orders  <sub>:68</sub>
-- Acceptance  <sub>:77</sub>
-- Out of scope  <sub>:83</sub>
+- 1. What the bullet actually wants, and what already delivers it  <sub>:21</sub>
+- 2. Why literal microservices would be the wrong trade here, not just an unbuilt feature  <sub>:44</sub>
+- Scope lenses  <sub>:66</sub>
+- Work orders  <sub>:73</sub>
+- Acceptance  <sub>:82</sub>
+- Out of scope  <sub>:88</sub>
 
-### `docs/implementation/architecture-patterns/93-headless-frontend-architecture.md`  <sub>66 lines</sub>
+### `docs/implementation/architecture-patterns/93-headless-frontend-architecture.md`  <sub>73 lines</sub>
 
-- What already exists  <sub>:10</sub>
-- The one correction: framework choice is fixed, not "any"  <sub>:27</sub>
-- Scope lenses  <sub>:42</sub>
-- Work orders  <sub>:48</sub>
-- Acceptance  <sub>:56</sub>
-- Out of scope  <sub>:61</sub>
+- What already exists  <sub>:17</sub>
+- The one correction: framework choice is fixed, not "any"  <sub>:34</sub>
+- Scope lenses  <sub>:49</sub>
+- Work orders  <sub>:55</sub>
+- Acceptance  <sub>:63</sub>
+- Out of scope  <sub>:68</sub>
 
-### `docs/implementation/architecture-patterns/94-cloud-native-container-scalability.md`  <sub>70 lines</sub>
+### `docs/implementation/architecture-patterns/94-cloud-native-container-scalability.md`  <sub>75 lines</sub>
 
-- What already exists  <sub>:14</sub>
-- The honest gap: "automatically... based on demand spikes" is not autoscaling  <sub>:27</sub>
-- Scope lenses  <sub>:43</sub>
-- Work orders  <sub>:49</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:64</sub>
-
-### `docs/implementation/architecture-patterns/95-externalized-rule-logic.md`  <sub>78 lines</sub>
-
-- What is already externalized, named one by one, per the bullet's own three examples  <sub>:15</sub>
-- Why a single generic rules engine is the wrong abstraction here  <sub>:32</sub>
+- What already exists  <sub>:19</sub>
+- The honest gap: "automatically... based on demand spikes" is not autoscaling  <sub>:32</sub>
 - Scope lenses  <sub>:48</sub>
 - Work orders  <sub>:54</sub>
-- Acceptance  <sub>:63</sub>
-- Out of scope  <sub>:71</sub>
+- Acceptance  <sub>:62</sub>
+- Out of scope  <sub>:69</sub>
 
-### `docs/implementation/architecture-patterns/96-version-controlled-policy-execution.md`  <sub>68 lines</sub>
+### `docs/implementation/architecture-patterns/95-externalized-rule-logic.md`  <sub>89 lines</sub>
 
-- What already delivers "no engineering deployment" today  <sub>:13</sub>
-- The one honest, already-named gap: a visual chain *designer*  <sub>:29</sub>
-- Scope lenses  <sub>:43</sub>
-- Work orders  <sub>:48</sub>
-- Acceptance  <sub>:56</sub>
-- Out of scope  <sub>:63</sub>
+- What is already externalized, named one by one, per the bullet's own three examples  <sub>:26</sub>
+- Why a single generic rules engine is the wrong abstraction here  <sub>:43</sub>
+- Scope lenses  <sub>:59</sub>
+- Work orders  <sub>:65</sub>
+- Acceptance  <sub>:74</sub>
+- Out of scope  <sub>:82</sub>
 
-### `docs/implementation/architecture-patterns/97-realtime-validation-single-source-of-truth.md`  <sub>63 lines</sub>
+### `docs/implementation/architecture-patterns/96-version-controlled-policy-execution.md`  <sub>72 lines</sub>
 
-- The three layers already doing this  <sub>:11</sub>
+- What already delivers "no engineering deployment" today  <sub>:17</sub>
+- The one honest, already-named gap: a visual chain *designer*  <sub>:33</sub>
+- Scope lenses  <sub>:47</sub>
+- Work orders  <sub>:52</sub>
+- Acceptance  <sub>:60</sub>
+- Out of scope  <sub>:67</sub>
+
+### `docs/implementation/architecture-patterns/97-realtime-validation-single-source-of-truth.md`  <sub>68 lines</sub>
+
+- The three layers already doing this  <sub>:16</sub>
+- Scope lenses  <sub>:42</sub>
+- Work orders  <sub>:49</sub>
+- Acceptance  <sub>:54</sub>
+- Out of scope  <sub>:60</sub>
+
+### `docs/implementation/architecture-patterns/98-contract-first-api-development.md`  <sub>89 lines</sub>
+
+- What already makes the interface stable, without contract-first sequencing  <sub>:24</sub>
+- The one honest gap: no automated contract-diff / backward-compatibility check  <sub>:48</sub>
+- Scope lenses  <sub>:59</sub>
+- Work orders  <sub>:64</sub>
+- Acceptance  <sub>:74</sub>
+- Out of scope  <sub>:82</sub>
+
+### `docs/implementation/architecture-patterns/99-centralized-api-gateway.md`  <sub>66 lines</sub>
+
+- What each named responsibility already maps to  <sub>:27</sub>
 - Scope lenses  <sub>:37</sub>
 - Work orders  <sub>:44</sub>
-- Acceptance  <sub>:49</sub>
-- Out of scope  <sub>:55</sub>
-
-### `docs/implementation/architecture-patterns/98-contract-first-api-development.md`  <sub>80 lines</sub>
-
-- What already makes the interface stable, without contract-first sequencing  <sub>:16</sub>
-- The one honest gap: no automated contract-diff / backward-compatibility check  <sub>:39</sub>
-- Scope lenses  <sub>:50</sub>
-- Work orders  <sub>:55</sub>
-- Acceptance  <sub>:65</sub>
-- Out of scope  <sub>:73</sub>
-
-### `docs/implementation/architecture-patterns/99-centralized-api-gateway.md`  <sub>60 lines</sub>
-
-- What each named responsibility already maps to  <sub>:21</sub>
-- Scope lenses  <sub>:31</sub>
-- Work orders  <sub>:38</sub>
-- Acceptance  <sub>:48</sub>
-- Out of scope  <sub>:53</sub>
+- Acceptance  <sub>:54</sub>
+- Out of scope  <sub>:59</sub>
 
 ### `docs/implementation/attendance-workforce/22-attendance-shifts-leave.md`  <sub>292 lines</sub>
 
@@ -3598,12 +3600,12 @@ _no second-level headings_
 - Grounded Context (partial, from ground:4 retries)  <sub>:510</sub>
 - Recommendation  <sub>:524</sub>
 
-### `GEMINI.md`  <sub>80 lines</sub>
+### `GEMINI.md`  <sub>81 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
 - Look it up before you search  <sub>:19</sub>
-- Three rules about the index  <sub>:55</sub>
-- Commands  <sub>:67</sub>
+- Three rules about the index  <sub>:56</sub>
+- Commands  <sub>:68</sub>
 
 ### `Memory.md`  <sub>28 lines</sub>
 

@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,247 files / 341,897 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,247 files / 342,069 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -119,12 +119,12 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 1,023 | 139,350 | [api](areas/api.md) |
+| apps/api | 1,023 | 139,362 | [api](areas/api.md) |
 | apps/web | 402 | 66,406 | [web](areas/web.md) |
 | apps/pos | 31 | 2,023 | [pos](areas/pos.md) |
 | apps/mobile | 49 | 6,900 | [mobile](areas/mobile.md) |
 | packages/* | 79 | 8,289 | [packages](areas/packages.md) |
-| docs/* | 396 | 67,762 | [docs](areas/docs.md) |
+| docs/* | 396 | 67,922 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 59 | 30,474 | [infra](areas/infra.md) |
 | repository root files | 208 | 20,693 | [root](areas/root.md) |
 

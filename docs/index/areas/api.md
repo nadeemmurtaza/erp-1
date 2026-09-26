@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,023 files · 139,350 lines
+1,023 files · 139,362 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -31,7 +31,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/prisma` | 3 | 3,294 | module |
 | `apps/api/prisma/schema` | 155 | 15,863 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 148 | nest module, module |
-| `apps/api/src/core` | 180 | 22,488 | unit test, service, module, controller |
+| `apps/api/src/core` | 180 | 22,500 | unit test, service, module, controller |
 | `apps/api/src/modules` | 645 | 88,481 | nest module, unit test, service, controller |
 | `apps/api/test` | 26 | 8,150 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
@@ -62,8 +62,8 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
 | `apps/api/prisma/schema/catalog.prisma` | 742 | prisma schema | Catalog: categories, products, variants, images. |
 | `apps/api/src/modules/catalog/product-admin.service.ts` | 739 | service |  |
+| `apps/api/src/core/events/domain-events.ts` | 726 | module | The catalogue of domain events. |
 | `apps/api/src/modules/cart/cart.service.ts` | 721 | service |  |
-| `apps/api/src/core/events/domain-events.ts` | 714 | module | The catalogue of domain events. |
 | `apps/api/src/core/auth/api-keys/api-keys.service.ts` | 712 | service |  |
 
 

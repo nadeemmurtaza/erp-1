@@ -1,5 +1,16 @@
 # 122 — A data lake: premature at this repository's current scale, with a stated, measurable trigger for when it stops being premature
 
+> **Status: corrected (2026-09-26).** This document's own citation list
+> named `doc 71's BomProductionLineLot` as an example of a real table with
+> a stated expected row count — verified false: `BomProductionLineLot`
+> has no Prisma model anywhere in this codebase (ADR-055 already found the
+> same document unbuilt, citing it for a different reason). Replaced with
+> `AttendanceEvent` (doc 22, built, partitioned by month per ADR-046) — a
+> real, growing table with its own stated row-count discipline. This
+> document's thesis (a data lake is premature; the stated trigger
+> condition is the correct test) is unaffected. See `DECISIONS.md`
+> ADR-056.
+
 "Decouple historical cold storage from active operational databases. This
 ensures massive datasets remain available for future machine learning
 training runs without degrading real-time system performance" names a
@@ -21,7 +32,7 @@ the discipline this repository uses instead of a data lake: every large
 table is indexed for its own real query patterns, bounded by pagination,
 and its expected row count at each of the three silhouettes is stated
 explicitly in the document that introduces it (doc 60's headcount series,
-doc 71's `BomProductionLineLot`, doc 79's `AssetAssignment`). No table in
+doc 22's `AttendanceEvent`, doc 79's `AssetAssignment`). No table in
 this repository has yet been documented as approaching a size where
 Postgres's own indexing and partitioning (a much smaller, incremental
 step than a full data lake) stops being sufficient for real-time

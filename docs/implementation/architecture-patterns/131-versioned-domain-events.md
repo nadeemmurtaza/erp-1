@@ -1,5 +1,19 @@
 # 131 — Versioned domain events: a naming convention for the one moment a shape must change
 
+> **Status: partially shipped (2026-09-26).** WO-131.1 (record the
+> convention) is built: `core/events/domain-events.ts`'s own header
+> comment now states it, next to the existing "adding an event" guidance.
+> WO-131.2 (extend doc 38's WO-38.5 contract-test suite to flag a
+> zero-subscriber predecessor) is **not** built — verified against the
+> live codebase, WO-38.5 itself does not exist: doc 38 carries no
+> `Status:` note, and no contract-test file exists anywhere in
+> `apps/api/src` for it to extend. WO-131.2 is deferred until WO-38.5 is
+> itself built, not built speculatively against a mechanism that isn't
+> there yet. This document's own convention holds regardless — it governs
+> how any future event-shape change is named, whether or not the contract
+> test exists yet to enforce it automatically. See `DECISIONS.md`
+> ADR-056.
+
 Doc 100 already establishes the transactional outbox as this repository's
 event-driven backbone; doc 38's own WO-38.5 already specifies a contract
 test per domain event, failing CI on an unannounced payload shape change.

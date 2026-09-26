@@ -7,6 +7,18 @@
  *
  * Adding an event: add the name here and its payload to DomainEventPayloads.
  * Subscribers that do not know the event simply never fire.
+ *
+ * Changing an event's shape (architecture-patterns/131-versioned-domain-events.md):
+ * adding a field is never a version bump — every subscriber already ignores
+ * a field it doesn't destructure, so it's non-breaking by construction. A
+ * genuinely breaking change (a field's type changes, a field is removed, the
+ * event's own meaning changes) publishes under a NEW name instead of
+ * mutating this one — e.g. `OrderPlaced: 'order.placed'` growing an
+ * `OrderPlacedV2: 'order.placed.v2'` entry, published alongside the original
+ * for a defined migration window while every subscriber moves over on its
+ * own schedule. The old name is retired only once
+ * `docs/index/cross/events.md`'s own generated listing shows zero remaining
+ * subscribers for it — a checkable condition, never a guess.
  */
 export const DomainEvent = {
   OrderPlaced: 'order.placed',

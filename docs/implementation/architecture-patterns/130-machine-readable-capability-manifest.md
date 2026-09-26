@@ -1,8 +1,31 @@
 # 130 — A capability manifest: what this system can do, discoverable, not just documented
 
+> **Status: verified, deliberately left unbuilt (2026-09-26).** This
+> document names three consumers for the manifest it proposes — an AI
+> agent via doc 116's MCP tool adapter, a hyperautomation platform via doc
+> 36's `OutboundConnector`, and "a future integration partner" via doc
+> 34's `ApiClient` — and all three are confirmed unbuilt: doc 116's own
+> WO-116.1 is explicit future work; doc 36 carries no `Status:` note and
+> `OutboundConnector` matches nothing in `apps/api/src`; doc 34's own
+> header says its `ApiClient` model is the service account ADR-037
+> "deliberately defers... nothing below is built" (doc 118, ADR-055).
+> With zero real consumers today, building a live introspection endpoint
+> for them would be exactly the speculative functionality CLAUDE.md's "No
+> speculative functionality" section forbids — the same reasoning already
+> applied to doc 128's deferred `ShippingCarrier.getRate()` and doc 139's
+> deferred `AgentSessionGateway`. Two further corrections for whenever a
+> real consumer is named and this is built: (1) the sketch's
+> `CapabilityManifest.organizationId` and `getCapabilityManifest(organizationId)`
+> repeat the recurring `organizationId` mistake ADR-044/040 already
+> corrects across this session — this deployment IS the tenant, no
+> parameter needed; (2) doc 128's own new ports are `IdentityProvider`
+> (`core/auth/identity-provider.ts`) and `CourierProvider`
+> (`fulfilment/courier-provider.ts`), not `identity`/`ShippingCarrier` as
+> sketched here. See `DECISIONS.md` ADR-056.
+
 Every extension point this repository has (`PaymentProvider`,
 `NotificationChannel`, `FiscalComplianceProvider`, and this same batch's
-own `IdentityProvider`/`ShippingCarrier`, doc 128) is documented in
+own `IdentityProvider`/`CourierProvider`, doc 128) is documented in
 `docs/index/` for a *human* reader. Nothing today lets a *program* — a new
 integration partner's own onboarding script, or doc 116's own future MCP
 tool adapter — ask "what can this deployment actually do right now"
@@ -14,22 +37,24 @@ static, build-time documentation.
 ## 1. The manifest, generated from live registrations, never hand-maintained
 
 ```ts
+// No organizationId (ADR-044/ADR-040): this deployment IS the tenant —
+// the original sketch's per-org parameter is corrected here, per the
+// Status note above, for whenever a real consumer justifies building this.
 interface CapabilityManifest {
-  organizationId: string;
   enabledModules: string[];              // the live MODULES allowlist for this deployment
   registeredProviders: {
     payment: string[];                   // ["easypaisa", "jazzcash"]
     notification: string[];              // ["email", "sms", "whatsapp"]
     fiscalCompliance: string[];          // ["fbr"]
-    identity: string[];                  // doc 128's own new port
-    shippingCarrier: string[];           // doc 128's own new port
+    identity: string[];                  // IdentityProvider, doc 128's own new port
+    courier: string[];                   // CourierProvider, doc 128's own new port
     vectorStore: string[];
   };
   permissionCatalog: Array<{ key: string; description: string }>;
   mcpTools: Array<{ name: string; description: string; requiredPermission: string }>; // doc 116, once built
 }
 
-async getCapabilityManifest(organizationId: string): Promise<CapabilityManifest> {
+async getCapabilityManifest(): Promise<CapabilityManifest> {
   // Reads the LIVE registry state (which provider classes are actually
   // instantiated for this deployment) — never a static document that can
   // drift from what's actually running, the same "generated from the
@@ -85,7 +110,7 @@ capability description.
 
 ## Work orders
 
-**WO-130.1 — `getCapabilityManifest(organizationId)`**, reading live
+**WO-130.1 — `getCapabilityManifest()`**, reading live
 registry state across every extension-point registry this repository
 already has (payment, notification, fiscal, and doc 128's own new ports).
 **WO-130.2 — `GET /admin/capabilities` endpoint**, gated by

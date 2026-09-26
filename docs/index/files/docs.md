@@ -563,7 +563,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 6144 |  |
+| `DECISIONS.md` | doc | 6254 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -632,11 +632,11 @@ All 396 tracked files in `docs/*`, by directory.
 | `115-hexagonal-architecture-ports-adapters.md` | doc | 85 |  |
 | `117-event-driven-choreography-immutability.md` | doc | 97 |  |
 | `118-headless-composable-api-capabilities.md` | doc | 117 |  |
-| `122-data-lake-cold-storage-architecture.md` | doc | 75 |  |
+| `122-data-lake-cold-storage-architecture.md` | doc | 86 |  |
 | `127-policy-as-data-completeness-sweep.md` | doc | 117 |  |
 | `128-extension-point-coverage-audit.md` | doc | 194 |  |
-| `130-machine-readable-capability-manifest.md` | doc | 110 |  |
-| `131-versioned-domain-events.md` | doc | 70 |  |
+| `130-machine-readable-capability-manifest.md` | doc | 135 |  |
+| `131-versioned-domain-events.md` | doc | 84 |  |
 | `133-reusable-dry-run-harness.md` | doc | 59 |  |
 | `134-hexagonal-purity-ci-check.md` | doc | 71 |  |
 | `136-database-cache-portability-audit.md` | doc | 126 |  |

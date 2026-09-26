@@ -563,7 +563,7 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 4475 |  |
+| `DECISIONS.md` | doc | 4611 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
@@ -581,7 +581,7 @@ All 394 tracked files in `docs/*`, by directory.
 | `161-sso-identity-federation.md` | doc | 366 |  |
 | `163-personal-api-keys.md` | doc | 625 |  |
 | `18-identity-verification.md` | doc | 149 |  |
-| `21-access-over-the-org-tree.md` | doc | 228 |  |
+| `21-access-over-the-org-tree.md` | doc | 294 |  |
 
 ### `docs/implementation/admin-platform` (5)
 
@@ -735,8 +735,8 @@ All 394 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `164-department-permission-role-duty-control.md` | doc | 327 |  |
-| `19-org-structure-offices-departments.md` | doc | 291 |  |
-| `20-people-positions-ranks.md` | doc | 297 |  |
+| `19-org-structure-offices-departments.md` | doc | 304 |  |
+| `20-people-positions-ranks.md` | doc | 301 |  |
 | `26-performance-reviews.md` | doc | 247 |  |
 | `27-training-skill-development.md` | doc | 246 |  |
 | `28-recruitment-onboarding-document-vault.md` | doc | 335 |  |

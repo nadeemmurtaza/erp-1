@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 891 tracked files in `apps/api`, by directory.
+All 897 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -41,7 +41,7 @@ All 891 tracked files in `apps/api`, by directory.
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 693 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 650 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 657 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
@@ -57,7 +57,7 @@ All 891 tracked files in `apps/api`, by directory.
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
 | `orders.prisma` | prisma schema | 361 | Orders and shipments. |
-| `org-structure.prisma` | prisma schema | 81 | The org tree: offices, regions, departments — whatever shape a client's |
+| `org-structure.prisma` | prisma schema | 127 | The org tree: offices, regions, departments — whatever shape a client's |
 | `organization.prisma` | prisma schema | 188 | The `organization` module (RETAIL-ERP.md Part 5, WO-18.3) — the top tier |
 | `parties.prisma` | prisma schema | 52 | Parties: the permanent counterparty profile. One canonical record per |
 | `payments.prisma` | prisma schema | 55 | Payments. `provider` is a plain string key, not an enum, so a new gateway is |
@@ -586,6 +586,12 @@ All 891 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 94 |  |
 
+### `apps/api/prisma/schema/migrations/20260926090000_add_org_unit_grant` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 38 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -659,13 +665,13 @@ All 891 tracked files in `apps/api`, by directory.
 | `ownership.guard.ts` | guard | 24 |  |
 | `password.util.spec.ts` | unit test | 80 |  |
 | `password.util.ts` | module | 89 |  |
-| `permissions.service.spec.ts` | unit test | 85 |  |
-| `permissions.service.ts` | service | 64 |  |
+| `permissions.service.spec.ts` | unit test | 129 |  |
+| `permissions.service.ts` | service | 86 |  |
 | `roles.controller.ts` | controller | 44 |  |
-| `roles.service.spec.ts` | unit test | 236 |  |
-| `roles.service.ts` | service | 307 |  |
-| `scope.guard.spec.ts` | unit test | 151 |  |
-| `scope.guard.ts` | guard | 129 |  |
+| `roles.service.spec.ts` | unit test | 277 |  |
+| `roles.service.ts` | service | 332 |  |
+| `scope.guard.spec.ts` | unit test | 195 |  |
+| `scope.guard.ts` | guard | 170 |  |
 | `sso-admin.controller.ts` | controller | 82 |  |
 | `sso.controller.spec.ts` | unit test | 221 |  |
 | `sso.controller.ts` | controller | 227 |  |
@@ -893,9 +899,9 @@ All 891 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 433 |  |
+| `settings.defaults.ts` | module | 450 |  |
 | `settings.module.ts` | nest module | 10 |  |
-| `settings.service.ts` | service | 85 |  |
+| `settings.service.ts` | service | 90 |  |
 
 ### `apps/api/src/core/storage` (8)
 
@@ -1476,19 +1482,24 @@ All 891 tracked files in `apps/api`, by directory.
 | `organization-policy.dto.ts` | dto | 10 |  |
 | `policy-quarantine.dto.ts` | dto | 11 |  |
 
-### `apps/api/src/modules/orgstructure` (4)
+### `apps/api/src/modules/orgstructure` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `org-access.cron.ts` | scheduled job | 25 |  |
+| `org-unit-grant.controller.ts` | controller | 52 |  |
+| `org-unit-grant.service.spec.ts` | unit test | 249 |  |
+| `org-unit-grant.service.ts` | service | 339 |  |
 | `org-unit.controller.ts` | controller | 79 |  |
 | `org-unit.service.spec.ts` | unit test | 185 |  |
 | `org-unit.service.ts` | service | 300 |  |
-| `orgstructure.module.ts` | nest module | 11 |  |
+| `orgstructure.module.ts` | nest module | 14 |  |
 
-### `apps/api/src/modules/orgstructure/dto` (1)
+### `apps/api/src/modules/orgstructure/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `org-unit-grant.dto.ts` | dto | 29 |  |
 | `org-unit.dto.ts` | dto | 45 |  |
 
 ### `apps/api/src/modules/parties` (4)

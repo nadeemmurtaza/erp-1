@@ -3,7 +3,7 @@
 
 # Tests
 
-**260** spec files, **2,575** cases. What is already pinned down — and what is not.
+**261** spec files, **2,605** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (240)
+## Unit and integration (241)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -71,10 +71,10 @@ regression or an N+1.
 | `apps/api/src/core/auth/guards.spec.ts` | core/auth | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a se… |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
 | `apps/api/src/core/auth/password.util.spec.ts` | core/auth | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
-| `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 6 | PermissionsResolverService.resolveForUser |
+| `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 10 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) |
 | `apps/api/src/core/auth/providers/oidc.provider.spec.ts` | core/auth | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityF… |
-| `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 18 | RolesService · create · update / delete — the locked-permission orphan guard · assertLockedKeysStil… |
-| `apps/api/src/core/auth/scope.guard.spec.ts` | core/auth | 20 | resolveScope · assertCanManageAtScope · scopeFilterFor |
+| `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 22 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orpha… |
+| `apps/api/src/core/auth/scope.guard.spec.ts` | core/auth | 24 | resolveScope · assertCanManageAtScope · scopeFilterFor · orgUnitScopeFilterFor |
 | `apps/api/src/core/auth/sso.controller.spec.ts` | core/auth | 8 | SsoController · start · callback · session |
 | `apps/api/src/core/auth/sso.service.spec.ts` | core/auth | 33 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing conne… |
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
@@ -180,6 +180,7 @@ regression or an N+1.
 | `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 12 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
 | `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
+| `apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts` | orgstructure | 18 | GrantService · reachOf · previewIssue / issue — the five refusals · ACTING mode · revoke · sweepExp… |
 | `apps/api/src/modules/orgstructure/org-unit.service.spec.ts` | orgstructure | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |

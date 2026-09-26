@@ -1886,16 +1886,16 @@ _no second-level headings_
 - Explicitly out of scope for this module  <sub>:115</sub>
 - Local setup  <sub>:137</sub>
 
-### `docs/implementation/access-control-identity/21-access-over-the-org-tree.md`  <sub>228 lines</sub>
+### `docs/implementation/access-control-identity/21-access-over-the-org-tree.md`  <sub>294 lines</sub>
 
-- Two sources of access, and only one of them is remembered  <sub>:11</sub>
-- The ceiling on the granter  <sub>:70</sub>
-- Resolution order  <sub>:94</sub>
-- What a department sees  <sub>:114</sub>
-- Scope lenses  <sub>:127</sub>
-- Work orders  <sub>:191</sub>
-- Acceptance  <sub>:206</sub>
-- Out of scope  <sub>:222</sub>
+- Two sources of access, and only one of them is remembered  <sub>:77</sub>
+- The ceiling on the granter  <sub>:136</sub>
+- Resolution order  <sub>:160</sub>
+- What a department sees  <sub>:180</sub>
+- Scope lenses  <sub>:193</sub>
+- Work orders  <sub>:257</sub>
+- Acceptance  <sub>:272</sub>
+- Out of scope  <sub>:288</sub>
 
 ### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>253 lines</sub>
 
@@ -2697,7 +2697,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>4,475 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>4,611 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2747,6 +2747,7 @@ _no second-level headings_
 - ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:4049</sub>
 - ADR-043 — `access-control-identity` docs 126/161 built; 16/18/163 re-verified; 125 corrected; 21 reported blocked on missing docs 19/20  <sub>:4183</sub>
 - ADR-044 — Docs 19/20 (org tree, positions and ranks): `OrgUnit` kept orthogonal to `Node` exactly as specified; no separate `Employee` model — every posting keys to `User`, matching payroll's and doc 79's own precedent  <sub>:4340</sub>
+- ADR-045 — Doc 21 (access over the org tree): `OrgUnitGrant` built exactly as specified; `MAX_GRANT_DAYS` as a plain Setting, not a `BrandPolicy` column; `org.access.grant` seeded to no role by default; the granter's own reach treats "no posting" as unrestricted; existing list endpoints are NOT retrofitted to scope by `OrgUnit`  <sub>:4476</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -2846,24 +2847,24 @@ _no second-level headings_
 - Out of scope  <sub>:309</sub>
 - Decision to record  <sub>:319</sub>
 
-### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>291 lines</sub>
+### `docs/implementation/hr-people-org/19-org-structure-offices-departments.md`  <sub>304 lines</sub>
 
-- Two hierarchies that look like one  <sub>:56</sub>
-- The design: `OrgUnit`, orthogonal to `Node`  <sub>:79</sub>
-- Scope lenses  <sub>:190</sub>
-- Work orders  <sub>:246</sub>
-- Acceptance  <sub>:266</sub>
-- Out of scope for this document  <sub>:280</sub>
-- Decision to record  <sub>:286</sub>
+- Two hierarchies that look like one  <sub>:69</sub>
+- The design: `OrgUnit`, orthogonal to `Node`  <sub>:92</sub>
+- Scope lenses  <sub>:203</sub>
+- Work orders  <sub>:259</sub>
+- Acceptance  <sub>:279</sub>
+- Out of scope for this document  <sub>:293</sub>
+- Decision to record  <sub>:299</sub>
 
-### `docs/implementation/hr-people-org/20-people-positions-ranks.md`  <sub>297 lines</sub>
+### `docs/implementation/hr-people-org/20-people-positions-ranks.md`  <sub>301 lines</sub>
 
-- Three things that are not each other  <sub>:67</sub>
-- Schema — `hr.prisma`  <sub>:85</sub>
-- Scope lenses  <sub>:207</sub>
-- Work orders  <sub>:265</sub>
-- Acceptance  <sub>:280</sub>
-- Out of scope  <sub>:291</sub>
+- Three things that are not each other  <sub>:71</sub>
+- Schema — `hr.prisma`  <sub>:89</sub>
+- Scope lenses  <sub>:211</sub>
+- Work orders  <sub>:269</sub>
+- Acceptance  <sub>:284</sub>
+- Out of scope  <sub>:295</sub>
 
 ### `docs/implementation/hr-people-org/26-performance-reviews.md`  <sub>247 lines</sub>
 

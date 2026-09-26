@@ -52,11 +52,15 @@
 > and is left for a future document if the list proves insufficient — not
 > built speculatively. `hr.people.view`/`.manage` are seeded to `ADMIN`.
 >
-> **The toxic pair named in this document's own scope lens**
-> (`hr.people.manage` + `org.access.grant`) is not enforced yet, for the
-> same reason doc 19's status note gives: `org.access.grant` does not
-> exist until doc 21, and `RolesService` has no generic toxic-pair
-> mechanism today. ADR-044 records this as doc 21's to close.
+> **Update (2026-09-26, doc 21 built):** the toxic pair named in this
+> document's own scope lens (`hr.people.manage` + `org.access.grant`) is now
+> enforced — `TOXIC_PERMISSION_PAIRS` (`packages/shared/src/permissions.ts`)
+> refuses the two together in `RolesService.create()`/`.update()`. The
+> original note is kept for the record: it was not enforced when this
+> document shipped, because `org.access.grant` did not exist until doc 21
+> defined it, and `RolesService` had no generic toxic-pair mechanism at
+> all. ADR-044 recorded this as doc 21's to close; ADR-045 is where it was
+> closed.
 
 This repository has a `User` (`core.prisma:11`) and it has `Role`
 (`core.prisma:307`). It has no employee, no post, and no notion that one person

@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2077,
-    "lines": 319214,
-    "routes": 702,
-    "controllers": 126,
-    "models": 253,
-    "enums": 117,
-    "migrations": 90,
+    "files": 2084,
+    "lines": 320837,
+    "routes": 706,
+    "controllers": 127,
+    "models": 254,
+    "enums": 118,
+    "migrations": 91,
     "events": 63,
-    "permissions": 91,
-    "screens": 241,
-    "crons": 21,
-    "specs": 260,
+    "permissions": 93,
+    "screens": 242,
+    "crons": 22,
+    "specs": 261,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 891,
-      "lines": 126484,
-      "bytes": 4847304,
+      "files": 897,
+      "lines": 127511,
+      "bytes": 4890789,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 384,
-      "lines": 62457,
-      "bytes": 2252739,
+      "files": 385,
+      "lines": 62789,
+      "bytes": 2264953,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 64072,
-      "bytes": 3808754,
+      "lines": 64291,
+      "bytes": 3822558,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8013,
-      "bytes": 284084,
+      "lines": 8058,
+      "bytes": 286446,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -610,13 +610,18 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/orgstructure/dto/org-unit-grant.dto.ts",
         "apps/api/src/modules/orgstructure/dto/org-unit.dto.ts",
+        "apps/api/src/modules/orgstructure/org-access.cron.ts",
+        "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+        "apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts",
+        "apps/api/src/modules/orgstructure/org-unit-grant.service.ts",
         "apps/api/src/modules/orgstructure/org-unit.controller.ts",
         "apps/api/src/modules/orgstructure/org-unit.service.spec.ts",
         "apps/api/src/modules/orgstructure/org-unit.service.ts",
         "apps/api/src/modules/orgstructure/orgstructure.module.ts"
       ],
-      "routes": 9,
+      "routes": 13,
       "page": "docs/index/modules/orgstructure.md"
     },
     {
@@ -6798,6 +6803,71 @@
     },
     {
       "method": "GET",
+      "path": "/admin/org-structure/:unitId/access",
+      "module": "orgstructure",
+      "controller": "GrantController",
+      "handler": "accessOverUnit",
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "line": 23,
+      "access": "org.access.view | org.access.grant",
+      "permissions": [
+        "org.access.view",
+        "org.access.grant"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Who reaches this unit, by posting or by grant"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:unitId/access",
+      "module": "orgstructure",
+      "controller": "GrantController",
+      "handler": "issue",
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "line": 41,
+      "access": "org.access.grant",
+      "permissions": [
+        "org.access.grant"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Issue a time-boxed access grant over this unit"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:unitId/access/:grantId/revoke",
+      "module": "orgstructure",
+      "controller": "GrantController",
+      "handler": "revoke",
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "line": 48,
+      "access": "org.access.grant",
+      "permissions": [
+        "org.access.grant"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Revoke an active grant"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/org-structure/:unitId/access/preview",
+      "module": "orgstructure",
+      "controller": "GrantController",
+      "handler": "previewIssue",
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "line": 30,
+      "access": "org.access.grant",
+      "permissions": [
+        "org.access.grant"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Which refusals a grant would hit, without writing anything"
+    },
+    {
+      "method": "GET",
       "path": "/admin/org-structure/tree",
       "module": "orgstructure",
       "controller": "OrgUnitController",
@@ -12446,8 +12516,7 @@
       ],
       "uiSites": 11,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12471,8 +12540,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12490,8 +12558,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12513,10 +12580,8 @@
         "POST /organization/replication/resync"
       ],
       "uiSites": 3,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "accounting.view",
@@ -12536,10 +12601,8 @@
         "GET /admin/accounting/reports/trial-balance"
       ],
       "uiSites": 2,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "crm.manage",
@@ -12581,8 +12644,7 @@
       ],
       "uiSites": 15,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12607,8 +12669,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12626,10 +12687,8 @@
         "POST /admin/pos/terminals/:id/suspend"
       ],
       "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "pos.operate",
@@ -12651,8 +12710,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12665,10 +12723,8 @@
         "POST /admin/orders/:orderId/instalments/cancel"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "pos.instalments.default",
@@ -12679,10 +12735,8 @@
         "POST /admin/orders/:orderId/instalments/default"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "payments.approve",
@@ -12696,8 +12750,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12714,8 +12767,7 @@
       "uiSites": 8,
       "roles": [
         "TAILOR",
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12730,8 +12782,7 @@
       "uiSites": 0,
       "roles": [
         "TAILOR",
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12755,8 +12806,7 @@
       "routes": [],
       "uiSites": 0,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12770,8 +12820,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12789,8 +12838,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12810,8 +12858,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12833,8 +12880,7 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12848,8 +12894,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12904,8 +12949,7 @@
       ],
       "uiSites": 17,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12930,8 +12974,7 @@
       ],
       "uiSites": 12,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12945,10 +12988,8 @@
         "GET /admin/reports/export/stock-valuation"
       ],
       "uiSites": 15,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "inventory.count",
@@ -12971,8 +13012,7 @@
       ],
       "uiSites": 4,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -12990,8 +13030,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13009,8 +13048,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13031,8 +13069,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13063,8 +13100,7 @@
       ],
       "uiSites": 10,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13080,8 +13116,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13096,10 +13131,8 @@
         "POST /admin/requisitions/:id/reject"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "inventory.spot_checks.manage",
@@ -13112,10 +13145,8 @@
         "PATCH /admin/inventory/spot-check-policies/:id"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "parties.manage",
@@ -13129,8 +13160,7 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13177,10 +13207,8 @@
         "GET /managed-services/usage"
       ],
       "uiSites": 4,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "settings.sso.manage",
@@ -13198,10 +13226,8 @@
         "GET /admin/sso/roles"
       ],
       "uiSites": 3,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "tax.manage",
@@ -13219,10 +13245,8 @@
         "PUT /admin/tax/settings"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.view",
@@ -13258,8 +13282,7 @@
       ],
       "uiSites": 23,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13282,10 +13305,8 @@
         "POST /admin/merchant-payables/organizations/:organizationId/schedule-payout"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.wallets.adjust",
@@ -13299,8 +13320,7 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13314,10 +13334,8 @@
         "POST /admin/wallet/adjustment-requests/:requestId/decide"
       ],
       "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.merchant-payables.dispute",
@@ -13329,10 +13347,8 @@
         "POST /admin/merchant-payables/:id/resolve-dispute"
       ],
       "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.credit-notes.create",
@@ -13346,8 +13362,7 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13361,10 +13376,8 @@
         "POST /admin/credit-notes/:id/void"
       ],
       "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.debit-notes.manage",
@@ -13378,8 +13391,7 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13393,10 +13405,8 @@
         "PUT /admin/dunning/policy"
       ],
       "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.assets.depreciate",
@@ -13408,10 +13418,8 @@
         "POST /admin/accounting/assets/:assetId/depreciation-schedule"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.assets.dispose",
@@ -13422,10 +13430,8 @@
         "POST /admin/accounting/assets/:assetId/dispose"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.settlement.view",
@@ -13438,10 +13444,8 @@
         "GET /admin/settlements/providers"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.settlement.reconcile",
@@ -13458,10 +13462,8 @@
         "GET /admin/settlements/providers"
       ],
       "uiSites": 3,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "finance.settlement.approve_writeoff",
@@ -13472,10 +13474,8 @@
         "POST /admin/settlements/batches/:id/approve-writeoff"
       ],
       "uiSites": 2,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "fulfilment.view",
@@ -13498,8 +13498,7 @@
       ],
       "uiSites": 5,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13545,8 +13544,7 @@
       ],
       "uiSites": 6,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13569,8 +13567,7 @@
       ],
       "uiSites": 10,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13591,10 +13588,8 @@
         "POST /admin/bom/recipes/:id/seed-cost-price"
       ],
       "uiSites": 4,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "bom.produce",
@@ -13606,8 +13601,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13785,6 +13779,37 @@
       "inSeed": true
     },
     {
+      "key": "org.access.view",
+      "label": "See who reaches an organization unit, by posting or by grant",
+      "category": "Organization",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/org-structure/:unitId/access"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "org.access.grant",
+      "label": "Issue or revoke a time-boxed access grant over an organization unit",
+      "category": "Organization",
+      "sensitivity": "high",
+      "routes": [
+        "GET /admin/org-structure/:unitId/access",
+        "POST /admin/org-structure/:unitId/access",
+        "POST /admin/org-structure/:unitId/access/:grantId/revoke",
+        "POST /admin/org-structure/:unitId/access/preview"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -13795,10 +13820,8 @@
         "PUT /admin/marketing/settings"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "roles.manage_permissions",
@@ -13812,10 +13835,8 @@
         "PATCH /admin/roles/:id"
       ],
       "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "audit.view",
@@ -13826,10 +13847,8 @@
         "GET /admin/settings/audit-log"
       ],
       "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "users.manage",
@@ -13849,10 +13868,8 @@
         "POST /admin/users/:id/roles/:roleId"
       ],
       "uiSites": 4,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "accounting.manage_periods",
@@ -13868,10 +13885,8 @@
         "POST /admin/accounting/fiscal-years/:id/close"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "promotions.view",
@@ -13885,8 +13900,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13907,8 +13921,7 @@
       ],
       "uiSites": 0,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13924,8 +13937,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13940,10 +13952,8 @@
         "PATCH /admin/gift-cards/:id/cancel"
       ],
       "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "content.view",
@@ -13960,8 +13970,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -13992,8 +14001,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14008,8 +14016,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14030,8 +14037,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14046,8 +14052,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14064,8 +14069,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14080,8 +14084,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14099,10 +14102,8 @@
         "POST /admin/campaigns/:id/schedule"
       ],
       "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "onsitemessages.view",
@@ -14117,8 +14118,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14139,8 +14139,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14155,8 +14154,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14170,8 +14168,7 @@
       ],
       "uiSites": 1,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14186,10 +14183,8 @@
         "PATCH /admin/loyalty/tiers/:id"
       ],
       "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
+      "roles": [],
+      "inSeed": false
     },
     {
       "key": "ai.view",
@@ -14202,8 +14197,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14224,8 +14218,7 @@
       ],
       "uiSites": 3,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14247,8 +14240,7 @@
       ],
       "uiSites": 3,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     },
@@ -14264,8 +14256,7 @@
       ],
       "uiSites": 2,
       "roles": [
-        "STAFF",
-        "ADMIN"
+        "STAFF"
       ],
       "inSeed": true
     }
@@ -15096,7 +15087,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 307,
+      "line": 314,
       "doc": "",
       "fields": [
         {
@@ -15355,7 +15346,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 630,
+      "line": 637,
       "doc": "",
       "fields": [
         {
@@ -15444,7 +15435,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 585,
+      "line": 592,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -15505,7 +15496,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 257,
+      "line": 264,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -16154,7 +16145,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 397,
+      "line": 404,
       "doc": "",
       "fields": [
         {
@@ -19011,7 +19002,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 565,
+      "line": 572,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -19568,7 +19559,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 352,
+      "line": 359,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -19754,7 +19745,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 213,
+      "line": 220,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -25392,6 +25383,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "grants",
+          "type": "OrgUnitGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -25399,6 +25397,123 @@
         "@@index([parentId])",
         "@@index([path])",
         "@@index([nodeId])"
+      ]
+    },
+    {
+      "name": "OrgUnitGrant",
+      "file": "apps/api/prisma/schema/org-structure.prisma",
+      "line": 90,
+      "doc": "access-control-identity/21-access-over-the-org-tree.md — an explicit, time-boxed grant of authority over a subtree.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "permissionKeys",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "mode",
+          "type": "GrantMode",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "expiresAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "grantedByUserId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "countersignedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "revokedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "user",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "grantedBy",
+          "type": "User",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "countersignedBy",
+          "type": "User?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnit",
+          "type": "OrgUnit",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([userId, expiresAt])",
+        "@@index([orgUnitId])"
       ]
     },
     {
@@ -25455,7 +25570,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 538,
+      "line": 545,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -25842,7 +25957,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 196,
+      "line": 203,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -26397,7 +26512,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 418,
+      "line": 425,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -30547,7 +30662,7 @@
     {
       "name": "RefreshToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 175,
+      "line": 182,
       "doc": "",
       "fields": [
         {
@@ -31674,7 +31789,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 484,
+      "line": 491,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -31732,7 +31847,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 498,
+      "line": 505,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -31786,7 +31901,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 434,
+      "line": 441,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -32013,7 +32128,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 330,
+      "line": 337,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -36583,6 +36698,27 @@
           "relation": false
         },
         {
+          "name": "orgUnitGrantsHeld",
+          "type": "OrgUnitGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnitGrantsIssued",
+          "type": "OrgUnitGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "orgUnitGrantsCountersigned",
+          "type": "OrgUnitGrant[]",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "assetDepreciationSchedulesCreated",
           "type": "AssetDepreciationSchedule[]",
           "id": false,
@@ -36718,7 +36854,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 455,
+      "line": 462,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -36779,7 +36915,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 513,
+      "line": 520,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -37693,7 +37829,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 624,
+      "line": 631,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -37703,7 +37839,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 603,
+      "line": 610,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -37747,7 +37883,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 238,
+      "line": 245,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -37757,7 +37893,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 231,
+      "line": 238,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -37940,7 +38076,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 553,
+      "line": 560,
       "values": [
         "IOS",
         "ANDROID",
@@ -37985,7 +38121,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 341,
+      "line": 348,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -38034,6 +38170,15 @@
         "REDEEMED",
         "EXPIRED",
         "CANCELLED"
+      ]
+    },
+    {
+      "name": "GrantMode",
+      "file": "apps/api/prisma/schema/org-structure.prisma",
+      "line": 123,
+      "values": [
+        "READ",
+        "ACTING"
       ]
     },
     {
@@ -38335,7 +38480,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 527,
+      "line": 534,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -38390,7 +38535,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 446,
+      "line": 453,
       "values": [
         "GRANT",
         "REVOKE"
@@ -40620,6 +40765,22 @@
         "Posting",
         "Rank"
       ]
+    },
+    {
+      "folder": "20260926090000_add_org_unit_grant",
+      "file": "apps/api/prisma/schema/migrations/20260926090000_add_org_unit_grant/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_org_unit_grant",
+      "statements": 8,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "OrgUnitGrant"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -42373,6 +42534,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/org-structure/[unitId]/access",
+      "file": "apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/payments",
       "file": "apps/web/src/app/(admin)/admin/(app)/payments/page.tsx",
       "client": true,
@@ -42928,6 +43098,13 @@
       "file": "apps/api/src/modules/orders/cod-risk.cron.ts",
       "line": 22,
       "handler": "computeCityCodRiskStats",
+      "doc": ""
+    },
+    {
+      "schedule": "0 4 * * *",
+      "file": "apps/api/src/modules/orgstructure/org-access.cron.ts",
+      "line": 17,
+      "handler": "sweep",
       "doc": ""
     },
     {
@@ -43597,9 +43774,10 @@
       "file": "apps/api/src/core/auth/permissions.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 6,
+      "cases": 10,
       "describes": [
-        "PermissionsResolverService.resolveForUser"
+        "PermissionsResolverService.resolveForUser",
+        "explicit OrgUnitGrant keys (doc 21)"
       ]
     },
     {
@@ -43619,10 +43797,11 @@
       "file": "apps/api/src/core/auth/roles.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 18,
+      "cases": 22,
       "describes": [
         "RolesService",
         "create",
+        "toxic-pair refusal (doc 21)",
         "update / delete — the locked-permission orphan guard",
         "assertLockedKeysStillHeldAfterRevoke",
         "conflictsForUser",
@@ -43633,11 +43812,12 @@
       "file": "apps/api/src/core/auth/scope.guard.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 20,
+      "cases": 24,
       "describes": [
         "resolveScope",
         "assertCanManageAtScope",
-        "scopeFilterFor"
+        "scopeFilterFor",
+        "orgUnitScopeFilterFor"
       ]
     },
     {
@@ -44835,6 +45015,21 @@
         "allowsBranchLocalPurchasing (BranchPolicyRegistry handler) — WO-23.3b",
         "allowsBranchLocalPurchasingForNode (BranchPolicyRegistry handler) — WO-23.3c/e, ADR-023",
         "revokeScope"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts",
+      "module": "orgstructure",
+      "kind": "unit test",
+      "cases": 18,
+      "describes": [
+        "GrantService",
+        "reachOf",
+        "previewIssue / issue — the five refusals",
+        "ACTING mode",
+        "revoke",
+        "sweepExpired",
+        "accessOverUnit"
       ]
     },
     {
@@ -46982,8 +47177,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 650,
-      "bytes": 26714,
+      "lines": 657,
+      "bytes": 27280,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -47843,6 +48038,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926090000_add_org_unit_grant/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 38,
+      "bytes": 1804,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -47882,8 +48086,8 @@
       "path": "apps/api/prisma/schema/org-structure.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 81,
-      "bytes": 3581,
+      "lines": 127,
+      "bytes": 5604,
       "doc": "The org tree: offices, regions, departments — whatever shape a client's",
       "symbols": []
     },
@@ -49136,8 +49340,8 @@
       "path": "apps/api/src/core/auth/permissions.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 85,
-      "bytes": 3337,
+      "lines": 129,
+      "bytes": 5398,
       "doc": "",
       "symbols": []
     },
@@ -49145,8 +49349,8 @@
       "path": "apps/api/src/core/auth/permissions.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 64,
-      "bytes": 2248,
+      "lines": 86,
+      "bytes": 3371,
       "doc": "",
       "symbols": [
         {
@@ -49157,7 +49361,7 @@
         {
           "name": "PermissionsResolverService",
           "kind": "class",
-          "line": 26
+          "line": 39
         }
       ]
     },
@@ -49209,8 +49413,8 @@
       "path": "apps/api/src/core/auth/roles.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 236,
-      "bytes": 9202,
+      "lines": 277,
+      "bytes": 10895,
       "doc": "",
       "symbols": []
     },
@@ -49218,8 +49422,8 @@
       "path": "apps/api/src/core/auth/roles.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 307,
-      "bytes": 12011,
+      "lines": 332,
+      "bytes": 13176,
       "doc": "",
       "symbols": [
         {
@@ -49248,8 +49452,8 @@
       "path": "apps/api/src/core/auth/scope.guard.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 151,
-      "bytes": 5234,
+      "lines": 195,
+      "bytes": 7401,
       "doc": "",
       "symbols": []
     },
@@ -49257,8 +49461,8 @@
       "path": "apps/api/src/core/auth/scope.guard.ts",
       "area": "api",
       "kind": "guard",
-      "lines": 129,
-      "bytes": 5846,
+      "lines": 170,
+      "bytes": 7888,
       "doc": "",
       "symbols": [
         {
@@ -49295,6 +49499,16 @@
           "name": "scopeFilterFor",
           "kind": "function",
           "line": 124
+        },
+        {
+          "name": "OrgUnitReach",
+          "kind": "interface",
+          "line": 140
+        },
+        {
+          "name": "orgUnitScopeFilterFor",
+          "kind": "function",
+          "line": 166
         }
       ]
     },
@@ -51452,8 +51666,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 433,
-      "bytes": 24179,
+      "lines": 450,
+      "bytes": 25292,
       "doc": "",
       "symbols": [
         {
@@ -51489,12 +51703,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 272
+          "line": 287
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 274
+          "line": 289
         }
       ]
     },
@@ -51517,8 +51731,8 @@
       "path": "apps/api/src/core/settings/settings.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 85,
-      "bytes": 3016,
+      "lines": 90,
+      "bytes": 3292,
       "doc": "",
       "symbols": [
         {
@@ -57206,6 +57420,21 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/orgstructure/dto/org-unit-grant.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 29,
+      "bytes": 608,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IssueOrgUnitGrantDto",
+          "kind": "class",
+          "line": 5
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/orgstructure/dto/org-unit.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -57227,6 +57456,90 @@
           "name": "MoveOrgUnitDto",
           "kind": "class",
           "line": 39
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-access.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 25,
+      "bytes": 842,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgAccessCron",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit-grant.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 52,
+      "bytes": 2233,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GrantController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 249,
+      "bytes": 10789,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/orgstructure/org-unit-grant.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 339,
+      "bytes": 12749,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgUnitGrantView",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "GrantRefusalCode",
+          "kind": "type",
+          "line": 24
+        },
+        {
+          "name": "GrantRefusal",
+          "kind": "interface",
+          "line": 31
+        },
+        {
+          "name": "IssueGrantInput",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "PreviewIssueResult",
+          "kind": "interface",
+          "line": 46
+        },
+        {
+          "name": "AccessOverUnit",
+          "kind": "interface",
+          "line": 50
+        },
+        {
+          "name": "GrantService",
+          "kind": "class",
+          "line": 91
         }
       ]
     },
@@ -57283,14 +57596,14 @@
       "path": "apps/api/src/modules/orgstructure/orgstructure.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 11,
-      "bytes": 298,
+      "lines": 14,
+      "bytes": 529,
       "doc": "",
       "symbols": [
         {
           "name": "OrgStructureModule",
           "kind": "class",
-          "line": 10
+          "line": 13
         }
       ]
     },
@@ -67200,17 +67513,32 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 318,
+      "bytes": 11412,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OrgUnitAccessPage",
+          "kind": "default",
+          "line": 50
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/org-structure/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 316,
-      "bytes": 11027,
+      "lines": 328,
+      "bytes": 11608,
       "doc": "",
       "symbols": [
         {
           "name": "OrgStructurePage",
           "kind": "default",
-          "line": 31
+          "line": 33
         }
       ]
     },
@@ -71137,8 +71465,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 255,
-      "bytes": 11462,
+      "lines": 257,
+      "bytes": 11683,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -75086,8 +75414,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 4475,
-      "bytes": 257966,
+      "lines": 4611,
+      "bytes": 266438,
       "doc": "",
       "symbols": []
     },
@@ -75203,8 +75531,8 @@
       "path": "docs/implementation/access-control-identity/21-access-over-the-org-tree.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 228,
-      "bytes": 11809,
+      "lines": 294,
+      "bytes": 16032,
       "doc": "",
       "symbols": []
     },
@@ -76049,8 +76377,8 @@
       "path": "docs/implementation/hr-people-org/19-org-structure-offices-departments.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 291,
-      "bytes": 15504,
+      "lines": 304,
+      "bytes": 16348,
       "doc": "",
       "symbols": []
     },
@@ -76058,8 +76386,8 @@
       "path": "docs/implementation/hr-people-org/20-people-positions-ranks.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 297,
-      "bytes": 15230,
+      "lines": 301,
+      "bytes": 15495,
       "doc": "",
       "symbols": []
     },
@@ -78246,8 +78574,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 964,
-      "bytes": 29970,
+      "lines": 1009,
+      "bytes": 32332,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -78268,47 +78596,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 582
+          "line": 597
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 584
+          "line": 599
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 594
+          "line": 609
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 601
+          "line": 616
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 789
+          "line": 804
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 951
+          "line": 978
+        },
+        {
+          "name": "TOXIC_PERMISSION_PAIRS",
+          "kind": "const",
+          "line": 996
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 956
+          "line": 1001
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 957
+          "line": 1002
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 960
+          "line": 1005
         }
       ]
     },

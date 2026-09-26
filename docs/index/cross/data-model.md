@@ -3,7 +3,7 @@
 
 # Data model
 
-All **253** Prisma models and **117** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **254** Prisma models and **118** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -47,7 +47,7 @@ against a real database.
 | [`notification-preferences.prisma`](../data/notification-preferences.md) | 1 | 2 | [`notification-preferences`](../modules/notification-preferences.md) | NotificationPreference |
 | [`onsite-messaging.prisma`](../data/onsite-messaging.md) | 3 | 2 | core platform | NewsletterSubscriber, OnsiteMessage, OnsiteMessageTranslation |
 | [`orders.prisma`](../data/orders.md) | 6 | 5 | [`orders`](../modules/orders.md) | CityCodRiskStat, Order, OrderItem, OrderNumberCounter, OrderStatusEvent, Shipment |
-| [`org-structure.prisma`](../data/org-structure.md) | 2 | 0 | core platform | OrgUnit, OrgUnitType |
+| [`org-structure.prisma`](../data/org-structure.md) | 3 | 1 | core platform | OrgUnit, OrgUnitGrant, OrgUnitType |
 | [`organization.prisma`](../data/organization.md) | 5 | 3 | [`organization`](../modules/organization.md) | AdminScope, BrandPolicy, Node, Organization, RetailBrand |
 | [`parties.prisma`](../data/parties.md) | 2 | 1 | [`parties`](../modules/parties.md) | Party, PartyRoleAssignment |
 | [`payments.prisma`](../data/payments.md) | 1 | 1 | [`payments`](../modules/payments.md) | Payment |
@@ -191,7 +191,8 @@ against a real database.
 | [`OrderNumberCounter`](../data/orders.md#ordernumbercounter) | `orders` | 2 | 0 | year | Backing store for sequential per-year order numbers (YSN-2026-0001). |
 | [`OrderStatusEvent`](../data/orders.md#orderstatusevent) | `orders` | 9 | 2 | id |  |
 | [`Organization`](../data/organization.md#organization) | `organization` | 6 | 0 | id | The top tier — the owner's group, run by a super admin from one dashboard (Part 1). |
-| [`OrgUnit`](../data/org-structure.md#orgunit) | `org-structure` | 19 | 5 | id |  |
+| [`OrgUnit`](../data/org-structure.md#orgunit) | `org-structure` | 20 | 5 | id |  |
+| [`OrgUnitGrant`](../data/org-structure.md#orgunitgrant) | `org-structure` | 15 | 4 | id | access-control-identity/21-access-over-the-org-tree.md — an explicit, time-boxed grant of… |
 | [`OrgUnitType`](../data/org-structure.md#orgunittype) | `org-structure` | 6 | 0 | id | What kinds of unit this deployment's org chart has. |
 | [`OutboxEvent`](../data/core.md#outboxevent) | `core` | 9 | 0 | id | Transactional outbox. |
 | [`Page`](../data/content.md#page) | `content` | 9 | 0 | id |  |
@@ -316,7 +317,7 @@ against a real database.
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
 | [`UsageMeter`](../data/platform.md#usagemeter) | `platform` | 8 | 1 | id | One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` inc… |
 | [`UsageMeteringCursor`](../data/platform.md#usagemeteringcursor) | `platform` | 6 | 1 | id | The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each ba… |
-| [`User`](../data/core.md#user) | `core` | 86 | 31 | id |  |
+| [`User`](../data/core.md#user) | `core` | 89 | 34 | id |  |
 | [`UserPermission`](../data/core.md#userpermission) | `core` | 7 | 2 | id | A per-user adjustment layered on top of their role's grants: GRANT adds a permission thei… |
 | [`UserRoleAssignment`](../data/core.md#userroleassignment) | `core` | 6 | 2 | id | Which `Role` rows a user holds. |
 | [`VariantForecast`](../data/inventory.md#variantforecast) | `inventory` | 7 | 1 | variantId | WO-9.3 (09-ai-layer.md). |
@@ -369,6 +370,7 @@ against a real database.
 | [`ExpenseRecurrence`](../data/finance.md#expenserecurrence) | `finance` | `NONE` `WEEKLY` `MONTHLY` `QUARTERLY` `YEARLY` |
 | [`FiscalPeriodStatus`](../data/accounting.md#fiscalperiodstatus) | `accounting` | `OPEN` `CLOSED` `LOCKED` |
 | [`GiftCardStatus`](../data/giftcards.md#giftcardstatus) | `giftcards` | `ACTIVE` `REDEEMED` `EXPIRED` `CANCELLED` |
+| [`GrantMode`](../data/org-structure.md#grantmode) | `org-structure` | `READ` `ACTING` |
 | [`IdentityVerificationStatus`](../data/identity-verification.md#identityverificationstatus) | `identity-verification` | `NOT_STARTED` `PENDING` `APPROVED` `REJECTED` `EXPIRED` |
 | [`IngestStatus`](../data/rag.md#ingeststatus) | `rag` | `QUEUED` `EXTRACTING` `CHUNKING` `EMBEDDING` `READY` `FAILED` |
 | [`InstalmentPlanStatus`](../data/instalments.md#instalmentplanstatus) | `instalments` | `ACTIVE` `COMPLETED` `DEFAULTED` `CANCELLED` |

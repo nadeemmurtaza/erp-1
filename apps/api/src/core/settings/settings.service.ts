@@ -81,4 +81,9 @@ export class SettingsService implements OnModuleInit {
   async getUseOptionModelReads(): Promise<boolean> {
     return this.get<boolean>(SettingKey.CatalogUseOptionModelReads);
   }
+
+  /** access-control-identity/21-access-over-the-org-tree.md — see the setting's own doc comment for why this lives here rather than on BrandPolicy. */
+  async getOrgAccessMaxGrantDays(): Promise<number> {
+    return this.get<number>(SettingKey.OrgAccessMaxGrantDays);
+  }
 }

@@ -76,7 +76,7 @@ All 79 tracked files in `packages/*`, by directory.
 | `markdown-suggestion.ts` | module | 85 | WO-9.8 (09-ai-layer.md) — "recommend the discount that clears [ageing stock] at the least margin loss, showing the trad… |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
 | `permissions.spec.ts` | unit test | 68 |  |
-| `permissions.ts` | module | 964 | The permission catalog for PBAC (Permission-Based Access Control). |
+| `permissions.ts` | module | 1009 | The permission catalog for PBAC (Permission-Based Access Control). |
 | `phone.spec.ts` | unit test | 65 |  |
 | `phone.ts` | module | 82 |  |
 | `pricing.spec.ts` | unit test | 307 |  |

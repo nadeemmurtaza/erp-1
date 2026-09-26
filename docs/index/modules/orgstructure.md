@@ -3,26 +3,31 @@
 
 # Module: `orgstructure`
 
-Pack **core** · enabled by the `MODULES` allowlist · 5 files
+Pack **core** · enabled by the `MODULES` allowlist · 10 files
 
 
 
 Source: `apps/api/src/modules/orgstructure/`
 
-## Files (5 · 620 lines)
+## Files (10 · 1,317 lines)
 
 All paths relative to `apps/api/src/modules/orgstructure/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `org-unit-grant.dto.ts` | dto | 29 | 1 |  |
 | `org-unit.dto.ts` | dto | 45 | 3 |  |
+| `org-access.cron.ts` | scheduled job | 25 | 1 | access-control-identity/21-access-over-the-org-tree.md — "expired rows are swept nightly" (the doc's own "hundred-thous… |
+| `org-unit-grant.controller.ts` | controller | 52 | 1 | access-control-identity/21-access-over-the-org-tree.md WO-21.6 — "one access screen per unit: who reaches this unit, by… |
+| `org-unit-grant.service.spec.ts` | unit test | 249 | — |  |
+| `org-unit-grant.service.ts` | service | 339 | 7 |  |
 | `org-unit.controller.ts` | controller | 79 | 1 | hr-people-org/19-org-structure-offices-departments.md — reads sit behind `org.structure.view`; every write additionally… |
 | `org-unit.service.spec.ts` | unit test | 185 | — |  |
 | `org-unit.service.ts` | service | 300 | 3 |  |
-| `orgstructure.module.ts` | nest module | 11 | 1 |  |
+| `orgstructure.module.ts` | nest module | 14 | 1 |  |
 
 
-## HTTP routes (9)
+## HTTP routes (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -33,6 +38,10 @@ All paths relative to `apps/api/src/modules/orgstructure/dto`.
 | POST | `/admin/org-structure/:id/move/preview` | `org.structure.manage` | `OrgUnitController.previewMove` :61 | What a move would touch, without writing anything |
 | PATCH | `/admin/org-structure/:id/rename` | `org.structure.manage` | `OrgUnitController.rename` :54 | Rename a unit |
 | GET | `/admin/org-structure/:id/subtree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.subtree` :40 | One unit and everything under it |
+| GET | `/admin/org-structure/:unitId/access` | `org.access.view` `org.access.grant` | `GrantController.accessOverUnit` :23 | Who reaches this unit, by posting or by grant |
+| POST | `/admin/org-structure/:unitId/access` | `org.access.grant` | `GrantController.issue` :41 | Issue a time-boxed access grant over this unit |
+| POST | `/admin/org-structure/:unitId/access/:grantId/revoke` | `org.access.grant` | `GrantController.revoke` :48 | Revoke an active grant |
+| POST | `/admin/org-structure/:unitId/access/preview` | `org.access.grant` | `GrantController.previewIssue` :30 | Which refusals a grant would hit, without writing anything |
 | GET | `/admin/org-structure/tree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.tree` :28 | The whole org tree |
 | GET | `/admin/org-structure/types` | `org.structure.view` `org.structure.manage` | `OrgUnitController.listTypes` :22 | Every configured unit type |
 
@@ -51,15 +60,20 @@ _none_
 
 
 
+## Scheduled work
+
+| Schedule | Handler | Where | What it does |
+|---|---|---|---|
+| `0 4 * * *` | `sweep()` | `org-access.cron.ts:17` |  |
 
 
 ## Nest wiring
 
 **`OrgStructureModule`** (`orgstructure.module.ts`)
 - imports: —
-- controllers: `OrgUnitController`
-- providers: `OrgUnitService`
-- exports: `OrgUnitService`
+- controllers: `OrgUnitController`, `GrantController`
+- providers: `OrgUnitService`, `GrantService`, `OrgAccessCron`
+- exports: `OrgUnitService`, `GrantService`
 
 
 ## Reaches out to
@@ -67,16 +81,19 @@ _none_
 - core `audit`
 - core `auth`
 - core `prisma`
+- core `settings`
+- package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
 either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (2)
 
 | Spec | Cases | Covers |
 |---|---|---|
+| `org-unit-grant.service.spec.ts` | 18 | GrantService · reachOf · previewIssue / issue — the five refusals · ACTING mode · revoke · sweepExpired · accessOverUnit |
 | `org-unit.service.spec.ts` | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
 
 
@@ -84,14 +101,24 @@ check there before adding another.
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `IssueOrgUnitGrantDto` | class | `org-unit-grant.dto.ts:5` |  |
 | `CreateOrgUnitDto` | class | `org-unit.dto.ts:4` |  |
 | `RenameOrgUnitDto` | class | `org-unit.dto.ts:33` |  |
 | `MoveOrgUnitDto` | class | `org-unit.dto.ts:39` |  |
+| `OrgAccessCron` | class | `org-access.cron.ts:12` | access-control-identity/21-access-over-the-org-tree.md — "expired rows are swept nightly" (the doc's own "hun… |
+| `GrantController` | class | `org-unit-grant.controller.ts:18` | access-control-identity/21-access-over-the-org-tree.md WO-21.6 — "one access screen per unit: who reaches thi… |
+| `OrgUnitGrantView` | interface | `org-unit-grant.service.ts:10` |  |
+| `GrantRefusalCode` | type | `org-unit-grant.service.ts:24` |  |
+| `GrantRefusal` | interface | `org-unit-grant.service.ts:31` |  |
+| `IssueGrantInput` | interface | `org-unit-grant.service.ts:36` |  |
+| `PreviewIssueResult` | interface | `org-unit-grant.service.ts:46` |  |
+| `AccessOverUnit` | interface | `org-unit-grant.service.ts:50` |  |
+| `GrantService` | class | `org-unit-grant.service.ts:91` | access-control-identity/21-access-over-the-org-tree.md — explicit, time-boxed access grants over an `OrgUnit`… |
 | `OrgUnitController` | class | `org-unit.controller.ts:17` | hr-people-org/19-org-structure-offices-departments.md — reads sit behind `org.structure.view`; every write ad… |
 | `OrgUnitView` | interface | `org-unit.service.ts:6` |  |
 | `MovePreview` | interface | `org-unit.service.ts:22` |  |
 | `OrgUnitService` | class | `org-unit.service.ts:56` | The org tree (hr-people-org/19-org-structure-offices-departments.md, DECISIONS.md ADR-044). |
-| `OrgStructureModule` | class | `orgstructure.module.ts:10` |  |
+| `OrgStructureModule` | class | `orgstructure.module.ts:13` |  |
 
 
 ---

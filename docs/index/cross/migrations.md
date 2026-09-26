@@ -3,7 +3,7 @@
 
 # Migrations
 
-**90** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**91** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -123,6 +123,7 @@ nothing here fails a build.
 | 2026-09-26 | `add_rag_document_retrieval` | 17 | CREATE TYPE, ALTER TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | DocumentChunk, DocumentSource |
 | 2026-09-26 | `add_org_structure` | 12 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | OrgUnit, OrgUnitType |
 | 2026-09-26 | `add_positions_ranks` | 22 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | EmployeeProfile, Position, Posting, Rank |
+| 2026-09-26 | `add_org_unit_grant` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | OrgUnitGrant |
 
 
 ---

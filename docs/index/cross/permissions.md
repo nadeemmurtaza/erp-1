@@ -3,7 +3,7 @@
 
 # Permissions
 
-All **91** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
+All **93** permissions in `PERMISSION_CATALOG`, mapped to the routes that enforce them, the UI that checks them, and the seed that grants them.
 
 
 Catalogue: `packages/shared/src/permissions.ts` ·
@@ -23,7 +23,7 @@ the *catalogue*, not any particular deployment's grants.
 | `UI call sites` = — | nothing in the admin UI gates on it; if a screen needs it, the screen is missing |
 
 - Permissions enforcing **no route**: **2** — `stitching.jobs.manage_own`, `stitching.jobs.manage_all`
-- Permissions **no seeded role grants**: **0**
+- Permissions **no seeded role grants**: **30** — `organization.manage`, `accounting.view`, `pos.manage`, `pos.instalments.cancel`, `pos.instalments.default`, `inventory.view_cost`, `purchasing.requisitions.approve`, `inventory.spot_checks.manage`, `settings.manage`, `settings.sso.manage`, `tax.manage`, `finance.manage`, `finance.wallets.adjust.approve`, `finance.merchant-payables.dispute`, `finance.credit-notes.approve`, `finance.credit-terms.manage`, `finance.assets.depreciate`, `finance.assets.dispose`, `finance.settlement.view`, `finance.settlement.reconcile`, `finance.settlement.approve_writeoff`, `bom.manage`, `marketing.manage`, `roles.manage_permissions`, `audit.view`, `users.manage`, `accounting.manage_periods`, `giftcards.manage`, `campaigns.manage`, `loyalty.manage`
 - Keys required by a route but **not in the catalogue**: **0**
 
 ## The catalogue
@@ -32,64 +32,64 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `analytics.view` | View dashboard analytics | low | 27 | 11 | STAFF, ADMIN |
-| `reports.view` | Export CSV reports | low | 11 | 2 | STAFF, ADMIN |
-| `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
-| `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
-| `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | 2 | ADMIN |
+| `analytics.view` | View dashboard analytics | low | 27 | 11 | STAFF |
+| `reports.view` | Export CSV reports | low | 11 | 2 | STAFF |
+| `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF |
+| `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | **none — no live user holds it** |
+| `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | 2 | **none — no live user holds it** |
 
 ### Customers
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `crm.manage` | Manage leads, contacts and CRM | low | 31 | 15 | STAFF, ADMIN |
+| `crm.manage` | Manage leads, contacts and CRM | low | 31 | 15 | STAFF |
 
 ### Sales
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `orders.manage` | Manage orders and shipments | medium | 12 | 2 | STAFF, ADMIN |
-| `pos.manage` | Register till terminals and issue their device credentials | high | 6 | — | ADMIN |
-| `pos.operate` | Open and close till shifts, and record cash movements | medium | 11 | 2 | STAFF, ADMIN |
-| `pos.instalments.cancel` | Cancel a layby/instalment plan — may forfeit or refund its deposit, per policy | high | 1 | 1 | ADMIN |
-| `pos.instalments.default` | Mark a layby/instalment plan defaulted — writes off the unpaid balance | high | 1 | 1 | ADMIN |
-| `payments.approve` | Approve bank-transfer payments | high | 3 | 2 | STAFF, ADMIN |
+| `orders.manage` | Manage orders and shipments | medium | 12 | 2 | STAFF |
+| `pos.manage` | Register till terminals and issue their device credentials | high | 6 | — | **none — no live user holds it** |
+| `pos.operate` | Open and close till shifts, and record cash movements | medium | 11 | 2 | STAFF |
+| `pos.instalments.cancel` | Cancel a layby/instalment plan — may forfeit or refund its deposit, per policy | high | 1 | 1 | **none — no live user holds it** |
+| `pos.instalments.default` | Mark a layby/instalment plan defaulted — writes off the unpaid balance | high | 1 | 1 | **none — no live user holds it** |
+| `payments.approve` | Approve bank-transfer payments | high | 3 | 2 | STAFF |
 
 ### Production
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 8 | TAILOR, STAFF, ADMIN |
-| `stitching.jobs.change_stage` | Move a job to its next stage | low | 1 | — | TAILOR, STAFF, ADMIN |
+| `stitching.jobs.view_queue` | View the tailor job queue | low | 3 | 8 | TAILOR, STAFF |
+| `stitching.jobs.change_stage` | Move a job to its next stage | low | 1 | — | TAILOR, STAFF |
 | `stitching.jobs.manage_own` | Change stage on own assigned jobs only | low | **0 — enforces nothing** | — | TAILOR |
-| `stitching.jobs.manage_all` | Change stage on any job, regardless of assignment | medium | **0 — enforces nothing** | — | STAFF, ADMIN |
-| `stitching.jobs.assign` | Assign jobs to a tailor | low | 1 | 2 | STAFF, ADMIN |
-| `stitching.bookings.manage` | Manage customer's-own-fabric stitching bookings | low | 5 | 1 | STAFF, ADMIN |
-| `stitching.designs.manage` | Manage the stitching style/design catalogue | low | 7 | 1 | STAFF, ADMIN |
-| `production.manage` | Manage bills of materials and work orders | medium | 9 | — | STAFF, ADMIN |
-| `production.view_chain` | View a SKU's full supply-chain status (stock, POs, work orders, pending orders) | low | 1 | 1 | STAFF, ADMIN |
+| `stitching.jobs.manage_all` | Change stage on any job, regardless of assignment | medium | **0 — enforces nothing** | — | STAFF |
+| `stitching.jobs.assign` | Assign jobs to a tailor | low | 1 | 2 | STAFF |
+| `stitching.bookings.manage` | Manage customer's-own-fabric stitching bookings | low | 5 | 1 | STAFF |
+| `stitching.designs.manage` | Manage the stitching style/design catalogue | low | 7 | 1 | STAFF |
+| `production.manage` | Manage bills of materials and work orders | medium | 9 | — | STAFF |
+| `production.view_chain` | View a SKU's full supply-chain status (stock, POs, work orders, pending orders) | low | 1 | 1 | STAFF |
 
 ### Catalogue
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `catalog.manage` | Manage products, categories and import | medium | 42 | 17 | STAFF, ADMIN |
-| `inventory.manage` | Adjust and view stock levels | medium | 12 | 12 | STAFF, ADMIN |
-| `inventory.view_cost` | See cost prices and margins | medium | 2 | 15 | ADMIN |
-| `inventory.count` | Run stock counts | low | 12 | 4 | STAFF, ADMIN |
-| `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | 2 | STAFF, ADMIN |
-| `measurements.manage_blueprints` | Manage garment types, measurement fields and size charts | low | 5 | 1 | STAFF, ADMIN |
-| `inventory.spot_checks.manage` | Configure unpredictable spot-check policies | medium | 3 | 1 | ADMIN |
+| `catalog.manage` | Manage products, categories and import | medium | 42 | 17 | STAFF |
+| `inventory.manage` | Adjust and view stock levels | medium | 12 | 12 | STAFF |
+| `inventory.view_cost` | See cost prices and margins | medium | 2 | 15 | **none — no live user holds it** |
+| `inventory.count` | Run stock counts | low | 12 | 4 | STAFF |
+| `transfers.manage` | Dispatch, receive and cancel inter-branch stock transfers | medium | 5 | 2 | STAFF |
+| `measurements.manage_blueprints` | Manage garment types, measurement fields and size charts | low | 5 | 1 | STAFF |
+| `inventory.spot_checks.manage` | Configure unpredictable spot-check policies | medium | 3 | 1 | **none — no live user holds it** |
 
 ### Purchasing
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `suppliers.manage` | Manage suppliers | medium | 8 | 2 | STAFF, ADMIN |
-| `purchasing.manage` | Create and receive purchase orders | medium | 18 | 10 | STAFF, ADMIN |
-| `purchasing.requisitions.create` | Request a purchase (not necessarily raise the PO) | low | 3 | 1 | STAFF, ADMIN |
-| `purchasing.requisitions.approve` | Approve or reject purchase requisitions | medium | 3 | 1 | ADMIN |
-| `parties.manage` | Manage the shared counterparty (supplier/retailer/distributor/manufacturer) pro… | medium | 3 | — | STAFF, ADMIN |
+| `suppliers.manage` | Manage suppliers | medium | 8 | 2 | STAFF |
+| `purchasing.manage` | Create and receive purchase orders | medium | 18 | 10 | STAFF |
+| `purchasing.requisitions.create` | Request a purchase (not necessarily raise the PO) | low | 3 | 1 | STAFF |
+| `purchasing.requisitions.approve` | Approve or reject purchase requisitions | medium | 3 | 1 | **none — no live user holds it** |
+| `parties.manage` | Manage the shared counterparty (supplier/retailer/distributor/manufacturer) pro… | medium | 3 | — | STAFF |
 
 ### Account
 
@@ -101,52 +101,52 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `settings.manage` | Access the Settings screen | critical | 18 | 4 | ADMIN |
-| `settings.sso.manage` | Register, edit and suspend single sign-on connections | critical | 8 | 3 | ADMIN |
-| `tax.manage` | Manage tax classes, rates and the pricing mode | medium | 8 | 1 | ADMIN |
-| `marketing.manage` | Turn on automated marketing email and set its timing | low | 3 | 1 | ADMIN |
-| `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | ADMIN |
-| `audit.view` | View the audit log | medium | 1 | — | ADMIN |
-| `users.manage` | Create and manage back-office user accounts | high | 10 | 4 | ADMIN |
-| `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | 1 | ADMIN |
-| `ai.view` | View AI usage, cost and the review queue for AI-generated drafts | low | 2 | 2 | STAFF, ADMIN |
-| `ai.manage` | Configure AI providers and the monthly budget, and approve or reject AI-generat… | medium | 8 | 3 | STAFF, ADMIN |
-| `rag.ingest.manage` | Upload documents into a RAG corpus, and retry or remove one from the ingestion… | medium | 9 | 3 | STAFF, ADMIN |
-| `rag.query` | Run a retrieval or generated-answer query directly against a document corpus | medium | 3 | 2 | STAFF, ADMIN |
+| `settings.manage` | Access the Settings screen | critical | 18 | 4 | **none — no live user holds it** |
+| `settings.sso.manage` | Register, edit and suspend single sign-on connections | critical | 8 | 3 | **none — no live user holds it** |
+| `tax.manage` | Manage tax classes, rates and the pricing mode | medium | 8 | 1 | **none — no live user holds it** |
+| `marketing.manage` | Turn on automated marketing email and set its timing | low | 3 | 1 | **none — no live user holds it** |
+| `roles.manage_permissions` | Edit each role's granted permissions | critical | 4 | — | **none — no live user holds it** |
+| `audit.view` | View the audit log | medium | 1 | — | **none — no live user holds it** |
+| `users.manage` | Create and manage back-office user accounts | high | 10 | 4 | **none — no live user holds it** |
+| `accounting.manage_periods` | Open, close and lock fiscal periods — locking is irreversible | medium | 6 | 1 | **none — no live user holds it** |
+| `ai.view` | View AI usage, cost and the review queue for AI-generated drafts | low | 2 | 2 | STAFF |
+| `ai.manage` | Configure AI providers and the monthly budget, and approve or reject AI-generat… | medium | 8 | 3 | STAFF |
+| `rag.ingest.manage` | Upload documents into a RAG corpus, and retry or remove one from the ingestion… | medium | 9 | 3 | STAFF |
+| `rag.query` | Run a retrieval or generated-answer query directly against a document corpus | medium | 3 | 2 | STAFF |
 
 ### Finance
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `finance.view` | View expenses and finance reports | medium | 25 | 23 | STAFF, ADMIN |
-| `finance.manage` | Record and edit expenses | medium | 11 | 1 | ADMIN |
-| `finance.wallets.adjust` | Issue a manual wallet balance correction, below the auto-approval threshold | medium | 3 | — | STAFF, ADMIN |
-| `finance.wallets.adjust.approve` | Approve a wallet adjustment at or above the auto-approval threshold — never the… | high | 2 | — | ADMIN |
-| `finance.merchant-payables.dispute` | Mark a merchant payable disputed (pulls it from the next payout run) or resolve… | high | 2 | — | ADMIN |
-| `finance.credit-notes.create` | Issue a credit note, and apply it to an invoice | medium | 3 | — | STAFF, ADMIN |
-| `finance.credit-notes.approve` | Approve a credit note above the approval threshold, and void one | high | 2 | — | ADMIN |
-| `finance.debit-notes.manage` | Issue and void debit notes against a supplier | medium | 3 | — | STAFF, ADMIN |
-| `finance.credit-terms.manage` | Set a customer's credit limit and payment terms, apply a credit hold, and edit… | high | 2 | — | ADMIN |
-| `finance.assets.depreciate` | Put a company asset on a depreciation schedule — a real accounting-policy decis… | medium | 2 | 1 | ADMIN |
-| `finance.assets.dispose` | Dispose an asset — posts a real loss/gain to the ledger | high | 1 | 1 | ADMIN |
-| `finance.settlement.view` | View settlement batches — what a bank or gateway actually paid out, reconciled… | medium | 3 | 1 | ADMIN |
-| `finance.settlement.reconcile` | Register expected settlement batches, reconcile them, and request writing off a… | medium | 7 | 3 | ADMIN |
-| `finance.settlement.approve_writeoff` | Approve writing off a settlement shortfall above the configured threshold | high | 1 | 2 | ADMIN |
+| `finance.view` | View expenses and finance reports | medium | 25 | 23 | STAFF |
+| `finance.manage` | Record and edit expenses | medium | 11 | 1 | **none — no live user holds it** |
+| `finance.wallets.adjust` | Issue a manual wallet balance correction, below the auto-approval threshold | medium | 3 | — | STAFF |
+| `finance.wallets.adjust.approve` | Approve a wallet adjustment at or above the auto-approval threshold — never the… | high | 2 | — | **none — no live user holds it** |
+| `finance.merchant-payables.dispute` | Mark a merchant payable disputed (pulls it from the next payout run) or resolve… | high | 2 | — | **none — no live user holds it** |
+| `finance.credit-notes.create` | Issue a credit note, and apply it to an invoice | medium | 3 | — | STAFF |
+| `finance.credit-notes.approve` | Approve a credit note above the approval threshold, and void one | high | 2 | — | **none — no live user holds it** |
+| `finance.debit-notes.manage` | Issue and void debit notes against a supplier | medium | 3 | — | STAFF |
+| `finance.credit-terms.manage` | Set a customer's credit limit and payment terms, apply a credit hold, and edit… | high | 2 | — | **none — no live user holds it** |
+| `finance.assets.depreciate` | Put a company asset on a depreciation schedule — a real accounting-policy decis… | medium | 2 | 1 | **none — no live user holds it** |
+| `finance.assets.dispose` | Dispose an asset — posts a real loss/gain to the ledger | high | 1 | 1 | **none — no live user holds it** |
+| `finance.settlement.view` | View settlement batches — what a bank or gateway actually paid out, reconciled… | medium | 3 | 1 | **none — no live user holds it** |
+| `finance.settlement.reconcile` | Register expected settlement batches, reconcile them, and request writing off a… | medium | 7 | 3 | **none — no live user holds it** |
+| `finance.settlement.approve_writeoff` | Approve writing off a settlement shortfall above the configured threshold | high | 1 | 2 | **none — no live user holds it** |
 
 ### Fulfilment
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `fulfilment.view` | View shipments, manifests, RTO and returns | low | 12 | 5 | STAFF, ADMIN |
-| `fulfilment.manage` | Book, track and manifest shipments; decide returns | medium | 33 | 6 | STAFF, ADMIN |
+| `fulfilment.view` | View shipments, manifests, RTO and returns | low | 12 | 5 | STAFF |
+| `fulfilment.manage` | Book, track and manifest shipments; decide returns | medium | 33 | 6 | STAFF |
 
 ### Manufacturing
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `bom.view` | View bills of materials and raw stock | low | 10 | 10 | STAFF, ADMIN |
-| `bom.manage` | Create and edit raw materials and recipes | medium | 9 | 4 | ADMIN |
-| `bom.produce` | Record a production run | low | 1 | 1 | STAFF, ADMIN |
+| `bom.view` | View bills of materials and raw stock | low | 10 | 10 | STAFF |
+| `bom.manage` | Create and edit raw materials and recipes | medium | 9 | 4 | **none — no live user holds it** |
+| `bom.produce` | Record a production run | low | 1 | 1 | STAFF |
 
 ### Payroll
 
@@ -171,28 +171,30 @@ the *catalogue*, not any particular deployment's grants.
 |---|---|---|---|---|---|
 | `org.structure.view` | View the organization tree — offices, regions and departments | low | 4 | 1 | ADMIN |
 | `org.structure.manage` | Create, rename, move and close units in the organization tree | high | 9 | 2 | ADMIN |
+| `org.access.view` | See who reaches an organization unit, by posting or by grant | medium | 1 | 1 | ADMIN |
+| `org.access.grant` | Issue or revoke a time-boxed access grant over an organization unit | high | 4 | 2 | ADMIN |
 
 ### Marketing
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `promotions.view` | View discounts, promo codes and their usage | low | 3 | 2 | STAFF, ADMIN |
-| `promotions.manage` | Create and edit discounts and promo codes | medium | 8 | — | STAFF, ADMIN |
-| `giftcards.view` | View gift cards, their ledgers and store credit balances | medium | 3 | 2 | STAFF, ADMIN |
-| `giftcards.manage` | Issue, cancel and adjust gift cards and store credit — real money | high | 3 | — | ADMIN |
-| `content.view` | View pages, blog posts, banners and menus | low | 6 | 1 | STAFF, ADMIN |
-| `content.manage` | Publish pages and posts, and edit banners and menus | medium | 18 | 1 | STAFF, ADMIN |
-| `collections.view` | View collections and their membership | low | 2 | 1 | STAFF, ADMIN |
-| `collections.manage` | Create and curate collections | medium | 8 | 1 | STAFF, ADMIN |
-| `search.view` | View the zero-result search report | low | 2 | 1 | STAFF, ADMIN |
-| `search.manage` | Edit search synonyms | low | 4 | 1 | STAFF, ADMIN |
-| `campaigns.view` | View campaigns and their send/open/click stats | low | 2 | 1 | STAFF, ADMIN |
-| `campaigns.manage` | Create, schedule and send campaigns to a customer segment | high | 6 | 1 | ADMIN |
-| `onsitemessages.view` | View on-site announcement bars, popups and newsletter capture | low | 4 | 1 | STAFF, ADMIN |
-| `onsitemessages.manage` | Create and schedule on-site announcement bars, popups and newsletter capture | low | 8 | 1 | STAFF, ADMIN |
-| `reviews.moderate` | Approve, reject and reply to customer product reviews | medium | 2 | 1 | STAFF, ADMIN |
-| `loyalty.view` | View loyalty point balances, tiers and referrals | low | 1 | 1 | STAFF, ADMIN |
-| `loyalty.manage` | Adjust a customer's loyalty points and configure tiers — real money once redeem… | high | 3 | — | ADMIN |
+| `promotions.view` | View discounts, promo codes and their usage | low | 3 | 2 | STAFF |
+| `promotions.manage` | Create and edit discounts and promo codes | medium | 8 | — | STAFF |
+| `giftcards.view` | View gift cards, their ledgers and store credit balances | medium | 3 | 2 | STAFF |
+| `giftcards.manage` | Issue, cancel and adjust gift cards and store credit — real money | high | 3 | — | **none — no live user holds it** |
+| `content.view` | View pages, blog posts, banners and menus | low | 6 | 1 | STAFF |
+| `content.manage` | Publish pages and posts, and edit banners and menus | medium | 18 | 1 | STAFF |
+| `collections.view` | View collections and their membership | low | 2 | 1 | STAFF |
+| `collections.manage` | Create and curate collections | medium | 8 | 1 | STAFF |
+| `search.view` | View the zero-result search report | low | 2 | 1 | STAFF |
+| `search.manage` | Edit search synonyms | low | 4 | 1 | STAFF |
+| `campaigns.view` | View campaigns and their send/open/click stats | low | 2 | 1 | STAFF |
+| `campaigns.manage` | Create, schedule and send campaigns to a customer segment | high | 6 | 1 | **none — no live user holds it** |
+| `onsitemessages.view` | View on-site announcement bars, popups and newsletter capture | low | 4 | 1 | STAFF |
+| `onsitemessages.manage` | Create and schedule on-site announcement bars, popups and newsletter capture | low | 8 | 1 | STAFF |
+| `reviews.moderate` | Approve, reject and reply to customer product reviews | medium | 2 | 1 | STAFF |
+| `loyalty.view` | View loyalty point balances, tiers and referrals | low | 1 | 1 | STAFF |
+| `loyalty.manage` | Adjust a customer's loyalty points and configure tiers — real money once redeem… | high | 3 | — | **none — no live user holds it** |
 
 
 ## Role → permission, as seeded
@@ -208,7 +210,7 @@ their own `UserPermission` GRANT/REVOKE overrides applied on top
 | `CUSTOMER` | 1 | `account.change_own_password` |
 | `TAILOR` | 5 | `account.change_own_password` `payroll.view_own` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_own` |
 | `STAFF` | 52 | `account.change_own_password` `payroll.view_own` `analytics.view` `reports.view` `organization.view` `crm.manage` `orders.manage` `payments.approve` `pos.operate` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.wallets.adjust` `finance.credit-notes.create` `finance.debit-notes.manage` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.produce` `promotions.view` `promotions.manage` `giftcards.view` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `ai.view` `ai.manage` `rag.ingest.manage` `rag.query` |
-| `ADMIN` | 90 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `hr.assets.manage` `hr.assets.writeoff` `hr.people.view` `hr.people.manage` `org.structure.view` `org.structure.manage` `analytics.view` `reports.view` `organization.view` `organization.manage` `accounting.view` `crm.manage` `orders.manage` `payments.approve` `stitching.jobs.view_queue` `stitching.jobs.change_stage` `stitching.jobs.manage_all` `stitching.jobs.assign` `stitching.bookings.manage` `stitching.designs.manage` `catalog.manage` `inventory.manage` `inventory.view_cost` `inventory.count` `transfers.manage` `measurements.manage_blueprints` `suppliers.manage` `purchasing.manage` `purchasing.requisitions.create` `purchasing.requisitions.approve` `inventory.spot_checks.manage` `production.manage` `production.view_chain` `parties.manage` `finance.view` `finance.manage` `finance.wallets.adjust` `finance.wallets.adjust.approve` `finance.merchant-payables.dispute` `finance.credit-notes.create` `finance.credit-notes.approve` `finance.debit-notes.manage` `finance.credit-terms.manage` `finance.assets.depreciate` `finance.assets.dispose` `finance.settlement.view` `finance.settlement.reconcile` `finance.settlement.approve_writeoff` `fulfilment.view` `fulfilment.manage` `bom.view` `bom.manage` `bom.produce` `settings.manage` `settings.sso.manage` `roles.manage_permissions` `audit.view` `users.manage` `tax.manage` `marketing.manage` `accounting.manage_periods` `pos.manage` `pos.operate` `pos.instalments.cancel` `pos.instalments.default` `promotions.view` `promotions.manage` `giftcards.view` `giftcards.manage` `content.view` `content.manage` `collections.view` `collections.manage` `search.view` `search.manage` `campaigns.view` `campaigns.manage` `onsitemessages.view` `onsitemessages.manage` `reviews.moderate` `loyalty.view` `loyalty.manage` `ai.view` `ai.manage` `rag.ingest.manage` `rag.query` |
+| `ADMIN` | 97 | `account.change_own_password` `payroll.view_own` `payroll.view` `payroll.manage` `hr.assets.manage` `hr.assets.writeoff` `hr.people.view` `hr.people.manage` `org.structure.view` `org.structure.manage` `org.access.view` `org.access.grant` `org.structure.manage` `hr.people.manage` `org.access.grant` `Access Reviewer` `s own     // ` ` silhouette.     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` `,     ` |
 
 
 ## Admin nav → permission

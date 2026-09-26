@@ -129,6 +129,13 @@ model User {
   /// gate on whether a posting is possible.
   employeeProfile           EmployeeProfile?
   postings                  Posting[]
+  /// org-structure.prisma (access-control-identity/21-access-over-the-org-tree.md)
+  /// — one User can hold a grant, issue one, and countersign a third at
+  /// once; three relation names for three distinct roles on the same model,
+  /// same idiom as the payroll and asset-assignment blocks above.
+  orgUnitGrantsHeld         OrgUnitGrant[]           @relation("OrgUnitGrantHolder")
+  orgUnitGrantsIssued       OrgUnitGrant[]           @relation("OrgUnitGrantGranter")
+  orgUnitGrantsCountersigned OrgUnitGrant[]          @relation("OrgUnitGrantCountersigner")
   /// accounting.prisma (finance-accounting/147-fixed-asset-depreciation.md)
   /// — who set up a depreciation schedule, a real accounting-policy decision.
   assetDepreciationSchedulesCreated AssetDepreciationSchedule[]

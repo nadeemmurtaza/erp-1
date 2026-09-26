@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **702** endpoints across **126** controllers, with the access rule that actually guards each one.
+All **706** endpoints across **127** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -694,7 +694,7 @@ never authorization.
 | PATCH | `/organization/policy/inter-brand-transfers` | `organization.manage` | `OrganizationController.setInterBrandTransfersPolicy` | Turn inter-brand transfers on or off for this organization (RETAIL-ERP.md R9, W… |
 | POST | `/organization/replication/resync` | `organization.manage` | `OrganizationController.resyncFromParent` |  |
 
-### [`orgstructure`](../modules/orgstructure.md) (9)
+### [`orgstructure`](../modules/orgstructure.md) (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -705,6 +705,10 @@ never authorization.
 | POST | `/admin/org-structure/:id/move/preview` | `org.structure.manage` | `OrgUnitController.previewMove` | What a move would touch, without writing anything |
 | PATCH | `/admin/org-structure/:id/rename` | `org.structure.manage` | `OrgUnitController.rename` | Rename a unit |
 | GET | `/admin/org-structure/:id/subtree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.subtree` | One unit and everything under it |
+| GET | `/admin/org-structure/:unitId/access` | `org.access.view` `org.access.grant` | `GrantController.accessOverUnit` | Who reaches this unit, by posting or by grant |
+| POST | `/admin/org-structure/:unitId/access` | `org.access.grant` | `GrantController.issue` | Issue a time-boxed access grant over this unit |
+| POST | `/admin/org-structure/:unitId/access/:grantId/revoke` | `org.access.grant` | `GrantController.revoke` | Revoke an active grant |
+| POST | `/admin/org-structure/:unitId/access/preview` | `org.access.grant` | `GrantController.previewIssue` | Which refusals a grant would hit, without writing anything |
 | GET | `/admin/org-structure/tree` | `org.structure.view` `org.structure.manage` | `OrgUnitController.tree` | The whole org tree |
 | GET | `/admin/org-structure/types` | `org.structure.view` `org.structure.manage` | `OrgUnitController.listTypes` | Every configured unit type |
 

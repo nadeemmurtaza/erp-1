@@ -595,7 +595,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `OrgStructurePage` | default | :31 | hr-people-org/19-org-structure-offices-departments.md WO-19.4 — one tree screen: the whole org char… |
+| `page.tsx` | `OrgStructurePage` | default | :33 | hr-people-org/19-org-structure-offices-departments.md WO-19.4 — one tree screen: the whole org char… |
+
+### `apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `OrgUnitAccessPage` | default | :50 | access-control-identity/21-access-over-the-org-tree.md WO-21.6 — "one access screen per unit: who r… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payments`
 

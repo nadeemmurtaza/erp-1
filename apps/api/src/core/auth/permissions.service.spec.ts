@@ -9,6 +9,7 @@ describe('PermissionsResolverService.resolveForUser', () => {
   beforeEach(async () => {
     prisma = {
       userRoleAssignment: { findMany: jest.fn().mockResolvedValue([]) },
+      orgUnitGrant: { findMany: jest.fn().mockResolvedValue([]) },
       userPermission: { findMany: jest.fn().mockResolvedValue([]) },
     };
 
@@ -80,5 +81,48 @@ describe('PermissionsResolverService.resolveForUser', () => {
     const result = await service.resolveForUser('u1');
 
     expect(result.permissions.sort()).toEqual(['x', 'z']);
+  });
+
+  // access-control-identity/21-access-over-the-org-tree.md — a currently-
+  // valid OrgUnitGrant can hand a key no held role gives, and only the
+  // query's own `revokedAt`/`expiresAt` predicate decides "currently valid"
+  // (the resolver trusts the predicate, not a client-supplied filter).
+  describe('explicit OrgUnitGrant keys (doc 21)', () => {
+    it('a valid grant adds a key no held role has', async () => {
+      prisma.userRoleAssignment.findMany.mockResolvedValue([roleAssignment('Auditor', ['analytics.view'])]);
+      prisma.orgUnitGrant.findMany.mockResolvedValue([{ permissionKeys: ['hr.people.view'] }]);
+
+      const result = await service.resolveForUser('u1');
+
+      expect(result.permissions.sort()).toEqual(['analytics.view', 'hr.people.view']);
+    });
+
+    it('unions keys across several valid grants', async () => {
+      prisma.orgUnitGrant.findMany.mockResolvedValue([
+        { permissionKeys: ['hr.people.view'] },
+        { permissionKeys: ['org.structure.view', 'hr.people.view'] },
+      ]);
+
+      const result = await service.resolveForUser('u1');
+
+      expect(result.permissions.sort()).toEqual(['hr.people.view', 'org.structure.view']);
+    });
+
+    it('a personal REVOKE removes a grant-derived key too — DENY wins last and unconditionally', async () => {
+      prisma.orgUnitGrant.findMany.mockResolvedValue([{ permissionKeys: ['hr.people.view'] }]);
+      prisma.userPermission.findMany.mockResolvedValue([{ effect: 'REVOKE', permission: { key: 'hr.people.view' } }]);
+
+      const result = await service.resolveForUser('u1');
+
+      expect(result.permissions).toEqual([]);
+    });
+
+    it('only reads grants for the requested user — the query itself is the isolation, proven by the call args', async () => {
+      await service.resolveForUser('u1');
+
+      expect(prisma.orgUnitGrant.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: expect.objectContaining({ userId: 'u1', revokedAt: null }) }),
+      );
+    });
   });
 });

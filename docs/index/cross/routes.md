@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **675** endpoints across **124** controllers, with the access rule that actually guards each one.
+All **683** endpoints across **124** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -139,7 +139,7 @@ never authorization.
 | DELETE | `/addresses/:id` | signed-in | `AddressesController.remove` | Remove a saved address |
 | PATCH | `/addresses/:id` | signed-in | `AddressesController.update` | Edit a saved address |
 
-### [`analytics`](../modules/analytics.md) (26)
+### [`analytics`](../modules/analytics.md) (24)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -154,10 +154,8 @@ never authorization.
 | GET | `/admin/analytics/inventory/valuation` | `analytics.view` | `AnalyticsController.inventoryValuation` | What the stock on hand is worth right now, by category, kind and age |
 | PATCH | `/admin/analytics/monthly-target` | `analytics.view` | `AnalyticsController.setMonthlyTarget` | Set the monthly revenue target shown on the dashboard |
 | GET | `/admin/analytics/orders/fulfilment` | `analytics.view` | `AnalyticsController.ordersFulfilment` | Average and median time spent in each order-status transition |
-| GET | `/admin/analytics/orders/lifecycle-breakdown` | `analytics.view` | `AnalyticsController.orderLifecycleBreakdown` | Every order, right now, grouped by status into Pending/Completed/Voided |
 | GET | `/admin/analytics/orders/overview` | `analytics.view` | `AnalyticsController.ordersOverview` | Open orders right now — ageing buckets, the oldest worklist, by-city and by-pay… |
 | GET | `/admin/analytics/products/categories` | `analytics.view` | `AnalyticsController.productsCategories` | Revenue, units and product count by category, with a daily trend |
-| GET | `/admin/analytics/products/category-velocity` | `analytics.view` | `AnalyticsController.categoryVelocity` | The top categories' own revenue, broken out day by day |
 | GET | `/admin/analytics/products/slow-sellers` | `analytics.view` | `AnalyticsController.productsSlowSellers` | In-stock, active variants flagged as slow movers, oldest first |
 | GET | `/admin/analytics/products/top-sellers` | `analytics.view` | `AnalyticsController.productsTopSellers` | Best-selling products by revenue, with units and margin |
 | GET | `/admin/analytics/purchasing/spend` | `analytics.view` | `AnalyticsController.purchasingSpend` | What was ordered, received, billed and is still owed to suppliers |
@@ -357,12 +355,6 @@ never authorization.
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/meta` | **PUBLIC** | `MetaController.get` | Which optional modules and sector packs this deployment has enabled |
-
-### [`core/feed`](../core/feed.md) (1)
-
-| Method | Path | Access | Handler | Summary |
-|---|---|---|---|---|
-| GET | `/admin/feed` | `analytics.view` | `FeedController.collect` | Recent order, purchase-order and payment activity, merged and capped, newest fi… |
 
 ### [`core/health`](../core/health.md) (2)
 
@@ -815,6 +807,22 @@ never authorization.
 | GET | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.getProducts` | Get products for a supplier |
 | POST | `/admin/suppliers/:id/products` | `suppliers.manage` | `PurchasingController.addProduct` | Add a product to a supplier |
 | DELETE | `/admin/suppliers/:id/products/:variantId` | `suppliers.manage` | `PurchasingController.removeProduct` | Remove a product from a supplier |
+
+### [`rag`](../modules/rag.md) (11)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/admin/rag/ask` | `rag.query` | `RagAdminController.ask` | Retrieval + a generated, cited answer — an internal staff read, no draft-confir… |
+| POST | `/admin/rag/query` | `rag.query` | `RagAdminController.query` | Dry run: the retrieved chunks for a query, with no generation step (the doc's o… |
+| GET | `/admin/rag/sources` | `rag.ingest.manage` | `RagAdminController.listSources` | The ingestion queue: every DocumentSource and its status — constrained to corpo… |
+| POST | `/admin/rag/sources` | `rag.ingest.manage` | `RagAdminController.uploadSource` | Upload a PDF into a corpus — queued for the next ingestion pass |
+| DELETE | `/admin/rag/sources/:id` | `rag.ingest.manage` | `RagAdminController.deleteSource` | Remove a source and its chunks — never indexed again unless re-uploaded |
+| GET | `/admin/rag/sources/:id` | `rag.ingest.manage` | `RagAdminController.getSource` | One DocumentSource, with its chunk count |
+| GET | `/admin/rag/sources/:id/file` | `rag.ingest.manage` | `RagAdminController.downloadSourceFile` | Download the original stored PDF — the only authenticated path to its bytes (H2… |
+| POST | `/admin/rag/sources/:id/file` | `rag.ingest.manage` | `RagAdminController.replaceSourceFile` | Replace a source's file — corrects a bad upload without a delete-then-recreate… |
+| POST | `/admin/rag/sources/:id/ingest-now` | `rag.ingest.manage` | `RagAdminController.ingestNow` | Queue immediate, in-background ingestion for one QUEUED source, without waiting… |
+| POST | `/admin/rag/sources/:id/retry` | `rag.ingest.manage` | `RagAdminController.retry` | Re-queue a FAILED source, or one stuck in-flight past the staleness threshold |
+| GET | `/admin/rag/status` | `rag.ingest.manage` `rag.query` | `RagAdminController.status` | Whether retrieval/generation are available — the absent-AiProvider case the que… |
 
 ### [`receivables`](../modules/receivables.md) (20)
 

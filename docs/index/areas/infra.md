@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-57 files · 29,688 lines
+57 files · 29,964 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,7 +19,7 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 19,836 | file, example, json, yaml |
+| `.` | 20 | 20,112 | file, example, json, yaml |
 | `.github` | 1 | 80 | doc |
 | `.github/workflows` | 2 | 255 | yaml |
 | `deploy` | 3 | 263 | sh |
@@ -40,7 +40,7 @@ on them.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `pnpm-lock.yaml` | 18,572 | yaml |  |
+| `pnpm-lock.yaml` | 18,847 | yaml |  |
 | `scripts/build-index.mjs` | 2,511 | script |  |
 | `scripts/lib/index-scan.mjs` | 906 | utility | Scanners for the repository index. |
 | `scripts/sync-client.mjs` | 701 | script | scripts/sync-client.mjs — the Extractor. |

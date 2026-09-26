@@ -529,6 +529,23 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Administration',
     sensitivity: 'medium',
   },
+  {
+    key: 'rag.ingest.manage',
+    label: 'Upload documents into a RAG corpus, and retry or remove one from the ingestion queue',
+    category: 'Administration',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'rag.query',
+    label: 'Run a retrieval or generated-answer query directly against a document corpus',
+    category: 'Administration',
+    // Security review (WO-35 H1): a corpus can hold payroll or accounting
+    // content depending on what an operator uploaded into it, so holding
+    // this key alone can surface confidential content — the actual
+    // per-corpus restriction is `rag-corpus-access.ts`'s own map, not this
+    // sensitivity tier; this only reflects what the base grant can reach.
+    sensitivity: 'medium',
+  },
 ] as const;
 
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]['key'];
@@ -721,8 +738,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'ai',
     label: 'AI layer',
-    description: 'Which AI providers are on, the monthly budget, and the review queue every AI-generated draft passes through before it reaches a customer or a supplier.',
-    permissions: ['ai.view', 'ai.manage'],
+    description: 'Which AI providers are on, the monthly budget, the review queue every AI-generated draft passes through before it reaches a customer or a supplier, and retrieval-augmented answers over an uploaded document corpus.',
+    permissions: ['ai.view', 'ai.manage', 'rag.ingest.manage', 'rag.query'],
   },
 ] as const;
 
@@ -792,6 +809,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'loyalty.view',
     'ai.view',
     'ai.manage',
+    'rag.ingest.manage',
+    'rag.query',
   ],
   ADMIN: [
     'account.change_own_password',
@@ -878,6 +897,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'loyalty.manage',
     'ai.view',
     'ai.manage',
+    'rag.ingest.manage',
+    'rag.query',
   ],
 };
 

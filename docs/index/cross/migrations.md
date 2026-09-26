@@ -3,7 +3,7 @@
 
 # Migrations
 
-**87** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**88** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -120,6 +120,7 @@ nothing here fails a build.
 | 2026-09-25 | `add_settlements` | 11 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | SettlementBatch, SettlementBatchLine, SettlementProvider |
 | 2026-09-25 | `add_settlement_writeoff_approval` | 4 | ALTER TABLE | SettlementBatch |
 | 2026-09-25 | `add_sso_identity_federation` | 8 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE INDEX | SsoConnection, User |
+| 2026-09-26 | `add_rag_document_retrieval` | 17 | CREATE TYPE, ALTER TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | DocumentChunk, DocumentSource |
 
 
 ---

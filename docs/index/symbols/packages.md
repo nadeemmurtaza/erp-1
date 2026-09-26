@@ -158,7 +158,7 @@ Every top-level export in `packages`, with the line to open.
 | `http-client.ts` | `RequestOptions` | interface | :53 |  |
 | `http-client.ts` | `messageOf` | function | :84 | Pulls a human message out of whatever the API returned. |
 | `http-client.ts` | `request` | function | :116 | One request. |
-| `http-client.ts` | `requestWithRefresh` | function | :158 | Wraps `request` with a 401 retry. |
+| `http-client.ts` | `requestWithRefresh` | function | :159 | Wraps `request` with a 401 retry. |
 | `human-code.ts` | `generateHumanCode` | function | :30 | A cryptographically random, human-readable code — never sequential. |
 | `index.ts` | `*` | re-export |  | from `./api-keys` |
 | `index.ts` | `*` | re-export |  | from `./cod-risk` |
@@ -201,15 +201,15 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :534 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :536 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :546 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :553 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :735 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :889 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :894 |  |
-| `permissions.ts` | `PermissionEffect` | type | :895 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :898 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :551 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :553 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :563 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :570 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :752 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :910 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :915 |  |
+| `permissions.ts` | `PermissionEffect` | type | :916 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :919 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

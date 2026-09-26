@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2051,
-    "lines": 313761,
-    "routes": 675,
+    "files": 2063,
+    "lines": 316603,
+    "routes": 683,
     "controllers": 124,
-    "models": 245,
-    "enums": 114,
-    "migrations": 87,
+    "models": 247,
+    "enums": 116,
+    "migrations": 88,
     "events": 63,
-    "permissions": 85,
-    "screens": 237,
-    "crons": 20,
-    "specs": 256,
+    "permissions": 87,
+    "screens": 239,
+    "crons": 21,
+    "specs": 258,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 57,
-      "lines": 29688,
-      "bytes": 1169052,
+      "lines": 29964,
+      "bytes": 1177400,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 869,
-      "lines": 122667,
-      "bytes": 4678550,
+      "files": 879,
+      "lines": 124893,
+      "bytes": 4785408,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 380,
-      "lines": 61320,
-      "bytes": 2211780,
+      "files": 382,
+      "lines": 61713,
+      "bytes": 2226806,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 394,
-      "lines": 63912,
-      "bytes": 3798991,
+      "lines": 63837,
+      "bytes": 3794190,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 7950,
-      "bytes": 281433,
+      "lines": 7972,
+      "bytes": 282481,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -123,12 +123,10 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
-        "apps/api/src/modules/analytics/analytics.category-velocity.spec.ts",
         "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
         "apps/api/src/modules/analytics/analytics.controller.ts",
         "apps/api/src/modules/analytics/analytics.customers.spec.ts",
         "apps/api/src/modules/analytics/analytics.inventory.spec.ts",
-        "apps/api/src/modules/analytics/analytics.lifecycle.spec.ts",
         "apps/api/src/modules/analytics/analytics.metrics.spec.ts",
         "apps/api/src/modules/analytics/analytics.metrics.ts",
         "apps/api/src/modules/analytics/analytics.module.ts",
@@ -137,14 +135,13 @@
         "apps/api/src/modules/analytics/analytics.purchasing.spec.ts",
         "apps/api/src/modules/analytics/analytics.sales.spec.ts",
         "apps/api/src/modules/analytics/analytics.service.ts",
-        "apps/api/src/modules/analytics/analytics.summary.spec.ts",
         "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
         "apps/api/src/modules/analytics/dto/analytics.dto.ts",
         "apps/api/src/modules/analytics/dto/cards.dto.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.spec.ts",
         "apps/api/src/modules/analytics/supply-chain-digest.cron.ts"
       ],
-      "routes": 26,
+      "routes": 24,
       "page": "docs/index/modules/analytics.md"
     },
     {
@@ -570,8 +567,6 @@
         "apps/api/src/modules/orders/instalment-plan.service.spec.ts",
         "apps/api/src/modules/orders/instalment-plan.service.ts",
         "apps/api/src/modules/orders/notification.subscriber.ts",
-        "apps/api/src/modules/orders/order-feed.source.spec.ts",
-        "apps/api/src/modules/orders/order-feed.source.ts",
         "apps/api/src/modules/orders/order-replication.listener.spec.ts",
         "apps/api/src/modules/orders/order-replication.listener.ts",
         "apps/api/src/modules/orders/orders-pos.service.spec.ts",
@@ -628,8 +623,6 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/payments/notification.subscriber.ts",
-        "apps/api/src/modules/payments/payment-feed.source.spec.ts",
-        "apps/api/src/modules/payments/payment-feed.source.ts",
         "apps/api/src/modules/payments/payment-provider.ts",
         "apps/api/src/modules/payments/payments.controller.ts",
         "apps/api/src/modules/payments/payments.module.ts",
@@ -752,8 +745,6 @@
         "apps/api/src/modules/purchasing/dto/supplier.dto.ts",
         "apps/api/src/modules/purchasing/goods-receipt-replication.listener.spec.ts",
         "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts",
-        "apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts",
-        "apps/api/src/modules/purchasing/purchase-order-feed.source.ts",
         "apps/api/src/modules/purchasing/purchasing.controller.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.spec.ts",
         "apps/api/src/modules/purchasing/purchasing.cron.ts",
@@ -771,6 +762,37 @@
       ],
       "routes": 24,
       "page": "docs/index/modules/purchasing.md"
+    },
+    {
+      "name": "rag",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/rag/chunking.spec.ts",
+        "apps/api/src/modules/rag/chunking.ts",
+        "apps/api/src/modules/rag/dto/rag.dto.ts",
+        "apps/api/src/modules/rag/pdf-extraction.service.spec.ts",
+        "apps/api/src/modules/rag/pdf-extraction.service.ts",
+        "apps/api/src/modules/rag/pg-vector.store.spec.ts",
+        "apps/api/src/modules/rag/pg-vector.store.ts",
+        "apps/api/src/modules/rag/rag-admin.controller.spec.ts",
+        "apps/api/src/modules/rag/rag-admin.controller.ts",
+        "apps/api/src/modules/rag/rag-corpus-access.ts",
+        "apps/api/src/modules/rag/rag-corpus.service.spec.ts",
+        "apps/api/src/modules/rag/rag-corpus.service.ts",
+        "apps/api/src/modules/rag/rag-generation.service.spec.ts",
+        "apps/api/src/modules/rag/rag-generation.service.ts",
+        "apps/api/src/modules/rag/rag-ingestion.cron.ts",
+        "apps/api/src/modules/rag/rag-ingestion.service.spec.ts",
+        "apps/api/src/modules/rag/rag-ingestion.service.ts",
+        "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
+        "apps/api/src/modules/rag/rag-retrieval.service.ts",
+        "apps/api/src/modules/rag/rag.module.ts",
+        "apps/api/src/modules/rag/vector-store.ts"
+      ],
+      "routes": 11,
+      "page": "docs/index/modules/rag.md"
     },
     {
       "name": "receivables",
@@ -1203,17 +1225,6 @@
       "page": "docs/index/core/extension-points.md"
     },
     {
-      "name": "feed",
-      "files": [
-        "apps/api/src/core/feed/feed-registry.service.spec.ts",
-        "apps/api/src/core/feed/feed-registry.service.ts",
-        "apps/api/src/core/feed/feed-source.ts",
-        "apps/api/src/core/feed/feed.controller.ts",
-        "apps/api/src/core/feed/feed.module.ts"
-      ],
-      "page": "docs/index/core/feed.md"
-    },
-    {
       "name": "health",
       "files": [
         "apps/api/src/core/health/health.controller.ts",
@@ -1331,6 +1342,7 @@
     {
       "name": "storage",
       "files": [
+        "apps/api/src/core/storage/files.controller.spec.ts",
         "apps/api/src/core/storage/files.controller.ts",
         "apps/api/src/core/storage/local-storage.driver.ts",
         "apps/api/src/core/storage/s3-storage.driver.ts",
@@ -1755,7 +1767,7 @@
       "controller": "AnalyticsController",
       "handler": "comparison",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 232,
+      "line": 220,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1771,7 +1783,7 @@
       "controller": "AnalyticsController",
       "handler": "customersOverview",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 185,
+      "line": 173,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1787,7 +1799,7 @@
       "controller": "AnalyticsController",
       "handler": "customersRetention",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 194,
+      "line": 182,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1803,7 +1815,7 @@
       "controller": "AnalyticsController",
       "handler": "customersTop",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 203,
+      "line": 191,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1851,7 +1863,7 @@
       "controller": "AnalyticsController",
       "handler": "inventoryMovements",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 173,
+      "line": 161,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1867,7 +1879,7 @@
       "controller": "AnalyticsController",
       "handler": "inventoryValuation",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 161,
+      "line": 149,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1883,7 +1895,7 @@
       "controller": "AnalyticsController",
       "handler": "setMonthlyTarget",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 249,
+      "line": 237,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1899,22 +1911,6 @@
       "controller": "AnalyticsController",
       "handler": "ordersFulfilment",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 94,
-      "access": "analytics.view",
-      "permissions": [
-        "analytics.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Average and median time spent in each order-status transition"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/analytics/orders/lifecycle-breakdown",
-      "module": "analytics",
-      "controller": "AnalyticsController",
-      "handler": "orderLifecycleBreakdown",
-      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
       "line": 88,
       "access": "analytics.view",
       "permissions": [
@@ -1922,7 +1918,7 @@
       ],
       "public": false,
       "authOnly": false,
-      "summary": "Every order, right now, grouped by status into Pending/Completed/Voided"
+      "summary": "Average and median time spent in each order-status transition"
     },
     {
       "method": "GET",
@@ -1947,7 +1943,7 @@
       "controller": "AnalyticsController",
       "handler": "productsCategories",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 147,
+      "line": 141,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1958,28 +1954,12 @@
     },
     {
       "method": "GET",
-      "path": "/admin/analytics/products/category-velocity",
-      "module": "analytics",
-      "controller": "AnalyticsController",
-      "handler": "categoryVelocity",
-      "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 155,
-      "access": "analytics.view",
-      "permissions": [
-        "analytics.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "The top categories' own revenue, broken out day by day"
-    },
-    {
-      "method": "GET",
       "path": "/admin/analytics/products/slow-sellers",
       "module": "analytics",
       "controller": "AnalyticsController",
       "handler": "productsSlowSellers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 141,
+      "line": 135,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -1995,7 +1975,7 @@
       "controller": "AnalyticsController",
       "handler": "productsTopSellers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 131,
+      "line": 125,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2011,7 +1991,7 @@
       "controller": "AnalyticsController",
       "handler": "purchasingSpend",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 102,
+      "line": 96,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2027,7 +2007,7 @@
       "controller": "AnalyticsController",
       "handler": "purchasingSuppliers",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 119,
+      "line": 113,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2123,7 +2103,7 @@
       "controller": "AnalyticsController",
       "handler": "visitors",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 224,
+      "line": 212,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -2139,7 +2119,7 @@
       "controller": "AnalyticsController",
       "handler": "workshopOutput",
       "file": "apps/api/src/modules/analytics/analytics.controller.ts",
-      "line": 212,
+      "line": 200,
       "access": "analytics.view",
       "permissions": [
         "analytics.view"
@@ -4798,22 +4778,6 @@
       "public": false,
       "authOnly": false,
       "summary": "Render a template against sample data"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/feed",
-      "module": "core/feed",
-      "controller": "FeedController",
-      "handler": "collect",
-      "file": "apps/api/src/core/feed/feed.controller.ts",
-      "line": 23,
-      "access": "analytics.view",
-      "permissions": [
-        "analytics.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Recent order, purchase-order and payment activity, merged and capped, newest first"
     },
     {
       "method": "GET",
@@ -7786,6 +7750,183 @@
       "public": false,
       "authOnly": false,
       "summary": "Get a quote"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/ask",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "ask",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 251,
+      "access": "rag.query",
+      "permissions": [
+        "rag.query"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Retrieval + a generated, cited answer — an internal staff read, no draft-confirm gate (09-ai-layer.md §5)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/query",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "query",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 230,
+      "access": "rag.query",
+      "permissions": [
+        "rag.query"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Dry run: the retrieved chunks for a query, with no generation step (the doc's own tuning tool)"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/rag/sources",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "listSources",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 96,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The ingestion queue: every DocumentSource and its status — constrained to corpora this caller may see (H1)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "uploadSource",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 127,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Upload a PDF into a corpus — queued for the next ingestion pass"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/rag/sources/:id",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "deleteSource",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 216,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Remove a source and its chunks — never indexed again unless re-uploaded"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/rag/sources/:id",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "getSource",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 105,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One DocumentSource, with its chunk count"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/rag/sources/:id/file",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "downloadSourceFile",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 114,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Download the original stored PDF — the only authenticated path to its bytes (H2, security review)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources/:id/file",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "replaceSourceFile",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 158,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Replace a source's file — corrects a bad upload without a delete-then-recreate round trip (L20, security review)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources/:id/ingest-now",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "ingestNow",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 195,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Queue immediate, in-background ingestion for one QUEUED source, without waiting for the cron"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/rag/sources/:id/retry",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "retry",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 175,
+      "access": "rag.ingest.manage",
+      "permissions": [
+        "rag.ingest.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Re-queue a FAILED source, or one stuck in-flight past the staleness threshold"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/rag/status",
+      "module": "rag",
+      "controller": "RagAdminController",
+      "handler": "status",
+      "file": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "line": 84,
+      "access": "rag.ingest.manage | rag.query",
+      "permissions": [
+        "rag.ingest.manage",
+        "rag.query"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Whether retrieval/generation are available — the absent-AiProvider case the query console hides itself for"
     },
     {
       "method": "GET",
@@ -11955,10 +12096,8 @@
         "GET /admin/analytics/inventory/valuation",
         "PATCH /admin/analytics/monthly-target",
         "GET /admin/analytics/orders/fulfilment",
-        "GET /admin/analytics/orders/lifecycle-breakdown",
         "GET /admin/analytics/orders/overview",
         "GET /admin/analytics/products/categories",
-        "GET /admin/analytics/products/category-velocity",
         "GET /admin/analytics/products/slow-sellers",
         "GET /admin/analytics/products/top-sellers",
         "GET /admin/analytics/purchasing/spend",
@@ -11970,7 +12109,6 @@
         "GET /admin/analytics/stitching",
         "GET /admin/analytics/visitors",
         "GET /admin/analytics/workshop/output",
-        "GET /admin/feed",
         "GET /admin/inventory/suspicious-traffic",
         "GET /admin/wishlist/out-of-stock-report"
       ],
@@ -12065,7 +12203,7 @@
         "GET /admin/accounting/reports/profit-and-loss",
         "GET /admin/accounting/reports/trial-balance"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "ADMIN"
       ],
@@ -12432,7 +12570,7 @@
         "POST /admin/catalog/redirects/import",
         "PATCH /admin/catalog/variants/:variantId/stock"
       ],
-      "uiSites": 18,
+      "uiSites": 17,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -12559,7 +12697,7 @@
         "POST /admin/suppliers/:id/products",
         "DELETE /admin/suppliers/:id/products/:variantId"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -13175,7 +13313,7 @@
         "GET /admin/payroll/runs",
         "GET /admin/payroll/runs/:id"
       ],
-      "uiSites": 3,
+      "uiSites": 4,
       "roles": [
         "ADMIN"
       ],
@@ -13678,6 +13816,46 @@
         "ADMIN"
       ],
       "inSeed": true
+    },
+    {
+      "key": "rag.ingest.manage",
+      "label": "Upload documents into a RAG corpus, and retry or remove one from the ingestion queue",
+      "category": "Administration",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/rag/sources",
+        "POST /admin/rag/sources",
+        "DELETE /admin/rag/sources/:id",
+        "GET /admin/rag/sources/:id",
+        "GET /admin/rag/sources/:id/file",
+        "POST /admin/rag/sources/:id/file",
+        "POST /admin/rag/sources/:id/ingest-now",
+        "POST /admin/rag/sources/:id/retry",
+        "GET /admin/rag/status"
+      ],
+      "uiSites": 3,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "rag.query",
+      "label": "Run a retrieval or generated-answer query directly against a document corpus",
+      "category": "Administration",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/rag/ask",
+        "POST /admin/rag/query",
+        "GET /admin/rag/status"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
     }
   ],
   "events": [
@@ -13706,7 +13884,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/orders/orders.service.ts:748",
-        "apps/api/src/modules/orders/orders.service.ts:933"
+        "apps/api/src/modules/orders/orders.service.ts:929"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -13721,7 +13899,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:933"
+        "apps/api/src/modules/orders/orders.service.ts:929"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -14765,7 +14943,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 618,
+      "line": 624,
       "doc": "",
       "fields": [
         {
@@ -18690,6 +18868,212 @@
       ],
       "indexes": [
         "@@index([isActive, startsAt, endsAt])"
+      ]
+    },
+    {
+      "name": "DocumentChunk",
+      "file": "apps/api/prisma/schema/rag.prisma",
+      "line": 129,
+      "doc": "One row per chunk, not per document — chunking is what makes retrieval precise instead of \"here's a 40-page PDF, good luck.\" `organizationId` and `corpus` are both denormalized from `DocumentSource`…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "organizationId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "corpus",
+          "type": "DocumentCorpus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "pageFrom",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "pageTo",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "text",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "embedding",
+          "type": "Unsupported(\"vector(1536)\")",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "source",
+          "type": "DocumentSource",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([organizationId, corpus, sourceId])",
+        "@@index([sourceId])"
+      ]
+    },
+    {
+      "name": "DocumentSource",
+      "file": "apps/api/prisma/schema/rag.prisma",
+      "line": 76,
+      "doc": "A source document — one row per uploaded file.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "organizationId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "storageKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "originalName",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "corpus",
+          "type": "DocumentCorpus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "IngestStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "pageCount",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ingestedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "failureReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "uploadedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "claimedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "attempts",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "nextAttemptAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "chunks",
+          "type": "DocumentChunk[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([organizationId, corpus, status])",
+        "@@index([status])"
       ]
     },
     {
@@ -36403,7 +36787,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 612,
+      "line": 618,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -36426,7 +36810,10 @@
         "WHATSAPP_ASSISTANT",
         "MARKDOWN_SUGGESTION",
         "REVIEW_SUMMARY",
-        "IMPORT_CLEANUP"
+        "IMPORT_CLEANUP",
+        "RAG_INGESTION",
+        "RAG_RETRIEVAL",
+        "RAG_GENERATION"
       ]
     },
     {
@@ -36679,6 +37066,17 @@
       ]
     },
     {
+      "name": "DocumentCorpus",
+      "file": "apps/api/prisma/schema/rag.prisma",
+      "line": 48,
+      "values": [
+        "EMPLOYEE_DOCUMENTS",
+        "SUPPLIER_CATALOG",
+        "BUSINESS_DOCUMENTS",
+        "KNOWLEDGE_BASE"
+      ]
+    },
+    {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 335,
@@ -36731,6 +37129,19 @@
         "APPROVED",
         "REJECTED",
         "EXPIRED"
+      ]
+    },
+    {
+      "name": "IngestStatus",
+      "file": "apps/api/prisma/schema/rag.prisma",
+      "line": 64,
+      "values": [
+        "QUEUED",
+        "EXTRACTING",
+        "CHUNKING",
+        "EMBEDDING",
+        "READY",
+        "FAILED"
       ]
     },
     {
@@ -39237,6 +39648,24 @@
         "SsoConnection",
         "User"
       ]
+    },
+    {
+      "folder": "20260926000000_add_rag_document_retrieval",
+      "file": "apps/api/prisma/schema/migrations/20260926000000_add_rag_document_retrieval/migration.sql",
+      "date": "2026-09-26",
+      "slug": "add_rag_document_retrieval",
+      "statements": 17,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "DocumentChunk",
+        "DocumentSource"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -41107,6 +41536,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/rag",
+      "file": "apps/web/src/app/(admin)/admin/(app)/rag/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/rag/query",
+      "file": "apps/web/src/app/(admin)/admin/(app)/rag/query/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/reports",
       "file": "apps/web/src/app/(admin)/admin/(app)/reports/page.tsx",
       "client": true,
@@ -41523,6 +41970,13 @@
       "file": "apps/api/src/modules/purchasing/purchasing.cron.ts",
       "line": 36,
       "handler": "sweepReorderCandidates",
+      "doc": ""
+    },
+    {
+      "schedule": "*/5 * * * *",
+      "file": "apps/api/src/modules/rag/rag-ingestion.cron.ts",
+      "line": 19,
+      "handler": "run",
       "doc": ""
     },
     {
@@ -42289,15 +42743,6 @@
       ]
     },
     {
-      "file": "apps/api/src/core/feed/feed-registry.service.spec.ts",
-      "module": "core/feed",
-      "kind": "unit test",
-      "cases": 6,
-      "describes": [
-        "FeedRegistryService — WO-58.2"
-      ]
-    },
-    {
       "file": "apps/api/src/core/intent/intent-router.service.spec.ts",
       "module": "core/intent",
       "kind": "unit test",
@@ -42477,6 +42922,15 @@
       ]
     },
     {
+      "file": "apps/api/src/core/storage/files.controller.spec.ts",
+      "module": "core/storage",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "FilesController"
+      ]
+    },
+    {
       "file": "apps/api/src/core/storage/storage.service.spec.ts",
       "module": "core/storage",
       "kind": "unit test",
@@ -42616,15 +43070,6 @@
       ]
     },
     {
-      "file": "apps/api/src/modules/analytics/analytics.category-velocity.spec.ts",
-      "module": "analytics",
-      "kind": "unit test",
-      "cases": 4,
-      "describes": [
-        "AnalyticsService.categoryVelocity — WO-57.1"
-      ]
-    },
-    {
       "file": "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
       "module": "analytics",
       "kind": "unit test",
@@ -42654,15 +43099,6 @@
         "AnalyticsService — WO-D.4 inventory valuation/movements",
         "inventoryValuation",
         "inventoryMovements"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/analytics/analytics.lifecycle.spec.ts",
-      "module": "analytics",
-      "kind": "unit test",
-      "cases": 4,
-      "describes": [
-        "AnalyticsService.orderLifecycleBreakdown — WO-69.1"
       ]
     },
     {
@@ -42726,15 +43162,6 @@
         "salesAov",
         "salesProfit",
         "salesFunnel"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/analytics/analytics.summary.spec.ts",
-      "module": "analytics",
-      "kind": "unit test",
-      "cases": 2,
-      "describes": [
-        "AnalyticsService.summary — WO-45.1 totalUnits"
       ]
     },
     {
@@ -43369,15 +43796,6 @@
       ]
     },
     {
-      "file": "apps/api/src/modules/orders/order-feed.source.spec.ts",
-      "module": "orders",
-      "kind": "unit test",
-      "cases": 6,
-      "describes": [
-        "OrderFeedSource — WO-58.2"
-      ]
-    },
-    {
       "file": "apps/api/src/modules/orders/order-replication.listener.spec.ts",
       "module": "orders",
       "kind": "unit test",
@@ -43443,15 +43861,6 @@
         "dedupeCandidate",
         "findOrCreateForRole",
         "search"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/payments/payment-feed.source.spec.ts",
-      "module": "payments",
-      "kind": "unit test",
-      "cases": 5,
-      "describes": [
-        "PaymentFeedSource — WO-58.2"
       ]
     },
     {
@@ -43633,15 +44042,6 @@
       ]
     },
     {
-      "file": "apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts",
-      "module": "purchasing",
-      "kind": "unit test",
-      "cases": 5,
-      "describes": [
-        "PurchaseOrderFeedSource — WO-58.2"
-      ]
-    },
-    {
       "file": "apps/api/src/modules/purchasing/purchasing.cron.spec.ts",
       "module": "purchasing",
       "kind": "unit test",
@@ -43702,6 +44102,104 @@
         "PurchasingService — supplier bills",
         "createSupplierBill",
         "recordSupplierBillPayment"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/chunking.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "chunkPages"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/pdf-extraction.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "PdfExtractionService",
+        "the scanned-page (OCR) fallback",
+        "unpack1BitGrayscale",
+        "withFallbackTimeout / withDeadline"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/pg-vector.store.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "PgVectorStore",
+        "isolation (WO-35.4 acceptance)",
+        "idempotent re-ingestion (WO-35.2/35.3 acceptance)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-admin.controller.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 17,
+      "describes": [
+        "RagAdminController",
+        "query (H1, security review)",
+        "ask (H1, security review)",
+        "uploadSource (H1/M4, security review)",
+        "ingestNow (M12, security review)",
+        "permission threading (H1, security review)",
+        "downloadSourceFile (H2, security review)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-corpus.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 18,
+      "describes": [
+        "RagCorpusService",
+        "createSource",
+        "retry",
+        "deleteSource",
+        "findOne (H1, security review)",
+        "list (H1, security review)",
+        "chunkCounts (L18, security review)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-generation.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "RagGenerationService",
+        "answer",
+        "isAvailable",
+        "prompt construction (L14, security review)",
+        "topK clamp (L17, security review)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-ingestion.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "RagIngestionService",
+        "processQueued",
+        "ingestOne",
+        "corpus access (H1, security review)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
+      "module": "rag",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "RagRetrievalService",
+        "isAvailable",
+        "retrieve"
       ]
     },
     {
@@ -44199,7 +44697,7 @@
       "file": "apps/api/test/orders.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
-      "cases": 34,
+      "cases": 33,
       "describes": [
         "Orders (e2e)",
         "payment methods",
@@ -45119,7 +45617,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5340,
+      "bytes": 5344,
       "doc": "",
       "symbols": []
     },
@@ -45128,7 +45626,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 174,
-      "bytes": 8747,
+      "bytes": 8751,
       "doc": "",
       "symbols": []
     },
@@ -45137,7 +45635,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5785,
+      "bytes": 5789,
       "doc": "",
       "symbols": []
     },
@@ -45388,8 +45886,8 @@
       "path": "apps/api/package.json",
       "area": "api",
       "kind": "json",
-      "lines": 79,
-      "bytes": 2491,
+      "lines": 81,
+      "bytes": 2570,
       "doc": "",
       "symbols": []
     },
@@ -45484,8 +45982,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 638,
-      "bytes": 26118,
+      "lines": 644,
+      "bytes": 26363,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -46318,6 +46816,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926000000_add_rag_document_retrieval/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 86,
+      "bytes": 3714,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -46423,6 +46930,15 @@
       "lines": 303,
       "bytes": 12379,
       "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/rag.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 159,
+      "bytes": 8184,
+      "doc": "WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md).",
       "symbols": []
     },
     {
@@ -48133,14 +48649,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 51,
-      "bytes": 1795,
+      "lines": 49,
+      "bytes": 1730,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 50
+          "line": 48
         }
       ]
     },
@@ -48690,80 +49206,6 @@
           "name": "StockIntakeRegistry",
           "kind": "class",
           "line": 52
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/feed/feed-registry.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 83,
-      "bytes": 4391,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/core/feed/feed-registry.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 89,
-      "bytes": 3495,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FeedRegistryService",
-          "kind": "class",
-          "line": 16
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/feed/feed-source.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 39,
-      "bytes": 1954,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FeedEntry",
-          "kind": "interface",
-          "line": 11
-        },
-        {
-          "name": "FeedSource",
-          "kind": "interface",
-          "line": 24
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/feed/feed.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 32,
-      "bytes": 1310,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FeedController",
-          "kind": "class",
-          "line": 18
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/core/feed/feed.module.ts",
-      "area": "api",
-      "kind": "nest module",
-      "lines": 19,
-      "bytes": 635,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "FeedModule",
-          "kind": "class",
-          "line": 18
         }
       ]
     },
@@ -50060,11 +50502,20 @@
       ]
     },
     {
+      "path": "apps/api/src/core/storage/files.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 63,
+      "bytes": 2837,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/core/storage/files.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 58,
-      "bytes": 1934,
+      "lines": 67,
+      "bytes": 2386,
       "doc": "",
       "symbols": [
         {
@@ -50078,8 +50529,8 @@
       "path": "apps/api/src/core/storage/local-storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 72,
-      "bytes": 2513,
+      "lines": 84,
+      "bytes": 2997,
       "doc": "",
       "symbols": [
         {
@@ -50090,7 +50541,7 @@
         {
           "name": "buildKey",
           "kind": "function",
-          "line": 61
+          "line": 73
         }
       ]
     },
@@ -50098,14 +50549,14 @@
       "path": "apps/api/src/core/storage/s3-storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 77,
-      "bytes": 2583,
+      "lines": 92,
+      "bytes": 3434,
       "doc": "",
       "symbols": [
         {
           "name": "S3StorageDriver",
           "kind": "class",
-          "line": 13
+          "line": 14
         }
       ]
     },
@@ -50113,8 +50564,8 @@
       "path": "apps/api/src/core/storage/storage.driver.ts",
       "area": "api",
       "kind": "driver",
-      "lines": 31,
-      "bytes": 842,
+      "lines": 35,
+      "bytes": 1297,
       "doc": "Extension point: file storage.",
       "symbols": [
         {
@@ -50162,8 +50613,8 @@
       "path": "apps/api/src/core/storage/storage.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 133,
-      "bytes": 4807,
+      "lines": 143,
+      "bytes": 5263,
       "doc": "",
       "symbols": [
         {
@@ -50769,15 +51220,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/analytics/analytics.category-velocity.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 136,
-      "bytes": 5563,
-      "doc": "",
-      "symbols": []
-    },
-    {
       "path": "apps/api/src/modules/analytics/analytics.comparison.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -50790,8 +51232,8 @@
       "path": "apps/api/src/modules/analytics/analytics.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 253,
-      "bytes": 11356,
+      "lines": 241,
+      "bytes": 10781,
       "doc": "",
       "symbols": [
         {
@@ -50816,15 +51258,6 @@
       "kind": "unit test",
       "lines": 196,
       "bytes": 9094,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/analytics/analytics.lifecycle.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 115,
-      "bytes": 4285,
       "doc": "",
       "symbols": []
     },
@@ -50937,8 +51370,8 @@
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 2590,
-      "bytes": 109766,
+      "lines": 2410,
+      "bytes": 100672,
       "doc": "",
       "symbols": [
         {
@@ -50974,178 +51407,159 @@
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 80
+          "line": 77
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 89
+          "line": 86
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 110
+          "line": 107
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 115
-        },
-        {
-          "name": "OrderLifecycleBreakdown",
-          "kind": "interface",
-          "line": 124
+          "line": 112
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 143
+          "line": 121
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 151
+          "line": 129
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 156
+          "line": 134
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 171
+          "line": 149
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 194
+          "line": 172
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 198
+          "line": 176
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 210
+          "line": 188
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 214
+          "line": 192
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 223
+          "line": 201
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 227
+          "line": 205
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 238
-        },
-        {
-          "name": "CategoryVelocitySeries",
-          "kind": "interface",
-          "line": 245
+          "line": 216
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 252
+          "line": 221
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 265
+          "line": 234
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 272
+          "line": 241
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 282
+          "line": 251
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 288
+          "line": 257
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 295
+          "line": 264
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 303
+          "line": 272
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 308
+          "line": 277
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 318
+          "line": 287
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 322
+          "line": 291
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 328
+          "line": 297
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 335
+          "line": 304
         },
         {
           "name": "ComparisonBucket",
           "kind": "interface",
-          "line": 342
+          "line": 311
         },
         {
           "name": "ComparisonAnalytics",
           "kind": "interface",
-          "line": 352
+          "line": 321
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 367
+          "line": 336
         },
         {
           "name": "AnalyticsService",
           "kind": "class",
-          "line": 389
+          "line": 358
         }
       ]
-    },
-    {
-      "path": "apps/api/src/modules/analytics/analytics.summary.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 94,
-      "bytes": 3402,
-      "doc": "",
-      "symbols": []
     },
     {
       "path": "apps/api/src/modules/analytics/analytics.workshop.spec.ts",
@@ -55013,8 +55427,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 106,
-      "bytes": 3463,
+      "lines": 107,
+      "bytes": 3478,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -55033,24 +55447,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 221,
-      "bytes": 12114,
+      "lines": 231,
+      "bytes": 12750,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 48
+          "line": 49
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 79
+          "line": 80
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 197
+          "line": 207
         }
       ]
     },
@@ -55294,39 +55708,39 @@
       "path": "apps/api/src/modules/orders/dto/order.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 168,
-      "bytes": 4588,
+      "lines": 152,
+      "bytes": 3901,
       "doc": "",
       "symbols": [
         {
           "name": "ShippingAddressDto",
           "kind": "class",
-          "line": 29
+          "line": 17
         },
         {
           "name": "PlaceOrderDto",
           "kind": "class",
-          "line": 73
+          "line": 61
         },
         {
           "name": "TrackOrderDto",
           "kind": "class",
-          "line": 118
+          "line": 106
         },
         {
           "name": "ChangeOrderStatusDto",
           "kind": "class",
-          "line": 125
+          "line": 113
         },
         {
           "name": "AdminOrderQueryDto",
           "kind": "class",
-          "line": 137
+          "line": 125
         },
         {
           "name": "OrderHistoryQueryDto",
           "kind": "class",
-          "line": 153
+          "line": 137
         }
       ]
     },
@@ -55381,30 +55795,6 @@
           "name": "OrderNotificationSubscriber",
           "kind": "class",
           "line": 53
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/orders/order-feed.source.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 77,
-      "bytes": 3222,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/orders/order-feed.source.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 57,
-      "bytes": 2159,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "OrderFeedSource",
-          "kind": "class",
-          "line": 16
         }
       ]
     },
@@ -55465,14 +55855,14 @@
       "path": "apps/api/src/modules/orders/orders.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 55,
-      "bytes": 2818,
+      "lines": 53,
+      "bytes": 2742,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersModule",
           "kind": "class",
-          "line": 54
+          "line": 52
         }
       ]
     },
@@ -55480,8 +55870,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1304,
-      "bytes": 51883,
+      "lines": 1300,
+      "bytes": 51573,
       "doc": "",
       "symbols": [
         {
@@ -55814,30 +56204,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/payments/payment-feed.source.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 69,
-      "bytes": 2953,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/payments/payment-feed.source.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 58,
-      "bytes": 2296,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "PaymentFeedSource",
-          "kind": "class",
-          "line": 16
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/payments/payment-provider.ts",
       "area": "api",
       "kind": "module",
@@ -55891,14 +56257,14 @@
       "path": "apps/api/src/modules/payments/payments.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 28,
-      "bytes": 1073,
+      "lines": 26,
+      "bytes": 991,
       "doc": "",
       "symbols": [
         {
           "name": "PaymentsModule",
           "kind": "class",
-          "line": 27
+          "line": 25
         }
       ]
     },
@@ -57037,30 +57403,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/purchasing/purchase-order-feed.source.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 69,
-      "bytes": 2984,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/purchasing/purchase-order-feed.source.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 62,
-      "bytes": 2599,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "PurchaseOrderFeedSource",
-          "kind": "class",
-          "line": 22
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/purchasing/purchasing.controller.ts",
       "area": "api",
       "kind": "controller",
@@ -57142,14 +57484,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 32,
-      "bytes": 1449,
+      "lines": 30,
+      "bytes": 1348,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingModule",
           "kind": "class",
-          "line": 31
+          "line": 29
         }
       ]
     },
@@ -57248,6 +57590,383 @@
       "bytes": 8558,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/chunking.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 71,
+      "bytes": 3124,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/chunking.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 61,
+      "bytes": 2681,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TextChunk",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "chunkPages",
+          "kind": "function",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/dto/rag.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 70,
+      "bytes": 2239,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UploadSourceDto",
+          "kind": "class",
+          "line": 9
+        },
+        {
+          "name": "ListSourcesQueryDto",
+          "kind": "class",
+          "line": 20
+        },
+        {
+          "name": "RagQueryDto",
+          "kind": "class",
+          "line": 47
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/pdf-extraction.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 196,
+      "bytes": 9749,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/pdf-extraction.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 341,
+      "bytes": 15518,
+      "doc": "Pinned to the last major (3.x) whose \"legacy\" Node build ships as",
+      "symbols": [
+        {
+          "name": "ExtractedPage",
+          "kind": "interface",
+          "line": 52
+        },
+        {
+          "name": "ExtractionResult",
+          "kind": "interface",
+          "line": 59
+        },
+        {
+          "name": "PdfExtractionService",
+          "kind": "class",
+          "line": 83
+        },
+        {
+          "name": "withFallbackTimeout",
+          "kind": "function",
+          "line": 259
+        },
+        {
+          "name": "withDeadline",
+          "kind": "function",
+          "line": 280
+        },
+        {
+          "name": "unpack1BitGrayscale",
+          "kind": "function",
+          "line": 302
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/pg-vector.store.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 170,
+      "bytes": 6644,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/pg-vector.store.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 118,
+      "bytes": 5865,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PgVectorStore",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-admin.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 226,
+      "bytes": 11173,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 266,
+      "bytes": 12380,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagAdminController",
+          "kind": "class",
+          "line": 70
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-corpus-access.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 52,
+      "bytes": 2664,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "assertCorpusAccess",
+          "kind": "function",
+          "line": 38
+        },
+        {
+          "name": "visibleCorpora",
+          "kind": "function",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-corpus.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 200,
+      "bytes": 10066,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-corpus.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 273,
+      "bytes": 11626,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PublicDocumentSource",
+          "kind": "type",
+          "line": 16
+        },
+        {
+          "name": "toPublicSource",
+          "kind": "function",
+          "line": 18
+        },
+        {
+          "name": "UploadedSourceFile",
+          "kind": "interface",
+          "line": 23
+        },
+        {
+          "name": "RagCorpusService",
+          "kind": "class",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-generation.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 135,
+      "bytes": 6453,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-generation.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 134,
+      "bytes": 6112,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagCitation",
+          "kind": "interface",
+          "line": 7
+        },
+        {
+          "name": "RagAnswer",
+          "kind": "interface",
+          "line": 14
+        },
+        {
+          "name": "RagGenerationService",
+          "kind": "class",
+          "line": 76
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-ingestion.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 27,
+      "bytes": 1086,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagIngestionCron",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-ingestion.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 236,
+      "bytes": 10945,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-ingestion.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 276,
+      "bytes": 12988,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "INGESTION_BATCH_SIZE",
+          "kind": "const",
+          "line": 15
+        },
+        {
+          "name": "STALE_CLAIM_MINUTES",
+          "kind": "const",
+          "line": 23
+        },
+        {
+          "name": "RagIngestionService",
+          "kind": "class",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 74,
+      "bytes": 3211,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag-retrieval.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 69,
+      "bytes": 3194,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagScope",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "DEFAULT_TOP_K",
+          "kind": "const",
+          "line": 11
+        },
+        {
+          "name": "RagRetrievalService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/rag.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 34,
+      "bytes": 1303,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagModule",
+          "kind": "class",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/rag/vector-store.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 70,
+      "bytes": 3072,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DocumentChunkInput",
+          "kind": "interface",
+          "line": 25
+        },
+        {
+          "name": "VectorQueryFilter",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "VectorQueryHit",
+          "kind": "interface",
+          "line": 43
+        },
+        {
+          "name": "VectorStore",
+          "kind": "interface",
+          "line": 53
+        },
+        {
+          "name": "VECTOR_STORE",
+          "kind": "const",
+          "line": 69
+        }
+      ]
     },
     {
       "path": "apps/api/src/modules/receivables/credit-notes.service.ts",
@@ -59599,8 +60318,8 @@
       "path": "apps/api/test/orders.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 981,
-      "bytes": 37117,
+      "lines": 950,
+      "bytes": 35712,
       "doc": "",
       "symbols": []
     },
@@ -65289,14 +66008,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 106,
-      "bytes": 4025,
+      "lines": 104,
+      "bytes": 3920,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDashboardPage",
           "kind": "default",
-          "line": 32
+          "line": 31
         }
       ]
     },
@@ -65507,6 +66226,36 @@
           "name": "PurchaseOrdersPage",
           "kind": "default",
           "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/rag/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 287,
+      "bytes": 10980,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagSourcesPage",
+          "kind": "default",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/rag/query/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 168,
+      "bytes": 6947,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RagQueryConsolePage",
+          "kind": "default",
+          "line": 30
         }
       ]
     },
@@ -67087,29 +67836,14 @@
       "path": "apps/web/src/components/admin/analytics/analytics-detail-page.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 152,
-      "bytes": 5816,
+      "lines": 149,
+      "bytes": 5609,
       "doc": "",
       "symbols": [
         {
           "name": "AnalyticsDetailPage",
           "kind": "function",
-          "line": 44
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/components/admin/analytics/blocks/dynamic-timeseries-block.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 29,
-      "bytes": 1267,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "DynamicTimeSeriesBlock",
-          "kind": "function",
-          "line": 14
+          "line": 43
         }
       ]
     },
@@ -67222,8 +67956,8 @@
       "path": "apps/web/src/components/admin/analytics/report-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 713,
-      "bytes": 25494,
+      "lines": 662,
+      "bytes": 23615,
       "doc": "",
       "symbols": [
         {
@@ -67239,22 +67973,22 @@
         {
           "name": "AnalyticsReport",
           "kind": "interface",
-          "line": 51
+          "line": 41
         },
         {
           "name": "REPORT_REGISTRY",
           "kind": "const",
-          "line": 69
+          "line": 59
         },
         {
           "name": "reportFor",
           "kind": "function",
-          "line": 705
+          "line": 654
         },
         {
           "name": "reportsFor",
           "kind": "function",
-          "line": 710
+          "line": 659
         }
       ]
     },
@@ -67687,21 +68421,6 @@
       ]
     },
     {
-      "path": "apps/web/src/components/admin/dashboard/live-feed-widget.tsx",
-      "area": "web",
-      "kind": "component",
-      "lines": 79,
-      "bytes": 2901,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "LiveFeedWidget",
-          "kind": "function",
-          "line": 20
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/components/admin/dashboard/metric-card.tsx",
       "area": "web",
       "kind": "component",
@@ -67895,8 +68614,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 952,
-      "bytes": 25744,
+      "lines": 975,
+      "bytes": 26562,
       "doc": "",
       "symbols": [
         {
@@ -67927,12 +68646,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 922
+          "line": 945
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 937
+          "line": 960
         }
       ]
     },
@@ -69300,8 +70019,8 @@
       "path": "apps/web/src/lib/admin-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 186,
-      "bytes": 6279,
+      "lines": 188,
+      "bytes": 6364,
       "doc": "",
       "symbols": [
         {
@@ -69632,6 +70351,21 @@
       ]
     },
     {
+      "path": "apps/web/src/lib/download-file.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 23,
+      "bytes": 756,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "downloadFile",
+          "kind": "function",
+          "line": 10
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/lib/onsite-messages-client.ts",
       "area": "web",
       "kind": "utility",
@@ -69646,6 +70380,21 @@
         },
         {
           "name": "subscribeToNewsletter",
+          "kind": "function",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/rag-corpus-access.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 27,
+      "bytes": 1248,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "visibleCorpora",
           "kind": "function",
           "line": 21
         }
@@ -69730,8 +70479,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1614,
-      "bytes": 43639,
+      "lines": 1641,
+      "bytes": 44190,
       "doc": "",
       "symbols": [
         {
@@ -69845,714 +70594,739 @@
           "line": 271
         },
         {
+          "name": "DocumentCorpus",
+          "kind": "type",
+          "line": 280
+        },
+        {
+          "name": "IngestStatus",
+          "kind": "type",
+          "line": 281
+        },
+        {
+          "name": "DocumentSourceRow",
+          "kind": "interface",
+          "line": 283
+        },
+        {
+          "name": "RagStatus",
+          "kind": "interface",
+          "line": 297
+        },
+        {
+          "name": "RagQueryHit",
+          "kind": "interface",
+          "line": 302
+        },
+        {
+          "name": "RagCitation",
+          "kind": "interface",
+          "line": 311
+        },
+        {
+          "name": "RagAnswer",
+          "kind": "interface",
+          "line": 318
+        },
+        {
           "name": "MeasurementFieldRow",
-          "kind": "interface",
-          "line": 279
-        },
-        {
-          "name": "GarmentType",
-          "kind": "interface",
-          "line": 294
-        },
-        {
-          "name": "AdminGarmentSizeChartRow",
-          "kind": "interface",
-          "line": 314
-        },
-        {
-          "name": "SizeRecommendation",
           "kind": "interface",
           "line": 323
         },
         {
+          "name": "GarmentType",
+          "kind": "interface",
+          "line": 338
+        },
+        {
+          "name": "AdminGarmentSizeChartRow",
+          "kind": "interface",
+          "line": 358
+        },
+        {
+          "name": "SizeRecommendation",
+          "kind": "interface",
+          "line": 367
+        },
+        {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 335
+          "line": 379
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 348
+          "line": 392
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 361
+          "line": 405
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 381
+          "line": 425
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 388
+          "line": 432
         },
         {
           "name": "ColumnMappingSuggestion",
           "kind": "interface",
-          "line": 397
+          "line": 441
         },
         {
           "name": "ValueNormalizationSuggestion",
           "kind": "interface",
-          "line": 402
+          "line": 446
         },
         {
           "name": "DuplicateFlag",
           "kind": "interface",
-          "line": 408
+          "line": 452
         },
         {
           "name": "CategorySuggestion",
           "kind": "interface",
-          "line": 414
+          "line": 458
         },
         {
           "name": "TranslationSuggestion",
           "kind": "interface",
-          "line": 419
+          "line": 463
         },
         {
           "name": "ImportAssistanceResult",
           "kind": "interface",
-          "line": 425
+          "line": 469
         },
         {
           "name": "CsvImportRowResult",
           "kind": "interface",
-          "line": 440
+          "line": 484
         },
         {
           "name": "CsvImportSummary",
           "kind": "interface",
-          "line": 447
+          "line": 491
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 455
+          "line": 499
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 473
+          "line": 517
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 481
+          "line": 525
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 491
+          "line": 535
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 500
+          "line": 544
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 511
+          "line": 555
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 526
+          "line": 570
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 541
+          "line": 585
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 557
+          "line": 601
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 570
+          "line": 614
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 577
+          "line": 621
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 586
+          "line": 630
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 596
+          "line": 640
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 608
+          "line": 652
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 621
+          "line": 665
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 627
+          "line": 671
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 638
+          "line": 682
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 645
+          "line": 689
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 651
+          "line": 695
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 660
+          "line": 704
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 668
+          "line": 712
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 673
+          "line": 717
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 680
+          "line": 724
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 688
+          "line": 732
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 694
+          "line": 738
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 700
+          "line": 744
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 713
+          "line": 757
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 719
+          "line": 763
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 731
+          "line": 775
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 735
+          "line": 779
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 744
+          "line": 788
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 748
+          "line": 792
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 757
+          "line": 801
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 764
+          "line": 808
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 771
+          "line": 815
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 778
+          "line": 822
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 788
+          "line": 832
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 796
+          "line": 840
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 803
+          "line": 847
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 809
+          "line": 853
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 814
+          "line": 858
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 824
+          "line": 868
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 830
+          "line": 874
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 836
+          "line": 880
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 843
+          "line": 887
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 852
+          "line": 896
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 854
+          "line": 898
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 865
+          "line": 909
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 870
+          "line": 914
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 876
+          "line": 920
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 878
+          "line": 922
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 887
+          "line": 931
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 896
+          "line": 940
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 898
+          "line": 942
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 915
+          "line": 959
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 920
+          "line": 964
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 922
+          "line": 966
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 936
+          "line": 980
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 938
+          "line": 982
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 949
+          "line": 993
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 964
+          "line": 1008
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 971
+          "line": 1015
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 973
+          "line": 1017
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 998
+          "line": 1042
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 1006
+          "line": 1050
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 1014
+          "line": 1058
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 1021
+          "line": 1065
         },
         {
           "name": "WhatsAppMessage",
           "kind": "interface",
-          "line": 1038
+          "line": 1082
         },
         {
           "name": "WhatsAppConversation",
           "kind": "interface",
-          "line": 1046
+          "line": 1090
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 1061
+          "line": 1105
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 1068
+          "line": 1112
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 1080
+          "line": 1124
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 1089
+          "line": 1133
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 1091
+          "line": 1135
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1103
+          "line": 1147
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 1109
+          "line": 1153
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 1116
+          "line": 1160
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 1121
+          "line": 1165
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1133
+          "line": 1177
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1142
+          "line": 1186
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1149
+          "line": 1193
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1163
+          "line": 1207
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1174
+          "line": 1218
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1178
+          "line": 1222
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1187
+          "line": 1231
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1195
+          "line": 1239
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1226
+          "line": 1270
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1259
+          "line": 1303
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1265
+          "line": 1309
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1283
+          "line": 1327
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1298
+          "line": 1342
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1307
+          "line": 1351
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1316
+          "line": 1360
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1332
+          "line": 1376
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1339
+          "line": 1383
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1347
+          "line": 1391
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1354
+          "line": 1398
         },
         {
           "name": "DashboardCardsResponse",
           "kind": "interface",
-          "line": 1371
+          "line": 1415
         },
         {
           "name": "ActionItem",
           "kind": "interface",
-          "line": 1385
+          "line": 1429
         },
         {
           "name": "ActionHubResponse",
           "kind": "interface",
-          "line": 1396
-        },
-        {
-          "name": "FeedEntry",
-          "kind": "interface",
-          "line": 1403
-        },
-        {
-          "name": "FeedResponse",
-          "kind": "interface",
-          "line": 1413
+          "line": 1440
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1419
+          "line": 1446
         },
         {
           "name": "ProductCrossSellKind",
           "kind": "type",
-          "line": 1427
+          "line": 1454
         },
         {
           "name": "ProductCrossSellRow",
           "kind": "interface",
-          "line": 1429
+          "line": 1456
         },
         {
           "name": "MarkdownSuggestionStatus",
           "kind": "type",
-          "line": 1436
+          "line": 1463
         },
         {
           "name": "MarkdownSuggestion",
           "kind": "interface",
-          "line": 1438
+          "line": 1465
         },
         {
           "name": "ApiKeyStatus",
           "kind": "type",
-          "line": 1464
+          "line": 1491
         },
         {
           "name": "ApiKeyRevocationReason",
           "kind": "type",
-          "line": 1465
+          "line": 1492
         },
         {
           "name": "ApiKeyView",
           "kind": "interface",
-          "line": 1486
+          "line": 1513
         },
         {
           "name": "IssuedApiKey",
           "kind": "interface",
-          "line": 1493
+          "line": 1520
         },
         {
           "name": "SsoConnectionStatus",
           "kind": "type",
-          "line": 1503
+          "line": 1530
         },
         {
           "name": "SsoConnection",
           "kind": "interface",
-          "line": 1505
+          "line": 1532
         },
         {
           "name": "SsoConnectionList",
           "kind": "interface",
-          "line": 1522
+          "line": 1549
         },
         {
           "name": "SsoDefaultRoleOption",
           "kind": "interface",
-          "line": 1528
+          "line": 1555
         },
         {
           "name": "SsoAccount",
           "kind": "interface",
-          "line": 1534
+          "line": 1561
         },
         {
           "name": "SsoSignInOption",
           "kind": "interface",
-          "line": 1548
+          "line": 1575
         },
         {
           "name": "ApiKeyOversightView",
           "kind": "interface",
-          "line": 1554
+          "line": 1581
         },
         {
           "name": "ManagedServicesUsageSnapshot",
           "kind": "interface",
-          "line": 1575
+          "line": 1602
         },
         {
           "name": "ManagedServicesTenantStatus",
           "kind": "type",
-          "line": 1582
+          "line": 1609
         },
         {
           "name": "ManagedServicesUsageResponse",
           "kind": "interface",
-          "line": 1584
+          "line": 1611
         },
         {
           "name": "ManagedServicesInvoiceStatus",
           "kind": "type",
-          "line": 1591
+          "line": 1618
         },
         {
           "name": "ManagedServicesStripePaymentStatus",
           "kind": "type",
-          "line": 1592
+          "line": 1619
         },
         {
           "name": "ManagedServicesInvoice",
           "kind": "interface",
-          "line": 1594
+          "line": 1621
         },
         {
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
-          "line": 1610
+          "line": 1637
         }
       ]
     },
@@ -73312,8 +74086,8 @@
       "path": "docs/implementation/analytics-reporting/45-order-count-tracking-coverage-note.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 73,
-      "bytes": 3843,
+      "lines": 63,
+      "bytes": 3243,
       "doc": "",
       "symbols": []
     },
@@ -73321,8 +74095,8 @@
       "path": "docs/implementation/analytics-reporting/57-multiday-category-velocity.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 130,
-      "bytes": 6590,
+      "lines": 117,
+      "bytes": 5772,
       "doc": "",
       "symbols": []
     },
@@ -73330,8 +74104,8 @@
       "path": "docs/implementation/analytics-reporting/58-live-operational-feed.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 161,
-      "bytes": 8699,
+      "lines": 141,
+      "bytes": 7387,
       "doc": "",
       "symbols": []
     },
@@ -73339,8 +74113,8 @@
       "path": "docs/implementation/analytics-reporting/69-order-lifecycle-status-dashboard.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 121,
-      "bytes": 6412,
+      "lines": 107,
+      "bytes": 5532,
       "doc": "",
       "symbols": []
     },
@@ -73348,8 +74122,8 @@
       "path": "docs/implementation/analytics-reporting/77-sales-category-breakdown-coverage-note.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 70,
-      "bytes": 3573,
+      "lines": 52,
+      "bytes": 2382,
       "doc": "",
       "symbols": []
     },
@@ -74671,8 +75445,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 58,
-      "bytes": 2341,
+      "lines": 59,
+      "bytes": 2373,
       "doc": "",
       "symbols": []
     },
@@ -75962,8 +76736,8 @@
       "path": "packages/shared/src/http-client.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 200,
-      "bytes": 7268,
+      "lines": 201,
+      "bytes": 7388,
       "doc": "The one HTTP layer for a signed-in browser client.",
       "symbols": [
         {
@@ -75994,7 +76768,7 @@
         {
           "name": "requestWithRefresh",
           "kind": "function",
-          "line": 158
+          "line": 159
         }
       ]
     },
@@ -76247,8 +77021,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 902,
-      "bytes": 27439,
+      "lines": 923,
+      "bytes": 28367,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -76269,47 +77043,47 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 534
+          "line": 551
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 536
+          "line": 553
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 546
+          "line": 563
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 553
+          "line": 570
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 735
+          "line": 752
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 889
+          "line": 910
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 894
+          "line": 915
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 895
+          "line": 916
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 898
+          "line": 919
         }
       ]
     },
@@ -76755,8 +77529,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 18572,
-      "bytes": 680437,
+      "lines": 18847,
+      "bytes": 688741,
       "doc": "",
       "symbols": []
     },

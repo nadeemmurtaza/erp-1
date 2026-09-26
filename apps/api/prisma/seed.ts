@@ -20,6 +20,7 @@ import { InventoryService } from '../src/modules/inventory/inventory.service';
 import { PrismaService } from '../src/core/prisma/prisma.service';
 import { StockIntakeRegistry } from '../src/core/extension-points/stock-intake.registry';
 import { EntityEnrichmentRegistry } from '../src/core/extension-points/entity-enrichment.registry';
+import { IntentRouterService } from '../src/core/intent/intent-router.service';
 import { CHART_OF_ACCOUNTS } from '../src/modules/accounting/chart-of-accounts';
 
 const prisma = new PrismaClient();
@@ -32,6 +33,7 @@ const inventoryService = new InventoryService(
   eventBus,
   new StockIntakeRegistry(),
   new EntityEnrichmentRegistry(),
+  new IntentRouterService(),
 );
 
 /**

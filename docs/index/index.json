@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2018,
-    "lines": 307310,
+    "lines": 307312,
     "routes": 660,
     "controllers": 121,
     "models": 244,
@@ -33,8 +33,8 @@
     },
     "api": {
       "files": 841,
-      "lines": 117736,
-      "bytes": 4469541,
+      "lines": 117738,
+      "bytes": 4469650,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -45927,8 +45927,8 @@
       "path": "apps/api/prisma/seed.ts",
       "area": "api",
       "kind": "module",
-      "lines": 3068,
-      "bytes": 105667,
+      "lines": 3070,
+      "bytes": 105776,
       "doc": "",
       "symbols": []
     },

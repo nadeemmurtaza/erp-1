@@ -21,8 +21,8 @@ Every top-level export in `root`, with the line to open.
 | `app-config.service.ts` | `AppConfigService` | class | :10 | Typed accessor over ConfigService — one place an env var name is spelled out, mirroring apps/api's… |
 | `config.module.ts` | `AppConfigModule` | class | :19 |  |
 | `env.validation.ts` | `envSchema` | const | :14 |  |
-| `env.validation.ts` | `PlatformEnv` | type | :185 |  |
-| `env.validation.ts` | `validatePlatformEnv` | function | :187 |  |
+| `env.validation.ts` | `PlatformEnv` | type | :194 |  |
+| `env.validation.ts` | `validatePlatformEnv` | function | :196 |  |
 
 ### `apps/platform/src/core/notifications`
 
@@ -97,7 +97,7 @@ Every top-level export in `root`, with the line to open.
 | `billing-period.ts` | `currentCalendarMonthPeriod` | function | :13 |  |
 | `billing.controller.ts` | `BillingController` | class | :11 |  |
 | `billing.cron.ts` | `BillingCron` | class | :12 | WO-50.3's own scheduled run — calendar-month billing periods. |
-| `billing.module.ts` | `BillingModule` | class | :31 |  |
+| `billing.module.ts` | `BillingModule` | class | :32 |  |
 | `billing.service.ts` | `UsageLine` | interface | :12 | doc 153's own "click the number": one line per metered dimension this charge actually included, eac… |
 | `billing.service.ts` | `UsageBreakdown` | interface | :20 |  |
 | `billing.service.ts` | `InvoicePreview` | interface | :25 |  |
@@ -106,8 +106,10 @@ Every top-level export in `root`, with the line to open.
 | `custom-quote.service.ts` | `RequestQuoteInput` | interface | :6 |  |
 | `custom-quote.service.ts` | `CustomQuoteService` | class | :21 | WO-50.4 — the custom-quote/discount-approval flow. |
 | `invoice-dunning.cron.ts` | `InvoiceDunningCron` | class | :18 | doc 153 §3 — "this pricing model is, structurally, the platform's own accounts-receivable problem",… |
-| `plans.controller.ts` | `PlansController` | class | :10 |  |
-| `plans.service.ts` | `PlansService` | class | :9 | WO-50.1/50.5 — the plan catalogue itself: create and list, each of the three pricing shapes validat… |
+| `plans.controller.ts` | `PlansController` | class | :11 |  |
+| `plans.service.ts` | `PlanComparisonRow` | interface | :29 | doc 154 §3's own literal `PlanComparisonRow` sketch, plus `key` — the actual `PlatformPlan.key` a C… |
+| `plans.service.ts` | `PlansService` | class | :42 | WO-50.1/50.5 — the plan catalogue itself: create and list, each of the three pricing shapes validat… |
+| `pricing.controller.ts` | `PricingController` | class | :16 | WO-154.3 — the public pricing-comparison endpoint `pricing.html` reads. |
 | `rate-card.controller.ts` | `RateCardController` | class | :10 |  |
 | `rate-card.service.ts` | `ProposeRateCardChangeInput` | interface | :6 |  |
 | `rate-card.service.ts` | `RateCardService` | class | :30 | doc 153 WO-153.4 — the same create/approve split doc 50 §4 already established for a custom-quote d… |
@@ -127,6 +129,7 @@ Every top-level export in `root`, with the line to open.
 | `rate-card.dto.ts` | `RejectRateCardChangeDto` | class | :22 |  |
 | `request-quote.dto.ts` | `RequestQuoteDto` | class | :3 |  |
 | `request-quote.dto.ts` | `RejectQuoteDto` | class | :21 |  |
+| `update-plan.dto.ts` | `UpdatePlanDto` | class | :12 | WO-154.1/154.3 — the entire admin-facing surface doc 154 adds on top of doc 50/153's own `PlatformP… |
 
 ### `apps/platform/src/modules/resource-quotas`
 
@@ -207,7 +210,7 @@ Every top-level export in `root`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `signup.controller.ts` | `SignupController` | class | :18 | The ONLY unauthenticated controller in this app — doc 51 §"the principal with no permission key": n… |
+| `signup.controller.ts` | `SignupController` | class | :20 | One of two unauthenticated controllers in this app — the other is doc 154's `PricingController`, a… |
 | `signup.service.ts` | `SignupService` | class | :26 | WO-51.2 — self-service signup. |
 | `trial-expiry.cron.ts` | `TrialExpiryCron` | class | :17 | WO-51.3 — TRIAL -> SUSPENDED on `trialExpiresAt`, plus an advance warning. |
 | `trials.controller.ts` | `TrialsController` | class | :10 |  |
@@ -226,7 +229,7 @@ Every top-level export in `root`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `ui.controller.ts` | `UiController` | class | :26 | The minimum UI these three documents actually require — CLAUDE.md's own "a feature ships whole, not… |
+| `ui.controller.ts` | `UiController` | class | :30 | The minimum UI these three documents actually require — CLAUDE.md's own "a feature ships whole, not… |
 | `ui.module.ts` | `UiModule` | class | :7 |  |
 
 

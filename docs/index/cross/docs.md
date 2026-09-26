@@ -2575,16 +2575,16 @@ _no second-level headings_
 - Acceptance  <sub>:275</sub>
 - Out of scope  <sub>:289</sub>
 
-### `docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md`  <sub>182 lines</sub>
+### `docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md`  <sub>188 lines</sub>
 
-- 1. The three headline plans, each an existing `PricingModel` under a customer-facing name  <sub>:14</sub>
-- 2. Why these three specific shapes cover the real span of a merchant's own risk appetite  <sub>:29</sub>
-- 3. The pricing screen itself — a customer-facing surface that doesn't exist yet  <sub>:43</sub>
-- 4. Selecting a plan routes to the identical provisioning path every plan already uses  <sub>:86</sub>
-- Scope lenses  <sub>:97</sub>
-- Work orders  <sub>:148</sub>
-- Acceptance  <sub>:164</sub>
-- Out of scope  <sub>:176</sub>
+- 1. The three headline plans, each an existing `PricingModel` under a customer-facing name  <sub>:20</sub>
+- 2. Why these three specific shapes cover the real span of a merchant's own risk appetite  <sub>:35</sub>
+- 3. The pricing screen itself — a customer-facing surface that doesn't exist yet  <sub>:49</sub>
+- 4. Selecting a plan routes to the identical provisioning path every plan already uses  <sub>:92</sub>
+- Scope lenses  <sub>:103</sub>
+- Work orders  <sub>:154</sub>
+- Acceptance  <sub>:170</sub>
+- Out of scope  <sub>:182</sub>
 
 ### `docs/implementation/commercial-licensing-agency/155-wallet-stored-value-merchant-escrow.md`  <sub>385 lines</sub>
 
@@ -2697,7 +2697,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>4,046 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>4,182 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2744,6 +2744,7 @@ _no second-level headings_
 - ADR-040 — `finance-accounting` docs 04/56/68/79/137/147/151/49 completed; a department-permission planning doc (164) added, deliberately not built  <sub>:3607</sub>
 - ADR-039 — Doc 14 (managed services) built in full, overriding its own "not now": `PlatformTenant`/`PlatformInvoice` extended rather than a parallel `AgencyClient` registry and invoice cache, real Stripe collection bridged in decoupled from `BillingService`  <sub>:3771</sub>
 - ADR-041 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call  <sub>:3951</sub>
+- ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:4049</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

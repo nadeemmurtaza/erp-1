@@ -3,7 +3,7 @@
 
 # repository root files
 
-187 files · 18,817 lines
+192 files · 19,324 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -26,8 +26,8 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `.githooks` | 2 | 0 | file |
 | `.junie` | 1 | 80 | doc |
 | `apps/platform` | 7 | 155 | script, json, module |
-| `apps/platform/prisma` | 9 | 1,401 | migration, toml, prisma schema |
-| `apps/platform/src` | 122 | 7,794 | nest module, service, config, module |
+| `apps/platform/prisma` | 10 | 1,450 | migration, toml, prisma schema |
+| `apps/platform/src` | 126 | 8,252 | nest module, service, config, module |
 | `apps/platform/test` | 1 | 10 | module |
 
 
@@ -46,19 +46,19 @@ Workspace manifests, Docker compose and stack files, environment templates.
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
 | `CLAUDE.md` | 978 | doc |  |
-| `apps/platform/prisma/schema/platform.prisma` | 767 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
+| `apps/platform/prisma/schema/platform.prisma` | 789 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `DEPLOYMENT.md` | 492 | doc |  |
 | `README.md` | 349 | doc |  |
 | `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | 285 | unit test |  |
 | `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | 285 | unit test |  |
 | `apps/platform/src/modules/billing/billing.service.ts` | 275 | service |  |
+| `apps/platform/src/modules/billing/plans.service.spec.ts` | 225 | unit test |  |
+| `apps/platform/src/core/config/env.validation.ts` | 203 | config |  |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
-| `apps/platform/src/core/config/env.validation.ts` | 194 | config |  |
 | `apps/platform/src/modules/agency/agency-stripe.service.ts` | 180 | service |  |
 | `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | 178 | unit test |  |
 | `apps/platform/prisma/schema/migrations/20260924010600_init/migration.sql` | 166 | migration |  |
-| `apps/platform/src/modules/tenants/provisioning.service.ts` | 165 | service |  |
 
 
 ---

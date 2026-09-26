@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **2,013** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,018** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -15,9 +15,9 @@ Split by area so you load one, not all of them.
 | apps/pos | 31 | 2,000 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 79 | 7,933 | [files/packages.md](../files/packages.md) |
-| docs/* | 394 | 63,378 | [files/docs.md](../files/docs.md) |
+| docs/* | 394 | 63,520 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 57 | 29,638 | [files/infra.md](../files/infra.md) |
-| repository root files | 187 | 18,817 | [files/root.md](../files/root.md) |
+| repository root files | 192 | 19,324 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,14 +29,14 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 419 |
-| unit test | 223 |
+| unit test | 224 |
 | page | 185 |
 | service | 155 |
 | module | 145 |
+| controller | 112 |
 | component | 112 |
-| controller | 111 |
-| dto | 103 |
-| migration | 85 |
+| dto | 104 |
+| migration | 86 |
 | nest module | 77 |
 | prisma schema | 45 |
 | script | 39 |
@@ -59,10 +59,10 @@ name a new file: the convention is what makes it findable.
 | channel | 5 |
 | types | 5 |
 | toml | 4 |
+| html | 4 |
 | not-found | 4 |
 | example | 3 |
 | driver | 3 |
-| html | 3 |
 | error | 3 |
 | sh | 3 |
 | timer | 3 |

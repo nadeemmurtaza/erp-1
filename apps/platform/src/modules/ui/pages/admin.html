@@ -63,7 +63,7 @@
 <main>
   <section id="tab-plans" class="active">
     <h2>Plan catalogue</h2>
-    <p class="hint">Three pricing models — doc 50. Fields shown depend on the model chosen.</p>
+    <p class="hint">Three pricing models — doc 50. Fields shown depend on the model chosen. Headline plans below appear on the public <a href="../ui/pricing" target="_blank" rel="noopener">pricing page</a> (doc 154), in headline order.</p>
     <form class="inline" id="plan-form">
       <label>Key <input name="key" required placeholder="solo-shared" /></label>
       <label>Edition cap <input name="editionCap" required placeholder="SOLO" /></label>
@@ -175,21 +175,66 @@
   function badge(value) { return '<span class="badge ' + value + '">' + value + '</span>'; }
   function esc(value) { return String(value == null ? '' : value).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
 
+  // doc 154 — kept so editHeadline() below can default its prompts to a
+  // plan's own current values instead of blanking them on every edit.
+  let plansCache = [];
+
   async function loadPlans() {
     const el = document.getElementById('plans-table');
     el.innerHTML = 'Loading…';
     try {
       const plans = await api('plans');
+      plansCache = plans;
       if (!plans.length) { el.innerHTML = '<p class="empty">No plans yet — create one above.</p>'; return; }
-      el.innerHTML = '<table><thead><tr><th>Key</th><th>Edition</th><th>Tier</th><th>Model</th><th>Price</th><th>Active</th></tr></thead><tbody>' +
+      el.innerHTML = '<table><thead><tr><th>Key</th><th>Edition</th><th>Tier</th><th>Model</th><th>Price</th><th>Active</th><th>Headline</th><th>Actions</th></tr></thead><tbody>' +
         plans.map((p) => '<tr><td>' + esc(p.key) + '</td><td>' + esc(p.editionCap) + '</td><td>' + esc(p.includedResourceTier) + '</td><td>' + badge(p.pricingModel) + '</td><td>' +
           (p.pricingModel === 'PER_SEAT' ? p.perSeatPriceMinor + '/seat'
             : p.pricingModel === 'ONE_TIME_LICENSE' ? p.oneTimeLicenseMinor + ' once (' + esc(p.licenseDeploymentMode) + ')'
             : p.pricingModel === 'USAGE_BASED' ? p.transactionFeeBps + ' bps/sale'
             : p.monthlyPriceMinor + '/mo') +
-          '</td><td>' + (p.isActive ? 'yes' : 'no') + '</td></tr>').join('') + '</tbody></table>';
+          '</td><td>' + (p.isActive ? 'yes' : 'no') + '</td><td>' +
+          (p.isHeadline ? 'yes (#' + p.headlineOrder + ')' : 'no') +
+          '</td><td class="row-actions">' +
+          (p.pricingModel === 'PER_SEAT'
+            ? '<span style="color:var(--muted);font-size:12px">never headline (doc 154)</span>'
+            : '<button class="btn" onclick="editHeadline(\'' + p.id + '\')">' + (p.isHeadline ? 'Edit headline' : 'Make headline') + '</button>' +
+              (p.isHeadline ? '<button class="btn danger" onclick="unmarkHeadline(\'' + p.id + '\')">Remove</button>' : '')) +
+          '</td></tr>').join('') + '</tbody></table>';
     } catch (error) { el.innerHTML = '<p class="err">' + esc(error.message) + '</p>'; }
   }
+
+  // doc 154 §3 — the pricing-comparison page reads exactly what an admin
+  // sets here (isHeadline/headlineOrder + the public copy), gated by the
+  // same platform.billing.manage scope as every other plan-catalogue action
+  // on this page.
+  window.editHeadline = async (id) => {
+    const plan = plansCache.find((p) => p.id === id);
+    if (!plan) return;
+    const headlineOrder = prompt('Headline order (0 = first, e.g. Lifetime License → Per Month → Pay As You Grow)', plan.headlineOrder ?? '0');
+    if (headlineOrder === null) return;
+    const displayName = prompt('Public display name (e.g. "Lifetime License")', plan.displayName || '');
+    if (displayName === null) return;
+    const priceDescription = prompt('Price description (e.g. "One-time, from Rs 50,000")', plan.priceDescription || '');
+    if (priceDescription === null) return;
+    const bestFor = prompt('Best for (one sentence)', plan.bestFor || '');
+    if (bestFor === null) return;
+    const ctaLabel = prompt('Button label (e.g. "Buy once")', plan.ctaLabel || 'Get started');
+    if (ctaLabel === null) return;
+    try {
+      await api('plans/' + id, {
+        method: 'PATCH',
+        body: JSON.stringify({ isHeadline: true, headlineOrder: Number(headlineOrder), displayName, priceDescription, bestFor, ctaLabel }),
+      });
+      loadPlans();
+    } catch (error) { alert(error.message); }
+  };
+  window.unmarkHeadline = async (id) => {
+    if (!confirm('Remove this plan from the public pricing-comparison page?')) return;
+    try {
+      await api('plans/' + id, { method: 'PATCH', body: JSON.stringify({ isHeadline: false }) });
+      loadPlans();
+    } catch (error) { alert(error.message); }
+  };
 
   document.getElementById('plan-form').addEventListener('submit', async (e) => {
     e.preventDefault();

@@ -3,26 +3,26 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2013,
-    "lines": 306661,
+    "files": 2018,
+    "lines": 307310,
     "routes": 660,
     "controllers": 121,
     "models": 244,
     "enums": 112,
-    "migrations": 85,
+    "migrations": 86,
     "events": 61,
     "permissions": 84,
     "screens": 234,
     "crons": 20,
-    "specs": 242,
+    "specs": 243,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 187,
-      "lines": 18817,
-      "bytes": 1103887,
+      "files": 192,
+      "lines": 19324,
+      "bytes": 1135456,
       "label": "repository root files"
     },
     "infra": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 394,
-      "lines": 63378,
-      "bytes": 3766078,
+      "lines": 63520,
+      "bytes": 3774536,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -14389,7 +14389,7 @@
     {
       "name": "AgencyUsageSnapshot",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 743,
+      "line": 765,
       "doc": "One row per agency-managed tenant per calendar day — a cache, not a source of truth, safe to delete and recompute (same discipline as `VariantSalesStat` on the tenant side).",
       "fields": [
         {
@@ -22306,7 +22306,7 @@
     {
       "name": "MeteredOrderFee",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 640,
+      "line": 662,
       "doc": "Doc 153's own \"the reversal document, not the reversal flag\" — one row per order actually metered for the transaction fee, naming the specific order and the exact amount metered for it, so a later `R…",
       "fields": [
         {
@@ -25102,7 +25102,7 @@
     {
       "name": "PlatformCustomQuote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 521,
+      "line": 543,
       "doc": "WO-50.4 — a custom quote's discount is checked against PLATFORM_QUOTE_DISCOUNT_APPROVAL_THRESHOLD_PCT at request time; above it the quote is PENDING until an ops principal OTHER than the requester ap…",
       "fields": [
         {
@@ -25226,7 +25226,7 @@
     {
       "name": "PlatformInvoice",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 411,
+      "line": 433,
       "doc": "",
       "fields": [
         {
@@ -25428,7 +25428,7 @@
     {
       "name": "PlatformInvoiceCreditNote",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 497,
+      "line": 519,
       "doc": "A billing dispute is resolved here, against the specific invoice — never an edited invoice line (doc 50's own \"the reversal document\" lens).",
       "fields": [
         {
@@ -25488,7 +25488,7 @@
     {
       "name": "PlatformOpsClient",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 279,
+      "line": 301,
       "doc": "A key-hash principal for internal hosting-ops tooling calling this control plane — the same shape TradingPartner/PosTerminal/Node already use in the tenant-side schema, scoped here to platform.",
       "fields": [
         {
@@ -25650,6 +25650,48 @@
           "relation": false
         },
         {
+          "name": "isHeadline",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "headlineOrder",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "displayName",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceDescription",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bestFor",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ctaLabel",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "tenants",
           "type": "PlatformTenant[]",
           "id": false,
@@ -25690,7 +25732,7 @@
     {
       "name": "PlatformRateCardChangeRequest",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 696,
+      "line": 718,
       "doc": "doc 153's own \"the threshold nobody approves alone\" / \"authority and blast radius\" lenses, resolved with the identical create/approve split `PlatformCustomQuote` (doc 50 §4) already established: a ra…",
       "fields": [
         {
@@ -25807,7 +25849,7 @@
     {
       "name": "PlatformSubscription",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 200,
+      "line": 222,
       "doc": "",
       "fields": [
         {
@@ -26146,7 +26188,7 @@
     {
       "name": "PlatformUsageRecord",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 216,
+      "line": 238,
       "doc": "Metered usage a tenant's own deployment reports about itself — never a source of business truth, only what feeds an invoice line.",
       "fields": [
         {
@@ -29317,7 +29359,7 @@
     {
       "name": "ResourceQuotaAlert",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 325,
+      "line": 347,
       "doc": "One row per (tenant, metric, window) that crossed its tier's quota threshold — the record ResourceQuotaAlertCron writes and the tenant's own billing contact / hosting-ops digest is generated from.",
       "fields": [
         {
@@ -29399,7 +29441,7 @@
     {
       "name": "ResourceTierQuota",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 300,
+      "line": 322,
       "doc": "--------------------------------------------------------------------------- WO-39.6 — resource quotas + alerting (application layer only; which orchestrator actually enforces a quota is named out of…",
       "fields": [
         {
@@ -31418,7 +31460,7 @@
     {
       "name": "SignupVerification",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 556,
+      "line": 578,
       "doc": "A signup request is held here, unprovisioned, until its email link is followed — doc 51 §3: the public form is a thin request, never a direct call into ProvisioningService.",
       "fields": [
         {
@@ -33573,7 +33615,7 @@
     {
       "name": "SupportAccessGrant",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 231,
+      "line": 253,
       "doc": "The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3.",
       "fields": [
         {
@@ -33904,7 +33946,7 @@
     {
       "name": "TenantDataExport",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 369,
+      "line": 391,
       "doc": "",
       "fields": [
         {
@@ -34006,7 +34048,7 @@
     {
       "name": "TenantDeploymentCredential",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 259,
+      "line": 281,
       "doc": "The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GCM, PLATFORM_ENCRYPTION_KEY) connection string, one row per tenant, never a plaintext column and never returned…",
       "fields": [
         {
@@ -34196,7 +34238,7 @@
     {
       "name": "TrialExtension",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 574,
+      "line": 596,
       "doc": "WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpiresAt` forward; every extension is recorded here so \"extended more than once\" is a query, not a memory.",
       "fields": [
         {
@@ -34263,7 +34305,7 @@
     {
       "name": "UsageMeter",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 607,
+      "line": 629,
       "doc": "One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` increments off a tenant's own transactional outbox (`transaction_fee_minor`, `messages_sent`) or sets to the late…",
       "fields": [
         {
@@ -34331,7 +34373,7 @@
     {
       "name": "UsageMeteringCursor",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 671,
+      "line": 693,
       "doc": "The per-tenant high-water mark `UsageMeteringService.pollTenant()` advances after each batch — so a poll reads only the outbox rows it has not already applied, rather than rescanning the whole table…",
       "fields": [
         {
@@ -36327,7 +36369,7 @@
     {
       "name": "InvoiceStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 406,
+      "line": 428,
       "values": [
         "ISSUED",
         "CREDITED"
@@ -36500,7 +36542,7 @@
     {
       "name": "OpsClientStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 269,
+      "line": 291,
       "values": [
         "ACTIVE",
         "REVOKED"
@@ -36704,7 +36746,7 @@
     {
       "name": "QuoteStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 510,
+      "line": 532,
       "values": [
         "PENDING",
         "APPROVED",
@@ -36714,7 +36756,7 @@
     {
       "name": "RateCardChangeStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 681,
+      "line": 703,
       "values": [
         "PENDING",
         "APPROVED",
@@ -36985,7 +37027,7 @@
     {
       "name": "StripeInvoicePaymentStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 730,
+      "line": 752,
       "values": [
         "PENDING",
         "PAID",
@@ -36995,7 +37037,7 @@
     {
       "name": "SubscriptionStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 194,
+      "line": 216,
       "values": [
         "ACTIVE",
         "PAST_DUE",
@@ -37015,7 +37057,7 @@
     {
       "name": "TenantExportStatus",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 349,
+      "line": 371,
       "values": [
         "PENDING",
         "RUNNING",
@@ -37026,7 +37068,7 @@
     {
       "name": "TenantExportTrigger",
       "file": "apps/platform/prisma/schema/platform.prisma",
-      "line": 356,
+      "line": 378,
       "values": [
         "MANUAL",
         "DEPROVISION"
@@ -38512,6 +38554,19 @@
         "AgencyUsageSnapshot",
         "PlatformInvoice",
         "PlatformTenant"
+      ]
+    },
+    {
+      "folder": "20260925094500_wo154_headline_plans",
+      "file": "apps/platform/prisma/schema/migrations/20260925094500_wo154_headline_plans/migration.sql",
+      "date": "2026-09-25",
+      "slug": "wo154_headline_plans",
+      "statements": 8,
+      "kinds": [
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "PlatformPlan"
       ]
     },
     {
@@ -43775,12 +43830,23 @@
       ]
     },
     {
+      "file": "apps/platform/src/modules/billing/headline-plan-signup.integration.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 1,
+      "describes": [
+        "a headline plan hands off to the identical existing provisioning path (doc 154 acceptance)"
+      ]
+    },
+    {
       "file": "apps/platform/src/modules/billing/plans.service.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 18,
       "describes": [
-        "PlansService"
+        "PlansService",
+        "update (doc 154)",
+        "getPlanComparison (doc 154)"
       ]
     },
     {
@@ -59949,6 +60015,15 @@
       "symbols": []
     },
     {
+      "path": "apps/platform/prisma/schema/migrations/20260925094500_wo154_headline_plans/migration.sql",
+      "area": "root",
+      "kind": "migration",
+      "lines": 27,
+      "bytes": 1649,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/prisma/schema/migrations/migration_lock.toml",
       "area": "root",
       "kind": "toml",
@@ -59961,8 +60036,8 @@
       "path": "apps/platform/prisma/schema/platform.prisma",
       "area": "root",
       "kind": "prisma schema",
-      "lines": 767,
-      "bytes": 34270,
+      "lines": 789,
+      "bytes": 35515,
       "doc": "WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) — the",
       "symbols": []
     },
@@ -60024,8 +60099,8 @@
       "path": "apps/platform/src/core/config/env.validation.ts",
       "area": "root",
       "kind": "config",
-      "lines": 194,
-      "bytes": 9882,
+      "lines": 203,
+      "bytes": 10353,
       "doc": "",
       "symbols": [
         {
@@ -60036,12 +60111,12 @@
         {
           "name": "PlatformEnv",
           "kind": "type",
-          "line": 185
+          "line": 194
         },
         {
           "name": "validatePlatformEnv",
           "kind": "function",
-          "line": 187
+          "line": 196
         }
       ]
     },
@@ -60646,14 +60721,14 @@
       "path": "apps/platform/src/modules/billing/billing.module.ts",
       "area": "root",
       "kind": "nest module",
-      "lines": 32,
-      "bytes": 1268,
+      "lines": 33,
+      "bytes": 1345,
       "doc": "",
       "symbols": [
         {
           "name": "BillingModule",
           "kind": "class",
-          "line": 31
+          "line": 32
         }
       ]
     },
@@ -60816,6 +60891,30 @@
       ]
     },
     {
+      "path": "apps/platform/src/modules/billing/dto/update-plan.dto.ts",
+      "area": "root",
+      "kind": "dto",
+      "lines": 46,
+      "bytes": 1306,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UpdatePlanDto",
+          "kind": "class",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/headline-plan-signup.integration.spec.ts",
+      "area": "root",
+      "kind": "unit test",
+      "lines": 95,
+      "bytes": 4512,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/platform/src/modules/billing/invoice-dunning.cron.ts",
       "area": "root",
       "kind": "scheduled job",
@@ -60834,14 +60933,14 @@
       "path": "apps/platform/src/modules/billing/plans.controller.ts",
       "area": "root",
       "kind": "controller",
-      "lines": 23,
-      "bytes": 642,
+      "lines": 31,
+      "bytes": 983,
       "doc": "",
       "symbols": [
         {
           "name": "PlansController",
           "kind": "class",
-          "line": 10
+          "line": 11
         }
       ]
     },
@@ -60849,8 +60948,8 @@
       "path": "apps/platform/src/modules/billing/plans.service.spec.ts",
       "area": "root",
       "kind": "unit test",
-      "lines": 88,
-      "bytes": 3857,
+      "lines": 225,
+      "bytes": 10972,
       "doc": "",
       "symbols": []
     },
@@ -60858,14 +60957,34 @@
       "path": "apps/platform/src/modules/billing/plans.service.ts",
       "area": "root",
       "kind": "service",
-      "lines": 48,
-      "bytes": 2489,
+      "lines": 166,
+      "bytes": 7889,
       "doc": "",
       "symbols": [
         {
+          "name": "PlanComparisonRow",
+          "kind": "interface",
+          "line": 29
+        },
+        {
           "name": "PlansService",
           "kind": "class",
-          "line": 9
+          "line": 42
+        }
+      ]
+    },
+    {
+      "path": "apps/platform/src/modules/billing/pricing.controller.ts",
+      "area": "root",
+      "kind": "controller",
+      "lines": 33,
+      "bytes": 1244,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PricingController",
+          "kind": "class",
+          "line": 16
         }
       ]
     },
@@ -61577,14 +61696,14 @@
       "path": "apps/platform/src/modules/trials/signup.controller.ts",
       "area": "root",
       "kind": "controller",
-      "lines": 33,
-      "bytes": 1227,
+      "lines": 35,
+      "bytes": 1343,
       "doc": "",
       "symbols": [
         {
           "name": "SignupController",
           "kind": "class",
-          "line": 18
+          "line": 20
         }
       ]
     },
@@ -61686,7 +61805,16 @@
       "area": "root",
       "kind": "html",
       "lines": 0,
-      "bytes": 22807,
+      "bytes": 25422,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/platform/src/modules/ui/pages/pricing.html",
+      "area": "root",
+      "kind": "html",
+      "lines": 0,
+      "bytes": 4444,
       "doc": "",
       "symbols": []
     },
@@ -61695,7 +61823,7 @@
       "area": "root",
       "kind": "html",
       "lines": 0,
-      "bytes": 4662,
+      "bytes": 5333,
       "doc": "",
       "symbols": []
     },
@@ -61712,14 +61840,14 @@
       "path": "apps/platform/src/modules/ui/ui.controller.ts",
       "area": "root",
       "kind": "controller",
-      "lines": 44,
-      "bytes": 1767,
+      "lines": 53,
+      "bytes": 2130,
       "doc": "",
       "symbols": [
         {
           "name": "UiController",
           "kind": "class",
-          "line": 26
+          "line": 30
         }
       ]
     },
@@ -71709,8 +71837,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 4046,
-      "bytes": 232304,
+      "lines": 4182,
+      "bytes": 240394,
       "doc": "",
       "symbols": []
     },
@@ -72483,8 +72611,8 @@
       "path": "docs/implementation/commercial-licensing-agency/154-three-headline-commercial-plans.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 182,
-      "bytes": 10057,
+      "lines": 188,
+      "bytes": 10425,
       "doc": "",
       "symbols": []
     },

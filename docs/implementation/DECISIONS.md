@@ -4934,7 +4934,7 @@ and why it does not reopen doc 39.
 Built as designed in doc 165: `MarketplaceListing` /
 `MarketplacePublisherCredential` / `MarketplaceViewerProfile` /
 `MarketplaceEngagement` in `apps/platform/prisma/schema/marketplace.prisma`.
-This ADR records the design; ADR-054 records WO-165.1/165.2/165.6's actual
+This ADR records the design; ADR-058 records WO-165.1/165.2/165.6's actual
 build and the remaining blocked work orders. Publishing is per-listing and
 explicit; audience is
 `visibleTo: MarketplaceAudience[]`; the transact-or-discover choice is

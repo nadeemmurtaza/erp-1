@@ -23,7 +23,7 @@
 > tenant as §2 describes — the mechanism doc 166 already built. erp-1 reads
 > the issued credential from `MARKETPLACE_API_URL`/`MARKETPLACE_API_KEY`,
 > mirroring doc 14's `ManagedServicesService` pattern exactly. See
-> ADR-054.
+> ADR-058.
 >
 > **Still blocked, named honestly, not built:** WO-165.3 (discovery),
 > WO-165.4 (transact), WO-165.5 (the `oidc-client.ts` extraction and

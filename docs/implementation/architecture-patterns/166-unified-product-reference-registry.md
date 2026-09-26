@@ -8,7 +8,7 @@
 > are built, migrated against a real Postgres, and passing
 > lint/typecheck/test. See "What's built" below for the exact file list and
 > every deviation from this document's own original sketch. ADR-048 and
-> ADR-055 record the decisions.
+> ADR-059 record the decisions.
 >
 > **Still not built, and not erp-1's own work to build:** WO-166.5, the
 > moderation screen for `GlobalProductReferenceFlag` — this document's own
@@ -19,7 +19,7 @@
 > would mean standing up a first ops console for the whole platform app, a
 > real architectural decision far larger than this document's own scope.
 > Named honestly rather than silently built or silently skipped — see
-> ADR-055.
+> ADR-059.
 >
 > **Also still not built:** the platform's own outbound sync dispatcher —
 > the push half of WO-166.4. §2's "Update fan-out" describes it as reusing
@@ -412,7 +412,7 @@ plus an `updatedAt` comparison for redelivery idempotency. Collapsing these
 into one method would force a choice between "the autofill silently
 discards a staff edit made in the same session" and "a later sync is
 diluted to only add missing locales" — neither matches what doc 166's own
-text asks for both moments to do. See ADR-055.
+text asks for both moments to do. See ADR-059.
 
 **Explicitly not built:** WO-166.5, the platform-staff moderation screen —
 see this document's own status note above for why that is not erp-1's work

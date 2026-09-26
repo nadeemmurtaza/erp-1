@@ -3513,17 +3513,17 @@ _no second-level headings_
 - Acceptance  <sub>:161</sub>
 - Out of scope  <sub>:170</sub>
 
-### `docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md`  <sub>221 lines</sub>
+### `docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md`  <sub>239 lines</sub>
 
-- 1. Work is assigned to a post, and optionally to a person  <sub>:10</sub>
-- 2. Status is a small enum plus a per-client workflow, not a string  <sub>:22</sub>
-- 3. A transition is an event, not an overwrite  <sub>:35</sub>
-- Schema — `tasks.prisma`  <sub>:41</sub>
-- Reassignment when someone leaves  <sub>:123</sub>
-- Scope lenses  <sub>:131</sub>
-- Work orders  <sub>:188</sub>
-- Acceptance  <sub>:203</sub>
-- Out of scope  <sub>:215</sub>
+- 1. Work is assigned to a post, and optionally to a person  <sub>:28</sub>
+- 2. Status is a small enum plus a per-client workflow, not a string  <sub>:40</sub>
+- 3. A transition is an event, not an overwrite  <sub>:53</sub>
+- Schema — `tasks.prisma`  <sub>:59</sub>
+- Reassignment when someone leaves  <sub>:141</sub>
+- Scope lenses  <sub>:149</sub>
+- Work orders  <sub>:206</sub>
+- Acceptance  <sub>:221</sub>
+- Out of scope  <sub>:233</sub>
 
 ### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>225 lines</sub>
 

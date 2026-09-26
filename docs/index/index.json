@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2248,
-    "lines": 342396,
+    "lines": 342414,
     "routes": 788,
     "controllers": 142,
     "models": 283,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 396,
-      "lines": 68081,
-      "bytes": 4052727,
+      "lines": 68099,
+      "bytes": 4053910,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -84195,8 +84195,8 @@
       "path": "docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 221,
-      "bytes": 10083,
+      "lines": 239,
+      "bytes": 11266,
       "doc": "",
       "symbols": []
     },

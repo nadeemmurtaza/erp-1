@@ -840,7 +840,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `148-external-customer-support-portal.md` | doc | 176 |  |
-| `23-tasks-allotment-tracking.md` | doc | 221 |  |
+| `23-tasks-allotment-tracking.md` | doc | 239 |  |
 | `24-internal-notifications-meetings-escalation.md` | doc | 225 |  |
 | `61-policy-communications-bulletin.md` | doc | 194 |  |
 | `64-help-desk-support-ticketing.md` | doc | 188 |  |

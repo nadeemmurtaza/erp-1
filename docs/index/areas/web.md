@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-403 files · 66,840 lines
+403 files · 66,871 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,13 +31,13 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 221 | 42,638 | page, loading, layout, error |
+| `apps/web/src/app` | 221 | 42,666 | page, loading, layout, error |
 | `apps/web/src/components` | 117 | 17,893 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 5 | 422 | constants |
 | `apps/web/src/hooks` | 3 | 72 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
-| `apps/web/src/lib` | 11 | 1,138 | utility |
+| `apps/web/src/lib` | 11 | 1,141 | utility |
 | `apps/web/src/providers` | 2 | 82 | react |
 | `apps/web/src/types` | 5 | 2,110 | types |
 | `apps/web/src/utils` | 5 | 306 | utility |
@@ -70,8 +70,8 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/components/admin/nav-registry.ts` | 1,073 | component |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx` | 853 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 774 | page |  |
-| `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 743 | page |  |
+| `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 791 | page |  |
+| `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 754 | page |  |
 | `apps/web/src/components/admin/analytics/report-registry.ts` | 713 | component |  |
 | `apps/web/messages/en.json` | 709 | json |  |
 | `apps/web/messages/ur.json` | 709 | json |  |

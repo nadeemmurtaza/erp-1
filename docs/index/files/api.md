@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,030 tracked files in `apps/api`, by directory.
+All 1,039 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 1,030 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (56)
+### `apps/api/prisma/schema` (57)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -54,6 +54,7 @@ All 1,030 tracked files in `apps/api`, by directory.
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
 | `giftcards.prisma` | prisma schema | 92 | Phase 5 WO-5.4/5.5 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
 | `hr.prisma` | prisma schema | 176 | Employee assets: which physical equipment (laptop, phone, uniform) is |
+| `idempotency.prisma` | prisma schema | 34 | A client-supplied Idempotency-Key, closing the one gap doc 117's own |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `instalments.prisma` | prisma schema | 76 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md) |
 | `inventory.prisma` | prisma schema | 369 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
@@ -668,6 +669,12 @@ All 1,030 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 36 |  |
 
+### `apps/api/prisma/schema/migrations/20260926150000_add_idempotency_key` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 32 |  |
+
 ### `apps/api/prisma/schema/migrations/20260926152210_wo149_b2b_accounts_approvals` (1)
 
 | File | Kind | Lines | Purpose |
@@ -690,14 +697,14 @@ All 1,030 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app.module.ts` | nest module | 30 |  |
+| `app.module.ts` | nest module | 35 |  |
 | `main.ts` | module | 113 | Must come before AppModule: the module registry reads MODULES from the |
 
 ### `apps/api/src/core` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 51 |  |
+| `core.module.ts` | nest module | 53 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -855,7 +862,7 @@ All 1,030 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 714 | The catalogue of domain events. |
+| `domain-events.ts` | module | 726 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -893,6 +900,18 @@ All 1,030 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `health.controller.ts` | controller | 52 |  |
 | `health.module.ts` | nest module | 6 |  |
+
+### `apps/api/src/core/idempotency` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `idempotency-key.constraint.spec.ts` | unit test | 40 |  |
+| `idempotency.cron.spec.ts` | unit test | 42 |  |
+| `idempotency.cron.ts` | scheduled job | 48 |  |
+| `idempotency.interceptor.spec.ts` | unit test | 161 |  |
+| `idempotency.interceptor.ts` | module | 90 |  |
+| `idempotency.module.ts` | nest module | 17 |  |
+| `idempotent-write.decorator.ts` | module | 13 |  |
 
 ### `apps/api/src/core/intent` (4)
 
@@ -1442,7 +1461,7 @@ All 1,030 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `courier-provider.ts` | module | 59 | Extension point: courier providers. |
-| `fulfilment.controller.ts` | controller | 92 |  |
+| `fulfilment.controller.ts` | controller | 94 |  |
 | `fulfilment.cron.ts` | scheduled job | 80 |  |
 | `fulfilment.module.ts` | nest module | 48 |  |
 | `fulfilment.service.ts` | service | 470 |  |
@@ -1712,7 +1731,7 @@ All 1,030 tracked files in `apps/api`, by directory.
 | `cod-risk.cron.ts` | scheduled job | 82 |  |
 | `cod-risk.service.spec.ts` | unit test | 105 |  |
 | `cod-risk.service.ts` | service | 86 |  |
-| `instalment-plan.controller.ts` | controller | 52 |  |
+| `instalment-plan.controller.ts` | controller | 54 |  |
 | `instalment-plan.service.spec.ts` | unit test | 239 |  |
 | `instalment-plan.service.ts` | service | 228 |  |
 | `notification.subscriber.ts` | event subscriber | 259 |  |
@@ -1721,7 +1740,7 @@ All 1,030 tracked files in `apps/api`, by directory.
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
 | `orders-pos.service.spec.ts` | unit test | 416 |  |
-| `orders.controller.ts` | controller | 145 |  |
+| `orders.controller.ts` | controller | 147 |  |
 | `orders.module.ts` | nest module | 57 |  |
 | `orders.service.ts` | service | 1370 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
@@ -1854,7 +1873,7 @@ All 1,030 tracked files in `apps/api`, by directory.
 | `pos-receipts.controller.ts` | controller | 24 |  |
 | `pos-receipts.service.spec.ts` | unit test | 110 |  |
 | `pos-receipts.service.ts` | service | 94 |  |
-| `pos-sales.controller.ts` | controller | 30 |  |
+| `pos-sales.controller.ts` | controller | 32 |  |
 | `pos-sales.service.spec.ts` | unit test | 79 |  |
 | `pos-sales.service.ts` | service | 63 |  |
 | `pos-shifts.controller.ts` | controller | 55 |  |
@@ -2260,7 +2279,7 @@ All 1,030 tracked files in `apps/api`, by directory.
 | `merchant-payable.controller.ts` | controller | 73 |  |
 | `merchant-payable.service.spec.ts` | unit test | 203 |  |
 | `merchant-payable.service.ts` | service | 237 |  |
-| `wallet-account.controller.ts` | controller | 39 |  |
+| `wallet-account.controller.ts` | controller | 41 |  |
 | `wallet-admin.controller.ts` | controller | 72 |  |
 | `wallet-credit-note.port.spec.ts` | unit test | 50 |  |
 | `wallet-credit-note.port.ts` | module | 110 |  |
@@ -2300,26 +2319,26 @@ All 1,030 tracked files in `apps/api`, by directory.
 | `backfill-product-options.spec.ts` | unit test | 114 |  |
 | `cart.e2e-spec.ts` | e2e test | 800 |  |
 | `catalog.e2e-spec.ts` | e2e test | 411 |  |
-| `crm.e2e-spec.ts` | e2e test | 489 |  |
-| `customer-portal.e2e-spec.ts` | e2e test | 255 |  |
+| `crm.e2e-spec.ts` | e2e test | 491 |  |
+| `customer-portal.e2e-spec.ts` | e2e test | 256 |  |
 | `customer-scope-routes.spec.ts` | unit test | 237 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |
 | `email-accounts-admin.e2e-spec.ts` | e2e test | 342 |  |
 | `email-channel.behavior.spec.ts` | unit test | 580 | Behavior tests for the email notification channel. |
 | `email-inbox.e2e-spec.ts` | e2e test | 225 |  |
 | `email-templates-admin.e2e-spec.ts` | e2e test | 86 |  |
-| `giftkarta-checkout.e2e-spec.ts` | e2e test | 215 |  |
+| `giftkarta-checkout.e2e-spec.ts` | e2e test | 217 |  |
 | `meta.e2e-spec.ts` | e2e test | 65 |  |
-| `orders.e2e-spec.ts` | e2e test | 981 |  |
-| `payments-gateway.e2e-spec.ts` | e2e test | 214 |  |
+| `orders.e2e-spec.ts` | e2e test | 1088 |  |
+| `payments-gateway.e2e-spec.ts` | e2e test | 217 |  |
 | `payments-refund.e2e-spec.ts` | e2e test | 164 |  |
-| `promotions-checkout.e2e-spec.ts` | e2e test | 327 |  |
+| `promotions-checkout.e2e-spec.ts` | e2e test | 334 |  |
 | `publish-gate.spec.ts` | unit test | 69 |  |
 | `reports.e2e-spec.ts` | e2e test | 189 |  |
 | `session-only-routes.spec.ts` | unit test | 75 |  |
 | `setup-env.ts` | module | 11 | Same ordering rule as src/core/config/load-env.ts: the environment must be |
 | `sso.e2e-spec.ts` | e2e test | 414 |  |
-| `stitching.e2e-spec.ts` | e2e test | 590 |  |
+| `stitching.e2e-spec.ts` | e2e test | 593 |  |
 
 ### `apps/api/test/support` (2)
 

@@ -5912,7 +5912,6 @@ instead, which is non-interactive and does not create a shadow database.
 ### Status
 **Accepted.**
 
-
 ## ADR-054 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected
 
 ### Context
@@ -6489,7 +6488,6 @@ waiting.
 
 ### Status
 **Accepted.**
-
 
 ## ADR-059 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure
 

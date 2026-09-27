@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**422** markdown documents. These explain **why**; this index only says **where**.
+**425** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -86,10 +86,11 @@ _no second-level headings_
 - Security engineering  <sub>:12</sub>
 - Personal API keys  <sub>:24</sub>
 
-### `.claude/rules/services.md`  <sub>31 lines</sub>
+### `.claude/rules/services.md`  <sub>49 lines</sub>
 
 - Error handling  <sub>:14</sub>
 - Observability  <sub>:23</sub>
+- Dry run before live  <sub>:35</sub>
 
 ### `.claude/rules/testing.md`  <sub>20 lines</sub>
 
@@ -2162,41 +2163,41 @@ _no second-level headings_
 - Acceptance  <sub>:100</sub>
 - Out of scope  <sub>:109</sub>
 
-### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>81 lines</sub>
+### `docs/implementation/architecture-patterns/115-hexagonal-architecture-ports-adapters.md`  <sub>85 lines</sub>
 
-- The mapping, made explicit  <sub>:30</sub>
-- What this document adds: naming, not architecture  <sub>:47</sub>
-- Scope lenses  <sub>:58</sub>
-- Work orders  <sub>:65</sub>
-- Acceptance  <sub>:70</sub>
-- Out of scope  <sub>:76</sub>
-
-### `docs/implementation/architecture-patterns/117-event-driven-choreography-immutability.md`  <sub>82 lines</sub>
-
-- What already exists: choreography and immutability  <sub>:15</sub>
-- Why idempotency here is domain-keyed, not generic event-ID deduplication  <sub>:26</sub>
-- Scope lenses  <sub>:56</sub>
-- Work orders  <sub>:63</sub>
-- Acceptance  <sub>:69</sub>
-- Out of scope  <sub>:75</sub>
-
-### `docs/implementation/architecture-patterns/118-headless-composable-api-capabilities.md`  <sub>87 lines</sub>
-
-- What already answers each clause  <sub>:13</sub>
-- The one thing this document adds: naming the risk of "acting on behalf of a human"  <sub>:41</sub>
-- Scope lenses  <sub>:57</sub>
-- Work orders  <sub>:65</sub>
+- The mapping, made explicit  <sub>:34</sub>
+- What this document adds: naming, not architecture  <sub>:51</sub>
+- Scope lenses  <sub>:62</sub>
+- Work orders  <sub>:69</sub>
 - Acceptance  <sub>:74</sub>
 - Out of scope  <sub>:80</sub>
 
-### `docs/implementation/architecture-patterns/122-data-lake-cold-storage-architecture.md`  <sub>75 lines</sub>
+### `docs/implementation/architecture-patterns/117-event-driven-choreography-immutability.md`  <sub>97 lines</sub>
 
-- Why this is premature today, stated with evidence rather than assumed  <sub>:16</sub>
-- The concrete trigger that would make this worth building  <sub>:33</sub>
-- Scope lenses  <sub>:50</sub>
-- Work orders  <sub>:56</sub>
-- Acceptance  <sub>:63</sub>
-- Out of scope  <sub>:70</sub>
+- What already exists: choreography and immutability  <sub>:30</sub>
+- Why idempotency here is domain-keyed, not generic event-ID deduplication  <sub>:41</sub>
+- Scope lenses  <sub>:71</sub>
+- Work orders  <sub>:78</sub>
+- Acceptance  <sub>:84</sub>
+- Out of scope  <sub>:90</sub>
+
+### `docs/implementation/architecture-patterns/118-headless-composable-api-capabilities.md`  <sub>117 lines</sub>
+
+- What already answers each clause  <sub>:33</sub>
+- The one thing this document adds: naming the risk of "acting on behalf of a human"  <sub>:67</sub>
+- Scope lenses  <sub>:86</sub>
+- Work orders  <sub>:94</sub>
+- Acceptance  <sub>:103</sub>
+- Out of scope  <sub>:109</sub>
+
+### `docs/implementation/architecture-patterns/122-data-lake-cold-storage-architecture.md`  <sub>86 lines</sub>
+
+- Why this is premature today, stated with evidence rather than assumed  <sub>:27</sub>
+- The concrete trigger that would make this worth building  <sub>:44</sub>
+- Scope lenses  <sub>:61</sub>
+- Work orders  <sub>:67</sub>
+- Acceptance  <sub>:74</sub>
+- Out of scope  <sub>:81</sub>
 
 ### `docs/implementation/architecture-patterns/127-policy-as-data-completeness-sweep.md`  <sub>117 lines</sub>
 
@@ -2217,39 +2218,39 @@ _no second-level headings_
 - Acceptance  <sub>:181</sub>
 - Out of scope  <sub>:188</sub>
 
-### `docs/implementation/architecture-patterns/130-machine-readable-capability-manifest.md`  <sub>110 lines</sub>
+### `docs/implementation/architecture-patterns/130-machine-readable-capability-manifest.md`  <sub>135 lines</sub>
 
-- 1. The manifest, generated from live registrations, never hand-maintained  <sub>:14</sub>
-- 2. Who reads this, and why it matters for the future you're actually worried about  <sub>:40</sub>
-- Scope lenses  <sub>:53</sub>
-- Work orders  <sub>:86</sub>
-- Acceptance  <sub>:96</sub>
-- Out of scope  <sub>:103</sub>
+- 1. The manifest, generated from live registrations, never hand-maintained  <sub>:37</sub>
+- 2. Who reads this, and why it matters for the future you're actually worried about  <sub>:65</sub>
+- Scope lenses  <sub>:78</sub>
+- Work orders  <sub>:111</sub>
+- Acceptance  <sub>:121</sub>
+- Out of scope  <sub>:128</sub>
 
-### `docs/implementation/architecture-patterns/131-versioned-domain-events.md`  <sub>70 lines</sub>
+### `docs/implementation/architecture-patterns/131-versioned-domain-events.md`  <sub>84 lines</sub>
 
-- The convention: additive by default, a new event name when a break is unavoidable  <sub>:11</sub>
-- Scope lenses  <sub>:41</sub>
-- Work orders  <sub>:47</sub>
-- Acceptance  <sub>:58</sub>
-- Out of scope  <sub>:64</sub>
+- The convention: additive by default, a new event name when a break is unavoidable  <sub>:25</sub>
+- Scope lenses  <sub>:55</sub>
+- Work orders  <sub>:61</sub>
+- Acceptance  <sub>:72</sub>
+- Out of scope  <sub>:78</sub>
 
-### `docs/implementation/architecture-patterns/133-reusable-dry-run-harness.md`  <sub>59 lines</sub>
+### `docs/implementation/architecture-patterns/133-reusable-dry-run-harness.md`  <sub>77 lines</sub>
 
-- The convention: every policy-as-data mechanism exposes a pure `preview()` alongside its `apply()`  <sub>:11</sub>
-- Scope lenses  <sub>:32</sub>
-- Work orders  <sub>:39</sub>
-- Acceptance  <sub>:47</sub>
-- Out of scope  <sub>:54</sub>
+- The convention: every policy-as-data mechanism exposes a pure `preview()` alongside its `apply()`  <sub>:29</sub>
+- Scope lenses  <sub>:50</sub>
+- Work orders  <sub>:57</sub>
+- Acceptance  <sub>:65</sub>
+- Out of scope  <sub>:72</sub>
 
-### `docs/implementation/architecture-patterns/134-hexagonal-purity-ci-check.md`  <sub>71 lines</sub>
+### `docs/implementation/architecture-patterns/134-hexagonal-purity-ci-check.md`  <sub>82 lines</sub>
 
-- 1. The specific violation this check catches  <sub>:11</sub>
-- 2. Why this is worth building even though the audit found zero violations today  <sub>:33</sub>
-- Scope lenses  <sub>:45</sub>
-- Work orders  <sub>:50</sub>
-- Acceptance  <sub>:59</sub>
-- Out of scope  <sub>:68</sub>
+- 1. The specific violation this check catches  <sub>:22</sub>
+- 2. Why this is worth building even though the audit found zero violations today  <sub>:44</sub>
+- Scope lenses  <sub>:56</sub>
+- Work orders  <sub>:61</sub>
+- Acceptance  <sub>:70</sub>
+- Out of scope  <sub>:79</sub>
 
 ### `docs/implementation/architecture-patterns/136-database-cache-portability-audit.md`  <sub>126 lines</sub>
 
@@ -2260,22 +2261,22 @@ _no second-level headings_
 - Acceptance  <sub>:114</sub>
 - Out of scope  <sub>:119</sub>
 
-### `docs/implementation/architecture-patterns/138-technology-substitution-playbook.md`  <sub>70 lines</sub>
+### `docs/implementation/architecture-patterns/138-technology-substitution-playbook.md`  <sub>91 lines</sub>
 
-- The playbook, one entry per core dependency  <sub>:11</sub>
-- Why this is worth writing down explicitly, even where the answer is short  <sub>:38</sub>
-- Scope lenses  <sub>:49</sub>
-- Work orders  <sub>:54</sub>
-- Acceptance  <sub>:62</sub>
-- Out of scope  <sub>:67</sub>
+- The playbook, one entry per core dependency  <sub>:26</sub>
+- Why this is worth writing down explicitly, even where the answer is short  <sub>:59</sub>
+- Scope lenses  <sub>:70</sub>
+- Work orders  <sub>:75</sub>
+- Acceptance  <sub>:83</sub>
+- Out of scope  <sub>:88</sub>
 
-### `docs/implementation/architecture-patterns/139-second-front-door-websocket-gateway.md`  <sub>106 lines</sub>
+### `docs/implementation/architecture-patterns/139-second-front-door-websocket-gateway.md`  <sub>124 lines</sub>
 
-- 1. A second transport, the identical authorization and service layer  <sub>:11</sub>
-- Scope lenses  <sub>:40</sub>
-- Work orders  <sub>:84</sub>
-- Acceptance  <sub>:92</sub>
-- Out of scope  <sub>:100</sub>
+- 1. A second transport, the identical authorization and service layer  <sub>:29</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:102</sub>
+- Acceptance  <sub>:110</sub>
+- Out of scope  <sub>:118</sub>
 
 ### `docs/implementation/architecture-patterns/140-general-eav-extensibility-model.md`  <sub>184 lines</sub>
 
@@ -2314,17 +2315,17 @@ _no second-level headings_
 - Acceptance  <sub>:182</sub>
 - Out of scope  <sub>:192</sub>
 
-### `docs/implementation/architecture-patterns/157-client-request-idempotency-keys.md`  <sub>276 lines</sub>
+### `docs/implementation/architecture-patterns/157-client-request-idempotency-keys.md`  <sub>319 lines</sub>
 
-- What already exists — and exactly why it can't cover this case  <sub>:10</sub>
-- The mechanism: a client-supplied key, checked before the write ever runs  <sub>:35</sub>
-- 1. Named allowlist, not a global behaviour change  <sub>:132</sub>
-- 2. The offline case is the sharpest version of the same problem  <sub>:151</sub>
-- 3. Cleanup — a key only needs to live as long as a client might retry  <sub>:164</sub>
-- Scope lenses  <sub>:184</sub>
-- Work orders  <sub>:241</sub>
-- Acceptance  <sub>:254</sub>
-- Out of scope  <sub>:266</sub>
+- What already exists — and exactly why it can't cover this case  <sub>:53</sub>
+- The mechanism: a client-supplied key, checked before the write ever runs  <sub>:78</sub>
+- 1. Named allowlist, not a global behaviour change  <sub>:175</sub>
+- 2. The offline case is the sharpest version of the same problem  <sub>:194</sub>
+- 3. Cleanup — a key only needs to live as long as a client might retry  <sub>:207</sub>
+- Scope lenses  <sub>:227</sub>
+- Work orders  <sub>:284</sub>
+- Acceptance  <sub>:297</sub>
+- Out of scope  <sub>:309</sub>
 
 ### `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md`  <sub>610 lines</sub>
 
@@ -2725,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,181 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>6,629 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2784,8 +2785,12 @@ _no second-level headings_
 - ADR-051 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)  <sub>:5486</sub>
 - ADR-052 — Docs 127/128/136 (hardcoded-policy sweep, extension-point coverage audit, database/cache portability audit): two real policy gaps converted; both of doc 128's own "gaps found" turn out to already be closed by prior work it never checked against; 170+ raw-SQL call sites triaged, none rewritten  <sub>:5593</sub>
 - ADR-053 — Doc 149 (`accounts`/`approvals` sector packs): a genuine REQUEST/RECORD split (`B2BOrderRequest`) rather than gating the generic checkout endpoint; the doc's own self-approval-refusal claim corrected against `ApprovalService`'s real behavior; an approval step widened to a Contact set, never a second chain mechanism  <sub>:5715</sub>
-- ADR-054 — Doc 165 (cross-tenant marketplace directory), part two: WO-165.1/165.2/165.6 built; WO-165.3/165.4/165.5 deferred together as ADR-047 already scoped them; the publisher credential is ops-issued, not self-service; `enforceSso` gates by legacy `User.role`, exempting whoever turned it on  <sub>:5916</sub>
-- ADR-055 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6044</sub>
+- ADR-054 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected  <sub>:5915</sub>
+- ADR-055 — Doc 117 (choreography and idempotency) and doc 118 (headless, composable, agent-consumable capabilities): both theses stand, but doc 117's own worked-example table was three-quarters fabricated, and doc 118 (plus doc 115, its own source) cite a deferred model as already shipped  <sub>:6040</sub>
+- ADR-056 — Docs 122 (data lake), 130 (capability manifest) and 131 (versioned domain events): one more fabricated citation, one more deferred-model repeat, one small real work order actually shipped  <sub>:6146</sub>
+- ADR-057 — Docs 133 (dry-run harness), 134 (hexagonal-purity CI check) and 138 (technology substitution playbook): a naming convention shipped with better evidence than it cited, a real static check built and wired into `pnpm lint`, one CI overclaim corrected  <sub>:6256</sub>
+- ADR-058 — Doc 165 (cross-tenant marketplace directory), part two: WO-165.1/165.2/165.6 built; WO-165.3/165.4/165.5 deferred together as ADR-047 already scoped them; the publisher credential is ops-issued, not self-service; `enforceSso` gates by legacy `User.role`, exempting whoever turned it on  <sub>:6365</sub>
+- ADR-059 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6492</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -2873,6 +2878,34 @@ _no second-level headings_
 - Work orders  <sub>:170</sub>
 - Acceptance  <sub>:191</sub>
 - Out of scope  <sub>:204</sub>
+
+### `docs/implementation/finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md`  <sub>78 lines</sub>
+
+- What a real build would need to answer  <sub>:48</sub>
+
+### `docs/implementation/GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md`  <sub>177 lines</sub>
+
+- Setup  <sub>:21</sub>
+- CRM  <sub>:42</sub>
+- Sales Management  <sub>:56</sub>
+- Purchase Management  <sub>:75</sub>
+- Inventory Management  <sub>:91</sub>
+- Production Module  <sub>:116</sub>
+- Financial Management  <sub>:126</sub>
+- What's already covered, not repeated above  <sub>:160</sub>
+
+### `docs/implementation/GAP-ANALYSIS-ODOO-APPS.md`  <sub>164 lines</sub>
+
+- Website / eCommerce  <sub>:20</sub>
+- Sales  <sub>:35</sub>
+- Finance  <sub>:51</sub>
+- Inventory & Manufacturing  <sub>:66</sub>
+- Human Resources  <sub>:80</sub>
+- Marketing  <sub>:91</sub>
+- Services  <sub>:101</sub>
+- Productivity  <sub>:119</sub>
+- Customization  <sub>:142</sub>
+- Bottom line  <sub>:151</sub>
 
 ### `docs/implementation/hr-people-org/164-department-permission-role-duty-control.md`  <sub>327 lines</sub>
 
@@ -3383,7 +3416,7 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>528 lines</sub>
+### `docs/implementation/README.md`  <sub>544 lines</sub>
 
 - Read in this order  <sub>:16</sub>
 - Dependency order  <sub>:398</sub>
@@ -3392,6 +3425,7 @@ _no second-level headings_
 - Known gaps not yet owned by a phase  <sub>:482</sub>
 - When a brief is wrong  <sub>:509</sub>
 - Scope, honestly  <sub>:522</sub>
+- Gap-analysis roadmap references  <sub>:529</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 
@@ -3510,17 +3544,17 @@ _no second-level headings_
 - Acceptance  <sub>:161</sub>
 - Out of scope  <sub>:170</sub>
 
-### `docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md`  <sub>221 lines</sub>
+### `docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md`  <sub>239 lines</sub>
 
-- 1. Work is assigned to a post, and optionally to a person  <sub>:10</sub>
-- 2. Status is a small enum plus a per-client workflow, not a string  <sub>:22</sub>
-- 3. A transition is an event, not an overwrite  <sub>:35</sub>
-- Schema — `tasks.prisma`  <sub>:41</sub>
-- Reassignment when someone leaves  <sub>:123</sub>
-- Scope lenses  <sub>:131</sub>
-- Work orders  <sub>:188</sub>
-- Acceptance  <sub>:203</sub>
-- Out of scope  <sub>:215</sub>
+- 1. Work is assigned to a post, and optionally to a person  <sub>:28</sub>
+- 2. Status is a small enum plus a per-client workflow, not a string  <sub>:40</sub>
+- 3. A transition is an event, not an overwrite  <sub>:53</sub>
+- Schema — `tasks.prisma`  <sub>:59</sub>
+- Reassignment when someone leaves  <sub>:141</sub>
+- Scope lenses  <sub>:149</sub>
+- Work orders  <sub>:206</sub>
+- Acceptance  <sub>:221</sub>
+- Out of scope  <sub>:233</sub>
 
 ### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>225 lines</sub>
 

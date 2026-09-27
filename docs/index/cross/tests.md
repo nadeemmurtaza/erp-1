@@ -3,7 +3,7 @@
 
 # Tests
 
-**301** spec files, **2,925** cases. What is already pinned down — and what is not.
+**304** spec files, **2,941** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -48,7 +48,7 @@ regression or an N+1.
 | `apps/api/test/email-templates-admin.e2e-spec.ts` | 4 | Admin email template catalog (e2e) |
 | `apps/api/test/giftkarta-checkout.e2e-spec.ts` | 6 | Giftkarta third-party gift card checkout (e2e) |
 | `apps/api/test/meta.e2e-spec.ts` | 2 | Meta (e2e) |
-| `apps/api/test/orders.e2e-spec.ts` | 34 | Orders (e2e) · payment methods · placing an order · stitched orders · bank transfer · order status · tracking · admin a… |
+| `apps/api/test/orders.e2e-spec.ts` | 39 | Orders (e2e) · payment methods · placing an order · idempotency (Idempotency-Key) · stitched orders · bank transfer · o… |
 | `apps/api/test/payments-gateway.e2e-spec.ts` | 4 | JazzCash checkout redirect (e2e) |
 | `apps/api/test/payments-refund.e2e-spec.ts` | 5 | Payment refunds (e2e) |
 | `apps/api/test/promotions-checkout.e2e-spec.ts` | 8 | Promotions & gift cards at checkout (e2e) · automatic discounts · promo codes · gift cards · store credit |
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (281)
+## Unit and integration (284)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -82,6 +82,9 @@ regression or an N+1.
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/feed/feed-registry.service.spec.ts` | core/feed | 6 | FeedRegistryService — WO-58.2 |
+| `apps/api/src/core/idempotency/idempotency-key.constraint.spec.ts` | core/idempotency | 1 | IdempotencyKey — @@unique([scope, key]) race guard |
+| `apps/api/src/core/idempotency/idempotency.cron.spec.ts` | core/idempotency | 2 | IdempotencyCron — WO-157.4 |
+| `apps/api/src/core/idempotency/idempotency.interceptor.spec.ts` | core/idempotency | 8 | IdempotencyInterceptor — WO-157.2 |
 | `apps/api/src/core/intent/intent-router.service.spec.ts` | core/intent | 12 | IntentRouterService · routing · permission enforcement — mirrors PermissionsGuard exactly, for a se… |
 | `apps/api/src/core/metrics/metric-registry.service.spec.ts` | core/metrics | 15 | MetricRegistryService · register · collect — permission gating · collect — failure isolation · coll… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |

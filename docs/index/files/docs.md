@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 396 tracked files in `docs/*`, by directory.
+All 399 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -558,16 +558,18 @@ All 396 tracked files in `docs/*`, by directory.
 | `06g-generate-workforce-shifts-jml.md` | doc | 42 |  |
 | `06h-harden-workforce-shifts-jml.md` | doc | 35 |  |
 
-### `docs/implementation` (8)
+### `docs/implementation` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 6181 |  |
+| `DECISIONS.md` | doc | 6629 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
+| `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
+| `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 528 |  |
+| `README.md` | doc | 544 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
@@ -629,24 +631,24 @@ All 396 tracked files in `docs/*`, by directory.
 | `110-cqrs-read-write-separation.md` | doc | 99 |  |
 | `113-micro-frontend-embedding.md` | doc | 129 |  |
 | `114-sandboxed-scripting-runtime.md` | doc | 119 |  |
-| `115-hexagonal-architecture-ports-adapters.md` | doc | 81 |  |
-| `117-event-driven-choreography-immutability.md` | doc | 82 |  |
-| `118-headless-composable-api-capabilities.md` | doc | 87 |  |
-| `122-data-lake-cold-storage-architecture.md` | doc | 75 |  |
+| `115-hexagonal-architecture-ports-adapters.md` | doc | 85 |  |
+| `117-event-driven-choreography-immutability.md` | doc | 97 |  |
+| `118-headless-composable-api-capabilities.md` | doc | 117 |  |
+| `122-data-lake-cold-storage-architecture.md` | doc | 86 |  |
 | `127-policy-as-data-completeness-sweep.md` | doc | 117 |  |
 | `128-extension-point-coverage-audit.md` | doc | 194 |  |
-| `130-machine-readable-capability-manifest.md` | doc | 110 |  |
-| `131-versioned-domain-events.md` | doc | 70 |  |
-| `133-reusable-dry-run-harness.md` | doc | 59 |  |
-| `134-hexagonal-purity-ci-check.md` | doc | 71 |  |
+| `130-machine-readable-capability-manifest.md` | doc | 135 |  |
+| `131-versioned-domain-events.md` | doc | 84 |  |
+| `133-reusable-dry-run-harness.md` | doc | 77 |  |
+| `134-hexagonal-purity-ci-check.md` | doc | 82 |  |
 | `136-database-cache-portability-audit.md` | doc | 126 |  |
-| `138-technology-substitution-playbook.md` | doc | 70 |  |
-| `139-second-front-door-websocket-gateway.md` | doc | 106 |  |
+| `138-technology-substitution-playbook.md` | doc | 91 |  |
+| `139-second-front-door-websocket-gateway.md` | doc | 124 |  |
 | `140-general-eav-extensibility-model.md` | doc | 184 |  |
 | `141-general-metadata-driven-ui-engine.md` | doc | 192 |  |
 | `142-bpmn-visual-workflow-engine.md` | doc | 166 |  |
 | `143-micro-frontend-architecture.md` | doc | 199 |  |
-| `157-client-request-idempotency-keys.md` | doc | 276 |  |
+| `157-client-request-idempotency-keys.md` | doc | 319 |  |
 | `166-unified-product-reference-registry.md` | doc | 610 |  |
 | `92-microservices-module-decoupling.md` | doc | 94 |  |
 | `93-headless-frontend-architecture.md` | doc | 73 |  |
@@ -719,7 +721,7 @@ All 396 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
 
-### `docs/implementation/finance-accounting` (8)
+### `docs/implementation/finance-accounting` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -731,6 +733,7 @@ All 396 tracked files in `docs/*`, by directory.
 | `49-financial-institution-settlement-partnerships.md` | doc | 330 |  |
 | `56-overdue-invoices-counter.md` | doc | 125 |  |
 | `68-realtime-gross-profit.md` | doc | 213 |  |
+| `GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md` | doc | 78 |  |
 
 ### `docs/implementation/hr-people-org` (19)
 
@@ -840,7 +843,7 @@ All 396 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `148-external-customer-support-portal.md` | doc | 176 |  |
-| `23-tasks-allotment-tracking.md` | doc | 221 |  |
+| `23-tasks-allotment-tracking.md` | doc | 239 |  |
 | `24-internal-notifications-meetings-escalation.md` | doc | 225 |  |
 | `61-policy-communications-bulletin.md` | doc | 194 |  |
 | `64-help-desk-support-ticketing.md` | doc | 188 |  |

@@ -32,16 +32,16 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,030 | 140,265 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 396 | 67,780 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 403 | 66,840 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 28,612 | workspace manifests, docker compose/stack files, env templates |
+| `apps/api` | 1,039 | 140,896 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 399 | 68,891 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 403 | 66,871 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 28,613 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
-| `scripts` | 24 | 9,458 | repository checks and generators (lint gates, this index) |
+| `scripts` | 25 | 9,607 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 62 | 7,707 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `apps/pos` | 31 | 2,000 | Next.js PWA — offline-first point of sale |
-| `.claude` | 22 | 1,046 |  |
+| `apps/pos` | 31 | 2,023 | Next.js PWA — offline-first point of sale |
+| `.claude` | 22 | 1,064 |  |
 | `packages/pos-core` | 13 | 481 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
 | `.github` | 3 | 336 | CI and deployment workflows |
@@ -139,6 +139,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`extension-points`](core/extension-points.md) | 11 |  |
 | [`feed`](core/feed.md) | 5 |  |
 | [`health`](core/health.md) | 2 |  |
+| [`idempotency`](core/idempotency.md) | 7 |  |
 | [`intent`](core/intent.md) | 4 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
 | [`notifications`](core/notifications.md) | 23 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |

@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **2,260** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,273** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,030 | 140,265 | [files/api.md](../files/api.md) |
-| apps/web | 403 | 66,840 | [files/web.md](../files/web.md) |
-| apps/pos | 31 | 2,000 | [files/pos.md](../files/pos.md) |
+| apps/api | 1,039 | 140,896 | [files/api.md](../files/api.md) |
+| apps/web | 403 | 66,871 | [files/web.md](../files/web.md) |
+| apps/pos | 31 | 2,023 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 79 | 8,289 | [files/packages.md](../files/packages.md) |
-| docs/* | 396 | 67,780 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 59 | 30,474 | [files/infra.md](../files/infra.md) |
-| repository root files | 213 | 21,303 | [files/root.md](../files/root.md) |
+| docs/* | 399 | 68,891 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 60 | 30,624 | [files/infra.md](../files/infra.md) |
+| repository root files | 213 | 21,321 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -28,21 +28,21 @@ name a new file: the convention is what makes it findable.
 
 | Kind | Count |
 |---|---|
-| doc | 421 |
-| unit test | 281 |
+| doc | 424 |
+| unit test | 284 |
 | page | 202 |
 | service | 185 |
-| module | 161 |
+| module | 163 |
 | controller | 137 |
 | dto | 125 |
 | component | 121 |
-| migration | 107 |
-| nest module | 92 |
-| prisma schema | 59 |
-| script | 41 |
+| migration | 108 |
+| nest module | 93 |
+| prisma schema | 60 |
+| script | 42 |
 | event subscriber | 33 |
+| scheduled job | 30 |
 | json | 29 |
-| scheduled job | 29 |
 | react | 29 |
 | asset | 26 |
 | utility | 24 |

@@ -168,6 +168,9 @@ export const DomainEvent = {
 
   /** 49-financial-institution-settlement-partnerships.md (WO-49.4) — SettlementService.writeOffShortfall() on an accepted SHORT batch. posting-rules.subscriber.ts's own handler posts the write-off through findPostedEntry(source, batchId), never a second posting mechanism; `settlements` never imports `accounting`. */
   SettlementShortfallWrittenOff: 'settlement.shortfall_written_off',
+
+  /** BulletinsService.publish() (tasks-notifications-support/61-policy-communications-bulletin.md, WO-61.3). BulletinNotificationListener is the only subscriber — resolves the audience through AudienceService.resolve() exactly as NotifyService does, and sends through NotificationsService, never a second delivery mechanism. */
+  BulletinPublished: 'notify.bulletin_published',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -674,6 +677,7 @@ export interface DomainEventPayloads {
   [DomainEvent.CreditHoldApplied]: CreditHoldAppliedPayload;
   [DomainEvent.NotificationSent]: NotificationSentPayload;
   [DomainEvent.SettlementShortfallWrittenOff]: SettlementShortfallWrittenOffPayload;
+  [DomainEvent.BulletinPublished]: BulletinPublishedPayload;
 }
 
 export interface CreditNoteIssuedPayload {
@@ -722,4 +726,10 @@ export interface SettlementShortfallWrittenOffPayload {
   shortfallMinor: number;
   /** ISO — the decision's own time, so a late post still resolves the currently open period (R15). */
   writtenOffAt: string;
+}
+
+export interface BulletinPublishedPayload {
+  bulletinId: string;
+  /** NULL means the whole organization — see Bulletin.audienceOrgUnitId. */
+  audienceOrgUnitId: string | null;
 }

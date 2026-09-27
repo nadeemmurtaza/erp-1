@@ -854,6 +854,18 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'organization',
     module: 'notify',
   },
+  {
+    // tasks-notifications-support/61-policy-communications-bulletin.md
+    // WO-61.5 — hr.bulletins.view is seeded broadly (TAILOR/STAFF/ADMIN),
+    // so this entry is reachable by nearly everyone, unlike the notify.*
+    // entries above it.
+    key: 'bulletins',
+    label: 'Bulletins',
+    href: '/admin/bulletins',
+    permissions: ['hr.bulletins.view'],
+    group: 'organization',
+    module: 'notify',
+  },
 
   // Group: Settings
   {

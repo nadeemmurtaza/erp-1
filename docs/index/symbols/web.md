@@ -174,6 +174,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AdminBrandsPage` | default | :35 | The brand list. |
 
+### `apps/web/src/app/(admin)/admin/(app)/bulletins`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `BulletinsPage` | default | :35 | tasks-notifications-support/61-policy-communications-bulletin.md (WO-61.5). |
+
+### `apps/web/src/app/(admin)/admin/(app)/bulletins/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewBulletinPage` | default | :24 | tasks-notifications-support/61-policy-communications-bulletin.md (WO-61.5). |
+
 ### `apps/web/src/app/(admin)/admin/(app)/bundles`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1315,8 +1327,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1077 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1092 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1089 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1104 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

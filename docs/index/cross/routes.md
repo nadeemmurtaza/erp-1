@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **809** endpoints across **148** controllers, with the access rule that actually guards each one.
+All **814** endpoints across **149** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -777,10 +777,15 @@ never authorization.
 | GET | `/notification-preferences` | signed-in | `NotificationPreferencesController.list` | My notification preferences, per channel and category |
 | PUT | `/notification-preferences` | signed-in | `NotificationPreferencesController.update` | Update one or more preference cells |
 
-### [`notify`](../modules/notify.md) (11)
+### [`notify`](../modules/notify.md) (16)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/bulletins` | `hr.bulletins.view` | `BulletinsController.list` | Every active notice the caller's own org-tree membership reaches |
+| POST | `/admin/bulletins` | `hr.bulletins.publish` | `BulletinsController.publish` | Publish a notice, queuing the "new notice" ping through the existing notificati… |
+| GET | `/admin/bulletins/:id` | `hr.bulletins.view` | `BulletinsController.get` | One notice, if the caller is within its audience |
+| POST | `/admin/bulletins/:id/acknowledge` | `hr.bulletins.view` | `BulletinsController.acknowledge` | Record that the caller has read this notice — a second click is a no-op |
+| POST | `/admin/bulletins/:id/retract` | `hr.bulletins.publish` | `BulletinsController.retract` | Retract a notice — removes it from the active list, never deletes the row or it… |
 | POST | `/admin/notify/:id/decide` | `notify.send` | `NotifyController.decide` | Countersign or reject a pending broadcast — only the person it was routed to ma… |
 | GET | `/admin/notify/escalation-rules` | `notify.escalation.manage` | `EscalationRuleController.list` | Every configured escalation rule |
 | POST | `/admin/notify/escalation-rules` | `notify.escalation.manage` | `EscalationRuleController.create` | Watch a Task.sourceType for staleness and escalate up Position.reportsTo |

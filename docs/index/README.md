@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,294 files / 349,053 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,302 files / 350,219 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -46,22 +46,22 @@ single fact — the page is the right tool when you need the shape of something.
 
 | Your question | Open this | Cost | What it gives you |
 |---|---|---|---|
-| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~35.0k | all 809 HTTP routes, with the permission that guards each |
-| “What permission do I need / who has it?” | [cross/permissions.md](cross/permissions.md) | ~5.6k | all 111 permissions → routes, UI call sites, seed |
-| “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | ~18.0k | all 292 Prisma models and 135 enums, field by field |
-| “How do modules talk to each other?” | [cross/events.md](cross/events.md) | ~10.1k | all 65 domain events → publishers and subscribers |
+| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~35.2k | all 814 HTTP routes, with the permission that guards each |
+| “What permission do I need / who has it?” | [cross/permissions.md](cross/permissions.md) | ~5.7k | all 113 permissions → routes, UI call sites, seed |
+| “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | ~18.1k | all 294 Prisma models and 136 enums, field by field |
+| “How do modules talk to each other?” | [cross/events.md](cross/events.md) | ~10.3k | all 66 domain events → publishers and subscribers |
 | “What are the valid status transitions for this entity?” | [cross/state-machines.md](cross/state-machines.md) | ~557 | every named `Record<XStatus, XStatus[]>` transition table (1) |
-| “What screen serves this URL?” | [cross/ui-routes.md](cross/ui-routes.md) | ~7.5k | all 255 screens across web, POS and mobile |
+| “What screen serves this URL?” | [cross/ui-routes.md](cross/ui-routes.md) | ~7.5k | all 257 screens across web, POS and mobile |
 | “Is there already a component for this?” | [cross/components.md](cross/components.md) | ~2.9k | shared primitives and every component, with usage counts |
 | “How should this look / behave / read?” | [cross/design-system.md](cross/design-system.md) | ~850 | the 0 design chapters, and the measured state of the code they govern |
 | “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | ~1.1k | 26 cron jobs and the background dispatchers |
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.9k | every script in every package.json (85) |
-| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~4.8k | 109 migrations, newest last |
-| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~12.1k | 309 spec files → what each one pins down |
-| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~42.3k | every document of record, with its outline |
+| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~4.9k | 110 migrations, newest last |
+| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~12.1k | 311 spec files → what each one pins down |
+| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~42.4k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (59) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~601.6k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~604.8k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -119,12 +119,12 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 1,056 | 142,755 | [api](areas/api.md) |
-| apps/web | 407 | 67,930 | [web](areas/web.md) |
+| apps/api | 1,062 | 143,434 | [api](areas/api.md) |
+| apps/web | 409 | 68,239 | [web](areas/web.md) |
 | apps/pos | 31 | 2,023 | [pos](areas/pos.md) |
 | apps/mobile | 49 | 6,900 | [mobile](areas/mobile.md) |
-| packages/* | 79 | 8,324 | [packages](areas/packages.md) |
-| docs/* | 399 | 69,176 | [docs](areas/docs.md) |
+| packages/* | 79 | 8,352 | [packages](areas/packages.md) |
+| docs/* | 399 | 69,326 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 60 | 30,624 | [infra](areas/infra.md) |
 | repository root files | 213 | 21,321 | [root](areas/root.md) |
 

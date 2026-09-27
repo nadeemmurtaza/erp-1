@@ -1,5 +1,43 @@
 # 61 — A bulletin board, not another notification channel
 
+> **Status: built (2026-09-27), WO-61.1–61.5, DECISIONS.md ADR-062.**
+> `Bulletin`/`BulletinAcknowledgement`/`BulletinCategory`
+> (`notify.prisma`), `BulletinsService`
+> (`publish()`/`list()`/`get()`/`acknowledge()`/`retract()`),
+> `BulletinNotificationListener` (the only subscriber to the new
+> `DomainEvent.BulletinPublished`), the two named permissions, and a
+> two-screen admin UI (`/admin/bulletins`, `/admin/bulletins/new`) with a
+> nav entry are all real, at `apps/api/src/modules/notify/` and
+> `apps/web/src/app/(admin)/admin/(app)/bulletins/`.
+>
+> Lives inside the `notify` module, not `hr` (this document's own casual
+> suggestion, "wherever `NotificationsService` is already wired") —
+> `hr` and `notify` are separate module packs with no approved coupling,
+> and this document's own rule ("never a bulletin-specific second
+> audience-resolution mechanism") leaves no other place to reuse
+> `AudienceService.resolve()` directly. `AudienceService.reachOf()` was
+> widened from `private` to a plain method on the same class for this,
+> not duplicated.
+>
+> Two decisions beyond this document's own literal sketch, both required
+> to make its own "Authority and blast radius" scope lens real rather than
+> aspirational — see `DECISIONS.md` ADR-062 for the full reasoning:
+> `BulletinsService.publish()` refuses (`ForbiddenException`) a
+> reach-bound author addressing a unit they do not hold a posting at
+> directly, or the whole organization by name (`audienceOrgUnitId: null`)
+> — this document's own sketch code shows no such check, though its own
+> prose names the boundary. Reading the board uses a distinct computation
+> from a sender's reach: `eligibleAudienceIds()` flattens every
+> `OrgUnit.path` a reader's own postings resolve to, so a notice addressed
+> to a unit reaches every reader posted anywhere in its subtree — the
+> SUBTREE-INVERSE of `reachOf()`'s own exact-unit-match answer, not the
+> same question asked twice.
+>
+> `Employee` is `User` and `authorId`/`BulletinAcknowledgement.userId`
+> carry no `organizationId` — the same two deviations from this document's
+> own literal sketch every other doc-24-family build in this codebase
+> already makes (ADR-044/040/046/049/060).
+
 Doc 24's own stated scope (`docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`,
 lines 1-20) is explicit: delivery infrastructure (`NotificationChannel`,
 `EmailChannel`, `ExpoPushChannel`, `LogChannel`, `NotificationsService`,

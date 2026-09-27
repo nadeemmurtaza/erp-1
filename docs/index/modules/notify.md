@@ -3,7 +3,7 @@
 
 # Module: `notify`
 
-Pack **core** · enabled by the `MODULES` allowlist · 15 files
+Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 
 
@@ -11,15 +11,20 @@ Pack **core** · enabled by the `MODULES` allowlist · 15 files
 
 Source: `apps/api/src/modules/notify/`
 
-## Files (15 · 1,420 lines)
+## Files (20 · 1,972 lines)
 
 All paths relative to `apps/api/src/modules/notify`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `audience.service.spec.ts` | unit test | 83 | — |  |
-| `audience.service.ts` | service | 109 | 4 |  |
-| `notify.dto.ts` | dto | 144 | 8 |  |
+| `audience.service.ts` | service | 114 | 4 |  |
+| `bulletin-notification.listener.spec.ts` | unit test | 67 | — |  |
+| `bulletin-notification.listener.ts` | event subscriber | 44 | 1 | tasks-notifications-support/61-policy-communications-bulletin.md (WO-61.3). |
+| `bulletins.controller.ts` | controller | 63 | 1 | tasks-notifications-support/61-policy-communications-bulletin.md (WO-61.5). |
+| `bulletins.service.spec.ts` | unit test | 167 | — |  |
+| `bulletins.service.ts` | service | 154 | 2 |  |
+| `notify.dto.ts` | dto | 175 | 9 |  |
 | `escalation-rule.controller.ts` | controller | 38 | 1 | tasks-notifications-support/24-internal-notifications-meetings-escalation.md (WO-24.4/24.5). |
 | `escalation-rule.service.spec.ts` | unit test | 33 | — |  |
 | `escalation-rule.service.ts` | service | 69 | 3 |  |
@@ -29,15 +34,20 @@ All paths relative to `apps/api/src/modules/notify`.
 | `meetings.service.spec.ts` | unit test | 95 | — |  |
 | `meetings.service.ts` | service | 156 | 3 |  |
 | `notify.controller.ts` | controller | 39 | 1 | tasks-notifications-support/24-internal-notifications-meetings-escalation.md (WO-24.2/24.5). |
-| `notify.module.ts` | nest module | 31 | 1 |  |
+| `notify.module.ts` | nest module | 52 | 1 |  |
 | `notify.service.spec.ts` | unit test | 138 | — |  |
 | `notify.service.ts` | service | 186 | 3 |  |
 
 
-## HTTP routes (11)
+## HTTP routes (16)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/bulletins` | `hr.bulletins.view` | `BulletinsController.list` :38 | Every active notice the caller's own org-tree membership reaches |
+| POST | `/admin/bulletins` | `hr.bulletins.publish` | `BulletinsController.publish` :23 | Publish a notice, queuing the "new notice" ping through the existing notification delivery |
+| GET | `/admin/bulletins/:id` | `hr.bulletins.view` | `BulletinsController.get` :45 | One notice, if the caller is within its audience |
+| POST | `/admin/bulletins/:id/acknowledge` | `hr.bulletins.view` | `BulletinsController.acknowledge` :52 | Record that the caller has read this notice — a second click is a no-op |
+| POST | `/admin/bulletins/:id/retract` | `hr.bulletins.publish` | `BulletinsController.retract` :59 | Retract a notice — removes it from the active list, never deletes the row or its acknowle… |
 | POST | `/admin/notify/:id/decide` | `notify.send` | `NotifyController.decide` :35 | Countersign or reject a pending broadcast — only the person it was routed to may decide it |
 | GET | `/admin/notify/escalation-rules` | `notify.escalation.manage` | `EscalationRuleController.list` :16 | Every configured escalation rule |
 | POST | `/admin/notify/escalation-rules` | `notify.escalation.manage` | `EscalationRuleController.create` :22 | Watch a Task.sourceType for staleness and escalate up Position.reportsTo |
@@ -55,12 +65,16 @@ All paths relative to `apps/api/src/modules/notify`.
 
 **Publishes** — written to the outbox inside the same transaction as the state change:
 
-_none_
+| Event | Name | Published at |
+|---|---|---|
+| `BulletinPublished` | `notify.bulletin_published` | `bulletins.service.ts:29`, `bulletins.service.ts:70`, `notify.module.ts:36` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
 
-_none_
+| Event | Name | Handler |
+|---|---|---|
+| `BulletinPublished` | `notify.bulletin_published` | `bulletin-notification.listener.ts:26` → `onBulletinPublished()` |
 
 
 ## Tables it owns (`notify.prisma`)
@@ -69,13 +83,15 @@ _none_
 |---|---|---|---|
 | `Audience` | 9 | :18 | Who a message goes to, stored as a specification, not a list of user ids — "the finance department" must mean… |
 | `BroadcastMessage` | 11 | :48 | A record that an internal message was actually sent — the "reversal document" lens answer for this module: a… |
+| `Bulletin` | 13 | :189 | One published notice. |
+| `BulletinAcknowledgement` | 5 | :228 | `@@unique([bulletinId, userId])` is the whole mechanism: a double-click of "acknowledge" is a P2002 the servi… |
 | `EscalationFire` | 7 | :155 | One row per actual escalation fire — the idempotency and fire-count tracking EscalationRule.maxFires needs. |
 | `EscalationRule` | 7 | :133 | The timer that makes a stalled task visible — climbs Position.reportsTo, never a person, so a vacant post is… |
 | `Meeting` | 14 | :76 |  |
 | `MeetingInvitation` | 7 | :110 | Materialised at send time — resolved once from the Audience, then fixed, so a person invited Monday can still… |
 
 
-Enums: `InviteResponse` (4)
+Enums: `BulletinCategory` (4) · `InviteResponse` (4)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
@@ -91,8 +107,8 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`NotifyModule`** (`notify.module.ts`)
 - imports: —
-- controllers: `NotifyController`, `MeetingsController`, `EscalationRuleController`
-- providers: `AudienceService`, `NotifyService`, `MeetingsService`, `EscalationRuleService`, `EscalationCron`
+- controllers: `NotifyController`, `MeetingsController`, `EscalationRuleController`, `BulletinsController`
+- providers: `AudienceService`, `NotifyService`, `MeetingsService`, `EscalationRuleService`, `EscalationCron`, `BulletinsService`, `BulletinNotificationListener`
 - exports: —
 
 
@@ -101,6 +117,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `approvals`
 - core `audit`
 - core `auth`
+- core `events`
 - core `notifications`
 - core `prisma`
 - core `settings`
@@ -110,11 +127,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (5)
+## Tests (7)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `audience.service.spec.ts` | 4 | AudienceService |
+| `bulletin-notification.listener.spec.ts` | 3 | BulletinNotificationListener |
+| `bulletins.service.spec.ts` | 11 | BulletinsService · publish · list · get · acknowledge · retract |
 | `escalation-rule.service.spec.ts` | 3 | EscalationRuleService |
 | `escalation.cron.spec.ts` | 5 | EscalationCron |
 | `meetings.service.spec.ts` | 6 | MeetingsService · shortfallReport · respond · cancel |
@@ -129,14 +148,19 @@ check there before adding another.
 | `ResolvedRecipient` | interface | `audience.service.ts:11` |  |
 | `AudienceResolution` | interface | `audience.service.ts:18` |  |
 | `AudienceService` | class | `audience.service.ts:40` | tasks-notifications-support/24-internal-notifications-meetings-escalation.md (WO-24.1). |
-| `AudienceSpecDto` | class | `notify.dto.ts:5` |  |
-| `PreviewAudienceDto` | class | `notify.dto.ts:28` |  |
-| `SendBroadcastDto` | class | `notify.dto.ts:30` |  |
-| `DecideBroadcastDto` | class | `notify.dto.ts:44` |  |
-| `CreateMeetingDto` | class | `notify.dto.ts:54` |  |
-| `RespondMeetingDto` | class | `notify.dto.ts:88` |  |
-| `CreateEscalationRuleDto` | class | `notify.dto.ts:93` |  |
-| `UpdateEscalationRuleDto` | class | `notify.dto.ts:120` |  |
+| `BulletinNotificationListener` | class | `bulletin-notification.listener.ts:17` | tasks-notifications-support/61-policy-communications-bulletin.md (WO-61.3). |
+| `BulletinsController` | class | `bulletins.controller.ts:17` | tasks-notifications-support/61-policy-communications-bulletin.md (WO-61.5). |
+| `PublishBulletinInput` | interface | `bulletins.service.ts:9` |  |
+| `BulletinsService` | class | `bulletins.service.ts:34` | tasks-notifications-support/61-policy-communications-bulletin.md (WO-61.2). |
+| `AudienceSpecDto` | class | `notify.dto.ts:6` |  |
+| `PreviewAudienceDto` | class | `notify.dto.ts:29` |  |
+| `SendBroadcastDto` | class | `notify.dto.ts:31` |  |
+| `DecideBroadcastDto` | class | `notify.dto.ts:45` |  |
+| `CreateMeetingDto` | class | `notify.dto.ts:55` |  |
+| `RespondMeetingDto` | class | `notify.dto.ts:89` |  |
+| `CreateEscalationRuleDto` | class | `notify.dto.ts:94` |  |
+| `PublishBulletinDto` | class | `notify.dto.ts:123` |  |
+| `UpdateEscalationRuleDto` | class | `notify.dto.ts:151` |  |
 | `EscalationRuleController` | class | `escalation-rule.controller.ts:11` | tasks-notifications-support/24-internal-notifications-meetings-escalation.md (WO-24.4/24.5). |
 | `EscalationRuleInput` | interface | `escalation-rule.service.ts:4` |  |
 | `EscalationRuleUpdate` | interface | `escalation-rule.service.ts:12` |  |
@@ -147,7 +171,7 @@ check there before adding another.
 | `MeetingShortfallReport` | interface | `meetings.service.ts:18` |  |
 | `MeetingsService` | class | `meetings.service.ts:34` | tasks-notifications-support/24-internal-notifications-meetings-escalation.md (WO-24.3). |
 | `NotifyController` | class | `notify.controller.ts:18` | tasks-notifications-support/24-internal-notifications-meetings-escalation.md (WO-24.2/24.5). |
-| `NotifyModule` | class | `notify.module.ts:30` |  |
+| `NotifyModule` | class | `notify.module.ts:51` |  |
 | `SendBroadcastInput` | interface | `notify.service.ts:10` |  |
 | `BroadcastPreview` | interface | `notify.service.ts:16` |  |
 | `NotifyService` | class | `notify.service.ts:30` | tasks-notifications-support/24-internal-notifications-meetings-escalation.md (WO-24.2/24.5). |

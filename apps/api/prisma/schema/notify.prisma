@@ -168,3 +168,70 @@ model EscalationFire {
   @@unique([taskId, fireNumber])
   @@index([taskId])
 }
+
+// A bulletin board (tasks-notifications-support/61-policy-communications-bulletin.md,
+// DECISIONS.md ADR-062). Doc 24's own delivery is reused unchanged for the
+// "you have a new notice" ping (BulletinNotificationListener calls
+// AudienceService.resolve()/NotificationsService.send() exactly as
+// NotifyService does) — this is the missing RECORD, never a second
+// delivery mechanism. Lives here, not in `hr` (the doc's own casual
+// suggestion), because it reuses AudienceService.resolve() directly:
+// hr and notify are separate module packs with no approved coupling, and
+// the doc's own "never a bulletin-specific second audience-resolution
+// mechanism" rule leaves no other place to put it.
+
+/// One published notice. `authorId`/`BulletinAcknowledgement.userId` — no
+/// `Employee` model exists in this codebase (every actor is `User`,
+/// ADR-044/040), and no `organizationId` (this deployment IS the tenant,
+/// ADR-040/044/046/049/060) — both are deviations from this document's own
+/// literal sketch, the same two this session's every other doc-24-family
+/// build already makes.
+model Bulletin {
+  id           String           @id @default(cuid())
+  authorId     String
+  title        String
+  bodyMarkdown String
+  category     BulletinCategory
+
+  /// NULL means the whole organization; otherwise the subtree rooted here
+  /// (OrgUnit.path), exactly as Audience.orgUnitId already means for doc 24.
+  audienceOrgUnitId String?
+
+  publishedAt DateTime  @default(now())
+  /// Optional — some notices are time-bound.
+  expiresAt   DateTime?
+  requiresAcknowledgement Boolean @default(false)
+
+  /// A bulletin is retracted, never deleted — "the reversal document" lens:
+  /// removes it from the active list while the row and every
+  /// acknowledgement already recorded against it remain (JournalEntry
+  /// reversal's own "never erased, only superseded" discipline).
+  archivedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  acknowledgements BulletinAcknowledgement[]
+
+  @@index([audienceOrgUnitId, publishedAt])
+}
+
+enum BulletinCategory {
+  POLICY
+  MEMO
+  NOTICE
+  HR_ANNOUNCEMENT
+}
+
+/// `@@unique([bulletinId, userId])` is the whole mechanism: a double-click
+/// of "acknowledge" is a P2002 the service swallows, never a duplicate row.
+model BulletinAcknowledgement {
+  id             String   @id @default(cuid())
+  bulletinId     String
+  userId         String
+  acknowledgedAt DateTime @default(now())
+
+  bulletin Bulletin @relation(fields: [bulletinId], references: [id], onDelete: Cascade)
+
+  @@unique([bulletinId, userId])
+}

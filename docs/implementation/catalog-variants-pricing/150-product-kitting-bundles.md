@@ -36,7 +36,7 @@
 > question, not assumed away) and the storefront's own "in stock" display
 > (`catalog.service.ts#localise()` is a widely-shared, non-location-aware
 > function; wiring `bundleAvailableStock()` into it needs a location
-> parameter that function does not have today). ADR-049, ADR-060.
+> parameter that function does not have today). ADR-049, ADR-061.
 
 Checked against `catalog.prisma` and `bom.prisma`: nothing models "sell
 these N distinct SKUs together as one purchasable unit, at one price,

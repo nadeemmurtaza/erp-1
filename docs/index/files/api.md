@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,108 tracked files in `apps/api`, by directory.
+All 1,113 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -731,6 +731,12 @@ All 1,108 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `migration.sql` | migration | 57 |  |
+
+### `apps/api/prisma/schema/migrations/20260927080000_wo31_pos_hardware_park_retrieve` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 53 |  |
 
 ### `apps/api/src` (2)
 
@@ -1824,10 +1830,10 @@ All 1,108 tracked files in `apps/api`, by directory.
 | `order-feed.source.ts` | module | 57 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 416 |  |
+| `orders-pos.service.spec.ts` | unit test | 436 |  |
 | `orders.controller.ts` | controller | 147 |  |
 | `orders.module.ts` | nest module | 57 |  |
-| `orders.service.ts` | service | 1370 |  |
+| `orders.service.ts` | service | 1379 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (2)
@@ -1979,32 +1985,36 @@ All 1,108 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `planning.dto.ts` | dto | 67 |  |
 
-### `apps/api/src/modules/pos` (16)
+### `apps/api/src/modules/pos` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `pos-catalog.controller.ts` | controller | 26 |  |
-| `pos-catalog.service.spec.ts` | unit test | 59 |  |
-| `pos-catalog.service.ts` | service | 71 |  |
+| `pos-catalog.controller.ts` | controller | 32 |  |
+| `pos-catalog.service.spec.ts` | unit test | 88 |  |
+| `pos-catalog.service.ts` | service | 109 |  |
+| `pos-parked-sales.controller.ts` | controller | 39 |  |
+| `pos-parked-sales.service.spec.ts` | unit test | 104 |  |
+| `pos-parked-sales.service.ts` | service | 66 |  |
 | `pos-receipts.controller.ts` | controller | 24 |  |
 | `pos-receipts.service.spec.ts` | unit test | 110 |  |
 | `pos-receipts.service.ts` | service | 94 |  |
 | `pos-sales.controller.ts` | controller | 32 |  |
-| `pos-sales.service.spec.ts` | unit test | 79 |  |
-| `pos-sales.service.ts` | service | 63 |  |
+| `pos-sales.service.spec.ts` | unit test | 173 |  |
+| `pos-sales.service.ts` | service | 106 |  |
 | `pos-shifts.controller.ts` | controller | 55 |  |
 | `pos-shifts.service.spec.ts` | unit test | 177 |  |
 | `pos-shifts.service.ts` | service | 139 |  |
 | `pos-terminals.controller.ts` | controller | 51 |  |
 | `pos-terminals.service.spec.ts` | unit test | 145 |  |
 | `pos-terminals.service.ts` | service | 116 |  |
-| `pos.module.ts` | nest module | 44 |  |
+| `pos.module.ts` | nest module | 63 |  |
 
-### `apps/api/src/modules/pos/dto` (3)
+### `apps/api/src/modules/pos/dto` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `pos-sale.dto.ts` | dto | 94 |  |
+| `pos-parked-sale.dto.ts` | dto | 27 | pos-hardware/31 §3 — the same local-tuple `IsEnum` convention `pos-sale.dto.ts` |
+| `pos-sale.dto.ts` | dto | 156 |  |
 | `pos-shift.dto.ts` | dto | 44 |  |
 | `pos-terminal.dto.ts` | dto | 27 |  |
 

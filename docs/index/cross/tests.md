@@ -3,7 +3,7 @@
 
 # Tests
 
-**325** spec files, **3,108** cases. What is already pinned down — and what is not.
+**326** spec files, **3,125** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (305)
+## Unit and integration (306)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -213,7 +213,7 @@ regression or an N+1.
 | `apps/api/src/modules/orders/instalment-plan.service.spec.ts` | orders | 16 | InstalmentPlanService · recordInstalmentPayment · cancel · markDefaulted |
 | `apps/api/src/modules/orders/order-feed.source.spec.ts` | orders | 6 | OrderFeedSource — WO-58.2 |
 | `apps/api/src/modules/orders/order-replication.listener.spec.ts` | orders | 3 | OrderReplicationListener — WO-20.4 · onModuleInit · onOrderPlaced |
-| `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 12 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
+| `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 13 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
 | `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
 | `apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts` | orgstructure | 18 | GrantService · reachOf · previewIssue / issue — the five refusals · ACTING mode · revoke · sweepExp… |
@@ -236,9 +236,10 @@ regression or an N+1.
 | `apps/api/src/modules/planning/planning.service.spec.ts` | planning | 3 | PlanningService |
 | `apps/api/src/modules/planning/propagation.spec.ts` | planning | 5 | propagate |
 | `apps/api/src/modules/planning/supplier-resilience.service.spec.ts` | planning | 7 | SupplierResilienceService · leadTimeDistribution · recordObservation · supplierScorecard |
-| `apps/api/src/modules/pos/pos-catalog.service.spec.ts` | pos | 3 | PosCatalogService — WO-21.4 |
+| `apps/api/src/modules/pos/pos-catalog.service.spec.ts` | pos | 5 | PosCatalogService — WO-21.4 · listSellableRecipes |
+| `apps/api/src/modules/pos/pos-parked-sales.service.spec.ts` | pos | 9 | PosParkedSalesService — pos-hardware/31 WO-31.3 · park · retrieve · listOpen / countOpen |
 | `apps/api/src/modules/pos/pos-receipts.service.spec.ts` | pos | 6 | PosReceiptsService — WO-21.5 · createForOrder · getForOrder · markPrinted |
-| `apps/api/src/modules/pos/pos-sales.service.spec.ts` | pos | 4 | PosSalesService — WO-21.3 |
+| `apps/api/src/modules/pos/pos-sales.service.spec.ts` | pos | 9 | PosSalesService — WO-21.3 · line modifiers / quantity source (pos-hardware/31) |
 | `apps/api/src/modules/pos/pos-shifts.service.spec.ts` | pos | 16 | PosShiftsService — WO-21.2 · openShift · recordCashMovement · closeShift · xReport · zReport |
 | `apps/api/src/modules/pos/pos-terminals.service.spec.ts` | pos | 13 | PosTerminalsService — WO-21.1 · register · findOne / update / suspend — the not-found guard · updat… |
 | `apps/api/src/modules/pricing/pricing.service.spec.ts` | pricing | 19 | PricingService · resolvePrices · resolvePrice · createPriceList · updatePriceList · setAssignment ·… |

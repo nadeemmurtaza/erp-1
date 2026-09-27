@@ -117,6 +117,25 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'high',
   },
   {
+    // pos-hardware/31-sector-pos-hardware-integration.md WO-31.6 — the
+    // `pos.*` namespace already existed; this specific key did not. Kept
+    // separate from `pos.manage` (terminal registration/device credentials,
+    // `high`) — this is order-type/driver wiring, operational rather than
+    // money-moving.
+    key: 'pos.terminal.configure',
+    label: "Configure a terminal's order types and hardware driver wiring",
+    category: 'Sales',
+    sensitivity: 'medium',
+  },
+  {
+    // pos-hardware/76-pos-mobile-dashboard.md WO-76.3 — counts and revenue
+    // only, never cost/margin (that stays behind inventory.view_cost).
+    key: 'pos.dashboard.view',
+    label: "View the till's own daily-sales/customers/low-stock snapshot",
+    category: 'Sales',
+    sensitivity: 'low',
+  },
+  {
     key: 'payments.approve',
     label: 'Approve bank-transfer payments',
     category: 'Sales',
@@ -882,6 +901,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'pos.operate',
       'pos.instalments.cancel',
       'pos.instalments.default',
+      'pos.terminal.configure',
+      'pos.dashboard.view',
       'pricing.price-lists.manage',
       'pricing.price-lists.approve',
       'pricing.assignments.manage',
@@ -1113,6 +1134,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'pricing.assignments.manage',
     'payments.approve',
     'pos.operate',
+    'pos.dashboard.view',
     'stitching.jobs.view_queue',
     'stitching.jobs.change_stage',
     'stitching.jobs.manage_all',
@@ -1280,6 +1302,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'pos.operate',
     'pos.instalments.cancel',
     'pos.instalments.default',
+    'pos.terminal.configure',
+    'pos.dashboard.view',
     'promotions.view',
     'promotions.manage',
     'giftcards.view',

@@ -27,7 +27,7 @@ methods for those.
 
 | Table | Entity status type | Module | Where |
 |---|---|---|---|
-| `ALLOWED_TRANSITIONS` | `OrderStatus` | `orders` | `apps/api/src/modules/orders/orders.service.ts:77` |
+| `ALLOWED_TRANSITIONS` | `OrderStatus` | `orders` | `apps/api/src/modules/orders/orders.service.ts:83` |
 | `ALLOWED_TRANSITIONS` | `CustomerTicketStatus` | `support` | `apps/api/src/modules/support/customer-support.service.ts:40` |
 | `ALLOWED_TRANSITIONS` | `TicketStatus` | `support` | `apps/api/src/modules/support/support-tickets.service.ts:27` |
 
@@ -37,7 +37,7 @@ methods for those.
 ### `ALLOWED_TRANSITIONS` (`orders`)
 
 > Which status may follow which.
-`apps/api/src/modules/orders/orders.service.ts:77`
+`apps/api/src/modules/orders/orders.service.ts:83`
 
 ```ts
 const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {

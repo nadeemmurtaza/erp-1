@@ -22,4 +22,10 @@ export class PosCatalogController {
 
     return { data: await this.catalog.searchVariants(terminal.locationId, q ?? '') };
   }
+
+  @Get('recipes')
+  @ApiOperation({ summary: 'pos-hardware/31 WO-31.4 — sellable BOM recipes, for a BOM_RECIPE_SCALE line' })
+  async recipes() {
+    return { data: await this.catalog.listSellableRecipes() };
+  }
 }

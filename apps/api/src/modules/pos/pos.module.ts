@@ -10,6 +10,8 @@ import { PosCatalogService } from './pos-catalog.service';
 import { PosCatalogController } from './pos-catalog.controller';
 import { PosReceiptsService } from './pos-receipts.service';
 import { PosReceiptsController } from './pos-receipts.controller';
+import { PosParkedSalesService } from './pos-parked-sales.service';
+import { PosParkedSalesController } from './pos-parked-sales.controller';
 
 /**
  * The till (RETAIL-ERP.md R7/R11). Off by default — see modules.registry.ts.
@@ -26,7 +28,9 @@ import { PosReceiptsController } from './pos-receipts.controller';
  * KNOWN_MODULE_COUPLINGS entry needed. Returns (WO-21.5) reuse
  * OrdersService.changeStatus() and PaymentsService.refund() through their
  * EXISTING admin endpoints from apps/pos directly — no new backend coupling
- * either. Park/retrieve and a till-side price override remain unbuilt.
+ * either. pos-hardware/31 (WO-31.3) adds park/retrieve (PosParkedSalesService,
+ * a direct Prisma read/write, same self-contained precedent) — a till-side
+ * price override remains unbuilt.
  */
 @Module({
   imports: [OrdersModule],
@@ -36,8 +40,23 @@ import { PosReceiptsController } from './pos-receipts.controller';
     PosSalesController,
     PosCatalogController,
     PosReceiptsController,
+    PosParkedSalesController,
   ],
-  providers: [PosTerminalsService, PosShiftsService, PosSalesService, PosCatalogService, PosReceiptsService],
-  exports: [PosTerminalsService, PosShiftsService, PosSalesService, PosCatalogService, PosReceiptsService],
+  providers: [
+    PosTerminalsService,
+    PosShiftsService,
+    PosSalesService,
+    PosCatalogService,
+    PosReceiptsService,
+    PosParkedSalesService,
+  ],
+  exports: [
+    PosTerminalsService,
+    PosShiftsService,
+    PosSalesService,
+    PosCatalogService,
+    PosReceiptsService,
+    PosParkedSalesService,
+  ],
 })
 export class PosModule {}

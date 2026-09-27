@@ -6,7 +6,7 @@ describe('PosCatalogService — WO-21.4', () => {
   let prisma: any;
 
   beforeEach(() => {
-    prisma = { productVariant: { findMany: jest.fn() } };
+    prisma = { productVariant: { findMany: jest.fn() }, bomRecipe: { findMany: jest.fn() } };
     service = new PosCatalogService(prisma as PrismaService);
   });
 
@@ -54,5 +54,34 @@ describe('PosCatalogService — WO-21.4', () => {
     expect(result[0]!.unitPrice).toBe(1500);
     expect(result[0]!.nameEn).toBe('kurta');
     expect(result[0]!.stock).toBe(0);
+  });
+
+  // pos-hardware/31 WO-31.4 — the read-only BOM recipe picker for a BOM_RECIPE_SCALE line.
+  describe('listSellableRecipes', () => {
+    it('only queries ACTIVE recipes, reading bom.prisma directly (no BomModule import)', async () => {
+      prisma.bomRecipe.findMany.mockResolvedValue([]);
+      await service.listSellableRecipes();
+      expect(prisma.bomRecipe.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { status: 'ACTIVE' } }),
+      );
+    });
+
+    it('maps a recipe to its variant’s own sellable shape', async () => {
+      prisma.bomRecipe.findMany.mockResolvedValue([
+        {
+          id: 'r1',
+          variantId: 'v1',
+          variant: {
+            sku: 'PAINT-1L',
+            priceOverride: null,
+            product: { slug: 'tint-blue', basePrice: 800, translations: [{ name: 'Tint — Blue' }] },
+          },
+        },
+      ]);
+
+      const result = await service.listSellableRecipes();
+
+      expect(result).toEqual([{ recipeId: 'r1', variantId: 'v1', sku: 'PAINT-1L', nameEn: 'Tint — Blue', unitPrice: 800 }]);
+    });
   });
 });

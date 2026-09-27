@@ -75,7 +75,7 @@ Indexes: `@@index([lineRef])`
 | `basketSnapshot` | `Json` |  |  |
 | `parkedAt` | `DateTime` |  | @default(now()) |
 | `retrievedAt` | `DateTime?` | optional |  |
-| `shift` | `PosShift` | relation | @relation(fields: [shiftId], references: [id]) |
+| `shift` | `PosShift` | relation | @relation(fields: [shiftId], references: [id], onDelete: Restrict) |
 
 Indexes: `@@index([shiftId, retrievedAt])`
 

@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2361,
-    "lines": 358825,
-    "routes": 846,
-    "controllers": 154,
+    "files": 2367,
+    "lines": 359604,
+    "routes": 850,
+    "controllers": 155,
     "models": 307,
     "enums": 144,
-    "migrations": 114,
+    "migrations": 115,
     "events": 69,
-    "permissions": 121,
+    "permissions": 123,
     "screens": 268,
     "crons": 27,
-    "specs": 325,
+    "specs": 326,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1108,
-      "lines": 148422,
-      "bytes": 5775865,
+      "files": 1113,
+      "lines": 149031,
+      "bytes": 5799371,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -44,9 +44,9 @@
       "label": "apps/mobile — Expo/React Native customer app"
     },
     "pos": {
-      "files": 31,
-      "lines": 2023,
-      "bytes": 69435,
+      "files": 32,
+      "lines": 2169,
+      "bytes": 74376,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
@@ -63,8 +63,8 @@
     },
     "packages": {
       "files": 80,
-      "lines": 8631,
-      "bytes": 310018,
+      "lines": 8655,
+      "bytes": 310965,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -943,12 +943,16 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/pos/dto/pos-parked-sale.dto.ts",
         "apps/api/src/modules/pos/dto/pos-sale.dto.ts",
         "apps/api/src/modules/pos/dto/pos-shift.dto.ts",
         "apps/api/src/modules/pos/dto/pos-terminal.dto.ts",
         "apps/api/src/modules/pos/pos-catalog.controller.ts",
         "apps/api/src/modules/pos/pos-catalog.service.spec.ts",
         "apps/api/src/modules/pos/pos-catalog.service.ts",
+        "apps/api/src/modules/pos/pos-parked-sales.controller.ts",
+        "apps/api/src/modules/pos/pos-parked-sales.service.spec.ts",
+        "apps/api/src/modules/pos/pos-parked-sales.service.ts",
         "apps/api/src/modules/pos/pos-receipts.controller.ts",
         "apps/api/src/modules/pos/pos-receipts.service.spec.ts",
         "apps/api/src/modules/pos/pos-receipts.service.ts",
@@ -963,7 +967,7 @@
         "apps/api/src/modules/pos/pos-terminals.service.ts",
         "apps/api/src/modules/pos/pos.module.ts"
       ],
-      "routes": 15,
+      "routes": 19,
       "page": "docs/index/modules/pos.md"
     },
     {
@@ -9429,6 +9433,22 @@
     },
     {
       "method": "GET",
+      "path": "/admin/pos/products/recipes",
+      "module": "pos",
+      "controller": "PosCatalogController",
+      "handler": "recipes",
+      "file": "apps/api/src/modules/pos/pos-catalog.controller.ts",
+      "line": 28,
+      "access": "pos.operate",
+      "permissions": [
+        "pos.operate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "pos-hardware/31 WO-31.4 — sellable BOM recipes, for a BOM_RECIPE_SCALE line"
+    },
+    {
+      "method": "GET",
       "path": "/admin/pos/products/search",
       "module": "pos",
       "controller": "PosCatalogController",
@@ -9506,6 +9526,54 @@
       "public": false,
       "authOnly": false,
       "summary": "Close a shift with the cashier's own physical cash count"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/pos/shifts/:id/parked-sales",
+      "module": "pos",
+      "controller": "PosParkedSalesController",
+      "handler": "listOpen",
+      "file": "apps/api/src/modules/pos/pos-parked-sales.controller.ts",
+      "line": 35,
+      "access": "pos.operate",
+      "permissions": [
+        "pos.operate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "List this shift's still-open parked sales (tabs/tables)"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pos/shifts/:id/parked-sales",
+      "module": "pos",
+      "controller": "PosParkedSalesController",
+      "handler": "park",
+      "file": "apps/api/src/modules/pos/pos-parked-sales.controller.ts",
+      "line": 23,
+      "access": "pos.operate",
+      "permissions": [
+        "pos.operate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Park a TAB/TABLE sale in progress — a COUNTER sale is refused"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/pos/shifts/:id/parked-sales/:parkedSaleId/retrieve",
+      "module": "pos",
+      "controller": "PosParkedSalesController",
+      "handler": "retrieve",
+      "file": "apps/api/src/modules/pos/pos-parked-sales.controller.ts",
+      "line": 29,
+      "access": "pos.operate",
+      "permissions": [
+        "pos.operate"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Retrieve a parked sale — refused if it was already retrieved"
     },
     {
       "method": "POST",
@@ -15266,11 +15334,15 @@
       "routes": [
         "GET /admin/orders/:orderId/instalments",
         "POST /admin/orders/:orderId/instalments/payments",
+        "GET /admin/pos/products/recipes",
         "GET /admin/pos/products/search",
         "GET /admin/pos/receipts/:orderId",
         "POST /admin/pos/receipts/:orderId/print",
         "POST /admin/pos/shifts/:id/cash-movements",
         "POST /admin/pos/shifts/:id/close",
+        "GET /admin/pos/shifts/:id/parked-sales",
+        "POST /admin/pos/shifts/:id/parked-sales",
+        "POST /admin/pos/shifts/:id/parked-sales/:parkedSaleId/retrieve",
         "POST /admin/pos/shifts/:id/sales",
         "GET /admin/pos/shifts/:id/x-report",
         "GET /admin/pos/shifts/:id/z-report",
@@ -15307,6 +15379,31 @@
       ],
       "uiSites": 1,
       "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "pos.terminal.configure",
+      "label": "Configure a terminal's order types and hardware driver wiring",
+      "category": "Sales",
+      "sensitivity": "medium",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "pos.dashboard.view",
+      "label": "View the till's own daily-sales/customers/low-stock snapshot",
+      "category": "Sales",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "STAFF",
         "ADMIN"
       ],
       "inSeed": true
@@ -17341,8 +17438,8 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:58",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:165",
-        "apps/api/src/modules/orders/orders.service.ts:518",
-        "apps/api/src/modules/orders/orders.service.ts:776"
+        "apps/api/src/modules/orders/orders.service.ts:524",
+        "apps/api/src/modules/orders/orders.service.ts:785"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
@@ -17358,8 +17455,8 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:803",
-        "apps/api/src/modules/orders/orders.service.ts:988"
+        "apps/api/src/modules/orders/orders.service.ts:812",
+        "apps/api/src/modules/orders/orders.service.ts:997"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -17374,7 +17471,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:988"
+        "apps/api/src/modules/orders/orders.service.ts:997"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -17389,7 +17486,7 @@
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:125",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:162",
         "apps/api/src/modules/orders/instalment-plan.service.ts:90",
-        "apps/api/src/modules/orders/orders.service.ts:747",
+        "apps/api/src/modules/orders/orders.service.ts:756",
         "apps/api/src/modules/payments/payments.service.ts:193",
         "apps/api/src/modules/payments/payments.service.ts:295",
         "apps/api/src/modules/payments/payments.service.ts:343"
@@ -48533,42 +48630,30 @@
         "CustomerSupportMessage",
         "CustomerSupportTicket"
       ]
+    },
+    {
+      "folder": "20260927080000_wo31_pos_hardware_park_retrieve",
+      "file": "apps/api/prisma/schema/migrations/20260927080000_wo31_pos_hardware_park_retrieve/migration.sql",
+      "date": "2026-09-27",
+      "slug": "wo31_pos_hardware_park_retrieve",
+      "statements": 9,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "PosLineModifier",
+        "PosLineQuantitySource",
+        "PosParkedSale"
+      ]
     }
   ],
   "schemaMigrationDrift": {
-    "missingTables": [
-      {
-        "model": "PosLineModifier",
-        "table": "PosLineModifier",
-        "file": "apps/api/prisma/schema/pos.prisma",
-        "line": 151
-      },
-      {
-        "model": "PosLineQuantitySource",
-        "table": "PosLineQuantitySource",
-        "file": "apps/api/prisma/schema/pos.prisma",
-        "line": 176
-      },
-      {
-        "model": "PosParkedSale",
-        "table": "PosParkedSale",
-        "file": "apps/api/prisma/schema/pos.prisma",
-        "line": 195
-      }
-    ],
+    "missingTables": [],
     "missingColumns": [],
-    "missingEnums": [
-      {
-        "enum": "PosOrderType",
-        "file": "apps/api/prisma/schema/pos.prisma",
-        "line": 184
-      },
-      {
-        "enum": "QuantitySource",
-        "file": "apps/api/prisma/schema/pos.prisma",
-        "line": 166
-      }
-    ],
+    "missingEnums": [],
     "missingEnumValues": [
       {
         "enum": "InvoiceStatus",
@@ -53416,7 +53501,7 @@
       "file": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "module": "orders",
       "kind": "unit test",
-      "cases": 12,
+      "cases": 13,
       "describes": [
         "OrdersService — placeFromPos (WO-21.3)",
         "changeStatus — return releases stock to the order\\",
@@ -53672,9 +53757,22 @@
       "file": "apps/api/src/modules/pos/pos-catalog.service.spec.ts",
       "module": "pos",
       "kind": "unit test",
-      "cases": 3,
+      "cases": 5,
       "describes": [
-        "PosCatalogService — WO-21.4"
+        "PosCatalogService — WO-21.4",
+        "listSellableRecipes"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/pos/pos-parked-sales.service.spec.ts",
+      "module": "pos",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "PosParkedSalesService — pos-hardware/31 WO-31.3",
+        "park",
+        "retrieve",
+        "listOpen / countOpen"
       ]
     },
     {
@@ -53693,9 +53791,10 @@
       "file": "apps/api/src/modules/pos/pos-sales.service.spec.ts",
       "module": "pos",
       "kind": "unit test",
-      "cases": 4,
+      "cases": 9,
       "describes": [
-        "PosSalesService — WO-21.3"
+        "PosSalesService — WO-21.3",
+        "line modifiers / quantity source (pos-hardware/31)"
       ]
     },
     {
@@ -57067,6 +57166,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260927080000_wo31_pos_hardware_park_retrieve/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 53,
+      "bytes": 1700,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -57161,7 +57269,7 @@
       "area": "api",
       "kind": "prisma schema",
       "lines": 212,
-      "bytes": 8600,
+      "bytes": 8620,
       "doc": "The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's",
       "symbols": []
     },
@@ -68151,8 +68259,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 416,
-      "bytes": 18191,
+      "lines": 436,
+      "bytes": 19112,
       "doc": "",
       "symbols": []
     },
@@ -68195,8 +68303,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1370,
-      "bytes": 55452,
+      "lines": 1379,
+      "bytes": 56125,
       "doc": "",
       "symbols": [
         {
@@ -68207,17 +68315,17 @@
         {
           "name": "PlaceFromPosInstalmentInput",
           "kind": "interface",
-          "line": 55
+          "line": 61
         },
         {
           "name": "PlaceFromPosInput",
           "kind": "interface",
-          "line": 61
+          "line": 67
         },
         {
           "name": "OrdersService",
           "kind": "class",
-          "line": 110
+          "line": 116
         }
       ]
     },
@@ -69560,32 +69668,57 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/pos/dto/pos-parked-sale.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 27,
+      "bytes": 1006,
+      "doc": "pos-hardware/31 §3 — the same local-tuple `IsEnum` convention `pos-sale.dto.ts`",
+      "symbols": [
+        {
+          "name": "ParkSaleDto",
+          "kind": "class",
+          "line": 14
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/pos/dto/pos-sale.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 94,
-      "bytes": 2042,
+      "lines": 156,
+      "bytes": 4029,
       "doc": "",
       "symbols": [
         {
           "name": "InstalmentScheduleLineDto",
           "kind": "class",
-          "line": 19
+          "line": 27
         },
         {
           "name": "PosInstalmentPlanDto",
           "kind": "class",
-          "line": 35
+          "line": 43
+        },
+        {
+          "name": "PosLineModifierDto",
+          "kind": "class",
+          "line": 64
+        },
+        {
+          "name": "PosLineQuantitySourceDto",
+          "kind": "class",
+          "line": 82
         },
         {
           "name": "PosSaleLineDto",
           "kind": "class",
-          "line": 53
+          "line": 93
         },
         {
           "name": "CreatePosSaleDto",
           "kind": "class",
-          "line": 65
+          "line": 127
         }
       ]
     },
@@ -69643,8 +69776,8 @@
       "path": "apps/api/src/modules/pos/pos-catalog.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 26,
-      "bytes": 1160,
+      "lines": 32,
+      "bytes": 1376,
       "doc": "",
       "symbols": [
         {
@@ -69658,8 +69791,8 @@
       "path": "apps/api/src/modules/pos/pos-catalog.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 59,
-      "bytes": 1878,
+      "lines": 88,
+      "bytes": 3004,
       "doc": "",
       "symbols": []
     },
@@ -69667,8 +69800,8 @@
       "path": "apps/api/src/modules/pos/pos-catalog.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 71,
-      "bytes": 2391,
+      "lines": 109,
+      "bytes": 3820,
       "doc": "",
       "symbols": [
         {
@@ -69677,9 +69810,53 @@
           "line": 5
         },
         {
+          "name": "PosSellableRecipeResult",
+          "kind": "interface",
+          "line": 15
+        },
+        {
           "name": "PosCatalogService",
           "kind": "class",
-          "line": 28
+          "line": 36
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/pos/pos-parked-sales.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 39,
+      "bytes": 1729,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PosParkedSalesController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/pos/pos-parked-sales.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 104,
+      "bytes": 4288,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/pos/pos-parked-sales.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 66,
+      "bytes": 2947,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PosParkedSalesService",
+          "kind": "class",
+          "line": 13
         }
       ]
     },
@@ -69746,8 +69923,8 @@
       "path": "apps/api/src/modules/pos/pos-sales.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 79,
-      "bytes": 3024,
+      "lines": 173,
+      "bytes": 6297,
       "doc": "",
       "symbols": []
     },
@@ -69755,8 +69932,8 @@
       "path": "apps/api/src/modules/pos/pos-sales.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 63,
-      "bytes": 2431,
+      "lines": 106,
+      "bytes": 4225,
       "doc": "",
       "symbols": [
         {
@@ -69853,14 +70030,14 @@
       "path": "apps/api/src/modules/pos/pos.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 44,
-      "bytes": 2273,
+      "lines": 63,
+      "bytes": 2670,
       "doc": "",
       "symbols": [
         {
           "name": "PosModule",
           "kind": "class",
-          "line": 43
+          "line": 62
         }
       ]
     },
@@ -77958,6 +78135,61 @@
       ]
     },
     {
+      "path": "apps/pos/src/lib/hardware.ts",
+      "area": "pos",
+      "kind": "utility",
+      "lines": 83,
+      "bytes": 2847,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "registerReceiptPrinter",
+          "kind": "function",
+          "line": 22
+        },
+        {
+          "name": "registerCashDrawer",
+          "kind": "function",
+          "line": 26
+        },
+        {
+          "name": "registerBarcodeScanner",
+          "kind": "function",
+          "line": 30
+        },
+        {
+          "name": "isPrinterRegistered",
+          "kind": "function",
+          "line": 34
+        },
+        {
+          "name": "isDrawerRegistered",
+          "kind": "function",
+          "line": 38
+        },
+        {
+          "name": "printReceipt",
+          "kind": "function",
+          "line": 49
+        },
+        {
+          "name": "printKitchenTicket",
+          "kind": "function",
+          "line": 59
+        },
+        {
+          "name": "kickCashDrawer",
+          "kind": "function",
+          "line": 68
+        },
+        {
+          "name": "onBarcodeScan",
+          "kind": "function",
+          "line": 79
+        }
+      ]
+    },
+    {
       "path": "apps/pos/src/lib/outbox-db.ts",
       "area": "pos",
       "kind": "utility",
@@ -78001,8 +78233,8 @@
       "path": "apps/pos/src/lib/pos-client.ts",
       "area": "pos",
       "kind": "utility",
-      "lines": 214,
-      "bytes": 6250,
+      "lines": 277,
+      "bytes": 8344,
       "doc": "",
       "symbols": [
         {
@@ -78041,109 +78273,149 @@
           "line": 57
         },
         {
+          "name": "PosLineModifierRequest",
+          "kind": "interface",
+          "line": 73
+        },
+        {
+          "name": "PosLineQuantitySourceRequest",
+          "kind": "type",
+          "line": 80
+        },
+        {
           "name": "PosSaleLine",
           "kind": "interface",
-          "line": 72
+          "line": 85
+        },
+        {
+          "name": "PosParkedSale",
+          "kind": "interface",
+          "line": 94
+        },
+        {
+          "name": "PosSellableRecipe",
+          "kind": "interface",
+          "line": 105
         },
         {
           "name": "PosInstalmentPlanRequest",
           "kind": "interface",
-          "line": 78
+          "line": 114
         },
         {
           "name": "PosSaleRequest",
           "kind": "interface",
-          "line": 84
+          "line": 120
         },
         {
           "name": "PosReceiptData",
           "kind": "interface",
-          "line": 92
+          "line": 128
         },
         {
           "name": "AdminOrderSummary",
           "kind": "interface",
-          "line": 107
+          "line": 143
         },
         {
           "name": "AdminOrderPayment",
           "kind": "interface",
-          "line": 117
+          "line": 153
         },
         {
           "name": "AdminOrderDetail",
           "kind": "interface",
-          "line": 124
+          "line": 160
         },
         {
           "name": "listTerminals",
           "kind": "function",
-          "line": 135
+          "line": 171
         },
         {
           "name": "searchProducts",
           "kind": "function",
-          "line": 139
+          "line": 175
+        },
+        {
+          "name": "listSellableRecipes",
+          "kind": "function",
+          "line": 180
         },
         {
           "name": "openShift",
           "kind": "function",
-          "line": 143
+          "line": 184
         },
         {
           "name": "closeShift",
           "kind": "function",
-          "line": 147
+          "line": 188
         },
         {
           "name": "xReport",
           "kind": "function",
-          "line": 151
+          "line": 192
         },
         {
           "name": "zReport",
           "kind": "function",
-          "line": 155
+          "line": 196
         },
         {
           "name": "recordCashMovement",
           "kind": "function",
-          "line": 159
+          "line": 200
         },
         {
           "name": "sell",
           "kind": "function",
-          "line": 175
+          "line": 216
+        },
+        {
+          "name": "parkSale",
+          "kind": "function",
+          "line": 225
+        },
+        {
+          "name": "retrieveParkedSale",
+          "kind": "function",
+          "line": 238
+        },
+        {
+          "name": "listParkedSales",
+          "kind": "function",
+          "line": 242
         },
         {
           "name": "getReceipt",
           "kind": "function",
-          "line": 183
+          "line": 246
         },
         {
           "name": "printReceipt",
           "kind": "function",
-          "line": 188
+          "line": 251
         },
         {
           "name": "searchOrders",
           "kind": "function",
-          "line": 199
+          "line": 262
         },
         {
           "name": "getOrder",
           "kind": "function",
-          "line": 203
+          "line": 266
         },
         {
           "name": "returnOrder",
           "kind": "function",
-          "line": 207
+          "line": 270
         },
         {
           "name": "refundPayment",
           "kind": "function",
-          "line": 211
+          "line": 274
         }
       ]
     },
@@ -91682,8 +91954,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1353,
-      "bytes": 45709,
+      "lines": 1377,
+      "bytes": 46656,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -91704,52 +91976,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 830
+          "line": 849
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 832
+          "line": 851
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 842
+          "line": 861
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 849
+          "line": 868
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 1082
+          "line": 1103
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1312
+          "line": 1336
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1331
+          "line": 1355
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1345
+          "line": 1369
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1346
+          "line": 1370
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1349
+          "line": 1373
         }
       ]
     },

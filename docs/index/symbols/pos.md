@@ -93,6 +93,15 @@ Every top-level export in `pos`, with the line to open.
 | `auth-client.ts` | `clearSession` | function | :51 |  |
 | `auth-client.ts` | `login` | function | :57 |  |
 | `auth-client.ts` | `logout` | function | :72 |  |
+| `hardware.ts` | `registerReceiptPrinter` | function | :22 |  |
+| `hardware.ts` | `registerCashDrawer` | function | :26 |  |
+| `hardware.ts` | `registerBarcodeScanner` | function | :30 |  |
+| `hardware.ts` | `isPrinterRegistered` | function | :34 |  |
+| `hardware.ts` | `isDrawerRegistered` | function | :38 |  |
+| `hardware.ts` | `printReceipt` | function | :49 | Never throws — a print failure is the caller's own retry state (doc 31's own failure-path lens), no… |
+| `hardware.ts` | `printKitchenTicket` | function | :59 | WO-31.5 — a kitchen ticket reuses the same driver, no separate hardware concept. |
+| `hardware.ts` | `kickCashDrawer` | function | :68 | Called once, from the till's own tender-completion path, per completed cash tender — never on a car… |
+| `hardware.ts` | `onBarcodeScan` | function | :79 | Camera-based scanning only — a keyboard-wedge scanner needs no driver. |
 | `outbox-db.ts` | `putOutboxEntry` | function | :44 |  |
 | `outbox-db.ts` | `listOutboxEntries` | function | :48 |  |
 | `outbox-db.ts` | `deleteOutboxEntry` | function | :52 |  |
@@ -104,27 +113,35 @@ Every top-level export in `pos`, with the line to open.
 | `pos-client.ts` | `PosVariant` | interface | :39 |  |
 | `pos-client.ts` | `PosOrderItem` | interface | :49 |  |
 | `pos-client.ts` | `PosOrder` | interface | :57 |  |
-| `pos-client.ts` | `PosSaleLine` | interface | :72 |  |
-| `pos-client.ts` | `PosInstalmentPlanRequest` | interface | :78 | finance-accounting/151-layby-installment-sales.md — requested at the point of sale. |
-| `pos-client.ts` | `PosSaleRequest` | interface | :84 |  |
-| `pos-client.ts` | `PosReceiptData` | interface | :92 |  |
-| `pos-client.ts` | `AdminOrderSummary` | interface | :107 |  |
-| `pos-client.ts` | `AdminOrderPayment` | interface | :117 |  |
-| `pos-client.ts` | `AdminOrderDetail` | interface | :124 |  |
-| `pos-client.ts` | `listTerminals` | function | :135 | Terminal setup is a one-time, admin-tier action (`pos.manage`, not `pos.operate`) — a plain cashier… |
-| `pos-client.ts` | `searchProducts` | function | :139 |  |
-| `pos-client.ts` | `openShift` | function | :143 |  |
-| `pos-client.ts` | `closeShift` | function | :147 |  |
-| `pos-client.ts` | `xReport` | function | :151 |  |
-| `pos-client.ts` | `zReport` | function | :155 |  |
-| `pos-client.ts` | `recordCashMovement` | function | :159 |  |
-| `pos-client.ts` | `sell` | function | :175 | architecture-patterns/157 — `idempotencyKey` is generated once, at the moment the sale is first att… |
-| `pos-client.ts` | `getReceipt` | function | :183 |  |
-| `pos-client.ts` | `printReceipt` | function | :188 | Marks the receipt printed and returns its data — call right before `window.print()`. |
-| `pos-client.ts` | `searchOrders` | function | :199 | Order lookup and the return path reuse the EXISTING admin/orders and admin/payments endpoints direc… |
-| `pos-client.ts` | `getOrder` | function | :203 |  |
-| `pos-client.ts` | `returnOrder` | function | :207 |  |
-| `pos-client.ts` | `refundPayment` | function | :211 |  |
+| `pos-client.ts` | `PosLineModifierRequest` | interface | :73 | pos-hardware/31 §2 — a modifier changes the till total ("extra shot"). |
+| `pos-client.ts` | `PosLineQuantitySourceRequest` | type | :80 | pos-hardware/31 §2 — where a line's quantity came from, when not typed. |
+| `pos-client.ts` | `PosSaleLine` | interface | :85 |  |
+| `pos-client.ts` | `PosParkedSale` | interface | :94 | pos-hardware/31 §3 (WO-31.3) — a sale started but not yet tendered. |
+| `pos-client.ts` | `PosSellableRecipe` | interface | :105 | pos-hardware/31 §1/WO-31.4 — a sellable BOM recipe, for a BOM_RECIPE_SCALE line. |
+| `pos-client.ts` | `PosInstalmentPlanRequest` | interface | :114 | finance-accounting/151-layby-installment-sales.md — requested at the point of sale. |
+| `pos-client.ts` | `PosSaleRequest` | interface | :120 |  |
+| `pos-client.ts` | `PosReceiptData` | interface | :128 |  |
+| `pos-client.ts` | `AdminOrderSummary` | interface | :143 |  |
+| `pos-client.ts` | `AdminOrderPayment` | interface | :153 |  |
+| `pos-client.ts` | `AdminOrderDetail` | interface | :160 |  |
+| `pos-client.ts` | `listTerminals` | function | :171 | Terminal setup is a one-time, admin-tier action (`pos.manage`, not `pos.operate`) — a plain cashier… |
+| `pos-client.ts` | `searchProducts` | function | :175 |  |
+| `pos-client.ts` | `listSellableRecipes` | function | :180 | pos-hardware/31 WO-31.4 — sellable BOM recipes, for a BOM_RECIPE_SCALE line. |
+| `pos-client.ts` | `openShift` | function | :184 |  |
+| `pos-client.ts` | `closeShift` | function | :188 |  |
+| `pos-client.ts` | `xReport` | function | :192 |  |
+| `pos-client.ts` | `zReport` | function | :196 |  |
+| `pos-client.ts` | `recordCashMovement` | function | :200 |  |
+| `pos-client.ts` | `sell` | function | :216 | architecture-patterns/157 — `idempotencyKey` is generated once, at the moment the sale is first att… |
+| `pos-client.ts` | `parkSale` | function | :225 | pos-hardware/31 WO-31.3 — park a TAB/TABLE sale in progress. |
+| `pos-client.ts` | `retrieveParkedSale` | function | :238 | Idempotent — retrieving an already-retrieved sale is refused (409). |
+| `pos-client.ts` | `listParkedSales` | function | :242 |  |
+| `pos-client.ts` | `getReceipt` | function | :246 |  |
+| `pos-client.ts` | `printReceipt` | function | :251 | Marks the receipt printed and returns its data — call right before `window.print()`. |
+| `pos-client.ts` | `searchOrders` | function | :262 | Order lookup and the return path reuse the EXISTING admin/orders and admin/payments endpoints direc… |
+| `pos-client.ts` | `getOrder` | function | :266 |  |
+| `pos-client.ts` | `returnOrder` | function | :270 |  |
+| `pos-client.ts` | `refundPayment` | function | :274 |  |
 
 
 ---

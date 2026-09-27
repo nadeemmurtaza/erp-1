@@ -205,7 +205,7 @@ model PosParkedSale {
   parkedAt    DateTime  @default(now())
   retrievedAt DateTime?
 
-  shift PosShift @relation(fields: [shiftId], references: [id])
+  shift PosShift @relation(fields: [shiftId], references: [id], onDelete: Restrict)
 
   @@index([shiftId, retrievedAt])
 }

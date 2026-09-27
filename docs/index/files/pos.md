@@ -3,7 +3,7 @@
 
 # Files — pos
 
-All 31 tracked files in `apps/pos`, by directory.
+All 32 tracked files in `apps/pos`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -94,15 +94,16 @@ All 31 tracked files in `apps/pos`, by directory.
 | `routes.ts` | constants | 9 |  |
 | `storage.ts` | constants | 12 | Its own localStorage/IndexedDB namespace — a till session is not an admin-panel session, even signed in as the same sta… |
 
-### `apps/pos/src/lib` (5)
+### `apps/pos/src/lib` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `api-client.ts` | utility | 67 |  |
 | `auth-client.ts` | utility | 80 |  |
+| `hardware.ts` | utility | 83 |  |
 | `outbox-db.ts` | utility | 55 |  |
 | `outbox-sync.ts` | utility | 44 |  |
-| `pos-client.ts` | utility | 214 |  |
+| `pos-client.ts` | utility | 277 |  |
 
 
 ---

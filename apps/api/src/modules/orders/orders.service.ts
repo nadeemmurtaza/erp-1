@@ -43,6 +43,12 @@ import { PlaceOrderDto } from './dto/order.dto';
 export interface PosSaleLineInput {
   variantId: string;
   quantity: number;
+  /** pos-hardware/31 §2 — only the number matters here; label/key are
+   *  pos-owned display metadata (`PosLineModifier`), written separately by
+   *  `PosSalesService` after this call returns. Folded into this line's
+   *  `unitPrice` below — "a richer line, no new coupling" (doc 31's own
+   *  words): zero schema change to `orders` itself. */
+  modifiers?: { priceDeltaMinor: number }[];
 }
 
 /**
@@ -596,7 +602,10 @@ export class OrdersService {
 
     const lines = input.lines.map((line) => {
       const variant = variantMap.get(line.variantId)!;
-      const unitPrice = variant.priceOverride ?? variant.product.basePrice;
+      // pos-hardware/31 §2 — a modifier's price delta applies per unit,
+      // folded into the same unitPrice OrderItem already carries.
+      const modifierDeltaPerUnit = (line.modifiers ?? []).reduce((sum, m) => sum + m.priceDeltaMinor, 0);
+      const unitPrice = (variant.priceOverride ?? variant.product.basePrice) + modifierDeltaPerUnit;
       const lineTotals = computeLineItem({ unitPrice, quantity: line.quantity });
       const english = pickTranslation(variant.product.translations, 'en');
       return {

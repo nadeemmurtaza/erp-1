@@ -3,7 +3,7 @@
 
 # Migrations
 
-**114** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**115** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -26,28 +26,7 @@ CI's own seed step.
 This section compares the two sides. It is a statement of fact, not a gate:
 nothing here fails a build.
 
-> [!WARNING]
-> The schema declares **3 table(s)**, **0 column(s)** and **2 enum(s)** that no committed migration creates.
-> A database built from `migrations/` alone will be missing them.
-
-### Models with no migration (3)
-
-| Model | Table | Declared at |
-|---|---|---|
-| `PosLineModifier` | `PosLineModifier` | `apps/api/prisma/schema/pos.prisma:151` |
-| `PosLineQuantitySource` | `PosLineQuantitySource` | `apps/api/prisma/schema/pos.prisma:176` |
-| `PosParkedSale` | `PosParkedSale` | `apps/api/prisma/schema/pos.prisma:195` |
-
-
-
-
-### Enums with no migration (2)
-
-| Enum | Declared at |
-|---|---|
-| `PosOrderType` | `apps/api/prisma/schema/pos.prisma:184` |
-| `QuantitySource` | `apps/api/prisma/schema/pos.prisma:166` |
-
+**In step.** Every model, column and enum the schema declares is built by a migration.
 
 
 ## Every migration
@@ -168,6 +147,7 @@ nothing here fails a build.
 | 2026-09-27 | `wo64_support_ticketing` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | SupportTicket, TicketMessage |
 | 2026-09-27 | `wo144_supplier_lead_time_observation` | 3 | ALTER TYPE, CREATE TABLE, CREATE INDEX | SupplierLeadTimeObservation |
 | 2026-09-27 | `wo148_customer_support_portal` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | CustomerSupportMessage, CustomerSupportTicket |
+| 2026-09-27 | `wo31_pos_hardware_park_retrieve` | 9 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | PosLineModifier, PosLineQuantitySource, PosParkedSale |
 
 
 ---

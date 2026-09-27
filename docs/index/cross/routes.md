@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **846** endpoints across **154** controllers, with the access rule that actually guards each one.
+All **850** endpoints across **155** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -937,15 +937,19 @@ never authorization.
 | GET | `/admin/planning/suppliers/:id/lead-time-distribution` | `planning.propagation.view` | `PlanningController.leadTimeDistribution` | A supplier's own lead-time distribution, backfilled from goods-receipt history |
 | GET | `/admin/planning/suppliers/:id/scorecard` | `planning.propagation.view` | `PlanningController.supplierScorecard` | On-time-in-full rate and price variance, computed from purchase-order history |
 
-### [`pos`](../modules/pos.md) (15)
+### [`pos`](../modules/pos.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/pos/products/recipes` | `pos.operate` | `PosCatalogController.recipes` | pos-hardware/31 WO-31.4 — sellable BOM recipes, for a BOM_RECIPE_SCALE line |
 | GET | `/admin/pos/products/search` | `pos.operate` | `PosCatalogController.search` | sku/barcode/name lookup, scoped to one terminal’s location stock |
 | GET | `/admin/pos/receipts/:orderId` | `pos.operate` | `PosReceiptsController.get` | The receipt for a POS sale, for on-screen preview or a reprint |
 | POST | `/admin/pos/receipts/:orderId/print` | `pos.operate` | `PosReceiptsController.print` | Marks the receipt printed and returns its data — call right before window.print… |
 | POST | `/admin/pos/shifts/:id/cash-movements` | `pos.operate` | `PosShiftsController.recordCashMovement` | Record cash in/out, a drop, or a paid-out against an open shift |
 | POST | `/admin/pos/shifts/:id/close` | `pos.operate` | `PosShiftsController.closeShift` | Close a shift with the cashier's own physical cash count |
+| GET | `/admin/pos/shifts/:id/parked-sales` | `pos.operate` | `PosParkedSalesController.listOpen` | List this shift's still-open parked sales (tabs/tables) |
+| POST | `/admin/pos/shifts/:id/parked-sales` | `pos.operate` | `PosParkedSalesController.park` | Park a TAB/TABLE sale in progress — a COUNTER sale is refused |
+| POST | `/admin/pos/shifts/:id/parked-sales/:parkedSaleId/retrieve` | `pos.operate` | `PosParkedSalesController.retrieve` | Retrieve a parked sale — refused if it was already retrieved |
 | POST | `/admin/pos/shifts/:id/sales` | `pos.operate` | `PosSalesController.sell` | Ring up a sale against an open shift — posts stock and a paid cash Order |
 | GET | `/admin/pos/shifts/:id/x-report` | `pos.operate` | `PosShiftsController.xReport` | A mid-shift cash snapshot — never closes or mutates the shift |
 | GET | `/admin/pos/shifts/:id/z-report` | `pos.operate` | `PosShiftsController.zReport` | The end-of-shift cash figure — only once the shift is closed |

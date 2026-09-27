@@ -205,6 +205,26 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
     expect(variance.status).toBe('OPEN');
   });
 
+  // pos-hardware/31 §2 (WO-31.2) — a modifier's price delta folds into the
+  // OrderItem's own unitPrice; no schema change to `orders` needed.
+  it('folds a line modifier\'s priceDeltaMinor into the OrderItem\'s own unitPrice', async () => {
+    const variant = await freshVariant();
+    await inventory.move({ variantId: variant.id, locationId: defaultLocationId, delta: 5, reason: 'ADJUSTMENT' });
+
+    const order = await orders.placeFromPos({
+      locationId: defaultLocationId,
+      terminalId: 'terminal-1',
+      shiftId: 'shift-1',
+      cashierUserId,
+      lines: [{ variantId: variant.id, quantity: 2, modifiers: [{ priceDeltaMinor: 50 }, { priceDeltaMinor: 25 }] }],
+    });
+    createdOrderIds.push(order.id);
+
+    expect(order.items[0]!.unitPrice).toBe(unitPrice + 75);
+    expect(order.items[0]!.lineTotal).toBe((unitPrice + 75) * 2);
+    expect(order.grandTotal).toBe((unitPrice + 75) * 2);
+  });
+
   it('rejects an unknown or inactive variant rather than silently skipping the line', async () => {
     await expect(
       orders.placeFromPos({

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **850** endpoints across **155** controllers, with the access rule that actually guards each one.
+All **851** endpoints across **156** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -937,10 +937,11 @@ never authorization.
 | GET | `/admin/planning/suppliers/:id/lead-time-distribution` | `planning.propagation.view` | `PlanningController.leadTimeDistribution` | A supplier's own lead-time distribution, backfilled from goods-receipt history |
 | GET | `/admin/planning/suppliers/:id/scorecard` | `planning.propagation.view` | `PlanningController.supplierScorecard` | On-time-in-full rate and price variance, computed from purchase-order history |
 
-### [`pos`](../modules/pos.md) (19)
+### [`pos`](../modules/pos.md) (20)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/pos/dashboard` | `pos.dashboard.view` | `PosDashboardController.summary` | The till's own daily-sales/customers/low-stock snapshot, scoped to one terminal… |
 | GET | `/admin/pos/products/recipes` | `pos.operate` | `PosCatalogController.recipes` | pos-hardware/31 WO-31.4 — sellable BOM recipes, for a BOM_RECIPE_SCALE line |
 | GET | `/admin/pos/products/search` | `pos.operate` | `PosCatalogController.search` | sku/barcode/name lookup, scoped to one terminal’s location stock |
 | GET | `/admin/pos/receipts/:orderId` | `pos.operate` | `PosReceiptsController.get` | The receipt for a POS sale, for on-screen preview or a reprint |

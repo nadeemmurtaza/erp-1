@@ -3,7 +3,7 @@
 
 # apps/pos — Next.js offline-first point of sale
 
-32 files · 2,169 lines
+33 files · 2,667 lines
 
 
 Next.js PWA for a physical till. **Offline-first**: a sale that already happened
@@ -24,7 +24,7 @@ outbox and replay when the network returns. The register maths itself lives in
 |---|---|---|---|
 | `apps/pos` | 6 | 165 | script, json, module |
 | `apps/pos/public` | 2 | 46 | asset, script |
-| `apps/pos/src` | 24 | 1,958 | error, global-error, stylesheet, layout |
+| `apps/pos/src` | 25 | 2,456 | page, error, global-error, stylesheet |
 
 
 ## Entry points
@@ -40,10 +40,11 @@ outbox and replay when the network returns. The register maths itself lives in
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `apps/pos/src/app/till/page.tsx` | 413 | page |  |
-| `apps/pos/src/lib/pos-client.ts` | 277 | utility |  |
+| `apps/pos/src/app/till/page.tsx` | 789 | page |  |
+| `apps/pos/src/lib/pos-client.ts` | 295 | utility |  |
 | `apps/pos/src/app/returns/page.tsx` | 184 | page |  |
 | `apps/pos/src/app/shift/close/page.tsx` | 106 | page |  |
+| `apps/pos/src/app/dashboard/page.tsx` | 102 | page |  |
 | `apps/pos/src/lib/hardware.ts` | 83 | utility |  |
 | `apps/pos/src/lib/auth-client.ts` | 80 | utility |  |
 | `apps/pos/src/app/global-error.tsx` | 76 | global-error |  |
@@ -54,7 +55,6 @@ outbox and replay when the network returns. The register maths itself lives in
 | `apps/pos/src/lib/api-client.ts` | 67 | utility |  |
 | `apps/pos/src/app/login/page.tsx` | 63 | page |  |
 | `apps/pos/src/lib/outbox-db.ts` | 55 | utility |  |
-| `apps/pos/tailwind.config.ts` | 51 | module |  |
 
 
 ---

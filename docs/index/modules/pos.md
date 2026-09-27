@@ -3,7 +3,7 @@
 
 # Module: `pos`
 
-Pack **core** · enabled by the `MODULES` allowlist · 23 files
+Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 
 
@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 23 files
 
 Source: `apps/api/src/modules/pos/`
 
-## Files (23 · 1,977 lines)
+## Files (26 · 2,169 lines)
 
 All paths relative to `apps/api/src/modules/pos/dto`.
 
@@ -24,6 +24,9 @@ All paths relative to `apps/api/src/modules/pos/dto`.
 | `pos-catalog.controller.ts` | controller | 32 | 1 |  |
 | `pos-catalog.service.spec.ts` | unit test | 88 | — |  |
 | `pos-catalog.service.ts` | service | 109 | 3 |  |
+| `pos-dashboard.controller.ts` | controller | 31 | 1 | pos-hardware/76-pos-mobile-dashboard.md WO-76.1/76.3 — gated by `pos.dashboard.view`, distinct from `inventory.view_cos… |
+| `pos-dashboard.service.spec.ts` | unit test | 70 | — |  |
+| `pos-dashboard.service.ts` | service | 86 | 3 |  |
 | `pos-parked-sales.controller.ts` | controller | 39 | 1 | pos-hardware/31 WO-31.3 — park/retrieve for `TAB`/`TABLE` sales, split from `PosSalesController` (which only ever rings… |
 | `pos-parked-sales.service.spec.ts` | unit test | 104 | — |  |
 | `pos-parked-sales.service.ts` | service | 66 | 1 | pos-hardware/31 §3 (WO-31.3) — park/retrieve for `TAB`/`TABLE` sales. |
@@ -39,13 +42,14 @@ All paths relative to `apps/api/src/modules/pos/dto`.
 | `pos-terminals.controller.ts` | controller | 51 | 1 |  |
 | `pos-terminals.service.spec.ts` | unit test | 145 | — |  |
 | `pos-terminals.service.ts` | service | 116 | 1 | `PosTerminal` registration and device auth (RETAIL-ERP.md R7/R11, WO-21.1) — same shape as `TradingPartnersService`/`No… |
-| `pos.module.ts` | nest module | 63 | 1 |  |
+| `pos.module.ts` | nest module | 68 | 1 |  |
 
 
-## HTTP routes (19)
+## HTTP routes (20)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/pos/dashboard` | `pos.dashboard.view` | `PosDashboardController.summary` :23 | The till's own daily-sales/customers/low-stock snapshot, scoped to one terminal's location |
 | GET | `/admin/pos/products/recipes` | `pos.operate` | `PosCatalogController.recipes` :28 | pos-hardware/31 WO-31.4 — sellable BOM recipes, for a BOM_RECIPE_SCALE line |
 | GET | `/admin/pos/products/search` | `pos.operate` | `PosCatalogController.search` :18 | sku/barcode/name lookup, scoped to one terminal’s location stock |
 | GET | `/admin/pos/receipts/:orderId` | `pos.operate` | `PosReceiptsController.get` :14 | The receipt for a POS sale, for on-screen preview or a reprint |
@@ -103,18 +107,21 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`PosModule`** (`pos.module.ts`)
 - imports: `OrdersModule`
-- controllers: `PosTerminalsController`, `PosShiftsController`, `PosSalesController`, `PosCatalogController`, `PosReceiptsController`, `PosParkedSalesController`
-- providers: `PosTerminalsService`, `PosShiftsService`, `PosSalesService`, `PosCatalogService`, `PosReceiptsService`, `PosParkedSalesService`
-- exports: `PosTerminalsService`, `PosShiftsService`, `PosSalesService`, `PosCatalogService`, `PosReceiptsService`, `PosParkedSalesService`
+- controllers: `PosTerminalsController`, `PosShiftsController`, `PosSalesController`, `PosCatalogController`, `PosReceiptsController`, `PosParkedSalesController`, `PosDashboardController`
+- providers: `PosTerminalsService`, `PosShiftsService`, `PosSalesService`, `PosCatalogService`, `PosReceiptsService`, `PosParkedSalesService`, `PosDashboardService`
+- exports: `PosTerminalsService`, `PosShiftsService`, `PosSalesService`, `PosCatalogService`, `PosReceiptsService`, `PosParkedSalesService`, `PosDashboardService`
 
 
 ## Reaches out to
 
 - **module `orders`** ⚠ direct import
 - core `auth`
+- core `common`
 - core `idempotency`
 - core `prisma`
 - core `security`
+- core `settings`
+- core `time`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -122,11 +129,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (6)
+## Tests (7)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `pos-catalog.service.spec.ts` | 5 | PosCatalogService — WO-21.4 · listSellableRecipes |
+| `pos-dashboard.service.spec.ts` | 4 | PosDashboardService — pos-hardware/76 WO-76.1 |
 | `pos-parked-sales.service.spec.ts` | 9 | PosParkedSalesService — pos-hardware/31 WO-31.3 · park · retrieve · listOpen / countOpen |
 | `pos-receipts.service.spec.ts` | 6 | PosReceiptsService — WO-21.5 · createForOrder · getForOrder · markPrinted |
 | `pos-sales.service.spec.ts` | 9 | PosSalesService — WO-21.3 · line modifiers / quantity source (pos-hardware/31) |
@@ -155,6 +163,10 @@ check there before adding another.
 | `PosVariantResult` | interface | `pos-catalog.service.ts:5` |  |
 | `PosSellableRecipeResult` | interface | `pos-catalog.service.ts:15` |  |
 | `PosCatalogService` | class | `pos-catalog.service.ts:36` | A till's product lookup — sku/barcode/name search, scoped to what a cashier actually needs on screen (RETAIL-… |
+| `PosDashboardController` | class | `pos-dashboard.controller.ts:15` | pos-hardware/76-pos-mobile-dashboard.md WO-76.1/76.3 — gated by `pos.dashboard.view`, distinct from `inventor… |
+| `PosDashboardLowStockRow` | interface | `pos-dashboard.service.ts:9` |  |
+| `PosDashboardSummary` | interface | `pos-dashboard.service.ts:18` |  |
+| `PosDashboardService` | class | `pos-dashboard.service.ts:41` | pos-hardware/76-pos-mobile-dashboard.md (WO-76.1) — the till's own glance-view, scoped to one `locationId` ex… |
 | `PosParkedSalesController` | class | `pos-parked-sales.controller.ts:18` | pos-hardware/31 WO-31.3 — park/retrieve for `TAB`/`TABLE` sales, split from `PosSalesController` (which only… |
 | `PosParkedSalesService` | class | `pos-parked-sales.service.ts:13` | pos-hardware/31 §3 (WO-31.3) — park/retrieve for `TAB`/`TABLE` sales. |
 | `PosReceiptsController` | class | `pos-receipts.controller.ts:9` |  |
@@ -167,7 +179,7 @@ check there before adding another.
 | `PosShiftsService` | class | `pos-shifts.service.ts:29` | Shift lifecycle and cash movements (RETAIL-ERP.md R11, WO-21.2) — a cashier opens a shift with a float, the d… |
 | `PosTerminalsController` | class | `pos-terminals.controller.ts:10` |  |
 | `PosTerminalsService` | class | `pos-terminals.service.ts:17` | `PosTerminal` registration and device auth (RETAIL-ERP.md R7/R11, WO-21.1) — same shape as `TradingPartnersSe… |
-| `PosModule` | class | `pos.module.ts:62` |  |
+| `PosModule` | class | `pos.module.ts:67` |  |
 
 
 ---

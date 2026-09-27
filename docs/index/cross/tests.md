@@ -3,7 +3,7 @@
 
 # Tests
 
-**326** spec files, **3,125** cases. What is already pinned down — and what is not.
+**327** spec files, **3,129** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (306)
+## Unit and integration (307)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -237,6 +237,7 @@ regression or an N+1.
 | `apps/api/src/modules/planning/propagation.spec.ts` | planning | 5 | propagate |
 | `apps/api/src/modules/planning/supplier-resilience.service.spec.ts` | planning | 7 | SupplierResilienceService · leadTimeDistribution · recordObservation · supplierScorecard |
 | `apps/api/src/modules/pos/pos-catalog.service.spec.ts` | pos | 5 | PosCatalogService — WO-21.4 · listSellableRecipes |
+| `apps/api/src/modules/pos/pos-dashboard.service.spec.ts` | pos | 4 | PosDashboardService — pos-hardware/76 WO-76.1 |
 | `apps/api/src/modules/pos/pos-parked-sales.service.spec.ts` | pos | 9 | PosParkedSalesService — pos-hardware/31 WO-31.3 · park · retrieve · listOpen / countOpen |
 | `apps/api/src/modules/pos/pos-receipts.service.spec.ts` | pos | 6 | PosReceiptsService — WO-21.5 · createForOrder · getForOrder · markPrinted |
 | `apps/api/src/modules/pos/pos-sales.service.spec.ts` | pos | 9 | PosSalesService — WO-21.3 · line modifiers / quantity source (pos-hardware/31) |

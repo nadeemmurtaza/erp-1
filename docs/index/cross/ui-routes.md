@@ -3,7 +3,7 @@
 
 # Screens
 
-All **268** routable files across the web app, the till and the mobile app.
+All **269** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -236,7 +236,7 @@ _none_
 | `/workshop/[id]` | screen | client | `apps/mobile/app/workshop/[id].tsx` |
 | `/workshop/index` | screen | client | `apps/mobile/app/workshop/index.tsx` |
 
-### pos (12)
+### pos (13)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -245,6 +245,7 @@ _none_
 | `/` | layout | server | `apps/pos/src/app/layout.tsx` |
 | `/` | not-found | server | `apps/pos/src/app/not-found.tsx` |
 | `/` | page | client | `apps/pos/src/app/page.tsx` |
+| `/dashboard` | page | client | `apps/pos/src/app/dashboard/page.tsx` |
 | `/login` | page | client | `apps/pos/src/app/login/page.tsx` |
 | `/receipt/[orderId]` | page | client | `apps/pos/src/app/receipt/[orderId]/page.tsx` |
 | `/returns` | page | client | `apps/pos/src/app/returns/page.tsx` |

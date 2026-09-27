@@ -12,6 +12,8 @@ import { PosReceiptsService } from './pos-receipts.service';
 import { PosReceiptsController } from './pos-receipts.controller';
 import { PosParkedSalesService } from './pos-parked-sales.service';
 import { PosParkedSalesController } from './pos-parked-sales.controller';
+import { PosDashboardService } from './pos-dashboard.service';
+import { PosDashboardController } from './pos-dashboard.controller';
 
 /**
  * The till (RETAIL-ERP.md R7/R11). Off by default — see modules.registry.ts.
@@ -41,6 +43,7 @@ import { PosParkedSalesController } from './pos-parked-sales.controller';
     PosCatalogController,
     PosReceiptsController,
     PosParkedSalesController,
+    PosDashboardController,
   ],
   providers: [
     PosTerminalsService,
@@ -49,6 +52,7 @@ import { PosParkedSalesController } from './pos-parked-sales.controller';
     PosCatalogService,
     PosReceiptsService,
     PosParkedSalesService,
+    PosDashboardService,
   ],
   exports: [
     PosTerminalsService,
@@ -57,6 +61,7 @@ import { PosParkedSalesController } from './pos-parked-sales.controller';
     PosCatalogService,
     PosReceiptsService,
     PosParkedSalesService,
+    PosDashboardService,
   ],
 })
 export class PosModule {}

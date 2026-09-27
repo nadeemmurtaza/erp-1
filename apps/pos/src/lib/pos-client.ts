@@ -181,6 +181,24 @@ export function listSellableRecipes(): Promise<{ data: PosSellableRecipe[] }> {
   return request('/admin/pos/products/recipes');
 }
 
+/** pos-hardware/76-pos-mobile-dashboard.md WO-76.1 — scoped to one terminal's own location. */
+export interface PosDashboardSummary {
+  dailySales: { revenue: number; orderCount: number };
+  totalCustomers: number;
+  lowStockVariants: Array<{
+    variantId: string;
+    sku: string;
+    productName: string;
+    variantLabel: string;
+    stock: number;
+    reorderPoint: number;
+  }>;
+}
+
+export function getDashboardSummary(terminalId: string): Promise<PosDashboardSummary> {
+  return request('/admin/pos/dashboard', { query: { terminalId } });
+}
+
 export function openShift(terminalId: string, openingCashMinor: number): Promise<PosShift> {
   return request('/admin/pos/shifts/open', { method: 'POST', body: { terminalId, openingCashMinor } });
 }

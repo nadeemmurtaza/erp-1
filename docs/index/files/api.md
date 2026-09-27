@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,113 tracked files in `apps/api`, by directory.
+All 1,116 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -1985,13 +1985,16 @@ All 1,113 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `planning.dto.ts` | dto | 67 |  |
 
-### `apps/api/src/modules/pos` (19)
+### `apps/api/src/modules/pos` (22)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `pos-catalog.controller.ts` | controller | 32 |  |
 | `pos-catalog.service.spec.ts` | unit test | 88 |  |
 | `pos-catalog.service.ts` | service | 109 |  |
+| `pos-dashboard.controller.ts` | controller | 31 |  |
+| `pos-dashboard.service.spec.ts` | unit test | 70 |  |
+| `pos-dashboard.service.ts` | service | 86 |  |
 | `pos-parked-sales.controller.ts` | controller | 39 |  |
 | `pos-parked-sales.service.spec.ts` | unit test | 104 |  |
 | `pos-parked-sales.service.ts` | service | 66 |  |
@@ -2007,7 +2010,7 @@ All 1,113 tracked files in `apps/api`, by directory.
 | `pos-terminals.controller.ts` | controller | 51 |  |
 | `pos-terminals.service.spec.ts` | unit test | 145 |  |
 | `pos-terminals.service.ts` | service | 116 |  |
-| `pos.module.ts` | nest module | 63 |  |
+| `pos.module.ts` | nest module | 68 |  |
 
 ### `apps/api/src/modules/pos/dto` (4)
 

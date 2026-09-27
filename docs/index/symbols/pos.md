@@ -21,6 +21,12 @@ Every top-level export in `pos`, with the line to open.
 | `not-found.tsx` | `NotFound` | default | :7 | Unmatched URL on a till device — renders inside the root layout, so globals.css is guaranteed (CLAU… |
 | `page.tsx` | `RootPage` | default | :10 | Routes to wherever this device's session actually is — never renders anything itself. |
 
+### `apps/pos/src/app/dashboard`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `PosDashboardPage` | default | :18 | pos-hardware/76-pos-mobile-dashboard.md WO-76.2 — a glance-view of the till's own branch: today's s… |
+
 ### `apps/pos/src/app/login`
 
 | File | Symbol | Kind | Line | Doc |
@@ -61,7 +67,7 @@ Every top-level export in `pos`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `TillPage` | default | :42 |  |
+| `page.tsx` | `TillPage` | default | :69 |  |
 
 ### `apps/pos/src/components`
 
@@ -127,21 +133,23 @@ Every top-level export in `pos`, with the line to open.
 | `pos-client.ts` | `listTerminals` | function | :171 | Terminal setup is a one-time, admin-tier action (`pos.manage`, not `pos.operate`) — a plain cashier… |
 | `pos-client.ts` | `searchProducts` | function | :175 |  |
 | `pos-client.ts` | `listSellableRecipes` | function | :180 | pos-hardware/31 WO-31.4 — sellable BOM recipes, for a BOM_RECIPE_SCALE line. |
-| `pos-client.ts` | `openShift` | function | :184 |  |
-| `pos-client.ts` | `closeShift` | function | :188 |  |
-| `pos-client.ts` | `xReport` | function | :192 |  |
-| `pos-client.ts` | `zReport` | function | :196 |  |
-| `pos-client.ts` | `recordCashMovement` | function | :200 |  |
-| `pos-client.ts` | `sell` | function | :216 | architecture-patterns/157 — `idempotencyKey` is generated once, at the moment the sale is first att… |
-| `pos-client.ts` | `parkSale` | function | :225 | pos-hardware/31 WO-31.3 — park a TAB/TABLE sale in progress. |
-| `pos-client.ts` | `retrieveParkedSale` | function | :238 | Idempotent — retrieving an already-retrieved sale is refused (409). |
-| `pos-client.ts` | `listParkedSales` | function | :242 |  |
-| `pos-client.ts` | `getReceipt` | function | :246 |  |
-| `pos-client.ts` | `printReceipt` | function | :251 | Marks the receipt printed and returns its data — call right before `window.print()`. |
-| `pos-client.ts` | `searchOrders` | function | :262 | Order lookup and the return path reuse the EXISTING admin/orders and admin/payments endpoints direc… |
-| `pos-client.ts` | `getOrder` | function | :266 |  |
-| `pos-client.ts` | `returnOrder` | function | :270 |  |
-| `pos-client.ts` | `refundPayment` | function | :274 |  |
+| `pos-client.ts` | `PosDashboardSummary` | interface | :185 | pos-hardware/76-pos-mobile-dashboard.md WO-76.1 — scoped to one terminal's own location. |
+| `pos-client.ts` | `getDashboardSummary` | function | :198 |  |
+| `pos-client.ts` | `openShift` | function | :202 |  |
+| `pos-client.ts` | `closeShift` | function | :206 |  |
+| `pos-client.ts` | `xReport` | function | :210 |  |
+| `pos-client.ts` | `zReport` | function | :214 |  |
+| `pos-client.ts` | `recordCashMovement` | function | :218 |  |
+| `pos-client.ts` | `sell` | function | :234 | architecture-patterns/157 — `idempotencyKey` is generated once, at the moment the sale is first att… |
+| `pos-client.ts` | `parkSale` | function | :243 | pos-hardware/31 WO-31.3 — park a TAB/TABLE sale in progress. |
+| `pos-client.ts` | `retrieveParkedSale` | function | :256 | Idempotent — retrieving an already-retrieved sale is refused (409). |
+| `pos-client.ts` | `listParkedSales` | function | :260 |  |
+| `pos-client.ts` | `getReceipt` | function | :264 |  |
+| `pos-client.ts` | `printReceipt` | function | :269 | Marks the receipt printed and returns its data — call right before `window.print()`. |
+| `pos-client.ts` | `searchOrders` | function | :280 | Order lookup and the return path reuse the EXISTING admin/orders and admin/payments endpoints direc… |
+| `pos-client.ts` | `getOrder` | function | :284 |  |
+| `pos-client.ts` | `returnOrder` | function | :288 |  |
+| `pos-client.ts` | `refundPayment` | function | :292 |  |
 
 
 ---

@@ -22,7 +22,7 @@ the *catalogue*, not any particular deployment's grants.
 | `Roles granted at seed` = none | `ROLE_PERMISSION_SEED` gives it to no role, so no live user holds it unless an admin grants it by hand — the `seedPermissions()` vs `seedRoles()` trap CLAUDE.md names |
 | `UI call sites` = — | nothing in the admin UI gates on it; if a screen needs it, the screen is missing |
 
-- Permissions enforcing **no route**: **8** — `pricing.price-lists.approve`, `pos.terminal.configure`, `pos.dashboard.view`, `stitching.jobs.manage_own`, `stitching.jobs.manage_all`, `notify.broadcast`, `support.tickets.handle`, `support.tickets.view_all`
+- Permissions enforcing **no route**: **7** — `pricing.price-lists.approve`, `pos.terminal.configure`, `stitching.jobs.manage_own`, `stitching.jobs.manage_all`, `notify.broadcast`, `support.tickets.handle`, `support.tickets.view_all`
 - Permissions **no seeded role grants**: **8** — `pricing.price-lists.approve`, `hr.attendance.view`, `hr.attendance.record`, `hr.attendance.reconcile`, `tasks.admin`, `notify.broadcast`, `notify.escalation.manage`, `support.tickets.reassign`
 - Keys required by a route but **not in the catalogue**: **0**
 
@@ -57,7 +57,7 @@ the *catalogue*, not any particular deployment's grants.
 | `pos.instalments.cancel` | Cancel a layby/instalment plan — may forfeit or refund its deposit, per policy | high | 1 | 1 | ADMIN |
 | `pos.instalments.default` | Mark a layby/instalment plan defaulted — writes off the unpaid balance | high | 1 | 1 | ADMIN |
 | `pos.terminal.configure` | Configure a terminal's order types and hardware driver wiring | medium | **0 — enforces nothing** | — | ADMIN |
-| `pos.dashboard.view` | View the till's own daily-sales/customers/low-stock snapshot | low | **0 — enforces nothing** | — | STAFF, ADMIN |
+| `pos.dashboard.view` | View the till's own daily-sales/customers/low-stock snapshot | low | 1 | — | STAFF, ADMIN |
 | `payments.approve` | Approve bank-transfer payments | high | 3 | 2 | STAFF, ADMIN |
 
 ### Production

@@ -1,15 +1,15 @@
 import { toKitchenTicket, toReceipt, type PlacedPosSale } from './receipt';
 
-describe('toReceipt', () => {
-  const sale: PlacedPosSale = {
-    number: 'YSN-2026-0001',
-    placedAt: '2026-01-01T00:00:00.000Z',
-    terminalId: 'terminal-1',
-    itemsSubtotal: 1000,
-    grandTotal: 1000,
-    items: [{ nameEn: 'Kurta', sku: 'SKU1', quantity: 2, unitPrice: 500, lineTotal: 1000 }],
-  };
+const sale: PlacedPosSale = {
+  number: 'YSN-2026-0001',
+  placedAt: '2026-01-01T00:00:00.000Z',
+  terminalId: 'terminal-1',
+  itemsSubtotal: 1000,
+  grandTotal: 1000,
+  items: [{ nameEn: 'Kurta', sku: 'SKU1', quantity: 2, unitPrice: 500, lineTotal: 1000 }],
+};
 
+describe('toReceipt', () => {
   it('builds a print-ready shape carrying tender and change', () => {
     const receipt = toReceipt(sale, 'cashier-1', 1200, 200);
 

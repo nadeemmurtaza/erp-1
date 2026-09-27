@@ -32,7 +32,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,113 | 149,031 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 1,116 | 149,223 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `apps/web` | 420 | 70,505 | Next.js — admin console and customer storefront in one app |
 | `docs` | 400 | 70,311 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 42 | 28,687 | workspace manifests, docker compose/stack files, env templates |
@@ -40,7 +40,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 | `scripts` | 25 | 9,621 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 62 | 7,872 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `apps/pos` | 32 | 2,169 | Next.js PWA — offline-first point of sale |
+| `apps/pos` | 33 | 2,667 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,064 |  |
 | `packages/pos-core` | 14 | 682 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
@@ -98,7 +98,7 @@ Each is independent: no module imports another except through a named
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 7 | 1 |
 | [`payroll`](modules/payroll.md) | core | MODULES allowlist | 19 | 9 |
 | [`planning`](modules/planning.md) | core | always on | 6 | — |
-| [`pos`](modules/pos.md) | core | MODULES allowlist | 19 | 7 |
+| [`pos`](modules/pos.md) | core | MODULES allowlist | 20 | 7 |
 | [`pricing`](modules/pricing.md) | core | MODULES allowlist | 7 | 3 |
 | [`production`](modules/production.md) | core | MODULES allowlist | 9 | 4 |
 | [`promotions`](modules/promotions.md) | core | MODULES allowlist | 12 | 3 |

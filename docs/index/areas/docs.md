@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-400 files · 70,311 lines
+400 files · 70,621 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 10 | 11,678 | doc, file |
+| `docs/implementation` | 10 | 11,837 | doc, file |
 | `docs/implementation/access-control-identity` | 7 | 1,896 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -102,7 +102,7 @@ has a bug.
 | `docs/implementation/inventory-purchasing` | 5 | 1,798 | doc |
 | `docs/implementation/lots-serials-traceability` | 3 | 805 | doc |
 | `docs/implementation/payroll` | 4 | 1,178 | doc |
-| `docs/implementation/pos-hardware` | 4 | 494 | doc |
+| `docs/implementation/pos-hardware` | 4 | 645 | doc |
 | `docs/implementation/promotions-giftcards` | 1 | 347 | doc |
 | `docs/implementation/resilience-scalability` | 8 | 1,323 | doc |
 | `docs/implementation/shipping-fulfilment-returns` | 1 | 335 | doc |
@@ -116,7 +116,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 7,525 | doc |  |
+| `docs/implementation/DECISIONS.md` | 7,684 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |

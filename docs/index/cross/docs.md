@@ -2727,7 +2727,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>7,525 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>7,684 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2799,6 +2799,7 @@ _no second-level headings_
 - ADR-064 — Doc 64 (in-app help desk): built as a new standalone module, with a per-instance transition-authority rule and a name-resolution step the document's own sketch does not specify  <sub>:7108</sub>
 - ADR-065 — Doc 148 (external customer support portal): built as a second, `Contact`-keyed model alongside doc 64's own `SupportTicket`, sharing its handler permissions and its action-hub source rather than inventing either again  <sub>:7223</sub>
 - ADR-066 — Doc 144 (R20–R26 supply-chain resilience planning engine): built as a pure read/recommendation engine, generating only the two action kinds this graph has real data to back  <sub>:7388</sub>
+- ADR-067 — Docs 31/66/67/76 (`pos-hardware/` category): the till hardware layer as extension points, ad-hoc modifiers over a hardcoded list, and a corrected permission claim  <sub>:7526</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3387,41 +3388,41 @@ _no second-level headings_
 - Acceptance  <sub>:135</sub>
 - Out of scope  <sub>:145</sub>
 
-### `docs/implementation/pos-hardware/31-sector-pos-hardware-integration.md`  <sub>244 lines</sub>
+### `docs/implementation/pos-hardware/31-sector-pos-hardware-integration.md`  <sub>312 lines</sub>
 
-- What each requested sector actually needs, checked against what exists  <sub>:13</sub>
-- 1. Hardware is an extension point, not a browser API call sprinkled through the till UI  <sub>:24</sub>
-- 2. A line can carry a modifier set and a quantity source other than "typed"  <sub>:68</sub>
-- 3. Order type decides whether a sale can be parked, not whether it exists  <sub>:106</sub>
-- Scope lenses  <sub>:139</sub>
-- Work orders  <sub>:205</sub>
-- Acceptance  <sub>:224</sub>
-- Out of scope  <sub>:237</sub>
+- What each requested sector actually needs, checked against what exists  <sub>:81</sub>
+- 1. Hardware is an extension point, not a browser API call sprinkled through the till UI  <sub>:92</sub>
+- 2. A line can carry a modifier set and a quantity source other than "typed"  <sub>:136</sub>
+- 3. Order type decides whether a sale can be parked, not whether it exists  <sub>:174</sub>
+- Scope lenses  <sub>:207</sub>
+- Work orders  <sub>:273</sub>
+- Acceptance  <sub>:292</sub>
+- Out of scope  <sub>:305</sub>
 
-### `docs/implementation/pos-hardware/66-multi-form-factor-pos.md`  <sub>78 lines</sub>
+### `docs/implementation/pos-hardware/66-multi-form-factor-pos.md`  <sub>102 lines</sub>
 
 - 1. What already covers this, and what a gap would actually look like  <sub>:15</sub>
-- Scope lenses  <sub>:42</sub>
-- Work orders  <sub>:53</sub>
-- Acceptance  <sub>:63</sub>
-- Out of scope  <sub>:72</sub>
+- Scope lenses  <sub>:66</sub>
+- Work orders  <sub>:77</sub>
+- Acceptance  <sub>:87</sub>
+- Out of scope  <sub>:96</sub>
 
-### `docs/implementation/pos-hardware/67-secure-cash-drawer-triggering.md`  <sub>63 lines</sub>
+### `docs/implementation/pos-hardware/67-secure-cash-drawer-triggering.md`  <sub>83 lines</sub>
 
-- 1. What "exclusively with completed cash transactions" already means here  <sub>:15</sub>
-- Scope lenses  <sub>:35</sub>
-- Work orders  <sub>:43</sub>
-- Acceptance  <sub>:50</sub>
-- Out of scope  <sub>:58</sub>
+- 1. What "exclusively with completed cash transactions" already means here  <sub>:35</sub>
+- Scope lenses  <sub>:55</sub>
+- Work orders  <sub>:63</sub>
+- Acceptance  <sub>:70</sub>
+- Out of scope  <sub>:78</sub>
 
-### `docs/implementation/pos-hardware/76-pos-mobile-dashboard.md`  <sub>109 lines</sub>
+### `docs/implementation/pos-hardware/76-pos-mobile-dashboard.md`  <sub>148 lines</sub>
 
-- 1. One read, reusing `AnalyticsService.summary()`'s own figures, scoped to the till's own location  <sub>:17</sub>
-- 2. Doc 31's own hardware/PWA foundation is where this screen lives  <sub>:37</sub>
-- Scope lenses  <sub>:47</sub>
-- Work orders  <sub>:84</sub>
-- Acceptance  <sub>:95</sub>
-- Out of scope  <sub>:104</sub>
+- 1. One read, reusing `AnalyticsService.summary()`'s own figures, scoped to the till's own location  <sub>:56</sub>
+- 2. Doc 31's own hardware/PWA foundation is where this screen lives  <sub>:76</sub>
+- Scope lenses  <sub>:86</sub>
+- Work orders  <sub>:123</sub>
+- Acceptance  <sub>:134</sub>
+- Out of scope  <sub>:143</sub>
 
 ### `docs/implementation/promotions-giftcards/05-promotions-giftcards.md`  <sub>347 lines</sub>
 

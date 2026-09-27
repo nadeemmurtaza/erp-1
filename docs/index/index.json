@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2371,
-    "lines": 360294,
+    "lines": 360604,
     "routes": 851,
     "controllers": 156,
     "models": 307,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 400,
-      "lines": 70311,
-      "bytes": 4184431,
+      "lines": 70621,
+      "bytes": 4204637,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -88793,8 +88793,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 7525,
-      "bytes": 439687,
+      "lines": 7684,
+      "bytes": 449327,
       "doc": "",
       "symbols": []
     },
@@ -88848,7 +88848,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 546,
-      "bytes": 75004,
+      "bytes": 75733,
       "doc": "",
       "symbols": []
     },
@@ -90197,8 +90197,8 @@
       "path": "docs/implementation/pos-hardware/31-sector-pos-hardware-integration.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 244,
-      "bytes": 12930,
+      "lines": 312,
+      "bytes": 17499,
       "doc": "",
       "symbols": []
     },
@@ -90206,8 +90206,8 @@
       "path": "docs/implementation/pos-hardware/66-multi-form-factor-pos.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 78,
-      "bytes": 4140,
+      "lines": 102,
+      "bytes": 5659,
       "doc": "",
       "symbols": []
     },
@@ -90215,8 +90215,8 @@
       "path": "docs/implementation/pos-hardware/67-secure-cash-drawer-triggering.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 63,
-      "bytes": 3244,
+      "lines": 83,
+      "bytes": 4556,
       "doc": "",
       "symbols": []
     },
@@ -90224,8 +90224,8 @@
       "path": "docs/implementation/pos-hardware/76-pos-mobile-dashboard.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 109,
-      "bytes": 5554,
+      "lines": 148,
+      "bytes": 7991,
       "doc": "",
       "symbols": []
     },

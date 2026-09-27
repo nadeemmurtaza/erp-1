@@ -14,6 +14,45 @@ on the till app has no glance-view of these figures without switching to
 the separate admin web app. This document is the missing screen, not a
 new data source.
 
+> **Status (2026-09-27): built, WO-76.1–76.3.** `PosDashboardService.summary
+> (locationId)` (`apps/api/src/modules/pos/pos-dashboard.service.ts`)
+> delegates to the same facts `AnalyticsService.summary()` already
+> aggregates (`Order`, `Contact`, `VariantLocationStock`/`ProductVariant`)
+> — no new aggregation logic, only a location-scoped read: `dailySales` is
+> an `Order` aggregate `WHERE locationId = … AND placedAt >= startOfToday`
+> (shop-timezone boundary, `core/time/shop-time.ts`, the same helper
+> `AnalyticsService` uses); `lowStockVariants` joins
+> `VariantLocationStock`/`ProductVariant`/`Product`/`ProductTranslation`
+> scoped to the same `locationId`, `quantity <= lowStockThreshold`, capped
+> at 20 rows. `PosDashboardController` (`GET admin/pos/dashboard
+> ?terminalId=`) resolves the terminal's own `locationId` server-side —
+> the client never states its own location — gated by the new
+> `pos.dashboard.view` permission (category `Sales`, `sensitivity: 'low'`,
+> seeded to `STAFF` and `ADMIN`). `apps/pos/src/app/dashboard/page.tsx`
+> (WO-76.2) is a sixth `apps/pos` route with loading/error(+retry)/populated
+> states and three tiles (daily sales, total customers, low stock),
+> reachable from the till's own header ("Dashboard" button) — no separate
+> nav surface.
+>
+> **One honest deviation.** `totalCustomers` is a plain `Contact.count()`
+> — deliberately NOT filtered by `locationId`, because `Contact` carries no
+> `locationId` column anywhere in this schema (nor does
+> `AnalyticsService.summary()` filter it by branch). At Chain/Organization
+> scale a branch is its own node with its own database (RETAIL-ERP.md R7),
+> so that node's `Contact` table already holds only its own customers —
+> the count is branch-scoped by the node model itself, not by an added
+> filter; at Solo scale it is correctly the shop's own whole count. Doc
+> 76's own "absent collaborator" answer (the tile omits itself with `crm`
+> off) is not separately enforced here: this codebase has no existing
+> on/off gate for `Contact`/customer counting anywhere (`AnalyticsService`
+> computes it unconditionally too) — building one would be new,
+> unrequested infrastructure, so the tile always renders today, honestly
+> stated rather than silently assumed.
+>
+> Tests: `pos-dashboard.service.spec.ts` (location scoping, zero-not-null
+> revenue, numeric coercion of raw-SQL rows, unscoped `Contact.count()`).
+> ADR-067.
+
 ## 1. One read, reusing `AnalyticsService.summary()`'s own figures, scoped to the till's own location
 
 ```ts

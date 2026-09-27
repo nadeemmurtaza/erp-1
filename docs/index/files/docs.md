@@ -563,7 +563,7 @@ All 400 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 7525 |  |
+| `DECISIONS.md` | doc | 7684 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -809,10 +809,10 @@ All 400 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `31-sector-pos-hardware-integration.md` | doc | 244 |  |
-| `66-multi-form-factor-pos.md` | doc | 78 |  |
-| `67-secure-cash-drawer-triggering.md` | doc | 63 |  |
-| `76-pos-mobile-dashboard.md` | doc | 109 |  |
+| `31-sector-pos-hardware-integration.md` | doc | 312 |  |
+| `66-multi-form-factor-pos.md` | doc | 102 |  |
+| `67-secure-cash-drawer-triggering.md` | doc | 83 |  |
+| `76-pos-mobile-dashboard.md` | doc | 148 |  |
 
 ### `docs/implementation/promotions-giftcards` (1)
 

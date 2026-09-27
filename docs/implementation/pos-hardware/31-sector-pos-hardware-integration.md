@@ -10,6 +10,74 @@ count and the receipt. What's missing is the **till hardware layer** and the
 **order-shape differences** a bakery counter, a wholesale counter and a
 restaurant floor each need on top of the same sale.
 
+> **Status (2026-09-27): built, WO-31.1–31.6.** `packages/pos-core/src/
+> hardware.ts` adds `BarcodeScanner`/`ReceiptPrinter`/`CashDrawer` as
+> extension-point interfaces only (WO-31.1) — no concrete WebUSB/serial
+> driver ships, a real one is a separate, later, per-deployment concern.
+> `apps/pos/src/lib/hardware.ts` is the browser-side registry: every call
+> (`printReceipt`, `printKitchenTicket`, `kickCashDrawer`, `onBarcodeScan`)
+> resolves to a safe no-op with nothing registered, the same
+> check-then-no-op discipline `AiService.isAvailable()` uses elsewhere.
+> `pos.prisma` gains `PosLineModifier`, `QuantitySource`,
+> `PosLineQuantitySource`, `PosOrderType`, `PosParkedSale` (WO-31.2, migration
+> `20260927080000_wo31_pos_hardware_park_retrieve`) — additive only.
+> `PosParkedSalesService`/`PosParkedSalesController` (WO-31.3) implement
+> park (refuses `COUNTER`), an idempotent `retrieve()` via a conditional
+> `updateMany` (predicate-on-write, House Rule 10), `listOpen`/`countOpen`,
+> gated by the existing `pos.operate` — no new permission for parking
+> itself. `PosCatalogService.listSellableRecipes()` reads `bom.prisma`'s
+> `BomRecipe` directly (`ACTIVE` only), the same direct-Prisma-read
+> precedent this module already set, no `BomModule` import and no new
+> `KNOWN_MODULE_COUPLINGS` entry. `basket.ts` gains `BasketLineModifier`,
+> `BasketQuantitySource` and an optional `lineRef` on `BasketLine`;
+> `addLine`/`setQuantity`/`removeLine` gained a trailing optional `lineRef`
+> parameter so a modifier or non-typed-quantity line never silently merges
+> with another — every existing caller that never sets one is unchanged
+> (proven by the pre-existing `basket.spec.ts` cases passing unmodified).
+> `orders.service.ts`'s `PosSaleLineInput.modifiers` folds
+> `priceDeltaMinor` into the `OrderItem`'s own `unitPrice` — zero schema
+> change to `orders` ("a richer line, no new coupling", this document's own
+> words). `PosSalesService.sell()` writes `PosLineModifier`/
+> `PosLineQuantitySource` best-effort, keyed by the till-generated
+> `lineRef`, after the sale commits — a bare scalar, deliberately never a
+> `@relation` to the `OrderItem` it produced. The till (`apps/pos/src/app/
+> till/page.tsx`) gained an order-type selector (`COUNTER` default,
+> unchanged behaviour), park/retrieve with an open-tabs-and-tables list, ad
+> hoc modifier entry, scale-weight entry, and a read-only recipe picker
+> (WO-31.4); a `TAB`/`TABLE` sale with modifiers prints a second,
+> price-free kitchen ticket via `toKitchenTicket()` (WO-31.5); a cash
+> drawer kick fires once, from the till's own tender-completion path, only
+> when cash actually changed hands (WO-31 §1, doc 67 confirms this below).
+>
+> **Three honest deviations from this document's own text.** First,
+> WO-31.6's claim that `pos.terminal.configure` "already extends the
+> existing `pos.*` family, no new top-level key needed" was misleading: the
+> *namespace* existed, this specific *key* did not — it is added for real
+> now (`packages/shared/src/permissions.ts`, category `Sales`, `sensitivity:
+> 'medium'`, seeded to `ADMIN` only, matching `pos.manage`'s own
+> placement). Second, having re-read "Authority and blast radius" once
+> more as instructed, order type is built as a **per-sale toggle** on the
+> till screen, not a terminal-level admin config screen: the lens's own
+> words are "only changes which button the cashier sees, not what the sale
+> posts", which is a per-sale choice, not a fixed device setting — so
+> `pos.terminal.configure` is seeded through for a real future
+> terminal-config screen but gates nothing yet; any `pos.operate` cashier
+> picks `COUNTER`/`TAB`/`TABLE` per sale today. Third, this repository has
+> no per-product modifier catalogue, and inventing one (`ProductModifierOption`)
+> is explicitly out of this document's own scope (it names `PosLineModifier`
+> as a per-sale record, never a catalogue) — modifiers are entered ad hoc
+> at the till (label + price delta), never picked from a hardcoded list
+> (Law 1).
+>
+> Tests: `basket.spec.ts` (modifier merge/no-merge, `lineRef`-scoped
+> `setQuantity`/`removeLine`, modifier price folding), `receipt.spec.ts`
+> (`toKitchenTicket`), `pos-parked-sales.service.spec.ts` (new — park
+> refuses `COUNTER`, idempotent retrieve, `listOpen`/`countOpen` scoping),
+> `pos-sales.service.spec.ts` (modifier fold-in, metadata writes, best-effort
+> failure), `pos-catalog.service.spec.ts` (`listSellableRecipes`),
+> `orders-pos.service.spec.ts` (modifier price fold-in against a real DB).
+> ADR-067.
+
 ## What each requested sector actually needs, checked against what exists
 
 | Sector ask | Already served by | Genuinely new here |

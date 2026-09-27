@@ -29,6 +29,30 @@ words, not new scope invented here.
   which is precisely what a handheld tablet or a bare smartphone running
   the same PWA needs.
 
+> **Status (2026-09-27): confirmed, WO-66.1/66.2 — one genuine finding, fixed.**
+> `scripts/check-overflow.mjs`'s `routeInventory()` (`scripts/check-links.mjs`)
+> walks `apps/pos/src/app` on the filesystem directly, so every `apps/pos`
+> route — including the new `/dashboard` from doc 76 — is swept
+> automatically; nothing is hand-listed or excluded by app. `WIDTHS`
+> (`scripts/lib/render-harness.mjs`) already carries exactly Law 4's seven:
+> `xs` 280, `sm` 380, `fold` 640, `md` 768, `lg` 1024, `xl` 1280, `2xl`
+> 1536. WO-66.1's answer is **already covered**, confirmed by reading the
+> checker's own source, not assumed.
+>
+> WO-66.2: an actual `pnpm check:overflow` run (real Postgres, api+web+pos
+> booted, 141 routes × 7 widths) found ONE genuine `apps/pos` violation —
+> `/till` overflowing by 13px at `xs` (280px), from doc 31's own new
+> order-type-selector + "Use recipe" row. Fixed with `flex-wrap` so the
+> link drops to its own line instead of forcing horizontal overflow;
+> re-run confirmed zero `apps/pos` violations remain (23 → 22 total, the
+> till's the only one that dropped out). The run also found 22
+> pre-existing violations on `apps/web` admin routes (`/admin/finance`,
+> `/admin/attendance`, `/admin/purchase-orders`, `/admin/reviews`, and
+> others, all at `xs`/`sm`) — genuine findings, but outside this
+> document's own scope (none is `apps/pos`) and not touched here; they
+> predate this work and are named so they are not lost, not fixed under
+> this document's own remit.
+
 **The one genuinely open question** is not architectural — it's measured:
 has `pnpm check:overflow`'s real sweep (`.github/workflows/ci.yml`'s
 `overflow` job) actually been run against every `apps/pos` screen at all

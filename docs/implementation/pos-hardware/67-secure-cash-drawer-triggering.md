@@ -12,6 +12,26 @@ WebUSB/serial connection) are all already specified and already scheduled
 as WO-31's own work. This document is a coverage note confirming there is
 no remaining gap, not a new specification.
 
+> **Status (2026-09-27): confirmed — the claim now holds, verified against
+> the real build.** Doc 31 was not yet built when this document first made
+> its claim, so it was re-verified against what doc 31 actually shipped,
+> not assumed. `kickCashDrawer()` (`apps/pos/src/lib/hardware.ts`) is
+> called from exactly one place: `apps/pos/src/app/till/page.tsx`'s
+> `completeSale()`, inside the single success branch after `sell()`
+> resolves, guarded by `cashWasTendered` (true for a `CASH` sale, or a
+> `LAYBY`/`INSTALMENT` sale whose deposit is greater than zero — never for
+> a zero-deposit layby that collected no cash, never for a sale that
+> queued offline). This till has no card/wallet tender path at all today
+> (`pos-core/src/tender.ts`'s own header: "No card/wallet tender yet"), so
+> "never on a card tender" holds structurally, not by a runtime branch that
+> could be flipped — there is no card branch to reach. The call site fires
+> exactly once per completed cash tender, never once per render or per
+> retry (`completeSale()`'s own single success path). With no
+> `CashDrawer` driver registered — true for every deployment today, per
+> WO-31.1's own honest scope — `kickCashDrawer()` resolves to `{ kicked:
+> false }` and never throws, so the till behaves exactly as before this
+> work.
+
 ## 1. What "exclusively with completed cash transactions" already means here
 
 - **Never on a card tender** — doc 31 states this outcome directly; the

@@ -3,7 +3,7 @@
 
 # Tests
 
-**316** spec files, **3,058** cases. What is already pinned down — and what is not.
+**325** spec files, **3,100** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (296)
+## Unit and integration (305)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -227,6 +227,15 @@ regression or an N+1.
 | `apps/api/src/modules/payroll/leave.service.spec.ts` | payroll | 16 | LeaveService · countWorkingDays · requestLeave / cancel · decide · accrue |
 | `apps/api/src/modules/payroll/pay-run.service.spec.ts` | payroll | 15 | PayRunService · build · approve / post lifecycle · postAdjustment — WO-19.5 |
 | `apps/api/src/modules/payroll/payroll.service.spec.ts` | payroll | 15 | PayrollService · setCompensationRate · calculateGross — MONTHLY · calculateGross — HOURLY / COMMISS… |
+| `apps/api/src/modules/planning/action-ranking.spec.ts` | planning | 4 | rankActions |
+| `apps/api/src/modules/planning/dependency-graph.spec.ts` | planning | 4 | DependencyGraphService |
+| `apps/api/src/modules/planning/goods-received-lead-time.listener.spec.ts` | planning | 3 | GoodsReceivedLeadTimeListener |
+| `apps/api/src/modules/planning/liquidity-forecast.service.spec.ts` | planning | 5 | LiquidityForecastService |
+| `apps/api/src/modules/planning/narration.service.spec.ts` | planning | 4 | NarrationService |
+| `apps/api/src/modules/planning/online-stock.service.spec.ts` | planning | 7 | OnlineStockService · onlineStockFor · assignFulfillingBranch |
+| `apps/api/src/modules/planning/planning.service.spec.ts` | planning | 3 | PlanningService |
+| `apps/api/src/modules/planning/propagation.spec.ts` | planning | 5 | propagate |
+| `apps/api/src/modules/planning/supplier-resilience.service.spec.ts` | planning | 7 | SupplierResilienceService · leadTimeDistribution · recordObservation · supplierScorecard |
 | `apps/api/src/modules/pos/pos-catalog.service.spec.ts` | pos | 3 | PosCatalogService — WO-21.4 |
 | `apps/api/src/modules/pos/pos-receipts.service.spec.ts` | pos | 6 | PosReceiptsService — WO-21.5 · createForOrder · getForOrder · markPrinted |
 | `apps/api/src/modules/pos/pos-sales.service.spec.ts` | pos | 4 | PosSalesService — WO-21.3 |

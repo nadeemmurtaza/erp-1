@@ -192,6 +192,8 @@ export const ROUTES = {
     /** Retired hand-built page (WO-D.2/E.2) — now the analytics report. */
     purchasingSpend: '/admin/analytics/purchasing/spend',
     suppliers: '/admin/suppliers',
+    /** 144-supply-chain-resilience-planning-engine.md. */
+    resilience: '/admin/resilience',
     supplier: (id: string) => `/admin/suppliers/${id}`,
     tradingPartners: '/admin/trading-partners',
     tradingPartner: (id: string) => `/admin/trading-partners/${id}`,

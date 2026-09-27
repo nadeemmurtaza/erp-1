@@ -305,3 +305,20 @@ model RequisitionLine {
   @@index([requisitionId])
   @@index([variantId])
 }
+
+/// resilience-scalability/144-supply-chain-resilience-planning-engine.md
+/// (WO-144.6, R25) — one row per goods receipt, backfilling a real lead-time
+/// distribution from history already in the database. Populated by a
+/// listener on GoodsReceived (never new data entry). Bare scalars, no
+/// `@relation`: an observation stands on its own even if the PurchaseOrder
+/// or Supplier it cites is later deleted, the same "erasure the ledger
+/// cannot obey" shape this document set already applies elsewhere.
+model SupplierLeadTimeObservation {
+  id              String   @id @default(cuid())
+  supplierId      String
+  purchaseOrderId String
+  observedDays    Int
+  createdAt       DateTime @default(now())
+
+  @@index([supplierId, createdAt])
+}

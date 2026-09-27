@@ -636,6 +636,10 @@ enum AiFeature {
   RAG_INGESTION
   RAG_RETRIEVAL
   RAG_GENERATION
+  // 144-supply-chain-resilience-planning-engine.md (R23) — narrating an
+  // already-computed propagation/ranking result; the model writes prose
+  // around figures it is handed, never originates one of its own.
+  PLANNING_NARRATION
 }
 
 enum AiCallKind {

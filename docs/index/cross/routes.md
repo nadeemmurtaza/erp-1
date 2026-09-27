@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **840** endpoints across **153** controllers, with the access rule that actually guards each one.
+All **846** endpoints across **154** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -925,6 +925,17 @@ never authorization.
 | PATCH | `/admin/payroll/runs/:id/approve` | `payroll.manage` | `PayRunController.approve` | DRAFT → APPROVED. |
 | PATCH | `/admin/payroll/runs/:id/post` | `payroll.manage` | `PayRunController.post` | APPROVED → POSTED. Fires payroll.run_posted. |
 | PATCH | `/admin/payroll/runs/:id/rebuild` | `payroll.manage` | `PayRunController.rebuild` | Recompute every line on a still-DRAFT pay run, replacing them. |
+
+### [`planning`](../modules/planning.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/planning/liquidity-forecast` | `planning.propagation.view` | `PlanningController.liquidityForecast` | Current cash plus the next scheduled AR/AP/payroll events |
+| GET | `/admin/planning/online-stock/:variantId` | `planning.propagation.view` | `PlanningController.onlineStockFor` | Online stock for a variant — the sum of every branch allotment |
+| POST | `/admin/planning/orders/:orderId/assign-branch` | `inventory.manage` | `PlanningController.assignFulfillingBranch` | Reassign which branch fulfils an order — reverses and re-commits stock through… |
+| POST | `/admin/planning/propagate` | `planning.propagation.view` | `PlanningController.propagate` | Run a shock scenario over the dependency graph and rank recovery actions |
+| GET | `/admin/planning/suppliers/:id/lead-time-distribution` | `planning.propagation.view` | `PlanningController.leadTimeDistribution` | A supplier's own lead-time distribution, backfilled from goods-receipt history |
+| GET | `/admin/planning/suppliers/:id/scorecard` | `planning.propagation.view` | `PlanningController.supplierScorecard` | On-time-in-full rate and price variance, computed from purchase-order history |
 
 ### [`pos`](../modules/pos.md) (15)
 

@@ -167,7 +167,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-hexagonal-purity.mjs` | 149 |  |
 | `scripts/check-links.mjs` | 409 |  |
 | `scripts/check-metadata-renderer.mjs` | 134 |  |
-| `scripts/check-module-boundaries.mjs` | 617 |  |
+| `scripts/check-module-boundaries.mjs` | 624 |  |
 | `scripts/check-overflow.mjs` | 644 |  |
 | `scripts/check-permission-checks.mjs` | 127 |  |
 | `scripts/check-rebrand.mjs` | 292 |  |

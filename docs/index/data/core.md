@@ -42,7 +42,7 @@ against a real database.
 
 Indexes: `@@index([userId])`
 
-### `AiUsageLog`  <sub>`apps/api/prisma/schema/core.prisma:647`</sub>
+### `AiUsageLog`  <sub>`apps/api/prisma/schema/core.prisma:651`</sub>
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|
@@ -442,7 +442,7 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 
 ## Enums
 
-### `AiCallKind`  <sub>`apps/api/prisma/schema/core.prisma:641`</sub>
+### `AiCallKind`  <sub>`apps/api/prisma/schema/core.prisma:645`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -471,6 +471,7 @@ Indexes: `@@unique([userId, roleId])` · `@@index([userId])` · `@@index([roleId
 | `RAG_INGESTION` |  |
 | `RAG_RETRIEVAL` |  |
 | `RAG_GENERATION` |  |
+| `PLANNING_NARRATION` |  |
 
 ### `ApiKeyRevocationReason`  <sub>`apps/api/prisma/schema/core.prisma:255`</sub>
 

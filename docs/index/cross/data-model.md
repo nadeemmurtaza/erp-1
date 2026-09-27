@@ -3,7 +3,7 @@
 
 # Data model
 
-All **303** Prisma models and **142** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **304** Prisma models and **142** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -69,7 +69,7 @@ against a real database.
 | [`pricing.prisma`](../data/pricing.md) | 3 | 0 | [`pricing`](../modules/pricing.md) | PriceList, PriceListAssignment, PriceListEntry |
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
-| [`purchasing.prisma`](../data/purchasing.md) | 9 | 3 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, PurchaseRequisition, RequisitionLine, Supplier, SupplierBill, S… |
+| [`purchasing.prisma`](../data/purchasing.md) | 10 | 3 | [`purchasing`](../modules/purchasing.md) | GoodsReceipt, GoodsReceiptItem, PurchaseOrder, PurchaseOrderItem, PurchaseRequisition, RequisitionLine, Supplier, SupplierBill, S… |
 | [`rag.prisma`](../data/rag.md) | 2 | 2 | [`rag`](../modules/rag.md) | DocumentChunk, DocumentSource |
 | [`receivables.prisma`](../data/receivables.md) | 5 | 1 | [`receivables`](../modules/receivables.md) | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
@@ -363,6 +363,7 @@ against a real database.
 | [`StoreCreditTransaction`](../data/giftcards.md#storecredittransaction) | `giftcards` | 11 | 2 | id | Same ledger shape, attached to a User rather than a code — refunds, RTO goodwill and serv… |
 | [`Supplier`](../data/purchasing.md#supplier) | `purchasing` | 28 | 3 | id |  |
 | [`SupplierBill`](../data/purchasing.md#supplierbill) | `purchasing` | 18 | 2 | id |  |
+| [`SupplierLeadTimeObservation`](../data/purchasing.md#supplierleadtimeobservation) | `purchasing` | 5 | 0 | id | resilience-scalability/144-supply-chain-resilience-planning-engine.md (WO-144.6, R25) — o… |
 | [`SupplierProduct`](../data/purchasing.md#supplierproduct) | `purchasing` | 10 | 2 | id | What a given supplier charges for a given variant, and under what terms. |
 | [`SupportAccessGrant`](../data/platform.md#supportaccessgrant) | `platform` | 11 | 1 | id | The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3. |
 | [`SupportTicket`](../data/support.md#supportticket) | `support` | 10 | 0 | id | In-app help desk (internal) — tasks-notifications-support/64-help-desk- support-ticketing… |

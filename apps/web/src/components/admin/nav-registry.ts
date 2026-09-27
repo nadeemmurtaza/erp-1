@@ -674,6 +674,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'purchasing',
   },
   {
+    key: 'resilience',
+    label: 'Resilience Planning',
+    href: '/admin/resilience',
+    permissions: ['planning.propagation.view'],
+    group: 'stock',
+    module: 'planning',
+  },
+  {
     key: 'transfers',
     label: 'Transfers',
     href: '/admin/transfers',

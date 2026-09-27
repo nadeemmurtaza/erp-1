@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **2,337** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,360** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,086 | 146,657 | [files/api.md](../files/api.md) |
-| apps/web | 419 | 70,135 | [files/web.md](../files/web.md) |
+| apps/api | 1,108 | 148,349 | [files/api.md](../files/api.md) |
+| apps/web | 420 | 70,505 | [files/web.md](../files/web.md) |
 | apps/pos | 31 | 2,023 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 79 | 8,422 | [files/packages.md](../files/packages.md) |
-| docs/* | 400 | 70,126 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 60 | 30,631 | [files/infra.md](../files/infra.md) |
+| packages/* | 79 | 8,430 | [files/packages.md](../files/packages.md) |
+| docs/* | 400 | 70,311 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 60 | 30,638 | [files/infra.md](../files/infra.md) |
 | repository root files | 213 | 21,321 | [files/root.md](../files/root.md) |
 
 
@@ -29,18 +29,18 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 425 |
-| unit test | 296 |
-| page | 218 |
-| service | 194 |
-| module | 164 |
-| controller | 144 |
-| dto | 129 |
+| unit test | 305 |
+| page | 219 |
+| service | 199 |
+| module | 167 |
+| controller | 145 |
+| dto | 130 |
 | component | 121 |
-| migration | 113 |
-| nest module | 96 |
+| migration | 114 |
+| nest module | 97 |
 | prisma schema | 63 |
 | script | 42 |
-| event subscriber | 34 |
+| event subscriber | 35 |
 | scheduled job | 32 |
 | json | 29 |
 | react | 29 |

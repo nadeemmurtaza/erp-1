@@ -1,4 +1,4 @@
-# 144 — R20–R26: the resilience-planning engine, fully designed, entirely unbuilt
+# 144 — R20–R26: the resilience-planning engine
 
 `RETAIL-ERP.md` already carries seven complete architecture rules (R20
 through R26) specifying a supply-chain resilience and cash-preservation
@@ -6,16 +6,63 @@ engine — a derived dependency graph, typed shock scenarios, deterministic
 propagation to stockout dates and cash-at-risk, a single ranking formula
 for recommended actions, GenAI narration constrained to cite only
 computed figures, liquidity forecasting off the ledger, supplier
-lead-time as a distribution, and OTIF scorecards. None of it exists in
-code. This is the single largest gap between what this repository has
-already designed and what it has actually built: no `propagation`,
-`shock`, or `dependency-graph` module anywhere; `Supplier.leadTimeDays`
-is still a bare scalar (`purchasing.prisma:31`, default `7`); the only
-related file, `supply-chain-digest.cron.ts`, is explicitly three nightly
-digest emails over existing tables — its own header states "no EDI, no
-external integration platform, no BI tool... not a vendor-managed-
-inventory platform," a deliberately smaller scope than R20–R26 ever
-described. This document is the buildable brief R20–R26 never got.
+lead-time as a distribution, and OTIF scorecards. This document is the
+buildable brief R20–R26 never got, and is now built against it.
+
+> **Status (2026-09-27): built, WO-144.1–144.8.** A new, always-on
+> `planning` module (`apps/api/src/modules/planning/`) — a pure read/
+> recommendation engine over rows every other module already writes, no
+> reason for a deployment to run without it. `DependencyGraphService.build()`
+> (R20) projects five real edge types (Supplier→SKU, RawMaterial→SKU via
+> `BomComponent`, SKU→Location via `VariantLocationStock`, Location→
+> Location via real `StockTransfer` history, Supplier→Obligation via
+> unpaid `SupplierBill`s) — never invented, never guessed. `propagate()`
+> (R21) and `rankActions()` (R22) are pure functions with no `prisma.*`
+> call of their own, proven deterministic and non-inventive by spec.
+> `NarrationService.narrate()` (R23) wires `AiService`/a new
+> `AiFeature.PLANNING_NARRATION` value, refusing to show any narration
+> whose text contains a standalone number outside the figures it was
+> handed — `assertNoOriginatedFigures()`, proven by spec.
+> `LiquidityForecastService.forecast()` (R24) reads `JournalLine`/
+> `Invoice`/`SupplierBill`/`PayRun` directly, including a real
+> `cashConversionCycleDays` (DIO+DSO-DPO). `SupplierLeadTimeObservation`
+> + `SupplierResilienceService` (R25) backfill from `GoodsReceived`
+> automatically; `supplierScorecard()`'s own `defectRatePct` is honestly
+> `null` — no quality/defect field exists anywhere in this schema, never
+> fabricated. `OnlineStockService` (R26) reads `onlineStockFor()` as a
+> sum of branch allotments and writes through `assignFulfillingBranch()`.
+> Permission `planning.propagation.view` (Purchasing category, seeded to
+> ADMIN) gates every read; `assignFulfillingBranch()` reuses the existing
+> `inventory.manage`. UI: `/admin/resilience` (three tabs — shock
+> scenario runner, liquidity forecast, supplier scorecard lookup),
+> reachable from the Stock nav group. ADR-066.
+>
+> **Two honest deviations from this document's own text.** First,
+> `buildDependencyGraph()` omits two of the doc's own illustrative edge
+> types — "SKU → Channel at Location" (no `LocationAssortment` model
+> exists in this schema) and "Sale → Cash account" (would mean inventing
+> a projection no work order names) — never built rather than faked; see
+> `dependency-graph.ts`'s own header comment. Second, `assignFulfillingBranch()`
+> is honestly a REASSIGNMENT, not a first-time decrement: this codebase's
+> real order-placement flow (`orders.service.ts`) already resolves and
+> decrements a real `locationId` at PLACEMENT time
+> (`order.locationId ?? defaultLocationId()`), so "assigning a fulfilling
+> branch" reverses the stock commitment at the order's current location
+> and re-commits it at the new one, atomically, through the identical
+> `InventoryService.move()` writer — never a second, competing decrement
+> from an unassigned state. `planning -> inventory` is a new
+> `KNOWN_MODULE_COUPLINGS` entry for exactly this write.
+>
+> **`rankActions()` generates only two of R22's own nine named action
+> kinds today** (`TRANSFER_STOCK`, `DELAY_DISCRETIONARY_AP`) — the only
+> two this graph currently has real, shipped data to back. The remaining
+> seven (`EXPEDITE_PO`, `SPLIT_PO_ALTERNATE_SUPPLIER`, `SUBSTITUTE_SKU`,
+> `REALLOCATE_ONLINE_BUFFER`, `DELIST_AT_LOCATION`,
+> `MARKDOWN_TRAPPED_STOCK`, `RAISE_PRICE`) are named in the
+> `CandidateActionKind` type for forward extensibility but never
+> generated — R22's own "generated from the graph, not invented" rule
+> applied to itself: an action kind with no real source is not generated
+> at all, not faked.
 
 ## 1. R20 — the dependency graph is a projection, never a second model
 

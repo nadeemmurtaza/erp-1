@@ -244,6 +244,13 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // Contact and vice versa — the identical same-transaction reasoning
   // `purchasing -> parties` already establishes for a Supplier and its Party.
   'support -> crm',
+  // online-stock.service.ts's assignFulfillingBranch() (144-supply-chain-
+  // resilience-planning-engine.md, R26) reverses stock at an order's
+  // current fulfilling location and re-commits it at the new one
+  // (InventoryService.move(), twice) inside one transaction — the same
+  // same-transaction-write reasoning as orders/purchasing/production/bom/
+  // fulfilment -> inventory above.
+  'planning -> inventory',
 ]);
 
 function walk(dir) {

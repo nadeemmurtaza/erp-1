@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,086 | 146,657 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `apps/web` | 419 | 70,135 | Next.js — admin console and customer storefront in one app |
-| `docs` | 400 | 70,126 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 1,108 | 148,349 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/web` | 420 | 70,505 | Next.js — admin console and customer storefront in one app |
+| `docs` | 400 | 70,311 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 42 | 28,613 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
-| `scripts` | 25 | 9,614 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 62 | 7,840 | brand, money, permissions, measurements, entities |
+| `scripts` | 25 | 9,621 | repository checks and generators (lint gates, this index) |
+| `packages/shared` | 62 | 7,848 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
 | `apps/pos` | 31 | 2,023 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,064 |  |
@@ -97,11 +97,12 @@ Each is independent: no module imports another except through a named
 | [`parties`](modules/parties.md) | core | MODULES allowlist | 3 | 2 |
 | [`payments`](modules/payments.md) | core | MODULES allowlist | 7 | 1 |
 | [`payroll`](modules/payroll.md) | core | MODULES allowlist | 19 | 9 |
+| [`planning`](modules/planning.md) | core | always on | 6 | — |
 | [`pos`](modules/pos.md) | core | MODULES allowlist | 15 | 4 |
 | [`pricing`](modules/pricing.md) | core | MODULES allowlist | 7 | 3 |
 | [`production`](modules/production.md) | core | MODULES allowlist | 9 | 4 |
 | [`promotions`](modules/promotions.md) | core | MODULES allowlist | 12 | 3 |
-| [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 24 | 9 |
+| [`purchasing`](modules/purchasing.md) | core | MODULES allowlist | 24 | 10 |
 | [`rag`](modules/rag.md) | core | MODULES allowlist | 11 | 2 |
 | [`receivables`](modules/receivables.md) | core | MODULES allowlist | 20 | 5 |
 | [`recommendations`](modules/recommendations.md) | core | MODULES allowlist | 7 | — |

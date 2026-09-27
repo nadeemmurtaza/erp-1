@@ -638,7 +638,8 @@ the repository's own rules:
    (`apps/api/src/core/extension-points/`) instead of a direct import — see
    `StockIntakeRegistry` for the shape").
 
-`planning` learns that data arrived through a domain event, not a call:
+The connectors module announces what happened through domain events, never a
+call into another module:
 
 ```ts
 // core/events/domain-events.ts — additive
@@ -650,9 +651,20 @@ ConnectorNeedsReauth:   'connectors.needs_reauth',                 // { connecto
 The control center does not even need to subscribe: its "new data since your
 last simulation" banner is computed on read, comparing the latest `PROMOTED`
 batch with the latest persisted run (doc 174 §4), both bare reads, no state
-kept. The events exist for the control plane's metering poller, which reads
-all three from the tenant's outbox for doc 180's milestones (the
-`UsageMeteringService` pattern), and for the action hub's notifications. **Net effect on the checker: `connectors`
+kept. The events exist for two readers: doc 180's `TenantMilestonePoller`, which
+reads `ingestion_batch_promoted` out of the tenant's outbox for the
+`FIRST_BATCH_PROMOTED` milestone (the `UsageMeteringService` pattern, with its
+own cursor), and the connectors module's own `ConnectorsListener`, which
+handles `ingestion_held` and `needs_reauth` with `@OnDomainEvent` and notifies
+the holders the audience lens names through core's `NotificationsService` —
+exactly how `InventoryListener` handles its own module's `ProductLowStock`
+(`modules/inventory/inventory.listener.ts:19`). The action-hub item is
+separate and needs no event: the hub is pull-based
+(`ActionHubRegistryService.collect()` calls each registered source's
+`fetchFor(user)`), so the connectors module registers a `ConnectorsActionSource`
+that reads held batches and reauth-required connectors on demand, as
+`leave-request-action.source.ts` does for payroll. **Net effect
+on the checker: `connectors`
 imports no module, and no module imports `connectors`.** If a future
 requirement ever does need a same-transaction write (none is identified), its
 entry would take the form `'connectors -> <module>'` with that write named in
@@ -881,7 +893,9 @@ chunked promotion with `promotedThroughOrdinal`, evidence-class confirmation
 audit, the three domain events.
 **WO-172.8 — Failure handling**: backoff, `REAUTH_REQUIRED`, drift
 classification, error-rate hold, the low-stock digest for ingestion-originated
-alerts; the circuit breaker is WO-176.2's and is consumed here.
+alerts, and `ConnectorsListener` (`ingestion_held`/`needs_reauth` →
+`NotificationsService`, audience from WO-172.9); the circuit breaker is
+WO-176.2's and is consumed here.
 **WO-172.9 — `PermissionsResolverService.holdersOf(key)`** (count + list) for
 audience resolution, with its own spec.
 **WO-172.10 — Retention**: compaction of promoted candidate JSON after 180

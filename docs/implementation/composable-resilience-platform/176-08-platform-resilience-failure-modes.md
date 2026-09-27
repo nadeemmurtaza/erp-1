@@ -259,12 +259,18 @@ game-day records a measured value in `DEPLOYMENT.md`, the file doc 38 §4 names.
 ## 7. Contract tests for the new events
 
 Doc 38 §5's contract-test suite (one test per domain event, asserting the payload
-shape every current subscriber depends on) gains the events this program adds —
-`connectors.ingestion_batch_promoted`, `connectors.ingestion_held`,
-`connectors.needs_reauth` — and, because the control plane reads them out of the
-tenant's outbox by name (the `UsageMeteringService` string contract), a
-cross-app test that the control plane's parser accepts exactly the payloads
-`apps/api` publishes. A breaking change publishes under a new name
+shape every current subscriber depends on) gains the ten events this program
+adds — doc 172 §9's `connectors.ingestion_batch_promoted`,
+`connectors.ingestion_held` and `connectors.needs_reauth`; doc 180 §0's
+`connectors.connector_created` and `connectors.mapping_confirmed`; doc 174's
+`planning.simulation_recorded` and `planning.recommendation_decided`; doc 177's
+`planning.derivability_assessed`; doc 179's `connectors.cutover_effective` —
+each also asserting that no amount and no user id is in the payload (only
+`ingestion_held` and `needs_reauth` have a tenant-side consumer, the connectors
+module's own notification listener; the other eight exist for the control
+plane's milestone poller). Because the control plane reads them out of the tenant's outbox by name
+(the `UsageMeteringService` string contract), a cross-app test proves that the
+control plane's parser accepts exactly the payloads `apps/api` publishes. A breaking change publishes under a new name
 (`domain-events.ts`'s own versioning rule), never mutates these.
 
 ## Scope lenses
@@ -293,11 +299,13 @@ budget pages `platform.resilience.oncall` holders (doc 38's reserved key); the
 paging tool is the operator's (doc 38's out-of-scope).
 **Request or record** — a sample is a RECORD; a freeze is a RECORD of a
 computed state.
-**The movement with no address / The unwritten posting rule / Every column or
-none / The period that already moved / The second legal entity** — n/a: no
-stock or money.
+**The movement with no address** — n/a: a sample, a breaker state and a freeze
+move no stock or cash.
 **Four hours down, the counter stays open** — this document is that lens, at
 system level, for every dependency the program adds (§2).
+**The unwritten posting rule / Every column or none / The period that already
+moved / The second legal entity** — n/a: no journal line, no tax document and no
+numbered series is written; samples are counts.
 **Dry run before live** — breaker thresholds replay over history (§4); a freeze
 rule can be evaluated against last month's samples before enforcement.
 **Click the number** — a fleet SLI links to per-tenant samples, and each sample
@@ -309,8 +317,12 @@ reported "not applicable", never 100%.
 **The second copy of the write** — `@@unique([tenantId, sli, windowStart])`.
 **The hundred-thousandth row** — 50,000 tenants × 7 SLIs × 96 fifteen-minute
 windows ≈ 33.6 M samples/day at full granularity — too many; samples are hourly
-(≈ 8.4 M/day) and rolled up to daily after 7 days, stated in WO-176.4.
-**The adoption test** — n/a.
+(≈ 8.4 M/day) and rolled up to daily after 7 days, stated in WO-176.4. Doc 180's
+two coarser keys (`connect_success_14d` weekly, `revenue_coverage_bps` daily)
+add ≈ 57,000 rows/day.
+**The adoption test** — n/a: nothing human-readable is generated; samples are
+keyed `(tenantId, sli, windowStart)` and a breaker's name (`connector.<id>`,
+`fiscal.<authority>`) derives from an id that is already unique.
 **The reversal document / The undo fan-out** — n/a: no business write.
 **The version stamp** — each sample names its SLI definition by key; a changed
 definition is a new key.

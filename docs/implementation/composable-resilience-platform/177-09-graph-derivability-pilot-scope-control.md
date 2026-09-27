@@ -91,10 +91,54 @@ a totals-only bookkeeper — the screen states which half applies), or **not
 derivable for this pilot** (an exclusion from §3 applies — the SME is told which
 and why, and nothing is shown that implies a complete graph).
 
+**Where the outcome lives.** Two places, deliberately different in kind. Inside
+the tenant, every assessment is its own row — an SME re-assessed after cleaning
+up its purchase data keeps both answers, each under the policy that produced
+it (no model with *assessment*, *readiness* or *eligibility* in its name exists
+in `apps/api/prisma/schema/` — checked, so this duplicates nothing):
+
+```prisma
+// planning.prisma — additive to doc 174's new file (WO-177.2). Bare scalars
+// for other-module references (ADR-012).
+enum DerivabilityClass { DERIVABLE PARTIALLY_DERIVABLE NOT_DERIVABLE }
+
+/// One row per assessment — never updated.
+model DerivabilityOutcome {
+  id                  String            @id @default(cuid())
+  /// The screen's per-submit key: a retried POST is a no-op.
+  requestKey          String            @unique
+  outcome             DerivabilityClass
+  /// PARTIALLY_DERIVABLE: which half applies; NOT_DERIVABLE: which §3
+  /// exclusion — the plain-words reason the SME was shown, as a code.
+  reasonCode          String?
+  /// Every measure in the table above with its numerator and denominator
+  /// (base minor units) and the filter the drill-down re-runs.
+  measures            Json
+  /// "derivability-policy-1" — the thresholds this row was judged against.
+  policyVersion       String
+  /// The one input not derived (BOM dependence), as declared for this run.
+  bomDeclared         Boolean
+  assessedById        String
+  runBySupportSession Boolean           @default(false)
+  assessedAt          DateTime          @default(now())
+
+  @@index([assessedAt])
+}
+```
+
+Outside the tenant, the control plane receives only the class. The same
+transaction publishes `planning.derivability_assessed` — `{ outcomeId, outcome,
+policyVersion, assessedAt, runBySupportSession }`, no measure and no amount —
+through the outbox, and doc 180 §0's poller turns it into the
+`DERIVABILITY_ASSESSED` milestone (first occurrence) and the tenant's current
+class (latest occurrence), which is what doc 179's gates and doc 180 §4's
+target read.
+
 ## Scope lenses
 
-This document's one artifact is the derivability assessment; ingestion lenses
-are in doc 172 and engine lenses in doc 173.
+This document's one artifact is the derivability assessment and its
+`DerivabilityOutcome` record; ingestion lenses are in doc 172 and engine lenses
+in doc 173.
 
 **The actor with three tables / The principal with no permission key / The
 grant that ends itself** — n/a: no new actor; the assessment runs under
@@ -108,9 +152,14 @@ radius** — the thresholds are program policy in code, versioned
 **Audience is a capability, not an address** — the outcome is shown in-app to
 the SME and recorded as a milestone; no message.
 **Request or record** — the assessment is a computation; storing its outcome
-is a RECORD.
-**The movement with no address** — n/a.
-**Four hours down, the counter stays open** — n/a: a read.
+(`DerivabilityOutcome`) is a RECORD of what the data showed, never refused.
+**The movement with no address** — n/a: the assessment writes no stock or cash;
+it only reads `VariantLocationStock` and `ObservedSale` rows that already name
+their `locationId`, and its stock-observability measure is per location.
+**Four hours down, the counter stays open** — n/a: nothing at a counter waits
+on it; the assessment runs on demand and writes only its own outcome row, so an
+outage means the SME cannot re-assess until the platform returns, and trades
+on its own systems meanwhile.
 **The unwritten posting rule / Every column or none / The period that already
 moved / The second legal entity** — n/a: no money fact; §3 is where the second
 legal entity is excluded.
@@ -124,16 +173,27 @@ Chain SMEs are in scope; Organization is §3's multi-entity exclusion.
 **The absent collaborator** — `connectors` off: the assessment has nothing to
 assess and says so; `bom` on with native BOMs: RawMaterial edges exist and the
 manufacturing exclusion is lifted for that tenant, by data, not by a flag.
-**The second copy of the write** — the stored outcome is keyed per tenant and
-policy version; re-running overwrites nothing (a new assessment is a new row).
+**The second copy of the write** — `DerivabilityOutcome.requestKey @unique`
+makes a retried submit a no-op; a deliberate re-run is a new row and overwrites
+nothing; the redelivered `planning.derivability_assessed` is absorbed by doc
+180's `sourceEventId` and `@@unique([tenantId, milestone])`.
 **The hundred-thousandth row** — aggregate queries over indexed columns
 (`SupplierBill [status, dueAt]`, `ObservedSale [variantId, occurredOn]`); run
 on demand, not per request.
-**The adoption test** — n/a.
-**The reversal document / The undo fan-out** — n/a.
+**The adoption test** — n/a: no human-readable code or number is generated;
+outcome rows are keyed by cuid and `requestKey`.
+**The reversal document / The undo fan-out** — n/a as a reversal: an outcome is
+superseded by the next assessment, never edited. Its one side effect,
+`planning.derivability_assessed`, sets a first-occurrence milestone that is
+deliberately irreversible (doc 180) and the control plane's current class,
+which the next assessment's event replaces automatically.
 **The version stamp** — `derivability-policy-1` stored with each outcome; a
 changed threshold is a new version, and old outcomes keep theirs.
-**The erasure the ledger cannot obey** — no personal data.
+**The erasure the ledger cannot obey** — `DerivabilityOutcome.assessedById` is
+the one person reference; on a `User` erasure it is retained and resolves to the
+pseudonymised `User` (doc 181 §6's disposition for actor references);
+`measures` holds supplier, variant and location totals, no person; the event
+carries no user id.
 **The failure path, and who is allowed to walk it** — an assessment that cannot
 compute a measure (no sales yet) reports that measure as "insufficient data",
 never as zero.
@@ -142,9 +202,13 @@ never as zero.
 
 **WO-177.1 — `DerivabilityAssessment`** (pure, `planning`), its specs over
 fixtures for each §2 segment and each §3 exclusion.
-**WO-177.2 — Outcome record and screen**: the SME-facing statement on the
-control center's overview (doc 174 question 1), stored with the tenant's
-onboarding milestones (doc 180 WO-180.2).
+**WO-177.2 — Outcome record and screen**: `DerivabilityOutcome` and
+`DerivabilityClass` in `planning.prisma` (forward-only migration); the assess
+endpoint under `planning.propagation.view`, writing the row and publishing
+`planning.derivability_assessed` in one transaction through the outbox (its
+payload contract test is doc 176 §7's); the SME-facing statement on the control
+center's overview (doc 174 question 1); the control plane's milestone and
+current class are doc 180 WO-180.2's.
 **WO-177.3 — Pre-pilot sample run**: the assessment over a prospect's sample
 files through doc 172's pure front half, used in Wave 0 selection (doc 179).
 **WO-177.4 — Services mode wording**: when stock measures are empty by nature,
@@ -160,6 +224,8 @@ the control center hides the stock-out half and says why, instead of rendering
 - No screen shows a stock-out projection for an SME assessed "partially
   derivable" on the stock half.
 - Every percentage drills down to the rows it counted.
+- A retried assess request with the same `requestKey` writes one row; the
+  published event carries the class and policy version and no measure or amount.
 
 ## Out of scope
 

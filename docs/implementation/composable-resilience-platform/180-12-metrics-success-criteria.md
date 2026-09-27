@@ -70,12 +70,46 @@ model TenantMilestoneCursor {
 }
 ```
 
-The tenant-side events it reads: `connectors.ingestion_batch_promoted`
-(doc 172 §9), and three this document adds to `domain-events.ts` (additive):
-`connectors.connector_created`, `connectors.mapping_confirmed`, and
-`planning.simulation_recorded` — published by `PlanningService.runPropagation()`
-with `{ simulationId, usedIngestedData, anyConfirmedMapping, runBySupportSession,
-createdAt }` (doc 174).
+Every milestone kind has exactly one source, named here so that none of them
+is a column nothing writes. Seven are tenant-side outbox events, each published
+in the same transaction as the fact it reports; none carries an amount, an
+entity name or a user id:
+
+| Milestone | Source | Published by |
+|---|---|---|
+| `SIGNED_UP` | the control plane's own `SignupVerification.createdAt` / `PlatformTenant.createdAt` (§2) | WO-180.2 — no event |
+| `FIRST_CONNECTOR_CREATED` | `connectors.connector_created` | the connectors module (WO-180.4) |
+| `FIRST_MAPPING_CONFIRMED` | `connectors.mapping_confirmed` | the connectors module (WO-180.4) |
+| `FIRST_BATCH_PROMOTED` | `connectors.ingestion_batch_promoted` | doc 172 §9 |
+| `FIRST_OWN_DATA_SIMULATION` | `planning.simulation_recorded` `{ simulationId, usedIngestedData, anyConfirmedMapping, runBySupportSession, createdAt }`, filtered by §2's four conditions | `PlanningService.runPropagation()`, WO-174.2 |
+| `DERIVABILITY_ASSESSED` | `planning.derivability_assessed` `{ outcomeId, outcome, policyVersion, assessedAt, runBySupportSession }` | WO-177.2 |
+| `FIRST_DECISION` | `planning.recommendation_decided` `{ decisionId, recommendationKind, decision, lowestTier, decidedAt }` | WO-174.4 |
+| `CUTOVER_EFFECTIVE` | `connectors.cutover_effective` `{ cutoverId, factScope, effectiveAt }` | WO-179.3 |
+
+All seven event keys are additive entries in `domain-events.ts`; the keys
+`connectors.*` and `planning.*` are unused today (checked: the file has no
+entry in either namespace).
+
+**The tenant's current derivability class** is the one fact here that is *not*
+a first occurrence: doc 179's gates and §4's target apply to tenants whose
+*latest* assessment is `DERIVABLE`, and a milestone is never overwritten. So the
+poller also keeps three nullable columns on the control plane's existing tenant
+row, written from every `planning.derivability_assessed` it reads:
+
+```prisma
+// apps/platform/prisma/schema/platform.prisma — additive to PlatformTenant
+  /// The latest assessment's class (doc 177) — null = never assessed, which
+  /// every metric reads as "not assessed", never as "not derivable".
+  derivabilityClass       String?
+  derivabilityPolicy      String?
+  derivabilityAssessedAt  DateTime?
+```
+
+The write is predicate-guarded — `UPDATE … WHERE "derivabilityAssessedAt" IS
+NULL OR "derivabilityAssessedAt" < :assessedAt` — so a redelivered or
+out-of-order older event can never replace a newer class. Only the class
+crosses the boundary; the measures behind it stay in the tenant's
+`DerivabilityOutcome` rows.
 
 ## 1. Connect success — target ≥ 85%
 
@@ -227,8 +261,18 @@ coverage = ───────────────────────
 
 Foreign-currency `Invoice`s are excluded from both sides and reported as a
 named figure (doc 173 §4.2) until `Invoice` carries R16's base columns.
-**Target ≥ 80%**, applied to tenants assessed *derivable* (doc 177 §4); for
-*partially derivable* tenants the figure is reported, not targeted.
+**Target ≥ 80%**, applied to tenants whose latest assessment is *derivable*
+(`PlatformTenant.derivabilityClass = 'DERIVABLE'`, §0; doc 177 §4); for
+*partially derivable* tenants the figure is reported, not targeted, and for a
+tenant never assessed it is reported as "not assessed".
+
+**How it leaves the tenant.** The ratio is computed inside the tenant and
+sampled by doc 176's `TenantSliSampler` once a day as `sli =
+"revenue_coverage_bps"`, `good = round(coverage × 10000)`, `total = 10000` —
+the ratio in basis points and never the revenue, so no amount reaches the
+control plane. Because every tenant's `total` is the same, the fleet figure is
+reported as a distribution (median, p10, share of targeted tenants at ≥ 8000),
+not as a pooled Σ good ÷ Σ total, which here would silently be a plain mean.
 
 ## 5. The recommendation funnel — measured, with no target claimed
 
@@ -267,7 +311,8 @@ acceptance rate is itself information about the ingestion layer).
 
 Ingestion and settlement lenses are answered in docs 172 and 175. This
 document's own artifacts: `TenantMilestone`, `TenantMilestoneCursor`, the
-poller, the three events, the added columns, the metric queries.
+poller, the seven milestone events (§0's table), the added columns — tenant-side
+and `PlatformTenant`'s derivability class — and the metric queries.
 
 **The actor with three tables / The principal with no permission key / The
 grant that ends itself** — the poller acts as the control plane, reading per
@@ -283,9 +328,17 @@ redefining it quietly.
 **Audience is a capability, not an address** — n/a: no messages.
 **Request or record** — a milestone is a RECORD of the first occurrence; never
 refused, never overwritten.
-**The movement with no address / The unwritten posting rule / Every column or
-none / The period that already moved / The second legal entity** — n/a: no
-stock or money written.
+**The movement with no address** — n/a: milestones, samples and the derivability
+class are counts and times; no stock or cash moves.
+**Four hours down, the counter stays open** — the control plane down: nothing at
+any tenant waits on it; milestones are late, not lost — the events stay in each
+tenant's `OutboxEvent` table (no code in `apps/api/src` deletes outbox rows —
+checked) and the poller's own cursor resumes where it stopped. A tenant down:
+its milestones arrive late carrying their tenant-side `occurredAt`, so no
+interval is stretched by the outage itself.
+**The unwritten posting rule / Every column or none / The period that already
+moved / The second legal entity** — n/a: no journal line, tax document or
+numbered series is written.
 **Dry run before live** — every query runs read-only against a tenant copy
 before it is scheduled.
 **Click the number** — a fleet figure drills to per-tenant samples and
@@ -298,7 +351,9 @@ has no denominator and reads "not applicable", never 0% or 100%.
 `sourceEventId`; the cursor.
 **The hundred-thousandth row** — ≤ 8 milestones per tenant: 400,000 rows at
 50,000 tenants; indexed by `[milestone, occurredAt]`.
-**The adoption test** — n/a.
+**The adoption test** — n/a: no human-readable code or number is generated;
+milestones are keyed `(tenantId, milestone)` and written by one central poller,
+so there is no second node to collide with.
 **The reversal document / The undo fan-out** — a milestone is never reversed; a
 tenant that later disconnects keeps its first-value milestone, deliberately.
 **The version stamp** — each metric computation names its definition version.
@@ -315,12 +370,15 @@ exactly.
 174).
 **WO-180.2 — `TenantMilestone` + `TenantMilestoneCursor` + `TenantMilestonePoller`**
 (the `UsageMeteringService` shape, its own cursor); `SIGNED_UP` written by the
-control plane.
+control plane; `PlatformTenant.derivabilityClass/Policy/AssessedAt` with the
+predicate-guarded latest-wins write (§0).
 **WO-180.3 — `ResilienceRecommendation.firstViewedAt/firstViewedById`**, set on
 first open of a recommendation's detail by a non-support user.
-**WO-180.4 — The three events** (`connectors.connector_created`,
-`connectors.mapping_confirmed`, `planning.simulation_recorded`) with contract
-tests (doc 176 §7).
+**WO-180.4 — The milestone events**: `connectors.connector_created` and
+`connectors.mapping_confirmed` published by the connectors module; the other
+five are published by the work orders §0's table names. All seven get payload
+contract tests (doc 176 §7), including the assertion that none carries an
+amount or a user id.
 **WO-180.5 — The metric queries** as versioned, read-only functions with specs
 over fixtures, and the program report for du (doc 179 WO-179.5).
 
@@ -332,6 +390,10 @@ over fixtures, and the program report for du (doc 179 WO-179.5).
 - Revenue on an invoice line that could not be resolved to a variant lowers
   coverage (it is in the denominator only) — proven by fixture.
 - No control-plane table stores an SME's revenue or amounts.
+- Every `TenantMilestoneKind` value has a source in §0's table, proven by a spec
+  that fails when an enum value is added without one.
+- An older `planning.derivability_assessed` delivered after a newer one leaves
+  `PlatformTenant.derivabilityClass` at the newer class.
 - Every §6 item renders as "NOT MEASURED" in the program report, with its reason.
 
 ## Out of scope

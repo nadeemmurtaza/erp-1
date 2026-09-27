@@ -162,7 +162,7 @@ owns it.
    (`18-identity-verification.md`). The README row calls it "NID/NADRA";
    erp-1 itself never talks to NADRA. The UAE implementation is still a second
    `IdentityVerificationProvider` — and it needs two additive interface
-   changes (doc 170 §4).
+   changes (doc 170 §3.3).
 3. **The connector system (docs 36/132/160/162) is specified, not built** —
    §2.4 above.
 4. **Doc 38 is specified, not built.** `CircuitBreaker` exists only as a
@@ -288,8 +288,8 @@ honest about where the second implementation needs an additive change.
 | Payment collection | `PaymentProvider` — `payments/payment-provider.ts` | `cod`, `bank_transfer`, `jazzcash`, `easypaisa`, `giftkarta`, `account` | A du rail (du Pay and/or its acquirer) — doc 175 | `verified` must become mandatory-true (security fix); `labelUr`/`descriptionUr` (`payment-provider.ts:77/80`) move to translation rows (ADR-006) |
 | Settlement | `FinancialInstitutionConnector` — `settlements/settlement-connector.ts` | none ("stays dark until credentials exist") | The du rail's payout report — doc 175 | none to the interface; the first real implementation |
 | Fiscal filing | `FiscalComplianceProvider` — doc 15 sketch | **none** (WO-15.5 unbuilt) | A UAE Accredited Service Provider (PINT AE) — doc 181 | The sketch is order-shaped; must become document-shaped before its first build |
-| Identity verification | `IdentityVerificationProvider` — `identity-verification/identity-verification-provider.ts` | `nid` | Emirates ID / UAE PASS — doc 170 §4 | `IdentityVerificationStart` gains an optional `redirectUrl`; `submitOtp` becomes optional (both additive) |
-| Staff sign-in | `SsoConnection` + `OidcProvider` (doc 161) | any OIDC workforce IdP | UAE PASS for SME users — doc 170 §4 | The `allowedEmailDomains` gate is wrong for a national IdP; a subject-binding mode is required |
+| Identity verification | `IdentityVerificationProvider` — `identity-verification/identity-verification-provider.ts` | `nid` | Emirates ID — doc 170 §3.3 | `IdentityVerificationStart` gains an optional `redirectUrl`; `submitOtp` becomes optional (both additive) |
+| Staff sign-in | `SsoConnection` + `OidcProvider` (doc 161) | any OIDC workforce IdP | UAE PASS for SME users — doc 170 §3.2 | The `allowedEmailDomains` gate is wrong for a national IdP; a subject-binding mode is required |
 | AI | `AiProvider` — `core/ai/ai-provider.ts` | `anthropic`, `openai` | An in-country provider, or none — doc 181 | none; narration already degrades to absent (`NarrationService.narrate()` returns `null`) |
 | Locale | `brand.ts` `locale` block | `PKR`, `+92`, `Asia/Karachi`, `['en','ur']`, RTL `['ur']` | `AED`, `+971`, `Asia/Dubai`, `['en','ar']`, RTL `['ar']` | RTL already works (Urdu exercised it); every `*Ur` column name and `paisa` identifier is a named sweep (doc 170) |
 
@@ -355,7 +355,77 @@ capability, and the one that handles untrusted external data) and **doc 175**
 173–174 answer each lens their own artifacts introduce and cite those two
 passes where the analysis is shared. Docs 176–183 introduce no write path of
 their own except where stated (doc 180's `TenantMilestone`, doc 179's
-cutover evidence), and answer the lenses those artifacts raise.
+cutover evidence, doc 177's `DerivabilityOutcome`), and answer the lenses those
+artifacts raise.
+
+One line per lens follows all the same, in catalogue order, because a blank
+line is not an answer: each says why this document itself owns nothing for that
+lens and names where the program answers it.
+
+**The actor with three tables** — n/a here: no actor is introduced. The
+program's actors are placed in doc 169 §3 (counterparties as `Supplier`+`Party`
+or `Contact`+`Party` CUSTOMER) and doc 170 §3 (a pushing POS as
+`InboundWebhookEndpoint`, du staff as control-plane principals).
+**The principal with no permission key** — n/a here; doc 170 §3 answers it for
+the push source (fail-closed HMAC), UAE PASS subject binding and the support
+session.
+**The grant that ends itself** — n/a here; doc 170 §4 (≤ 15-minute support
+tokens under purpose-scoped grants).
+**Whose rows, and which columns** — n/a here: tenant = database (doc 169 §2);
+per-artifact visibility is in docs 172, 174 and 180, where the control plane
+never receives an SME's figures.
+**The threshold nobody approves alone** — n/a here: nothing here commits money;
+the thresholds are doc 171's two-person approval for a money/stock-path release
+and doc 179 §5.2's three-signature cutover.
+**The toxic pair, caught at grant or at act** — n/a here; doc 170 §2.1 reasons
+each new key pair, doc 179 refuses one person signing twice at the act.
+**Authority and blast radius** — this document's one authority is a decision:
+ADR-069 and the two decisions WO-168.3 opens can be changed only by a new
+`DECISIONS.md` entry, never inside an implementation PR (§3a).
+**Audience is a capability, not an address** — n/a here: nothing is sent; doc
+172 resolves every audience by key (`holdersOf`, WO-172.9).
+**Request or record — classify every write** — n/a here: nothing is written;
+each program write is classified in its own document (docs 172, 174, 175, 179).
+**The movement with no address** — n/a here; ingestion names every stock write's
+`locationId` from the source or `IngestionMapping.defaultLocationId` (doc 172),
+so `InventoryService.defaultLocationId()` is reached on no new path.
+**Four hours down, the counter stays open** — n/a here; doc 176 §2's degradation
+matrix, one row per dependency this program adds.
+**The unwritten posting rule** — n/a here; doc 175 (the du rail's postings and the
+clearing-account ADR it names) and doc 179 (the opening-balance door).
+**Every column or none** — n/a here; doc 175 and doc 179 set the dimensions on
+every line they write.
+**The period that already moved** — n/a here; doc 179 dates a cutover at a period
+boundary; under doc 181 §5 a credit note is issued in the open period and
+cites the original (IBT-025), which is never edited.
+**The second legal entity** — the premise this document owns: one tenant is one
+legal entity (doc 169 §2); the runtime legal identity a UAE tax invoice needs is
+WO-168.3's Open decision (doc 170 §6).
+**Dry run before live** — n/a here; doc 172's pure front half and doc 174's
+runs, which are dry runs by construction.
+**Click the number** — n/a here; doc 172 §7's provenance chain and doc 174's
+drill-downs.
+**Three silhouettes, and the day the tier above appears** — n/a here; each layer
+answers it, and the Organization edition is outside the pilot (doc 177 §3).
+**The absent collaborator** — this document's architectural claim: every new
+module is survivably absent (`connectors` is `offByDefault`, §6), proven per
+`MODULES` set by doc 171 §7's boot test.
+**The second copy of the write** — n/a here; doc 172's keys per level, doc 175's
+callback and settlement keys.
+**The hundred-thousandth row** — n/a here; volumes are in doc 172
+(`IngestionRecord`), doc 176 (`TenantSliSample`) and doc 180 (`TenantMilestone`).
+**The adoption test** — n/a here: no code or number is generated; doc 172's
+`EXT-<connector code>-…` and the existing node-folding `documentNumber()` cover
+the program.
+**The reversal document, not the reversal flag** — n/a here; doc 175 §6 (partial
+refunds) and doc 172 (compensating rows, superseded links).
+**The undo fan-out** — n/a here; docs 172, 174 and 179 each enumerate theirs.
+**The version stamp** — this document's stamp is ADR-069 itself; the program's
+are `cp-1`, mapping versions, `derivability-policy-1` and `PlatformRelease`.
+**The erasure the ledger cannot obey** — n/a here; doc 181 §6's per-table
+disposition.
+**The failure path, and who is allowed to walk it** — n/a here; doc 172 §10 and
+doc 176 §3.
 
 ## Work orders
 

@@ -217,7 +217,11 @@ Accept writes, **in one transaction**: the `RecommendationDecision` row and an
 evidence-class audit row (`AuditService.recordEvidence()`, ruling 9 — this is a
 decision about money and stock) carrying the recommendation id, the assumptions
 hash, the affected entities, the lowest tier and confidence, the decider, and
-the acknowledged records. A recommendation with `requiresAcknowledgement` is
+the acknowledged records — and the `planning.recommendation_decided` outbox
+event (`{ decisionId, recommendationKind, decision, lowestTier, decidedAt }`: no
+amount, no entity, no user id), which doc 180 §0's poller reads for the
+`FIRST_DECISION` milestone and nothing else consumes today. Modify and Dismiss
+write the same three things. A recommendation with `requiresAcknowledgement` is
 refused without `acknowledgedRecordIds` covering every `WARNING` record among
 its source edges.
 
@@ -362,14 +366,17 @@ bounded to at-risk rows only.
 a changed mind is a new decision (a later `DISMISSED` after an `ACCEPTED` is a
 second row), and the log shows both.
 **The undo fan-out** — Accept fires one action-hub update and opens a pre-filled
-screen (nothing irreversible); the executing document's own undo is its own
-module's (a transfer's cancel, a requisition's rejection).
+screen (nothing irreversible), and publishes `planning.recommendation_decided`,
+whose only consumer sets a first-occurrence milestone that is deliberately
+irreversible (doc 180); the executing document's own undo is its own module's
+(a transfer's cancel, a requisition's rejection).
 **The version stamp** — runs stamp the confidence policy, the mapping versions,
 the release and the graph fingerprint; recommendations snapshot their figures,
 assumptions and labels.
 **The erasure the ledger cannot obey** — runs and decisions hold supplier and
-product labels and user ids; a `User` erasure pseudonymises `deciderId` /
-`createdById` per ruling 1; no customer data is held.
+product labels and user ids; on a `User` erasure `deciderId`, `createdById` and
+`firstViewedById` are retained and resolve to the pseudonymised `User` (ruling 1;
+doc 181 §6 names the basis: evidence of who decided); no customer data is held.
 **The failure path, and who is allowed to walk it** — a run that fails (a
 provenance query error, doc 173) records nothing and shows the error; an
 outcome measurement that fails leaves `outcomeStatus` unchanged and is retried
@@ -387,8 +394,10 @@ same transaction through the outbox — the event doc 180's time-to-first-value
 milestone reads.
 **WO-174.3 — `ExposureSummary`** (question 1), pure, with specs.
 **WO-174.4 — Decisions**: Accept/Modify/Dismiss endpoints under
-`planning.recommendations.decide`, evidence-class audit in the same
-transaction, `validateModification()`, acknowledgement enforcement.
+`planning.recommendations.decide`, evidence-class audit and the
+`planning.recommendation_decided` event in the same transaction (payload
+contract test in doc 176 §7), `validateModification()`, acknowledgement
+enforcement.
 **WO-174.5 — Execution linking** (proposal by bare read, confirmation by a
 holder) and **`RecommendationOutcomeCron`** (§3.5).
 **WO-174.6 — The screen**: the four sections, name-searching pickers, labels via

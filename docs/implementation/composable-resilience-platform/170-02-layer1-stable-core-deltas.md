@@ -84,6 +84,11 @@ second.
 },
 ```
 
+- **One more key, owned elsewhere.** Doc 181 adds `privacy.requests.manage`
+  (sensitivity `high`, `system-admin` group, seeded to `ADMIN` so the workflow
+  is reachable on day one — a deployment may move it to a dedicated privacy
+  role) with its request workflow;
+  it is specified there because its only consumer is that workflow.
 - **Groups.** A new `PERMISSION_GROUPS` entry `connections` ("Connections &
   data import") holds the three `connectors.*` keys;
   `planning.recommendations.decide` joins the existing `purchasing` group beside

@@ -147,7 +147,9 @@ unknown; both run without AI and show narration as unavailable.
 **The second copy of the write** — step 20b demonstrates it.
 **The hundred-thousandth row** — n/a for a demo; the pilot's volumes are in doc
 179.
-**The adoption test** — n/a.
+**The adoption test** — n/a: the demo generates no code of its own; the
+`EXT-<connector code>-…` numbers its ingested invoices and locations receive are
+doc 172's, already collision-free across sources.
 **The reversal document / The undo fan-out / The version stamp** — n/a beyond
 docs 172–175.
 **The erasure the ledger cannot obey** — demo data is synthetic; no real person.

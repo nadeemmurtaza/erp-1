@@ -187,11 +187,19 @@ model SystemOfRecordCutover {
 `EFFECTIVE` is written in one transaction with the mapping change it
 authorises: the legacy connector's mapping for that fact scope gets
 `authoritativeUntil = effectiveAt` (doc 172 §4), so the handover is a date, not
-an overlap, and the native writer's first fact is dated after it. Each signature
+an overlap, and the native writer's first fact is dated after it. The same
+transaction publishes `connectors.cutover_effective` (`{ cutoverId, factScope,
+effectiveAt }` — a record kind and at most a location id, no amount) through
+the outbox; doc 180 §0's poller reads it for the `CUTOVER_EFFECTIVE`
+milestone. Each signature
 is an evidence-class audit row. The du and NEWAX signatories sign inside the
 tenant under a purpose-scoped support session (doc 170 §4.2's grant gains the
 purpose `CUTOVER_SIGNOFF`, and nothing else) — the SME's own signatory is an
-ordinary user.
+ordinary user holding the existing `accounting.manage_periods` ("Open, close and
+lock fiscal periods", `packages/shared/src/permissions.ts:711`), because a
+cutover is dated at a period boundary and moves where the books are kept — the
+same authority, no new key. The sign route carries `@SessionOnly()`: a
+signature attests a person, and a personal API key is not one.
 
 **Abandon, before `EFFECTIVE`:** native issuing stops; the legacy system was
 the ledger throughout, so nothing needs undoing. **After `EFFECTIVE`:** moving
@@ -219,7 +227,10 @@ document's own artifact — `SystemOfRecordCutover` — and the wave gates.
 **The actor with three tables** — the three signatories are `User`s (du and
 NEWAX signatories acting through a support session with the single purpose
 `CUTOVER_SIGNOFF`); no new actor type.
-**The principal with no permission key** — n/a.
+**The principal with no permission key** — n/a: no keyless principal is
+introduced. The SME's signatory signs under `accounting.manage_periods` on a
+`@SessionOnly()` route; du's and NEWAX's sign through a support session whose
+grant names `CUTOVER_SIGNOFF` and nothing else (doc 170 §4.2).
 **The grant that ends itself** — the signing support session ends with its
 grant; `frozenUntil` ends the manifest freeze without a human remembering.
 **Whose rows, and which columns** — the cutover record and variance report are
@@ -270,7 +281,9 @@ variance report is a file, not rows.
 record in the other direction, never an edited status.
 **The undo fan-out** — `EFFECTIVE` ends the legacy mapping's authority
 (automatic), adds `accounting` to the manifest (human, du operations, doc 171),
-posts opening balances (automatic, once).
+posts opening balances (automatic, once), and publishes
+`connectors.cutover_effective`, whose milestone is deliberately irreversible
+(doc 180) — moving back is a new cutover, so it gets its own record.
 **The version stamp** — the record keeps the variance report and signatures as
 they were; a later policy change never re-opens a signed cutover.
 **The erasure the ledger cannot obey** — the variance report can contain
@@ -289,7 +302,8 @@ the sample-run procedure (WO-177.3), the data-terms acceptance.
 native documents and read-back ingested documents, the variance classification,
 the report into `StorageService`.
 **WO-179.3 — `SystemOfRecordCutover`** and its three-signature flow, with the
-`CUTOVER_SIGNOFF` support purpose.
+`CUTOVER_SIGNOFF` support purpose, and `connectors.cutover_effective` published
+in the `EFFECTIVE` transaction (payload contract test in doc 176 §7).
 **WO-179.4 — Opening-balance door** into `postEntry()` (an `accounting` work
 order, prerequisite of the first cutover).
 **WO-179.5 — Wave gate reports**: each gate's criteria computed from doc 180's

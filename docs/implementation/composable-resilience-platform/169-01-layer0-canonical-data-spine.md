@@ -314,7 +314,7 @@ CREATE UNIQUE INDEX external_record_link_one_sor
 ```
 
 `IngestionConfidenceTier` is declared in the same `connectors.prisma` file
-(doc 172 §5), so no schema file references another module's enum.
+(doc 172 §4's schema; its meaning is §5), so no schema file references another module's enum.
 
 **`Party.externalRef`/`externalSystem` are finally written, and only as a
 mirror.** They were pre-placed for exactly this and nothing writes them today
@@ -414,7 +414,7 @@ model ObservedSale {
   refId             String
   connectorId       String
   /// The staged record that produced it — unique, so a replayed promotion
-  /// writes nothing twice (doc 172 §7).
+  /// writes nothing twice (doc 172 §8's sink table, §10's duplicate row).
   ingestionRecordId String   @unique
   createdAt         DateTime @default(now())
 
@@ -551,13 +551,13 @@ lines below answer only what **this** document's own artifacts introduce: the
 a consumer is a `Contact` with `partyId` null, meaning written beside the
 column.
 **The principal with no permission key** — n/a: this document adds data, no
-new principal; doc 170 §4 owns principals.
+new principal; doc 170 §3 owns principals.
 **The grant that ends itself** — n/a: no grant is introduced here.
 **Whose rows, and which columns** — `ObservedSale` and `ObservedCashBalance`
 are read by `planning.propagation.view` holders only through the planning
 screens; `ObservedCashBalance.externalAccountRef` is stored masked (last four
 characters) so no screen can leak an account number; `ExternalRecordLink` rows
-are shown to `connectors.ingestion.review` holders (doc 170 §3).
+are shown to `connectors.ingestion.review` holders (doc 170 §2.1).
 **The threshold nobody approves alone** — n/a: nothing here commits money.
 **The toxic pair, caught at grant or at act** — n/a: no new permission here.
 **Authority and blast radius** — changing an `Invoice` counterparty is not an

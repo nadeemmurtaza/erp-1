@@ -3,7 +3,7 @@
 
 # Tests
 
-**298** spec files, **2,895** cases. What is already pinned down — and what is not.
+**303** spec files, **2,922** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (278)
+## Unit and integration (283)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -193,6 +193,11 @@ regression or an N+1.
 | `apps/api/src/modules/measurements/size-bias.service.spec.ts` | measurements | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |
 | `apps/api/src/modules/measurements/size-recommendation.service.spec.ts` | measurements | 8 | SizeRecommendationService |
 | `apps/api/src/modules/metadata-forms/metadata-forms.service.spec.ts` | metadata-forms | 5 | MetadataFormsService — WO-141.1 |
+| `apps/api/src/modules/notify/audience.service.spec.ts` | notify | 4 | AudienceService |
+| `apps/api/src/modules/notify/escalation-rule.service.spec.ts` | notify | 3 | EscalationRuleService |
+| `apps/api/src/modules/notify/escalation.cron.spec.ts` | notify | 5 | EscalationCron |
+| `apps/api/src/modules/notify/meetings.service.spec.ts` | notify | 6 | MeetingsService · shortfallReport · respond · cancel |
+| `apps/api/src/modules/notify/notify.service.spec.ts` | notify | 9 | NotifyService · decide |
 | `apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts` | onsitemessages | 8 | OnsiteMessagesService |
 | `apps/api/src/modules/orders/backorder.listener.spec.ts` | orders | 4 | BackorderListener |
 | `apps/api/src/modules/orders/cod-risk.cron.spec.ts` | orders | 4 | CodRiskCron |

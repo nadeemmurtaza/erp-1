@@ -3,7 +3,7 @@
 
 # Data model
 
-All **283** Prisma models and **128** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **289** Prisma models and **129** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -55,6 +55,7 @@ against a real database.
 | [`measurements.prisma`](../data/measurements.md) | 4 | 1 | [`measurements`](../modules/measurements.md) | GarmentSizeChart, GarmentType, MeasurementField, MeasurementProfile |
 | [`metadata-forms.prisma`](../data/metadata-forms.md) | 1 | 0 | [`metadata-forms`](../modules/metadata-forms.md) | FormMetadata |
 | [`notification-preferences.prisma`](../data/notification-preferences.md) | 1 | 2 | [`notification-preferences`](../modules/notification-preferences.md) | NotificationPreference |
+| [`notify.prisma`](../data/notify.md) | 6 | 1 | [`notify`](../modules/notify.md) | Audience, BroadcastMessage, EscalationFire, EscalationRule, Meeting, MeetingInvitation |
 | [`onsite-messaging.prisma`](../data/onsite-messaging.md) | 3 | 2 | core platform | NewsletterSubscriber, OnsiteMessage, OnsiteMessageTranslation |
 | [`orders.prisma`](../data/orders.md) | 6 | 5 | [`orders`](../modules/orders.md) | CityCodRiskStat, Order, OrderItem, OrderNumberCounter, OrderStatusEvent, Shipment |
 | [`org-structure.prisma`](../data/org-structure.md) | 3 | 1 | core platform | OrgUnit, OrgUnitGrant, OrgUnitType |
@@ -105,6 +106,7 @@ against a real database.
 | [`AttendanceDevice`](../data/attendance.md#attendancedevice) | `attendance` | 11 | 1 | id | A biometric terminal or kiosk that punches on behalf of employees at one unit. |
 | [`AttendanceEvent`](../data/attendance.md#attendanceevent) | `attendance` | 15 | 3 | — | Raw, immutable. |
 | [`AttendanceException`](../data/attendance.md#attendanceexception) | `attendance` | 13 | 3 | id | A punch that did not fit. |
+| [`Audience`](../data/notify.md#audience) | `notify` | 9 | 0 | id | Who a message goes to, stored as a specification, not a list of user ids — "the finance d… |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
 | [`B2BAccount`](../data/accounts.md#b2baccount) | `accounts` | 8 | 0 | id | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md (b2b-wholes… |
 | [`B2BOrderRequest`](../data/accounts.md#b2borderrequest) | `accounts` | 14 | 1 | id | "Request or record" — an order placed against a B2BAccount under an active B2BPurchaseApp… |
@@ -124,6 +126,7 @@ against a real database.
 | [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | A label a product is sold under. |
 | [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and… |
 | [`BrandTranslation`](../data/catalog.md#brandtranslation) | `catalog` | 6 | 1 | id | House Rule 6: a customer-facing name is a translation row, not a column. |
+| [`BroadcastMessage`](../data/notify.md#broadcastmessage) | `notify` | 11 | 1 | id | A record that an internal message was actually sent — the "reversal document" lens answer… |
 | [`BundleComponent`](../data/catalog.md#bundlecomponent) | `catalog` | 5 | 1 | id |  |
 | [`Campaign`](../data/marketing.md#campaign) | `marketing` | 14 | 2 | id |  |
 | [`CampaignRecipient`](../data/marketing.md#campaignrecipient) | `marketing` | 10 | 2 | id |  |
@@ -156,6 +159,8 @@ against a real database.
 | [`EmbeddedWidget`](../data/embeds.md#embeddedwidget) | `embeds` | 9 | 1 | id | Embedding a third-party dashboard: a narrow iframe pattern, not a micro-frontend architec… |
 | [`EmployeeProfile`](../data/hr.md#employeeprofile) | `hr` | 9 | 1 | id | Optional HR-specific metadata about a User who works here. |
 | [`EntityAttribute`](../data/entity-attributes.md#entityattribute) | `entity-attributes` | 8 | 0 | id | A general EAV model, built by explicit owner override (ADR-026). |
+| [`EscalationFire`](../data/notify.md#escalationfire) | `notify` | 7 | 1 | id | One row per actual escalation fire — the idempotency and fire-count tracking EscalationRu… |
+| [`EscalationRule`](../data/notify.md#escalationrule) | `notify` | 7 | 0 | id | The timer that makes a stalled task visible — climbs Position.reportsTo, never a person,… |
 | [`Expense`](../data/finance.md#expense) | `finance` | 24 | 5 | id |  |
 | [`ExpenseCategory`](../data/finance.md#expensecategory) | `finance` | 9 | 0 | id | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 —… |
 | [`FiscalPeriod`](../data/accounting.md#fiscalperiod) | `accounting` | 10 | 1 | id | What a `JournalEntry` posts into. |
@@ -202,6 +207,8 @@ against a real database.
 | [`MarketplacePublisherCredential`](../data/marketplace.md#marketplacepublishercredential) | `marketplace` | 6 | 1 | id | One row per tenant that has opted into the cross-tenant network (either capability this f… |
 | [`MeasurementField`](../data/measurements.md#measurementfield) | `measurements` | 14 | 1 | id |  |
 | [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
+| [`Meeting`](../data/notify.md#meeting) | `notify` | 14 | 1 | id |  |
+| [`MeetingInvitation`](../data/notify.md#meetinginvitation) | `notify` | 7 | 1 | id | Materialised at send time — resolved once from the Audience, then fixed, so a person invi… |
 | [`MenuItem`](../data/content.md#menuitem) | `content` | 11 | 2 | id | A tree per named slot (`menuKey`: "footer_help", "footer_about", …) — see MENU_KEYS in pa… |
 | [`MenuItemTranslation`](../data/content.md#menuitemtranslation) | `content` | 5 | 1 | id |  |
 | [`MerchantPayable`](../data/wallet.md#merchantpayable) | `wallet` | 15 | 0 | id | The exact mirror of doc 145's own AP side (`SupplierBill`) — a merchant selling through t… |
@@ -388,7 +395,7 @@ against a real database.
 | [`ApiKeySurface`](../data/core.md#apikeysurface) | `core` | `ADMIN` `STOREFRONT` |
 | [`ApprovalChainStatus`](../data/approvals.md#approvalchainstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` |
 | [`ApprovalStepStatus`](../data/approvals.md#approvalstepstatus) | `approvals` | `PENDING` `APPROVED` `REJECTED` `SKIPPED` |
-| [`ApprovalSubjectType`](../data/approvals.md#approvalsubjecttype) | `approvals` | `PURCHASE_REQUISITION` `WALLET_ADJUSTMENT` `B2B_ORDER` |
+| [`ApprovalSubjectType`](../data/approvals.md#approvalsubjecttype) | `approvals` | `PURCHASE_REQUISITION` `WALLET_ADJUSTMENT` `B2B_ORDER` `BROADCAST_MESSAGE` |
 | [`AssetStatus`](../data/hr.md#assetstatus) | `hr` | `AVAILABLE` `ASSIGNED` `RETIRED` `LOST` |
 | [`AttendanceDeviceStatus`](../data/attendance.md#attendancedevicestatus) | `attendance` | `PENDING` `ACTIVE` `SUSPENDED` |
 | [`AttendanceExceptionReason`](../data/attendance.md#attendanceexceptionreason) | `attendance` | `NO_MATCHING_SHIFT` `OUTSIDE_ROSTER` `WRONG_UNIT` `WHILE_ON_LEAVE` `DUPLICATE_SUSPECTED` `MISSING_COUNTERPART` |
@@ -425,6 +432,7 @@ against a real database.
 | [`InstalmentPlanStatus`](../data/instalments.md#instalmentplanstatus) | `instalments` | `ACTIVE` `COMPLETED` `DEFAULTED` `CANCELLED` |
 | [`InstalmentPlanType`](../data/instalments.md#instalmentplantype) | `instalments` | `LAYBY` `INSTALMENT` |
 | [`InteractionKind`](../data/crm.md#interactionkind) | `crm` | `CALL` `WHATSAPP` `EMAIL` `SMS` `VISIT` `NOTE` `COMPLAINT` |
+| [`InviteResponse`](../data/notify.md#inviteresponse) | `notify` | `NO_RESPONSE` `ACCEPTED` `DECLINED` `TENTATIVE` |
 | [`InvoiceStatus`](../data/invoicing.md#invoicestatus) | `invoicing` | `ISSUED` `PAID` `VOID` |
 | [`InvoiceStatus`](../data/platform.md#invoicestatus) | `platform` | `ISSUED` `CREDITED` |
 | [`JournalEntryStatus`](../data/accounting.md#journalentrystatus) | `accounting` | `POSTED` `REVERSED` |

@@ -2726,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,363 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>6,484 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2789,6 +2789,7 @@ _no second-level headings_
 - ADR-055 — Doc 117 (choreography and idempotency) and doc 118 (headless, composable, agent-consumable capabilities): both theses stand, but doc 117's own worked-example table was three-quarters fabricated, and doc 118 (plus doc 115, its own source) cite a deferred model as already shipped  <sub>:6039</sub>
 - ADR-056 — Docs 122 (data lake), 130 (capability manifest) and 131 (versioned domain events): one more fabricated citation, one more deferred-model repeat, one small real work order actually shipped  <sub>:6145</sub>
 - ADR-057 — Docs 133 (dry-run harness), 134 (hexagonal-purity CI check) and 138 (technology substitution playbook): a naming convention shipped with better evidence than it cited, a real static check built and wired into `pnpm lint`, one CI overclaim corrected  <sub>:6255</sub>
+- ADR-058 — Doc 24 (internal notifications, meetings and escalation): built in full, with one new model beyond its own sketch and a countersignature routed to a named person rather than a role  <sub>:6364</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3554,15 +3555,15 @@ _no second-level headings_
 - Acceptance  <sub>:221</sub>
 - Out of scope  <sub>:233</sub>
 
-### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>225 lines</sub>
+### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>258 lines</sub>
 
-- The new part: an audience is a query over the org tree  <sub>:15</sub>
-- Meetings are a notification that expects an answer  <sub>:48</sub>
-- Escalation: the timer that makes a stalled approval visible  <sub>:94</sub>
-- Scope lenses  <sub>:128</sub>
-- Work orders  <sub>:192</sub>
-- Acceptance  <sub>:207</sub>
-- Out of scope  <sub>:220</sub>
+- The new part: an audience is a query over the org tree  <sub>:48</sub>
+- Meetings are a notification that expects an answer  <sub>:81</sub>
+- Escalation: the timer that makes a stalled approval visible  <sub>:127</sub>
+- Scope lenses  <sub>:161</sub>
+- Work orders  <sub>:225</sub>
+- Acceptance  <sub>:240</sub>
+- Out of scope  <sub>:253</sub>
 
 ### `docs/implementation/tasks-notifications-support/61-policy-communications-bulletin.md`  <sub>194 lines</sub>
 

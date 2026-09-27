@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2251,
-    "lines": 342849,
-    "routes": 788,
-    "controllers": 142,
-    "models": 283,
-    "enums": 128,
-    "migrations": 105,
+    "files": 2271,
+    "lines": 345262,
+    "routes": 799,
+    "controllers": 145,
+    "models": 289,
+    "enums": 129,
+    "migrations": 106,
     "events": 65,
-    "permissions": 108,
-    "screens": 250,
-    "crons": 25,
-    "specs": 298,
+    "permissions": 111,
+    "screens": 253,
+    "crons": 26,
+    "specs": 303,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 60,
       "lines": 30624,
-      "bytes": 1205160,
+      "bytes": 1205181,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1023,
-      "lines": 139362,
-      "bytes": 5394982,
+      "files": 1040,
+      "lines": 141117,
+      "bytes": 5464618,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 402,
-      "lines": 66406,
-      "bytes": 2396509,
+      "files": 405,
+      "lines": 66875,
+      "bytes": 2413981,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 399,
-      "lines": 68534,
-      "bytes": 4076919,
+      "lines": 68688,
+      "bytes": 4085968,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8289,
-      "bytes": 296333,
+      "lines": 8324,
+      "bytes": 297693,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -678,6 +678,31 @@
       ],
       "routes": 2,
       "page": "docs/index/modules/notification-preferences.md"
+    },
+    {
+      "name": "notify",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/notify/audience.service.spec.ts",
+        "apps/api/src/modules/notify/audience.service.ts",
+        "apps/api/src/modules/notify/dto/notify.dto.ts",
+        "apps/api/src/modules/notify/escalation-rule.controller.ts",
+        "apps/api/src/modules/notify/escalation-rule.service.spec.ts",
+        "apps/api/src/modules/notify/escalation-rule.service.ts",
+        "apps/api/src/modules/notify/escalation.cron.spec.ts",
+        "apps/api/src/modules/notify/escalation.cron.ts",
+        "apps/api/src/modules/notify/meetings.controller.ts",
+        "apps/api/src/modules/notify/meetings.service.spec.ts",
+        "apps/api/src/modules/notify/meetings.service.ts",
+        "apps/api/src/modules/notify/notify.controller.ts",
+        "apps/api/src/modules/notify/notify.module.ts",
+        "apps/api/src/modules/notify/notify.service.spec.ts",
+        "apps/api/src/modules/notify/notify.service.ts"
+      ],
+      "routes": 11,
+      "page": "docs/index/modules/notify.md"
     },
     {
       "name": "onsitemessages",
@@ -7590,6 +7615,180 @@
       "public": false,
       "authOnly": false,
       "summary": "Define (or replace) the form shape for one entity type"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/notify/:id/decide",
+      "module": "notify",
+      "controller": "NotifyController",
+      "handler": "decide",
+      "file": "apps/api/src/modules/notify/notify.controller.ts",
+      "line": 35,
+      "access": "notify.send",
+      "permissions": [
+        "notify.send"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Countersign or reject a pending broadcast — only the person it was routed to may decide it"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/notify/escalation-rules",
+      "module": "notify",
+      "controller": "EscalationRuleController",
+      "handler": "list",
+      "file": "apps/api/src/modules/notify/escalation-rule.controller.ts",
+      "line": 16,
+      "access": "notify.escalation.manage",
+      "permissions": [
+        "notify.escalation.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every configured escalation rule"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/notify/escalation-rules",
+      "module": "notify",
+      "controller": "EscalationRuleController",
+      "handler": "create",
+      "file": "apps/api/src/modules/notify/escalation-rule.controller.ts",
+      "line": 22,
+      "access": "notify.escalation.manage",
+      "permissions": [
+        "notify.escalation.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Watch a Task.sourceType for staleness and escalate up Position.reportsTo"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/notify/escalation-rules/:id",
+      "module": "notify",
+      "controller": "EscalationRuleController",
+      "handler": "remove",
+      "file": "apps/api/src/modules/notify/escalation-rule.controller.ts",
+      "line": 34,
+      "access": "notify.escalation.manage",
+      "permissions": [
+        "notify.escalation.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Stop watching this source type"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/notify/escalation-rules/:id",
+      "module": "notify",
+      "controller": "EscalationRuleController",
+      "handler": "update",
+      "file": "apps/api/src/modules/notify/escalation-rule.controller.ts",
+      "line": 28,
+      "access": "notify.escalation.manage",
+      "permissions": [
+        "notify.escalation.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Update an escalation rule"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/notify/meetings",
+      "module": "notify",
+      "controller": "MeetingsController",
+      "handler": "create",
+      "file": "apps/api/src/modules/notify/meetings.controller.ts",
+      "line": 23,
+      "access": "notify.send",
+      "permissions": [
+        "notify.send"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Call a meeting, materialising invitations from the resolved audience"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/notify/meetings/:id/cancel",
+      "module": "notify",
+      "controller": "MeetingsController",
+      "handler": "cancel",
+      "file": "apps/api/src/modules/notify/meetings.controller.ts",
+      "line": 56,
+      "access": "notify.send",
+      "permissions": [
+        "notify.send"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Cancel a meeting — notifies every invitee, never deletes the record"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/notify/meetings/:id/respond",
+      "module": "notify",
+      "controller": "MeetingsController",
+      "handler": "respond",
+      "file": "apps/api/src/modules/notify/meetings.controller.ts",
+      "line": 42,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Answer your own invitation to a meeting"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/notify/meetings/:id/shortfall",
+      "module": "notify",
+      "controller": "MeetingsController",
+      "handler": "shortfall",
+      "file": "apps/api/src/modules/notify/meetings.controller.ts",
+      "line": 49,
+      "access": "notify.send",
+      "permissions": [
+        "notify.send"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Required invitees who have not yet answered"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/notify/preview",
+      "module": "notify",
+      "controller": "NotifyController",
+      "handler": "preview",
+      "file": "apps/api/src/modules/notify/notify.controller.ts",
+      "line": 23,
+      "access": "notify.send",
+      "permissions": [
+        "notify.send"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Resolve an audience and report whether it needs a countersignature, without sending"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/notify/send",
+      "module": "notify",
+      "controller": "NotifyController",
+      "handler": "send",
+      "file": "apps/api/src/modules/notify/notify.controller.ts",
+      "line": 29,
+      "access": "notify.send",
+      "permissions": [
+        "notify.send"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Send an internal message, or submit it for countersignature if it is above the quorum"
     },
     {
       "method": "GET",
@@ -15615,6 +15814,50 @@
       "inSeed": false
     },
     {
+      "key": "notify.send",
+      "label": "Send an internal message or call a meeting, within your own reach",
+      "category": "Organization",
+      "sensitivity": "low",
+      "routes": [
+        "POST /admin/notify/:id/decide",
+        "POST /admin/notify/meetings",
+        "POST /admin/notify/meetings/:id/cancel",
+        "GET /admin/notify/meetings/:id/shortfall",
+        "POST /admin/notify/preview",
+        "POST /admin/notify/send"
+      ],
+      "uiSites": 4,
+      "roles": [
+        "STAFF"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "notify.broadcast",
+      "label": "Send an announcement above the quorum threshold (requires a countersignature)",
+      "category": "Organization",
+      "sensitivity": "high",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [],
+      "inSeed": false
+    },
+    {
+      "key": "notify.escalation.manage",
+      "label": "Configure which stalled tasks escalate, and how far",
+      "category": "Organization",
+      "sensitivity": "high",
+      "routes": [
+        "GET /admin/notify/escalation-rules",
+        "POST /admin/notify/escalation-rules",
+        "DELETE /admin/notify/escalation-rules/:id",
+        "PUT /admin/notify/escalation-rules/:id"
+      ],
+      "uiSites": 2,
+      "roles": [],
+      "inSeed": false
+    },
+    {
       "key": "marketing.manage",
       "label": "Turn on automated marketing email and set its timing",
       "category": "Administration",
@@ -17496,7 +17739,7 @@
     {
       "name": "ApprovalChain",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 32,
+      "line": 35,
       "doc": "",
       "fields": [
         {
@@ -17564,7 +17807,7 @@
     {
       "name": "ApprovalStep",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 47,
+      "line": 50,
       "doc": "",
       "fields": [
         {
@@ -18328,6 +18571,80 @@
       "indexes": [
         "@@index([resolvedAt])",
         "@@index([userId])",
+        "@@index([orgUnitId])"
+      ]
+    },
+    {
+      "name": "Audience",
+      "file": "apps/api/prisma/schema/notify.prisma",
+      "line": 18,
+      "doc": "Who a message goes to, stored as a specification, not a list of user ids — \"the finance department\" must mean the finance department ON THE DAY IT SENDS, not the membership frozen when somebody draft…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "includeDescendants",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "minRankLevel",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "positionIds",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdByUserId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "broadcasts",
+          "type": "BroadcastMessage[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "meetings",
+          "type": "Meeting[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
         "@@index([orgUnitId])"
       ]
     },
@@ -19851,6 +20168,94 @@
       ],
       "indexes": [
         "@@unique([brandId, locale])"
+      ]
+    },
+    {
+      "name": "BroadcastMessage",
+      "file": "apps/api/prisma/schema/notify.prisma",
+      "line": 48,
+      "doc": "A record that an internal message was actually sent — the \"reversal document\" lens answer for this module: a sent message cannot be unsent, so this row is the permanent, immutable proof of what went…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "senderId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "audienceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subject",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "body",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "recipientCount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "excludedCount",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvalChainId",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "sentAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "audience",
+          "type": "Audience",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([senderId, createdAt])"
       ]
     },
     {
@@ -22648,6 +23053,125 @@
         "@@unique([entityType, entityId, attributeKey])",
         "@@index([entityType, entityId])"
       ]
+    },
+    {
+      "name": "EscalationFire",
+      "file": "apps/api/prisma/schema/notify.prisma",
+      "line": 155,
+      "doc": "One row per actual escalation fire — the idempotency and fire-count tracking EscalationRule.maxFires needs.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "taskId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ruleId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "fireNumber",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "climbedToPositionId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "firedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rule",
+          "type": "EscalationRule",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([taskId, fireNumber])",
+        "@@index([taskId])"
+      ]
+    },
+    {
+      "name": "EscalationRule",
+      "file": "apps/api/prisma/schema/notify.prisma",
+      "line": 133,
+      "doc": "The timer that makes a stalled task visible — climbs Position.reportsTo, never a person, so a vacant post is skipped to its own reportsTo (the leaver case, handled by construction, same as doc 23's o…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceType",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "afterMinutes",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "stepsPerFire",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ceilingRankLevel",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "maxFires",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "fires",
+          "type": "EscalationFire[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "Expense",
@@ -26499,6 +27023,176 @@
       "indexes": [
         "@@unique([userId, garmentTypeId, label])",
         "@@index([userId])"
+      ]
+    },
+    {
+      "name": "Meeting",
+      "file": "apps/api/prisma/schema/notify.prisma",
+      "line": 76,
+      "doc": "",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "detail",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startsAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endsAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "timezone",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "location",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "audienceId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "calledByUserId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orgUnitId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "cancelledAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "audience",
+          "type": "Audience",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "invitations",
+          "type": "MeetingInvitation[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([orgUnitId, startsAt])"
+      ]
+    },
+    {
+      "name": "MeetingInvitation",
+      "file": "apps/api/prisma/schema/notify.prisma",
+      "line": 110,
+      "doc": "Materialised at send time — resolved once from the Audience, then fixed, so a person invited Monday can still answer Tuesday after being moved to another department.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "meetingId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "required",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "response",
+          "type": "InviteResponse",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "respondedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "meeting",
+          "type": "Meeting",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([meetingId, userId])",
+        "@@index([userId, response])"
       ]
     },
     {
@@ -41923,7 +42617,7 @@
     {
       "name": "ApprovalChainStatus",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 19,
+      "line": 22,
       "values": [
         "PENDING",
         "APPROVED",
@@ -41933,7 +42627,7 @@
     {
       "name": "ApprovalStepStatus",
       "file": "apps/api/prisma/schema/approvals.prisma",
-      "line": 25,
+      "line": 28,
       "values": [
         "PENDING",
         "APPROVED",
@@ -41948,7 +42642,8 @@
       "values": [
         "PURCHASE_REQUISITION",
         "WALLET_ADJUSTMENT",
-        "B2B_ORDER"
+        "B2B_ORDER",
+        "BROADCAST_MESSAGE"
       ]
     },
     {
@@ -42346,6 +43041,17 @@
         "VISIT",
         "NOTE",
         "COMPLAINT"
+      ]
+    },
+    {
+      "name": "InviteResponse",
+      "file": "apps/api/prisma/schema/notify.prisma",
+      "line": 99,
+      "values": [
+        "NO_RESPONSE",
+        "ACCEPTED",
+        "DECLINED",
+        "TENTATIVE"
       ]
     },
     {
@@ -45150,6 +45856,29 @@
         "B2BOrderRequest",
         "B2BPurchaseApprovalPolicy"
       ]
+    },
+    {
+      "folder": "20260926210000_wo24_notify_meetings_escalation",
+      "file": "apps/api/prisma/schema/migrations/20260926210000_wo24_notify_meetings_escalation/migration.sql",
+      "date": "2026-09-26",
+      "slug": "wo24_notify_meetings_escalation",
+      "statements": 22,
+      "kinds": [
+        "ALTER TYPE",
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "CREATE UNIQUE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "Audience",
+        "BroadcastMessage",
+        "EscalationFire",
+        "EscalationRule",
+        "Meeting",
+        "MeetingInvitation"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -46876,6 +47605,33 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/notify",
+      "file": "apps/web/src/app/(admin)/admin/(app)/notify/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/notify/escalation-rules",
+      "file": "apps/web/src/app/(admin)/admin/(app)/notify/escalation-rules/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/notify/meetings",
+      "file": "apps/web/src/app/(admin)/admin/(app)/notify/meetings/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/o",
       "file": "apps/web/src/app/(admin)/admin/(app)/o/page.tsx",
       "client": true,
@@ -47552,6 +48308,13 @@
       "schedule": "0 3 * * *",
       "file": "apps/api/src/modules/marketing/marketing-automation.cron.ts",
       "line": 72,
+      "handler": "run",
+      "doc": ""
+    },
+    {
+      "schedule": "*/10 * * * *",
+      "file": "apps/api/src/modules/notify/escalation.cron.ts",
+      "line": 34,
       "handler": "run",
       "doc": ""
     },
@@ -49615,6 +50378,55 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/notify/audience.service.spec.ts",
+      "module": "notify",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "AudienceService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/notify/escalation-rule.service.spec.ts",
+      "module": "notify",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "EscalationRuleService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/notify/escalation.cron.spec.ts",
+      "module": "notify",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "EscalationCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/notify/meetings.service.spec.ts",
+      "module": "notify",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "MeetingsService",
+        "shortfallReport",
+        "respond",
+        "cancel"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/notify/notify.service.spec.ts",
+      "module": "notify",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "NotifyService",
+        "decide"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/onsitemessages/onsite-messages.service.spec.ts",
       "module": "onsitemessages",
       "kind": "unit test",
@@ -51673,7 +52485,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5391,
+      "bytes": 5398,
       "doc": "",
       "symbols": []
     },
@@ -51682,7 +52494,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 180,
-      "bytes": 9287,
+      "bytes": 9294,
       "doc": "",
       "symbols": []
     },
@@ -51691,7 +52503,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5844,
+      "bytes": 5851,
       "doc": "",
       "symbols": []
     },
@@ -52002,8 +52814,8 @@
       "path": "apps/api/prisma/schema/approvals.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 76,
-      "bytes": 2813,
+      "lines": 79,
+      "bytes": 2970,
       "doc": "Approvals: one generic, subject-agnostic approval chain, referenced by a",
       "symbols": []
     },
@@ -53106,6 +53918,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260926210000_wo24_notify_meetings_escalation/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 136,
+      "bytes": 4577,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -53121,6 +53942,15 @@
       "lines": 51,
       "bytes": 1994,
       "doc": "Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md).",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/notify.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 171,
+      "bytes": 6331,
+      "doc": "Internal notifications, meetings and escalation",
       "symbols": []
     },
     {
@@ -56974,8 +57804,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 503,
-      "bytes": 28062,
+      "lines": 521,
+      "bytes": 29079,
       "doc": "",
       "symbols": [
         {
@@ -57011,12 +57841,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 327
+          "line": 341
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 329
+          "line": 343
         }
       ]
     },
@@ -63017,8 +63847,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 128,
-      "bytes": 4378,
+      "lines": 129,
+      "bytes": 4396,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -63037,24 +63867,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 285,
-      "bytes": 16319,
+      "lines": 291,
+      "bytes": 16696,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 60
+          "line": 61
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 91
+          "line": 92
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 261
+          "line": 267
         }
       ]
     },
@@ -63105,6 +63935,281 @@
           "name": "NotificationPreferencesModule",
           "kind": "class",
           "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/audience.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 83,
+      "bytes": 3152,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/notify/audience.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 109,
+      "bytes": 4351,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AudienceSpec",
+          "kind": "interface",
+          "line": 4
+        },
+        {
+          "name": "ResolvedRecipient",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "AudienceResolution",
+          "kind": "interface",
+          "line": 18
+        },
+        {
+          "name": "AudienceService",
+          "kind": "class",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/dto/notify.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 144,
+      "bytes": 2558,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AudienceSpecDto",
+          "kind": "class",
+          "line": 5
+        },
+        {
+          "name": "PreviewAudienceDto",
+          "kind": "class",
+          "line": 28
+        },
+        {
+          "name": "SendBroadcastDto",
+          "kind": "class",
+          "line": 30
+        },
+        {
+          "name": "DecideBroadcastDto",
+          "kind": "class",
+          "line": 44
+        },
+        {
+          "name": "CreateMeetingDto",
+          "kind": "class",
+          "line": 54
+        },
+        {
+          "name": "RespondMeetingDto",
+          "kind": "class",
+          "line": 88
+        },
+        {
+          "name": "CreateEscalationRuleDto",
+          "kind": "class",
+          "line": 93
+        },
+        {
+          "name": "UpdateEscalationRuleDto",
+          "kind": "class",
+          "line": 120
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/escalation-rule.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 38,
+      "bytes": 1365,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EscalationRuleController",
+          "kind": "class",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/escalation-rule.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 33,
+      "bytes": 1471,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/notify/escalation-rule.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 69,
+      "bytes": 2319,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EscalationRuleInput",
+          "kind": "interface",
+          "line": 4
+        },
+        {
+          "name": "EscalationRuleUpdate",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "EscalationRuleService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/escalation.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 104,
+      "bytes": 4991,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/notify/escalation.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 135,
+      "bytes": 5581,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EscalationCron",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/meetings.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 60,
+      "bytes": 2293,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MeetingsController",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/meetings.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 95,
+      "bytes": 4043,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/notify/meetings.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 156,
+      "bytes": 6094,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateMeetingInput",
+          "kind": "interface",
+          "line": 7
+        },
+        {
+          "name": "MeetingShortfallReport",
+          "kind": "interface",
+          "line": 18
+        },
+        {
+          "name": "MeetingsService",
+          "kind": "class",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/notify.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 39,
+      "bytes": 1824,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NotifyController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/notify.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 31,
+      "bytes": 1584,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NotifyModule",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/notify/notify.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 138,
+      "bytes": 6636,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/notify/notify.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 186,
+      "bytes": 8897,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SendBroadcastInput",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "BroadcastPreview",
+          "kind": "interface",
+          "line": 16
+        },
+        {
+          "name": "NotifyService",
+          "kind": "class",
+          "line": 30
         }
       ]
     },
@@ -74396,6 +75501,51 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/notify/escalation-rules/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 141,
+      "bytes": 5221,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "EscalationRulesPage",
+          "kind": "default",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/notify/meetings/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 167,
+      "bytes": 6482,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MeetingsPage",
+          "kind": "default",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/notify/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 136,
+      "bytes": 5123,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NotifyComposePage",
+          "kind": "default",
+          "line": 28
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx",
       "area": "web",
       "kind": "page",
@@ -77355,8 +78505,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1062,
-      "bytes": 29508,
+      "lines": 1087,
+      "bytes": 30154,
       "doc": "",
       "symbols": [
         {
@@ -77387,12 +78537,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1032
+          "line": 1057
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1047
+          "line": 1072
         }
       ]
     },
@@ -82692,8 +83842,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 6363,
-      "bytes": 370803,
+      "lines": 6484,
+      "bytes": 377816,
       "doc": "",
       "symbols": []
     },
@@ -84231,8 +85381,8 @@
       "path": "docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 225,
-      "bytes": 11061,
+      "lines": 258,
+      "bytes": 13097,
       "doc": "",
       "symbols": []
     },
@@ -85917,8 +87067,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1215,
-      "bytes": 40601,
+      "lines": 1250,
+      "bytes": 41961,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -85939,52 +87089,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 733
+          "line": 756
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 735
+          "line": 758
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 745
+          "line": 768
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 752
+          "line": 775
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 972
+          "line": 998
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1179
+          "line": 1209
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1198
+          "line": 1228
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1207
+          "line": 1242
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1208
+          "line": 1243
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1211
+          "line": 1246
         }
       ]
     },

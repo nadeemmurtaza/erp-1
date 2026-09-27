@@ -1,5 +1,38 @@
 # 24 — Internal notifications, meetings and escalation
 
+> **Status: built (2026-09-27), WO-24.1–24.6, DECISIONS.md ADR-058.**
+> `notify.prisma` (`Audience`, `BroadcastMessage`, `Meeting`,
+> `MeetingInvitation`, `EscalationRule`, `EscalationFire`), `AudienceService`
+> (`resolve()`/reach-intersected, shared by preview and the real send),
+> `NotifyService` (send/decide, gated above quorum by `ApprovalService`'s
+> own generic chain — a new `BROADCAST_MESSAGE` subject type, never a
+> second approval engine), `MeetingsService` (create/respond/cancel/
+> shortfall), `EscalationCron` (climbs `Position.reportsTo`, skipping a
+> vacant post for free, respecting a ceiling and a fire count), the three
+> named permissions, and a compose/meetings/escalation-rules admin UI with
+> nav entries are all real, at `apps/api/src/modules/notify/` and
+> `apps/web/src/app/(admin)/admin/(app)/notify/`. `notify` is a `core`
+> module (not off by default), matching `tasks`/`attendance`'s own
+> precedent of a broadly-useful capability rather than a sector- or
+> scale-gated one.
+>
+> Two additions beyond the document's own literal sketch, both required to
+> make its own stated requirements real rather than aspirational:
+> `BroadcastMessage` (not sketched in this document at all) is the record
+> an above-quorum send needs to exist as an `ApprovalChain` subject, and is
+> also this module's own "reversal document" answer — the permanent proof
+> of what was sent, to whom, and when; a countersignature is routed to a
+> specific person (the sender's own `Position.reportsTo` holder,
+> `NotifyService`'s own `managerOf()`) rather than to a permission
+> category, since `ApprovalService` itself does not resolve who may decide
+> a step — the caller's own concern, per its own doc comment — and
+> `NotifyService.decide()` checks that identity match directly.
+>
+> Two settings back the quorum this document names but does not fully
+> mechanise: `NotifyAnnounceQuorumRankLevel` and
+> `NotifyAnnounceQuorumRecipientCount` (`SettingKey`, client-editable, no
+> deploy needed to retune either threshold).
+
 This repository already delivers notifications. `NotificationChannel`
 (`apps/api/src/core/notifications/notification-channel.ts`) is the interface,
 `EmailChannel`, `ExpoPushChannel` and `LogChannel` implement it,

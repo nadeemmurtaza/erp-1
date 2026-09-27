@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,023 tracked files in `apps/api`, by directory.
+All 1,040 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,13 +31,13 @@ All 1,023 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (57)
+### `apps/api/prisma/schema` (58)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.prisma` | prisma schema | 285 | The `accounting` module (RETAIL-ERP.md R15, Part 5, WO-19.1) — a |
 | `accounts.prisma` | prisma schema | 120 | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md |
-| `approvals.prisma` | prisma schema | 76 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
+| `approvals.prisma` | prisma schema | 79 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
@@ -64,6 +64,7 @@ All 1,023 tracked files in `apps/api`, by directory.
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
 | `metadata-forms.prisma` | prisma schema | 26 | A general metadata-driven UI engine, built by explicit owner override |
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
+| `notify.prisma` | prisma schema | 171 | Internal notifications, meetings and escalation |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
 | `orders.prisma` | prisma schema | 361 | Orders and shipments. |
 | `org-structure.prisma` | prisma schema | 132 | The org tree: offices, regions, departments — whatever shape a client's |
@@ -681,6 +682,12 @@ All 1,023 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 74 |  |
 
+### `apps/api/prisma/schema/migrations/20260926210000_wo24_notify_meetings_escalation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 136 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -1012,7 +1019,7 @@ All 1,023 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 503 |  |
+| `settings.defaults.ts` | module | 521 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 107 |  |
 
@@ -1042,8 +1049,8 @@ All 1,023 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 128 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 285 |  |
+| `module-packs.ts` | module | 129 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 291 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1669,6 +1676,31 @@ All 1,023 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `notification-preference.dto.ts` | dto | 31 |  |
+
+### `apps/api/src/modules/notify` (14)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `audience.service.spec.ts` | unit test | 83 |  |
+| `audience.service.ts` | service | 109 |  |
+| `escalation-rule.controller.ts` | controller | 38 |  |
+| `escalation-rule.service.spec.ts` | unit test | 33 |  |
+| `escalation-rule.service.ts` | service | 69 |  |
+| `escalation.cron.spec.ts` | unit test | 104 |  |
+| `escalation.cron.ts` | scheduled job | 135 |  |
+| `meetings.controller.ts` | controller | 60 |  |
+| `meetings.service.spec.ts` | unit test | 95 |  |
+| `meetings.service.ts` | service | 156 |  |
+| `notify.controller.ts` | controller | 39 |  |
+| `notify.module.ts` | nest module | 31 |  |
+| `notify.service.spec.ts` | unit test | 138 |  |
+| `notify.service.ts` | service | 186 |  |
+
+### `apps/api/src/modules/notify/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `notify.dto.ts` | dto | 144 |  |
 
 ### `apps/api/src/modules/onsitemessages` (4)
 

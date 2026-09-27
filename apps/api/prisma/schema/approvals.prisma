@@ -14,6 +14,9 @@ enum ApprovalSubjectType {
   /// doc 149 (WO-149.1) — a B2BOrderRequest at or above its account's own
   /// B2BPurchaseApprovalPolicy.thresholdMinor.
   B2B_ORDER
+  /// doc 24 (WO-24.5) — a BroadcastMessage above ANNOUNCE_QUORUM_RANK or
+  /// addressed to more than the configured recipient count.
+  BROADCAST_MESSAGE
 }
 
 enum ApprovalChainStatus {

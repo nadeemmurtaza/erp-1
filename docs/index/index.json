@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2393,
-    "lines": 362809,
+    "files": 2406,
+    "lines": 368482,
     "routes": 858,
     "controllers": 157,
     "models": 308,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 401,
-      "lines": 71021,
-      "bytes": 4228543,
+      "files": 414,
+      "lines": 76694,
+      "bytes": 4599858,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -90371,6 +90371,123 @@
       "kind": "doc",
       "lines": 87,
       "bytes": 4508,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/168-00-overview-and-decision-to-build-here.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 399,
+      "bytes": 31069,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/169-01-layer0-canonical-data-spine.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 661,
+      "bytes": 41738,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/170-02-layer1-stable-core-deltas.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 528,
+      "bytes": 31399,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/171-03-layer2-versioned-module-packs-build-manifest.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 441,
+      "bytes": 25593,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/172-04-layer3-ingestion-boundary-confidence-provenance.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 926,
+      "bytes": 58819,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/173-05-layer4-resilience-engine-extensions.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 459,
+      "bytes": 30151,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/174-06-layer5-control-center.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 423,
+      "bytes": 24510,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/175-07-layer6-settlement-execution-channel.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 460,
+      "bytes": 30045,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/176-08-platform-resilience-failure-modes.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 365,
+      "bytes": 25503,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/177-09-graph-derivability-pilot-scope-control.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 169,
+      "bytes": 14472,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/178-10-competition-deliverable-vs-pilot-vertical-slice.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 185,
+      "bytes": 17086,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/179-11-pilot-rollout-waves.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 316,
+      "bytes": 19890,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/composable-resilience-platform/180-12-metrics-success-criteria.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 341,
+      "bytes": 21040,
       "doc": "",
       "symbols": []
     },

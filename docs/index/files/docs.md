@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 401 tracked files in `docs/*`, by directory.
+All 414 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -709,6 +709,24 @@ All 401 tracked files in `docs/*`, by directory.
 | `83-entry-level-pos-deployment.md` | doc | 71 |  |
 | `84-micro-saas-hr-per-user-pricing.md` | doc | 65 |  |
 | `89-rapid-onboarding-customizable-reports.md` | doc | 87 |  |
+
+### `docs/implementation/composable-resilience-platform` (13)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `168-00-overview-and-decision-to-build-here.md` | doc | 399 |  |
+| `169-01-layer0-canonical-data-spine.md` | doc | 661 |  |
+| `170-02-layer1-stable-core-deltas.md` | doc | 528 |  |
+| `171-03-layer2-versioned-module-packs-build-manifest.md` | doc | 441 |  |
+| `172-04-layer3-ingestion-boundary-confidence-provenance.md` | doc | 926 |  |
+| `173-05-layer4-resilience-engine-extensions.md` | doc | 459 |  |
+| `174-06-layer5-control-center.md` | doc | 423 |  |
+| `175-07-layer6-settlement-execution-channel.md` | doc | 460 |  |
+| `176-08-platform-resilience-failure-modes.md` | doc | 365 |  |
+| `177-09-graph-derivability-pilot-scope-control.md` | doc | 169 |  |
+| `178-10-competition-deliverable-vs-pilot-vertical-slice.md` | doc | 185 |  |
+| `179-11-pilot-rollout-waves.md` | doc | 316 |  |
+| `180-12-metrics-success-criteria.md` | doc | 341 |  |
 
 ### `docs/implementation/content-marketing-search` (1)
 

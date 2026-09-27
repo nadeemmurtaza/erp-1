@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-401 files · 71,021 lines
+414 files · 76,694 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -94,6 +94,7 @@ has a bug.
 | `docs/implementation/b2b-wholesale-multientity` | 5 | 1,148 | doc |
 | `docs/implementation/catalog-variants-pricing` | 3 | 963 | doc |
 | `docs/implementation/commercial-licensing-agency` | 14 | 2,741 | doc |
+| `docs/implementation/composable-resilience-platform` | 13 | 5,673 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
 | `docs/implementation/finance-accounting` | 10 | 2,325 | doc |
@@ -121,16 +122,16 @@ has a bug.
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
 | `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md` | 937 | doc |  |
+| `docs/implementation/composable-resilience-platform/172-04-layer3-ingestion-boundary-confidence-provenance.md` | 926 | doc |  |
 | `docs/implementation/MULTI-SECTOR.md` | 854 | doc |  |
 | `docs/design/principles-laws/10-laws.md` | 850 | doc |  |
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
+| `docs/implementation/composable-resilience-platform/169-01-layer0-canonical-data-spine.md` | 661 | doc |  |
 | `docs/erp-lenses/_meta/_conflicts.md` | 645 | doc |  |
 | `docs/implementation/access-control-identity/163-personal-api-keys.md` | 625 | doc |  |
 | `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md` | 610 | doc |  |
 | `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md` | 566 | doc |  |
-| `docs/erp-lenses/_meta/_index.md` | 550 | doc |  |
-| `docs/implementation/README.md` | 546 | doc |  |
 
 
 ---

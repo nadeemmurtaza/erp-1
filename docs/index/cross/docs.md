@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**427** markdown documents. These explain **why**; this index only says **where**.
+**440** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2699,6 +2699,185 @@ _no second-level headings_
 - Work orders  <sub>:63</sub>
 - Acceptance  <sub>:73</sub>
 - Out of scope  <sub>:81</sub>
+
+### `docs/implementation/composable-resilience-platform/168-00-overview-and-decision-to-build-here.md`  <sub>399 lines</sub>
+
+- 1. The thesis  <sub>:12</sub>
+- 2. Why this repository — the argument ADR-069 records  <sub>:59</sub>
+- 3. Premises corrected against the code  <sub>:141</sub>
+- 3a. The one architectural decision this program does *not* get to make quietly  <sub>:240</sub>
+- 4. The seven layers, and what each reuses  <sub>:264</sub>
+- 5. The international proof: every country-specific seam takes an unrelated second implementation  <sub>:276</sub>
+- 6. Relationship to the documents of record  <sub>:302</sub>
+- 7. The document set  <sub>:328</sub>
+- Scope lenses  <sub>:348</sub>
+- Work orders  <sub>:360</sub>
+- Acceptance  <sub>:379</sub>
+- Out of scope  <sub>:390</sub>
+
+### `docs/implementation/composable-resilience-platform/169-01-layer0-canonical-data-spine.md`  <sub>661 lines</sub>
+
+- 1. The rule: the canonical model *is* the operational schema  <sub>:14</sub>
+- 2. Why there is no `tenantId` column — and what answers "whose record is this?"  <sub>:38</sub>
+- 3. The six concepts, bound to real models  <sub>:74</sub>
+- 4. What every record must be able to answer — and where each answer lives  <sub>:245</sub>
+- 5. The system-of-record window — how "one writer per invariant" survives mirroring  <sub>:327</sub>
+- 6. The two facts with no native home  <sub>:362</sub>
+- 7. Money on every record  <sub>:463</sub>
+- 8. Alignment with UBL 2.1 / PINT AE  <sub>:477</sub>
+- 9. Alignment with ISO 20022  <sub>:522</sub>
+- Scope lenses  <sub>:542</sub>
+- Work orders  <sub>:625</sub>
+- Acceptance  <sub>:642</sub>
+- Out of scope  <sub>:655</sub>
+
+### `docs/implementation/composable-resilience-platform/170-02-layer1-stable-core-deltas.md`  <sub>528 lines</sub>
+
+- 1. Reused with zero change  <sub>:13</sub>
+- 2. Permission keys — checked against both catalogues first  <sub>:36</sub>
+- 3. Principal types — four deltas  <sub>:132</sub>
+- 4. Expiring grants for the program's highest-trust operations  <sub>:251</sub>
+- 5. The currency-neutrality sweep (mandatory before the first UAE tenant)  <sub>:321</sub>
+- 6. The SME's legal identity at runtime — bounded, and needing its own ADR  <sub>:370</sub>
+- Scope lenses  <sub>:402</sub>
+- Work orders  <sub>:479</sub>
+- Acceptance  <sub>:505</sub>
+- Out of scope  <sub>:521</sub>
+
+### `docs/implementation/composable-resilience-platform/171-03-layer2-versioned-module-packs-build-manifest.md`  <sub>441 lines</sub>
+
+- 1. What already exists  <sub>:13</sub>
+- 2. What "version-pinned modules" can honestly mean here  <sub>:44</sub>
+- 3. Schema — additive to `apps/platform/prisma/schema/platform.prisma`  <sub>:64</sub>
+- 4. One rollout algorithm, across two databases  <sub>:212</sub>
+- 5. The Update Agent  <sub>:244</sub>
+- 6. Which releases count as money/stock-path  <sub>:287</sub>
+- 7. The boot test per `MODULES` set — closing `ENTERPRISE-SCALE.md`'s S4 gap where it bites  <sub>:299</sub>
+- Scope lenses  <sub>:317</sub>
+- Work orders  <sub>:396</sub>
+- Acceptance  <sub>:415</sub>
+- Out of scope  <sub>:433</sub>
+
+### `docs/implementation/composable-resilience-platform/172-04-layer3-ingestion-boundary-confidence-provenance.md`  <sub>926 lines</sub>
+
+- Implementation plan  <sub>:17</sub>
+- 1. What "read-only" means, exactly  <sub>:82</sub>
+- 2. Where this lives — and why it is not a new pack or a second module  <sub>:96</sub>
+- 3. The foundation: docs 160/162 built as specified, with four corrections  <sub>:112</sub>
+- 4. The pipeline, and its three tables  <sub>:171</sub>
+- 5. The confidence model  <sub>:379</sub>
+- 6. Human confirmation before simulation  <sub>:448</sub>
+- 7. Provenance and freshness  <sub>:486</sub>
+- 8. Writing into the modules that own the data — an extension point, not an import  <sub>:508</sub>
+- 9. `KNOWN_MODULE_COUPLINGS` — the entry the brief expected, and why it is not added  <sub>:592</sub>
+- 10. Failure modes, and what each one leaves behind  <sub>:661</sub>
+- 11. What the SME and du support actually use  <sub>:677</sub>
+- Scope lenses  <sub>:693</sub>
+- Work orders  <sub>:854</sub>
+- Acceptance  <sub>:893</sub>
+- Out of scope  <sub>:916</sub>
+
+### `docs/implementation/composable-resilience-platform/173-05-layer4-resilience-engine-extensions.md`  <sub>459 lines</sub>
+
+- 1. What does not change  <sub>:17</sub>
+- 2. Confidence-weighted edges — carried by partition, never by multiplication  <sub>:27</sub>
+- 3. `rupeesSpentMinor` — the finding, the rename, and every call site  <sub>:118</sub>
+- 4. Three correctness fixes the UAE surfaces in shipped code  <sub>:217</sub>
+- 5. Revenue and margin at risk — the figures doc 144's prose promised  <sub>:282</sub>
+- 6. Three more deviations of the shipped code from doc 144's prose  <sub>:304</sub>
+- 7. R22's nine action kinds — which gain a real source, honestly  <sub>:329</sub>
+- Scope lenses  <sub>:351</sub>
+- Work orders  <sub>:407</sub>
+- Acceptance  <sub>:432</sub>
+- Out of scope  <sub>:452</sub>
+
+### `docs/implementation/composable-resilience-platform/174-06-layer5-control-center.md`  <sub>423 lines</sub>
+
+- 1. What ships today, read as it is  <sub>:15</sub>
+- 2. The five questions  <sub>:31</sub>
+- 3. Simulate → Accept → Modify  <sub>:60</sub>
+- 4. The screen  <sub>:274</sub>
+- Scope lenses  <sub>:301</sub>
+- Work orders  <sub>:378</sub>
+- Acceptance  <sub>:399</sub>
+- Out of scope  <sub>:416</sub>
+
+### `docs/implementation/composable-resilience-platform/175-07-layer6-settlement-execution-channel.md`  <sub>460 lines</sub>
+
+- Implementation plan  <sub>:18</sub>
+- 1. Execution channel, never the product  <sub>:81</sub>
+- 2. The loop, on real code  <sub>:92</sub>
+- 3. The du-rail `PaymentProvider`  <sub>:109</sub>
+- 4. The custody boundary — concretely  <sub>:156</sub>
+- 5. Settlement reconciliation — doc 49's pattern, reused, and one gap closed  <sub>:189</sub>
+- 6. Refunds, and the reversal they post  <sub>:246</sub>
+- Scope lenses  <sub>:268</sub>
+- Work orders  <sub>:411</sub>
+- Acceptance  <sub>:435</sub>
+- Out of scope  <sub>:452</sub>
+
+### `docs/implementation/composable-resilience-platform/176-08-platform-resilience-failure-modes.md`  <sub>365 lines</sub>
+
+- 1. The honest starting point  <sub>:18</sub>
+- 2. The degradation matrix, extended  <sub>:31</sub>
+- 3. The failure modes, one by one  <sub>:54</sub>
+- 4. Circuit breakers — doc 38 §2, built  <sub>:151</sub>
+- 5. SLOs and error budgets — numbers, computed from rows  <sub>:184</sub>
+- 6. Disaster recovery — what is measured, what is a target  <sub>:245</sub>
+- 7. Contract tests for the new events  <sub>:259</sub>
+- Scope lenses  <sub>:270</sub>
+- Work orders  <sub>:322</sub>
+- Acceptance  <sub>:343</sub>
+- Out of scope  <sub>:359</sub>
+
+### `docs/implementation/composable-resilience-platform/177-09-graph-derivability-pilot-scope-control.md`  <sub>169 lines</sub>
+
+- 1. The graph, edge by edge, against what ingestion can supply  <sub>:14</sub>
+- 2. Where the pilot onboards  <sub>:35</sub>
+- 3. What the pilot does not onboard, and the evidence for each  <sub>:53</sub>
+- 4. The derivability assessment — decided per SME, from its own data  <sub>:71</sub>
+- Scope lenses  <sub>:94</sub>
+- Work orders  <sub>:141</sub>
+- Acceptance  <sub>:154</sub>
+- Out of scope  <sub>:164</sub>
+
+### `docs/implementation/composable-resilience-platform/178-10-competition-deliverable-vs-pilot-vertical-slice.md`  <sub>185 lines</sub>
+
+- 1. The slice, component by component  <sub>:15</sub>
+- 2. The demo journey  <sub>:47</sub>
+- 3. Non-goals — each out for a reason in this codebase  <sub>:90</sub>
+- 4. Competition submission vs pilot  <sub>:103</sub>
+- Scope lenses  <sub>:114</sub>
+- Work orders  <sub>:156</sub>
+- Acceptance  <sub>:170</sub>
+- Out of scope  <sub>:181</sub>
+
+### `docs/implementation/composable-resilience-platform/179-11-pilot-rollout-waves.md`  <sub>316 lines</sub>
+
+- 1. Select patterns, not companies  <sub>:12</sub>
+- 2. Wave 0 — ten patterns, one SME each  <sub>:21</sub>
+- 3. Wave 1 — connect-only, 40 tenants  <sub>:54</sub>
+- 4. Wave 2 — invoicing migrated, 150 tenants  <sub>:79</sub>
+- 5. Parallel running and the financial cutover  <sub>:99</sub>
+- 6. Wave 3 — the full engine  <sub>:201</sub>
+- Scope lenses  <sub>:214</sub>
+- Work orders  <sub>:284</sub>
+- Acceptance  <sub>:298</sub>
+- Out of scope  <sub>:310</sub>
+
+### `docs/implementation/composable-resilience-platform/180-12-metrics-success-criteria.md`  <sub>341 lines</sub>
+
+- 0. How a fleet metric is computed without breaking tenant isolation  <sub>:13</sub>
+- 1. Connect success — target ≥ 85%  <sub>:80</sub>
+- 2. Time to first value — target ≤ 5 days (median)  <sub>:129</sub>
+- 3. Time-to-impact visibility — the primary resilience KPI  <sub>:168</sub>
+- 4. Revenue-linked dependency coverage — target ≥ 80%  <sub>:188</sub>
+- 5. The recommendation funnel — measured, with no target claimed  <sub>:233</sub>
+- 6. NOT MEASURED — named, not dropped  <sub>:255</sub>
+- Scope lenses  <sub>:266</sub>
+- Work orders  <sub>:311</sub>
+- Acceptance  <sub>:327</sub>
+- Out of scope  <sub>:337</sub>
 
 ### `docs/implementation/content-marketing-search/08-content-marketing-search.md`  <sub>160 lines</sub>
 

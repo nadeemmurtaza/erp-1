@@ -3,7 +3,7 @@
 
 # Screens
 
-All **269** routable files across the web app, the till and the mobile app.
+All **274** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (175)
+### admin (179)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -115,7 +115,11 @@ _none_
 | `/admin/inventory/[variantId]/chain` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/[variantId]/chain/page.tsx` |
 | `/admin/inventory/counts` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/page.tsx` |
 | `/admin/inventory/counts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/counts/[id]/page.tsx` |
+| `/admin/inventory/lots` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/lots/page.tsx` |
+| `/admin/inventory/lots/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/lots/[id]/page.tsx` |
 | `/admin/inventory/reorder` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx` |
+| `/admin/inventory/serials` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/serials/page.tsx` |
+| `/admin/inventory/serials/[serialNumber]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/serials/[serialNumber]/page.tsx` |
 | `/admin/inventory/slow-movers` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers/page.tsx` |
 | `/admin/inventory/spot-checks` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/page.tsx` |
 | `/admin/inventory/spot-checks/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]/page.tsx` |
@@ -254,7 +258,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (55)
+### storefront (56)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -312,6 +316,7 @@ _none_
 | `/[locale]/terms` | page | server | `apps/web/src/app/(storefront)/[locale]/terms/page.tsx` |
 | `/[locale]/unsubscribe` | page | client | `apps/web/src/app/(storefront)/[locale]/unsubscribe/page.tsx` |
 | `/[locale]/verify-email` | page | client | `apps/web/src/app/(storefront)/[locale]/verify-email/page.tsx` |
+| `/[locale]/verify-purchase` | page | client | `apps/web/src/app/(storefront)/[locale]/verify-purchase/page.tsx` |
 | `/[locale]/wishlist` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/wishlist/page.tsx` |
 
 ### web (4)

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **851** endpoints across **156** controllers, with the access rule that actually guards each one.
+All **864** endpoints across **159** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -32,7 +32,7 @@ never authorization.
 | POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/accounts/accounts.controller.ts:59` |
 | POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/accounts/accounts.controller.ts:52` |
 
-- **Public routes: 76** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 77** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
@@ -97,6 +97,7 @@ never authorization.
 | GET | `/products/:productId/reviews` | `ReviewsPublicController.listForProduct` |
 | GET | `/products/:productId/reviews/summary` | `ReviewsPublicController.summary` |
 | POST | `/promotions/preview` | `PromotionsPublicController.preview` |
+| GET | `/public/serials/:serialNumber` | `SerializedUnitsPublicController.verify` |
 | GET | `/replication/pull` | `ReplicationController.pull` |
 | POST | `/replication/push` | `ReplicationController.push` |
 | POST | `/reviews/:id/helpful` | `ReviewsPublicController.markHelpful` |
@@ -233,10 +234,12 @@ never authorization.
 | POST | `/admin/bank-facilities/drawdowns/:drawdownId/post` | `finance.facilities.manage` | `BankFacilitiesController.postDrawdown` | Post an approved drawdown to the general ledger |
 | GET | `/admin/bank-facilities/renewals` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.listUpcomingRenewals` | Active facilities maturing within the configured renewal-alert window |
 
-### [`bom`](../modules/bom.md) (20)
+### [`bom`](../modules/bom.md) (22)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/bom/lots/:lotId/trace-forward` | `bom.view` | `BomController.traceInputLotForward` | "Which finished batches did this ingredient reach" — every production run that… |
+| GET | `/admin/bom/lots/:lotId/trace-output` | `bom.view` | `BomController.traceOutputLot` | "What went into this finished batch" — the run that produced this lot and every… |
 | GET | `/admin/bom/missing` | `bom.view` | `BomController.missing` | Variants with no recipe, and ACTIVE recipes whose cost is still incomplete |
 | GET | `/admin/bom/production-runs` | `bom.view` | `BomController.listProductionRuns` | List production runs |
 | POST | `/admin/bom/production-runs` | `bom.produce` | `BomController.createProductionRun` | Record a production run — consumes raw stock, credits finished stock, rolls the… |
@@ -672,7 +675,7 @@ never authorization.
 | POST | `/identity-verification/start` | signed-in | `IdentityVerificationController.start` | Start (or restart, after a rejection/expiry) identity verification |
 | POST | `/identity-verification/webhook` | **PUBLIC** | `IdentityVerificationController.webhook` | nID verification-result callback (signature-verified, not session-authenticated) |
 
-### [`inventory`](../modules/inventory.md) (29)
+### [`inventory`](../modules/inventory.md) (40)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -688,10 +691,20 @@ never authorization.
 | POST | `/admin/inventory/counts/:id/scan` | `inventory.count` | `StockCountController.scan` |  |
 | POST | `/admin/inventory/counts/:id/start` | `inventory.count` | `StockCountController.start` |  |
 | GET | `/admin/inventory/locations` | `inventory.manage` | `InventoryAdminController.locations` | Every real, active location — never an in-transit bucket (WO-22.1) |
+| GET | `/admin/inventory/lots` | `inventory.lots.manage` | `LotsController.list` | Every lot registered for a variant, with its remaining stock per location |
+| GET | `/admin/inventory/lots/:id` | `inventory.lots.manage` | `LotsController.getOne` | One lot's own identity and remaining stock per location |
+| GET | `/admin/inventory/lots/:id/recall` | `inventory.recall` | `LotsController.recall` | Every order that drew from this lot — the recall query this ledger exists to an… |
+| GET | `/admin/inventory/lots/expiring` | `inventory.lots.manage` | `LotsController.expiring` | Lots nearing expiry with unsold stock — the same candidates InventoryCron alert… |
+| POST | `/admin/inventory/lots/preview-allocation` | `inventory.lots.manage` | `LotsController.previewAllocation` | Dry run: which lots a deduction of this size would draw from, FEFO order |
 | GET | `/admin/inventory/markdown-suggestions` | `inventory.manage` | `MarkdownSuggestionsController.list` | The markdown review queue |
 | POST | `/admin/inventory/markdown-suggestions/:id/activate` | `inventory.manage` | `MarkdownSuggestionsController.activate` | Create the suggested discount (product-wide) and close this suggestion |
 | POST | `/admin/inventory/markdown-suggestions/:id/dismiss` | `inventory.manage` | `MarkdownSuggestionsController.dismiss` | Close this suggestion without creating a discount |
 | GET | `/admin/inventory/reorder` | `inventory.manage` | `InventoryAdminController.reorder` | Reorder suggestions based on reorderPoint |
+| GET | `/admin/inventory/serials` | `inventory.manage` | `SerializedUnitsController.list` | Every serialized unit for a variant |
+| GET | `/admin/inventory/serials/:serialNumber/history` | `inventory.manage` | `SerializedUnitsController.history` | A unit's status, sale and warranty history — staff-side lookup |
+| POST | `/admin/inventory/serials/return` | `inventory.manage` | `SerializedUnitsController.returnUnit` | Return one specific unit — refused unless it was sold on this exact order |
+| POST | `/admin/inventory/serials/sell` | `inventory.manage` | `SerializedUnitsController.sell` | Sell one specific unit against an order |
+| POST | `/admin/inventory/serials/write-off` | `inventory.manage` | `SerializedUnitsController.writeOff` | Theft, damage, lost — writes the unit off and records the stock movement |
 | GET | `/admin/inventory/slow-movers` | `inventory.manage` | `InventoryAdminController.slowMovers` | Variants with zero sales in the slow mover window |
 | GET | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.list` |  |
 | POST | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.create` |  |
@@ -705,6 +718,7 @@ never authorization.
 | GET | `/admin/inventory/variances` | `inventory.manage` | `StockVarianceController.listOpen` | Open oversells — postUnconditional() drove a location negative |
 | POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` | Acknowledge a variance — never reverses the shrinkage journal it already posted |
 | GET | `/admin/inventory/variances/by-shift` | `inventory.manage` | `StockVarianceController.listByShift` | Variance history attributed to the shift that had custody — 156-loss-prevention… |
+| GET | `/public/serials/:serialNumber` | **PUBLIC** | `SerializedUnitsPublicController.verify` | Verify a purchase by serial number — status, sale date and warranty only |
 
 ### [`loyalty`](../modules/loyalty.md) (11)
 

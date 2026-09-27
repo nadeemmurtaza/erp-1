@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 21 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (21 · 3,824 lines)
+## Files (21 · 3,847 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -31,10 +31,10 @@ All paths relative to `apps/api/src/modules/orders`.
 | `order-feed.source.ts` | module | 57 | 1 | The live feed's own worked example (analytics-reporting/58-live-operational-feed.md) — an order placement, newest first. |
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `orders-pos.service.spec.ts` | unit test | 436 | — |  |
+| `orders-pos.service.spec.ts` | unit test | 438 | — |  |
 | `orders.controller.ts` | controller | 147 | 2 |  |
 | `orders.module.ts` | nest module | 57 | 1 |  |
-| `orders.service.ts` | service | 1379 | 4 |  |
+| `orders.service.ts` | service | 1400 | 4 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 
@@ -61,10 +61,10 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `OrderPlaced` | `order.placed` | `orders.service.ts:524`, `orders.service.ts:785` |
-| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:812`, `orders.service.ts:997` |
-| `OrderCancelled` | `order.cancelled` | `orders.service.ts:997` |
-| `PaymentSucceeded` | `payment.succeeded` | `instalment-plan.service.ts:90`, `orders.service.ts:756` |
+| `OrderPlaced` | `order.placed` | `orders.service.ts:545`, `orders.service.ts:806` |
+| `OrderStatusChanged` | `order.status_changed` | `orders.service.ts:833`, `orders.service.ts:1018` |
+| `OrderCancelled` | `order.cancelled` | `orders.service.ts:1018` |
+| `PaymentSucceeded` | `payment.succeeded` | `instalment-plan.service.ts:90`, `orders.service.ts:777` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -184,7 +184,7 @@ check there before adding another.
 | `PosSaleLineInput` | interface | `orders.service.ts:43` |  |
 | `PlaceFromPosInstalmentInput` | interface | `orders.service.ts:61` | finance-accounting/151-layby-installment-sales.md — a layby/instalment plan requested at the point of sale. |
 | `PlaceFromPosInput` | interface | `orders.service.ts:67` |  |
-| `OrdersService` | class | `orders.service.ts:116` |  |
+| `OrdersService` | class | `orders.service.ts:117` |  |
 | `ShipmentStatusListener` | class | `shipment-status.listener.ts:28` | The ONLY place a fulfilment-module event ever reaches Order.status. |
 
 

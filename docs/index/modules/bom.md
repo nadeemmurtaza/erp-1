@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 22 files
 
 Source: `apps/api/src/modules/bom/`
 
-## Files (22 · 3,463 lines)
+## Files (22 · 3,747 lines)
 
 All paths relative to `apps/api/src/modules/bom`.
 
@@ -19,30 +19,32 @@ All paths relative to `apps/api/src/modules/bom`.
 | `bom-cards.metrics.ts` | module | 126 | 2 | The "BOM & Manufacturing" group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4/D — wiring WO-C.4's alr… |
 | `bom-production-replication.listener.spec.ts` | unit test | 62 | — |  |
 | `bom-production-replication.listener.ts` | event subscriber | 50 | 1 | WO-23.3c/e (RETAIL-ERP.md R13, ADR-021) — `BomProductionRun` registers FACT/UP, exactly like `OrderReplicationListener`… |
-| `bom.controller.ts` | controller | 228 | 1 |  |
+| `bom.controller.ts` | controller | 242 | 1 |  |
 | `bom.listener.spec.ts` | unit test | 88 | — |  |
 | `bom.listener.ts` | event subscriber | 49 | 1 | Rule 3 in action, no new event needed: receiving fabric against a PO already publishes GoodsReceived (purchasing.servic… |
-| `bom.metrics.spec.ts` | unit test | 204 | — |  |
+| `bom.metrics.spec.ts` | unit test | 206 | — |  |
 | `bom.metrics.ts` | module | 131 | 4 |  |
 | `bom.module.ts` | nest module | 29 | 1 |  |
 | `bom.service.ts` | service | 47 | 1 | Helpers shared by every bom. |
-| `bom.spec.ts` | unit test | 529 | — |  |
+| `bom.spec.ts` | unit test | 533 | — |  |
 | `cost-rollup.spec.ts` | unit test | 124 | — | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | 5 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
-| `production-run.dto.ts` | dto | 48 | 2 |  |
+| `production-run.dto.ts` | dto | 54 | 2 |  |
 | `raw-material.dto.ts` | dto | 52 | 3 |  |
 | `raw-usage.dto.ts` | dto | 30 | 1 |  |
 | `recipe.dto.ts` | dto | 113 | 5 |  |
-| `production.service.spec.ts` | unit test | 438 | — |  |
-| `production.service.ts` | service | 265 | 1 | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryService — a di… |
+| `production.service.spec.ts` | unit test | 537 | — |  |
+| `production.service.ts` | service | 424 | 1 | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryService — a di… |
 | `raw-material.service.ts` | service | 218 | 1 | A raw material is an ordinary ProductVariant with a RawMaterial marker row (D5, bom.prisma). |
 | `recipe.service.ts` | service | 501 | 3 |  |
 
 
-## HTTP routes (20)
+## HTTP routes (22)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/bom/lots/:lotId/trace-forward` | `bom.view` | `BomController.traceInputLotForward` :223 | "Which finished batches did this ingredient reach" — every production run that consumed t… |
+| GET | `/admin/bom/lots/:lotId/trace-output` | `bom.view` | `BomController.traceOutputLot` :216 | "What went into this finished batch" — the run that produced this lot and every input lot… |
 | GET | `/admin/bom/missing` | `bom.view` | `BomController.missing` :105 | Variants with no recipe, and ACTIVE recipes whose cost is still incomplete |
 | GET | `/admin/bom/production-runs` | `bom.view` | `BomController.listProductionRuns` :188 | List production runs |
 | POST | `/admin/bom/production-runs` | `bom.produce` | `BomController.createProductionRun` :202 | Record a production run — consumes raw stock, credits finished stock, rolls the finished… |
@@ -53,7 +55,7 @@ All paths relative to `apps/api/src/modules/bom`.
 | GET | `/admin/bom/raw-materials/:id` | `bom.view` | `BomController.get` :73 | Raw material detail plus its recent stock movements |
 | PATCH | `/admin/bom/raw-materials/:id` | `bom.manage` | `BomController.update` :87 | Edit a raw material |
 | POST | `/admin/bom/raw-materials/:id/deactivate` | `bom.manage` | `BomController.deactivate` :98 | Deactivate a raw material |
-| GET | `/admin/bom/raw-usage` | `bom.view` | `BomController.rawUsage` :216 | Raw-material consumption over time, sourced from the stock ledger — cost fields only with… |
+| GET | `/admin/bom/raw-usage` | `bom.view` | `BomController.rawUsage` :230 | Raw-material consumption over time, sourced from the stock ledger — cost fields only with… |
 | GET | `/admin/bom/recipes` | `bom.view` | `BomController.listRecipes` :112 | List recipes — filter=all\|active\|missing\|incomplete-cost |
 | POST | `/admin/bom/recipes` | `bom.manage` | `BomController.createRecipe` :129 | Create a recipe for a finished ProductVariant |
 | GET | `/admin/bom/recipes/:id` | `bom.view` | `BomController.getRecipe` :122 | Recipe detail with its components |
@@ -71,7 +73,7 @@ All paths relative to `apps/api/src/modules/bom`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `BomProductionCompleted` | `bom.production_completed` | `production.service.ts:200` |
+| `BomProductionCompleted` | `bom.production_completed` | `production.service.ts:350` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -87,8 +89,9 @@ All paths relative to `apps/api/src/modules/bom`.
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
 | `BomComponent` | 10 | :125 |  |
-| `BomProductionLine` | 9 | :205 | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself. |
-| `BomProductionRun` | 21 | :152 | One production run: the recipe was run N times, consuming raw stock and crediting finished stock, both throug… |
+| `BomProductionLine` | 10 | :214 | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself. |
+| `BomProductionLineLot` | 6 | :246 | 71-recipe-batch-traceability.md, DECISIONS.md ADR-068. |
+| `BomProductionRun` | 23 | :152 | One production run: the recipe was run N times, consuming raw stock and crediting finished stock, both throug… |
 | `BomRecipe` | 19 | :81 | The recipe for one finished ProductVariant: which raw materials, how much of each, and the resulting cost est… |
 | `RawMaterial` | 13 | :32 |  |
 
@@ -144,7 +147,7 @@ check there before adding another.
 | `bom.metrics.spec.ts` | 5 | BomMetricsService — raw usage · missing-recipe count consistency |
 | `bom.spec.ts` | 21 | bom module — raw materials · resolveCategoryId · create · unitScale immutability · deactivate · list/get · purchasing i… |
 | `cost-rollup.spec.ts` | 7 | computeRecipeCost |
-| `production.service.spec.ts` | 12 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/locationId — WO-23.3a, R… |
+| `production.service.spec.ts` | 17 | ProductionService · consuming raw stock and producing finished stock · scopeLevel/originNodeId/locationId — WO-23.3a, R… |
 
 
 ## Every export in this unit
@@ -168,7 +171,7 @@ check there before adding another.
 | `RecipeCostResult` | interface | `cost-rollup.ts:44` |  |
 | `computeRecipeCost` | function | `cost-rollup.ts:54` |  |
 | `CreateProductionRunDto` | class | `production-run.dto.ts:7` |  |
-| `ProductionRunQueryDto` | class | `production-run.dto.ts:37` |  |
+| `ProductionRunQueryDto` | class | `production-run.dto.ts:43` |  |
 | `CreateRawMaterialDto` | class | `raw-material.dto.ts:9` |  |
 | `UpdateRawMaterialDto` | class | `raw-material.dto.ts:39` |  |
 | `RawMaterialQueryDto` | class | `raw-material.dto.ts:41` |  |
@@ -178,7 +181,7 @@ check there before adding another.
 | `UpdateRecipeDto` | class | `recipe.dto.ts:96` |  |
 | `RecipeQueryDto` | class | `recipe.dto.ts:98` |  |
 | `RecipeAvailabilityQueryDto` | class | `recipe.dto.ts:105` |  |
-| `ProductionService` | class | `production.service.ts:56` | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryServ… |
+| `ProductionService` | class | `production.service.ts:61` | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryServ… |
 | `RawMaterialService` | class | `raw-material.service.ts:17` | A raw material is an ordinary ProductVariant with a RawMaterial marker row (D5, bom.prisma). |
 | `MissingVariantRow` | interface | `recipe.service.ts:19` |  |
 | `RecipeListItem` | interface | `recipe.service.ts:25` |  |

@@ -146,6 +146,9 @@ export class ProductAdminService {
               reorderPoint: variant.reorderPoint ?? null,
               reorderQuantity: variant.reorderQuantity ?? null,
               preferredSupplierId: variant.preferredSupplierId || null,
+              lotTracked: variant.lotTracked ?? false,
+              tracksSerials: variant.tracksSerials ?? false,
+              warrantyMonths: variant.warrantyMonths ?? null,
             })),
           },
           ...((dto.kind === 'UNSTITCHED' || dto.kind === 'STITCHED') && dto.garmentTypeIds?.length
@@ -567,6 +570,9 @@ export class ProductAdminService {
         reorderPoint: variant.reorderPoint ?? null,
         reorderQuantity: variant.reorderQuantity ?? null,
         preferredSupplierId: variant.preferredSupplierId || null,
+        lotTracked: variant.lotTracked ?? false,
+        tracksSerials: variant.tracksSerials ?? false,
+        warrantyMonths: variant.warrantyMonths ?? null,
       };
 
       const requestedStock = variant.stock ?? 0;

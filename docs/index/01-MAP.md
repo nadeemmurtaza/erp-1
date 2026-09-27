@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,116 | 149,223 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 1,127 | 151,527 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/web` | 425 | 71,795 | Next.js — admin console and customer storefront in one app |
 | `docs` | 400 | 70,621 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 420 | 70,517 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,687 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
 | `scripts` | 25 | 9,621 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 62 | 7,872 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 62 | 7,894 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
 | `apps/pos` | 33 | 2,667 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,064 |  |
@@ -65,7 +65,7 @@ Each is independent: no module imports another except through a named
 | [`analytics`](modules/analytics.md) | core | MODULES allowlist | 26 | — |
 | [`attendance`](modules/attendance.md) | core | MODULES allowlist | 17 | 4 |
 | [`bankfacilities`](modules/bankfacilities.md) | core | MODULES allowlist | 10 | — |
-| [`bom`](modules/bom.md) | core | MODULES allowlist | 20 | 5 |
+| [`bom`](modules/bom.md) | core | MODULES allowlist | 22 | 6 |
 | [`bpmn-workflows`](modules/bpmn-workflows.md) | core | always on | 2 | 1 |
 | [`cart`](modules/cart.md) | core | MODULES allowlist | 8 | 3 |
 | [`catalog`](modules/catalog.md) | core | MODULES allowlist | 58 | 30 |
@@ -81,7 +81,7 @@ Each is independent: no module imports another except through a named
 | [`giftcards`](modules/giftcards.md) | core | MODULES allowlist | 10 | 3 |
 | [`hr`](modules/hr.md) | core | MODULES allowlist | 17 | 6 |
 | [`identity-verification`](modules/identity-verification.md) | core | MODULES allowlist | 4 | 1 |
-| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 29 | 12 |
+| [`inventory`](modules/inventory.md) | core | MODULES allowlist | 40 | 16 |
 | [`loyalty`](modules/loyalty.md) | core | MODULES allowlist | 11 | 3 |
 | [`managed-services`](modules/managed-services.md) | core | MODULES allowlist | 2 | — |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 11 | 3 |

@@ -637,6 +637,20 @@ export const ADMIN_NAV: AdminNavItem[] = [
         group: 'stock',
         module: 'wishlist',
       },
+      {
+        key: 'inventory-lots',
+        label: 'Lots & Batches',
+        href: '/admin/inventory/lots',
+        permissions: ['inventory.lots.manage'],
+        group: 'stock',
+      },
+      {
+        key: 'inventory-serials',
+        label: 'Serial Numbers',
+        href: '/admin/inventory/serials',
+        permissions: ['inventory.manage'],
+        group: 'stock',
+      },
     ],
   },
   {

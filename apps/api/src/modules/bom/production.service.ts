@@ -9,6 +9,7 @@ import { documentNumber, documentNumberPrefix } from '../../core/settings/docume
 import { documentPrefix } from '../../core/settings/document-prefix';
 import { SettingsService } from '../../core/settings/settings.service';
 import { InventoryService } from '../inventory/inventory.service';
+import { LotsService } from '../inventory/lots.service';
 import type { CreateProductionRunDto, ProductionRunQueryDto } from './dto/production-run.dto';
 import type { Prisma } from '../../core/prisma/client';
 
@@ -36,8 +37,12 @@ const runInclude = {
   recipe: { select: { id: true, variantId: true, outputQuantity: true, wastageBps: true } },
   variant: { select: { id: true, sku: true, label: true } },
   operator: { select: { id: true, firstName: true, lastName: true } },
+  outputLot: { select: { id: true, lotCode: true } },
   lines: {
-    include: { rawMaterial: { select: { id: true, name: true, variant: { select: { sku: true } } } } },
+    include: {
+      rawMaterial: { select: { id: true, name: true, variant: { select: { sku: true } } } },
+      lotAllocations: { include: { lot: { select: { id: true, lotCode: true } } } },
+    },
   },
 } satisfies Prisma.BomProductionRunInclude;
 
@@ -57,6 +62,7 @@ export class ProductionService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly inventory: InventoryService,
+    private readonly lots: LotsService,
     private readonly settings: SettingsService,
     private readonly config: AppConfigService,
     private readonly events: EventBusService,
@@ -86,6 +92,105 @@ export class ProductionService {
     const run = await this.prisma.bomProductionRun.findUnique({ where: { id }, include: runInclude });
     if (!run) throw new NotFoundException('That production run no longer exists.');
     return this.toDetail(run);
+  }
+
+  /**
+   * 71-recipe-batch-traceability.md §3, WO-71.3 — "what went into this
+   * finished batch." A single join over rows §2 already writes at
+   * production time: BomProductionRun.outputLotId -> its own lines ->
+   * BomProductionLineLot -> Lot. Never recomputed or inferred — a recall
+   * reads exactly what was written, nothing walked backward from stock.
+   */
+  async traceOutputLot(lotId: string) {
+    const run = await this.prisma.bomProductionRun.findFirst({
+      where: { outputLotId: lotId },
+      include: {
+        outputLot: true,
+        variant: { select: { id: true, sku: true, label: true } },
+        lines: {
+          include: {
+            rawMaterial: { select: { id: true, name: true, variant: { select: { sku: true } } } },
+            lotAllocations: { include: { lot: true } },
+          },
+        },
+      },
+    });
+    if (!run || !run.outputLot) {
+      throw new NotFoundException('That lot was not produced by any production run.');
+    }
+
+    const inputLots = run.lines.flatMap((line) =>
+      line.lotAllocations.map((allocation) => ({
+        lot: allocation.lot,
+        quantityConsumed: allocation.quantityBase,
+        rawMaterial: line.rawMaterial,
+      })),
+    );
+
+    return {
+      outputLot: run.outputLot,
+      producedByRun: {
+        id: run.id,
+        number: run.number,
+        recipeId: run.recipeId,
+        variantId: run.variantId,
+        sku: run.variant.sku,
+        quantityProduced: run.quantityProduced,
+        producedAt: run.producedAt,
+      },
+      inputLots,
+    };
+  }
+
+  /**
+   * The reverse walk — "which finished batches did this ingredient reach,"
+   * symmetrical to traceOutputLot(): the identical BomProductionLineLot
+   * join, grouped by run instead of by output lot, in case one run drew
+   * the same input lot across more than one line.
+   */
+  async traceInputLotForward(lotId: string) {
+    const lot = await this.prisma.lot.findUnique({ where: { id: lotId } });
+    if (!lot) throw new NotFoundException('That lot no longer exists.');
+
+    const allocations = await this.prisma.bomProductionLineLot.findMany({
+      where: { lotId },
+      include: {
+        productionLine: {
+          include: {
+            run: {
+              include: {
+                variant: { select: { id: true, sku: true, label: true } },
+                outputLot: { select: { id: true, lotCode: true } },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const byRun = new Map<string, { run: (typeof allocations)[number]['productionLine']['run']; quantityConsumed: number }>();
+    for (const allocation of allocations) {
+      const run = allocation.productionLine.run;
+      const existing = byRun.get(run.id);
+      if (existing) {
+        existing.quantityConsumed += allocation.quantityBase;
+      } else {
+        byRun.set(run.id, { run, quantityConsumed: allocation.quantityBase });
+      }
+    }
+
+    return [...byRun.values()].map(({ run, quantityConsumed }) => ({
+      id: run.id,
+      number: run.number,
+      recipeId: run.recipeId,
+      variantId: run.variantId,
+      sku: run.variant.sku,
+      quantityProduced: run.quantityProduced,
+      producedAt: run.producedAt,
+      outputLotId: run.outputLotId,
+      outputLotCode: run.outputLot?.lotCode ?? null,
+      quantityConsumedFromThisLot: quantityConsumed,
+    }));
   }
 
   /** Ledger history — never deleted. A correction is a reversing adjustment through the normal inventory screen. */
@@ -149,7 +254,7 @@ export class ProductionService {
       // Consume raw stock — InsufficientStockError (a 400 naming the short
       // material) rolls back this entire transaction, including the run row
       // just created above.
-      await this.inventory.moveMany(
+      const consumeMovements = await this.inventory.moveMany(
         consumption.map((line) => ({
           variantId: line.component.rawMaterial.variant.id,
           locationId,
@@ -163,16 +268,43 @@ export class ProductionService {
         tx,
       );
 
-      await tx.bomProductionLine.createMany({
-        data: consumption.map((line) => ({
-          runId: run.id,
-          rawMaterialId: line.component.rawMaterialId,
-          variantId: line.component.rawMaterial.variant.id,
-          quantityBase: line.totalBaseQty,
-          unitCost: line.unitCost,
-          lineCost: line.lineCost,
-        })),
-      });
+      // 71-recipe-batch-traceability.md, DECISIONS.md ADR-068. Individual
+      // create() calls, not createMany() — a line's own id is required to
+      // attach BomProductionLineLot rows to, and createMany() never returns
+      // created rows. Safe to correlate a raw material's own consumption
+      // back to its line by rawMaterialId: BomRecipeComponent is
+      // @@unique([recipeId, rawMaterialId]), so each appears at most once.
+      for (const line of consumption) {
+        const variantId = line.component.rawMaterial.variant.id;
+        const productionLine = await tx.bomProductionLine.create({
+          data: {
+            runId: run.id,
+            rawMaterialId: line.component.rawMaterialId,
+            variantId,
+            quantityBase: line.totalBaseQty,
+            unitCost: line.unitCost,
+            lineCost: line.lineCost,
+          },
+        });
+
+        if (line.component.rawMaterial.variant.lotTracked) {
+          const movement = consumeMovements.find((m) => m.variantId === variantId);
+          if (!movement) throw new Error('Missing movement');
+          const allocations = await this.lots.recordDeduction(
+            { variantId, locationId, quantity: line.totalBaseQty, stockMovementId: movement.id },
+            tx,
+          );
+          if (allocations.length > 0) {
+            await tx.bomProductionLineLot.createMany({
+              data: allocations.map((allocation) => ({
+                productionLineId: productionLine.id,
+                lotId: allocation.lotId,
+                quantityBase: allocation.quantity,
+              })),
+            });
+          }
+        }
+      }
 
       // Credit finished stock.
       const producedMovement = await this.inventory.move(
@@ -188,6 +320,24 @@ export class ProductionService {
         },
         tx,
       );
+
+      // 71-recipe-batch-traceability.md §1. A production run is the OTHER
+      // legitimate origin of a new lot besides a purchase (doc 32's own
+      // sourceReceiptId) — created at the moment of production, the
+      // output batch code either given or auto-generated from the run's
+      // own number.
+      if (outputVariant.lotTracked) {
+        const outputLot = await this.lots.recordReceipt(
+          {
+            variantId: recipe.variantId,
+            locationId,
+            lotCode: dto.outputLotCode?.trim() || number,
+            quantity: quantityProduced,
+          },
+          tx,
+        );
+        await tx.bomProductionRun.update({ where: { id: run.id }, data: { outputLotId: outputLot.id } });
+      }
 
       // The keystone: the SAME weighted-average helper purchasing uses, so a
       // manufactured unit costs exactly like a bought one with no second
@@ -250,6 +400,10 @@ export class ProductionService {
       operatorId: run.operatorId,
       producedAt: run.producedAt,
       createdAt: run.createdAt,
+      // 71-recipe-batch-traceability.md's own "click the number" promise —
+      // never a dead-end lot-code text label.
+      outputLotId: run.outputLotId,
+      outputLotCode: run.outputLot?.lotCode ?? null,
       lines: run.lines.map((line) => ({
         id: line.id,
         rawMaterialId: line.rawMaterialId,
@@ -258,6 +412,11 @@ export class ProductionService {
         quantityBase: line.quantityBase,
         unitCost: line.unitCost,
         lineCost: line.lineCost,
+        lotAllocations: line.lotAllocations.map((allocation) => ({
+          lotId: allocation.lotId,
+          lotCode: allocation.lot.lotCode,
+          quantityBase: allocation.quantityBase,
+        })),
       })),
     };
   }

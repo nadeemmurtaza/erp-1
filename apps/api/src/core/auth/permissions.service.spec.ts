@@ -11,6 +11,7 @@ describe('PermissionsResolverService.resolveForUser', () => {
       userRoleAssignment: { findMany: jest.fn().mockResolvedValue([]) },
       orgUnitGrant: { findMany: jest.fn().mockResolvedValue([]) },
       userPermission: { findMany: jest.fn().mockResolvedValue([]) },
+      user: { findMany: jest.fn().mockResolvedValue([]) },
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -123,6 +124,51 @@ describe('PermissionsResolverService.resolveForUser', () => {
       expect(prisma.orgUnitGrant.findMany).toHaveBeenCalledWith(
         expect.objectContaining({ where: expect.objectContaining({ userId: 'u1', revokedAt: null }) }),
       );
+    });
+  });
+
+  describe('usersWithPermission — the inverse batch query', () => {
+    it('returns [] with no user lookup at all when nobody holds it', async () => {
+      const result = await service.usersWithPermission('inventory.manage');
+
+      expect(result).toEqual([]);
+      expect(prisma.user.findMany).not.toHaveBeenCalled();
+    });
+
+    it('returns every user whose role grants the key', async () => {
+      prisma.userRoleAssignment.findMany.mockResolvedValue([{ userId: 'u1' }, { userId: 'u2' }]);
+      prisma.user.findMany.mockResolvedValue([
+        { id: 'u1', email: 'a@example.com', firstName: 'A', lastName: 'One' },
+        { id: 'u2', email: 'b@example.com', firstName: 'B', lastName: 'Two' },
+      ]);
+
+      const result = await service.usersWithPermission('inventory.manage');
+
+      expect(result.map((u) => u.id).sort()).toEqual(['u1', 'u2']);
+      expect(prisma.user.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { id: { in: expect.arrayContaining(['u1', 'u2']) } } }),
+      );
+    });
+
+    it('a personal GRANT override adds a user no role gives it to', async () => {
+      prisma.userRoleAssignment.findMany.mockResolvedValue([]);
+      prisma.userPermission.findMany.mockResolvedValue([{ userId: 'u3', effect: 'GRANT' }]);
+      prisma.user.findMany.mockResolvedValue([{ id: 'u3', email: 'c@example.com', firstName: 'C', lastName: null }]);
+
+      const result = await service.usersWithPermission('inventory.recall');
+
+      expect(result.map((u) => u.id)).toEqual(['u3']);
+    });
+
+    it('a personal REVOKE removes a role-derived holder — DENY wins unconditionally', async () => {
+      prisma.userRoleAssignment.findMany.mockResolvedValue([{ userId: 'u1' }, { userId: 'u2' }]);
+      prisma.userPermission.findMany.mockResolvedValue([{ userId: 'u2', effect: 'REVOKE' }]);
+      prisma.user.findMany.mockResolvedValue([{ id: 'u1', email: 'a@example.com', firstName: 'A', lastName: 'One' }]);
+
+      const result = await service.usersWithPermission('inventory.manage');
+
+      expect(result.map((u) => u.id)).toEqual(['u1']);
+      expect(prisma.user.findMany).toHaveBeenCalledWith(expect.objectContaining({ where: { id: { in: ['u1'] } } }));
     });
   });
 });

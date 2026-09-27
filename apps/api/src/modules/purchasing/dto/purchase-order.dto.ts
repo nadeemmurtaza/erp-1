@@ -68,6 +68,27 @@ export class ReceiveGoodsItemDto {
   @IsNumber()
   @Min(1)
   quantity: number;
+
+  /// 32-lots-batch-expiry-fefo.md WO-32.3. Required only when the receiving
+  /// screen shows this line as lot-tracked (`ProductVariant.lotTracked`) —
+  /// validated against that flag in the service, not here, since the DTO
+  /// cannot see the variant.
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  lotCode?: string;
+
+  @IsOptional()
+  @IsDateString()
+  expiresOn?: string;
+
+  /// 158-serialized-unit-tracking.md WO-158.4. Required, one per physical
+  /// unit, only when this line's variant has `tracksSerials: true` — the
+  /// count must match `quantity` exactly (§2's own refusal rule).
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  serials?: string[];
 }
 
 export class ReceiveGoodsDto {

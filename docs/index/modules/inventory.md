@@ -3,34 +3,44 @@
 
 # Module: `inventory`
 
-Pack **core** · enabled by the `MODULES` allowlist · 28 files
+Pack **core** · enabled by the `MODULES` allowlist · 38 files
 
 
 
 Source: `apps/api/src/modules/inventory/`
 
-## Files (28 · 3,684 lines)
+## Files (38 · 4,965 lines)
 
 All paths relative to `apps/api/src/modules/inventory/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `inventory.dto.ts` | dto | 31 | 3 | Mirrors StockAdjustment.reason — kept as a union so the admin form has a fixed list. |
+| `lots.dto.ts` | dto | 20 | 1 |  |
 | `markdown-suggestion.dto.ts` | dto | 13 | 1 |  |
+| `serialized-units.dto.ts` | dto | 36 | 3 |  |
 | `stock-variance.dto.ts` | dto | 9 | 1 |  |
 | `inventory.controller.ts` | controller | 76 | 1 |  |
-| `inventory.cron.spec.ts` | unit test | 275 | — |  |
-| `inventory.cron.ts` | scheduled job | 221 | 1 |  |
+| `inventory.cron.spec.ts` | unit test | 348 | — |  |
+| `inventory.cron.ts` | scheduled job | 281 | 1 |  |
 | `inventory.listener.spec.ts` | unit test | 70 | — |  |
 | `inventory.listener.ts` | event subscriber | 61 | 1 |  |
 | `inventory.metrics.spec.ts` | unit test | 70 | — |  |
 | `inventory.metrics.ts` | module | 135 | 2 | The Inventory group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
-| `inventory.module.ts` | nest module | 44 | 1 |  |
+| `inventory.module.ts` | nest module | 53 | 1 |  |
 | `inventory.service.spec.ts` | unit test | 541 | — |  |
 | `inventory.service.ts` | service | 626 | 3 |  |
+| `lot-allocation.spec.ts` | unit test | 62 | — |  |
+| `lot-allocation.ts` | module | 76 | 4 | 32-lots-batch-expiry-fefo.md §2. |
+| `lots.controller.ts` | controller | 53 | 1 | 32-lots-batch-expiry-fefo.md WO-32.4/32.6. |
+| `lots.service.spec.ts` | unit test | 149 | — |  |
+| `lots.service.ts` | service | 260 | 3 |  |
 | `markdown-suggestions.controller.ts` | controller | 37 | 1 | WO-9.8's review queue — "a person activates it" (the doc's own words): nothing here ever creates or changes a Discount… |
 | `markdown-suggestions.service.spec.ts` | unit test | 160 | — |  |
 | `markdown-suggestions.service.ts` | service | 116 | 1 | WO-9.8 (09-ai-layer.md) — the review queue MarkdownSuggestionsCron (via InventoryCron's own nightly pass) fills. |
+| `serialized-units.controller.ts` | controller | 77 | 2 | 158-serialized-unit-tracking.md WO-158.5. |
+| `serialized-units.service.spec.ts` | unit test | 152 | — |  |
+| `serialized-units.service.ts` | service | 254 | 3 |  |
 | `spot-check.controller.ts` | controller | 68 | 2 |  |
 | `spot-check.service.spec.ts` | unit test | 150 | — |  |
 | `spot-check.service.ts` | service | 228 | 2 |  |
@@ -45,7 +55,7 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | `suspicious-traffic.service.ts` | service | 59 | 2 |  |
 
 
-## HTTP routes (29)
+## HTTP routes (40)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -61,10 +71,20 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | POST | `/admin/inventory/counts/:id/scan` | `inventory.count` | `StockCountController.scan` :42 |  |
 | POST | `/admin/inventory/counts/:id/start` | `inventory.count` | `StockCountController.start` :36 |  |
 | GET | `/admin/inventory/locations` | `inventory.manage` | `InventoryAdminController.locations` :35 | Every real, active location — never an in-transit bucket (WO-22.1) |
+| GET | `/admin/inventory/lots` | `inventory.lots.manage` | `LotsController.list` :21 | Every lot registered for a variant, with its remaining stock per location |
+| GET | `/admin/inventory/lots/:id` | `inventory.lots.manage` | `LotsController.getOne` :42 | One lot's own identity and remaining stock per location |
+| GET | `/admin/inventory/lots/:id/recall` | `inventory.recall` | `LotsController.recall` :49 | Every order that drew from this lot — the recall query this ledger exists to answer |
+| GET | `/admin/inventory/lots/expiring` | `inventory.lots.manage` | `LotsController.expiring` :28 | Lots nearing expiry with unsold stock — the same candidates InventoryCron alerts on |
+| POST | `/admin/inventory/lots/preview-allocation` | `inventory.lots.manage` | `LotsController.previewAllocation` :35 | Dry run: which lots a deduction of this size would draw from, FEFO order |
 | GET | `/admin/inventory/markdown-suggestions` | `inventory.manage` | `MarkdownSuggestionsController.list` :21 | The markdown review queue |
 | POST | `/admin/inventory/markdown-suggestions/:id/activate` | `inventory.manage` | `MarkdownSuggestionsController.activate` :27 | Create the suggested discount (product-wide) and close this suggestion |
 | POST | `/admin/inventory/markdown-suggestions/:id/dismiss` | `inventory.manage` | `MarkdownSuggestionsController.dismiss` :33 | Close this suggestion without creating a discount |
 | GET | `/admin/inventory/reorder` | `inventory.manage` | `InventoryAdminController.reorder` :23 | Reorder suggestions based on reorderPoint |
+| GET | `/admin/inventory/serials` | `inventory.manage` | `SerializedUnitsController.list` :26 | Every serialized unit for a variant |
+| GET | `/admin/inventory/serials/:serialNumber/history` | `inventory.manage` | `SerializedUnitsController.history` :32 | A unit's status, sale and warranty history — staff-side lookup |
+| POST | `/admin/inventory/serials/return` | `inventory.manage` | `SerializedUnitsController.returnUnit` :46 | Return one specific unit — refused unless it was sold on this exact order |
+| POST | `/admin/inventory/serials/sell` | `inventory.manage` | `SerializedUnitsController.sell` :40 | Sell one specific unit against an order |
+| POST | `/admin/inventory/serials/write-off` | `inventory.manage` | `SerializedUnitsController.writeOff` :52 | Theft, damage, lost — writes the unit off and records the stock movement |
 | GET | `/admin/inventory/slow-movers` | `inventory.manage` | `InventoryAdminController.slowMovers` :29 | Variants with zero sales in the slow mover window |
 | GET | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.list` :15 |  |
 | POST | `/admin/inventory/spot-check-policies` | `inventory.spot_checks.manage` | `SpotCheckPolicyController.create` :21 |  |
@@ -78,6 +98,7 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 | GET | `/admin/inventory/variances` | `inventory.manage` | `StockVarianceController.listOpen` :16 | Open oversells — postUnconditional() drove a location negative |
 | POST | `/admin/inventory/variances/:id/resolve` | `inventory.manage` | `StockVarianceController.resolve` :28 | Acknowledge a variance — never reverses the shrinkage journal it already posted |
 | GET | `/admin/inventory/variances/by-shift` | `inventory.manage` | `StockVarianceController.listByShift` :22 | Variance history attributed to the shift that had custody — 156-loss-prevention.md |
+| GET | `/public/serials/:serialNumber` | **PUBLIC** | `SerializedUnitsPublicController.verify` :71 | Verify a purchase by serial number — status, sale date and warranty only |
 
 
 ## Domain events
@@ -103,21 +124,25 @@ All paths relative to `apps/api/src/modules/inventory/dto`.
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Location` | 17 | :81 | A place stock physically lives. |
-| `MarkdownSuggestion` | 12 | :303 |  |
-| `SpotCheck` | 11 | :199 | A small, unscheduled StockCount-like sheet — a handful of SKUs, never the whole shop, completable in minutes… |
-| `SpotCheckLine` | 8 | :217 |  |
-| `SpotCheckPolicy` | 9 | :172 | 156-single-employee-branch-loss-prevention.md §3. |
-| `StockCount` | 14 | :329 |  |
-| `StockCountLine` | 10 | :352 |  |
-| `StockMovement` | 15 | :22 |  |
-| `StockVariance` | 16 | :134 | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened i… |
-| `VariantForecast` | 7 | :275 | WO-9.3 (09-ai-layer.md). |
-| `VariantLocationStock` | 6 | :239 | Stock, per variant, per location. |
-| `VariantSalesStat` | 11 | :252 | CACHE: variantId as primary key. |
+| `Location` | 19 | :83 | A place stock physically lives. |
+| `Lot` | 13 | :342 | 32-lots-batch-expiry-fefo.md, DECISIONS.md ADR-068. |
+| `LotAllocation` | 7 | :396 | One row per unit of movement that consumed a specific lot — the join a recall query walks. |
+| `LotStock` | 6 | :379 | The per-location quantity for ONE lot. |
+| `MarkdownSuggestion` | 12 | :315 |  |
+| `SerializedUnit` | 15 | :431 |  |
+| `SpotCheck` | 11 | :211 | A small, unscheduled StockCount-like sheet — a handful of SKUs, never the whole shop, completable in minutes… |
+| `SpotCheckLine` | 8 | :229 |  |
+| `SpotCheckPolicy` | 9 | :184 | 156-single-employee-branch-loss-prevention.md §3. |
+| `StockCount` | 14 | :485 |  |
+| `StockCountLine` | 10 | :508 |  |
+| `StockMovement` | 17 | :22 |  |
+| `StockVariance` | 18 | :138 | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened i… |
+| `VariantForecast` | 7 | :287 | WO-9.3 (09-ai-layer.md). |
+| `VariantLocationStock` | 6 | :251 | Stock, per variant, per location. |
+| `VariantSalesStat` | 11 | :264 | CACHE: variantId as primary key. |
 
 
-Enums: `LocationType` (4) · `MarkdownSuggestionStatus` (3) · `SpotCheckStatus` (4) · `StockCountStatus` (4) · `StockMovementReason` (14) · `StockVarianceStatus` (2)
+Enums: `LocationType` (4) · `MarkdownSuggestionStatus` (3) · `SerializedUnitStatus` (5) · `SpotCheckStatus` (4) · `StockCountStatus` (4) · `StockMovementReason` (14) · `StockVarianceStatus` (2)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
@@ -126,17 +151,18 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 | Schedule | Handler | Where | What it does |
 |---|---|---|---|
-| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory.cron.ts:23` | 156-single-employee-branch-loss-prevention.md §3. |
-| `0 2 * * *` | `computeNightlyStats()` | `inventory.cron.ts:33` |  |
+| `0 6 * * *` | `alertExpiringLots()` | `inventory.cron.ts:35` | 32-lots-batch-expiry-fefo.md WO-32.5. |
+| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory.cron.ts:83` | 156-single-employee-branch-loss-prevention.md §3. |
+| `0 2 * * *` | `computeNightlyStats()` | `inventory.cron.ts:93` |  |
 
 
 ## Nest wiring
 
 **`InventoryModule`** (`inventory.module.ts`)
 - imports: —
-- controllers: `InventoryAdminController`, `StockCountController`, `StockVarianceController`, `SpotCheckController`, `SpotCheckPolicyController`, `SuspiciousTrafficController`, `MarkdownSuggestionsController`
-- providers: `InventoryService`, `InventoryCron`, `InventoryListener`, `StockCountService`, `StockVarianceService`, `InventoryMetricsProvider`, `InventoryValuationMetricsProvider`, `SpotCheckService`, `SuspiciousTrafficService`, `MarkdownSuggestionsService`
-- exports: `InventoryService`
+- controllers: `InventoryAdminController`, `StockCountController`, `StockVarianceController`, `SpotCheckController`, `SpotCheckPolicyController`, `SuspiciousTrafficController`, `MarkdownSuggestionsController`, `LotsController`, `SerializedUnitsController`, `SerializedUnitsPublicController`
+- providers: `InventoryService`, `InventoryCron`, `InventoryListener`, `StockCountService`, `StockVarianceService`, `InventoryMetricsProvider`, `InventoryValuationMetricsProvider`, `SpotCheckService`, `SuspiciousTrafficService`, `MarkdownSuggestionsService`, `LotsService`, `SerializedUnitsService`
+- exports: `InventoryService`, `LotsService`, `SerializedUnitsService`
 
 
 ## Reaches out to
@@ -158,15 +184,18 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (9)
+## Tests (12)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `inventory.cron.spec.ts` | 10 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md |
+| `inventory.cron.spec.ts` | 14 | InventoryCron · WO-9.8 — markdown suggestions · maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md ·… |
 | `inventory.listener.spec.ts` | 1 | InventoryListener |
 | `inventory.metrics.spec.ts` | 4 | InventoryMetricsProvider · InventoryValuationMetricsProvider |
 | `inventory.service.spec.ts` | 18 | InventoryService — locations (B6) · check_inventory_chain_status intent (135-intent-router-voice-video-agent.md WO-135.… |
+| `lot-allocation.spec.ts` | 7 | allocateFefo |
+| `lots.service.spec.ts` | 9 | LotsService · recordReceipt · recordDeduction · getDetail · recallLookup |
 | `markdown-suggestions.service.spec.ts` | 10 | MarkdownSuggestionsService · list · activate · dismiss |
+| `serialized-units.service.spec.ts` | 13 | SerializedUnitsService · receiveUnits · sellUnit · returnUnit — the toxic-pair guard · getUnitHistory |
 | `spot-check.service.spec.ts` | 10 | SpotCheckService — 156-single-employee-branch-loss-prevention.md §3 · dueForRandomCheck — the unpredictability rule · m… |
 | `stock-count.service.spec.ts` | 1 | StockCountService |
 | `stock-variance.service.spec.ts` | 9 | StockVarianceService — WO-21.3 · resolve · listByShift |
@@ -180,19 +209,36 @@ check there before adding another.
 | `STOCK_ADJUSTMENT_REASONS` | const | `inventory.dto.ts:5` | Mirrors StockAdjustment.reason — kept as a union so the admin form has a fixed list. |
 | `StockAdjustmentReason` | type | `inventory.dto.ts:13` |  |
 | `AdjustStockDto` | class | `inventory.dto.ts:15` |  |
+| `PreviewAllocationDto` | class | `lots.dto.ts:3` |  |
 | `MarkdownSuggestionQueryDto` | class | `markdown-suggestion.dto.ts:7` |  |
+| `SellSerializedUnitDto` | class | `serialized-units.dto.ts:3` |  |
+| `ReturnSerializedUnitDto` | class | `serialized-units.dto.ts:13` |  |
+| `WriteOffSerializedUnitDto` | class | `serialized-units.dto.ts:27` |  |
 | `ResolveStockVarianceDto` | class | `stock-variance.dto.ts:3` |  |
 | `InventoryAdminController` | class | `inventory.controller.ts:12` |  |
-| `InventoryCron` | class | `inventory.cron.ts:10` |  |
+| `InventoryCron` | class | `inventory.cron.ts:15` |  |
 | `InventoryListener` | class | `inventory.listener.ts:10` |  |
 | `InventoryMetricsProvider` | class | `inventory.metrics.ts:24` | The Inventory group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
 | `InventoryValuationMetricsProvider` | class | `inventory.metrics.ts:106` | `inventory.valuation` alone — see the class doc above for why it is split out. |
-| `InventoryModule` | class | `inventory.module.ts:43` |  |
+| `InventoryModule` | class | `inventory.module.ts:52` |  |
 | `StockMoveInput` | interface | `inventory.service.ts:22` |  |
 | `InsufficientStockError` | class | `inventory.service.ts:39` |  |
 | `InventoryService` | class | `inventory.service.ts:60` | Stock levels and their audit trail. |
+| `LotAllocationCandidate` | interface | `lot-allocation.ts:10` | 32-lots-batch-expiry-fefo.md §2. |
+| `LotAllocationResult` | interface | `lot-allocation.ts:16` |  |
+| `InsufficientLotStockError` | class | `lot-allocation.ts:21` |  |
+| `allocateFefo` | function | `lot-allocation.ts:38` | `preferredLotId` is the named manual override (§2): the real exception (a specific lot pulled for a recall te… |
+| `LotsController` | class | `lots.controller.ts:15` | 32-lots-batch-expiry-fefo.md WO-32.4/32.6. |
+| `RegisterLotReceiptInput` | interface | `lots.service.ts:6` |  |
+| `RecordLotDeductionInput` | interface | `lots.service.ts:15` |  |
+| `LotsService` | class | `lots.service.ts:35` | 32-lots-batch-expiry-fefo.md. |
 | `MarkdownSuggestionsController` | class | `markdown-suggestions.controller.ts:16` | WO-9.8's review queue — "a person activates it" (the doc's own words): nothing here ever creates or changes a… |
 | `MarkdownSuggestionsService` | class | `markdown-suggestions.service.ts:38` | WO-9.8 (09-ai-layer.md) — the review queue MarkdownSuggestionsCron (via InventoryCron's own nightly pass) fil… |
+| `SerializedUnitsController` | class | `serialized-units.controller.ts:21` | 158-serialized-unit-tracking.md WO-158.5. |
+| `SerializedUnitsPublicController` | class | `serialized-units.controller.ts:65` | The narrow public "verify your purchase" lookup (doc 158 §3) — never exposing which branch or which employee… |
+| `ReceiveSerializedUnitsInput` | interface | `serialized-units.service.ts:10` |  |
+| `UnitHistory` | interface | `serialized-units.service.ts:21` |  |
+| `SerializedUnitsService` | class | `serialized-units.service.ts:44` | 158-serialized-unit-tracking.md. |
 | `SpotCheckPolicyController` | class | `spot-check.controller.ts:10` |  |
 | `SpotCheckController` | class | `spot-check.controller.ts:35` | Counting itself is a front-line task — gated the same as a stock count. |
 | `CreateSpotCheckPolicyInput` | interface | `spot-check.service.ts:8` |  |

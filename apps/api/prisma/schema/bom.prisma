@@ -188,16 +188,25 @@ model BomProductionRun {
   /// one, matching every run before this column existed.
   locationId   String
 
-  recipe   BomRecipe           @relation(fields: [recipeId], references: [id])
-  variant  ProductVariant      @relation("BomProducedVariant", fields: [variantId], references: [id])
-  operator User?               @relation("BomProductionOperator", fields: [operatorId], references: [id], onDelete: SetNull)
-  lines    BomProductionLine[]
+  /// 71-recipe-batch-traceability.md, DECISIONS.md ADR-068. The lot the
+  /// FINISHED output of this run belongs to — created at the moment of
+  /// production, a production run being the other legitimate origin of a
+  /// new lot besides a purchase (doc 32's own `Lot.sourceReceiptId`). Null
+  /// when the output variant isn't lot-tracked (`ProductVariant.lotTracked`).
+  outputLotId String?
+
+  recipe    BomRecipe           @relation(fields: [recipeId], references: [id])
+  variant   ProductVariant      @relation("BomProducedVariant", fields: [variantId], references: [id])
+  operator  User?               @relation("BomProductionOperator", fields: [operatorId], references: [id], onDelete: SetNull)
+  lines     BomProductionLine[]
+  outputLot Lot?                @relation("BomOutputLot", fields: [outputLotId], references: [id])
 
   @@index([producedAt])
   @@index([scopeLevel])
   @@index([locationId])
   @@index([recipeId])
   @@index([variantId])
+  @@index([outputLotId])
 }
 
 /// One raw-material line consumed by a production run — the same SNAPSHOT
@@ -219,9 +228,30 @@ model BomProductionLine {
   unitCost     Int
   lineCost     Int
 
-  run         BomProductionRun @relation(fields: [runId], references: [id], onDelete: Cascade)
-  rawMaterial RawMaterial      @relation(fields: [rawMaterialId], references: [id])
+  run            BomProductionRun       @relation(fields: [runId], references: [id], onDelete: Cascade)
+  rawMaterial    RawMaterial            @relation(fields: [rawMaterialId], references: [id])
+  lotAllocations BomProductionLineLot[]
 
   @@index([runId])
   @@index([rawMaterialId])
+}
+
+/// 71-recipe-batch-traceability.md, DECISIONS.md ADR-068. One row per input
+/// lot actually drawn on by one production line — the same "join a recall
+/// query walks" role doc 32's own LotAllocation already plays for an
+/// ordinary stock movement, extended to a production consumption. Nullable
+/// on the BomProductionLine side: a raw material with no Lot rows at all
+/// (never received through a lot-tracked goods receipt) legitimately has
+/// none.
+model BomProductionLineLot {
+  id               String @id @default(cuid())
+  productionLineId String
+  lotId            String
+  quantityBase     Int
+
+  productionLine BomProductionLine @relation(fields: [productionLineId], references: [id], onDelete: Cascade)
+  lot            Lot               @relation(fields: [lotId], references: [id])
+
+  @@index([productionLineId])
+  @@index([lotId])
 }

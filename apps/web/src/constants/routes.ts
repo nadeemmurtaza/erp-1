@@ -70,6 +70,8 @@ export const ROUTES = {
     returns: '/returns',
     terms: '/terms',
     privacy: '/privacy',
+    /** 158-serialized-unit-tracking.md §3 — public warranty-verify lookup. */
+    verifyPurchase: '/verify-purchase',
 
     // CMS-driven (WO-8.1).
     blog: '/blog',
@@ -184,6 +186,12 @@ export const ROUTES = {
     inventorySlowMovers: '/admin/inventory/slow-movers',
     /** Retired hand-built page (WO-D.4/E.2) — now the analytics report. */
     inventoryInsights: '/admin/analytics/inventory/valuation',
+    /** 32-lots-batch-expiry-fefo.md. */
+    lots: '/admin/inventory/lots',
+    lot: (id: string) => `/admin/inventory/lots/${id}`,
+    /** 158-serialized-unit-tracking.md. Keyed by serialNumber, not id — the API's own identifier for a unit. */
+    serials: '/admin/inventory/serials',
+    serial: (serialNumber: string) => `/admin/inventory/serials/${encodeURIComponent(serialNumber)}`,
 
     purchaseOrders: '/admin/purchase-orders',
     purchaseOrderNew: '/admin/purchase-orders/new',

@@ -151,6 +151,22 @@ export class ProductVariantDto {
   @IsString()
   preferredSupplierId?: string;
 
+  @ApiPropertyOptional({ description: '32-lots-batch-expiry-fefo.md. Batch/lot identity tracked as a sub-ledger under this variant\'s stock — FEFO allocation on sale, recall lookup, expiry alerting.', default: false })
+  @IsOptional()
+  @IsBoolean()
+  lotTracked?: boolean;
+
+  @ApiPropertyOptional({ description: '158-serialized-unit-tracking.md. One row per physical unit (IMEI-style) — warranty lookup, toxic-pair-guarded returns.', default: false })
+  @IsOptional()
+  @IsBoolean()
+  tracksSerials?: boolean;
+
+  @ApiPropertyOptional({ description: '158-serialized-unit-tracking.md. Months of warranty coverage from the sale date, shown on the public warranty-verify page.' })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  warrantyMonths?: number;
+
   @ApiPropertyOptional({
     type: [String],
     description: 'Option value keys this variant is defined by, in option order, e.g. ["m", "blu"]. Drives ProductOption/ProductOptionValue (WO-3.1/3.2) alongside size/color.',

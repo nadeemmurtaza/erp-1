@@ -3,7 +3,7 @@
 
 # Migrations
 
-**115** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**116** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -148,6 +148,7 @@ nothing here fails a build.
 | 2026-09-27 | `wo144_supplier_lead_time_observation` | 3 | ALTER TYPE, CREATE TABLE, CREATE INDEX | SupplierLeadTimeObservation |
 | 2026-09-27 | `wo148_customer_support_portal` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | CustomerSupportMessage, CustomerSupportTicket |
 | 2026-09-27 | `wo31_pos_hardware_park_retrieve` | 9 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | PosLineModifier, PosLineQuantitySource, PosParkedSale |
+| 2026-09-27 | `wo32_wo71_wo158_lots_serials_traceability` | 37 | CREATE TYPE, CREATE TABLE, ALTER TABLE, CREATE UNIQUE INDEX, CREATE INDEX | BomProductionLineLot, BomProductionRun, Lot, LotAllocation, LotStock, ProductVariant, SerializedUnit, StockVa… |
 
 
 ---

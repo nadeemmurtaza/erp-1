@@ -19,7 +19,7 @@
 > yet (the "likely first-run" case this document's own text names). Picking
 > a preset shows the dry run (`preview()`'s own created/skipped/collision
 > counts) before committing, exactly as this document's "Dry run before
-> live" lens requires. ADR-049, ADR-060.
+> live" lens requires. ADR-049, ADR-061.
 
 `Category`/`CategoryTranslation` (`catalog.prisma`) already carry a full
 parent/child tree with bilingual names — the schema this document needs

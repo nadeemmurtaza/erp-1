@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 407 tracked files in `apps/web`, by directory.
+All 409 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -158,6 +158,18 @@ All 407 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 199 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bank-facilities` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 350 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/bank-facilities/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 350 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom` (1)
 
@@ -1330,7 +1342,7 @@ All 407 tracked files in `apps/web`, by directory.
 | `image-manager.tsx` | component | 543 |  |
 | `metadata-driven-entity-form.tsx` | component | 120 |  |
 | `metadata-driven-form.tsx` | component | 147 |  |
-| `nav-registry.ts` | component | 1107 |  |
+| `nav-registry.ts` | component | 1115 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1572 |  |
@@ -1498,7 +1510,7 @@ All 407 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 272 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 276 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)

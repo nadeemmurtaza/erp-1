@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 399 tracked files in `docs/*`, by directory.
+All 400 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,13 +563,13 @@ All 399 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 6865 |  |
+| `DECISIONS.md` | doc | 6991 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 544 |  |
+| `README.md` | doc | 546 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
@@ -721,7 +721,7 @@ All 399 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
 
-### `docs/implementation/finance-accounting` (9)
+### `docs/implementation/finance-accounting` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -730,10 +730,11 @@ All 399 tracked files in `docs/*`, by directory.
 | `145-receivables-credit-limits-dunning.md` | doc | 358 |  |
 | `147-fixed-asset-depreciation.md` | doc | 259 |  |
 | `151-layby-installment-sales.md` | doc | 253 |  |
+| `167-bank-facility-management.md` | doc | 296 |  |
 | `49-financial-institution-settlement-partnerships.md` | doc | 330 |  |
 | `56-overdue-invoices-counter.md` | doc | 125 |  |
 | `68-realtime-gross-profit.md` | doc | 213 |  |
-| `GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md` | doc | 78 |  |
+| `GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md` | doc | 86 |  |
 
 ### `docs/implementation/hr-people-org` (19)
 

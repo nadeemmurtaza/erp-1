@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**425** markdown documents. These explain **why**; this index only says **where**.
+**426** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2726,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,865 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>6,991 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2792,7 +2792,8 @@ _no second-level headings_
 - ADR-058 — Doc 165 (cross-tenant marketplace directory), part two: WO-165.1/165.2/165.6 built; WO-165.3/165.4/165.5 deferred together as ADR-047 already scoped them; the publisher credential is ops-issued, not self-service; `enforceSso` gates by legacy `User.role`, exempting whoever turned it on  <sub>:6365</sub>
 - ADR-059 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6492</sub>
 - ADR-060 — Doc 24 (internal notifications, meetings and escalation): built in full, with one new model beyond its own sketch and a countersignature routed to a named person rather than a role  <sub>:6629</sub>
-- ADR-060 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6751</sub>
+- ADR-061 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6751</sub>
+- ADR-062 — Doc 167 (bank facility management): promoted from a gap report to a built capability, mirroring doc 49's own settlements shape rather than inventing a new one  <sub>:6866</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -2854,6 +2855,17 @@ _no second-level headings_
 - Acceptance  <sub>:236</sub>
 - Out of scope  <sub>:246</sub>
 
+### `docs/implementation/finance-accounting/167-bank-facility-management.md`  <sub>296 lines</sub>
+
+- 1. A facility limit is independent of any drawdown against it  <sub>:56</sub>
+- 2. Utilization is computed, never stored — the same discipline doc 150 already establishes for bundle stock  <sub>:97</sub>
+- 3. A drawdown is a REQUEST/RECORD pair; a repayment and a markup accrual are RECORDs  <sub>:111</sub>
+- 4. Renewal/covenant tracking is a read, not a flag  <sub>:124</sub>
+- Scope lenses  <sub>:136</sub>
+- Work orders  <sub>:247</sub>
+- Acceptance  <sub>:267</sub>
+- Out of scope  <sub>:281</sub>
+
 ### `docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md`  <sub>330 lines</sub>
 
 - 1. A settlement batch is a reconciliation target, not a payment record  <sub>:79</sub>
@@ -2881,9 +2893,9 @@ _no second-level headings_
 - Acceptance  <sub>:191</sub>
 - Out of scope  <sub>:204</sub>
 
-### `docs/implementation/finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md`  <sub>78 lines</sub>
+### `docs/implementation/finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md`  <sub>86 lines</sub>
 
-- What a real build would need to answer  <sub>:48</sub>
+- What a real build would need to answer  <sub>:56</sub>
 
 ### `docs/implementation/GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md`  <sub>177 lines</sub>
 
@@ -3418,16 +3430,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>544 lines</sub>
+### `docs/implementation/README.md`  <sub>546 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:398</sub>
-- The two module groups  <sub>:427</sub>
-- How a work order runs  <sub>:464</sub>
-- Known gaps not yet owned by a phase  <sub>:482</sub>
-- When a brief is wrong  <sub>:509</sub>
-- Scope, honestly  <sub>:522</sub>
-- Gap-analysis roadmap references  <sub>:529</sub>
+- Dependency order  <sub>:399</sub>
+- The two module groups  <sub>:428</sub>
+- How a work order runs  <sub>:465</sub>
+- Known gaps not yet owned by a phase  <sub>:483</sub>
+- When a brief is wrong  <sub>:510</sub>
+- Scope, honestly  <sub>:523</sub>
+- Gap-analysis roadmap references  <sub>:530</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 

@@ -3,7 +3,7 @@
 
 # Tests
 
-**309** spec files, **2,972** cases. What is already pinned down — and what is not.
+**310** spec files, **2,993** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (289)
+## Unit and integration (290)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -130,6 +130,7 @@ regression or an N+1.
 | `apps/api/src/modules/attendance/attendance-device.service.spec.ts` | attendance | 13 | AttendanceDeviceService · register · findOne / update / suspend — the not-found guard · update · ro… |
 | `apps/api/src/modules/attendance/attendance-time.spec.ts` | attendance | 9 | workingDayOf · workedMinutesBetween |
 | `apps/api/src/modules/attendance/attendance.service.spec.ts` | attendance | 22 | AttendanceService · record — the unconditional path · reconcile · adjust / previewAdjust — never mu… |
+| `apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts` | bankfacilities | 21 | BankFacilitiesService · createFacility · utilizationOf · recordDrawdown · approveDrawdown · postDra… |
 | `apps/api/src/modules/bom/bom-cards.metrics.spec.ts` | bom | 4 | BomCardsMetricsProvider · BomValueMetricsProvider |
 | `apps/api/src/modules/bom/bom-production-replication.listener.spec.ts` | bom | 3 | BomProductionReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onBomProductionCompleted |
 | `apps/api/src/modules/bom/bom.listener.spec.ts` | bom | 4 | BomListener |

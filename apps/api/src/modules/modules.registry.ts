@@ -3,6 +3,7 @@ import { AccountingModule } from './accounting/accounting.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { AddressesModule } from './addresses/addresses.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { BankFacilitiesModule } from './bankfacilities/bankfacilities.module';
 import { BomModule } from './bom/bom.module';
 import { CartModule } from './cart/cart.module';
 import { CatalogModule } from './catalog/catalog.module';
@@ -130,6 +131,13 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // same tier as accounting: no real FinancialInstitutionConnector exists
   // yet, so a deployment gains nothing by enabling this until one does.
   { name: 'settlements', module: SettlementsModule, offByDefault: true },
+  // 167-bank-facility-management.md — off by default: a Solo shop with no
+  // bank borrowing must not see this concept at all. Posts through domain
+  // events only (BankFacilityDrawdownPosted/RepaymentRecorded/
+  // MarkupAccrued -> posting-rules.subscriber.ts), so it never imports
+  // AccountingModule directly — the identical shape `settlements` above
+  // already establishes.
+  { name: 'bankfacilities', module: BankFacilitiesModule, offByDefault: true },
   // Hard-imported by orders.module.ts directly (same reasoning as tax
   // above — checkout always needs ShippingService.quote()), but still
   // listed here so its own admin routes/nav follow the allowlist like

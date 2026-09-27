@@ -267,6 +267,10 @@ export const SettingKey = {
   PosInstalmentForfeitDepositOnCancel: 'pos.instalment_forfeit_deposit_on_cancel',
   /** 49-financial-institution-settlement-partnerships.md (WO-49.4) — "a configurable value threshold": a SHORT settlement batch's shortfall at or below this writes off straight through; above it needs a second approver first (finance.settlement.approve_writeoff), by someone other than whoever requested it — the identical shape FinanceCreditNoteApprovalThresholdMinor already establishes. */
   FinanceSettlementWriteoffApprovalThresholdMinor: 'finance.settlement_writeoff_approval_threshold_minor',
+  /** 167-bank-facility-management.md (WO-167.3) — "a configurable value threshold": a drawdown at or below this posts straight through; above it needs finance.facilities.approve_drawdown first, by someone other than whoever recorded it — the identical shape FinanceCreditNoteApprovalThresholdMinor already establishes. */
+  FinanceFacilityDrawdownApprovalThresholdMinor: 'finance.facility_drawdown_approval_threshold_minor',
+  /** 167-bank-facility-management.md (WO-167.5) — "renewal/covenant tracking": an active facility maturing within this many days surfaces on the upcoming-renewals list, the same "don't let a real deadline silently pass" discipline PurchasingSupplierDigestLeadDays already applies to a different deadline. */
+  FinanceFacilityRenewalAlertDays: 'finance.facility_renewal_alert_days',
   /**
    * access-control-identity/21-access-over-the-org-tree.md (WO-21.3) — the
    * ceiling on how far in the future an OrgUnitGrant's expiresAt may be set.
@@ -456,6 +460,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.PosInstalmentForfeitDepositOnCancel]: false,
   /** Rs. 10,000 — a reasonable default; a shortfall this size or smaller is usually a rounding/fee difference, not something worth a second signature. */
   [SettingKey.FinanceSettlementWriteoffApprovalThresholdMinor]: toMinor(10_000),
+  [SettingKey.FinanceFacilityDrawdownApprovalThresholdMinor]: toMinor(1_000_000),
+  [SettingKey.FinanceFacilityRenewalAlertDays]: 60,
   /** 90 days — long enough to cover a real leave or a seasonal audit, short enough that a grant nobody renewed is gone within a quarter. */
   [SettingKey.OrgAccessMaxGrantDays]: 90,
 

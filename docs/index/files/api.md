@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,056 tracked files in `apps/api`, by directory.
+All 1,064 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 1,056 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (58)
+### `apps/api/prisma/schema` (59)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -39,6 +39,7 @@ All 1,056 tracked files in `apps/api`, by directory.
 | `accounts.prisma` | prisma schema | 120 | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md |
 | `approvals.prisma` | prisma schema | 79 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
+| `bank-facilities.prisma` | prisma schema | 122 | Bank facility management |
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
@@ -700,6 +701,12 @@ All 1,056 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 7 |  |
 
+### `apps/api/prisma/schema/migrations/20260927040000_add_bank_facilities` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 108 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -869,7 +876,7 @@ All 1,056 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 726 | The catalogue of domain events. |
+| `domain-events.ts` | module | 760 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -1031,7 +1038,7 @@ All 1,056 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 521 |  |
+| `settings.defaults.ts` | module | 527 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 107 |  |
 
@@ -1061,8 +1068,8 @@ All 1,056 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 136 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 298 |  |
+| `module-packs.ts` | module | 139 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 306 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1075,7 +1082,7 @@ All 1,056 tracked files in `apps/api`, by directory.
 | `asset-depreciation.cron.ts` | scheduled job | 24 |  |
 | `asset-depreciation.service.spec.ts` | unit test | 376 |  |
 | `asset-depreciation.service.ts` | service | 295 |  |
-| `chart-of-accounts.ts` | module | 112 |  |
+| `chart-of-accounts.ts` | module | 127 |  |
 | `consolidation.controller.ts` | controller | 38 |  |
 | `consolidation.service.spec.ts` | unit test | 128 |  |
 | `consolidation.service.ts` | service | 132 |  |
@@ -1086,7 +1093,7 @@ All 1,056 tracked files in `apps/api`, by directory.
 | `gl-reports.service.spec.ts` | unit test | 174 |  |
 | `gl-reports.service.ts` | service | 298 |  |
 | `posting-rules.subscriber.spec.ts` | unit test | 790 |  |
-| `posting-rules.subscriber.ts` | event subscriber | 653 |  |
+| `posting-rules.subscriber.ts` | event subscriber | 771 |  |
 | `wallet-posting-rules.subscriber.spec.ts` | unit test | 140 |  |
 | `wallet-posting-rules.subscriber.ts` | event subscriber | 135 |  |
 
@@ -1179,6 +1186,22 @@ All 1,056 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `attendance-device.dto.ts` | dto | 34 |  |
 | `attendance.dto.ts` | dto | 83 |  |
+
+### `apps/api/src/modules/bankfacilities` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `bankfacilities.controller.ts` | controller | 88 |  |
+| `bankfacilities.cron.ts` | scheduled job | 24 |  |
+| `bankfacilities.module.ts` | nest module | 22 |  |
+| `bankfacilities.service.spec.ts` | unit test | 288 |  |
+| `bankfacilities.service.ts` | service | 309 |  |
+
+### `apps/api/src/modules/bankfacilities/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `bank-facility.dto.ts` | dto | 100 |  |
 
 ### `apps/api/src/modules/bom` (18)
 

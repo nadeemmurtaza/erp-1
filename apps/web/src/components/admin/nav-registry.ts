@@ -436,6 +436,14 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'finance',
     module: 'settlements',
   },
+  {
+    key: 'bank-facilities',
+    label: 'Bank Facilities',
+    href: '/admin/bank-facilities',
+    permissions: ['finance.facilities.view', 'finance.facilities.manage', 'finance.facilities.approve_drawdown'],
+    group: 'finance',
+    module: 'bankfacilities',
+  },
 
   // Group: Workshop
   {

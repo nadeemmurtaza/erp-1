@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2294,
-    "lines": 349053,
-    "routes": 809,
-    "controllers": 148,
-    "models": 292,
-    "enums": 135,
-    "migrations": 109,
-    "events": 65,
-    "permissions": 111,
-    "screens": 255,
-    "crons": 26,
-    "specs": 309,
+    "files": 2305,
+    "lines": 351466,
+    "routes": 819,
+    "controllers": 149,
+    "models": 297,
+    "enums": 137,
+    "migrations": 110,
+    "events": 68,
+    "permissions": 114,
+    "screens": 257,
+    "crons": 27,
+    "specs": 310,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 60,
       "lines": 30624,
-      "bytes": 1205217,
+      "bytes": 1205262,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1056,
-      "lines": 142755,
-      "bytes": 5532113,
+      "files": 1064,
+      "lines": 144000,
+      "bytes": 5583896,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 407,
-      "lines": 67930,
-      "bytes": 2453790,
+      "files": 409,
+      "lines": 68642,
+      "bytes": 2480295,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 399,
-      "lines": 69176,
-      "bytes": 4116352,
+      "files": 400,
+      "lines": 69608,
+      "bytes": 4141190,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8324,
-      "bytes": 297693,
+      "lines": 8348,
+      "bytes": 298518,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -184,6 +184,22 @@
       ],
       "routes": 17,
       "page": "docs/index/modules/attendance.md"
+    },
+    {
+      "name": "bankfacilities",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+        "apps/api/src/modules/bankfacilities/bankfacilities.cron.ts",
+        "apps/api/src/modules/bankfacilities/bankfacilities.module.ts",
+        "apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts",
+        "apps/api/src/modules/bankfacilities/bankfacilities.service.ts",
+        "apps/api/src/modules/bankfacilities/dto/bank-facility.dto.ts"
+      ],
+      "routes": 10,
+      "page": "docs/index/modules/bankfacilities.md"
     },
     {
       "name": "bom",
@@ -2884,6 +2900,170 @@
       "public": false,
       "authOnly": false,
       "summary": "Create a planned shift"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/bank-facilities",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "listFacilities",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 39,
+      "access": "finance.facilities.view | finance.facilities.manage",
+      "permissions": [
+        "finance.facilities.view",
+        "finance.facilities.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every bank facility, optionally filtered by status, each with its own computed utilization"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bank-facilities",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "createFacility",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 59,
+      "access": "finance.facilities.manage",
+      "permissions": [
+        "finance.facilities.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Register a bank facility — its limit, markup rate, tenor and maturity"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/bank-facilities/:id",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "getFacility",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 53,
+      "access": "finance.facilities.view | finance.facilities.manage",
+      "permissions": [
+        "finance.facilities.view",
+        "finance.facilities.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One facility's detail, with every drawdown, repayment and markup accrual"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bank-facilities/:id/drawdowns",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "recordDrawdown",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 65,
+      "access": "finance.facilities.manage",
+      "permissions": [
+        "finance.facilities.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Record a drawdown — refused if it would breach the facility limit; posts immediately at or below the approval threshold"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bank-facilities/:id/repayments",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "recordRepayment",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 84,
+      "access": "finance.facilities.manage",
+      "permissions": [
+        "finance.facilities.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Record a repayment against principal, accrued markup, or both"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/bank-facilities/banks",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "listBanks",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 26,
+      "access": "finance.facilities.view | finance.facilities.manage",
+      "permissions": [
+        "finance.facilities.view",
+        "finance.facilities.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every registered lending institution"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bank-facilities/banks",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "createBank",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 32,
+      "access": "finance.facilities.manage",
+      "permissions": [
+        "finance.facilities.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Register a lending institution"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bank-facilities/drawdowns/:drawdownId/approve",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "approveDrawdown",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 72,
+      "access": "finance.facilities.approve_drawdown",
+      "permissions": [
+        "finance.facilities.approve_drawdown"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve an above-threshold drawdown — never the requester's own"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/bank-facilities/drawdowns/:drawdownId/post",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "postDrawdown",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 78,
+      "access": "finance.facilities.manage",
+      "permissions": [
+        "finance.facilities.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Post an approved drawdown to the general ledger"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/bank-facilities/renewals",
+      "module": "bankfacilities",
+      "controller": "BankFacilitiesController",
+      "handler": "listUpcomingRenewals",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "line": 46,
+      "access": "finance.facilities.view | finance.facilities.manage",
+      "permissions": [
+        "finance.facilities.view",
+        "finance.facilities.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Active facilities maturing within the configured renewal-alert window"
     },
     {
       "method": "GET",
@@ -15557,6 +15737,59 @@
       "inSeed": true
     },
     {
+      "key": "finance.facilities.view",
+      "label": "View bank facilities — a term loan, running finance, overdraft or LC/guarantee limit — and each one's utilization",
+      "category": "Finance",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/bank-facilities",
+        "GET /admin/bank-facilities/:id",
+        "GET /admin/bank-facilities/banks",
+        "GET /admin/bank-facilities/renewals"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.facilities.manage",
+      "label": "Register banks and facilities, and record drawdowns and repayments against them",
+      "category": "Finance",
+      "sensitivity": "high",
+      "routes": [
+        "GET /admin/bank-facilities",
+        "POST /admin/bank-facilities",
+        "GET /admin/bank-facilities/:id",
+        "POST /admin/bank-facilities/:id/drawdowns",
+        "POST /admin/bank-facilities/:id/repayments",
+        "GET /admin/bank-facilities/banks",
+        "POST /admin/bank-facilities/banks",
+        "POST /admin/bank-facilities/drawdowns/:drawdownId/post",
+        "GET /admin/bank-facilities/renewals"
+      ],
+      "uiSites": 3,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "finance.facilities.approve_drawdown",
+      "label": "Approve a bank facility drawdown above the configured threshold",
+      "category": "Finance",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/bank-facilities/drawdowns/:drawdownId/approve"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "fulfilment.view",
       "label": "View shipments, manifests, RTO and returns",
       "category": "Fulfilment",
@@ -16540,14 +16773,14 @@
       "name": "order.placed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:55",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:162",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:58",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:165",
         "apps/api/src/modules/orders/orders.service.ts:518",
         "apps/api/src/modules/orders/orders.service.ts:776"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:53 onOrderPlaced()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:56 onOrderPlaced()",
         "apps/api/src/modules/crm/order.subscriber.ts:27 onOrderPlaced()",
         "apps/api/src/modules/orders/notification.subscriber.ts:70 onOrderPlaced()",
         "apps/api/src/modules/orders/order-replication.listener.ts:48 onOrderPlaced()",
@@ -16587,8 +16820,8 @@
       "name": "payment.succeeded",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:122",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:159",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:125",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:162",
         "apps/api/src/modules/orders/instalment-plan.service.ts:90",
         "apps/api/src/modules/orders/orders.service.ts:747",
         "apps/api/src/modules/payments/payments.service.ts:193",
@@ -16596,7 +16829,7 @@
         "apps/api/src/modules/payments/payments.service.ts:343"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:120 onPaymentSucceeded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:123 onPaymentSucceeded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:34 onPaymentSucceeded()"
       ]
     },
@@ -16629,7 +16862,7 @@
         "apps/api/src/modules/payments/payments.service.ts:402"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:157 onPaymentRefunded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:160 onPaymentRefunded()",
         "apps/api/src/modules/payments/notification.subscriber.ts:118 onPaymentRefunded()"
       ]
     },
@@ -16834,11 +17067,11 @@
       "name": "inventory.stock_variance_recorded",
       "doc": "InventoryService.postUnconditional() drove a location negative (RETAIL-ERP.md R5) — never fired by move().",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:286",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:289",
         "apps/api/src/modules/inventory/inventory.service.ts:396"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:284 onStockVarianceRecorded()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:287 onStockVarianceRecorded()"
       ]
     },
     {
@@ -16888,11 +17121,11 @@
       "name": "purchasing.supplier_bill_raised",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:183",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:186",
         "apps/api/src/modules/purchasing/purchasing.service.ts:599"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:181 onSupplierBillRaised()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:184 onSupplierBillRaised()"
       ]
     },
     {
@@ -16900,11 +17133,11 @@
       "name": "purchasing.supplier_bill_paid",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:233",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:236",
         "apps/api/src/modules/purchasing/purchasing.service.ts:663"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:231 onSupplierBillPaid()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:234 onSupplierBillPaid()"
       ]
     },
     {
@@ -16923,11 +17156,11 @@
       "name": "transfers.inter_branch_invoiced",
       "doc": "An InterBranchInvoice was raised — TransfersService.receive() on an INVOICED transfer (R12/R17, WO-22.3).",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:339",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:342",
         "apps/api/src/modules/transfers/transfers.service.ts:300"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:337 onInterBranchTransferInvoiced()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:340 onInterBranchTransferInvoiced()"
       ]
     },
     {
@@ -17020,12 +17253,12 @@
       "name": "finance.expense_recorded",
       "doc": "FinanceService.create() (WO-23.1) — fires whether or not `accounting` is on; posting-rules.subscriber.ts is the only subscriber today.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:399",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:402",
         "apps/api/src/modules/finance/finance.service.ts:252",
         "apps/api/src/modules/finance/finance.service.ts:645"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:397 onExpenseRecorded()",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:400 onExpenseRecorded()",
         "apps/api/src/modules/finance/expense-replication.listener.ts:38 onExpenseRecorded()"
       ]
     },
@@ -17043,11 +17276,11 @@
       "name": "payroll.run_posted",
       "doc": "PayRunService.post() (docs/implementation/payroll/19-payroll.md WO-19.4) — the eighth posting rule; fires whether or not `accounting` is on, same idiom as ExpenseRecorded.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:444",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:447",
         "apps/api/src/modules/payroll/pay-run.service.ts:186"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:442 onPayrollRunPosted()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:445 onPayrollRunPosted()"
       ]
     },
     {
@@ -17055,11 +17288,11 @@
       "name": "payroll.adjustment_posted",
       "doc": "PayRunService.postAdjustment() (docs/implementation/payroll/19-payroll.md WO-19.5) — the overpayment/correction reversal path, a distinct postable fact from the original run it corrects.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:495",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:498",
         "apps/api/src/modules/payroll/pay-run.service.ts:237"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:493 onPayrollAdjustmentPosted()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:496 onPayrollAdjustmentPosted()"
       ]
     },
     {
@@ -17195,12 +17428,12 @@
       "name": "receivables.credit_note_issued",
       "doc": "145-receivables-credit-limits-dunning.md (WO-145.2) — CreditNotesService.issue().",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:534",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:561",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:537",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:564",
         "apps/api/src/modules/receivables/credit-notes.service.ts:130"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:532 onCreditNoteIssued()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:535 onCreditNoteIssued()"
       ]
     },
     {
@@ -17211,7 +17444,7 @@
         "apps/api/src/modules/receivables/credit-notes.service.ts:181"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:559 onCreditNoteVoided()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:562 onCreditNoteVoided()"
       ]
     },
     {
@@ -17219,12 +17452,12 @@
       "name": "receivables.debit_note_issued",
       "doc": "DebitNotesService.issue() — the AP-side mirror of CreditNoteIssued.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:580",
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:606",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:583",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:609",
         "apps/api/src/modules/receivables/debit-notes.service.ts:93"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:578 onDebitNoteIssued()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:581 onDebitNoteIssued()"
       ]
     },
     {
@@ -17235,7 +17468,7 @@
         "apps/api/src/modules/receivables/debit-notes.service.ts:123"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:604 onDebitNoteVoided()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:607 onDebitNoteVoided()"
       ]
     },
     {
@@ -17261,11 +17494,47 @@
       "name": "settlement.shortfall_written_off",
       "doc": "49-financial-institution-settlement-partnerships.md (WO-49.4) — SettlementService.writeOffShortfall() on an accepted SHORT batch.",
       "publishers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:624",
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:627",
         "apps/api/src/modules/settlements/settlements.service.ts:210"
       ],
       "subscribers": [
-        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:622 onSettlementShortfallWrittenOff()"
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:625 onSettlementShortfallWrittenOff()"
+      ]
+    },
+    {
+      "symbol": "BankFacilityDrawdownPosted",
+      "name": "bank_facility.drawdown_posted",
+      "doc": "167-bank-facility-management.md (WO-167.3) — BankFacilitiesService.postDrawdown(), fired only once a drawdown has actually posted (below-threshold immediately, above-threshold after approve()).",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:665",
+        "apps/api/src/modules/bankfacilities/bankfacilities.service.ts:204"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:663 onBankFacilityDrawdownPosted()"
+      ]
+    },
+    {
+      "symbol": "BankFacilityRepaymentRecorded",
+      "name": "bank_facility.repayment_recorded",
+      "doc": "167-bank-facility-management.md (WO-167.3) — BankFacilitiesService.recordRepayment().",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:697",
+        "apps/api/src/modules/bankfacilities/bankfacilities.service.ts:249"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:695 onBankFacilityRepaymentRecorded()"
+      ]
+    },
+    {
+      "symbol": "BankFacilityMarkupAccrued",
+      "name": "bank_facility.markup_accrued",
+      "doc": "167-bank-facility-management.md (WO-167.3) — the monthly markup-accrual cron's own posting, one event per facility per calendar month, idempotent via findPostedEntry(source, `${facilityId}:${monthKey…",
+      "publishers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:745",
+        "apps/api/src/modules/bankfacilities/bankfacilities.service.ts:298"
+      ],
+      "subscribers": [
+        "apps/api/src/modules/accounting/posting-rules.subscriber.ts:743 onBankFacilityMarkupAccrued()"
       ]
     }
   ],
@@ -19202,6 +19471,392 @@
         "@@unique([userId, variantId])",
         "@@index([variantId])"
       ]
+    },
+    {
+      "name": "Bank",
+      "file": "apps/api/prisma/schema/bank-facilities.prisma",
+      "line": 24,
+      "doc": "The lending institution itself — deliberately its own actor, never `Contact`/`Party`: a bank is not a customer or a supplier (167-bank-facility-management.md's own \"actor with three tables\" lens).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "facilities",
+          "type": "BankFacility[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "BankFacility",
+      "file": "apps/api/prisma/schema/bank-facilities.prisma",
+      "line": 39,
+      "doc": "One facility limit a bank has extended — its own markup rate, tenor and maturity, independent of any drawdown against it.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bankId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "facilityType",
+          "type": "BankFacilityType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "limitMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "markupRateBps",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "isFloatingRate",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "securityReference",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "maturityDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "BankFacilityStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bank",
+          "type": "Bank",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "drawdowns",
+          "type": "BankFacilityDrawdown[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "repayments",
+          "type": "BankFacilityRepayment[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "accruals",
+          "type": "BankFacilityMarkupAccrual[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status])",
+        "@@index([maturityDate])"
+      ]
+    },
+    {
+      "name": "BankFacilityDrawdown",
+      "file": "apps/api/prisma/schema/bank-facilities.prisma",
+      "line": 75,
+      "doc": "A REQUEST/RECORD pair like every other money-moving mechanism in this codebase: below the configured threshold, posts straight through; above it, needs a second approver (finance.facilities.approve_d…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "facilityId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "drawdownDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "note",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "postedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "facility",
+          "type": "BankFacility",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "BankFacilityMarkupAccrual",
+      "file": "apps/api/prisma/schema/bank-facilities.prisma",
+      "line": 110,
+      "doc": "One row per calendar month the markup-accrual cron posts for a facility — mirrors AssetDepreciationPosting exactly: a schedule-free periodic posting log giving findPostedEntry-style idempotency witho…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "facilityId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodStart",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "periodEnd",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "facility",
+          "type": "BankFacility",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([facilityId, periodStart])"
+      ]
+    },
+    {
+      "name": "BankFacilityRepayment",
+      "file": "apps/api/prisma/schema/bank-facilities.prisma",
+      "line": 93,
+      "doc": "A repayment against principal, accrued markup, or both — either component may be zero but not both.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "facilityId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "principalMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "markupMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "repaymentDate",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "note",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "facility",
+          "type": "BankFacility",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": []
     },
     {
       "name": "Banner",
@@ -43204,6 +43859,27 @@
       ]
     },
     {
+      "name": "BankFacilityStatus",
+      "file": "apps/api/prisma/schema/bank-facilities.prisma",
+      "line": 16,
+      "values": [
+        "ACTIVE",
+        "CLOSED"
+      ]
+    },
+    {
+      "name": "BankFacilityType",
+      "file": "apps/api/prisma/schema/bank-facilities.prisma",
+      "line": 8,
+      "values": [
+        "TERM_LOAN",
+        "RUNNING_FINANCE",
+        "OVERDRAFT",
+        "LETTER_OF_CREDIT",
+        "BANK_GUARANTEE"
+      ]
+    },
+    {
       "name": "BomStatus",
       "file": "apps/api/prisma/schema/bom.prisma",
       "line": 69,
@@ -46472,6 +47148,27 @@
         "ProductImage",
         "ProductTranslation"
       ]
+    },
+    {
+      "folder": "20260927040000_add_bank_facilities",
+      "file": "apps/api/prisma/schema/migrations/20260927040000_add_bank_facilities/migration.sql",
+      "date": "2026-09-27",
+      "slug": "add_bank_facilities",
+      "statements": 16,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "Bank",
+        "BankFacility",
+        "BankFacilityDrawdown",
+        "BankFacilityMarkupAccrual",
+        "BankFacilityRepayment"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -47453,6 +48150,24 @@
       "kind": "page",
       "url": "/admin/b2b-accounts/[id]",
       "file": "apps/web/src/app/(admin)/admin/(app)/b2b-accounts/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/bank-facilities",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bank-facilities/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/bank-facilities/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bank-facilities/[id]/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -48857,6 +49572,13 @@
       "file": "apps/api/src/modules/attendance/attendance-partition.cron.ts",
       "line": 31,
       "handler": "ensureFuturePartitions",
+      "doc": ""
+    },
+    {
+      "schedule": "0 2 1 * *",
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.cron.ts",
+      "line": 18,
+      "handler": "run",
       "doc": ""
     },
     {
@@ -50305,6 +51027,22 @@
         "reconcile",
         "adjust / previewAdjust — never mutates the original row",
         "minutesBetween"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts",
+      "module": "bankfacilities",
+      "kind": "unit test",
+      "cases": 21,
+      "describes": [
+        "BankFacilitiesService",
+        "createFacility",
+        "utilizationOf",
+        "recordDrawdown",
+        "approveDrawdown",
+        "postDrawdown",
+        "recordRepayment",
+        "postMonthlyMarkupAccruals"
       ]
     },
     {
@@ -53161,7 +53899,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5410,
+      "bytes": 5425,
       "doc": "",
       "symbols": []
     },
@@ -53170,7 +53908,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 180,
-      "bytes": 9306,
+      "bytes": 9321,
       "doc": "",
       "symbols": []
     },
@@ -53179,7 +53917,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5863,
+      "bytes": 5878,
       "doc": "",
       "symbols": []
     },
@@ -53502,6 +54240,15 @@
       "lines": 198,
       "bytes": 8407,
       "doc": "Attendance, shifts and leave —",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/bank-facilities.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 122,
+      "bytes": 4488,
+      "doc": "Bank facility management",
       "symbols": []
     },
     {
@@ -54617,6 +55364,15 @@
       "kind": "migration",
       "lines": 7,
       "bytes": 254,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20260927040000_add_bank_facilities/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 108,
+      "bytes": 3828,
       "doc": "",
       "symbols": []
     },
@@ -56526,8 +57282,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 726,
-      "bytes": 30320,
+      "lines": 760,
+      "bytes": 32281,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -56538,292 +57294,307 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 173
+          "line": 180
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 175
+          "line": 182
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 188
+          "line": 195
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 196
+          "line": 203
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 204
+          "line": 211
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 224
+          "line": 231
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 230
+          "line": 237
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 237
+          "line": 244
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 244
+          "line": 251
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 248
+          "line": 255
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 254
+          "line": 261
         },
         {
           "name": "ApiKeyIssuedPayload",
           "kind": "interface",
-          "line": 265
+          "line": 272
         },
         {
           "name": "SsoAccountLinkedPayload",
           "kind": "interface",
-          "line": 278
+          "line": 285
         },
         {
           "name": "SsoUserProvisionedPayload",
           "kind": "interface",
-          "line": 283
+          "line": 290
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 288
+          "line": 295
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 295
+          "line": 302
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 305
+          "line": 312
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 314
+          "line": 321
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 323
+          "line": 330
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 331
+          "line": 338
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 339
+          "line": 346
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 350
+          "line": 357
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 357
+          "line": 364
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 366
+          "line": 373
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 374
+          "line": 381
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 379
+          "line": 386
         },
         {
           "name": "SupplierDigestReadyPayload",
           "kind": "interface",
-          "line": 387
+          "line": 394
         },
         {
           "name": "RequisitionCreatedPayload",
           "kind": "interface",
-          "line": 392
+          "line": 399
         },
         {
           "name": "RequisitionConvertedPayload",
           "kind": "interface",
-          "line": 398
+          "line": 405
         },
         {
           "name": "GoodsReceivedPayload",
           "kind": "interface",
-          "line": 404
+          "line": 411
         },
         {
           "name": "SupplierDeletedPayload",
           "kind": "interface",
-          "line": 416
+          "line": 423
         },
         {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 420
+          "line": 427
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 435
+          "line": 442
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 443
+          "line": 450
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 457
+          "line": 464
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 470
+          "line": 477
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 483
+          "line": 490
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 499
+          "line": 506
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 507
+          "line": 514
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 519
+          "line": 526
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 530
+          "line": 537
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 541
+          "line": 548
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 548
+          "line": 555
         },
         {
           "name": "WalletCreditPurchasedPayload",
           "kind": "interface",
-          "line": 554
+          "line": 561
         },
         {
           "name": "WalletCreditRedeemedPayload",
           "kind": "interface",
-          "line": 562
+          "line": 569
         },
         {
           "name": "WalletCreditRefundedPayload",
           "kind": "interface",
-          "line": 571
+          "line": 578
         },
         {
           "name": "MerchantPayableCreatedPayload",
           "kind": "interface",
-          "line": 582
+          "line": 589
         },
         {
           "name": "MerchantPayablePaidPayload",
           "kind": "interface",
-          "line": 589
+          "line": 596
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 596
+          "line": 603
         },
         {
           "name": "PostingEndedPayload",
           "kind": "interface",
-          "line": 603
+          "line": 610
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 611
+          "line": 618
         },
         {
           "name": "CreditNoteIssuedPayload",
           "kind": "interface",
-          "line": 679
+          "line": 689
         },
         {
           "name": "CreditNoteVoidedPayload",
           "kind": "interface",
-          "line": 688
+          "line": 698
         },
         {
           "name": "DebitNoteIssuedPayload",
           "kind": "interface",
-          "line": 692
+          "line": 702
         },
         {
           "name": "DebitNoteVoidedPayload",
           "kind": "interface",
-          "line": 700
+          "line": 710
         },
         {
           "name": "CreditHoldAppliedPayload",
           "kind": "interface",
-          "line": 704
+          "line": 714
         },
         {
           "name": "NotificationSentPayload",
           "kind": "interface",
-          "line": 709
+          "line": 719
         },
         {
           "name": "SettlementShortfallWrittenOffPayload",
           "kind": "interface",
-          "line": 720
+          "line": 730
+        },
+        {
+          "name": "BankFacilityDrawdownPostedPayload",
+          "kind": "interface",
+          "line": 737
+        },
+        {
+          "name": "BankFacilityRepaymentRecordedPayload",
+          "kind": "interface",
+          "line": 745
+        },
+        {
+          "name": "BankFacilityMarkupAccruedPayload",
+          "kind": "interface",
+          "line": 754
         }
       ]
     },
@@ -58498,8 +59269,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 521,
-      "bytes": 29079,
+      "lines": 527,
+      "bytes": 30028,
       "doc": "",
       "symbols": [
         {
@@ -58535,12 +59306,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 341
+          "line": 345
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 343
+          "line": 347
         }
       ]
     },
@@ -58976,8 +59747,8 @@
       "path": "apps/api/src/modules/accounting/chart-of-accounts.ts",
       "area": "api",
       "kind": "module",
-      "lines": 112,
-      "bytes": 6045,
+      "lines": 127,
+      "bytes": 6959,
       "doc": "",
       "symbols": [
         {
@@ -58988,7 +59759,7 @@
         {
           "name": "ACCOUNT_CODE",
           "kind": "const",
-          "line": 84
+          "line": 96
         }
       ]
     },
@@ -59192,14 +59963,14 @@
       "path": "apps/api/src/modules/accounting/posting-rules.subscriber.ts",
       "area": "api",
       "kind": "event subscriber",
-      "lines": 653,
-      "bytes": 29358,
+      "lines": 771,
+      "bytes": 34959,
       "doc": "",
       "symbols": [
         {
           "name": "PostingRulesSubscriber",
           "kind": "class",
-          "line": 39
+          "line": 42
         }
       ]
     },
@@ -60077,6 +60848,110 @@
           "name": "CreateShiftDto",
           "kind": "class",
           "line": 64
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bankfacilities/bankfacilities.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 88,
+      "bytes": 4085,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BankFacilitiesController",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bankfacilities/bankfacilities.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 24,
+      "bytes": 974,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BankFacilitiesCron",
+          "kind": "class",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bankfacilities/bankfacilities.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 22,
+      "bytes": 951,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BankFacilitiesModule",
+          "kind": "class",
+          "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 288,
+      "bytes": 12704,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/bankfacilities/bankfacilities.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 309,
+      "bytes": 12776,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BankFacilityWithUtilization",
+          "kind": "interface",
+          "line": 19
+        },
+        {
+          "name": "BankFacilitiesService",
+          "kind": "class",
+          "line": 36
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/bankfacilities/dto/bank-facility.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 100,
+      "bytes": 1838,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateBankDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "CreateBankFacilityDto",
+          "kind": "class",
+          "line": 13
+        },
+        {
+          "name": "RecordDrawdownDto",
+          "kind": "class",
+          "line": 62
+        },
+        {
+          "name": "RecordRepaymentDto",
+          "kind": "class",
+          "line": 78
         }
       ]
     },
@@ -64801,8 +65676,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 136,
-      "bytes": 4820,
+      "lines": 139,
+      "bytes": 4986,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -64821,24 +65696,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 298,
-      "bytes": 17165,
+      "lines": 306,
+      "bytes": 17713,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 62
+          "line": 63
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 93
+          "line": 94
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 274
+          "line": 282
         }
       ]
     },
@@ -75293,6 +76168,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bank-facilities/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 350,
+      "bytes": 13032,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BankFacilityDetailPage",
+          "kind": "default",
+          "line": 62
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bank-facilities/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 350,
+      "bytes": 13047,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BankFacilitiesPage",
+          "kind": "default",
+          "line": 49
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -79557,8 +80462,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1107,
-      "bytes": 30771,
+      "lines": 1115,
+      "bytes": 31040,
       "doc": "",
       "symbols": [
         {
@@ -79589,12 +80494,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1077
+          "line": 1085
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1092
+          "line": 1100
         }
       ]
     },
@@ -80855,8 +81760,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 272,
-      "bytes": 12562,
+      "lines": 276,
+      "bytes": 12719,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -84919,8 +85824,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 6865,
-      "bytes": 400225,
+      "lines": 6991,
+      "bytes": 407533,
       "doc": "",
       "symbols": []
     },
@@ -84973,8 +85878,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 544,
-      "bytes": 73504,
+      "lines": 546,
+      "bytes": 74169,
       "doc": "",
       "symbols": []
     },
@@ -85879,6 +86784,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/finance-accounting/167-bank-facility-management.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 296,
+      "bytes": 16406,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/finance-accounting/49-financial-institution-settlement-partnerships.md",
       "area": "docs",
       "kind": "doc",
@@ -85909,8 +86823,8 @@
       "path": "docs/implementation/finance-accounting/GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 78,
-      "bytes": 4282,
+      "lines": 86,
+      "bytes": 4741,
       "doc": "",
       "symbols": []
     },
@@ -88144,8 +89058,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1250,
-      "bytes": 41961,
+      "lines": 1274,
+      "bytes": 42786,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -88166,52 +89080,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 756
+          "line": 774
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 758
+          "line": 776
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 768
+          "line": 786
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 775
+          "line": 793
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 998
+          "line": 1019
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1209
+          "line": 1233
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1228
+          "line": 1252
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1242
+          "line": 1266
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1243
+          "line": 1267
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1246
+          "line": 1270
         }
       ]
     },

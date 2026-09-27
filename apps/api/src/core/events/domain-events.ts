@@ -168,6 +168,13 @@ export const DomainEvent = {
 
   /** 49-financial-institution-settlement-partnerships.md (WO-49.4) — SettlementService.writeOffShortfall() on an accepted SHORT batch. posting-rules.subscriber.ts's own handler posts the write-off through findPostedEntry(source, batchId), never a second posting mechanism; `settlements` never imports `accounting`. */
   SettlementShortfallWrittenOff: 'settlement.shortfall_written_off',
+
+  /** 167-bank-facility-management.md (WO-167.3) — BankFacilitiesService.postDrawdown(), fired only once a drawdown has actually posted (below-threshold immediately, above-threshold after approve()). `bankfacilities` never imports `accounting`, the identical decoupling `settlements` already establishes. */
+  BankFacilityDrawdownPosted: 'bank_facility.drawdown_posted',
+  /** 167-bank-facility-management.md (WO-167.3) — BankFacilitiesService.recordRepayment(). Principal and/or markup, each posted only if its own amount is positive. */
+  BankFacilityRepaymentRecorded: 'bank_facility.repayment_recorded',
+  /** 167-bank-facility-management.md (WO-167.3) — the monthly markup-accrual cron's own posting, one event per facility per calendar month, idempotent via findPostedEntry(source, `${facilityId}:${monthKey}`) exactly like AssetDepreciation's own cron. */
+  BankFacilityMarkupAccrued: 'bank_facility.markup_accrued',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -674,6 +681,9 @@ export interface DomainEventPayloads {
   [DomainEvent.CreditHoldApplied]: CreditHoldAppliedPayload;
   [DomainEvent.NotificationSent]: NotificationSentPayload;
   [DomainEvent.SettlementShortfallWrittenOff]: SettlementShortfallWrittenOffPayload;
+  [DomainEvent.BankFacilityDrawdownPosted]: BankFacilityDrawdownPostedPayload;
+  [DomainEvent.BankFacilityRepaymentRecorded]: BankFacilityRepaymentRecordedPayload;
+  [DomainEvent.BankFacilityMarkupAccrued]: BankFacilityMarkupAccruedPayload;
 }
 
 export interface CreditNoteIssuedPayload {
@@ -722,4 +732,28 @@ export interface SettlementShortfallWrittenOffPayload {
   shortfallMinor: number;
   /** ISO — the decision's own time, so a late post still resolves the currently open period (R15). */
   writtenOffAt: string;
+}
+
+export interface BankFacilityDrawdownPostedPayload {
+  drawdownId: string;
+  facilityId: string;
+  amountMinor: number;
+  /** ISO — the drawdown's own drawdownDate, so a late post still resolves the currently open period (R15). */
+  drawdownDate: string;
+}
+
+export interface BankFacilityRepaymentRecordedPayload {
+  repaymentId: string;
+  facilityId: string;
+  principalMinor: number;
+  markupMinor: number;
+  /** ISO — the repayment's own repaymentDate, so a late post still resolves the currently open period (R15). */
+  repaymentDate: string;
+}
+
+export interface BankFacilityMarkupAccruedPayload {
+  facilityId: string;
+  amountMinor: number;
+  /** ISO — the accrual period's own end date, so a late post still resolves the currently open period (R15). */
+  periodEnd: string;
 }

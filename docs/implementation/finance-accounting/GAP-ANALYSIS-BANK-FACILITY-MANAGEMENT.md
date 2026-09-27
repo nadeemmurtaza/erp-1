@@ -1,5 +1,13 @@
 # Gap analysis: Bank Facility Management
 
+> **Superseded (2026-09-27): built as
+> [`167-bank-facility-management.md`](./167-bank-facility-management.md).**
+> Every question this gap report named — the actor, the facility itself,
+> drawdown/repayment, markup accrual, utilization/limit-breach alerts,
+> renewal tracking, reporting — is answered and built there. This report
+> is kept as the historical record of the gap as it stood before doc 167;
+> read doc 167 for the current, built mechanism.
+
 **What this is.** A roadmap reference, not a work order: this capability
 does not exist at all in this repository, and this document records why,
 what it would need to answer, and where it would sit — so a future scoping

@@ -59,6 +59,9 @@ export const MODULE_PACKS: Record<string, PackName> = {
   settlements: 'core',
   addresses: 'core',
   analytics: 'core',
+  // 167-bank-facility-management.md — the mirror concern to receivables:
+  // what the business itself owes a bank, not what it is owed.
+  bankfacilities: 'core',
   bom: 'core',
   cart: 'core',
   catalog: 'core',

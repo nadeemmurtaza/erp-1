@@ -18,6 +18,9 @@ import {
   type DebitNoteIssuedPayload,
   type DebitNoteVoidedPayload,
   type SettlementShortfallWrittenOffPayload,
+  type BankFacilityDrawdownPostedPayload,
+  type BankFacilityRepaymentRecordedPayload,
+  type BankFacilityMarkupAccruedPayload,
 } from '../../core/events/domain-events';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { AccountingService, type PostLineInput } from './accounting.service';
@@ -646,6 +649,121 @@ export class PostingRulesSubscriber {
       lines: [
         { accountId: shortfallExpense, debitMinor: payload.shortfallMinor },
         { accountId: cashAndBank, creditMinor: payload.shortfallMinor },
+      ],
+    });
+  }
+
+  /**
+   * Dr Cash & Bank · Cr Bank Loan Payable — the business's own borrowing
+   * actually arriving, distinct from Accounts Payable's trade-credit shape.
+   * `bankfacilities` never imports this module — BankFacilitiesService only
+   * ever publishes this event once a drawdown has actually posted (below
+   * the approval threshold immediately, above it after approve()).
+   */
+  @OnDomainEvent(DomainEvent.BankFacilityDrawdownPosted)
+  async onBankFacilityDrawdownPosted(payload: BankFacilityDrawdownPostedPayload): Promise<void> {
+    const source = DomainEvent.BankFacilityDrawdownPosted;
+    if (await this.accounting.findPostedEntry(source, payload.drawdownId)) return;
+    if (payload.amountMinor <= 0) return;
+
+    const accountIds = await this.accounting.accountIdsByCode([ACCOUNT_CODE.CASH_AND_BANK, ACCOUNT_CODE.BANK_LOAN_PAYABLE]);
+    const cashAndBank = accountIds.get(ACCOUNT_CODE.CASH_AND_BANK);
+    const bankLoanPayable = accountIds.get(ACCOUNT_CODE.BANK_LOAN_PAYABLE);
+    if (!cashAndBank || !bankLoanPayable) {
+      this.logger.error(`Chart of accounts is missing Cash & Bank or Bank Loan Payable — cannot post drawdown ${payload.drawdownId}.`);
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.drawdownDate),
+      source,
+      sourceRef: payload.drawdownId,
+      memo: `Bank facility drawdown — facility ${payload.facilityId}`,
+      lines: [
+        { accountId: cashAndBank, debitMinor: payload.amountMinor },
+        { accountId: bankLoanPayable, creditMinor: payload.amountMinor },
+      ],
+    });
+  }
+
+  /**
+   * A repayment clears principal, accrued markup, or both, each as its own
+   * line — never one signed amount — so the general ledger shows what
+   * portion of a repayment reduced the loan itself versus what it merely
+   * cleared in already-accrued markup.
+   */
+  @OnDomainEvent(DomainEvent.BankFacilityRepaymentRecorded)
+  async onBankFacilityRepaymentRecorded(payload: BankFacilityRepaymentRecordedPayload): Promise<void> {
+    const source = DomainEvent.BankFacilityRepaymentRecorded;
+    if (await this.accounting.findPostedEntry(source, payload.repaymentId)) return;
+    if (payload.principalMinor <= 0 && payload.markupMinor <= 0) return;
+
+    const accountIds = await this.accounting.accountIdsByCode([
+      ACCOUNT_CODE.CASH_AND_BANK,
+      ACCOUNT_CODE.BANK_LOAN_PAYABLE,
+      ACCOUNT_CODE.ACCRUED_MARKUP_PAYABLE,
+    ]);
+    const cashAndBank = accountIds.get(ACCOUNT_CODE.CASH_AND_BANK);
+    const bankLoanPayable = accountIds.get(ACCOUNT_CODE.BANK_LOAN_PAYABLE);
+    const accruedMarkupPayable = accountIds.get(ACCOUNT_CODE.ACCRUED_MARKUP_PAYABLE);
+    if (!cashAndBank || !bankLoanPayable || !accruedMarkupPayable) {
+      this.logger.error(
+        `Chart of accounts is missing Cash & Bank, Bank Loan Payable or Accrued Markup Payable — cannot post repayment ${payload.repaymentId}.`,
+      );
+      return;
+    }
+
+    const lines: PostLineInput[] = [];
+    if (payload.principalMinor > 0) {
+      lines.push({ accountId: bankLoanPayable, debitMinor: payload.principalMinor });
+    }
+    if (payload.markupMinor > 0) {
+      lines.push({ accountId: accruedMarkupPayable, debitMinor: payload.markupMinor });
+    }
+    lines.push({ accountId: cashAndBank, creditMinor: payload.principalMinor + payload.markupMinor });
+
+    await this.accounting.postEntry({
+      date: new Date(payload.repaymentDate),
+      source,
+      sourceRef: payload.repaymentId,
+      memo: `Bank facility repayment — facility ${payload.facilityId}`,
+      lines,
+    });
+  }
+
+  /**
+   * The monthly markup-accrual cron's own posting — Dr Markup Expense ·
+   * Cr Accrued Markup Payable, on the outstanding balance, independent of
+   * whether any repayment happens that month. `sourceRef` already carries
+   * the `facilityId:monthKey` idempotency key the cron computed; this
+   * handler only re-checks it, the same defence-in-depth every other
+   * handler here already applies against the outbox's at-least-once
+   * delivery.
+   */
+  @OnDomainEvent(DomainEvent.BankFacilityMarkupAccrued)
+  async onBankFacilityMarkupAccrued(payload: BankFacilityMarkupAccruedPayload): Promise<void> {
+    const source = DomainEvent.BankFacilityMarkupAccrued;
+    const monthKey = `${new Date(payload.periodEnd).getUTCFullYear()}-${String(new Date(payload.periodEnd).getUTCMonth() + 1).padStart(2, '0')}`;
+    const sourceRef = `${payload.facilityId}:${monthKey}`;
+    if (await this.accounting.findPostedEntry(source, sourceRef)) return;
+    if (payload.amountMinor <= 0) return;
+
+    const accountIds = await this.accounting.accountIdsByCode([ACCOUNT_CODE.MARKUP_EXPENSE, ACCOUNT_CODE.ACCRUED_MARKUP_PAYABLE]);
+    const markupExpense = accountIds.get(ACCOUNT_CODE.MARKUP_EXPENSE);
+    const accruedMarkupPayable = accountIds.get(ACCOUNT_CODE.ACCRUED_MARKUP_PAYABLE);
+    if (!markupExpense || !accruedMarkupPayable) {
+      this.logger.error(`Chart of accounts is missing Markup Expense or Accrued Markup Payable — cannot post accrual for facility ${payload.facilityId}.`);
+      return;
+    }
+
+    await this.accounting.postEntry({
+      date: new Date(payload.periodEnd),
+      source,
+      sourceRef,
+      memo: `Bank facility markup accrual — facility ${payload.facilityId}, ${monthKey}`,
+      lines: [
+        { accountId: markupExpense, debitMinor: payload.amountMinor },
+        { accountId: accruedMarkupPayable, creditMinor: payload.amountMinor },
       ],
     });
   }

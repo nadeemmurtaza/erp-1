@@ -520,6 +520,15 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'catalog',
   },
   {
+    // 150-product-kitting-bundles.md WO-150.6.
+    key: 'bundles',
+    label: 'Bundles',
+    href: '/admin/bundles',
+    permissions: ['catalog.manage'],
+    group: 'catalogue',
+    module: 'catalog',
+  },
+  {
     key: 'option-templates',
     label: 'Options & attributes',
     href: '/admin/options',

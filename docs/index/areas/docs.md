@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-399 files · 68,891 lines
+399 files · 69,023 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 10 | 10,780 | doc, file |
+| `docs/implementation` | 10 | 10,896 | doc, file |
 | `docs/implementation/access-control-identity` | 7 | 1,896 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -92,7 +92,7 @@ has a bug.
 | `docs/implementation/architecture-patterns` | 38 | 4,882 | doc |
 | `docs/implementation/attendance-workforce` | 8 | 1,072 | doc |
 | `docs/implementation/b2b-wholesale-multientity` | 5 | 1,148 | doc |
-| `docs/implementation/catalog-variants-pricing` | 3 | 947 | doc |
+| `docs/implementation/catalog-variants-pricing` | 3 | 963 | doc |
 | `docs/implementation/commercial-licensing-agency` | 14 | 2,741 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
@@ -116,7 +116,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 6,629 | doc |  |
+| `docs/implementation/DECISIONS.md` | 6,745 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |

@@ -93,6 +93,8 @@ export const ROUTES = {
     productInsights: '/admin/analytics/products/top-sellers',
     categories: '/admin/categories',
     brands: '/admin/brands',
+    /** 150-product-kitting-bundles.md WO-150.6. */
+    bundles: '/admin/bundles',
     optionTemplates: '/admin/options',
     seo: '/admin/seo',
     import: '/admin/import',

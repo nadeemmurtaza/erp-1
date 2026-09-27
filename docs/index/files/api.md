@@ -1247,8 +1247,8 @@ All 1,039 tracked files in `apps/api`, by directory.
 | `ai-suggestions.service.spec.ts` | unit test | 314 |  |
 | `ai-suggestions.service.ts` | service | 352 |  |
 | `brand-admin.service.ts` | service | 170 |  |
-| `bundles.service.spec.ts` | unit test | 201 |  |
-| `bundles.service.ts` | service | 224 |  |
+| `bundles.service.spec.ts` | unit test | 250 |  |
+| `bundles.service.ts` | service | 279 |  |
 | `catalog-admin.controller.ts` | controller | 358 |  |
 | `catalog-options-admin.controller.ts` | controller | 105 |  |
 | `catalog.controller.ts` | controller | 51 |  |

@@ -2543,24 +2543,24 @@ _no second-level headings_
 - WO-3.9 — Redirects  <sub>:521</sub>
 - Phase 3 exit criteria  <sub>:555</sub>
 
-### `docs/implementation/catalog-variants-pricing/150-product-kitting-bundles.md`  <sub>211 lines</sub>
+### `docs/implementation/catalog-variants-pricing/150-product-kitting-bundles.md`  <sub>222 lines</sub>
 
-- 1. A bundle is a sellable shell over existing variants, never a new physical item  <sub>:43</sub>
-- 2. Selling a bundle decrements every component, atomically, through the one existing writer  <sub>:71</sub>
-- 3. Bundle "stock" is computed, never stored — the same discipline R26 already establishes for online allotment  <sub>:100</sub>
-- Scope lenses  <sub>:111</sub>
-- Work orders  <sub>:178</sub>
-- Acceptance  <sub>:194</sub>
-- Out of scope  <sub>:204</sub>
+- 1. A bundle is a sellable shell over existing variants, never a new physical item  <sub>:54</sub>
+- 2. Selling a bundle decrements every component, atomically, through the one existing writer  <sub>:82</sub>
+- 3. Bundle "stock" is computed, never stored — the same discipline R26 already establishes for online allotment  <sub>:111</sub>
+- Scope lenses  <sub>:122</sub>
+- Work orders  <sub>:189</sub>
+- Acceptance  <sub>:205</sub>
+- Out of scope  <sub>:215</sub>
 
-### `docs/implementation/catalog-variants-pricing/47-preconfigured-sector-taxonomy.md`  <sub>170 lines</sub>
+### `docs/implementation/catalog-variants-pricing/47-preconfigured-sector-taxonomy.md`  <sub>175 lines</sub>
 
-- 1. A taxonomy preset is a named, versioned tree template  <sub>:36</sub>
-- 2. Applying a preset is one action, and it is undoable the honest way  <sub>:60</sub>
-- Scope lenses  <sub>:85</sub>
-- Work orders  <sub>:139</sub>
-- Acceptance  <sub>:152</sub>
-- Out of scope  <sub>:162</sub>
+- 1. A taxonomy preset is a named, versioned tree template  <sub>:41</sub>
+- 2. Applying a preset is one action, and it is undoable the honest way  <sub>:65</sub>
+- Scope lenses  <sub>:90</sub>
+- Work orders  <sub>:144</sub>
+- Acceptance  <sub>:157</sub>
+- Out of scope  <sub>:167</sub>
 
 ### `docs/implementation/commercial-licensing-agency/11-client-handover-model.md`  <sub>131 lines</sub>
 
@@ -2726,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,629 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>6,745 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2791,6 +2791,7 @@ _no second-level headings_
 - ADR-057 — Docs 133 (dry-run harness), 134 (hexagonal-purity CI check) and 138 (technology substitution playbook): a naming convention shipped with better evidence than it cited, a real static check built and wired into `pnpm lint`, one CI overclaim corrected  <sub>:6256</sub>
 - ADR-058 — Doc 165 (cross-tenant marketplace directory), part two: WO-165.1/165.2/165.6 built; WO-165.3/165.4/165.5 deferred together as ADR-047 already scoped them; the publisher credential is ops-issued, not self-service; `enforceSso` gates by legacy `User.role`, exempting whoever turned it on  <sub>:6365</sub>
 - ADR-059 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6492</sub>
+- ADR-060 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6631</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

@@ -13,8 +13,13 @@
 > by the real `catalog.manage` permission, not the `catalog.categories.manage`
 > key this document names, which does not exist in this codebase's actual
 > permission catalogue (`CatalogAdminController`'s own class-level
-> `@RequirePermission`). WO-47.4 (a dedicated "start from a template" UI
-> button, distinct from calling the API directly) is not yet built. ADR-049.
+> `@RequirePermission`). **WO-47.4 built (2026-09-27):** "Start from a
+> template" on the categories admin screen — a button beside the page
+> title, and the primary action of the empty state when no category exists
+> yet (the "likely first-run" case this document's own text names). Picking
+> a preset shows the dry run (`preview()`'s own created/skipped/collision
+> counts) before committing, exactly as this document's "Dry run before
+> live" lens requires. ADR-049, ADR-060.
 
 `Category`/`CategoryTranslation` (`catalog.prisma`) already carry a full
 parent/child tree with bilingual names — the schema this document needs

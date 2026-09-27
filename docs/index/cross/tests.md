@@ -3,7 +3,7 @@
 
 # Tests
 
-**304** spec files, **2,941** cases. What is already pinned down — and what is not.
+**304** spec files, **2,945** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -142,7 +142,7 @@ regression or an N+1.
 | `apps/api/src/modules/cart/cart.guest-contact.spec.ts` | cart | 4 | CartService.updateGuestContact |
 | `apps/api/src/modules/cart/cart.service.spec.ts` | cart | 2 | CartService.getOrCreate — guest cart TTL |
 | `apps/api/src/modules/catalog/ai-suggestions.service.spec.ts` | catalog | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBu… |
-| `apps/api/src/modules/catalog/bundles.service.spec.ts` | catalog | 16 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create ·… |
+| `apps/api/src/modules/catalog/bundles.service.spec.ts` | catalog | 20 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create ·… |
 | `apps/api/src/modules/catalog/category-preset.service.spec.ts` | catalog | 6 | CategoryPresetService · preview · apply |
 | `apps/api/src/modules/catalog/import-assistant.service.spec.ts` | catalog | 21 | ImportAssistantService · column mapping · value normalization · duplicate flagging (pure arithmetic… |
 | `apps/api/src/modules/catalog/product-admin.service.spec.ts` | catalog | 13 | assertKindRules · assertUniqueSkus |

@@ -16,6 +16,7 @@ describe('BundlesService', () => {
     };
     prisma = {
       productBundle: { findMany: jest.fn(), findUnique: jest.fn(), create: jest.fn(), delete: jest.fn() },
+      productVariant: { findMany: jest.fn() },
       variantLocationStock: { findMany: jest.fn() },
       $transaction: jest.fn((work: (client: unknown) => unknown) => work(tx)),
     };
@@ -195,6 +196,54 @@ describe('BundlesService', () => {
 
       expect(prisma.productBundle.delete).toHaveBeenCalledWith({ where: { id: 'b1' } });
       expect(audit.record).toHaveBeenCalledWith(expect.objectContaining({ action: 'catalog.bundle_removed' }));
+    });
+  });
+
+  describe('list / get — WO-150.6 label enrichment', () => {
+    const VARIANTS = [
+      { id: 'bundle-v', sku: 'KIT-1', label: null, product: { translations: [{ name: 'Starter kit' }] } },
+      { id: 'shirt-v', sku: 'SHIRT-M', label: 'Medium', product: { translations: [{ name: 'Cotton shirt' }] } },
+    ];
+
+    it('never returns a raw variant id — every reference is resolved to a display label', async () => {
+      prisma.productBundle.findMany.mockResolvedValue([
+        { id: 'b1', variantId: 'bundle-v', isActive: true, components: [{ id: 'c1', componentVariantId: 'shirt-v', quantity: 3 }] },
+      ]);
+      prisma.productVariant.findMany.mockResolvedValue(VARIANTS);
+
+      const [bundle] = await service.list();
+
+      expect(prisma.productVariant.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { id: { in: expect.arrayContaining(['bundle-v', 'shirt-v']) } } }),
+      );
+      expect(bundle!.variantLabel).toBe('Starter kit (KIT-1)');
+      expect(bundle!.components[0]!.label).toBe('Cotton shirt — Medium (SHIRT-M)');
+    });
+
+    it('falls back to the raw id if a referenced variant no longer exists, rather than throwing', async () => {
+      prisma.productBundle.findMany.mockResolvedValue([
+        { id: 'b1', variantId: 'deleted-v', isActive: true, components: [] },
+      ]);
+      prisma.productVariant.findMany.mockResolvedValue([]);
+
+      const [bundle] = await service.list();
+
+      expect(bundle!.variantLabel).toBe('deleted-v');
+    });
+
+    it('get() enriches a single bundle the same way', async () => {
+      prisma.productBundle.findUnique.mockResolvedValue({ id: 'b1', variantId: 'bundle-v', isActive: true, components: [] });
+      prisma.productVariant.findMany.mockResolvedValue(VARIANTS);
+
+      const bundle = await service.get('b1');
+
+      expect(bundle.variantLabel).toBe('Starter kit (KIT-1)');
+    });
+
+    it('get() throws NotFoundException for an unknown bundle, never calling the label lookup', async () => {
+      prisma.productBundle.findUnique.mockResolvedValue(null);
+      await expect(service.get('missing')).rejects.toThrow(NotFoundException);
+      expect(prisma.productVariant.findMany).not.toHaveBeenCalled();
     });
   });
 });

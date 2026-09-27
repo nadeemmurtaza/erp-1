@@ -189,6 +189,21 @@ export interface AdminCategory {
   _count: { products: number; children: number };
 }
 
+/** `GET /admin/catalog/category-presets` (47-preconfigured-sector-taxonomy.md WO-47.4). */
+export interface CategoryPreset {
+  id: string;
+  key: string;
+  label: string;
+  description: string | null;
+}
+
+/** `GET /admin/catalog/category-presets/:key/preview` — the dry run shown before commit. */
+export interface CategoryPresetPreview {
+  created: number;
+  skipped: number;
+  collisions: string[];
+}
+
 export interface AdminBrand {
   id: string;
   slug: string;
@@ -220,6 +235,26 @@ export interface AdminOptionTemplate {
   order: number;
   translations: OptionValueTranslation[];
   values: AdminOptionTemplateValue[];
+}
+
+/** `GET /admin/catalog/bundles` (150-product-kitting-bundles.md WO-150.6) —
+ *  every reference is a resolved display label, never a raw
+ *  `variantId`/`componentVariantId` (the schema's own bare scalars). */
+export interface AdminBundleComponent {
+  id: string;
+  componentVariantId: string;
+  quantity: number;
+  label: string;
+}
+
+export interface AdminBundle {
+  id: string;
+  variantId: string;
+  variantLabel: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  components: AdminBundleComponent[];
 }
 
 export interface AdminProductOption {

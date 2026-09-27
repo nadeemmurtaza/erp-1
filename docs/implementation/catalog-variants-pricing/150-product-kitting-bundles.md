@@ -17,15 +17,26 @@
 > than a new `BUNDLE_SALE` reason, so a sales report by reason already
 > includes bundle-driven decrements without needing to know bundles exist;
 > gated by the existing `catalog.manage` permission, not a new
-> `catalog.bundles.manage` key. **Not built in this pass**: `placeFromPos()`
-> (a till sale uses `postUnconditional()`'s oversell-tolerant R5 path, which
+> `catalog.bundles.manage` key. **WO-150.6 built (2026-09-27):** the
+> bundle-builder admin screen (`apps/web/src/app/(admin)/admin/(app)
+> /bundles/page.tsx`) — a bundle's own already-existing variant is picked
+> via the same debounced product search this codebase already uses
+> elsewhere (`cross-sell-manager.tsx`'s own pattern), components are
+> added/removed/requantified the same way, and the list shows every
+> reference by its real name, never a raw id. `BundlesService.list()`/
+> `.get()` gained a `withLabels()` enrichment step for exactly that reason
+> — `variantId`/`componentVariantId` stay bare scalars in the schema
+> (ADR-012), but the admin response resolves them to a display label
+> before this screen (or any future one) ever has to. Reachable from
+> Catalogue → Bundles, `catalog.manage`-gated like every other bundle
+> route. 4 new tests (`bundles.service.spec.ts`); full apps/api suite
+> passing with no regression. **Still not built**: `placeFromPos()` (a
+> till sale uses `postUnconditional()`'s oversell-tolerant R5 path, which
 > `sellBundle()` does not support — extending it is a real, separate design
 > question, not assumed away) and the storefront's own "in stock" display
 > (`catalog.service.ts#localise()` is a widely-shared, non-location-aware
 > function; wiring `bundleAvailableStock()` into it needs a location
-> parameter that function does not have today). A bundle-builder admin
-> screen (WO-150.6) is not built. 16 new tests (`bundles.service.spec.ts`);
-> full apps/api suite passing with no regression. ADR-049.
+> parameter that function does not have today). ADR-049, ADR-060.
 
 Checked against `catalog.prisma` and `bom.prisma`: nothing models "sell
 these N distinct SKUs together as one purchasable unit, at one price,

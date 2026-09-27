@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 37 files
 
 Source: `apps/api/src/modules/catalog/`
 
-## Files (37 · 6,818 lines)
+## Files (37 · 6,922 lines)
 
 All paths relative to `apps/api/src/modules/catalog`.
 
@@ -19,8 +19,8 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `ai-suggestions.service.spec.ts` | unit test | 314 | — |  |
 | `ai-suggestions.service.ts` | service | 352 | 1 | WO-9.1 (09-ai-layer.md) — alt text and SEO copy as human-confirmed drafts. |
 | `brand-admin.service.ts` | service | 170 | 1 | The managed list of brands. |
-| `bundles.service.spec.ts` | unit test | 201 | — |  |
-| `bundles.service.ts` | service | 224 | 1 | 150-product-kitting-bundles.md — a bundle is a sellable shell over existing variants, never a new physical item; every… |
+| `bundles.service.spec.ts` | unit test | 250 | — |  |
+| `bundles.service.ts` | service | 279 | 2 | A bundle as the admin screen (WO-150.6) reads it — `variantId`/ `componentVariantId` are deliberately bare scalars in t… |
 | `catalog-admin.controller.ts` | controller | 358 | 1 |  |
 | `catalog-options-admin.controller.ts` | controller | 105 | 1 | WO-3.1 (03-variants-sku-seo.md) — the store-level option library and each product's own option axes. |
 | `catalog.controller.ts` | controller | 51 | 1 |  |
@@ -213,7 +213,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `ai-suggestions.service.spec.ts` | 16 | AiSuggestionsService · generateForProduct · generateBulk · listQueue · approve · reject · approveBulk |
-| `bundles.service.spec.ts` | 16 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create · update · remove |
+| `bundles.service.spec.ts` | 20 | BundlesService · bundlesByVariantId · sellBundle · restockBundle · bundleAvailableStock · create · update · remove · li… |
 | `category-preset.service.spec.ts` | 6 | CategoryPresetService · preview · apply |
 | `import-assistant.service.spec.ts` | 21 | ImportAssistantService · column mapping · value normalization · duplicate flagging (pure arithmetic, no AI call) · cate… |
 | `product-admin.service.spec.ts` | 13 | assertKindRules · assertUniqueSkus |
@@ -228,7 +228,8 @@ check there before adding another.
 | `AiSuggestionsController` | class | `ai-suggestions.controller.ts:34` | WO-9.1's review queue (09-ai-layer.md): every AI-drafted alt text, meta title/description, product descriptio… |
 | `AiSuggestionsService` | class | `ai-suggestions.service.ts:115` | WO-9.1 (09-ai-layer.md) — alt text and SEO copy as human-confirmed drafts. |
 | `BrandAdminService` | class | `brand-admin.service.ts:16` | The managed list of brands. |
-| `BundlesService` | class | `bundles.service.ts:25` | 150-product-kitting-bundles.md — a bundle is a sellable shell over existing variants, never a new physical it… |
+| `BundleView` | interface | `bundles.service.ts:15` | A bundle as the admin screen (WO-150.6) reads it — `variantId`/ `componentVariantId` are deliberately bare sc… |
+| `BundlesService` | class | `bundles.service.ts:34` | 150-product-kitting-bundles.md — a bundle is a sellable shell over existing variants, never a new physical it… |
 | `CatalogAdminController` | class | `catalog-admin.controller.ts:82` |  |
 | `CatalogOptionsAdminController` | class | `catalog-options-admin.controller.ts:17` | WO-3.1 (03-variants-sku-seo.md) — the store-level option library and each product's own option axes. |
 | `CatalogController` | class | `catalog.controller.ts:11` |  |

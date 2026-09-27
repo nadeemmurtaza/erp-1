@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2273,
-    "lines": 345815,
+    "files": 2274,
+    "lines": 346641,
     "routes": 798,
     "controllers": 145,
     "models": 286,
@@ -12,7 +12,7 @@
     "migrations": 108,
     "events": 65,
     "permissions": 108,
-    "screens": 251,
+    "screens": 252,
     "crons": 25,
     "specs": 304,
     "designLaws": 0
@@ -33,8 +33,8 @@
     },
     "api": {
       "files": 1039,
-      "lines": 140896,
-      "bytes": 5457883,
+      "lines": 141000,
+      "bytes": 5462477,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,15 +50,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 403,
-      "lines": 66871,
-      "bytes": 2415481,
+      "files": 404,
+      "lines": 67461,
+      "bytes": 2436318,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 399,
-      "lines": 68891,
-      "bytes": 4099267,
+      "lines": 69023,
+      "bytes": 4107304,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -14702,7 +14702,7 @@
         "GET /admin/marketplace/product-references/lookup",
         "POST /admin/marketplace/product-references/register"
       ],
-      "uiSites": 19,
+      "uiSites": 20,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -46830,6 +46830,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/bundles",
+      "file": "apps/web/src/app/(admin)/admin/(app)/bundles/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/campaigns",
       "file": "apps/web/src/app/(admin)/admin/(app)/campaigns/page.tsx",
       "client": true,
@@ -49679,7 +49688,7 @@
       "file": "apps/api/src/modules/catalog/bundles.service.spec.ts",
       "module": "catalog",
       "kind": "unit test",
-      "cases": 16,
+      "cases": 20,
       "describes": [
         "BundlesService",
         "bundlesByVariantId",
@@ -49688,7 +49697,8 @@
         "bundleAvailableStock",
         "create",
         "update",
-        "remove"
+        "remove",
+        "list / get — WO-150.6 label enrichment"
       ]
     },
     {
@@ -59892,8 +59902,8 @@
       "path": "apps/api/src/modules/catalog/bundles.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 201,
-      "bytes": 8336,
+      "lines": 250,
+      "bytes": 10600,
       "doc": "",
       "symbols": []
     },
@@ -59901,14 +59911,19 @@
       "path": "apps/api/src/modules/catalog/bundles.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 224,
-      "bytes": 8427,
+      "lines": 279,
+      "bytes": 10757,
       "doc": "",
       "symbols": [
         {
+          "name": "BundleView",
+          "kind": "interface",
+          "line": 15
+        },
+        {
           "name": "BundlesService",
           "kind": "class",
-          "line": 25
+          "line": 34
         }
       ]
     },
@@ -74338,6 +74353,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/bundles/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 408,
+      "bytes": 14242,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BundlesPage",
+          "kind": "default",
+          "line": 28
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/campaigns/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -74371,14 +74401,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/categories/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 309,
-      "bytes": 10431,
+      "lines": 445,
+      "bytes": 15795,
       "doc": "",
       "symbols": [
         {
           "name": "AdminCategoriesPage",
           "kind": "default",
-          "line": 27
+          "line": 28
         }
       ]
     },
@@ -78377,8 +78407,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1073,
-      "bytes": 29914,
+      "lines": 1082,
+      "bytes": 30125,
       "doc": "",
       "symbols": [
         {
@@ -78409,12 +78439,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1043
+          "line": 1052
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1058
+          "line": 1067
         }
       ]
     },
@@ -79675,8 +79705,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 270,
-      "bytes": 12479,
+      "lines": 272,
+      "bytes": 12562,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -80242,8 +80272,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1786,
-      "bytes": 48674,
+      "lines": 1821,
+      "bytes": 49611,
       "doc": "",
       "symbols": [
         {
@@ -80302,889 +80332,909 @@
           "line": 181
         },
         {
+          "name": "CategoryPreset",
+          "kind": "interface",
+          "line": 193
+        },
+        {
+          "name": "CategoryPresetPreview",
+          "kind": "interface",
+          "line": 201
+        },
+        {
           "name": "AdminBrand",
-          "kind": "interface",
-          "line": 192
-        },
-        {
-          "name": "OptionValueTranslation",
-          "kind": "interface",
-          "line": 202
-        },
-        {
-          "name": "AdminOptionTemplateValue",
           "kind": "interface",
           "line": 207
         },
         {
+          "name": "OptionValueTranslation",
+          "kind": "interface",
+          "line": 217
+        },
+        {
+          "name": "AdminOptionTemplateValue",
+          "kind": "interface",
+          "line": 222
+        },
+        {
           "name": "AdminOptionTemplate",
           "kind": "interface",
-          "line": 216
+          "line": 231
+        },
+        {
+          "name": "AdminBundleComponent",
+          "kind": "interface",
+          "line": 243
+        },
+        {
+          "name": "AdminBundle",
+          "kind": "interface",
+          "line": 250
         },
         {
           "name": "AdminProductOption",
           "kind": "interface",
-          "line": 225
+          "line": 260
         },
         {
           "name": "AdminRedirect",
           "kind": "interface",
-          "line": 235
+          "line": 270
         },
         {
           "name": "SeoHealthRow",
           "kind": "interface",
-          "line": 245
+          "line": 280
         },
         {
           "name": "AiSuggestionKind",
           "kind": "type",
-          "line": 254
+          "line": 289
         },
         {
           "name": "AiSuggestionStatus",
           "kind": "type",
-          "line": 255
+          "line": 290
         },
         {
           "name": "AiSuggestion",
           "kind": "interface",
-          "line": 257
+          "line": 292
         },
         {
           "name": "AiStatus",
           "kind": "interface",
-          "line": 271
+          "line": 306
         },
         {
           "name": "DocumentCorpus",
           "kind": "type",
-          "line": 280
+          "line": 315
         },
         {
           "name": "IngestStatus",
           "kind": "type",
-          "line": 281
+          "line": 316
         },
         {
           "name": "DocumentSourceRow",
           "kind": "interface",
-          "line": 283
+          "line": 318
         },
         {
           "name": "RagStatus",
           "kind": "interface",
-          "line": 297
+          "line": 332
         },
         {
           "name": "RagQueryHit",
           "kind": "interface",
-          "line": 302
+          "line": 337
         },
         {
           "name": "RagCitation",
           "kind": "interface",
-          "line": 311
+          "line": 346
         },
         {
           "name": "RagAnswer",
           "kind": "interface",
-          "line": 318
+          "line": 353
         },
         {
           "name": "MeasurementFieldRow",
           "kind": "interface",
-          "line": 323
+          "line": 358
         },
         {
           "name": "GarmentType",
           "kind": "interface",
-          "line": 338
+          "line": 373
         },
         {
           "name": "AdminGarmentSizeChartRow",
           "kind": "interface",
-          "line": 358
+          "line": 393
         },
         {
           "name": "SizeRecommendation",
           "kind": "interface",
-          "line": 367
+          "line": 402
         },
         {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 379
+          "line": 414
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 392
+          "line": 427
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 405
+          "line": 440
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 425
+          "line": 460
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 432
+          "line": 467
         },
         {
           "name": "ColumnMappingSuggestion",
           "kind": "interface",
-          "line": 441
+          "line": 476
         },
         {
           "name": "ValueNormalizationSuggestion",
           "kind": "interface",
-          "line": 446
+          "line": 481
         },
         {
           "name": "DuplicateFlag",
           "kind": "interface",
-          "line": 452
+          "line": 487
         },
         {
           "name": "CategorySuggestion",
           "kind": "interface",
-          "line": 458
+          "line": 493
         },
         {
           "name": "TranslationSuggestion",
           "kind": "interface",
-          "line": 463
+          "line": 498
         },
         {
           "name": "ImportAssistanceResult",
           "kind": "interface",
-          "line": 469
+          "line": 504
         },
         {
           "name": "CsvImportRowResult",
           "kind": "interface",
-          "line": 484
+          "line": 519
         },
         {
           "name": "CsvImportSummary",
           "kind": "interface",
-          "line": 491
+          "line": 526
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 499
+          "line": 534
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 517
+          "line": 552
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 525
+          "line": 560
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 535
+          "line": 570
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 544
+          "line": 579
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 555
+          "line": 590
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 570
+          "line": 605
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 585
+          "line": 620
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 601
+          "line": 636
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 614
+          "line": 649
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 621
+          "line": 656
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 630
+          "line": 665
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 640
+          "line": 675
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 652
+          "line": 687
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 665
+          "line": 700
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 671
+          "line": 706
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 682
+          "line": 717
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 689
+          "line": 724
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 695
+          "line": 730
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 704
+          "line": 739
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 712
+          "line": 747
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 717
+          "line": 752
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 724
+          "line": 759
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 732
+          "line": 767
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 738
+          "line": 773
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 744
+          "line": 779
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 757
+          "line": 792
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 763
+          "line": 798
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 775
+          "line": 810
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 779
+          "line": 814
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 788
+          "line": 823
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 792
+          "line": 827
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 801
+          "line": 836
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 808
+          "line": 843
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 815
+          "line": 850
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 822
+          "line": 857
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 832
+          "line": 867
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 840
+          "line": 875
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 847
+          "line": 882
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 853
+          "line": 888
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 858
+          "line": 893
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 868
+          "line": 903
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 874
+          "line": 909
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 880
+          "line": 915
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 887
+          "line": 922
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 896
+          "line": 931
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 898
+          "line": 933
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 909
+          "line": 944
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 914
+          "line": 949
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 920
+          "line": 955
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 922
+          "line": 957
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 931
+          "line": 966
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 940
+          "line": 975
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 942
+          "line": 977
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 959
+          "line": 994
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 964
+          "line": 999
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 966
+          "line": 1001
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 980
+          "line": 1015
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 982
+          "line": 1017
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 993
+          "line": 1028
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 1008
+          "line": 1043
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 1015
+          "line": 1050
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 1017
+          "line": 1052
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 1042
+          "line": 1077
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 1050
+          "line": 1085
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 1058
+          "line": 1093
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 1065
+          "line": 1100
         },
         {
           "name": "WhatsAppMessage",
           "kind": "interface",
-          "line": 1082
+          "line": 1117
         },
         {
           "name": "WhatsAppConversation",
           "kind": "interface",
-          "line": 1090
+          "line": 1125
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 1105
+          "line": 1140
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 1112
+          "line": 1147
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 1124
+          "line": 1159
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 1133
+          "line": 1168
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 1135
+          "line": 1170
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1147
+          "line": 1182
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 1153
+          "line": 1188
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 1160
+          "line": 1195
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 1165
+          "line": 1200
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1177
+          "line": 1212
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1186
+          "line": 1221
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1193
+          "line": 1228
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1207
+          "line": 1242
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1218
+          "line": 1253
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1222
+          "line": 1257
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1231
+          "line": 1266
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1239
+          "line": 1274
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1270
+          "line": 1305
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1303
+          "line": 1338
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1309
+          "line": 1344
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1327
+          "line": 1362
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1342
+          "line": 1377
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1351
+          "line": 1386
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1360
+          "line": 1395
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1376
+          "line": 1411
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1383
+          "line": 1418
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1391
+          "line": 1426
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1398
+          "line": 1433
         },
         {
           "name": "DashboardCardsResponse",
           "kind": "interface",
-          "line": 1415
+          "line": 1450
         },
         {
           "name": "ActionItem",
           "kind": "interface",
-          "line": 1429
+          "line": 1464
         },
         {
           "name": "ActionHubResponse",
           "kind": "interface",
-          "line": 1440
+          "line": 1475
         },
         {
           "name": "FeedEntry",
           "kind": "interface",
-          "line": 1447
+          "line": 1482
         },
         {
           "name": "FeedResponse",
           "kind": "interface",
-          "line": 1457
+          "line": 1492
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1463
+          "line": 1498
         },
         {
           "name": "ProductCrossSellKind",
           "kind": "type",
-          "line": 1471
+          "line": 1506
         },
         {
           "name": "ProductCrossSellRow",
           "kind": "interface",
-          "line": 1473
+          "line": 1508
         },
         {
           "name": "MarkdownSuggestionStatus",
           "kind": "type",
-          "line": 1480
+          "line": 1515
         },
         {
           "name": "MarkdownSuggestion",
           "kind": "interface",
-          "line": 1482
+          "line": 1517
         },
         {
           "name": "ApiKeyStatus",
           "kind": "type",
-          "line": 1508
+          "line": 1543
         },
         {
           "name": "ApiKeyRevocationReason",
           "kind": "type",
-          "line": 1509
+          "line": 1544
         },
         {
           "name": "ApiKeyView",
           "kind": "interface",
-          "line": 1530
+          "line": 1565
         },
         {
           "name": "IssuedApiKey",
           "kind": "interface",
-          "line": 1537
+          "line": 1572
         },
         {
           "name": "SsoConnectionStatus",
           "kind": "type",
-          "line": 1547
+          "line": 1582
         },
         {
           "name": "SsoConnection",
           "kind": "interface",
-          "line": 1549
+          "line": 1584
         },
         {
           "name": "SsoConnectionList",
           "kind": "interface",
-          "line": 1568
+          "line": 1603
         },
         {
           "name": "SsoDefaultRoleOption",
           "kind": "interface",
-          "line": 1574
+          "line": 1609
         },
         {
           "name": "SsoAccount",
           "kind": "interface",
-          "line": 1580
+          "line": 1615
         },
         {
           "name": "SsoSignInOption",
           "kind": "interface",
-          "line": 1594
+          "line": 1629
         },
         {
           "name": "ApiKeyOversightView",
           "kind": "interface",
-          "line": 1600
+          "line": 1635
         },
         {
           "name": "ManagedServicesUsageSnapshot",
           "kind": "interface",
-          "line": 1621
+          "line": 1656
         },
         {
           "name": "ManagedServicesTenantStatus",
           "kind": "type",
-          "line": 1628
+          "line": 1663
         },
         {
           "name": "ManagedServicesUsageResponse",
           "kind": "interface",
-          "line": 1630
+          "line": 1665
         },
         {
           "name": "ManagedServicesInvoiceStatus",
           "kind": "type",
-          "line": 1637
+          "line": 1672
         },
         {
           "name": "ManagedServicesStripePaymentStatus",
           "kind": "type",
-          "line": 1638
+          "line": 1673
         },
         {
           "name": "ManagedServicesInvoice",
           "kind": "interface",
-          "line": 1640
+          "line": 1675
         },
         {
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
-          "line": 1656
+          "line": 1691
         },
         {
           "name": "CustomFieldDefinition",
           "kind": "interface",
-          "line": 1662
+          "line": 1697
         },
         {
           "name": "CustomFieldEntityType",
           "kind": "type",
-          "line": 1671
+          "line": 1706
         },
         {
           "name": "CustomFieldValueType",
           "kind": "type",
-          "line": 1672
+          "line": 1707
         },
         {
           "name": "CustomFieldValue",
           "kind": "type",
-          "line": 1674
+          "line": 1709
         },
         {
           "name": "EmbeddedWidget",
           "kind": "interface",
-          "line": 1677
+          "line": 1712
         },
         {
           "name": "EmbedToken",
           "kind": "interface",
-          "line": 1686
+          "line": 1721
         },
         {
           "name": "EntityAttribute",
           "kind": "interface",
-          "line": 1699
+          "line": 1734
         },
         {
           "name": "EntityAttributeValueType",
           "kind": "type",
-          "line": 1708
+          "line": 1743
         },
         {
           "name": "MicroFrontendFragment",
           "kind": "interface",
-          "line": 1716
+          "line": 1751
         },
         {
           "name": "FragmentStatus",
           "kind": "type",
-          "line": 1726
+          "line": 1761
         },
         {
           "name": "FragmentToken",
           "kind": "interface",
-          "line": 1729
+          "line": 1764
         },
         {
           "name": "FormMetadata",
           "kind": "interface",
-          "line": 1741
+          "line": 1776
         },
         {
           "name": "FieldMetadata",
           "kind": "interface",
-          "line": 1747
+          "line": 1782
         },
         {
           "name": "FieldMetadataValueType",
           "kind": "type",
-          "line": 1756
+          "line": 1791
         },
         {
           "name": "BpmnWorkflowDefinition",
           "kind": "interface",
-          "line": 1764
+          "line": 1799
         },
         {
           "name": "ApprovalSubjectType",
           "kind": "type",
-          "line": 1771
+          "line": 1806
         },
         {
           "name": "ProductReferenceLookup",
           "kind": "interface",
-          "line": 1779
+          "line": 1814
         }
       ]
     },
@@ -83719,8 +83769,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 6629,
-      "bytes": 386579,
+      "lines": 6745,
+      "bytes": 393213,
       "doc": "",
       "symbols": []
     },
@@ -83774,7 +83824,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 544,
-      "bytes": 73198,
+      "bytes": 73504,
       "doc": "",
       "symbols": []
     },
@@ -84475,8 +84525,8 @@
       "path": "docs/implementation/catalog-variants-pricing/150-product-kitting-bundles.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 211,
-      "bytes": 10760,
+      "lines": 222,
+      "bytes": 11526,
       "doc": "",
       "symbols": []
     },
@@ -84484,8 +84534,8 @@
       "path": "docs/implementation/catalog-variants-pricing/47-preconfigured-sector-taxonomy.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 170,
-      "bytes": 9164,
+      "lines": 175,
+      "bytes": 9495,
       "doc": "",
       "symbols": []
     },

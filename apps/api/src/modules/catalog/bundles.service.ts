@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { DEFAULT_LOCALE } from '@newax/shared';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
@@ -7,6 +8,14 @@ import { InventoryService } from '../inventory/inventory.service';
 import type { CreateBundleDto, UpdateBundleDto } from './dto/bundle.dto';
 
 type BundleWithComponents = ProductBundle & { components: BundleComponent[] };
+
+/** A bundle as the admin screen (WO-150.6) reads it — `variantId`/
+ *  `componentVariantId` are deliberately bare scalars in the schema (never
+ *  a raw id shown to a human, per doc 150's own "Click the number" lens). */
+export interface BundleView extends ProductBundle {
+  variantLabel: string;
+  components: (BundleComponent & { label: string })[];
+}
 
 /**
  * 150-product-kitting-bundles.md — a bundle is a sellable shell over
@@ -137,14 +146,60 @@ export class BundlesService {
 
   // --- Admin CRUD (WO-150.6) ---
 
-  async list() {
-    return this.prisma.productBundle.findMany({ include: { components: true }, orderBy: { createdAt: 'desc' } });
+  async list(): Promise<BundleView[]> {
+    const bundles = await this.prisma.productBundle.findMany({ include: { components: true }, orderBy: { createdAt: 'desc' } });
+    return this.withLabels(bundles);
   }
 
-  async get(id: string) {
+  async get(id: string): Promise<BundleView> {
+    const bundle = await this.findOrThrow(id);
+    return (await this.withLabels([bundle]))[0]!;
+  }
+
+  /** The raw row, no label enrichment — `update()`/`remove()`'s own
+   *  existence check needs `variantId`/`isActive`/`components.length`
+   *  only, never a display label. */
+  private async findOrThrow(id: string): Promise<BundleWithComponents> {
     const bundle = await this.prisma.productBundle.findUnique({ where: { id }, include: { components: true } });
     if (!bundle) throw new NotFoundException(`No bundle with id ${id}`);
     return bundle;
+  }
+
+  /** `variantId`/`componentVariantId` are bare scalars in the schema
+   *  (ADR-012's own reasoning), so a human-readable label is resolved here,
+   *  once per response, rather than a raw id ever reaching the admin
+   *  screen. */
+  private async withLabels(bundles: BundleWithComponents[]): Promise<BundleView[]> {
+    const variantIds = new Set<string>();
+    for (const bundle of bundles) {
+      variantIds.add(bundle.variantId);
+      for (const component of bundle.components) variantIds.add(component.componentVariantId);
+    }
+
+    const variants = await this.prisma.productVariant.findMany({
+      where: { id: { in: [...variantIds] } },
+      select: {
+        id: true,
+        sku: true,
+        label: true,
+        product: { select: { translations: { where: { locale: DEFAULT_LOCALE }, select: { name: true } } } },
+      },
+    });
+    const labelById = new Map(
+      variants.map((variant) => {
+        const name = variant.product.translations[0]?.name ?? variant.sku;
+        return [variant.id, variant.label ? `${name} — ${variant.label} (${variant.sku})` : `${name} (${variant.sku})`];
+      }),
+    );
+
+    return bundles.map((bundle) => ({
+      ...bundle,
+      variantLabel: labelById.get(bundle.variantId) ?? bundle.variantId,
+      components: bundle.components.map((component) => ({
+        ...component,
+        label: labelById.get(component.componentVariantId) ?? component.componentVariantId,
+      })),
+    }));
   }
 
   async create(actor: AuthenticatedUser, dto: CreateBundleDto): Promise<ProductBundle> {
@@ -174,7 +229,7 @@ export class BundlesService {
   }
 
   async update(actor: AuthenticatedUser, id: string, dto: UpdateBundleDto): Promise<ProductBundle> {
-    const existing = await this.get(id);
+    const existing = await this.findOrThrow(id);
 
     if (dto.components?.some((c) => c.componentVariantId === existing.variantId)) {
       throw new BadRequestException('A bundle cannot list itself as its own component.');
@@ -209,7 +264,7 @@ export class BundlesService {
   }
 
   async remove(actor: AuthenticatedUser, id: string): Promise<void> {
-    const existing = await this.get(id);
+    const existing = await this.findOrThrow(id);
     await this.prisma.productBundle.delete({ where: { id } });
 
     await this.audit.record({

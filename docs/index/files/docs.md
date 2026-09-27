@@ -563,7 +563,7 @@ All 399 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 6629 |  |
+| `DECISIONS.md` | doc | 6745 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -687,8 +687,8 @@ All 399 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `03-variants-sku-seo.md` | doc | 566 |  |
-| `150-product-kitting-bundles.md` | doc | 211 |  |
-| `47-preconfigured-sector-taxonomy.md` | doc | 170 |  |
+| `150-product-kitting-bundles.md` | doc | 222 |  |
+| `47-preconfigured-sector-taxonomy.md` | doc | 175 |  |
 
 ### `docs/implementation/commercial-licensing-agency` (14)
 

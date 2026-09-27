@@ -3,7 +3,7 @@
 
 # Data model
 
-All **309** Prisma models and **144** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **313** Prisma models and **145** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -30,7 +30,7 @@ against a real database.
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
 | [`bank-facilities.prisma`](../data/bank-facilities.md) | 5 | 2 | core platform | Bank, BankFacility, BankFacilityDrawdown, BankFacilityMarkupAccrual, BankFacilityRepayment |
-| [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
+| [`bom.prisma`](../data/bom.md) | 6 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionLineLot, BomProductionRun, BomRecipe, RawMaterial |
 | [`bpmn-workflows.prisma`](../data/bpmn-workflows.md) | 1 | 0 | [`bpmn-workflows`](../modules/bpmn-workflows.md) | BpmnWorkflowDefinition |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
 | [`catalog.prisma`](../data/catalog.md) | 30 | 7 | [`catalog`](../modules/catalog.md) | Brand, BrandTranslation, BundleComponent, Category, CategoryPreset, CategoryTranslation, Collection, CollectionProduct, Collectio… |
@@ -49,7 +49,7 @@ against a real database.
 | [`idempotency.prisma`](../data/idempotency.md) | 1 | 1 | core platform | IdempotencyKey |
 | [`identity-verification.prisma`](../data/identity-verification.md) | 1 | 1 | [`identity-verification`](../modules/identity-verification.md) | IdentityVerification |
 | [`instalments.prisma`](../data/instalments.md) | 3 | 2 | core platform | InstalmentPayment, InstalmentPlan, InstalmentScheduleLine |
-| [`inventory.prisma`](../data/inventory.md) | 12 | 6 | [`inventory`](../modules/inventory.md) | Location, MarkdownSuggestion, SpotCheck, SpotCheckLine, SpotCheckPolicy, StockCount, StockCountLine, StockMovement, StockVariance… |
+| [`inventory.prisma`](../data/inventory.md) | 16 | 7 | [`inventory`](../modules/inventory.md) | Location, Lot, LotAllocation, LotStock, MarkdownSuggestion, SerializedUnit, SpotCheck, SpotCheckLine, SpotCheckPolicy, StockCount… |
 | [`invoicing.prisma`](../data/invoicing.md) | 4 | 2 | core platform | Invoice, InvoiceLine, Quote, QuoteLine |
 | [`loyalty.prisma`](../data/loyalty.md) | 3 | 1 | [`loyalty`](../modules/loyalty.md) | LoyaltyTier, LoyaltyTransaction, Referral |
 | [`marketing.prisma`](../data/marketing.md) | 3 | 3 | [`marketing`](../modules/marketing.md) | Campaign, CampaignRecipient, PhoneOptOut |
@@ -74,7 +74,6 @@ against a real database.
 | [`rag.prisma`](../data/rag.md) | 2 | 2 | [`rag`](../modules/rag.md) | DocumentChunk, DocumentSource |
 | [`receivables.prisma`](../data/receivables.md) | 5 | 1 | [`receivables`](../modules/receivables.md) | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
-| [`resilience.prisma`](../data/resilience.md) | 1 | 0 | [`resilience`](../modules/resilience.md) | RequestOutcome |
 | [`reviews.prisma`](../data/reviews.md) | 2 | 1 | [`reviews`](../modules/reviews.md) | ProductReviewSummary, Review |
 | [`search.prisma`](../data/search.md) | 2 | 0 | [`search`](../modules/search.md) | SearchQueryLog, SearchSynonym |
 | [`settlements.prisma`](../data/settlements.md) | 3 | 1 | [`settlements`](../modules/settlements.md) | SettlementBatch, SettlementBatchLine, SettlementProvider |
@@ -128,8 +127,9 @@ against a real database.
 | [`BlogPost`](../data/content.md#blogpost) | `content` | 13 | 1 | id |  |
 | [`BlogPostTranslation`](../data/content.md#blogposttranslation) | `content` | 10 | 1 | id |  |
 | [`BomComponent`](../data/bom.md#bomcomponent) | `bom` | 10 | 2 | id |  |
-| [`BomProductionLine`](../data/bom.md#bomproductionline) | `bom` | 9 | 2 | id | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the… |
-| [`BomProductionRun`](../data/bom.md#bomproductionrun) | `bom` | 21 | 3 | id | One production run: the recipe was run N times, consuming raw stock and crediting finishe… |
+| [`BomProductionLine`](../data/bom.md#bomproductionline) | `bom` | 10 | 2 | id | One raw-material line consumed by a production run — the same SNAPSHOT discipline as the… |
+| [`BomProductionLineLot`](../data/bom.md#bomproductionlinelot) | `bom` | 6 | 2 | id | 71-recipe-batch-traceability.md, DECISIONS.md ADR-068. |
+| [`BomProductionRun`](../data/bom.md#bomproductionrun) | `bom` | 23 | 4 | id | One production run: the recipe was run N times, consuming raw stock and crediting finishe… |
 | [`BomRecipe`](../data/bom.md#bomrecipe) | `bom` | 19 | 2 | id | The recipe for one finished ProductVariant: which raw materials, how much of each, and th… |
 | [`BpmnWorkflowDefinition`](../data/bpmn-workflows.md#bpmnworkflowdefinition) | `bpmn-workflows` | 6 | 0 | id | A BPMN visual workflow engine, built by explicit owner override (ADR-026) — architecture-… |
 | [`Brand`](../data/catalog.md#brand) | `catalog` | 9 | 0 | id | A label a product is sold under. |
@@ -212,7 +212,10 @@ against a real database.
 | [`LeaveBalance`](../data/payroll.md#leavebalance) | `payroll` | 7 | 2 | id | One row per user per leave type — the running balance a request debits and an accrual run… |
 | [`LeaveRequest`](../data/payroll.md#leaverequest) | `payroll` | 15 | 3 | id |  |
 | [`LeaveType`](../data/payroll.md#leavetype) | `payroll` | 9 | 0 | id |  |
-| [`Location`](../data/inventory.md#location) | `inventory` | 17 | 1 | id | A place stock physically lives. |
+| [`Location`](../data/inventory.md#location) | `inventory` | 19 | 1 | id | A place stock physically lives. |
+| [`Lot`](../data/inventory.md#lot) | `inventory` | 13 | 2 | id | 32-lots-batch-expiry-fefo.md, DECISIONS.md ADR-068. |
+| [`LotAllocation`](../data/inventory.md#lotallocation) | `inventory` | 7 | 2 | id | One row per unit of movement that consumed a specific lot — the join a recall query walks. |
+| [`LotStock`](../data/inventory.md#lotstock) | `inventory` | 6 | 2 | id | The per-location quantity for ONE lot. |
 | [`LoyaltyTier`](../data/loyalty.md#loyaltytier) | `loyalty` | 6 | 0 | id | Trailing-12-month spend bands. |
 | [`LoyaltyTransaction`](../data/loyalty.md#loyaltytransaction) | `loyalty` | 9 | 2 | id |  |
 | [`Manifest`](../data/fulfilment.md#manifest) | `fulfilment` | 9 | 1 | id | A day's pickup, grouped by courier — WO-6.4's printable handover sheet. |
@@ -299,7 +302,7 @@ against a real database.
 | [`ProductReviewSummary`](../data/reviews.md#productreviewsummary) | `reviews` | 9 | 1 | productId | WO-9.9 (09-ai-layer.md). |
 | [`ProductSizeBias`](../data/catalog.md#productsizebias) | `catalog` | 8 | 1 | productId | WO-9.2. |
 | [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 14 | 1 | id |  |
-| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 51 | 5 | id |  |
+| [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 56 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PromoCode`](../data/promotions.md#promocode) | `promotions` | 12 | 1 | id |  |
 | [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 26 | 2 | id |  |
@@ -316,7 +319,6 @@ against a real database.
 | [`ReplicationQuarantine`](../data/replication.md#replicationquarantine) | `replication` | 12 | 0 | id | Where an incoming record lands when it fails to apply — never dropped, never retried fore… |
 | [`ReplicationRecord`](../data/replication.md#replicationrecord) | `replication` | 12 | 0 | id | The log. |
 | [`ReplicationSequenceCounter`](../data/replication.md#replicationsequencecounter) | `replication` | 2 | 0 | nodeId | This node's own per-origin sequence counter — `originNodeId` is always this node's own `N… |
-| [`RequestOutcome`](../data/resilience.md#requestoutcome) | `resilience` | 5 | 0 | id | Resilience engineering (resilience-scalability/38-resilience-engineering.md, WO-38.3). |
 | [`RequisitionLine`](../data/purchasing.md#requisitionline) | `purchasing` | 7 | 2 | id |  |
 | [`ResourceQuotaAlert`](../data/platform.md#resourcequotaalert) | `platform` | 10 | 1 | id | One row per (tenant, metric, window) that crossed its tier's quota threshold — the record… |
 | [`ResourceTierQuota`](../data/platform.md#resourcetierquota) | `platform` | 7 | 0 | id | --------------------------------------------------------------------------- WO-39.6 — res… |
@@ -333,6 +335,7 @@ against a real database.
 | [`SearchQueryLog`](../data/search.md#searchquerylog) | `search` | 6 | 0 | id | No FK to User: most rows are anonymous storefront visitors, and a search log at this volu… |
 | [`SearchSynonym`](../data/search.md#searchsynonym) | `search` | 5 | 0 | id | Search. |
 | [`Segment`](../data/crm.md#segment) | `crm` | 10 | 1 | id | A saved contact filter — "repeat buyers in Lahore", "bridal enquiries" — stored as a filt… |
+| [`SerializedUnit`](../data/inventory.md#serializedunit) | `inventory` | 15 | 4 | id |  |
 | [`Setting`](../data/core.md#setting) | `core` | 4 | 0 | key | Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fe… |
 | [`SettlementBatch`](../data/settlements.md#settlementbatch) | `settlements` | 14 | 1 | id |  |
 | [`SettlementBatchLine`](../data/settlements.md#settlementbatchline) | `settlements` | 6 | 2 | id | Which of our own Payment rows this settlement batch is meant to cover — the join a reconc… |
@@ -363,10 +366,10 @@ against a real database.
 | [`StockAdjustment`](../data/catalog.md#stockadjustment) | `catalog` | 10 | 2 | id | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without a… |
 | [`StockCount`](../data/inventory.md#stockcount) | `inventory` | 14 | 2 | id |  |
 | [`StockCountLine`](../data/inventory.md#stockcountline) | `inventory` | 10 | 2 | id |  |
-| [`StockMovement`](../data/inventory.md#stockmovement) | `inventory` | 15 | 3 | id |  |
+| [`StockMovement`](../data/inventory.md#stockmovement) | `inventory` | 17 | 3 | id |  |
 | [`StockTransfer`](../data/transfers.md#stocktransfer) | `transfers` | 17 | 0 | id |  |
 | [`StockTransferLine`](../data/transfers.md#stocktransferline) | `transfers` | 7 | 1 | id |  |
-| [`StockVariance`](../data/inventory.md#stockvariance) | `inventory` | 16 | 3 | id | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale tha… |
+| [`StockVariance`](../data/inventory.md#stockvariance) | `inventory` | 18 | 4 | id | One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale tha… |
 | [`StoreCreditTransaction`](../data/giftcards.md#storecredittransaction) | `giftcards` | 11 | 2 | id | Same ledger shape, attached to a User rather than a code — refunds, RTO goodwill and serv… |
 | [`Supplier`](../data/purchasing.md#supplier) | `purchasing` | 28 | 3 | id |  |
 | [`SupplierBill`](../data/purchasing.md#supplierbill) | `purchasing` | 18 | 2 | id |  |
@@ -520,6 +523,7 @@ against a real database.
 | [`ReturnStatus`](../data/fulfilment.md#returnstatus) | `fulfilment` | `REQUESTED` `APPROVED` `REJECTED` `IN_TRANSIT` `RECEIVED` `INSPECTED` `REFUNDED` `CLOSED` |
 | [`ReviewStatus`](../data/reviews.md#reviewstatus) | `reviews` | `PENDING` `PUBLISHED` `REJECTED` |
 | [`ScopeLevel`](../data/core.md#scopelevel) | `core` | `ORG` `BRAND` `BRANCH` |
+| [`SerializedUnitStatus`](../data/inventory.md#serializedunitstatus) | `inventory` | `IN_STOCK` `SOLD` `RETURNED` `RMA_TO_SUPPLIER` `WRITTEN_OFF` |
 | [`SettlementBatchStatus`](../data/settlements.md#settlementbatchstatus) | `settlements` | `EXPECTED` `CONFIRMED` `SHORT` `DISPUTED` |
 | [`SettlementMode`](../data/transfers.md#settlementmode) | `transfers` | `NONE` `INTERNAL_PL` `INVOICED` |
 | [`ShipmentStatus`](../data/orders.md#shipmentstatus) | `orders` | `PENDING` `DISPATCHED` `IN_TRANSIT` `DELIVERED` `RETURNED` `LOST` |

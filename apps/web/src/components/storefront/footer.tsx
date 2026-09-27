@@ -69,6 +69,11 @@ export function Footer({
                   {t('sizeGuide')}
                 </Link>
               </li>
+              <li>
+                <Link className="text-sm text-neutral-200 hover:text-white transition-colors block" href={ROUTES.storefront.verifyPurchase}>
+                  {t('verifyPurchase')}
+                </Link>
+              </li>
               {footerHelpMenu.map((item) => (
                 <li key={item.id}>
                   <FooterCmsLink item={item} />

@@ -1,8 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InventoryCron } from './inventory.cron';
+import { PermissionsResolverService } from '../../core/auth/permissions.service';
+import { NotificationsService } from '../../core/notifications/notifications.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
+import { LotsService } from './lots.service';
 import { SpotCheckService } from './spot-check.service';
 import { Logger } from '@nestjs/common';
 
@@ -11,6 +14,9 @@ describe('InventoryCron', () => {
   let prisma: any;
   let settings: any;
   let spotChecks: any;
+  let lots: any;
+  let permissions: any;
+  let notifications: any;
 
   beforeEach(async () => {
     prisma = {
@@ -31,12 +37,27 @@ describe('InventoryCron', () => {
       maybeTriggerDueChecks: jest.fn().mockResolvedValue([]),
     };
 
+    lots = {
+      expiringLotsWithStock: jest.fn().mockResolvedValue([]),
+    };
+
+    permissions = {
+      usersWithPermission: jest.fn().mockResolvedValue([]),
+    };
+
+    notifications = {
+      send: jest.fn().mockResolvedValue(undefined),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         InventoryCron,
         { provide: PrismaService, useValue: prisma },
         { provide: SettingsService, useValue: settings },
         { provide: SpotCheckService, useValue: spotChecks },
+        { provide: LotsService, useValue: lots },
+        { provide: PermissionsResolverService, useValue: permissions },
+        { provide: NotificationsService, useValue: notifications },
       ],
     }).compile();
 
@@ -268,6 +289,58 @@ describe('InventoryCron', () => {
       const errorSpy = jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
 
       await expect(cron.maybeTriggerSpotCheck()).resolves.toBeUndefined();
+      expect(errorSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('alertExpiringLots — 32-lots-batch-expiry-fefo.md WO-32.5', () => {
+    it('sends nothing when no lots are expiring', async () => {
+      lots.expiringLotsWithStock.mockResolvedValue([]);
+
+      await cron.alertExpiringLots();
+
+      expect(permissions.usersWithPermission).not.toHaveBeenCalled();
+      expect(notifications.send).not.toHaveBeenCalled();
+    });
+
+    it('logs an escalation instead of a silent no-op when nobody holds inventory.manage', async () => {
+      lots.expiringLotsWithStock.mockResolvedValue([
+        { lotId: 'l1', lotCode: 'L001', expiresOn: new Date('2027-01-01'), sku: 'SKU-1', label: 'Widget', unsoldQuantity: 5 },
+      ]);
+      permissions.usersWithPermission.mockResolvedValue([]);
+      const errorSpy = jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+
+      await cron.alertExpiringLots();
+
+      expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining('inventory.manage'));
+      expect(notifications.send).not.toHaveBeenCalled();
+    });
+
+    it('sends one consolidated digest to every inventory.manage holder, never one per lot', async () => {
+      lots.expiringLotsWithStock.mockResolvedValue([
+        { lotId: 'l1', lotCode: 'L001', expiresOn: new Date('2027-01-01'), sku: 'SKU-1', label: 'Widget', unsoldQuantity: 5 },
+        { lotId: 'l2', lotCode: 'L002', expiresOn: new Date('2027-01-05'), sku: 'SKU-2', label: 'Gadget', unsoldQuantity: 3 },
+      ]);
+      permissions.usersWithPermission.mockResolvedValue([
+        { id: 'u1', email: 'a@example.com', firstName: 'A', lastName: 'One' },
+        { id: 'u2', email: 'b@example.com', firstName: 'B', lastName: 'Two' },
+      ]);
+
+      await cron.alertExpiringLots();
+
+      expect(permissions.usersWithPermission).toHaveBeenCalledWith('inventory.manage');
+      expect(notifications.send).toHaveBeenCalledTimes(2);
+      const bodies = notifications.send.mock.calls.map((call: any[]) => call[0].body);
+      expect(bodies[0]).toContain('L001');
+      expect(bodies[0]).toContain('L002');
+      expect(bodies[0]).toBe(bodies[1]);
+    });
+
+    it('a failure is caught and logged, never thrown', async () => {
+      lots.expiringLotsWithStock.mockRejectedValue(new Error('db unavailable'));
+      const errorSpy = jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
+
+      await expect(cron.alertExpiringLots()).resolves.toBeUndefined();
       expect(errorSpy).toHaveBeenCalled();
     });
   });

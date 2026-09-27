@@ -18,6 +18,21 @@ timestamps across production runs" gap the promotional list names. This
 document is the connection, not a new traceability engine — `lots`
 already is that engine.
 
+> **Status (2026-09-27): built, WO-71.1–71.4.** `BomProductionLineLot` and
+> `BomProductionRun.outputLotId` (`bom.prisma`) ship exactly as sketched
+> (WO-71.1). `ProductionService.create()` calls `LotsService
+> .recordDeduction()`/`.recordReceipt()` inside its own existing
+> transaction for each lot-tracked input line and a lot-tracked output
+> variant (WO-71.2, DECISIONS.md ADR-069) — a raw material or output with
+> no `Lot` rows registered behaves identically to today's untracked path,
+> proven by a spec against the pre-existing fixtures.
+> `traceOutputLot()`/`traceInputLotForward()` (WO-71.3) walk the rows §2
+> writes, exposed at `GET /admin/bom/lots/:lotId/trace-output`/
+> `.../trace-forward`. The production-run entry screen has an output
+> batch/lot-code field (defaulting to the run's own number when left
+> blank), and both the production-run detail screen and the lot detail
+> screen link genealogy both ways (WO-71.4).
+
 ## 1. Consumption draws from specific input lots; production creates one output lot
 
 ```prisma

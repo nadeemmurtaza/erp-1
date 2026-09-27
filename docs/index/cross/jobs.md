@@ -28,8 +28,9 @@ runs on every node that has its module enabled.
 | `0 * * * *` | `generateRecurringExpenses()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:27` |  |
 | `EVERY_` | `pollActiveShipments()` | `fulfilment` | `apps/api/src/modules/fulfilment/fulfilment.cron.ts:30` |  |
 | `0 3 * * *` | `reconcile()` | `giftcards` | `apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts:16` |  |
-| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:23` | 156-single-employee-branch-loss-prevention.md §3. |
-| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:33` |  |
+| `0 6 * * *` | `alertExpiringLots()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:35` | 32-lots-batch-expiry-fefo.md WO-32.5. |
+| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:83` | 156-single-employee-branch-loss-prevention.md §3. |
+| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:93` |  |
 | `EVERY_MINUTE` | `run()` | `marketing` | `apps/api/src/modules/marketing/campaign-dispatch.cron.ts:23` |  |
 | `0 3 * * *` | `run()` | `marketing` | `apps/api/src/modules/marketing/marketing-automation.cron.ts:72` |  |
 | `*/10 * * * *` | `run()` | `notify` | `apps/api/src/modules/notify/escalation.cron.ts:34` |  |

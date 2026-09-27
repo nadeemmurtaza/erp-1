@@ -11,6 +11,7 @@ import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enr
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 import { IntentRouterService } from '../../core/intent/intent-router.service';
 import { InventoryService } from '../inventory/inventory.service';
+import { LotsService } from '../inventory/lots.service';
 import { PaymentsService } from '../payments/payments.service';
 import { TaxService } from '../tax/tax.service';
 import { ShippingService } from '../fulfilment/shipping.service';
@@ -45,6 +46,7 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
       providers: [
         OrdersService,
         InventoryService,
+        LotsService,
         PrismaService,
         SettingsService,
         StockIntakeRegistry,

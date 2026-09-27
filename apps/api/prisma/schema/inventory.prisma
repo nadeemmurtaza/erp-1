@@ -48,9 +48,11 @@ model StockMovement {
   actorId   String?
   createdAt DateTime @default(now())
 
-  variant  ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  actor    User?          @relation("StockMovementActor", fields: [actorId], references: [id], onDelete: SetNull)
-  location Location?      @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  variant         ProductVariant   @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  actor           User?            @relation("StockMovementActor", fields: [actorId], references: [id], onDelete: SetNull)
+  location        Location?        @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  lotAllocations  LotAllocation[]
+  serializedUnits SerializedUnit[]
 
   @@index([variantId, createdAt])
   @@index([reason, createdAt])
@@ -114,6 +116,8 @@ model Location {
   variances         StockVariance[]
   spotCheckPolicies SpotCheckPolicy[]
   spotChecks        SpotCheck[]
+  lotStocks         LotStock[]
+  serializedUnits   SerializedUnit[]
 
   @@index([isActive])
   @@index([retailBrandId])
@@ -153,16 +157,24 @@ model StockVariance {
   /// non-POS location, or a variance predating this column).
   posShiftId String?
 
+  /// 158-serialized-unit-tracking.md §4 — set when the missing/oversold item
+  /// is serial-tracked, naming the EXACT unit rather than only the SKU.
+  /// Additive: every variance predating serials, or on a non-serialized
+  /// variant, keeps this null.
+  serializedUnitId String?
+
   createdAt DateTime @default(now())
 
-  variant  ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
-  location Location       @relation(fields: [locationId], references: [id], onDelete: Cascade)
-  posShift PosShift?      @relation(fields: [posShiftId], references: [id], onDelete: SetNull)
+  variant        ProductVariant  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  location       Location        @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  posShift       PosShift?       @relation(fields: [posShiftId], references: [id], onDelete: SetNull)
+  serializedUnit SerializedUnit? @relation(fields: [serializedUnitId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([variantId])
   @@index([locationId])
   @@index([posShiftId])
+  @@index([serializedUnitId])
 }
 
 /// 156-single-employee-branch-loss-prevention.md §3. An expected cadence for
@@ -317,6 +329,150 @@ model MarkdownSuggestion {
 
   @@index([variantId, status])
   @@index([status, createdAt])
+}
+
+// 32-lots-batch-expiry-fefo.md, DECISIONS.md ADR-068. `lots` is core, not a
+// pack (MULTI-SECTOR.md's own ruling: "a bakery, a chemist and a battery
+// warehouse need the identical sub-ledger") — a sub-ledger UNDER the
+// existing VariantLocationStock row, never a second stock model. LotStock's
+// quantity for a given (lotId, locationId) sums, across every lot of a
+// variant, to that variant/location's own VariantLocationStock.quantity —
+// the same predicate-on-write invariant House Rule 10 already requires for
+// ordinary stock, enforced by LotsService, never a nightly reconciliation.
+model Lot {
+  id               String    @id @default(cuid())
+  productVariantId String
+  /// The manufacturer's or the receiving branch's own batch code — unique
+  /// per variant, not global; two suppliers legitimately reuse "L001".
+  lotCode          String
+  expiresOn        DateTime?
+  receivedOn       DateTime  @default(now())
+  /// The goods receipt this lot was created from — a bare scalar, per this
+  /// schema's existing cross-module decoupling convention (StockMovement
+  /// already names `sourceRef` the same way; GoodsReceipt is `purchasing`,
+  /// a separate module from `inventory`).
+  sourceReceiptId  String?
+  createdAt        DateTime  @default(now())
+
+  variant     ProductVariant  @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  stocks      LotStock[]
+  allocations LotAllocation[]
+
+  /// bom.prisma — a production run whose FINISHED output belongs to this lot
+  /// (71-recipe-batch-traceability.md). Both `lots` and `bom` are core, so
+  /// this is an ordinary core-to-core relation, not a cross-pack coupling.
+  outputOfRuns    BomProductionRun[]     @relation("BomOutputLot")
+  /// Every BomProductionLine that consumed this lot as a raw-material input.
+  consumedByLines BomProductionLineLot[]
+  /// 158-serialized-unit-tracking.md — units that shipped in this batch,
+  /// when the supplier also lot-codes. Null-able on the SerializedUnit side:
+  /// a sector may use serials without ever using lots.
+  serializedUnits SerializedUnit[]
+
+  @@unique([productVariantId, lotCode])
+  @@index([expiresOn])
+}
+
+/// The per-location quantity for ONE lot. VariantLocationStock stays the
+/// authoritative total per variant/location; this table's rows for a given
+/// (variantId, locationId) must sum to that total.
+model LotStock {
+  id         String @id @default(cuid())
+  lotId      String
+  locationId String
+  quantity   Int    @default(0)
+
+  lot      Lot      @relation(fields: [lotId], references: [id], onDelete: Cascade)
+  location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  @@unique([lotId, locationId])
+  @@index([locationId])
+}
+
+/// One row per unit of movement that consumed a specific lot — the join a
+/// recall query walks. Written by LotsService at the moment of allocation,
+/// inside the same transaction as the StockMovement it belongs to, never
+/// backfilled after the fact.
+model LotAllocation {
+  id              String   @id @default(cuid())
+  lotId           String
+  stockMovementId String
+  quantity        Int
+  allocatedAt     DateTime @default(now())
+
+  lot           Lot           @relation(fields: [lotId], references: [id])
+  stockMovement StockMovement @relation(fields: [stockMovementId], references: [id], onDelete: Cascade)
+
+  /// A movement legitimately draws from a given lot at most once — this is
+  /// the "second copy of the write" guard: a redelivered/retried allocation
+  /// call for the same (lot, movement) pair is a no-op, never a duplicate
+  /// row or a double-decremented LotStock.
+  @@unique([lotId, stockMovementId])
+  @@index([lotId])
+  @@index([stockMovementId])
+}
+
+// 158-serialized-unit-tracking.md, DECISIONS.md ADR-068. The other end of
+// the same idea `lots` already proves: a lot groups many units under one
+// batch identity, a serial number gives exactly one unit its own identity.
+// No organizationId (ADR-040/044/046/049/060/062, and this document's own
+// doc-148/doc-144 precedent): this deployment IS the tenant boundary, so
+// `serialNumber` is unique across the whole deployment, not per-org — the
+// stricter, more correct constraint for a manufacturer-assigned identifier
+// (an IMEI is already globally unique in the real world).
+enum SerializedUnitStatus {
+  IN_STOCK
+  SOLD
+  RETURNED
+  RMA_TO_SUPPLIER
+  WRITTEN_OFF
+}
+
+model SerializedUnit {
+  id               String               @id @default(cuid())
+  productVariantId String
+  /// Manufacturer-assigned in the overwhelming majority of cases (IMEI, a
+  /// printed serial) — this system records it, never generates it, unlike
+  /// documentNumber()'s own sequence-generated codes elsewhere in this repo.
+  serialNumber     String               @unique
+  status           SerializedUnitStatus @default(IN_STOCK)
+  /// The batch this unit shipped in, when the supplier also lot-codes —
+  /// null when the sector uses serials without lots.
+  lotId            String?
+  /// Current location, valid only while status = IN_STOCK. History of how it
+  /// got there is StockMovement's own job — never duplicated here as a
+  /// second location ledger.
+  locationId       String?
+  /// Set once, on SOLD — which order carried this exact unit out the door.
+  /// A bare scalar, no relation: `orders` is a separate module from
+  /// `inventory`, the identical decoupling GoodsReceipt.locationId already
+  /// uses for `purchasing`.
+  orderId          String?
+  /// The StockMovement that produced the CURRENT status. Deliberately NOT
+  /// unique, correcting an internal contradiction in this document's own
+  /// draft: its own prose claimed "unique per movement," but its own §2
+  /// code sample already shares ONE receiving movement (delta = line
+  /// quantity) across every serial received in that line — the code's
+  /// shape is the one actually consistent with how `receiveGoods()`
+  /// batches a line's stock movement rather than moving one unit at a
+  /// time. Idempotency instead comes from the status check
+  /// `sellSerializedUnit()` already performs (`status !== 'IN_STOCK'`
+  /// refuses a retry outright), the same guard the doc's own toxic-pair
+  /// answer names — never from a uniqueness constraint a genuinely shared
+  /// movement would violate on receipt.
+  stockMovementId  String?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  variant       ProductVariant  @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  lot           Lot?            @relation(fields: [lotId], references: [id], onDelete: SetNull)
+  location      Location?       @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  stockMovement StockMovement?  @relation(fields: [stockMovementId], references: [id], onDelete: SetNull)
+  variances     StockVariance[]
+
+  @@index([productVariantId, status])
+  @@index([orderId])
+  @@index([stockMovementId])
 }
 
 enum StockCountStatus {

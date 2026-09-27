@@ -444,6 +444,7 @@
     "shipping": "Shipping & delivery",
     "returns": "Returns",
     "sizeGuide": "Measurement guide",
+    "verifyPurchase": "Verify your purchase",
     "about": "About",
     "story": "Our story",
     "stitchingService": "Stitching service",
@@ -696,6 +697,27 @@
       "INSPECTED": "Being reviewed",
       "REFUNDED": "Refunded",
       "CLOSED": "Closed"
+    }
+  },
+  "warrantyVerify": {
+    "title": "Verify your purchase",
+    "description": "Enter the serial number printed on your unit to check its warranty status.",
+    "inputLabel": "Serial number",
+    "submit": "Verify",
+    "notFound": "That serial number is not recorded in this system.",
+    "soldOn": "Sold on",
+    "order": "Order",
+    "warrantyEndsOn": "Warranty ends",
+    "warrantyActive": "Warranty active",
+    "warrantyExpired": "Warranty expired",
+    "noWarranty": "No warranty on record",
+    "backToShop": "Back to shop",
+    "status": {
+      "IN_STOCK": "Not yet sold",
+      "SOLD": "Sold",
+      "RETURNED": "Returned",
+      "RMA_TO_SUPPLIER": "With supplier for repair",
+      "WRITTEN_OFF": "Written off"
     }
   },
   "support": {

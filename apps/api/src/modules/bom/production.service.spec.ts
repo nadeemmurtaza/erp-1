@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { Test } from '@nestjs/testing';
-import { BadRequestException, MethodNotAllowedException } from '@nestjs/common';
+import { BadRequestException, MethodNotAllowedException, NotFoundException } from '@nestjs/common';
 import { weightedAverageCost } from '@newax/shared';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
@@ -9,6 +9,7 @@ import { AuditService } from '../../core/audit/audit.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { InventoryService } from '../inventory/inventory.service';
+import { LotsService } from '../inventory/lots.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 import { IntentRouterService } from '../../core/intent/intent-router.service';
 import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
@@ -29,6 +30,7 @@ describe('ProductionService', () => {
   let recipes: RecipeService;
   let production: ProductionService;
   let inventory: InventoryService;
+  let lots: LotsService;
   let orderEconomics: OrderEconomicsService;
   let prisma: PrismaService;
   let actorId: string;
@@ -46,6 +48,7 @@ describe('ProductionService', () => {
         SettingsService,
         AuditService,
         InventoryService,
+        LotsService,
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'main' } },
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: StockIntakeRegistry, useValue: { register: jest.fn() } },
@@ -58,6 +61,7 @@ describe('ProductionService', () => {
     recipes = module.get(RecipeService);
     production = module.get(ProductionService);
     inventory = module.get(InventoryService);
+    lots = module.get(LotsService);
     orderEconomics = module.get(OrderEconomicsService);
     prisma = module.get(PrismaService);
 
@@ -411,6 +415,101 @@ describe('ProductionService', () => {
 
       expect(first.id).not.toBe(second.id);
       expect(first.number).not.toBe(second.number);
+    });
+  });
+
+  /** 71-recipe-batch-traceability.md acceptance criteria. */
+  describe('batch genealogy — WO-71.2/71.3', () => {
+    async function makeLotTrackedRecipe(opts: { fabricStock: number; quantityBasePerBatch: number }) {
+      const material = await rawMaterials.create({ name: name('Lot fabric'), unit: 'GAZ', unitScale: 1000 });
+      await prisma.productVariant.update({
+        where: { id: material.variantId },
+        data: { costPrice: 50, lotTracked: true },
+      });
+      await inventory.move({ variantId: material.variantId, locationId, delta: opts.fabricStock, reason: 'ADJUSTMENT', actorId });
+      const inputLot = await lots.recordReceipt({
+        variantId: material.variantId,
+        locationId,
+        lotCode: name('INPUT-LOT'),
+        quantity: opts.fabricStock,
+      });
+
+      const finished = await createFinishedVariant('Lot output');
+      await prisma.productVariant.update({ where: { id: finished.id }, data: { lotTracked: true } });
+      const draft = await recipes.create(
+        {
+          variantId: finished.id,
+          outputQuantity: 1,
+          wastageBps: 0,
+          labourCost: 0,
+          overheadCost: 0,
+          components: [{ rawMaterialId: material.id, quantityBase: opts.quantityBasePerBatch, isOptional: false }],
+        },
+        actorId,
+      );
+      const recipe = await recipes.activate(draft.id);
+
+      return { material, inputLot, finished, recipe };
+    }
+
+    it('a lot-tracked consumption writes BomProductionLineLot rows summing to the line quantityBase, and a lot-tracked output creates an output Lot', async () => {
+      const { inputLot, recipe } = await makeLotTrackedRecipe({ fabricStock: 30000, quantityBasePerBatch: 2000 });
+
+      const run = await production.create({ recipeId: recipe.id, runs: 10, outputLotCode: 'GENEALOGY-BATCH-1' }, actorId);
+
+      const lineLots = await prisma.bomProductionLineLot.findMany({ where: { productionLine: { runId: run.id } } });
+      expect(lineLots.every((row) => row.lotId === inputLot.id)).toBe(true);
+      expect(lineLots.reduce((sum, row) => sum + row.quantityBase, 0)).toBe(20000);
+
+      const stored = await prisma.bomProductionRun.findUniqueOrThrow({ where: { id: run.id } });
+      expect(stored.outputLotId).not.toBeNull();
+      const outputLot = await prisma.lot.findUniqueOrThrow({ where: { id: stored.outputLotId! } });
+      expect(outputLot.lotCode).toBe('GENEALOGY-BATCH-1');
+    });
+
+    it('a raw material and output with no Lot rows registered leave BomProductionLineLot empty and outputLotId null — untracked behavior unchanged', async () => {
+      const { recipe } = await makeActiveRecipeWithFabric({
+        fabricStock: 10000,
+        fabricCostPrice: 10,
+        quantityBasePerBatch: 100,
+      });
+
+      const run = await production.create({ recipeId: recipe.id, runs: 1 }, actorId);
+
+      const lineLots = await prisma.bomProductionLineLot.findMany({ where: { productionLine: { runId: run.id } } });
+      expect(lineLots).toHaveLength(0);
+
+      const stored = await prisma.bomProductionRun.findUniqueOrThrow({ where: { id: run.id } });
+      expect(stored.outputLotId).toBeNull();
+    });
+
+    it('traceOutputLot() and traceInputLotForward() answer both directions of the same genealogy, symmetrically', async () => {
+      const { inputLot, recipe } = await makeLotTrackedRecipe({ fabricStock: 30000, quantityBasePerBatch: 2000 });
+      const run = await production.create({ recipeId: recipe.id, runs: 10 }, actorId);
+      const stored = await prisma.bomProductionRun.findUniqueOrThrow({ where: { id: run.id } });
+      const outputLotId = stored.outputLotId!;
+
+      const backward = await production.traceOutputLot(outputLotId);
+      expect(backward.outputLot.id).toBe(outputLotId);
+      expect(backward.producedByRun.id).toBe(run.id);
+      expect(backward.inputLots.some((entry) => entry.lot.id === inputLot.id)).toBe(true);
+      expect(backward.inputLots.reduce((sum, entry) => sum + entry.quantityConsumed, 0)).toBe(20000);
+
+      const forward = await production.traceInputLotForward(inputLot.id);
+      expect(forward).toHaveLength(1);
+      expect(forward[0].id).toBe(run.id);
+      expect(forward[0].outputLotId).toBe(outputLotId);
+      expect(forward[0].quantityConsumedFromThisLot).toBe(20000);
+    });
+
+    it('traceOutputLot() refuses a lot that no production run ever produced', async () => {
+      const { inputLot } = await makeLotTrackedRecipe({ fabricStock: 1000, quantityBasePerBatch: 100 });
+
+      await expect(production.traceOutputLot(inputLot.id)).rejects.toBeInstanceOf(NotFoundException);
+    });
+
+    it('traceInputLotForward() refuses a lot that does not exist', async () => {
+      await expect(production.traceInputLotForward('does-not-exist')).rejects.toBeInstanceOf(NotFoundException);
     });
   });
 

@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "043668251ccf2c76",
+  "contentHash": "070b224d14088e83",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -50,10 +50,8 @@
     "docs/index/core/notifications.md",
     "docs/index/core/prisma.md",
     "docs/index/core/replication.md",
-    "docs/index/core/resilience.md",
     "docs/index/core/security.md",
     "docs/index/core/settings.md",
-    "docs/index/core/slo.md",
     "docs/index/core/storage.md",
     "docs/index/core/time.md",
     "docs/index/core/versioning.md",
@@ -121,7 +119,6 @@
     "docs/index/data/rag.md",
     "docs/index/data/receivables.md",
     "docs/index/data/replication.md",
-    "docs/index/data/resilience.md",
     "docs/index/data/reviews.md",
     "docs/index/data/search.md",
     "docs/index/data/settlements.md",
@@ -194,7 +191,6 @@
     "docs/index/modules/receivables.md",
     "docs/index/modules/recommendations.md",
     "docs/index/modules/reports.md",
-    "docs/index/modules/resilience.md",
     "docs/index/modules/reviews.md",
     "docs/index/modules/search.md",
     "docs/index/modules/settings.md",
@@ -218,18 +214,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2413,
-    "lines": 365422,
-    "routes": 864,
-    "controllers": 158,
-    "models": 309,
-    "enums": 144,
+    "files": 2409,
+    "lines": 366692,
+    "routes": 871,
+    "controllers": 160,
+    "models": 313,
+    "enums": 145,
     "migrations": 117,
     "events": 69,
     "permissions": 127,
-    "screens": 272,
+    "screens": 276,
     "crons": 29,
-    "specs": 338,
+    "specs": 335,
     "designLaws": 0
   }
 }

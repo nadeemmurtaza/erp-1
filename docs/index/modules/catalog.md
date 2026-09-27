@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 37 files
 
 Source: `apps/api/src/modules/catalog/`
 
-## Files (37 · 6,922 lines)
+## Files (37 · 6,944 lines)
 
 All paths relative to `apps/api/src/modules/catalog`.
 
@@ -34,13 +34,13 @@ All paths relative to `apps/api/src/modules/catalog`.
 | `category.dto.ts` | dto | 68 | 2 |  |
 | `option.dto.ts` | dto | 103 | 6 |  |
 | `product-query.dto.ts` | dto | 88 | 3 |  |
-| `product.dto.ts` | dto | 319 | 4 |  |
+| `product.dto.ts` | dto | 335 | 4 |  |
 | `redirect.dto.ts` | dto | 23 | 1 |  |
 | `import-assistant.service.spec.ts` | unit test | 387 | — |  |
 | `import-assistant.service.ts` | service | 392 | 7 |  |
 | `option-template-admin.service.ts` | service | 125 | 1 | WO-3.1's store-level option library (03-variants-sku-seo.md) — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Op… |
 | `product-admin.service.spec.ts` | unit test | 109 | — |  |
-| `product-admin.service.ts` | service | 745 | 4 | Product and service management for the dashboard. |
+| `product-admin.service.ts` | service | 751 | 4 | Product and service management for the dashboard. |
 | `product-import.service.spec.ts` | unit test | 77 | — |  |
 | `product-import.service.ts` | service | 510 | 6 |  |
 | `product-option-admin.service.ts` | service | 248 | 1 | A product's own option axes (WO-3.1, 03-variants-sku-seo.md) — the part of the variant matrix builder that lets a bouti… |
@@ -124,9 +124,9 @@ All paths relative to `apps/api/src/modules/catalog`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `ProductPublished` | `catalog.product_published` | `product-admin.service.ts:197` |
-| `ProductPriceChanged` | `catalog.product_price_changed` | `product-admin.service.ts:356` |
-| `ProductChanged` | `catalog.product_changed` | `ai-suggestions.service.ts:296`, `product-admin.service.ts:207`, `product-admin.service.ts:364` |
+| `ProductPublished` | `catalog.product_published` | `product-admin.service.ts:200` |
+| `ProductPriceChanged` | `catalog.product_price_changed` | `product-admin.service.ts:359` |
+| `ProductChanged` | `catalog.product_changed` | `ai-suggestions.service.ts:296`, `product-admin.service.ts:210`, `product-admin.service.ts:367` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -143,34 +143,34 @@ All paths relative to `apps/api/src/modules/catalog`.
 |---|---|---|---|
 | `Brand` | 9 | :65 | A label a product is sold under. |
 | `BrandTranslation` | 6 | :84 | House Rule 6: a customer-facing name is a translation row, not a column. |
-| `BundleComponent` | 5 | :756 |  |
+| `BundleComponent` | 5 | :778 |  |
 | `Category` | 13 | :23 |  |
 | `CategoryPreset` | 5 | :51 | 47-preconfigured-sector-taxonomy.md — a named, versioned starter category tree for one vertical, seeded (neve… |
 | `CategoryTranslation` | 6 | :96 |  |
-| `Collection` | 10 | :592 |  |
-| `CollectionProduct` | 5 | :632 | Manual membership and manual sort order. |
-| `CollectionTranslation` | 8 | :615 |  |
-| `OptionTemplate` | 7 | :503 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
-| `OptionTemplateTranslation` | 5 | :516 |  |
-| `OptionTemplateValue` | 8 | :527 |  |
-| `OptionTemplateValueTranslation` | 5 | :542 |  |
+| `Collection` | 10 | :614 |  |
+| `CollectionProduct` | 5 | :654 | Manual membership and manual sort order. |
+| `CollectionTranslation` | 8 | :637 |  |
+| `OptionTemplate` | 7 | :525 | Store-level, reusable option axis — "Size: XS/S/M/L/XL/XXL" typed once under Catalogue -> Options & attribute… |
+| `OptionTemplateTranslation` | 5 | :538 |  |
+| `OptionTemplateValue` | 8 | :549 |  |
+| `OptionTemplateValueTranslation` | 5 | :564 |  |
 | `Product` | 44 | :108 |  |
-| `ProductAiSuggestion` | 12 | :668 | WO-9.1. |
-| `ProductBundle` | 6 | :743 | 150-product-kitting-bundles.md — a sellable shell over existing variants, never a new physical item: selling… |
-| `ProductCrossSell` | 8 | :719 |  |
-| `ProductGarmentType` | 3 | :404 | Which garments a given unstitched fabric can be made into. |
-| `ProductImage` | 13 | :360 |  |
-| `ProductImageTranslation` | 5 | :392 | Alt text per locale. |
-| `ProductOption` | 9 | :425 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
-| `ProductOptionTranslation` | 5 | :442 |  |
-| `ProductOptionValue` | 9 | :454 | A specific value on an option axis: "M", "Ferozi", "128GB". |
-| `ProductOptionValueTranslation` | 5 | :472 |  |
-| `ProductSizeBias` | 8 | :691 | WO-9.2. |
+| `ProductAiSuggestion` | 12 | :690 | WO-9.1. |
+| `ProductBundle` | 6 | :765 | 150-product-kitting-bundles.md — a sellable shell over existing variants, never a new physical item: selling… |
+| `ProductCrossSell` | 8 | :741 |  |
+| `ProductGarmentType` | 3 | :426 | Which garments a given unstitched fabric can be made into. |
+| `ProductImage` | 13 | :382 |  |
+| `ProductImageTranslation` | 5 | :414 | Alt text per locale. |
+| `ProductOption` | 9 | :447 | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
+| `ProductOptionTranslation` | 5 | :464 |  |
+| `ProductOptionValue` | 9 | :476 | A specific value on an option axis: "M", "Ferozi", "128GB". |
+| `ProductOptionValueTranslation` | 5 | :494 |  |
+| `ProductSizeBias` | 8 | :713 | WO-9.2. |
 | `ProductTranslation` | 14 | :200 |  |
-| `ProductVariant` | 51 | :253 |  |
-| `ProductVariantOptionValue` | 5 | :486 | The join that DEFINES a variant: one row per option axis per variant. |
-| `Redirect` | 7 | :556 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
-| `StockAdjustment` | 10 | :342 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
+| `ProductVariant` | 56 | :253 |  |
+| `ProductVariantOptionValue` | 5 | :508 | The join that DEFINES a variant: one row per option axis per variant. |
+| `Redirect` | 7 | :578 | A storefront path that now 301s somewhere else — created automatically when a live product/category slug chan… |
+| `StockAdjustment` | 10 | :364 | One entry per change to ProductVariant.stock, so "why is stock 4" has an answer without an audit table bolted… |
 
 
 Enums: `AiSuggestionKind` (5) · `AiSuggestionStatus` (3) · `CollectionSortStrategy` (6) · `OptionDisplay` (4) · `ProductCrossSellKind` (3) · `ProductKind` (6) · `ProductStatus` (3)
@@ -257,8 +257,8 @@ check there before adding another.
 | `AdminProductQueryDto` | class | `product-query.dto.ts:77` | Admin listing filters — adds status, which the storefront never sees. |
 | `ProductTranslationDto` | class | `product.dto.ts:20` |  |
 | `ProductVariantDto` | class | `product.dto.ts:62` |  |
-| `CreateProductDto` | class | `product.dto.ts:164` |  |
-| `UpdateProductDto` | class | `product.dto.ts:300` |  |
+| `CreateProductDto` | class | `product.dto.ts:180` |  |
+| `UpdateProductDto` | class | `product.dto.ts:316` |  |
 | `CreateRedirectDto` | class | `redirect.dto.ts:4` |  |
 | `ColumnMappingSuggestion` | interface | `import-assistant.service.ts:18` |  |
 | `ValueNormalizationSuggestion` | interface | `import-assistant.service.ts:23` |  |
@@ -269,9 +269,9 @@ check there before adding another.
 | `ImportAssistantService` | class | `import-assistant.service.ts:117` | WO-9.10 (09-ai-layer.md) — "add AI assistance to the mapping step" of the already-idempotent, already-preview… |
 | `OptionTemplateAdminService` | class | `option-template-admin.service.ts:19` | WO-3.1's store-level option library (03-variants-sku-seo.md) — "Size: XS/S/M/L/XL/XXL" typed once under Catal… |
 | `ProductAdminService` | class | `product-admin.service.ts:35` | Product and service management for the dashboard. |
-| `assertKindRules` | function | `product-admin.service.ts:626` | The rules that distinguish the three product kinds. |
-| `assertUniqueSkus` | function | `product-admin.service.ts:672` | Catches the two ways a hand-typed variant list contradicts itself before either reaches the database: the sam… |
-| `toAdminView` | function | `product-admin.service.ts:731` | Admin view: both locales side by side, plus stock roll-ups for the table. |
+| `assertKindRules` | function | `product-admin.service.ts:632` | The rules that distinguish the three product kinds. |
+| `assertUniqueSkus` | function | `product-admin.service.ts:678` | Catches the two ways a hand-typed variant list contradicts itself before either reaches the database: the sam… |
+| `toAdminView` | function | `product-admin.service.ts:737` | Admin view: both locales side by side, plus stock roll-ups for the table. |
 | `ImportRowResult` | interface | `product-import.service.ts:18` |  |
 | `ImportSummary` | interface | `product-import.service.ts:25` |  |
 | `COLUMNS` | const | `product-import.service.ts:34` | Exported for ImportAssistantService (WO-9.10) — the one canonical list, never duplicated. |

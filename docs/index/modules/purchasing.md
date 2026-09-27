@@ -9,13 +9,13 @@ Pack **core** · enabled by the `MODULES` allowlist · 24 files
 
 Source: `apps/api/src/modules/purchasing/`
 
-## Files (24 · 3,297 lines)
+## Files (24 · 3,527 lines)
 
 All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `purchase-order.dto.ts` | dto | 104 | 4 |  |
+| `purchase-order.dto.ts` | dto | 125 | 4 |  |
 | `requisition.dto.ts` | dto | 50 | 4 |  |
 | `supplier-bill.dto.ts` | dto | 67 | 2 |  |
 | `supplier.dto.ts` | dto | 104 | 3 |  |
@@ -29,8 +29,8 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | `purchasing.metrics.spec.ts` | unit test | 74 | — |  |
 | `purchasing.metrics.ts` | module | 135 | 2 | The Purchasing group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
 | `purchasing.module.ts` | nest module | 34 | 1 |  |
-| `purchasing.service.ts` | service | 680 | 1 |  |
-| `purchasing.spec.ts` | unit test | 233 | — |  |
+| `purchasing.service.ts` | service | 749 | 1 |  |
+| `purchasing.spec.ts` | unit test | 369 | — |  |
 | `reorder.listener.spec.ts` | unit test | 146 | — |  |
 | `reorder.listener.ts` | event subscriber | 83 | 1 | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an external supplie… |
 | `requisition-task-source.spec.ts` | unit test | 59 | — |  |
@@ -38,7 +38,7 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | `requisition.controller.ts` | controller | 63 | 1 |  |
 | `requisition.service.spec.ts` | unit test | 207 | — |  |
 | `requisition.service.ts` | service | 214 | 1 | 152-purchase-requisition.md. |
-| `supplier-bill.spec.ts` | unit test | 230 | — |  |
+| `supplier-bill.spec.ts` | unit test | 234 | — |  |
 
 
 ## HTTP routes (24)
@@ -77,12 +77,12 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:448` |
+| `GoodsReceived` | `purchasing.goods_received` | `purchasing.service.ts:517` |
 | `RequisitionCreated` | `purchasing.requisition_created` | `requisition-task-source.ts:38`, `requisition.service.ts:72` |
 | `RequisitionConverted` | `purchasing.requisition_converted` | `requisition.service.ts:205` |
-| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:599` |
-| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:663` |
-| `SupplierDeleted` | `purchasing.supplier_deleted` | `purchasing.service.ts:182` |
+| `SupplierBillRaised` | `purchasing.supplier_bill_raised` | `purchasing.service.ts:668` |
+| `SupplierBillPaid` | `purchasing.supplier_bill_paid` | `purchasing.service.ts:732` |
+| `SupplierDeleted` | `purchasing.supplier_deleted` | `purchasing.service.ts:186` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -159,7 +159,7 @@ check there before adding another.
 | `purchase-order-feed.source.spec.ts` | 5 | PurchaseOrderFeedSource — WO-58.2 |
 | `purchasing.cron.spec.ts` | 5 | PurchasingCron |
 | `purchasing.metrics.spec.ts` | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |
-| `purchasing.spec.ts` | 10 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
+| `purchasing.spec.ts` | 15 | PurchasingService · upsertReorderDraftLine · createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021 · create (Suppl… |
 | `reorder.listener.spec.ts` | 9 | PurchasingReorderListener |
 | `requisition-task-source.spec.ts` | 4 | RequisitionTaskSource |
 | `requisition.service.spec.ts` | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refusal · convertToPurcha… |
@@ -173,7 +173,7 @@ check there before adding another.
 | `CreatePurchaseOrderItemDto` | class | `purchase-order.dto.ts:6` |  |
 | `CreatePurchaseOrderDto` | class | `purchase-order.dto.ts:24` |  |
 | `ReceiveGoodsItemDto` | class | `purchase-order.dto.ts:63` |  |
-| `ReceiveGoodsDto` | class | `purchase-order.dto.ts:73` |  |
+| `ReceiveGoodsDto` | class | `purchase-order.dto.ts:94` |  |
 | `CreateRequisitionLineDto` | class | `requisition.dto.ts:4` |  |
 | `CreateRequisitionDto` | class | `requisition.dto.ts:19` |  |
 | `DecideRequisitionDto` | class | `requisition.dto.ts:35` |  |
@@ -192,7 +192,7 @@ check there before adding another.
 | `PurchasingMetricsProvider` | class | `purchasing.metrics.ts:17` | The Purchasing group's dashboard cards (10-admin-dashboard.md card inventory, WO-A.4). |
 | `PurchasingSpendMetricsProvider` | class | `purchasing.metrics.ts:102` | `purchasing.spend` alone — see the class doc above for why it is split out. |
 | `PurchasingModule` | class | `purchasing.module.ts:33` |  |
-| `PurchasingService` | class | `purchasing.service.ts:70` |  |
+| `PurchasingService` | class | `purchasing.service.ts:72` |  |
 | `PurchasingReorderListener` | class | `reorder.listener.ts:24` | Turns a real-time reorder-point crossing into an immediate DRAFT PO line, for variants sourced from an extern… |
 | `RequisitionTaskSource` | class | `requisition-task-source.ts:30` | WO-23.3's own real, single demonstration registration: `purchasing. |
 | `RequisitionController` | class | `requisition.controller.ts:11` |  |

@@ -32,6 +32,12 @@ export class CreateProductionRunDto {
   @IsIn(SCOPE_LEVELS)
   @IsOptional()
   scopeLevel?: (typeof SCOPE_LEVELS)[number];
+
+  /** 71-recipe-batch-traceability.md §1. Only used when the output variant is lot-tracked; omit for an FEFO-suggested default (the run's own number). */
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  outputLotCode?: string;
 }
 
 export class ProductionRunQueryDto extends PaginationQueryDto {

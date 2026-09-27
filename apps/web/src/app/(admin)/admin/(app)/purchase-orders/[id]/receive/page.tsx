@@ -21,6 +21,8 @@ interface PurchaseOrder {
       product: { translations: { name: string }[] };
       size: string | null;
       color: string | null;
+      lotTracked: boolean;
+      tracksSerials: boolean;
     };
   }>;
 }
@@ -39,6 +41,13 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
   const [receiveQtys, setReceiveQtys] = useState<Record<string, number>>({});
   const [notes, setNotes] = useState('');
   const [saving, setSaving] = useState(false);
+
+  // 32-lots-batch-expiry-fefo.md / 158-serialized-unit-tracking.md — one lot
+  // code + expiry per lot-tracked line, one serial number per unit per
+  // serial-tracked line. Keyed by PO item id, same as receiveQtys.
+  const [lotCodes, setLotCodes] = useState<Record<string, string>>({});
+  const [expiresOn, setExpiresOn] = useState<Record<string, string>>({});
+  const [serialsText, setSerialsText] = useState<Record<string, string>>({});
 
   useEffect(() => {
     adminFetch<PurchaseOrder>(`/admin/purchase-orders/${id}`)
@@ -67,16 +76,33 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
     setSaving(true);
     setError(null);
     try {
-      const items = po.items
-        .filter(item => receiveQtys[item.id] > 0)
-        .map(item => ({
-          purchaseOrderItemId: item.id,
-          quantity: receiveQtys[item.id],
-        }));
+      const receivingLines = po.items.filter((item) => receiveQtys[item.id] > 0);
 
-      if (items.length === 0) {
+      if (receivingLines.length === 0) {
         throw new Error('No items to receive. Set a quantity > 0.');
       }
+
+      for (const item of receivingLines) {
+        if (item.variant.lotTracked && !lotCodes[item.id]?.trim()) {
+          throw new Error(`${item.variant.sku} is batch/lot tracked — enter a lot code before receiving it.`);
+        }
+        if (item.variant.tracksSerials) {
+          const serials = parseSerials(serialsText[item.id]);
+          if (serials.length !== receiveQtys[item.id]) {
+            throw new Error(
+              `${item.variant.sku} is serial tracked — ${receiveQtys[item.id]} unit(s) receiving but ${serials.length} serial number(s) given.`,
+            );
+          }
+        }
+      }
+
+      const items = receivingLines.map((item) => ({
+        purchaseOrderItemId: item.id,
+        quantity: receiveQtys[item.id],
+        lotCode: item.variant.lotTracked ? lotCodes[item.id]?.trim() : undefined,
+        expiresOn: item.variant.lotTracked && expiresOn[item.id] ? expiresOn[item.id] : undefined,
+        serials: item.variant.tracksSerials ? parseSerials(serialsText[item.id]) : undefined,
+      }));
 
       await adminFetch(`/admin/purchase-orders/${id}/receive`, {
         method: 'POST',
@@ -168,6 +194,62 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
         />
       </div>
 
+      {po.items.some((item) => receiveQtys[item.id] > 0 && (item.variant.lotTracked || item.variant.tracksSerials)) ? (
+        <div className="card mb-6 space-y-5 p-6">
+          <h2 className="text-sm font-medium text-neutral-900">Batch &amp; serial details</h2>
+          {po.items
+            .filter((item) => receiveQtys[item.id] > 0 && (item.variant.lotTracked || item.variant.tracksSerials))
+            .map((item) => (
+              <div key={item.id} className="border-t border-neutral-100 pt-4 first:border-t-0 first:pt-0">
+                <p className="mb-2 text-sm font-medium text-neutral-900">
+                  {item.variant.product.translations[0]?.name || item.variant.sku}
+                  <span className="ms-2 text-xs font-normal text-neutral-900/60">{item.variant.sku}</span>
+                </p>
+                {item.variant.lotTracked ? (
+                  <div className="mb-3 grid gap-3 sm:grid-cols-2">
+                    <label className="block">
+                      <span className="field-label">Lot / batch code</span>
+                      <input
+                        className="field-input"
+                        value={lotCodes[item.id] ?? ''}
+                        onChange={(e) => setLotCodes({ ...lotCodes, [item.id]: e.target.value })}
+                        placeholder="e.g. LOT-2026-0912"
+                        required
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="field-label">Expires on (optional)</span>
+                      <input
+                        type="date"
+                        className="field-input"
+                        value={expiresOn[item.id] ?? ''}
+                        onChange={(e) => setExpiresOn({ ...expiresOn, [item.id]: e.target.value })}
+                      />
+                    </label>
+                  </div>
+                ) : null}
+                {item.variant.tracksSerials ? (
+                  <label className="block">
+                    <span className="field-label">
+                      Serial numbers — one per line, exactly {receiveQtys[item.id]} needed
+                    </span>
+                    <textarea
+                      className="field-input w-full"
+                      rows={Math.min(8, Math.max(3, receiveQtys[item.id]))}
+                      value={serialsText[item.id] ?? ''}
+                      onChange={(e) => setSerialsText({ ...serialsText, [item.id]: e.target.value })}
+                      placeholder={'IMEI-0001\nIMEI-0002\n…'}
+                    />
+                    <span className="mt-1 block text-xs text-neutral-900/60">
+                      {parseSerials(serialsText[item.id]).length} of {receiveQtys[item.id]} entered
+                    </span>
+                  </label>
+                ) : null}
+              </div>
+            ))}
+        </div>
+      ) : null}
+
       <div className="card p-6 max-w-2xl">
         {locations.length > 1 ? (
           <div className="mb-6">
@@ -223,4 +305,12 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
       </div>
     </>
   );
+}
+
+function parseSerials(text: string | undefined): string[] {
+  if (!text) return [];
+  return text
+    .split(/[\n,]/)
+    .map((serial) => serial.trim())
+    .filter(Boolean);
 }

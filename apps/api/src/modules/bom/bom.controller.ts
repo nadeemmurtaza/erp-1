@@ -210,6 +210,20 @@ export class BomController {
     return this.production.remove();
   }
 
+  @Get('lots/:lotId/trace-output')
+  @RequirePermission('bom.view')
+  @ApiOperation({ summary: '"What went into this finished batch" — the run that produced this lot and every input lot it consumed' })
+  async traceOutputLot(@Param('lotId') lotId: string) {
+    return this.production.traceOutputLot(lotId);
+  }
+
+  @Get('lots/:lotId/trace-forward')
+  @RequirePermission('bom.view')
+  @ApiOperation({ summary: '"Which finished batches did this ingredient reach" — every production run that consumed this lot' })
+  async traceInputLotForward(@Param('lotId') lotId: string) {
+    return this.production.traceInputLotForward(lotId);
+  }
+
   @Get('raw-usage')
   @RequirePermission('bom.view')
   @ApiOperation({ summary: 'Raw-material consumption over time, sourced from the stock ledger — cost fields only with inventory.view_cost' })

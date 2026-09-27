@@ -137,6 +137,11 @@ export interface AdminVariant {
   reorderPoint: number | null;
   reorderQuantity: number | null;
   preferredSupplierId: string | null;
+  /** 32-lots-batch-expiry-fefo.md — FEFO allocation, recall lookup, expiry alerting. */
+  lotTracked: boolean;
+  /** 158-serialized-unit-tracking.md — one row per physical unit (IMEI-style). */
+  tracksSerials: boolean;
+  warrantyMonths: number | null;
 }
 
 export interface AdminProduct {

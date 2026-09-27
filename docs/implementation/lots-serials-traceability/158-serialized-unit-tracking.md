@@ -12,6 +12,25 @@ number gives exactly one unit its own identity.** Neither replaces the
 other, and neither replaces `Location`/`VariantLocationStock`'s own job of
 "how much of this variant is at this location."
 
+> **Status (2026-09-27): built, WO-158.1–158.5, with named boundaries.**
+> `SerializedUnit`/`SerializedUnitStatus` and `ProductVariant.tracksSerials`
+> ship as sketched (WO-158.1). `SerializedUnitsService.receiveUnits()` is
+> the only writer at receipt time, calling `InventoryService.move()`
+> unchanged — N individual calls (delta 1 each), not one `moveMany()` for
+> the whole line, proved cost-equivalent to a single batched receipt
+> (DECISIONS.md ADR-069). `sellUnit()`/`returnUnit()`/`writeOff()` are
+> manual staff actions, **deliberately NOT wired into the POS/online sale
+> flow WO-158.4 also names** — automatically picking which physical unit a
+> sale consumes is a real correctness risk this document's own §2 sketch
+> does not resolve, so a staff member reconciles the sold serial against
+> the order afterward instead (ADR-069's own reasoning). `getUnitHistory()`
+> and the public `GET /public/serials/:serialNumber` warranty lookup are
+> built (WO-158.3) and reachable from the storefront footer — **surfacing
+> the lookup inside doc 64's help-desk ticket screen is not built**. The
+> goods-receipt screen's serial-entry step is built (WO-158.4). Permissions
+> are exactly as scoped (WO-158.5): `inventory.manage` for staff actions,
+> `@Public()` for the narrow lookup.
+
 ## Why this is a real gap, not a smaller version of `lots`
 
 A grocery recall asks "which customers may have bought from batch

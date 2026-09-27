@@ -82,4 +82,42 @@ export class PermissionsResolverService {
 
     return { roles, permissions: [...permissions] };
   }
+
+  /**
+   * The inverse of `resolveForUser()` — every user who currently holds a
+   * given permission key, for a caller that needs to address a capability
+   * rather than a fixed address (CLAUDE.md's "Audience is a capability, not
+   * an address" — `inventory.listener.ts`'s `store.supportEmail` is the
+   * standing counter-example this exists to avoid repeating). Unions
+   * role-derived grants with a per-user GRANT override and subtracts a
+   * per-user REVOKE, the same two layers `resolveForUser()` already applies
+   * — deliberately omitting `OrgUnitGrant`-derived access (time-boxed,
+   * narrow, and per `resolveForUser()`'s own doc comment unused by every
+   * deployment today); a caller needing that reach too should compose
+   * `resolveForUser()` per candidate instead of this batch shortcut.
+   */
+  async usersWithPermission(permissionKey: string): Promise<Array<{ id: string; email: string | null; firstName: string | null; lastName: string | null }>> {
+    const [roleGranted, overrides] = await Promise.all([
+      this.prisma.userRoleAssignment.findMany({
+        where: { role: { grants: { some: { permission: { key: permissionKey } } } } },
+        select: { userId: true },
+      }),
+      this.prisma.userPermission.findMany({
+        where: { permission: { key: permissionKey } },
+        select: { userId: true, effect: true },
+      }),
+    ]);
+
+    const userIds = new Set(roleGranted.map((assignment) => assignment.userId));
+    for (const override of overrides) {
+      if (override.effect === 'GRANT') userIds.add(override.userId);
+      else userIds.delete(override.userId);
+    }
+    if (userIds.size === 0) return [];
+
+    return this.prisma.user.findMany({
+      where: { id: { in: [...userIds] } },
+      select: { id: true, email: true, firstName: true, lastName: true },
+    });
+  }
 }

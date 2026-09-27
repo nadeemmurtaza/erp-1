@@ -3,26 +3,26 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2393,
-    "lines": 362809,
-    "routes": 858,
-    "controllers": 157,
-    "models": 308,
+    "files": 2413,
+    "lines": 365422,
+    "routes": 864,
+    "controllers": 158,
+    "models": 309,
     "enums": 144,
-    "migrations": 116,
+    "migrations": 117,
     "events": 69,
-    "permissions": 124,
-    "screens": 271,
-    "crons": 28,
-    "specs": 332,
+    "permissions": 127,
+    "screens": 272,
+    "crons": 29,
+    "specs": 338,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
       "files": 213,
-      "lines": 21395,
-      "bytes": 1222740,
+      "lines": 21432,
+      "bytes": 1225054,
       "label": "repository root files"
     },
     "infra": {
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1135,
-      "lines": 150504,
-      "bytes": 5862026,
+      "files": 1154,
+      "lines": 152518,
+      "bytes": 5943603,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 422,
-      "lines": 70991,
-      "bytes": 2565713,
+      "files": 423,
+      "lines": 71228,
+      "bytes": 2576670,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 401,
-      "lines": 71021,
-      "bytes": 4228543,
+      "lines": 71305,
+      "bytes": 4247221,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 80,
-      "lines": 8693,
-      "bytes": 313008,
+      "lines": 8734,
+      "bytes": 314966,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -894,6 +894,7 @@
         "apps/api/src/modules/payments/payment-provider.ts",
         "apps/api/src/modules/payments/payments.controller.ts",
         "apps/api/src/modules/payments/payments.module.ts",
+        "apps/api/src/modules/payments/payments.service.spec.ts",
         "apps/api/src/modules/payments/payments.service.ts",
         "apps/api/src/modules/payments/providers/account.provider.spec.ts",
         "apps/api/src/modules/payments/providers/account.provider.ts",
@@ -1176,6 +1177,19 @@
       ],
       "routes": 12,
       "page": "docs/index/modules/reports.md"
+    },
+    {
+      "name": "resilience",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/resilience/dto/resilience.dto.ts",
+        "apps/api/src/modules/resilience/resilience-admin.controller.ts",
+        "apps/api/src/modules/resilience/resilience-admin.module.ts"
+      ],
+      "routes": 6,
+      "page": "docs/index/modules/resilience.md"
     },
     {
       "name": "reviews",
@@ -1573,8 +1587,10 @@
     {
       "name": "events",
       "files": [
+        "apps/api/src/core/events/contract-analyzer.ts",
         "apps/api/src/core/events/domain-events.ts",
         "apps/api/src/core/events/event-bus.service.ts",
+        "apps/api/src/core/events/event-contracts.spec.ts",
         "apps/api/src/core/events/events.module.ts",
         "apps/api/src/core/events/on-domain-event.decorator.ts",
         "apps/api/src/core/events/outbox.dispatcher.ts"
@@ -1621,6 +1637,7 @@
     {
       "name": "health",
       "files": [
+        "apps/api/src/core/health/health.controller.spec.ts",
         "apps/api/src/core/health/health.controller.ts",
         "apps/api/src/core/health/health.module.ts"
       ],
@@ -1726,6 +1743,16 @@
       "page": "docs/index/core/replication.md"
     },
     {
+      "name": "resilience",
+      "files": [
+        "apps/api/src/core/resilience/circuit-breaker.service.spec.ts",
+        "apps/api/src/core/resilience/circuit-breaker.service.ts",
+        "apps/api/src/core/resilience/circuit-breaker.ts",
+        "apps/api/src/core/resilience/resilience.module.ts"
+      ],
+      "page": "docs/index/core/resilience.md"
+    },
+    {
       "name": "security",
       "files": [
         "apps/api/src/core/security/api-token.ts",
@@ -1745,6 +1772,18 @@
         "apps/api/src/core/settings/settings.service.ts"
       ],
       "page": "docs/index/core/settings.md"
+    },
+    {
+      "name": "slo",
+      "files": [
+        "apps/api/src/core/slo/request-outcome-prune.cron.spec.ts",
+        "apps/api/src/core/slo/request-outcome-prune.cron.ts",
+        "apps/api/src/core/slo/slo-paths.ts",
+        "apps/api/src/core/slo/slo-recorder.service.spec.ts",
+        "apps/api/src/core/slo/slo-recorder.service.ts",
+        "apps/api/src/core/slo/slo.module.ts"
+      ],
+      "page": "docs/index/core/slo.md"
     },
     {
       "name": "storage",
@@ -8616,7 +8655,7 @@
       "controller": "OrdersAdminController",
       "handler": "list",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 104,
+      "line": 112,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -8632,7 +8671,7 @@
       "controller": "OrdersAdminController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 120,
+      "line": 128,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -8648,7 +8687,7 @@
       "controller": "OrdersAdminController",
       "handler": "changeStatus",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 126,
+      "line": 134,
       "access": "orders.manage",
       "permissions": [
         "orders.manage"
@@ -9762,7 +9801,7 @@
       "controller": "PosSalesController",
       "handler": "sell",
       "file": "apps/api/src/modules/pos/pos-sales.controller.ts",
-      "line": 18,
+      "line": 23,
       "access": "pos.operate",
       "permissions": [
         "pos.operate"
@@ -10955,6 +10994,102 @@
       "public": false,
       "authOnly": false,
       "summary": "The current user's own requisitions"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/resilience/circuits",
+      "module": "resilience",
+      "controller": "ResilienceAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/resilience/resilience-admin.controller.ts",
+      "line": 28,
+      "access": "platform.resilience.view",
+      "permissions": [
+        "platform.resilience.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every circuit breaker that has taken a call or been configured, with its live state"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/resilience/circuits/:key/configure",
+      "module": "resilience",
+      "controller": "ResilienceAdminController",
+      "handler": "configure",
+      "file": "apps/api/src/modules/resilience/resilience-admin.controller.ts",
+      "line": 35,
+      "access": "platform.resilience.tune",
+      "permissions": [
+        "platform.resilience.tune"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Change a circuit's failure threshold and/or cooldown window"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/resilience/circuits/:key/simulate",
+      "module": "resilience",
+      "controller": "ResilienceAdminController",
+      "handler": "simulate",
+      "file": "apps/api/src/modules/resilience/resilience-admin.controller.ts",
+      "line": 45,
+      "access": "platform.resilience.tune",
+      "permissions": [
+        "platform.resilience.tune"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": ""
+    },
+    {
+      "method": "GET",
+      "path": "/admin/resilience/dr",
+      "module": "resilience",
+      "controller": "ResilienceAdminController",
+      "handler": "dr",
+      "file": "apps/api/src/modules/resilience/resilience-admin.controller.ts",
+      "line": 60,
+      "access": "platform.resilience.view",
+      "permissions": [
+        "platform.resilience.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "RPO/RTO as documented in DEPLOYMENT.md §9 — stated facts, not live data"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/resilience/slo",
+      "module": "resilience",
+      "controller": "ResilienceAdminController",
+      "handler": "slo",
+      "file": "apps/api/src/modules/resilience/resilience-admin.controller.ts",
+      "line": 54,
+      "access": "platform.resilience.view",
+      "permissions": [
+        "platform.resilience.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Trailing-30-day success rate, p95 latency and remaining error budget for checkout, POS sale completion and till-parent sync — each carries its own overBudget boolean"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/resilience/slo-paths",
+      "module": "resilience",
+      "controller": "ResilienceAdminController",
+      "handler": "paths",
+      "file": "apps/api/src/modules/resilience/resilience-admin.controller.ts",
+      "line": 86,
+      "access": "platform.resilience.view",
+      "permissions": [
+        "platform.resilience.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "The three named critical paths this dashboard tracks, for the frontend to render without hardcoding them twice"
     },
     {
       "method": "GET",
@@ -14342,7 +14477,7 @@
       "controller": "OrdersController",
       "handler": "place",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 40,
+      "line": 45,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -14356,7 +14491,7 @@
       "controller": "OrdersController",
       "handler": "get",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 76,
+      "line": 84,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -14370,7 +14505,7 @@
       "controller": "OrdersController",
       "handler": "track",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 85,
+      "line": 93,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -14384,7 +14519,7 @@
       "controller": "OrdersController",
       "handler": "mine",
       "file": "apps/api/src/modules/orders/orders.controller.ts",
-      "line": 62,
+      "line": 70,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -17624,6 +17759,50 @@
         "ADMIN"
       ],
       "inSeed": true
+    },
+    {
+      "key": "platform.resilience.view",
+      "label": "View the degradation matrix, circuit-breaker states, SLO/error-budget dashboards and DR numbers",
+      "category": "Platform",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/resilience/circuits",
+        "GET /admin/resilience/dr",
+        "GET /admin/resilience/slo",
+        "GET /admin/resilience/slo-paths"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "platform.resilience.oncall",
+      "label": "Be paged when a circuit breaker opens or a critical-path error budget is breached",
+      "category": "Platform",
+      "sensitivity": "low",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "platform.resilience.tune",
+      "label": "Change a circuit breaker's failure threshold or cooldown window",
+      "category": "Platform",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/resilience/circuits/:key/configure",
+        "POST /admin/resilience/circuits/:key/simulate"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     }
   ],
   "events": [
@@ -17684,9 +17863,9 @@
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:162",
         "apps/api/src/modules/orders/instalment-plan.service.ts:90",
         "apps/api/src/modules/orders/orders.service.ts:756",
-        "apps/api/src/modules/payments/payments.service.ts:193",
-        "apps/api/src/modules/payments/payments.service.ts:295",
-        "apps/api/src/modules/payments/payments.service.ts:343"
+        "apps/api/src/modules/payments/payments.service.ts:199",
+        "apps/api/src/modules/payments/payments.service.ts:301",
+        "apps/api/src/modules/payments/payments.service.ts:349"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:123 onPaymentSucceeded()",
@@ -17698,8 +17877,8 @@
       "name": "payment.failed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/payments/payments.service.ts:193",
-        "apps/api/src/modules/payments/payments.service.ts:295"
+        "apps/api/src/modules/payments/payments.service.ts:199",
+        "apps/api/src/modules/payments/payments.service.ts:301"
       ],
       "subscribers": [
         "apps/api/src/modules/payments/notification.subscriber.ts:79 onPaymentFailed()"
@@ -17710,7 +17889,7 @@
       "name": "payment.awaiting_approval",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/payments/payments.service.ts:118"
+        "apps/api/src/modules/payments/payments.service.ts:124"
       ],
       "subscribers": []
     },
@@ -17719,7 +17898,7 @@
       "name": "payment.refunded",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/payments/payments.service.ts:402"
+        "apps/api/src/modules/payments/payments.service.ts:408"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:160 onPaymentRefunded()",
@@ -37915,6 +38094,52 @@
       "indexes": []
     },
     {
+      "name": "RequestOutcome",
+      "file": "apps/api/prisma/schema/resilience.prisma",
+      "line": 23,
+      "doc": "Resilience engineering (resilience-scalability/38-resilience-engineering.md, WO-38.3).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "path",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "succeeded",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "latencyMs",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "occurredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([path, occurredAt])"
+      ]
+    },
+    {
       "name": "RequisitionLine",
       "file": "apps/api/prisma/schema/purchasing.prisma",
       "line": 293,
@@ -48983,6 +49208,20 @@
       "tables": [
         "FeatureFlag"
       ]
+    },
+    {
+      "folder": "20260927100000_wo38_request_outcomes",
+      "file": "apps/api/prisma/schema/migrations/20260927100000_wo38_request_outcomes/migration.sql",
+      "date": "2026-09-27",
+      "slug": "wo38_request_outcomes",
+      "statements": 3,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "RequestOutcome"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -51005,6 +51244,15 @@
     },
     {
       "app": "web",
+      "kind": "page",
+      "url": "/admin/platform-resilience",
+      "file": "apps/web/src/app/(admin)/admin/(app)/platform-resilience/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "loading",
       "url": "/admin/products",
       "file": "apps/web/src/app/(admin)/admin/(app)/products/loading.tsx",
@@ -51478,6 +51726,13 @@
       "line": 39,
       "handler": "reapStuckInProgressKeys",
       "doc": "A narrower sweep than the nightly purge above — reaps only rows stuck `IN_PROGRESS` well past any real request's own duration, so a crashed handler does not permanently block retries under the same k…"
+    },
+    {
+      "schedule": "30 3 * * *",
+      "file": "apps/api/src/core/slo/request-outcome-prune.cron.ts",
+      "line": 22,
+      "handler": "prune",
+      "doc": ""
     },
     {
       "schedule": "0 2 1 * *",
@@ -52188,7 +52443,7 @@
       "file": "apps/api/src/core/ai/ai.service.spec.ts",
       "module": "core/ai",
       "kind": "unit test",
-      "cases": 16,
+      "cases": 17,
       "describes": [
         "AiService",
         "isAvailable",
@@ -52408,6 +52663,16 @@
       ]
     },
     {
+      "file": "apps/api/src/core/events/event-contracts.spec.ts",
+      "module": "core/events",
+      "kind": "unit test",
+      "cases": 13,
+      "describes": [
+        "Domain event contracts — WO-38.5",
+        "contract-analyzer — unit fixtures"
+      ]
+    },
+    {
       "file": "apps/api/src/core/extension-points/branch-policy.registry.spec.ts",
       "module": "core/extension-points",
       "kind": "unit test",
@@ -52434,6 +52699,15 @@
       "cases": 6,
       "describes": [
         "FeedRegistryService — WO-58.2"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/health/health.controller.spec.ts",
+      "module": "core/health",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "HealthController — 38-resilience-engineering.md WO-38.1, degradation matrix row "
       ]
     },
     {
@@ -52519,7 +52793,7 @@
       "file": "apps/api/src/core/notifications/notifications.service.spec.ts",
       "module": "core/notifications",
       "kind": "unit test",
-      "cases": 2,
+      "cases": 3,
       "describes": [
         "NotificationsService"
       ]
@@ -52596,7 +52870,7 @@
       "file": "apps/api/src/core/replication/replication-sync.agent.spec.ts",
       "module": "core/replication",
       "kind": "unit test",
-      "cases": 14,
+      "cases": 16,
       "describes": [
         "ReplicationSyncAgent — WO-20.2 / WO-20.5",
         "tick",
@@ -52625,6 +52899,16 @@
       ]
     },
     {
+      "file": "apps/api/src/core/resilience/circuit-breaker.service.spec.ts",
+      "module": "core/resilience",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "CircuitBreakerService — WO-38.2",
+        "simulate() — dry run against a supplied call history"
+      ]
+    },
+    {
       "file": "apps/api/src/core/security/unsubscribe-token.spec.ts",
       "module": "core/security",
       "kind": "unit test",
@@ -52643,6 +52927,27 @@
       ]
     },
     {
+      "file": "apps/api/src/core/slo/request-outcome-prune.cron.spec.ts",
+      "module": "core/slo",
+      "kind": "unit test",
+      "cases": 1,
+      "describes": [
+        "RequestOutcomePruneCron — WO-38.3"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/slo/slo-recorder.service.spec.ts",
+      "module": "core/slo",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "SloRecorderService — WO-38.3",
+        "time()",
+        "recordReplicationTick()",
+        "computeBudget()"
+      ]
+    },
+    {
       "file": "apps/api/src/core/storage/files.controller.spec.ts",
       "module": "core/storage",
       "kind": "unit test",
@@ -52655,10 +52960,11 @@
       "file": "apps/api/src/core/storage/storage.service.spec.ts",
       "module": "core/storage",
       "kind": "unit test",
-      "cases": 11,
+      "cases": 12,
       "describes": [
         "StorageService.putImage",
-        "StorageService.putDocument"
+        "StorageService.putDocument",
+        "StorageService — 38-resilience-engineering.md WO-38.1, degradation matrix row "
       ]
     },
     {
@@ -54010,6 +54316,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/payments/payments.service.spec.ts",
+      "module": "payments",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "PaymentsService.createForOrder — 38-resilience-engineering.md WO-38.1/38.2"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/payments/providers/account.provider.spec.ts",
       "module": "payments",
       "kind": "unit test",
@@ -54492,7 +54807,7 @@
       "file": "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
       "module": "rag",
       "kind": "unit test",
-      "cases": 5,
+      "cases": 6,
       "describes": [
         "RagRetrievalService",
         "isAvailable",
@@ -56240,8 +56555,8 @@
       "path": "DEPLOYMENT.md",
       "area": "root",
       "kind": "doc",
-      "lines": 492,
-      "bytes": 20352,
+      "lines": 529,
+      "bytes": 22666,
       "doc": "",
       "symbols": []
     },
@@ -57620,6 +57935,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260927100000_wo38_request_outcomes/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 18,
+      "bytes": 610,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -57779,6 +58103,15 @@
       "lines": 185,
       "bytes": 8373,
       "doc": "The replication engine (RETAIL-ERP.md Part 6, WO-20.1: \"log, cursors,",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/resilience.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 53,
+      "bytes": 2696,
+      "doc": "Resilience engineering (resilience-scalability/38-resilience-engineering.md,",
       "symbols": []
     },
     {
@@ -58068,8 +58401,8 @@
       "path": "apps/api/src/core/ai/ai.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 278,
-      "bytes": 10595,
+      "lines": 298,
+      "bytes": 11792,
       "doc": "",
       "symbols": []
     },
@@ -58077,19 +58410,19 @@
       "path": "apps/api/src/core/ai/ai.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 206,
-      "bytes": 8222,
+      "lines": 217,
+      "bytes": 8788,
       "doc": "",
       "symbols": [
         {
           "name": "AiCapability",
           "kind": "type",
-          "line": 37
+          "line": 38
         },
         {
           "name": "AiService",
           "kind": "class",
-          "line": 58
+          "line": 59
         }
       ]
     },
@@ -59504,14 +59837,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 57,
-      "bytes": 2076,
+      "lines": 61,
+      "bytes": 2226,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 56
+          "line": 60
         }
       ]
     },
@@ -59527,6 +59860,76 @@
           "name": "segmentFilterToWhere",
           "kind": "function",
           "line": 88
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/events/contract-analyzer.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 399,
+      "bytes": 14642,
+      "doc": "The static analysis behind `event-contracts.spec.ts` (WO-38.5).",
+      "symbols": [
+        {
+          "name": "PayloadShape",
+          "kind": "interface",
+          "line": 24
+        },
+        {
+          "name": "PayloadParseResult",
+          "kind": "interface",
+          "line": 29
+        },
+        {
+          "name": "HandlerInfo",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "maskSource",
+          "kind": "function",
+          "line": 55
+        },
+        {
+          "name": "parseDomainEventKeys",
+          "kind": "function",
+          "line": 172
+        },
+        {
+          "name": "findNamedInterfaceFields",
+          "kind": "function",
+          "line": 191
+        },
+        {
+          "name": "parsePayloadShapes",
+          "kind": "function",
+          "line": 207
+        },
+        {
+          "name": "extractAccessedFields",
+          "kind": "function",
+          "line": 241
+        },
+        {
+          "name": "parseHandlers",
+          "kind": "function",
+          "line": 272
+        },
+        {
+          "name": "ContractViolation",
+          "kind": "interface",
+          "line": 316
+        },
+        {
+          "name": "ContractCheckResult",
+          "kind": "interface",
+          "line": 323
+        },
+        {
+          "name": "checkContracts",
+          "kind": "function",
+          "line": 335
         }
       ]
     },
@@ -59872,6 +60275,36 @@
           "name": "EventBusService",
           "kind": "class",
           "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/events/event-contracts.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 268,
+      "bytes": 10839,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DomainEvent",
+          "kind": "const",
+          "line": 116
+        },
+        {
+          "name": "DomainEventName",
+          "kind": "type",
+          "line": 120
+        },
+        {
+          "name": "WidgetPayload",
+          "kind": "interface",
+          "line": 122
+        },
+        {
+          "name": "DomainEventPayloads",
+          "kind": "interface",
+          "line": 127
         }
       ]
     },
@@ -60256,6 +60689,15 @@
           "line": 18
         }
       ]
+    },
+    {
+      "path": "apps/api/src/core/health/health.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 38,
+      "bytes": 1788,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/core/health/health.controller.ts",
@@ -61054,8 +61496,8 @@
       "path": "apps/api/src/core/notifications/notifications.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 98,
-      "bytes": 3199,
+      "lines": 121,
+      "bytes": 4188,
       "doc": "",
       "symbols": []
     },
@@ -61355,8 +61797,8 @@
       "path": "apps/api/src/core/replication/replication-sync.agent.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 220,
-      "bytes": 8813,
+      "lines": 245,
+      "bytes": 9868,
       "doc": "",
       "symbols": []
     },
@@ -61364,14 +61806,14 @@
       "path": "apps/api/src/core/replication/replication-sync.agent.ts",
       "area": "api",
       "kind": "agent",
-      "lines": 174,
-      "bytes": 6406,
+      "lines": 184,
+      "bytes": 6990,
       "doc": "",
       "symbols": [
         {
           "name": "ReplicationSyncAgent",
           "kind": "class",
-          "line": 46
+          "line": 47
         }
       ]
     },
@@ -61465,6 +61907,100 @@
           "name": "ReplicationRecordLike",
           "kind": "interface",
           "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/resilience/circuit-breaker.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 144,
+      "bytes": 6231,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/resilience/circuit-breaker.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 212,
+      "bytes": 7795,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CircuitBreakerService",
+          "kind": "class",
+          "line": 50
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/resilience/circuit-breaker.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 71,
+      "bytes": 2514,
+      "doc": "Extension point (38-resilience-engineering.md §2): the three-state gate every existing extension-point call sits behind — `AiProvider`, `PaymentProvider` and `VectorStore` today (see `circuit-breaker.service .ts`'s own…",
+      "symbols": [
+        {
+          "name": "CircuitBreaker",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "CircuitState",
+          "kind": "type",
+          "line": 16
+        },
+        {
+          "name": "CircuitOpenError",
+          "kind": "class",
+          "line": 19
+        },
+        {
+          "name": "CircuitBreakerOptions",
+          "kind": "interface",
+          "line": 29
+        },
+        {
+          "name": "DEFAULT_CIRCUIT_OPTIONS",
+          "kind": "const",
+          "line": 36
+        },
+        {
+          "name": "CircuitSnapshot",
+          "kind": "interface",
+          "line": 42
+        },
+        {
+          "name": "SimulatedCallOutcome",
+          "kind": "interface",
+          "line": 55
+        },
+        {
+          "name": "SimulationTransition",
+          "kind": "interface",
+          "line": 60
+        },
+        {
+          "name": "SimulationResult",
+          "kind": "interface",
+          "line": 65
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/resilience/resilience.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 18,
+      "bytes": 690,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResilienceModule",
+          "kind": "class",
+          "line": 17
         }
       ]
     },
@@ -61642,6 +62178,109 @@
       ]
     },
     {
+      "path": "apps/api/src/core/slo/request-outcome-prune.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 18,
+      "bytes": 752,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/slo/request-outcome-prune.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 29,
+      "bytes": 1343,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RequestOutcomePruneCron",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/slo/slo-paths.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 56,
+      "bytes": 1949,
+      "doc": "The three critical paths named in 38-resilience-engineering.md §3 — the only paths in this codebase with a formal SLO.",
+      "symbols": [
+        {
+          "name": "SLO_PATHS",
+          "kind": "const",
+          "line": 7
+        },
+        {
+          "name": "SloPath",
+          "kind": "type",
+          "line": 13
+        },
+        {
+          "name": "SloTarget",
+          "kind": "interface",
+          "line": 15
+        },
+        {
+          "name": "SLO_TARGETS",
+          "kind": "const",
+          "line": 34
+        },
+        {
+          "name": "TRAILING_WINDOW_DAYS",
+          "kind": "const",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/slo/slo-recorder.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 85,
+      "bytes": 3617,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/slo/slo-recorder.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 139,
+      "bytes": 5824,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SloBudget",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "SloRecorderService",
+          "kind": "class",
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/slo/slo.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 603,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SloModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/storage/files.controller.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -61744,8 +62383,8 @@
       "path": "apps/api/src/core/storage/storage.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 186,
-      "bytes": 7165,
+      "lines": 224,
+      "bytes": 9071,
       "doc": "",
       "symbols": []
     },
@@ -68173,8 +68812,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 158,
-      "bytes": 6029,
+      "lines": 162,
+      "bytes": 6262,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -68193,24 +68832,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 332,
-      "bytes": 19560,
+      "lines": 339,
+      "bytes": 20045,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 67
+          "line": 68
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 98
+          "line": 99
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 308
+          "line": 315
         }
       ]
     },
@@ -68953,19 +69592,19 @@
       "path": "apps/api/src/modules/orders/orders.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 147,
-      "bytes": 4476,
+      "lines": 155,
+      "bytes": 4922,
       "doc": "",
       "symbols": [
         {
           "name": "OrdersController",
           "kind": "class",
-          "line": 33
+          "line": 35
         },
         {
           "name": "OrdersAdminController",
           "kind": "class",
-          "line": 99
+          "line": 107
         }
       ]
     },
@@ -69599,17 +70238,26 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/payments/payments.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 91,
+      "bytes": 3277,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/payments/payments.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 439,
-      "bytes": 15376,
+      "lines": 445,
+      "bytes": 15754,
       "doc": "",
       "symbols": [
         {
           "name": "PaymentsService",
           "kind": "class",
-          "line": 30
+          "line": 31
         }
       ]
     },
@@ -70642,14 +71290,14 @@
       "path": "apps/api/src/modules/pos/pos-sales.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 32,
-      "bytes": 1192,
+      "lines": 41,
+      "bytes": 1597,
       "doc": "",
       "symbols": [
         {
           "name": "PosSalesController",
           "kind": "class",
-          "line": 12
+          "line": 14
         }
       ]
     },
@@ -71829,8 +72477,8 @@
       "path": "apps/api/src/modules/rag/rag-ingestion.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 236,
-      "bytes": 10945,
+      "lines": 238,
+      "bytes": 11063,
       "doc": "",
       "symbols": []
     },
@@ -71838,24 +72486,24 @@
       "path": "apps/api/src/modules/rag/rag-ingestion.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 276,
-      "bytes": 12988,
+      "lines": 279,
+      "bytes": 13274,
       "doc": "",
       "symbols": [
         {
           "name": "INGESTION_BATCH_SIZE",
           "kind": "const",
-          "line": 15
+          "line": 16
         },
         {
           "name": "STALE_CLAIM_MINUTES",
           "kind": "const",
-          "line": 23
+          "line": 24
         },
         {
           "name": "RagIngestionService",
           "kind": "class",
-          "line": 59
+          "line": 60
         }
       ]
     },
@@ -71863,8 +72511,8 @@
       "path": "apps/api/src/modules/rag/rag-retrieval.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 74,
-      "bytes": 3211,
+      "lines": 95,
+      "bytes": 4341,
       "doc": "",
       "symbols": []
     },
@@ -71872,24 +72520,24 @@
       "path": "apps/api/src/modules/rag/rag-retrieval.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 69,
-      "bytes": 3194,
+      "lines": 74,
+      "bytes": 3496,
       "doc": "",
       "symbols": [
         {
           "name": "RagScope",
           "kind": "interface",
-          "line": 6
+          "line": 7
         },
         {
           "name": "DEFAULT_TOP_K",
           "kind": "const",
-          "line": 11
+          "line": 12
         },
         {
           "name": "RagRetrievalService",
           "kind": "class",
-          "line": 26
+          "line": 27
         }
       ]
     },
@@ -71912,8 +72560,8 @@
       "path": "apps/api/src/modules/rag/vector-store.ts",
       "area": "api",
       "kind": "module",
-      "lines": 70,
-      "bytes": 3072,
+      "lines": 79,
+      "bytes": 3477,
       "doc": "",
       "symbols": [
         {
@@ -71940,6 +72588,11 @@
           "name": "VECTOR_STORE",
           "kind": "const",
           "line": 69
+        },
+        {
+          "name": "VECTOR_STORE_CIRCUIT_KEY",
+          "kind": "const",
+          "line": 78
         }
       ]
     },
@@ -72403,6 +73056,61 @@
           "name": "ReportsService",
           "kind": "class",
           "line": 36
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/resilience/dto/resilience.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 48,
+      "bytes": 1340,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ConfigureCircuitDto",
+          "kind": "class",
+          "line": 5
+        },
+        {
+          "name": "SimulatedCallOutcomeDto",
+          "kind": "class",
+          "line": 19
+        },
+        {
+          "name": "SimulateCircuitDto",
+          "kind": "class",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/resilience/resilience-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 90,
+      "bytes": 3908,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResilienceAdminController",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/resilience/resilience-admin.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 15,
+      "bytes": 524,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResilienceAdminModule",
+          "kind": "class",
+          "line": 14
         }
       ]
     },
@@ -81258,6 +81966,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/platform-resilience/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 213,
+      "bytes": 9863,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PlatformResiliencePage",
+          "kind": "default",
+          "line": 77
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/products/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -84067,8 +84790,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1173,
-      "bytes": 33299,
+      "lines": 1188,
+      "bytes": 33979,
       "doc": "",
       "symbols": [
         {
@@ -84099,12 +84822,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1143
+          "line": 1158
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1158
+          "line": 1173
         }
       ]
     },
@@ -85365,8 +86088,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 297,
-      "bytes": 13684,
+      "lines": 306,
+      "bytes": 14098,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -89469,8 +90192,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 7808,
-      "bytes": 456883,
+      "lines": 7951,
+      "bytes": 465718,
       "doc": "",
       "symbols": []
     },
@@ -89524,7 +90247,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 546,
-      "bytes": 75972,
+      "bytes": 76283,
       "doc": "",
       "symbols": []
     },
@@ -90972,8 +91695,8 @@
       "path": "docs/implementation/resilience-scalability/38-resilience-engineering.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 238,
-      "bytes": 14709,
+      "lines": 379,
+      "bytes": 24241,
       "doc": "",
       "symbols": []
     },
@@ -92752,8 +93475,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1415,
-      "bytes": 48715,
+      "lines": 1456,
+      "bytes": 50673,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -92774,52 +93497,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 870
+          "line": 899
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 872
+          "line": 901
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 882
+          "line": 911
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 889
+          "line": 918
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 1130
+          "line": 1165
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1374
+          "line": 1415
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1393
+          "line": 1434
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1407
+          "line": 1448
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1408
+          "line": 1449
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1411
+          "line": 1452
         }
       ]
     },

@@ -162,6 +162,15 @@ export const ROUTES = {
     featureFlags: '/admin/feature-flags',
     featureFlag: (id: string) => `/admin/feature-flags/${id}`,
 
+    /**
+     * 38-resilience-engineering.md. Named distinctly from `resilience`
+     * above (144-supply-chain-resilience-planning-engine.md's own,
+     * unrelated "Resilience Planning" screen) — two different documents
+     * both happened to pick the word "resilience," and the existing route
+     * wins the shorter name since it shipped first.
+     */
+    platformResilience: '/admin/platform-resilience',
+
     /** hr-people-org/19-org-structure-offices-departments.md. */
     orgStructure: '/admin/org-structure',
     /** access-control-identity/21-access-over-the-org-tree.md WO-21.6 — one access screen per unit, reached by clicking from the tree. */

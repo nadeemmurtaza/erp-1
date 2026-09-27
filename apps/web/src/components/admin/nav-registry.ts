@@ -1017,6 +1017,21 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'feature-flags',
   },
   {
+    // 38-resilience-engineering.md. Same shape as Feature flags just
+    // above — engineering-ops tooling (doc 38's own "Whose rows" scope-
+    // lens), so it sits beside it under Settings rather than a new group.
+    // Named "Platform Resilience" and routed to /admin/platform-resilience,
+    // distinct from the unrelated "Resilience Planning" entry above
+    // (144-supply-chain-resilience-planning-engine.md), which already
+    // holds /admin/resilience.
+    key: 'platform-resilience',
+    label: 'Platform Resilience',
+    href: '/admin/platform-resilience',
+    permissions: ['platform.resilience.view'],
+    group: 'settings',
+    module: 'resilience',
+  },
+  {
     // WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md).
     // Two separate entries, not one nested under the other: a holder of only
     // `rag.query` (never sees corpus administration) must still reach the

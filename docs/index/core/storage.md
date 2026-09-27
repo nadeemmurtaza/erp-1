@@ -13,7 +13,7 @@ Source: `apps/api/src/core/storage/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (8 · 684 lines)
+## Files (8 · 722 lines)
 
 All paths relative to `apps/api/src/core/storage`.
 
@@ -25,7 +25,7 @@ All paths relative to `apps/api/src/core/storage`.
 | `s3-storage.driver.ts` | driver | 92 | 1 | S3-compatible object storage: MinIO locally, Cloudflare R2 or AWS S3 in production. |
 | `storage.driver.ts` | driver | 35 | 3 | Extension point: file storage. |
 | `storage.module.ts` | nest module | 14 | 1 |  |
-| `storage.service.spec.ts` | unit test | 186 | — |  |
+| `storage.service.spec.ts` | unit test | 224 | — |  |
 | `storage.service.ts` | service | 143 | 1 | Front door for file storage. |
 
 
@@ -76,7 +76,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `files.controller.spec.ts` | 3 | FilesController |
-| `storage.service.spec.ts` | 11 | StorageService.putImage · StorageService.putDocument |
+| `storage.service.spec.ts` | 12 | StorageService.putImage · StorageService.putDocument · StorageService — 38-resilience-engineering.md WO-38.1, degradati… |
 
 
 ## Every export in this unit

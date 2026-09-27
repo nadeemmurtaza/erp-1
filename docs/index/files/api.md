@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,135 tracked files in `apps/api`, by directory.
+All 1,154 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (61)
+### `apps/api/prisma/schema` (62)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -82,6 +82,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `rag.prisma` | prisma schema | 159 | WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md). |
 | `receivables.prisma` | prisma schema | 142 | Receivables: CreditNote/DebitNote, customer credit limits, and dunning — |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
+| `resilience.prisma` | prisma schema | 53 | Resilience engineering (resilience-scalability/38-resilience-engineering.md, |
 | `reviews.prisma` | prisma schema | 79 | Phase 7 WO-7.5 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `schema.prisma` | prisma schema | 32 | Datasource and generator only. Models live in one file per module — |
 | `search.prisma` | prisma schema | 40 | Search. WO-8.3, |
@@ -745,6 +746,12 @@ All 1,135 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 32 |  |
 
+### `apps/api/prisma/schema/migrations/20260927100000_wo38_request_outcomes` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 18 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -756,7 +763,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 57 |  |
+| `core.module.ts` | nest module | 61 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -774,8 +781,8 @@ All 1,135 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `ai-provider.ts` | module | 67 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and StorageDriver). |
 | `ai.module.ts` | nest module | 13 |  |
-| `ai.service.spec.ts` | unit test | 278 |  |
-| `ai.service.ts` | service | 206 |  |
+| `ai.service.spec.ts` | unit test | 298 |  |
+| `ai.service.ts` | service | 217 |  |
 
 ### `apps/api/src/core/ai/providers` (2)
 
@@ -910,12 +917,14 @@ All 1,135 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `segment-filter-engine.ts` | module | 94 |  |
 
-### `apps/api/src/core/events` (5)
+### `apps/api/src/core/events` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `contract-analyzer.ts` | module | 399 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
 | `domain-events.ts` | module | 769 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
+| `event-contracts.spec.ts` | unit test | 268 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
 | `outbox.dispatcher.ts` | dispatcher | 120 |  |
@@ -954,10 +963,11 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `feed.controller.ts` | controller | 32 |  |
 | `feed.module.ts` | nest module | 19 |  |
 
-### `apps/api/src/core/health` (2)
+### `apps/api/src/core/health` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `health.controller.spec.ts` | unit test | 38 |  |
 | `health.controller.ts` | controller | 52 |  |
 | `health.module.ts` | nest module | 6 |  |
 
@@ -1003,7 +1013,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `notification-channel.ts` | module | 38 | Extension point: outbound customer messaging. |
 | `notification-preferences.service.ts` | service | 71 |  |
 | `notifications.module.ts` | nest module | 36 |  |
-| `notifications.service.spec.ts` | unit test | 98 |  |
+| `notifications.service.spec.ts` | unit test | 121 |  |
 | `notifications.service.ts` | service | 80 |  |
 | `sms.channel.ts` | channel | 48 |  |
 | `unsubscribe.controller.ts` | controller | 41 |  |
@@ -1054,8 +1064,8 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `replication-log.service.ts` | service | 81 |  |
 | `replication-quarantine.service.spec.ts` | unit test | 72 |  |
 | `replication-quarantine.service.ts` | service | 48 |  |
-| `replication-sync.agent.spec.ts` | unit test | 220 |  |
-| `replication-sync.agent.ts` | agent | 174 |  |
+| `replication-sync.agent.spec.ts` | unit test | 245 |  |
+| `replication-sync.agent.ts` | agent | 184 |  |
 | `replication.controller.spec.ts` | unit test | 104 |  |
 | `replication.controller.ts` | controller | 109 |  |
 | `replication.module.ts` | nest module | 49 |  |
@@ -1068,6 +1078,15 @@ All 1,135 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `push-replication.dto.ts` | dto | 48 |  |
+
+### `apps/api/src/core/resilience` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `circuit-breaker.service.spec.ts` | unit test | 144 |  |
+| `circuit-breaker.service.ts` | service | 212 |  |
+| `circuit-breaker.ts` | module | 71 | Extension point (38-resilience-engineering.md §2): the three-state gate every existing extension-point call sits behind… |
+| `resilience.module.ts` | nest module | 18 |  |
 
 ### `apps/api/src/core/security` (3)
 
@@ -1088,6 +1107,17 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 107 |  |
 
+### `apps/api/src/core/slo` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `request-outcome-prune.cron.spec.ts` | unit test | 18 |  |
+| `request-outcome-prune.cron.ts` | scheduled job | 29 |  |
+| `slo-paths.ts` | module | 56 | The three critical paths named in 38-resilience-engineering.md §3 — the only paths in this codebase with a formal SLO. |
+| `slo-recorder.service.spec.ts` | unit test | 85 |  |
+| `slo-recorder.service.ts` | service | 139 |  |
+| `slo.module.ts` | nest module | 17 |  |
+
 ### `apps/api/src/core/storage` (8)
 
 | File | Kind | Lines | Purpose |
@@ -1098,7 +1128,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `s3-storage.driver.ts` | driver | 92 |  |
 | `storage.driver.ts` | driver | 35 | Extension point: file storage. |
 | `storage.module.ts` | nest module | 14 |  |
-| `storage.service.spec.ts` | unit test | 186 |  |
+| `storage.service.spec.ts` | unit test | 224 |  |
 | `storage.service.ts` | service | 143 |  |
 
 ### `apps/api/src/core/time` (4)
@@ -1124,8 +1154,8 @@ All 1,135 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 158 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 332 |  |
+| `module-packs.ts` | module | 162 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 339 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1880,7 +1910,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
 | `orders-pos.service.spec.ts` | unit test | 436 |  |
-| `orders.controller.ts` | controller | 147 |  |
+| `orders.controller.ts` | controller | 155 |  |
 | `orders.module.ts` | nest module | 57 |  |
 | `orders.service.ts` | service | 1379 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
@@ -1950,7 +1980,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `party-role.const.ts` | dto | 3 | Mirrors the Prisma PartyRoleName enum — kept as a plain array so DTOs can validate against it without importing the gen… |
 | `party.dto.ts` | dto | 44 |  |
 
-### `apps/api/src/modules/payments` (7)
+### `apps/api/src/modules/payments` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1960,7 +1990,8 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `payment-provider.ts` | module | 113 | Extension point: payment providers. |
 | `payments.controller.ts` | controller | 135 |  |
 | `payments.module.ts` | nest module | 39 |  |
-| `payments.service.ts` | service | 439 |  |
+| `payments.service.spec.ts` | unit test | 91 |  |
+| `payments.service.ts` | service | 445 |  |
 
 ### `apps/api/src/modules/payments/providers` (8)
 
@@ -2050,7 +2081,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `pos-receipts.controller.ts` | controller | 24 |  |
 | `pos-receipts.service.spec.ts` | unit test | 110 |  |
 | `pos-receipts.service.ts` | service | 94 |  |
-| `pos-sales.controller.ts` | controller | 32 |  |
+| `pos-sales.controller.ts` | controller | 41 |  |
 | `pos-sales.service.spec.ts` | unit test | 173 |  |
 | `pos-sales.service.ts` | service | 106 |  |
 | `pos-shifts.controller.ts` | controller | 55 |  |
@@ -2176,12 +2207,12 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `rag-generation.service.spec.ts` | unit test | 135 |  |
 | `rag-generation.service.ts` | service | 134 |  |
 | `rag-ingestion.cron.ts` | scheduled job | 27 |  |
-| `rag-ingestion.service.spec.ts` | unit test | 236 |  |
-| `rag-ingestion.service.ts` | service | 276 |  |
-| `rag-retrieval.service.spec.ts` | unit test | 74 |  |
-| `rag-retrieval.service.ts` | service | 69 |  |
+| `rag-ingestion.service.spec.ts` | unit test | 238 |  |
+| `rag-ingestion.service.ts` | service | 279 |  |
+| `rag-retrieval.service.spec.ts` | unit test | 95 |  |
+| `rag-retrieval.service.ts` | service | 74 |  |
 | `rag.module.ts` | nest module | 34 |  |
-| `vector-store.ts` | module | 70 |  |
+| `vector-store.ts` | module | 79 |  |
 
 ### `apps/api/src/modules/rag/dto` (1)
 
@@ -2244,6 +2275,19 @@ All 1,135 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `reports.dto.ts` | dto | 33 |  |
+
+### `apps/api/src/modules/resilience` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `resilience-admin.controller.ts` | controller | 90 |  |
+| `resilience-admin.module.ts` | nest module | 15 |  |
+
+### `apps/api/src/modules/resilience/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `resilience.dto.ts` | dto | 48 |  |
 
 ### `apps/api/src/modules/reviews` (9)
 

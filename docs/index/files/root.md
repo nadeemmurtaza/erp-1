@@ -21,7 +21,7 @@ All 213 tracked files in `repository root files`, by directory.
 | `check_output.txt` | txt | — |  |
 | `CLAUDE.md` | doc | 1004 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
-| `DEPLOYMENT.md` | doc | 492 |  |
+| `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |
 | `fix-all.js` | script | 15 | Get all files from git grep |
 | `fix-db.js` | script | 15 |  |

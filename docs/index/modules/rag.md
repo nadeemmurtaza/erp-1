@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 21 files
 
 Source: `apps/api/src/modules/rag/`
 
-## Files (21 · 3,099 lines)
+## Files (21 · 3,139 lines)
 
 All paths relative to `apps/api/src/modules/rag`.
 
@@ -32,12 +32,12 @@ All paths relative to `apps/api/src/modules/rag`.
 | `rag-generation.service.spec.ts` | unit test | 135 | — |  |
 | `rag-generation.service.ts` | service | 134 | 3 |  |
 | `rag-ingestion.cron.ts` | scheduled job | 27 | 1 | WO-35.2's own "every step is a cron/queue-driven job" — `finance.cron.ts`'s exact shape. |
-| `rag-ingestion.service.spec.ts` | unit test | 236 | — |  |
-| `rag-ingestion.service.ts` | service | 276 | 3 | How many QUEUED sources one cron tick processes — bounded so a huge backlog never turns one tick into an hour-long job… |
-| `rag-retrieval.service.spec.ts` | unit test | 74 | — |  |
-| `rag-retrieval.service.ts` | service | 69 | 3 |  |
+| `rag-ingestion.service.spec.ts` | unit test | 238 | — |  |
+| `rag-ingestion.service.ts` | service | 279 | 3 | How many QUEUED sources one cron tick processes — bounded so a huge backlog never turns one tick into an hour-long job… |
+| `rag-retrieval.service.spec.ts` | unit test | 95 | — |  |
+| `rag-retrieval.service.ts` | service | 74 | 3 |  |
 | `rag.module.ts` | nest module | 34 | 1 |  |
-| `vector-store.ts` | module | 70 | 5 | Extension point: vector similarity search (WO-35.3, docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md… |
+| `vector-store.ts` | module | 79 | 6 | Extension point: vector similarity search (WO-35.3, docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md… |
 
 
 ## HTTP routes (11)
@@ -105,6 +105,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `auth`
 - core `common`
 - core `prisma`
+- core `resilience`
 - core `storage`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -123,7 +124,7 @@ check there before adding another.
 | `rag-corpus.service.spec.ts` | 18 | RagCorpusService · createSource · retry · deleteSource · findOne (H1, security review) · list (H1, security review) · c… |
 | `rag-generation.service.spec.ts` | 9 | RagGenerationService · answer · isAvailable · prompt construction (L14, security review) · topK clamp (L17, security re… |
 | `rag-ingestion.service.spec.ts` | 14 | RagIngestionService · processQueued · ingestOne · corpus access (H1, security review) |
-| `rag-retrieval.service.spec.ts` | 5 | RagRetrievalService · isAvailable · retrieve |
+| `rag-retrieval.service.spec.ts` | 6 | RagRetrievalService · isAvailable · retrieve |
 
 
 ## Every export in this unit
@@ -153,18 +154,19 @@ check there before adding another.
 | `RagAnswer` | interface | `rag-generation.service.ts:14` |  |
 | `RagGenerationService` | class | `rag-generation.service.ts:76` | WO-35.5 — generation reuses `AiService.complete()` and `09-ai-layer.md`'s own rule (§5, restated in the doc's… |
 | `RagIngestionCron` | class | `rag-ingestion.cron.ts:14` | WO-35.2's own "every step is a cron/queue-driven job" — `finance.cron.ts`'s exact shape. |
-| `INGESTION_BATCH_SIZE` | const | `rag-ingestion.service.ts:15` | How many QUEUED sources one cron tick processes — bounded so a huge backlog never turns one tick into an hour… |
-| `STALE_CLAIM_MINUTES` | const | `rag-ingestion.service.ts:23` | M7 (security review) — how long a claim (EXTRACTING/CHUNKING/EMBEDDING) may sit with no progress before it is… |
-| `RagIngestionService` | class | `rag-ingestion.service.ts:59` | WO-35.2's own pipeline: extract -> chunk -> embed (batched) -> upsert -> READY. |
-| `RagScope` | interface | `rag-retrieval.service.ts:6` |  |
-| `DEFAULT_TOP_K` | const | `rag-retrieval.service.ts:11` |  |
-| `RagRetrievalService` | class | `rag-retrieval.service.ts:26` | WO-35.4 — `retrieve()`, exactly the doc's own §4 shape. |
+| `INGESTION_BATCH_SIZE` | const | `rag-ingestion.service.ts:16` | How many QUEUED sources one cron tick processes — bounded so a huge backlog never turns one tick into an hour… |
+| `STALE_CLAIM_MINUTES` | const | `rag-ingestion.service.ts:24` | M7 (security review) — how long a claim (EXTRACTING/CHUNKING/EMBEDDING) may sit with no progress before it is… |
+| `RagIngestionService` | class | `rag-ingestion.service.ts:60` | WO-35.2's own pipeline: extract -> chunk -> embed (batched) -> upsert -> READY. |
+| `RagScope` | interface | `rag-retrieval.service.ts:7` |  |
+| `DEFAULT_TOP_K` | const | `rag-retrieval.service.ts:12` |  |
+| `RagRetrievalService` | class | `rag-retrieval.service.ts:27` | WO-35.4 — `retrieve()`, exactly the doc's own §4 shape. |
 | `RagModule` | class | `rag.module.ts:33` |  |
 | `DocumentChunkInput` | interface | `vector-store.ts:25` | Extension point: vector similarity search (WO-35.3, docs/implementation/ai-layer/35-scalable-rag-document-ret… |
 | `VectorQueryFilter` | interface | `vector-store.ts:36` |  |
 | `VectorQueryHit` | interface | `vector-store.ts:43` |  |
 | `VectorStore` | interface | `vector-store.ts:53` |  |
 | `VECTOR_STORE` | const | `vector-store.ts:69` |  |
+| `VECTOR_STORE_CIRCUIT_KEY` | const | `vector-store.ts:78` | 38-resilience-engineering.md §2, WO-38.2 — the one `CircuitBreakerService` key both `RagRetrievalService.retr… |
 
 
 ---

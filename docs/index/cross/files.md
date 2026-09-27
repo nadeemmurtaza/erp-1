@@ -3,21 +3,21 @@
 
 # Every tracked file
 
-All **2,393** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,413** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,135 | 150,504 | [files/api.md](../files/api.md) |
-| apps/web | 422 | 70,991 | [files/web.md](../files/web.md) |
+| apps/api | 1,154 | 152,518 | [files/api.md](../files/api.md) |
+| apps/web | 423 | 71,228 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,667 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 80 | 8,693 | [files/packages.md](../files/packages.md) |
-| docs/* | 401 | 71,021 | [files/docs.md](../files/docs.md) |
+| packages/* | 80 | 8,734 | [files/packages.md](../files/packages.md) |
+| docs/* | 401 | 71,305 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 60 | 30,638 | [files/infra.md](../files/infra.md) |
-| repository root files | 213 | 21,395 | [files/root.md](../files/root.md) |
+| repository root files | 213 | 21,432 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,19 +29,19 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 426 |
-| unit test | 312 |
-| page | 222 |
-| service | 204 |
-| module | 169 |
-| controller | 148 |
-| dto | 132 |
+| unit test | 318 |
+| page | 223 |
+| service | 206 |
+| module | 172 |
+| controller | 149 |
+| dto | 133 |
 | component | 121 |
-| migration | 116 |
-| nest module | 101 |
-| prisma schema | 64 |
+| migration | 117 |
+| nest module | 104 |
+| prisma schema | 65 |
 | script | 42 |
 | event subscriber | 36 |
-| scheduled job | 33 |
+| scheduled job | 34 |
 | json | 29 |
 | react | 29 |
 | asset | 26 |

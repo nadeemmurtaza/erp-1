@@ -10,6 +10,7 @@ import { AuditService } from '../../core/audit/audit.service';
 import { DomainEvent } from '../../core/events/domain-events';
 import { EventBusService, type PrismaLike } from '../../core/events/event-bus.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { CircuitBreakerService } from '../../core/resilience/circuit-breaker.service';
 import { StorageService } from '../../core/storage/storage.service';
 import type { Prisma } from '../../core/prisma/client';
 import { AccountProvider } from './providers/account.provider';
@@ -36,6 +37,7 @@ export class PaymentsService {
     private readonly events: EventBusService,
     private readonly audit: AuditService,
     private readonly storage: StorageService,
+    private readonly circuitBreaker: CircuitBreakerService,
     config: AppConfigService,
     cod: CodProvider,
     bankTransfer: BankTransferProvider,
@@ -100,7 +102,11 @@ export class PaymentsService {
     context: PaymentContext,
   ): Promise<{ paymentId: string; redirectUrl: string | null; meta?: unknown }> {
     const provider = this.get(providerKey);
-    const initiation = await provider.initiate(context);
+    // 38-resilience-engineering.md §2, WO-38.2 — PaymentProvider's own wrap
+    // point, the checkout-time initiation call every provider goes through.
+    const initiation = await this.circuitBreaker.execute(`payment.${provider.key}`, () =>
+      provider.initiate(context),
+    );
 
     const payment = await tx.payment.create({
       data: {

@@ -13,7 +13,7 @@ Source: `apps/api/src/core/notifications/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (23 · 4,748 lines)
+## Files (23 · 4,771 lines)
 
 All paths relative to `apps/api/src/core/notifications`.
 
@@ -36,7 +36,7 @@ All paths relative to `apps/api/src/core/notifications`.
 | `notification-channel.ts` | module | 38 | 3 | Extension point: outbound customer messaging. |
 | `notification-preferences.service.ts` | service | 71 | 2 |  |
 | `notifications.module.ts` | nest module | 36 | 1 |  |
-| `notifications.service.spec.ts` | unit test | 98 | — |  |
+| `notifications.service.spec.ts` | unit test | 121 | — |  |
 | `notifications.service.ts` | service | 80 | 1 | Fans a message out to every enabled channel that can reach the recipient. |
 | `sms.channel.ts` | channel | 48 | 1 | Same generic gateway contract and honesty as whatsapp.channel.ts — see its header comment. |
 | `unsubscribe.controller.ts` | controller | 41 | 1 | The link every automated marketing send carries (see MarketingAutomationCron, modules/marketing). |
@@ -107,7 +107,7 @@ check there before adding another.
 |---|---|---|
 | `email.channel.spec.ts` | 2 | isDeliverable |
 | `templates.spec.ts` | 30 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment refunded email · accou… |
-| `notifications.service.spec.ts` | 2 | NotificationsService |
+| `notifications.service.spec.ts` | 3 | NotificationsService |
 
 
 ## Every export in this unit

@@ -3,7 +3,7 @@
 
 # Tests
 
-**332** spec files, **3,166** cases. What is already pinned down — and what is not.
+**338** spec files, **3,209** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -24,6 +24,7 @@ such exemption.
 - [`loyalty`](../modules/loyalty.md)
 - [`notification-preferences`](../modules/notification-preferences.md)
 - [`promotions`](../modules/promotions.md)
+- [`resilience`](../modules/resilience.md)
 - [`stitching`](../modules/stitching.md)
 - [`tax`](../modules/tax.md)
 - [`tracking`](../modules/tracking.md)
@@ -58,12 +59,12 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (312)
+## Unit and integration (318)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
 | `apps/api/src/core/action-hub/action-hub-registry.service.spec.ts` | core/action-hub | 6 | ActionHubRegistryService |
-| `apps/api/src/core/ai/ai.service.spec.ts` | core/ai | 16 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpen… |
+| `apps/api/src/core/ai/ai.service.spec.ts` | core/ai | 17 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpen… |
 | `apps/api/src/core/approvals/approval.service.spec.ts` | core/approvals | 13 | ApprovalService — 63-multi-tier-approval-hierarchies.md, scoped to PURCHASE_REQUISITION · start · d… |
 | `apps/api/src/core/auth/api-keys/api-key-access.spec.ts` | core/auth | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements —… |
 | `apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts` | core/auth | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says wh… |
@@ -81,9 +82,11 @@ regression or an N+1.
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
+| `apps/api/src/core/events/event-contracts.spec.ts` | core/events | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/feature-flags/feature-flags.service.spec.ts` | core/feature-flags | 10 | FeatureFlagsService — WO-37.2 |
 | `apps/api/src/core/feed/feed-registry.service.spec.ts` | core/feed | 6 | FeedRegistryService — WO-58.2 |
+| `apps/api/src/core/health/health.controller.spec.ts` | core/health | 3 | HealthController — 38-resilience-engineering.md WO-38.1, degradation matrix row |
 | `apps/api/src/core/idempotency/idempotency-key.constraint.spec.ts` | core/idempotency | 1 | IdempotencyKey — @@unique([scope, key]) race guard |
 | `apps/api/src/core/idempotency/idempotency.cron.spec.ts` | core/idempotency | 2 | IdempotencyCron — WO-157.4 |
 | `apps/api/src/core/idempotency/idempotency.interceptor.spec.ts` | core/idempotency | 8 | IdempotencyInterceptor — WO-157.2 |
@@ -91,7 +94,7 @@ regression or an N+1.
 | `apps/api/src/core/metrics/metric-registry.service.spec.ts` | core/metrics | 15 | MetricRegistryService · register · collect — permission gating · collect — failure isolation · coll… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
 | `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 30 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
-| `apps/api/src/core/notifications/notifications.service.spec.ts` | core/notifications | 2 | NotificationsService |
+| `apps/api/src/core/notifications/notifications.service.spec.ts` | core/notifications | 3 | NotificationsService |
 | `apps/api/src/core/prisma/enums.spec.ts` | core/prisma | 0 | shared enums stay in sync with the Prisma schema |
 | `apps/api/src/core/replication/node-credential.service.spec.ts` | core/replication | 5 | NodeCredentialService — WO-20.2 |
 | `apps/api/src/core/replication/policy-quarantine.service.spec.ts` | core/replication | 4 | PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023 · resolve |
@@ -99,13 +102,16 @@ regression or an N+1.
 | `apps/api/src/core/replication/replication-cursor.service.spec.ts` | core/replication | 8 | ReplicationCursorService — WO-20.1 / WO-20.2 / WO-20.5 · get · advance · reset — WO-20.5 resync |
 | `apps/api/src/core/replication/replication-log.service.spec.ts` | core/replication | 4 | ReplicationLogService — WO-20.1 |
 | `apps/api/src/core/replication/replication-quarantine.service.spec.ts` | core/replication | 4 | ReplicationQuarantineService — WO-20.1 · resolve |
-| `apps/api/src/core/replication/replication-sync.agent.spec.ts` | core/replication | 14 | ReplicationSyncAgent — WO-20.2 / WO-20.5 · tick · pushFacts · pullPolicy |
+| `apps/api/src/core/replication/replication-sync.agent.spec.ts` | core/replication | 16 | ReplicationSyncAgent — WO-20.2 / WO-20.5 · tick · pushFacts · pullPolicy |
 | `apps/api/src/core/replication/replication.controller.spec.ts` | core/replication | 7 | ReplicationController — WO-20.2 · push · pull |
 | `apps/api/src/core/replication/replication.registry.spec.ts` | core/replication | 5 | ReplicationRegistry — WO-20.1 |
+| `apps/api/src/core/resilience/circuit-breaker.service.spec.ts` | core/resilience | 10 | CircuitBreakerService — WO-38.2 · simulate() — dry run against a supplied call history |
 | `apps/api/src/core/security/unsubscribe-token.spec.ts` | core/security | 6 | unsubscribeToken / isValidUnsubscribeToken |
 | `apps/api/src/core/settings/document-number.spec.ts` | core/settings | 5 | documentNumber |
+| `apps/api/src/core/slo/request-outcome-prune.cron.spec.ts` | core/slo | 1 | RequestOutcomePruneCron — WO-38.3 |
+| `apps/api/src/core/slo/slo-recorder.service.spec.ts` | core/slo | 8 | SloRecorderService — WO-38.3 · time() · recordReplicationTick() · computeBudget() |
 | `apps/api/src/core/storage/files.controller.spec.ts` | core/storage | 3 | FilesController |
-| `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 11 | StorageService.putImage · StorageService.putDocument |
+| `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 12 | StorageService.putImage · StorageService.putDocument · StorageService — 38-resilience-engineering.m… |
 | `apps/api/src/core/time/metric-window.spec.ts` | core/time | 18 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays · previousWindow |
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 19 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · shopLocalHour · asse… |
 | `apps/api/src/core/versioning/api-version-policy.service.spec.ts` | core/versioning | 5 | ApiVersionPolicyService — WO-37.1 |
@@ -226,6 +232,7 @@ regression or an N+1.
 | `apps/api/src/modules/orgstructure/org-unit.service.spec.ts` | orgstructure | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
 | `apps/api/src/modules/payments/payment-feed.source.spec.ts` | payments | 5 | PaymentFeedSource — WO-58.2 |
+| `apps/api/src/modules/payments/payments.service.spec.ts` | payments | 2 | PaymentsService.createForOrder — 38-resilience-engineering.md WO-38.1/38.2 |
 | `apps/api/src/modules/payments/providers/account.provider.spec.ts` | payments | 7 | AccountProvider — 149-b2b-accounts-approvals-sector-packs.md |
 | `apps/api/src/modules/payments/providers/callback-verification.spec.ts` | payments | 8 | Easypaisa callback verification · JazzCash callback verification |
 | `apps/api/src/modules/payroll/leave-accrual.cron.spec.ts` | payroll | 3 | LeaveAccrualCron |
@@ -270,7 +277,7 @@ regression or an N+1.
 | `apps/api/src/modules/rag/rag-corpus.service.spec.ts` | rag | 18 | RagCorpusService · createSource · retry · deleteSource · findOne (H1, security review) · list (H1,… |
 | `apps/api/src/modules/rag/rag-generation.service.spec.ts` | rag | 9 | RagGenerationService · answer · isAvailable · prompt construction (L14, security review) · topK cla… |
 | `apps/api/src/modules/rag/rag-ingestion.service.spec.ts` | rag | 14 | RagIngestionService · processQueued · ingestOne · corpus access (H1, security review) |
-| `apps/api/src/modules/rag/rag-retrieval.service.spec.ts` | rag | 5 | RagRetrievalService · isAvailable · retrieve |
+| `apps/api/src/modules/rag/rag-retrieval.service.spec.ts` | rag | 6 | RagRetrievalService · isAvailable · retrieve |
 | `apps/api/src/modules/receivables/dunning.cron.spec.ts` | receivables | 6 | DunningCron — WO-145.4 |
 | `apps/api/src/modules/receivables/dunning.service.spec.ts` | receivables | 6 | DunningService — WO-145.4 |
 | `apps/api/src/modules/receivables/receivables.integration.spec.ts` | receivables | 7 | Receivables — CreditNote/DebitNote posting and credit checks (WO-145) |

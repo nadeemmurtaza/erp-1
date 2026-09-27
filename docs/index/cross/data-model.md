@@ -3,7 +3,7 @@
 
 # Data model
 
-All **308** Prisma models and **144** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **309** Prisma models and **144** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -74,6 +74,7 @@ against a real database.
 | [`rag.prisma`](../data/rag.md) | 2 | 2 | [`rag`](../modules/rag.md) | DocumentChunk, DocumentSource |
 | [`receivables.prisma`](../data/receivables.md) | 5 | 1 | [`receivables`](../modules/receivables.md) | CreditNote, CustomerCreditTerm, DebitNote, DunningEvent, DunningPolicy |
 | [`replication.prisma`](../data/replication.md) | 5 | 4 | core platform | PolicyQuarantine, ReplicationCursor, ReplicationQuarantine, ReplicationRecord, ReplicationSequenceCounter |
+| [`resilience.prisma`](../data/resilience.md) | 1 | 0 | [`resilience`](../modules/resilience.md) | RequestOutcome |
 | [`reviews.prisma`](../data/reviews.md) | 2 | 1 | [`reviews`](../modules/reviews.md) | ProductReviewSummary, Review |
 | [`search.prisma`](../data/search.md) | 2 | 0 | [`search`](../modules/search.md) | SearchQueryLog, SearchSynonym |
 | [`settlements.prisma`](../data/settlements.md) | 3 | 1 | [`settlements`](../modules/settlements.md) | SettlementBatch, SettlementBatchLine, SettlementProvider |
@@ -315,6 +316,7 @@ against a real database.
 | [`ReplicationQuarantine`](../data/replication.md#replicationquarantine) | `replication` | 12 | 0 | id | Where an incoming record lands when it fails to apply — never dropped, never retried fore… |
 | [`ReplicationRecord`](../data/replication.md#replicationrecord) | `replication` | 12 | 0 | id | The log. |
 | [`ReplicationSequenceCounter`](../data/replication.md#replicationsequencecounter) | `replication` | 2 | 0 | nodeId | This node's own per-origin sequence counter — `originNodeId` is always this node's own `N… |
+| [`RequestOutcome`](../data/resilience.md#requestoutcome) | `resilience` | 5 | 0 | id | Resilience engineering (resilience-scalability/38-resilience-engineering.md, WO-38.3). |
 | [`RequisitionLine`](../data/purchasing.md#requisitionline) | `purchasing` | 7 | 2 | id |  |
 | [`ResourceQuotaAlert`](../data/platform.md#resourcequotaalert) | `platform` | 10 | 1 | id | One row per (tenant, metric, window) that crossed its tier's quota threshold — the record… |
 | [`ResourceTierQuota`](../data/platform.md#resourcetierquota) | `platform` | 7 | 0 | id | --------------------------------------------------------------------------- WO-39.6 — res… |

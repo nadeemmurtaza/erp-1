@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 Source: `apps/api/src/modules/pos/`
 
-## Files (26 · 2,169 lines)
+## Files (26 · 2,178 lines)
 
 All paths relative to `apps/api/src/modules/pos/dto`.
 
@@ -33,7 +33,7 @@ All paths relative to `apps/api/src/modules/pos/dto`.
 | `pos-receipts.controller.ts` | controller | 24 | 1 |  |
 | `pos-receipts.service.spec.ts` | unit test | 110 | — |  |
 | `pos-receipts.service.ts` | service | 94 | 2 |  |
-| `pos-sales.controller.ts` | controller | 32 | 1 |  |
+| `pos-sales.controller.ts` | controller | 41 | 1 |  |
 | `pos-sales.service.spec.ts` | unit test | 173 | — |  |
 | `pos-sales.service.ts` | service | 106 | 1 | The till's own half of the `pos -> orders` hand-off (RETAIL-ERP.md R11): resolves which terminal/location a shift belon… |
 | `pos-shifts.controller.ts` | controller | 55 | 1 | Shift and cash-drawer operations (WO-21.2) — day-to-day cashier work, so gated by `pos.operate` (medium sensitivity, ha… |
@@ -59,7 +59,7 @@ All paths relative to `apps/api/src/modules/pos/dto`.
 | GET | `/admin/pos/shifts/:id/parked-sales` | `pos.operate` | `PosParkedSalesController.listOpen` :35 | List this shift's still-open parked sales (tabs/tables) |
 | POST | `/admin/pos/shifts/:id/parked-sales` | `pos.operate` | `PosParkedSalesController.park` :23 | Park a TAB/TABLE sale in progress — a COUNTER sale is refused |
 | POST | `/admin/pos/shifts/:id/parked-sales/:parkedSaleId/retrieve` | `pos.operate` | `PosParkedSalesController.retrieve` :29 | Retrieve a parked sale — refused if it was already retrieved |
-| POST | `/admin/pos/shifts/:id/sales` | `pos.operate` | `PosSalesController.sell` :18 | Ring up a sale against an open shift — posts stock and a paid cash Order |
+| POST | `/admin/pos/shifts/:id/sales` | `pos.operate` | `PosSalesController.sell` :23 | Ring up a sale against an open shift — posts stock and a paid cash Order |
 | GET | `/admin/pos/shifts/:id/x-report` | `pos.operate` | `PosShiftsController.xReport` :45 | A mid-shift cash snapshot — never closes or mutates the shift |
 | GET | `/admin/pos/shifts/:id/z-report` | `pos.operate` | `PosShiftsController.zReport` :51 | The end-of-shift cash figure — only once the shift is closed |
 | POST | `/admin/pos/shifts/open` | `pos.operate` | `PosShiftsController.openShift` :23 | Open a shift on a terminal with an opening cash float |
@@ -121,6 +121,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `prisma`
 - core `security`
 - core `settings`
+- core `slo`
 - core `time`
 - package `@newax/shared`
 
@@ -172,7 +173,7 @@ check there before adding another.
 | `PosReceiptsController` | class | `pos-receipts.controller.ts:9` |  |
 | `PosReceiptData` | interface | `pos-receipts.service.ts:4` |  |
 | `PosReceiptsService` | class | `pos-receipts.service.ts:33` | One receipt per POS sale (WO-21.5). |
-| `PosSalesController` | class | `pos-sales.controller.ts:12` |  |
+| `PosSalesController` | class | `pos-sales.controller.ts:14` |  |
 | `PosSalesService` | class | `pos-sales.service.ts:15` | The till's own half of the `pos -> orders` hand-off (RETAIL-ERP.md R11): resolves which terminal/location a s… |
 | `PosShiftsController` | class | `pos-shifts.controller.ts:18` | Shift and cash-drawer operations (WO-21.2) — day-to-day cashier work, so gated by `pos.operate` (medium sensi… |
 | `CashBreakdown` | interface | `pos-shifts.service.ts:6` |  |

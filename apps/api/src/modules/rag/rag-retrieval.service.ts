@@ -1,7 +1,8 @@
 import { Inject, Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { AiService } from '../../core/ai/ai.service';
 import { AiFeature, type DocumentCorpus } from '../../core/prisma/client';
-import { VECTOR_STORE, type VectorQueryHit, type VectorStore } from './vector-store';
+import { CircuitBreakerService } from '../../core/resilience/circuit-breaker.service';
+import { VECTOR_STORE, VECTOR_STORE_CIRCUIT_KEY, type VectorQueryHit, type VectorStore } from './vector-store';
 
 export interface RagScope {
   organizationId: string | null;
@@ -29,6 +30,7 @@ export class RagRetrievalService {
   constructor(
     private readonly ai: AiService,
     @Inject(VECTOR_STORE) private readonly vectorStore: VectorStore,
+    private readonly circuitBreaker: CircuitBreakerService,
   ) {}
 
   /** For a screen to check before rendering a query box at all — the doc's own "absent collaborator" rule. */
@@ -56,7 +58,10 @@ export class RagRetrievalService {
       throw new ServiceUnavailableException('Retrieval is not available right now — try again shortly.');
     }
     try {
-      return await this.vectorStore.query(embedded.vectors[0], scope, topK);
+      // 38-resilience-engineering.md §2, WO-38.2.
+      return await this.circuitBreaker.execute(VECTOR_STORE_CIRCUIT_KEY, () =>
+        this.vectorStore.query(embedded.vectors[0], scope, topK),
+      );
     } catch (error) {
       // L16 (security review) — a vector-store failure (a bad connection, a
       // query timeout) must degrade the same documented way every other

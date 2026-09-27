@@ -3,13 +3,13 @@
 
 # Module: `payments`
 
-Pack **core** · enabled by the `MODULES` allowlist · 15 files
+Pack **core** · enabled by the `MODULES` allowlist · 16 files
 
 
 
 Source: `apps/api/src/modules/payments/`
 
-## Files (15 · 1,991 lines)
+## Files (16 · 2,088 lines)
 
 All paths relative to `apps/api/src/modules/payments`.
 
@@ -21,7 +21,8 @@ All paths relative to `apps/api/src/modules/payments`.
 | `payment-provider.ts` | module | 113 | 4 | Extension point: payment providers. |
 | `payments.controller.ts` | controller | 135 | 2 |  |
 | `payments.module.ts` | nest module | 39 | 1 |  |
-| `payments.service.ts` | service | 439 | 1 | Payments, behind one interface. |
+| `payments.service.spec.ts` | unit test | 91 | — |  |
+| `payments.service.ts` | service | 445 | 1 | Payments, behind one interface. |
 | `account.provider.spec.ts` | unit test | 80 | — |  |
 | `account.provider.ts` | module | 83 | 1 | "Pay on account" — 149-b2b-accounts-approvals-sector-packs.md. |
 | `bank-transfer.provider.ts` | module | 54 | 1 | Bank transfer: the customer pays into the shop's account and uploads the receipt, and staff approve it from the dashboa… |
@@ -51,10 +52,10 @@ All paths relative to `apps/api/src/modules/payments`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `PaymentSucceeded` | `payment.succeeded` | `payments.service.ts:193`, `payments.service.ts:295`, `payments.service.ts:343` |
-| `PaymentFailed` | `payment.failed` | `payments.service.ts:193`, `payments.service.ts:295` |
-| `PaymentAwaitingApproval` | `payment.awaiting_approval` | `payments.service.ts:118` |
-| `PaymentRefunded` | `payment.refunded` | `payments.service.ts:402` |
+| `PaymentSucceeded` | `payment.succeeded` | `payments.service.ts:199`, `payments.service.ts:301`, `payments.service.ts:349` |
+| `PaymentFailed` | `payment.failed` | `payments.service.ts:199`, `payments.service.ts:301` |
+| `PaymentAwaitingApproval` | `payment.awaiting_approval` | `payments.service.ts:124` |
+| `PaymentRefunded` | `payment.refunded` | `payments.service.ts:408` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -99,6 +100,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `feed`
 - core `notifications`
 - core `prisma`
+- core `resilience`
 - core `settings`
 - core `storage`
 - package `@newax/shared`
@@ -108,11 +110,12 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (3)
+## Tests (4)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `payment-feed.source.spec.ts` | 5 | PaymentFeedSource — WO-58.2 |
+| `payments.service.spec.ts` | 2 | PaymentsService.createForOrder — 38-resilience-engineering.md WO-38.1/38.2 |
 | `account.provider.spec.ts` | 7 | AccountProvider — 149-b2b-accounts-approvals-sector-packs.md |
 | `callback-verification.spec.ts` | 8 | Easypaisa callback verification · JazzCash callback verification |
 
@@ -130,7 +133,7 @@ check there before adding another.
 | `PaymentsController` | class | `payments.controller.ts:53` |  |
 | `PaymentsAdminController` | class | `payments.controller.ts:106` |  |
 | `PaymentsModule` | class | `payments.module.ts:38` |  |
-| `PaymentsService` | class | `payments.service.ts:30` | Payments, behind one interface. |
+| `PaymentsService` | class | `payments.service.ts:31` | Payments, behind one interface. |
 | `AccountProvider` | class | `account.provider.ts:25` | "Pay on account" — 149-b2b-accounts-approvals-sector-packs.md. |
 | `BankTransferProvider` | class | `bank-transfer.provider.ts:26` | Bank transfer: the customer pays into the shop's account and uploads the receipt, and staff approve it from t… |
 | `CodProvider` | class | `cod.provider.ts:19` | Cash on delivery — how most of Pakistan pays online. |

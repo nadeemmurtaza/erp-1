@@ -3,7 +3,7 @@
 
 # repository root files
 
-213 files · 21,395 lines
+213 files · 21,432 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,7 +17,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 22 | 8,407 | file, doc, txt, script |
+| `.` | 22 | 8,444 | file, doc, txt, script |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 8 | 341 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
@@ -47,7 +47,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
 | `CLAUDE.md` | 1,004 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
-| `DEPLOYMENT.md` | 492 | doc |  |
+| `DEPLOYMENT.md` | 529 | doc |  |
 | `README.md` | 349 | doc |  |
 | `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | 285 | unit test |  |

@@ -747,6 +747,12 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `PeoplePage` | default | :53 | hr-people-org/20-people-positions-ranks.md WO-20.5 — the people list, one nav entry. |
 
+### `apps/web/src/app/(admin)/admin/(app)/platform-resilience`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `PlatformResiliencePage` | default | :77 | 38-resilience-engineering.md. |
+
 ### `apps/web/src/app/(admin)/admin/(app)/products`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1405,8 +1411,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1143 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1158 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1158 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1173 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

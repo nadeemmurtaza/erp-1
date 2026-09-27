@@ -183,3 +183,41 @@ describe('StorageService.putDocument', () => {
     expect(local.put).not.toHaveBeenCalled();
   });
 });
+
+describe('StorageService — 38-resilience-engineering.md WO-38.1, degradation matrix row "StorageDriver (S3/R2)"', () => {
+  /**
+   * The row's stated degraded behavior is "new uploads queue for retry."
+   * This test proves what the code actually does today: `put()` has no
+   * retry or queue of any kind (confirmed by reading `storage.service.ts`
+   * in full) — a driver failure propagates straight to the caller. This is
+   * a genuine gap between the degradation matrix's own text and the
+   * codebase, named honestly here (and in doc 38's status blockquote)
+   * rather than papered over with a test for behavior that does not exist.
+   * Building a real upload retry queue is a separate, larger work order —
+   * out of doc 38's own WO-38.1 (prove existing behavior), which is not a
+   * license to invent a new mechanism.
+   */
+  it('propagates a driver failure directly to the caller — no queue, no retry, exists today', async () => {
+    const local = { name: 'local', put: jest.fn().mockRejectedValue(new Error('ENOSPC: no space left on device')) };
+    const s3 = { name: 's3', put: jest.fn() };
+    const config = { get: jest.fn().mockReturnValue('local') };
+    const settings = { get: jest.fn().mockResolvedValue(false) };
+
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        StorageService,
+        { provide: AppConfigService, useValue: config },
+        { provide: LocalStorageDriver, useValue: local },
+        { provide: S3StorageDriver, useValue: s3 },
+        { provide: SettingsService, useValue: settings },
+      ],
+    }).compile();
+
+    const service = module.get<StorageService>(StorageService);
+
+    await expect(service.put({ folder: 'x', filename: 'a.bin', contentType: 'application/octet-stream', body: Buffer.from('x') })).rejects.toThrow(
+      'ENOSPC',
+    );
+    expect(local.put).toHaveBeenCalledTimes(1);
+  });
+});

@@ -563,7 +563,7 @@ All 401 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 7808 |  |
+| `DECISIONS.md` | doc | 7951 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -830,7 +830,7 @@ All 401 tracked files in `docs/*`, by directory.
 | `124-infrastructure-as-code.md` | doc | 64 |  |
 | `144-supply-chain-resilience-planning-engine.md` | doc | 392 |  |
 | `37-scalability-future-upgrades.md` | doc | 306 |  |
-| `38-resilience-engineering.md` | doc | 238 |  |
+| `38-resilience-engineering.md` | doc | 379 |  |
 | `48-native-desktop-deployment.md` | doc | 184 |  |
 | `90-automatic-backups-local-support.md` | doc | 56 |  |
 

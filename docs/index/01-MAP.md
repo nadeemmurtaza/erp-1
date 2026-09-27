@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,135 | 150,504 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 401 | 71,021 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 422 | 70,991 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 28,687 | workspace manifests, docker compose/stack files, env templates |
+| `apps/api` | 1,154 | 152,518 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 401 | 71,305 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 423 | 71,228 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 28,724 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
 | `scripts` | 25 | 9,621 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 62 | 7,910 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 62 | 7,951 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
 | `apps/pos` | 33 | 2,667 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,064 |  |
@@ -109,6 +109,7 @@ Each is independent: no module imports another except through a named
 | [`receivables`](modules/receivables.md) | core | MODULES allowlist | 20 | 5 |
 | [`recommendations`](modules/recommendations.md) | core | MODULES allowlist | 7 | — |
 | [`reports`](modules/reports.md) | core | MODULES allowlist | 12 | — |
+| [`resilience`](modules/resilience.md) | core | always on | 6 | 1 |
 | [`reviews`](modules/reviews.md) | core | MODULES allowlist | 7 | 2 |
 | [`search`](modules/search.md) | core | MODULES allowlist | 6 | 2 |
 | [`settings`](modules/settings.md) | core | always on | 8 | — |
@@ -141,19 +142,21 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`common`](core/common.md) | 7 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
 | [`config`](core/config.md) | 6 |  |
 | [`crm`](core/crm.md) | 1 |  |
-| [`events`](core/events.md) | 5 | The catalogue of domain events. |
+| [`events`](core/events.md) | 7 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
 | [`extension-points`](core/extension-points.md) | 11 |  |
 | [`feature-flags`](core/feature-flags.md) | 3 |  |
 | [`feed`](core/feed.md) | 5 |  |
-| [`health`](core/health.md) | 2 |  |
+| [`health`](core/health.md) | 3 |  |
 | [`idempotency`](core/idempotency.md) | 7 |  |
 | [`intent`](core/intent.md) | 4 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
 | [`notifications`](core/notifications.md) | 23 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |
 | [`replication`](core/replication.md) | 21 |  |
+| [`resilience`](core/resilience.md) | 4 | Extension point (38-resilience-engineering.md §2): the three-state gate every existing extension-point call s… |
 | [`security`](core/security.md) | 3 |  |
 | [`settings`](core/settings.md) | 6 |  |
+| [`slo`](core/slo.md) | 6 | The three critical paths named in 38-resilience-engineering.md §3 — the only paths in this codebase with a fo… |
 | [`storage`](core/storage.md) | 8 | Extension point: file storage. |
 | [`time`](core/time.md) | 4 | Rolling a daily series up into week or month buckets — WO-B.5's comparative chart, and anything after it that… |
 | [`versioning`](core/versioning.md) | 5 |  |

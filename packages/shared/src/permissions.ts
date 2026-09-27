@@ -865,6 +865,35 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Platform',
     sensitivity: 'high',
   },
+  {
+    // 38-resilience-engineering.md (WO-38.6) — the degradation matrix, each
+    // circuit breaker's live state, the three critical paths' error-budget
+    // dashboard and the DR numbers. Doc 38's own "Whose rows" scope-lens:
+    // engineering-ops tooling, not a customer- or branch-facing report.
+    key: 'platform.resilience.view',
+    label: 'View the degradation matrix, circuit-breaker states, SLO/error-budget dashboards and DR numbers',
+    category: 'Platform',
+    sensitivity: 'low',
+  },
+  {
+    // Doc 38's own "Audience is a capability, not an address" scope-lens —
+    // who an open circuit or a breached error budget pages, resolved by
+    // this key, never a hardcoded phone number or email.
+    key: 'platform.resilience.oncall',
+    label: 'Be paged when a circuit breaker opens or a critical-path error budget is breached',
+    category: 'Platform',
+    sensitivity: 'low',
+  },
+  {
+    // Doc 38's own "Authority and blast radius" scope-lens — tuning a
+    // circuit breaker's failure threshold or cooldown window; the worst
+    // value is a threshold so sensitive it trips on ordinary latency
+    // variance, which the dry-run (below) catches before it ships.
+    key: 'platform.resilience.tune',
+    label: "Change a circuit breaker's failure threshold or cooldown window",
+    category: 'Platform',
+    sensitivity: 'medium',
+  },
 ] as const;
 
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]['key'];
@@ -1116,8 +1145,14 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'platform',
     label: 'Platform engineering',
-    description: 'Feature flags for staging a rollout — creating and editing flags, and the separate second-approver step for raising a money/stock-path flag to 100% or clearing its kill switch.',
-    permissions: ['platform.flags.manage', 'platform.flags.approve_rollout'],
+    description: 'Feature flags for staging a rollout — creating and editing flags, and the separate second-approver step for raising a money/stock-path flag to 100% or clearing its kill switch — plus the resilience dashboard: the degradation matrix, circuit-breaker states, SLO/error-budget tracking, on-call paging and DR numbers.',
+    permissions: [
+      'platform.flags.manage',
+      'platform.flags.approve_rollout',
+      'platform.resilience.view',
+      'platform.resilience.oncall',
+      'platform.resilience.tune',
+    ],
   },
 ] as const;
 
@@ -1363,6 +1398,12 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     // 37's own scope-lens marks "The toxic pair" n/a for this document).
     'platform.flags.manage',
     'platform.flags.approve_rollout',
+    // 38-resilience-engineering.md (WO-38.6). All three seeded onto ADMIN,
+    // the same as every other platform.* key — engineering-ops tooling
+    // with no customer- or branch-facing counterpart to gate separately.
+    'platform.resilience.view',
+    'platform.resilience.oncall',
+    'platform.resilience.tune',
   ],
 };
 

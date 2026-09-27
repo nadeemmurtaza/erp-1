@@ -3,7 +3,7 @@
 
 # Migrations
 
-**116** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**117** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -149,6 +149,7 @@ nothing here fails a build.
 | 2026-09-27 | `wo148_customer_support_portal` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | CustomerSupportMessage, CustomerSupportTicket |
 | 2026-09-27 | `wo31_pos_hardware_park_retrieve` | 9 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | PosLineModifier, PosLineQuantitySource, PosParkedSale |
 | 2026-09-27 | `wo37_feature_flags` | 4 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | FeatureFlag |
+| 2026-09-27 | `wo38_request_outcomes` | 3 | CREATE TABLE, CREATE INDEX | RequestOutcome |
 
 
 ---

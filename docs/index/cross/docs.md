@@ -148,7 +148,7 @@ _no second-level headings_
 - Before you push  <sub>:104</sub>
 - Local setup  <sub>:114</sub>
 
-### `DEPLOYMENT.md`  <sub>492 lines</sub>
+### `DEPLOYMENT.md`  <sub>529 lines</sub>
 
 - 1. Provision the VPS  <sub>:39</sub>
 - 2. First login: base setup, a deploy user, and firewall  <sub>:53</sub>
@@ -159,10 +159,10 @@ _no second-level headings_
 - 7. GitHub Actions: secrets for automatic deploys  <sub>:240</sub>
 - 8. Day-to-day deploys  <sub>:283</sub>
 - 9. Backups, restore tests and off-site copies  <sub>:324</sub>
-- 10. Disk threshold alerts  <sub>:401</sub>
-- 11. Automatic restart at boot  <sub>:423</sub>
-- 12. Resource limits and connection pooling  <sub>:441</sub>
-- 13. Troubleshooting  <sub>:474</sub>
+- 10. Disk threshold alerts  <sub>:438</sub>
+- 11. Automatic restart at boot  <sub>:460</sub>
+- 12. Resource limits and connection pooling  <sub>:478</sub>
+- 13. Troubleshooting  <sub>:511</sub>
 
 ### `Design.md`  <sub>41 lines</sub>
 
@@ -2727,7 +2727,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>7,808 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>7,951 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2801,6 +2801,7 @@ _no second-level headings_
 - ADR-066 — Doc 144 (R20–R26 supply-chain resilience planning engine): built as a pure read/recommendation engine, generating only the two action kinds this graph has real data to back  <sub>:7388</sub>
 - ADR-067 — Docs 31/66/67/76 (`pos-hardware/` category): the till hardware layer as extension points, ad-hoc modifiers over a hardcoded list, and a corrected permission claim  <sub>:7526</sub>
 - ADR-068 — Doc 37 (scalability future upgrades): the versioning policy ships inert, `FeatureFlag` gains two fields its own sketch omitted, and the rollout threshold reuses the settlements/bank-facilities maker-checker shape rather than inventing a third  <sub>:7685</sub>
+- ADR-069 — Doc 38 (resilience engineering): a table-driven contract test over the real source tree instead of 69 hand-written files, `RequestOutcome` instead of forcing SLO data through the business-metrics registry, and a genuine `/admin/resilience` naming collision resolved by renaming the newer screen  <sub>:7809</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3498,17 +3499,17 @@ _no second-level headings_
 - Acceptance  <sub>:277</sub>
 - Out of scope  <sub>:294</sub>
 
-### `docs/implementation/resilience-scalability/38-resilience-engineering.md`  <sub>238 lines</sub>
+### `docs/implementation/resilience-scalability/38-resilience-engineering.md`  <sub>379 lines</sub>
 
-- 1. The degradation matrix: what actually happens when each dependency is down  <sub>:15</sub>
-- 2. Circuit breakers, generalized from the one pattern the outbox already proves  <sub>:39</sub>
-- 3. SLOs and error budgets for the paths that actually matter  <sub>:64</sub>
-- 4. Disaster recovery, naming the numbers `deploy/backup.sh` already earns  <sub>:85</sub>
-- 5. Contract tests: the module-boundary guarantee, extended to behavior  <sub>:105</sub>
-- Scope lenses  <sub>:118</sub>
-- Work orders  <sub>:188</sub>
-- Acceptance  <sub>:209</sub>
-- Out of scope  <sub>:224</sub>
+- 1. The degradation matrix: what actually happens when each dependency is down  <sub>:156</sub>
+- 2. Circuit breakers, generalized from the one pattern the outbox already proves  <sub>:180</sub>
+- 3. SLOs and error budgets for the paths that actually matter  <sub>:205</sub>
+- 4. Disaster recovery, naming the numbers `deploy/backup.sh` already earns  <sub>:226</sub>
+- 5. Contract tests: the module-boundary guarantee, extended to behavior  <sub>:246</sub>
+- Scope lenses  <sub>:259</sub>
+- Work orders  <sub>:329</sub>
+- Acceptance  <sub>:350</sub>
+- Out of scope  <sub>:365</sub>
 
 ### `docs/implementation/resilience-scalability/48-native-desktop-deployment.md`  <sub>184 lines</sub>
 

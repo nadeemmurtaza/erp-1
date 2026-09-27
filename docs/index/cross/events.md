@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **66** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **69** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -95,6 +95,9 @@ order" is a new file, not an edit to checkout.
 | `receivables.credit_hold_applied` | `CreditHoldApplied` | `receivables` | _none_ |
 | `notification.sent` | `NotificationSent` | core/`notifications` | _none_ |
 | `settlement.shortfall_written_off` | `SettlementShortfallWrittenOff` | `accounting`, `settlements` | `accounting` |
+| `bank_facility.drawdown_posted` | `BankFacilityDrawdownPosted` | `accounting`, `bankfacilities` | `accounting` |
+| `bank_facility.repayment_recorded` | `BankFacilityRepaymentRecorded` | `accounting`, `bankfacilities` | `accounting` |
+| `bank_facility.markup_accrued` | `BankFacilityMarkupAccrued` | `accounting`, `bankfacilities` | `accounting` |
 | `notify.bulletin_published` | `BulletinPublished` | `notify` | `notify` |
 
 
@@ -107,8 +110,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:55` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:162` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:58` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:165` | `accounting` |
 | `apps/api/src/modules/orders/orders.service.ts:518` | `orders` |
 | `apps/api/src/modules/orders/orders.service.ts:776` | `orders` |
 
@@ -118,7 +121,7 @@ order" is a new file, not an edit to checkout.
 | Handler | Where | Module |
 |---|---|---|
 | `handle()` | `apps/api/src/core/events/on-domain-event.decorator.ts:7` | core/`events` |
-| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:53` | `accounting` |
+| `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:56` | `accounting` |
 | `onOrderPlaced()` | `apps/api/src/modules/crm/order.subscriber.ts:27` | `crm` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/notification.subscriber.ts:70` | `orders` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/order-replication.listener.ts:48` | `orders` |
@@ -169,8 +172,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:122` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:159` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:125` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:162` | `accounting` |
 | `apps/api/src/modules/orders/instalment-plan.service.ts:90` | `orders` |
 | `apps/api/src/modules/orders/orders.service.ts:747` | `orders` |
 | `apps/api/src/modules/payments/payments.service.ts:193` | `payments` |
@@ -182,7 +185,7 @@ order" is a new file, not an edit to checkout.
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:120` | `accounting` |
+| `onPaymentSucceeded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:123` | `accounting` |
 | `onPaymentSucceeded()` | `apps/api/src/modules/payments/notification.subscriber.ts:34` | `payments` |
 
 ### `payment.failed`
@@ -230,7 +233,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:157` | `accounting` |
+| `onPaymentRefunded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:160` | `accounting` |
 | `onPaymentRefunded()` | `apps/api/src/modules/payments/notification.subscriber.ts:118` | `payments` |
 
 ### `stitching.job_created`
@@ -535,7 +538,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:286` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:289` | `accounting` |
 | `apps/api/src/modules/inventory/inventory.service.ts:396` | `inventory` |
 
 
@@ -543,7 +546,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:284` | `accounting` |
+| `onStockVarianceRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:287` | `accounting` |
 
 ### `purchasing.goods_received`
 
@@ -615,7 +618,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:183` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:186` | `accounting` |
 | `apps/api/src/modules/purchasing/purchasing.service.ts:599` | `purchasing` |
 
 
@@ -623,7 +626,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:181` | `accounting` |
+| `onSupplierBillRaised()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:184` | `accounting` |
 
 ### `purchasing.supplier_bill_paid`
 
@@ -632,7 +635,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:233` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:236` | `accounting` |
 | `apps/api/src/modules/purchasing/purchasing.service.ts:663` | `purchasing` |
 
 
@@ -640,7 +643,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:231` | `accounting` |
+| `onSupplierBillPaid()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:234` | `accounting` |
 
 ### `purchasing.supplier_deleted`
 
@@ -667,7 +670,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:339` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:342` | `accounting` |
 | `apps/api/src/modules/transfers/transfers.service.ts:300` | `transfers` |
 
 
@@ -675,7 +678,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:337` | `accounting` |
+| `onInterBranchTransferInvoiced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:340` | `accounting` |
 
 ### `analytics.supplier_digest_ready`
 
@@ -817,7 +820,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:399` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:402` | `accounting` |
 | `apps/api/src/modules/finance/finance.service.ts:252` | `finance` |
 | `apps/api/src/modules/finance/finance.service.ts:645` | `finance` |
 
@@ -826,7 +829,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:397` | `accounting` |
+| `onExpenseRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:400` | `accounting` |
 | `onExpenseRecorded()` | `apps/api/src/modules/finance/expense-replication.listener.ts:38` | `finance` |
 
 ### `finance.order_economics_computed`
@@ -852,7 +855,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:444` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:447` | `accounting` |
 | `apps/api/src/modules/payroll/pay-run.service.ts:186` | `payroll` |
 
 
@@ -860,7 +863,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPayrollRunPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:442` | `accounting` |
+| `onPayrollRunPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:445` | `accounting` |
 
 ### `payroll.adjustment_posted`
 
@@ -870,7 +873,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:495` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:498` | `accounting` |
 | `apps/api/src/modules/payroll/pay-run.service.ts:237` | `payroll` |
 
 
@@ -878,7 +881,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onPayrollAdjustmentPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:493` | `accounting` |
+| `onPayrollAdjustmentPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:496` | `accounting` |
 
 ### `fulfilment.shipment_status_changed`
 
@@ -1082,8 +1085,8 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:534` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:561` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:537` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:564` | `accounting` |
 | `apps/api/src/modules/receivables/credit-notes.service.ts:130` | `receivables` |
 
 
@@ -1091,7 +1094,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onCreditNoteIssued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:532` | `accounting` |
+| `onCreditNoteIssued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:535` | `accounting` |
 
 ### `receivables.credit_note_voided`
 
@@ -1108,7 +1111,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onCreditNoteVoided()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:559` | `accounting` |
+| `onCreditNoteVoided()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:562` | `accounting` |
 
 ### `receivables.debit_note_issued`
 
@@ -1118,8 +1121,8 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:580` | `accounting` |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:606` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:583` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:609` | `accounting` |
 | `apps/api/src/modules/receivables/debit-notes.service.ts:93` | `receivables` |
 
 
@@ -1127,7 +1130,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onDebitNoteIssued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:578` | `accounting` |
+| `onDebitNoteIssued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:581` | `accounting` |
 
 ### `receivables.debit_note_voided`
 
@@ -1144,7 +1147,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onDebitNoteVoided()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:604` | `accounting` |
+| `onDebitNoteVoided()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:607` | `accounting` |
 
 ### `receivables.credit_hold_applied`
 
@@ -1184,7 +1187,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:624` | `accounting` |
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:627` | `accounting` |
 | `apps/api/src/modules/settlements/settlements.service.ts:210` | `settlements` |
 
 
@@ -1192,7 +1195,61 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Handler | Where | Module |
 |---|---|---|
-| `onSettlementShortfallWrittenOff()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:622` | `accounting` |
+| `onSettlementShortfallWrittenOff()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:625` | `accounting` |
+
+### `bank_facility.drawdown_posted`
+
+> 167-bank-facility-management.md (WO-167.3) — BankFacilitiesService.postDrawdown(), fired only once a drawdown has actually posted (below-threshold immediately, above-threshold after approve()).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:665` | `accounting` |
+| `apps/api/src/modules/bankfacilities/bankfacilities.service.ts:204` | `bankfacilities` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onBankFacilityDrawdownPosted()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:663` | `accounting` |
+
+### `bank_facility.repayment_recorded`
+
+> 167-bank-facility-management.md (WO-167.3) — BankFacilitiesService.recordRepayment().
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:697` | `accounting` |
+| `apps/api/src/modules/bankfacilities/bankfacilities.service.ts:249` | `bankfacilities` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onBankFacilityRepaymentRecorded()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:695` | `accounting` |
+
+### `bank_facility.markup_accrued`
+
+> 167-bank-facility-management.md (WO-167.3) — the monthly markup-accrual cron's own posting, one event per facility per calendar month, idempotent via findPostedEntry(source, `${facilityId}:${monthKey…
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/accounting/posting-rules.subscriber.ts:745` | `accounting` |
+| `apps/api/src/modules/bankfacilities/bankfacilities.service.ts:298` | `bankfacilities` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onBankFacilityMarkupAccrued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:743` | `accounting` |
 
 ### `notify.bulletin_published`
 

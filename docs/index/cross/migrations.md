@@ -3,7 +3,7 @@
 
 # Migrations
 
-**111** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**112** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -142,6 +142,7 @@ nothing here fails a build.
 | 2026-09-26 | `wo1656_sso_enforce_sso` | 1 | ALTER TABLE | SsoConnection |
 | 2026-09-26 | `wo24_notify_meetings_escalation` | 22 | ALTER TYPE, CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | Audience, BroadcastMessage, EscalationFire, EscalationRule, Meeting, MeetingInvitation |
 | 2026-09-26 | `wo166_product_reference_sync_provenance` | 2 | ALTER TABLE | ProductImage, ProductTranslation |
+| 2026-09-27 | `add_bank_facilities` | 16 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Bank, BankFacility, BankFacilityDrawdown, BankFacilityMarkupAccrual, BankFacilityRepayment |
 | 2026-09-27 | `wo61_bulletin_board` | 6 | CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | Bulletin, BulletinAcknowledgement |
 | 2026-09-27 | `wo64_support_ticketing` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | SupportTicket, TicketMessage |
 

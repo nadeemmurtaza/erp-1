@@ -5,7 +5,7 @@ import { SupportTicketsService } from './support-tickets.service';
 
 /**
  * tasks-notifications-support/64-help-desk-support-ticketing.md
- * (DECISIONS.md ADR-063). A fully standalone module (the doc's own "The
+ * (DECISIONS.md ADR-064). A fully standalone module (the doc's own "The
  * absent collaborator" lens): imports no other feature module, and no
  * other module imports this one. Delivery is `NotificationsService`
  * (core, global) unchanged; state changes go through `AuditService` (core,

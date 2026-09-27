@@ -78,6 +78,18 @@ export const CHART_OF_ACCOUNTS: ReadonlyArray<{
   // that actually arrived, so the write-off credits Cash & Bank back down
   // by the shortfall and recognises the loss — no new asset account needed.
   { code: '5700', name: 'Settlement Shortfall Expense', type: 'EXPENSE' },
+  // Bank facility management (finance-accounting/167-bank-facility-
+  // management.md WO-167.2). A drawdown is the business's own borrowing,
+  // not revenue or a customer balance — a new liability distinct from
+  // Accounts Payable (2200, a trade payable) and Salaries Payable (2300,
+  // an employee obligation). Markup accrues into its own payable rather
+  // than posting straight to expense at drawdown time, so a repayment can
+  // clear accrued markup separately from principal — the same accrual
+  // shape AccumulatedDepreciation/DepreciationExpense already establishes
+  // for a different periodic liability.
+  { code: '2500', name: 'Bank Loan Payable', type: 'LIABILITY' },
+  { code: '2600', name: 'Accrued Markup Payable', type: 'LIABILITY' },
+  { code: '5800', name: 'Markup Expense', type: 'EXPENSE' },
 ];
 
 /** The codes above, named — so a posting rule never hand-types a magic string. */
@@ -108,4 +120,7 @@ export const ACCOUNT_CODE = {
   GAIN_ON_DISPOSAL: '4300',
   LOSS_ON_DISPOSAL: '5600',
   SETTLEMENT_SHORTFALL_EXPENSE: '5700',
+  BANK_LOAN_PAYABLE: '2500',
+  ACCRUED_MARKUP_PAYABLE: '2600',
+  MARKUP_EXPENSE: '5800',
 } as const;

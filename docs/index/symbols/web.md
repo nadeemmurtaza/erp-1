@@ -108,6 +108,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `B2BAccountDetailPage` | default | :32 | 149-b2b-accounts-approvals-sector-packs.md (WO-149.4) — the staff side of setting an account's appr… |
 
+### `apps/web/src/app/(admin)/admin/(app)/bank-facilities`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `BankFacilitiesPage` | default | :49 | finance-accounting/167-bank-facility-management.md WO-167.6 — the business's own borrowing against… |
+
+### `apps/web/src/app/(admin)/admin/(app)/bank-facilities/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `BankFacilityDetailPage` | default | :62 | finance-accounting/167-bank-facility-management.md WO-167.6 — one facility's own utilization, drawd… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/bom`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1345,8 +1357,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1101 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1116 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1109 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1124 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

@@ -22,7 +22,7 @@ against a real database.
 
 ### `SupportTicket`  <sub>`apps/api/prisma/schema/support.prisma:17`</sub>
 
-> In-app help desk (internal) — tasks-notifications-support/64-help-desk- support-ticketing.md, DECISIONS.md ADR-063.
+> In-app help desk (internal) — tasks-notifications-support/64-help-desk- support-ticketing.md, DECISIONS.md ADR-064.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

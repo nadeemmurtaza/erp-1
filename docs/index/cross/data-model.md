@@ -3,7 +3,7 @@
 
 # Data model
 
-All **296** Prisma models and **138** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **301** Prisma models and **140** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -29,6 +29,7 @@ against a real database.
 | [`accounts.prisma`](../data/accounts.md) | 3 | 1 | [`accounts`](../modules/accounts.md) | B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
+| [`bank-facilities.prisma`](../data/bank-facilities.md) | 5 | 2 | core platform | Bank, BankFacility, BankFacilityDrawdown, BankFacilityMarkupAccrual, BankFacilityRepayment |
 | [`bom.prisma`](../data/bom.md) | 5 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionRun, BomRecipe, RawMaterial |
 | [`bpmn-workflows.prisma`](../data/bpmn-workflows.md) | 1 | 0 | [`bpmn-workflows`](../modules/bpmn-workflows.md) | BpmnWorkflowDefinition |
 | [`cart.prisma`](../data/cart.md) | 3 | 0 | [`cart`](../modules/cart.md) | Cart, CartItem, CartItemStitchingOption |
@@ -113,6 +114,11 @@ against a real database.
 | [`B2BOrderRequest`](../data/accounts.md#b2borderrequest) | `accounts` | 14 | 1 | id | "Request or record" — an order placed against a B2BAccount under an active B2BPurchaseApp… |
 | [`B2BPurchaseApprovalPolicy`](../data/accounts.md#b2bpurchaseapprovalpolicy) | `accounts` | 7 | 1 | id | The buyer's own internal purchasing control, not this organization's — the seller merely… |
 | [`BackInStockRequest`](../data/wishlist.md#backinstockrequest) | `wishlist` | 6 | 2 | id | One row per customer waiting on one variant. |
+| [`Bank`](../data/bank-facilities.md#bank) | `bank-facilities` | 5 | 0 | id | The lending institution itself — deliberately its own actor, never `Contact`/`Party`: a b… |
+| [`BankFacility`](../data/bank-facilities.md#bankfacility) | `bank-facilities` | 17 | 1 | id | One facility limit a bank has extended — its own markup rate, tenor and maturity, indepen… |
+| [`BankFacilityDrawdown`](../data/bank-facilities.md#bankfacilitydrawdown) | `bank-facilities` | 10 | 1 | id | A REQUEST/RECORD pair like every other money-moving mechanism in this codebase: below the… |
+| [`BankFacilityMarkupAccrual`](../data/bank-facilities.md#bankfacilitymarkupaccrual) | `bank-facilities` | 7 | 1 | id | One row per calendar month the markup-accrual cron posts for a facility — mirrors AssetDe… |
+| [`BankFacilityRepayment`](../data/bank-facilities.md#bankfacilityrepayment) | `bank-facilities` | 9 | 1 | id | A repayment against principal, accrued markup, or both — either component may be zero but… |
 | [`Banner`](../data/content.md#banner) | `content` | 11 | 0 | id |  |
 | [`BannerTranslation`](../data/content.md#bannertranslation) | `content` | 7 | 1 | id |  |
 | [`BillOfMaterial`](../data/production.md#billofmaterial) | `production` | 8 | 1 | id | One recipe per produced variant: how many of each component variant it takes to make one… |
@@ -410,6 +416,8 @@ against a real database.
 | [`AttendanceKind`](../data/attendance.md#attendancekind) | `attendance` | `IN` `OUT` `BREAK_START` `BREAK_END` `ADJUSTMENT` |
 | [`AttendanceSource`](../data/attendance.md#attendancesource) | `attendance` | `DEVICE` `SELF` `MANAGER` `IMPORT` |
 | [`B2BOrderRequestStatus`](../data/accounts.md#b2borderrequeststatus) | `accounts` | `PENDING` `APPROVED` `REJECTED` `CONVERTED` |
+| [`BankFacilityStatus`](../data/bank-facilities.md#bankfacilitystatus) | `bank-facilities` | `ACTIVE` `CLOSED` |
+| [`BankFacilityType`](../data/bank-facilities.md#bankfacilitytype) | `bank-facilities` | `TERM_LOAN` `RUNNING_FINANCE` `OVERDRAFT` `LETTER_OF_CREDIT` `BANK_GUARANTEE` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`BulletinCategory`](../data/notify.md#bulletincategory) | `notify` | `POLICY` `MEMO` `NOTICE` `HR_ANNOUNCEMENT` |
 | [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |

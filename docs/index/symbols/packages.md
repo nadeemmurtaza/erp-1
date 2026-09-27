@@ -205,16 +205,16 @@ Every top-level export in `packages`, with the line to open.
 | `permissions.ts` | `PermissionSensitivity` | type | :36 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PermissionDefinition` | interface | :38 | How much is at stake if this permission is granted to the wrong person — shown as a warning in the… |
 | `permissions.ts` | `PERMISSION_CATALOG` | const | :45 |  |
-| `permissions.ts` | `PermissionKey` | type | :806 |  |
-| `permissions.ts` | `PERMISSION_KEYS` | const | :808 |  |
-| `permissions.ts` | `PermissionGroup` | interface | :818 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
-| `permissions.ts` | `PERMISSION_GROUPS` | const | :825 |  |
-| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :1054 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
-| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :1280 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
-| `permissions.ts` | `TOXIC_PERMISSION_PAIRS` | const | :1299 | Permission pairs a single role must never grant together (access-control-identity/21-access-over-th… |
-| `permissions.ts` | `PERMISSION_EFFECTS` | const | :1313 |  |
-| `permissions.ts` | `PermissionEffect` | type | :1314 |  |
-| `permissions.ts` | `PermissionOverride` | interface | :1317 | One entry in a user's permission-override set (@see UserPermission). |
+| `permissions.ts` | `PermissionKey` | type | :824 |  |
+| `permissions.ts` | `PERMISSION_KEYS` | const | :826 |  |
+| `permissions.ts` | `PermissionGroup` | interface | :836 | The role-creation wizard's own grouping (owner's request) — smaller and more numerous than `categor… |
+| `permissions.ts` | `PERMISSION_GROUPS` | const | :843 |  |
+| `permissions.ts` | `ROLE_PERMISSION_SEED` | const | :1075 | Today's exact access, expressed as permission grants — this is what the database seed reproduces so… |
+| `permissions.ts` | `ADMIN_LOCKED_PERMISSIONS` | const | :1304 | Permissions the update-role-permissions endpoint refuses to remove from ADMIN, so an admin can neve… |
+| `permissions.ts` | `TOXIC_PERMISSION_PAIRS` | const | :1323 | Permission pairs a single role must never grant together (access-control-identity/21-access-over-th… |
+| `permissions.ts` | `PERMISSION_EFFECTS` | const | :1337 |  |
+| `permissions.ts` | `PermissionEffect` | type | :1338 |  |
+| `permissions.ts` | `PermissionOverride` | interface | :1341 | One entry in a user's permission-override set (@see UserPermission). |
 | `phone.ts` | `NormalizedPhone` | interface | :21 |  |
 | `phone.ts` | `normalizePhone` | function | :29 |  |
 | `phone.ts` | `isValidPhone` | function | :64 |  |

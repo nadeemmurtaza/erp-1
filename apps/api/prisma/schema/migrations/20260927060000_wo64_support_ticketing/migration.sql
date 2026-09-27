@@ -1,6 +1,6 @@
 -- In-app help desk (internal) — a ticket with a lifecycle and an ordered
 -- reply thread. tasks-notifications-support/64-help-desk-support-ticketing.md
--- (WO-64.1), DECISIONS.md ADR-063.
+-- (WO-64.1), DECISIONS.md ADR-064.
 --
 -- Hand-written, forward-only (ADR-008). Purely additive. No organizationId
 -- anywhere (ADR-040/ADR-044/ADR-046/ADR-049/ADR-060/ADR-062): this

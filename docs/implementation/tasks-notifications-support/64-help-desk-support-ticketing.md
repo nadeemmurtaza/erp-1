@@ -1,6 +1,6 @@
 # 64 — In-app help desk: a genuinely new capability
 
-> **Status: built (2026-09-27), WO-64.1–64.5, DECISIONS.md ADR-063.**
+> **Status: built (2026-09-27), WO-64.1–64.5, DECISIONS.md ADR-064.**
 > `SupportTicket`/`TicketMessage`/`TicketStatus`/`TicketPriority`
 > (`support.prisma`), `SupportTicketsService`
 > (`create()`/`reply()`/`assign()`/`transition()`/`list()`/`get()`),
@@ -21,7 +21,7 @@
 > unnecessary, this document's own WO-64.5 wording notwithstanding.
 >
 > Two decisions beyond this document's own literal sketch, both required
-> to make its own stated requirements real — see `DECISIONS.md` ADR-063
+> to make its own stated requirements real — see `DECISIONS.md` ADR-064
 > for the full reasoning: who may call `transition()` is resolved
 > per-instance inside the service (the current assignee, a
 > `support.tickets.reassign` holder, or — only for the one backward move —

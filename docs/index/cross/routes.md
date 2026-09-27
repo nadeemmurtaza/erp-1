@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **820** endpoints across **150** controllers, with the access rule that actually guards each one.
+All **830** endpoints across **151** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -217,6 +217,21 @@ never authorization.
 | GET | `/admin/attendance/shifts` | `hr.attendance.view` `hr.attendance.record` `hr.attendance.reconcile` | `AttendanceController.listShifts` | Shifts for one person |
 | POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
 | POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
+
+### [`bankfacilities`](../modules/bankfacilities.md) (10)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/bank-facilities` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.listFacilities` | Every bank facility, optionally filtered by status, each with its own computed… |
+| POST | `/admin/bank-facilities` | `finance.facilities.manage` | `BankFacilitiesController.createFacility` | Register a bank facility — its limit, markup rate, tenor and maturity |
+| GET | `/admin/bank-facilities/:id` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.getFacility` | One facility's detail, with every drawdown, repayment and markup accrual |
+| POST | `/admin/bank-facilities/:id/drawdowns` | `finance.facilities.manage` | `BankFacilitiesController.recordDrawdown` | Record a drawdown — refused if it would breach the facility limit; posts immedi… |
+| POST | `/admin/bank-facilities/:id/repayments` | `finance.facilities.manage` | `BankFacilitiesController.recordRepayment` | Record a repayment against principal, accrued markup, or both |
+| GET | `/admin/bank-facilities/banks` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.listBanks` | Every registered lending institution |
+| POST | `/admin/bank-facilities/banks` | `finance.facilities.manage` | `BankFacilitiesController.createBank` | Register a lending institution |
+| POST | `/admin/bank-facilities/drawdowns/:drawdownId/approve` | `finance.facilities.approve_drawdown` | `BankFacilitiesController.approveDrawdown` | Approve an above-threshold drawdown — never the requester's own |
+| POST | `/admin/bank-facilities/drawdowns/:drawdownId/post` | `finance.facilities.manage` | `BankFacilitiesController.postDrawdown` | Post an approved drawdown to the general ledger |
+| GET | `/admin/bank-facilities/renewals` | `finance.facilities.view` `finance.facilities.manage` | `BankFacilitiesController.listUpcomingRenewals` | Active facilities maturing within the configured renewal-alert window |
 
 ### [`bom`](../modules/bom.md) (20)
 

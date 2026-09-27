@@ -829,6 +829,31 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'organization',
     module: 'tasks',
   },
+  {
+    // tasks-notifications-support/24-internal-notifications-meetings-escalation.md.
+    key: 'notify',
+    label: 'Announcements',
+    href: '/admin/notify',
+    permissions: ['notify.send'],
+    group: 'organization',
+    module: 'notify',
+  },
+  {
+    key: 'notify-meetings',
+    label: 'Meetings',
+    href: '/admin/notify/meetings',
+    permissions: ['notify.send'],
+    group: 'organization',
+    module: 'notify',
+  },
+  {
+    key: 'notify-escalation-rules',
+    label: 'Escalation rules',
+    href: '/admin/notify/escalation-rules',
+    permissions: ['notify.escalation.manage'],
+    group: 'organization',
+    module: 'notify',
+  },
 
   // Group: Settings
   {

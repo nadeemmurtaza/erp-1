@@ -2726,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,745 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>6,865 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2791,7 +2791,8 @@ _no second-level headings_
 - ADR-057 — Docs 133 (dry-run harness), 134 (hexagonal-purity CI check) and 138 (technology substitution playbook): a naming convention shipped with better evidence than it cited, a real static check built and wired into `pnpm lint`, one CI overclaim corrected  <sub>:6256</sub>
 - ADR-058 — Doc 165 (cross-tenant marketplace directory), part two: WO-165.1/165.2/165.6 built; WO-165.3/165.4/165.5 deferred together as ADR-047 already scoped them; the publisher credential is ops-issued, not self-service; `enforceSso` gates by legacy `User.role`, exempting whoever turned it on  <sub>:6365</sub>
 - ADR-059 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6492</sub>
-- ADR-060 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6631</sub>
+- ADR-060 — Doc 24 (internal notifications, meetings and escalation): built in full, with one new model beyond its own sketch and a countersignature routed to a named person rather than a role  <sub>:6629</sub>
+- ADR-060 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6751</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3557,15 +3558,15 @@ _no second-level headings_
 - Acceptance  <sub>:221</sub>
 - Out of scope  <sub>:233</sub>
 
-### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>225 lines</sub>
+### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>258 lines</sub>
 
-- The new part: an audience is a query over the org tree  <sub>:15</sub>
-- Meetings are a notification that expects an answer  <sub>:48</sub>
-- Escalation: the timer that makes a stalled approval visible  <sub>:94</sub>
-- Scope lenses  <sub>:128</sub>
-- Work orders  <sub>:192</sub>
-- Acceptance  <sub>:207</sub>
-- Out of scope  <sub>:220</sub>
+- The new part: an audience is a query over the org tree  <sub>:48</sub>
+- Meetings are a notification that expects an answer  <sub>:81</sub>
+- Escalation: the timer that makes a stalled approval visible  <sub>:127</sub>
+- Scope lenses  <sub>:161</sub>
+- Work orders  <sub>:225</sub>
+- Acceptance  <sub>:240</sub>
+- Out of scope  <sub>:253</sub>
 
 ### `docs/implementation/tasks-notifications-support/61-policy-communications-bulletin.md`  <sub>194 lines</sub>
 

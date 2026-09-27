@@ -322,6 +322,20 @@ export const SettingKey = {
    * a shop wants to hold a cart open is its own call, not an engineering one.
    */
   CartGuestTtlDays: 'cart.guest_ttl_days',
+  /**
+   * tasks-notifications-support/24-internal-notifications-meetings-escalation.md
+   * — an announcement addressed to a rank at or above this level needs a
+   * countersignature (NotifyService.send()). NULL disables the rank half of
+   * the quorum check (the recipient-count half below still applies).
+   */
+  NotifyAnnounceQuorumRankLevel: 'notify.announce_quorum_rank_level',
+  /**
+   * 24-internal-notifications-meetings-escalation.md — an announcement
+   * resolving to more than this many recipients needs a countersignature,
+   * regardless of rank. Mass internal messaging is the control that is
+   * always missing until the first all-staff accident.
+   */
+  NotifyAnnounceQuorumRecipientCount: 'notify.announce_quorum_recipient_count',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -499,4 +513,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.TradingPartnersQuoteDefaultValidityDays]: 14,
   // "Guest carts live for a month; long enough to come back after payday."
   [SettingKey.CartGuestTtlDays]: 30,
+  // Rank.level is seeded 10, 20, 30…; 30 is a conservative "department head
+  // and above" default a deployment tunes once its own rank ladder is real.
+  [SettingKey.NotifyAnnounceQuorumRankLevel]: 30,
+  [SettingKey.NotifyAnnounceQuorumRecipientCount]: 50,
 };

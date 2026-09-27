@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 404 tracked files in `apps/web`, by directory.
+All 407 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -640,6 +640,24 @@ All 404 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 79 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/notify` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 136 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/notify/escalation-rules` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 141 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/notify/meetings` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 167 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/o` (1)
 
@@ -1312,7 +1330,7 @@ All 404 tracked files in `apps/web`, by directory.
 | `image-manager.tsx` | component | 543 |  |
 | `metadata-driven-entity-form.tsx` | component | 120 |  |
 | `metadata-driven-form.tsx` | component | 147 |  |
-| `nav-registry.ts` | component | 1082 |  |
+| `nav-registry.ts` | component | 1107 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1572 |  |

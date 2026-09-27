@@ -573,6 +573,29 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'high',
   },
   {
+    // tasks-notifications-support/24-internal-notifications-meetings-escalation.md.
+    key: 'notify.send',
+    label: 'Send an internal message or call a meeting, within your own reach',
+    category: 'Organization',
+    sensitivity: 'low',
+  },
+  {
+    // Toxic-paired with org.access.grant (TOXIC_PERMISSION_PAIRS below):
+    // address everyone AND widen your own reach is exactly "invent the
+    // thing, then authorise yourself over it," restated for a broadcast
+    // audience instead of an org-unit grant.
+    key: 'notify.broadcast',
+    label: 'Send an announcement above the quorum threshold (requires a countersignature)',
+    category: 'Organization',
+    sensitivity: 'high',
+  },
+  {
+    key: 'notify.escalation.manage',
+    label: 'Configure which stalled tasks escalate, and how far',
+    category: 'Organization',
+    sensitivity: 'high',
+  },
+  {
     key: 'marketing.manage',
     label: 'Turn on automated marketing email and set its timing',
     category: 'Administration',
@@ -935,6 +958,9 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'tasks.assign',
       'tasks.close',
       'tasks.admin',
+      'notify.send',
+      'notify.broadcast',
+      'notify.escalation.manage',
     ],
   },
   {
@@ -987,6 +1013,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'tasks.view',
     'tasks.assign',
     'tasks.close',
+    'notify.send',
     'crm.manage',
     'orders.manage',
     'pricing.price-lists.manage',
@@ -1072,6 +1099,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     // (self-assign, then self-close, on a money-adjacent task).
     'tasks.close',
     'tasks.admin',
+    'notify.send',
+    'notify.broadcast',
+    'notify.escalation.manage',
     'hr.attendance.view',
     'hr.attendance.record',
     // 'hr.attendance.reconcile' is deliberately NOT seeded here, the
@@ -1202,6 +1232,11 @@ export const TOXIC_PERMISSION_PAIRS: readonly (readonly [PermissionKey, Permissi
   // exception and then paying it." payroll.manage, not the doc's own
   // 'hr.payroll.run' — see hr.attendance.reconcile's own catalogue note.
   ['hr.attendance.reconcile', 'payroll.manage'],
+  // tasks-notifications-support/24-internal-notifications-meetings-escalation.md:
+  // address everyone AND widen your own reach — the identical "invent the
+  // thing, then authorise yourself over it" shape, for a broadcast
+  // audience instead of an org-unit grant.
+  ['notify.broadcast', 'org.access.grant'],
 ];
 
 export const PERMISSION_EFFECTS = ['GRANT', 'REVOKE'] as const;

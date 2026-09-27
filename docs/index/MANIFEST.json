@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "9a60d979001620a3",
+  "contentHash": "ee0e79f2f3304d02",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -98,6 +98,7 @@
     "docs/index/data/measurements.md",
     "docs/index/data/metadata-forms.md",
     "docs/index/data/notification-preferences.md",
+    "docs/index/data/notify.md",
     "docs/index/data/onsite-messaging.md",
     "docs/index/data/orders.md",
     "docs/index/data/org-structure.md",
@@ -164,6 +165,7 @@
     "docs/index/modules/measurements.md",
     "docs/index/modules/metadata-forms.md",
     "docs/index/modules/notification-preferences.md",
+    "docs/index/modules/notify.md",
     "docs/index/modules/onsitemessages.md",
     "docs/index/modules/orders.md",
     "docs/index/modules/organization.md",
@@ -202,18 +204,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2274,
-    "lines": 346641,
-    "routes": 798,
-    "controllers": 145,
-    "models": 286,
-    "enums": 134,
-    "migrations": 108,
+    "files": 2294,
+    "lines": 349053,
+    "routes": 809,
+    "controllers": 148,
+    "models": 292,
+    "enums": 135,
+    "migrations": 109,
     "events": 65,
-    "permissions": 108,
-    "screens": 252,
-    "crons": 25,
-    "specs": 304,
+    "permissions": 111,
+    "screens": 255,
+    "crons": 26,
+    "specs": 309,
     "designLaws": 0
   }
 }

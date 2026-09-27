@@ -103,6 +103,7 @@ export const MODULE_PACKS: Record<string, PackName> = {
   // other module (event-intake goes through core/extension-points/
   // task-source.registry.ts) and no other module imports it.
   tasks: 'core',
+  notify: 'core',
   promotions: 'core',
   giftcards: 'core',
   search: 'core',

@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **798** endpoints across **145** controllers, with the access rule that actually guards each one.
+All **809** endpoints across **148** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -776,6 +776,22 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/notification-preferences` | signed-in | `NotificationPreferencesController.list` | My notification preferences, per channel and category |
 | PUT | `/notification-preferences` | signed-in | `NotificationPreferencesController.update` | Update one or more preference cells |
+
+### [`notify`](../modules/notify.md) (11)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| POST | `/admin/notify/:id/decide` | `notify.send` | `NotifyController.decide` | Countersign or reject a pending broadcast — only the person it was routed to ma… |
+| GET | `/admin/notify/escalation-rules` | `notify.escalation.manage` | `EscalationRuleController.list` | Every configured escalation rule |
+| POST | `/admin/notify/escalation-rules` | `notify.escalation.manage` | `EscalationRuleController.create` | Watch a Task.sourceType for staleness and escalate up Position.reportsTo |
+| DELETE | `/admin/notify/escalation-rules/:id` | `notify.escalation.manage` | `EscalationRuleController.remove` | Stop watching this source type |
+| PUT | `/admin/notify/escalation-rules/:id` | `notify.escalation.manage` | `EscalationRuleController.update` | Update an escalation rule |
+| POST | `/admin/notify/meetings` | `notify.send` | `MeetingsController.create` | Call a meeting, materialising invitations from the resolved audience |
+| POST | `/admin/notify/meetings/:id/cancel` | `notify.send` | `MeetingsController.cancel` | Cancel a meeting — notifies every invitee, never deletes the record |
+| POST | `/admin/notify/meetings/:id/respond` | signed-in | `MeetingsController.respond` | Answer your own invitation to a meeting |
+| GET | `/admin/notify/meetings/:id/shortfall` | `notify.send` | `MeetingsController.shortfall` | Required invitees who have not yet answered |
+| POST | `/admin/notify/preview` | `notify.send` | `NotifyController.preview` | Resolve an audience and report whether it needs a countersignature, without sen… |
+| POST | `/admin/notify/send` | `notify.send` | `NotifyController.send` | Send an internal message, or submit it for countersignature if it is above the… |
 
 ### [`onsitemessages`](../modules/onsitemessages.md) (10)
 

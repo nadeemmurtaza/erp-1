@@ -3,7 +3,7 @@
 
 # Data model
 
-All **297** Prisma models and **137** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **299** Prisma models and **138** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -56,7 +56,7 @@ against a real database.
 | [`measurements.prisma`](../data/measurements.md) | 4 | 1 | [`measurements`](../modules/measurements.md) | GarmentSizeChart, GarmentType, MeasurementField, MeasurementProfile |
 | [`metadata-forms.prisma`](../data/metadata-forms.md) | 1 | 0 | [`metadata-forms`](../modules/metadata-forms.md) | FormMetadata |
 | [`notification-preferences.prisma`](../data/notification-preferences.md) | 1 | 2 | [`notification-preferences`](../modules/notification-preferences.md) | NotificationPreference |
-| [`notify.prisma`](../data/notify.md) | 6 | 1 | [`notify`](../modules/notify.md) | Audience, BroadcastMessage, EscalationFire, EscalationRule, Meeting, MeetingInvitation |
+| [`notify.prisma`](../data/notify.md) | 8 | 2 | [`notify`](../modules/notify.md) | Audience, BroadcastMessage, Bulletin, BulletinAcknowledgement, EscalationFire, EscalationRule, Meeting, MeetingInvitation |
 | [`onsite-messaging.prisma`](../data/onsite-messaging.md) | 3 | 2 | core platform | NewsletterSubscriber, OnsiteMessage, OnsiteMessageTranslation |
 | [`orders.prisma`](../data/orders.md) | 6 | 5 | [`orders`](../modules/orders.md) | CityCodRiskStat, Order, OrderItem, OrderNumberCounter, OrderStatusEvent, Shipment |
 | [`org-structure.prisma`](../data/org-structure.md) | 3 | 1 | core platform | OrgUnit, OrgUnitGrant, OrgUnitType |
@@ -133,6 +133,8 @@ against a real database.
 | [`BrandPolicy`](../data/organization.md#brandpolicy) | `organization` | 8 | 1 | id | Per-brand policy switches (R9) — what R9 calls `brand.allow_branch_product_creation` and… |
 | [`BrandTranslation`](../data/catalog.md#brandtranslation) | `catalog` | 6 | 1 | id | House Rule 6: a customer-facing name is a translation row, not a column. |
 | [`BroadcastMessage`](../data/notify.md#broadcastmessage) | `notify` | 11 | 1 | id | A record that an internal message was actually sent — the "reversal document" lens answer… |
+| [`Bulletin`](../data/notify.md#bulletin) | `notify` | 13 | 0 | id | One published notice. |
+| [`BulletinAcknowledgement`](../data/notify.md#bulletinacknowledgement) | `notify` | 5 | 1 | id | `@@unique([bulletinId, userId])` is the whole mechanism: a double-click of "acknowledge"… |
 | [`BundleComponent`](../data/catalog.md#bundlecomponent) | `catalog` | 5 | 1 | id |  |
 | [`Campaign`](../data/marketing.md#campaign) | `marketing` | 14 | 2 | id |  |
 | [`CampaignRecipient`](../data/marketing.md#campaignrecipient) | `marketing` | 10 | 2 | id |  |
@@ -414,6 +416,7 @@ against a real database.
 | [`BankFacilityStatus`](../data/bank-facilities.md#bankfacilitystatus) | `bank-facilities` | `ACTIVE` `CLOSED` |
 | [`BankFacilityType`](../data/bank-facilities.md#bankfacilitytype) | `bank-facilities` | `TERM_LOAN` `RUNNING_FINANCE` `OVERDRAFT` `LETTER_OF_CREDIT` `BANK_GUARANTEE` |
 | [`BomStatus`](../data/bom.md#bomstatus) | `bom` | `DRAFT` `ACTIVE` `ARCHIVED` |
+| [`BulletinCategory`](../data/notify.md#bulletincategory) | `notify` | `POLICY` `MEMO` `NOTICE` `HR_ANNOUNCEMENT` |
 | [`CampaignChannel`](../data/marketing.md#campaignchannel) | `marketing` | `EMAIL` `SMS` `WHATSAPP` |
 | [`CampaignRecipientStatus`](../data/marketing.md#campaignrecipientstatus) | `marketing` | `PENDING` `SENT` `SKIPPED_OPT_OUT` `SKIPPED_NO_CONTACT` `FAILED` `OPENED` `CLICKED` |
 | [`CampaignStatus`](../data/marketing.md#campaignstatus) | `marketing` | `DRAFT` `SCHEDULED` `SENDING` `SENT` `CANCELLED` |

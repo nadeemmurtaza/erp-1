@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,064 tracked files in `apps/api`, by directory.
+All 1,070 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -65,7 +65,7 @@ All 1,064 tracked files in `apps/api`, by directory.
 | `measurements.prisma` | prisma schema | 107 | Measurements: garment types, their measurement fields, and saved customer |
 | `metadata-forms.prisma` | prisma schema | 26 | A general metadata-driven UI engine, built by explicit owner override |
 | `notification-preferences.prisma` | prisma schema | 51 | Phase 7 WO-7.8 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
-| `notify.prisma` | prisma schema | 171 | Internal notifications, meetings and escalation |
+| `notify.prisma` | prisma schema | 238 | Internal notifications, meetings and escalation |
 | `onsite-messaging.prisma` | prisma schema | 72 | On-site messaging. WO-8.6, |
 | `orders.prisma` | prisma schema | 361 | Orders and shipments. |
 | `org-structure.prisma` | prisma schema | 132 | The org tree: offices, regions, departments — whatever shape a client's |
@@ -707,6 +707,12 @@ All 1,064 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 108 |  |
 
+### `apps/api/prisma/schema/migrations/20260927050000_wo61_bulletin_board` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 50 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -876,7 +882,7 @@ All 1,064 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `domain-events.ts` | module | 760 | The catalogue of domain events. |
+| `domain-events.ts` | module | 769 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `events.module.ts` | nest module | 19 |  |
 | `on-domain-event.decorator.ts` | module | 16 |  |
@@ -1736,12 +1742,17 @@ All 1,064 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `notification-preference.dto.ts` | dto | 31 |  |
 
-### `apps/api/src/modules/notify` (14)
+### `apps/api/src/modules/notify` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `audience.service.spec.ts` | unit test | 83 |  |
-| `audience.service.ts` | service | 109 |  |
+| `audience.service.ts` | service | 114 |  |
+| `bulletin-notification.listener.spec.ts` | unit test | 67 |  |
+| `bulletin-notification.listener.ts` | event subscriber | 44 |  |
+| `bulletins.controller.ts` | controller | 63 |  |
+| `bulletins.service.spec.ts` | unit test | 167 |  |
+| `bulletins.service.ts` | service | 154 |  |
 | `escalation-rule.controller.ts` | controller | 38 |  |
 | `escalation-rule.service.spec.ts` | unit test | 33 |  |
 | `escalation-rule.service.ts` | service | 69 |  |
@@ -1751,7 +1762,7 @@ All 1,064 tracked files in `apps/api`, by directory.
 | `meetings.service.spec.ts` | unit test | 95 |  |
 | `meetings.service.ts` | service | 156 |  |
 | `notify.controller.ts` | controller | 39 |  |
-| `notify.module.ts` | nest module | 31 |  |
+| `notify.module.ts` | nest module | 52 |  |
 | `notify.service.spec.ts` | unit test | 138 |  |
 | `notify.service.ts` | service | 186 |  |
 
@@ -1759,7 +1770,7 @@ All 1,064 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `notify.dto.ts` | dto | 144 |  |
+| `notify.dto.ts` | dto | 175 |  |
 
 ### `apps/api/src/modules/onsitemessages` (4)
 

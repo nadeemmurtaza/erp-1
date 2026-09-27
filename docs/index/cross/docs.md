@@ -2726,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,991 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>7,108 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2793,7 +2793,8 @@ _no second-level headings_
 - ADR-059 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6492</sub>
 - ADR-060 — Doc 24 (internal notifications, meetings and escalation): built in full, with one new model beyond its own sketch and a countersignature routed to a named person rather than a role  <sub>:6629</sub>
 - ADR-061 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6751</sub>
-- ADR-062 — Doc 167 (bank facility management): promoted from a gap report to a built capability, mirroring doc 49's own settlements shape rather than inventing a new one  <sub>:6866</sub>
+- ADR-062 — Doc 61 (policy communications bulletin board): built inside the `notify` module rather than `hr`, an author-side reach check the document's own sketch omits, and a read-side visibility rule distinct from a sender's reach  <sub>:6866</sub>
+- ADR-063 — Doc 167 (bank facility management): promoted from a gap report to a built capability, mirroring doc 49's own settlements shape rather than inventing a new one  <sub>:6978</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3580,14 +3581,14 @@ _no second-level headings_
 - Acceptance  <sub>:240</sub>
 - Out of scope  <sub>:253</sub>
 
-### `docs/implementation/tasks-notifications-support/61-policy-communications-bulletin.md`  <sub>194 lines</sub>
+### `docs/implementation/tasks-notifications-support/61-policy-communications-bulletin.md`  <sub>232 lines</sub>
 
-- 1. A `Bulletin` is a record; `NotificationsService` announces it, never replaces it  <sub>:14</sub>
-- 2. Publishing a bulletin fires doc 24's own notification, once  <sub>:66</sub>
-- Scope lenses  <sub>:84</sub>
-- Work orders  <sub>:159</sub>
-- Acceptance  <sub>:175</sub>
-- Out of scope  <sub>:187</sub>
+- 1. A `Bulletin` is a record; `NotificationsService` announces it, never replaces it  <sub>:52</sub>
+- 2. Publishing a bulletin fires doc 24's own notification, once  <sub>:104</sub>
+- Scope lenses  <sub>:122</sub>
+- Work orders  <sub>:197</sub>
+- Acceptance  <sub>:213</sub>
+- Out of scope  <sub>:225</sub>
 
 ### `docs/implementation/tasks-notifications-support/64-help-desk-support-ticketing.md`  <sub>188 lines</sub>
 

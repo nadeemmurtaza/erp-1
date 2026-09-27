@@ -530,6 +530,25 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    // tasks-notifications-support/61-policy-communications-bulletin.md
+    // (WO-61.4). Broad by design — "a bulletin board's whole point is
+    // being read by everyone in scope" (the doc's own words) — unlike
+    // every other hr.* key above, which is ADMIN-only.
+    key: 'hr.bulletins.view',
+    label: 'Read the bulletin board — company policy notices and memos',
+    category: 'Human Resources',
+    sensitivity: 'low',
+  },
+  {
+    // Scoped to the publisher's own reach (BulletinsService.publish()'s
+    // own reachOf() check), the same authority boundary notify.send
+    // already applies to an ordinary internal message.
+    key: 'hr.bulletins.publish',
+    label: 'Post and retract notices on the bulletin board, within your own reach',
+    category: 'Human Resources',
+    sensitivity: 'medium',
+  },
+  {
     // hr-people-org/19-org-structure-offices-departments.md.
     key: 'org.structure.view',
     label: 'View the organization tree — offices, regions and departments',
@@ -964,6 +983,8 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'hr.attendance.view',
       'hr.attendance.record',
       'hr.attendance.reconcile',
+      'hr.bulletins.view',
+      'hr.bulletins.publish',
     ],
   },
   {
@@ -1024,6 +1045,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'stitching.jobs.view_queue',
     'stitching.jobs.change_stage',
     'stitching.jobs.manage_own',
+    // Broad by design, same reasoning as STAFF/ADMIN below — see this
+    // key's own catalogue note.
+    'hr.bulletins.view',
   ],
   STAFF: [
     'account.change_own_password',
@@ -1035,6 +1059,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'tasks.assign',
     'tasks.close',
     'notify.send',
+    'hr.bulletins.view',
+    'hr.bulletins.publish',
     'crm.manage',
     'orders.manage',
     'pricing.price-lists.manage',
@@ -1125,6 +1151,8 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'notify.escalation.manage',
     'hr.attendance.view',
     'hr.attendance.record',
+    'hr.bulletins.view',
+    'hr.bulletins.publish',
     // 'hr.attendance.reconcile' is deliberately NOT seeded here, the
     // identical reasoning as 'org.access.grant' just above: ADMIN already
     // holds 'payroll.manage', and TOXIC_PERMISSION_PAIRS refuses the two

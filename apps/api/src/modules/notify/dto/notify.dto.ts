@@ -1,6 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsArray, IsBoolean, IsDateString, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
+import type { BulletinCategory } from '../../../core/prisma/client';
 
 export class AudienceSpecDto {
   @ApiPropertyOptional({ description: 'NULL means the whole organization' })
@@ -115,6 +116,36 @@ export class CreateEscalationRuleDto {
   @IsInt()
   @Min(1)
   maxFires?: number;
+}
+
+const BULLETIN_CATEGORIES = ['POLICY', 'MEMO', 'NOTICE', 'HR_ANNOUNCEMENT'] as const;
+
+export class PublishBulletinDto {
+  @IsString()
+  @IsNotEmpty()
+  title!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  bodyMarkdown!: string;
+
+  @IsIn(BULLETIN_CATEGORIES)
+  category!: BulletinCategory;
+
+  @ApiPropertyOptional({ description: 'NULL means the whole organization' })
+  @IsOptional()
+  @IsString()
+  audienceOrgUnitId?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsDateString()
+  expiresAt?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  requiresAcknowledgement?: boolean;
 }
 
 export class UpdateEscalationRuleDto {

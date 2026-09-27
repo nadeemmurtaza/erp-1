@@ -175,6 +175,8 @@ export const DomainEvent = {
   BankFacilityRepaymentRecorded: 'bank_facility.repayment_recorded',
   /** 167-bank-facility-management.md (WO-167.3) — the monthly markup-accrual cron's own posting, one event per facility per calendar month, idempotent via findPostedEntry(source, `${facilityId}:${monthKey}`) exactly like AssetDepreciation's own cron. */
   BankFacilityMarkupAccrued: 'bank_facility.markup_accrued',
+  /** BulletinsService.publish() (tasks-notifications-support/61-policy-communications-bulletin.md, WO-61.3). BulletinNotificationListener is the only subscriber — resolves the audience through AudienceService.resolve() exactly as NotifyService does, and sends through NotificationsService, never a second delivery mechanism. */
+  BulletinPublished: 'notify.bulletin_published',
 } as const;
 
 export type DomainEventName = (typeof DomainEvent)[keyof typeof DomainEvent];
@@ -684,6 +686,7 @@ export interface DomainEventPayloads {
   [DomainEvent.BankFacilityDrawdownPosted]: BankFacilityDrawdownPostedPayload;
   [DomainEvent.BankFacilityRepaymentRecorded]: BankFacilityRepaymentRecordedPayload;
   [DomainEvent.BankFacilityMarkupAccrued]: BankFacilityMarkupAccruedPayload;
+  [DomainEvent.BulletinPublished]: BulletinPublishedPayload;
 }
 
 export interface CreditNoteIssuedPayload {
@@ -756,4 +759,10 @@ export interface BankFacilityMarkupAccruedPayload {
   amountMinor: number;
   /** ISO — the accrual period's own end date, so a late post still resolves the currently open period (R15). */
   periodEnd: string;
+}
+
+export interface BulletinPublishedPayload {
+  bulletinId: string;
+  /** NULL means the whole organization — see Bulletin.audienceOrgUnitId. */
+  audienceOrgUnitId: string | null;
 }

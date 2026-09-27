@@ -3,7 +3,7 @@
 
 # Screens
 
-All **257** routable files across the web app, the till and the mobile app.
+All **259** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (167)
+### admin (169)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -63,6 +63,8 @@ _none_
 | `/admin/bom/raw-usage` | page | client | `apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx` |
 | `/admin/br/[branchId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx` |
 | `/admin/brands` | page | client | `apps/web/src/app/(admin)/admin/(app)/brands/page.tsx` |
+| `/admin/bulletins` | page | client | `apps/web/src/app/(admin)/admin/(app)/bulletins/page.tsx` |
+| `/admin/bulletins/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/bulletins/new/page.tsx` |
 | `/admin/bundles` | page | client | `apps/web/src/app/(admin)/admin/(app)/bundles/page.tsx` |
 | `/admin/campaigns` | page | client | `apps/web/src/app/(admin)/admin/(app)/campaigns/page.tsx` |
 | `/admin/campaigns/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/campaigns/[id]/page.tsx` |

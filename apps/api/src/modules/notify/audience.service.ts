@@ -46,8 +46,13 @@ export class AudienceService {
    * matching `GrantService.reachOf()`'s own reasoning: the one account
    * that exists on a fresh deployment (ADMIN) holds no posting, and an
    * "empty reach by default" reading would make it unable to ever send.
+   *
+   * Public: `BulletinsService` (61-policy-communications-bulletin.md,
+   * WO-61.2) reuses this exact computation to check whether a publisher
+   * may address a given `audienceOrgUnitId`, rather than a second,
+   * bulletin-specific reach mechanism.
    */
-  private async reachOf(userId: string): Promise<string[] | null> {
+  async reachOf(userId: string): Promise<string[] | null> {
     const postings = await this.prisma.posting.findMany({
       where: { userId, endedOn: null },
       select: { position: { select: { orgUnitId: true } } },

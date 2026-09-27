@@ -3,7 +3,7 @@
 
 # Schema: `notify.prisma`
 
-6 models · 1 enums. Owned by module [`notify`](../modules/notify.md).
+8 models · 2 enums. Owned by module [`notify`](../modules/notify.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -57,6 +57,42 @@ Indexes: `@@index([orgUnitId])`
 | `audience` | `Audience` | relation | @relation(fields: [audienceId], references: [id]) |
 
 Indexes: `@@index([senderId, createdAt])`
+
+### `Bulletin`  <sub>`apps/api/prisma/schema/notify.prisma:189`</sub>
+
+> One published notice.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `authorId` | `String` |  |  |
+| `title` | `String` |  |  |
+| `bodyMarkdown` | `String` |  |  |
+| `category` | `BulletinCategory` |  |  |
+| `audienceOrgUnitId` | `String?` | optional |  |
+| `publishedAt` | `DateTime` |  | @default(now()) |
+| `expiresAt` | `DateTime?` | optional |  |
+| `requiresAcknowledgement` | `Boolean` |  | @default(false) |
+| `archivedAt` | `DateTime?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `acknowledgements` | `BulletinAcknowledgement[]` |  |  |
+
+Indexes: `@@index([audienceOrgUnitId, publishedAt])`
+
+### `BulletinAcknowledgement`  <sub>`apps/api/prisma/schema/notify.prisma:228`</sub>
+
+> `@@unique([bulletinId, userId])` is the whole mechanism: a double-click of "acknowledge" is a P2002 the service swallows, never a duplicate row.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `bulletinId` | `String` |  |  |
+| `userId` | `String` |  |  |
+| `acknowledgedAt` | `DateTime` |  | @default(now()) |
+| `bulletin` | `Bulletin` | relation | @relation(fields: [bulletinId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@unique([bulletinId, userId])`
 
 ### `EscalationFire`  <sub>`apps/api/prisma/schema/notify.prisma:155`</sub>
 
@@ -127,6 +163,15 @@ Indexes: `@@unique([meetingId, userId])` · `@@index([userId, response])`
 
 
 ## Enums
+
+### `BulletinCategory`  <sub>`apps/api/prisma/schema/notify.prisma:219`</sub>
+
+| Value | Meaning |
+|---|---|
+| `POLICY` |  |
+| `MEMO` |  |
+| `NOTICE` |  |
+| `HR_ANNOUNCEMENT` |  |
 
 ### `InviteResponse`  <sub>`apps/api/prisma/schema/notify.prisma:99`</sub>
 

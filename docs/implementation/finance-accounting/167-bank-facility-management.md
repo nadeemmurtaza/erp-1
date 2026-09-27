@@ -51,7 +51,7 @@ real, numbered work order.
 > `BankFacility` carry no `organizationId` — this codebase's real
 > multi-tenancy boundary is the deployment itself, not a column on every
 > table (`RETAIL-ERP.md` R7), and no sibling model this document mirrors
-> (`SettlementProvider`, `CreditNote`) carries one either. ADR-062.
+> (`SettlementProvider`, `CreditNote`) carries one either. ADR-063.
 
 ## 1. A facility limit is independent of any drawdown against it
 

@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **68** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **69** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -98,6 +98,7 @@ order" is a new file, not an edit to checkout.
 | `bank_facility.drawdown_posted` | `BankFacilityDrawdownPosted` | `accounting`, `bankfacilities` | `accounting` |
 | `bank_facility.repayment_recorded` | `BankFacilityRepaymentRecorded` | `accounting`, `bankfacilities` | `accounting` |
 | `bank_facility.markup_accrued` | `BankFacilityMarkupAccrued` | `accounting`, `bankfacilities` | `accounting` |
+| `notify.bulletin_published` | `BulletinPublished` | `notify` | `notify` |
 
 
 ## Detail
@@ -1249,6 +1250,25 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onBankFacilityMarkupAccrued()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:743` | `accounting` |
+
+### `notify.bulletin_published`
+
+> BulletinsService.publish() (tasks-notifications-support/61-policy-communications-bulletin.md, WO-61.3).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/notify/bulletins.service.ts:29` | `notify` |
+| `apps/api/src/modules/notify/bulletins.service.ts:70` | `notify` |
+| `apps/api/src/modules/notify/notify.module.ts:36` | `notify` |
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onBulletinPublished()` | `apps/api/src/modules/notify/bulletin-notification.listener.ts:26` | `notify` |
 
 
 ---

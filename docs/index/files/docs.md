@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 400 tracked files in `docs/*`, by directory.
+All 401 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -558,12 +558,12 @@ All 400 tracked files in `docs/*`, by directory.
 | `06g-generate-workforce-shifts-jml.md` | doc | 42 |  |
 | `06h-harden-workforce-shifts-jml.md` | doc | 35 |  |
 
-### `docs/implementation` (10)
+### `docs/implementation` (11)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 7684 |  |
+| `DECISIONS.md` | doc | 7808 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -571,6 +571,7 @@ All 400 tracked files in `docs/*`, by directory.
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
 | `README.md` | doc | 546 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
+| `SDK-CONTRACT.md` | doc | 217 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
 ### `docs/implementation/access-control-identity` (7)
@@ -828,7 +829,7 @@ All 400 tracked files in `docs/*`, by directory.
 | `123-automated-degradation-resilience.md` | doc | 73 |  |
 | `124-infrastructure-as-code.md` | doc | 64 |  |
 | `144-supply-chain-resilience-planning-engine.md` | doc | 392 |  |
-| `37-scalability-future-upgrades.md` | doc | 247 |  |
+| `37-scalability-future-upgrades.md` | doc | 306 |  |
 | `38-resilience-engineering.md` | doc | 238 |  |
 | `48-native-desktop-deployment.md` | doc | 184 |  |
 | `90-automatic-backups-local-support.md` | doc | 56 |  |

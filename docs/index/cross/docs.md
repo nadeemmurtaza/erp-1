@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**426** markdown documents. These explain **why**; this index only says **where**.
+**427** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2727,7 +2727,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>7,684 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>7,808 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2800,6 +2800,7 @@ _no second-level headings_
 - ADR-065 — Doc 148 (external customer support portal): built as a second, `Contact`-keyed model alongside doc 64's own `SupportTicket`, sharing its handler permissions and its action-hub source rather than inventing either again  <sub>:7223</sub>
 - ADR-066 — Doc 144 (R20–R26 supply-chain resilience planning engine): built as a pure read/recommendation engine, generating only the two action kinds this graph has real data to back  <sub>:7388</sub>
 - ADR-067 — Docs 31/66/67/76 (`pos-hardware/` category): the till hardware layer as extension points, ad-hoc modifiers over a hardcoded list, and a corrected permission claim  <sub>:7526</sub>
+- ADR-068 — Doc 37 (scalability future upgrades): the versioning policy ships inert, `FeatureFlag` gains two fields its own sketch omitted, and the rollout threshold reuses the settlements/bank-facilities maker-checker shape rather than inventing a third  <sub>:7685</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3488,14 +3489,14 @@ _no second-level headings_
 - Acceptance  <sub>:370</sub>
 - Out of scope  <sub>:385</sub>
 
-### `docs/implementation/resilience-scalability/37-scalability-future-upgrades.md`  <sub>247 lines</sub>
+### `docs/implementation/resilience-scalability/37-scalability-future-upgrades.md`  <sub>306 lines</sub>
 
-- What already exists, referenced rather than repeated  <sub>:15</sub>
-- What is genuinely missing  <sub>:29</sub>
-- Scope lenses  <sub>:127</sub>
-- Work orders  <sub>:203</sub>
-- Acceptance  <sub>:218</sub>
-- Out of scope  <sub>:235</sub>
+- What already exists, referenced rather than repeated  <sub>:74</sub>
+- What is genuinely missing  <sub>:88</sub>
+- Scope lenses  <sub>:186</sub>
+- Work orders  <sub>:262</sub>
+- Acceptance  <sub>:277</sub>
+- Out of scope  <sub>:294</sub>
 
 ### `docs/implementation/resilience-scalability/38-resilience-engineering.md`  <sub>238 lines</sub>
 
@@ -3540,6 +3541,13 @@ _no second-level headings_
 - Part 7 — Roadmap  <sub>:865</sub>
 - Part 8 — The briefs this spawns  <sub>:946</sub>
 - Acceptance  <sub>:1006</sub>
+
+### `docs/implementation/SDK-CONTRACT.md`  <sub>217 lines</sub>
+
+- 1. The extension-point interfaces  <sub>:18</sub>
+- 2. The domain-event catalogue's stable subset  <sub>:117</sub>
+- 3. The module-registration checklist  <sub>:165</sub>
+- 4. The reference pack — proof, not prose  <sub>:194</sub>
 
 ### `docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md`  <sub>335 lines</sub>
 

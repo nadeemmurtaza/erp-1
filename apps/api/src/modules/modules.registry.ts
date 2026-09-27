@@ -14,6 +14,8 @@ import { CrmModule } from './crm/crm.module';
 import { CustomFieldsModule } from './custom-fields/custom-fields.module';
 import { EmbedsModule } from './embeds/embeds.module';
 import { EntityAttributesModule } from './entity-attributes/entity-attributes.module';
+import { ExampleHelloWorldPackModule } from './example-hello-world-pack/example-hello-world-pack.module';
+import { FeatureFlagsAdminModule } from './feature-flags/feature-flags-admin.module';
 import { FragmentsModule } from './fragments/fragments.module';
 import { MetadataFormsModule } from './metadata-forms/metadata-forms.module';
 import { BpmnWorkflowsModule } from './bpmn-workflows/bpmn-workflows.module';
@@ -279,6 +281,20 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // 142-bpmn-visual-workflow-engine.md — a BPMN visual workflow engine over
   // doc 63's own ApprovalChain, built by explicit owner override (ADR-026).
   { name: 'bpmn-workflows', module: BpmnWorkflowsModule, alwaysOn: true },
+  // 37-scalability-future-upgrades.md (WO-37.2/37.5) — the admin CRUD
+  // surface over FeatureFlag. FeatureFlagsService.isEnabled() itself lives
+  // in core/feature-flags (always available, like SettingsService); this
+  // entry only gates the admin controller/nav, the same "settings" shape
+  // above. A deployment gains nothing by running without it — a flag with
+  // no rows behaves exactly as if this were off (doc 37's own "absent
+  // collaborator" lens).
+  { name: 'feature-flags', module: FeatureFlagsAdminModule, alwaysOn: true },
+  // 37-scalability-future-upgrades.md §3 (WO-37.4) — a reference "hello
+  // world" pack proving SDK-CONTRACT.md's published extension-point/
+  // domain-event seam works for a pack built outside this repository.
+  // Deliberately off by default in every deployment: it is a demonstration,
+  // never production scope. See module-packs.ts's own 'example' PackName.
+  { name: 'example-hello-world-pack', module: ExampleHelloWorldPackModule, offByDefault: true },
 ];
 
 /**

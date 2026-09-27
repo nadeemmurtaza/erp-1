@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,116 tracked files in `apps/api`, by directory.
+All 1,135 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 1,116 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (60)
+### `apps/api/prisma/schema` (61)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -50,6 +50,7 @@ All 1,116 tracked files in `apps/api`, by directory.
 | `custom-fields.prisma` | prisma schema | 33 | Custom fields: a narrow, bounded JSONB overlay, never a general EAV model |
 | `embeds.prisma` | prisma schema | 19 | Embedding a third-party dashboard: a narrow iframe pattern, not a |
 | `entity-attributes.prisma` | prisma schema | 36 | A general EAV model, built by explicit owner override (ADR-026). |
+| `feature-flags.prisma` | prisma schema | 78 | Feature flags — the missing piece between "built" and "everyone has it" |
 | `finance.prisma` | prisma schema | 133 | Finance: operational expenses and per-order economics (RETAIL-ERP.md |
 | `fragments.prisma` | prisma schema | 41 | Micro-frontend fragments, built by explicit owner override (ADR-026), |
 | `fulfilment.prisma` | prisma schema | 276 | Phase 6 (docs/implementation/06-shipping-fulfilment-returns.md) — shipping |
@@ -738,18 +739,24 @@ All 1,116 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 53 |  |
 
+### `apps/api/prisma/schema/migrations/20260927090000_wo37_feature_flags` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 32 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app.module.ts` | nest module | 35 |  |
+| `app.module.ts` | nest module | 40 |  |
 | `main.ts` | module | 113 | Must come before AppModule: the module registry reads MODULES from the |
 
 ### `apps/api/src/core` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 53 |  |
+| `core.module.ts` | nest module | 57 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -929,6 +936,14 @@ All 1,116 tracked files in `apps/api`, by directory.
 | `task-source.registry.ts` | registry | 63 |  |
 | `workflow-steps.registry.ts` | registry | 39 |  |
 
+### `apps/api/src/core/feature-flags` (3)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `feature-flags.module.ts` | nest module | 17 |  |
+| `feature-flags.service.spec.ts` | unit test | 95 |  |
+| `feature-flags.service.ts` | service | 123 |  |
+
 ### `apps/api/src/core/feed` (5)
 
 | File | Kind | Lines | Purpose |
@@ -1095,12 +1110,22 @@ All 1,116 tracked files in `apps/api`, by directory.
 | `shop-time.spec.ts` | unit test | 175 |  |
 | `shop-time.ts` | module | 235 | Calendar days in the shop's timezone. |
 
+### `apps/api/src/core/versioning` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `api-version-policy.service.spec.ts` | unit test | 44 |  |
+| `api-version-policy.service.ts` | service | 58 |  |
+| `deprecation-header.interceptor.spec.ts` | unit test | 82 |  |
+| `deprecation-header.interceptor.ts` | module | 62 |  |
+| `versioning.module.ts` | nest module | 19 |  |
+
 ### `apps/api/src/modules` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 144 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 316 |  |
+| `module-packs.ts` | module | 158 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 332 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1471,6 +1496,30 @@ All 1,116 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `entity-attribute.dto.ts` | dto | 30 |  |
+
+### `apps/api/src/modules/example-hello-world-pack` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `example-hello-world-pack.module.ts` | nest module | 17 |  |
+| `hello-world.listener.ts` | event subscriber | 28 |  |
+
+### `apps/api/src/modules/feature-flags` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `feature-flag-audit.cron.spec.ts` | unit test | 30 |  |
+| `feature-flag-audit.cron.ts` | scheduled job | 44 |  |
+| `feature-flags-admin.controller.ts` | controller | 66 |  |
+| `feature-flags-admin.module.ts` | nest module | 17 |  |
+| `feature-flags-admin.service.spec.ts` | unit test | 185 |  |
+| `feature-flags-admin.service.ts` | service | 167 |  |
+
+### `apps/api/src/modules/feature-flags/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `feature-flag.dto.ts` | dto | 78 |  |
 
 ### `apps/api/src/modules/finance` (18)
 

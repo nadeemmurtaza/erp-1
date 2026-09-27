@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2371,
-    "lines": 360616,
-    "routes": 851,
-    "controllers": 156,
-    "models": 307,
+    "files": 2393,
+    "lines": 362809,
+    "routes": 858,
+    "controllers": 157,
+    "models": 308,
     "enums": 144,
-    "migrations": 115,
+    "migrations": 116,
     "events": 69,
-    "permissions": 123,
-    "screens": 269,
-    "crons": 27,
-    "specs": 327,
+    "permissions": 124,
+    "screens": 271,
+    "crons": 28,
+    "specs": 332,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 60,
       "lines": 30638,
-      "bytes": 1206171,
+      "bytes": 1206246,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1116,
-      "lines": 149223,
-      "bytes": 5807340,
+      "files": 1135,
+      "lines": 150504,
+      "bytes": 5862026,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 420,
-      "lines": 70517,
-      "bytes": 2548681,
+      "files": 422,
+      "lines": 70991,
+      "bytes": 2565713,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 400,
-      "lines": 70621,
-      "bytes": 4204637,
+      "files": 401,
+      "lines": 71021,
+      "bytes": 4228543,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 80,
-      "lines": 8655,
-      "bytes": 310949,
+      "lines": 8693,
+      "bytes": 313008,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -428,6 +428,35 @@
       ],
       "routes": 2,
       "page": "docs/index/modules/entity-attributes.md"
+    },
+    {
+      "name": "example-hello-world-pack",
+      "pack": "example",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/example-hello-world-pack/example-hello-world-pack.module.ts",
+        "apps/api/src/modules/example-hello-world-pack/hello-world.listener.ts"
+      ],
+      "routes": 0,
+      "page": "docs/index/modules/example-hello-world-pack.md"
+    },
+    {
+      "name": "feature-flags",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/feature-flags/dto/feature-flag.dto.ts",
+        "apps/api/src/modules/feature-flags/feature-flag-audit.cron.spec.ts",
+        "apps/api/src/modules/feature-flags/feature-flag-audit.cron.ts",
+        "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+        "apps/api/src/modules/feature-flags/feature-flags-admin.module.ts",
+        "apps/api/src/modules/feature-flags/feature-flags-admin.service.spec.ts",
+        "apps/api/src/modules/feature-flags/feature-flags-admin.service.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/feature-flags.md"
     },
     {
       "name": "finance",
@@ -1570,6 +1599,15 @@
       "page": "docs/index/core/extension-points.md"
     },
     {
+      "name": "feature-flags",
+      "files": [
+        "apps/api/src/core/feature-flags/feature-flags.module.ts",
+        "apps/api/src/core/feature-flags/feature-flags.service.spec.ts",
+        "apps/api/src/core/feature-flags/feature-flags.service.ts"
+      ],
+      "page": "docs/index/core/feature-flags.md"
+    },
+    {
       "name": "feed",
       "files": [
         "apps/api/src/core/feed/feed-registry.service.spec.ts",
@@ -1731,6 +1769,17 @@
         "apps/api/src/core/time/shop-time.ts"
       ],
       "page": "docs/index/core/time.md"
+    },
+    {
+      "name": "versioning",
+      "files": [
+        "apps/api/src/core/versioning/api-version-policy.service.spec.ts",
+        "apps/api/src/core/versioning/api-version-policy.service.ts",
+        "apps/api/src/core/versioning/deprecation-header.interceptor.spec.ts",
+        "apps/api/src/core/versioning/deprecation-header.interceptor.ts",
+        "apps/api/src/core/versioning/versioning.module.ts"
+      ],
+      "page": "docs/index/core/versioning.md"
     }
   ],
   "routes": [
@@ -6203,6 +6252,118 @@
       "public": false,
       "authOnly": true,
       "summary": "Set one attribute on one entity, gated by that entity's own edit permission"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/feature-flags",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 25,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every feature flag"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/feature-flags",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "create",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 43,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a feature flag"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/feature-flags/:id",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "get",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 37,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One flag's detail"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/feature-flags/:id",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "update",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 49,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit a flag — killSwitch=true and any non-100% rollout apply immediately; the risky direction on a money/stock-path flag is refused here"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/feature-flags/:id/approve-rollout",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "approveRollout",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 62,
+      "access": "platform.flags.approve_rollout",
+      "permissions": [
+        "platform.flags.approve_rollout"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve a proposed rollout change — the checker half, never the same person as the proposal"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/feature-flags/:id/propose-rollout",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "proposeRollout",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 55,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Propose 100% rollout and/or clearing the kill switch on a money/stock-path flag — the maker half of the pair"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/feature-flags/audit",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "audit",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 31,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-37.3 — every flag older than 90 days with no stated removal criteria"
     },
     {
       "method": "GET",
@@ -17449,6 +17610,20 @@
         "ADMIN"
       ],
       "inSeed": true
+    },
+    {
+      "key": "platform.flags.approve_rollout",
+      "label": "Approve a proposed 100% rollout or kill-switch clearance on a money/stock-path feature flag",
+      "category": "Platform",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/feature-flags/:id/approve-rollout"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     }
   ],
   "events": [
@@ -17466,6 +17641,7 @@
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:56 onOrderPlaced()",
         "apps/api/src/modules/crm/order.subscriber.ts:27 onOrderPlaced()",
+        "apps/api/src/modules/example-hello-world-pack/hello-world.listener.ts:23 onOrderPlaced()",
         "apps/api/src/modules/orders/notification.subscriber.ts:70 onOrderPlaced()",
         "apps/api/src/modules/orders/order-replication.listener.ts:48 onOrderPlaced()",
         "apps/api/src/modules/stitching/order.subscriber.ts:25 onOrderPlaced()"
@@ -25277,6 +25453,129 @@
       ],
       "indexes": [
         "@@index([isActive, order])"
+      ]
+    },
+    {
+      "name": "FeatureFlag",
+      "file": "apps/api/prisma/schema/feature-flags.prisma",
+      "line": 17,
+      "doc": "FeatureFlagService.isEnabled(key, organizationId) is the one caller every other module goes through — never a raw `prisma.featureFlag` read from outside core/feature-flags, the same \"one writer per i…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rolloutPercent",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "enabledOrgIds",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "killSwitch",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "moneyOrStockPath",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedRolloutPercent",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedKillSwitchOff",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "removalCriteria",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([createdAt])"
       ]
     },
     {
@@ -48669,6 +48968,21 @@
         "PosLineQuantitySource",
         "PosParkedSale"
       ]
+    },
+    {
+      "folder": "20260927090000_wo37_feature_flags",
+      "file": "apps/api/prisma/schema/migrations/20260927090000_wo37_feature_flags/migration.sql",
+      "date": "2026-09-27",
+      "slug": "wo37_feature_flags",
+      "statements": 4,
+      "kinds": [
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "FeatureFlag"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -50062,6 +50376,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/feature-flags",
+      "file": "apps/web/src/app/(admin)/admin/(app)/feature-flags/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/feature-flags/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/feature-flags/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/finance",
       "file": "apps/web/src/app/(admin)/admin/(app)/finance/page.tsx",
       "client": true,
@@ -51198,6 +51530,13 @@
     },
     {
       "schedule": "0 3 * * *",
+      "file": "apps/api/src/modules/feature-flags/feature-flag-audit.cron.ts",
+      "line": 28,
+      "handler": "auditStaleFlags",
+      "doc": ""
+    },
+    {
+      "schedule": "0 3 * * *",
       "file": "apps/api/src/modules/finance/finance.cron.ts",
       "line": 13,
       "handler": "generateRecurringInstances",
@@ -52080,6 +52419,15 @@
       ]
     },
     {
+      "file": "apps/api/src/core/feature-flags/feature-flags.service.spec.ts",
+      "module": "core/feature-flags",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "FeatureFlagsService — WO-37.2"
+      ]
+    },
+    {
       "file": "apps/api/src/core/feed/feed-registry.service.spec.ts",
       "module": "core/feed",
       "kind": "unit test",
@@ -52339,6 +52687,24 @@
         "shopDayExpr",
         "shopLocalHour",
         "assertIanaTimeZone"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/versioning/api-version-policy.service.spec.ts",
+      "module": "core/versioning",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "ApiVersionPolicyService — WO-37.1"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/versioning/deprecation-header.interceptor.spec.ts",
+      "module": "core/versioning",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "DeprecationHeaderInterceptor — WO-37.1"
       ]
     },
     {
@@ -52999,6 +53365,28 @@
       "cases": 1,
       "describes": [
         "EntityAttributeSupplierDeletedListener — WO-140.3"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/feature-flags/feature-flag-audit.cron.spec.ts",
+      "module": "feature-flags",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "FeatureFlagAuditCron — WO-37.3"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.service.spec.ts",
+      "module": "feature-flags",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "FeatureFlagsAdminService — WO-37.2/37.5",
+        "listStale",
+        "update",
+        "proposeRollout",
+        "approveRollout"
       ]
     },
     {
@@ -55691,7 +56079,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5433,
+      "bytes": 5458,
       "doc": "",
       "symbols": []
     },
@@ -55700,7 +56088,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 180,
-      "bytes": 9329,
+      "bytes": 9354,
       "doc": "",
       "symbols": []
     },
@@ -55709,7 +56097,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5886,
+      "bytes": 5911,
       "doc": "",
       "symbols": []
     },
@@ -56131,6 +56519,15 @@
       "lines": 36,
       "bytes": 1751,
       "doc": "A general EAV model, built by explicit owner override (ADR-026).",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/feature-flags.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 78,
+      "bytes": 3928,
+      "doc": "Feature flags — the missing piece between \"built\" and \"everyone has it\"",
       "symbols": []
     },
     {
@@ -57214,6 +57611,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260927090000_wo37_feature_flags/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 32,
+      "bytes": 1046,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -57523,14 +57929,14 @@
       "path": "apps/api/src/app.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 35,
-      "bytes": 1616,
+      "lines": 40,
+      "bytes": 1997,
       "doc": "",
       "symbols": [
         {
           "name": "AppModule",
           "kind": "class",
-          "line": 34
+          "line": 39
         }
       ]
     },
@@ -59098,14 +59504,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 53,
-      "bytes": 1888,
+      "lines": 57,
+      "bytes": 2076,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 52
+          "line": 56
         }
       ]
     },
@@ -59735,6 +60141,45 @@
           "name": "WorkflowStepsRegistry",
           "kind": "class",
           "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/feature-flags/feature-flags.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 590,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/feature-flags/feature-flags.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 95,
+      "bytes": 3993,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/feature-flags/feature-flags.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 123,
+      "bytes": 5584,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsService",
+          "kind": "class",
+          "line": 40
         }
       ]
     },
@@ -61444,6 +61889,74 @@
           "name": "assertIanaTimeZone",
           "kind": "function",
           "line": 225
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/versioning/api-version-policy.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 44,
+      "bytes": 1694,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/versioning/api-version-policy.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 58,
+      "bytes": 2545,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DeprecationEntry",
+          "kind": "interface",
+          "line": 3
+        },
+        {
+          "name": "ApiVersionPolicyService",
+          "kind": "class",
+          "line": 38
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/versioning/deprecation-header.interceptor.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 82,
+      "bytes": 3482,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/versioning/deprecation-header.interceptor.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 62,
+      "bytes": 2697,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DeprecationHeaderInterceptor",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/versioning/versioning.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 19,
+      "bytes": 828,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "VersioningModule",
+          "kind": "class",
+          "line": 18
         }
       ]
     },
@@ -65066,6 +65579,139 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/example-hello-world-pack/example-hello-world-pack.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 678,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ExampleHelloWorldPackModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/example-hello-world-pack/hello-world.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 28,
+      "bytes": 1309,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "HelloWorldListener",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/dto/feature-flag.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 78,
+      "bytes": 2481,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateFeatureFlagDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "UpdateFeatureFlagDto",
+          "kind": "class",
+          "line": 33
+        },
+        {
+          "name": "ProposeRolloutDto",
+          "kind": "class",
+          "line": 65
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flag-audit.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 30,
+      "bytes": 1262,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flag-audit.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 44,
+      "bytes": 1937,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagAuditCron",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 66,
+      "bytes": 2948,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsAdminController",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flags-admin.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 727,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsAdminModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flags-admin.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 185,
+      "bytes": 7318,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flags-admin.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 167,
+      "bytes": 7071,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsAdminService",
+          "kind": "class",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/finance/dto/expense-category.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -67527,8 +68173,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 144,
-      "bytes": 5237,
+      "lines": 158,
+      "bytes": 6029,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -67539,7 +68185,7 @@
         {
           "name": "MODULE_PACKS",
           "kind": "const",
-          "line": 50
+          "line": 54
         }
       ]
     },
@@ -67547,24 +68193,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 316,
-      "bytes": 18353,
+      "lines": 332,
+      "bytes": 19560,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 65
+          "line": 67
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 96
+          "line": 98
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 292
+          "line": 308
         }
       ]
     },
@@ -79547,6 +80193,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/feature-flags/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 242,
+      "bytes": 8615,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagDetailPage",
+          "kind": "default",
+          "line": 36
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/feature-flags/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 215,
+      "bytes": 7718,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsPage",
+          "kind": "default",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/cash-flow/page.tsx",
       "area": "web",
       "kind": "page",
@@ -83391,8 +84067,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1160,
-      "bytes": 32752,
+      "lines": 1173,
+      "bytes": 33299,
       "doc": "",
       "symbols": [
         {
@@ -83423,12 +84099,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1130
+          "line": 1143
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1145
+          "line": 1158
         }
       ]
     },
@@ -84689,8 +85365,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 293,
-      "bytes": 13532,
+      "lines": 297,
+      "bytes": 13684,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -88793,8 +89469,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 7684,
-      "bytes": 449327,
+      "lines": 7808,
+      "bytes": 456883,
       "doc": "",
       "symbols": []
     },
@@ -88848,7 +89524,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 546,
-      "bytes": 75733,
+      "bytes": 75972,
       "doc": "",
       "symbols": []
     },
@@ -88858,6 +89534,15 @@
       "kind": "doc",
       "lines": 1099,
       "bytes": 64906,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/SDK-CONTRACT.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 217,
+      "bytes": 11974,
       "doc": "",
       "symbols": []
     },
@@ -90278,8 +90963,8 @@
       "path": "docs/implementation/resilience-scalability/37-scalability-future-upgrades.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 247,
-      "bytes": 13688,
+      "lines": 306,
+      "bytes": 17825,
       "doc": "",
       "symbols": []
     },
@@ -92067,8 +92752,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1377,
-      "bytes": 46656,
+      "lines": 1415,
+      "bytes": 48715,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -92089,52 +92774,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 849
+          "line": 870
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 851
+          "line": 872
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 861
+          "line": 882
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 868
+          "line": 889
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 1103
+          "line": 1130
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1336
+          "line": 1374
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1355
+          "line": 1393
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1369
+          "line": 1407
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1370
+          "line": 1408
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1373
+          "line": 1411
         }
       ]
     },

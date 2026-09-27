@@ -844,6 +844,27 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     // sensitivity tier; this only reflects what the base grant can reach.
     sensitivity: 'medium',
   },
+  {
+    // 37-scalability-future-upgrades.md (WO-37.5) — the first platform.*
+    // key: engineering-ops tooling, not a customer- or branch-facing
+    // capability (doc 37's own "Whose rows" scope-lens).
+    key: 'platform.flags.manage',
+    label: 'Create and edit feature flags, and turn a kill switch on',
+    category: 'Platform',
+    sensitivity: 'medium',
+  },
+  {
+    // Doc 37's own "threshold nobody approves alone" lens: flipping a
+    // money/stock-path flag to 100% rollout, or clearing its kill switch,
+    // needs this key from someone other than whoever proposed the change —
+    // checked again inside FeatureFlagsAdminService.approveRollout(), the
+    // identical shape finance.settlement.approve_writeoff/
+    // finance.facilities.approve_drawdown already establish.
+    key: 'platform.flags.approve_rollout',
+    label: 'Approve a proposed 100% rollout or kill-switch clearance on a money/stock-path feature flag',
+    category: 'Platform',
+    sensitivity: 'high',
+  },
 ] as const;
 
 export type PermissionKey = (typeof PERMISSION_CATALOG)[number]['key'];
@@ -1092,6 +1113,12 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
     description: 'Which AI providers are on, the monthly budget, the review queue every AI-generated draft passes through before it reaches a customer or a supplier, and retrieval-augmented answers over an uploaded document corpus.',
     permissions: ['ai.view', 'ai.manage', 'rag.ingest.manage', 'rag.query'],
   },
+  {
+    key: 'platform',
+    label: 'Platform engineering',
+    description: 'Feature flags for staging a rollout — creating and editing flags, and the separate second-approver step for raising a money/stock-path flag to 100% or clearing its kill switch.',
+    permissions: ['platform.flags.manage', 'platform.flags.approve_rollout'],
+  },
 ] as const;
 
 /**
@@ -1325,6 +1352,17 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'ai.manage',
     'rag.ingest.manage',
     'rag.query',
+    // 37-scalability-future-upgrades.md (WO-37.5). Both seeded onto ADMIN,
+    // the identical shape finance.settlement.approve_writeoff and
+    // finance.facilities.approve_drawdown already take above: the second-
+    // approver guarantee comes from FeatureFlagsAdminService.
+    // approveRollout()'s own "never the same person as the proposal"
+    // refusal, not from withholding the permission — the same reasoning
+    // those two settlement/facility approve_* keys already establish, not
+    // the org.access.grant/hr.attendance.reconcile toxic-pair shape (doc
+    // 37's own scope-lens marks "The toxic pair" n/a for this document).
+    'platform.flags.manage',
+    'platform.flags.approve_rollout',
   ],
 };
 

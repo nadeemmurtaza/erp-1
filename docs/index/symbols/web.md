@@ -349,6 +349,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `EmbedsPage` | default | :18 | architecture-patterns/113-micro-frontend-embedding.md (WO-113.2) — every active embedded widget, ea… |
 
+### `apps/web/src/app/(admin)/admin/(app)/feature-flags`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `FeatureFlagsPage` | default | :30 | resilience-scalability/37-scalability-future-upgrades.md (WO-37.2/37.3). |
+
+### `apps/web/src/app/(admin)/admin/(app)/feature-flags/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `FeatureFlagDetailPage` | default | :36 | resilience-scalability/37-scalability-future-upgrades.md (WO-37.2/37.5). |
+
 ### `apps/web/src/app/(admin)/admin/(app)/finance`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1393,8 +1405,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1130 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1145 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1143 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1158 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |

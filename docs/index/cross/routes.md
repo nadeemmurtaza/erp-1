@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **851** endpoints across **156** controllers, with the access rule that actually guards each one.
+All **858** endpoints across **157** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -547,6 +547,18 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/admin/entity-attributes` | signed-in | `EntityAttributesController.list` | One entity's own attributes, gated by that entity's own edit permission |
 | POST | `/admin/entity-attributes` | signed-in | `EntityAttributesController.set` | Set one attribute on one entity, gated by that entity's own edit permission |
+
+### [`feature-flags`](../modules/feature-flags.md) (7)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/feature-flags` | `platform.flags.manage` | `FeatureFlagsAdminController.list` | Every feature flag |
+| POST | `/admin/feature-flags` | `platform.flags.manage` | `FeatureFlagsAdminController.create` | Create a feature flag |
+| GET | `/admin/feature-flags/:id` | `platform.flags.manage` | `FeatureFlagsAdminController.get` | One flag's detail |
+| PATCH | `/admin/feature-flags/:id` | `platform.flags.manage` | `FeatureFlagsAdminController.update` | Edit a flag — killSwitch=true and any non-100% rollout apply immediately; the r… |
+| POST | `/admin/feature-flags/:id/approve-rollout` | `platform.flags.approve_rollout` | `FeatureFlagsAdminController.approveRollout` | Approve a proposed rollout change — the checker half, never the same person as… |
+| POST | `/admin/feature-flags/:id/propose-rollout` | `platform.flags.manage` | `FeatureFlagsAdminController.proposeRollout` | Propose 100% rollout and/or clearing the kill switch on a money/stock-path flag… |
+| GET | `/admin/feature-flags/audit` | `platform.flags.manage` | `FeatureFlagsAdminController.audit` | WO-37.3 — every flag older than 90 days with no stated removal criteria |
 
 ### [`finance`](../modules/finance.md) (17)
 

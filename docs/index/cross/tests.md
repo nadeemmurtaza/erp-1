@@ -3,7 +3,7 @@
 
 # Tests
 
-**327** spec files, **3,129** cases. What is already pinned down — and what is not.
+**332** spec files, **3,166** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -19,6 +19,7 @@ such exemption.
 ## API modules with no spec file
 
 - [`addresses`](../modules/addresses.md)
+- [`example-hello-world-pack`](../modules/example-hello-world-pack.md)
 - [`giftcards`](../modules/giftcards.md)
 - [`loyalty`](../modules/loyalty.md)
 - [`notification-preferences`](../modules/notification-preferences.md)
@@ -57,7 +58,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (307)
+## Unit and integration (312)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -81,6 +82,7 @@ regression or an N+1.
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
+| `apps/api/src/core/feature-flags/feature-flags.service.spec.ts` | core/feature-flags | 10 | FeatureFlagsService — WO-37.2 |
 | `apps/api/src/core/feed/feed-registry.service.spec.ts` | core/feed | 6 | FeedRegistryService — WO-58.2 |
 | `apps/api/src/core/idempotency/idempotency-key.constraint.spec.ts` | core/idempotency | 1 | IdempotencyKey — @@unique([scope, key]) race guard |
 | `apps/api/src/core/idempotency/idempotency.cron.spec.ts` | core/idempotency | 2 | IdempotencyCron — WO-157.4 |
@@ -106,6 +108,8 @@ regression or an N+1.
 | `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 11 | StorageService.putImage · StorageService.putDocument |
 | `apps/api/src/core/time/metric-window.spec.ts` | core/time | 18 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays · previousWindow |
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 19 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · shopLocalHour · asse… |
+| `apps/api/src/core/versioning/api-version-policy.service.spec.ts` | core/versioning | 5 | ApiVersionPolicyService — WO-37.1 |
+| `apps/api/src/core/versioning/deprecation-header.interceptor.spec.ts` | core/versioning | 5 | DeprecationHeaderInterceptor — WO-37.1 |
 | `apps/api/src/modules/accounting/accounting.service.spec.ts` | accounting | 5 | AccountingService — WO-19.1 · postEntry |
 | `apps/api/src/modules/accounting/asset-depreciation.service.spec.ts` | accounting | 24 | monthlyDepreciation — pure · date helpers · AssetDepreciationService · createSchedule · postMonthly… |
 | `apps/api/src/modules/accounting/consolidation.service.spec.ts` | accounting | 7 | ConsolidationService — R17, WO-20.6 · groupProfitAndLoss · unmatchedIntercompany |
@@ -162,6 +166,8 @@ regression or an N+1.
 | `apps/api/src/modules/embeds/embed-widgets.service.spec.ts` | embeds | 8 | EmbedWidgetsService — WO-113.1 |
 | `apps/api/src/modules/entity-attributes/entity-attributes.service.spec.ts` | entity-attributes | 6 | EntityAttributeService — WO-140.2 |
 | `apps/api/src/modules/entity-attributes/supplier-deleted.listener.spec.ts` | entity-attributes | 1 | EntityAttributeSupplierDeletedListener — WO-140.3 |
+| `apps/api/src/modules/feature-flags/feature-flag-audit.cron.spec.ts` | feature-flags | 3 | FeatureFlagAuditCron — WO-37.3 |
+| `apps/api/src/modules/feature-flags/feature-flags-admin.service.spec.ts` | feature-flags | 14 | FeatureFlagsAdminService — WO-37.2/37.5 · listStale · update · proposeRollout · approveRollout |
 | `apps/api/src/modules/finance/expense-import.service.spec.ts` | finance | 5 | ExpenseImportService |
 | `apps/api/src/modules/finance/expense-replication.listener.spec.ts` | finance | 3 | ExpenseReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onExpenseRecorded |
 | `apps/api/src/modules/finance/finance-margins.spec.ts` | finance | 4 | FinanceService margins and unit economics · marginBy · unitEconomics |

@@ -158,6 +158,10 @@ export const ROUTES = {
     bankFacilities: '/admin/bank-facilities',
     bankFacility: (id: string) => `/admin/bank-facilities/${id}`,
 
+    /** 37-scalability-future-upgrades.md. */
+    featureFlags: '/admin/feature-flags',
+    featureFlag: (id: string) => `/admin/feature-flags/${id}`,
+
     /** hr-people-org/19-org-structure-offices-departments.md. */
     orgStructure: '/admin/org-structure',
     /** access-control-identity/21-access-over-the-org-tree.md WO-21.6 — one access screen per unit, reached by clicking from the tree. */

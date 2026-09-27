@@ -3,7 +3,7 @@
 
 # Data model
 
-All **307** Prisma models and **144** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **308** Prisma models and **144** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -40,6 +40,7 @@ against a real database.
 | [`custom-fields.prisma`](../data/custom-fields.md) | 1 | 1 | [`custom-fields`](../modules/custom-fields.md) | CustomFieldDefinition |
 | [`embeds.prisma`](../data/embeds.md) | 1 | 0 | [`embeds`](../modules/embeds.md) | EmbeddedWidget |
 | [`entity-attributes.prisma`](../data/entity-attributes.md) | 1 | 0 | [`entity-attributes`](../modules/entity-attributes.md) | EntityAttribute |
+| [`feature-flags.prisma`](../data/feature-flags.md) | 1 | 0 | [`feature-flags`](../modules/feature-flags.md) | FeatureFlag |
 | [`finance.prisma`](../data/finance.md) | 3 | 1 | [`finance`](../modules/finance.md) | Expense, ExpenseCategory, OrderEconomics |
 | [`fragments.prisma`](../data/fragments.md) | 1 | 1 | [`fragments`](../modules/fragments.md) | MicroFrontendFragment |
 | [`fulfilment.prisma`](../data/fulfilment.md) | 16 | 4 | [`fulfilment`](../modules/fulfilment.md) | Manifest, ManifestNumberCounter, ReturnReasonCode, ReturnReasonTranslation, ReturnRequest, ReturnRequestItem, ReturnRequestNumber… |
@@ -174,6 +175,7 @@ against a real database.
 | [`EscalationRule`](../data/notify.md#escalationrule) | `notify` | 7 | 0 | id | The timer that makes a stalled task visible — climbs Position.reportsTo, never a person,… |
 | [`Expense`](../data/finance.md#expense) | `finance` | 24 | 5 | id |  |
 | [`ExpenseCategory`](../data/finance.md#expensecategory) | `finance` | 9 | 0 | id | Finance: operational expenses and per-order economics (RETAIL-ERP.md Tranche 6, WO-23.1 —… |
+| [`FeatureFlag`](../data/feature-flags.md#featureflag) | `feature-flags` | 16 | 0 | id | FeatureFlagService.isEnabled(key, organizationId) is the one caller every other module go… |
 | [`FiscalPeriod`](../data/accounting.md#fiscalperiod) | `accounting` | 10 | 1 | id | What a `JournalEntry` posts into. |
 | [`FiscalYear`](../data/accounting.md#fiscalyear) | `accounting` | 7 | 0 | id | A trading year. |
 | [`FollowUpTask`](../data/crm.md#followuptask) | `crm` | 13 | 3 | id |  |

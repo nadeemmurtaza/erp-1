@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2387,
-    "lines": 364220,
-    "routes": 864,
-    "controllers": 159,
-    "models": 312,
-    "enums": 145,
+    "files": 2393,
+    "lines": 362809,
+    "routes": 858,
+    "controllers": 157,
+    "models": 308,
+    "enums": 144,
     "migrations": 116,
     "events": 69,
-    "permissions": 126,
-    "screens": 274,
+    "permissions": 124,
+    "screens": 271,
     "crons": 28,
-    "specs": 330,
+    "specs": 332,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 60,
       "lines": 30638,
-      "bytes": 1206171,
+      "bytes": 1206246,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1127,
-      "lines": 151527,
-      "bytes": 5905405,
+      "files": 1135,
+      "lines": 150504,
+      "bytes": 5862026,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 425,
-      "lines": 71795,
-      "bytes": 2597355,
+      "files": 422,
+      "lines": 70991,
+      "bytes": 2565713,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 400,
-      "lines": 70621,
-      "bytes": 4204637,
+      "files": 401,
+      "lines": 71021,
+      "bytes": 4228543,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 80,
-      "lines": 8677,
-      "bytes": 311617,
+      "lines": 8693,
+      "bytes": 313008,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -230,7 +230,7 @@
         "apps/api/src/modules/bom/raw-material.service.ts",
         "apps/api/src/modules/bom/recipe.service.ts"
       ],
-      "routes": 22,
+      "routes": 20,
       "page": "docs/index/modules/bom.md"
     },
     {
@@ -430,6 +430,35 @@
       "page": "docs/index/modules/entity-attributes.md"
     },
     {
+      "name": "example-hello-world-pack",
+      "pack": "example",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/example-hello-world-pack/example-hello-world-pack.module.ts",
+        "apps/api/src/modules/example-hello-world-pack/hello-world.listener.ts"
+      ],
+      "routes": 0,
+      "page": "docs/index/modules/example-hello-world-pack.md"
+    },
+    {
+      "name": "feature-flags",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/feature-flags/dto/feature-flag.dto.ts",
+        "apps/api/src/modules/feature-flags/feature-flag-audit.cron.spec.ts",
+        "apps/api/src/modules/feature-flags/feature-flag-audit.cron.ts",
+        "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+        "apps/api/src/modules/feature-flags/feature-flags-admin.module.ts",
+        "apps/api/src/modules/feature-flags/feature-flags-admin.service.spec.ts",
+        "apps/api/src/modules/feature-flags/feature-flags-admin.service.ts"
+      ],
+      "routes": 7,
+      "page": "docs/index/modules/feature-flags.md"
+    },
+    {
       "name": "finance",
       "pack": "core",
       "alwaysOn": false,
@@ -563,9 +592,7 @@
       "inRegistry": true,
       "files": [
         "apps/api/src/modules/inventory/dto/inventory.dto.ts",
-        "apps/api/src/modules/inventory/dto/lots.dto.ts",
         "apps/api/src/modules/inventory/dto/markdown-suggestion.dto.ts",
-        "apps/api/src/modules/inventory/dto/serialized-units.dto.ts",
         "apps/api/src/modules/inventory/dto/stock-variance.dto.ts",
         "apps/api/src/modules/inventory/inventory.controller.ts",
         "apps/api/src/modules/inventory/inventory.cron.spec.ts",
@@ -577,17 +604,9 @@
         "apps/api/src/modules/inventory/inventory.module.ts",
         "apps/api/src/modules/inventory/inventory.service.spec.ts",
         "apps/api/src/modules/inventory/inventory.service.ts",
-        "apps/api/src/modules/inventory/lot-allocation.spec.ts",
-        "apps/api/src/modules/inventory/lot-allocation.ts",
-        "apps/api/src/modules/inventory/lots.controller.ts",
-        "apps/api/src/modules/inventory/lots.service.spec.ts",
-        "apps/api/src/modules/inventory/lots.service.ts",
         "apps/api/src/modules/inventory/markdown-suggestions.controller.ts",
         "apps/api/src/modules/inventory/markdown-suggestions.service.spec.ts",
         "apps/api/src/modules/inventory/markdown-suggestions.service.ts",
-        "apps/api/src/modules/inventory/serialized-units.controller.ts",
-        "apps/api/src/modules/inventory/serialized-units.service.spec.ts",
-        "apps/api/src/modules/inventory/serialized-units.service.ts",
         "apps/api/src/modules/inventory/spot-check.controller.ts",
         "apps/api/src/modules/inventory/spot-check.service.spec.ts",
         "apps/api/src/modules/inventory/spot-check.service.ts",
@@ -601,7 +620,7 @@
         "apps/api/src/modules/inventory/suspicious-traffic.service.spec.ts",
         "apps/api/src/modules/inventory/suspicious-traffic.service.ts"
       ],
-      "routes": 40,
+      "routes": 29,
       "page": "docs/index/modules/inventory.md"
     },
     {
@@ -1580,6 +1599,15 @@
       "page": "docs/index/core/extension-points.md"
     },
     {
+      "name": "feature-flags",
+      "files": [
+        "apps/api/src/core/feature-flags/feature-flags.module.ts",
+        "apps/api/src/core/feature-flags/feature-flags.service.spec.ts",
+        "apps/api/src/core/feature-flags/feature-flags.service.ts"
+      ],
+      "page": "docs/index/core/feature-flags.md"
+    },
+    {
       "name": "feed",
       "files": [
         "apps/api/src/core/feed/feed-registry.service.spec.ts",
@@ -1741,6 +1769,17 @@
         "apps/api/src/core/time/shop-time.ts"
       ],
       "page": "docs/index/core/time.md"
+    },
+    {
+      "name": "versioning",
+      "files": [
+        "apps/api/src/core/versioning/api-version-policy.service.spec.ts",
+        "apps/api/src/core/versioning/api-version-policy.service.ts",
+        "apps/api/src/core/versioning/deprecation-header.interceptor.spec.ts",
+        "apps/api/src/core/versioning/deprecation-header.interceptor.ts",
+        "apps/api/src/core/versioning/versioning.module.ts"
+      ],
+      "page": "docs/index/core/versioning.md"
     }
   ],
   "routes": [
@@ -3143,38 +3182,6 @@
     },
     {
       "method": "GET",
-      "path": "/admin/bom/lots/:lotId/trace-forward",
-      "module": "bom",
-      "controller": "BomController",
-      "handler": "traceInputLotForward",
-      "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 223,
-      "access": "bom.view",
-      "permissions": [
-        "bom.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "\"Which finished batches did this ingredient reach\" — every production run that consumed this lot"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/bom/lots/:lotId/trace-output",
-      "module": "bom",
-      "controller": "BomController",
-      "handler": "traceOutputLot",
-      "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 216,
-      "access": "bom.view",
-      "permissions": [
-        "bom.view"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "\"What went into this finished batch\" — the run that produced this lot and every input lot it consumed"
-    },
-    {
-      "method": "GET",
       "path": "/admin/bom/missing",
       "module": "bom",
       "controller": "BomController",
@@ -3340,7 +3347,7 @@
       "controller": "BomController",
       "handler": "rawUsage",
       "file": "apps/api/src/modules/bom/bom.controller.ts",
-      "line": 230,
+      "line": 216,
       "access": "bom.view",
       "permissions": [
         "bom.view"
@@ -6248,6 +6255,118 @@
     },
     {
       "method": "GET",
+      "path": "/admin/feature-flags",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "list",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 25,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every feature flag"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/feature-flags",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "create",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 43,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Create a feature flag"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/feature-flags/:id",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "get",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 37,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One flag's detail"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/feature-flags/:id",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "update",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 49,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit a flag — killSwitch=true and any non-100% rollout apply immediately; the risky direction on a money/stock-path flag is refused here"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/feature-flags/:id/approve-rollout",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "approveRollout",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 62,
+      "access": "platform.flags.approve_rollout",
+      "permissions": [
+        "platform.flags.approve_rollout"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Approve a proposed rollout change — the checker half, never the same person as the proposal"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/feature-flags/:id/propose-rollout",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "proposeRollout",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 55,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Propose 100% rollout and/or clearing the kill switch on a money/stock-path flag — the maker half of the pair"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/feature-flags/audit",
+      "module": "feature-flags",
+      "controller": "FeatureFlagsAdminController",
+      "handler": "audit",
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "line": 31,
+      "access": "platform.flags.manage",
+      "permissions": [
+        "platform.flags.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "WO-37.3 — every flag older than 90 days with no stated removal criteria"
+    },
+    {
+      "method": "GET",
       "path": "/admin/feed",
       "module": "core/feed",
       "controller": "FeedController",
@@ -7340,86 +7459,6 @@
     },
     {
       "method": "GET",
-      "path": "/admin/inventory/lots",
-      "module": "inventory",
-      "controller": "LotsController",
-      "handler": "list",
-      "file": "apps/api/src/modules/inventory/lots.controller.ts",
-      "line": 21,
-      "access": "inventory.lots.manage",
-      "permissions": [
-        "inventory.lots.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Every lot registered for a variant, with its remaining stock per location"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/inventory/lots/:id",
-      "module": "inventory",
-      "controller": "LotsController",
-      "handler": "getOne",
-      "file": "apps/api/src/modules/inventory/lots.controller.ts",
-      "line": 42,
-      "access": "inventory.lots.manage",
-      "permissions": [
-        "inventory.lots.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "One lot's own identity and remaining stock per location"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/inventory/lots/:id/recall",
-      "module": "inventory",
-      "controller": "LotsController",
-      "handler": "recall",
-      "file": "apps/api/src/modules/inventory/lots.controller.ts",
-      "line": 49,
-      "access": "inventory.recall",
-      "permissions": [
-        "inventory.recall"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Every order that drew from this lot — the recall query this ledger exists to answer"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/inventory/lots/expiring",
-      "module": "inventory",
-      "controller": "LotsController",
-      "handler": "expiring",
-      "file": "apps/api/src/modules/inventory/lots.controller.ts",
-      "line": 28,
-      "access": "inventory.lots.manage",
-      "permissions": [
-        "inventory.lots.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Lots nearing expiry with unsold stock — the same candidates InventoryCron alerts on"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/inventory/lots/preview-allocation",
-      "module": "inventory",
-      "controller": "LotsController",
-      "handler": "previewAllocation",
-      "file": "apps/api/src/modules/inventory/lots.controller.ts",
-      "line": 35,
-      "access": "inventory.lots.manage",
-      "permissions": [
-        "inventory.lots.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Dry run: which lots a deduction of this size would draw from, FEFO order"
-    },
-    {
-      "method": "GET",
       "path": "/admin/inventory/markdown-suggestions",
       "module": "inventory",
       "controller": "MarkdownSuggestionsController",
@@ -7481,86 +7520,6 @@
       "public": false,
       "authOnly": false,
       "summary": "Reorder suggestions based on reorderPoint"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/inventory/serials",
-      "module": "inventory",
-      "controller": "SerializedUnitsController",
-      "handler": "list",
-      "file": "apps/api/src/modules/inventory/serialized-units.controller.ts",
-      "line": 26,
-      "access": "inventory.manage",
-      "permissions": [
-        "inventory.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Every serialized unit for a variant"
-    },
-    {
-      "method": "GET",
-      "path": "/admin/inventory/serials/:serialNumber/history",
-      "module": "inventory",
-      "controller": "SerializedUnitsController",
-      "handler": "history",
-      "file": "apps/api/src/modules/inventory/serialized-units.controller.ts",
-      "line": 32,
-      "access": "inventory.manage",
-      "permissions": [
-        "inventory.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "A unit's status, sale and warranty history — staff-side lookup"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/inventory/serials/return",
-      "module": "inventory",
-      "controller": "SerializedUnitsController",
-      "handler": "returnUnit",
-      "file": "apps/api/src/modules/inventory/serialized-units.controller.ts",
-      "line": 46,
-      "access": "inventory.manage",
-      "permissions": [
-        "inventory.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Return one specific unit — refused unless it was sold on this exact order"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/inventory/serials/sell",
-      "module": "inventory",
-      "controller": "SerializedUnitsController",
-      "handler": "sell",
-      "file": "apps/api/src/modules/inventory/serialized-units.controller.ts",
-      "line": 40,
-      "access": "inventory.manage",
-      "permissions": [
-        "inventory.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Sell one specific unit against an order"
-    },
-    {
-      "method": "POST",
-      "path": "/admin/inventory/serials/write-off",
-      "module": "inventory",
-      "controller": "SerializedUnitsController",
-      "handler": "writeOff",
-      "file": "apps/api/src/modules/inventory/serialized-units.controller.ts",
-      "line": 52,
-      "access": "inventory.manage",
-      "permissions": [
-        "inventory.manage"
-      ],
-      "public": false,
-      "authOnly": false,
-      "summary": "Theft, damage, lost — writes the unit off and records the stock movement"
     },
     {
       "method": "GET",
@@ -14772,20 +14731,6 @@
     },
     {
       "method": "GET",
-      "path": "/public/serials/:serialNumber",
-      "module": "inventory",
-      "controller": "SerializedUnitsPublicController",
-      "handler": "verify",
-      "file": "apps/api/src/modules/inventory/serialized-units.controller.ts",
-      "line": 71,
-      "access": "PUBLIC",
-      "permissions": [],
-      "public": true,
-      "authOnly": false,
-      "summary": "Verify a purchase by serial number — status, sale date and warranty only"
-    },
-    {
-      "method": "GET",
       "path": "/replication/pull",
       "module": "core/replication",
       "controller": "ReplicationController",
@@ -15901,18 +15846,13 @@
         "POST /admin/inventory/markdown-suggestions/:id/activate",
         "POST /admin/inventory/markdown-suggestions/:id/dismiss",
         "GET /admin/inventory/reorder",
-        "GET /admin/inventory/serials",
-        "GET /admin/inventory/serials/:serialNumber/history",
-        "POST /admin/inventory/serials/return",
-        "POST /admin/inventory/serials/sell",
-        "POST /admin/inventory/serials/write-off",
         "GET /admin/inventory/slow-movers",
         "GET /admin/inventory/variances",
         "POST /admin/inventory/variances/:id/resolve",
         "GET /admin/inventory/variances/by-shift",
         "POST /admin/planning/orders/:orderId/assign-branch"
       ],
-      "uiSites": 13,
+      "uiSites": 12,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -16112,50 +16052,6 @@
         "GET /admin/inventory/spot-check-policies",
         "POST /admin/inventory/spot-check-policies",
         "PATCH /admin/inventory/spot-check-policies/:id"
-      ],
-      "uiSites": 1,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
-      "key": "inventory.lots.manage",
-      "label": "Register and view lots — batch code, expiry, FEFO allocation",
-      "category": "Catalogue",
-      "sensitivity": "low",
-      "routes": [
-        "GET /admin/inventory/lots",
-        "GET /admin/inventory/lots/:id",
-        "GET /admin/inventory/lots/expiring",
-        "POST /admin/inventory/lots/preview-allocation"
-      ],
-      "uiSites": 1,
-      "roles": [
-        "STAFF",
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
-      "key": "inventory.lots.override",
-      "label": "Manually pick a specific lot to allocate from, overriding FEFO",
-      "category": "Catalogue",
-      "sensitivity": "medium",
-      "routes": [],
-      "uiSites": 0,
-      "roles": [
-        "ADMIN"
-      ],
-      "inSeed": true
-    },
-    {
-      "key": "inventory.recall",
-      "label": "Look up every order a batch reached — exposes customer identity, narrower than ordinary stock viewing",
-      "category": "Catalogue",
-      "sensitivity": "high",
-      "routes": [
-        "GET /admin/inventory/lots/:id/recall"
       ],
       "uiSites": 1,
       "roles": [
@@ -16735,8 +16631,6 @@
       "category": "Manufacturing",
       "sensitivity": "low",
       "routes": [
-        "GET /admin/bom/lots/:lotId/trace-forward",
-        "GET /admin/bom/lots/:lotId/trace-output",
         "GET /admin/bom/missing",
         "GET /admin/bom/production-runs",
         "GET /admin/bom/production-runs/:id",
@@ -16748,7 +16642,7 @@
         "GET /admin/bom/recipes/:id/availability",
         "GET /admin/bom/recipes/:id/cost"
       ],
-      "uiSites": 11,
+      "uiSites": 10,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -17716,6 +17610,20 @@
         "ADMIN"
       ],
       "inSeed": true
+    },
+    {
+      "key": "platform.flags.approve_rollout",
+      "label": "Approve a proposed 100% rollout or kill-switch clearance on a money/stock-path feature flag",
+      "category": "Platform",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/feature-flags/:id/approve-rollout"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
     }
   ],
   "events": [
@@ -17726,13 +17634,14 @@
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:58",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:165",
-        "apps/api/src/modules/orders/orders.service.ts:545",
-        "apps/api/src/modules/orders/orders.service.ts:806"
+        "apps/api/src/modules/orders/orders.service.ts:524",
+        "apps/api/src/modules/orders/orders.service.ts:785"
       ],
       "subscribers": [
         "apps/api/src/core/events/on-domain-event.decorator.ts:7 handle()",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:56 onOrderPlaced()",
         "apps/api/src/modules/crm/order.subscriber.ts:27 onOrderPlaced()",
+        "apps/api/src/modules/example-hello-world-pack/hello-world.listener.ts:23 onOrderPlaced()",
         "apps/api/src/modules/orders/notification.subscriber.ts:70 onOrderPlaced()",
         "apps/api/src/modules/orders/order-replication.listener.ts:48 onOrderPlaced()",
         "apps/api/src/modules/stitching/order.subscriber.ts:25 onOrderPlaced()"
@@ -17743,8 +17652,8 @@
       "name": "order.status_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/orders/orders.service.ts:833",
-        "apps/api/src/modules/orders/orders.service.ts:1018"
+        "apps/api/src/modules/orders/orders.service.ts:812",
+        "apps/api/src/modules/orders/orders.service.ts:997"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:66 onStatusChanged()",
@@ -17759,7 +17668,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/finance/finance.listener.ts:9",
-        "apps/api/src/modules/orders/orders.service.ts:1018"
+        "apps/api/src/modules/orders/orders.service.ts:997"
       ],
       "subscribers": [
         "apps/api/src/modules/crm/order.subscriber.ts:71 onCancelled()",
@@ -17774,7 +17683,7 @@
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:125",
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:162",
         "apps/api/src/modules/orders/instalment-plan.service.ts:90",
-        "apps/api/src/modules/orders/orders.service.ts:777",
+        "apps/api/src/modules/orders/orders.service.ts:756",
         "apps/api/src/modules/payments/payments.service.ts:193",
         "apps/api/src/modules/payments/payments.service.ts:295",
         "apps/api/src/modules/payments/payments.service.ts:343"
@@ -17969,7 +17878,7 @@
       "name": "catalog.product_published",
       "doc": "Fires once, the moment a product's status first becomes ACTIVE — never again on a later re-save.",
       "publishers": [
-        "apps/api/src/modules/catalog/product-admin.service.ts:200"
+        "apps/api/src/modules/catalog/product-admin.service.ts:197"
       ],
       "subscribers": [
         "apps/api/src/modules/catalog/product-replication.listener.ts:50 onProductPublished()",
@@ -17981,7 +17890,7 @@
       "name": "catalog.product_price_changed",
       "doc": "Fires only when basePrice actually changes value, never on an unrelated field edit.",
       "publishers": [
-        "apps/api/src/modules/catalog/product-admin.service.ts:359"
+        "apps/api/src/modules/catalog/product-admin.service.ts:356"
       ],
       "subscribers": [
         "apps/api/src/modules/catalog/product-replication.listener.ts:55 onProductPriceChanged()",
@@ -17994,8 +17903,8 @@
       "doc": "WO-8.3 — fires on every create()/update(), unconditionally: search.reindexProduct's own trigger, since a name, description, tag, category or brand edit all change what a product should match on, not…",
       "publishers": [
         "apps/api/src/modules/catalog/ai-suggestions.service.ts:296",
-        "apps/api/src/modules/catalog/product-admin.service.ts:210",
-        "apps/api/src/modules/catalog/product-admin.service.ts:367"
+        "apps/api/src/modules/catalog/product-admin.service.ts:207",
+        "apps/api/src/modules/catalog/product-admin.service.ts:364"
       ],
       "subscribers": [
         "apps/api/src/modules/search/search-reindex.listener.ts:17 onProductChanged()"
@@ -18030,7 +17939,7 @@
       "name": "purchasing.goods_received",
       "doc": "",
       "publishers": [
-        "apps/api/src/modules/purchasing/purchasing.service.ts:517"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:448"
       ],
       "subscribers": [
         "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()",
@@ -18062,7 +17971,7 @@
       "name": "bom.production_completed",
       "doc": "A BomProductionRun completed (WO-C.3) — fires after stock consumption, stock credit and the weighted-average cost update all land in the same transaction.",
       "publishers": [
-        "apps/api/src/modules/bom/production.service.ts:350"
+        "apps/api/src/modules/bom/production.service.ts:200"
       ],
       "subscribers": [
         "apps/api/src/modules/bom/bom-production-replication.listener.ts:38 onBomProductionCompleted()"
@@ -18074,7 +17983,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:186",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:668"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:599"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:184 onSupplierBillRaised()"
@@ -18086,7 +17995,7 @@
       "doc": "",
       "publishers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:236",
-        "apps/api/src/modules/purchasing/purchasing.service.ts:732"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:663"
       ],
       "subscribers": [
         "apps/api/src/modules/accounting/posting-rules.subscriber.ts:234 onSupplierBillPaid()"
@@ -18097,7 +18006,7 @@
       "name": "purchasing.supplier_deleted",
       "doc": "PurchasingService.remove() — fired so any module holding data keyed to this supplier (e.g.",
       "publishers": [
-        "apps/api/src/modules/purchasing/purchasing.service.ts:186"
+        "apps/api/src/modules/purchasing/purchasing.service.ts:182"
       ],
       "subscribers": [
         "apps/api/src/modules/entity-attributes/supplier-deleted.listener.ts:23 onSupplierDeleted()"
@@ -21359,7 +21268,7 @@
     {
       "name": "BomProductionLine",
       "file": "apps/api/prisma/schema/bom.prisma",
-      "line": 214,
+      "line": 205,
       "doc": "One raw-material line consumed by a production run — the same SNAPSHOT discipline as the run itself.",
       "fields": [
         {
@@ -21424,72 +21333,11 @@
           "id": false,
           "unique": false,
           "relation": true
-        },
-        {
-          "name": "lotAllocations",
-          "type": "BomProductionLineLot[]",
-          "id": false,
-          "unique": false,
-          "relation": false
         }
       ],
       "indexes": [
         "@@index([runId])",
         "@@index([rawMaterialId])"
-      ]
-    },
-    {
-      "name": "BomProductionLineLot",
-      "file": "apps/api/prisma/schema/bom.prisma",
-      "line": 246,
-      "doc": "71-recipe-batch-traceability.md, DECISIONS.md ADR-068.",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "productionLineId",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "lotId",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "quantityBase",
-          "type": "Int",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "productionLine",
-          "type": "BomProductionLine",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "lot",
-          "type": "Lot",
-          "id": false,
-          "unique": false,
-          "relation": true
-        }
-      ],
-      "indexes": [
-        "@@index([productionLineId])",
-        "@@index([lotId])"
       ]
     },
     {
@@ -21618,13 +21466,6 @@
           "relation": false
         },
         {
-          "name": "outputLotId",
-          "type": "String?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
           "name": "recipe",
           "type": "BomRecipe",
           "id": false,
@@ -21651,13 +21492,6 @@
           "id": false,
           "unique": false,
           "relation": false
-        },
-        {
-          "name": "outputLot",
-          "type": "Lot?",
-          "id": false,
-          "unique": false,
-          "relation": true
         }
       ],
       "indexes": [
@@ -21665,8 +21499,7 @@
         "@@index([scopeLevel])",
         "@@index([locationId])",
         "@@index([recipeId])",
-        "@@index([variantId])",
-        "@@index([outputLotId])"
+        "@@index([variantId])"
       ]
     },
     {
@@ -22296,7 +22129,7 @@
     {
       "name": "BundleComponent",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 778,
+      "line": 756,
       "doc": "",
       "fields": [
         {
@@ -23152,7 +22985,7 @@
     {
       "name": "Collection",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 614,
+      "line": 592,
       "doc": "",
       "fields": [
         {
@@ -23233,7 +23066,7 @@
     {
       "name": "CollectionProduct",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 654,
+      "line": 632,
       "doc": "Manual membership and manual sort order.",
       "fields": [
         {
@@ -23280,7 +23113,7 @@
     {
       "name": "CollectionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 637,
+      "line": 615,
       "doc": "",
       "fields": [
         {
@@ -25620,6 +25453,129 @@
       ],
       "indexes": [
         "@@index([isActive, order])"
+      ]
+    },
+    {
+      "name": "FeatureFlag",
+      "file": "apps/api/prisma/schema/feature-flags.prisma",
+      "line": 17,
+      "doc": "FeatureFlagService.isEnabled(key, organizationId) is the one caller every other module goes through — never a raw `prisma.featureFlag` read from outside core/feature-flags, the same \"one writer per i…",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rolloutPercent",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "enabledOrgIds",
+          "type": "String[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "killSwitch",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "moneyOrStockPath",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedRolloutPercent",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedKillSwitchOff",
+          "type": "Boolean",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "proposedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedById",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "approvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "removalCriteria",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([createdAt])"
       ]
     },
     {
@@ -28524,7 +28480,7 @@
     {
       "name": "Location",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 83,
+      "line": 81,
       "doc": "A place stock physically lives.",
       "fields": [
         {
@@ -28645,244 +28601,11 @@
           "id": false,
           "unique": false,
           "relation": false
-        },
-        {
-          "name": "lotStocks",
-          "type": "LotStock[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "serializedUnits",
-          "type": "SerializedUnit[]",
-          "id": false,
-          "unique": false,
-          "relation": false
         }
       ],
       "indexes": [
         "@@index([isActive])",
         "@@index([retailBrandId])"
-      ]
-    },
-    {
-      "name": "Lot",
-      "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 342,
-      "doc": "32-lots-batch-expiry-fefo.md, DECISIONS.md ADR-068.",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "productVariantId",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "lotCode",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "expiresOn",
-          "type": "DateTime?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "receivedOn",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "sourceReceiptId",
-          "type": "String?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "createdAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "variant",
-          "type": "ProductVariant",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "stocks",
-          "type": "LotStock[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "allocations",
-          "type": "LotAllocation[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "outputOfRuns",
-          "type": "BomProductionRun[]",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "consumedByLines",
-          "type": "BomProductionLineLot[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "serializedUnits",
-          "type": "SerializedUnit[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        }
-      ],
-      "indexes": [
-        "@@unique([productVariantId, lotCode])",
-        "@@index([expiresOn])"
-      ]
-    },
-    {
-      "name": "LotAllocation",
-      "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 396,
-      "doc": "One row per unit of movement that consumed a specific lot — the join a recall query walks.",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "lotId",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "stockMovementId",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "quantity",
-          "type": "Int",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "allocatedAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "lot",
-          "type": "Lot",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "stockMovement",
-          "type": "StockMovement",
-          "id": false,
-          "unique": false,
-          "relation": true
-        }
-      ],
-      "indexes": [
-        "@@unique([lotId, stockMovementId])",
-        "@@index([lotId])",
-        "@@index([stockMovementId])"
-      ]
-    },
-    {
-      "name": "LotStock",
-      "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 379,
-      "doc": "The per-location quantity for ONE lot.",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "lotId",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "locationId",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "quantity",
-          "type": "Int",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "lot",
-          "type": "Lot",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "location",
-          "type": "Location",
-          "id": false,
-          "unique": false,
-          "relation": true
-        }
-      ],
-      "indexes": [
-        "@@unique([lotId, locationId])",
-        "@@index([locationId])"
       ]
     },
     {
@@ -29113,7 +28836,7 @@
     {
       "name": "MarkdownSuggestion",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 315,
+      "line": 303,
       "doc": "",
       "fields": [
         {
@@ -30764,7 +30487,7 @@
     {
       "name": "OptionTemplate",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 525,
+      "line": 503,
       "doc": "Store-level, reusable option axis — \"Size: XS/S/M/L/XL/XXL\" typed once under Catalogue -> Options & attributes instead of on every product.",
       "fields": [
         {
@@ -30824,7 +30547,7 @@
     {
       "name": "OptionTemplateTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 538,
+      "line": 516,
       "doc": "",
       "fields": [
         {
@@ -30870,7 +30593,7 @@
     {
       "name": "OptionTemplateValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 549,
+      "line": 527,
       "doc": "",
       "fields": [
         {
@@ -30938,7 +30661,7 @@
     {
       "name": "OptionTemplateValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 564,
+      "line": 542,
       "doc": "",
       "fields": [
         {
@@ -35679,7 +35402,7 @@
     {
       "name": "ProductAiSuggestion",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 690,
+      "line": 668,
       "doc": "WO-9.1.",
       "fields": [
         {
@@ -35775,7 +35498,7 @@
     {
       "name": "ProductBundle",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 765,
+      "line": 743,
       "doc": "150-product-kitting-bundles.md — a sellable shell over existing variants, never a new physical item: selling one is entirely expressed as decrementing its components (BundlesService.sellBundle()), an…",
       "fields": [
         {
@@ -35826,7 +35549,7 @@
     {
       "name": "ProductCrossSell",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 741,
+      "line": 719,
       "doc": "",
       "fields": [
         {
@@ -35894,7 +35617,7 @@
     {
       "name": "ProductGarmentType",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 426,
+      "line": 404,
       "doc": "Which garments a given unstitched fabric can be made into.",
       "fields": [
         {
@@ -35926,7 +35649,7 @@
     {
       "name": "ProductImage",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 382,
+      "line": 360,
       "doc": "",
       "fields": [
         {
@@ -36028,7 +35751,7 @@
     {
       "name": "ProductImageTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 414,
+      "line": 392,
       "doc": "Alt text per locale.",
       "fields": [
         {
@@ -36074,7 +35797,7 @@
     {
       "name": "ProductOption",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 447,
+      "line": 425,
       "doc": "A dynamic option axis a product varies along: \"Size\", \"Colour\", \"Storage\".",
       "fields": [
         {
@@ -36149,7 +35872,7 @@
     {
       "name": "ProductOptionTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 464,
+      "line": 442,
       "doc": "",
       "fields": [
         {
@@ -36195,7 +35918,7 @@
     {
       "name": "ProductOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 476,
+      "line": 454,
       "doc": "A specific value on an option axis: \"M\", \"Ferozi\", \"128GB\".",
       "fields": [
         {
@@ -36270,7 +35993,7 @@
     {
       "name": "ProductOptionValueTranslation",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 494,
+      "line": 472,
       "doc": "",
       "fields": [
         {
@@ -36388,7 +36111,7 @@
     {
       "name": "ProductSizeBias",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 713,
+      "line": 691,
       "doc": "WO-9.2.",
       "fields": [
         {
@@ -36707,27 +36430,6 @@
           "relation": false
         },
         {
-          "name": "lotTracked",
-          "type": "Boolean",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "tracksSerials",
-          "type": "Boolean",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "warrantyMonths",
-          "type": "Int?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
           "name": "taxClassId",
           "type": "String?",
           "id": false,
@@ -36943,20 +36645,6 @@
           "id": false,
           "unique": false,
           "relation": false
-        },
-        {
-          "name": "lots",
-          "type": "Lot[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "serializedUnits",
-          "type": "SerializedUnit[]",
-          "id": false,
-          "unique": false,
-          "relation": false
         }
       ],
       "indexes": [
@@ -36967,7 +36655,7 @@
     {
       "name": "ProductVariantOptionValue",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 508,
+      "line": 486,
       "doc": "The join that DEFINES a variant: one row per option axis per variant.",
       "fields": [
         {
@@ -37773,7 +37461,7 @@
     {
       "name": "Redirect",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 578,
+      "line": 556,
       "doc": "A storefront path that now 301s somewhere else — created automatically when a live product/category slug changes, or entered by hand (including a CSV import when migrating an old site).",
       "fields": [
         {
@@ -39365,124 +39053,6 @@
       "indexes": []
     },
     {
-      "name": "SerializedUnit",
-      "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 431,
-      "doc": "",
-      "fields": [
-        {
-          "name": "id",
-          "type": "String",
-          "id": true,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "productVariantId",
-          "type": "String",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "serialNumber",
-          "type": "String",
-          "id": false,
-          "unique": true,
-          "relation": false
-        },
-        {
-          "name": "status",
-          "type": "SerializedUnitStatus",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "lotId",
-          "type": "String?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "locationId",
-          "type": "String?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "orderId",
-          "type": "String?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "stockMovementId",
-          "type": "String?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "createdAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "updatedAt",
-          "type": "DateTime",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "variant",
-          "type": "ProductVariant",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "lot",
-          "type": "Lot?",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "location",
-          "type": "Location?",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "stockMovement",
-          "type": "StockMovement?",
-          "id": false,
-          "unique": false,
-          "relation": true
-        },
-        {
-          "name": "variances",
-          "type": "StockVariance[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        }
-      ],
-      "indexes": [
-        "@@index([productVariantId, status])",
-        "@@index([orderId])",
-        "@@index([stockMovementId])"
-      ]
-    },
-    {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
       "line": 347,
@@ -40665,7 +40235,7 @@
     {
       "name": "SpotCheck",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 211,
+      "line": 199,
       "doc": "A small, unscheduled StockCount-like sheet — a handful of SKUs, never the whole shop, completable in minutes on the POS/mobile device.",
       "fields": [
         {
@@ -40754,7 +40324,7 @@
     {
       "name": "SpotCheckLine",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 229,
+      "line": 217,
       "doc": "",
       "fields": [
         {
@@ -40821,7 +40391,7 @@
     {
       "name": "SpotCheckPolicy",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 184,
+      "line": 172,
       "doc": "156-single-employee-branch-loss-prevention.md §3.",
       "fields": [
         {
@@ -41622,7 +41192,7 @@
     {
       "name": "StockAdjustment",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 364,
+      "line": 342,
       "doc": "One entry per change to ProductVariant.stock, so \"why is stock 4\" has an answer without an audit table bolted on after the fact.",
       "fields": [
         {
@@ -41703,7 +41273,7 @@
     {
       "name": "StockCount",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 485,
+      "line": 329,
       "doc": "",
       "fields": [
         {
@@ -41812,7 +41382,7 @@
     {
       "name": "StockCountLine",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 508,
+      "line": 352,
       "doc": "",
       "fields": [
         {
@@ -42000,20 +41570,6 @@
           "id": false,
           "unique": false,
           "relation": true
-        },
-        {
-          "name": "lotAllocations",
-          "type": "LotAllocation[]",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
-          "name": "serializedUnits",
-          "type": "SerializedUnit[]",
-          "id": false,
-          "unique": false,
-          "relation": false
         }
       ],
       "indexes": [
@@ -42219,7 +41775,7 @@
     {
       "name": "StockVariance",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 138,
+      "line": 134,
       "doc": "One row per oversell InventoryService.postUnconditional() let through (R5: a POS sale that already happened is never rejected by sync).",
       "fields": [
         {
@@ -42307,13 +41863,6 @@
           "relation": false
         },
         {
-          "name": "serializedUnitId",
-          "type": "String?",
-          "id": false,
-          "unique": false,
-          "relation": false
-        },
-        {
           "name": "createdAt",
           "type": "DateTime",
           "id": false,
@@ -42340,21 +41889,13 @@
           "id": false,
           "unique": false,
           "relation": true
-        },
-        {
-          "name": "serializedUnit",
-          "type": "SerializedUnit?",
-          "id": false,
-          "unique": false,
-          "relation": true
         }
       ],
       "indexes": [
         "@@index([status])",
         "@@index([variantId])",
         "@@index([locationId])",
-        "@@index([posShiftId])",
-        "@@index([serializedUnitId])"
+        "@@index([posShiftId])"
       ]
     },
     {
@@ -44927,7 +44468,7 @@
     {
       "name": "VariantForecast",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 287,
+      "line": 275,
       "doc": "WO-9.3 (09-ai-layer.md).",
       "fields": [
         {
@@ -44985,7 +44526,7 @@
     {
       "name": "VariantLocationStock",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 251,
+      "line": 239,
       "doc": "Stock, per variant, per location.",
       "fields": [
         {
@@ -45038,7 +44579,7 @@
     {
       "name": "VariantSalesStat",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 264,
+      "line": 252,
       "doc": "CACHE: variantId as primary key.",
       "fields": [
         {
@@ -45819,7 +45360,7 @@
     {
       "name": "AiSuggestionKind",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 672,
+      "line": 650,
       "values": [
         "ALT_TEXT",
         "META_TITLE",
@@ -45831,7 +45372,7 @@
     {
       "name": "AiSuggestionStatus",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 680,
+      "line": 658,
       "values": [
         "PENDING",
         "APPROVED",
@@ -46060,7 +45601,7 @@
     {
       "name": "CollectionSortStrategy",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 603,
+      "line": 581,
       "values": [
         "MANUAL",
         "BEST_SELLING",
@@ -46406,7 +45947,7 @@
     {
       "name": "LocationType",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 70,
+      "line": 68,
       "values": [
         "STORE",
         "WAREHOUSE",
@@ -46437,7 +45978,7 @@
     {
       "name": "MarkdownSuggestionStatus",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 309,
+      "line": 297,
       "values": [
         "PENDING",
         "CREATED",
@@ -46594,7 +46135,7 @@
     {
       "name": "OptionDisplay",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 435,
+      "line": 413,
       "values": [
         "BUTTON",
         "DROPDOWN",
@@ -46743,7 +46284,7 @@
     {
       "name": "ProductCrossSellKind",
       "file": "apps/api/prisma/schema/catalog.prisma",
-      "line": 735,
+      "line": 713,
       "values": [
         "MANUAL",
         "CO_OCCURRENCE",
@@ -46955,18 +46496,6 @@
       ]
     },
     {
-      "name": "SerializedUnitStatus",
-      "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 423,
-      "values": [
-        "IN_STOCK",
-        "SOLD",
-        "RETURNED",
-        "RMA_TO_SUPPLIER",
-        "WRITTEN_OFF"
-      ]
-    },
-    {
       "name": "SettlementBatchStatus",
       "file": "apps/api/prisma/schema/settlements.prisma",
       "line": 22,
@@ -47014,7 +46543,7 @@
     {
       "name": "SpotCheckStatus",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 202,
+      "line": 190,
       "values": [
         "PENDING",
         "IN_PROGRESS",
@@ -47078,7 +46607,7 @@
     {
       "name": "StockCountStatus",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 478,
+      "line": 322,
       "values": [
         "DRAFT",
         "IN_PROGRESS",
@@ -47120,7 +46649,7 @@
     {
       "name": "StockVarianceStatus",
       "file": "apps/api/prisma/schema/inventory.prisma",
-      "line": 126,
+      "line": 122,
       "values": [
         "OPEN",
         "RESOLVED"
@@ -49441,27 +48970,18 @@
       ]
     },
     {
-      "folder": "20260927090000_wo32_wo71_wo158_lots_serials_traceability",
-      "file": "apps/api/prisma/schema/migrations/20260927090000_wo32_wo71_wo158_lots_serials_traceability/migration.sql",
+      "folder": "20260927090000_wo37_feature_flags",
+      "file": "apps/api/prisma/schema/migrations/20260927090000_wo37_feature_flags/migration.sql",
       "date": "2026-09-27",
-      "slug": "wo32_wo71_wo158_lots_serials_traceability",
-      "statements": 37,
+      "slug": "wo37_feature_flags",
+      "statements": 4,
       "kinds": [
-        "CREATE TYPE",
         "CREATE TABLE",
-        "ALTER TABLE",
         "CREATE UNIQUE INDEX",
         "CREATE INDEX"
       ],
       "tables": [
-        "BomProductionLineLot",
-        "BomProductionRun",
-        "Lot",
-        "LotAllocation",
-        "LotStock",
-        "ProductVariant",
-        "SerializedUnit",
-        "StockVariance"
+        "FeatureFlag"
       ]
     }
   ],
@@ -50325,15 +49845,6 @@
     {
       "app": "web",
       "kind": "page",
-      "url": "/[locale]/verify-purchase",
-      "file": "apps/web/src/app/(storefront)/[locale]/verify-purchase/page.tsx",
-      "client": true,
-      "surface": "storefront",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
       "url": "/[locale]/wishlist",
       "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/wishlist/page.tsx",
       "client": true,
@@ -50865,6 +50376,24 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/feature-flags",
+      "file": "apps/web/src/app/(admin)/admin/(app)/feature-flags/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/feature-flags/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/feature-flags/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/finance",
       "file": "apps/web/src/app/(admin)/admin/(app)/finance/page.tsx",
       "client": true,
@@ -51081,44 +50610,8 @@
     {
       "app": "web",
       "kind": "page",
-      "url": "/admin/inventory/lots",
-      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/lots/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
-      "url": "/admin/inventory/lots/[id]",
-      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/lots/[id]/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
       "url": "/admin/inventory/reorder",
       "file": "apps/web/src/app/(admin)/admin/(app)/inventory/reorder/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
-      "url": "/admin/inventory/serials",
-      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/serials/page.tsx",
-      "client": true,
-      "surface": "admin",
-      "doc": ""
-    },
-    {
-      "app": "web",
-      "kind": "page",
-      "url": "/admin/inventory/serials/[serialNumber]",
-      "file": "apps/web/src/app/(admin)/admin/(app)/inventory/serials/[serialNumber]/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -52037,6 +51530,13 @@
     },
     {
       "schedule": "0 3 * * *",
+      "file": "apps/api/src/modules/feature-flags/feature-flag-audit.cron.ts",
+      "line": 28,
+      "handler": "auditStaleFlags",
+      "doc": ""
+    },
+    {
+      "schedule": "0 3 * * *",
       "file": "apps/api/src/modules/finance/finance.cron.ts",
       "line": 13,
       "handler": "generateRecurringInstances",
@@ -52064,23 +51564,16 @@
       "doc": ""
     },
     {
-      "schedule": "0 6 * * *",
-      "file": "apps/api/src/modules/inventory/inventory.cron.ts",
-      "line": 35,
-      "handler": "alertExpiringLots",
-      "doc": "32-lots-batch-expiry-fefo.md WO-32.5."
-    },
-    {
       "schedule": "0 * * * *",
       "file": "apps/api/src/modules/inventory/inventory.cron.ts",
-      "line": 83,
+      "line": 23,
       "handler": "maybeTriggerSpotCheck",
       "doc": "156-single-employee-branch-loss-prevention.md §3."
     },
     {
       "schedule": "0 2 * * *",
       "file": "apps/api/src/modules/inventory/inventory.cron.ts",
-      "line": 93,
+      "line": 33,
       "handler": "computeNightlyStats",
       "doc": ""
     },
@@ -52805,11 +52298,10 @@
       "file": "apps/api/src/core/auth/permissions.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 14,
+      "cases": 10,
       "describes": [
         "PermissionsResolverService.resolveForUser",
-        "explicit OrgUnitGrant keys (doc 21)",
-        "usersWithPermission — the inverse batch query"
+        "explicit OrgUnitGrant keys (doc 21)"
       ]
     },
     {
@@ -52924,6 +52416,15 @@
         "BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023",
         "allowsBranchLocalPurchasing (user-keyed)",
         "allowsBranchLocalPurchasingForNode (node-keyed, replication-received)"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/feature-flags/feature-flags.service.spec.ts",
+      "module": "core/feature-flags",
+      "kind": "unit test",
+      "cases": 10,
+      "describes": [
+        "FeatureFlagsService — WO-37.2"
       ]
     },
     {
@@ -53186,6 +52687,24 @@
         "shopDayExpr",
         "shopLocalHour",
         "assertIanaTimeZone"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/versioning/api-version-policy.service.spec.ts",
+      "module": "core/versioning",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "ApiVersionPolicyService — WO-37.1"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/versioning/deprecation-header.interceptor.spec.ts",
+      "module": "core/versioning",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "DeprecationHeaderInterceptor — WO-37.1"
       ]
     },
     {
@@ -53574,7 +53093,7 @@
       "file": "apps/api/src/modules/bom/production.service.spec.ts",
       "module": "bom",
       "kind": "unit test",
-      "cases": 17,
+      "cases": 12,
       "describes": [
         "ProductionService",
         "consuming raw stock and producing finished stock",
@@ -53586,7 +53105,6 @@
         "downstream — the new cost reaches order economics",
         "history is immutable",
         "production is genuinely repeatable",
-        "batch genealogy — WO-71.2/71.3",
         "deletion"
       ]
     },
@@ -53850,6 +53368,28 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/feature-flags/feature-flag-audit.cron.spec.ts",
+      "module": "feature-flags",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "FeatureFlagAuditCron — WO-37.3"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/feature-flags/feature-flags-admin.service.spec.ts",
+      "module": "feature-flags",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "FeatureFlagsAdminService — WO-37.2/37.5",
+        "listStale",
+        "update",
+        "proposeRollout",
+        "approveRollout"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/finance/expense-import.service.spec.ts",
       "module": "finance",
       "kind": "unit test",
@@ -54010,12 +53550,11 @@
       "file": "apps/api/src/modules/inventory/inventory.cron.spec.ts",
       "module": "inventory",
       "kind": "unit test",
-      "cases": 14,
+      "cases": 10,
       "describes": [
         "InventoryCron",
         "WO-9.8 — markdown suggestions",
-        "maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md",
-        "alertExpiringLots — 32-lots-batch-expiry-fefo.md WO-32.5"
+        "maybeTriggerSpotCheck — 156-single-employee-branch-loss-prevention.md"
       ]
     },
     {
@@ -54052,28 +53591,6 @@
       ]
     },
     {
-      "file": "apps/api/src/modules/inventory/lot-allocation.spec.ts",
-      "module": "inventory",
-      "kind": "unit test",
-      "cases": 7,
-      "describes": [
-        "allocateFefo"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/inventory/lots.service.spec.ts",
-      "module": "inventory",
-      "kind": "unit test",
-      "cases": 9,
-      "describes": [
-        "LotsService",
-        "recordReceipt",
-        "recordDeduction",
-        "getDetail",
-        "recallLookup"
-      ]
-    },
-    {
       "file": "apps/api/src/modules/inventory/markdown-suggestions.service.spec.ts",
       "module": "inventory",
       "kind": "unit test",
@@ -54083,19 +53600,6 @@
         "list",
         "activate",
         "dismiss"
-      ]
-    },
-    {
-      "file": "apps/api/src/modules/inventory/serialized-units.service.spec.ts",
-      "module": "inventory",
-      "kind": "unit test",
-      "cases": 13,
-      "describes": [
-        "SerializedUnitsService",
-        "receiveUnits",
-        "sellUnit",
-        "returnUnit — the toxic-pair guard",
-        "getUnitHistory"
       ]
     },
     {
@@ -54848,13 +54352,12 @@
       "file": "apps/api/src/modules/purchasing/purchasing.spec.ts",
       "module": "purchasing",
       "kind": "unit test",
-      "cases": 15,
+      "cases": 10,
       "describes": [
         "PurchasingService",
         "upsertReorderDraftLine",
         "createPurchaseOrder — WO-23.3a, RETAIL-ERP.md R13, ADR-021",
-        "create (Supplier + its backing Party)",
-        "receiveGoods — lots (doc 32) and serialized units (doc 158)"
+        "create (Supplier + its backing Party)"
       ]
     },
     {
@@ -56576,7 +56079,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5433,
+      "bytes": 5458,
       "doc": "",
       "symbols": []
     },
@@ -56585,7 +56088,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 180,
-      "bytes": 9329,
+      "bytes": 9354,
       "doc": "",
       "symbols": []
     },
@@ -56594,7 +56097,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5886,
+      "bytes": 5911,
       "doc": "",
       "symbols": []
     },
@@ -56932,8 +56435,8 @@
       "path": "apps/api/prisma/schema/bom.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 258,
-      "bytes": 10318,
+      "lines": 228,
+      "bytes": 8880,
       "doc": "BOM: which raw materials go into a finished product, how much of each, and",
       "symbols": []
     },
@@ -56959,8 +56462,8 @@
       "path": "apps/api/prisma/schema/catalog.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 788,
-      "bytes": 31048,
+      "lines": 766,
+      "bytes": 29811,
       "doc": "Catalog: categories, products, variants, images.",
       "symbols": []
     },
@@ -57016,6 +56519,15 @@
       "lines": 36,
       "bytes": 1751,
       "doc": "A general EAV model, built by explicit owner override (ADR-026).",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/feature-flags.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 78,
+      "bytes": 3928,
+      "doc": "Feature flags — the missing piece between \"built\" and \"everyone has it\"",
       "symbols": []
     },
     {
@@ -57094,8 +56606,8 @@
       "path": "apps/api/prisma/schema/inventory.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 525,
-      "bytes": 22274,
+      "lines": 369,
+      "bytes": 14673,
       "doc": "Inventory: the stock ledger. Every change to ProductVariant.stock has",
       "symbols": []
     },
@@ -58099,11 +57611,11 @@
       "symbols": []
     },
     {
-      "path": "apps/api/prisma/schema/migrations/20260927090000_wo32_wo71_wo158_lots_serials_traceability/migration.sql",
+      "path": "apps/api/prisma/schema/migrations/20260927090000_wo37_feature_flags/migration.sql",
       "area": "api",
       "kind": "migration",
-      "lines": 172,
-      "bytes": 6925,
+      "lines": 32,
+      "bytes": 1046,
       "doc": "",
       "symbols": []
     },
@@ -58417,14 +57929,14 @@
       "path": "apps/api/src/app.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 35,
-      "bytes": 1616,
+      "lines": 40,
+      "bytes": 1997,
       "doc": "",
       "symbols": [
         {
           "name": "AppModule",
           "kind": "class",
-          "line": 34
+          "line": 39
         }
       ]
     },
@@ -59442,8 +58954,8 @@
       "path": "apps/api/src/core/auth/permissions.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 175,
-      "bytes": 7667,
+      "lines": 129,
+      "bytes": 5398,
       "doc": "",
       "symbols": []
     },
@@ -59451,8 +58963,8 @@
       "path": "apps/api/src/core/auth/permissions.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 124,
-      "bytes": 5203,
+      "lines": 86,
+      "bytes": 3371,
       "doc": "",
       "symbols": [
         {
@@ -59992,14 +59504,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 53,
-      "bytes": 1888,
+      "lines": 57,
+      "bytes": 2076,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 52
+          "line": 56
         }
       ]
     },
@@ -60629,6 +60141,45 @@
           "name": "WorkflowStepsRegistry",
           "kind": "class",
           "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/feature-flags/feature-flags.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 590,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/feature-flags/feature-flags.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 95,
+      "bytes": 3993,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/feature-flags/feature-flags.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 123,
+      "bytes": 5584,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsService",
+          "kind": "class",
+          "line": 40
         }
       ]
     },
@@ -62342,6 +61893,74 @@
       ]
     },
     {
+      "path": "apps/api/src/core/versioning/api-version-policy.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 44,
+      "bytes": 1694,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/versioning/api-version-policy.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 58,
+      "bytes": 2545,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DeprecationEntry",
+          "kind": "interface",
+          "line": 3
+        },
+        {
+          "name": "ApiVersionPolicyService",
+          "kind": "class",
+          "line": 38
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/versioning/deprecation-header.interceptor.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 82,
+      "bytes": 3482,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/versioning/deprecation-header.interceptor.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 62,
+      "bytes": 2697,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DeprecationHeaderInterceptor",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/versioning/versioning.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 19,
+      "bytes": 828,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "VersioningModule",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/main.ts",
       "area": "api",
       "kind": "module",
@@ -63757,8 +63376,8 @@
       "path": "apps/api/src/modules/bom/bom.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 242,
-      "bytes": 10071,
+      "lines": 228,
+      "bytes": 9433,
       "doc": "",
       "symbols": [
         {
@@ -63796,8 +63415,8 @@
       "path": "apps/api/src/modules/bom/bom.metrics.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 206,
-      "bytes": 8879,
+      "lines": 204,
+      "bytes": 8801,
       "doc": "",
       "symbols": []
     },
@@ -63865,8 +63484,8 @@
       "path": "apps/api/src/modules/bom/bom.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 533,
-      "bytes": 24270,
+      "lines": 529,
+      "bytes": 24080,
       "doc": "",
       "symbols": []
     },
@@ -63918,8 +63537,8 @@
       "path": "apps/api/src/modules/bom/dto/production-run.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 54,
-      "bytes": 1565,
+      "lines": 48,
+      "bytes": 1328,
       "doc": "",
       "symbols": [
         {
@@ -63930,7 +63549,7 @@
         {
           "name": "ProductionRunQueryDto",
           "kind": "class",
-          "line": 43
+          "line": 37
         }
       ]
     },
@@ -64013,8 +63632,8 @@
       "path": "apps/api/src/modules/bom/production.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 537,
-      "bytes": 23417,
+      "lines": 438,
+      "bytes": 18456,
       "doc": "",
       "symbols": []
     },
@@ -64022,14 +63641,14 @@
       "path": "apps/api/src/modules/bom/production.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 424,
-      "bytes": 16276,
+      "lines": 265,
+      "bytes": 10210,
       "doc": "",
       "symbols": [
         {
           "name": "ProductionService",
           "kind": "class",
-          "line": 61
+          "line": 56
         }
       ]
     },
@@ -64635,8 +64254,8 @@
       "path": "apps/api/src/modules/catalog/dto/product.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 335,
-      "bytes": 8172,
+      "lines": 319,
+      "bytes": 7425,
       "doc": "",
       "symbols": [
         {
@@ -64652,12 +64271,12 @@
         {
           "name": "CreateProductDto",
           "kind": "class",
-          "line": 180
+          "line": 164
         },
         {
           "name": "UpdateProductDto",
           "kind": "class",
-          "line": 316
+          "line": 300
         }
       ]
     },
@@ -64758,8 +64377,8 @@
       "path": "apps/api/src/modules/catalog/product-admin.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 751,
-      "bytes": 28918,
+      "lines": 745,
+      "bytes": 28580,
       "doc": "",
       "symbols": [
         {
@@ -64770,17 +64389,17 @@
         {
           "name": "assertKindRules",
           "kind": "function",
-          "line": 632
+          "line": 626
         },
         {
           "name": "assertUniqueSkus",
           "kind": "function",
-          "line": 678
+          "line": 672
         },
         {
           "name": "toAdminView",
           "kind": "function",
-          "line": 737
+          "line": 731
         }
       ]
     },
@@ -65956,6 +65575,139 @@
           "name": "EntityAttributeSupplierDeletedListener",
           "kind": "class",
           "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/example-hello-world-pack/example-hello-world-pack.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 678,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ExampleHelloWorldPackModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/example-hello-world-pack/hello-world.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 28,
+      "bytes": 1309,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "HelloWorldListener",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/dto/feature-flag.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 78,
+      "bytes": 2481,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateFeatureFlagDto",
+          "kind": "class",
+          "line": 4
+        },
+        {
+          "name": "UpdateFeatureFlagDto",
+          "kind": "class",
+          "line": 33
+        },
+        {
+          "name": "ProposeRolloutDto",
+          "kind": "class",
+          "line": 65
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flag-audit.cron.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 30,
+      "bytes": 1262,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flag-audit.cron.ts",
+      "area": "api",
+      "kind": "scheduled job",
+      "lines": 44,
+      "bytes": 1937,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagAuditCron",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flags-admin.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 66,
+      "bytes": 2948,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsAdminController",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flags-admin.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 17,
+      "bytes": 727,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsAdminModule",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flags-admin.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 185,
+      "bytes": 7318,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/feature-flags/feature-flags-admin.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 167,
+      "bytes": 7071,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsAdminService",
+          "kind": "class",
+          "line": 22
         }
       ]
     },
@@ -67175,21 +66927,6 @@
       ]
     },
     {
-      "path": "apps/api/src/modules/inventory/dto/lots.dto.ts",
-      "area": "api",
-      "kind": "dto",
-      "lines": 20,
-      "bytes": 335,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "PreviewAllocationDto",
-          "kind": "class",
-          "line": 3
-        }
-      ]
-    },
-    {
       "path": "apps/api/src/modules/inventory/dto/markdown-suggestion.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -67201,31 +66938,6 @@
           "name": "MarkdownSuggestionQueryDto",
           "kind": "class",
           "line": 7
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/inventory/dto/serialized-units.dto.ts",
-      "area": "api",
-      "kind": "dto",
-      "lines": 36,
-      "bytes": 556,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "SellSerializedUnitDto",
-          "kind": "class",
-          "line": 3
-        },
-        {
-          "name": "ReturnSerializedUnitDto",
-          "kind": "class",
-          "line": 13
-        },
-        {
-          "name": "WriteOffSerializedUnitDto",
-          "kind": "class",
-          "line": 27
         }
       ]
     },
@@ -67263,8 +66975,8 @@
       "path": "apps/api/src/modules/inventory/inventory.cron.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 348,
-      "bytes": 13914,
+      "lines": 275,
+      "bytes": 10740,
       "doc": "",
       "symbols": []
     },
@@ -67272,14 +66984,14 @@
       "path": "apps/api/src/modules/inventory/inventory.cron.ts",
       "area": "api",
       "kind": "scheduled job",
-      "lines": 281,
-      "bytes": 10928,
+      "lines": 221,
+      "bytes": 8315,
       "doc": "",
       "symbols": [
         {
           "name": "InventoryCron",
           "kind": "class",
-          "line": 15
+          "line": 10
         }
       ]
     },
@@ -67340,14 +67052,14 @@
       "path": "apps/api/src/modules/inventory/inventory.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 53,
-      "bytes": 2130,
+      "lines": 44,
+      "bytes": 1685,
       "doc": "",
       "symbols": [
         {
           "name": "InventoryModule",
           "kind": "class",
-          "line": 52
+          "line": 43
         }
       ]
     },
@@ -67382,94 +67094,6 @@
           "name": "InventoryService",
           "kind": "class",
           "line": 60
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/inventory/lot-allocation.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 62,
-      "bytes": 2592,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/inventory/lot-allocation.ts",
-      "area": "api",
-      "kind": "module",
-      "lines": 76,
-      "bytes": 2526,
-      "doc": "32-lots-batch-expiry-fefo.md §2.",
-      "symbols": [
-        {
-          "name": "LotAllocationCandidate",
-          "kind": "interface",
-          "line": 10
-        },
-        {
-          "name": "LotAllocationResult",
-          "kind": "interface",
-          "line": 16
-        },
-        {
-          "name": "InsufficientLotStockError",
-          "kind": "class",
-          "line": 21
-        },
-        {
-          "name": "allocateFefo",
-          "kind": "function",
-          "line": 38
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/inventory/lots.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 53,
-      "bytes": 2147,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "LotsController",
-          "kind": "class",
-          "line": 15
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/inventory/lots.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 149,
-      "bytes": 6234,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/inventory/lots.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 260,
-      "bytes": 10469,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "RegisterLotReceiptInput",
-          "kind": "interface",
-          "line": 6
-        },
-        {
-          "name": "RecordLotDeductionInput",
-          "kind": "interface",
-          "line": 15
-        },
-        {
-          "name": "LotsService",
-          "kind": "class",
-          "line": 35
         }
       ]
     },
@@ -67509,60 +67133,6 @@
           "name": "MarkdownSuggestionsService",
           "kind": "class",
           "line": 38
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/inventory/serialized-units.controller.ts",
-      "area": "api",
-      "kind": "controller",
-      "lines": 77,
-      "bytes": 3681,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "SerializedUnitsController",
-          "kind": "class",
-          "line": 21
-        },
-        {
-          "name": "SerializedUnitsPublicController",
-          "kind": "class",
-          "line": 65
-        }
-      ]
-    },
-    {
-      "path": "apps/api/src/modules/inventory/serialized-units.service.spec.ts",
-      "area": "api",
-      "kind": "unit test",
-      "lines": 152,
-      "bytes": 6948,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "apps/api/src/modules/inventory/serialized-units.service.ts",
-      "area": "api",
-      "kind": "service",
-      "lines": 254,
-      "bytes": 9661,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "ReceiveSerializedUnitsInput",
-          "kind": "interface",
-          "line": 10
-        },
-        {
-          "name": "UnitHistory",
-          "kind": "interface",
-          "line": 21
-        },
-        {
-          "name": "SerializedUnitsService",
-          "kind": "class",
-          "line": 44
         }
       ]
     },
@@ -68603,8 +68173,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 144,
-      "bytes": 5237,
+      "lines": 158,
+      "bytes": 6029,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -68615,7 +68185,7 @@
         {
           "name": "MODULE_PACKS",
           "kind": "const",
-          "line": 50
+          "line": 54
         }
       ]
     },
@@ -68623,24 +68193,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 316,
-      "bytes": 18353,
+      "lines": 332,
+      "bytes": 19560,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 65
+          "line": 67
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 96
+          "line": 98
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 292
+          "line": 308
         }
       ]
     },
@@ -69374,8 +68944,8 @@
       "path": "apps/api/src/modules/orders/orders-pos.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 438,
-      "bytes": 19190,
+      "lines": 436,
+      "bytes": 19112,
       "doc": "",
       "symbols": []
     },
@@ -69418,8 +68988,8 @@
       "path": "apps/api/src/modules/orders/orders.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1400,
-      "bytes": 57332,
+      "lines": 1379,
+      "bytes": 56125,
       "doc": "",
       "symbols": [
         {
@@ -69440,7 +69010,7 @@
         {
           "name": "OrdersService",
           "kind": "class",
-          "line": 117
+          "line": 116
         }
       ]
     },
@@ -71634,8 +71204,8 @@
       "path": "apps/api/src/modules/purchasing/dto/purchase-order.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 125,
-      "bytes": 2731,
+      "lines": 104,
+      "bytes": 2049,
       "doc": "",
       "symbols": [
         {
@@ -71656,7 +71226,7 @@
         {
           "name": "ReceiveGoodsDto",
           "kind": "class",
-          "line": 94
+          "line": 73
         }
       ]
     },
@@ -71880,14 +71450,14 @@
       "path": "apps/api/src/modules/purchasing/purchasing.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 749,
-      "bytes": 29439,
+      "lines": 680,
+      "bytes": 25771,
       "doc": "",
       "symbols": [
         {
           "name": "PurchasingService",
           "kind": "class",
-          "line": 72
+          "line": 70
         }
       ]
     },
@@ -71895,8 +71465,8 @@
       "path": "apps/api/src/modules/purchasing/purchasing.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 369,
-      "bytes": 15338,
+      "lines": 233,
+      "bytes": 9090,
       "doc": "",
       "symbols": []
     },
@@ -71991,8 +71561,8 @@
       "path": "apps/api/src/modules/purchasing/supplier-bill.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 234,
-      "bytes": 8802,
+      "lines": 230,
+      "bytes": 8558,
       "doc": "",
       "symbols": []
     },
@@ -79657,8 +79227,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 768,
-      "bytes": 30512,
+      "lines": 746,
+      "bytes": 29733,
       "doc": "",
       "symbols": []
     },
@@ -79666,8 +79236,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 768,
-      "bytes": 42069,
+      "lines": 746,
+      "bytes": 40942,
       "doc": "",
       "symbols": []
     },
@@ -80086,14 +79656,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 144,
-      "bytes": 4686,
+      "lines": 114,
+      "bytes": 3525,
       "doc": "",
       "symbols": [
         {
           "name": "ProductionRunDetailPage",
           "kind": "default",
-          "line": 39
+          "line": 36
         }
       ]
     },
@@ -80101,8 +79671,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 205,
-      "bytes": 7481,
+      "lines": 190,
+      "bytes": 6948,
       "doc": "",
       "symbols": [
         {
@@ -80623,6 +80193,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/feature-flags/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 242,
+      "bytes": 8615,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagDetailPage",
+          "kind": "default",
+          "line": 36
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/feature-flags/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 215,
+      "bytes": 7718,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FeatureFlagsPage",
+          "kind": "default",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/cash-flow/page.tsx",
       "area": "web",
       "kind": "page",
@@ -80968,36 +80568,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/lots/[id]/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 236,
-      "bytes": 8622,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "LotDetailPage",
-          "kind": "default",
-          "line": 55
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/lots/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 200,
-      "bytes": 7287,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "LotsPage",
-          "kind": "default",
-          "line": 42
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/(admin)/admin/(app)/inventory/page.tsx",
       "area": "web",
       "kind": "page",
@@ -81024,36 +80594,6 @@
           "name": "ReorderSuggestionsPage",
           "kind": "default",
           "line": 27
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/serials/[serialNumber]/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 271,
-      "bytes": 9682,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "SerialDetailPage",
-          "kind": "default",
-          "line": 29
-        }
-      ]
-    },
-    {
-      "path": "apps/web/src/app/(admin)/admin/(app)/inventory/serials/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 189,
-      "bytes": 6755,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "SerialsPage",
-          "kind": "default",
-          "line": 38
         }
       ]
     },
@@ -81796,14 +81336,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/[id]/receive/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 317,
-      "bytes": 12256,
+      "lines": 227,
+      "bytes": 7718,
       "doc": "",
       "symbols": [
         {
           "name": "ReceiveGoodsPage",
           "kind": "default",
-          "line": 30
+          "line": 28
         }
       ]
     },
@@ -83468,21 +83008,6 @@
       ]
     },
     {
-      "path": "apps/web/src/app/(storefront)/[locale]/verify-purchase/page.tsx",
-      "area": "web",
-      "kind": "page",
-      "lines": 105,
-      "bytes": 3851,
-      "doc": "",
-      "symbols": [
-        {
-          "name": "VerifyPurchasePage",
-          "kind": "default",
-          "line": 16
-        }
-      ]
-    },
-    {
       "path": "apps/web/src/app/checkout/callback/[provider]/route.ts",
       "area": "web",
       "kind": "route handler",
@@ -84542,8 +84067,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1174,
-      "bytes": 33137,
+      "lines": 1173,
+      "bytes": 33299,
       "doc": "",
       "symbols": [
         {
@@ -84574,12 +84099,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1144
+          "line": 1143
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1159
+          "line": 1158
         }
       ]
     },
@@ -84622,14 +84147,14 @@
       "path": "apps/web/src/components/admin/product-form.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 1614,
-      "bytes": 61684,
+      "lines": 1572,
+      "bytes": 59709,
       "doc": "",
       "symbols": [
         {
           "name": "ProductForm",
           "kind": "function",
-          "line": 89
+          "line": 83
         }
       ]
     },
@@ -84772,19 +84297,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 117,
-      "bytes": 4755,
+      "lines": 109,
+      "bytes": 4397,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 110
+          "line": 102
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 114
+          "line": 106
         }
       ]
     },
@@ -85002,8 +84527,8 @@
       "path": "apps/web/src/components/storefront/footer.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 150,
-      "bytes": 6273,
+      "lines": 145,
+      "bytes": 6029,
       "doc": "",
       "symbols": [
         {
@@ -85840,8 +85365,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 301,
-      "bytes": 14044,
+      "lines": 297,
+      "bytes": 13684,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -86172,8 +85697,8 @@
       "path": "apps/web/src/lib/customer-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 268,
-      "bytes": 8535,
+      "lines": 252,
+      "bytes": 7928,
       "doc": "",
       "symbols": [
         {
@@ -86222,79 +85747,69 @@
           "line": 107
         },
         {
-          "name": "SerialVerifyResult",
-          "kind": "interface",
-          "line": 116
-        },
-        {
-          "name": "verifySerial",
-          "kind": "function",
-          "line": 126
-        },
-        {
           "name": "logoutCustomer",
           "kind": "function",
-          "line": 132
+          "line": 116
         },
         {
           "name": "getMyOrder",
           "kind": "function",
-          "line": 152
+          "line": 136
         },
         {
           "name": "trackOrder",
           "kind": "function",
-          "line": 156
+          "line": 140
         },
         {
           "name": "listReturnReasons",
           "kind": "function",
-          "line": 166
+          "line": 150
         },
         {
           "name": "listMyReturns",
           "kind": "function",
-          "line": 170
+          "line": 154
         },
         {
           "name": "getMyReturn",
           "kind": "function",
-          "line": 174
+          "line": 158
         },
         {
           "name": "createReturnRequest",
           "kind": "function",
-          "line": 178
+          "line": 162
         },
         {
           "name": "listMySupportTickets",
           "kind": "function",
-          "line": 187
+          "line": 171
         },
         {
           "name": "getMySupportTicket",
           "kind": "function",
-          "line": 191
+          "line": 175
         },
         {
           "name": "raiseSupportTicket",
           "kind": "function",
-          "line": 195
+          "line": 179
         },
         {
           "name": "replySupportTicket",
           "kind": "function",
-          "line": 205
+          "line": 189
         },
         {
           "name": "reopenSupportTicket",
           "kind": "function",
-          "line": 209
+          "line": 193
         },
         {
           "name": "customerFetch",
           "kind": "function",
-          "line": 245
+          "line": 229
         }
       ]
     },
@@ -86442,8 +85957,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1852,
-      "bytes": 50584,
+      "lines": 1847,
+      "bytes": 50326,
       "doc": "",
       "symbols": [
         {
@@ -86494,932 +86009,932 @@
         {
           "name": "AdminProduct",
           "kind": "interface",
-          "line": 147
+          "line": 142
         },
         {
           "name": "AdminCategory",
           "kind": "interface",
-          "line": 186
+          "line": 181
         },
         {
           "name": "CategoryPreset",
           "kind": "interface",
-          "line": 198
+          "line": 193
         },
         {
           "name": "CategoryPresetPreview",
           "kind": "interface",
-          "line": 206
+          "line": 201
         },
         {
           "name": "AdminBrand",
           "kind": "interface",
-          "line": 212
+          "line": 207
         },
         {
           "name": "OptionValueTranslation",
           "kind": "interface",
-          "line": 222
+          "line": 217
         },
         {
           "name": "AdminOptionTemplateValue",
           "kind": "interface",
-          "line": 227
+          "line": 222
         },
         {
           "name": "AdminOptionTemplate",
           "kind": "interface",
-          "line": 236
+          "line": 231
         },
         {
           "name": "AdminBundleComponent",
           "kind": "interface",
-          "line": 248
+          "line": 243
         },
         {
           "name": "AdminBundle",
           "kind": "interface",
-          "line": 255
+          "line": 250
         },
         {
           "name": "AdminProductOption",
           "kind": "interface",
-          "line": 265
+          "line": 260
         },
         {
           "name": "AdminRedirect",
           "kind": "interface",
-          "line": 275
+          "line": 270
         },
         {
           "name": "SeoHealthRow",
           "kind": "interface",
-          "line": 285
+          "line": 280
         },
         {
           "name": "AiSuggestionKind",
           "kind": "type",
-          "line": 294
+          "line": 289
         },
         {
           "name": "AiSuggestionStatus",
           "kind": "type",
-          "line": 295
+          "line": 290
         },
         {
           "name": "AiSuggestion",
           "kind": "interface",
-          "line": 297
+          "line": 292
         },
         {
           "name": "AiStatus",
           "kind": "interface",
-          "line": 311
+          "line": 306
         },
         {
           "name": "DocumentCorpus",
           "kind": "type",
-          "line": 320
+          "line": 315
         },
         {
           "name": "IngestStatus",
           "kind": "type",
-          "line": 321
+          "line": 316
         },
         {
           "name": "DocumentSourceRow",
           "kind": "interface",
-          "line": 323
+          "line": 318
         },
         {
           "name": "RagStatus",
           "kind": "interface",
-          "line": 337
+          "line": 332
         },
         {
           "name": "RagQueryHit",
           "kind": "interface",
-          "line": 342
+          "line": 337
         },
         {
           "name": "RagCitation",
           "kind": "interface",
-          "line": 351
+          "line": 346
         },
         {
           "name": "RagAnswer",
           "kind": "interface",
-          "line": 358
+          "line": 353
         },
         {
           "name": "MeasurementFieldRow",
           "kind": "interface",
-          "line": 363
+          "line": 358
         },
         {
           "name": "GarmentType",
           "kind": "interface",
-          "line": 378
+          "line": 373
         },
         {
           "name": "AdminGarmentSizeChartRow",
           "kind": "interface",
-          "line": 398
+          "line": 393
         },
         {
           "name": "SizeRecommendation",
           "kind": "interface",
-          "line": 407
+          "line": 402
         },
         {
           "name": "StitchingDesignArea",
           "kind": "type",
-          "line": 419
+          "line": 414
         },
         {
           "name": "AdminStitchingOption",
           "kind": "interface",
-          "line": 432
+          "line": 427
         },
         {
           "name": "AdminStitchingOptionGroup",
           "kind": "interface",
-          "line": 445
+          "line": 440
         },
         {
           "name": "ImportRowResult",
           "kind": "interface",
-          "line": 465
+          "line": 460
         },
         {
           "name": "ImportSummary",
           "kind": "interface",
-          "line": 472
+          "line": 467
         },
         {
           "name": "ColumnMappingSuggestion",
           "kind": "interface",
-          "line": 481
+          "line": 476
         },
         {
           "name": "ValueNormalizationSuggestion",
           "kind": "interface",
-          "line": 486
+          "line": 481
         },
         {
           "name": "DuplicateFlag",
           "kind": "interface",
-          "line": 492
+          "line": 487
         },
         {
           "name": "CategorySuggestion",
           "kind": "interface",
-          "line": 498
+          "line": 493
         },
         {
           "name": "TranslationSuggestion",
           "kind": "interface",
-          "line": 503
+          "line": 498
         },
         {
           "name": "ImportAssistanceResult",
           "kind": "interface",
-          "line": 509
+          "line": 504
         },
         {
           "name": "CsvImportRowResult",
           "kind": "interface",
-          "line": 524
+          "line": 519
         },
         {
           "name": "CsvImportSummary",
           "kind": "interface",
-          "line": 531
+          "line": 526
         },
         {
           "name": "AuthUser",
           "kind": "interface",
-          "line": 539
+          "line": 534
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 557
+          "line": 552
         },
         {
           "name": "DeploymentMeta",
           "kind": "interface",
-          "line": 565
+          "line": 560
         },
         {
           "name": "RetailBrandSummary",
           "kind": "interface",
-          "line": 575
+          "line": 570
         },
         {
           "name": "OrgNodeSummary",
           "kind": "interface",
-          "line": 584
+          "line": 579
         },
         {
           "name": "MyScope",
           "kind": "interface",
-          "line": 595
+          "line": 590
         },
         {
           "name": "AdminScopeWithHolder",
           "kind": "interface",
-          "line": 610
+          "line": 605
         },
         {
           "name": "PolicyQuarantineEntry",
           "kind": "interface",
-          "line": 625
+          "line": 620
         },
         {
           "name": "GrantScopeInput",
           "kind": "interface",
-          "line": 641
+          "line": 636
         },
         {
           "name": "BrandPolicy",
           "kind": "interface",
-          "line": 654
+          "line": 649
         },
         {
           "name": "UpdateBrandPolicyInput",
           "kind": "interface",
-          "line": 661
+          "line": 656
         },
         {
           "name": "Location",
           "kind": "interface",
-          "line": 670
+          "line": 665
         },
         {
           "name": "StockAdjustment",
           "kind": "interface",
-          "line": 680
+          "line": 675
         },
         {
           "name": "InventoryVariantRow",
           "kind": "interface",
-          "line": 692
+          "line": 687
         },
         {
           "name": "StitchingAnalytics",
           "kind": "interface",
-          "line": 705
+          "line": 700
         },
         {
           "name": "ExtendedAnalytics",
           "kind": "interface",
-          "line": 711
+          "line": 706
         },
         {
           "name": "VisitorFunnel",
           "kind": "interface",
-          "line": 722
+          "line": 717
         },
         {
           "name": "TrafficSourceRow",
           "kind": "interface",
-          "line": 729
+          "line": 724
         },
         {
           "name": "VisitorAnalytics",
           "kind": "interface",
-          "line": 735
+          "line": 730
         },
         {
           "name": "MonthlyTarget",
           "kind": "interface",
-          "line": 744
+          "line": 739
         },
         {
           "name": "OrderAgeingBucket",
           "kind": "interface",
-          "line": 752
+          "line": 747
         },
         {
           "name": "OrdersOverview",
           "kind": "interface",
-          "line": 757
+          "line": 752
         },
         {
           "name": "OrderTransitionTiming",
           "kind": "interface",
-          "line": 764
+          "line": 759
         },
         {
           "name": "OrdersFulfilment",
           "kind": "interface",
-          "line": 772
+          "line": 767
         },
         {
           "name": "PurchasingSpend",
           "kind": "interface",
-          "line": 778
+          "line": 773
         },
         {
           "name": "PurchasingSupplierRow",
           "kind": "interface",
-          "line": 784
+          "line": 779
         },
         {
           "name": "PurchasingSuppliers",
           "kind": "interface",
-          "line": 797
+          "line": 792
         },
         {
           "name": "ProductTopSellerRow",
           "kind": "interface",
-          "line": 803
+          "line": 798
         },
         {
           "name": "ProductsTopSellers",
           "kind": "interface",
-          "line": 815
+          "line": 810
         },
         {
           "name": "ProductSlowSellerRow",
           "kind": "interface",
-          "line": 819
+          "line": 814
         },
         {
           "name": "ProductsSlowSellers",
           "kind": "interface",
-          "line": 828
+          "line": 823
         },
         {
           "name": "ProductCategoryRow",
           "kind": "interface",
-          "line": 832
+          "line": 827
         },
         {
           "name": "ProductsCategories",
           "kind": "interface",
-          "line": 841
+          "line": 836
         },
         {
           "name": "InventoryValuation",
           "kind": "interface",
-          "line": 848
+          "line": 843
         },
         {
           "name": "StockMovementReasonRow",
           "kind": "interface",
-          "line": 855
+          "line": 850
         },
         {
           "name": "InventoryMovementRow",
           "kind": "interface",
-          "line": 862
+          "line": 857
         },
         {
           "name": "InventoryMovements",
           "kind": "interface",
-          "line": 872
+          "line": 867
         },
         {
           "name": "CustomersOverview",
           "kind": "interface",
-          "line": 880
+          "line": 875
         },
         {
           "name": "CustomerCohort",
           "kind": "interface",
-          "line": 887
+          "line": 882
         },
         {
           "name": "CustomersRetention",
           "kind": "interface",
-          "line": 893
+          "line": 888
         },
         {
           "name": "CustomerTopRow",
           "kind": "interface",
-          "line": 898
+          "line": 893
         },
         {
           "name": "CustomersTop",
           "kind": "interface",
-          "line": 908
+          "line": 903
         },
         {
           "name": "WorkshopStageRow",
           "kind": "interface",
-          "line": 914
+          "line": 909
         },
         {
           "name": "WorkshopTailorRow",
           "kind": "interface",
-          "line": 920
+          "line": 915
         },
         {
           "name": "WorkshopOutput",
           "kind": "interface",
-          "line": 927
+          "line": 922
         },
         {
           "name": "CompensationBasis",
           "kind": "type",
-          "line": 936
+          "line": 931
         },
         {
           "name": "CompensationRate",
           "kind": "interface",
-          "line": 938
+          "line": 933
         },
         {
           "name": "EmployeeCompensation",
           "kind": "interface",
-          "line": 949
+          "line": 944
         },
         {
           "name": "GrossPreview",
           "kind": "interface",
-          "line": 954
+          "line": 949
         },
         {
           "name": "LeaveKind",
           "kind": "type",
-          "line": 960
+          "line": 955
         },
         {
           "name": "LeaveType",
           "kind": "interface",
-          "line": 962
+          "line": 957
         },
         {
           "name": "LeaveBalance",
           "kind": "interface",
-          "line": 971
+          "line": 966
         },
         {
           "name": "LeaveRequestStatus",
           "kind": "type",
-          "line": 980
+          "line": 975
         },
         {
           "name": "LeaveRequest",
           "kind": "interface",
-          "line": 982
+          "line": 977
         },
         {
           "name": "EmployeeLeave",
           "kind": "interface",
-          "line": 999
+          "line": 994
         },
         {
           "name": "PayRunStatus",
           "kind": "type",
-          "line": 1004
+          "line": 999
         },
         {
           "name": "PayRunLine",
           "kind": "interface",
-          "line": 1006
+          "line": 1001
         },
         {
           "name": "PayRunAdjustmentReason",
           "kind": "type",
-          "line": 1020
+          "line": 1015
         },
         {
           "name": "PayRunAdjustment",
           "kind": "interface",
-          "line": 1022
+          "line": 1017
         },
         {
           "name": "PayRun",
           "kind": "interface",
-          "line": 1033
+          "line": 1028
         },
         {
           "name": "PayRunWithLines",
           "kind": "interface",
-          "line": 1048
+          "line": 1043
         },
         {
           "name": "EmailAccountPurpose",
           "kind": "type",
-          "line": 1055
+          "line": 1050
         },
         {
           "name": "EmailAccount",
           "kind": "interface",
-          "line": 1057
+          "line": 1052
         },
         {
           "name": "EmailTemplateCatalogEntry",
           "kind": "interface",
-          "line": 1082
+          "line": 1077
         },
         {
           "name": "RenderedEmailPreview",
           "kind": "interface",
-          "line": 1090
+          "line": 1085
         },
         {
           "name": "InboundEmailReply",
           "kind": "interface",
-          "line": 1098
+          "line": 1093
         },
         {
           "name": "InboundEmail",
           "kind": "interface",
-          "line": 1105
+          "line": 1100
         },
         {
           "name": "WhatsAppMessage",
           "kind": "interface",
-          "line": 1122
+          "line": 1117
         },
         {
           "name": "WhatsAppConversation",
           "kind": "interface",
-          "line": 1130
+          "line": 1125
         },
         {
           "name": "PermissionDefinition",
           "kind": "interface",
-          "line": 1145
+          "line": 1140
         },
         {
           "name": "AuditLogEntry",
           "kind": "interface",
-          "line": 1152
+          "line": 1147
         },
         {
           "name": "AuditLogPage",
           "kind": "interface",
-          "line": 1164
+          "line": 1159
         },
         {
           "name": "BackOfficeRole",
           "kind": "type",
-          "line": 1173
+          "line": 1168
         },
         {
           "name": "AdminUser",
           "kind": "interface",
-          "line": 1175
+          "line": 1170
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1187
+          "line": 1182
         },
         {
           "name": "HeldRole",
           "kind": "interface",
-          "line": 1193
+          "line": 1188
         },
         {
           "name": "UserRoleConflicts",
           "kind": "interface",
-          "line": 1200
+          "line": 1195
         },
         {
           "name": "AdminUserDetail",
           "kind": "interface",
-          "line": 1205
+          "line": 1200
         },
         {
           "name": "RoleSummary",
           "kind": "interface",
-          "line": 1217
+          "line": 1212
         },
         {
           "name": "RoleWriteResult",
           "kind": "interface",
-          "line": 1226
+          "line": 1221
         },
         {
           "name": "CustomerAddress",
           "kind": "interface",
-          "line": 1233
+          "line": 1228
         },
         {
           "name": "MeasurementProfile",
           "kind": "interface",
-          "line": 1247
+          "line": 1242
         },
         {
           "name": "MeasurementProfileDetail",
           "kind": "interface",
-          "line": 1258
+          "line": 1253
         },
         {
           "name": "CustomerOrderSummary",
           "kind": "interface",
-          "line": 1262
+          "line": 1257
         },
         {
           "name": "StitchingTimelineEvent",
           "kind": "interface",
-          "line": 1271
+          "line": 1266
         },
         {
           "name": "CustomerOrderItem",
           "kind": "interface",
-          "line": 1279
+          "line": 1274
         },
         {
           "name": "CustomerOrder",
           "kind": "interface",
-          "line": 1310
+          "line": 1305
         },
         {
           "name": "CustomerReturnReason",
           "kind": "interface",
-          "line": 1343
+          "line": 1338
         },
         {
           "name": "CustomerReturnRequest",
           "kind": "interface",
-          "line": 1349
+          "line": 1344
         },
         {
           "name": "CustomerSupportTicket",
           "kind": "interface",
-          "line": 1368
+          "line": 1363
         },
         {
           "name": "CustomerSupportMessageView",
           "kind": "interface",
-          "line": 1379
+          "line": 1374
         },
         {
           "name": "CustomerSupportTicketDetail",
           "kind": "interface",
-          "line": 1387
+          "line": 1382
         },
         {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1393
+          "line": 1388
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1408
+          "line": 1403
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1417
+          "line": 1412
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1426
+          "line": 1421
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1442
+          "line": 1437
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1449
+          "line": 1444
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1457
+          "line": 1452
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1464
+          "line": 1459
         },
         {
           "name": "DashboardCardsResponse",
           "kind": "interface",
-          "line": 1481
+          "line": 1476
         },
         {
           "name": "ActionItem",
           "kind": "interface",
-          "line": 1495
+          "line": 1490
         },
         {
           "name": "ActionHubResponse",
           "kind": "interface",
-          "line": 1506
+          "line": 1501
         },
         {
           "name": "FeedEntry",
           "kind": "interface",
-          "line": 1513
+          "line": 1508
         },
         {
           "name": "FeedResponse",
           "kind": "interface",
-          "line": 1523
+          "line": 1518
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1529
+          "line": 1524
         },
         {
           "name": "ProductCrossSellKind",
           "kind": "type",
-          "line": 1537
+          "line": 1532
         },
         {
           "name": "ProductCrossSellRow",
           "kind": "interface",
-          "line": 1539
+          "line": 1534
         },
         {
           "name": "MarkdownSuggestionStatus",
           "kind": "type",
-          "line": 1546
+          "line": 1541
         },
         {
           "name": "MarkdownSuggestion",
           "kind": "interface",
-          "line": 1548
+          "line": 1543
         },
         {
           "name": "ApiKeyStatus",
           "kind": "type",
-          "line": 1574
+          "line": 1569
         },
         {
           "name": "ApiKeyRevocationReason",
           "kind": "type",
-          "line": 1575
+          "line": 1570
         },
         {
           "name": "ApiKeyView",
           "kind": "interface",
-          "line": 1596
+          "line": 1591
         },
         {
           "name": "IssuedApiKey",
           "kind": "interface",
-          "line": 1603
+          "line": 1598
         },
         {
           "name": "SsoConnectionStatus",
           "kind": "type",
-          "line": 1613
+          "line": 1608
         },
         {
           "name": "SsoConnection",
           "kind": "interface",
-          "line": 1615
+          "line": 1610
         },
         {
           "name": "SsoConnectionList",
           "kind": "interface",
-          "line": 1634
+          "line": 1629
         },
         {
           "name": "SsoDefaultRoleOption",
           "kind": "interface",
-          "line": 1640
+          "line": 1635
         },
         {
           "name": "SsoAccount",
           "kind": "interface",
-          "line": 1646
+          "line": 1641
         },
         {
           "name": "SsoSignInOption",
           "kind": "interface",
-          "line": 1660
+          "line": 1655
         },
         {
           "name": "ApiKeyOversightView",
           "kind": "interface",
-          "line": 1666
+          "line": 1661
         },
         {
           "name": "ManagedServicesUsageSnapshot",
           "kind": "interface",
-          "line": 1687
+          "line": 1682
         },
         {
           "name": "ManagedServicesTenantStatus",
           "kind": "type",
-          "line": 1694
+          "line": 1689
         },
         {
           "name": "ManagedServicesUsageResponse",
           "kind": "interface",
-          "line": 1696
+          "line": 1691
         },
         {
           "name": "ManagedServicesInvoiceStatus",
           "kind": "type",
-          "line": 1703
+          "line": 1698
         },
         {
           "name": "ManagedServicesStripePaymentStatus",
           "kind": "type",
-          "line": 1704
+          "line": 1699
         },
         {
           "name": "ManagedServicesInvoice",
           "kind": "interface",
-          "line": 1706
+          "line": 1701
         },
         {
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
-          "line": 1722
+          "line": 1717
         },
         {
           "name": "CustomFieldDefinition",
           "kind": "interface",
-          "line": 1728
+          "line": 1723
         },
         {
           "name": "CustomFieldEntityType",
           "kind": "type",
-          "line": 1737
+          "line": 1732
         },
         {
           "name": "CustomFieldValueType",
           "kind": "type",
-          "line": 1738
+          "line": 1733
         },
         {
           "name": "CustomFieldValue",
           "kind": "type",
-          "line": 1740
+          "line": 1735
         },
         {
           "name": "EmbeddedWidget",
           "kind": "interface",
-          "line": 1743
+          "line": 1738
         },
         {
           "name": "EmbedToken",
           "kind": "interface",
-          "line": 1752
+          "line": 1747
         },
         {
           "name": "EntityAttribute",
           "kind": "interface",
-          "line": 1765
+          "line": 1760
         },
         {
           "name": "EntityAttributeValueType",
           "kind": "type",
-          "line": 1774
+          "line": 1769
         },
         {
           "name": "MicroFrontendFragment",
           "kind": "interface",
-          "line": 1782
+          "line": 1777
         },
         {
           "name": "FragmentStatus",
           "kind": "type",
-          "line": 1792
+          "line": 1787
         },
         {
           "name": "FragmentToken",
           "kind": "interface",
-          "line": 1795
+          "line": 1790
         },
         {
           "name": "FormMetadata",
           "kind": "interface",
-          "line": 1807
+          "line": 1802
         },
         {
           "name": "FieldMetadata",
           "kind": "interface",
-          "line": 1813
+          "line": 1808
         },
         {
           "name": "FieldMetadataValueType",
           "kind": "type",
-          "line": 1822
+          "line": 1817
         },
         {
           "name": "BpmnWorkflowDefinition",
           "kind": "interface",
-          "line": 1830
+          "line": 1825
         },
         {
           "name": "ApprovalSubjectType",
           "kind": "type",
-          "line": 1837
+          "line": 1832
         },
         {
           "name": "ProductReferenceLookup",
           "kind": "interface",
-          "line": 1845
+          "line": 1840
         }
       ]
     },
@@ -89954,8 +89469,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 7684,
-      "bytes": 449327,
+      "lines": 7808,
+      "bytes": 456883,
       "doc": "",
       "symbols": []
     },
@@ -90009,7 +89524,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 546,
-      "bytes": 75733,
+      "bytes": 75972,
       "doc": "",
       "symbols": []
     },
@@ -90019,6 +89534,15 @@
       "kind": "doc",
       "lines": 1099,
       "bytes": 64906,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/SDK-CONTRACT.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 217,
+      "bytes": 11974,
       "doc": "",
       "symbols": []
     },
@@ -91439,8 +90963,8 @@
       "path": "docs/implementation/resilience-scalability/37-scalability-future-upgrades.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 247,
-      "bytes": 13688,
+      "lines": 306,
+      "bytes": 17825,
       "doc": "",
       "symbols": []
     },
@@ -93228,8 +92752,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1399,
-      "bytes": 47324,
+      "lines": 1415,
+      "bytes": 48715,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -93250,52 +92774,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 867
+          "line": 870
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 869
+          "line": 872
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 879
+          "line": 882
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 886
+          "line": 889
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 1121
+          "line": 1130
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1358
+          "line": 1374
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1377
+          "line": 1393
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1391
+          "line": 1407
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1392
+          "line": 1408
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1395
+          "line": 1411
         }
       ]
     },

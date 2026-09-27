@@ -12,6 +12,65 @@ everyone at once being the only option.** That is a software-lifecycle
 question, not a data-shape or a tenancy question, and this repository has
 no document for it today.
 
+> **Status (2026-09-27): built, WO-37.1–37.5, with two named exceptions
+> deferred by ADR-037/doc 34, not built here.** `core/versioning/`
+> (`ApiVersionPolicyService` + `DeprecationHeaderInterceptor`, bound
+> globally in `app.module.ts`) implements the `Deprecation`/`Sunset` (RFC
+> 8594) header mechanism this document's §1 asks for — unit-tested by
+> directly registering a fake deprecated version and asserting the headers
+> and the post-sunset 404 both appear, since nothing has ever actually been
+> deprecated (v1 is the only version this platform has ever shipped) and
+> there is no live route to exercise it against, the same "ships inert,
+> ready the day it's needed" posture doc 38's own `CircuitBreaker` takes.
+> **Not built**, honestly: the `apiVersion` column on `ApiClientRequestLog`
+> and the admin "who still calls v1" report, both named in this document's
+> own §1 — `ApiClientRequestLog` does not exist in this codebase.
+> `34-partner-developer-api-access.md`'s own `ApiClient` is **deferred**
+> (ADR-037: an organisation-level service account is postponed in favor of
+> doc 163's personal API keys), and building it here as a side effect of
+> this work order would reopen a settled decision without new evidence,
+> which `CLAUDE.md`'s "Preserve existing systems" rule forbids. Both
+> pieces are real, small, additive follow-ups the day doc 34 ships.
+>
+> `core/feature-flags/feature-flags.service.ts`'s `FeatureFlag` model
+> (`feature-flags.prisma`, migration `20260927090000_wo37_feature_flags`)
+> adds `moneyOrStockPath` and a `removalCriteria` column doc 37's own
+> Prisma sketch named a need for (WO-37.3's audit) but never gave a field —
+> both necessary completions of what this document already asked for, not
+> scope creep. `isEnabled(key, organizationId)` implements the stated
+> precedence (killSwitch forces off; `enabledOrgIds` forces on; otherwise a
+> stable SHA-256-bucketed percentage check, deterministic per organization,
+> never re-randomized; a missing row fails closed to `false`), cached 30s
+> in-process — a rollout-percentage edit takes up to 30s to reach every
+> process, named honestly rather than hidden, while `killSwitch=true`
+> invalidates its own process's cache entry synchronously so an incident
+> stop is immediate on the process that flips it. `FeatureFlagsAdminController`
+> (`/admin/feature-flags`) is the CRUD surface, plus the maker-checker pair
+> this document's own "threshold nobody approves alone" lens asks for: a
+> money/stock-path flag's 100%-rollout or kill-switch-clear transition is
+> refused inline and must go through `propose-rollout` then `approve-rollout`,
+> which refuses the same actor approving their own proposal — the identical
+> shape `SettlementsService.approveWriteoff()` and
+> `BankFacilityDrawdown.approvedById` already establish, both permissions
+> (`platform.flags.manage`, `platform.flags.approve_rollout`) seeded onto
+> ADMIN the same way `finance.settlement.approve_writeoff` is, relying on
+> that distinct-actor check rather than withholding the permission.
+> `FeatureFlagAuditCron` (nightly, `@Cron('0 3 * * *')`) logs every flag
+> older than 90 days with no `removalCriteria`; the real surface a
+> `platform.flags.manage` holder reads is the live admin screen
+> (`/admin/feature-flags`, with a staleness banner) and its detail page
+> (`/admin/feature-flags/[id]`), queried fresh on every load rather than off
+> the cron's own cached output, reachable from the Settings nav group.
+> [`SDK-CONTRACT.md`](../SDK-CONTRACT.md) publishes the extension-point
+> interfaces, a judged stable subset of the domain-event catalogue, and the
+> module-registration checklist (citing `MULTI-SECTOR.md` rather than
+> re-deriving it); `apps/api/src/modules/example-hello-world-pack/`
+> (registered under a new, non-`core` `'example'` `PackName`, `offByDefault:
+> true`) is the reference pack this document's own acceptance criterion
+> asks for — `pnpm lint`'s `check-module-boundaries.mjs` passes with it
+> present and zero edits to any core module file (verified: "Module
+> boundaries OK (64 module(s) — core: 61, example: 1, apparel: 2, …)").
+
 ## What already exists, referenced rather than repeated
 
 - **Module packs + the `MODULES` allowlist** (`MULTI-SECTOR.md`) — adding a

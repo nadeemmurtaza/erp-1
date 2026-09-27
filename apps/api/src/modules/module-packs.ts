@@ -45,7 +45,11 @@ export type PackName =
   | 'media'
   | 'pets'
   | 'home'
-  | 'digital';
+  | 'digital'
+  // Not a real sector — reserved for SDK-CONTRACT.md's own reference
+  // "hello world" pack (37-scalability-future-upgrades.md §3, WO-37.4)
+  // alone. Never assign a real client's module to this pack.
+  | 'example';
 
 export const MODULE_PACKS: Record<string, PackName> = {
   // The universal commerce core — what clothing, grocery, medicine, hardware
@@ -136,8 +140,18 @@ export const MODULE_PACKS: Record<string, PackName> = {
   // issues this tenant a MarketplacePublisherCredential (modules.registry
   // .ts's own `offByDefault`).
   marketplace: 'core',
+  // 37-scalability-future-upgrades.md (WO-37.2) — the FeatureFlag primitive.
+  // Core infrastructure, never a sector concept.
+  'feature-flags': 'core',
 
   // Apparel & boutique — what makes this particular shop what it is.
   measurements: 'apparel',
   stitching: 'apparel',
+
+  // 37-scalability-future-upgrades.md §3 (WO-37.4) — SDK-CONTRACT.md's own
+  // reference pack, registered under its own pack name (never 'core') so
+  // the DIRECTION rule below actually applies to it, the same as a real
+  // third-party sector pack would face. offByDefault in every deployment
+  // (modules.registry.ts) — a demonstration, never production scope.
+  'example-hello-world-pack': 'example',
 };

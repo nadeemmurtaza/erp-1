@@ -30,7 +30,7 @@ order" is a new file, not an edit to checkout.
 
 | Event | Symbol | Published by | Subscribed by |
 |---|---|---|---|
-| `order.placed` | `OrderPlaced` | `accounting`, `orders` | core/`events`, `accounting`, `crm`, `orders`, `stitching` |
+| `order.placed` | `OrderPlaced` | `accounting`, `orders` | core/`events`, `accounting`, `crm`, `example-hello-world-pack`, `orders`, `stitching` |
 | `order.status_changed` | `OrderStatusChanged` | `orders` | `crm`, `finance`, `loyalty`, `orders` |
 | `order.cancelled` | `OrderCancelled` | `finance`, `orders` | `crm`, `orders` |
 | `payment.succeeded` | `PaymentSucceeded` | `accounting`, `orders`, `payments` | `accounting`, `payments` |
@@ -123,6 +123,7 @@ order" is a new file, not an edit to checkout.
 | `handle()` | `apps/api/src/core/events/on-domain-event.decorator.ts:7` | core/`events` |
 | `onOrderPlaced()` | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:56` | `accounting` |
 | `onOrderPlaced()` | `apps/api/src/modules/crm/order.subscriber.ts:27` | `crm` |
+| `onOrderPlaced()` | `apps/api/src/modules/example-hello-world-pack/hello-world.listener.ts:23` | `example-hello-world-pack` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/notification.subscriber.ts:70` | `orders` |
 | `onOrderPlaced()` | `apps/api/src/modules/orders/order-replication.listener.ts:48` | `orders` |
 | `onOrderPlaced()` | `apps/api/src/modules/stitching/order.subscriber.ts:25` | `stitching` |

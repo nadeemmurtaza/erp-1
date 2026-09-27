@@ -1018,6 +1018,19 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'settings',
   },
   {
+    // 37-scalability-future-upgrades.md. Under Settings, alongside AI and
+    // Hosting & Billing above — engineering-ops tooling, not a customer- or
+    // branch-facing capability (doc 37's own "Whose rows" scope-lens), so
+    // it belongs with the other platform-configuration screens rather than
+    // a new top-level nav group for one screen.
+    key: 'feature-flags',
+    label: 'Feature flags',
+    href: '/admin/feature-flags',
+    permissions: ['platform.flags.manage'],
+    group: 'settings',
+    module: 'feature-flags',
+  },
+  {
     // WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md).
     // Two separate entries, not one nested under the other: a holder of only
     // `rag.query` (never sees corpus administration) must still reach the

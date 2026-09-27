@@ -5,6 +5,7 @@ import { JwtAuthGuard, PermissionsGuard } from './core/auth/guards';
 import { AllExceptionsFilter } from './core/common/filters/all-exceptions.filter';
 import { CoreModule } from './core/core.module';
 import { IdempotencyInterceptor } from './core/idempotency/idempotency.interceptor';
+import { DeprecationHeaderInterceptor } from './core/versioning/deprecation-header.interceptor';
 import { FeatureModulesModule } from './modules/modules.registry';
 
 @Module({
@@ -29,6 +30,10 @@ import { FeatureModulesModule } from './modules/modules.registry';
     // @IdempotentWrite(scope); runs after every APP_GUARD above (Nest's own
     // guards-before-interceptors order), never in place of authorization.
     { provide: APP_INTERCEPTOR, useClass: IdempotencyInterceptor },
+    // 37-scalability-future-upgrades.md (WO-37.1) — a no-op on any request
+    // whose URI version carries no registered deprecation, which is every
+    // request today (nothing has ever been deprecated).
+    { provide: APP_INTERCEPTOR, useClass: DeprecationHeaderInterceptor },
   ],
 })
 export class AppModule {}

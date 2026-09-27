@@ -148,7 +148,7 @@ nothing here fails a build.
 | 2026-09-27 | `wo144_supplier_lead_time_observation` | 3 | ALTER TYPE, CREATE TABLE, CREATE INDEX | SupplierLeadTimeObservation |
 | 2026-09-27 | `wo148_customer_support_portal` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | CustomerSupportMessage, CustomerSupportTicket |
 | 2026-09-27 | `wo31_pos_hardware_park_retrieve` | 9 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | PosLineModifier, PosLineQuantitySource, PosParkedSale |
-| 2026-09-27 | `wo32_wo71_wo158_lots_serials_traceability` | 37 | CREATE TYPE, CREATE TABLE, ALTER TABLE, CREATE UNIQUE INDEX, CREATE INDEX | BomProductionLineLot, BomProductionRun, Lot, LotAllocation, LotStock, ProductVariant, SerializedUnit, StockVa… |
+| 2026-09-27 | `wo37_feature_flags` | 4 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | FeatureFlag |
 
 
 ---

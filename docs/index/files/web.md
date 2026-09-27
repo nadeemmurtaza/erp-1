@@ -1609,7 +1609,7 @@ All 420 tracked files in `apps/web`, by directory.
 | `download-file.ts` | utility | 23 |  |
 | `onsite-messages-client.ts` | utility | 24 |  |
 | `rag-corpus-access.ts` | utility | 27 |  |
-| `wishlist.ts` | utility | 192 |  |
+| `wishlist.ts` | utility | 204 |  |
 
 ### `apps/web/src/providers` (2)
 

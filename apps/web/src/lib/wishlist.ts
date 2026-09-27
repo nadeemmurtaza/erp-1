@@ -104,8 +104,20 @@ function subscribeServer(listener: () => void): () => void {
   return () => serverListeners.delete(listener);
 }
 
+// `useSyncExternalStore` requires a snapshot getter to return the same
+// reference until the underlying data actually changes — `.map()` on every
+// call handed it a fresh array each time, which React's dev-mode check
+// (correctly) treats as an infinite loop. Cache the derived array and only
+// recompute it when `serverItems` itself has changed.
+let serverIdsCache: string[] = [];
+let serverIdsCacheSource: ServerItem[] | null = null;
+
 function getServerIdsSnapshot(): string[] {
-  return serverItems ? serverItems.map((item) => item.productId) : [];
+  if (serverItems !== serverIdsCacheSource) {
+    serverIdsCacheSource = serverItems;
+    serverIdsCache = serverItems ? serverItems.map((item) => item.productId) : [];
+  }
+  return serverIdsCache;
 }
 
 async function ensureServerWishlist(userId: string): Promise<void> {

@@ -500,7 +500,7 @@ export default function TillPage() {
 
           {/* pos-hardware/31 §3/WO-31.4 — order type (COUNTER default, matching
               today's exact behaviour) and, when TAB/TABLE, park + a recipe picker. */}
-          <div className="mb-3 flex items-center gap-2">
+          <div className="mb-3 flex flex-wrap items-center gap-2">
             <div className="flex gap-1 rounded-lg border border-neutral-200 p-1" role="group" aria-label="Order type">
               {(['COUNTER', 'TAB', 'TABLE'] as const).map((type) => (
                 <button

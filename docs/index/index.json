@@ -46,7 +46,7 @@
     "pos": {
       "files": 33,
       "lines": 2667,
-      "bytes": 95265,
+      "bytes": 95275,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
@@ -78087,7 +78087,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 789,
-      "bytes": 32697,
+      "bytes": 32707,
       "doc": "",
       "symbols": [
         {

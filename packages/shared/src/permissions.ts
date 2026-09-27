@@ -980,8 +980,17 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'inventory',
     label: 'Inventory',
-    description: 'Stock levels, stock counts, inter-branch transfers, spot checks, and — separately — cost prices and margins.',
-    permissions: ['inventory.manage', 'inventory.count', 'transfers.manage', 'inventory.view_cost', 'inventory.spot_checks.manage'],
+    description: 'Stock levels, stock counts, inter-branch transfers, spot checks, batch/lot tracking, and — separately — cost prices, margins and the recall trail.',
+    permissions: [
+      'inventory.manage',
+      'inventory.count',
+      'transfers.manage',
+      'inventory.view_cost',
+      'inventory.spot_checks.manage',
+      'inventory.lots.manage',
+      'inventory.lots.override',
+      'inventory.recall',
+    ],
   },
   {
     key: 'purchasing',

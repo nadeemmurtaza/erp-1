@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,135 tracked files in `apps/api`, by directory.
+All 1,146 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -40,10 +40,10 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `approvals.prisma` | prisma schema | 79 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
 | `bank-facilities.prisma` | prisma schema | 122 | Bank facility management |
-| `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
+| `bom.prisma` | prisma schema | 258 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 766 | Catalog: categories, products, variants, images. |
+| `catalog.prisma` | prisma schema | 788 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
 | `core.prisma` | prisma schema | 671 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
@@ -59,7 +59,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `idempotency.prisma` | prisma schema | 34 | A client-supplied Idempotency-Key, closing the one gap doc 117's own |
 | `identity-verification.prisma` | prisma schema | 40 | / Tracks a User's identity verification against nID (Newax's external |
 | `instalments.prisma` | prisma schema | 76 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md) |
-| `inventory.prisma` | prisma schema | 369 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
+| `inventory.prisma` | prisma schema | 525 | Inventory: the stock ledger. Every change to ProductVariant.stock has |
 | `invoicing.prisma` | prisma schema | 88 | Trading-partner invoices and quotes (WO-18.3's remaining "forth" |
 | `loyalty.prisma` | prisma schema | 85 | Phase 7 WO-7.7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md). |
 | `marketing.prisma` | prisma schema | 87 | Campaigns and broadcasts. WO-8.4, |
@@ -739,6 +739,12 @@ All 1,135 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 53 |  |
 
+### `apps/api/prisma/schema/migrations/20260927090000_wo32_wo71_wo158_lots_serials_traceability` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 172 |  |
+
 ### `apps/api/prisma/schema/migrations/20260927090000_wo37_feature_flags` (1)
 
 | File | Kind | Lines | Purpose |
@@ -818,8 +824,8 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `ownership.guard.ts` | guard | 24 |  |
 | `password.util.spec.ts` | unit test | 80 |  |
 | `password.util.ts` | module | 89 |  |
-| `permissions.service.spec.ts` | unit test | 129 |  |
-| `permissions.service.ts` | service | 86 |  |
+| `permissions.service.spec.ts` | unit test | 175 |  |
+| `permissions.service.ts` | service | 124 |  |
 | `roles.controller.ts` | controller | 44 |  |
 | `roles.service.spec.ts` | unit test | 277 |  |
 | `roles.service.ts` | service | 332 |  |
@@ -1267,18 +1273,18 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `bom-cards.metrics.ts` | module | 126 |  |
 | `bom-production-replication.listener.spec.ts` | unit test | 62 |  |
 | `bom-production-replication.listener.ts` | event subscriber | 50 |  |
-| `bom.controller.ts` | controller | 228 |  |
+| `bom.controller.ts` | controller | 242 |  |
 | `bom.listener.spec.ts` | unit test | 88 |  |
 | `bom.listener.ts` | event subscriber | 49 |  |
-| `bom.metrics.spec.ts` | unit test | 204 |  |
+| `bom.metrics.spec.ts` | unit test | 206 |  |
 | `bom.metrics.ts` | module | 131 |  |
 | `bom.module.ts` | nest module | 29 |  |
 | `bom.service.ts` | service | 47 |  |
-| `bom.spec.ts` | unit test | 529 |  |
+| `bom.spec.ts` | unit test | 533 |  |
 | `cost-rollup.spec.ts` | unit test | 124 | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
-| `production.service.spec.ts` | unit test | 438 |  |
-| `production.service.ts` | service | 265 |  |
+| `production.service.spec.ts` | unit test | 537 |  |
+| `production.service.ts` | service | 424 |  |
 | `raw-material.service.ts` | service | 218 |  |
 | `recipe.service.ts` | service | 501 |  |
 
@@ -1286,7 +1292,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `production-run.dto.ts` | dto | 48 |  |
+| `production-run.dto.ts` | dto | 54 |  |
 | `raw-material.dto.ts` | dto | 52 |  |
 | `raw-usage.dto.ts` | dto | 30 |  |
 | `recipe.dto.ts` | dto | 113 |  |
@@ -1347,7 +1353,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `import-assistant.service.ts` | service | 392 |  |
 | `option-template-admin.service.ts` | service | 125 |  |
 | `product-admin.service.spec.ts` | unit test | 109 |  |
-| `product-admin.service.ts` | service | 745 |  |
+| `product-admin.service.ts` | service | 751 |  |
 | `product-import.service.spec.ts` | unit test | 77 |  |
 | `product-import.service.ts` | service | 510 |  |
 | `product-option-admin.service.ts` | service | 248 |  |
@@ -1369,7 +1375,7 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `category.dto.ts` | dto | 68 |  |
 | `option.dto.ts` | dto | 103 |  |
 | `product-query.dto.ts` | dto | 88 |  |
-| `product.dto.ts` | dto | 319 |  |
+| `product.dto.ts` | dto | 335 |  |
 | `redirect.dto.ts` | dto | 23 |  |
 
 ### `apps/api/src/modules/collections` (5)
@@ -1658,23 +1664,31 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `nid-callback-verification.spec.ts` | unit test | 123 |  |
 | `nid.provider.ts` | module | 176 |  |
 
-### `apps/api/src/modules/inventory` (25)
+### `apps/api/src/modules/inventory` (33)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `inventory.controller.ts` | controller | 76 |  |
-| `inventory.cron.spec.ts` | unit test | 275 |  |
-| `inventory.cron.ts` | scheduled job | 221 |  |
+| `inventory.cron.spec.ts` | unit test | 348 |  |
+| `inventory.cron.ts` | scheduled job | 281 |  |
 | `inventory.listener.spec.ts` | unit test | 70 |  |
 | `inventory.listener.ts` | event subscriber | 61 |  |
 | `inventory.metrics.spec.ts` | unit test | 70 |  |
 | `inventory.metrics.ts` | module | 135 |  |
-| `inventory.module.ts` | nest module | 44 |  |
+| `inventory.module.ts` | nest module | 53 |  |
 | `inventory.service.spec.ts` | unit test | 541 |  |
 | `inventory.service.ts` | service | 626 |  |
+| `lot-allocation.spec.ts` | unit test | 62 |  |
+| `lot-allocation.ts` | module | 76 | 32-lots-batch-expiry-fefo.md §2. |
+| `lots.controller.ts` | controller | 53 |  |
+| `lots.service.spec.ts` | unit test | 149 |  |
+| `lots.service.ts` | service | 260 |  |
 | `markdown-suggestions.controller.ts` | controller | 37 |  |
 | `markdown-suggestions.service.spec.ts` | unit test | 160 |  |
 | `markdown-suggestions.service.ts` | service | 116 |  |
+| `serialized-units.controller.ts` | controller | 77 |  |
+| `serialized-units.service.spec.ts` | unit test | 152 |  |
+| `serialized-units.service.ts` | service | 254 |  |
 | `spot-check.controller.ts` | controller | 68 |  |
 | `spot-check.service.spec.ts` | unit test | 150 |  |
 | `spot-check.service.ts` | service | 228 |  |
@@ -1688,12 +1702,14 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `suspicious-traffic.service.spec.ts` | unit test | 69 |  |
 | `suspicious-traffic.service.ts` | service | 59 |  |
 
-### `apps/api/src/modules/inventory/dto` (3)
+### `apps/api/src/modules/inventory/dto` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `inventory.dto.ts` | dto | 31 |  |
+| `lots.dto.ts` | dto | 20 |  |
 | `markdown-suggestion.dto.ts` | dto | 13 |  |
+| `serialized-units.dto.ts` | dto | 36 |  |
 | `stock-variance.dto.ts` | dto | 9 |  |
 
 ### `apps/api/src/modules/loyalty` (5)
@@ -1879,10 +1895,10 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `order-feed.source.ts` | module | 57 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 436 |  |
+| `orders-pos.service.spec.ts` | unit test | 438 |  |
 | `orders.controller.ts` | controller | 147 |  |
 | `orders.module.ts` | nest module | 57 |  |
-| `orders.service.ts` | service | 1379 |  |
+| `orders.service.ts` | service | 1400 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 |  |
 
 ### `apps/api/src/modules/orders/dto` (2)
@@ -2138,8 +2154,8 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `purchasing.metrics.spec.ts` | unit test | 74 |  |
 | `purchasing.metrics.ts` | module | 135 |  |
 | `purchasing.module.ts` | nest module | 34 |  |
-| `purchasing.service.ts` | service | 680 |  |
-| `purchasing.spec.ts` | unit test | 233 |  |
+| `purchasing.service.ts` | service | 749 |  |
+| `purchasing.spec.ts` | unit test | 369 |  |
 | `reorder.listener.spec.ts` | unit test | 146 |  |
 | `reorder.listener.ts` | event subscriber | 83 |  |
 | `requisition-task-source.spec.ts` | unit test | 59 |  |
@@ -2147,13 +2163,13 @@ All 1,135 tracked files in `apps/api`, by directory.
 | `requisition.controller.ts` | controller | 63 |  |
 | `requisition.service.spec.ts` | unit test | 207 |  |
 | `requisition.service.ts` | service | 214 |  |
-| `supplier-bill.spec.ts` | unit test | 230 |  |
+| `supplier-bill.spec.ts` | unit test | 234 |  |
 
 ### `apps/api/src/modules/purchasing/dto` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `purchase-order.dto.ts` | dto | 104 |  |
+| `purchase-order.dto.ts` | dto | 125 |  |
 | `requisition.dto.ts` | dto | 50 |  |
 | `supplier-bill.dto.ts` | dto | 67 |  |
 | `supplier.dto.ts` | dto | 104 |  |

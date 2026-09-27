@@ -175,7 +175,7 @@ export default function LotDetailPage({ params }: { params: Promise<{ id: string
           ) : null}
           {forward && forward.length > 0 ? (
             <div className="mb-8 overflow-hidden">
-              <p className="mb-2 text-xs text-neutral-900/60">Production runs this lot's stock was consumed into:</p>
+              <p className="mb-2 text-xs text-neutral-900/60">Production runs this lot&apos;s stock was consumed into:</p>
               <DataTable
                 rows={forward}
                 rowKey={(row) => row.id}

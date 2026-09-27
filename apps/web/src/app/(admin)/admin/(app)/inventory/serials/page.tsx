@@ -105,7 +105,7 @@ export default function SerialsPage() {
 
       <div className="card relative mb-6 p-4">
         <label htmlFor="serial-variant-search" className="field-label">
-          Browse a SKU's serial numbers
+          Browse a SKU&apos;s serial numbers
         </label>
         <input
           id="serial-variant-search"
@@ -115,7 +115,7 @@ export default function SerialsPage() {
           placeholder="Search by name or SKU…"
         />
         {results.length > 0 ? (
-          <ul className="absolute inset-x-4 top-full z-10 mt-1 rounded-md border border-neutral-200 bg-white shadow-md">
+          <ul className="absolute inset-x-4 top-full z-10 mt-1 rounded-md bg-white shadow-md">
             {results.map((result) => (
               <li key={result.id}>
                 <button

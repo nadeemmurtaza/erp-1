@@ -15,6 +15,26 @@ branch" and "12 units of milk at the Gulberg branch, lot L2024-118, expiring
 2027-01-04" are different facts, and only the second one lets a recall query
 answer "which of my customers may have bought from this batch."
 
+> **Status (2026-09-27): built, WO-32.1–32.6, with two named gaps.**
+> `Lot`/`LotStock`/`LotAllocation` (`inventory.prisma`) ship exactly as
+> sketched; `LotsService.recordReceipt()`/`recordDeduction()` are the only
+> writers, called alongside `InventoryService.move()` — never inside it —
+> from purchasing's goods receipt and an order's sale deduction (WO-32.1/
+> 32.2, DECISIONS.md ADR-069). `allocateFefo()` (`lot-allocation.ts`) is a
+> pure function with an optional `preferredLotId` manual override.
+> Goods-receipt UI captures lot code + expiry per line when the variant is
+> `lotTracked` (WO-32.3). `recallLookup()` and an admin Lots list/detail
+> screen with the recall trail are built, gated by `inventory.recall`
+> (WO-32.4) — **the CSV export this work order also names is not built**.
+> `InventoryCron.alertExpiringLots()` sends one consolidated digest to
+> every `inventory.manage` holder, resolved as a capability via
+> `PermissionsResolverService.usersWithPermission()`, never a fixed address
+> (WO-32.5). All three permissions are seeded through to real roles
+> (WO-32.6), but **`inventory.lots.override`'s own dedicated override
+> endpoint with a value-threshold second approval is not built** —
+> `previewAllocation()`'s `preferredLotId` parameter is the only
+> manual-override surface today.
+
 ## 1. A lot is a sub-ledger under the existing stock row, never a second stock model
 
 ```prisma

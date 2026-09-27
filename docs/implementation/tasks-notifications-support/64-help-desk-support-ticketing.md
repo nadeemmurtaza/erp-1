@@ -1,5 +1,41 @@
 # 64 — In-app help desk: a genuinely new capability
 
+> **Status: built (2026-09-27), WO-64.1–64.5, DECISIONS.md ADR-063.**
+> `SupportTicket`/`TicketMessage`/`TicketStatus`/`TicketPriority`
+> (`support.prisma`), `SupportTicketsService`
+> (`create()`/`reply()`/`assign()`/`transition()`/`list()`/`get()`),
+> `SupportTicketActionSource` (registered into doc 44's own action-hub
+> registry), the four named permissions, and a three-screen admin UI
+> (list, raise, detail-with-reply) with a nav entry under Settings — "per
+> the request's own placement" — are all real, at
+> `apps/api/src/modules/support/` and
+> `apps/web/src/app/(admin)/admin/(app)/support/tickets/`. A new,
+> standalone module (`support`, `core`, not off by default): nothing
+> depends on it, it depends on nothing else, matching this document's own
+> "The absent collaborator" lens.
+>
+> One list screen serves both a requester's own tickets and a handler's
+> queue — the API's own visibility scoping (`support.tickets.view_all`
+> sees everything, everyone else sees only what they raised or were
+> assigned) makes a separate "support-queue view for handlers" screen
+> unnecessary, this document's own WO-64.5 wording notwithstanding.
+>
+> Two decisions beyond this document's own literal sketch, both required
+> to make its own stated requirements real — see `DECISIONS.md` ADR-063
+> for the full reasoning: who may call `transition()` is resolved
+> per-instance inside the service (the current assignee, a
+> `support.tickets.reassign` holder, or — only for the one backward move —
+> the original requester), since this document's own WO-64.3 names no
+> separate permission for it; and `get()` batch-resolves every bare
+> `userId` scalar on a ticket to a display name before it ever reaches an
+> admin screen, the same discipline ADR-061 already established for a raw
+> variant id.
+>
+> A single SLA window (`SupportTicketSlaMinutes`, default 240 minutes)
+> backs the action-hub source's SLA-breach detection — client-editable, no
+> per-priority tuning yet, exactly this document's own named, deferred
+> scope.
+
 Nothing in this repository today lets a user raise a support request from
 inside the product and have it tracked, assigned, and resolved. `AuditService`
 records what happened; `NotificationsService` delivers a message; neither

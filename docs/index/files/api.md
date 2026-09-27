@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,062 tracked files in `apps/api`, by directory.
+All 1,071 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 1,062 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (58)
+### `apps/api/prisma/schema` (59)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -86,6 +86,7 @@ All 1,062 tracked files in `apps/api`, by directory.
 | `settlements.prisma` | prisma schema | 77 | Financial institution settlement partnerships |
 | `sso.prisma` | prisma schema | 73 | SSO / identity federation |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
+| `support.prisma` | prisma schema | 70 | In-app help desk (internal) — tasks-notifications-support/64-help-desk- |
 | `tasks.prisma` | prisma schema | 134 | Task allotment, status and tracking |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
@@ -706,6 +707,12 @@ All 1,062 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 50 |  |
 
+### `apps/api/prisma/schema/migrations/20260927060000_wo64_support_ticketing` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 52 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -1037,7 +1044,7 @@ All 1,062 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 521 |  |
+| `settings.defaults.ts` | module | 533 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.ts` | service | 107 |  |
 
@@ -1067,8 +1074,8 @@ All 1,062 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 136 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 298 |  |
+| `module-packs.ts` | module | 137 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 303 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -2198,6 +2205,23 @@ All 1,062 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `stitching.dto.ts` | dto | 401 |  |
+
+### `apps/api/src/modules/support` (6)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `support-ticket-action.source.spec.ts` | unit test | 84 |  |
+| `support-ticket-action.source.ts` | module | 122 |  |
+| `support-tickets.controller.ts` | controller | 63 |  |
+| `support-tickets.service.spec.ts` | unit test | 220 |  |
+| `support-tickets.service.ts` | service | 221 |  |
+| `support.module.ts` | nest module | 24 |  |
+
+### `apps/api/src/modules/support/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `support.dto.ts` | dto | 39 |  |
 
 ### `apps/api/src/modules/tasks` (11)
 

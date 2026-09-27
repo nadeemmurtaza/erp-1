@@ -897,6 +897,18 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'settings',
   },
   {
+    // tasks-notifications-support/64-help-desk-support-ticketing.md
+    // WO-64.5 — "alongside account and company profile configuration
+    // menus," per the request's own placement. support.tickets.raise is
+    // seeded broadly (every internal role) since anyone may need help.
+    key: 'support-tickets',
+    label: 'Support',
+    href: '/admin/support/tickets',
+    permissions: ['support.tickets.raise'],
+    group: 'settings',
+    module: 'support',
+  },
+  {
     key: 'settings',
     label: 'Settings',
     href: '/admin/settings',

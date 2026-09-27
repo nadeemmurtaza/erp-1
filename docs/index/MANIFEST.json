@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "93d9359907f171b0",
+  "contentHash": "d3e0ad3c517d6653",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",
@@ -120,6 +120,7 @@
     "docs/index/data/settlements.md",
     "docs/index/data/sso.md",
     "docs/index/data/stitching.md",
+    "docs/index/data/support.md",
     "docs/index/data/tasks.md",
     "docs/index/data/tax.md",
     "docs/index/data/trading-partners.md",
@@ -187,6 +188,7 @@
     "docs/index/modules/settings.md",
     "docs/index/modules/settlements.md",
     "docs/index/modules/stitching.md",
+    "docs/index/modules/support.md",
     "docs/index/modules/tasks.md",
     "docs/index/modules/tax.md",
     "docs/index/modules/tracking.md",
@@ -204,18 +206,18 @@
     "docs/index/symbols/web.md"
   ],
   "totals": {
-    "files": 2302,
-    "lines": 350219,
-    "routes": 814,
-    "controllers": 149,
-    "models": 294,
-    "enums": 136,
-    "migrations": 110,
+    "files": 2314,
+    "lines": 351715,
+    "routes": 820,
+    "controllers": 150,
+    "models": 296,
+    "enums": 138,
+    "migrations": 111,
     "events": 66,
-    "permissions": 113,
-    "screens": 257,
+    "permissions": 117,
+    "screens": 260,
     "crons": 26,
-    "specs": 311,
+    "specs": 313,
     "designLaws": 0
   }
 }

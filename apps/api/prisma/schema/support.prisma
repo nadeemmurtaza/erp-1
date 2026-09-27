@@ -1,0 +1,69 @@
+// In-app help desk (internal) — tasks-notifications-support/64-help-desk-
+// support-ticketing.md, DECISIONS.md ADR-063. A standalone module: nothing
+// else in this repository depends on it, and it depends on no other
+// optional module (MOD-1).
+//
+// No organizationId anywhere (ADR-040/044/046/049/060/062): this
+// deployment IS the tenant boundary. raisedByUserId/assignedToUserId/
+// TicketMessage.authorId are bare scalars, no `@relation` — the same
+// "erasure the ledger cannot obey" shape MeetingInvitation.userId and
+// EscalationFire.taskId already use, so a deleted User never forces a
+// cascade decision onto this module.
+//
+// External (customer-facing) support ticketing is doc 148's own,
+// separately-scoped work — a distinct actor model (Contact/Party, not
+// User) — never conflated with this internal help desk.
+
+model SupportTicket {
+  id       String @id @default(cuid())
+  raisedByUserId String
+
+  subject  String
+  /// Free text, not a closed enum — a client's own support taxonomy
+  /// varies, the same reasoning `LeaveType`/`DeductionType` already rest
+  /// on (rows, not an enum, for anything that varies per deployment).
+  category String
+
+  status   TicketStatus   @default(OPEN)
+  priority TicketPriority @default(NORMAL)
+
+  assignedToUserId String?
+
+  createdAt  DateTime  @default(now())
+  resolvedAt DateTime?
+
+  messages TicketMessage[]
+
+  @@index([status, assignedToUserId])
+  @@index([raisedByUserId])
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+/// An append-only reply thread — a correction is a new message, never an
+/// edit in place, the same immutable-thread discipline this repository
+/// already applies everywhere else a conversation is recorded.
+model TicketMessage {
+  id       String @id @default(cuid())
+  ticketId String
+  authorId String
+  body     String
+
+  createdAt DateTime @default(now())
+
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId, createdAt])
+}

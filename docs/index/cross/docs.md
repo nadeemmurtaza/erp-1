@@ -2726,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>6,977 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>7,092 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2794,6 +2794,7 @@ _no second-level headings_
 - ADR-060 — Doc 24 (internal notifications, meetings and escalation): built in full, with one new model beyond its own sketch and a countersignature routed to a named person rather than a role  <sub>:6629</sub>
 - ADR-061 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6751</sub>
 - ADR-062 — Doc 61 (policy communications bulletin board): built inside the `notify` module rather than `hr`, an author-side reach check the document's own sketch omits, and a read-side visibility rule distinct from a sender's reach  <sub>:6866</sub>
+- ADR-063 — Doc 64 (in-app help desk): built as a new standalone module, with a per-instance transition-authority rule and a name-resolution step the document's own sketch does not specify  <sub>:6978</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3578,14 +3579,14 @@ _no second-level headings_
 - Acceptance  <sub>:213</sub>
 - Out of scope  <sub>:225</sub>
 
-### `docs/implementation/tasks-notifications-support/64-help-desk-support-ticketing.md`  <sub>188 lines</sub>
+### `docs/implementation/tasks-notifications-support/64-help-desk-support-ticketing.md`  <sub>224 lines</sub>
 
-- 1. A ticket is a record of a request, with an ordered reply thread  <sub>:13</sub>
-- 2. Assignment and status transitions reuse the org tree, not a new team model  <sub>:55</sub>
-- Scope lenses  <sub>:75</sub>
-- Work orders  <sub>:153</sub>
-- Acceptance  <sub>:169</sub>
-- Out of scope  <sub>:178</sub>
+- 1. A ticket is a record of a request, with an ordered reply thread  <sub>:49</sub>
+- 2. Assignment and status transitions reuse the org tree, not a new team model  <sub>:91</sub>
+- Scope lenses  <sub>:111</sub>
+- Work orders  <sub>:189</sub>
+- Acceptance  <sub>:205</sub>
+- Out of scope  <sub>:214</sub>
 
 ### `docs/implementation/tax-compliance/112-pluggable-fiscal-engines.md`  <sub>51 lines</sub>
 

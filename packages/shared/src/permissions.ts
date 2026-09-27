@@ -615,6 +615,37 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'high',
   },
   {
+    // tasks-notifications-support/64-help-desk-support-ticketing.md
+    // (WO-64.3). Broad — every internal (non-customer) user may raise one.
+    key: 'support.tickets.raise',
+    label: 'Raise an internal support ticket',
+    category: 'Organization',
+    sensitivity: 'low',
+  },
+  {
+    // Resolved fresh at assignment time (SupportTicketsService.assign()),
+    // never cached — losing this role stops someone appearing as an
+    // eligible assignee for a NEW assignment immediately.
+    key: 'support.tickets.handle',
+    label: 'Be assigned support tickets, and work the ones assigned to you',
+    category: 'Organization',
+    sensitivity: 'medium',
+  },
+  {
+    key: 'support.tickets.view_all',
+    label: 'View every support ticket, not only your own',
+    category: 'Organization',
+    sensitivity: 'medium',
+  },
+  {
+    // Distinct from support.tickets.handle: reassigning ANY ticket (not
+    // just claiming an unassigned one) is the broader authority.
+    key: 'support.tickets.reassign',
+    label: 'Assign or reassign any support ticket',
+    category: 'Organization',
+    sensitivity: 'medium',
+  },
+  {
     key: 'marketing.manage',
     label: 'Turn on automated marketing email and set its timing',
     category: 'Administration',
@@ -982,6 +1013,10 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'notify.send',
       'notify.broadcast',
       'notify.escalation.manage',
+      'support.tickets.raise',
+      'support.tickets.handle',
+      'support.tickets.view_all',
+      'support.tickets.reassign',
     ],
   },
   {
@@ -1027,6 +1062,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     // Broad by design, same reasoning as STAFF/ADMIN below — see this
     // key's own catalogue note.
     'hr.bulletins.view',
+    'support.tickets.raise',
   ],
   STAFF: [
     'account.change_own_password',
@@ -1040,6 +1076,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'notify.send',
     'hr.bulletins.view',
     'hr.bulletins.publish',
+    'support.tickets.raise',
+    'support.tickets.handle',
+    'support.tickets.view_all',
     'crm.manage',
     'orders.manage',
     'pricing.price-lists.manage',
@@ -1128,6 +1167,10 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'notify.send',
     'notify.broadcast',
     'notify.escalation.manage',
+    'support.tickets.raise',
+    'support.tickets.handle',
+    'support.tickets.view_all',
+    'support.tickets.reassign',
     'hr.attendance.view',
     'hr.attendance.record',
     'hr.bulletins.view',

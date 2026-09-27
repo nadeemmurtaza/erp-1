@@ -91,6 +91,11 @@ const TONES: Record<string, BadgeTone> = {
   // 149-b2b-accounts-approvals-sector-packs.md — B2BOrderRequestStatus: an
   // approved request that successfully placed its real Order.
   CONVERTED: 'success',
+  // TicketStatus (64-help-desk-support-ticketing.md) — the ordinary,
+  // successful end of a ticket's life; RESOLVED can still be reopened
+  // (the one allowed backward move), CLOSED cannot.
+  RESOLVED: 'success',
+  CLOSED: 'success',
 };
 
 /** `READY_TO_SHIP` -> `Ready to ship`. */

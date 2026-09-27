@@ -104,6 +104,7 @@ export const MODULE_PACKS: Record<string, PackName> = {
   // task-source.registry.ts) and no other module imports it.
   tasks: 'core',
   notify: 'core',
+  support: 'core',
   promotions: 'core',
   giftcards: 'core',
   search: 'core',

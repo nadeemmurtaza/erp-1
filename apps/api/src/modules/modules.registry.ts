@@ -23,6 +23,7 @@ import { HrModule } from './hr/hr.module';
 import { OrgStructureModule } from './orgstructure/orgstructure.module';
 import { TasksModule } from './tasks/tasks.module';
 import { NotifyModule } from './notify/notify.module';
+import { SupportModule } from './support/support.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { InventoryModule } from './inventory/inventory.module';
 import { LoyaltyModule } from './loyalty/loyalty.module';
@@ -155,6 +156,10 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // tables directly by Prisma query), same no-dependency-on-either-being-on
   // shape as `attendance`/`tasks` just above.
   { name: 'notify', module: NotifyModule },
+  // tasks-notifications-support/64-help-desk-support-ticketing.md — a
+  // fully standalone module (doc's own "The absent collaborator" lens):
+  // imports nothing, nothing imports it, reads only its own tables.
+  { name: 'support', module: SupportModule },
   // Same allowlist tier as payments/finance (not offByDefault): checkout
   // couples to both directly, in the same transaction as order creation
   // (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE_COUPLINGS)

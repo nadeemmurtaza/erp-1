@@ -12,7 +12,7 @@ Source: `apps/api/src/core/settings/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 775 lines)
+## Files (6 · 787 lines)
 
 All paths relative to `apps/api/src/core/settings`.
 
@@ -21,7 +21,7 @@ All paths relative to `apps/api/src/core/settings`.
 | `document-number.spec.ts` | unit test | 37 | — |  |
 | `document-number.ts` | module | 50 | 2 |  |
 | `document-prefix.ts` | module | 50 | 1 | What this shop's documents are numbered with. |
-| `settings.defaults.ts` | module | 521 | 8 | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lead times. |
+| `settings.defaults.ts` | module | 533 | 8 | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lead times. |
 | `settings.module.ts` | nest module | 10 | 1 |  |
 | `settings.service.ts` | service | 107 | 1 | Runtime business configuration, read from the Setting table and cached briefly so hot paths (every cart total needs the… |
 
@@ -85,8 +85,8 @@ check there before adding another.
 | `DocumentSettings` | interface | `settings.defaults.ts:54` |  |
 | `FinanceGatewayFeeBpsSettings` | interface | `settings.defaults.ts:68` | Basis points per payment provider (Rule 5 — 250 = 2.5%), read by OrderEconomicsService (WO-B.3) to derive `ga… |
 | `SettingKey` | const | `settings.defaults.ts:75` |  |
-| `SettingKeyName` | type | `settings.defaults.ts:341` |  |
-| `DEFAULT_SETTINGS` | const | `settings.defaults.ts:343` |  |
+| `SettingKeyName` | type | `settings.defaults.ts:349` |  |
+| `DEFAULT_SETTINGS` | const | `settings.defaults.ts:351` |  |
 | `SettingsModule` | class | `settings.module.ts:9` |  |
 | `SettingsService` | class | `settings.service.ts:14` | Runtime business configuration, read from the Setting table and cached briefly so hot paths (every cart total… |
 

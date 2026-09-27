@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2302,
-    "lines": 350219,
-    "routes": 814,
-    "controllers": 149,
-    "models": 294,
-    "enums": 136,
-    "migrations": 110,
+    "files": 2314,
+    "lines": 351715,
+    "routes": 820,
+    "controllers": 150,
+    "models": 296,
+    "enums": 138,
+    "migrations": 111,
     "events": 66,
-    "permissions": 113,
-    "screens": 257,
+    "permissions": 117,
+    "screens": 260,
     "crons": 26,
-    "specs": 311,
+    "specs": 313,
     "designLaws": 0
   },
   "designLaws": [],
@@ -28,13 +28,13 @@
     "infra": {
       "files": 60,
       "lines": 30624,
-      "bytes": 1205217,
+      "bytes": 1205241,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1062,
-      "lines": 143434,
-      "bytes": 5561072,
+      "files": 1071,
+      "lines": 144347,
+      "bytes": 5600787,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 409,
-      "lines": 68239,
-      "bytes": 2465042,
+      "files": 412,
+      "lines": 68628,
+      "bytes": 2478831,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 399,
-      "lines": 69326,
-      "bytes": 4125511,
+      "lines": 69477,
+      "bytes": 4134515,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8352,
-      "bytes": 298816,
+      "lines": 8395,
+      "bytes": 300320,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1182,6 +1182,23 @@
       ],
       "routes": 21,
       "page": "docs/index/modules/stitching.md"
+    },
+    {
+      "name": "support",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/support/dto/support.dto.ts",
+        "apps/api/src/modules/support/support-ticket-action.source.spec.ts",
+        "apps/api/src/modules/support/support-ticket-action.source.ts",
+        "apps/api/src/modules/support/support-tickets.controller.ts",
+        "apps/api/src/modules/support/support-tickets.service.spec.ts",
+        "apps/api/src/modules/support/support-tickets.service.ts",
+        "apps/api/src/modules/support/support.module.ts"
+      ],
+      "routes": 6,
+      "page": "docs/index/modules/support.md"
     },
     {
       "name": "tasks",
@@ -11621,6 +11638,94 @@
       "summary": "Remove a product from a supplier"
     },
     {
+      "method": "GET",
+      "path": "/admin/support/tickets",
+      "module": "support",
+      "controller": "SupportTicketsController",
+      "handler": "list",
+      "file": "apps/api/src/modules/support/support-tickets.controller.ts",
+      "line": 31,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Tickets you raised or were assigned — or every ticket, with support.tickets.view_all"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/support/tickets",
+      "module": "support",
+      "controller": "SupportTicketsController",
+      "handler": "create",
+      "file": "apps/api/src/modules/support/support-tickets.controller.ts",
+      "line": 24,
+      "access": "support.tickets.raise",
+      "permissions": [
+        "support.tickets.raise"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Raise a support ticket"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/support/tickets/:id",
+      "module": "support",
+      "controller": "SupportTicketsController",
+      "handler": "get",
+      "file": "apps/api/src/modules/support/support-tickets.controller.ts",
+      "line": 38,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "One ticket, with its full reply thread"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/support/tickets/:id/assign",
+      "module": "support",
+      "controller": "SupportTicketsController",
+      "handler": "assign",
+      "file": "apps/api/src/modules/support/support-tickets.controller.ts",
+      "line": 52,
+      "access": "support.tickets.reassign",
+      "permissions": [
+        "support.tickets.reassign"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Assign or reassign a ticket to someone who holds support.tickets.handle"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/support/tickets/:id/messages",
+      "module": "support",
+      "controller": "SupportTicketsController",
+      "handler": "reply",
+      "file": "apps/api/src/modules/support/support-tickets.controller.ts",
+      "line": 45,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Reply on a ticket you can see"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/support/tickets/:id/transition",
+      "module": "support",
+      "controller": "SupportTicketsController",
+      "handler": "transition",
+      "file": "apps/api/src/modules/support/support-tickets.controller.ts",
+      "line": 59,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Move a ticket forward, or reopen a resolved one"
+    },
+    {
       "method": "POST",
       "path": "/admin/tasks",
       "module": "tasks",
@@ -16161,6 +16266,56 @@
         "PUT /admin/notify/escalation-rules/:id"
       ],
       "uiSites": 2,
+      "roles": [],
+      "inSeed": false
+    },
+    {
+      "key": "support.tickets.raise",
+      "label": "Raise an internal support ticket",
+      "category": "Organization",
+      "sensitivity": "low",
+      "routes": [
+        "POST /admin/support/tickets"
+      ],
+      "uiSites": 3,
+      "roles": [
+        "STAFF"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "support.tickets.handle",
+      "label": "Be assigned support tickets, and work the ones assigned to you",
+      "category": "Organization",
+      "sensitivity": "medium",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "STAFF"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "support.tickets.view_all",
+      "label": "View every support ticket, not only your own",
+      "category": "Organization",
+      "sensitivity": "medium",
+      "routes": [],
+      "uiSites": 0,
+      "roles": [
+        "STAFF"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "support.tickets.reassign",
+      "label": "Assign or reassign any support ticket",
+      "category": "Organization",
+      "sensitivity": "medium",
+      "routes": [
+        "POST /admin/support/tickets/:id/assign"
+      ],
+      "uiSites": 1,
       "roles": [],
       "inSeed": false
     },
@@ -40668,6 +40823,88 @@
       ]
     },
     {
+      "name": "SupportTicket",
+      "file": "apps/api/prisma/schema/support.prisma",
+      "line": 17,
+      "doc": "In-app help desk (internal) — tasks-notifications-support/64-help-desk- support-ticketing.md, DECISIONS.md ADR-063.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "raisedByUserId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subject",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "category",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "TicketStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priority",
+          "type": "TicketPriority",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assignedToUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "messages",
+          "type": "TicketMessage[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status, assignedToUserId])",
+        "@@index([raisedByUserId])"
+      ]
+    },
+    {
       "name": "Tag",
       "file": "apps/api/prisma/schema/crm.prisma",
       "line": 233,
@@ -41328,6 +41565,59 @@
         }
       ],
       "indexes": []
+    },
+    {
+      "name": "TicketMessage",
+      "file": "apps/api/prisma/schema/support.prisma",
+      "line": 58,
+      "doc": "An append-only reply thread — a correction is a new message, never an edit in place, the same immutable-thread discipline this repository already applies everywhere else a conversation is recorded.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ticketId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "authorId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "body",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ticket",
+          "type": "SupportTicket",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([ticketId, createdAt])"
+      ]
     },
     {
       "name": "TradingPartner",
@@ -44659,6 +44949,28 @@
       ]
     },
     {
+      "name": "TicketPriority",
+      "file": "apps/api/prisma/schema/support.prisma",
+      "line": 48,
+      "values": [
+        "LOW",
+        "NORMAL",
+        "HIGH",
+        "URGENT"
+      ]
+    },
+    {
+      "name": "TicketStatus",
+      "file": "apps/api/prisma/schema/support.prisma",
+      "line": 41,
+      "values": [
+        "OPEN",
+        "IN_PROGRESS",
+        "RESOLVED",
+        "CLOSED"
+      ]
+    },
+    {
       "name": "TradingPartnerKind",
       "file": "apps/api/prisma/schema/trading-partners.prisma",
       "line": 8,
@@ -46777,6 +47089,23 @@
       "tables": [
         "Bulletin",
         "BulletinAcknowledgement"
+      ]
+    },
+    {
+      "folder": "20260927060000_wo64_support_ticketing",
+      "file": "apps/api/prisma/schema/migrations/20260927060000_wo64_support_ticketing/migration.sql",
+      "date": "2026-09-27",
+      "slug": "wo64_support_ticketing",
+      "statements": 8,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "SupportTicket",
+        "TicketMessage"
       ]
     }
   ],
@@ -49004,6 +49333,33 @@
       "client": true,
       "surface": "admin",
       "doc": "No clsx import needed"
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/support/tickets",
+      "file": "apps/web/src/app/(admin)/admin/(app)/support/tickets/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/support/tickets/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/support/tickets/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/support/tickets/new",
+      "file": "apps/web/src/app/(admin)/admin/(app)/support/tickets/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
     },
     {
       "app": "web",
@@ -52133,6 +52489,29 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/support/support-ticket-action.source.spec.ts",
+      "module": "support",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "SupportTicketActionSource"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/support/support-tickets.service.spec.ts",
+      "module": "support",
+      "kind": "unit test",
+      "cases": 22,
+      "describes": [
+        "SupportTicketsService",
+        "create",
+        "get/list visibility",
+        "reply",
+        "assign",
+        "transition"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/tasks/task-event-intake.service.spec.ts",
       "module": "tasks",
       "kind": "unit test",
@@ -53508,7 +53887,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 101,
-      "bytes": 5410,
+      "bytes": 5418,
       "doc": "",
       "symbols": []
     },
@@ -53517,7 +53896,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 180,
-      "bytes": 9306,
+      "bytes": 9314,
       "doc": "",
       "symbols": []
     },
@@ -53526,7 +53905,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 129,
-      "bytes": 5863,
+      "bytes": 5871,
       "doc": "",
       "symbols": []
     },
@@ -54977,6 +55356,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260927060000_wo64_support_ticketing/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 52,
+      "bytes": 1829,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -55190,6 +55578,15 @@
       "lines": 202,
       "bytes": 6849,
       "doc": "Stitching: the style options a customer picks, standalone stitching orders",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/support.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 70,
+      "bytes": 2068,
+      "doc": "In-app help desk (internal) — tasks-notifications-support/64-help-desk-",
       "symbols": []
     },
     {
@@ -58859,8 +59256,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 521,
-      "bytes": 29079,
+      "lines": 533,
+      "bytes": 29766,
       "doc": "",
       "symbols": [
         {
@@ -58896,12 +59293,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 341
+          "line": 349
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 343
+          "line": 351
         }
       ]
     },
@@ -65162,8 +65559,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 136,
-      "bytes": 4820,
+      "lines": 137,
+      "bytes": 4839,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -65182,24 +65579,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 298,
-      "bytes": 17165,
+      "lines": 303,
+      "bytes": 17484,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 62
+          "line": 63
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 93
+          "line": 94
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 274
+          "line": 279
         }
       ]
     },
@@ -69590,6 +69987,129 @@
           "name": "StitchingService",
           "kind": "class",
           "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/support/dto/support.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 39,
+      "bytes": 828,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateTicketDto",
+          "kind": "class",
+          "line": 8
+        },
+        {
+          "name": "ReplyTicketDto",
+          "kind": "class",
+          "line": 23
+        },
+        {
+          "name": "AssignTicketDto",
+          "kind": "class",
+          "line": 29
+        },
+        {
+          "name": "TransitionTicketDto",
+          "kind": "class",
+          "line": 35
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/support/support-ticket-action.source.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 84,
+      "bytes": 3635,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/support/support-ticket-action.source.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 122,
+      "bytes": 5086,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportTicketActionSource",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/support/support-tickets.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 63,
+      "bytes": 2919,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportTicketsController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/support/support-tickets.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 220,
+      "bytes": 10806,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/support/support-tickets.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 221,
+      "bytes": 10383,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CreateTicketInput",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "TicketMessageView",
+          "kind": "interface",
+          "line": 16
+        },
+        {
+          "name": "TicketDetail",
+          "kind": "interface",
+          "line": 20
+        },
+        {
+          "name": "SupportTicketsService",
+          "kind": "class",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/support/support.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 24,
+      "bytes": 1136,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportModule",
+          "kind": "class",
+          "line": 23
         }
       ]
     },
@@ -77812,6 +78332,51 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/support/tickets/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 186,
+      "bytes": 6451,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportTicketDetailPage",
+          "kind": "default",
+          "line": 43
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/support/tickets/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 86,
+      "bytes": 3073,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewSupportTicketPage",
+          "kind": "default",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/support/tickets/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 95,
+      "bytes": 3334,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportTicketsPage",
+          "kind": "default",
+          "line": 30
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/tasks/page.tsx",
       "area": "web",
       "kind": "page",
@@ -80021,8 +80586,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1119,
-      "bytes": 31193,
+      "lines": 1131,
+      "bytes": 31664,
       "doc": "",
       "symbols": [
         {
@@ -80053,12 +80618,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1089
+          "line": 1101
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1104
+          "line": 1116
         }
       ]
     },
@@ -80251,19 +80816,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 104,
-      "bytes": 4157,
+      "lines": 109,
+      "bytes": 4397,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 97
+          "line": 102
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 101
+          "line": 106
         }
       ]
     },
@@ -81319,8 +81884,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 276,
-      "bytes": 12696,
+      "lines": 281,
+      "bytes": 12916,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -85383,8 +85948,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 6977,
-      "bytes": 406957,
+      "lines": 7092,
+      "bytes": 413786,
       "doc": "",
       "symbols": []
     },
@@ -85438,7 +86003,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 544,
-      "bytes": 73713,
+      "bytes": 73849,
       "doc": "",
       "symbols": []
     },
@@ -86940,8 +87505,8 @@
       "path": "docs/implementation/tasks-notifications-support/64-help-desk-support-ticketing.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 188,
-      "bytes": 9583,
+      "lines": 224,
+      "bytes": 11622,
       "doc": "",
       "symbols": []
     },
@@ -88608,8 +89173,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1278,
-      "bytes": 43084,
+      "lines": 1321,
+      "bytes": 44588,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -88630,52 +89195,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 775
+          "line": 806
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 777
+          "line": 808
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 787
+          "line": 818
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 794
+          "line": 825
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 1019
+          "line": 1054
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1237
+          "line": 1280
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1256
+          "line": 1299
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1270
+          "line": 1313
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1271
+          "line": 1314
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1274
+          "line": 1317
         }
       ]
     },

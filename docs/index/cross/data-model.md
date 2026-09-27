@@ -3,7 +3,7 @@
 
 # Data model
 
-All **294** Prisma models and **136** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **296** Prisma models and **138** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -77,6 +77,7 @@ against a real database.
 | [`settlements.prisma`](../data/settlements.md) | 3 | 1 | [`settlements`](../modules/settlements.md) | SettlementBatch, SettlementBatchLine, SettlementProvider |
 | [`sso.prisma`](../data/sso.md) | 1 | 2 | core platform | SsoConnection |
 | [`stitching.prisma`](../data/stitching.md) | 8 | 3 | [`stitching`](../modules/stitching.md) | StitchingJob, StitchingJobEvent, StitchingJobNumberCounter, StitchingOption, StitchingOptionGroup, StitchingOrder, StitchingOrder… |
+| [`support.prisma`](../data/support.md) | 2 | 2 | [`support`](../modules/support.md) | SupportTicket, TicketMessage |
 | [`tasks.prisma`](../data/tasks.md) | 3 | 1 | [`tasks`](../modules/tasks.md) | Task, TaskStageDefinition, TaskTransition |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
 | [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
@@ -356,6 +357,7 @@ against a real database.
 | [`SupplierBill`](../data/purchasing.md#supplierbill) | `purchasing` | 18 | 2 | id |  |
 | [`SupplierProduct`](../data/purchasing.md#supplierproduct) | `purchasing` | 10 | 2 | id | What a given supplier charges for a given variant, and under what terms. |
 | [`SupportAccessGrant`](../data/platform.md#supportaccessgrant) | `platform` | 11 | 1 | id | The one deliberately time-boxed door into a tenant's isolated deployment — doc 39 §3. |
+| [`SupportTicket`](../data/support.md#supportticket) | `support` | 10 | 0 | id | In-app help desk (internal) — tasks-notifications-support/64-help-desk- support-ticketing… |
 | [`Tag`](../data/crm.md#tag) | `crm` | 5 | 0 | id |  |
 | [`TailorProfile`](../data/stitching.md#tailorprofile) | `stitching` | 9 | 0 | id |  |
 | [`Task`](../data/tasks.md#task) | `tasks` | 19 | 1 | id |  |
@@ -365,6 +367,7 @@ against a real database.
 | [`TaxRate`](../data/tax.md#taxrate) | `tax` | 7 | 1 | id | One row per rate that has ever applied to a class. |
 | [`TenantDataExport`](../data/platform.md#tenantdataexport) | `platform` | 13 | 1 | id |  |
 | [`TenantDeploymentCredential`](../data/platform.md#tenantdeploymentcredential) | `platform` | 6 | 1 | id | The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GC… |
+| [`TicketMessage`](../data/support.md#ticketmessage) | `support` | 6 | 1 | id | An append-only reply thread — a correction is a new message, never an edit in place, the… |
 | [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
@@ -517,6 +520,8 @@ against a real database.
 | [`TenantExportStatus`](../data/platform.md#tenantexportstatus) | `platform` | `PENDING` `RUNNING` `COMPLETE` `FAILED` |
 | [`TenantExportTrigger`](../data/platform.md#tenantexporttrigger) | `platform` | `MANUAL` `DEPROVISION` |
 | [`TenantStatus`](../data/platform.md#tenantstatus) | `platform` | `PROVISIONING` `TRIAL` `ACTIVE` `SUSPENDED` `DEPROVISIONED` |
+| [`TicketPriority`](../data/support.md#ticketpriority) | `support` | `LOW` `NORMAL` `HIGH` `URGENT` |
+| [`TicketStatus`](../data/support.md#ticketstatus) | `support` | `OPEN` `IN_PROGRESS` `RESOLVED` `CLOSED` |
 | [`TradingPartnerKind`](../data/trading-partners.md#tradingpartnerkind) | `trading-partners` | `SUPPLIER` `CUSTOMER` `BOTH` |
 | [`TradingPartnerStatus`](../data/trading-partners.md#tradingpartnerstatus) | `trading-partners` | `PENDING` `ACTIVE` `SUSPENDED` |
 | [`UserRole`](../data/core.md#userrole) | `core` | `CUSTOMER` `STAFF` `TAILOR` `ADMIN` |

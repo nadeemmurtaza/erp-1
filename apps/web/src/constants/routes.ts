@@ -88,6 +88,11 @@ export const ROUTES = {
     bulletins: '/admin/bulletins',
     bulletinNew: '/admin/bulletins/new',
 
+    /** 64-help-desk-support-ticketing.md WO-64.5. */
+    supportTickets: '/admin/support/tickets',
+    supportTicketNew: '/admin/support/tickets/new',
+    supportTicket: (id: string) => `/admin/support/tickets/${id}`,
+
     /** 165-cross-tenant-marketplace-directory.md — off by default (module: 'marketplace'). */
     marketplace: '/admin/marketplace',
     products: '/admin/products',

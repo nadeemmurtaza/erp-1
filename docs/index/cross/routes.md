@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **814** endpoints across **149** controllers, with the access rule that actually guards each one.
+All **820** endpoints across **150** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -1147,6 +1147,17 @@ never authorization.
 | POST | `/stitching/bookings/:number/track` | **PUBLIC** | `StitchingController.track` | Track a booking with the phone number it was made with |
 | GET | `/stitching/garments` | **PUBLIC** | `StitchingController.garments` |  |
 | GET | `/stitching/option-groups` | **PUBLIC** | `StitchingController.optionGroups` | Style options for a garment, with their price deltas |
+
+### [`support`](../modules/support.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/support/tickets` | signed-in | `SupportTicketsController.list` | Tickets you raised or were assigned — or every ticket, with support.tickets.vie… |
+| POST | `/admin/support/tickets` | `support.tickets.raise` | `SupportTicketsController.create` | Raise a support ticket |
+| GET | `/admin/support/tickets/:id` | signed-in | `SupportTicketsController.get` | One ticket, with its full reply thread |
+| POST | `/admin/support/tickets/:id/assign` | `support.tickets.reassign` | `SupportTicketsController.assign` | Assign or reassign a ticket to someone who holds support.tickets.handle |
+| POST | `/admin/support/tickets/:id/messages` | signed-in | `SupportTicketsController.reply` | Reply on a ticket you can see |
+| POST | `/admin/support/tickets/:id/transition` | signed-in | `SupportTicketsController.transition` | Move a ticket forward, or reopen a resolved one |
 
 ### [`tasks`](../modules/tasks.md) (11)
 

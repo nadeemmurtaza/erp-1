@@ -336,6 +336,14 @@ export const SettingKey = {
    * always missing until the first all-staff accident.
    */
   NotifyAnnounceQuorumRecipientCount: 'notify.announce_quorum_recipient_count',
+  /**
+   * tasks-notifications-support/64-help-desk-support-ticketing.md — a
+   * ticket still OPEN or IN_PROGRESS past this many minutes since it was
+   * raised surfaces to doc 44's own action hub as an SLA breach, rather
+   * than aging silently. A single default window, not per-priority tuning
+   * (named explicitly out of scope until real usage data justifies it).
+   */
+  SupportTicketSlaMinutes: 'support.ticket_sla_minutes',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -517,4 +525,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   // and above" default a deployment tunes once its own rank ladder is real.
   [SettingKey.NotifyAnnounceQuorumRankLevel]: 30,
   [SettingKey.NotifyAnnounceQuorumRecipientCount]: 50,
+  // A working day's worth of hours — long enough that a normal-priority
+  // ticket picked up before lunch never falsely breaches, short enough
+  // that an unnoticed OPEN ticket surfaces the same day.
+  [SettingKey.SupportTicketSlaMinutes]: 240,
 };

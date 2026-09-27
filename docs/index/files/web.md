@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 409 tracked files in `apps/web`, by directory.
+All 412 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -955,6 +955,24 @@ All 409 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 195 | No clsx import needed |
 
+### `apps/web/src/app/(admin)/admin/(app)/support/tickets` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 95 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/support/tickets/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 186 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/support/tickets/new` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 86 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/tasks` (1)
 
 | File | Kind | Lines | Purpose |
@@ -1342,7 +1360,7 @@ All 409 tracked files in `apps/web`, by directory.
 | `image-manager.tsx` | component | 543 |  |
 | `metadata-driven-entity-form.tsx` | component | 120 |  |
 | `metadata-driven-form.tsx` | component | 147 |  |
-| `nav-registry.ts` | component | 1119 |  |
+| `nav-registry.ts` | component | 1131 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1572 |  |
@@ -1421,7 +1439,7 @@ All 409 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `secret-once.tsx` | component | 100 |  |
-| `status-badge.tsx` | component | 104 |  |
+| `status-badge.tsx` | component | 109 |  |
 | `toast-container.tsx` | component | 60 |  |
 | `wizard.tsx` | component | 146 |  |
 
@@ -1510,7 +1528,7 @@ All 409 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 276 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 281 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)

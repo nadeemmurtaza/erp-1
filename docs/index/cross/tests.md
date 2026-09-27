@@ -3,7 +3,7 @@
 
 # Tests
 
-**311** spec files, **2,986** cases. What is already pinned down — and what is not.
+**313** spec files, **3,012** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (291)
+## Unit and integration (293)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -268,6 +268,8 @@ regression or an N+1.
 | `apps/api/src/modules/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
 | `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
 | `apps/api/src/modules/settlements/settlements.service.spec.ts` | settlements | 22 | SettlementsService · createExpectedBatch · reconcile · pollExpectedBatches · requestWriteoff / appr… |
+| `apps/api/src/modules/support/support-ticket-action.source.spec.ts` | support | 4 | SupportTicketActionSource |
+| `apps/api/src/modules/support/support-tickets.service.spec.ts` | support | 22 | SupportTicketsService · create · get/list visibility · reply · assign · transition |
 | `apps/api/src/modules/tasks/task-event-intake.service.spec.ts` | tasks | 6 | TaskEventIntakeService |
 | `apps/api/src/modules/tasks/task-leaver.listener.spec.ts` | tasks | 4 | TaskLeaverListener |
 | `apps/api/src/modules/tasks/task-stage.service.spec.ts` | tasks | 4 | TaskStageService — WO-23.1: stages seeded empty, added by a client without a migration |

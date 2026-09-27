@@ -904,6 +904,24 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `SupplierDetailPage` | default | :35 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/support/tickets`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SupportTicketsPage` | default | :30 | tasks-notifications-support/64-help-desk-support-ticketing.md (WO-64.5). |
+
+### `apps/web/src/app/(admin)/admin/(app)/support/tickets/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SupportTicketDetailPage` | default | :43 | tasks-notifications-support/64-help-desk-support-ticketing.md WO-64.5. |
+
+### `apps/web/src/app/(admin)/admin/(app)/support/tickets/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewSupportTicketPage` | default | :14 | tasks-notifications-support/64-help-desk-support-ticketing.md WO-64.5. |
+
 ### `apps/web/src/app/(admin)/admin/(app)/tasks`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1327,8 +1345,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1089 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1104 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1101 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1116 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1457,8 +1475,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | function | :18 | because the storefront's comes from messages .json and the admin's is English (House Rule 6). |
-| `status-badge.tsx` | `statusLabel` | function | :97 | `READY_TO_SHIP` -> `Ready to ship`. |
-| `status-badge.tsx` | `StatusBadge` | function | :101 |  |
+| `status-badge.tsx` | `statusLabel` | function | :102 | `READY_TO_SHIP` -> `Ready to ship`. |
+| `status-badge.tsx` | `StatusBadge` | function | :106 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :11 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :36 | A form split into small, single-purpose steps instead of one long page. |

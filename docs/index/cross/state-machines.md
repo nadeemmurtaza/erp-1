@@ -3,7 +3,7 @@
 
 # State machines
 
-Every **1** `Record<XStatus, XStatus[]>`-shaped transition table in the codebase — a read-only, generated inventory (architecture-patterns/106-finite-state-machines-registry.md, WO-106.1), never a second enforcement path and never runtime-editable.
+Every **2** `Record<XStatus, XStatus[]>`-shaped transition table in the codebase — a read-only, generated inventory (architecture-patterns/106-finite-state-machines-registry.md, WO-106.1), never a second enforcement path and never runtime-editable.
 
 
 ## What this page is, and is not
@@ -28,6 +28,7 @@ methods for those.
 | Table | Entity status type | Module | Where |
 |---|---|---|---|
 | `ALLOWED_TRANSITIONS` | `OrderStatus` | `orders` | `apps/api/src/modules/orders/orders.service.ts:77` |
+| `ALLOWED_TRANSITIONS` | `TicketStatus` | `support` | `apps/api/src/modules/support/support-tickets.service.ts:27` |
 
 
 ## Detail
@@ -47,6 +48,20 @@ const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   DELIVERED: ['RETURNED'],
   CANCELLED: [],
   RETURNED: [],
+};
+```
+
+### `ALLOWED_TRANSITIONS` (`support`)
+
+> WO-64.1's own state machine: forward-only, RESOLVED -> IN_PROGRESS the one allowed backward move.
+`apps/api/src/modules/support/support-tickets.service.ts:27`
+
+```ts
+const ALLOWED_TRANSITIONS: Record<TicketStatus, TicketStatus[]> = {
+  OPEN: ['IN_PROGRESS'],
+  IN_PROGRESS: ['RESOLVED'],
+  RESOLVED: ['CLOSED', 'IN_PROGRESS'],
+  CLOSED: [],
 };
 ```
 

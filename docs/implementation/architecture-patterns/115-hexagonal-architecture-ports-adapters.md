@@ -12,6 +12,10 @@
 > are all verified real. The corrected table below cites only what
 > exists; this document's own thesis (the repository already has the
 > hexagonal shape, informally) stands on those five ports alone.
+>
+> **Follow-up correction (2026-09-26, found while verifying doc 118):**
+> the "application core" row named `OrdersService.createFromPos()`, which
+> does not exist — the real method is `placeFromPos()`. Fixed below.
 
 "Separate your core domain and business logic entirely from the
 presentation layer and the external infrastructure layer. Define explicit
@@ -33,7 +37,7 @@ exists."**
 |---|---|
 | **Port** (a contract the domain defines) | `PaymentProvider`, `StorageDriver`, `AiProvider`, `NotificationChannel`, `VectorStore` — every one of these is a TypeScript interface the *domain* (a service) defines and calls, never a concrete implementation the service imports directly |
 | **Adapter** (a concrete implementation at the edge) | `StripeProvider`, an `S3StorageDriver`, `EmailChannel`/`SmsChannel` — each a class implementing its own port, registered rather than hardcoded, exactly `MULTI-SECTOR.md`'s own "adding a provider is a new class, never a rewrite of a caller" |
-| **The application core, trigger-agnostic** | A NestJS service method — `OrdersService.createFromPos()`, `AnalyticsService.summary()` — is called identically whether the caller is `OrdersController` (HTTP), a domain-event subscriber, or a future MCP tool adapter (doc 116) — the service itself never branches on "who called me" |
+| **The application core, trigger-agnostic** | A NestJS service method — `OrdersService.placeFromPos()`, `AnalyticsService.summary()` — is called identically whether the caller is `OrdersController` (HTTP), a domain-event subscriber, or a future MCP tool adapter (doc 116) — the service itself never branches on "who called me" |
 | **Driving vs. driven adapters** | A NestJS `Controller` (HTTP in) and a `PaymentProvider` implementation (payment gateway out) are exactly hexagonal architecture's own "driving" (primary) and "driven" (secondary) adapter kinds, already structurally separate in this codebase's own `controller`/`service`/`provider` layering |
 
 "The application layer remains completely unaware of whether it is being

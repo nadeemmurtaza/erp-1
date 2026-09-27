@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 21 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (21 · 3,791 lines)
+## Files (21 · 3,795 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -23,7 +23,7 @@ All paths relative to `apps/api/src/modules/orders`.
 | `cod-risk.service.ts` | service | 86 | 3 |  |
 | `instalment-plan.dto.ts` | dto | 16 | 1 |  |
 | `order.dto.ts` | dto | 177 | 6 |  |
-| `instalment-plan.controller.ts` | controller | 52 | 1 | finance-accounting/151-layby-installment-sales.md — a plan is created at the point of sale (POS's own sell() endpoint);… |
+| `instalment-plan.controller.ts` | controller | 54 | 1 | finance-accounting/151-layby-installment-sales.md — a plan is created at the point of sale (POS's own sell() endpoint);… |
 | `instalment-plan.service.spec.ts` | unit test | 239 | — |  |
 | `instalment-plan.service.ts` | service | 228 | 1 | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md). |
 | `notification.subscriber.ts` | event subscriber | 259 | 1 |  |
@@ -32,7 +32,7 @@ All paths relative to `apps/api/src/modules/orders`.
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
 | `orders-pos.service.spec.ts` | unit test | 416 | — |  |
-| `orders.controller.ts` | controller | 145 | 2 |  |
+| `orders.controller.ts` | controller | 147 | 2 |  |
 | `orders.module.ts` | nest module | 57 | 1 |  |
 | `orders.service.ts` | service | 1370 | 4 |  |
 | `shipment-status.listener.ts` | event subscriber | 80 | 1 | The ONLY place a fulfilment-module event ever reaches Order.status. |
@@ -42,17 +42,17 @@ All paths relative to `apps/api/src/modules/orders`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` :102 | All orders, filterable by status |
-| GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` :118 |  |
-| POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` :124 | Move the order along; cancelling restores stock |
-| GET | `/admin/orders/:orderId/instalments` | `pos.operate` | `InstalmentPlanController.get` :23 | An order's instalment plan, its schedule, and every payment received so far |
-| POST | `/admin/orders/:orderId/instalments/cancel` | `pos.instalments.cancel` | `InstalmentPlanController.cancel` :41 | Cancel an active plan — refunds or forfeits the deposit per the configured policy |
-| POST | `/admin/orders/:orderId/instalments/default` | `pos.instalments.default` | `InstalmentPlanController.markDefaulted` :48 | Mark an active plan defaulted — writes off the unpaid balance |
-| POST | `/admin/orders/:orderId/instalments/payments` | `pos.operate` | `InstalmentPlanController.recordPayment` :30 | Record one instalment payment against the plan |
-| POST | `/orders` | **PUBLIC** | `OrdersController.place` :38 | Place the order in the current cart |
-| GET | `/orders/:number` | signed-in | `OrdersController.get` :74 | One order, for its owner |
-| POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` :83 |  |
-| GET | `/orders/mine` | signed-in | `OrdersController.mine` :60 | The signed-in customer's orders |
+| GET | `/admin/orders` | `orders.manage` | `OrdersAdminController.list` :104 | All orders, filterable by status |
+| GET | `/admin/orders/:id` | `orders.manage` | `OrdersAdminController.get` :120 |  |
+| POST | `/admin/orders/:id/status` | `orders.manage` | `OrdersAdminController.changeStatus` :126 | Move the order along; cancelling restores stock |
+| GET | `/admin/orders/:orderId/instalments` | `pos.operate` | `InstalmentPlanController.get` :24 | An order's instalment plan, its schedule, and every payment received so far |
+| POST | `/admin/orders/:orderId/instalments/cancel` | `pos.instalments.cancel` | `InstalmentPlanController.cancel` :43 | Cancel an active plan — refunds or forfeits the deposit per the configured policy |
+| POST | `/admin/orders/:orderId/instalments/default` | `pos.instalments.default` | `InstalmentPlanController.markDefaulted` :50 | Mark an active plan defaulted — writes off the unpaid balance |
+| POST | `/admin/orders/:orderId/instalments/payments` | `pos.operate` | `InstalmentPlanController.recordPayment` :32 | Record one instalment payment against the plan |
+| POST | `/orders` | **PUBLIC** | `OrdersController.place` :40 | Place the order in the current cart |
+| GET | `/orders/:number` | signed-in | `OrdersController.get` :76 | One order, for its owner |
+| POST | `/orders/:number/track` | **PUBLIC** | `OrdersController.track` :85 |  |
+| GET | `/orders/mine` | signed-in | `OrdersController.mine` :62 | The signed-in customer's orders |
 
 
 ## Domain events
@@ -130,6 +130,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `events`
 - core `extension-points`
 - core `feed`
+- core `idempotency`
 - core `intent`
 - core `notifications`
 - core `prisma`
@@ -172,13 +173,13 @@ check there before adding another.
 | `ChangeOrderStatusDto` | class | `order.dto.ts:134` |  |
 | `AdminOrderQueryDto` | class | `order.dto.ts:146` |  |
 | `OrderHistoryQueryDto` | class | `order.dto.ts:162` |  |
-| `InstalmentPlanController` | class | `instalment-plan.controller.ts:17` | finance-accounting/151-layby-installment-sales.md — a plan is created at the point of sale (POS's own sell()… |
+| `InstalmentPlanController` | class | `instalment-plan.controller.ts:18` | finance-accounting/151-layby-installment-sales.md — a plan is created at the point of sale (POS's own sell()… |
 | `InstalmentPlanService` | class | `instalment-plan.service.ts:22` | Layby and instalment sales (finance-accounting/151-layby-installment-sales.md). |
 | `OrderNotificationSubscriber` | class | `notification.subscriber.ts:53` |  |
 | `OrderFeedSource` | class | `order-feed.source.ts:16` | The live feed's own worked example (analytics-reporting/58-live-operational-feed.md) — an order placement, ne… |
 | `OrderReplicationListener` | class | `order-replication.listener.ts:30` | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `OrdersController` | class | `orders.controller.ts:32` |  |
-| `OrdersAdminController` | class | `orders.controller.ts:97` |  |
+| `OrdersController` | class | `orders.controller.ts:33` |  |
+| `OrdersAdminController` | class | `orders.controller.ts:99` |  |
 | `OrdersModule` | class | `orders.module.ts:56` |  |
 | `PosSaleLineInput` | interface | `orders.service.ts:43` |  |
 | `PlaceFromPosInstalmentInput` | interface | `orders.service.ts:55` | finance-accounting/151-layby-installment-sales.md — a layby/instalment plan requested at the point of sale. |

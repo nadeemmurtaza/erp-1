@@ -1,5 +1,23 @@
 # 23 — Task allotment, status and tracking
 
+> **Status: built (ADR-049/ADR-050).** `tasks.prisma` (`Task`,
+> `TaskTransition`, `TaskStageDefinition`), `TaskService` (sole writer,
+> pure `canTransition()`), `task-event-intake.service.ts` (generic
+> subscriber over a `TaskSourceRegistry` entry, so `tasks` imports no
+> module it serves), `task-leaver.listener.ts` (on `hr.posting_ended`,
+> unclaims and surfaces — never auto-reassigns), the four permissions, and
+> a my-work list + post queue + task drawer UI with a nav entry are all
+> real, confirmed at `apps/api/src/modules/tasks/`. Three deviations from
+> this document's own literal text, recorded in `tasks.prisma`'s own
+> header and ADR-049: `assigneeUserId` not `assigneeEmployeeId` (ADR-044 —
+> no `Employee` model, every actor is a `User`); `TaskStageDefinition` has
+> no `organizationId`, `key` unique alone (this deployment IS the tenant);
+> the `tasks.assign`/`tasks.close` toxic pair is a per-instance check
+> inside `TaskService.close()`, not a `TOXIC_PERMISSION_PAIRS` entry,
+> since it is only toxic for a task whose `sourceType` is a money module.
+> This blockquote was the one piece missing — the build itself predates
+> it. No new work in this pass.
+
 A task system is easy to build and easy to build wrongly. The wrong version
 assigns work to a person, stores a status as a string, and discovers on the day
 somebody resigns that four hundred tasks are addressed to a user who no longer

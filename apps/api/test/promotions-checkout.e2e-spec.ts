@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common
 import { Test } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
 import request from 'supertest';
+import { randomUUID } from 'node:crypto';
 import { toMinor } from '@newax/shared';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
@@ -112,6 +113,7 @@ describe('Promotions & gift cards at checkout (e2e)', () => {
       const { agent } = await cartWithReadyItem();
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod' })
         .expect(201);
       createdOrderIds.push(response.body.id);
@@ -148,6 +150,7 @@ describe('Promotions & gift cards at checkout (e2e)', () => {
       const { agent } = await cartWithReadyItem();
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod', promoCode: 'NOT-A-REAL-CODE' })
         .expect(400);
       expect(String(response.body.message)).toMatch(/not valid/i);
@@ -163,6 +166,7 @@ describe('Promotions & gift cards at checkout (e2e)', () => {
       const { agent } = await cartWithReadyItem();
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod', promoCode: code.body.code })
         .expect(201);
       createdOrderIds.push(response.body.id);
@@ -184,8 +188,8 @@ describe('Promotions & gift cards at checkout (e2e)', () => {
       const cart2 = await cartWithReadyItem();
 
       const responses = await Promise.all([
-        cart1.agent.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod', promoCode: code.body.code }),
-        cart2.agent.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod', promoCode: code.body.code }),
+        cart1.agent.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({ shippingAddress: KARACHI, paymentMethod: 'cod', promoCode: code.body.code }),
+        cart2.agent.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({ shippingAddress: KARACHI, paymentMethod: 'cod', promoCode: code.body.code }),
       ]);
 
       for (const res of responses) {
@@ -215,6 +219,7 @@ describe('Promotions & gift cards at checkout (e2e)', () => {
       const { agent } = await cartWithReadyItem();
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({
           shippingAddress: KARACHI,
           paymentMethod: 'cod',
@@ -250,13 +255,13 @@ describe('Promotions & gift cards at checkout (e2e)', () => {
       const cart2 = await cartWithReadyItem();
 
       const responses = await Promise.all([
-        cart1.agent.post('/api/v1/orders').send({
+        cart1.agent.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({
           shippingAddress: KARACHI,
           paymentMethod: 'cod',
           giftCardCode: giftCard.body.code,
           giftCardAmount: toMinor(300),
         }),
-        cart2.agent.post('/api/v1/orders').send({
+        cart2.agent.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({
           shippingAddress: KARACHI,
           paymentMethod: 'cod',
           giftCardCode: giftCard.body.code,
@@ -302,6 +307,7 @@ describe('Promotions & gift cards at checkout (e2e)', () => {
       await api().delete('/api/v1/cart').set('Authorization', `Bearer ${customerToken}`).expect(200);
       const { agent, auth } = await cartWithReadyItem(customerToken);
       const response = await auth(agent.post('/api/v1/orders'))
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod', storeCreditAmount: toMinor(400) })
         .expect(201);
       createdOrderIds.push(response.body.id);
@@ -318,6 +324,7 @@ describe('Promotions & gift cards at checkout (e2e)', () => {
       const { agent } = await cartWithReadyItem();
       const response = await agent
         .post('/api/v1/orders')
+        .set('Idempotency-Key', randomUUID())
         .send({ shippingAddress: KARACHI, paymentMethod: 'cod', storeCreditAmount: toMinor(100) })
         .expect(400);
       expect(String(response.body.message)).toMatch(/sign in/i);

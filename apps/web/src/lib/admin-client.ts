@@ -155,6 +155,8 @@ interface AdminRequestOptions {
   query?: Record<string, unknown>;
   /** Set for endpoints that return CSV, or a downloadable file, rather than JSON. */
   expect?: 'json' | 'text' | 'blob';
+  /** Extra headers — e.g. `Idempotency-Key` for a route guarded by `@IdempotentWrite`. */
+  headers?: Record<string, string>;
 }
 
 export async function adminFetch<T>(
@@ -172,6 +174,7 @@ export async function adminFetch<T>(
       credentials: 'include',
       headers: {
         Accept: options.expect === 'text' ? 'text/csv' : options.expect === 'blob' ? '*/*' : 'application/json',
+        ...options.headers,
       },
     },
     {

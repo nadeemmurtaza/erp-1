@@ -129,8 +129,15 @@ export default function TillPage() {
       instalmentPlan,
     };
 
+    // architecture-patterns/157 — generated BEFORE the attempt, not after a
+    // failure: if this exact call reaches the server and creates the order
+    // but the response is lost (the timeout case below), the outbox retry
+    // must resend the SAME key so it replays that order instead of ringing
+    // up a second one.
+    const idempotencyKey = crypto.randomUUID();
+
     try {
-      const order = await sell(shiftId, payload);
+      const order = await sell(shiftId, payload, idempotencyKey);
       setLastResult({
         queued: false,
         orderId: order.id,
@@ -149,7 +156,7 @@ export default function TillPage() {
       if (cause instanceof ApiError) {
         setError(cause.message);
       } else {
-        await putOutboxEntry(createOutboxEntry(crypto.randomUUID(), payload));
+        await putOutboxEntry(createOutboxEntry(idempotencyKey, payload));
         await refreshPendingCount();
         setLastResult({ queued: true, changeMinor: saleType === 'CASH' ? tender.changeMinor : 0, isLayby: saleType === 'LAYBY' });
         setBasket(clearBasket());

@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { IsDateString, IsOptional } from 'class-validator';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
+import { IdempotentWrite } from '../../core/idempotency/idempotent-write.decorator';
 import type { ShipmentStatus } from '../../core/prisma/client';
 import { AddToManifestDto, CreateManifestDto, CreateShipmentDto, RecordShipmentStatusDto } from './dto/fulfilment.dto';
 import { FulfilmentService } from './fulfilment.service';
@@ -43,6 +44,7 @@ export class FulfilmentAdminController {
   }
 
   @Post('shipments')
+  @IdempotentWrite('fulfilment.shipment.create')
   createShipment(@CurrentUser() user: AuthenticatedUser, @Body() dto: CreateShipmentDto) {
     return this.fulfilment.createShipment(dto, user.id);
   }

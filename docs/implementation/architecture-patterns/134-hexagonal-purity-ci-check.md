@@ -1,5 +1,16 @@
 # 134 — Enforcing "the core doesn't know its caller" the same way module boundaries are already enforced
 
+> **Status: shipped, WO-134.1/134.2 (2026-09-26).**
+> `scripts/check-hexagonal-purity.mjs` scans every `*.service.ts` file for
+> an import from `express`, `react` or `next`/`next/*`, or an `@Req()`/
+> `@Res()` decorator, following `check-module-boundaries.mjs`'s own
+> error-reporting shape and `check-rebrand.mjs`'s own `--self-test`
+> convention (8 cases, all passing). Run against the live codebase: 153
+> service files, zero violations — confirming this document's own claimed
+> baseline. Wired into `pnpm lint` immediately after
+> `check-module-boundaries.mjs`, and given its own `pnpm
+> check:hexagonal-purity` alias matching every other standalone check.
+
 Doc 115 found this repository already practices hexagonal architecture —
 every service method is trigger-agnostic — but only as an *observed*
 pattern, checked by code review, not by a machine. `scripts/

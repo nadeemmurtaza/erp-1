@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**84**), plus the repository's own check scripts.
+Every script in every `package.json` (**85**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -119,12 +119,13 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 |---|---|
 | `build` | `turbo run build` |
 | `dev` | `turbo run dev` |
-| `lint` | `node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-chart-imports.mjs && node scri…` |
+| `lint` | `node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node s…` |
 | `typecheck` | `turbo run typecheck` |
 | `test` | `turbo run test` |
 | `format` | `prettier --write "**/*.{ts,tsx,js,mjs,json,md}"` |
 | `format:check` | `prettier --check "**/*.{ts,tsx,js,mjs,json,md}"` |
 | `boundaries` | `node scripts/check-module-boundaries.mjs` |
+| `check:hexagonal-purity` | `node scripts/check-hexagonal-purity.mjs` |
 | `check:metadata-renderer` | `node scripts/check-metadata-renderer.mjs` |
 | `check:hardcoded-policy` | `node scripts/check-hardcoded-policy.mjs` |
 | `check:secrets` | `node scripts/check-frontend-secrets.mjs` |
@@ -163,6 +164,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
 | `scripts/check-hardcoded-policy.mjs` | 85 |  |
+| `scripts/check-hexagonal-purity.mjs` | 149 |  |
 | `scripts/check-links.mjs` | 409 |  |
 | `scripts/check-metadata-renderer.mjs` | 134 |  |
 | `scripts/check-module-boundaries.mjs` | 610 |  |

@@ -1,5 +1,20 @@
 # 138 — A written swap plan per core dependency, so resilience is checked, not assumed
 
+> **Status: corrected (2026-09-26).** This document's fourth entry claimed
+> a Node.js runtime bump is "a `Dockerfile` change, tested in CI before
+> rollout" — verified false: `.github/workflows/ci.yml` runs lint,
+> typecheck and tests directly against the Node runtime, never building or
+> testing either `apps/api/Dockerfile` or `apps/web/Dockerfile`;
+> `.github/workflows/deploy-cloudflare.yml` is a deployment-status
+> notifier for Cloudflare Pages' own auto-build, not a Docker pipeline
+> either — no CI workflow in this repository builds or tests a Docker
+> image today. The Dockerfiles themselves are real (doc 94's own
+> "verified" status already confirms this), and a runtime bump is
+> genuinely a small, contained `Dockerfile` edit — but "tested in CI" was
+> an overclaim, corrected below. Every other entry (`PasswordHasher`, doc
+> 100's own outbox trigger, the provider-registry pattern) checked out
+> real. See `DECISIONS.md` ADR-057.
+
 Every extension point in this repository already makes swapping a
 *provider* (a payment gateway, a notification channel) cheap. This
 document covers the smaller number of dependencies that are not behind a
@@ -29,8 +44,14 @@ insufficient, what's the actual path.
   since publishing is already abstracted from its own transport.
 - **`bcryptjs`/Node.js runtime itself** — swap path: this repository's
   own containerized deployment (doc 94/119) already means a runtime
-  version bump is a `Dockerfile` change, tested in CI before rollout —
-  no further playbook needed beyond the existing deployment pipeline.
+  version bump is a small, contained `Dockerfile` edit rather than a
+  scattered change — but it is **not yet CI-tested**: no workflow in
+  `.github/workflows/` builds or runs either Dockerfile today
+  (`ci.yml` tests the Node runtime directly; `deploy-cloudflare.yml` is a
+  deployment-status notifier for Cloudflare Pages' own build, not a
+  Docker pipeline). A future runtime bump is manually verified before
+  rollout until a CI step actually builds and smoke-tests the image —
+  named here as a real, small gap rather than assumed covered.
 - **A specific notification/payment vendor going out of business** —
   already fully solved by the provider-registry pattern itself; no
   additional playbook entry needed beyond "register a new implementation."

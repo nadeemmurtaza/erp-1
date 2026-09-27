@@ -1,5 +1,48 @@
 # 157 — Preventing the double transaction: a client `Idempotency-Key`, closing the one gap doc 117's domain keys structurally cannot reach
 
+> **Status: shipped, 2026-09-26.** Built with five corrections to this
+> document's own sketch, found while verifying its claims against the live
+> codebase before writing code:
+> 1. **No `organizationId`** (ADR-044/ADR-040 — this deployment IS the
+>    tenant). The sketch's `IdempotencyKey.organizationId` and its
+>    `req.user.organizationId` read cannot work: the primary guarded route
+>    (`OrdersController`'s real `place()` method) is `@Public()` with
+>    `user?: AuthenticatedUser | undefined` — guest checkout, frequently no
+>    user at all — and no `AuthenticatedUser` in this codebase carries an
+>    `organizationId`. The unique constraint is `(scope, key)` alone, which
+>    is already correct for a single-tenant deployment.
+> 2. **Corrected route names.** `OrdersController.create()` does not exist —
+>    the real guest-checkout method is `place()`. `POST /orders/:id/shipments`
+>    does not exist — the real route is `POST /admin/fulfilment/shipments`
+>    (body-carried `orderId`, not a path param).
+> 3. **The sketch's race guard was not actually atomic.** Its own
+>    `findUnique()`-then-`create()` sequence has a real TOCTOU gap under true
+>    concurrency; the shipped `IdempotencyInterceptor` instead wraps
+>    `create()` in try/catch for Prisma's `P2002` unique-violation code,
+>    treating a genuine race as a 409 — realizing the sketch's own stated
+>    intent ("the `@@unique` constraint is the actual race guard") correctly.
+>    Proven by `idempotency-key.constraint.spec.ts`'s real-DB
+>    `Promise.allSettled` test.
+> 4. **Real status-code recovery for replay.** `Reflector.get(HTTP_CODE_METADATA, ...)`
+>    recovers each route's actual configured status (defaulting to Nest's own
+>    201 for POST), rather than assuming 200 as the sketch did — so a replay
+>    carries the same status the original response did.
+> 5. **WO-157.5 (client changes) is not optional scaffolding — it shipped.**
+>    Making the header required with no client changes would have broken
+>    real checkout in production the moment this merged. `apps/web`'s
+>    checkout page, the admin "add tracking" and "record instalment payment"
+>    actions, and `apps/pos`'s till sale (both the immediate attempt and the
+>    outbox-sync retry, sharing one key generated *before* the first attempt
+>    so a lost response replays instead of duplicating) all now send
+>    `Idempotency-Key`. `wallet.purchase` has no client call site anywhere in
+>    this codebase — the wallet module ships off by default (doc 155) with
+>    no purchase UI built yet — so nothing there needed a client fix.
+>
+> All 5 guarded routes verified end to end in `orders.e2e-spec.ts`'s own
+> `idempotency (Idempotency-Key)` block, plus the 7 pre-existing e2e suites
+> that place orders, updated to send the now-required header. See
+> `DECISIONS.md` ADR-054.
+
 **Idempotency**, stated the way it was put to me: an operation that can be
 applied more than once without changing the result beyond the first
 application — the elevator button that stays "called" no matter how many

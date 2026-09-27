@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
+import { IdempotentWrite } from '../../core/idempotency/idempotent-write.decorator';
 import { InstalmentPlanService } from './instalment-plan.service';
 import { RecordInstalmentPaymentDto } from './dto/instalment-plan.dto';
 
@@ -26,6 +27,7 @@ export class InstalmentPlanController {
 
   @Post('payments')
   @RequirePermission('pos.operate')
+  @IdempotentWrite('instalment.payment.record')
   @ApiOperation({ summary: 'Record one instalment payment against the plan' })
   async recordPayment(
     @Param('orderId') orderId: string,

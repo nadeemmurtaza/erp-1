@@ -165,8 +165,19 @@ export function recordCashMovement(
   return request(`/admin/pos/shifts/${shiftId}/cash-movements`, { method: 'POST', body: { type, amountMinor, reason } });
 }
 
-export function sell(shiftId: string, sale: PosSaleRequest): Promise<PosOrder> {
-  return request(`/admin/pos/shifts/${shiftId}/sales`, { method: 'POST', body: sale });
+/**
+ * architecture-patterns/157 — `idempotencyKey` is generated once, at the
+ * moment the sale is first attempted, and resent unchanged on every retry
+ * (the immediate one here, and any later outbox-sync retry of the same
+ * queued sale) so a lost response or a flaky reconnect collapses to the
+ * one order the till already promised the customer, never a second one.
+ */
+export function sell(shiftId: string, sale: PosSaleRequest, idempotencyKey: string): Promise<PosOrder> {
+  return request(`/admin/pos/shifts/${shiftId}/sales`, {
+    method: 'POST',
+    headers: { 'Idempotency-Key': idempotencyKey },
+    body: sale,
+  });
 }
 
 export function getReceipt(orderId: string): Promise<PosReceiptData> {

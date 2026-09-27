@@ -17,6 +17,7 @@ import {
   type AuthenticatedUser,
 } from '../../core/auth/auth.constants';
 import { AuthenticatedOnly, CurrentUser, CustomerScope, Public, RequirePermission } from '../../core/auth/decorators';
+import { IdempotentWrite } from '../../core/idempotency/idempotent-write.decorator';
 import {
   AdminOrderQueryDto,
   ChangeOrderStatusDto,
@@ -34,6 +35,7 @@ export class OrdersController {
 
   @Public()
   @Post()
+  @IdempotentWrite('orders.place')
   @ApiOperation({ summary: 'Place the order in the current cart' })
   async place(
     @Req() request: Request,

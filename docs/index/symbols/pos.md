@@ -118,13 +118,13 @@ Every top-level export in `pos`, with the line to open.
 | `pos-client.ts` | `xReport` | function | :151 |  |
 | `pos-client.ts` | `zReport` | function | :155 |  |
 | `pos-client.ts` | `recordCashMovement` | function | :159 |  |
-| `pos-client.ts` | `sell` | function | :168 |  |
-| `pos-client.ts` | `getReceipt` | function | :172 |  |
-| `pos-client.ts` | `printReceipt` | function | :177 | Marks the receipt printed and returns its data — call right before `window.print()`. |
-| `pos-client.ts` | `searchOrders` | function | :188 | Order lookup and the return path reuse the EXISTING admin/orders and admin/payments endpoints direc… |
-| `pos-client.ts` | `getOrder` | function | :192 |  |
-| `pos-client.ts` | `returnOrder` | function | :196 |  |
-| `pos-client.ts` | `refundPayment` | function | :200 |  |
+| `pos-client.ts` | `sell` | function | :175 | architecture-patterns/157 — `idempotencyKey` is generated once, at the moment the sale is first att… |
+| `pos-client.ts` | `getReceipt` | function | :183 |  |
+| `pos-client.ts` | `printReceipt` | function | :188 | Marks the receipt printed and returns its data — call right before `window.print()`. |
+| `pos-client.ts` | `searchOrders` | function | :199 | Order lookup and the return path reuse the EXISTING admin/orders and admin/payments endpoints direc… |
+| `pos-client.ts` | `getOrder` | function | :203 |  |
+| `pos-client.ts` | `returnOrder` | function | :207 |  |
+| `pos-client.ts` | `refundPayment` | function | :211 |  |
 
 
 ---

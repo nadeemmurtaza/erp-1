@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe, VersioningType } from '@nestjs/common
 import { Test } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
 import request from 'supertest';
+import { randomUUID } from 'node:crypto';
 import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { PrismaService } from '../src/core/prisma/prisma.service';
@@ -101,7 +102,7 @@ describe('Customer portal (e2e)', () => {
     // test below could then match the other line.
     await agent.delete('/api/v1/cart').expect(200);
     await agent.post('/api/v1/cart/items').send({ variantId: readyVariantId, quantity: 1 }).expect(201);
-    const placed = await agent.post('/api/v1/orders').send({ shippingAddress: KARACHI, paymentMethod: 'cod' }).expect(201);
+    const placed = await agent.post('/api/v1/orders').set('Idempotency-Key', randomUUID()).send({ shippingAddress: KARACHI, paymentMethod: 'cod' }).expect(201);
     createdOrderIds.push(placed.body.id);
 
     for (const status of ['CONFIRMED', 'PROCESSING', 'READY_TO_SHIP', 'SHIPPED', 'DELIVERED']) {

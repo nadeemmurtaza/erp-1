@@ -75,13 +75,16 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `CashMovement` | 8 | :108 | One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which… |
-| `PosReceipt` | 5 | :130 | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succ… |
-| `PosShift` | 12 | :65 | One cashier's stretch at one terminal, opened with a cash float and closed with a physical count (RETAIL-ERP.… |
-| `PosTerminal` | 10 | :27 | A physical till. |
+| `CashMovement` | 8 | :112 | One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which… |
+| `PosLineModifier` | 6 | :151 | pos-hardware/31 §2 (WO-31.2) — a modifier on a basket/receipt line, e.g. |
+| `PosLineQuantitySource` | 3 | :176 | pos-hardware/31 §2 (WO-31.2) — extends the basket line concept with where its quantity came from: a scale rea… |
+| `PosParkedSale` | 8 | :195 | pos-hardware/31 §3 (WO-31.2/31.3) — a sale that has started but not tendered, exactly the "park/retrieve" pos… |
+| `PosReceipt` | 5 | :134 | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succ… |
+| `PosShift` | 13 | :67 | One cashier's stretch at one terminal, opened with a cash float and closed with a physical count (RETAIL-ERP.… |
+| `PosTerminal` | 10 | :29 | A physical till. |
 
 
-Enums: `CashMovementType` (5) · `PosShiftStatus` (2) · `PosTerminalStatus` (3)
+Enums: `CashMovementType` (5) · `PosOrderType` (3) · `PosShiftStatus` (2) · `PosTerminalStatus` (3) · `QuantitySource` (3)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 

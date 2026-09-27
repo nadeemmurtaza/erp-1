@@ -3,7 +3,7 @@
 
 # Schema: `pos.prisma`
 
-4 models · 3 enums. Owned by module [`pos`](../modules/pos.md).
+7 models · 5 enums. Owned by module [`pos`](../modules/pos.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `CashMovement`  <sub>`apps/api/prisma/schema/pos.prisma:108`</sub>
+### `CashMovement`  <sub>`apps/api/prisma/schema/pos.prisma:112`</sub>
 
 > One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which direction.
 
@@ -37,7 +37,49 @@ against a real database.
 
 Indexes: `@@index([shiftId])`
 
-### `PosReceipt`  <sub>`apps/api/prisma/schema/pos.prisma:130`</sub>
+### `PosLineModifier`  <sub>`apps/api/prisma/schema/pos.prisma:151`</sub>
+
+> pos-hardware/31 §2 (WO-31.2) — a modifier on a basket/receipt line, e.g.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `lineRef` | `String` |  |  |
+| `key` | `String` |  |  |
+| `label` | `String` |  |  |
+| `priceDeltaMinor` | `Int` |  | @default(0) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+
+Indexes: `@@index([lineRef])`
+
+### `PosLineQuantitySource`  <sub>`apps/api/prisma/schema/pos.prisma:176`</sub>
+
+> pos-hardware/31 §2 (WO-31.2) — extends the basket line concept with where its quantity came from: a scale reading or a scaled BOM recipe, not just a typed integer.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `lineRef` | `String` | id | @id |
+| `source` | `QuantitySource` |  |  |
+| `recipeId` | `String?` | optional |  |
+
+### `PosParkedSale`  <sub>`apps/api/prisma/schema/pos.prisma:195`</sub>
+
+> pos-hardware/31 §3 (WO-31.2/31.3) — a sale that has started but not tendered, exactly the "park/retrieve" pos.prisma's own header already named as unbuilt.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `shiftId` | `String` |  |  |
+| `orderType` | `PosOrderType` |  | @default(COUNTER) |
+| `label` | `String` |  |  |
+| `basketSnapshot` | `Json` |  |  |
+| `parkedAt` | `DateTime` |  | @default(now()) |
+| `retrievedAt` | `DateTime?` | optional |  |
+| `shift` | `PosShift` | relation | @relation(fields: [shiftId], references: [id]) |
+
+Indexes: `@@index([shiftId, retrievedAt])`
+
+### `PosReceipt`  <sub>`apps/api/prisma/schema/pos.prisma:134`</sub>
 
 > One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succeeds, best-effort and outside that call's own transaction, the same "not core to the sale'…
 
@@ -51,7 +93,7 @@ Indexes: `@@index([shiftId])`
 
 Indexes: `@@index([orderId])`
 
-### `PosShift`  <sub>`apps/api/prisma/schema/pos.prisma:65`</sub>
+### `PosShift`  <sub>`apps/api/prisma/schema/pos.prisma:67`</sub>
 
 > One cashier's stretch at one terminal, opened with a cash float and closed with a physical count (RETAIL-ERP.md R11, WO-21.2).
 
@@ -69,10 +111,11 @@ Indexes: `@@index([orderId])`
 | `terminal` | `PosTerminal` | relation | @relation(fields: [terminalId], references: [id], onDelete: Restrict) |
 | `cashMovements` | `CashMovement[]` |  |  |
 | `stockVariances` | `StockVariance[]` |  |  |
+| `parkedSales` | `PosParkedSale[]` |  |  |
 
 Indexes: `@@index([terminalId])` · `@@index([status])`
 
-### `PosTerminal`  <sub>`apps/api/prisma/schema/pos.prisma:27`</sub>
+### `PosTerminal`  <sub>`apps/api/prisma/schema/pos.prisma:29`</sub>
 
 > A physical till.
 
@@ -94,7 +137,7 @@ Indexes: `@@index([locationId])` · `@@index([status])`
 
 ## Enums
 
-### `CashMovementType`  <sub>`apps/api/prisma/schema/pos.prisma:90`</sub>
+### `CashMovementType`  <sub>`apps/api/prisma/schema/pos.prisma:94`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -104,14 +147,22 @@ Indexes: `@@index([locationId])` · `@@index([status])`
 | `DROP` |  |
 | `PAID_OUT` |  |
 
-### `PosShiftStatus`  <sub>`apps/api/prisma/schema/pos.prisma:52`</sub>
+### `PosOrderType`  <sub>`apps/api/prisma/schema/pos.prisma:184`</sub>
+
+| Value | Meaning |
+|---|---|
+| `COUNTER` |  |
+| `TAB` |  |
+| `TABLE` |  |
+
+### `PosShiftStatus`  <sub>`apps/api/prisma/schema/pos.prisma:54`</sub>
 
 | Value | Meaning |
 |---|---|
 | `OPEN` |  |
 | `CLOSED` |  |
 
-### `PosTerminalStatus`  <sub>`apps/api/prisma/schema/pos.prisma:12`</sub>
+### `PosTerminalStatus`  <sub>`apps/api/prisma/schema/pos.prisma:14`</sub>
 
 > The till (RETAIL-ERP.md R7/R11, Tranche 4).
 
@@ -120,6 +171,14 @@ Indexes: `@@index([locationId])` · `@@index([status])`
 | `PENDING` |  |
 | `ACTIVE` |  |
 | `SUSPENDED` |  |
+
+### `QuantitySource`  <sub>`apps/api/prisma/schema/pos.prisma:166`</sub>
+
+| Value | Meaning |
+|---|---|
+| `TYPED` |  |
+| `SCALE_WEIGHT` |  |
+| `BOM_RECIPE_SCALE` |  |
 
 
 ---

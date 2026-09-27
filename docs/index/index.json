@@ -3,12 +3,12 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2360,
-    "lines": 358551,
+    "files": 2361,
+    "lines": 358825,
     "routes": 846,
     "controllers": 154,
-    "models": 304,
-    "enums": 142,
+    "models": 307,
+    "enums": 144,
     "migrations": 114,
     "events": 69,
     "permissions": 121,
@@ -33,8 +33,8 @@
     },
     "api": {
       "files": 1108,
-      "lines": 148349,
-      "bytes": 5772937,
+      "lines": 148422,
+      "bytes": 5775865,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -62,9 +62,9 @@
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 79,
-      "lines": 8430,
-      "bytes": 301721,
+      "files": 80,
+      "lines": 8631,
+      "bytes": 310018,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -22380,7 +22380,7 @@
     {
       "name": "CashMovement",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 108,
+      "line": 112,
       "doc": "One physical cash movement at the drawer during a shift — always a positive `amountMinor`; `type` says which direction.",
       "fields": [
         {
@@ -34046,9 +34046,159 @@
       ]
     },
     {
+      "name": "PosLineModifier",
+      "file": "apps/api/prisma/schema/pos.prisma",
+      "line": 151,
+      "doc": "pos-hardware/31 §2 (WO-31.2) — a modifier on a basket/receipt line, e.g.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lineRef",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "key",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priceDeltaMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([lineRef])"
+      ]
+    },
+    {
+      "name": "PosLineQuantitySource",
+      "file": "apps/api/prisma/schema/pos.prisma",
+      "line": 176,
+      "doc": "pos-hardware/31 §2 (WO-31.2) — extends the basket line concept with where its quantity came from: a scale reading or a scaled BOM recipe, not just a typed integer.",
+      "fields": [
+        {
+          "name": "lineRef",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "source",
+          "type": "QuantitySource",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "recipeId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "name": "PosParkedSale",
+      "file": "apps/api/prisma/schema/pos.prisma",
+      "line": 195,
+      "doc": "pos-hardware/31 §3 (WO-31.2/31.3) — a sale that has started but not tendered, exactly the \"park/retrieve\" pos.prisma's own header already named as unbuilt.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shiftId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderType",
+          "type": "PosOrderType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "basketSnapshot",
+          "type": "Json",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "parkedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "retrievedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "shift",
+          "type": "PosShift",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([shiftId, retrievedAt])"
+      ]
+    },
+    {
       "name": "PosReceipt",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 130,
+      "line": 134,
       "doc": "One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService.placeFromPos() succeeds, best-effort and outside that call's own transaction, the same \"not core to the sale'…",
       "fields": [
         {
@@ -34094,7 +34244,7 @@
     {
       "name": "PosShift",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 65,
+      "line": 67,
       "doc": "One cashier's stretch at one terminal, opened with a cash float and closed with a physical count (RETAIL-ERP.md R11, WO-21.2).",
       "fields": [
         {
@@ -34180,6 +34330,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "parkedSales",
+          "type": "PosParkedSale[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -34190,7 +34347,7 @@
     {
       "name": "PosTerminal",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 27,
+      "line": 29,
       "doc": "A physical till.",
       "fields": [
         {
@@ -45005,7 +45162,7 @@
     {
       "name": "CashMovementType",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 90,
+      "line": 94,
       "values": [
         "OPENING_FLOAT",
         "CASH_IN",
@@ -45668,9 +45825,19 @@
       ]
     },
     {
+      "name": "PosOrderType",
+      "file": "apps/api/prisma/schema/pos.prisma",
+      "line": 184,
+      "values": [
+        "COUNTER",
+        "TAB",
+        "TABLE"
+      ]
+    },
+    {
       "name": "PosShiftStatus",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 52,
+      "line": 54,
       "values": [
         "OPEN",
         "CLOSED"
@@ -45679,7 +45846,7 @@
     {
       "name": "PosTerminalStatus",
       "file": "apps/api/prisma/schema/pos.prisma",
-      "line": 12,
+      "line": 14,
       "values": [
         "PENDING",
         "ACTIVE",
@@ -45750,6 +45917,16 @@
         "PARTIAL",
         "RECEIVED",
         "CANCELLED"
+      ]
+    },
+    {
+      "name": "QuantitySource",
+      "file": "apps/api/prisma/schema/pos.prisma",
+      "line": 166,
+      "values": [
+        "TYPED",
+        "SCALE_WEIGHT",
+        "BOM_RECIPE_SCALE"
       ]
     },
     {
@@ -48359,9 +48536,39 @@
     }
   ],
   "schemaMigrationDrift": {
-    "missingTables": [],
+    "missingTables": [
+      {
+        "model": "PosLineModifier",
+        "table": "PosLineModifier",
+        "file": "apps/api/prisma/schema/pos.prisma",
+        "line": 151
+      },
+      {
+        "model": "PosLineQuantitySource",
+        "table": "PosLineQuantitySource",
+        "file": "apps/api/prisma/schema/pos.prisma",
+        "line": 176
+      },
+      {
+        "model": "PosParkedSale",
+        "table": "PosParkedSale",
+        "file": "apps/api/prisma/schema/pos.prisma",
+        "line": 195
+      }
+    ],
     "missingColumns": [],
-    "missingEnums": [],
+    "missingEnums": [
+      {
+        "enum": "PosOrderType",
+        "file": "apps/api/prisma/schema/pos.prisma",
+        "line": 184
+      },
+      {
+        "enum": "QuantitySource",
+        "file": "apps/api/prisma/schema/pos.prisma",
+        "line": 166
+      }
+    ],
     "missingEnumValues": [
       {
         "enum": "InvoiceStatus",
@@ -54834,9 +55041,10 @@
       "file": "packages/pos-core/src/basket.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 9,
+      "cases": 16,
       "describes": [
-        "basket"
+        "basket",
+        "modifiers and quantity sources (pos-hardware/31)"
       ]
     },
     {
@@ -54852,9 +55060,10 @@
       "file": "packages/pos-core/src/receipt.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 2,
+      "cases": 3,
       "describes": [
-        "toReceipt"
+        "toReceipt",
+        "toKitchenTicket"
       ]
     },
     {
@@ -56951,8 +57160,8 @@
       "path": "apps/api/prisma/schema/pos.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 139,
-      "bytes": 5672,
+      "lines": 212,
+      "bytes": 8600,
       "doc": "The till (RETAIL-ERP.md R7/R11, Tranche 4). WO-21.1 owns a terminal's",
       "symbols": []
     },
@@ -89909,8 +90118,8 @@
       "path": "packages/pos-core/src/basket.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 55,
-      "bytes": 1994,
+      "lines": 131,
+      "bytes": 5081,
       "doc": "",
       "symbols": []
     },
@@ -89918,49 +90127,84 @@
       "path": "packages/pos-core/src/basket.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 66,
-      "bytes": 2542,
+      "lines": 122,
+      "bytes": 5038,
       "doc": "",
       "symbols": [
         {
+          "name": "BasketLineModifier",
+          "kind": "interface",
+          "line": 14
+        },
+        {
+          "name": "BasketQuantitySource",
+          "kind": "type",
+          "line": 23
+        },
+        {
           "name": "BasketLine",
           "kind": "interface",
-          "line": 12
+          "line": 28
         },
         {
           "name": "Basket",
           "kind": "type",
-          "line": 22
+          "line": 47
         },
         {
           "name": "addLine",
           "kind": "function",
-          "line": 25
+          "line": 63
         },
         {
           "name": "setQuantity",
           "kind": "function",
-          "line": 37
+          "line": 84
         },
         {
           "name": "removeLine",
           "kind": "function",
-          "line": 42
+          "line": 91
         },
         {
           "name": "clearBasket",
           "kind": "function",
-          "line": 46
+          "line": 95
         },
         {
           "name": "basketTotals",
           "kind": "function",
-          "line": 57
+          "line": 113
         },
         {
           "name": "lineTotal",
           "kind": "function",
-          "line": 63
+          "line": 119
+        }
+      ]
+    },
+    {
+      "path": "packages/pos-core/src/hardware.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 35,
+      "bytes": 1432,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BarcodeScanner",
+          "kind": "interface",
+          "line": 19
+        },
+        {
+          "name": "ReceiptPrinter",
+          "kind": "interface",
+          "line": 25
+        },
+        {
+          "name": "CashDrawer",
+          "kind": "interface",
+          "line": 29
         }
       ]
     },
@@ -89968,8 +90212,8 @@
       "path": "packages/pos-core/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 5,
-      "bytes": 105,
+      "lines": 6,
+      "bytes": 133,
       "doc": "",
       "symbols": []
     },
@@ -90041,8 +90285,8 @@
       "path": "packages/pos-core/src/receipt.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 34,
-      "bytes": 1142,
+      "lines": 49,
+      "bytes": 1759,
       "doc": "",
       "symbols": []
     },
@@ -90050,8 +90294,8 @@
       "path": "packages/pos-core/src/receipt.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 62,
-      "bytes": 1779,
+      "lines": 80,
+      "bytes": 2416,
       "doc": "The receipt model — a plain, print-ready shape built from a placed sale's API response.",
       "symbols": [
         {
@@ -90070,9 +90314,14 @@
           "line": 29
         },
         {
+          "name": "toKitchenTicket",
+          "kind": "function",
+          "line": 45
+        },
+        {
           "name": "toReceipt",
           "kind": "function",
-          "line": 38
+          "line": 56
         }
       ]
     },

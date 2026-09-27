@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,108 files · 148,349 lines
+1,108 files · 148,422 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -29,7 +29,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 |---|---|---|---|
 | `apps/api` | 10 | 845 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,294 | module |
-| `apps/api/prisma/schema` | 166 | 16,860 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 166 | 16,933 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 148 | nest module, module |
 | `apps/api/src/core` | 180 | 22,718 | unit test, service, module, controller |
 | `apps/api/src/modules` | 719 | 96,247 | nest module, unit test, service, controller |

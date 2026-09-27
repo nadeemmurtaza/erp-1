@@ -3,7 +3,7 @@
 
 # Data model
 
-All **304** Prisma models and **142** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **307** Prisma models and **144** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -65,7 +65,7 @@ against a real database.
 | [`payments.prisma`](../data/payments.md) | 1 | 1 | [`payments`](../modules/payments.md) | Payment |
 | [`payroll.prisma`](../data/payroll.md) | 9 | 5 | [`payroll`](../modules/payroll.md) | CompensationRate, LeaveAccrualRun, LeaveBalance, LeaveRequest, LeaveType, PayRun, PayRunAdjustment, PayRunLine, PayRunNumberCount… |
 | [`platform.prisma`](../data/platform.md) | 20 | 11 | core platform | AgencyUsageSnapshot, MeteredOrderFee, PlatformCustomQuote, PlatformInvoice, PlatformInvoiceCreditNote, PlatformOpsClient, Platfor… |
-| [`pos.prisma`](../data/pos.md) | 4 | 3 | [`pos`](../modules/pos.md) | CashMovement, PosReceipt, PosShift, PosTerminal |
+| [`pos.prisma`](../data/pos.md) | 7 | 5 | [`pos`](../modules/pos.md) | CashMovement, PosLineModifier, PosLineQuantitySource, PosParkedSale, PosReceipt, PosShift, PosTerminal |
 | [`pricing.prisma`](../data/pricing.md) | 3 | 0 | [`pricing`](../modules/pricing.md) | PriceList, PriceListAssignment, PriceListEntry |
 | [`production.prisma`](../data/production.md) | 4 | 2 | [`production`](../modules/production.md) | BillOfMaterial, BillOfMaterialLine, WorkOrder, WorkOrderNumberCounter |
 | [`promotions.prisma`](../data/promotions.md) | 3 | 2 | [`promotions`](../modules/promotions.md) | Discount, OrderDiscount, PromoCode |
@@ -272,8 +272,11 @@ against a real database.
 | [`PlatformUsageRecord`](../data/platform.md#platformusagerecord) | `platform` | 6 | 1 | id | Metered usage a tenant's own deployment reports about itself — never a source of business… |
 | [`PolicyQuarantine`](../data/replication.md#policyquarantine) | `replication` | 14 | 1 | id | R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for rev… |
 | [`Position`](../data/hr.md#position) | `hr` | 11 | 4 | id | A post in the org chart: "Finance Manager, North Region". |
+| [`PosLineModifier`](../data/pos.md#poslinemodifier) | `pos` | 6 | 0 | id | pos-hardware/31 §2 (WO-31.2) — a modifier on a basket/receipt line, e.g. |
+| [`PosLineQuantitySource`](../data/pos.md#poslinequantitysource) | `pos` | 3 | 0 | lineRef | pos-hardware/31 §2 (WO-31.2) — extends the basket line concept with where its quantity ca… |
+| [`PosParkedSale`](../data/pos.md#posparkedsale) | `pos` | 8 | 1 | id | pos-hardware/31 §3 (WO-31.2/31.3) — a sale that has started but not tendered, exactly the… |
 | [`PosReceipt`](../data/pos.md#posreceipt) | `pos` | 5 | 0 | id | One receipt per POS sale (WO-21.5) — created by PosSalesService right after OrdersService… |
-| [`PosShift`](../data/pos.md#posshift) | `pos` | 12 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
+| [`PosShift`](../data/pos.md#posshift) | `pos` | 13 | 1 | id | One cashier's stretch at one terminal, opened with a cash float and closed with a physica… |
 | [`PosTerminal`](../data/pos.md#posterminal) | `pos` | 10 | 0 | id | A physical till. |
 | [`Posting`](../data/hr.md#posting) | `hr` | 8 | 2 | id | Who holds which post, when. |
 | [`PriceList`](../data/pricing.md#pricelist) | `pricing` | 8 | 0 | id | The `pricing` module — 146-wholesale-tiered-pricing.md (b2b-wholesale-multientity/146-who… |
@@ -489,6 +492,7 @@ against a real database.
 | [`PayRunAdjustmentReason`](../data/payroll.md#payrunadjustmentreason) | `payroll` | `OVERPAYMENT` `UNDERPAYMENT` `CORRECTION` |
 | [`PayRunStatus`](../data/payroll.md#payrunstatus) | `payroll` | `DRAFT` `APPROVED` `POSTED` |
 | [`PermissionEffect`](../data/core.md#permissioneffect) | `core` | `GRANT` `REVOKE` |
+| [`PosOrderType`](../data/pos.md#posordertype) | `pos` | `COUNTER` `TAB` `TABLE` |
 | [`PosShiftStatus`](../data/pos.md#posshiftstatus) | `pos` | `OPEN` `CLOSED` |
 | [`PosTerminalStatus`](../data/pos.md#posterminalstatus) | `pos` | `PENDING` `ACTIVE` `SUSPENDED` |
 | [`PricingModel`](../data/platform.md#pricingmodel) | `platform` | `PER_SEAT` `FLAT_MONTHLY` `ONE_TIME_LICENSE` `USAGE_BASED` |
@@ -497,6 +501,7 @@ against a real database.
 | [`ProductReferenceReviewStatus`](../data/marketplace.md#productreferencereviewstatus) | `marketplace` | `UNREVIEWED` `CONFIRMED` `FLAGGED` |
 | [`ProductStatus`](../data/catalog.md#productstatus) | `catalog` | `DRAFT` `ACTIVE` `ARCHIVED` |
 | [`PurchaseOrderStatus`](../data/purchasing.md#purchaseorderstatus) | `purchasing` | `DRAFT` `SENT` `PARTIAL` `RECEIVED` `CANCELLED` |
+| [`QuantitySource`](../data/pos.md#quantitysource) | `pos` | `TYPED` `SCALE_WEIGHT` `BOM_RECIPE_SCALE` |
 | [`QuoteStatus`](../data/invoicing.md#quotestatus) | `invoicing` | `SENT` `ACCEPTED` `REJECTED` `EXPIRED` |
 | [`QuoteStatus`](../data/platform.md#quotestatus) | `platform` | `PENDING` `APPROVED` `REJECTED` |
 | [`RateCardChangeStatus`](../data/platform.md#ratecardchangestatus) | `platform` | `PENDING` `APPROVED` `REJECTED` `APPLIED` |

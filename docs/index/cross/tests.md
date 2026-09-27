@@ -3,7 +3,7 @@
 
 # Tests
 
-**325** spec files, **3,100** cases. What is already pinned down — and what is not.
+**325** spec files, **3,108** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -341,9 +341,9 @@ regression or an N+1.
 | `apps/platform/src/modules/trials/signup.service.spec.ts` | root | 7 | SignupService · requestSignup · verifyAndProvision |
 | `apps/platform/src/modules/trials/trials.service.spec.ts` | root | 8 | TrialsService · extend · convert · expireToSuspended · listExtendedMoreThanOnce |
 | `apps/web/src/components/admin/analytics/resolve-path.spec.ts` | web | 13 | resolvePath · interpolateHref |
-| `packages/pos-core/src/basket.spec.ts` | packages | 9 | basket |
+| `packages/pos-core/src/basket.spec.ts` | packages | 16 | basket · modifiers and quantity sources (pos-hardware/31) |
 | `packages/pos-core/src/outbox.spec.ts` | packages | 6 | outbox state machine |
-| `packages/pos-core/src/receipt.spec.ts` | packages | 2 | toReceipt |
+| `packages/pos-core/src/receipt.spec.ts` | packages | 3 | toReceipt · toKitchenTicket |
 | `packages/pos-core/src/tender.spec.ts` | packages | 3 | computeTender |
 | `packages/shared/src/api-keys.spec.ts` | packages | 34 | NON_DELEGATABLE_PERMISSIONS · effectiveApiKeyPermissions — a key never exceeds its owner · refuseAp… |
 | `packages/shared/src/cod-risk.spec.ts` | packages | 19 | computeCodRiskScore |

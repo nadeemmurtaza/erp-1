@@ -12,18 +12,24 @@ Every top-level export in `packages`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `basket.ts` | `BasketLine` | interface | :12 | The till's own basket — pure functions, no I/O (RETAIL-ERP.md's own `packages/pos-core` description… |
-| `basket.ts` | `Basket` | type | :22 |  |
-| `basket.ts` | `addLine` | function | :25 | Adds a line, or increments an existing one for the same variant. |
-| `basket.ts` | `setQuantity` | function | :37 | Sets a line's quantity outright; a quantity of 0 or less removes it. |
-| `basket.ts` | `removeLine` | function | :42 |  |
-| `basket.ts` | `clearBasket` | function | :46 |  |
-| `basket.ts` | `basketTotals` | function | :57 | The basket's totals — zero shipping/COD/tax, the same simplification `OrdersService.placeFromPos()`… |
-| `basket.ts` | `lineTotal` | function | :63 |  |
+| `basket.ts` | `BasketLineModifier` | interface | :14 | pos-hardware/31 §2 — a modifier changes the till total, e.g. |
+| `basket.ts` | `BasketQuantitySource` | type | :23 | pos-hardware/31 §2 — where a line's quantity came from, when it is not a typed integer: a scale rea… |
+| `basket.ts` | `BasketLine` | interface | :28 |  |
+| `basket.ts` | `Basket` | type | :47 |  |
+| `basket.ts` | `addLine` | function | :63 | Adds a line, or increments an existing one for the same variant — but only when BOTH the new line a… |
+| `basket.ts` | `setQuantity` | function | :84 | Sets a line's quantity outright; a quantity of 0 or less removes it. |
+| `basket.ts` | `removeLine` | function | :91 |  |
+| `basket.ts` | `clearBasket` | function | :95 |  |
+| `basket.ts` | `basketTotals` | function | :113 | The basket's totals — zero shipping/COD/tax, the same simplification `OrdersService.placeFromPos()`… |
+| `basket.ts` | `lineTotal` | function | :119 |  |
+| `hardware.ts` | `BarcodeScanner` | interface | :19 | pos-hardware/31-sector-pos-hardware-integration.md WO-31.1 — the till hardware layer, as extension… |
+| `hardware.ts` | `ReceiptPrinter` | interface | :25 |  |
+| `hardware.ts` | `CashDrawer` | interface | :29 |  |
 | `index.ts` | `*` | re-export |  | from `./basket` |
 | `index.ts` | `*` | re-export |  | from `./tender` |
 | `index.ts` | `*` | re-export |  | from `./receipt` |
 | `index.ts` | `*` | re-export |  | from `./outbox` |
+| `index.ts` | `*` | re-export |  | from `./hardware` |
 | `outbox.ts` | `OutboxStatus` | type | :16 | The offline sale outbox — a pure state machine, no I/O (RETAIL-ERP.md's own `packages/pos-core` des… |
 | `outbox.ts` | `OutboxEntry` | interface | :18 | The offline sale outbox — a pure state machine, no I/O (RETAIL-ERP.md's own `packages/pos-core` des… |
 | `outbox.ts` | `InvalidOutboxTransitionError` | class | :29 |  |
@@ -36,7 +42,8 @@ Every top-level export in `packages`, with the line to open.
 | `receipt.ts` | `ReceiptLine` | interface | :8 | The receipt model — a plain, print-ready shape built from a placed sale's API response. |
 | `receipt.ts` | `ReceiptData` | interface | :16 |  |
 | `receipt.ts` | `PlacedPosSale` | interface | :29 | The minimal shape of a placeFromPos() response this file needs — not the full Order type. |
-| `receipt.ts` | `toReceipt` | function | :38 |  |
+| `receipt.ts` | `toKitchenTicket` | function | :45 | pos-hardware/31 WO-31.5 — a kitchen-facing ticket for a `TAB`/`TABLE` sale with modifiers: the same… |
+| `receipt.ts` | `toReceipt` | function | :56 |  |
 | `tender.ts` | `TenderResult` | interface | :7 | Cash tender and change — pure, in paisa. |
 | `tender.ts` | `computeTender` | function | :15 |  |
 

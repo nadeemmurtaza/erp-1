@@ -26,7 +26,28 @@ CI's own seed step.
 This section compares the two sides. It is a statement of fact, not a gate:
 nothing here fails a build.
 
-**In step.** Every model, column and enum the schema declares is built by a migration.
+> [!WARNING]
+> The schema declares **3 table(s)**, **0 column(s)** and **2 enum(s)** that no committed migration creates.
+> A database built from `migrations/` alone will be missing them.
+
+### Models with no migration (3)
+
+| Model | Table | Declared at |
+|---|---|---|
+| `PosLineModifier` | `PosLineModifier` | `apps/api/prisma/schema/pos.prisma:151` |
+| `PosLineQuantitySource` | `PosLineQuantitySource` | `apps/api/prisma/schema/pos.prisma:176` |
+| `PosParkedSale` | `PosParkedSale` | `apps/api/prisma/schema/pos.prisma:195` |
+
+
+
+
+### Enums with no migration (2)
+
+| Enum | Declared at |
+|---|---|
+| `PosOrderType` | `apps/api/prisma/schema/pos.prisma:184` |
+| `QuantitySource` | `apps/api/prisma/schema/pos.prisma:166` |
+
 
 
 ## Every migration

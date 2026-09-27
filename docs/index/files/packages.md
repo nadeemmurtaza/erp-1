@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 79 tracked files in `packages/*`, by directory.
+All 80 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -26,17 +26,18 @@ All 79 tracked files in `packages/*`, by directory.
 | `package.json` | json | 37 |  |
 | `tsconfig.json` | json | 15 |  |
 
-### `packages/pos-core/src` (9)
+### `packages/pos-core/src` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `basket.spec.ts` | unit test | 55 |  |
-| `basket.ts` | module | 66 |  |
-| `index.ts` | module | 5 |  |
+| `basket.spec.ts` | unit test | 131 |  |
+| `basket.ts` | module | 122 |  |
+| `hardware.ts` | module | 35 |  |
+| `index.ts` | module | 6 |  |
 | `outbox.spec.ts` | unit test | 70 |  |
 | `outbox.ts` | module | 84 | The offline sale outbox — a pure state machine, no I/O (RETAIL-ERP.md's own `packages/pos-core` description). |
-| `receipt.spec.ts` | unit test | 34 |  |
-| `receipt.ts` | module | 62 | The receipt model — a plain, print-ready shape built from a placed sale's API response. |
+| `receipt.spec.ts` | unit test | 49 |  |
+| `receipt.ts` | module | 80 | The receipt model — a plain, print-ready shape built from a placed sale's API response. |
 | `tender.spec.ts` | unit test | 16 |  |
 | `tender.ts` | module | 20 | Cash tender and change — pure, in paisa. |
 

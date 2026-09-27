@@ -18,6 +18,8 @@ import {
 } from '../../core/auth/auth.constants';
 import { AuthenticatedOnly, CurrentUser, CustomerScope, Public, RequirePermission } from '../../core/auth/decorators';
 import { IdempotentWrite } from '../../core/idempotency/idempotent-write.decorator';
+import { SloRecorderService } from '../../core/slo/slo-recorder.service';
+import { SLO_PATHS } from '../../core/slo/slo-paths';
 import {
   AdminOrderQueryDto,
   ChangeOrderStatusDto,
@@ -31,7 +33,10 @@ import { stripCodRiskFields, stripCodRiskFieldsList, stripOrderCost, stripOrderL
 @ApiTags('orders')
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly orders: OrdersService) {}
+  constructor(
+    private readonly orders: OrdersService,
+    private readonly slo: SloRecorderService,
+  ) {}
 
   @Public()
   @Post()
@@ -43,15 +48,18 @@ export class OrdersController {
     @Body() dto: PlaceOrderDto,
     @Query('locale') locale?: string,
   ) {
+    // 38-resilience-engineering.md §3, WO-38.3 — checkout's own SLO path.
+    // `time()` never awaits its own recording write, so a slow or failed
+    // outcome-log write can never slow or fail a real checkout.
+    const order = await this.slo.time(SLO_PATHS.Checkout, () =>
+      this.orders.place(cartToken(request), user?.id, dto, toLocale(locale)),
+    );
+
     // Cost is never exposed to customers -- strip unconditionally (requirePermission=false).
     // Same for WO-9.4's COD-risk fields: telling a customer they were
     // flagged, and why, is a staff-only tool, never a checkout response.
     return stripCodRiskFields(
-      stripOrderCost(
-        await this.orders.place(cartToken(request), user?.id, dto, toLocale(locale)),
-        user,
-        false,
-      ),
+      stripOrderCost(order, user, false),
     );
   }
 

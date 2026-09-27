@@ -49,6 +49,7 @@ import { PromotionsModule } from './promotions/promotions.module';
 import { PurchasingModule } from './purchasing/purchasing.module';
 import { RagModule } from './rag/rag.module';
 import { ReceivablesModule } from './receivables/receivables.module';
+import { ResilienceAdminModule } from './resilience/resilience-admin.module';
 import { SettlementsModule } from './settlements/settlements.module';
 import { RecommendationsModule } from './recommendations/recommendations.module';
 import { ReportsModule } from './reports/reports.module';
@@ -289,6 +290,12 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // no rows behaves exactly as if this were off (doc 37's own "absent
   // collaborator" lens).
   { name: 'feature-flags', module: FeatureFlagsAdminModule, alwaysOn: true },
+  // 38-resilience-engineering.md — the admin read/tune surface over
+  // CircuitBreakerService (core/resilience) and SloRecorderService
+  // (core/slo), both already global and always available regardless of
+  // this entry — the same "this only gates the admin controller/nav"
+  // shape `feature-flags` establishes just above.
+  { name: 'resilience', module: ResilienceAdminModule, alwaysOn: true },
   // 37-scalability-future-upgrades.md §3 (WO-37.4) — a reference "hello
   // world" pack proving SDK-CONTRACT.md's published extension-point/
   // domain-event seam works for a pack built outside this repository.

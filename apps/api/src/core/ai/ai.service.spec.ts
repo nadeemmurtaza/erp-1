@@ -6,6 +6,7 @@ import { SettingsService } from '../settings/settings.service';
 import { SettingKey } from '../settings/settings.defaults';
 import { AppConfigService } from '../config/app-config.service';
 import { AiCallKind, AiFeature } from '../prisma/client';
+import { CircuitBreakerService } from '../resilience/circuit-breaker.service';
 import { AnthropicProvider } from './providers/anthropic.provider';
 import { OpenAiProvider } from './providers/openai.provider';
 
@@ -29,6 +30,7 @@ describe('AiService', () => {
         { provide: AppConfigService, useValue: buildConfig(aiProviders) },
         { provide: PrismaService, useValue: prisma },
         { provide: SettingsService, useValue: settings },
+        CircuitBreakerService,
         { provide: AnthropicProvider, useValue: anthropic },
         { provide: OpenAiProvider, useValue: openai },
       ],
@@ -182,6 +184,24 @@ describe('AiService', () => {
           errorMessage: 'vendor is down',
         }),
       });
+    });
+
+    it('WO-38.1/38.2 — degradation matrix row "AiProvider down": once the circuit opens, the provider is never called again and every AI feature keeps returning null (its stated non-AI fallback) instead of retrying a dependency already known to be down', async () => {
+      anthropic.complete.mockRejectedValue(new Error('vendor is down'));
+      const service = await buildService(['anthropic']);
+
+      // Default failure threshold is 5 — five real attempts hit the provider.
+      for (let i = 0; i < 5; i++) {
+        await expect(service.complete(AiFeature.SEO_COPY, { prompt: 'x' })).resolves.toBeNull();
+      }
+      expect(anthropic.complete).toHaveBeenCalledTimes(5);
+
+      // The circuit is now OPEN: a further call fails fast without ever
+      // reaching the provider again, and AiService's own contract still
+      // holds — the caller gets null, never a thrown CircuitOpenError.
+      const result = await service.complete(AiFeature.SEO_COPY, { prompt: 'x' });
+      expect(result).toBeNull();
+      expect(anthropic.complete).toHaveBeenCalledTimes(5);
     });
 
     it('picks the first registered provider that supports the capability, in registration order', async () => {

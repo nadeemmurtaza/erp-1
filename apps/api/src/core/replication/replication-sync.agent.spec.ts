@@ -10,6 +10,7 @@ describe('ReplicationSyncAgent — WO-20.2 / WO-20.5', () => {
   let config: any;
   let cursor: any;
   let apply: any;
+  let slo: any;
   let fetchSpy: jest.SpyInstance;
 
   beforeEach(() => {
@@ -17,6 +18,7 @@ describe('ReplicationSyncAgent — WO-20.2 / WO-20.5', () => {
     config = { isChainNode: true, nodeId: 'lhr-01', parentUrl: 'https://brand1.example', parentApiKey: 'parent_key' };
     cursor = { get: jest.fn().mockResolvedValue(null), advance: jest.fn().mockResolvedValue({}) };
     apply = { apply: jest.fn().mockResolvedValue(undefined) };
+    slo = { recordReplicationTick: jest.fn() };
     fetchSpy = jest.spyOn(global, 'fetch');
 
     agent = new ReplicationSyncAgent(
@@ -24,6 +26,7 @@ describe('ReplicationSyncAgent — WO-20.2 / WO-20.5', () => {
       config as AppConfigService,
       cursor as ReplicationCursorService,
       apply as ReplicationApplyService,
+      slo,
     );
   });
 
@@ -56,6 +59,28 @@ describe('ReplicationSyncAgent — WO-20.2 / WO-20.5', () => {
       await agent.pushFacts();
 
       expect(fetchSpy).not.toHaveBeenCalled();
+    });
+
+    it('records a zero-age replication tick when fully caught up (WO-38.3)', async () => {
+      prisma.replicationRecord.findMany.mockResolvedValue([]);
+
+      await agent.pushFacts();
+
+      expect(slo.recordReplicationTick).toHaveBeenCalledWith(0);
+    });
+
+    it('records the oldest still-unpushed fact\'s age, regardless of whether this tick\'s push itself succeeds (WO-38.3)', async () => {
+      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+      prisma.replicationRecord.findMany.mockResolvedValue([
+        { sequence: 3n, entity: 'Order', entityId: 'o1', op: 'UPSERT', payload: {}, schemaVersion: 1, occurredAt: oneHourAgo },
+      ]);
+      fetchSpy.mockRejectedValue(new Error('parent unreachable'));
+
+      await agent.pushFacts();
+
+      expect(slo.recordReplicationTick).toHaveBeenCalledTimes(1);
+      const backlogAgeMs = slo.recordReplicationTick.mock.calls[0][0];
+      expect(backlogAgeMs).toBeGreaterThanOrEqual(60 * 60 * 1000 - 1000);
     });
 
     it('posts unpushed FACT rows to the parent and advances the UP cursor to the highest sequence sent', async () => {

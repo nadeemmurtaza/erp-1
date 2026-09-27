@@ -12,6 +12,147 @@ failure" — it is knowing, in one place, what happens when *any* dependency
 fails, so an incident is a lookup, not a page-by-page search through
 thirty-five documents at 3am.
 
+> **Status (2026-09-27): built, WO-38.1–38.6, with the gaps named below
+> rather than papered over.** WO-38.1's §1 table is now a tested claim: a
+> row-by-row degradation test exists for every dependency this environment
+> can simulate — `HealthController.ready()`'s Postgres-down path
+> (`health.controller.spec.ts`, new), `AiService`'s circuit tripping and
+> falling back to `null` (`ai.service.spec.ts`, new), `RagRetrievalService`'s
+> `VectorStore` circuit doing the same (`rag-retrieval.service.spec.ts`,
+> new), `PaymentsService`'s per-provider circuit independence — Easypaisa
+> down never touches COD's own circuit (`payments.service.spec.ts`, new
+> file), and `NotificationsService`'s existing `Promise.all`-per-channel
+> fan-out, now proven with two channels where one throws
+> (`notifications.service.spec.ts`, new case). Two rows were **already
+> covered** and are cited, not duplicated: the replication-parent-down row
+> by `replication-sync.agent.spec.ts`'s existing "never throws when the
+> parent is unreachable" cases, and "the branch itself, offline" by
+> `packages/pos-core/src/outbox.spec.ts`'s existing state-machine tests. One
+> row is a **found gap in the matrix's own claim**, named honestly rather
+> than faked: `StorageDriver (S3/R2)`'s "new uploads queue for retry" text
+> has no queue behind it anywhere in `storage.service.ts` — `put()`
+> propagates a driver failure straight to its caller
+> (`storage.service.spec.ts`'s new test proves the real, current behavior).
+> Building that queue is a separate, larger work order, not a side effect
+> of WO-38.1's job (proving existing behavior). `OutboundConnector` (doc 36)
+> has no live subject to test at all — it does not exist in this codebase
+> (`grep -rln "OutboundConnector" apps/api/src` returns nothing) — the same
+> honest "nothing to wrap" this status gives `CircuitBreakerService` below.
+>
+> **WO-38.2 — `CircuitBreakerService`** (`core/resilience/`) implements the
+> exact three-state interface this document's §2 specifies — CLOSED/OPEN/
+> HALF_OPEN, a per-key configurable failure threshold (default 5) and
+> cooldown (default 30s) — proven under a forced-failure test including the
+> HALF_OPEN trial call and re-open-on-trial-failure paths
+> (`circuit-breaker.service.spec.ts`). It wraps exactly the three extension
+> points with a live implementation to wrap: `AiService`'s one funnel
+> (`complete`/`embed`/`describeImage`, keyed `ai.<provider>`),
+> `PaymentsService.createForOrder()`'s `provider.initiate()` call (keyed
+> `payment.<provider>`), and `VectorStore`'s two call sites in
+> `RagRetrievalService`/`RagIngestionService` (one shared `vector.store`
+> key, exported from `vector-store.ts` so both stay in step). It is written
+> generically enough to wrap `OutboundConnector` the day doc 36 ships — a
+> new key, no change to `execute()` — but doc 36 does not exist yet, so
+> nothing was wrapped for it; building `OutboundConnector` itself is out of
+> this document's own scope and was not done here. `StorageDriver`/
+> `SmsProvider`/`WhatsAppProvider` were **not** wrapped: this document's own
+> §2 names `AiProvider`/`PaymentProvider`/`OutboundConnector`/`VectorStore`
+> specifically, and `NotificationsService`'s existing per-channel
+> `Promise.all` fan-out already gives every channel call its own isolated
+> failure path with no shared state to trip — a circuit breaker would add
+> nothing there today; `StorageDriver` has no retry path to protect (the
+> gap named above), so wrapping it would only make an already-thrown error
+> fail faster, not differently. `simulate()` (the "dry run before live"
+> lens) is real and unit-tested as a pure replay function, but has no live
+> data to run: no call-outcome log exists for `AiProvider`/`PaymentProvider`/
+> `VectorStore` calls specifically (WO-38.3's own `RequestOutcome` table
+> instruments three different, named business paths — checkout, POS sale,
+> replication sync — never these four extension points), so "would this
+> threshold have tripped last month" is honestly unanswerable today rather
+> than faked against data that does not exist — named in the admin
+> screen itself, not hidden.
+>
+> **WO-38.3 — SLO instrumentation.** `core/metrics/metric-provider.ts`
+> (built earlier for permission-gated, previous-period-compared *business*
+> dashboard numbers) is the wrong shape for a raw per-request success/
+> latency stream, exactly as this work order's own brief predicted — a new,
+> minimal `RequestOutcome` table (`resilience.prisma`, migration
+> `20260927100000_wo38_request_outcomes`, indexed on `(path, occurredAt)`)
+> and `SloRecorderService` (`core/slo/`) were built instead, with
+> `RequestOutcomePruneCron` (nightly, `@Cron('30 3 * * *')`, 35-day
+> retention) keeping this operational log bounded rather than growing
+> forever like a business record. `OrdersController.place()` and
+> `PosSalesController.sell()` wrap their own call through
+> `SloRecorderService.time()`, which never awaits its own recording write —
+> a failed or slow outcome-log write cannot slow or fail a real checkout or
+> sale (proven: `slo-recorder.service.spec.ts`'s own "never throws or slows
+> the caller when the recording write itself fails" case).
+> `ReplicationSyncAgent.pushFacts()` records the oldest still-unsynced
+> fact's own age every tick, regardless of whether that tick's push
+> succeeds — the actual number doc 38 §3's "facts land within 4 hours"
+> bound is measured against, not a proxy. `replication.sync` carries no
+> percentage error-budget figure, on purpose: this document's own §3 states
+> an error budget only against the two paths with a stated percentage SLO
+> (checkout 99.9%, POS 99.95%); replication's own stated bound is a hard
+> latency bound, and inventing a percentage target the document never
+> wrote would be exactly the kind of speculative number `CLAUDE.md` warns
+> against. `GET /admin/resilience/slo` computes the trailing-30-day success
+> rate, p95 latency (Postgres `percentile_cont`, one indexed query rather
+> than pulling every row into Node — the "hundred-thousandth row" lens)
+> and remaining error-budget minutes per path, each carrying its own
+> `overBudget` boolean. **The honest scope of "freezes non-essential
+> deploys":** this repository has no CI/CD gate to hook a real freeze into,
+> so this ships as a real, computed boolean any future CI job could read
+> from that same endpoint, plus an unmissable banner on the admin screen
+> when any path is over budget — never a claim that a pipeline actually
+> enforces it today, because none does.
+>
+> **WO-38.4 — DR numbers**, in `DEPLOYMENT.md` §9. RPO is real and stated:
+> 24 hours, from `yaseen-backup.timer`'s own nightly 03:00 UTC schedule.
+> RTO is **honestly unmeasured**: `deploy/backup.sh`'s own restore-test path
+> needs a live Docker Swarm stack running the production images against
+> `.env.production`, which neither this sandbox nor CI provides — no
+> plausible-sounding number was written in its place. The quarterly
+> game-day is recorded as a scheduled, owned commitment
+> (`platform.resilience.oncall` holder) whose first real run also produces
+> the first real RTO measurement — a calendar commitment, not code, per
+> this document's own "Out of scope."
+>
+> **WO-38.5 — contract test suite.** One table-driven Jest suite
+> (`core/events/event-contracts.spec.ts` + `contract-analyzer.ts`) over
+> every `@OnDomainEvent` handler in the real source tree (71 handlers
+> across 36 files today) beats 69 hand-written files, per this document's
+> own "use your judgment" — the assertion is identical for every handler
+> (its declared/accessed payload fields must be a subset of the real
+> event's canonical shape), checked once against the whole tree on every
+> `pnpm test`. Character-level masking (comments and plain strings blanked,
+> a template literal's own `${...}` code kept live) avoids the false
+> positives a naive line scan would hit — proven directly:
+> `posting-rules.subscriber.ts`'s own `` `${payload.billId}:${payload
+> .paidAt}` `` sourceRef is checked, not skipped. **Proven live, not just
+> asserted:** `PasswordChangedPayload.userId` was temporarily renamed,
+> `pnpm test` failed with the exact broken subscriber named
+> (`security-notification.subscriber.ts :: onPasswordChanged()`), and the
+> rename was reverted — the diff this PR ships contains no trace of that
+> edit. A permanent synthetic-fixture suite in the same file proves the
+> same catch mechanically on every future run, so this is not a one-time
+> demonstration.
+>
+> **WO-38.6 — permissions**: `platform.resilience.view`,
+> `platform.resilience.oncall`, `platform.resilience.tune`, added to the
+> existing `Platform` category doc 37 created, seeded onto `ADMIN` the same
+> way `platform.flags.*` already is. `ResilienceAdminController`
+> (`/admin/resilience`, `alwaysOn: true` in `modules.registry.ts`, the same
+> shape `feature-flags` already establishes) is the read/tune surface; the
+> admin screen (`/admin/platform-resilience` — named to avoid colliding
+> with `144-supply-chain-resilience-planning-engine.md`'s own, unrelated
+> `/admin/resilience` "Resilience Planning" screen, a genuine naming
+> collision this work order found and resolved rather than overwriting)
+> renders the degradation matrix (static, already fully-specified text),
+> every circuit's live state, the three SLO paths' trailing-30-day figures,
+> and the DR numbers above, gated by `platform.resilience.view` and
+> reachable from the Settings nav group.
+
 ## 1. The degradation matrix: what actually happens when each dependency is down
 
 This is a synthesis, not new design — every row cites the document that

@@ -396,6 +396,43 @@ docker run --rm -v yaseen-prod_api-prod-uploads:/data -v ~/backups:/backup \
   alpine:3 sh -c "rm -rf /data/* && tar xzf /backup/uploads-<stamp>.tar.gz -C /data"
 ```
 
+### RPO/RTO — the numbers this document owes (38-resilience-engineering.md §4)
+
+A backup script is infrastructure; these two numbers are the plan built on
+top of it — what a real incident is actually promising, stated once here
+rather than left implicit in a timer file nobody reads as a commitment.
+
+- **RPO (Recovery Point Objective): 24 hours.**
+  `deploy/systemd/yaseen-backup.timer`'s own `OnCalendar=*-*-* 03:00:00`
+  (plus up to a 5-minute `RandomizedDelaySec`) means a backup runs once a
+  day. The worst case — a failure that strikes at 02:59, one minute before
+  the next dump — loses up to 24 hours of writes. This is the real, current
+  number; lowering it means a shorter timer interval (a config change) or
+  continuous WAL archiving (a materially larger commitment, not assumed
+  here — see doc 38's own "Out of scope").
+- **RTO (Recovery Time Objective): not yet measured.** Doc 38 §4 requires
+  this be a real, timed run of `deploy/backup.sh`'s own restore-test path
+  against a realistic data volume, never an estimate. That path
+  (`docker exec … pg_dump`, then a restore into a scratch database on the
+  SAME running Postgres container) needs a live Docker Swarm stack running
+  the production images against `.env.production` — infrastructure this
+  repository's own development/CI sandboxes do not provide, and this
+  document will not fabricate a plausible-sounding number in its place
+  (`CLAUDE.md`'s "never claim success from reasoning alone," applied to a
+  number instead of a test result). **The first real RTO measurement is
+  the opening item of the next quarterly game-day below** — timed,
+  recorded here with the date it was measured, and re-measured each
+  quarter rather than assumed to still hold as the database grows.
+
+**Quarterly game-day.** Once a quarter, on a real non-production
+environment (never against `production` — see this file's own "No direct
+production modification" discipline and `CLAUDE.md`'s Deployment section):
+restore the latest nightly dump from scratch, time it end to end, and
+record the wall-clock RTO here. Owner: whoever holds
+`platform.resilience.oncall` at the time; scheduled as a recurring
+calendar entry, not left to be remembered. First run: pending — this
+document's own honest status until it happens once for real.
+
 ---
 
 ## 10. Disk threshold alerts

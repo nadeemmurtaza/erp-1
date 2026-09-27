@@ -3,6 +3,7 @@ import { Test } from '@nestjs/testing';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { StorageService } from '../../core/storage/storage.service';
 import { AiService } from '../../core/ai/ai.service';
+import { CircuitBreakerService } from '../../core/resilience/circuit-breaker.service';
 import { PdfExtractionService } from './pdf-extraction.service';
 import { RagIngestionService } from './rag-ingestion.service';
 import { VECTOR_STORE } from './vector-store';
@@ -47,6 +48,7 @@ describe('RagIngestionService', () => {
         { provide: AiService, useValue: ai },
         { provide: PdfExtractionService, useValue: extraction },
         { provide: VECTOR_STORE, useValue: vectorStore },
+        CircuitBreakerService,
       ],
     }).compile();
     service = module.get(RagIngestionService);

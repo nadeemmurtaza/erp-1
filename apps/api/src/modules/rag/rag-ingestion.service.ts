@@ -4,9 +4,10 @@ import { PrismaService } from '../../core/prisma/prisma.service';
 import { StorageService } from '../../core/storage/storage.service';
 import { AiService } from '../../core/ai/ai.service';
 import { AiFeature } from '../../core/prisma/client';
+import { CircuitBreakerService } from '../../core/resilience/circuit-breaker.service';
 import { PdfExtractionService } from './pdf-extraction.service';
 import { chunkPages } from './chunking';
-import { VECTOR_STORE, type DocumentChunkInput, type VectorStore } from './vector-store';
+import { VECTOR_STORE, VECTOR_STORE_CIRCUIT_KEY, type DocumentChunkInput, type VectorStore } from './vector-store';
 import { assertCorpusAccess } from './rag-corpus-access';
 
 /** How many chunks go into one `AiService.embed()` call — batched (WO-35.2's own words), never one call per chunk. */
@@ -65,6 +66,7 @@ export class RagIngestionService {
     private readonly ai: AiService,
     private readonly extraction: PdfExtractionService,
     @Inject(VECTOR_STORE) private readonly vectorStore: VectorStore,
+    private readonly circuitBreaker: CircuitBreakerService,
   ) {}
 
   /** Picks up to `batchSize` eligible QUEUED sources, oldest-eligible first, and ingests each in turn. */
@@ -187,7 +189,8 @@ export class RagIngestionService {
       // The one atomic swap — everything up to here was read-only or an AI
       // call; nothing about `DocumentChunk` changes until every embedding
       // for this source has already succeeded.
-      await this.vectorStore.upsertChunks(chunkInputs);
+      // 38-resilience-engineering.md §2, WO-38.2.
+      await this.circuitBreaker.execute(VECTOR_STORE_CIRCUIT_KEY, () => this.vectorStore.upsertChunks(chunkInputs));
 
       await this.prisma.documentSource.update({
         where: { id: sourceId },

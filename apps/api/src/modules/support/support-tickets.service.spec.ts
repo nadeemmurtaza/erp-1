@@ -2,8 +2,8 @@ import { BadRequestException, ForbiddenException, NotFoundException } from '@nes
 import { Test, TestingModule } from '@nestjs/testing';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { AuditService } from '../../core/audit/audit.service';
-import { NotificationsService } from '../../core/notifications/notifications.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { SupportHandlersService } from './support-handlers.service';
 import { SupportTicketsService } from './support-tickets.service';
 
 /**
@@ -15,7 +15,7 @@ import { SupportTicketsService } from './support-tickets.service';
 describe('SupportTicketsService', () => {
   let service: SupportTicketsService;
   let prisma: any;
-  let notifications: any;
+  let handlers: any;
   let audit: any;
 
   const actor = (id: string, permissions: string[] = []): AuthenticatedUser =>
@@ -25,16 +25,16 @@ describe('SupportTicketsService', () => {
     prisma = {
       supportTicket: { create: jest.fn(), findUnique: jest.fn(), update: jest.fn(), findMany: jest.fn() },
       ticketMessage: { create: jest.fn() },
-      user: { findMany: jest.fn().mockResolvedValue([]), count: jest.fn() },
+      user: { findMany: jest.fn().mockResolvedValue([]) },
     };
-    notifications = { send: jest.fn() };
+    handlers = { holdsPermission: jest.fn(), notifyHandlers: jest.fn() };
     audit = { record: jest.fn() };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SupportTicketsService,
         { provide: PrismaService, useValue: prisma },
-        { provide: NotificationsService, useValue: notifications },
+        { provide: SupportHandlersService, useValue: handlers },
         { provide: AuditService, useValue: audit },
       ],
     }).compile();
@@ -48,26 +48,18 @@ describe('SupportTicketsService', () => {
       await expect(service.create({ raisedByUserId: 'u1', subject: 'Broken laptop', category: '' })).rejects.toThrow(BadRequestException);
     });
 
-    it('notifies every current holder of support.tickets.handle, once each', async () => {
+    it('audits the raise and delegates handler notification to SupportHandlersService', async () => {
       prisma.supportTicket.create.mockResolvedValue({ id: 't1', subject: 'Broken laptop', priority: 'NORMAL' });
-      prisma.user.findMany.mockResolvedValue([
-        { id: 'h1', email: 'h1@x.test', phone: null, firstName: 'H', lastName: 'One' },
-        { id: 'h2', email: 'h2@x.test', phone: null, firstName: 'H', lastName: 'Two' },
-      ]);
 
       await service.create({ raisedByUserId: 'u1', subject: 'Broken laptop', category: 'IT' });
 
-      expect(notifications.send).toHaveBeenCalledTimes(2);
+      expect(handlers.notifyHandlers).toHaveBeenCalledWith({
+        ticketId: 't1',
+        subject: 'Broken laptop',
+        priorityLabel: 'normal',
+        template: 'support.ticket_raised',
+      });
       expect(audit.record).toHaveBeenCalledWith(expect.objectContaining({ action: 'support.ticket.raised', entityId: 't1' }));
-    });
-
-    it('warns and sends nothing when nobody holds support.tickets.handle', async () => {
-      prisma.supportTicket.create.mockResolvedValue({ id: 't1', subject: 'Broken laptop', priority: 'NORMAL' });
-      prisma.user.findMany.mockResolvedValue([]);
-
-      await service.create({ raisedByUserId: 'u1', subject: 'Broken laptop', category: 'IT' });
-
-      expect(notifications.send).not.toHaveBeenCalled();
     });
   });
 
@@ -142,14 +134,14 @@ describe('SupportTicketsService', () => {
   describe('assign', () => {
     it('refuses assigning to someone who does not hold support.tickets.handle', async () => {
       prisma.supportTicket.findUnique.mockResolvedValue({ assignedToUserId: null });
-      prisma.user.count.mockResolvedValue(0);
+      handlers.holdsPermission.mockResolvedValue(false);
 
       await expect(service.assign('t1', 'nobody', 'admin1')).rejects.toThrow(BadRequestException);
     });
 
     it('assigns and audits old/new value', async () => {
       prisma.supportTicket.findUnique.mockResolvedValue({ assignedToUserId: 'old-handler' });
-      prisma.user.count.mockResolvedValue(1);
+      handlers.holdsPermission.mockResolvedValue(true);
       prisma.supportTicket.update.mockResolvedValue({ id: 't1', assignedToUserId: 'new-handler' });
 
       await service.assign('t1', 'new-handler', 'admin1');

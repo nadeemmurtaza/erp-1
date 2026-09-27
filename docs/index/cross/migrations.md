@@ -3,7 +3,7 @@
 
 # Migrations
 
-**112** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**113** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -145,6 +145,7 @@ nothing here fails a build.
 | 2026-09-27 | `add_bank_facilities` | 16 | CREATE TYPE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX, ALTER TABLE | Bank, BankFacility, BankFacilityDrawdown, BankFacilityMarkupAccrual, BankFacilityRepayment |
 | 2026-09-27 | `wo61_bulletin_board` | 6 | CREATE TYPE, CREATE TABLE, CREATE INDEX, CREATE UNIQUE INDEX, ALTER TABLE | Bulletin, BulletinAcknowledgement |
 | 2026-09-27 | `wo64_support_ticketing` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | SupportTicket, TicketMessage |
+| 2026-09-27 | `wo148_customer_support_portal` | 8 | CREATE TYPE, CREATE TABLE, CREATE INDEX, ALTER TABLE | CustomerSupportMessage, CustomerSupportTicket |
 
 
 ---

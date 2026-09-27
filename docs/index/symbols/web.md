@@ -916,6 +916,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `SupplierDetailPage` | default | :35 |  |
 
+### `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `CustomerSupportTicketsPage` | default | :36 | 148-external-customer-support-portal.md WO-148.4 — the staff queue for tickets raised by customers… |
+
+### `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `CustomerSupportTicketDetailPage` | default | :52 | 148-external-customer-support-portal.md WO-148.4 — the staff side of a customer-raised ticket. |
+
 ### `apps/web/src/app/(admin)/admin/(app)/support/tickets`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1053,7 +1065,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AccountApiKeysPage` | default | :76 | A customer's own personal API keys (163-personal-api-keys.md) — for an app, a script or an AI assis… |
+| `page.tsx` | `AccountApiKeysPage` | default | :77 | A customer's own personal API keys (163-personal-api-keys.md) — for an app, a script or an AI assis… |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/b2b`
 
@@ -1114,6 +1126,24 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `page.tsx` | `MyReviewsPage` | default | :23 | WO-7.5 — what a customer has said about what they bought. |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `MySupportTicketsPage` | default | :15 | 148-external-customer-support-portal.md WO-148.4 — mirrors returns/page.tsx's own shape. |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `SupportTicketDetailPage` | default | :16 | 148-external-customer-support-portal.md WO-148.4 — the customer's own ticket thread. |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/new`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `NewSupportTicketPage` | default | :13 | 148-external-customer-support-portal.md WO-148.4 — mirrors returns/new/page.tsx's own form shape. |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet`
 
@@ -1357,8 +1387,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1109 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1124 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1122 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1137 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1497,7 +1527,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `dashboard-nav.tsx` | `DashboardNav` | function | :58 |  |
+| `dashboard-nav.tsx` | `DashboardNav` | function | :59 |  |
 
 ### `apps/web/src/components/storefront`
 
@@ -1672,23 +1702,28 @@ Every top-level export in `web`, with the line to open.
 | `cart-client.ts` | `updateCartItem` | function | :74 |  |
 | `cart-client.ts` | `removeCartItem` | function | :82 |  |
 | `cart-client.ts` | `updateGuestContact` | function | :92 | WO-8.5 — captures a guest's phone and marketing consent onto the cart as soon as they're typed at c… |
-| `customer-client.ts` | `getCustomerToken` | function | :12 |  |
-| `customer-client.ts` | `getStoredCustomerUser` | function | :16 |  |
-| `customer-client.ts` | `clearCustomerSession` | function | :34 |  |
-| `customer-client.ts` | `loginCustomer` | function | :40 |  |
-| `customer-client.ts` | `registerCustomer` | function | :53 |  |
-| `customer-client.ts` | `forgotPassword` | function | :72 |  |
-| `customer-client.ts` | `resetPassword` | function | :81 |  |
-| `customer-client.ts` | `verifyEmail` | function | :90 |  |
-| `customer-client.ts` | `unsubscribeFromMarketing` | function | :99 |  |
-| `customer-client.ts` | `logoutCustomer` | function | :108 |  |
-| `customer-client.ts` | `getMyOrder` | function | :128 | One order, for whoever is allowed to see it. |
-| `customer-client.ts` | `trackOrder` | function | :132 |  |
-| `customer-client.ts` | `listReturnReasons` | function | :142 | WO-6.6 — the customer's own side of returns/RMA. |
-| `customer-client.ts` | `listMyReturns` | function | :146 |  |
-| `customer-client.ts` | `getMyReturn` | function | :150 |  |
-| `customer-client.ts` | `createReturnRequest` | function | :154 |  |
-| `customer-client.ts` | `customerFetch` | function | :194 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
+| `customer-client.ts` | `getCustomerToken` | function | :20 |  |
+| `customer-client.ts` | `getStoredCustomerUser` | function | :24 |  |
+| `customer-client.ts` | `clearCustomerSession` | function | :42 |  |
+| `customer-client.ts` | `loginCustomer` | function | :48 |  |
+| `customer-client.ts` | `registerCustomer` | function | :61 |  |
+| `customer-client.ts` | `forgotPassword` | function | :80 |  |
+| `customer-client.ts` | `resetPassword` | function | :89 |  |
+| `customer-client.ts` | `verifyEmail` | function | :98 |  |
+| `customer-client.ts` | `unsubscribeFromMarketing` | function | :107 |  |
+| `customer-client.ts` | `logoutCustomer` | function | :116 |  |
+| `customer-client.ts` | `getMyOrder` | function | :136 | One order, for whoever is allowed to see it. |
+| `customer-client.ts` | `trackOrder` | function | :140 |  |
+| `customer-client.ts` | `listReturnReasons` | function | :150 | WO-6.6 — the customer's own side of returns/RMA. |
+| `customer-client.ts` | `listMyReturns` | function | :154 |  |
+| `customer-client.ts` | `getMyReturn` | function | :158 |  |
+| `customer-client.ts` | `createReturnRequest` | function | :162 |  |
+| `customer-client.ts` | `listMySupportTickets` | function | :171 | 148-external-customer-support-portal.md — the customer's own side of the support ticket portal. |
+| `customer-client.ts` | `getMySupportTicket` | function | :175 |  |
+| `customer-client.ts` | `raiseSupportTicket` | function | :179 |  |
+| `customer-client.ts` | `replySupportTicket` | function | :189 |  |
+| `customer-client.ts` | `reopenSupportTicket` | function | :193 |  |
+| `customer-client.ts` | `customerFetch` | function | :229 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
 | `download-csv.ts` | `downloadCsv` | function | :17 | Pull a CSV from an admin endpoint and hand it to the browser. |
 | `download-file.ts` | `downloadFile` | function | :10 | Pull a binary file (a PDF, here — H2/L20's own RAG source download) from an admin endpoint and hand… |
 | `onsite-messages-client.ts` | `fetchActiveOnsiteMessages` | function | :13 | WO-8.6. |
@@ -1848,59 +1883,62 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `CustomerOrder` | interface | :1305 | One order as its buyer sees it — signed in, or tracked with a phone number. |
 | `api.ts` | `CustomerReturnReason` | interface | :1338 | WO-6.6's seeded, editable reason list — never free text. |
 | `api.ts` | `CustomerReturnRequest` | interface | :1344 |  |
-| `api.ts` | `PaginatedResult` | interface | :1362 |  |
-| `api.ts` | `StockTransferLine` | interface | :1377 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
-| `api.ts` | `InterBranchInvoice` | interface | :1386 |  |
-| `api.ts` | `StockTransfer` | interface | :1395 |  |
-| `api.ts` | `StockTransferListResult` | interface | :1411 |  |
-| `api.ts` | `CmsBanner` | interface | :1418 | --- Content (WO-8.1) ------------------------------------------------------- |
-| `api.ts` | `CmsPage` | interface | :1426 |  |
-| `api.ts` | `CmsPost` | interface | :1433 |  |
-| `api.ts` | `DashboardCardsResponse` | interface | :1450 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
-| `api.ts` | `ActionItem` | interface | :1464 | `GET /admin/action-hub` (admin-platform/44-manager-action-hub.md D2). |
-| `api.ts` | `ActionHubResponse` | interface | :1475 |  |
-| `api.ts` | `FeedEntry` | interface | :1482 | `GET /admin/feed` (analytics-reporting/58-live-operational-feed.md WO-58.3). |
-| `api.ts` | `FeedResponse` | interface | :1492 |  |
-| `api.ts` | `CmsMenuLink` | interface | :1498 |  |
-| `api.ts` | `ProductCrossSellKind` | type | :1506 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
-| `api.ts` | `ProductCrossSellRow` | interface | :1508 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
-| `api.ts` | `MarkdownSuggestionStatus` | type | :1515 |  |
-| `api.ts` | `MarkdownSuggestion` | interface | :1517 |  |
-| `api.ts` | `ApiKeyStatus` | type | :1543 | --- Personal API keys (docs/implementation/access-control-identity/163-personal-api-keys.md) --- Mi… |
-| `api.ts` | `ApiKeyRevocationReason` | type | :1544 |  |
-| `api.ts` | `ApiKeyView` | interface | :1565 | One of your own keys, with what it can do right now. |
-| `api.ts` | `IssuedApiKey` | interface | :1572 |  |
-| `api.ts` | `SsoConnectionStatus` | type | :1582 | --- Single sign-on (docs/implementation/access-control-identity/161-sso-identity-federation.md) ---… |
-| `api.ts` | `SsoConnection` | interface | :1584 |  |
-| `api.ts` | `SsoConnectionList` | interface | :1603 | `GET /admin/sso/connections` — the callback URL beside the rows, so it can be registered before the… |
-| `api.ts` | `SsoDefaultRoleOption` | interface | :1609 | A role, and the access-widening permissions that keep it from being a connection's default — empty… |
-| `api.ts` | `SsoAccount` | interface | :1615 | One account created or linked through a connection, read from its audit trail. |
-| `api.ts` | `SsoSignInOption` | interface | :1629 | `GET /auth/sso/connections` — public: what the sign-in screen draws a button for. |
-| `api.ts` | `ApiKeyOversightView` | interface | :1635 | A key on the `users.manage` oversight list — its owner, never its secret. |
-| `api.ts` | `ManagedServicesUsageSnapshot` | interface | :1656 | doc 14 (commercial-licensing-agency/14-managed-services-module.md) — the "Hosting & Billing" admin… |
-| `api.ts` | `ManagedServicesTenantStatus` | type | :1663 |  |
-| `api.ts` | `ManagedServicesUsageResponse` | interface | :1665 |  |
-| `api.ts` | `ManagedServicesInvoiceStatus` | type | :1672 |  |
-| `api.ts` | `ManagedServicesStripePaymentStatus` | type | :1673 |  |
-| `api.ts` | `ManagedServicesInvoice` | interface | :1675 |  |
-| `api.ts` | `ManagedServicesInvoicesResponse` | interface | :1691 | `currency` travels with every response that carries money — the agency's OWN billing currency (`PLA… |
-| `api.ts` | `CustomFieldDefinition` | interface | :1697 | `GET/POST /admin/custom-fields/definitions` (architecture-patterns/104-jsonb-eav-extensibility.md,… |
-| `api.ts` | `CustomFieldEntityType` | type | :1706 |  |
-| `api.ts` | `CustomFieldValueType` | type | :1707 |  |
-| `api.ts` | `CustomFieldValue` | type | :1709 |  |
-| `api.ts` | `EmbeddedWidget` | interface | :1712 | `GET/POST /admin/embeds` (architecture-patterns/113-micro-frontend-embedding.md, WO-113). |
-| `api.ts` | `EmbedToken` | interface | :1721 | `POST /admin/embeds/:key/token`. |
-| `api.ts` | `EntityAttribute` | interface | :1734 | `GET/POST /admin/entity-attributes` (architecture-patterns/140-general-eav-extensibility-model.md,… |
-| `api.ts` | `EntityAttributeValueType` | type | :1743 |  |
-| `api.ts` | `MicroFrontendFragment` | interface | :1751 | `GET/POST /admin/fragments` (architecture-patterns/143-micro-frontend- architecture.md, WO-143.2). |
-| `api.ts` | `FragmentStatus` | type | :1761 |  |
-| `api.ts` | `FragmentToken` | interface | :1764 | `POST /admin/fragments/:key/token?mountPoint=...`. |
-| `api.ts` | `FormMetadata` | interface | :1776 | `GET/PUT /admin/metadata-forms/:entityType` (architecture-patterns/141-general-metadata-driven-ui-e… |
-| `api.ts` | `FieldMetadata` | interface | :1782 |  |
-| `api.ts` | `FieldMetadataValueType` | type | :1791 |  |
-| `api.ts` | `BpmnWorkflowDefinition` | interface | :1799 | `GET/PUT /admin/bpmn-workflows/:subjectType` (architecture-patterns/142-bpmn-visual-workflow-engine… |
-| `api.ts` | `ApprovalSubjectType` | type | :1806 |  |
-| `api.ts` | `ProductReferenceLookup` | interface | :1814 | `GET /admin/marketplace/product-references/lookup` (architecture-patterns/166-unified-product-refer… |
+| `api.ts` | `CustomerSupportTicket` | interface | :1363 | 148-external-customer-support-portal.md — the customer's own side. |
+| `api.ts` | `CustomerSupportMessageView` | interface | :1374 |  |
+| `api.ts` | `CustomerSupportTicketDetail` | interface | :1382 |  |
+| `api.ts` | `PaginatedResult` | interface | :1388 |  |
+| `api.ts` | `StockTransferLine` | interface | :1403 | --- Transfers (RETAIL-ERP.md R4, WO-22.1/22.2/22.3, WO-23.3d) --------------- `transfers` module is… |
+| `api.ts` | `InterBranchInvoice` | interface | :1412 |  |
+| `api.ts` | `StockTransfer` | interface | :1421 |  |
+| `api.ts` | `StockTransferListResult` | interface | :1437 |  |
+| `api.ts` | `CmsBanner` | interface | :1444 | --- Content (WO-8.1) ------------------------------------------------------- |
+| `api.ts` | `CmsPage` | interface | :1452 |  |
+| `api.ts` | `CmsPost` | interface | :1459 |  |
+| `api.ts` | `DashboardCardsResponse` | interface | :1476 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
+| `api.ts` | `ActionItem` | interface | :1490 | `GET /admin/action-hub` (admin-platform/44-manager-action-hub.md D2). |
+| `api.ts` | `ActionHubResponse` | interface | :1501 |  |
+| `api.ts` | `FeedEntry` | interface | :1508 | `GET /admin/feed` (analytics-reporting/58-live-operational-feed.md WO-58.3). |
+| `api.ts` | `FeedResponse` | interface | :1518 |  |
+| `api.ts` | `CmsMenuLink` | interface | :1524 |  |
+| `api.ts` | `ProductCrossSellKind` | type | :1532 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
+| `api.ts` | `ProductCrossSellRow` | interface | :1534 | ProductCrossSell.kind (WO-9.6) — "MANUAL rows always outrank CO_OCCURRENCE/EMBEDDING ones at read t… |
+| `api.ts` | `MarkdownSuggestionStatus` | type | :1541 |  |
+| `api.ts` | `MarkdownSuggestion` | interface | :1543 |  |
+| `api.ts` | `ApiKeyStatus` | type | :1569 | --- Personal API keys (docs/implementation/access-control-identity/163-personal-api-keys.md) --- Mi… |
+| `api.ts` | `ApiKeyRevocationReason` | type | :1570 |  |
+| `api.ts` | `ApiKeyView` | interface | :1591 | One of your own keys, with what it can do right now. |
+| `api.ts` | `IssuedApiKey` | interface | :1598 |  |
+| `api.ts` | `SsoConnectionStatus` | type | :1608 | --- Single sign-on (docs/implementation/access-control-identity/161-sso-identity-federation.md) ---… |
+| `api.ts` | `SsoConnection` | interface | :1610 |  |
+| `api.ts` | `SsoConnectionList` | interface | :1629 | `GET /admin/sso/connections` — the callback URL beside the rows, so it can be registered before the… |
+| `api.ts` | `SsoDefaultRoleOption` | interface | :1635 | A role, and the access-widening permissions that keep it from being a connection's default — empty… |
+| `api.ts` | `SsoAccount` | interface | :1641 | One account created or linked through a connection, read from its audit trail. |
+| `api.ts` | `SsoSignInOption` | interface | :1655 | `GET /auth/sso/connections` — public: what the sign-in screen draws a button for. |
+| `api.ts` | `ApiKeyOversightView` | interface | :1661 | A key on the `users.manage` oversight list — its owner, never its secret. |
+| `api.ts` | `ManagedServicesUsageSnapshot` | interface | :1682 | doc 14 (commercial-licensing-agency/14-managed-services-module.md) — the "Hosting & Billing" admin… |
+| `api.ts` | `ManagedServicesTenantStatus` | type | :1689 |  |
+| `api.ts` | `ManagedServicesUsageResponse` | interface | :1691 |  |
+| `api.ts` | `ManagedServicesInvoiceStatus` | type | :1698 |  |
+| `api.ts` | `ManagedServicesStripePaymentStatus` | type | :1699 |  |
+| `api.ts` | `ManagedServicesInvoice` | interface | :1701 |  |
+| `api.ts` | `ManagedServicesInvoicesResponse` | interface | :1717 | `currency` travels with every response that carries money — the agency's OWN billing currency (`PLA… |
+| `api.ts` | `CustomFieldDefinition` | interface | :1723 | `GET/POST /admin/custom-fields/definitions` (architecture-patterns/104-jsonb-eav-extensibility.md,… |
+| `api.ts` | `CustomFieldEntityType` | type | :1732 |  |
+| `api.ts` | `CustomFieldValueType` | type | :1733 |  |
+| `api.ts` | `CustomFieldValue` | type | :1735 |  |
+| `api.ts` | `EmbeddedWidget` | interface | :1738 | `GET/POST /admin/embeds` (architecture-patterns/113-micro-frontend-embedding.md, WO-113). |
+| `api.ts` | `EmbedToken` | interface | :1747 | `POST /admin/embeds/:key/token`. |
+| `api.ts` | `EntityAttribute` | interface | :1760 | `GET/POST /admin/entity-attributes` (architecture-patterns/140-general-eav-extensibility-model.md,… |
+| `api.ts` | `EntityAttributeValueType` | type | :1769 |  |
+| `api.ts` | `MicroFrontendFragment` | interface | :1777 | `GET/POST /admin/fragments` (architecture-patterns/143-micro-frontend- architecture.md, WO-143.2). |
+| `api.ts` | `FragmentStatus` | type | :1787 |  |
+| `api.ts` | `FragmentToken` | interface | :1790 | `POST /admin/fragments/:key/token?mountPoint=...`. |
+| `api.ts` | `FormMetadata` | interface | :1802 | `GET/PUT /admin/metadata-forms/:entityType` (architecture-patterns/141-general-metadata-driven-ui-e… |
+| `api.ts` | `FieldMetadata` | interface | :1808 |  |
+| `api.ts` | `FieldMetadataValueType` | type | :1817 |  |
+| `api.ts` | `BpmnWorkflowDefinition` | interface | :1825 | `GET/PUT /admin/bpmn-workflows/:subjectType` (architecture-patterns/142-bpmn-visual-workflow-engine… |
+| `api.ts` | `ApprovalSubjectType` | type | :1832 |  |
+| `api.ts` | `ProductReferenceLookup` | interface | :1840 | `GET /admin/marketplace/product-references/lookup` (architecture-patterns/166-unified-product-refer… |
 | `cart.ts` | `CartStitching` | interface | :5 | Shapes returned by the cart endpoints. |
 | `cart.ts` | `CartLine` | interface | :18 |  |
 | `cart.ts` | `Cart` | interface | :37 |  |

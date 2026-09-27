@@ -230,6 +230,7 @@ export const CUSTOMER_SCOPE_RESOURCES = [
   'loyalty',
   'store-credit',
   'b2b-account',
+  'support',
 ] as const;
 export type CustomerScopeResource = (typeof CUSTOMER_SCOPE_RESOURCES)[number];
 export type CustomerScopeAccess = 'read' | 'write';
@@ -296,6 +297,8 @@ export const CUSTOMER_SCOPE_CATALOG = [
   // order") — neither write action is reachable by a personal API key yet;
   // both stay session-only by the absence of a `write` scope here.
   { key: 'b2b-account:read', resource: 'b2b-account', access: 'read', label: 'Read your account, its approval policy and your pending orders', module: 'accounts' },
+  { key: 'support:read', resource: 'support', access: 'read', label: 'Read your support tickets', module: 'support' },
+  { key: 'support:write', resource: 'support', access: 'write', label: 'Raise a support ticket and reply on your own tickets', module: 'support' },
 ] as const satisfies readonly CustomerScopeDefinition[];
 
 export type CustomerScopeKey = (typeof CUSTOMER_SCOPE_CATALOG)[number]['key'];

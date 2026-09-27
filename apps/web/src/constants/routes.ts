@@ -57,6 +57,10 @@ export const ROUTES = {
     /** The customer's own return requests — distinct from the static /returns policy page below. */
     accountReturnNew: (orderNumber: string) => `/account/returns/new?number=${encodeURIComponent(orderNumber)}`,
     accountReturn: (id: string) => `/account/returns/${id}`,
+    /** 148-external-customer-support-portal.md WO-148.4. */
+    accountSupport: '/account/support',
+    accountSupportNew: '/account/support/new',
+    accountSupportTicket: (id: string) => `/account/support/${id}`,
 
     // Static content pages.
     contact: '/contact',
@@ -92,6 +96,8 @@ export const ROUTES = {
     supportTickets: '/admin/support/tickets',
     supportTicketNew: '/admin/support/tickets/new',
     supportTicket: (id: string) => `/admin/support/tickets/${id}`,
+    supportCustomerTickets: '/admin/support/customer-tickets',
+    supportCustomerTicket: (id: string) => `/admin/support/customer-tickets/${id}`,
 
     /** 165-cross-tenant-marketplace-directory.md — off by default (module: 'marketplace'). */
     marketplace: '/admin/marketplace',

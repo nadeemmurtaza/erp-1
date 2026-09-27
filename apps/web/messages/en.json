@@ -10,6 +10,7 @@
       "wishlist": "Wishlist",
       "overview": "Overview",
       "returns": "Returns",
+      "support": "Support",
       "reviews": "Reviews",
       "credit": "Credit & Gift Cards",
       "loyalty": "Loyalty",
@@ -220,6 +221,7 @@
       "resource_loyalty": "Loyalty points",
       "resource_storeCredit": "Store credit",
       "resource_b2bAccount": "B2B account",
+      "resource_support": "Support tickets",
       "status_ACTIVE": "Active",
       "status_EXPIRED": "Expired",
       "status_REVOKED": "Revoked",
@@ -693,6 +695,41 @@
       "RECEIVED": "Received",
       "INSPECTED": "Being reviewed",
       "REFUNDED": "Refunded",
+      "CLOSED": "Closed"
+    }
+  },
+  "support": {
+    "title": "Support",
+    "raiseAction": "Raise a ticket",
+    "myTickets": "My tickets",
+    "noTickets": "You have no support tickets yet.",
+    "subject": "Subject",
+    "category": "Category",
+    "categoryPlaceholder": "e.g. Order, Delivery, Payment",
+    "message": "Message",
+    "messagePlaceholder": "Describe what you need help with",
+    "orderNumber": "Order number (optional)",
+    "priority": "Priority",
+    "submit": "Raise ticket",
+    "submitted": "Your ticket has been raised — our team has been notified.",
+    "backToTickets": "Back to tickets",
+    "reply": "Reply",
+    "replyPlaceholder": "Write a reply",
+    "sendReply": "Send reply",
+    "reopen": "Reopen this ticket",
+    "raisedOn": "Raised {date}",
+    "resolvedOn": "Resolved {date}",
+    "priorityLevel": {
+      "LOW": "Low",
+      "NORMAL": "Normal",
+      "HIGH": "High",
+      "URGENT": "Urgent"
+    },
+    "status": {
+      "OPEN": "Open",
+      "AWAITING_CUSTOMER": "Waiting on your reply",
+      "IN_PROGRESS": "In progress",
+      "RESOLVED": "Resolved",
       "CLOSED": "Closed"
     }
   },

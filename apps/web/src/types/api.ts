@@ -1359,6 +1359,32 @@ export interface CustomerReturnRequest {
   }>;
 }
 
+/** 148-external-customer-support-portal.md — the customer's own side. */
+export interface CustomerSupportTicket {
+  id: string;
+  subject: string;
+  category: string;
+  priority: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
+  status: 'OPEN' | 'AWAITING_CUSTOMER' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+  orderId: string | null;
+  createdAt: string;
+  resolvedAt: string | null;
+}
+
+export interface CustomerSupportMessageView {
+  id: string;
+  authorType: 'CUSTOMER' | 'STAFF';
+  authorName: string;
+  body: string;
+  createdAt: string;
+}
+
+export interface CustomerSupportTicketDetail extends CustomerSupportTicket {
+  contactName: string;
+  assignedToName: string | null;
+  messages: CustomerSupportMessageView[];
+}
+
 export interface PaginatedResult<T> {
   data: T[];
   meta: {

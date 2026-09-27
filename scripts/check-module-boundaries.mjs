@@ -237,6 +237,13 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // approval threshold — the identical PricingService.resolvePrices() pure
   // read `cart -> pricing`/`orders -> pricing` already establish.
   'accounts -> pricing',
+  // 148-external-customer-support-portal.md — customer-support.service.ts's
+  // raise() finds-or-creates the authenticated customer's own Contact
+  // (CrmService.upsertContact()) inside the SAME transaction as the
+  // CustomerSupportTicket write, so a ticket never exists without its
+  // Contact and vice versa — the identical same-transaction reasoning
+  // `purchasing -> parties` already establishes for a Supplier and its Party.
+  'support -> crm',
 ]);
 
 function walk(dir) {

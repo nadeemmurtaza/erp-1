@@ -197,9 +197,9 @@ the *catalogue*, not any particular deployment's grants.
 | `notify.broadcast` | Send an announcement above the quorum threshold (requires a countersignature) | high | **0 — enforces nothing** | — | **none — no live user holds it** |
 | `notify.escalation.manage` | Configure which stalled tasks escalate, and how far | high | 4 | 2 | **none — no live user holds it** |
 | `support.tickets.raise` | Raise an internal support ticket | low | 1 | 3 | STAFF |
-| `support.tickets.handle` | Be assigned support tickets, and work the ones assigned to you | medium | **0 — enforces nothing** | — | STAFF |
-| `support.tickets.view_all` | View every support ticket, not only your own | medium | **0 — enforces nothing** | — | STAFF |
-| `support.tickets.reassign` | Assign or reassign any support ticket | medium | 1 | 1 | **none — no live user holds it** |
+| `support.tickets.handle` | Be assigned support tickets, and work the ones assigned to you | medium | **0 — enforces nothing** | 1 | STAFF |
+| `support.tickets.view_all` | View every support ticket, not only your own | medium | **0 — enforces nothing** | 1 | STAFF |
+| `support.tickets.reassign` | Assign or reassign any support ticket | medium | 2 | 2 | **none — no live user holds it** |
 
 ### Marketing
 

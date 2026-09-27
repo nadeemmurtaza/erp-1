@@ -2726,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>7,222 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>7,387 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2796,6 +2796,7 @@ _no second-level headings_
 - ADR-062 — Doc 61 (policy communications bulletin board): built inside the `notify` module rather than `hr`, an author-side reach check the document's own sketch omits, and a read-side visibility rule distinct from a sender's reach  <sub>:6866</sub>
 - ADR-063 — Doc 167 (bank facility management): promoted from a gap report to a built capability, mirroring doc 49's own settlements shape rather than inventing a new one  <sub>:6978</sub>
 - ADR-064 — Doc 64 (in-app help desk): built as a new standalone module, with a per-instance transition-authority rule and a name-resolution step the document's own sketch does not specify  <sub>:7108</sub>
+- ADR-065 — Doc 148 (external customer support portal): built as a second, `Contact`-keyed model alongside doc 64's own `SupportTicket`, sharing its handler permissions and its action-hub source rather than inventing either again  <sub>:7223</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3551,14 +3552,14 @@ _no second-level headings_
 - WO-6.8 — Screens  <sub>:315</sub>
 - Phase 6 exit criteria  <sub>:325</sub>
 
-### `docs/implementation/tasks-notifications-support/148-external-customer-support-portal.md`  <sub>176 lines</sub>
+### `docs/implementation/tasks-notifications-support/148-external-customer-support-portal.md`  <sub>224 lines</sub>
 
-- 1. A customer ticket, keyed to a `Contact`/`Party`, never a `User`  <sub>:13</sub>
-- 2. The trust boundary this document exists to get right  <sub>:64</sub>
-- Scope lenses  <sub>:85</sub>
-- Work orders  <sub>:143</sub>
-- Acceptance  <sub>:161</sub>
-- Out of scope  <sub>:170</sub>
+- 1. A customer ticket, keyed to a `Contact`/`Party`, never a `User`  <sub>:61</sub>
+- 2. The trust boundary this document exists to get right  <sub>:112</sub>
+- Scope lenses  <sub>:133</sub>
+- Work orders  <sub>:191</sub>
+- Acceptance  <sub>:209</sub>
+- Out of scope  <sub>:218</sub>
 
 ### `docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md`  <sub>239 lines</sub>
 

@@ -21,8 +21,10 @@ describe('SupportTicketActionSource', () => {
 
   beforeEach(async () => {
     prisma = {
-      supportTicket: { findMany: jest.fn() },
-      user: { findMany: jest.fn() },
+      supportTicket: { findMany: jest.fn().mockResolvedValue([]) },
+      customerSupportTicket: { findMany: jest.fn().mockResolvedValue([]) },
+      user: { findMany: jest.fn().mockResolvedValue([]) },
+      contact: { findMany: jest.fn().mockResolvedValue([]) },
     };
     settings = { get: jest.fn().mockResolvedValue(240) };
 
@@ -79,5 +81,33 @@ describe('SupportTicketActionSource', () => {
     const items = await source.fetchFor(actor(['support.tickets.reassign']));
 
     expect(items).toEqual([]);
+  });
+
+  it('surfaces an unassigned CUSTOMER ticket to a support.tickets.handle holder, tagged distinctly', async () => {
+    prisma.customerSupportTicket.findMany.mockResolvedValueOnce([
+      { id: 'ct1', subject: 'Where is my parcel', createdAt: new Date(), contactId: 'contact1', assignedToUserId: null },
+    ]);
+    prisma.contact.findMany.mockResolvedValueOnce([{ id: 'contact1', name: 'Ayesha' }]);
+
+    const items = await source.fetchFor(actor(['support.tickets.handle']));
+
+    expect(items).toHaveLength(1);
+    expect(items[0].kind).toBe('CUSTOMER_SUPPORT_TICKET');
+    expect(items[0].subjectEmployeeName).toBe('Ayesha');
+    expect(items[0].href).toBe('/admin/support/customer-tickets/ct1');
+  });
+
+  it('surfaces a CUSTOMER ticket whose assignee has since lost support.tickets.handle, only to a reassign holder', async () => {
+    prisma.customerSupportTicket.findMany.mockResolvedValueOnce([
+      { id: 'ct2', subject: 'Refund status', createdAt: new Date(), contactId: 'contact2', assignedToUserId: 'deactivated1' },
+    ]);
+    prisma.user.findMany.mockResolvedValueOnce([]); // stillHandlers — deactivated1 no longer holds it
+    prisma.contact.findMany.mockResolvedValueOnce([{ id: 'contact2', name: 'Bilal' }]);
+
+    const items = await source.fetchFor(actor(['support.tickets.reassign']));
+
+    expect(items).toHaveLength(1);
+    expect(items[0].kind).toBe('CUSTOMER_SUPPORT_TICKET');
+    expect(items[0].summary).toContain('Needs reassignment');
   });
 });

@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 414 tracked files in `apps/web`, by directory.
+All 419 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -26,8 +26,8 @@ All 414 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 709 |  |
-| `ur.json` | json | 709 |  |
+| `en.json` | json | 746 |  |
+| `ur.json` | json | 746 |  |
 
 ### `apps/web/public` (1)
 
@@ -967,6 +967,18 @@ All 414 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 195 | No clsx import needed |
 
+### `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 86 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 203 |  |
+
 ### `apps/web/src/app/(admin)/admin/(app)/support/tickets` (1)
 
 | File | Kind | Lines | Purpose |
@@ -1101,7 +1113,7 @@ All 414 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 467 |  |
+| `page.tsx` | page | 468 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/b2b` (1)
 
@@ -1162,6 +1174,24 @@ All 414 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 66 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 81 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 144 |  |
+
+### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/new` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 125 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet` (1)
 
@@ -1372,7 +1402,7 @@ All 414 tracked files in `apps/web`, by directory.
 | `image-manager.tsx` | component | 543 |  |
 | `metadata-driven-entity-form.tsx` | component | 120 |  |
 | `metadata-driven-form.tsx` | component | 147 |  |
-| `nav-registry.ts` | component | 1139 |  |
+| `nav-registry.ts` | component | 1152 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1572 |  |
@@ -1459,7 +1489,7 @@ All 414 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `dashboard-nav.tsx` | component | 103 |  |
+| `dashboard-nav.tsx` | component | 104 |  |
 
 ### `apps/web/src/components/storefront` (37)
 
@@ -1540,7 +1570,7 @@ All 414 tracked files in `apps/web`, by directory.
 | `downloads.ts` | constants | 21 |  |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 285 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 291 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 61 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (3)
@@ -1568,7 +1598,7 @@ All 414 tracked files in `apps/web`, by directory.
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
 | `api.ts` | utility | 200 |  |
 | `cart-client.ts` | utility | 99 |  |
-| `customer-client.ts` | utility | 217 |  |
+| `customer-client.ts` | utility | 252 |  |
 | `download-csv.ts` | utility | 36 |  |
 | `download-file.ts` | utility | 23 |  |
 | `onsite-messages-client.ts` | utility | 24 |  |
@@ -1586,7 +1616,7 @@ All 414 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api.ts` | types | 1821 |  |
+| `api.ts` | types | 1847 |  |
 | `cart.ts` | types | 110 |  |
 | `commerce.ts` | types | 24 | The commerce contracts — product, order, cart, inventory — in one import. |
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |

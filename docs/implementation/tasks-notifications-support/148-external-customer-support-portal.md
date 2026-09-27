@@ -1,5 +1,53 @@
 # 148 — Customer-facing support: doc 64's own named, unbuilt gap
 
+> **Status: built (2026-09-27), WO-148.1–148.4, DECISIONS.md ADR-065.**
+> `CustomerSupportTicket`/`CustomerSupportMessage`/`CustomerTicketStatus`/
+> `SupportMessageAuthorType` (in the same `support.prisma` doc 64 owns),
+> `CustomerSupportService`
+> (`raise()`/`replyAsCustomer()`/`replyAsStaff()`/`assign()`/`transition()`/
+> `listForStaff()`/`listMine()`/`getForStaff()`/`getForCustomer()`), a
+> shared `SupportHandlersService` extracted from doc 64's own
+> `SupportTicketsService` so "who holds `support.tickets.handle`" is one
+> primitive for both ticket kinds, and `SupportTicketActionSource`
+> extended (not duplicated) to also surface `CustomerSupportTicket` items
+> under a `CUSTOMER_SUPPORT_TICKET` kind, are all real, at
+> `apps/api/src/modules/support/`. Keyed on `contactId`, never
+> `raisedByUserId` — this document's own central actor-model thesis,
+> restated: `raise()` finds-or-creates the caller's own `Contact` via
+> `CrmService.upsertContact()` inside the same transaction as the ticket
+> write (the `'support -> crm'` entry in `KNOWN_MODULE_COUPLINGS`), which
+> closes this document's own "Contact creation timing gap" — a customer
+> who has never ordered still gets a `Contact` the moment they raise a
+> ticket.
+>
+> Three storefront screens (list, raise, detail-with-reply-and-reopen) at
+> `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/`,
+> gated by a new `@CustomerScope('support:read'|'support:write')` pair so
+> a personal API key can reach them exactly like every other self-service
+> resource; two admin screens (list, detail-with-reply/assign/transition)
+> at `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/`, a
+> sibling to doc 64's own `support/tickets/` screens rather than a filter
+> tab bolted onto them — `CustomerSupportTicket` is a distinct model with a
+> distinct requester, so it is a distinct object with its own queue. Both
+> admin screens reuse doc 64's own three handler permissions
+> (`support.tickets.handle`/`.view_all`/`.reassign`) unchanged, per this
+> document's own WO-148.3.
+>
+> Two decisions beyond this document's own literal sketch, both required
+> to make its own stated requirements real — see `DECISIONS.md` ADR-065
+> for the full reasoning: `reply()` is two methods
+> (`replyAsCustomer()`/`replyAsStaff()`), not the one this document
+> sketches, since the two sides of the trust boundary need genuinely
+> different visibility checks and only a customer's own reply auto-resumes
+> the SLA clock out of `AWAITING_CUSTOMER`; and `listForStaff()`
+> batch-resolves every row's `Contact.name` in one extra query, since a
+> bare `contactId` in a triage queue is the same unresolved-scalar defect
+> ADR-061 and ADR-064 already named elsewhere. The built model also omits
+> this document's own sketched `organizationId` column — this deployment
+> has no row-level tenant column anywhere (ADR-040/044/046/049/060/062),
+> the deployment itself is the tenant boundary, and `support.prisma`'s own
+> header comment names the precedent.
+
 Doc 64 built the internal staff help desk and named its own boundary
 explicitly: "Customer-facing (external) support ticketing — this document
 scopes the *internal* help desk... an external customer-support portal is

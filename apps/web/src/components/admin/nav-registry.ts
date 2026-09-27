@@ -917,6 +917,19 @@ export const ADMIN_NAV: AdminNavItem[] = [
     module: 'support',
   },
   {
+    // 148-external-customer-support-portal.md WO-148.4 — a second entry, not
+    // a tab on the internal-tickets screen: `CustomerSupportTicket` is a
+    // distinct model with a distinct requester (`Contact`, never `User`), so
+    // it is a distinct object with its own queue, sharing only the handler
+    // permissions doc 64 already seeded (`support.tickets.handle`/`.view_all`).
+    key: 'support-customer-tickets',
+    label: 'Customer tickets',
+    href: '/admin/support/customer-tickets',
+    permissions: ['support.tickets.handle', 'support.tickets.view_all'],
+    group: 'settings',
+    module: 'support',
+  },
+  {
     key: 'settings',
     label: 'Settings',
     href: '/admin/settings',

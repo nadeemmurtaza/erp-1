@@ -3,7 +3,7 @@
 
 # Data model
 
-All **301** Prisma models and **140** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **303** Prisma models and **142** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -78,7 +78,7 @@ against a real database.
 | [`settlements.prisma`](../data/settlements.md) | 3 | 1 | [`settlements`](../modules/settlements.md) | SettlementBatch, SettlementBatchLine, SettlementProvider |
 | [`sso.prisma`](../data/sso.md) | 1 | 2 | core platform | SsoConnection |
 | [`stitching.prisma`](../data/stitching.md) | 8 | 3 | [`stitching`](../modules/stitching.md) | StitchingJob, StitchingJobEvent, StitchingJobNumberCounter, StitchingOption, StitchingOptionGroup, StitchingOrder, StitchingOrder… |
-| [`support.prisma`](../data/support.md) | 2 | 2 | [`support`](../modules/support.md) | SupportTicket, TicketMessage |
+| [`support.prisma`](../data/support.md) | 4 | 4 | [`support`](../modules/support.md) | CustomerSupportMessage, CustomerSupportTicket, SupportTicket, TicketMessage |
 | [`tasks.prisma`](../data/tasks.md) | 3 | 1 | [`tasks`](../modules/tasks.md) | Task, TaskStageDefinition, TaskTransition |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
 | [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
@@ -155,6 +155,8 @@ against a real database.
 | [`ContactTag`](../data/crm.md#contacttag) | `crm` | 4 | 2 | — |  |
 | [`CreditNote`](../data/receivables.md#creditnote) | `receivables` | 14 | 0 | id | Reduces what a customer owes — a return, a pricing correction, a goodwill credit. |
 | [`CustomerCreditTerm`](../data/receivables.md#customercreditterm) | `receivables` | 7 | 0 | id | A policy row, checked at the one place a sale can be refused for it — never inferred, alw… |
+| [`CustomerSupportMessage`](../data/support.md#customersupportmessage) | `support` | 8 | 1 | id | authorType makes which side of the trust boundary a message came from explicit, rather th… |
+| [`CustomerSupportTicket`](../data/support.md#customersupportticket) | `support` | 11 | 0 | id | TicketPriority above is reused unchanged — "identical shape, no reason to diverge" (the d… |
 | [`CustomFieldDefinition`](../data/custom-fields.md#customfielddefinition) | `custom-fields` | 8 | 0 | id |  |
 | [`DebitNote`](../data/receivables.md#debitnote) | `receivables` | 12 | 0 | id | The mirror on the supplier side of the ledger — reduces what this organization owes a sup… |
 | [`DeviceToken`](../data/core.md#devicetoken) | `core` | 9 | 1 | id | A push notification target: one installation of the mobile app. |
@@ -430,6 +432,7 @@ against a real database.
 | [`ContactStatus`](../data/crm.md#contactstatus) | `crm` | `LEAD` `ACTIVE` `REPEAT` `DORMANT` `BLOCKED` |
 | [`ContentStatus`](../data/content.md#contentstatus) | `content` | `DRAFT` `PUBLISHED` `ARCHIVED` |
 | [`CreditDebitNoteStatus`](../data/receivables.md#creditdebitnotestatus) | `receivables` | `DRAFT` `ISSUED` `APPLIED` `VOID` |
+| [`CustomerTicketStatus`](../data/support.md#customerticketstatus) | `support` | `OPEN` `AWAITING_CUSTOMER` `IN_PROGRESS` `RESOLVED` `CLOSED` |
 | [`CustomFieldValueType`](../data/custom-fields.md#customfieldvaluetype) | `custom-fields` | `TEXT` `NUMBER` `BOOLEAN` `DATE` |
 | [`DepreciationMethod`](../data/accounting.md#depreciationmethod) | `accounting` | `STRAIGHT_LINE` `DECLINING_BALANCE` |
 | [`DevicePlatform`](../data/core.md#deviceplatform) | `core` | `IOS` `ANDROID` `WEB` |
@@ -524,6 +527,7 @@ against a real database.
 | [`StripeInvoicePaymentStatus`](../data/platform.md#stripeinvoicepaymentstatus) | `platform` | `PENDING` `PAID` `FAILED` |
 | [`SubscriptionStatus`](../data/platform.md#subscriptionstatus) | `platform` | `ACTIVE` `PAST_DUE` `CANCELLED` |
 | [`SupplierBillStatus`](../data/purchasing.md#supplierbillstatus) | `purchasing` | `UNPAID` `PARTIAL` `PAID` |
+| [`SupportMessageAuthorType`](../data/support.md#supportmessageauthortype) | `support` | `CUSTOMER` `STAFF` |
 | [`TaskState`](../data/tasks.md#taskstate) | `tasks` | `OPEN` `IN_PROGRESS` `BLOCKED` `DONE` `CANCELLED` |
 | [`TenantExportStatus`](../data/platform.md#tenantexportstatus) | `platform` | `PENDING` `RUNNING` `COMPLETE` `FAILED` |
 | [`TenantExportTrigger`](../data/platform.md#tenantexporttrigger) | `platform` | `MANUAL` `DEPROVISION` |

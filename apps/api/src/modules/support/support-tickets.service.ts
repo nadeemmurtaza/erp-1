@@ -1,9 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { AuditService } from '../../core/audit/audit.service';
-import { NotificationsService } from '../../core/notifications/notifications.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import type { Prisma, SupportTicket, TicketMessage, TicketPriority, TicketStatus } from '../../core/prisma/client';
+import { SupportHandlersService } from './support-handlers.service';
 
 export interface CreateTicketInput {
   raisedByUserId: string;
@@ -42,12 +42,10 @@ const ALLOWED_TRANSITIONS: Record<TicketStatus, TicketStatus[]> = {
  */
 @Injectable()
 export class SupportTicketsService {
-  private readonly logger = new Logger(SupportTicketsService.name);
-
   constructor(
     private readonly prisma: PrismaService,
-    private readonly notifications: NotificationsService,
     private readonly audit: AuditService,
+    private readonly handlers: SupportHandlersService,
   ) {}
 
   async create(input: CreateTicketInput): Promise<SupportTicket> {
@@ -63,7 +61,12 @@ export class SupportTicketsService {
       },
     });
     await this.audit.record({ actorId: input.raisedByUserId, action: 'support.ticket.raised', entity: 'SupportTicket', entityId: ticket.id });
-    await this.notifyHandlers(ticket);
+    await this.handlers.notifyHandlers({
+      ticketId: ticket.id,
+      subject: ticket.subject,
+      priorityLabel: ticket.priority.toLowerCase(),
+      template: 'support.ticket_raised',
+    });
     return ticket;
   }
 
@@ -79,7 +82,7 @@ export class SupportTicketsService {
     const ticket = await this.prisma.supportTicket.findUnique({ where: { id: ticketId }, select: { assignedToUserId: true } });
     if (!ticket) throw new NotFoundException('Ticket not found.');
 
-    const eligible = await this.holdsPermission(assigneeUserId, 'support.tickets.handle');
+    const eligible = await this.handlers.holdsPermission(assigneeUserId, 'support.tickets.handle');
     if (!eligible) throw new BadRequestException('The assignee must hold support.tickets.handle.');
 
     const updated = await this.prisma.supportTicket.update({ where: { id: ticketId }, data: { assignedToUserId: assigneeUserId } });
@@ -182,39 +185,4 @@ export class SupportTicketsService {
     return ticket;
   }
 
-  /** "Audience is a capability, not an address" — every current holder of `support.tickets.handle`, resolved fresh, never a hardcoded support address. A small holder set: a direct notification, not a digest. */
-  private async notifyHandlers(ticket: SupportTicket): Promise<void> {
-    const holders = await this.prisma.user.findMany({
-      where: { roleAssignments: { some: { role: { grants: { some: { permission: { key: 'support.tickets.handle' } } } } } } },
-      select: { id: true, email: true, phone: true, firstName: true, lastName: true },
-    });
-    if (holders.length === 0) {
-      this.logger.warn(`Ticket ${ticket.id} raised, but nobody holds support.tickets.handle — no one was notified.`);
-      return;
-    }
-
-    await Promise.all(
-      holders.map((holder) =>
-        this.notifications.send({
-          template: 'support.ticket_raised',
-          recipient: {
-            userId: holder.id,
-            email: holder.email,
-            phone: holder.phone,
-            name: [holder.firstName, holder.lastName].filter(Boolean).join(' ') || null,
-          },
-          subject: `New ${ticket.priority.toLowerCase()} priority ticket: ${ticket.subject}`,
-          body: `A new support ticket was raised: ${ticket.subject}`,
-          data: { ticketId: ticket.id },
-        }),
-      ),
-    );
-  }
-
-  private async holdsPermission(userId: string, key: string): Promise<boolean> {
-    const count = await this.prisma.user.count({
-      where: { id: userId, roleAssignments: { some: { role: { grants: { some: { permission: { key } } } } } } },
-    });
-    return count > 0;
-  }
 }

@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2325,
-    "lines": 354131,
-    "routes": 830,
-    "controllers": 151,
-    "models": 301,
-    "enums": 140,
-    "migrations": 112,
+    "files": 2337,
+    "lines": 356215,
+    "routes": 840,
+    "controllers": 153,
+    "models": 303,
+    "enums": 142,
+    "migrations": 113,
     "events": 69,
     "permissions": 120,
-    "screens": 262,
+    "screens": 267,
     "crons": 27,
-    "specs": 314,
+    "specs": 316,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 60,
-      "lines": 30624,
-      "bytes": 1205286,
+      "lines": 30631,
+      "bytes": 1205748,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1079,
-      "lines": 145591,
-      "bytes": 5652569,
+      "files": 1086,
+      "lines": 146657,
+      "bytes": 5700658,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 414,
-      "lines": 69340,
-      "bytes": 2505336,
+      "files": 419,
+      "lines": 70135,
+      "bytes": 2532475,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 400,
-      "lines": 69913,
-      "bytes": 4159922,
+      "lines": 70126,
+      "bytes": 4173206,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8419,
-      "bytes": 301145,
+      "lines": 8422,
+      "bytes": 301425,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1205,7 +1205,13 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/support/customer-support.controller.ts",
+        "apps/api/src/modules/support/customer-support.service.spec.ts",
+        "apps/api/src/modules/support/customer-support.service.ts",
+        "apps/api/src/modules/support/dto/customer-support.dto.ts",
         "apps/api/src/modules/support/dto/support.dto.ts",
+        "apps/api/src/modules/support/support-handlers.service.spec.ts",
+        "apps/api/src/modules/support/support-handlers.service.ts",
         "apps/api/src/modules/support/support-ticket-action.source.spec.ts",
         "apps/api/src/modules/support/support-ticket-action.source.ts",
         "apps/api/src/modules/support/support-tickets.controller.ts",
@@ -1213,7 +1219,7 @@
         "apps/api/src/modules/support/support-tickets.service.ts",
         "apps/api/src/modules/support/support.module.ts"
       ],
-      "routes": 6,
+      "routes": 16,
       "page": "docs/index/modules/support.md"
     },
     {
@@ -11819,6 +11825,78 @@
     },
     {
       "method": "GET",
+      "path": "/admin/support/customer-tickets",
+      "module": "support",
+      "controller": "CustomerSupportStaffController",
+      "handler": "list",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 82,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Assigned to you, or every customer ticket with support.tickets.view_all"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/support/customer-tickets/:id",
+      "module": "support",
+      "controller": "CustomerSupportStaffController",
+      "handler": "get",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 89,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "One customer ticket, with its full reply thread"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/support/customer-tickets/:id/assign",
+      "module": "support",
+      "controller": "CustomerSupportStaffController",
+      "handler": "assign",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 103,
+      "access": "support.tickets.reassign",
+      "permissions": [
+        "support.tickets.reassign"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Assign or reassign a customer ticket to someone who holds support.tickets.handle"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/support/customer-tickets/:id/messages",
+      "module": "support",
+      "controller": "CustomerSupportStaffController",
+      "handler": "reply",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 96,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Reply as staff — notifies the customer through their own contact channel"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/support/customer-tickets/:id/transition",
+      "module": "support",
+      "controller": "CustomerSupportStaffController",
+      "handler": "transition",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 110,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Move a customer ticket forward, or reopen a resolved one"
+    },
+    {
+      "method": "GET",
       "path": "/admin/support/tickets",
       "module": "support",
       "controller": "SupportTicketsController",
@@ -14544,6 +14622,76 @@
     },
     {
       "method": "POST",
+      "path": "/support/tickets",
+      "module": "support",
+      "controller": "CustomerSupportController",
+      "handler": "raise",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 26,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Raise a support ticket"
+    },
+    {
+      "method": "GET",
+      "path": "/support/tickets/:id",
+      "module": "support",
+      "controller": "CustomerSupportController",
+      "handler": "get",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 49,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "One of your own tickets, with its full reply thread"
+    },
+    {
+      "method": "POST",
+      "path": "/support/tickets/:id/messages",
+      "module": "support",
+      "controller": "CustomerSupportController",
+      "handler": "reply",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 57,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Reply on your own ticket"
+    },
+    {
+      "method": "POST",
+      "path": "/support/tickets/:id/transition",
+      "module": "support",
+      "controller": "CustomerSupportController",
+      "handler": "transition",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 65,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Reopen a resolved ticket — every other status change is staff-side"
+    },
+    {
+      "method": "GET",
+      "path": "/support/tickets/mine",
+      "module": "support",
+      "controller": "CustomerSupportController",
+      "handler": "mine",
+      "file": "apps/api/src/modules/support/customer-support.controller.ts",
+      "line": 41,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Every ticket you raised"
+    },
+    {
+      "method": "POST",
       "path": "/track/event",
       "module": "tracking",
       "controller": "TrackingController",
@@ -16522,7 +16670,7 @@
       "category": "Organization",
       "sensitivity": "medium",
       "routes": [],
-      "uiSites": 0,
+      "uiSites": 1,
       "roles": [
         "STAFF"
       ],
@@ -16534,7 +16682,7 @@
       "category": "Organization",
       "sensitivity": "medium",
       "routes": [],
-      "uiSites": 0,
+      "uiSites": 1,
       "roles": [
         "STAFF"
       ],
@@ -16546,9 +16694,10 @@
       "category": "Organization",
       "sensitivity": "medium",
       "routes": [
+        "POST /admin/support/customer-tickets/:id/assign",
         "POST /admin/support/tickets/:id/assign"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [],
       "inSeed": false
     },
@@ -23149,6 +23298,162 @@
       ],
       "indexes": [
         "@@index([isOnHold])"
+      ]
+    },
+    {
+      "name": "CustomerSupportMessage",
+      "file": "apps/api/prisma/schema/support.prisma",
+      "line": 122,
+      "doc": "authorType makes which side of the trust boundary a message came from explicit, rather than inferring it from which id column is non-null — the document's own reasoning, quoted directly.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ticketId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "authorType",
+          "type": "SupportMessageAuthorType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "contactId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "body",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "ticket",
+          "type": "CustomerSupportTicket",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@index([ticketId, createdAt])"
+      ]
+    },
+    {
+      "name": "CustomerSupportTicket",
+      "file": "apps/api/prisma/schema/support.prisma",
+      "line": 88,
+      "doc": "TicketPriority above is reused unchanged — \"identical shape, no reason to diverge\" (the document's own words).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "contactId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "orderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "subject",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "category",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "CustomerTicketStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "priority",
+          "type": "TicketPriority",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "assignedToUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "resolvedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "messages",
+          "type": "CustomerSupportMessage[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status, assignedToUserId])",
+        "@@index([contactId])"
       ]
     },
     {
@@ -44582,6 +44887,18 @@
       ]
     },
     {
+      "name": "CustomerTicketStatus",
+      "file": "apps/api/prisma/schema/support.prisma",
+      "line": 110,
+      "values": [
+        "OPEN",
+        "AWAITING_CUSTOMER",
+        "IN_PROGRESS",
+        "RESOLVED",
+        "CLOSED"
+      ]
+    },
+    {
       "name": "CustomFieldValueType",
       "file": "apps/api/prisma/schema/custom-fields.prisma",
       "line": 13,
@@ -45578,6 +45895,15 @@
         "UNPAID",
         "PARTIAL",
         "PAID"
+      ]
+    },
+    {
+      "name": "SupportMessageAuthorType",
+      "file": "apps/api/prisma/schema/support.prisma",
+      "line": 139,
+      "values": [
+        "CUSTOMER",
+        "STAFF"
       ]
     },
     {
@@ -47804,6 +48130,23 @@
         "SupportTicket",
         "TicketMessage"
       ]
+    },
+    {
+      "folder": "20260927070000_wo148_customer_support_portal",
+      "file": "apps/api/prisma/schema/migrations/20260927070000_wo148_customer_support_portal/migration.sql",
+      "date": "2026-09-27",
+      "slug": "wo148_customer_support_portal",
+      "statements": 8,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "CustomerSupportMessage",
+        "CustomerSupportTicket"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -48344,6 +48687,33 @@
       "kind": "page",
       "url": "/[locale]/account/reviews",
       "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/support",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/support/[id]",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/[id]/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/account/support/new",
+      "file": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/new/page.tsx",
       "client": true,
       "surface": "storefront",
       "doc": ""
@@ -50048,6 +50418,24 @@
       "client": true,
       "surface": "admin",
       "doc": "No clsx import needed"
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/support/customer-tickets",
+      "file": "apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/support/customer-tickets/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/[id]/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
     },
     {
       "app": "web",
@@ -53227,10 +53615,37 @@
       ]
     },
     {
-      "file": "apps/api/src/modules/support/support-ticket-action.source.spec.ts",
+      "file": "apps/api/src/modules/support/customer-support.service.spec.ts",
+      "module": "support",
+      "kind": "unit test",
+      "cases": 20,
+      "describes": [
+        "CustomerSupportService",
+        "raise",
+        "replyAsCustomer",
+        "replyAsStaff",
+        "assign",
+        "transition",
+        "listForStaff / listMine visibility",
+        "getForCustomer"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/support/support-handlers.service.spec.ts",
       "module": "support",
       "kind": "unit test",
       "cases": 4,
+      "describes": [
+        "SupportHandlersService",
+        "holdsPermission",
+        "notifyHandlers"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/support/support-ticket-action.source.spec.ts",
+      "module": "support",
+      "kind": "unit test",
+      "cases": 6,
       "describes": [
         "SupportTicketActionSource"
       ]
@@ -53239,7 +53654,7 @@
       "file": "apps/api/src/modules/support/support-tickets.service.spec.ts",
       "module": "support",
       "kind": "unit test",
-      "cases": 22,
+      "cases": 21,
       "describes": [
         "SupportTicketsService",
         "create",
@@ -56121,6 +56536,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260927070000_wo148_customer_support_portal/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 57,
+      "bytes": 2209,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -56340,8 +56764,8 @@
       "path": "apps/api/prisma/schema/support.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 70,
-      "bytes": 2068,
+      "lines": 143,
+      "bytes": 4486,
       "doc": "In-app help desk (internal) — tasks-notifications-support/64-help-desk-",
       "symbols": []
     },
@@ -70866,6 +71290,100 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/support/customer-support.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 114,
+      "bytes": 4735,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomerSupportController",
+          "kind": "class",
+          "line": 19
+        },
+        {
+          "name": "CustomerSupportStaffController",
+          "kind": "class",
+          "line": 76
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/support/customer-support.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 242,
+      "bytes": 12419,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/support/customer-support.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 318,
+      "bytes": 15153,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RaiseCustomerTicketInput",
+          "kind": "interface",
+          "line": 16
+        },
+        {
+          "name": "CustomerTicketMessageView",
+          "kind": "interface",
+          "line": 25
+        },
+        {
+          "name": "CustomerTicketDetail",
+          "kind": "interface",
+          "line": 29
+        },
+        {
+          "name": "CustomerTicketListRow",
+          "kind": "interface",
+          "line": 35
+        },
+        {
+          "name": "CustomerSupportService",
+          "kind": "class",
+          "line": 66
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/support/dto/customer-support.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 48,
+      "bytes": 1038,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RaiseCustomerTicketDto",
+          "kind": "class",
+          "line": 8
+        },
+        {
+          "name": "ReplyCustomerTicketDto",
+          "kind": "class",
+          "line": 32
+        },
+        {
+          "name": "AssignCustomerTicketDto",
+          "kind": "class",
+          "line": 38
+        },
+        {
+          "name": "TransitionCustomerTicketDto",
+          "kind": "class",
+          "line": 44
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/support/dto/support.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -70896,11 +71414,40 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/support/support-handlers.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 63,
+      "bytes": 2636,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/support/support-handlers.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 68,
+      "bytes": 3004,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NotifyHandlersInput",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "SupportHandlersService",
+          "kind": "class",
+          "line": 23
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/support/support-ticket-action.source.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 84,
-      "bytes": 3635,
+      "lines": 114,
+      "bytes": 5290,
       "doc": "",
       "symbols": []
     },
@@ -70908,14 +71455,14 @@
       "path": "apps/api/src/modules/support/support-ticket-action.source.ts",
       "area": "api",
       "kind": "module",
-      "lines": 122,
-      "bytes": 5086,
+      "lines": 195,
+      "bytes": 8635,
       "doc": "",
       "symbols": [
         {
           "name": "SupportTicketActionSource",
           "kind": "class",
-          "line": 24
+          "line": 31
         }
       ]
     },
@@ -70938,8 +71485,8 @@
       "path": "apps/api/src/modules/support/support-tickets.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 220,
-      "bytes": 10806,
+      "lines": 212,
+      "bytes": 10324,
       "doc": "",
       "symbols": []
     },
@@ -70947,8 +71494,8 @@
       "path": "apps/api/src/modules/support/support-tickets.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 221,
-      "bytes": 10383,
+      "lines": 189,
+      "bytes": 8852,
       "doc": "",
       "symbols": [
         {
@@ -70977,14 +71524,14 @@
       "path": "apps/api/src/modules/support/support.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 24,
-      "bytes": 1136,
+      "lines": 38,
+      "bytes": 2041,
       "doc": "",
       "symbols": [
         {
           "name": "SupportModule",
           "kind": "class",
-          "line": 23
+          "line": 37
         }
       ]
     },
@@ -72326,8 +72873,8 @@
       "path": "apps/api/test/customer-scope-routes.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 237,
-      "bytes": 11438,
+      "lines": 243,
+      "bytes": 11819,
       "doc": "",
       "symbols": []
     },
@@ -76771,8 +77318,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 709,
-      "bytes": 28559,
+      "lines": 746,
+      "bytes": 29733,
       "doc": "",
       "symbols": []
     },
@@ -76780,8 +77327,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 709,
-      "bytes": 39452,
+      "lines": 746,
+      "bytes": 40942,
       "doc": "",
       "symbols": []
     },
@@ -79237,6 +79784,36 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 203,
+      "bytes": 6919,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomerSupportTicketDetailPage",
+          "kind": "default",
+          "line": 52
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 86,
+      "bytes": 3298,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CustomerSupportTicketsPage",
+          "kind": "default",
+          "line": 36
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/support/tickets/[id]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -79560,14 +80137,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/api-keys/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 467,
-      "bytes": 16313,
+      "lines": 468,
+      "bytes": 16344,
       "doc": "",
       "symbols": [
         {
           "name": "AccountApiKeysPage",
           "kind": "default",
-          "line": 76
+          "line": 77
         }
       ]
     },
@@ -79733,6 +80310,51 @@
           "name": "MyReviewsPage",
           "kind": "default",
           "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 144,
+      "bytes": 4698,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SupportTicketDetailPage",
+          "kind": "default",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/new/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 125,
+      "bytes": 3878,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NewSupportTicketPage",
+          "kind": "default",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 81,
+      "bytes": 2673,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MySupportTicketsPage",
+          "kind": "default",
+          "line": 15
         }
       ]
     },
@@ -81491,8 +82113,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1139,
-      "bytes": 31933,
+      "lines": 1152,
+      "bytes": 32563,
       "doc": "",
       "symbols": [
         {
@@ -81523,12 +82145,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1109
+          "line": 1122
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1124
+          "line": 1137
         }
       ]
     },
@@ -81776,14 +82398,14 @@
       "path": "apps/web/src/components/dashboard/dashboard-nav.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 103,
-      "bytes": 4081,
+      "lines": 104,
+      "bytes": 4162,
       "doc": "",
       "symbols": [
         {
           "name": "DashboardNav",
           "kind": "function",
-          "line": 58
+          "line": 59
         }
       ]
     },
@@ -82789,8 +83411,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 285,
-      "bytes": 13073,
+      "lines": 291,
+      "bytes": 13436,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -83121,94 +83743,119 @@
       "path": "apps/web/src/lib/customer-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 217,
-      "bytes": 6739,
+      "lines": 252,
+      "bytes": 7928,
       "doc": "",
       "symbols": [
         {
           "name": "getCustomerToken",
           "kind": "function",
-          "line": 12
+          "line": 20
         },
         {
           "name": "getStoredCustomerUser",
           "kind": "function",
-          "line": 16
+          "line": 24
         },
         {
           "name": "clearCustomerSession",
           "kind": "function",
-          "line": 34
+          "line": 42
         },
         {
           "name": "loginCustomer",
           "kind": "function",
-          "line": 40
+          "line": 48
         },
         {
           "name": "registerCustomer",
           "kind": "function",
-          "line": 53
+          "line": 61
         },
         {
           "name": "forgotPassword",
           "kind": "function",
-          "line": 72
+          "line": 80
         },
         {
           "name": "resetPassword",
           "kind": "function",
-          "line": 81
+          "line": 89
         },
         {
           "name": "verifyEmail",
           "kind": "function",
-          "line": 90
+          "line": 98
         },
         {
           "name": "unsubscribeFromMarketing",
           "kind": "function",
-          "line": 99
+          "line": 107
         },
         {
           "name": "logoutCustomer",
           "kind": "function",
-          "line": 108
+          "line": 116
         },
         {
           "name": "getMyOrder",
           "kind": "function",
-          "line": 128
+          "line": 136
         },
         {
           "name": "trackOrder",
           "kind": "function",
-          "line": 132
+          "line": 140
         },
         {
           "name": "listReturnReasons",
           "kind": "function",
-          "line": 142
+          "line": 150
         },
         {
           "name": "listMyReturns",
           "kind": "function",
-          "line": 146
+          "line": 154
         },
         {
           "name": "getMyReturn",
           "kind": "function",
-          "line": 150
+          "line": 158
         },
         {
           "name": "createReturnRequest",
           "kind": "function",
-          "line": 154
+          "line": 162
+        },
+        {
+          "name": "listMySupportTickets",
+          "kind": "function",
+          "line": 171
+        },
+        {
+          "name": "getMySupportTicket",
+          "kind": "function",
+          "line": 175
+        },
+        {
+          "name": "raiseSupportTicket",
+          "kind": "function",
+          "line": 179
+        },
+        {
+          "name": "replySupportTicket",
+          "kind": "function",
+          "line": 189
+        },
+        {
+          "name": "reopenSupportTicket",
+          "kind": "function",
+          "line": 193
         },
         {
           "name": "customerFetch",
           "kind": "function",
-          "line": 194
+          "line": 229
         }
       ]
     },
@@ -83356,8 +84003,8 @@
       "path": "apps/web/src/types/api.ts",
       "area": "web",
       "kind": "types",
-      "lines": 1821,
-      "bytes": 49611,
+      "lines": 1847,
+      "bytes": 50326,
       "doc": "",
       "symbols": [
         {
@@ -84056,269 +84703,284 @@
           "line": 1344
         },
         {
+          "name": "CustomerSupportTicket",
+          "kind": "interface",
+          "line": 1363
+        },
+        {
+          "name": "CustomerSupportMessageView",
+          "kind": "interface",
+          "line": 1374
+        },
+        {
+          "name": "CustomerSupportTicketDetail",
+          "kind": "interface",
+          "line": 1382
+        },
+        {
           "name": "PaginatedResult",
           "kind": "interface",
-          "line": 1362
+          "line": 1388
         },
         {
           "name": "StockTransferLine",
           "kind": "interface",
-          "line": 1377
+          "line": 1403
         },
         {
           "name": "InterBranchInvoice",
           "kind": "interface",
-          "line": 1386
+          "line": 1412
         },
         {
           "name": "StockTransfer",
           "kind": "interface",
-          "line": 1395
+          "line": 1421
         },
         {
           "name": "StockTransferListResult",
           "kind": "interface",
-          "line": 1411
+          "line": 1437
         },
         {
           "name": "CmsBanner",
           "kind": "interface",
-          "line": 1418
+          "line": 1444
         },
         {
           "name": "CmsPage",
           "kind": "interface",
-          "line": 1426
+          "line": 1452
         },
         {
           "name": "CmsPost",
           "kind": "interface",
-          "line": 1433
+          "line": 1459
         },
         {
           "name": "DashboardCardsResponse",
           "kind": "interface",
-          "line": 1450
+          "line": 1476
         },
         {
           "name": "ActionItem",
           "kind": "interface",
-          "line": 1464
+          "line": 1490
         },
         {
           "name": "ActionHubResponse",
           "kind": "interface",
-          "line": 1475
+          "line": 1501
         },
         {
           "name": "FeedEntry",
           "kind": "interface",
-          "line": 1482
+          "line": 1508
         },
         {
           "name": "FeedResponse",
           "kind": "interface",
-          "line": 1492
+          "line": 1518
         },
         {
           "name": "CmsMenuLink",
           "kind": "interface",
-          "line": 1498
+          "line": 1524
         },
         {
           "name": "ProductCrossSellKind",
           "kind": "type",
-          "line": 1506
+          "line": 1532
         },
         {
           "name": "ProductCrossSellRow",
           "kind": "interface",
-          "line": 1508
+          "line": 1534
         },
         {
           "name": "MarkdownSuggestionStatus",
           "kind": "type",
-          "line": 1515
+          "line": 1541
         },
         {
           "name": "MarkdownSuggestion",
           "kind": "interface",
-          "line": 1517
+          "line": 1543
         },
         {
           "name": "ApiKeyStatus",
           "kind": "type",
-          "line": 1543
+          "line": 1569
         },
         {
           "name": "ApiKeyRevocationReason",
           "kind": "type",
-          "line": 1544
+          "line": 1570
         },
         {
           "name": "ApiKeyView",
           "kind": "interface",
-          "line": 1565
+          "line": 1591
         },
         {
           "name": "IssuedApiKey",
           "kind": "interface",
-          "line": 1572
+          "line": 1598
         },
         {
           "name": "SsoConnectionStatus",
           "kind": "type",
-          "line": 1582
+          "line": 1608
         },
         {
           "name": "SsoConnection",
           "kind": "interface",
-          "line": 1584
+          "line": 1610
         },
         {
           "name": "SsoConnectionList",
           "kind": "interface",
-          "line": 1603
+          "line": 1629
         },
         {
           "name": "SsoDefaultRoleOption",
           "kind": "interface",
-          "line": 1609
+          "line": 1635
         },
         {
           "name": "SsoAccount",
           "kind": "interface",
-          "line": 1615
+          "line": 1641
         },
         {
           "name": "SsoSignInOption",
           "kind": "interface",
-          "line": 1629
+          "line": 1655
         },
         {
           "name": "ApiKeyOversightView",
           "kind": "interface",
-          "line": 1635
+          "line": 1661
         },
         {
           "name": "ManagedServicesUsageSnapshot",
           "kind": "interface",
-          "line": 1656
+          "line": 1682
         },
         {
           "name": "ManagedServicesTenantStatus",
           "kind": "type",
-          "line": 1663
+          "line": 1689
         },
         {
           "name": "ManagedServicesUsageResponse",
           "kind": "interface",
-          "line": 1665
+          "line": 1691
         },
         {
           "name": "ManagedServicesInvoiceStatus",
           "kind": "type",
-          "line": 1672
+          "line": 1698
         },
         {
           "name": "ManagedServicesStripePaymentStatus",
           "kind": "type",
-          "line": 1673
+          "line": 1699
         },
         {
           "name": "ManagedServicesInvoice",
           "kind": "interface",
-          "line": 1675
+          "line": 1701
         },
         {
           "name": "ManagedServicesInvoicesResponse",
           "kind": "interface",
-          "line": 1691
+          "line": 1717
         },
         {
           "name": "CustomFieldDefinition",
           "kind": "interface",
-          "line": 1697
+          "line": 1723
         },
         {
           "name": "CustomFieldEntityType",
           "kind": "type",
-          "line": 1706
+          "line": 1732
         },
         {
           "name": "CustomFieldValueType",
           "kind": "type",
-          "line": 1707
+          "line": 1733
         },
         {
           "name": "CustomFieldValue",
           "kind": "type",
-          "line": 1709
+          "line": 1735
         },
         {
           "name": "EmbeddedWidget",
           "kind": "interface",
-          "line": 1712
+          "line": 1738
         },
         {
           "name": "EmbedToken",
           "kind": "interface",
-          "line": 1721
+          "line": 1747
         },
         {
           "name": "EntityAttribute",
           "kind": "interface",
-          "line": 1734
+          "line": 1760
         },
         {
           "name": "EntityAttributeValueType",
           "kind": "type",
-          "line": 1743
+          "line": 1769
         },
         {
           "name": "MicroFrontendFragment",
           "kind": "interface",
-          "line": 1751
+          "line": 1777
         },
         {
           "name": "FragmentStatus",
           "kind": "type",
-          "line": 1761
+          "line": 1787
         },
         {
           "name": "FragmentToken",
           "kind": "interface",
-          "line": 1764
+          "line": 1790
         },
         {
           "name": "FormMetadata",
           "kind": "interface",
-          "line": 1776
+          "line": 1802
         },
         {
           "name": "FieldMetadata",
           "kind": "interface",
-          "line": 1782
+          "line": 1808
         },
         {
           "name": "FieldMetadataValueType",
           "kind": "type",
-          "line": 1791
+          "line": 1817
         },
         {
           "name": "BpmnWorkflowDefinition",
           "kind": "interface",
-          "line": 1799
+          "line": 1825
         },
         {
           "name": "ApprovalSubjectType",
           "kind": "type",
-          "line": 1806
+          "line": 1832
         },
         {
           "name": "ProductReferenceLookup",
           "kind": "interface",
-          "line": 1814
+          "line": 1840
         }
       ]
     },
@@ -86853,8 +87515,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 7222,
-      "bytes": 421446,
+      "lines": 7387,
+      "bytes": 431524,
       "doc": "",
       "symbols": []
     },
@@ -86908,7 +87570,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 546,
-      "bytes": 74731,
+      "bytes": 74909,
       "doc": "",
       "symbols": []
     },
@@ -88383,8 +89045,8 @@
       "path": "docs/implementation/tasks-notifications-support/148-external-customer-support-portal.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 176,
-      "bytes": 9288,
+      "lines": 224,
+      "bytes": 12316,
       "doc": "",
       "symbols": []
     },
@@ -88808,8 +89470,8 @@
       "path": "packages/shared/src/api-keys.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 331,
-      "bytes": 15020,
+      "lines": 334,
+      "bytes": 15300,
       "doc": "Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request.",
       "symbols": [
         {
@@ -88905,42 +89567,42 @@
         {
           "name": "CustomerScopeResource",
           "kind": "type",
-          "line": 234
+          "line": 235
         },
         {
           "name": "CustomerScopeAccess",
           "kind": "type",
-          "line": 235
+          "line": 236
         },
         {
           "name": "CustomerScopeDefinition",
           "kind": "interface",
-          "line": 237
+          "line": 238
         },
         {
           "name": "CUSTOMER_SCOPE_CATALOG",
           "kind": "const",
-          "line": 261
+          "line": 262
         },
         {
           "name": "CustomerScopeKey",
           "kind": "type",
-          "line": 301
+          "line": 304
         },
         {
           "name": "CUSTOMER_SCOPE_KEYS",
           "kind": "const",
-          "line": 303
+          "line": 306
         },
         {
           "name": "expandCustomerScopes",
           "kind": "function",
-          "line": 316
+          "line": 319
         },
         {
           "name": "unknownCustomerScopes",
           "kind": "function",
-          "line": 328
+          "line": 331
         }
       ]
     },
@@ -90794,8 +91456,8 @@
       "path": "scripts/check-module-boundaries.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 610,
-      "bytes": 27035,
+      "lines": 617,
+      "bytes": 27497,
       "doc": "",
       "symbols": []
     },

@@ -3,7 +3,7 @@
 
 # Schema: `support.prisma`
 
-2 models · 2 enums. Owned by module [`support`](../modules/support.md).
+4 models · 4 enums. Owned by module [`support`](../modules/support.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -19,6 +19,43 @@ Migrations are **hand-written and forward-only** — never `prisma migrate diff`
 against a real database.
 
 ## Models
+
+### `CustomerSupportMessage`  <sub>`apps/api/prisma/schema/support.prisma:122`</sub>
+
+> authorType makes which side of the trust boundary a message came from explicit, rather than inferring it from which id column is non-null — the document's own reasoning, quoted directly.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `ticketId` | `String` |  |  |
+| `authorType` | `SupportMessageAuthorType` |  |  |
+| `contactId` | `String?` | optional |  |
+| `userId` | `String?` | optional |  |
+| `body` | `String` |  |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `ticket` | `CustomerSupportTicket` | relation | @relation(fields: [ticketId], references: [id], onDelete: Cascade) |
+
+Indexes: `@@index([ticketId, createdAt])`
+
+### `CustomerSupportTicket`  <sub>`apps/api/prisma/schema/support.prisma:88`</sub>
+
+> TicketPriority above is reused unchanged — "identical shape, no reason to diverge" (the document's own words).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `contactId` | `String` |  |  |
+| `orderId` | `String?` | optional |  |
+| `subject` | `String` |  |  |
+| `category` | `String` |  |  |
+| `status` | `CustomerTicketStatus` |  | @default(OPEN) |
+| `priority` | `TicketPriority` |  | @default(NORMAL) |
+| `assignedToUserId` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `resolvedAt` | `DateTime?` | optional |  |
+| `messages` | `CustomerSupportMessage[]` |  |  |
+
+Indexes: `@@index([status, assignedToUserId])` · `@@index([contactId])`
 
 ### `SupportTicket`  <sub>`apps/api/prisma/schema/support.prisma:17`</sub>
 
@@ -56,6 +93,23 @@ Indexes: `@@index([ticketId, createdAt])`
 
 
 ## Enums
+
+### `CustomerTicketStatus`  <sub>`apps/api/prisma/schema/support.prisma:110`</sub>
+
+| Value | Meaning |
+|---|---|
+| `OPEN` |  |
+| `AWAITING_CUSTOMER` |  |
+| `IN_PROGRESS` |  |
+| `RESOLVED` |  |
+| `CLOSED` |  |
+
+### `SupportMessageAuthorType`  <sub>`apps/api/prisma/schema/support.prisma:139`</sub>
+
+| Value | Meaning |
+|---|---|
+| `CUSTOMER` |  |
+| `STAFF` |  |
 
 ### `TicketPriority`  <sub>`apps/api/prisma/schema/support.prisma:48`</sub>
 

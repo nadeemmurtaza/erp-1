@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,079 tracked files in `apps/api`, by directory.
+All 1,086 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -87,7 +87,7 @@ All 1,079 tracked files in `apps/api`, by directory.
 | `settlements.prisma` | prisma schema | 77 | Financial institution settlement partnerships |
 | `sso.prisma` | prisma schema | 73 | SSO / identity federation |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
-| `support.prisma` | prisma schema | 70 | In-app help desk (internal) — tasks-notifications-support/64-help-desk- |
+| `support.prisma` | prisma schema | 143 | In-app help desk (internal) — tasks-notifications-support/64-help-desk- |
 | `tasks.prisma` | prisma schema | 134 | Task allotment, status and tracking |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
 | `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
@@ -719,6 +719,12 @@ All 1,079 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `migration.sql` | migration | 52 |  |
+
+### `apps/api/prisma/schema/migrations/20260927070000_wo148_customer_support_portal` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 57 |  |
 
 ### `apps/api/src` (2)
 
@@ -2229,21 +2235,27 @@ All 1,079 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `stitching.dto.ts` | dto | 401 |  |
 
-### `apps/api/src/modules/support` (6)
+### `apps/api/src/modules/support` (11)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `support-ticket-action.source.spec.ts` | unit test | 84 |  |
-| `support-ticket-action.source.ts` | module | 122 |  |
+| `customer-support.controller.ts` | controller | 114 |  |
+| `customer-support.service.spec.ts` | unit test | 242 |  |
+| `customer-support.service.ts` | service | 318 |  |
+| `support-handlers.service.spec.ts` | unit test | 63 |  |
+| `support-handlers.service.ts` | service | 68 |  |
+| `support-ticket-action.source.spec.ts` | unit test | 114 |  |
+| `support-ticket-action.source.ts` | module | 195 |  |
 | `support-tickets.controller.ts` | controller | 63 |  |
-| `support-tickets.service.spec.ts` | unit test | 220 |  |
-| `support-tickets.service.ts` | service | 221 |  |
-| `support.module.ts` | nest module | 24 |  |
+| `support-tickets.service.spec.ts` | unit test | 212 |  |
+| `support-tickets.service.ts` | service | 189 |  |
+| `support.module.ts` | nest module | 38 |  |
 
-### `apps/api/src/modules/support/dto` (1)
+### `apps/api/src/modules/support/dto` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `customer-support.dto.ts` | dto | 48 |  |
 | `support.dto.ts` | dto | 39 |  |
 
 ### `apps/api/src/modules/tasks` (11)
@@ -2411,7 +2423,7 @@ All 1,079 tracked files in `apps/api`, by directory.
 | `catalog.e2e-spec.ts` | e2e test | 411 |  |
 | `crm.e2e-spec.ts` | e2e test | 491 |  |
 | `customer-portal.e2e-spec.ts` | e2e test | 256 |  |
-| `customer-scope-routes.spec.ts` | unit test | 237 |  |
+| `customer-scope-routes.spec.ts` | unit test | 243 |  |
 | `devices.e2e-spec.ts` | e2e test | 150 |  |
 | `email-accounts-admin.e2e-spec.ts` | e2e test | 342 |  |
 | `email-channel.behavior.spec.ts` | unit test | 580 | Behavior tests for the email notification channel. |

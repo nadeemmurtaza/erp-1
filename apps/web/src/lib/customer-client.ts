@@ -2,7 +2,15 @@
 
 import { API_URL } from './api';
 import { request, requestWithRefresh } from './api-client';
-import type { AuthResult, AuthUser, CustomerOrder, CustomerReturnReason, CustomerReturnRequest } from '@/types/api';
+import type {
+  AuthResult,
+  AuthUser,
+  CustomerOrder,
+  CustomerReturnReason,
+  CustomerReturnRequest,
+  CustomerSupportTicket,
+  CustomerSupportTicketDetail,
+} from '@/types/api';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 const ACCESS_KEY = STORAGE_KEYS.customer.access;
@@ -157,6 +165,33 @@ export async function createReturnRequest(input: {
   items: Array<{ orderItemId: string; reasonId: string; quantity: number }>;
 }): Promise<CustomerReturnRequest> {
   return customerFetch<CustomerReturnRequest>('/returns', { method: 'POST', body: input });
+}
+
+/** 148-external-customer-support-portal.md — the customer's own side of the support ticket portal. */
+export async function listMySupportTickets(): Promise<CustomerSupportTicket[]> {
+  return customerFetch<CustomerSupportTicket[]>('/support/tickets/mine');
+}
+
+export async function getMySupportTicket(id: string): Promise<CustomerSupportTicketDetail> {
+  return customerFetch<CustomerSupportTicketDetail>(`/support/tickets/${id}`);
+}
+
+export async function raiseSupportTicket(input: {
+  subject: string;
+  category: string;
+  body: string;
+  orderId?: string;
+  priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
+}): Promise<CustomerSupportTicket> {
+  return customerFetch<CustomerSupportTicket>('/support/tickets', { method: 'POST', body: input });
+}
+
+export async function replySupportTicket(id: string, body: string): Promise<void> {
+  await customerFetch(`/support/tickets/${id}/messages`, { method: 'POST', body: { body } });
+}
+
+export async function reopenSupportTicket(id: string): Promise<void> {
+  await customerFetch(`/support/tickets/${id}/transition`, { method: 'POST', body: { status: 'IN_PROGRESS' } });
 }
 
 /**

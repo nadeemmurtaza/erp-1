@@ -3,7 +3,7 @@
 
 # Tests
 
-**314** spec files, **3,033** cases. What is already pinned down — and what is not.
+**316** spec files, **3,058** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (294)
+## Unit and integration (296)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -269,8 +269,10 @@ regression or an N+1.
 | `apps/api/src/modules/search/search.service.spec.ts` | search | 15 | SearchService · SearchService — WO-9.5 semantic and visual search · embedPendingTranslations · sear… |
 | `apps/api/src/modules/settings/settings-admin.service.spec.ts` | settings | 6 | SettingsAdminService — AI settings · getAi · updateAi |
 | `apps/api/src/modules/settlements/settlements.service.spec.ts` | settlements | 22 | SettlementsService · createExpectedBatch · reconcile · pollExpectedBatches · requestWriteoff / appr… |
-| `apps/api/src/modules/support/support-ticket-action.source.spec.ts` | support | 4 | SupportTicketActionSource |
-| `apps/api/src/modules/support/support-tickets.service.spec.ts` | support | 22 | SupportTicketsService · create · get/list visibility · reply · assign · transition |
+| `apps/api/src/modules/support/customer-support.service.spec.ts` | support | 20 | CustomerSupportService · raise · replyAsCustomer · replyAsStaff · assign · transition · listForStaf… |
+| `apps/api/src/modules/support/support-handlers.service.spec.ts` | support | 4 | SupportHandlersService · holdsPermission · notifyHandlers |
+| `apps/api/src/modules/support/support-ticket-action.source.spec.ts` | support | 6 | SupportTicketActionSource |
+| `apps/api/src/modules/support/support-tickets.service.spec.ts` | support | 21 | SupportTicketsService · create · get/list visibility · reply · assign · transition |
 | `apps/api/src/modules/tasks/task-event-intake.service.spec.ts` | tasks | 6 | TaskEventIntakeService |
 | `apps/api/src/modules/tasks/task-leaver.listener.spec.ts` | tasks | 4 | TaskLeaverListener |
 | `apps/api/src/modules/tasks/task-stage.service.spec.ts` | tasks | 4 | TaskStageService — WO-23.1: stages seeded empty, added by a client without a migration |

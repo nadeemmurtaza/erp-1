@@ -563,7 +563,7 @@ All 400 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 7222 |  |
+| `DECISIONS.md` | doc | 7387 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -843,7 +843,7 @@ All 400 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `148-external-customer-support-portal.md` | doc | 176 |  |
+| `148-external-customer-support-portal.md` | doc | 224 |  |
 | `23-tasks-allotment-tracking.md` | doc | 239 |  |
 | `24-internal-notifications-meetings-escalation.md` | doc | 258 |  |
 | `61-policy-communications-bulletin.md` | doc | 232 |  |

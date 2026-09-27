@@ -3,7 +3,7 @@
 
 # Module: `support`
 
-Pack **core** · enabled by the `MODULES` allowlist · 7 files
+Pack **core** · enabled by the `MODULES` allowlist · 13 files
 
 
 
@@ -11,31 +11,47 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 Source: `apps/api/src/modules/support/`
 
-## Files (7 · 773 lines)
+## Files (13 · 1,703 lines)
 
-All paths relative to `apps/api/src/modules/support/dto`.
+All paths relative to `apps/api/src/modules/support`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `customer-support.controller.ts` | controller | 114 | 2 | tasks-notifications-support/148-external-customer-support-portal.md (WO-148.4). |
+| `customer-support.service.spec.ts` | unit test | 242 | — |  |
+| `customer-support.service.ts` | service | 318 | 5 |  |
+| `customer-support.dto.ts` | dto | 48 | 4 |  |
 | `support.dto.ts` | dto | 39 | 4 |  |
-| `support-ticket-action.source.spec.ts` | unit test | 84 | — |  |
-| `support-ticket-action.source.ts` | module | 122 | 1 | tasks-notifications-support/64-help-desk-support-ticketing.md (WO-64.4). |
+| `support-handlers.service.spec.ts` | unit test | 63 | — |  |
+| `support-handlers.service.ts` | service | 68 | 2 |  |
+| `support-ticket-action.source.spec.ts` | unit test | 114 | — |  |
+| `support-ticket-action.source.ts` | module | 195 | 1 | tasks-notifications-support/64-help-desk-support-ticketing.md (WO-64.4), extended by tasks-notifications-support/148-ex… |
 | `support-tickets.controller.ts` | controller | 63 | 1 | tasks-notifications-support/64-help-desk-support-ticketing.md (WO-64.5). |
-| `support-tickets.service.spec.ts` | unit test | 220 | — |  |
-| `support-tickets.service.ts` | service | 221 | 4 |  |
-| `support.module.ts` | nest module | 24 | 1 |  |
+| `support-tickets.service.spec.ts` | unit test | 212 | — |  |
+| `support-tickets.service.ts` | service | 189 | 4 |  |
+| `support.module.ts` | nest module | 38 | 1 |  |
 
 
-## HTTP routes (6)
+## HTTP routes (16)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/support/customer-tickets` | signed-in | `CustomerSupportStaffController.list` :82 | Assigned to you, or every customer ticket with support.tickets.view_all |
+| GET | `/admin/support/customer-tickets/:id` | signed-in | `CustomerSupportStaffController.get` :89 | One customer ticket, with its full reply thread |
+| POST | `/admin/support/customer-tickets/:id/assign` | `support.tickets.reassign` | `CustomerSupportStaffController.assign` :103 | Assign or reassign a customer ticket to someone who holds support.tickets.handle |
+| POST | `/admin/support/customer-tickets/:id/messages` | signed-in | `CustomerSupportStaffController.reply` :96 | Reply as staff — notifies the customer through their own contact channel |
+| POST | `/admin/support/customer-tickets/:id/transition` | signed-in | `CustomerSupportStaffController.transition` :110 | Move a customer ticket forward, or reopen a resolved one |
 | GET | `/admin/support/tickets` | signed-in | `SupportTicketsController.list` :31 | Tickets you raised or were assigned — or every ticket, with support.tickets.view_all |
 | POST | `/admin/support/tickets` | `support.tickets.raise` | `SupportTicketsController.create` :24 | Raise a support ticket |
 | GET | `/admin/support/tickets/:id` | signed-in | `SupportTicketsController.get` :38 | One ticket, with its full reply thread |
 | POST | `/admin/support/tickets/:id/assign` | `support.tickets.reassign` | `SupportTicketsController.assign` :52 | Assign or reassign a ticket to someone who holds support.tickets.handle |
 | POST | `/admin/support/tickets/:id/messages` | signed-in | `SupportTicketsController.reply` :45 | Reply on a ticket you can see |
 | POST | `/admin/support/tickets/:id/transition` | signed-in | `SupportTicketsController.transition` :59 | Move a ticket forward, or reopen a resolved one |
+| POST | `/support/tickets` | signed-in | `CustomerSupportController.raise` :26 | Raise a support ticket |
+| GET | `/support/tickets/:id` | signed-in | `CustomerSupportController.get` :49 | One of your own tickets, with its full reply thread |
+| POST | `/support/tickets/:id/messages` | signed-in | `CustomerSupportController.reply` :57 | Reply on your own ticket |
+| POST | `/support/tickets/:id/transition` | signed-in | `CustomerSupportController.transition` :65 | Reopen a resolved ticket — every other status change is staff-side |
+| GET | `/support/tickets/mine` | signed-in | `CustomerSupportController.mine` :41 | Every ticket you raised |
 
 
 ## Domain events
@@ -54,11 +70,13 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
+| `CustomerSupportMessage` | 8 | :122 | authorType makes which side of the trust boundary a message came from explicit, rather than inferring it from… |
+| `CustomerSupportTicket` | 11 | :88 | TicketPriority above is reused unchanged — "identical shape, no reason to diverge" (the document's own words). |
 | `SupportTicket` | 10 | :17 | In-app help desk (internal) — tasks-notifications-support/64-help-desk- support-ticketing.md, DECISIONS.md AD… |
 | `TicketMessage` | 6 | :58 | An append-only reply thread — a correction is a new message, never an edit in place, the same immutable-threa… |
 
 
-Enums: `TicketPriority` (4) · `TicketStatus` (4)
+Enums: `CustomerTicketStatus` (5) · `SupportMessageAuthorType` (2) · `TicketPriority` (4) · `TicketStatus` (4)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
@@ -68,14 +86,15 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 ## Nest wiring
 
 **`SupportModule`** (`support.module.ts`)
-- imports: —
-- controllers: `SupportTicketsController`
-- providers: `SupportTicketsService`, `SupportTicketActionSource`
+- imports: `CrmModule`
+- controllers: `SupportTicketsController`, `CustomerSupportController`, `CustomerSupportStaffController`
+- providers: `SupportTicketsService`, `SupportHandlersService`, `SupportTicketActionSource`, `CustomerSupportService`
 - exports: —
 
 
 ## Reaches out to
 
+- **module `crm`** ⚠ direct import
 - core `action-hub`
 - core `audit`
 - core `auth`
@@ -88,29 +107,44 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (2)
+## Tests (4)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `support-ticket-action.source.spec.ts` | 4 | SupportTicketActionSource |
-| `support-tickets.service.spec.ts` | 22 | SupportTicketsService · create · get/list visibility · reply · assign · transition |
+| `customer-support.service.spec.ts` | 20 | CustomerSupportService · raise · replyAsCustomer · replyAsStaff · assign · transition · listForStaff / listMine visibil… |
+| `support-handlers.service.spec.ts` | 4 | SupportHandlersService · holdsPermission · notifyHandlers |
+| `support-ticket-action.source.spec.ts` | 6 | SupportTicketActionSource |
+| `support-tickets.service.spec.ts` | 21 | SupportTicketsService · create · get/list visibility · reply · assign · transition |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `CustomerSupportController` | class | `customer-support.controller.ts:19` | tasks-notifications-support/148-external-customer-support-portal.md (WO-148.4). |
+| `CustomerSupportStaffController` | class | `customer-support.controller.ts:76` | The staff side — reuses doc 64's own three permissions unchanged, since the handler pool is identical (the do… |
+| `RaiseCustomerTicketInput` | interface | `customer-support.service.ts:16` |  |
+| `CustomerTicketMessageView` | interface | `customer-support.service.ts:25` |  |
+| `CustomerTicketDetail` | interface | `customer-support.service.ts:29` |  |
+| `CustomerTicketListRow` | interface | `customer-support.service.ts:35` |  |
+| `CustomerSupportService` | class | `customer-support.service.ts:66` | tasks-notifications-support/148-external-customer-support-portal.md (WO-148.2). |
+| `RaiseCustomerTicketDto` | class | `customer-support.dto.ts:8` |  |
+| `ReplyCustomerTicketDto` | class | `customer-support.dto.ts:32` |  |
+| `AssignCustomerTicketDto` | class | `customer-support.dto.ts:38` |  |
+| `TransitionCustomerTicketDto` | class | `customer-support.dto.ts:44` |  |
 | `CreateTicketDto` | class | `support.dto.ts:8` |  |
 | `ReplyTicketDto` | class | `support.dto.ts:23` |  |
 | `AssignTicketDto` | class | `support.dto.ts:29` |  |
 | `TransitionTicketDto` | class | `support.dto.ts:35` |  |
-| `SupportTicketActionSource` | class | `support-ticket-action.source.ts:24` | tasks-notifications-support/64-help-desk-support-ticketing.md (WO-64.4). |
+| `NotifyHandlersInput` | interface | `support-handlers.service.ts:5` |  |
+| `SupportHandlersService` | class | `support-handlers.service.ts:23` | Shared between `SupportTicketsService` (doc 64, internal) and `CustomerSupportService` (doc 148, external) —… |
+| `SupportTicketActionSource` | class | `support-ticket-action.source.ts:31` | tasks-notifications-support/64-help-desk-support-ticketing.md (WO-64.4), extended by tasks-notifications-supp… |
 | `SupportTicketsController` | class | `support-tickets.controller.ts:18` | tasks-notifications-support/64-help-desk-support-ticketing.md (WO-64.5). |
 | `CreateTicketInput` | interface | `support-tickets.service.ts:8` |  |
 | `TicketMessageView` | interface | `support-tickets.service.ts:16` | A raw scalar `authorId`/`assignedToUserId` never reaches an admin screen unresolved — the same `withLabels()`… |
 | `TicketDetail` | interface | `support-tickets.service.ts:20` |  |
 | `SupportTicketsService` | class | `support-tickets.service.ts:44` | tasks-notifications-support/64-help-desk-support-ticketing.md (WO-64.2). |
-| `SupportModule` | class | `support.module.ts:23` |  |
+| `SupportModule` | class | `support.module.ts:37` |  |
 
 
 ---

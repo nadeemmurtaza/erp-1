@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **830** endpoints across **151** controllers, with the access rule that actually guards each one.
+All **840** endpoints across **153** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -1163,16 +1163,26 @@ never authorization.
 | GET | `/stitching/garments` | **PUBLIC** | `StitchingController.garments` |  |
 | GET | `/stitching/option-groups` | **PUBLIC** | `StitchingController.optionGroups` | Style options for a garment, with their price deltas |
 
-### [`support`](../modules/support.md) (6)
+### [`support`](../modules/support.md) (16)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
+| GET | `/admin/support/customer-tickets` | signed-in | `CustomerSupportStaffController.list` | Assigned to you, or every customer ticket with support.tickets.view_all |
+| GET | `/admin/support/customer-tickets/:id` | signed-in | `CustomerSupportStaffController.get` | One customer ticket, with its full reply thread |
+| POST | `/admin/support/customer-tickets/:id/assign` | `support.tickets.reassign` | `CustomerSupportStaffController.assign` | Assign or reassign a customer ticket to someone who holds support.tickets.handle |
+| POST | `/admin/support/customer-tickets/:id/messages` | signed-in | `CustomerSupportStaffController.reply` | Reply as staff — notifies the customer through their own contact channel |
+| POST | `/admin/support/customer-tickets/:id/transition` | signed-in | `CustomerSupportStaffController.transition` | Move a customer ticket forward, or reopen a resolved one |
 | GET | `/admin/support/tickets` | signed-in | `SupportTicketsController.list` | Tickets you raised or were assigned — or every ticket, with support.tickets.vie… |
 | POST | `/admin/support/tickets` | `support.tickets.raise` | `SupportTicketsController.create` | Raise a support ticket |
 | GET | `/admin/support/tickets/:id` | signed-in | `SupportTicketsController.get` | One ticket, with its full reply thread |
 | POST | `/admin/support/tickets/:id/assign` | `support.tickets.reassign` | `SupportTicketsController.assign` | Assign or reassign a ticket to someone who holds support.tickets.handle |
 | POST | `/admin/support/tickets/:id/messages` | signed-in | `SupportTicketsController.reply` | Reply on a ticket you can see |
 | POST | `/admin/support/tickets/:id/transition` | signed-in | `SupportTicketsController.transition` | Move a ticket forward, or reopen a resolved one |
+| POST | `/support/tickets` | signed-in | `CustomerSupportController.raise` | Raise a support ticket |
+| GET | `/support/tickets/:id` | signed-in | `CustomerSupportController.get` | One of your own tickets, with its full reply thread |
+| POST | `/support/tickets/:id/messages` | signed-in | `CustomerSupportController.reply` | Reply on your own ticket |
+| POST | `/support/tickets/:id/transition` | signed-in | `CustomerSupportController.transition` | Reopen a resolved ticket — every other status change is staff-side |
+| GET | `/support/tickets/mine` | signed-in | `CustomerSupportController.mine` | Every ticket you raised |
 
 ### [`tasks`](../modules/tasks.md) (11)
 

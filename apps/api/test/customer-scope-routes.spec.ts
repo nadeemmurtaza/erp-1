@@ -19,6 +19,7 @@ import { MeasurementsController } from '../src/modules/measurements/measurements
 import { NotificationPreferencesController } from '../src/modules/notification-preferences/notification-preferences.controller';
 import { OrdersController } from '../src/modules/orders/orders.controller';
 import { ReviewsPublicController } from '../src/modules/reviews/reviews-public.controller';
+import { CustomerSupportController } from '../src/modules/support/customer-support.controller';
 import { WishlistController } from '../src/modules/wishlist/wishlist.controller';
 
 /**
@@ -65,6 +66,11 @@ const SCOPED_ROUTES: Array<[Controller, string, string]> = [
   [B2BAccountsController, 'myAccount', 'b2b-account:read'],
   [B2BAccountsController, 'myRequests', 'b2b-account:read'],
   [B2BAccountsController, 'pendingApprovals', 'b2b-account:read'],
+  [CustomerSupportController, 'raise', 'support:write'],
+  [CustomerSupportController, 'mine', 'support:read'],
+  [CustomerSupportController, 'get', 'support:read'],
+  [CustomerSupportController, 'reply', 'support:write'],
+  [CustomerSupportController, 'transition', 'support:write'],
 ];
 
 /** Customer routes deliberately left to a signed-in session — each with its reason in doc 163 §4. */

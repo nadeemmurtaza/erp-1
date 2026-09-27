@@ -3,7 +3,7 @@
 
 # Screens
 
-All **262** routable files across the web app, the till and the mobile app.
+All **267** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (172)
+### admin (174)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -190,6 +190,8 @@ _none_
 | `/admin/stitching/jobs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/stitching/jobs/[id]/page.tsx` |
 | `/admin/suppliers` | page | client | `apps/web/src/app/(admin)/admin/(app)/suppliers/page.tsx` |
 | `/admin/suppliers/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/suppliers/[id]/page.tsx` |
+| `/admin/support/customer-tickets` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/page.tsx` |
+| `/admin/support/customer-tickets/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets/[id]/page.tsx` |
 | `/admin/support/tickets` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/tickets/page.tsx` |
 | `/admin/support/tickets/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/tickets/[id]/page.tsx` |
 | `/admin/support/tickets/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/support/tickets/new/page.tsx` |
@@ -250,7 +252,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (52)
+### storefront (55)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -274,6 +276,9 @@ _none_
 | `/[locale]/account/returns/[id]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/[id]/page.tsx` |
 | `/[locale]/account/returns/new` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new/page.tsx` |
 | `/[locale]/account/reviews` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews/page.tsx` |
+| `/[locale]/account/support` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/page.tsx` |
+| `/[locale]/account/support/[id]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/[id]/page.tsx` |
+| `/[locale]/account/support/new` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/new/page.tsx` |
 | `/[locale]/account/wallet` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet/page.tsx` |
 | `/[locale]/blog` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/page.tsx` |
 | `/[locale]/blog/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/[slug]/page.tsx` |

@@ -3,7 +3,7 @@
 
 # State machines
 
-Every **2** `Record<XStatus, XStatus[]>`-shaped transition table in the codebase — a read-only, generated inventory (architecture-patterns/106-finite-state-machines-registry.md, WO-106.1), never a second enforcement path and never runtime-editable.
+Every **3** `Record<XStatus, XStatus[]>`-shaped transition table in the codebase — a read-only, generated inventory (architecture-patterns/106-finite-state-machines-registry.md, WO-106.1), never a second enforcement path and never runtime-editable.
 
 
 ## What this page is, and is not
@@ -28,6 +28,7 @@ methods for those.
 | Table | Entity status type | Module | Where |
 |---|---|---|---|
 | `ALLOWED_TRANSITIONS` | `OrderStatus` | `orders` | `apps/api/src/modules/orders/orders.service.ts:77` |
+| `ALLOWED_TRANSITIONS` | `CustomerTicketStatus` | `support` | `apps/api/src/modules/support/customer-support.service.ts:40` |
 | `ALLOWED_TRANSITIONS` | `TicketStatus` | `support` | `apps/api/src/modules/support/support-tickets.service.ts:27` |
 
 
@@ -48,6 +49,21 @@ const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   DELIVERED: ['RETURNED'],
   CANCELLED: [],
   RETURNED: [],
+};
+```
+
+### `ALLOWED_TRANSITIONS` (`support`)
+
+> The document's own state machine (§1): forward-only, RESOLVED -> IN_PROGRESS the one allowed backward move, plus AWAITING_CUSTOMER as the one extra holding state doc 64's internal ticket never needed.
+`apps/api/src/modules/support/customer-support.service.ts:40`
+
+```ts
+const ALLOWED_TRANSITIONS: Record<CustomerTicketStatus, CustomerTicketStatus[]> = {
+  OPEN: ['IN_PROGRESS'],
+  IN_PROGRESS: ['AWAITING_CUSTOMER', 'RESOLVED'],
+  AWAITING_CUSTOMER: ['IN_PROGRESS'],
+  RESOLVED: ['CLOSED', 'IN_PROGRESS'],
+  CLOSED: [],
 };
 ```
 

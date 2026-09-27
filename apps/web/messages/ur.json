@@ -10,6 +10,7 @@
       "wishlist": "پسندیدہ",
       "overview": "جائزہ",
       "returns": "واپسی",
+      "support": "مدد",
       "reviews": "جائزے",
       "credit": "کریڈٹ اور گفٹ کارڈ",
       "loyalty": "لائلٹی",
@@ -220,6 +221,7 @@
       "resource_loyalty": "لائلٹی پوائنٹس",
       "resource_storeCredit": "اسٹور کریڈٹ",
       "resource_b2bAccount": "بی 2 بی اکاؤنٹ",
+      "resource_support": "سپورٹ ٹکٹس",
       "status_ACTIVE": "فعال",
       "status_EXPIRED": "میعاد ختم",
       "status_REVOKED": "منسوخ",
@@ -693,6 +695,41 @@
       "RECEIVED": "موصول ہو گیا",
       "INSPECTED": "جائزہ لیا جا رہا ہے",
       "REFUNDED": "رقم واپس کر دی گئی",
+      "CLOSED": "بند"
+    }
+  },
+  "support": {
+    "title": "مدد",
+    "raiseAction": "ٹکٹ درج کریں",
+    "myTickets": "میرے ٹکٹس",
+    "noTickets": "ابھی تک آپ کا کوئی سپورٹ ٹکٹ نہیں ہے۔",
+    "subject": "موضوع",
+    "category": "قسم",
+    "categoryPlaceholder": "مثلاً آرڈر، ڈیلیوری، ادائیگی",
+    "message": "پیغام",
+    "messagePlaceholder": "بتائیں کہ آپ کو کس بارے میں مدد چاہیے",
+    "orderNumber": "آرڈر نمبر (اختیاری)",
+    "priority": "ترجیح",
+    "submit": "ٹکٹ درج کریں",
+    "submitted": "آپ کا ٹکٹ درج ہو گیا ہے — ہماری ٹیم کو مطلع کر دیا گیا ہے۔",
+    "backToTickets": "ٹکٹس پر واپس جائیں",
+    "reply": "جواب دیں",
+    "replyPlaceholder": "جواب لکھیں",
+    "sendReply": "جواب بھیجیں",
+    "reopen": "یہ ٹکٹ دوبارہ کھولیں",
+    "raisedOn": "{date} کو درج کیا گیا",
+    "resolvedOn": "{date} کو حل کیا گیا",
+    "priorityLevel": {
+      "LOW": "کم",
+      "NORMAL": "معمولی",
+      "HIGH": "زیادہ",
+      "URGENT": "فوری"
+    },
+    "status": {
+      "OPEN": "کھلا",
+      "AWAITING_CUSTOMER": "آپ کے جواب کا منتظر",
+      "IN_PROGRESS": "زیرِ عمل",
+      "RESOLVED": "حل شدہ",
       "CLOSED": "بند"
     }
   },

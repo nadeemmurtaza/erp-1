@@ -3,7 +3,7 @@
 
 # Migrations
 
-**117** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**118** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·

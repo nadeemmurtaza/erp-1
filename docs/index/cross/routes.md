@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **871** endpoints across **160** controllers, with the access rule that actually guards each one.
+All **877** endpoints across **161** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -1129,6 +1129,17 @@ never authorization.
 | GET | `/admin/reports/export/stock` | `reports.view` | `ReportsController.exportStock` | CSV: current stock, one row per product variant |
 | GET | `/admin/reports/export/stock-ledger` | `reports.view` | `ReportsController.exportStockLedger` | CSV: stock movement ledger |
 | GET | `/admin/reports/export/stock-valuation` | `inventory.view_cost` | `ReportsController.exportStockValuation` | CSV: stock valuation, one row per variant |
+
+### [`resilience`](../modules/resilience.md) (6)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/resilience/circuits` | `platform.resilience.view` | `ResilienceAdminController.list` | Every circuit breaker that has taken a call or been configured, with its live s… |
+| POST | `/admin/resilience/circuits/:key/configure` | `platform.resilience.tune` | `ResilienceAdminController.configure` | Change a circuit's failure threshold and/or cooldown window |
+| POST | `/admin/resilience/circuits/:key/simulate` | `platform.resilience.tune` | `ResilienceAdminController.simulate` |  |
+| GET | `/admin/resilience/dr` | `platform.resilience.view` | `ResilienceAdminController.dr` | RPO/RTO as documented in DEPLOYMENT.md §9 — stated facts, not live data |
+| GET | `/admin/resilience/slo` | `platform.resilience.view` | `ResilienceAdminController.slo` | Trailing-30-day success rate, p95 latency and remaining error budget for checko… |
+| GET | `/admin/resilience/slo-paths` | `platform.resilience.view` | `ResilienceAdminController.paths` | The three named critical paths this dashboard tracks, for the frontend to rende… |
 
 ### [`reviews`](../modules/reviews.md) (7)
 

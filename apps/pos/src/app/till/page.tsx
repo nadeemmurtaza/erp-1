@@ -444,7 +444,7 @@ export default function TillPage() {
       </header>
 
       {showParked && (
-        <div className="mb-4 rounded-lg border border-neutral-100 bg-white">
+        <div className="mb-4 rounded-lg bg-white shadow-sm">
           <div className="flex items-center justify-between px-4 py-2 text-sm font-medium text-neutral-700">
             <span>Open tabs &amp; tables</span>
             <button className="text-neutral-400" onClick={() => setShowParked(false)} aria-label="Close">
@@ -501,7 +501,7 @@ export default function TillPage() {
           {/* pos-hardware/31 §3/WO-31.4 — order type (COUNTER default, matching
               today's exact behaviour) and, when TAB/TABLE, park + a recipe picker. */}
           <div className="mb-3 flex flex-wrap items-center gap-2">
-            <div className="flex gap-1 rounded-lg border border-neutral-200 p-1" role="group" aria-label="Order type">
+            <div className="flex gap-1" role="group" aria-label="Order type">
               {(['COUNTER', 'TAB', 'TABLE'] as const).map((type) => (
                 <button
                   key={type}
@@ -520,7 +520,7 @@ export default function TillPage() {
           </div>
 
           {showRecipePicker && (
-            <div className="mb-4 rounded-lg border border-neutral-100 bg-white">
+            <div className="mb-4 rounded-lg bg-white shadow-sm">
               <div className="flex items-center justify-between px-4 py-2 text-sm font-medium text-neutral-700">
                 <span>Sellable recipes</span>
                 <button className="text-neutral-400" onClick={() => setShowRecipePicker(false)} aria-label="Close">

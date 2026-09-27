@@ -61,18 +61,18 @@ export default function PosDashboardPage() {
       {!loading && !error && summary && (
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-lg border border-neutral-100 bg-white p-4">
+            <div className="rounded-lg bg-white p-4 shadow-sm">
               <p className="text-sm text-neutral-500">Today&apos;s sales</p>
               <p className="mt-1 text-2xl font-semibold text-neutral-900">{formatMoney(summary.dailySales.revenue)}</p>
               <p className="text-xs text-neutral-400">{summary.dailySales.orderCount} sale{summary.dailySales.orderCount === 1 ? '' : 's'}</p>
             </div>
-            <div className="rounded-lg border border-neutral-100 bg-white p-4">
+            <div className="rounded-lg bg-white p-4 shadow-sm">
               <p className="text-sm text-neutral-500">Total customers</p>
               <p className="mt-1 text-2xl font-semibold text-neutral-900">{summary.totalCustomers}</p>
             </div>
           </div>
 
-          <div className="rounded-lg border border-neutral-100 bg-white p-4">
+          <div className="rounded-lg bg-white p-4 shadow-sm">
             <p className="mb-2 text-sm font-medium text-neutral-700">Low stock</p>
             {summary.lowStockVariants.length === 0 ? (
               <p className="text-sm text-neutral-400">Nothing below its reorder point at this branch.</p>

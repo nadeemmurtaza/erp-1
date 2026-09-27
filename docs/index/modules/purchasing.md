@@ -105,6 +105,7 @@ All paths relative to `apps/api/src/modules/purchasing/dto`.
 | `RequisitionLine` | 7 | :293 |  |
 | `Supplier` | 28 | :1 |  |
 | `SupplierBill` | 18 | :219 |  |
+| `SupplierLeadTimeObservation` | 5 | :316 | resilience-scalability/144-supply-chain-resilience-planning-engine.md (WO-144.6, R25) — one row per goods rec… |
 | `SupplierProduct` | 10 | :74 | What a given supplier charges for a given variant, and under what terms. |
 
 

@@ -2726,7 +2726,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>7,222 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>7,360 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2796,6 +2796,7 @@ _no second-level headings_
 - ADR-062 — Doc 61 (policy communications bulletin board): built inside the `notify` module rather than `hr`, an author-side reach check the document's own sketch omits, and a read-side visibility rule distinct from a sender's reach  <sub>:6866</sub>
 - ADR-063 — Doc 167 (bank facility management): promoted from a gap report to a built capability, mirroring doc 49's own settlements shape rather than inventing a new one  <sub>:6978</sub>
 - ADR-064 — Doc 64 (in-app help desk): built as a new standalone module, with a per-instance transition-authority rule and a name-resolution step the document's own sketch does not specify  <sub>:7108</sub>
+- ADR-065 — Doc 144 (R20–R26 supply-chain resilience planning engine): built as a pure read/recommendation engine, generating only the two action kinds this graph has real data to back  <sub>:7223</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3470,19 +3471,19 @@ _no second-level headings_
 - Acceptance  <sub>:51</sub>
 - Out of scope  <sub>:59</sub>
 
-### `docs/implementation/resilience-scalability/144-supply-chain-resilience-planning-engine.md`  <sub>345 lines</sub>
+### `docs/implementation/resilience-scalability/144-supply-chain-resilience-planning-engine.md`  <sub>392 lines</sub>
 
-- 1. R20 — the dependency graph is a projection, never a second model  <sub>:20</sub>
-- 2. R21 — shocks and propagation, arithmetic over the graph, never inference  <sub>:52</sub>
-- 3. R22 — one ranking formula, actions generated from the graph, never invented  <sub>:89</sub>
-- 4. R23 — GenAI narrates, cites, never computes  <sub>:116</sub>
-- 5. R24 — liquidity is a ledger query plus a schedule, not a new forecast model  <sub>:137</sub>
-- 6. R25 — lead time as a distribution, backfilled from history already in the database  <sub>:155</sub>
-- 7. R26 — online stock is the sum of branch allotments, no separate reservation ledger  <sub>:188</sub>
-- Scope lenses  <sub>:210</sub>
-- Work orders  <sub>:302</sub>
-- Acceptance  <sub>:323</sub>
-- Out of scope  <sub>:338</sub>
+- 1. R20 — the dependency graph is a projection, never a second model  <sub>:67</sub>
+- 2. R21 — shocks and propagation, arithmetic over the graph, never inference  <sub>:99</sub>
+- 3. R22 — one ranking formula, actions generated from the graph, never invented  <sub>:136</sub>
+- 4. R23 — GenAI narrates, cites, never computes  <sub>:163</sub>
+- 5. R24 — liquidity is a ledger query plus a schedule, not a new forecast model  <sub>:184</sub>
+- 6. R25 — lead time as a distribution, backfilled from history already in the database  <sub>:202</sub>
+- 7. R26 — online stock is the sum of branch allotments, no separate reservation ledger  <sub>:235</sub>
+- Scope lenses  <sub>:257</sub>
+- Work orders  <sub>:349</sub>
+- Acceptance  <sub>:370</sub>
+- Out of scope  <sub>:385</sub>
 
 ### `docs/implementation/resilience-scalability/37-scalability-future-upgrades.md`  <sub>247 lines</sub>
 

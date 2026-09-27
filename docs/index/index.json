@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2325,
-    "lines": 354131,
-    "routes": 830,
-    "controllers": 151,
-    "models": 301,
+    "files": 2348,
+    "lines": 356393,
+    "routes": 836,
+    "controllers": 152,
+    "models": 302,
     "enums": 140,
-    "migrations": 112,
+    "migrations": 113,
     "events": 69,
-    "permissions": 120,
-    "screens": 262,
+    "permissions": 121,
+    "screens": 263,
     "crons": 27,
-    "specs": 314,
+    "specs": 323,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 60,
-      "lines": 30624,
-      "bytes": 1205286,
+      "lines": 30631,
+      "bytes": 1205709,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1079,
-      "lines": 145591,
-      "bytes": 5652569,
+      "files": 1101,
+      "lines": 147283,
+      "bytes": 5724848,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 414,
-      "lines": 69340,
-      "bytes": 2505336,
+      "files": 415,
+      "lines": 69710,
+      "bytes": 2520972,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 400,
-      "lines": 69913,
-      "bytes": 4159922,
+      "lines": 70098,
+      "bytes": 4171147,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 79,
-      "lines": 8419,
-      "bytes": 301145,
+      "lines": 8427,
+      "bytes": 301441,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -905,6 +905,37 @@
       ],
       "routes": 19,
       "page": "docs/index/modules/payroll.md"
+    },
+    {
+      "name": "planning",
+      "pack": "core",
+      "alwaysOn": true,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/planning/action-ranking.spec.ts",
+        "apps/api/src/modules/planning/action-ranking.ts",
+        "apps/api/src/modules/planning/dependency-graph.spec.ts",
+        "apps/api/src/modules/planning/dependency-graph.ts",
+        "apps/api/src/modules/planning/dto/planning.dto.ts",
+        "apps/api/src/modules/planning/goods-received-lead-time.listener.spec.ts",
+        "apps/api/src/modules/planning/goods-received-lead-time.listener.ts",
+        "apps/api/src/modules/planning/liquidity-forecast.service.spec.ts",
+        "apps/api/src/modules/planning/liquidity-forecast.service.ts",
+        "apps/api/src/modules/planning/narration.service.spec.ts",
+        "apps/api/src/modules/planning/narration.service.ts",
+        "apps/api/src/modules/planning/online-stock.service.spec.ts",
+        "apps/api/src/modules/planning/online-stock.service.ts",
+        "apps/api/src/modules/planning/planning.controller.ts",
+        "apps/api/src/modules/planning/planning.module.ts",
+        "apps/api/src/modules/planning/planning.service.spec.ts",
+        "apps/api/src/modules/planning/planning.service.ts",
+        "apps/api/src/modules/planning/propagation.spec.ts",
+        "apps/api/src/modules/planning/propagation.ts",
+        "apps/api/src/modules/planning/supplier-resilience.service.spec.ts",
+        "apps/api/src/modules/planning/supplier-resilience.service.ts"
+      ],
+      "routes": 6,
+      "page": "docs/index/modules/planning.md"
     },
     {
       "name": "pos",
@@ -9296,6 +9327,102 @@
     },
     {
       "method": "GET",
+      "path": "/admin/planning/liquidity-forecast",
+      "module": "planning",
+      "controller": "PlanningController",
+      "handler": "liquidityForecast",
+      "file": "apps/api/src/modules/planning/planning.controller.ts",
+      "line": 56,
+      "access": "planning.propagation.view",
+      "permissions": [
+        "planning.propagation.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Current cash plus the next scheduled AR/AP/payroll events"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/planning/online-stock/:variantId",
+      "module": "planning",
+      "controller": "PlanningController",
+      "handler": "onlineStockFor",
+      "file": "apps/api/src/modules/planning/planning.controller.ts",
+      "line": 74,
+      "access": "planning.propagation.view",
+      "permissions": [
+        "planning.propagation.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Online stock for a variant — the sum of every branch allotment"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/planning/orders/:orderId/assign-branch",
+      "module": "planning",
+      "controller": "PlanningController",
+      "handler": "assignFulfillingBranch",
+      "file": "apps/api/src/modules/planning/planning.controller.ts",
+      "line": 81,
+      "access": "inventory.manage",
+      "permissions": [
+        "inventory.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Reassign which branch fulfils an order — reverses and re-commits stock through the same writer every sale uses"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/planning/propagate",
+      "module": "planning",
+      "controller": "PlanningController",
+      "handler": "propagate",
+      "file": "apps/api/src/modules/planning/planning.controller.ts",
+      "line": 50,
+      "access": "planning.propagation.view",
+      "permissions": [
+        "planning.propagation.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Run a shock scenario over the dependency graph and rank recovery actions"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/planning/suppliers/:id/lead-time-distribution",
+      "module": "planning",
+      "controller": "PlanningController",
+      "handler": "leadTimeDistribution",
+      "file": "apps/api/src/modules/planning/planning.controller.ts",
+      "line": 62,
+      "access": "planning.propagation.view",
+      "permissions": [
+        "planning.propagation.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A supplier's own lead-time distribution, backfilled from goods-receipt history"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/planning/suppliers/:id/scorecard",
+      "module": "planning",
+      "controller": "PlanningController",
+      "handler": "supplierScorecard",
+      "file": "apps/api/src/modules/planning/planning.controller.ts",
+      "line": 68,
+      "access": "planning.propagation.view",
+      "permissions": [
+        "planning.propagation.view"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "On-time-in-full rate and price variance, computed from purchase-order history"
+    },
+    {
+      "method": "GET",
       "path": "/admin/pos/products/search",
       "module": "pos",
       "controller": "PosCatalogController",
@@ -15295,7 +15422,8 @@
         "GET /admin/inventory/slow-movers",
         "GET /admin/inventory/variances",
         "POST /admin/inventory/variances/:id/resolve",
-        "GET /admin/inventory/variances/by-shift"
+        "GET /admin/inventory/variances/by-shift",
+        "POST /admin/planning/orders/:orderId/assign-branch"
       ],
       "uiSites": 12,
       "roles": [
@@ -15463,6 +15591,24 @@
         "GET /admin/requisitions",
         "POST /admin/requisitions/:id/approve",
         "POST /admin/requisitions/:id/reject"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "planning.propagation.view",
+      "label": "Run a supply-chain shock scenario, view ranked recovery actions, the liquidity forecast and supplier scorecards",
+      "category": "Purchasing",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/planning/liquidity-forecast",
+        "GET /admin/planning/online-stock/:variantId",
+        "POST /admin/planning/propagate",
+        "GET /admin/planning/suppliers/:id/lead-time-distribution",
+        "GET /admin/planning/suppliers/:id/scorecard"
       ],
       "uiSites": 2,
       "roles": [
@@ -17354,6 +17500,7 @@
       ],
       "subscribers": [
         "apps/api/src/modules/bom/bom.listener.ts:22 recomputeAffectedRecipes()",
+        "apps/api/src/modules/planning/goods-received-lead-time.listener.ts:24 onGoodsReceived()",
         "apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts:70 onGoodsReceived()"
       ]
     },
@@ -18195,7 +18342,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 647,
+      "line": 651,
       "doc": "",
       "fields": [
         {
@@ -41308,6 +41455,52 @@
       ]
     },
     {
+      "name": "SupplierLeadTimeObservation",
+      "file": "apps/api/prisma/schema/purchasing.prisma",
+      "line": 316,
+      "doc": "resilience-scalability/144-supply-chain-resilience-planning-engine.md (WO-144.6, R25) — one row per goods receipt, backfilling a real lead-time distribution from history already in the database.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "supplierId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "purchaseOrderId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "observedDays",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([supplierId, createdAt])"
+      ]
+    },
+    {
       "name": "SupplierProduct",
       "file": "apps/api/prisma/schema/purchasing.prisma",
       "line": 74,
@@ -44255,7 +44448,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 641,
+      "line": 645,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -44281,7 +44474,8 @@
         "IMPORT_CLEANUP",
         "RAG_INGESTION",
         "RAG_RETRIEVAL",
-        "RAG_GENERATION"
+        "RAG_GENERATION",
+        "PLANNING_NARRATION"
       ]
     },
     {
@@ -47804,6 +47998,21 @@
         "SupportTicket",
         "TicketMessage"
       ]
+    },
+    {
+      "folder": "20260927070000_wo144_supplier_lead_time_observation",
+      "file": "apps/api/prisma/schema/migrations/20260927070000_wo144_supplier_lead_time_observation/migration.sql",
+      "date": "2026-09-27",
+      "slug": "wo144_supplier_lead_time_observation",
+      "statements": 3,
+      "kinds": [
+        "ALTER TYPE",
+        "CREATE TABLE",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "SupplierLeadTimeObservation"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -49892,6 +50101,15 @@
       "kind": "page",
       "url": "/admin/requisitions/new",
       "file": "apps/web/src/app/(admin)/admin/(app)/requisitions/new/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/resilience",
+      "file": "apps/web/src/app/(admin)/admin/(app)/resilience/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -52770,6 +52988,92 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/planning/action-ranking.spec.ts",
+      "module": "planning",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "rankActions"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/planning/dependency-graph.spec.ts",
+      "module": "planning",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "DependencyGraphService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/planning/goods-received-lead-time.listener.spec.ts",
+      "module": "planning",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "GoodsReceivedLeadTimeListener"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/planning/liquidity-forecast.service.spec.ts",
+      "module": "planning",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "LiquidityForecastService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/planning/narration.service.spec.ts",
+      "module": "planning",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "NarrationService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/planning/online-stock.service.spec.ts",
+      "module": "planning",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "OnlineStockService",
+        "onlineStockFor",
+        "assignFulfillingBranch"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/planning/planning.service.spec.ts",
+      "module": "planning",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "PlanningService"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/planning/propagation.spec.ts",
+      "module": "planning",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "propagate"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/planning/supplier-resilience.service.spec.ts",
+      "module": "planning",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "SupplierResilienceService",
+        "leadTimeDistribution",
+        "recordObservation",
+        "supplierScorecard"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/pos/pos-catalog.service.spec.ts",
       "module": "pos",
       "kind": "unit test",
@@ -55026,8 +55330,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 667,
-      "bytes": 28688,
+      "lines": 671,
+      "bytes": 28924,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -56121,6 +56425,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260927070000_wo144_supplier_lead_time_observation/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 23,
+      "bytes": 914,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -56250,8 +56563,8 @@
       "path": "apps/api/prisma/schema/purchasing.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 308,
-      "bytes": 12637,
+      "lines": 325,
+      "bytes": 13386,
       "doc": "",
       "symbols": []
     },
@@ -66434,8 +66747,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 140,
-      "bytes": 5005,
+      "lines": 144,
+      "bytes": 5237,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -66454,24 +66767,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 311,
-      "bytes": 18032,
+      "lines": 316,
+      "bytes": 18353,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 64
+          "line": 65
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 95
+          "line": 96
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 287
+          "line": 292
         }
       ]
     },
@@ -68252,6 +68565,362 @@
         },
         {
           "name": "PayrollService",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/action-ranking.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 58,
+      "bytes": 3154,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/planning/action-ranking.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 117,
+      "bytes": 4701,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CandidateActionKind",
+          "kind": "type",
+          "line": 16
+        },
+        {
+          "name": "CandidateAction",
+          "kind": "interface",
+          "line": 27
+        },
+        {
+          "name": "VariantEconomics",
+          "kind": "interface",
+          "line": 39
+        },
+        {
+          "name": "rankActions",
+          "kind": "function",
+          "line": 51
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/dependency-graph.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 53,
+      "bytes": 2497,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/planning/dependency-graph.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 99,
+      "bytes": 4149,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GraphNodeType",
+          "kind": "type",
+          "line": 14
+        },
+        {
+          "name": "GraphNode",
+          "kind": "interface",
+          "line": 16
+        },
+        {
+          "name": "DependencyEdge",
+          "kind": "interface",
+          "line": 21
+        },
+        {
+          "name": "DependencyGraphService",
+          "kind": "class",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/dto/planning.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 67,
+      "bytes": 1313,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RunPropagationDto",
+          "kind": "class",
+          "line": 6
+        },
+        {
+          "name": "AssignFulfillingBranchDto",
+          "kind": "class",
+          "line": 53
+        },
+        {
+          "name": "LiquidityForecastQueryDto",
+          "kind": "class",
+          "line": 60
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/goods-received-lead-time.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 54,
+      "bytes": 2188,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/planning/goods-received-lead-time.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 42,
+      "bytes": 1857,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GoodsReceivedLeadTimeListener",
+          "kind": "class",
+          "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/liquidity-forecast.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 60,
+      "bytes": 2663,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/planning/liquidity-forecast.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 103,
+      "bytes": 4892,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ScheduledCashEvent",
+          "kind": "interface",
+          "line": 4
+        },
+        {
+          "name": "LiquidityForecast",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "LiquidityForecastService",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/narration.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 53,
+      "bytes": 2460,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/planning/narration.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 95,
+      "bytes": 3939,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Citation",
+          "kind": "interface",
+          "line": 7
+        },
+        {
+          "name": "NarrationResult",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "NarrationService",
+          "kind": "class",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/online-stock.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 89,
+      "bytes": 4336,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/planning/online-stock.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 102,
+      "bytes": 4392,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OnlineStockService",
+          "kind": "class",
+          "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/planning.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 86,
+      "bytes": 4072,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PlanningController",
+          "kind": "class",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/planning.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 41,
+      "bytes": 1817,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PlanningModule",
+          "kind": "class",
+          "line": 40
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/planning.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 48,
+      "bytes": 1998,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/planning/planning.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 111,
+      "bytes": 4818,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RunPropagationResult",
+          "kind": "interface",
+          "line": 13
+        },
+        {
+          "name": "PlanningService",
+          "kind": "class",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/propagation.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 52,
+      "bytes": 2285,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/planning/propagation.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 104,
+      "bytes": 4249,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Shock",
+          "kind": "type",
+          "line": 3
+        },
+        {
+          "name": "DemandBand",
+          "kind": "interface",
+          "line": 21
+        },
+        {
+          "name": "SkuLocationRiskRow",
+          "kind": "interface",
+          "line": 27
+        },
+        {
+          "name": "PropagationResult",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "propagate",
+          "kind": "function",
+          "line": 49
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/planning/supplier-resilience.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 112,
+      "bytes": 4094,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/planning/supplier-resilience.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 93,
+      "bytes": 3953,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LeadTimeDistribution",
+          "kind": "interface",
+          "line": 4
+        },
+        {
+          "name": "SupplierScorecard",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "SupplierResilienceService",
           "kind": "class",
           "line": 25
         }
@@ -78982,6 +79651,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/resilience/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 360,
+      "bytes": 15351,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ResiliencePage",
+          "kind": "default",
+          "line": 71
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/reviews/page.tsx",
       "area": "web",
       "kind": "page",
@@ -81491,8 +82175,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1139,
-      "bytes": 31933,
+      "lines": 1147,
+      "bytes": 32122,
       "doc": "",
       "symbols": [
         {
@@ -81523,12 +82207,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1109
+          "line": 1117
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1124
+          "line": 1132
         }
       ]
     },
@@ -82789,8 +83473,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 285,
-      "bytes": 13073,
+      "lines": 287,
+      "bytes": 13169,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -86853,8 +87537,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 7222,
-      "bytes": 421446,
+      "lines": 7360,
+      "bytes": 429609,
       "doc": "",
       "symbols": []
     },
@@ -86908,7 +87592,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 546,
-      "bytes": 74731,
+      "bytes": 74826,
       "doc": "",
       "symbols": []
     },
@@ -88329,8 +89013,8 @@
       "path": "docs/implementation/resilience-scalability/144-supply-chain-resilience-planning-engine.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 345,
-      "bytes": 17854,
+      "lines": 392,
+      "bytes": 20821,
       "doc": "",
       "symbols": []
     },
@@ -90087,8 +90771,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1345,
-      "bytes": 45413,
+      "lines": 1353,
+      "bytes": 45709,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -90109,52 +90793,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 824
+          "line": 830
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 826
+          "line": 832
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 836
+          "line": 842
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 843
+          "line": 849
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 1075
+          "line": 1082
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1304
+          "line": 1312
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1323
+          "line": 1331
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1337
+          "line": 1345
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1338
+          "line": 1346
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1341
+          "line": 1349
         }
       ]
     },
@@ -90794,8 +91478,8 @@
       "path": "scripts/check-module-boundaries.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 610,
-      "bytes": 27035,
+      "lines": 617,
+      "bytes": 27458,
       "doc": "",
       "symbols": []
     },

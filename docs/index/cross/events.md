@@ -56,7 +56,7 @@ order" is a new file, not an edit to checkout.
 | `catalog.product_changed` | `ProductChanged` | `catalog` | `search` |
 | `inventory.stock_replenished` | `StockReplenished` | `inventory` | `orders`, `wishlist` |
 | `inventory.stock_variance_recorded` | `StockVarianceRecorded` | `accounting`, `inventory` | `accounting` |
-| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom`, `purchasing` |
+| `purchasing.goods_received` | `GoodsReceived` | `purchasing` | `bom`, `planning`, `purchasing` |
 | `purchasing.requisition_created` | `RequisitionCreated` | `purchasing` | _none_ |
 | `purchasing.requisition_converted` | `RequisitionConverted` | `purchasing` | _none_ |
 | `bom.production_completed` | `BomProductionCompleted` | `bom` | `bom` |
@@ -563,6 +563,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `recomputeAffectedRecipes()` | `apps/api/src/modules/bom/bom.listener.ts:22` | `bom` |
+| `onGoodsReceived()` | `apps/api/src/modules/planning/goods-received-lead-time.listener.ts:24` | `planning` |
 | `onGoodsReceived()` | `apps/api/src/modules/purchasing/goods-receipt-replication.listener.ts:70` | `purchasing` |
 
 ### `purchasing.requisition_created`

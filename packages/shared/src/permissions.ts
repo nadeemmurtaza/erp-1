@@ -230,6 +230,12 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     sensitivity: 'medium',
   },
   {
+    key: 'planning.propagation.view',
+    label: 'Run a supply-chain shock scenario, view ranked recovery actions, the liquidity forecast and supplier scorecards',
+    category: 'Purchasing',
+    sensitivity: 'medium',
+  },
+  {
     key: 'inventory.spot_checks.manage',
     label: 'Configure unpredictable spot-check policies',
     category: 'Catalogue',
@@ -927,6 +933,7 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
       'purchasing.requisitions.create',
       'purchasing.requisitions.approve',
       'parties.manage',
+      'planning.propagation.view',
     ],
   },
   {
@@ -1229,6 +1236,7 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'purchasing.manage',
     'purchasing.requisitions.create',
     'purchasing.requisitions.approve',
+    'planning.propagation.view',
     'inventory.spot_checks.manage',
     'production.manage',
     'production.view_chain',

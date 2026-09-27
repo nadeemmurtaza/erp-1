@@ -3,7 +3,7 @@
 
 # Schema: `purchasing.prisma`
 
-9 models · 3 enums. Owned by module [`purchasing`](../modules/purchasing.md).
+10 models · 3 enums. Owned by module [`purchasing`](../modules/purchasing.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -201,6 +201,20 @@ Indexes: `@@index([isActive, name])` · `@@index([tradingPartnerId])`
 | `purchaseOrder` | `PurchaseOrder?` | relation, optional | @relation(fields: [purchaseOrderId], references: [id], onDelete: SetNull) |
 
 Indexes: `@@index([supplierId, status])` · `@@index([status, dueAt])`
+
+### `SupplierLeadTimeObservation`  <sub>`apps/api/prisma/schema/purchasing.prisma:316`</sub>
+
+> resilience-scalability/144-supply-chain-resilience-planning-engine.md (WO-144.6, R25) — one row per goods receipt, backfilling a real lead-time distribution from history already in the database.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `supplierId` | `String` |  |  |
+| `purchaseOrderId` | `String` |  |  |
+| `observedDays` | `Int` |  |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+
+Indexes: `@@index([supplierId, createdAt])`
 
 ### `SupplierProduct`  <sub>`apps/api/prisma/schema/purchasing.prisma:74`</sub>
 

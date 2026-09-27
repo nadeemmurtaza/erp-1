@@ -237,6 +237,13 @@ const KNOWN_MODULE_COUPLINGS = new Set([
   // approval threshold — the identical PricingService.resolvePrices() pure
   // read `cart -> pricing`/`orders -> pricing` already establish.
   'accounts -> pricing',
+  // online-stock.service.ts's assignFulfillingBranch() (144-supply-chain-
+  // resilience-planning-engine.md, R26) reverses stock at an order's
+  // current fulfilling location and re-commits it at the new one
+  // (InventoryService.move(), twice) inside one transaction — the same
+  // same-transaction-write reasoning as orders/purchasing/production/bom/
+  // fulfilment -> inventory above.
+  'planning -> inventory',
 ]);
 
 function walk(dir) {

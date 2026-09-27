@@ -86,6 +86,10 @@ export const MODULE_PACKS: Record<string, PackName> = {
   // not a sector pack, per this file's own "Business models... cut across
   // every sector" rule above.
   pricing: 'core',
+  // 144-supply-chain-resilience-planning-engine.md (R20-R26) — a pure
+  // read/recommendation engine over rows every other module already
+  // writes; always on, the same posture settings/users already take.
+  planning: 'core',
   pos: 'core',
   production: 'core',
   purchasing: 'core',

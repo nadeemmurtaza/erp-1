@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,079 tracked files in `apps/api`, by directory.
+All 1,101 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -45,7 +45,7 @@ All 1,079 tracked files in `apps/api`, by directory.
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 766 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 667 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 671 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `custom-fields.prisma` | prisma schema | 33 | Custom fields: a narrow, bounded JSONB overlay, never a general EAV model |
 | `embeds.prisma` | prisma schema | 19 | Embedding a third-party dashboard: a narrow iframe pattern, not a |
@@ -77,7 +77,7 @@ All 1,079 tracked files in `apps/api`, by directory.
 | `pricing.prisma` | prisma schema | 58 | The `pricing` module — 146-wholesale-tiered-pricing.md |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
 | `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
-| `purchasing.prisma` | prisma schema | 308 |  |
+| `purchasing.prisma` | prisma schema | 325 |  |
 | `rag.prisma` | prisma schema | 159 | WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md). |
 | `receivables.prisma` | prisma schema | 142 | Receivables: CreditNote/DebitNote, customer credit limits, and dunning — |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
@@ -720,6 +720,12 @@ All 1,079 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 52 |  |
 
+### `apps/api/prisma/schema/migrations/20260927070000_wo144_supplier_lead_time_observation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 23 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -1081,8 +1087,8 @@ All 1,079 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 140 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 311 |  |
+| `module-packs.ts` | module | 144 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 316 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1935,6 +1941,37 @@ All 1,079 tracked files in `apps/api`, by directory.
 | `leave.dto.ts` | dto | 35 |  |
 | `pay-run-adjustment.dto.ts` | dto | 25 |  |
 | `pay-run.dto.ts` | dto | 19 |  |
+
+### `apps/api/src/modules/planning` (20)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `action-ranking.spec.ts` | unit test | 58 |  |
+| `action-ranking.ts` | module | 117 |  |
+| `dependency-graph.spec.ts` | unit test | 53 |  |
+| `dependency-graph.ts` | module | 99 |  |
+| `goods-received-lead-time.listener.spec.ts` | unit test | 54 |  |
+| `goods-received-lead-time.listener.ts` | event subscriber | 42 |  |
+| `liquidity-forecast.service.spec.ts` | unit test | 60 |  |
+| `liquidity-forecast.service.ts` | service | 103 |  |
+| `narration.service.spec.ts` | unit test | 53 |  |
+| `narration.service.ts` | service | 95 |  |
+| `online-stock.service.spec.ts` | unit test | 89 |  |
+| `online-stock.service.ts` | service | 102 |  |
+| `planning.controller.ts` | controller | 86 |  |
+| `planning.module.ts` | nest module | 41 |  |
+| `planning.service.spec.ts` | unit test | 48 |  |
+| `planning.service.ts` | service | 111 |  |
+| `propagation.spec.ts` | unit test | 52 |  |
+| `propagation.ts` | module | 104 |  |
+| `supplier-resilience.service.spec.ts` | unit test | 112 |  |
+| `supplier-resilience.service.ts` | service | 93 |  |
+
+### `apps/api/src/modules/planning/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `planning.dto.ts` | dto | 67 |  |
 
 ### `apps/api/src/modules/pos` (16)
 

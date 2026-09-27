@@ -40,6 +40,7 @@ import { PartiesModule } from './parties/parties.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PayrollModule } from './payroll/payroll.module';
 import { PricingModule } from './pricing/pricing.module';
+import { PlanningModule } from './planning/planning.module';
 import { PosModule } from './pos/pos.module';
 import { ProductionModule } from './production/production.module';
 import { PromotionsModule } from './promotions/promotions.module';
@@ -260,6 +261,10 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   { name: 'custom-fields', module: CustomFieldsModule, alwaysOn: true },
   // 113-micro-frontend-embedding.md — a narrow iframe embed pattern.
   { name: 'embeds', module: EmbedsModule, alwaysOn: true },
+  // 144-supply-chain-resilience-planning-engine.md — a pure read/
+  // recommendation engine over rows every other module already writes; a
+  // deployment gains nothing by running without it.
+  { name: 'planning', module: PlanningModule, alwaysOn: true },
   // 140-general-eav-extensibility-model.md — a general EAV model, built by
   // explicit owner override (ADR-026).
   { name: 'entity-attributes', module: EntityAttributesModule, alwaysOn: true },

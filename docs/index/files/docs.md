@@ -563,7 +563,7 @@ All 400 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 7222 |  |
+| `DECISIONS.md` | doc | 7360 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -827,7 +827,7 @@ All 400 tracked files in `docs/*`, by directory.
 | `119-containerized-workload-portability.md` | doc | 69 |  |
 | `123-automated-degradation-resilience.md` | doc | 73 |  |
 | `124-infrastructure-as-code.md` | doc | 64 |  |
-| `144-supply-chain-resilience-planning-engine.md` | doc | 345 |  |
+| `144-supply-chain-resilience-planning-engine.md` | doc | 392 |  |
 | `37-scalability-future-upgrades.md` | doc | 247 |  |
 | `38-resilience-engineering.md` | doc | 238 |  |
 | `48-native-desktop-deployment.md` | doc | 184 |  |

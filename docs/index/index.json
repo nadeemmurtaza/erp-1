@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2360,
-    "lines": 358551,
+    "lines": 358563,
     "routes": 846,
     "controllers": 154,
     "models": 304,
@@ -51,8 +51,8 @@
     },
     "web": {
       "files": 420,
-      "lines": 70505,
-      "bytes": 2548111,
+      "lines": 70517,
+      "bytes": 2548681,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -84612,8 +84612,8 @@
       "path": "apps/web/src/lib/wishlist.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 192,
-      "bytes": 5970,
+      "lines": 204,
+      "bytes": 6540,
       "doc": "",
       "symbols": [
         {
@@ -84624,12 +84624,12 @@
         {
           "name": "WishlistState",
           "kind": "interface",
-          "line": 157
+          "line": 169
         },
         {
           "name": "useWishlist",
           "kind": "function",
-          "line": 164
+          "line": 176
         }
       ]
     },

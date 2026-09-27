@@ -1736,8 +1736,8 @@ Every top-level export in `web`, with the line to open.
 | `onsite-messages-client.ts` | `subscribeToNewsletter` | function | :21 |  |
 | `rag-corpus-access.ts` | `visibleCorpora` | function | :21 | Filters a list of corpus options down to the ones `can` may reach — the same convention `reports/pa… |
 | `wishlist.ts` | `toggleWishlist` | function | :62 |  |
-| `wishlist.ts` | `WishlistState` | interface | :157 |  |
-| `wishlist.ts` | `useWishlist` | function | :164 |  |
+| `wishlist.ts` | `WishlistState` | interface | :169 |  |
+| `wishlist.ts` | `useWishlist` | function | :176 |  |
 
 ### `apps/web/src/providers`
 

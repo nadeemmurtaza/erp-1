@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2348,
-    "lines": 356393,
+    "lines": 356467,
     "routes": 836,
     "controllers": 152,
     "models": 302,
@@ -21,8 +21,8 @@
   "areas": {
     "root": {
       "files": 213,
-      "lines": 21321,
-      "bytes": 1218293,
+      "lines": 21395,
+      "bytes": 1222740,
       "label": "repository root files"
     },
     "infra": {
@@ -55063,8 +55063,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 978,
-      "bytes": 51582,
+      "lines": 1004,
+      "bytes": 52979,
       "doc": "",
       "symbols": []
     },
@@ -55126,8 +55126,8 @@
       "path": "PRD.md",
       "area": "root",
       "kind": "doc",
-      "lines": 137,
-      "bytes": 7608,
+      "lines": 185,
+      "bytes": 10658,
       "doc": "",
       "symbols": []
     },

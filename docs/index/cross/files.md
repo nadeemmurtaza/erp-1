@@ -17,7 +17,7 @@ Split by area so you load one, not all of them.
 | packages/* | 79 | 8,427 | [files/packages.md](../files/packages.md) |
 | docs/* | 400 | 70,098 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 60 | 30,631 | [files/infra.md](../files/infra.md) |
-| repository root files | 213 | 21,321 | [files/root.md](../files/root.md) |
+| repository root files | 213 | 21,395 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains

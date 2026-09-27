@@ -3,7 +3,7 @@
 
 # repository root files
 
-213 files · 21,321 lines
+213 files · 21,395 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,7 +17,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 22 | 8,333 | file, doc, txt, script |
+| `.` | 22 | 8,407 | file, doc, txt, script |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 8 | 341 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
@@ -45,7 +45,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
-| `CLAUDE.md` | 978 | doc |  |
+| `CLAUDE.md` | 1,004 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `DEPLOYMENT.md` | 492 | doc |  |
 | `README.md` | 349 | doc |  |
@@ -58,7 +58,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
 | `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | 195 | unit test |  |
-| `apps/platform/src/modules/agency/agency-stripe.service.ts` | 180 | service |  |
+| `PRD.md` | 185 | doc |  |
 
 
 ---

@@ -19,7 +19,7 @@ All 213 tracked files in `repository root files`, by directory.
 | `AGENTS.md` | doc | 81 |  |
 | `Architecture.md` | doc | 32 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 978 |  |
+| `CLAUDE.md` | doc | 1004 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 492 |  |
 | `Design.md` | doc | 41 |  |
@@ -29,7 +29,7 @@ All 213 tracked files in `repository root files`, by directory.
 | `GEMINI.md` | doc | 81 |  |
 | `Memory.md` | doc | 28 |  |
 | `Phases.md` | doc | 48 |  |
-| `PRD.md` | doc | 137 |  |
+| `PRD.md` | doc | 185 |  |
 | `raw_output.txt` | txt | — |  |
 | `README.md` | doc | 349 |  |
 | `Rules.md` | doc | 30 |  |

@@ -127,17 +127,18 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `CLAUDE.md`  <sub>978 lines</sub>
+### `CLAUDE.md`  <sub>1,004 lines</sub>
 
-- The seven laws  <sub>:13</sub>
-- Software engineering, not vibe coding  <sub>:35</sub>
-- Feature scope: build the whole capability, not one slice of it  <sub>:144</sub>
-- Scale: the three axes  <sub>:358</sub>
-- Look it up before you search  <sub>:420</sub>
-- The rule index  <sub>:491</sub>
-- Before you open a PR  <sub>:529</sub>
-- Deployment  <sub>:608</sub>
-- NEWAX Engineering Operating Protocol  <sub>:621</sub>
+- Vision and scale  <sub>:13</sub>
+- The seven laws  <sub>:39</sub>
+- Software engineering, not vibe coding  <sub>:61</sub>
+- Feature scope: build the whole capability, not one slice of it  <sub>:170</sub>
+- Scale: the three axes  <sub>:384</sub>
+- Look it up before you search  <sub>:446</sub>
+- The rule index  <sub>:517</sub>
+- Before you open a PR  <sub>:555</sub>
+- Deployment  <sub>:634</sub>
+- NEWAX Engineering Operating Protocol  <sub>:647</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -3673,17 +3674,17 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `PRD.md`  <sub>137 lines</sub>
+### `PRD.md`  <sub>185 lines</sub>
 
-- Vision  <sub>:9</sub>
-- Problem statement  <sub>:22</sub>
-- Target users  <sub>:36</sub>
-- Product pillars  <sub>:53</sub>
-- Scope  <sub>:76</sub>
-- Editions and commercial model  <sub>:96</sub>
-- Current state  <sub>:108</sub>
-- Success metrics  <sub>:119</sub>
-- References  <sub>:131</sub>
+- Vision  <sub>:18</sub>
+- Problem statement  <sub>:70</sub>
+- Target users  <sub>:84</sub>
+- Product pillars  <sub>:101</sub>
+- Scope  <sub>:124</sub>
+- Editions and commercial model  <sub>:144</sub>
+- Current state  <sub>:156</sub>
+- Success metrics  <sub>:167</sub>
+- References  <sub>:179</sub>
 
 ### `README.md`  <sub>349 lines</sub>
 

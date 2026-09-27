@@ -1,5 +1,14 @@
 # Product Requirements Document
 
+> **Build the ERP that bends.** Move small and medium businesses and large
+> enterprises beyond monolithic systems with a modular, AI-driven
+> architecture and a centrally connected ecosystem. Written around a base
+> of more than 50,000 SMEs and large enterprises — not a handful of pilot
+> clients — which is why "bends" is a scoped engineering claim below, not
+> a slogan: it names the module-pack boundary, the sector/brand/branch
+> axes, and the AI layer as an optional extension point, each already
+> load-bearing at that scale rather than added for this document.
+
 The one document of the six requested that did not already exist under a
 different name. Built from what this repository's own documents of record
 already establish — cited throughout, not re-derived — with the one
@@ -10,14 +19,53 @@ open item rather than invented.
 
 A single, multi-sector commerce and business-management platform that
 serves a shop with one till today and a group running a hundred branches
-across several brands tomorrow, without a rewrite in between. The
-platform started as a clothing-and-stitching store's own system
-(`docs/implementation/README.md`'s own framing) and generalized into a
-**universal commerce core** — inventory, purchasing, orders, payments,
-shipping, finance, HR/payroll, analytics — plus **sector packs** that add
-what one vertical needs (apparel's `measurements`/`stitching`; a future
-grocery pack's `batches`; a future pharmacy pack's `prescriptions`) without
-ever touching the core (`MULTI-SECTOR.md`).
+across several brands tomorrow, without a rewrite in between — **the ERP
+that bends** instead of the one that gets replaced every time the business
+outgrows it. The platform started as a clothing-and-stitching store's own
+system (`docs/implementation/README.md`'s own framing) and generalized
+into a **universal commerce core** — inventory, purchasing, orders,
+payments, shipping, finance, HR/payroll, analytics — plus **sector packs**
+that add what one vertical needs (apparel's `measurements`/`stitching`; a
+future grocery pack's `batches`; a future pharmacy pack's
+`prescriptions`) without ever touching the core (`MULTI-SECTOR.md`).
+
+"Bends" names three concrete properties, each already specified or built,
+not three aspirations:
+
+- **Modular** — the module-pack architecture (`CLAUDE.md`'s "Scale: the
+  three axes", `ENTERPRISE-SCALE.md`): a sector is a folder, never a
+  fork; every module is independent of every other, checked by
+  `pnpm lint`; a deployment runs with any module absent. This is what lets
+  the same codebase serve a one-till shop and a 100-branch chain without a
+  rewrite, and what lets a capability nobody has asked for yet arrive as a
+  new module instead of a change to an existing one.
+- **AI-driven** — the `AiService`/`AiProvider` extension point
+  (`docs/implementation/ai-layer/09-*.md`) feature code calls through,
+  never a provider directly, already load-bearing in the resilience
+  planning engine's narration layer (doc 144) and scoped, per this
+  document's own "AI-driven" claim, to be genuinely absent-tolerant: a
+  deployment with no provider configured, or a call that times out or
+  exceeds budget, degrades to no narration, never to a blocked feature.
+  "AI-driven" here means AI sits behind an interface every capability can
+  use and none may hard-depend on — not a chatbot bolted on top.
+- **Centrally connected ecosystem** — the provider-agnostic connectivity
+  layer (VoIP/SMS/WhatsApp/email, marketplaces, accounting software, SSO,
+  file-based bank/payroll exchange — docs 33, 36, 132, 159–162), the
+  trading-partner network (doc 18) for supplier/distributor document
+  exchange, and the platform/agency layer (doc 14) that lets one operator
+  host many still-single-brand deployments. "Centrally connected" means
+  every integration is a named, swappable provider behind one boundary,
+  never a hardcoded call to one vendor's API scattered through feature
+  code (House Law 1's own reach into integrations, not only branding).
+
+The 50,000-SME-and-enterprise base is the reason "Scale" below treats a
+sector, a brand and a branch as three different kinds of things instead of
+one flag, why `docs/implementation/ENTERPRISE-SCALE.md`'s "hundred-
+thousandth row" lens exists, and why the three editions (Solo, Chain,
+Organization) are one codebase rather than three. A change that only works
+for one shop, or that only works assuming a single AI provider or a single
+integration vendor is always reachable, does not meet this document's own
+bar.
 
 ## Problem statement
 

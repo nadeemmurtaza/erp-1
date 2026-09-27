@@ -10,6 +10,32 @@ That file is the contract; this one is the part you must not miss.
 
 ---
 
+## Vision and scale
+
+**Build the ERP that bends.** The product moves small and medium
+businesses and large enterprises beyond monolithic systems on a modular,
+AI-driven architecture with a centrally connected ecosystem — not a
+single-tenant app with plugins bolted on. [`PRD.md`](./PRD.md) is the
+document of record for the full vision statement; this section changes no
+rule below, it names the number the rest of this file was already written
+against: **more than 50,000 SMEs and large enterprises**, not a handful of
+pilot clients.
+
+That is the reason, not a new requirement, behind rules already binding
+below: "Scale: the three axes" treats a sector, a brand and a branch as
+three different kinds of things rather than one flag; every module in
+`MODULES` must be survivably absent rather than assumed present;
+`ENTERPRISE-SCALE.md`'s "hundred-thousandth row" lens exists; and the AI
+layer (`AiService`/`AiProvider`, `docs/implementation/ai-layer/09-*.md`)
+is itself an extension point a deployment can run without, never a hard
+dependency load-bearing at that scale — "AI-driven" means every capability
+sits behind an interface it can be built and shipped without, not a
+chatbot bolted on. A change that only works for one shop, or that only
+works assuming a single AI provider or a single integration vendor is
+always reachable, fails this bar whether or not it fails a lint rule.
+
+---
+
 ## The seven laws
 
 Binding on every surface — admin, storefront, customer account, mobile, API.

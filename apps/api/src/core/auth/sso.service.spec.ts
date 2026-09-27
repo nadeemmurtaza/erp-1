@@ -41,6 +41,7 @@ describe('SsoService', () => {
     allowedEmailDomains: ['shop.test'],
     defaultRoleName: 'Staff',
     status: 'ACTIVE',
+    enforceSso: false,
     createdByUserId: 'admin-1',
     createdAt: new Date('2026-09-01T00:00:00Z'),
     updatedAt: new Date('2026-09-01T00:00:00Z'),
@@ -549,6 +550,18 @@ describe('SsoService', () => {
     it('answers 404 for a connection that does not exist', async () => {
       prisma.ssoConnection.findUnique.mockResolvedValue(null);
       await expect(service.updateConnection('nope', { label: 'x' }, 'admin-1')).rejects.toBeInstanceOf(NotFoundException);
+    });
+
+    it('audits enforceSso the same as any other editable field (WO-165.6)', async () => {
+      await service.updateConnection('c1', { enforceSso: true }, 'admin-1');
+      expect(prisma.ssoConnection.updateManyAndReturn).toHaveBeenCalledWith(
+        expect.objectContaining({ data: expect.objectContaining({ enforceSso: true }) }),
+      );
+      expect(audit.recordEvidence.mock.calls[0][1].data).toEqual({
+        from: { enforceSso: false },
+        to: { enforceSso: true },
+        credentialReplaced: false,
+      });
     });
   });
 

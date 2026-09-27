@@ -3,7 +3,7 @@
 
 # repository root files
 
-208 files · 20,711 lines
+213 files · 21,321 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -26,8 +26,8 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `.githooks` | 2 | 0 | file |
 | `.junie` | 1 | 81 | doc |
 | `apps/platform` | 7 | 155 | script, json, module |
-| `apps/platform/prisma` | 12 | 1,734 | prisma schema, migration, toml |
-| `apps/platform/src` | 140 | 9,333 | nest module, service, config, module |
+| `apps/platform/prisma` | 13 | 1,947 | prisma schema, migration, toml |
+| `apps/platform/src` | 144 | 9,730 | nest module, service, config, module |
 | `apps/platform/test` | 1 | 11 | module |
 
 
@@ -46,19 +46,19 @@ Workspace manifests, Docker compose and stack files, environment templates.
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
 | `CLAUDE.md` | 978 | doc |  |
-| `apps/platform/prisma/schema/platform.prisma` | 801 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
+| `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `DEPLOYMENT.md` | 492 | doc |  |
 | `README.md` | 349 | doc |  |
 | `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
 | `apps/platform/src/modules/billing/billing.service.spec.ts` | 285 | unit test |  |
 | `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | 285 | unit test |  |
 | `apps/platform/src/modules/billing/billing.service.ts` | 275 | service |  |
+| `apps/platform/prisma/schema/marketplace.prisma` | 271 | prisma schema | The cross-tenant marketplace/product-reference network — doc 165 |
 | `apps/platform/src/modules/billing/plans.service.spec.ts` | 225 | unit test |  |
 | `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
 | `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | 195 | unit test |  |
 | `apps/platform/src/modules/agency/agency-stripe.service.ts` | 180 | service |  |
-| `apps/platform/src/modules/tenants/provisioning.service.spec.ts` | 178 | unit test |  |
 
 
 ---

@@ -139,6 +139,15 @@ export const envSchema = z.object({
   AGENCY_API_URL: z.string().optional(),
   AGENCY_API_KEY: z.string().optional(),
 
+  // Doc 165 (cross-tenant marketplace directory) — the credential ops issues
+  // once this tenant opts into the network (`POST /marketplace/tenants/
+  // :tenantId/credential` on the platform app, ops-authenticated). Same
+  // "optional at the env-schema level, `marketplace` module also has to be
+  // in MODULES, MarketplaceService throws at call time not boot time"
+  // reasoning as AGENCY_API_URL/_KEY above.
+  MARKETPLACE_API_URL: z.string().optional(),
+  MARKETPLACE_API_KEY: z.string().optional(),
+
   // Outbound email. Plain SMTP on purpose: the mail server is ours (see
   // docker-compose.mail.yml), and if its reputation ever disappoints, pointing
   // these four values at a relay is the whole migration — no code changes.

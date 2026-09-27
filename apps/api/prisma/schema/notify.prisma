@@ -1,6 +1,6 @@
 // Internal notifications, meetings and escalation
 // (tasks-notifications-support/24-internal-notifications-meetings-escalation.md,
-// DECISIONS.md ADR-058).
+// DECISIONS.md ADR-060).
 //
 // Delivery itself is NOT rebuilt here — NotificationChannel/EmailChannel/
 // ExpoPushChannel/LogChannel/NotificationsService (core/notifications/)

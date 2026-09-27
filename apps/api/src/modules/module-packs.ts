@@ -121,6 +121,13 @@ export const MODULE_PACKS: Record<string, PackName> = {
   // arrangement, never a sector concept, and never in a client's default
   // MODULES allowlist (see modules.registry.ts's own `offByDefault`).
   'managed-services': 'core',
+  // doc 165 (b2b-wholesale-multientity/165-cross-tenant-marketplace-
+  // directory.md) — a thin server-to-server proxy to the shared platform
+  // app's own cross-tenant directory; a B2B/B2B2C capability, not a sector
+  // concept, and off by a client's default MODULES allowlist until ops
+  // issues this tenant a MarketplacePublisherCredential (modules.registry
+  // .ts's own `offByDefault`).
+  marketplace: 'core',
 
   // Apparel & boutique — what makes this particular shop what it is.
   measurements: 'apparel',

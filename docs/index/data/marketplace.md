@@ -3,7 +3,7 @@
 
 # Schema: `marketplace.prisma`
 
-6 models · 1 enums. Owned by the core platform.
+9 models · 7 enums. Owned by module [`marketplace`](../modules/marketplace.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `GlobalProductReference`  <sub>`apps/platform/prisma/schema/marketplace.prisma:46`</sub>
+### `GlobalProductReference`  <sub>`apps/platform/prisma/schema/marketplace.prisma:59`</sub>
 
 > One row per physical product, keyed by the one fact that is unambiguously true regardless of who is selling it: its barcode.
 
@@ -41,7 +41,7 @@ against a real database.
 
 Indexes: `@@index([registeredByTenantId])`
 
-### `GlobalProductReferenceFlag`  <sub>`apps/platform/prisma/schema/marketplace.prisma:132`</sub>
+### `GlobalProductReferenceFlag`  <sub>`apps/platform/prisma/schema/marketplace.prisma:145`</sub>
 
 > A non-owning tenant's report that a shared reference is wrong — reviewed by platform staff, never auto-applied.
 
@@ -58,7 +58,7 @@ Indexes: `@@index([registeredByTenantId])`
 
 Indexes: `@@index([referenceId])`
 
-### `GlobalProductReferenceImage`  <sub>`apps/platform/prisma/schema/marketplace.prisma:95`</sub>
+### `GlobalProductReferenceImage`  <sub>`apps/platform/prisma/schema/marketplace.prisma:108`</sub>
 
 > The shared image itself, stored once in the platform app's own storage driver — never copied into a linking tenant's bucket for a cloud-connected tenant (an offline-capable deployment's own local sna…
 
@@ -73,7 +73,7 @@ Indexes: `@@index([referenceId])`
 
 Indexes: `@@index([referenceId])`
 
-### `GlobalProductReferenceLink`  <sub>`apps/platform/prisma/schema/marketplace.prisma:111`</sub>
+### `GlobalProductReferenceLink`  <sub>`apps/platform/prisma/schema/marketplace.prisma:124`</sub>
 
 > One row per tenant that has linked one of their own ProductVariants to this shared reference.
 
@@ -89,7 +89,7 @@ Indexes: `@@index([referenceId])`
 
 Indexes: `@@unique([tenantId, variantRef])` · `@@index([referenceId])` · `@@index([tenantId])`
 
-### `GlobalProductReferenceTranslation`  <sub>`apps/platform/prisma/schema/marketplace.prisma:76`</sub>
+### `GlobalProductReferenceTranslation`  <sub>`apps/platform/prisma/schema/marketplace.prisma:89`</sub>
 
 > Mirrors ProductTranslation's own locale-keyed shape exactly (en/ur) — the identical structure a linked tenant's own table is synced into.
 
@@ -105,7 +105,52 @@ Indexes: `@@unique([tenantId, variantRef])` · `@@index([referenceId])` · `@@in
 
 Indexes: `@@unique([referenceId, locale])`
 
-### `MarketplacePublisherCredential`  <sub>`apps/platform/prisma/schema/marketplace.prisma:24`</sub>
+### `MarketplaceEngagement`  <sub>`apps/platform/prisma/schema/marketplace.prisma:255`</sub>
+
+> A viewer acting on a listing, chosen by the listing's own engagementMode.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `listingId` | `String` |  |  |
+| `viewerProfileId` | `String` |  |  |
+| `kind` | `MarketplaceEngagementKind` |  |  |
+| `payload` | `Json` |  |  |
+| `status` | `MarketplaceEngagementStatus` |  | @default(PENDING) |
+| `deliveryError` | `String?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `deliveredAt` | `DateTime?` | optional |  |
+| `listing` | `MarketplaceListing` | relation | @relation(fields: [listingId], references: [id]) |
+| `viewerProfile` | `MarketplaceViewerProfile` | relation | @relation(fields: [viewerProfileId], references: [id]) |
+
+Indexes: `@@index([listingId, status])`
+
+### `MarketplaceListing`  <sub>`apps/platform/prisma/schema/marketplace.prisma:192`</sub>
+
+> A tenant's own published product/service, WO-165.2.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `tenantId` | `String` |  |  |
+| `kind` | `MarketplaceListingKind` |  |  |
+| `externalRef` | `String` |  |  |
+| `title` | `String` |  |  |
+| `description` | `String` |  |  |
+| `priceMinorUnits` | `Int?` | optional |  |
+| `currency` | `String?` | optional |  |
+| `imageUrl` | `String?` | optional |  |
+| `visibleTo` | `MarketplaceAudience[]` |  |  |
+| `engagementMode` | `MarketplaceEngagementMode` |  | @default(DISCOVERY_ONLY) |
+| `status` | `MarketplaceListingStatus` |  | @default(ACTIVE) |
+| `publishedAt` | `DateTime` |  | @default(now()) |
+| `updatedAt` | `DateTime` |  | @updatedAt |
+| `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
+| `engagements` | `MarketplaceEngagement[]` |  |  |
+
+Indexes: `@@unique([tenantId, externalRef])` · `@@index([status, kind])`
+
+### `MarketplacePublisherCredential`  <sub>`apps/platform/prisma/schema/marketplace.prisma:37`</sub>
 
 > One row per tenant that has opted into the cross-tenant network (either capability this file offers).
 
@@ -118,10 +163,75 @@ Indexes: `@@unique([referenceId, locale])`
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `tenant` | `PlatformTenant` | relation | @relation(fields: [tenantId], references: [id]) |
 
+### `MarketplaceViewerProfile`  <sub>`apps/platform/prisma/schema/marketplace.prisma:225`</sub>
+
+> A viewer authenticated once via nID and reused across every tenant's published listings — a fourth kind of principal (doc 165's own "actor with three tables" lens): not a User (no tenant relationship…
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `nidSubjectId` | `String` | unique | @unique |
+| `declaredType` | `MarketplaceAudience` |  |  |
+| `verifiedType` | `MarketplaceAudience?` | optional |  |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `engagements` | `MarketplaceEngagement[]` |  |  |
+
 
 ## Enums
 
-### `ProductReferenceReviewStatus`  <sub>`apps/platform/prisma/schema/marketplace.prisma:34`</sub>
+### `MarketplaceAudience`  <sub>`apps/platform/prisma/schema/marketplace.prisma:169`</sub>
+
+> Exactly the four categories the owner named.
+
+| Value | Meaning |
+|---|---|
+| `RETAILER` |  |
+| `DISTRIBUTOR` |  |
+| `SUPPLIER` |  |
+| `DIRECT_CUSTOMER` |  |
+
+### `MarketplaceEngagementKind`  <sub>`apps/platform/prisma/schema/marketplace.prisma:241`</sub>
+
+| Value | Meaning |
+|---|---|
+| `INQUIRY` |  |
+| `ORDER_REQUEST` |  |
+
+### `MarketplaceEngagementMode`  <sub>`apps/platform/prisma/schema/marketplace.prisma:184`</sub>
+
+> The owner's own answer: "give both discovery and transaction and let the client choose" — a per-listing choice, never a platform-wide one.
+
+| Value | Meaning |
+|---|---|
+| `DISCOVERY_ONLY` |  |
+| `DISCOVERY_AND_TRANSACT` |  |
+
+### `MarketplaceEngagementStatus`  <sub>`apps/platform/prisma/schema/marketplace.prisma:246`</sub>
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `DELIVERED` |  |
+| `FAILED` |  |
+
+### `MarketplaceListingKind`  <sub>`apps/platform/prisma/schema/marketplace.prisma:161`</sub>
+
+> --- Doc 165's own publish/discover/transact layer -------------------------
+
+| Value | Meaning |
+|---|---|
+| `PRODUCT` |  |
+| `SERVICE` |  |
+
+### `MarketplaceListingStatus`  <sub>`apps/platform/prisma/schema/marketplace.prisma:176`</sub>
+
+| Value | Meaning |
+|---|---|
+| `ACTIVE` |  |
+| `PAUSED` |  |
+| `DELISTED` |  |
+
+### `ProductReferenceReviewStatus`  <sub>`apps/platform/prisma/schema/marketplace.prisma:47`</sub>
 
 | Value | Meaning |
 |---|---|

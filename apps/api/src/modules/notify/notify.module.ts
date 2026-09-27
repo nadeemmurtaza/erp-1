@@ -10,7 +10,7 @@ import { NotifyService } from './notify.service';
 
 /**
  * tasks-notifications-support/24-internal-notifications-meetings-escalation.md
- * (DECISIONS.md ADR-058). Imports no other feature module: reads `Position`/
+ * (DECISIONS.md ADR-060). Imports no other feature module: reads `Position`/
  * `Posting`/`Rank`/`OrgUnit` (hr/orgstructure) and `Task` (tasks) directly
  * through Prisma, the identical no-coupling shape `AttendanceModule`'s and
  * `TasksModule`'s own header comments already document. Delivery is

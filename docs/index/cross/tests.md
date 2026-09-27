@@ -3,7 +3,7 @@
 
 # Tests
 
-**303** spec files, **2,922** cases. What is already pinned down — and what is not.
+**309** spec files, **2,968** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -57,7 +57,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (283)
+## Unit and integration (289)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -67,7 +67,7 @@ regression or an N+1.
 | `apps/api/src/core/auth/api-keys/api-key-access.spec.ts` | core/auth | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements —… |
 | `apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts` | core/auth | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says wh… |
 | `apps/api/src/core/auth/api-keys/api-keys.service.spec.ts` | core/auth | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do righ… |
-| `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 2 | parseDuration |
+| `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 7 | AuthService.login — enforceSso (WO-165.6) · parseDuration |
 | `apps/api/src/core/auth/guards.spec.ts` | core/auth | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a se… |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
 | `apps/api/src/core/auth/password.util.spec.ts` | core/auth | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
@@ -76,7 +76,7 @@ regression or an N+1.
 | `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 22 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orpha… |
 | `apps/api/src/core/auth/scope.guard.spec.ts` | core/auth | 24 | resolveScope · assertCanManageAtScope · scopeFilterFor · orgUnitScopeFilterFor |
 | `apps/api/src/core/auth/sso.controller.spec.ts` | core/auth | 8 | SsoController · start · callback · session |
-| `apps/api/src/core/auth/sso.service.spec.ts` | core/auth | 33 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing conne… |
+| `apps/api/src/core/auth/sso.service.spec.ts` | core/auth | 34 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing conne… |
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 20 | validateEnv |
@@ -188,6 +188,11 @@ regression or an N+1.
 | `apps/api/src/modules/managed-services/managed-services.service.spec.ts` | managed-services | 5 | ManagedServicesService |
 | `apps/api/src/modules/marketing/campaigns.service.spec.ts` | marketing | 4 | CampaignsService |
 | `apps/api/src/modules/marketing/marketing-automation.cron.spec.ts` | marketing | 19 | MarketingAutomationCron · sendAbandonedCartReminders · sendAbandonedCartFirstTouch · sendAbandonedC… |
+| `apps/api/src/modules/marketplace/marketplace-webhook.controller.spec.ts` | marketplace | 1 | MarketplaceWebhookController — 166-unified-product-reference-registry.md WO-166.4 |
+| `apps/api/src/modules/marketplace/marketplace-webhook.guard.spec.ts` | marketplace | 4 | MarketplaceWebhookGuard — 166-unified-product-reference-registry.md WO-166.4 |
+| `apps/api/src/modules/marketplace/marketplace.service.spec.ts` | marketplace | 10 | MarketplaceService — 165-cross-tenant-marketplace-directory.md WO-165.2 · product references — 166-… |
+| `apps/api/src/modules/marketplace/product-reference-sync.service.spec.ts` | marketplace | 9 | ProductReferenceSyncService · adopt · apply |
+| `apps/api/src/modules/marketplace/product-references.controller.spec.ts` | marketplace | 9 | ProductReferencesController — 166-unified-product-reference-registry.md WO-166.3 · lookup · apply ·… |
 | `apps/api/src/modules/measurements/garment-fields-seed.spec.ts` | measurements | 1 | seeded measurement fields satisfy MeasurementFieldDto |
 | `apps/api/src/modules/measurements/size-bias.listener.spec.ts` | measurements | 5 | SizeBiasListener · onReviewModerated · onReturnRequestStatusChanged |
 | `apps/api/src/modules/measurements/size-bias.service.spec.ts` | measurements | 10 | SizeBiasService · WO-9.9 — ProductReviewSummary.fitSignal corroboration |
@@ -305,7 +310,8 @@ regression or an N+1.
 | `apps/platform/src/modules/billing/seat-counter.service.spec.ts` | root | 3 | SeatCounterService |
 | `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | root | 11 | UsageMeteringService · pollTenant · snapshotAllowances · getMetersForPeriod |
 | `apps/platform/src/modules/product-reference/marketplace-credential.guard.spec.ts` | root | 5 | MarketplaceCredentialGuard |
-| `apps/platform/src/modules/product-reference/marketplace-credentials.service.spec.ts` | root | 7 | MarketplaceCredentialsService · issue · rotate · revoke |
+| `apps/platform/src/modules/product-reference/marketplace-credentials.service.spec.ts` | root | 8 | MarketplaceCredentialsService · issue · rotate · revoke |
+| `apps/platform/src/modules/product-reference/marketplace-listings.service.spec.ts` | root | 6 | MarketplaceListingsService — 165-cross-tenant-marketplace-directory.md WO-165.2 · publish · the tox… |
 | `apps/platform/src/modules/product-reference/product-reference-key.spec.ts` | root | 4 | product-reference-key |
 | `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | root | 16 | ProductReferenceService · lookup · bulkLookup · register · update · link · flag · exportSince |
 | `apps/platform/src/modules/resource-quotas/resource-quotas.service.spec.ts` | root | 4 | ResourceQuotasService · upsertQuota |

@@ -1,13 +1,35 @@
 # 166 — Unified product reference registry: write once, reference everywhere
 
-> **Status: platform-side schema + API built (2026-09-26); erp-1-side
-> consumer not yet built.** WO-166.1 (schema/migration), WO-166.2 (lookup +
-> registration API), and WO-166.6 (bulk-lookup + export/pull) are built,
-> migrated against a real Postgres, and passing lint/typecheck/test.
-> WO-166.3 (barcode-autofill UI), WO-166.4 (`ProductReferenceSyncService`
-> push consumer) and WO-166.5 (moderation screen) remain unbuilt — see
-> "What's built" below for the exact file list and every deviation from
-> this document's own original sketch. ADR-048 records the decisions.
+> **Status: platform-side schema + API, and every erp-1-side piece,
+> built (2026-09-26).** WO-166.1 (schema/migration), WO-166.2 (lookup +
+> registration API), WO-166.6 (bulk-lookup + export/pull), WO-166.3
+> (barcode-autofill UI) and WO-166.4 (`ProductReferenceSyncService`, both
+> the "accept autofill" write path and the inbound sync-delivery consumer)
+> are built, migrated against a real Postgres, and passing
+> lint/typecheck/test. See "What's built" below for the exact file list and
+> every deviation from this document's own original sketch. ADR-048 and
+> ADR-059 record the decisions.
+>
+> **Still not built, and not erp-1's own work to build:** WO-166.5, the
+> moderation screen for `GlobalProductReferenceFlag` — this document's own
+> Work Orders section names it explicitly as "(platform staff)", not
+> erp-1-side. `apps/platform` has no frontend of any kind today (it is a
+> NestJS API only, the same as every other ops-facing surface in this
+> codebase — see `OpsAuthGuard`'s own callers), so building this screen
+> would mean standing up a first ops console for the whole platform app, a
+> real architectural decision far larger than this document's own scope.
+> Named honestly rather than silently built or silently skipped — see
+> ADR-059.
+>
+> **Also still not built:** the platform's own outbound sync dispatcher —
+> the push half of WO-166.4. §2's "Update fan-out" describes it as reusing
+> doc 18.3's existing outbox pattern, but that pattern lives entirely in
+> `apps/api`; `apps/platform` has no outbox/domain-event infrastructure of
+> its own today. `ProductReferenceSyncService.apply()` (this document's own
+> erp-1-side consumer) is built and tested against a simulated delivery, the
+> same "shape the receiver so a real request isn't a design exercise"
+> pattern doc 18.5's EDI deferral already established — it is ready the
+> moment a sender exists.
 >
 > **Original status note (2026-09-26).** Written at the owner's own
 > request: adopt Apple Silicon's unified-memory principle to stop the same
@@ -349,12 +371,55 @@ made while building, not a silent drift:**
    constraint violation — built as an upsert from the start rather than
    discovering the need for one after a test failure.
 
-**Explicitly not built in this pass:** WO-166.3 (the erp-1-side barcode
-autofill UI), WO-166.4 (the erp-1-side `ProductReferenceSyncService` that
-consumes a push delivery), and WO-166.5 (the platform-staff moderation
-screen for `GlobalProductReferenceFlag`). All three require erp-1-side
-work or a UI, sequenced separately from the platform-side schema/API this
-pass covers.
+**erp-1-side pieces built in a later pass (2026-09-26):**
+
+- `apps/api/prisma/schema/catalog.prisma` — `ProductTranslation` gained
+  `sourcedFromGlobalReferenceId`/`sourcedFromReferenceUpdatedAt`;
+  `ProductImage` gained `sourcedFromGlobalReferenceId`. Migration
+  `20260926210218_wo166_product_reference_sync_provenance`. `ProductAdminService
+  .update()`'s own translation upsert now clears both `ProductTranslation`
+  fields on every ordinary edit — the mechanism behind "a local edit is a
+  deliberate override, never silently clobbered."
+- `apps/api/src/modules/marketplace/` gained: `product-reference-sync.service.ts`
+  (`ProductReferenceSyncService.adopt()`/`.apply()` — see "Two write paths,
+  not one" below), `product-references.controller.ts` (`GET .../lookup`,
+  `POST .../apply`, `POST .../register`, all `catalog.manage`-gated),
+  `marketplace-webhook.controller.ts` + `marketplace-webhook.guard.ts` (the
+  inbound sync delivery, `@Public()`, authenticated by the same
+  `MARKETPLACE_API_KEY` this tenant already holds — never a second
+  credential). `MarketplaceService` gained `lookupProductReference()`,
+  `registerProductReference()`, `linkProductReference()`. Six new/extended
+  spec files, all passing.
+- `apps/web/src/components/admin/product-form.tsx` — the barcode field's
+  own `onBlur` triggers the lookup; a match renders `BarcodeReferencePreview`
+  (a thumbnail, the reference's name, and a "Fill from shared listing"
+  button — nothing is written until it is clicked); a genuinely new barcode
+  is registered silently after the product's own save succeeds, exactly as
+  §2's own text describes ("the form behaves exactly as it does today").
+  Gated behind the `marketplace` module (`isModuleEnabled()`) so a
+  deployment without it fires no extra request on every barcode blur.
+
+**Two write paths, not one — a deviation from a single `apply()` this
+document's own §2 implied:** `adopt()` runs once, right after the product's
+own normal save already wrote whatever the staff member kept or edited from
+the preview — it deliberately never rewrites `name`/`description`/
+`careInstructions` on a translation row that already exists (that content
+is already correct, possibly hand-edited), only stamps provenance and pulls
+in the reference's own images, which the ordinary upload form has no way to
+bring in from a remote URL. `apply()` is the OTHER caller — a later push
+delivery — and DOES overwrite text, guarded by the same provenance marker
+plus an `updatedAt` comparison for redelivery idempotency. Collapsing these
+into one method would force a choice between "the autofill silently
+discards a staff edit made in the same session" and "a later sync is
+diluted to only add missing locales" — neither matches what doc 166's own
+text asks for both moments to do. See ADR-059.
+
+**Explicitly not built:** WO-166.5, the platform-staff moderation screen —
+see this document's own status note above for why that is not erp-1's work
+to do, and the platform's own outbound sync dispatcher (the push half of
+WO-166.4), which needs outbox infrastructure `apps/platform` does not have
+today. `ProductReferenceSyncService.apply()` is tested against a simulated
+delivery and ready the moment a sender exists.
 
 ## Scope lenses
 

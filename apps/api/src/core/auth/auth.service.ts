@@ -134,6 +134,22 @@ export class AuthService {
     if (!user.isActive) {
       throw new UnauthorizedException('This account has been deactivated.');
     }
+    // WO-165.6 (165-cross-tenant-marketplace-directory.md §3, piece one):
+    // a staff/tailor/admin account is refused password sign-in once any
+    // active SsoConnection enforces SSO — a plain CUSTOMER is never
+    // affected, since this column exists to move STAFF sign-in onto SSO,
+    // not to gate storefront login. The one exception is whichever admin
+    // enabled enforcement (SsoConnection.createdByUserId): they can always
+    // undo their own change without being locked out by it.
+    if (user.role !== 'CUSTOMER') {
+      const enforced = await this.prisma.ssoConnection.findFirst({
+        where: { status: 'ACTIVE', enforceSso: true, createdByUserId: { not: user.id } },
+        select: { label: true },
+      });
+      if (enforced) {
+        throw new UnauthorizedException(`Password sign-in is disabled for staff accounts. Use "Sign in with ${enforced.label}" instead.`);
+      }
+    }
 
     await this.prisma.user.update({
       where: { id: user.id },

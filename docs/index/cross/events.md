@@ -326,8 +326,8 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:202` | core/`auth` |
-| `apps/api/src/core/auth/auth.service.ts:257` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:218` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:273` | core/`auth` |
 
 
 **Subscribed by**
@@ -343,7 +343,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:227` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:243` | core/`auth` |
 
 
 **Subscribed by**
@@ -359,7 +359,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:278` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:294` | core/`auth` |
 
 
 **Subscribed by**
@@ -394,8 +394,8 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/sso.service.ts:612` | core/`auth` |
-| `apps/api/src/core/auth/sso.service.ts:632` | core/`auth` |
+| `apps/api/src/core/auth/sso.service.ts:614` | core/`auth` |
+| `apps/api/src/core/auth/sso.service.ts:634` | core/`auth` |
 
 
 **Subscribed by**
@@ -412,7 +412,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/sso.service.ts:672` | core/`auth` |
+| `apps/api/src/core/auth/sso.service.ts:674` | core/`auth` |
 
 
 **Subscribed by**
@@ -479,7 +479,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:350` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:356` | `catalog` |
 
 
 **Subscribed by**
@@ -499,7 +499,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 |---|---|
 | `apps/api/src/modules/catalog/ai-suggestions.service.ts:296` | `catalog` |
 | `apps/api/src/modules/catalog/product-admin.service.ts:207` | `catalog` |
-| `apps/api/src/modules/catalog/product-admin.service.ts:358` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:364` | `catalog` |
 
 
 **Subscribed by**

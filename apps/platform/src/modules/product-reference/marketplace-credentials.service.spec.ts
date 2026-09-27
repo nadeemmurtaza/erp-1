@@ -5,6 +5,7 @@ describe('MarketplaceCredentialsService', () => {
   const pepper = 'test-pepper-at-least-32-characters-long';
   let prisma: any;
   let config: any;
+  let listings: any;
   let service: MarketplaceCredentialsService;
 
   beforeEach(() => {
@@ -13,7 +14,8 @@ describe('MarketplaceCredentialsService', () => {
       marketplacePublisherCredential: { findUnique: jest.fn(), create: jest.fn(), update: jest.fn(), delete: jest.fn() },
     };
     config = { get: () => pepper };
-    service = new MarketplaceCredentialsService(prisma, config);
+    listings = { delistAllForTenant: jest.fn() };
+    service = new MarketplaceCredentialsService(prisma, config, listings);
   });
 
   describe('issue', () => {
@@ -73,6 +75,12 @@ describe('MarketplaceCredentialsService', () => {
       prisma.marketplacePublisherCredential.findUnique.mockResolvedValue({ tenantId: 't1' });
       await service.revoke('t1');
       expect(prisma.marketplacePublisherCredential.delete).toHaveBeenCalledWith({ where: { tenantId: 't1' } });
+    });
+
+    it('delists every listing this tenant owns — no dangling published data outliving the credential', async () => {
+      prisma.marketplacePublisherCredential.findUnique.mockResolvedValue({ tenantId: 't1' });
+      await service.revoke('t1');
+      expect(listings.delistAllForTenant).toHaveBeenCalledWith('t1');
     });
   });
 });

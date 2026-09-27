@@ -1,6 +1,6 @@
 -- Internal notifications, meetings and escalation.
 -- tasks-notifications-support/24-internal-notifications-meetings-escalation.md
--- (WO-24.1/24.3/24.4/24.5), DECISIONS.md ADR-058.
+-- (WO-24.1/24.3/24.4/24.5), DECISIONS.md ADR-060.
 --
 -- Hand-written, forward-only (ADR-008). Purely additive. No organizationId
 -- anywhere (ADR-040/ADR-044/ADR-046/ADR-049): this deployment IS the tenant

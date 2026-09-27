@@ -563,7 +563,7 @@ All 399 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 6484 |  |
+| `DECISIONS.md` | doc | 6749 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -649,7 +649,7 @@ All 399 tracked files in `docs/*`, by directory.
 | `142-bpmn-visual-workflow-engine.md` | doc | 166 |  |
 | `143-micro-frontend-architecture.md` | doc | 199 |  |
 | `157-client-request-idempotency-keys.md` | doc | 319 |  |
-| `166-unified-product-reference-registry.md` | doc | 545 |  |
+| `166-unified-product-reference-registry.md` | doc | 610 |  |
 | `92-microservices-module-decoupling.md` | doc | 94 |  |
 | `93-headless-frontend-architecture.md` | doc | 73 |  |
 | `94-cloud-native-container-scalability.md` | doc | 75 |  |
@@ -679,7 +679,7 @@ All 399 tracked files in `docs/*`, by directory.
 | `111-hierarchical-entity-isolation.md` | doc | 81 |  |
 | `146-wholesale-tiered-pricing.md` | doc | 203 |  |
 | `149-b2b-accounts-approvals-sector-packs.md` | doc | 212 |  |
-| `165-cross-tenant-marketplace-directory.md` | doc | 487 |  |
+| `165-cross-tenant-marketplace-directory.md` | doc | 513 |  |
 | `73-multi-entity-multi-company-configuration.md` | doc | 139 |  |
 
 ### `docs/implementation/catalog-variants-pricing` (3)

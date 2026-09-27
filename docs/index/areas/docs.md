@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-399 files · 68,688 lines
+399 files · 69,044 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,14 +84,14 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 10 | 10,635 | doc, file |
+| `docs/implementation` | 10 | 10,900 | doc, file |
 | `docs/implementation/access-control-identity` | 7 | 1,896 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
 | `docs/implementation/analytics-reporting` | 5 | 555 | doc |
-| `docs/implementation/architecture-patterns` | 38 | 4,817 | doc |
+| `docs/implementation/architecture-patterns` | 38 | 4,882 | doc |
 | `docs/implementation/attendance-workforce` | 8 | 1,072 | doc |
-| `docs/implementation/b2b-wholesale-multientity` | 5 | 1,122 | doc |
+| `docs/implementation/b2b-wholesale-multientity` | 5 | 1,148 | doc |
 | `docs/implementation/catalog-variants-pricing` | 3 | 947 | doc |
 | `docs/implementation/commercial-licensing-agency` | 14 | 2,741 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
@@ -116,7 +116,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 6,484 | doc |  |
+| `docs/implementation/DECISIONS.md` | 6,749 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
@@ -127,9 +127,9 @@ has a bug.
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
 | `docs/erp-lenses/_meta/_conflicts.md` | 645 | doc |  |
 | `docs/implementation/access-control-identity/163-personal-api-keys.md` | 625 | doc |  |
+| `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md` | 610 | doc |  |
 | `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md` | 566 | doc |  |
 | `docs/erp-lenses/_meta/_index.md` | 550 | doc |  |
-| `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md` | 545 | doc |  |
 | `docs/implementation/README.md` | 544 | doc |  |
 
 

@@ -3,7 +3,7 @@
 
 # Data model
 
-All **289** Prisma models and **129** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **292** Prisma models and **135** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -51,7 +51,7 @@ against a real database.
 | [`invoicing.prisma`](../data/invoicing.md) | 4 | 2 | core platform | Invoice, InvoiceLine, Quote, QuoteLine |
 | [`loyalty.prisma`](../data/loyalty.md) | 3 | 1 | [`loyalty`](../modules/loyalty.md) | LoyaltyTier, LoyaltyTransaction, Referral |
 | [`marketing.prisma`](../data/marketing.md) | 3 | 3 | [`marketing`](../modules/marketing.md) | Campaign, CampaignRecipient, PhoneOptOut |
-| [`marketplace.prisma`](../data/marketplace.md) | 6 | 1 | core platform | GlobalProductReference, GlobalProductReferenceFlag, GlobalProductReferenceImage, GlobalProductReferenceLink, GlobalProductReferen… |
+| [`marketplace.prisma`](../data/marketplace.md) | 9 | 7 | [`marketplace`](../modules/marketplace.md) | GlobalProductReference, GlobalProductReferenceFlag, GlobalProductReferenceImage, GlobalProductReferenceLink, GlobalProductReferen… |
 | [`measurements.prisma`](../data/measurements.md) | 4 | 1 | [`measurements`](../modules/measurements.md) | GarmentSizeChart, GarmentType, MeasurementField, MeasurementProfile |
 | [`metadata-forms.prisma`](../data/metadata-forms.md) | 1 | 0 | [`metadata-forms`](../modules/metadata-forms.md) | FormMetadata |
 | [`notification-preferences.prisma`](../data/notification-preferences.md) | 1 | 2 | [`notification-preferences`](../modules/notification-preferences.md) | NotificationPreference |
@@ -204,7 +204,10 @@ against a real database.
 | [`Manifest`](../data/fulfilment.md#manifest) | `fulfilment` | 9 | 1 | id | A day's pickup, grouped by courier — WO-6.4's printable handover sheet. |
 | [`ManifestNumberCounter`](../data/fulfilment.md#manifestnumbercounter) | `fulfilment` | 2 | 0 | year |  |
 | [`MarkdownSuggestion`](../data/inventory.md#markdownsuggestion) | `inventory` | 12 | 1 | id |  |
+| [`MarketplaceEngagement`](../data/marketplace.md#marketplaceengagement) | `marketplace` | 11 | 2 | id | A viewer acting on a listing, chosen by the listing's own engagementMode. |
+| [`MarketplaceListing`](../data/marketplace.md#marketplacelisting) | `marketplace` | 16 | 1 | id | A tenant's own published product/service, WO-165.2. |
 | [`MarketplacePublisherCredential`](../data/marketplace.md#marketplacepublishercredential) | `marketplace` | 6 | 1 | id | One row per tenant that has opted into the cross-tenant network (either capability this f… |
+| [`MarketplaceViewerProfile`](../data/marketplace.md#marketplaceviewerprofile) | `marketplace` | 6 | 0 | id | A viewer authenticated once via nID and reused across every tenant's published listings —… |
 | [`MeasurementField`](../data/measurements.md#measurementfield) | `measurements` | 14 | 1 | id |  |
 | [`MeasurementProfile`](../data/measurements.md#measurementprofile) | `measurements` | 10 | 1 | id | A saved set of measurements: "Ammi – kameez", "Self – shalwar". |
 | [`Meeting`](../data/notify.md#meeting) | `notify` | 14 | 1 | id |  |
@@ -254,7 +257,7 @@ against a real database.
 | [`PlatformPlan`](../data/platform.md#platformplan) | `platform` | 24 | 0 | id |  |
 | [`PlatformRateCardChangeRequest`](../data/platform.md#platformratecardchangerequest) | `platform` | 15 | 1 | id | doc 153's own "the threshold nobody approves alone" / "authority and blast radius" lenses… |
 | [`PlatformSubscription`](../data/platform.md#platformsubscription) | `platform` | 8 | 2 | id |  |
-| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 41 | 1 | id | One row per hosted client. |
+| [`PlatformTenant`](../data/platform.md#platformtenant) | `platform` | 42 | 1 | id | One row per hosted client. |
 | [`PlatformUsageRecord`](../data/platform.md#platformusagerecord) | `platform` | 6 | 1 | id | Metered usage a tenant's own deployment reports about itself — never a source of business… |
 | [`PolicyQuarantine`](../data/replication.md#policyquarantine) | `replication` | 14 | 1 | id | R9's OTHER quarantine — "a fact arriving in violation is accepted and quarantined for rev… |
 | [`Position`](../data/hr.md#position) | `hr` | 11 | 4 | id | A post in the org chart: "Finance Manager, North Region". |
@@ -270,7 +273,7 @@ against a real database.
 | [`ProductBundle`](../data/catalog.md#productbundle) | `catalog` | 6 | 0 | id | 150-product-kitting-bundles.md — a sellable shell over existing variants, never a new phy… |
 | [`ProductCrossSell`](../data/catalog.md#productcrosssell) | `catalog` | 8 | 2 | id |  |
 | [`ProductGarmentType`](../data/catalog.md#productgarmenttype) | `catalog` | 3 | 1 | — | Which garments a given unstitched fabric can be made into. |
-| [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 12 | 2 | id |  |
+| [`ProductImage`](../data/catalog.md#productimage) | `catalog` | 13 | 2 | id |  |
 | [`ProductImageTranslation`](../data/catalog.md#productimagetranslation) | `catalog` | 5 | 1 | id | Alt text per locale. |
 | [`ProductOption`](../data/catalog.md#productoption) | `catalog` | 9 | 1 | id | A dynamic option axis a product varies along: "Size", "Colour", "Storage". |
 | [`ProductOptionTranslation`](../data/catalog.md#productoptiontranslation) | `catalog` | 5 | 1 | id |  |
@@ -278,7 +281,7 @@ against a real database.
 | [`ProductOptionValueTranslation`](../data/catalog.md#productoptionvaluetranslation) | `catalog` | 5 | 1 | id |  |
 | [`ProductReviewSummary`](../data/reviews.md#productreviewsummary) | `reviews` | 9 | 1 | productId | WO-9.9 (09-ai-layer.md). |
 | [`ProductSizeBias`](../data/catalog.md#productsizebias) | `catalog` | 8 | 1 | productId | WO-9.2. |
-| [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 12 | 1 | id |  |
+| [`ProductTranslation`](../data/catalog.md#producttranslation) | `catalog` | 14 | 1 | id |  |
 | [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 51 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PromoCode`](../data/promotions.md#promocode) | `promotions` | 12 | 1 | id |  |
@@ -331,7 +334,7 @@ against a real database.
 | [`SpotCheck`](../data/inventory.md#spotcheck) | `inventory` | 11 | 2 | id | A small, unscheduled StockCount-like sheet — a handful of SKUs, never the whole shop, com… |
 | [`SpotCheckLine`](../data/inventory.md#spotcheckline) | `inventory` | 8 | 2 | id |  |
 | [`SpotCheckPolicy`](../data/inventory.md#spotcheckpolicy) | `inventory` | 9 | 1 | id | 156-single-employee-branch-loss-prevention.md §3. |
-| [`SsoConnection`](../data/sso.md#ssoconnection) | `sso` | 12 | 0 | id |  |
+| [`SsoConnection`](../data/sso.md#ssoconnection) | `sso` | 13 | 0 | id |  |
 | [`StitchingJob`](../data/stitching.md#stitchingjob) | `stitching` | 19 | 2 | id |  |
 | [`StitchingJobEvent`](../data/stitching.md#stitchingjobevent) | `stitching` | 9 | 1 | id | Every stage transition, appended and never updated. |
 | [`StitchingJobNumberCounter`](../data/stitching.md#stitchingjobnumbercounter) | `stitching` | 2 | 0 | year | Same as StitchingOrderNumberCounter, for JOB-2026-0001 numbers. |
@@ -443,6 +446,12 @@ against a real database.
 | [`LoyaltyTransactionType`](../data/loyalty.md#loyaltytransactiontype) | `loyalty` | `EARNED` `REDEEMED` `REVERSED` `ADJUSTED` |
 | [`ManifestStatus`](../data/fulfilment.md#manifeststatus) | `fulfilment` | `OPEN` `DISPATCHED` |
 | [`MarkdownSuggestionStatus`](../data/inventory.md#markdownsuggestionstatus) | `inventory` | `PENDING` `CREATED` `DISMISSED` |
+| [`MarketplaceAudience`](../data/marketplace.md#marketplaceaudience) | `marketplace` | `RETAILER` `DISTRIBUTOR` `SUPPLIER` `DIRECT_CUSTOMER` |
+| [`MarketplaceEngagementKind`](../data/marketplace.md#marketplaceengagementkind) | `marketplace` | `INQUIRY` `ORDER_REQUEST` |
+| [`MarketplaceEngagementMode`](../data/marketplace.md#marketplaceengagementmode) | `marketplace` | `DISCOVERY_ONLY` `DISCOVERY_AND_TRANSACT` |
+| [`MarketplaceEngagementStatus`](../data/marketplace.md#marketplaceengagementstatus) | `marketplace` | `PENDING` `DELIVERED` `FAILED` |
+| [`MarketplaceListingKind`](../data/marketplace.md#marketplacelistingkind) | `marketplace` | `PRODUCT` `SERVICE` |
+| [`MarketplaceListingStatus`](../data/marketplace.md#marketplacelistingstatus) | `marketplace` | `ACTIVE` `PAUSED` `DELISTED` |
 | [`MeasurementUnit`](../data/measurements.md#measurementunit) | `measurements` | `INCH` `CM` |
 | [`MerchantPayableStatus`](../data/wallet.md#merchantpayablestatus) | `wallet` | `OPEN` `SCHEDULED` `PAID` `DISPUTED` |
 | [`NodeRole`](../data/organization.md#noderole) | `organization` | `BRANCH` `BRAND` |

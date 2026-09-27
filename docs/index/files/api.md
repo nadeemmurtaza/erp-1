@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,040 tracked files in `apps/api`, by directory.
+All 1,056 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -42,7 +42,7 @@ All 1,040 tracked files in `apps/api`, by directory.
 | `bom.prisma` | prisma schema | 228 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
-| `catalog.prisma` | prisma schema | 742 | Catalog: categories, products, variants, images. |
+| `catalog.prisma` | prisma schema | 766 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
 | `core.prisma` | prisma schema | 667 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
@@ -84,7 +84,7 @@ All 1,040 tracked files in `apps/api`, by directory.
 | `schema.prisma` | prisma schema | 32 | Datasource and generator only. Models live in one file per module — |
 | `search.prisma` | prisma schema | 40 | Search. WO-8.3, |
 | `settlements.prisma` | prisma schema | 77 | Financial institution settlement partnerships |
-| `sso.prisma` | prisma schema | 63 | SSO / identity federation |
+| `sso.prisma` | prisma schema | 73 | SSO / identity federation |
 | `stitching.prisma` | prisma schema | 202 | Stitching: the style options a customer picks, standalone stitching orders |
 | `tasks.prisma` | prisma schema | 134 | Task allotment, status and tracking |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
@@ -682,11 +682,23 @@ All 1,040 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 74 |  |
 
+### `apps/api/prisma/schema/migrations/20260926203715_wo1656_sso_enforce_sso` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 3 |  |
+
 ### `apps/api/prisma/schema/migrations/20260926210000_wo24_notify_meetings_escalation` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `migration.sql` | migration | 136 |  |
+
+### `apps/api/prisma/schema/migrations/20260926210218_wo166_product_reference_sync_provenance` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 7 |  |
 
 ### `apps/api/src` (2)
 
@@ -749,8 +761,8 @@ All 1,040 tracked files in `apps/api`, by directory.
 | `auth.constants.ts` | module | 114 |  |
 | `auth.controller.ts` | controller | 208 |  |
 | `auth.module.ts` | nest module | 52 |  |
-| `auth.service.spec.ts` | unit test | 24 |  |
-| `auth.service.ts` | service | 445 |  |
+| `auth.service.spec.ts` | unit test | 111 |  |
+| `auth.service.ts` | service | 461 |  |
 | `bearer-token.ts` | module | 31 |  |
 | `decorators.ts` | module | 80 |  |
 | `guards.spec.ts` | unit test | 212 |  |
@@ -771,8 +783,8 @@ All 1,040 tracked files in `apps/api`, by directory.
 | `sso-admin.controller.ts` | controller | 82 |  |
 | `sso.controller.spec.ts` | unit test | 221 |  |
 | `sso.controller.ts` | controller | 227 |  |
-| `sso.service.spec.ts` | unit test | 643 |  |
-| `sso.service.ts` | service | 867 |  |
+| `sso.service.spec.ts` | unit test | 656 |  |
+| `sso.service.ts` | service | 869 |  |
 
 ### `apps/api/src/core/auth/api-keys` (8)
 
@@ -799,13 +811,13 @@ All 1,040 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `auth.dto.ts` | dto | 126 |  |
 | `role.dto.ts` | dto | 44 |  |
-| `sso.dto.ts` | dto | 177 |  |
+| `sso.dto.ts` | dto | 188 |  |
 
 ### `apps/api/src/core/auth/providers` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `oidc.provider.spec.ts` | unit test | 204 |  |
+| `oidc.provider.spec.ts` | unit test | 205 |  |
 | `oidc.provider.ts` | module | 195 |  |
 
 ### `apps/api/src/core/checkout` (1)
@@ -843,7 +855,7 @@ All 1,040 tracked files in `apps/api`, by directory.
 | `app-config.service.ts` | service | 72 |  |
 | `config.module.ts` | nest module | 23 |  |
 | `env.validation.spec.ts` | unit test | 154 |  |
-| `env.validation.ts` | config | 341 |  |
+| `env.validation.ts` | config | 350 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 41 |  |
 
@@ -1049,8 +1061,8 @@ All 1,040 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 129 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 291 |  |
+| `module-packs.ts` | module | 136 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 298 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1256,7 +1268,7 @@ All 1,040 tracked files in `apps/api`, by directory.
 | `import-assistant.service.ts` | service | 392 |  |
 | `option-template-admin.service.ts` | service | 125 |  |
 | `product-admin.service.spec.ts` | unit test | 109 |  |
-| `product-admin.service.ts` | service | 739 |  |
+| `product-admin.service.ts` | service | 745 |  |
 | `product-import.service.spec.ts` | unit test | 77 |  |
 | `product-import.service.ts` | service | 510 |  |
 | `product-option-admin.service.ts` | service | 248 |  |
@@ -1626,6 +1638,30 @@ All 1,040 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `campaign.dto.ts` | dto | 49 |  |
 | `marketing-settings.dto.ts` | dto | 38 |  |
+
+### `apps/api/src/modules/marketplace` (12)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `marketplace-webhook.controller.spec.ts` | unit test | 20 |  |
+| `marketplace-webhook.controller.ts` | controller | 30 |  |
+| `marketplace-webhook.guard.spec.ts` | unit test | 38 |  |
+| `marketplace-webhook.guard.ts` | guard | 39 |  |
+| `marketplace.controller.ts` | controller | 49 |  |
+| `marketplace.module.ts` | nest module | 24 |  |
+| `marketplace.service.spec.ts` | unit test | 116 |  |
+| `marketplace.service.ts` | service | 147 |  |
+| `product-reference-sync.service.spec.ts` | unit test | 180 |  |
+| `product-reference-sync.service.ts` | service | 204 |  |
+| `product-references.controller.spec.ts` | unit test | 131 |  |
+| `product-references.controller.ts` | controller | 142 |  |
+
+### `apps/api/src/modules/marketplace/dto` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `marketplace.dto.ts` | dto | 98 |  |
+| `product-reference.dto.ts` | dto | 113 |  |
 
 ### `apps/api/src/modules/measurements` (11)
 

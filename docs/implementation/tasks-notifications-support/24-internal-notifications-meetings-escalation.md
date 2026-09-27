@@ -1,6 +1,6 @@
 # 24 — Internal notifications, meetings and escalation
 
-> **Status: built (2026-09-27), WO-24.1–24.6, DECISIONS.md ADR-058.**
+> **Status: built (2026-09-27), WO-24.1–24.6, DECISIONS.md ADR-060.**
 > `notify.prisma` (`Audience`, `BroadcastMessage`, `Meeting`,
 > `MeetingInvitation`, `EscalationRule`, `EscalationFire`), `AudienceService`
 > (`resolve()`/reach-intersected, shared by preview and the real send),

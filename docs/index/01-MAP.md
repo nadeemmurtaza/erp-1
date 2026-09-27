@@ -32,11 +32,11 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,040 | 141,117 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 399 | 68,688 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 405 | 66,875 | Next.js — admin console and customer storefront in one app |
+| `apps/api` | 1,056 | 142,651 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 399 | 69,044 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 406 | 67,340 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 42 | 28,613 | workspace manifests, docker compose/stack files, env templates |
-| `apps/platform` | 160 | 11,233 |  |
+| `apps/platform` | 165 | 11,843 |  |
 | `scripts` | 25 | 9,607 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 62 | 7,742 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
@@ -84,6 +84,7 @@ Each is independent: no module imports another except through a named
 | [`loyalty`](modules/loyalty.md) | core | MODULES allowlist | 11 | 3 |
 | [`managed-services`](modules/managed-services.md) | core | MODULES allowlist | 2 | — |
 | [`marketing`](modules/marketing.md) | core | MODULES allowlist | 11 | 3 |
+| [`marketplace`](modules/marketplace.md) | core | MODULES allowlist | 10 | 9 |
 | [`measurements`](modules/measurements.md) | apparel | MODULES allowlist | 13 | 4 |
 | [`metadata-forms`](modules/metadata-forms.md) | core | always on | 2 | 1 |
 | [`notification-preferences`](modules/notification-preferences.md) | core | MODULES allowlist | 2 | 1 |

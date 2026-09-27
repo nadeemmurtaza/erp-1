@@ -210,6 +210,21 @@ model ProductTranslation {
   /// shown to a customer. WO-3.7, 03-variants-sku-seo.md.
   focusKeyword     String?
 
+  /// 166-unified-product-reference-registry.md, WO-166.4. Set only when this
+  /// row's name/description/careInstructions track a
+  /// `GlobalProductReference` (the platform app's shared registry) — never
+  /// set by an ordinary hand-typed edit. `ProductAdminService.update()`
+  /// clears both fields back to null the moment a staff member edits this
+  /// row directly through the normal product form, which is what makes a
+  /// later local edit "a deliberate override... never silently clobbered"
+  /// (doc 166 §2): once null, no future sync delivery for this locale is
+  /// applied until the tenant re-adopts a reference explicitly.
+  sourcedFromGlobalReferenceId  String?
+  /// The reference's own `updatedAt` as of the last applied sync — compared
+  /// against an incoming delivery's `updatedAt` so a redelivered (at-least-
+  /// once) sync is a no-op rather than a redundant rewrite.
+  sourcedFromReferenceUpdatedAt DateTime?
+
   /// WO-8.3 (08-content-marketing-search.md). Precomputed by
   /// SearchService.reindexProduct() on every write to this row or to the
   /// product/category/brand/tags it's derived from — a `VariantSalesStat`-
@@ -354,6 +369,15 @@ model ProductImage {
   order     Int      @default(0)
   isPrimary Boolean  @default(false)
   createdAt DateTime @default(now())
+
+  /// 166-unified-product-reference-registry.md, WO-166.4. Set only on a row
+  /// written by `ProductReferenceSyncService` — never by the ordinary image
+  /// upload path. `url` on such a row points directly at the platform app's
+  /// own shared storage, never a locally re-uploaded copy (doc 166's own
+  /// "one buffer, many readers" saving). A sync delivery only ever deletes
+  /// and recreates rows carrying this same reference id, so a staff-uploaded
+  /// image (this column null) is never touched by a sync.
+  sourcedFromGlobalReferenceId String?
 
   product       Product                   @relation(fields: [productId], references: [id], onDelete: Cascade)
   variant       ProductVariant?           @relation(fields: [variantId], references: [id], onDelete: SetNull)

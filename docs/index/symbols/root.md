@@ -139,18 +139,22 @@ Every top-level export in `root`, with the line to open.
 | `marketplace-credential.guard.ts` | `RequestWithPublisherTenant` | interface | :8 |  |
 | `marketplace-credential.guard.ts` | `MarketplaceCredentialGuard` | class | :28 | Docs 165/166's own tenant-trust boundary for the cross-tenant network, mirroring `AgencyApiKeyGuard… |
 | `marketplace-credentials.controller.ts` | `MarketplaceCredentialsController` | class | :18 | `POST /marketplace/tenants/:tenantId/credential{,/rotate}`, `DELETE /marketplace/tenants/:tenantId/… |
-| `marketplace-credentials.service.ts` | `MarketplaceCredentialsService` | class | :18 | The ops-facing half of docs 165/166, mirroring `AgencyClientsService`'s own shape exactly: an ops p… |
+| `marketplace-credentials.service.ts` | `MarketplaceCredentialsService` | class | :19 | The ops-facing half of docs 165/166, mirroring `AgencyClientsService`'s own shape exactly: an ops p… |
 | `marketplace-key-throttler.guard.ts` | `MarketplaceKeyThrottlerGuard` | class | :15 | Same rationale as `AgencyKeyThrottlerGuard`: the global `ThrottlerGuard` (`app.module.ts`) already… |
+| `marketplace-listings.controller.ts` | `MarketplaceListingsController` | class | :21 | Doc 165 §2's own publish API (WO-165.2) — `X-Marketplace-Api-Key` (`MarketplaceCredentialGuard`), t… |
+| `marketplace-listings.service.ts` | `MarketplaceListingsService` | class | :12 | Doc 165 §2's own publish layer, WO-165.2. |
 | `product-reference-key.ts` | `generateMarketplaceApiKey` | function | :15 | The `MarketplacePublisherCredential.apiKeyHash` credential docs 165/166 describe. |
 | `product-reference-key.ts` | `hashMarketplaceApiKey` | function | :19 |  |
 | `product-reference.controller.ts` | `ProductReferenceController` | class | :33 | Doc 166's own tenant-facing API — `X-Marketplace-Api-Key` (`MarketplaceCredentialGuard`), the ident… |
-| `product-reference.module.ts` | `ProductReferenceModule` | class | :24 |  |
+| `product-reference.module.ts` | `ProductReferenceModule` | class | :32 |  |
 | `product-reference.service.ts` | `ProductReferenceService` | class | :20 | Doc 166's own registry service. |
 
 ### `apps/platform/src/modules/product-reference/dto`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
+| `marketplace-listing.dto.ts` | `CreateMarketplaceListingDto` | class | :23 | `POST /marketplace/v1/listings` — doc 165 §2's "Publish to marketplace" screen. |
+| `marketplace-listing.dto.ts` | `UpdateMarketplaceListingDto` | class | :71 | `PATCH /marketplace/v1/listings/:id` — the publishing tenant only. |
 | `product-reference.dto.ts` | `ProductReferenceTranslationDto` | class | :18 |  |
 | `product-reference.dto.ts` | `ProductReferenceImageDto` | class | :35 |  |
 | `product-reference.dto.ts` | `RegisterProductReferenceDto` | class | :58 | `POST /marketplace/v1/product-references` — registers a brand-new barcode. |

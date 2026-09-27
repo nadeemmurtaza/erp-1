@@ -27,6 +27,7 @@ import { IdentityVerificationModule } from './identity-verification/identity-ver
 import { InventoryModule } from './inventory/inventory.module';
 import { LoyaltyModule } from './loyalty/loyalty.module';
 import { ManagedServicesModule } from './managed-services/managed-services.module';
+import { MarketplaceModule } from './marketplace/marketplace.module';
 import { MarketingModule } from './marketing/marketing.module';
 import { MeasurementsModule } from './measurements/measurements.module';
 import { NotificationPreferencesModule } from './notification-preferences/notification-preferences.module';
@@ -231,6 +232,12 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // client's own `.env.example`/MODULES allowlist (that structural
   // absence is doc 14's own "impossible for self-hosted clients" point).
   { name: 'managed-services', module: ManagedServicesModule, offByDefault: true },
+  // 165-cross-tenant-marketplace-directory.md (WO-165.2) — off by default:
+  // a deployment turns it on once ops has issued it a
+  // MarketplacePublisherCredential and handed over MARKETPLACE_API_URL/
+  // MARKETPLACE_API_KEY; with neither set, MarketplaceModule's own
+  // "absent collaborator" note applies unchanged.
+  { name: 'marketplace', module: MarketplaceModule, offByDefault: true },
   // Account administration — not togglable business features.
   { name: 'settings', module: SettingsAdminModule, alwaysOn: true },
   { name: 'users', module: UsersAdminModule, alwaysOn: true },

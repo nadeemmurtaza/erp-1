@@ -51,6 +51,16 @@ model SsoConnection {
   /// again at provisioning, so least privilege survives a later role edit.
   defaultRoleName     String
   status              SsoConnectionStatus @default(ACTIVE)
+  /// WO-165.6 (165-cross-tenant-marketplace-directory.md §3, piece one):
+  /// "login should remain with SSO only". When true, `AuthController`'s
+  /// password route refuses sign-in for every STAFF/TAILOR/ADMIN account
+  /// (`User.role !== 'CUSTOMER'` — a plain customer is never affected) with
+  /// a message pointing at the SSO button — except `createdByUserId` below,
+  /// so the admin who turned enforcement on can never lock themselves out of
+  /// undoing it. Additive, default false: with every connection at the
+  /// default, erp-1's login screen is byte-identical to today's (doc 161's
+  /// own acceptance, restated in doc 165's own Acceptance section).
+  enforceSso          Boolean             @default(false)
   /// A plain id, not a relation — the audit rows carry the actor of every
   /// later change, and this survives that person's own erasure as an id.
   createdByUserId     String

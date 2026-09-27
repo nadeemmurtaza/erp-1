@@ -58,7 +58,7 @@
     "docs": {
       "files": 400,
       "lines": 69913,
-      "bytes": 4159705,
+      "bytes": 4159922,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -86908,7 +86908,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 546,
-      "bytes": 74514,
+      "bytes": 74731,
       "doc": "",
       "symbols": []
     },

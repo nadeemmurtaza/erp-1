@@ -1,13 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
 import { RolesService } from './roles.service';
+import { PermissionsResolverService } from './permissions.service';
 import { PrismaService } from '../prisma/prisma.service';
 
 describe('RolesService', () => {
   let service: RolesService;
   let prisma: any;
+  let permissions: { invalidate: jest.Mock; invalidateAll: jest.Mock };
 
   beforeEach(async () => {
+    permissions = { invalidate: jest.fn().mockResolvedValue(undefined), invalidateAll: jest.fn().mockResolvedValue(undefined) };
     prisma = {
       role: {
         findUnique: jest.fn().mockResolvedValue(null),
@@ -28,7 +31,11 @@ describe('RolesService', () => {
     };
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RolesService, { provide: PrismaService, useValue: prisma }],
+      providers: [
+        RolesService,
+        { provide: PrismaService, useValue: prisma },
+        { provide: PermissionsResolverService, useValue: permissions },
+      ],
     }).compile();
 
     service = module.get<RolesService>(RolesService);
@@ -271,6 +278,110 @@ describe('RolesService', () => {
       prisma.role.findUnique.mockResolvedValue(null);
       await service.assignByNameIfExists('u1', 'Nonexistent');
       expect(prisma.userRoleAssignment.upsert).not.toHaveBeenCalled();
+    });
+  });
+
+  // 208-l1-l2-l3-caching-architecture.md §2 — every write here that changes
+  // what PermissionsResolverService resolves drops the cached answer, after
+  // the write, never before it.
+  describe('permission cache invalidation (doc 208 §2)', () => {
+    const roleRow = { id: 'r1', name: 'Branch Lead', description: null, grants: [], _count: { assignments: 3 } };
+
+    it('assign drops that user\'s cached set once the assignment is written', async () => {
+      prisma.role.findUnique.mockResolvedValue({ id: 'r1' });
+      await service.assign('u1', 'r1');
+
+      expect(permissions.invalidate).toHaveBeenCalledWith('u1');
+      expect(permissions.invalidate.mock.invocationCallOrder[0]).toBeGreaterThan(
+        prisma.userRoleAssignment.upsert.mock.invocationCallOrder[0],
+      );
+      expect(permissions.invalidateAll).not.toHaveBeenCalled();
+    });
+
+    it('assign inside a caller\'s transaction leaves invalidation to that caller — nothing is committed yet', async () => {
+      const tx = { role: { findUnique: jest.fn().mockResolvedValue({ id: 'r1' }) }, userRoleAssignment: { upsert: jest.fn() } };
+      await service.assign('u1', 'r1', tx as any);
+
+      expect(tx.userRoleAssignment.upsert).toHaveBeenCalled();
+      expect(permissions.invalidate).not.toHaveBeenCalled();
+    });
+
+    it('unassign drops that user\'s cached set once the assignment is gone', async () => {
+      await service.unassign('u1', 'r1');
+
+      expect(prisma.userRoleAssignment.deleteMany).toHaveBeenCalledWith({ where: { userId: 'u1', roleId: 'r1' } });
+      expect(permissions.invalidate).toHaveBeenCalledWith('u1');
+    });
+
+    it('editing a role\'s grants drops every cached set at once — a role has any number of holders', async () => {
+      prisma.role.findUnique.mockResolvedValue({ id: 'r1', name: 'Branch Lead' });
+      prisma.roleGrant.findFirst.mockResolvedValue({ id: 'g1' });
+      prisma.role.update.mockResolvedValue(roleRow);
+
+      await service.update('r1', { permissions: ['orders.manage'] });
+
+      expect(permissions.invalidateAll).toHaveBeenCalledTimes(1);
+      expect(permissions.invalidateAll.mock.invocationCallOrder[0]).toBeGreaterThan(
+        prisma.role.update.mock.invocationCallOrder[0],
+      );
+      expect(permissions.invalidate).not.toHaveBeenCalled();
+    });
+
+    it('renaming a role drops every cached set — holders resolve its name', async () => {
+      prisma.role.findUnique.mockResolvedValue({ id: 'r1', name: 'Branch Lead' });
+      prisma.role.update.mockResolvedValue({ ...roleRow, name: 'Area Lead' });
+
+      await service.update('r1', { name: 'Area Lead' });
+
+      expect(permissions.invalidateAll).toHaveBeenCalledTimes(1);
+    });
+
+    it('editing only the description drops nothing — no holder\'s set changed', async () => {
+      prisma.role.findUnique.mockResolvedValue({ id: 'r1', name: 'Branch Lead' });
+      prisma.role.update.mockResolvedValue(roleRow);
+
+      await service.update('r1', { description: 'Runs one branch' });
+
+      expect(permissions.invalidateAll).not.toHaveBeenCalled();
+    });
+
+    it('a refused edit drops nothing — nothing was written', async () => {
+      prisma.role.findUnique.mockResolvedValue({ id: 'r1', name: 'Rogue' });
+
+      await expect(service.update('r1', { permissions: ['org.access.grant', 'hr.people.manage'] })).rejects.toBeInstanceOf(
+        BadRequestException,
+      );
+      expect(permissions.invalidateAll).not.toHaveBeenCalled();
+    });
+
+    it('a grant rewrite that fails part-way still drops every cached set — the old grants are already gone', async () => {
+      prisma.role.findUnique.mockResolvedValue({ id: 'r1', name: 'Branch Lead' });
+      prisma.roleGrant.findFirst.mockResolvedValue({ id: 'g1' });
+      prisma.permission.findMany.mockResolvedValue([{ id: 'p1' }]);
+      prisma.roleGrant.createMany.mockRejectedValue(new Error('connection reset'));
+
+      await expect(service.update('r1', { permissions: ['orders.manage'] })).rejects.toThrow('connection reset');
+      expect(prisma.roleGrant.deleteMany).toHaveBeenCalled();
+      expect(permissions.invalidateAll).toHaveBeenCalledTimes(1);
+    });
+
+    it('deleting a role drops every cached set — its holders lost it with the cascade', async () => {
+      prisma.role.findUnique.mockResolvedValue({ id: 'r1', name: 'Branch Lead' });
+      prisma.roleGrant.findFirst.mockResolvedValue({ id: 'g1' });
+
+      await service.delete('r1');
+
+      expect(prisma.role.delete).toHaveBeenCalledWith({ where: { id: 'r1' } });
+      expect(permissions.invalidateAll).toHaveBeenCalledTimes(1);
+    });
+
+    it('creating a role drops nothing — a new role has no holders', async () => {
+      prisma.role.create.mockResolvedValue({ ...roleRow, _count: { assignments: 0 } });
+
+      await service.create({ name: 'Bookkeeper', permissions: ['accounting.view'] });
+
+      expect(permissions.invalidate).not.toHaveBeenCalled();
+      expect(permissions.invalidateAll).not.toHaveBeenCalled();
     });
   });
 });

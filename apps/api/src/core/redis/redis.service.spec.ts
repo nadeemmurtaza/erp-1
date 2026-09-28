@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common';
+import { REDIS_KEYSPACES } from './redis.keyspaces';
 import { REDIS_BOOT_READY_WAIT_MS, REDIS_CLIENT_OPTIONS, RedisService, redisReconnectDelayMs } from './redis.service';
 
 /**
@@ -47,6 +48,21 @@ describe('RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum)'
     expect(service.client('rateLimit').options.db).toBe(0);
   });
 
+  it('puts the cache keyspace on database 1 — its own database, so flushing a cache never touches a counter (doc 208, WO-208.4)', () => {
+    expect(service.client('cache').options.db).toBe(1);
+    expect(service.client('cache')).not.toBe(service.client('rateLimit'));
+    const databases = Object.values(REDIS_KEYSPACES).map((keyspace) => keyspace.db);
+    expect(new Set(databases).size).toBe(databases.length);
+  });
+
+  it('says, per keyspace, what the API does while it cannot connect', async () => {
+    await service.onModuleInit();
+
+    const notReady = logged.filter((line) => /not ready after 2000 ms/.test(line));
+    expect(notReady.find((line) => line.includes('"rateLimit"'))).toContain('Sign-in and routes with their own rate limit answer 503');
+    expect(notReady.find((line) => line.includes('"cache"'))).toContain('served from Postgres');
+  });
+
   it('boots anyway after the bounded wait — Redis is never a boot dependency', async () => {
     const started = Date.now();
     await service.onModuleInit();
@@ -67,12 +83,12 @@ describe('RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum)'
     await expect(service.ping('rateLimit')).resolves.toEqual({ ok: false, detail: expect.stringContaining('enableOfflineQueue') });
   });
 
-  it('reports the outage once, by address — never the password in REDIS_URL', async () => {
+  it('reports the outage once per keyspace, by address — never the password in REDIS_URL', async () => {
     await service.onModuleInit();
 
     const unreachable = logged.filter((line) => line.includes('unreachable'));
-    expect(unreachable).toHaveLength(1);
-    expect(unreachable[0]).toContain('127.0.0.1:1');
+    expect(unreachable).toHaveLength(Object.keys(REDIS_KEYSPACES).length);
+    for (const line of unreachable) expect(line).toContain('127.0.0.1:1');
     expect(logged.join('\n')).not.toContain('s3cret-password');
   });
 });

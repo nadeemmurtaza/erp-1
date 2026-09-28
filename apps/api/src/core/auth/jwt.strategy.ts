@@ -25,6 +25,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
    * A token stays valid for 15 minutes, so without this a deactivated
    * account, a demoted staff member, or a permission an admin just revoked
    * from a role would keep working until the token expired.
+   *
+   * The account row is read fresh, so a deactivation is refused on the very
+   * next request everywhere. The permission set comes through the cache
+   * (208-l1-l2-l3-caching-architecture.md §2, ADR-077): a change takes effect
+   * on the next request this replica serves after the write, and within 10 s
+   * on any other replica.
    */
   async validate(payload: JwtPayload): Promise<AuthenticatedUser> {
     const user = await this.prisma.user.findUnique({
@@ -36,7 +42,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('This account is no longer active.');
     }
 
-    const { roles, permissions } = await this.permissions.resolveForUser(user.id);
+    const { roles, permissions } = await this.permissions.resolveForUserCached(user.id);
 
     return { id: user.id, roles, permissions, email: user.email, phone: user.phone };
   }

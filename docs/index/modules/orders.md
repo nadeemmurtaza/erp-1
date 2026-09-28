@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 21 files
 
 Source: `apps/api/src/modules/orders/`
 
-## Files (21 · 3,855 lines)
+## Files (21 · 3,858 lines)
 
 All paths relative to `apps/api/src/modules/orders`.
 
@@ -31,7 +31,7 @@ All paths relative to `apps/api/src/modules/orders`.
 | `order-feed.source.ts` | module | 57 | 1 | The live feed's own worked example (analytics-reporting/58-live-operational-feed.md) — an order placement, newest first. |
 | `order-replication.listener.spec.ts` | unit test | 54 | — |  |
 | `order-replication.listener.ts` | event subscriber | 53 | 1 | WO-20.4's first real FACT entity — R2's own first example is "a sale". |
-| `orders-pos.service.spec.ts` | unit test | 438 | — |  |
+| `orders-pos.service.spec.ts` | unit test | 441 | — |  |
 | `orders.controller.ts` | controller | 155 | 2 |  |
 | `orders.module.ts` | nest module | 57 | 1 |  |
 | `orders.service.ts` | service | 1400 | 4 |  |
@@ -134,6 +134,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `intent`
 - core `notifications`
 - core `prisma`
+- core `redis`
 - core `replication`
 - core `settings`
 - core `slo`

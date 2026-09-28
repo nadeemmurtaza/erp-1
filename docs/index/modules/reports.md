@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 Source: `apps/api/src/modules/reports/`
 
-## Files (6 · 909 lines)
+## Files (6 · 916 lines)
 
 All paths relative to `apps/api/src/modules/reports`.
 
@@ -17,7 +17,7 @@ All paths relative to `apps/api/src/modules/reports`.
 |---|---|---|---|---|
 | `csv.util.ts` | module | 15 | 2 | RFC 4180 field/row escaping for the three characters that break a bare CSV field (comma, quote, newline). |
 | `reports.dto.ts` | dto | 33 | 3 | Both bounds are calendar dates (YYYY-MM-DD), inclusive of the whole day. |
-| `reports-finance-exports.spec.ts` | unit test | 65 | — |  |
+| `reports-finance-exports.spec.ts` | unit test | 72 | — |  |
 | `reports.controller.ts` | controller | 135 | 1 |  |
 | `reports.module.ts` | nest module | 10 | 1 |  |
 | `reports.service.ts` | service | 651 | 2 | A CSV export ready to stream: a filename, a header row, and data rows in column order. |
@@ -71,6 +71,7 @@ _none_
 - core `auth`
 - core `common`
 - core `prisma`
+- core `redis`
 - core `settings`
 - core `time`
 - package `@newax/shared`

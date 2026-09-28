@@ -154,8 +154,7 @@ export class RedisService implements OnModuleInit, OnApplicationShutdown {
     if (!(await waitUntilReady(client, REDIS_BOOT_READY_WAIT_MS))) {
       this.logger.warn(
         `Redis keyspace "${keyspace}" not ready after ${REDIS_BOOT_READY_WAIT_MS} ms at ${this.address(client)} — ` +
-          'starting without it. Sign-in and routes with their own rate limit answer 503 until it connects; ' +
-          'the global rate limit counts per process meanwhile.',
+          `starting without it. ${REDIS_KEYSPACES[keyspace].whenDown}`,
       );
     }
   }

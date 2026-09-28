@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 18 files
 
 Source: `apps/api/src/modules/payroll/`
 
-## Files (18 · 1,908 lines)
+## Files (18 · 1,911 lines)
 
 All paths relative to `apps/api/src/modules/payroll/dto`.
 
@@ -27,7 +27,7 @@ All paths relative to `apps/api/src/modules/payroll/dto`.
 | `leave.service.spec.ts` | unit test | 224 | — |  |
 | `leave.service.ts` | service | 175 | 3 | The days a leave request spans, Monday–Saturday counted, Sunday not — the "plain Mon–Sat week" fallback 19-payroll.md W… |
 | `pay-run.controller.ts` | controller | 73 | 1 | Pay-run build/approve/post (docs/implementation/payroll/19-payroll.md WO-19.4). |
-| `pay-run.service.spec.ts` | unit test | 282 | — |  |
+| `pay-run.service.spec.ts` | unit test | 285 | — |  |
 | `pay-run.service.ts` | service | 254 | 2 |  |
 | `payroll.controller.ts` | controller | 78 | 1 | Compensation rates and the salary calculator (docs/implementation/ 19-payroll.md WO-19.2). |
 | `payroll.module.ts` | nest module | 24 | 1 |  |
@@ -118,6 +118,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `config`
 - core `events`
 - core `prisma`
+- core `redis`
 - core `settings`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`

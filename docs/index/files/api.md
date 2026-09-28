@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,183 tracked files in `apps/api`, by directory.
+All 1,192 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -818,7 +818,7 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `audit.module.ts` | nest module | 10 |  |
 | `audit.service.ts` | service | 69 |  |
 
-### `apps/api/src/core/auth` (33)
+### `apps/api/src/core/auth` (34)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -832,7 +832,8 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `guards.spec.ts` | unit test | 212 |  |
 | `guards.ts` | module | 167 |  |
 | `identity-provider.ts` | module | 91 |  |
-| `jwt.strategy.ts` | auth strategy | 44 |  |
+| `jwt.strategy.spec.ts` | unit test | 57 |  |
+| `jwt.strategy.ts` | auth strategy | 50 |  |
 | `login-identifier.spec.ts` | unit test | 39 |  |
 | `login-identifier.ts` | module | 38 |  |
 | `login-throttle.service.spec.ts` | unit test | 111 |  |
@@ -841,13 +842,13 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `ownership.guard.ts` | guard | 24 |  |
 | `password.util.spec.ts` | unit test | 80 |  |
 | `password.util.ts` | module | 89 |  |
-| `permissions.service.spec.ts` | unit test | 175 |  |
-| `permissions.service.ts` | service | 124 |  |
+| `permissions.service.spec.ts` | unit test | 317 |  |
+| `permissions.service.ts` | service | 219 |  |
 | `rate-limit-audit.service.spec.ts` | unit test | 76 |  |
 | `rate-limit-audit.service.ts` | service | 85 |  |
 | `roles.controller.ts` | controller | 44 |  |
-| `roles.service.spec.ts` | unit test | 277 |  |
-| `roles.service.ts` | service | 332 |  |
+| `roles.service.spec.ts` | unit test | 388 |  |
+| `roles.service.ts` | service | 359 |  |
 | `scope.guard.spec.ts` | unit test | 195 |  |
 | `scope.guard.ts` | guard | 170 |  |
 | `sso-admin.controller.ts` | controller | 82 |  |
@@ -862,8 +863,8 @@ All 1,183 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `api-key-access.spec.ts` | unit test | 159 |  |
 | `api-key-access.ts` | module | 93 |  |
-| `api-key-auth.service.spec.ts` | unit test | 270 |  |
-| `api-key-auth.service.ts` | service | 192 |  |
+| `api-key-auth.service.spec.ts` | unit test | 273 |  |
+| `api-key-auth.service.ts` | service | 194 |  |
 | `api-keys-admin.controller.ts` | controller | 41 |  |
 | `api-keys.controller.ts` | controller | 67 |  |
 | `api-keys.service.spec.ts` | unit test | 546 |  |
@@ -889,6 +890,15 @@ All 1,183 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `oidc.provider.spec.ts` | unit test | 205 |  |
 | `oidc.provider.ts` | module | 195 |  |
+
+### `apps/api/src/core/cache` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `in-process-cache.spec.ts` | unit test | 183 |  |
+| `in-process-cache.ts` | module | 88 |  |
+| `tiered-cache.spec.ts` | unit test | 247 |  |
+| `tiered-cache.ts` | module | 269 |  |
 
 ### `apps/api/src/core/checkout` (1)
 
@@ -1071,10 +1081,10 @@ All 1,183 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `redis.keyspaces.ts` | module | 28 | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardenin… |
-| `redis.module.ts` | nest module | 21 |  |
-| `redis.service.spec.ts` | unit test | 79 |  |
-| `redis.service.ts` | service | 202 |  |
+| `redis.keyspaces.ts` | module | 62 | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardenin… |
+| `redis.module.ts` | nest module | 23 |  |
+| `redis.service.spec.ts` | unit test | 95 |  |
+| `redis.service.ts` | service | 201 |  |
 
 ### `apps/api/src/core/replication` (20)
 
@@ -1124,7 +1134,7 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `unsubscribe-token.spec.ts` | unit test | 35 |  |
 | `unsubscribe-token.ts` | module | 24 |  |
 
-### `apps/api/src/core/settings` (6)
+### `apps/api/src/core/settings` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1133,7 +1143,8 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `document-prefix.ts` | module | 50 |  |
 | `settings.defaults.ts` | module | 539 |  |
 | `settings.module.ts` | nest module | 10 |  |
-| `settings.service.ts` | service | 107 |  |
+| `settings.service.spec.ts` | unit test | 125 |  |
+| `settings.service.ts` | service | 146 |  |
 
 ### `apps/api/src/core/slo` (6)
 
@@ -1262,22 +1273,22 @@ All 1,183 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `analytics.category-velocity.spec.ts` | unit test | 136 |  |
-| `analytics.comparison.spec.ts` | unit test | 311 |  |
+| `analytics.category-velocity.spec.ts` | unit test | 139 |  |
+| `analytics.comparison.spec.ts` | unit test | 314 |  |
 | `analytics.controller.ts` | controller | 253 |  |
-| `analytics.customers.spec.ts` | unit test | 168 |  |
-| `analytics.inventory.spec.ts` | unit test | 196 |  |
-| `analytics.lifecycle.spec.ts` | unit test | 115 |  |
+| `analytics.customers.spec.ts` | unit test | 171 |  |
+| `analytics.inventory.spec.ts` | unit test | 199 |  |
+| `analytics.lifecycle.spec.ts` | unit test | 118 |  |
 | `analytics.metrics.spec.ts` | unit test | 210 |  |
 | `analytics.metrics.ts` | module | 454 |  |
 | `analytics.module.ts` | nest module | 30 |  |
-| `analytics.orders.spec.ts` | unit test | 201 |  |
-| `analytics.products.spec.ts` | unit test | 262 |  |
-| `analytics.purchasing.spec.ts` | unit test | 385 |  |
-| `analytics.sales.spec.ts` | unit test | 151 |  |
+| `analytics.orders.spec.ts` | unit test | 204 |  |
+| `analytics.products.spec.ts` | unit test | 265 |  |
+| `analytics.purchasing.spec.ts` | unit test | 388 |  |
+| `analytics.sales.spec.ts` | unit test | 154 |  |
 | `analytics.service.ts` | service | 2590 |  |
-| `analytics.summary.spec.ts` | unit test | 94 |  |
-| `analytics.workshop.spec.ts` | unit test | 182 |  |
+| `analytics.summary.spec.ts` | unit test | 97 |  |
+| `analytics.workshop.spec.ts` | unit test | 185 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |
 | `supply-chain-digest.cron.ts` | scheduled job | 257 |  |
 
@@ -1338,14 +1349,14 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `bom.controller.ts` | controller | 242 |  |
 | `bom.listener.spec.ts` | unit test | 88 |  |
 | `bom.listener.ts` | event subscriber | 49 |  |
-| `bom.metrics.spec.ts` | unit test | 206 |  |
+| `bom.metrics.spec.ts` | unit test | 209 |  |
 | `bom.metrics.ts` | module | 131 |  |
 | `bom.module.ts` | nest module | 29 |  |
 | `bom.service.ts` | service | 47 |  |
-| `bom.spec.ts` | unit test | 533 |  |
+| `bom.spec.ts` | unit test | 536 |  |
 | `cost-rollup.spec.ts` | unit test | 124 | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
-| `production.service.spec.ts` | unit test | 537 |  |
+| `production.service.spec.ts` | unit test | 540 |  |
 | `production.service.ts` | service | 424 |  |
 | `raw-material.service.ts` | service | 218 |  |
 | `recipe.service.ts` | service | 501 |  |
@@ -1381,9 +1392,9 @@ All 1,183 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `cart.controller.ts` | controller | 217 |  |
-| `cart.guest-contact.spec.ts` | unit test | 79 |  |
+| `cart.guest-contact.spec.ts` | unit test | 89 |  |
 | `cart.module.ts` | nest module | 22 |  |
-| `cart.service.spec.ts` | unit test | 58 |  |
+| `cart.service.spec.ts` | unit test | 68 |  |
 | `cart.service.ts` | service | 721 |  |
 | `reorder.service.ts` | service | 69 |  |
 
@@ -1608,7 +1619,7 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `finance.module.ts` | nest module | 26 |  |
 | `finance.service.ts` | service | 675 |  |
 | `finance.spec.ts` | unit test | 522 |  |
-| `order-economics.service.spec.ts` | unit test | 298 |  |
+| `order-economics.service.spec.ts` | unit test | 306 |  |
 | `order-economics.service.ts` | service | 205 |  |
 | `rto-expense.listener.ts` | event subscriber | 47 |  |
 
@@ -1643,11 +1654,11 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `fulfilment.cron.ts` | scheduled job | 80 |  |
 | `fulfilment.module.ts` | nest module | 48 |  |
 | `fulfilment.service.ts` | service | 470 |  |
-| `fulfilment.spec.ts` | unit test | 125 |  |
+| `fulfilment.spec.ts` | unit test | 128 |  |
 | `return-notification.subscriber.ts` | event subscriber | 69 |  |
 | `returns.controller.ts` | controller | 160 |  |
 | `returns.service.ts` | service | 405 |  |
-| `returns.spec.ts` | unit test | 182 |  |
+| `returns.spec.ts` | unit test | 185 |  |
 | `shipping-migration.spec.ts` | unit test | 90 |  |
 | `shipping.controller.ts` | controller | 114 |  |
 | `shipping.service.ts` | service | 328 |  |
@@ -1957,7 +1968,7 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `order-feed.source.ts` | module | 57 |  |
 | `order-replication.listener.spec.ts` | unit test | 54 |  |
 | `order-replication.listener.ts` | event subscriber | 53 |  |
-| `orders-pos.service.spec.ts` | unit test | 438 |  |
+| `orders-pos.service.spec.ts` | unit test | 441 |  |
 | `orders.controller.ts` | controller | 155 |  |
 | `orders.module.ts` | nest module | 57 |  |
 | `orders.service.ts` | service | 1400 |  |
@@ -1998,8 +2009,8 @@ All 1,183 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `org-access.cron.ts` | scheduled job | 25 |  |
 | `org-unit-grant.controller.ts` | controller | 52 |  |
-| `org-unit-grant.service.spec.ts` | unit test | 249 |  |
-| `org-unit-grant.service.ts` | service | 339 |  |
+| `org-unit-grant.service.spec.ts` | unit test | 291 |  |
+| `org-unit-grant.service.ts` | service | 347 |  |
 | `org-unit.controller.ts` | controller | 79 |  |
 | `org-unit.service.spec.ts` | unit test | 185 |  |
 | `org-unit.service.ts` | service | 300 |  |
@@ -2066,7 +2077,7 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `leave.service.spec.ts` | unit test | 224 |  |
 | `leave.service.ts` | service | 175 |  |
 | `pay-run.controller.ts` | controller | 73 |  |
-| `pay-run.service.spec.ts` | unit test | 282 |  |
+| `pay-run.service.spec.ts` | unit test | 285 |  |
 | `pay-run.service.ts` | service | 254 |  |
 | `payroll.controller.ts` | controller | 78 |  |
 | `payroll.module.ts` | nest module | 24 |  |
@@ -2280,7 +2291,7 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `dunning.service.spec.ts` | unit test | 70 |  |
 | `dunning.service.ts` | service | 48 |  |
 | `receivables.controller.ts` | controller | 200 |  |
-| `receivables.integration.spec.ts` | unit test | 334 |  |
+| `receivables.integration.spec.ts` | unit test | 338 |  |
 | `receivables.module.ts` | nest module | 38 |  |
 | `statements.service.spec.ts` | unit test | 63 |  |
 | `statements.service.ts` | service | 102 |  |
@@ -2313,7 +2324,7 @@ All 1,183 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `csv.util.ts` | module | 15 | RFC 4180 field/row escaping for the three characters that break a bare CSV field (comma, quote, newline). |
-| `reports-finance-exports.spec.ts` | unit test | 65 |  |
+| `reports-finance-exports.spec.ts` | unit test | 72 |  |
 | `reports.controller.ts` | controller | 135 |  |
 | `reports.module.ts` | nest module | 10 |  |
 | `reports.service.ts` | service | 651 |  |
@@ -2538,7 +2549,7 @@ All 1,183 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `transfers.controller.ts` | controller | 44 |  |
 | `transfers.module.ts` | nest module | 22 |  |
-| `transfers.service.spec.ts` | unit test | 820 |  |
+| `transfers.service.spec.ts` | unit test | 823 |  |
 | `transfers.service.ts` | service | 510 |  |
 
 ### `apps/api/src/modules/transfers/dto` (1)
@@ -2556,8 +2567,8 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `security-notification.subscriber.ts` | event subscriber | 184 |  |
 | `users-admin.controller.ts` | controller | 87 |  |
 | `users-admin.module.ts` | nest module | 12 |  |
-| `users-admin.service.spec.ts` | unit test | 242 |  |
-| `users-admin.service.ts` | service | 373 |  |
+| `users-admin.service.spec.ts` | unit test | 319 |  |
+| `users-admin.service.ts` | service | 376 |  |
 
 ### `apps/api/src/modules/users/dto` (1)
 
@@ -2602,12 +2613,12 @@ All 1,183 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `wishlist.dto.ts` | dto | 30 |  |
 
-### `apps/api/test` (27)
+### `apps/api/test` (30)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
-| `api-keys.e2e-spec.ts` | e2e test | 362 |  |
+| `api-keys.e2e-spec.ts` | e2e test | 371 |  |
 | `auth-throttle.e2e-spec.ts` | e2e test | 431 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |
 | `backfill-product-options.spec.ts` | unit test | 114 |  |
@@ -2626,13 +2637,16 @@ All 1,183 tracked files in `apps/api`, by directory.
 | `orders.e2e-spec.ts` | e2e test | 1088 |  |
 | `payments-gateway.e2e-spec.ts` | e2e test | 217 |  |
 | `payments-refund.e2e-spec.ts` | e2e test | 164 |  |
+| `permissions-cache.e2e-spec.ts` | e2e test | 231 |  |
 | `promotions-checkout.e2e-spec.ts` | e2e test | 334 |  |
 | `publish-gate.spec.ts` | unit test | 69 |  |
 | `reports.e2e-spec.ts` | e2e test | 189 |  |
 | `session-only-routes.spec.ts` | unit test | 75 |  |
+| `settings-cache.e2e-spec.ts` | e2e test | 144 |  |
 | `setup-env.ts` | module | 11 | Same ordering rule as src/core/config/load-env.ts: the environment must be |
 | `sso.e2e-spec.ts` | e2e test | 414 |  |
 | `stitching.e2e-spec.ts` | e2e test | 593 |  |
+| `tiered-cache.e2e-spec.ts` | e2e test | 221 |  |
 
 ### `apps/api/test/support` (2)
 

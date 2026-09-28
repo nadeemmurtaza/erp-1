@@ -43,7 +43,7 @@ describe('ApiKeyAuthService.authenticate', () => {
       },
     };
     permissions = {
-      resolveForUser: jest.fn().mockResolvedValue({ roles: ['Staff'], permissions: ['orders.manage', 'catalog.manage'] }),
+      resolveForUserCached: jest.fn().mockResolvedValue({ roles: ['Staff'], permissions: ['orders.manage', 'catalog.manage'] }),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -81,28 +81,31 @@ describe('ApiKeyAuthService.authenticate', () => {
   describe('a key never exceeds its owner', () => {
     it('keeps only the key’s permissions the owner still holds', async () => {
       prisma.apiKey.findUnique.mockResolvedValue(adminRow());
-      permissions.resolveForUser.mockResolvedValue({ roles: [], permissions: ['orders.manage', 'finance.view'] });
+      permissions.resolveForUserCached.mockResolvedValue({ roles: [], permissions: ['orders.manage', 'finance.view'] });
 
       const principal = await service.authenticate(ADMIN_RAW, { now });
 
       expect(principal.permissions).toEqual(['orders.manage']);
     });
 
-    it('re-resolves the owner on every request — a demotion shrinks the key on the very next one', async () => {
+    // The resolver's cache drops a demoted owner's set at the write that demotes them
+    // (permissions.service.spec.ts, test/permissions-cache.e2e-spec.ts); this service
+    // asks again on every request and keeps nothing itself.
+    it('asks for the owner\'s permissions on every request — a demotion shrinks the key on the very next one', async () => {
       prisma.apiKey.findUnique.mockResolvedValue(adminRow());
 
       const before = await service.authenticate(ADMIN_RAW, { now });
-      permissions.resolveForUser.mockResolvedValue({ roles: [], permissions: [] });
+      permissions.resolveForUserCached.mockResolvedValue({ roles: [], permissions: [] });
       const after = await service.authenticate(ADMIN_RAW, { now });
 
       expect(before.permissions).toEqual(['orders.manage', 'catalog.manage']);
       expect(after.permissions).toEqual([]);
-      expect(permissions.resolveForUser).toHaveBeenCalledTimes(2);
+      expect(permissions.resolveForUserCached).toHaveBeenCalledTimes(2);
     });
 
     it('strips a non-delegatable permission even when the row carries it and the owner holds it', async () => {
       prisma.apiKey.findUnique.mockResolvedValue(adminRow({ permissionKeys: ['users.manage', 'orders.manage'] }));
-      permissions.resolveForUser.mockResolvedValue({ roles: [], permissions: ['users.manage', 'orders.manage'] });
+      permissions.resolveForUserCached.mockResolvedValue({ roles: [], permissions: ['users.manage', 'orders.manage'] });
 
       const principal = await service.authenticate(ADMIN_RAW, { now });
 
@@ -123,7 +126,7 @@ describe('ApiKeyAuthService.authenticate', () => {
       surface: 'STOREFRONT',
       customerScopes: ['addresses:read', 'addresses:write'],
     });
-    expect(permissions.resolveForUser).not.toHaveBeenCalled();
+    expect(permissions.resolveForUserCached).not.toHaveBeenCalled();
   });
 
   describe('refusals — each a 401 that says why', () => {
@@ -161,7 +164,7 @@ describe('ApiKeyAuthService.authenticate', () => {
       await expect(service.authenticate(ADMIN_RAW, { now })).rejects.toThrow(
         'The account this API key belongs to is no longer active.',
       );
-      expect(permissions.resolveForUser).not.toHaveBeenCalled();
+      expect(permissions.resolveForUserCached).not.toHaveBeenCalled();
     });
 
     it('never puts the raw key in a log line', async () => {

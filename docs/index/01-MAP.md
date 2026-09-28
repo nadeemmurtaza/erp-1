@@ -32,10 +32,10 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,183 | 157,483 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 435 | 88,361 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 1,192 | 159,759 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 435 | 88,596 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 428 | 72,517 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 29,033 | workspace manifests, docker compose/stack files, env templates |
+| `(root)` | 43 | 29,033 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
 | `scripts` | 25 | 9,621 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 63 | 8,098 | brand, money, permissions, measurements, entities |
@@ -137,7 +137,8 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`ai`](core/ai.md) | 6 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and Stor… |
 | [`approvals`](core/approvals.md) | 3 |  |
 | [`audit`](core/audit.md) | 2 |  |
-| [`auth`](core/auth.md) | 47 |  |
+| [`auth`](core/auth.md) | 48 |  |
+| [`cache`](core/cache.md) | 4 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
 | [`common`](core/common.md) | 8 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
 | [`config`](core/config.md) | 6 |  |
@@ -156,7 +157,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`replication`](core/replication.md) | 21 |  |
 | [`resilience`](core/resilience.md) | 4 | Extension point (38-resilience-engineering.md §2): the three-state gate every existing extension-point call s… |
 | [`security`](core/security.md) | 3 |  |
-| [`settings`](core/settings.md) | 6 |  |
+| [`settings`](core/settings.md) | 7 |  |
 | [`slo`](core/slo.md) | 6 | The three critical paths named in 38-resilience-engineering.md §3 — the only paths in this codebase with a fo… |
 | [`storage`](core/storage.md) | 8 | Extension point: file storage. |
 | [`throttling`](core/throttling.md) | 5 | The module-wide rate limit every route gets unless it declares its own `@Throttle`: 300 requests per 60 s per… |

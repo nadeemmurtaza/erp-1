@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 13 files
 
 Source: `apps/api/src/modules/receivables/`
 
-## Files (13 · 1,665 lines)
+## Files (13 · 1,669 lines)
 
 All paths relative to `apps/api/src/modules/receivables`.
 
@@ -26,7 +26,7 @@ All paths relative to `apps/api/src/modules/receivables`.
 | `dunning.service.spec.ts` | unit test | 70 | — |  |
 | `dunning.service.ts` | service | 48 | 2 |  |
 | `receivables.controller.ts` | controller | 200 | 5 |  |
-| `receivables.integration.spec.ts` | unit test | 334 | — |  |
+| `receivables.integration.spec.ts` | unit test | 338 | — |  |
 | `receivables.module.ts` | nest module | 38 | 1 |  |
 | `statements.service.spec.ts` | unit test | 63 | — |  |
 | `statements.service.ts` | service | 102 | 3 |  |
@@ -118,6 +118,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `events`
 - core `notifications`
 - core `prisma`
+- core `redis`
 - core `settings`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`

@@ -56,7 +56,10 @@ describe('GrantService', () => {
       $transaction: jest.fn((fn: any) => fn(prisma)),
     };
     audit = { recordEvidence: jest.fn() };
-    permissions = { resolveForUser: jest.fn().mockResolvedValue({ roles: [], permissions: ['org.access.grant', 'hr.people.view'] }) };
+    permissions = {
+      resolveForUser: jest.fn().mockResolvedValue({ roles: [], permissions: ['org.access.grant', 'hr.people.view'] }),
+      invalidate: jest.fn().mockResolvedValue(undefined),
+    };
     settings = { getOrgAccessMaxGrantDays: jest.fn().mockResolvedValue(90) };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -188,6 +191,32 @@ describe('GrantService', () => {
         expect.objectContaining({ action: 'org_unit_grant.issued', actorId: 'granter1' }),
       );
     });
+
+    // 208-l1-l2-l3-caching-architecture.md §2 — a grant is a write that changes
+    // what the grantee resolves; judging the granter is not a per-request read.
+    it('drops the grantee\'s cached permission set once the grant is committed', async () => {
+      prisma.orgUnitGrant.create.mockResolvedValue(grant());
+
+      await service.issue(validInput(), 'granter1');
+
+      expect(permissions.invalidate).toHaveBeenCalledWith('u1');
+      expect(permissions.invalidate.mock.invocationCallOrder[0]).toBeGreaterThan(
+        prisma.$transaction.mock.invocationCallOrder[0],
+      );
+    });
+
+    it('judges the granter on an uncached read — a grant outlives any cache window', async () => {
+      await service.previewIssue(validInput(), 'granter1');
+
+      expect(permissions.resolveForUser).toHaveBeenCalledWith('granter1');
+    });
+
+    it('drops nothing when the grant is refused — nothing was written', async () => {
+      permissions.resolveForUser.mockResolvedValue({ roles: [], permissions: ['hr.people.view'] });
+
+      await expect(service.issue(validInput(), 'granter1')).rejects.toBeInstanceOf(ForbiddenException);
+      expect(permissions.invalidate).not.toHaveBeenCalled();
+    });
   });
 
   describe('revoke', () => {
@@ -200,6 +229,7 @@ describe('GrantService', () => {
       prisma.orgUnitGrant.findUnique.mockResolvedValue(grant({ revokedAt: new Date('2026-02-01') }));
       await service.revoke('g1', 'granter1');
       expect(prisma.orgUnitGrant.update).not.toHaveBeenCalled();
+      expect(permissions.invalidate).not.toHaveBeenCalled();
     });
 
     it('revokes an active grant and audits it — needs no other refusal check', async () => {
@@ -213,6 +243,15 @@ describe('GrantService', () => {
         expect.objectContaining({ action: 'org_unit_grant.revoked' }),
       );
     });
+
+    it('drops the holder\'s cached permission set once the revocation is committed (doc 208 §2)', async () => {
+      prisma.orgUnitGrant.findUnique.mockResolvedValue(grant({ userId: 'holder9' }));
+      prisma.orgUnitGrant.update.mockResolvedValue(grant({ userId: 'holder9', revokedAt: new Date() }));
+
+      await service.revoke('g1', 'granter1');
+
+      expect(permissions.invalidate).toHaveBeenCalledWith('holder9');
+    });
   });
 
   describe('sweepExpired', () => {
@@ -223,6 +262,9 @@ describe('GrantService', () => {
       expect(prisma.orgUnitGrant.updateMany).toHaveBeenCalledWith(
         expect.objectContaining({ where: expect.objectContaining({ revokedAt: null }) }),
       );
+      // Already expired, so already absent from every resolved set — and a
+      // cached set was only ever cached until the grant's expiresAt.
+      expect(permissions.invalidate).not.toHaveBeenCalled();
     });
   });
 

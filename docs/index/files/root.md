@@ -3,12 +3,12 @@
 
 # Files — root
 
-All 213 tracked files in `repository root files`, by directory.
+All 214 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `.` (22)
+### `.` (23)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -23,6 +23,7 @@ All 213 tracked files in `repository root files`, by directory.
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |
+| `dump.rdb` | rdb | — |  |
 | `fix-all.js` | script | 15 | Get all files from git grep |
 | `fix-db.js` | script | 15 |  |
 | `fix.js` | script | 9 | Use regex to remove duplicate users block |

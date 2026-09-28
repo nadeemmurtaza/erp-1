@@ -43,13 +43,15 @@ export interface ApiKeyAuthContext {
  * Turns a raw personal API key into the principal it acts as — or a 401 that
  * says why not (163-personal-api-keys.md §2).
  *
- * Everything that decides what the key may do is read fresh on every call,
- * never cached: whether it is revoked or expired, whether its owner is still
- * active, and — for an ADMIN key — its owner's live permissions, intersected
- * with the key's own through `effectiveApiKeyPermissions()`. The same
- * guarantee JwtStrategy.validate() gives a session: a demoted owner's keys
- * shrink on their very next request, and a revoked key is refused on its
- * very next request, with no cache to wait out.
+ * Whether the key is revoked or expired, and whether its owner is still
+ * active, are read fresh on every call, never cached: a revoked key or a
+ * deactivated owner is refused on the very next request, everywhere. For an
+ * ADMIN key, its owner's live permissions — intersected with the key's own
+ * through `effectiveApiKeyPermissions()` — come through the same permission
+ * cache as a session's (JwtStrategy.validate(); 208-l1-l2-l3-caching-
+ * architecture.md §2, ADR-077): a demoted owner's keys shrink on the next
+ * request the replica that made the change serves, and within 10 s on any
+ * other replica.
  *
  * The same scheme as TradingPartnersService.verifyInboundKey() and
  * NodeCredentialService.verify(): the raw key is hashed and looked up by a
@@ -105,7 +107,7 @@ export class ApiKeyAuthService {
     let permissions: string[] = [];
     let customerScopes: string[] = [];
     if (key.surface === 'ADMIN') {
-      const live = await this.permissions.resolveForUser(key.userId);
+      const live = await this.permissions.resolveForUserCached(key.userId);
       permissions = effectiveApiKeyPermissions(key.permissionKeys, live.permissions);
     } else {
       customerScopes = expandCustomerScopes(key.customerScopes);

@@ -6,23 +6,23 @@
 Shared platform — available to every module, part of no feature · 4 files
 
 
-> The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardening.md §1.2, §5).
+> The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardening.md §1.2, §5; 208-l1-l2-l3-caching-architecture.md).
 
 Source: `apps/api/src/core/redis/`
 
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (4 · 330 lines)
+## Files (4 · 381 lines)
 
 All paths relative to `apps/api/src/core/redis`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `redis.keyspaces.ts` | module | 28 | 2 | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardenin… |
-| `redis.module.ts` | nest module | 21 | 1 |  |
-| `redis.service.spec.ts` | unit test | 79 | — |  |
-| `redis.service.ts` | service | 202 | 5 | How every connection to the dedicated Redis instance behaves when Redis is slow or gone (206-rate-limiting-caching-comp… |
+| `redis.keyspaces.ts` | module | 62 | 2 | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardenin… |
+| `redis.module.ts` | nest module | 23 | 1 |  |
+| `redis.service.spec.ts` | unit test | 95 | — |  |
+| `redis.service.ts` | service | 201 | 5 | How every connection to the dedicated Redis instance behaves when Redis is slow or gone (206-rate-limiting-caching-comp… |
 
 
 ## HTTP routes (0)
@@ -61,16 +61,16 @@ _none_
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `redis.service.spec.ts` | 6 | RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum) |
+| `redis.service.spec.ts` | 8 | RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum) |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `REDIS_KEYSPACES` | const | `redis.keyspaces.ts:16` | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compressio… |
-| `RedisKeyspace` | type | `redis.keyspaces.ts:27` |  |
-| `RedisModule` | class | `redis.module.ts:20` |  |
+| `REDIS_KEYSPACES` | const | `redis.keyspaces.ts:25` | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compressio… |
+| `RedisKeyspace` | type | `redis.keyspaces.ts:61` |  |
+| `RedisModule` | class | `redis.module.ts:22` |  |
 | `REDIS_CLIENT_OPTIONS` | const | `redis.service.ts:14` | How every connection to the dedicated Redis instance behaves when Redis is slow or gone (206-rate-limiting-ca… |
 | `redisReconnectDelayMs` | function | `redis.service.ts:52` | Reconnect forever, 50 ms more per attempt, capped at 2 s — ioredis's own default, restated so the recovery bo… |
 | `REDIS_BOOT_READY_WAIT_MS` | const | `redis.service.ts:64` | How long boot waits for the first connection before carrying on without it: long enough for a healthy instanc… |

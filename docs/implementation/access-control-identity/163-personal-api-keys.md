@@ -35,6 +35,16 @@ questions.
    snapshotted. A demoted owner's keys shrink on the next request; a removed
    role grant drops out of every key the next time it is used; a deactivated
    owner's keys are revoked in the deactivation transaction itself.
+
+   > **2026-09-28 — doc 208 / ADR-077.** "Live permissions" now come through
+   > the permission-resolution cache (`resolveForUserCached()`), the same one
+   > a session uses. Every write that changes them — a role's grants, an
+   > assignment, an override, an OrgUnitGrant — drops the cached set as it
+   > commits, so "the next request" holds on the replica that served the
+   > change (every replica, while a node runs one process) and becomes
+   > "within 10 s" on any other. A change no write site sees (raw SQL, a seed
+   > run) is bounded by 60 s. The key's own revocation and expiry, and the
+   > owner's deactivation, are still read fresh on every request.
 2. **A separate, explicit non-delegatable list** decides what can never be put
    in a key — not `PermissionDefinition.sensitivity`. That tag drives the
    role-wizard warning (`low`/`medium`/`high`/`critical`); it answers "how bad

@@ -163,6 +163,9 @@ export class GrantService {
 
       return row;
     });
+    // Committed: the grantee's next request resolves the new keys
+    // (208-l1-l2-l3-caching-architecture.md §2).
+    await this.permissions.invalidate(created.userId);
 
     return toView(created);
   }
@@ -192,6 +195,9 @@ export class GrantService {
       });
       return row;
     });
+    // Committed: refused on the holder's next request that this replica
+    // serves, within 10 s everywhere (208-l1-l2-l3-caching-architecture.md §2).
+    await this.permissions.invalidate(updated.userId);
 
     return toView(updated);
   }
@@ -202,6 +208,8 @@ export class GrantService {
    * other reader already filter on `expiresAt > now`, so this only keeps
    * "currently active" (`revokedAt IS NULL`) a cheap query for the access
    * screen rather than something every caller re-derives from `expiresAt`.
+   * Nothing to invalidate for the same reason: a cached permission set that
+   * included one of these grants was only ever cached until its `expiresAt`.
    */
   async sweepExpired(): Promise<number> {
     const result = await this.prisma.orgUnitGrant.updateMany({

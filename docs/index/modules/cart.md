@@ -9,16 +9,16 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 Source: `apps/api/src/modules/cart/`
 
-## Files (7 · 1,316 lines)
+## Files (7 · 1,336 lines)
 
 All paths relative to `apps/api/src/modules/cart`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
 | `cart.controller.ts` | controller | 217 | 1 | Cart endpoints. |
-| `cart.guest-contact.spec.ts` | unit test | 79 | — |  |
+| `cart.guest-contact.spec.ts` | unit test | 89 | — |  |
 | `cart.module.ts` | nest module | 22 | 1 |  |
-| `cart.service.spec.ts` | unit test | 58 | — |  |
+| `cart.service.spec.ts` | unit test | 68 | — |  |
 | `cart.service.ts` | service | 721 | 3 |  |
 | `cart.dto.ts` | dto | 150 | 5 |  |
 | `reorder.service.ts` | service | 69 | 2 |  |
@@ -80,6 +80,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `auth`
 - core `extension-points`
 - core `prisma`
+- core `redis`
 - core `settings`
 - package `@newax/shared`
 

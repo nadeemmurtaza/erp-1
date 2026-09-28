@@ -239,3 +239,80 @@ describe('UsersAdminService.resetPassword — "sign them out everywhere" means k
     );
   });
 });
+
+// 208-l1-l2-l3-caching-architecture.md §2 — a personal override is one of the
+// writes that change what PermissionsResolverService resolves.
+describe('UsersAdminService.updatePermissions — the override reaches the next request', () => {
+  let service: UsersAdminService;
+  let prisma: any;
+  let permissions: { resolveForUser: jest.Mock; invalidate: jest.Mock };
+
+  const target = { id: 'u4', role: 'STAFF', isActive: true };
+
+  beforeEach(async () => {
+    prisma = {
+      user: { findUnique: jest.fn().mockResolvedValue(target) },
+      permission: { findMany: jest.fn().mockResolvedValue([{ id: 'p1', key: 'orders.manage' }]) },
+      userPermission: {
+        deleteMany: jest.fn().mockReturnValue('delete-overrides'),
+        createMany: jest.fn().mockReturnValue('create-overrides'),
+        findMany: jest.fn().mockResolvedValue([]),
+      },
+      userRoleAssignment: { findMany: jest.fn().mockResolvedValue([]) },
+      $transaction: jest.fn().mockResolvedValue([]),
+    };
+    permissions = {
+      resolveForUser: jest.fn().mockResolvedValue({ roles: [], permissions: ['orders.manage'] }),
+      invalidate: jest.fn().mockResolvedValue(undefined),
+    };
+
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersAdminService,
+        { provide: PrismaService, useValue: prisma },
+        { provide: PermissionsResolverService, useValue: permissions },
+        {
+          provide: RolesService,
+          useValue: {
+            assertLockedKeysStillHeldAfterRevoke: jest.fn().mockResolvedValue(undefined),
+            conflictsForUser: jest.fn().mockResolvedValue({ redundantGrants: [], overriddenRevokes: [] }),
+          },
+        },
+        { provide: AuditService, useValue: { record: jest.fn().mockResolvedValue(undefined) } },
+        { provide: ApiKeysService, useValue: {} },
+        { provide: EmployeeOffboardingRegistry, useValue: {} },
+      ],
+    }).compile();
+
+    service = module.get<UsersAdminService>(UsersAdminService);
+  });
+
+  it('drops the target\'s cached permission set once the overrides are committed, then shows the uncached result', async () => {
+    const result = await service.updatePermissions('admin1', 'u4', [{ key: 'orders.manage', effect: 'GRANT' }]);
+
+    expect(prisma.$transaction).toHaveBeenCalledWith(['delete-overrides', 'create-overrides']);
+    expect(permissions.invalidate).toHaveBeenCalledWith('u4');
+    expect(permissions.invalidate.mock.invocationCallOrder[0]).toBeGreaterThan(prisma.$transaction.mock.invocationCallOrder[0]);
+    // The admin reads back the database's answer, never a cached one.
+    expect(permissions.resolveForUser).toHaveBeenCalledWith('u4');
+    expect(result.effectivePermissions).toEqual(['orders.manage']);
+  });
+
+  it('drops nothing when the write is refused — an unknown key writes no override', async () => {
+    await expect(
+      service.updatePermissions('admin1', 'u4', [{ key: 'no.such.key' as any, effect: 'GRANT' }]),
+    ).rejects.toThrow(/Unknown permission key/);
+
+    expect(prisma.$transaction).not.toHaveBeenCalled();
+    expect(permissions.invalidate).not.toHaveBeenCalled();
+  });
+
+  it('drops nothing when the transaction fails — the old overrides still stand', async () => {
+    prisma.$transaction.mockRejectedValueOnce(new Error('serialization failure'));
+
+    await expect(service.updatePermissions('admin1', 'u4', [{ key: 'orders.manage', effect: 'GRANT' }])).rejects.toThrow(
+      'serialization failure',
+    );
+    expect(permissions.invalidate).not.toHaveBeenCalled();
+  });
+});

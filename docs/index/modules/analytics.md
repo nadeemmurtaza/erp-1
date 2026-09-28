@@ -9,28 +9,28 @@ Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 Source: `apps/api/src/modules/analytics/`
 
-## Files (20 · 6,303 lines)
+## Files (20 · 6,336 lines)
 
 All paths relative to `apps/api/src/modules/analytics`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `analytics.category-velocity.spec.ts` | unit test | 136 | — |  |
-| `analytics.comparison.spec.ts` | unit test | 311 | — |  |
+| `analytics.category-velocity.spec.ts` | unit test | 139 | — |  |
+| `analytics.comparison.spec.ts` | unit test | 314 | — |  |
 | `analytics.controller.ts` | controller | 253 | 1 |  |
-| `analytics.customers.spec.ts` | unit test | 168 | — |  |
-| `analytics.inventory.spec.ts` | unit test | 196 | — |  |
-| `analytics.lifecycle.spec.ts` | unit test | 115 | — |  |
+| `analytics.customers.spec.ts` | unit test | 171 | — |  |
+| `analytics.inventory.spec.ts` | unit test | 199 | — |  |
+| `analytics.lifecycle.spec.ts` | unit test | 118 | — |  |
 | `analytics.metrics.spec.ts` | unit test | 210 | — |  |
 | `analytics.metrics.ts` | module | 454 | 7 |  |
 | `analytics.module.ts` | nest module | 30 | 1 |  |
-| `analytics.orders.spec.ts` | unit test | 201 | — |  |
-| `analytics.products.spec.ts` | unit test | 262 | — |  |
-| `analytics.purchasing.spec.ts` | unit test | 385 | — |  |
-| `analytics.sales.spec.ts` | unit test | 151 | — |  |
+| `analytics.orders.spec.ts` | unit test | 204 | — |  |
+| `analytics.products.spec.ts` | unit test | 265 | — |  |
+| `analytics.purchasing.spec.ts` | unit test | 388 | — |  |
+| `analytics.sales.spec.ts` | unit test | 154 | — |  |
 | `analytics.service.ts` | service | 2590 | 39 |  |
-| `analytics.summary.spec.ts` | unit test | 94 | — |  |
-| `analytics.workshop.spec.ts` | unit test | 182 | — |  |
+| `analytics.summary.spec.ts` | unit test | 97 | — |  |
+| `analytics.workshop.spec.ts` | unit test | 185 | — |  |
 | `analytics.dto.ts` | dto | 10 | 1 |  |
 | `cards.dto.ts` | dto | 44 | 2 | `GET /admin/analytics/cards` (10-admin-dashboard.md D2, WO-A.4). |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 | — |  |
@@ -112,6 +112,7 @@ _none_
 - core `metrics`
 - core `notifications`
 - core `prisma`
+- core `redis`
 - core `settings`
 - core `time`
 - package `@newax/shared`

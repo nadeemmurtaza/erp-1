@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 22 files
 
 Source: `apps/api/src/modules/bom/`
 
-## Files (22 · 3,747 lines)
+## Files (22 · 3,756 lines)
 
 All paths relative to `apps/api/src/modules/bom`.
 
@@ -22,18 +22,18 @@ All paths relative to `apps/api/src/modules/bom`.
 | `bom.controller.ts` | controller | 242 | 1 |  |
 | `bom.listener.spec.ts` | unit test | 88 | — |  |
 | `bom.listener.ts` | event subscriber | 49 | 1 | Rule 3 in action, no new event needed: receiving fabric against a PO already publishes GoodsReceived (purchasing.servic… |
-| `bom.metrics.spec.ts` | unit test | 206 | — |  |
+| `bom.metrics.spec.ts` | unit test | 209 | — |  |
 | `bom.metrics.ts` | module | 131 | 4 |  |
 | `bom.module.ts` | nest module | 29 | 1 |  |
 | `bom.service.ts` | service | 47 | 1 | Helpers shared by every bom. |
-| `bom.spec.ts` | unit test | 533 | — |  |
+| `bom.spec.ts` | unit test | 536 | — |  |
 | `cost-rollup.spec.ts` | unit test | 124 | — | 2000 base units of fabric at 50 paisa/base-unit = 100000 |
 | `cost-rollup.ts` | module | 70 | 5 | The BOM cost rollup (WO-C.2, 10-admin-dashboard.md §C) — a pure function, deliberately: it takes plain numbers in, retu… |
 | `production-run.dto.ts` | dto | 54 | 2 |  |
 | `raw-material.dto.ts` | dto | 52 | 3 |  |
 | `raw-usage.dto.ts` | dto | 30 | 1 |  |
 | `recipe.dto.ts` | dto | 113 | 5 |  |
-| `production.service.spec.ts` | unit test | 537 | — |  |
+| `production.service.spec.ts` | unit test | 540 | — |  |
 | `production.service.ts` | service | 424 | 1 | The step that makes BOM real: a run consumes raw stock and credits finished stock, both through InventoryService — a di… |
 | `raw-material.service.ts` | service | 218 | 1 | A raw material is an ordinary ProductVariant with a RawMaterial marker row (D5, bom.prisma). |
 | `recipe.service.ts` | service | 501 | 3 |  |
@@ -128,6 +128,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `intent`
 - core `metrics`
 - core `prisma`
+- core `redis`
 - core `replication`
 - core `settings`
 - package `@newax/shared`

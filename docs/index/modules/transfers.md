@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 Source: `apps/api/src/modules/transfers/`
 
-## Files (5 · 1,505 lines)
+## Files (5 · 1,508 lines)
 
 All paths relative to `apps/api/src/modules/transfers/dto`.
 
@@ -20,7 +20,7 @@ All paths relative to `apps/api/src/modules/transfers/dto`.
 | `transfer.dto.ts` | dto | 109 | 7 |  |
 | `transfers.controller.ts` | controller | 44 | 1 |  |
 | `transfers.module.ts` | nest module | 22 | 1 |  |
-| `transfers.service.spec.ts` | unit test | 820 | — |  |
+| `transfers.service.spec.ts` | unit test | 823 | — |  |
 | `transfers.service.ts` | service | 510 | 3 |  |
 
 
@@ -86,6 +86,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `extension-points`
 - core `intent`
 - core `prisma`
+- core `redis`
 - core `settings`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`

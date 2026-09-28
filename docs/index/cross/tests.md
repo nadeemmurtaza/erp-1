@@ -3,7 +3,7 @@
 
 # Tests
 
-**350** spec files, **3,345** cases. What is already pinned down — and what is not.
+**357** spec files, **3,431** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -30,7 +30,7 @@ such exemption.
 - [`tracking`](../modules/tracking.md)
 - [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (21)
+## End-to-end (24)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -54,13 +54,16 @@ regression or an N+1.
 | `apps/api/test/orders.e2e-spec.ts` | 39 | Orders (e2e) · payment methods · placing an order · idempotency (Idempotency-Key) · stitched orders · bank transfer · o… |
 | `apps/api/test/payments-gateway.e2e-spec.ts` | 4 | JazzCash checkout redirect (e2e) |
 | `apps/api/test/payments-refund.e2e-spec.ts` | 5 | Payment refunds (e2e) |
+| `apps/api/test/permissions-cache.e2e-spec.ts` | 7 | Permission resolution cached across replicas (doc 208 §2, e2e) |
 | `apps/api/test/promotions-checkout.e2e-spec.ts` | 8 | Promotions & gift cards at checkout (e2e) · automatic discounts · promo codes · gift cards · store credit |
 | `apps/api/test/reports.e2e-spec.ts` | 2 | Reports and dashboard: stitching-booking revenue (e2e) |
+| `apps/api/test/settings-cache.e2e-spec.ts` | 5 | Settings shared across replicas (doc 208 WO-208.3, e2e) |
 | `apps/api/test/sso.e2e-spec.ts` | 9 | Single sign-on (e2e) |
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
+| `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (329)
+## Unit and integration (333)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -72,17 +75,20 @@ regression or an N+1.
 | `apps/api/src/core/auth/api-keys/api-keys.service.spec.ts` | core/auth | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do righ… |
 | `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 26 | AuthService.login — enforceSso (WO-165.6) · AuthService.login — per-account attempt bucket (WO-206.… |
 | `apps/api/src/core/auth/guards.spec.ts` | core/auth | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a se… |
+| `apps/api/src/core/auth/jwt.strategy.spec.ts` | core/auth | 3 | JwtStrategy.validate |
 | `apps/api/src/core/auth/login-identifier.spec.ts` | core/auth | 3 | login identifiers as the rate limiter and the audit trail see them (doc 206 §1.2) |
 | `apps/api/src/core/auth/login-throttle.service.spec.ts` | core/auth | 9 | LoginThrottleService (doc 206 §1.2) |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
 | `apps/api/src/core/auth/password.util.spec.ts` | core/auth | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
-| `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 14 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) · usersWithPermissi… |
+| `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 24 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) · resolveForUserCac… |
 | `apps/api/src/core/auth/providers/oidc.provider.spec.ts` | core/auth | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityF… |
 | `apps/api/src/core/auth/rate-limit-audit.service.spec.ts` | core/auth | 5 | RateLimitAuditService — auth.rate_limited, one row per throttling episode (doc 206 §1.2) |
-| `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 22 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orpha… |
+| `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 32 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orpha… |
 | `apps/api/src/core/auth/scope.guard.spec.ts` | core/auth | 24 | resolveScope · assertCanManageAtScope · scopeFilterFor · orgUnitScopeFilterFor |
 | `apps/api/src/core/auth/sso.controller.spec.ts` | core/auth | 8 | SsoController · start · callback · session |
 | `apps/api/src/core/auth/sso.service.spec.ts` | core/auth | 34 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing conne… |
+| `apps/api/src/core/cache/in-process-cache.spec.ts` | core/cache | 13 | InProcessCache · expiry · invalidate · maxEntries — bounded memory, least recently used first · opt… |
+| `apps/api/src/core/cache/tiered-cache.spec.ts` | core/cache | 12 | TieredCache without a working Redis · Redis not connected · a read in flight when this process inva… |
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
 | `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 3 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) |
@@ -101,7 +107,7 @@ regression or an N+1.
 | `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 30 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
 | `apps/api/src/core/notifications/notifications.service.spec.ts` | core/notifications | 3 | NotificationsService |
 | `apps/api/src/core/prisma/enums.spec.ts` | core/prisma | 0 | shared enums stay in sync with the Prisma schema |
-| `apps/api/src/core/redis/redis.service.spec.ts` | core/redis | 6 | RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum) |
+| `apps/api/src/core/redis/redis.service.spec.ts` | core/redis | 8 | RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum) |
 | `apps/api/src/core/replication/node-credential.service.spec.ts` | core/replication | 5 | NodeCredentialService — WO-20.2 |
 | `apps/api/src/core/replication/policy-quarantine.service.spec.ts` | core/replication | 4 | PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023 · resolve |
 | `apps/api/src/core/replication/replication-apply.service.spec.ts` | core/replication | 3 | ReplicationApplyService — WO-20.1 |
@@ -114,6 +120,7 @@ regression or an N+1.
 | `apps/api/src/core/resilience/circuit-breaker.service.spec.ts` | core/resilience | 10 | CircuitBreakerService — WO-38.2 · simulate() — dry run against a supplied call history |
 | `apps/api/src/core/security/unsubscribe-token.spec.ts` | core/security | 6 | unsubscribeToken / isValidUnsubscribeToken |
 | `apps/api/src/core/settings/document-number.spec.ts` | core/settings | 5 | documentNumber |
+| `apps/api/src/core/settings/settings.service.spec.ts` | core/settings | 9 | SettingsService |
 | `apps/api/src/core/slo/request-outcome-prune.cron.spec.ts` | core/slo | 1 | RequestOutcomePruneCron — WO-38.3 |
 | `apps/api/src/core/slo/slo-recorder.service.spec.ts` | core/slo | 8 | SloRecorderService — WO-38.3 · time() · recordReplicationTick() · computeBudget() |
 | `apps/api/src/core/storage/files.controller.spec.ts` | core/storage | 3 | FilesController |
@@ -239,7 +246,7 @@ regression or an N+1.
 | `apps/api/src/modules/orders/orders-pos.service.spec.ts` | orders | 13 | OrdersService — placeFromPos (WO-21.3) · changeStatus — return releases stock to the order\ · place… |
 | `apps/api/src/modules/organization/nodes.service.spec.ts` | organization | 9 | NodesService · rotateInboundKey |
 | `apps/api/src/modules/organization/organization.service.spec.ts` | organization | 51 | OrganizationService · listBrands · listNodes · myScope · grantsFor · listScopes · grantScope · setI… |
-| `apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts` | orgstructure | 18 | GrantService · reachOf · previewIssue / issue — the five refusals · ACTING mode · revoke · sweepExp… |
+| `apps/api/src/modules/orgstructure/org-unit-grant.service.spec.ts` | orgstructure | 22 | GrantService · reachOf · previewIssue / issue — the five refusals · ACTING mode · revoke · sweepExp… |
 | `apps/api/src/modules/orgstructure/org-unit.service.spec.ts` | orgstructure | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
 | `apps/api/src/modules/parties/parties.service.spec.ts` | parties | 7 | PartiesService · get · dedupeCandidate · findOrCreateForRole · search |
 | `apps/api/src/modules/payments/payment-feed.source.spec.ts` | payments | 5 | PaymentFeedSource — WO-58.2 |
@@ -322,7 +329,7 @@ regression or an N+1.
 | `apps/api/src/modules/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
 | `apps/api/src/modules/users/security-notification.subscriber.spec.ts` | users | 3 | SecurityNotificationSubscriber.onSsoAccountLinked |
-| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 12 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
+| `apps/api/src/modules/users/users-admin.service.spec.ts` | users | 15 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivatio… |
 | `apps/api/src/modules/wallet/merchant-payable.service.spec.ts` | wallet | 16 | MerchantPayableService — 155-wallet-stored-value-merchant-escrow.md §3 · createMerchantPayable · sc… |
 | `apps/api/src/modules/wallet/wallet-credit-note.port.spec.ts` | wallet | 3 | MerchantPayableAdjustmentCreditNoteService — the interim default, pending doc 145 |
 | `apps/api/src/modules/wallet/wallet.service.spec.ts` | wallet | 34 | WalletService — 155-wallet-stored-value-merchant-escrow.md · availableBalance — the three transitio… |

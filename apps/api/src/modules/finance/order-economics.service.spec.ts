@@ -1,5 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { RedisService } from '../../core/redis/redis.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { DomainEvent } from '../../core/events/domain-events';
@@ -18,7 +19,14 @@ describe('OrderEconomicsService', () => {
   beforeAll(async () => {
     events = { publish: jest.fn() };
     const module = await Test.createTestingModule({
-      providers: [OrderEconomicsService, PrismaService, SettingsService, { provide: EventBusService, useValue: events }],
+      providers: [
+        OrderEconomicsService,
+        PrismaService,
+        SettingsService,
+        // Settings' shared L2 is not under test here: Redis reads as not connected, so every read is Postgres's.
+        { provide: RedisService, useValue: { isReady: () => false } },
+        { provide: EventBusService, useValue: events },
+      ],
     }).compile();
 
     service = module.get(OrderEconomicsService);

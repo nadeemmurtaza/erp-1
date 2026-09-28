@@ -350,6 +350,9 @@ export class UsersAdminService {
         })),
       }),
     ]);
+    // Committed: their next request resolves the new overrides
+    // (208-l1-l2-l3-caching-architecture.md §2).
+    await this.permissions.invalidate(targetId);
 
     await this.audit.record({
       actorId,

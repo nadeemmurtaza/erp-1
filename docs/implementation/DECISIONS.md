@@ -9169,6 +9169,60 @@ states), adding one keyspace (`cache: { db: 1 }`) rather than a third.
 ### Status
 **Accepted.**
 
+### Addendum — 2026-09-28: WO-208.1 to WO-208.5 as built
+
+Every number decided above runs unchanged (permissions 10 s L1 capped at
+10,000, 60 s L2 at `permissions:{userId}`; settings 30 s L1, 300 s L2 at
+`settings:{key}`; `cache: { db: 1 }`). Building it against the real code
+corrected four things the decision rested on; doc 208 §5 has the full
+record and §6 the measured budget.
+
+**Corrected while building.**
+1. *No per-keyspace eviction policy exists.* Redis sets `maxmemory-policy`
+   once per instance, so `allkeys-lru` on db 1 beside `noeviction` on db 0
+   cannot be configured, and switching the instance would let a cache burst
+   evict rate-limit counters (ADR-075's refused fail-open). The cache shares
+   the instance's `noeviction`, as doc 206 §8.1 had already noted: a full
+   instance refuses the cache write, read as a miss. The shared budget is
+   the cost — at the ceiling rate-limit writes are refused too — measured
+   and bounded in doc 208 §6; a separate `allkeys-lru` instance is the named
+   answer if WO-206.8's response cache outgrows it.
+2. *Eight write sites in three files, and role-level writes reach every
+   holder.* `GrantService.issue()`/`.revoke()` (orgstructure) change the
+   resolved set too. A change to a role's grants, name or existence changes
+   every holder's set — the `Customer` role has every customer — so it
+   replaces one namespace token instead of deleting a key per holder.
+3. *Delete-on-write alone reopens the window it closes.* A replica that read
+   Postgres just before the write committed would write the old set back for
+   a full TTL. Entries carry the namespace and per-id version tokens they
+   were read under and are served only while both still match; in-process,
+   an epoch keeps a read that straddled an invalidation out of L1.
+4. *The settings gap was bounded, and L2 cannot shorten it.* `set()` called
+   `delete(key)`, and every L1 entry expired after 30 s, so another replica
+   was stale for at most 30 s — not "unbounded". An L2 behind each replica's
+   L1 cannot shorten that; it was built as specified (it never lengthens it
+   with delete-on-write) and buys one Postgres read per key per 300 s
+   fleet-wide.
+
+**Scoped while building.** Only the two per-request authenticators
+(`JwtStrategy`, `ApiKeyAuthService`) take the cached path
+(`resolveForUserCached()`); `resolveForUser()` stays uncached for the five
+one-off callers, one of which (`GrantService` judging a granter) would
+otherwise let a just-demoted granter issue a grant that outlives the cache
+window. A time-boxed OrgUnitGrant caps its set's lifetime at its `expiresAt`.
+The Consequences above therefore tighten: with a write site, a revocation
+is refused on the revoking replica's next request and within 10 s on the
+others; without one (raw SQL, a seed run), within 60 s.
+
+**Parameters added** (Parameter — exact value — why — where — degrades):
+
+| Parameter | Value | Why | Where | Degrades |
+|---|---|---|---|---|
+| Settings L1 capacity | 1,000 entries | 79 `SettingKey`s, none built dynamically: never evicts a real key | `SETTINGS_L1_MAX_ENTRIES` | LRU: one more read |
+| Version token lifetime | 2 × L2 TTL (120 s / 600 s) | outlives every entry stamped with the token it replaced | `TieredCache.invalidate()` | — |
+| Write-back cutoff | a read ≥ 1 L2 TTL old is not written back | keeps the row above true for a stuck loader | `TieredCache.writeShared()` | that read is not shared |
+| Namespace token | no expiry, one per namespace | O(1) role-level invalidation; never evicted | `TieredCache.invalidateAll()` | — |
+
 ## ADR-078 — Doc 209 (semantic caching): applied to exactly one of ten AiFeature call sites — RAG_GENERATION, the only one where the answer depends solely on question meaning — and explicitly refused for WHATSAPP_ASSISTANT, where every prompt is already personalized per contact and a semantic cache would risk leaking one customer's data into another's answer
 
 ### Context

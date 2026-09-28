@@ -152,11 +152,16 @@ describe('Personal API keys (e2e)', () => {
         .expect(403);
     });
 
+    // Demoted through the admin route, as a real demotion happens: that write
+    // drops the owner's cached permission set (208-l1-l2-l3-caching-
+    // architecture.md §2), so the very next request is refused. A raw SQL edit
+    // would be bounded by the cache's TTL instead — test/permissions-cache.e2e-spec.ts.
     it('shrinks the moment its owner is demoted, and resumes when the grant returns', async () => {
-      const grant = await prisma.roleGrant.findFirstOrThrow({
-        where: { roleId, permission: { key: 'orders.manage' } },
-      });
-      await prisma.roleGrant.delete({ where: { id: grant.id } });
+      await api()
+        .patch(`/api/v1/admin/roles/${roleId}`)
+        .set(bearer(adminToken))
+        .send({ permissions: ['catalog.manage'] })
+        .expect(200);
 
       await api().get('/api/v1/admin/orders').set(bearer(key.secret)).expect(403);
       const list = await api().get('/api/v1/api-keys?surface=ADMIN').set(bearer(staffToken)).expect(200);
@@ -165,7 +170,11 @@ describe('Personal API keys (e2e)', () => {
         pausedScopes: ['orders.manage'],
       });
 
-      await prisma.roleGrant.create({ data: { roleId, permissionId: grant.permissionId } });
+      await api()
+        .patch(`/api/v1/admin/roles/${roleId}`)
+        .set(bearer(adminToken))
+        .send({ permissions: ['orders.manage', 'catalog.manage'] })
+        .expect(200);
       await api().get('/api/v1/admin/orders').set(bearer(key.secret)).expect(200);
     });
 

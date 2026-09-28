@@ -11,7 +11,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 17 files
 
 Source: `apps/api/src/modules/fulfilment/`
 
-## Files (17 · 2,821 lines)
+## Files (17 · 2,827 lines)
 
 All paths relative to `apps/api/src/modules/fulfilment`.
 
@@ -25,12 +25,12 @@ All paths relative to `apps/api/src/modules/fulfilment`.
 | `fulfilment.cron.ts` | scheduled job | 80 | 1 | WO-6.5 — polls every non-terminal shipment's courier every 30 minutes and feeds the result through FulfilmentService.ap… |
 | `fulfilment.module.ts` | nest module | 48 | 1 |  |
 | `fulfilment.service.ts` | service | 470 | 1 | WO-6.2/6.4/6.5/6.7 — shipment lifecycle, manifests, tracking automation and RTO. |
-| `fulfilment.spec.ts` | unit test | 125 | — |  |
+| `fulfilment.spec.ts` | unit test | 128 | — |  |
 | `manual.provider.ts` | module | 49 | 1 | "Type a tracking number" — what every shop on this platform does today. |
 | `return-notification.subscriber.ts` | event subscriber | 69 | 1 |  |
 | `returns.controller.ts` | controller | 160 | 2 | WO-6.8's `/admin/sales/returns` + `/[id]` — the inspection sheet. |
 | `returns.service.ts` | service | 405 | 1 | WO-6.6 — request -> approve/reject -> receive -> inspect -> resolve. |
-| `returns.spec.ts` | unit test | 182 | — |  |
+| `returns.spec.ts` | unit test | 185 | — |  |
 | `shipping-migration.spec.ts` | unit test | 90 | — |  |
 | `shipping.controller.ts` | controller | 114 | 2 | WO-6.8's `/admin/settings/shipping` (zones, rates, methods, classes) plus the storefront's own live quote — the "delive… |
 | `shipping.service.ts` | service | 328 | 3 |  |
@@ -154,6 +154,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `idempotency`
 - core `notifications`
 - core `prisma`
+- core `redis`
 - core `settings`
 - core `storage`
 - package `@newax/shared`

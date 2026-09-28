@@ -1,10 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { TieredCache, type Loaded } from '../cache/tiered-cache';
 import { PrismaService } from '../prisma/prisma.service';
+import { RedisService } from '../redis/redis.service';
 
 export interface ResolvedPermissions {
   /** Every `Role` name this user currently holds — plural, unioned below (custom roles). */
   roles: string[];
   permissions: string[];
+}
+
+/**
+ * L1: how long one process serves a user's resolved set
+ * (208-l1-l2-l3-caching-architecture.md §2). 10 s, not settings' 30 s: a
+ * stale *revocation* is a live over-permission window, not a cosmetic delay.
+ * Every write that changes a user's permissions drops the entry at once in
+ * the process that made it, so this is the most another replica can lag.
+ */
+export const PERMISSIONS_L1_TTL_MS = 10_000;
+/** L1 entries per process, least recently used evicted past it (doc 208 §2). Measured sizes in doc 208 §6. */
+export const PERMISSIONS_L1_MAX_ENTRIES = 10_000;
+/**
+ * L2: how long a resolved set is shared in Redis (`permissions:{userId}`,
+ * doc 208 §2). Invalidated at every write site, so it bounds only a change
+ * no write site saw — a raw SQL edit, a seed run — and an L1 entry filled
+ * from it never outlives it.
+ */
+export const PERMISSIONS_L2_TTL_MS = 60_000;
+
+function decodeResolved(json: unknown): ResolvedPermissions | undefined {
+  if (typeof json !== 'object' || json === null) return undefined;
+  const { roles, permissions } = json as Record<string, unknown>;
+  return isStringArray(roles) && isStringArray(permissions) ? { roles, permissions } : undefined;
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string');
 }
 
 /**
@@ -28,18 +58,76 @@ export interface ResolvedPermissions {
  * resolver answers *may you at all*; *over which rows* is scope.guard.ts's
  * job, unchanged).
  *
- * Called on every request (@see JwtStrategy) and on every token issue
- * (@see AuthService), the same places roles are already re-read from the
- * database — so a super admin editing a role's grants, assigning or
- * removing a role, overriding a permission, or issuing/revoking an
- * OrgUnitGrant takes effect within the access token's lifetime, not just at
- * the next login.
+ * Two ways in (doc 208 §2, ADR-077):
+ *  - `resolveForUserCached()` — every authenticated request (@see JwtStrategy,
+ *    ApiKeyAuthService): L1 in this process (10 s), L2 in Redis (60 s), then
+ *    the database. Every write that changes the answer calls `invalidate()`
+ *    or `invalidateAll()` after it commits, so a super admin editing a role's
+ *    grants, assigning or removing a role, overriding a permission, or
+ *    issuing/revoking an OrgUnitGrant takes effect on the very next request
+ *    served by the replica that made the change, and within 10 s on every
+ *    other replica (their L1 — the stated, accepted bound; nothing pushes
+ *    to them). A grant that simply expires stops counting at its
+ *    `expiresAt`, never up to a TTL later.
+ *  - `resolveForUser()` — straight from the database, every time: for a
+ *    decision that confers durable authority on the strength of the answer
+ *    (issuing an OrgUnitGrant, minting an API key, adjusting someone else's
+ *    attendance), for the sets a session is issued with, and for the
+ *    effective permissions an admin reads right after editing them. None
+ *    of those is per-request, so the cache would buy them nothing.
  */
 @Injectable()
 export class PermissionsResolverService {
-  constructor(private readonly prisma: PrismaService) {}
+  private readonly cache: TieredCache<ResolvedPermissions>;
 
+  constructor(
+    private readonly prisma: PrismaService,
+    redis: RedisService,
+  ) {
+    this.cache = new TieredCache<ResolvedPermissions>(redis, new Logger(PermissionsResolverService.name), {
+      namespace: 'permissions',
+      l1: { maxEntries: PERMISSIONS_L1_MAX_ENTRIES, ttlMs: PERMISSIONS_L1_TTL_MS },
+      l2: { ttlMs: PERMISSIONS_L2_TTL_MS },
+      decode: decodeResolved,
+    });
+  }
+
+  /** Uncached — see the class comment for who needs this rather than `resolveForUserCached()`. */
   async resolveForUser(userId: string): Promise<ResolvedPermissions> {
+    return (await this.load(userId)).value;
+  }
+
+  /**
+   * The per-request path: served from this process for up to 10 s and from
+   * Redis for up to 60 s, dropped at every write that changes it. Each caller
+   * gets its own copy, so nothing done to one request's arrays reaches another.
+   */
+  async resolveForUserCached(userId: string): Promise<ResolvedPermissions> {
+    const cached = await this.cache.getOrLoad(userId, () => this.load(userId));
+    return { roles: [...cached.roles], permissions: [...cached.permissions] };
+  }
+
+  /**
+   * Call after — never before — a committed write that changed one user's
+   * role assignments, permission overrides or OrgUnitGrants. Invalidating
+   * inside an open transaction would let a concurrent request re-cache the
+   * pre-write set as current.
+   */
+  invalidate(userId: string): Promise<void> {
+    return this.cache.invalidate(userId);
+  }
+
+  /**
+   * Call after a committed write that changed what a role grants or is
+   * called, or deleted one: every holder's set changed, and a role can have
+   * any number of holders, so every cached set goes — one Redis write, not
+   * one per holder.
+   */
+  invalidateAll(): Promise<void> {
+    return this.cache.invalidateAll();
+  }
+
+  private async load(userId: string): Promise<Loaded<ResolvedPermissions>> {
     const [assignments, grants, overrides] = await Promise.all([
       this.prisma.userRoleAssignment.findMany({
         where: { userId },
@@ -51,7 +139,7 @@ export class PermissionsResolverService {
       }),
       this.prisma.orgUnitGrant.findMany({
         where: { userId, revokedAt: null, expiresAt: { gt: new Date() } },
-        select: { permissionKeys: true },
+        select: { permissionKeys: true, expiresAt: true },
       }),
       this.prisma.userPermission.findMany({
         where: { userId },
@@ -80,7 +168,14 @@ export class PermissionsResolverService {
       }
     }
 
-    return { roles, permissions: [...permissions] };
+    // The set stops being true the moment the earliest grant in it expires —
+    // no write marks that moment, so the cache is told when it is.
+    const validUntil = grants.reduce<number | null>(
+      (earliest, grant) => Math.min(earliest ?? Number.POSITIVE_INFINITY, grant.expiresAt.getTime()),
+      null,
+    );
+
+    return { value: { roles, permissions: [...permissions] }, validUntil };
   }
 
   /**

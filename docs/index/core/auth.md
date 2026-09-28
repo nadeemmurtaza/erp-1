@@ -3,7 +3,7 @@
 
 # Core: `auth`
 
-Shared platform — available to every module, part of no feature · 47 files
+Shared platform — available to every module, part of no feature · 48 files
 
 
 
@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (47 · 9,364 lines)
+## Files (48 · 9,807 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -20,8 +20,8 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 |---|---|---|---|---|
 | `api-key-access.spec.ts` | unit test | 159 | — |  |
 | `api-key-access.ts` | module | 93 | 4 | What a route declares about who may call it, read off its decorators. |
-| `api-key-auth.service.spec.ts` | unit test | 270 | — |  |
-| `api-key-auth.service.ts` | service | 192 | 5 | `lastUsedAt` is stamped at most this often per key — a key making 300 requests a minute writes it once. |
+| `api-key-auth.service.spec.ts` | unit test | 273 | — |  |
+| `api-key-auth.service.ts` | service | 194 | 5 | `lastUsedAt` is stamped at most this often per key — a key making 300 requests a minute writes it once. |
 | `api-keys-admin.controller.ts` | controller | 41 | 1 | Oversight of every account's personal API keys — read and revoke only (163-personal-api-keys.md §5). |
 | `api-keys.controller.ts` | controller | 67 | 1 | A signed-in person managing their own personal API keys, on either surface (163-personal-api-keys.md §5). |
 | `api-keys.service.spec.ts` | unit test | 546 | — |  |
@@ -40,7 +40,8 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `guards.spec.ts` | unit test | 212 | — |  |
 | `guards.ts` | module | 167 | 2 | Registered globally in AppModule: every route requires a valid access token unless it is marked @Public. |
 | `identity-provider.ts` | module | 91 | 6 | All a person is ever told when single sign-on fails. |
-| `jwt.strategy.ts` | auth strategy | 44 | 1 |  |
+| `jwt.strategy.spec.ts` | unit test | 57 | — |  |
+| `jwt.strategy.ts` | auth strategy | 50 | 1 |  |
 | `login-identifier.spec.ts` | unit test | 39 | — |  |
 | `login-identifier.ts` | module | 38 | 3 | A sign-in identifier as the rate limiter and the audit trail see it: the normalised form, hashed (206-rate-limiting-cac… |
 | `login-throttle.service.spec.ts` | unit test | 111 | — |  |
@@ -49,15 +50,15 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `ownership.guard.ts` | guard | 24 | 2 |  |
 | `password.util.spec.ts` | unit test | 80 | — |  |
 | `password.util.ts` | module | 89 | 6 |  |
-| `permissions.service.spec.ts` | unit test | 175 | — |  |
-| `permissions.service.ts` | service | 124 | 2 |  |
+| `permissions.service.spec.ts` | unit test | 317 | — |  |
+| `permissions.service.ts` | service | 219 | 5 |  |
 | `oidc.provider.spec.ts` | unit test | 205 | — |  |
 | `oidc.provider.ts` | module | 195 | 2 | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnection.protocol… |
 | `rate-limit-audit.service.spec.ts` | unit test | 76 | — |  |
 | `rate-limit-audit.service.ts` | service | 85 | 5 |  |
 | `roles.controller.ts` | controller | 44 | 1 | Custom roles (owner's request) — create, edit, delete a named permission bundle, freely, without a deploy. |
-| `roles.service.spec.ts` | unit test | 277 | — |  |
-| `roles.service.ts` | service | 332 | 4 |  |
+| `roles.service.spec.ts` | unit test | 388 | — |  |
+| `roles.service.ts` | service | 359 | 4 |  |
 | `scope.guard.spec.ts` | unit test | 195 | — |  |
 | `scope.guard.ts` | guard | 170 | 9 | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RETAIL-ERP.md… |
 | `sso-admin.controller.ts` | controller | 82 | 1 | Registering, editing and suspending single sign-on connections (161-sso-identity-federation.md, WO-161.4/161.5), and th… |
@@ -150,7 +151,7 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (16)
+## Tests (17)
 
 | Spec | Cases | Covers |
 |---|---|---|
@@ -159,14 +160,15 @@ check there before adding another.
 | `api-keys.service.spec.ts` | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do right now · update · rot… |
 | `auth.service.spec.ts` | 26 | AuthService.login — enforceSso (WO-165.6) · AuthService.login — per-account attempt bucket (WO-206.2) · AuthService.ref… |
 | `guards.spec.ts` | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a session — unchanged ·… |
+| `jwt.strategy.spec.ts` | 3 | JwtStrategy.validate |
 | `login-identifier.spec.ts` | 3 | login identifiers as the rate limiter and the audit trail see them (doc 206 §1.2) |
 | `login-throttle.service.spec.ts` | 9 | LoginThrottleService (doc 206 §1.2) |
 | `ownership.guard.spec.ts` | 5 | assertCanManage |
 | `password.util.spec.ts` | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
-| `permissions.service.spec.ts` | 14 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) · usersWithPermission — the inverse bat… |
+| `permissions.service.spec.ts` | 24 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) · resolveForUserCached — L1 (doc 208 §2… |
 | `oidc.provider.spec.ts` | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityFromClaims |
 | `rate-limit-audit.service.spec.ts` | 5 | RateLimitAuditService — auth.rate_limited, one row per throttling episode (doc 206 §1.2) |
-| `roles.service.spec.ts` | 22 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orphan guard · assertLock… |
+| `roles.service.spec.ts` | 32 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orphan guard · assertLock… |
 | `scope.guard.spec.ts` | 24 | resolveScope · assertCanManageAtScope · scopeFilterFor · orgUnitScopeFilterFor |
 | `sso.controller.spec.ts` | 8 | SsoController · start · callback · session |
 | `sso.service.spec.ts` | 34 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing connection · startLogin ·… |
@@ -184,7 +186,7 @@ check there before adding another.
 | `API_KEY_FAILURE_LIMIT` | const | `api-key-auth.service.ts:22` | Failed key authentications one client address may make per window before its key attempts are refused with a… |
 | `API_KEY_FAILURE_WINDOW_MS` | const | `api-key-auth.service.ts:23` | Failed key authentications one client address may make per window before its key attempts are refused with a… |
 | `ApiKeyAuthContext` | interface | `api-key-auth.service.ts:36` |  |
-| `ApiKeyAuthService` | class | `api-key-auth.service.ts:59` | Turns a raw personal API key into the principal it acts as — or a 401 that says why not (163-personal-api-key… |
+| `ApiKeyAuthService` | class | `api-key-auth.service.ts:61` | Turns a raw personal API key into the principal it acts as — or a 401 that says why not (163-personal-api-key… |
 | `ApiKeysAdminController` | class | `api-keys-admin.controller.ts:19` | Oversight of every account's personal API keys — read and revoke only (163-personal-api-keys.md §5). |
 | `ApiKeysController` | class | `api-keys.controller.ts:30` | A signed-in person managing their own personal API keys, on either surface (163-personal-api-keys.md §5). |
 | `ApiKeyStatus` | type | `api-keys.service.ts:34` |  |
@@ -288,8 +290,11 @@ check there before adding another.
 | `PASSWORD_HASHERS` | const | `password.util.ts:54` | Every registered algorithm. |
 | `hashPassword` | function | `password.util.ts:61` | The one place a plaintext password becomes a stored hash — keeps the algorithm and round count consistent eve… |
 | `verifyPassword` | function | `password.util.ts:75` | Checks a plaintext password against a stored hash, whichever registered algorithm wrote it. |
-| `ResolvedPermissions` | interface | `permissions.service.ts:4` |  |
-| `PermissionsResolverService` | class | `permissions.service.ts:39` | Resolves a user's currently effective roles and permission keys. |
+| `ResolvedPermissions` | interface | `permissions.service.ts:6` |  |
+| `PERMISSIONS_L1_TTL_MS` | const | `permissions.service.ts:19` | L1: how long one process serves a user's resolved set (208-l1-l2-l3-caching-architecture.md §2). |
+| `PERMISSIONS_L1_MAX_ENTRIES` | const | `permissions.service.ts:21` | L1 entries per process, least recently used evicted past it (doc 208 §2). |
+| `PERMISSIONS_L2_TTL_MS` | const | `permissions.service.ts:28` | L2: how long a resolved set is shared in Redis (`permissions:{userId}`, doc 208 §2). |
+| `PermissionsResolverService` | class | `permissions.service.ts:80` | Resolves a user's currently effective roles and permission keys. |
 | `OidcProvider` | class | `oidc.provider.ts:50` | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnectio… |
 | `identityFromClaims` | function | `oidc.provider.ts:161` | The identity a verified ID token proves. |
 | `RATE_LIMITED_AUDIT_ACTION` | const | `rate-limit-audit.service.ts:5` |  |
@@ -298,10 +303,10 @@ check there before adding another.
 | `RateLimitRefusal` | interface | `rate-limit-audit.service.ts:12` | Which limit refused the request: ThrottlerGuard's per-IP counter, or LoginThrottleService's per-account bucke… |
 | `RateLimitAuditService` | class | `rate-limit-audit.service.ts:49` | Writes `auth.rate_limited` (206-rate-limiting-caching-compression-hardening.md §1.2) — the hashed identifier,… |
 | `RolesController` | class | `roles.controller.ts:16` | Custom roles (owner's request) — create, edit, delete a named permission bundle, freely, without a deploy. |
-| `RoleWithGrants` | interface | `roles.service.ts:6` |  |
-| `RoleWriteResult` | interface | `roles.service.ts:14` |  |
-| `UserRoleConflicts` | interface | `roles.service.ts:20` |  |
-| `RolesService` | class | `roles.service.ts:46` | Custom roles (owner's request, WO-R2/R3): create, edit, delete a `Role`, assign or unassign one on a user, pl… |
+| `RoleWithGrants` | interface | `roles.service.ts:7` |  |
+| `RoleWriteResult` | interface | `roles.service.ts:15` |  |
+| `UserRoleConflicts` | interface | `roles.service.ts:21` |  |
+| `RolesService` | class | `roles.service.ts:52` | Custom roles (owner's request, WO-R2/R3): create, edit, delete a `Role`, assign or unassign one on a user, pl… |
 | `AdminScopeGrant` | interface | `scope.guard.ts:11` | The shape `assertCanManageAtScope()` and `scopeFilterFor()` read — an actor's resolved `AdminScope` rows (RET… |
 | `ScopedActor` | interface | `scope.guard.ts:17` |  |
 | `ScopeTarget` | interface | `scope.guard.ts:24` | What a `RetailBrand`- or `Location`-shaped row needs, to be checked or filtered against an actor's scope. |

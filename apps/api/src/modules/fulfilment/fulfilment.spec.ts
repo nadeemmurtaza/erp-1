@@ -3,6 +3,7 @@ import { AppConfigService } from '../../core/config/app-config.service';
 import { AuditService } from '../../core/audit/audit.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { RedisService } from '../../core/redis/redis.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { FulfilmentService } from './fulfilment.service';
 import { ManualCourierProvider } from './providers/manual.provider';
@@ -25,6 +26,8 @@ describe('FulfilmentService.applyStatusChange', () => {
         PrismaService,
         AuditService,
         SettingsService,
+        // Settings' shared L2 is not under test here: Redis reads as not connected, so every read is Postgres's.
+        { provide: RedisService, useValue: { isReady: () => false } },
         ManualCourierProvider,
         { provide: EventBusService, useValue: { publish } },
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'main', isCourierProviderEnabled: () => true } },

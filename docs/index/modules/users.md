@@ -9,7 +9,7 @@ Pack **core** · always on · 8 files
 
 Source: `apps/api/src/modules/users/`
 
-## Files (8 · 1,130 lines)
+## Files (8 · 1,210 lines)
 
 All paths relative to `apps/api/src/modules/users/dto`.
 
@@ -21,8 +21,8 @@ All paths relative to `apps/api/src/modules/users/dto`.
 | `security-notification.subscriber.ts` | event subscriber | 184 | 1 | Account-security mail: a changed password, a reset link, a verification link. |
 | `users-admin.controller.ts` | controller | 87 | 1 |  |
 | `users-admin.module.ts` | nest module | 12 | 1 |  |
-| `users-admin.service.spec.ts` | unit test | 242 | — |  |
-| `users-admin.service.ts` | service | 373 | 1 |  |
+| `users-admin.service.spec.ts` | unit test | 319 | — |  |
+| `users-admin.service.ts` | service | 376 | 1 |  |
 
 
 ## HTTP routes (8)
@@ -91,7 +91,7 @@ check there before adding another.
 | Spec | Cases | Covers |
 |---|---|---|
 | `security-notification.subscriber.spec.ts` | 3 | SecurityNotificationSubscriber.onSsoAccountLinked |
-| `users-admin.service.spec.ts` | 12 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivation ends every persona… |
+| `users-admin.service.spec.ts` | 15 | UsersAdminService.create — role selection at creation time · UsersAdminService.update — deactivation ends every persona… |
 
 
 ## Every export in this unit

@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { EventEmitterModule, EventEmitter2 } from '@nestjs/event-emitter';
 import { ForbiddenException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { RedisService } from '../../core/redis/redis.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { AppConfigService } from '../../core/config/app-config.service';
@@ -58,6 +59,8 @@ describe('Receivables — CreditNote/DebitNote posting and credit checks (WO-145
       providers: [
         PrismaService,
         SettingsService,
+        // Settings' shared L2 is not under test here: Redis reads as not connected, so every read is Postgres's.
+        { provide: RedisService, useValue: { isReady: () => false } },
         AuditService,
         AccountingService,
         PostingRulesSubscriber,
@@ -327,7 +330,8 @@ describe('Receivables — CreditNote/DebitNote posting and credit checks (WO-145
   }
 
   async function approvalThreshold(): Promise<number> {
-    const settings = new SettingsService(prisma);
+    // Settings' shared L2 is not under test here: Redis reads as not connected, so the read is Postgres's.
+    const settings = new SettingsService(prisma, { isReady: () => false } as unknown as RedisService);
     return settings.get<number>(SettingKey.FinanceCreditNoteApprovalThresholdMinor);
   }
 });

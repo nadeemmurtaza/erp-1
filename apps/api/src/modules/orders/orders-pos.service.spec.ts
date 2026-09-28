@@ -2,6 +2,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Test } from '@nestjs/testing';
 import { BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { RedisService } from '../../core/redis/redis.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { AuditService } from '../../core/audit/audit.service';
@@ -49,6 +50,8 @@ describe('OrdersService — placeFromPos (WO-21.3)', () => {
         LotsService,
         PrismaService,
         SettingsService,
+        // Settings' shared L2 is not under test here: Redis reads as not connected, so every read is Postgres's.
+        { provide: RedisService, useValue: { isReady: () => false } },
         StockIntakeRegistry,
         EntityEnrichmentRegistry,
         IntentRouterService,

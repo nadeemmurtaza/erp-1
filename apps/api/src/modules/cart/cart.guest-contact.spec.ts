@@ -1,6 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { CartLineValidatorRegistry } from '../../core/extension-points/cart-line-validator.registry';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { RedisService } from '../../core/redis/redis.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { AuditService } from '../../core/audit/audit.service';
 import { PricingService } from '../pricing/pricing.service';
@@ -13,7 +14,16 @@ describe('CartService.updateGuestContact', () => {
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
-      providers: [CartService, PrismaService, SettingsService, CartLineValidatorRegistry, AuditService, PricingService],
+      providers: [
+        CartService,
+        PrismaService,
+        SettingsService,
+        // Settings' shared L2 is not under test here: Redis reads as not connected, so every read is Postgres's.
+        { provide: RedisService, useValue: { isReady: () => false } },
+        CartLineValidatorRegistry,
+        AuditService,
+        PricingService,
+      ],
     }).compile();
     service = module.get(CartService);
     prisma = module.get(PrismaService);

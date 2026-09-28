@@ -563,7 +563,7 @@ All 435 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 9295 |  |
+| `DECISIONS.md` | doc | 9349 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -582,7 +582,7 @@ All 435 tracked files in `docs/*`, by directory.
 | `126-pluggable-cryptography.md` | doc | 176 |  |
 | `16-pbac-row-scoping.md` | doc | 184 |  |
 | `161-sso-identity-federation.md` | doc | 366 |  |
-| `163-personal-api-keys.md` | doc | 625 |  |
+| `163-personal-api-keys.md` | doc | 635 |  |
 | `18-identity-verification.md` | doc | 149 |  |
 | `21-access-over-the-org-tree.md` | doc | 294 |  |
 
@@ -864,7 +864,7 @@ All 435 tracked files in `docs/*`, by directory.
 | `144-supply-chain-resilience-planning-engine.md` | doc | 392 |  |
 | `206-rate-limiting-caching-compression-hardening.md` | doc | 351 |  |
 | `207-checkout-admission-queue-hot-sku-contention.md` | doc | 229 |  |
-| `208-l1-l2-l3-caching-architecture.md` | doc | 203 |  |
+| `208-l1-l2-l3-caching-architecture.md` | doc | 374 |  |
 | `209-semantic-caching-rag-generation.md` | doc | 182 |  |
 | `210-third-party-api-call-caching-status.md` | doc | 81 |  |
 | `37-scalability-future-upgrades.md` | doc | 306 |  |

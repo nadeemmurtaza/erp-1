@@ -8,9 +8,11 @@ import { RedisService } from './redis.service';
  * never share a blast radius.
  *
  * Global, like PrismaModule: a consumer injects RedisService and asks for its
- * own keyspace (redis.keyspaces.ts). Today that is rate limiting only —
- * ThrottlerModule's storage in app.module.ts and LoginThrottleService in
- * core/auth.
+ * own keyspace (redis.keyspaces.ts). Today: `rateLimit` — ThrottlerModule's
+ * storage in app.module.ts and LoginThrottleService in core/auth — and
+ * `cache`, the shared L2 of TieredCache (core/cache), used by
+ * PermissionsResolverService and SettingsService
+ * (208-l1-l2-l3-caching-architecture.md).
  */
 @Global()
 @Module({

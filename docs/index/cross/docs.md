@@ -1868,17 +1868,17 @@ _no second-level headings_
 - Acceptance  <sub>:344</sub>
 - Out of scope  <sub>:357</sub>
 
-### `docs/implementation/access-control-identity/163-personal-api-keys.md`  <sub>625 lines</sub>
+### `docs/implementation/access-control-identity/163-personal-api-keys.md`  <sub>635 lines</sub>
 
 - 1. The three decisions this feature is built on  <sub>:20</sub>
-- 2. Architecture  <sub>:50</sub>
-- 3. The non-delegatable list  <sub>:178</sub>
-- 4. The customer scope catalogue  <sub>:230</sub>
-- 5. Lifecycle  <sub>:296</sub>
-- 6. Surfaces  <sub>:349</sub>
-- 7. Implementation plan  <sub>:371</sub>
-- 8. Verification  <sub>:584</sub>
-- 9. Deferred: service accounts  <sub>:607</sub>
+- 2. Architecture  <sub>:60</sub>
+- 3. The non-delegatable list  <sub>:188</sub>
+- 4. The customer scope catalogue  <sub>:240</sub>
+- 5. Lifecycle  <sub>:306</sub>
+- 6. Surfaces  <sub>:359</sub>
+- 7. Implementation plan  <sub>:381</sub>
+- 8. Verification  <sub>:594</sub>
+- 9. Deferred: service accounts  <sub>:617</sub>
 
 ### `docs/implementation/access-control-identity/18-identity-verification.md`  <sub>149 lines</sub>
 
@@ -2943,7 +2943,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,295 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,349 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3026,8 +3026,8 @@ _no second-level headings_
 - ADR-075 — Doc 206 (rate limiting, sudden-logout, RAM ceilings, connection pooling, API caching, lazy loading, compression): eight requests investigated against the real code first — three extend what's already built, five are genuinely new, every parameter stated with its exact value  <sub>:8880</sub>
 - ADR-076 — Doc 207 (checkout admission queue): "prevent overselling during rush hours" corrected — overselling is already structurally impossible via `InventoryService.applyMovement()`'s predicate-on-write; the real problem is checkout UX and lock contention on a hot SKU's two rows, addressed with a per-variant admission queue that fails open, never a second stock guard  <sub>:9016</sub>
 - ADR-077 — Doc 208 (L1/L2/L3 caching): each tier attached to a found hot path, not applied blindly — permission resolution's uncached three-query call on every authenticated request as the real L1/L2 target, `VariantSalesStat`'s eager-materialization pattern generalized as the L3 strategy, a real cross-replica settings-staleness bug found and closed along the way  <sub>:9088</sub>
-- ADR-078 — Doc 209 (semantic caching): applied to exactly one of ten AiFeature call sites — RAG_GENERATION, the only one where the answer depends solely on question meaning — and explicitly refused for WHATSAPP_ASSISTANT, where every prompt is already personalized per contact and a semantic cache would risk leaking one customer's data into another's answer  <sub>:9172</sub>
-- ADR-079 — Doc 210: caching third-party API calls to save charges — checked every real integration in this codebase and found exactly one billable, cacheable target (the AI provider), already covered by docs 208/209; two future non-AI targets named with their trigger condition, neither built now  <sub>:9239</sub>
+- ADR-078 — Doc 209 (semantic caching): applied to exactly one of ten AiFeature call sites — RAG_GENERATION, the only one where the answer depends solely on question meaning — and explicitly refused for WHATSAPP_ASSISTANT, where every prompt is already personalized per contact and a semantic cache would risk leaking one customer's data into another's answer  <sub>:9226</sub>
+- ADR-079 — Doc 210: caching third-party API calls to save charges — checked every real integration in this codebase and found exactly one billable, cacheable target (the AI provider), already covered by docs 208/209; two future non-AI targets named with their trigger condition, neither built now  <sub>:9293</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3906,16 +3906,18 @@ _no second-level headings_
 - Acceptance  <sub>:205</sub>
 - Out of scope  <sub>:221</sub>
 
-### `docs/implementation/resilience-scalability/208-l1-l2-l3-caching-architecture.md`  <sub>203 lines</sub>
+### `docs/implementation/resilience-scalability/208-l1-l2-l3-caching-architecture.md`  <sub>374 lines</sub>
 
-- 0. What the three tiers are actually for — not three arbitrary layers  <sub>:17</sub>
-- 1. The reusable L1 primitive — extracted from `SettingsService`, not duplicated  <sub>:41</sub>
-- 2. Permission resolution — the actual hottest read path in this codebase  <sub>:57</sub>
-- 3. General API response caching — this is doc 206 §5, reclassified as L2, unchanged  <sub>:134</sub>
-- 4. L3 — where eager materialization applies, and where it doesn't  <sub>:143</sub>
-- Work orders  <sub>:165</sub>
-- Acceptance  <sub>:181</sub>
-- Out of scope  <sub>:195</sub>
+- 0. What the three tiers are actually for — not three arbitrary layers  <sub>:21</sub>
+- 1. The reusable L1 primitive — extracted from `SettingsService`, not duplicated  <sub>:45</sub>
+- 2. Permission resolution — the actual hottest read path in this codebase  <sub>:61</sub>
+- 3. General API response caching — this is doc 206 §5, reclassified as L2, unchanged  <sub>:138</sub>
+- 4. L3 — where eager materialization applies, and where it doesn't  <sub>:147</sub>
+- 5. As built — WO-208.1 to WO-208.5 (2026-09-28)  <sub>:169</sub>
+- 6. Memory budget, measured (2026-09-28)  <sub>:308</sub>
+- Work orders  <sub>:336</sub>
+- Acceptance  <sub>:352</sub>
+- Out of scope  <sub>:366</sub>
 
 ### `docs/implementation/resilience-scalability/209-semantic-caching-rag-generation.md`  <sub>182 lines</sub>
 

@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 Source: `apps/api/src/modules/finance/`
 
-## Files (20 · 3,019 lines)
+## Files (20 · 3,027 lines)
 
 All paths relative to `apps/api/src/modules/finance/dto`.
 
@@ -32,7 +32,7 @@ All paths relative to `apps/api/src/modules/finance/dto`.
 | `finance.module.ts` | nest module | 26 | 1 |  |
 | `finance.service.ts` | service | 675 | 6 |  |
 | `finance.spec.ts` | unit test | 522 | — |  |
-| `order-economics.service.spec.ts` | unit test | 298 | — |  |
+| `order-economics.service.spec.ts` | unit test | 306 | — |  |
 | `order-economics.service.ts` | service | 205 | 3 |  |
 | `rto-expense.listener.ts` | event subscriber | 47 | 1 | WO-6.7 — "Record the RTO cost (both legs of courier charge) as a direct cost." Posted as an Expense against the existin… |
 
@@ -119,6 +119,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `events`
 - core `metrics`
 - core `prisma`
+- core `redis`
 - core `replication`
 - core `settings`
 - core `storage`

@@ -1,6 +1,10 @@
 # 208 — L1/L2/L3 caching, applied where the code actually shows a hot path
 
-> **Status: proposed (2026-09-28), not yet built**, except where this
+> **Status: built (2026-09-28), WO-208.1–208.5.** §5 records what the code
+> does, the parameters it needed that §1–§4 did not decide, and the places
+> §1–§4 were wrong once the real code was in view; where they differ, §5 is
+> what runs. §6 is the memory budget, measured. Written before that as:
+> **proposed (2026-09-28), not yet built**, except where this
 > document names something already real. "Where needed" is not a phrase to
 > skip past: every tier below is attached to a specific, measured read path
 > found by reading the actual code, not a generic caching layer bolted on
@@ -161,6 +165,173 @@ scope doesn't cover — naming a speculative L3 target here would be exactly
 the "unused abstraction with no documented reason" this repo's rules forbid.
 The criterion above is written down so the next real candidate is evaluated
 against it, not invented ad hoc.
+
+## 5. As built — WO-208.1 to WO-208.5 (2026-09-28)
+
+Every number §1–§2 decided runs unchanged: permissions L1 10 s capped at
+10,000 entries, L2 60 s at `permissions:{userId}`; settings L1 30 s, L2 300 s
+at `settings:{key}`; both in `cache: { db: 1 }`. What follows is what the
+code needed that the text did not decide, and the places the text was wrong.
+
+**Where it lives.** `apps/api/src/core/cache/` — `InProcessCache` (L1: a
+bounded, expiring, least-recently-used map; the extraction of
+`SettingsService`'s hand-rolled `Map`) and `TieredCache` (L1 in front of a
+Redis entry every replica shares, in front of the loader). `TieredCache` is
+a second shared primitive on purpose: both consumers need the identical,
+race-free L2 logic below, and two copies of it would be the duplication §1
+exists to prevent. Consumers: `PermissionsResolverService`
+(`core/auth/permissions.service.ts`) and `SettingsService`.
+
+**Parameters §1–§2 did not decide.**
+
+| Parameter | Exact value | Why this number | Enforced in | Degrades |
+|---|---|---|---|---|
+| Settings L1 capacity | 1,000 entries | The key set is closed — `SettingKey` names 79 keys, no caller builds one — so this never evicts a real key (~12× headroom); it exists so a future caller that did build keys could not grow the map without bound | `SETTINGS_L1_MAX_ENTRIES` | LRU eviction: one more L2/Postgres read |
+| Version token lifetime | 2 × the L2 TTL (120 s permissions, 600 s settings) | Must outlive every entry stamped with the token it replaced; an entry is written at most one TTL after its tokens were read (next row), so 2× always covers it | `TieredCache.invalidate()` | — |
+| Write-back cutoff | a read older than one L2 TTL is not written back | Keeps the row above true even for a loader stuck longer than the TTL | `TieredCache.writeShared()` | That one read is not shared |
+| Namespace generation token | no expiry, one key per namespace | Replaced by `invalidateAll()`; never evicted (noeviction) | `TieredCache.invalidateAll()` | — |
+
+**Departure 1 — the cache keyspace runs `noeviction`, not `allkeys-lru`.**
+§2 put `allkeys-lru` on db 1 and `noeviction` on db 0. Redis sets
+`maxmemory-policy` (and `maxmemory`) once per instance; there is no
+per-database or per-connection policy, in Redis or in ioredis. The instance
+is provisioned `noeviction` (the `redis` service in every compose file and
+swarm stack), and switching it to `allkeys-lru` would let a cache burst evict
+rate-limit counters — the silent fail-open ADR-075 refused. So the cache
+shares `noeviction`, as doc 206 §8.1's WO-206.8 note had already decided: at
+the ceiling a cache write is refused and the next read is a miss. Every key
+carries a TTL, so the cache cannot grow past one TTL of traffic, and a full
+instance drains as entries expire. The cost of sharing, proven in
+`test/tiered-cache.e2e-spec.ts`: at the ceiling the rate limiter's writes are
+refused too — hence the budget in §6. A separate cache instance is the
+answer if that budget ever stops holding (see §6's trigger).
+
+**Departure 2 — eight write sites in three files, not two.** Found by
+searching for every write to `UserRoleAssignment`, `RoleGrant`, `Role`,
+`UserPermission` and `OrgUnitGrant`: `RolesService.assign()`, `.unassign()`,
+`.update()` (grants or name), `.delete()`; `UsersAdminService
+.updatePermissions()`; and `GrantService.issue()`, `.revoke()` in
+`modules/orgstructure/org-unit-grant.service.ts`, which §2 did not name. Each
+invalidates after its commit, never inside it (a concurrent read would
+re-cache the pre-write set as current). `assign()` inside a caller's own
+transaction leaves invalidation to that caller; its one such caller,
+`SsoService.provision()`, assigns to a user it creates in the same
+transaction, so nothing can have cached it. `GrantService.sweepExpired()`
+needs none (Departure 7). Out of reach by design: raw SQL and a seed run —
+bounded by the 60 s L2.
+
+**Departure 3 — a role-level change drops every entry at once.** A role's
+grants, name or existence are part of *every holder's* set, and a role can
+have any number of holders — the `Customer` role has every customer. Deleting
+`permissions:{userId}` per holder would read every holder in the admin's
+request. Instead `invalidateAll()` replaces one namespace token (one Redis
+write); every entry stamped with the old token stops being served.
+
+**Departure 4 — `invalidate()` lives on the resolver.** §2 named a
+`PermissionsCacheInvalidationService`; the L1 it must drop is the resolver's
+own per-process instance, so a separate service would only have to share
+it. `PermissionsResolverService.invalidate(userId)` / `.invalidateAll()`.
+
+**Departure 5 — only the per-request path is cached.** `resolveForUser()` had
+seven callers. The two that run on every request — `JwtStrategy.validate()`
+and `ApiKeyAuthService.authenticate()` — call the new
+`resolveForUserCached()`. `resolveForUser()` stays uncached for the other
+five, each a one-off where a cache buys nothing and a stale answer can
+outlive the window: `GrantService` judging a granter (a just-demoted
+granter could issue a grant that runs for weeks), `ApiKeysService` minting a
+key, `AttendanceService` letting someone adjust another person's record,
+`AuthService` issuing a session, and `UsersAdminService.get()` showing an
+admin the effective set right after an edit. A new caller gets the uncached
+read unless it opts in by name.
+
+**Departure 6 — DEL alone is not enough: the stale write-back race.** A
+replica that read Postgres just before a revocation committed would, with
+DEL alone, write the old set back just after the writer deleted it — and
+every replica would serve it for the full 60 s, on the revoking replica too.
+Each entry therefore records the namespace token and its own id's version
+token, read in the same `MGET` that looked for the entry and before the
+database read; `invalidate()` replaces the version token (and deletes the
+entry) in one pipeline — not `MULTI`, whose abort under a full instance
+would take the DEL with it. A late write-back is born stale and never
+served. Inside one process the same race is closed by an epoch: a read that
+was in flight when this process invalidated never fills L1.
+
+**Departure 7 — a time-boxed grant stops at its `expiresAt`.** No write
+marks a grant's expiry, so a set that includes one is cached only until the
+earliest such `expiresAt`, in both tiers — never up to a TTL past it.
+
+**Departure 8 — the real bounds.** With a write site: refused on the next
+request the revoking replica serves, and within **10 s** on every other
+replica (their own L1 — nothing pushes to them; a pub/sub push stays out of
+scope, §2) — not "within 60 s". Without one (raw SQL, a seed run): within
+**60 s**, because an L1 entry filled from L2 is capped at what that L2 entry
+has left (otherwise 60 + 10). Proven in `test/permissions-cache.e2e-spec.ts`.
+
+**Departure 9 — the settings "cross-replica staleness bug" was already
+bounded, and L2 cannot shorten it.** §2 says `set()` "calls
+`this.cache.clear()`" and the acceptance says a second replica was stale
+"unbounded-until-restart". The code read `this.cache.delete(key)` (`clear()`
+was `invalidate()`), and every entry expired 30 s after it was set, so a
+second replica was already stale for at most 30 s. An L2 behind each
+replica's 30 s L1 cannot shorten that: the other replica serves its own L1
+entry until it lapses, whatever happens in Redis. Built as specified anyway —
+with delete-on-write it never makes that bound worse — and measured in
+`test/settings-cache.e2e-spec.ts`: the other replica reads a write at exactly
+30 s. What the L2 does buy is load: one Postgres read per key per 300 s for
+the whole fleet (2 reads in a simulated 10 minutes across two replicas,
+against 40 before). What it can make worse: a write that bypasses `set()`
+(none does today) or an invalidation that cannot reach Redis — up to 300 s,
+logged as an error when it happens.
+
+**Departure 10 — sizes.** §2's "~200 bytes per resolved set" holds for a
+customer only; a staff member's set is several times that. Measured in §6.
+
+**Failure modes.**
+
+| Condition | Reads | Invalidation | Logged |
+|---|---|---|---|
+| Redis not connected | L1, then Postgres; nothing written back | L1 dropped here; other replicas keep a shared copy until it expires (≤ 60 s / 300 s) | error, per invalidation, naming the id and the bound |
+| Redis slow | a read waits at most `commandTimeout` (500 ms, doc 206 §8.1), then Postgres | same as down | warn once per outage, and on recovery |
+| Instance full (noeviction) | reads work; write-backs refused — a miss | the DEL lands; the version SET is refused (no write-back can land either) | warn once; error for the refused SET |
+
+**Tests.** `in-process-cache.spec.ts` (TTL, LRU, and a load of 100,000 keys
+through a 10,000 cap), `tiered-cache.spec.ts` (no Redis, failing Redis, the
+epoch), `settings.service.spec.ts`, `permissions.service.spec.ts` (an L1 hit
+issues zero queries), `jwt.strategy.spec.ts`, the write-site specs
+(`roles.service`, `users-admin.service`, `org-unit-grant.service`); against a
+real Redis and Postgres, `test/tiered-cache.e2e-spec.ts`,
+`test/permissions-cache.e2e-spec.ts`, `test/settings-cache.e2e-spec.ts`.
+`test/api-keys.e2e-spec.ts` now demotes a key's owner through
+`PATCH /admin/roles/:id` rather than a raw `RoleGrant` delete — a raw write
+is exactly what the cache's TTL, not its invalidation, bounds.
+
+## 6. Memory budget, measured (2026-09-28)
+
+Measured with `MEMORY USAGE` on Redis 7 and V8 heap deltas on Node 22, for
+the permission catalogue as it stands (153 keys):
+
+| Resolved set | Redis L2 entry | L1, per entry | L1 at the 10,000 cap |
+|---|---|---|---|
+| Customer (`Customer`, no keys) | 216 B | 348 B | 3.3 MB |
+| Staff holding 20 keys | 728 B | 1,302 B | 12.4 MB |
+| Holding all 153 keys | 3,672 B | 6,822 B | 65.1 MB |
+
+A version token costs 152 B for 2 × the TTL; all 80 settings rows hold 1,044
+bytes of JSON between them. **L1:** the cap bounds a process at 65 MB only
+if 10,000 distinct users each holding every key are active within one
+10-second window — a realistic mix (customers plus a few hundred staff) is
+single-digit MB against the API container's 768 MB. **L2**, against the
+shared 64 MB: doc 206 §8.1 sized the instance at ~3× a busy single-brand
+minute of rate-limit keys, i.e. ~20 MB for that minute, leaving ~44 MB —
+about 200,000 distinct customers authenticating within one minute before
+the permission entries alone fill it. If they did, cache writes
+would be refused and the rate limiter's with them (Departure 1) until the
+entries expire, 60 s at most.
+
+**Trigger for revisiting:** WO-206.8's API-response cache is the first
+consumer whose key space is not bounded by users per minute. It either
+budgets itself into this table, or it takes its own Redis instance with
+`allkeys-lru` — the configuration §2 wanted, and the only place it can exist.
 
 ## Work orders
 

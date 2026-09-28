@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 10 files
 
 Source: `apps/api/src/modules/orgstructure/`
 
-## Files (10 · 1,317 lines)
+## Files (10 · 1,367 lines)
 
 All paths relative to `apps/api/src/modules/orgstructure/dto`.
 
@@ -19,8 +19,8 @@ All paths relative to `apps/api/src/modules/orgstructure/dto`.
 | `org-unit.dto.ts` | dto | 45 | 3 |  |
 | `org-access.cron.ts` | scheduled job | 25 | 1 | access-control-identity/21-access-over-the-org-tree.md — "expired rows are swept nightly" (the doc's own "hundred-thous… |
 | `org-unit-grant.controller.ts` | controller | 52 | 1 | access-control-identity/21-access-over-the-org-tree.md WO-21.6 — "one access screen per unit: who reaches this unit, by… |
-| `org-unit-grant.service.spec.ts` | unit test | 249 | — |  |
-| `org-unit-grant.service.ts` | service | 339 | 7 |  |
+| `org-unit-grant.service.spec.ts` | unit test | 291 | — |  |
+| `org-unit-grant.service.ts` | service | 347 | 7 |  |
 | `org-unit.controller.ts` | controller | 79 | 1 | hr-people-org/19-org-structure-offices-departments.md — reads sit behind `org.structure.view`; every write additionally… |
 | `org-unit.service.spec.ts` | unit test | 185 | — |  |
 | `org-unit.service.ts` | service | 300 | 3 |  |
@@ -93,7 +93,7 @@ check there before adding another.
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `org-unit-grant.service.spec.ts` | 18 | GrantService · reachOf · previewIssue / issue — the five refusals · ACTING mode · revoke · sweepExpired · accessOverUnit |
+| `org-unit-grant.service.spec.ts` | 22 | GrantService · reachOf · previewIssue / issue — the five refusals · ACTING mode · revoke · sweepExpired · accessOverUnit |
 | `org-unit.service.spec.ts` | 13 | OrgUnitService · create · close · move / previewMove — the single-writer discipline · get / findRow |
 
 

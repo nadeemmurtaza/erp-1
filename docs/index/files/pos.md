@@ -104,7 +104,7 @@ All 33 tracked files in `apps/pos`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `api-client.ts` | utility | 67 |  |
+| `api-client.ts` | utility | 68 |  |
 | `auth-client.ts` | utility | 80 |  |
 | `hardware.ts` | utility | 83 |  |
 | `outbox-db.ts` | utility | 55 |  |

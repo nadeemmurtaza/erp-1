@@ -13,24 +13,24 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `.dockerignore` | file | — |  |
-| `.env.branch.example` | example | 101 |  |
-| `.env.example` | example | 180 |  |
-| `.env.production.example` | example | 129 |  |
+| `.env.branch.example` | example | 109 |  |
+| `.env.example` | example | 193 |  |
+| `.env.production.example` | example | 140 |  |
 | `.gitignore` | file | 68 |  |
 | `Caddyfile` | file | 63 |  |
 | `cloudflare.json` | json | 22 |  |
-| `docker-compose.branch.yml` | yaml | 98 |  |
+| `docker-compose.branch.yml` | yaml | 129 |  |
 | `docker-compose.caddy.yml` | yaml | 31 |  |
 | `docker-compose.mail.yml` | yaml | 75 |  |
-| `docker-compose.prod.yml` | yaml | 101 |  |
-| `docker-compose.yml` | yaml | 42 |  |
+| `docker-compose.prod.yml` | yaml | 150 |  |
+| `docker-compose.yml` | yaml | 61 |  |
 | `docker-stack.edge.yml` | yaml | 42 |  |
-| `docker-stack.prod.yml` | yaml | 88 |  |
-| `docker-stack.staging.yml` | yaml | 88 |  |
+| `docker-stack.prod.yml` | yaml | 124 |  |
+| `docker-stack.staging.yml` | yaml | 124 |  |
 | `package.json` | json | 62 |  |
 | `pnpm-lock.yaml` | yaml | 19082 |  |
 | `pnpm-workspace.yaml` | yaml | 12 |  |
-| `turbo.json` | json | 55 |  |
+| `turbo.json` | json | 56 |  |
 | `wrangler.toml` | toml | 17 |  |
 
 ### `.github` (1)
@@ -43,7 +43,7 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `ci.yml` | yaml | 164 |  |
+| `ci.yml` | yaml | 184 |  |
 | `deploy-cloudflare.yml` | yaml | 91 |  |
 
 ### `deploy` (3)

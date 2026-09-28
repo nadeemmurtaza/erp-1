@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-80 files · 8,765 lines
+80 files · 8,791 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -23,7 +23,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 10 | 613 | unit test, module |
 | `packages/shared` | 4 | 75 | script, json |
-| `packages/shared/src` | 58 | 7,907 | unit test, module |
+| `packages/shared/src` | 58 | 7,933 | unit test, module |
 
 
 ## Entry points
@@ -50,8 +50,8 @@ file may hard-code one.
 | `packages/shared/src/pricing.spec.ts` | 307 | unit test |  |
 | `packages/shared/src/pricing.ts` | 275 | module | Order maths. |
 | `packages/shared/src/api-keys.spec.ts` | 231 | unit test |  |
+| `packages/shared/src/http-client.ts` | 227 | module | The one HTTP layer for a signed-in browser client. |
 | `packages/shared/src/discounts.spec.ts` | 215 | unit test |  |
-| `packages/shared/src/http-client.ts` | 201 | module | The one HTTP layer for a signed-in browser client. |
 | `packages/shared/src/cod-risk.spec.ts` | 199 | unit test |  |
 | `packages/shared/src/constants.ts` | 199 | module |  |
 | `packages/shared/src/demand-forecast.spec.ts` | 179 | unit test |  |

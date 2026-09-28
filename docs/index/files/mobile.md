@@ -102,7 +102,7 @@ All 49 tracked files in `apps/mobile`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `client.ts` | module | 206 |  |
+| `client.ts` | module | 212 |  |
 | `resources.ts` | module | 393 |  |
 | `types.ts` | module | 375 |  |
 

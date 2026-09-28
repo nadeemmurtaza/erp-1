@@ -169,7 +169,8 @@ Every top-level export in `packages`, with the line to open.
 | `http-client.ts` | `RequestOptions` | interface | :53 |  |
 | `http-client.ts` | `messageOf` | function | :84 | Pulls a human message out of whatever the API returned. |
 | `http-client.ts` | `request` | function | :116 | One request. |
-| `http-client.ts` | `requestWithRefresh` | function | :159 | Wraps `request` with a 401 retry. |
+| `http-client.ts` | `singleFlight` | function | :164 | At most one run of `task` in flight at a time: a call made while a run is pending gets that run's o… |
+| `http-client.ts` | `requestWithRefresh` | function | :185 | Wraps `request` with a 401 retry. |
 | `human-code.ts` | `generateHumanCode` | function | :30 | A cryptographically random, human-readable code — never sequential. |
 | `index.ts` | `*` | re-export |  | from `./api-keys` |
 | `index.ts` | `*` | re-export |  | from `./cod-risk` |

@@ -89,10 +89,10 @@ Every top-level export in `pos`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `api-client.ts` | `API_URL` | const | :9 |  |
-| `api-client.ts` | `clearSession` | function | :19 |  |
-| `api-client.ts` | `publicRequest` | function | :26 | An unauthenticated call — only /auth/login and /auth/refresh use this. |
-| `api-client.ts` | `request` | function | :59 | The one HTTP call every authenticated screen makes — a 401 refreshes once and retries once, then si… |
+| `api-client.ts` | `API_URL` | const | :15 |  |
+| `api-client.ts` | `clearSession` | function | :25 |  |
+| `api-client.ts` | `publicRequest` | function | :32 | An unauthenticated call — only /auth/login and /auth/refresh use this. |
+| `api-client.ts` | `request` | function | :60 | The one HTTP call every authenticated screen makes — a 401 refreshes once and retries once, then si… |
 | `auth-client.ts` | `PosUser` | interface | :6 |  |
 | `auth-client.ts` | `getAccessToken` | function | :30 | A cashier signs into the till with the same staff account the admin panel uses — `pos.operate` is a… |
 | `auth-client.ts` | `getStoredUser` | function | :34 |  |

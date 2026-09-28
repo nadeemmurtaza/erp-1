@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2462,
-    "lines": 386625,
+    "files": 2463,
+    "lines": 387039,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -27,8 +27,8 @@
     },
     "infra": {
       "files": 60,
-      "lines": 30714,
-      "bytes": 1209617,
+      "lines": 30938,
+      "bytes": 1218347,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -39,32 +39,32 @@
     },
     "mobile": {
       "files": 49,
-      "lines": 6900,
-      "bytes": 319713,
+      "lines": 6906,
+      "bytes": 320001,
       "label": "apps/mobile — Expo/React Native customer app"
     },
     "pos": {
       "files": 33,
-      "lines": 2667,
-      "bytes": 95154,
+      "lines": 2668,
+      "bytes": 95029,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
       "files": 428,
-      "lines": 72506,
-      "bytes": 2625307,
+      "lines": 72516,
+      "bytes": 2625790,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 434,
-      "lines": 88015,
-      "bytes": 5313569,
+      "files": 435,
+      "lines": 88162,
+      "bytes": 5321568,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 80,
-      "lines": 8765,
-      "bytes": 315799,
+      "lines": 8791,
+      "bytes": 316800,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -57346,8 +57346,8 @@
       "path": ".env.branch.example",
       "area": "infra",
       "kind": "example",
-      "lines": 101,
-      "bytes": 5458,
+      "lines": 109,
+      "bytes": 5918,
       "doc": "",
       "symbols": []
     },
@@ -57355,8 +57355,8 @@
       "path": ".env.example",
       "area": "infra",
       "kind": "example",
-      "lines": 180,
-      "bytes": 9354,
+      "lines": 193,
+      "bytes": 10223,
       "doc": "",
       "symbols": []
     },
@@ -57364,8 +57364,8 @@
       "path": ".env.production.example",
       "area": "infra",
       "kind": "example",
-      "lines": 129,
-      "bytes": 5911,
+      "lines": 140,
+      "bytes": 6618,
       "doc": "",
       "symbols": []
     },
@@ -57409,8 +57409,8 @@
       "path": ".github/workflows/ci.yml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 164,
-      "bytes": 5697,
+      "lines": 184,
+      "bytes": 6414,
       "doc": "",
       "symbols": []
     },
@@ -77204,74 +77204,74 @@
       "path": "apps/mobile/src/api/client.ts",
       "area": "mobile",
       "kind": "module",
-      "lines": 206,
-      "bytes": 6985,
+      "lines": 212,
+      "bytes": 7273,
       "doc": "",
       "symbols": [
         {
           "name": "API_URL",
           "kind": "const",
-          "line": 17
+          "line": 18
         },
         {
           "name": "SITE_URL",
           "kind": "const",
-          "line": 27
+          "line": 28
         },
         {
           "name": "ApiError",
           "kind": "class",
-          "line": 42
+          "line": 43
         },
         {
           "name": "setSignOutHandler",
           "kind": "function",
-          "line": 56
+          "line": 57
         },
         {
           "name": "getAccessToken",
           "kind": "function",
-          "line": 79
+          "line": 80
         },
         {
           "name": "storeTokens",
           "kind": "function",
-          "line": 83
+          "line": 84
         },
         {
           "name": "clearTokens",
           "kind": "function",
-          "line": 88
+          "line": 89
         },
         {
           "name": "getCartToken",
           "kind": "function",
-          "line": 93
+          "line": 94
         },
         {
           "name": "setCartToken",
           "kind": "function",
-          "line": 97
+          "line": 98
         },
         {
           "name": "clearCartToken",
           "kind": "function",
-          "line": 101
+          "line": 102
         },
         {
           "name": "RequestOptions",
           "kind": "interface",
-          "line": 105
+          "line": 106
         },
         {
           "name": "toQuery",
           "kind": "function",
-          "line": 114
+          "line": 115
         },
         {
           "name": "api",
           "kind": "function",
-          "line": 126
+          "line": 127
         }
       ]
     },
@@ -80694,29 +80694,29 @@
       "path": "apps/pos/src/lib/api-client.ts",
       "area": "pos",
       "kind": "utility",
-      "lines": 67,
-      "bytes": 2409,
+      "lines": 68,
+      "bytes": 2284,
       "doc": "",
       "symbols": [
         {
           "name": "API_URL",
           "kind": "const",
-          "line": 9
+          "line": 15
         },
         {
           "name": "clearSession",
           "kind": "function",
-          "line": 19
+          "line": 25
         },
         {
           "name": "publicRequest",
           "kind": "function",
-          "line": 26
+          "line": 32
         },
         {
           "name": "request",
           "kind": "function",
-          "line": 59
+          "line": 60
         }
       ]
     },
@@ -87439,54 +87439,54 @@
       "path": "apps/web/src/lib/admin-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 191,
-      "bytes": 6521,
+      "lines": 196,
+      "bytes": 6753,
       "doc": "",
       "symbols": [
         {
           "name": "getAccessToken",
           "kind": "function",
-          "line": 21
+          "line": 22
         },
         {
           "name": "getStoredUser",
           "kind": "function",
-          "line": 25
+          "line": 26
         },
         {
           "name": "clearSession",
           "kind": "function",
-          "line": 43
+          "line": 44
         },
         {
           "name": "login",
           "kind": "function",
-          "line": 61
+          "line": 62
         },
         {
           "name": "listSsoSignInOptions",
           "kind": "function",
-          "line": 89
+          "line": 90
         },
         {
           "name": "ssoStartUrl",
           "kind": "function",
-          "line": 98
+          "line": 99
         },
         {
           "name": "completeSsoSignIn",
           "kind": "function",
-          "line": 103
+          "line": 104
         },
         {
           "name": "logout",
           "kind": "function",
-          "line": 121
+          "line": 122
         },
         {
           "name": "adminFetch",
           "kind": "function",
-          "line": 162
+          "line": 167
         }
       ]
     },
@@ -87664,129 +87664,129 @@
       "path": "apps/web/src/lib/customer-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 268,
-      "bytes": 8535,
+      "lines": 273,
+      "bytes": 8786,
       "doc": "",
       "symbols": [
         {
           "name": "getCustomerToken",
           "kind": "function",
-          "line": 20
+          "line": 21
         },
         {
           "name": "getStoredCustomerUser",
           "kind": "function",
-          "line": 24
+          "line": 25
         },
         {
           "name": "clearCustomerSession",
           "kind": "function",
-          "line": 42
+          "line": 43
         },
         {
           "name": "loginCustomer",
           "kind": "function",
-          "line": 48
+          "line": 49
         },
         {
           "name": "registerCustomer",
           "kind": "function",
-          "line": 61
+          "line": 62
         },
         {
           "name": "forgotPassword",
           "kind": "function",
-          "line": 80
+          "line": 81
         },
         {
           "name": "resetPassword",
           "kind": "function",
-          "line": 89
+          "line": 90
         },
         {
           "name": "verifyEmail",
           "kind": "function",
-          "line": 98
+          "line": 99
         },
         {
           "name": "unsubscribeFromMarketing",
           "kind": "function",
-          "line": 107
+          "line": 108
         },
         {
           "name": "SerialVerifyResult",
           "kind": "interface",
-          "line": 116
+          "line": 117
         },
         {
           "name": "verifySerial",
           "kind": "function",
-          "line": 126
+          "line": 127
         },
         {
           "name": "logoutCustomer",
           "kind": "function",
-          "line": 132
+          "line": 133
         },
         {
           "name": "getMyOrder",
           "kind": "function",
-          "line": 152
+          "line": 153
         },
         {
           "name": "trackOrder",
           "kind": "function",
-          "line": 156
+          "line": 157
         },
         {
           "name": "listReturnReasons",
           "kind": "function",
-          "line": 166
+          "line": 167
         },
         {
           "name": "listMyReturns",
           "kind": "function",
-          "line": 170
+          "line": 171
         },
         {
           "name": "getMyReturn",
           "kind": "function",
-          "line": 174
+          "line": 175
         },
         {
           "name": "createReturnRequest",
           "kind": "function",
-          "line": 178
+          "line": 179
         },
         {
           "name": "listMySupportTickets",
           "kind": "function",
-          "line": 187
+          "line": 188
         },
         {
           "name": "getMySupportTicket",
           "kind": "function",
-          "line": 191
+          "line": 192
         },
         {
           "name": "raiseSupportTicket",
           "kind": "function",
-          "line": 195
+          "line": 196
         },
         {
           "name": "replySupportTicket",
           "kind": "function",
-          "line": 205
+          "line": 206
         },
         {
           "name": "reopenSupportTicket",
           "kind": "function",
-          "line": 209
+          "line": 210
         },
         {
           "name": "customerFetch",
           "kind": "function",
-          "line": 245
+          "line": 250
         }
       ]
     },
@@ -89385,8 +89385,8 @@
       "path": "docker-compose.branch.yml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 98,
-      "bytes": 3668,
+      "lines": 129,
+      "bytes": 4725,
       "doc": "",
       "symbols": []
     },
@@ -89412,8 +89412,8 @@
       "path": "docker-compose.prod.yml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 101,
-      "bytes": 3411,
+      "lines": 150,
+      "bytes": 5503,
       "doc": "",
       "symbols": []
     },
@@ -89421,8 +89421,8 @@
       "path": "docker-compose.yml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 42,
-      "bytes": 937,
+      "lines": 61,
+      "bytes": 1760,
       "doc": "",
       "symbols": []
     },
@@ -89439,8 +89439,8 @@
       "path": "docker-stack.prod.yml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 88,
-      "bytes": 2295,
+      "lines": 124,
+      "bytes": 3289,
       "doc": "",
       "symbols": []
     },
@@ -89448,8 +89448,8 @@
       "path": "docker-stack.staging.yml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 88,
-      "bytes": 2309,
+      "lines": 124,
+      "bytes": 3303,
       "doc": "",
       "symbols": []
     },
@@ -91446,8 +91446,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 9189,
-      "bytes": 539996,
+      "lines": 9246,
+      "bytes": 542861,
       "doc": "",
       "symbols": []
     },
@@ -91500,8 +91500,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 659,
-      "bytes": 100797,
+      "lines": 668,
+      "bytes": 101806,
       "doc": "",
       "symbols": []
     },
@@ -93225,6 +93225,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/resilience-scalability/210-third-party-api-call-caching-status.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 81,
+      "bytes": 4125,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/resilience-scalability/37-scalability-future-upgrades.md",
       "area": "docs",
       "kind": "doc",
@@ -94741,8 +94750,8 @@
       "path": "packages/shared/src/http-client.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 201,
-      "bytes": 7388,
+      "lines": 227,
+      "bytes": 8389,
       "doc": "The one HTTP layer for a signed-in browser client.",
       "symbols": [
         {
@@ -94771,9 +94780,14 @@
           "line": 116
         },
         {
+          "name": "singleFlight",
+          "kind": "function",
+          "line": 164
+        },
+        {
           "name": "requestWithRefresh",
           "kind": "function",
-          "line": 159
+          "line": 185
         }
       ]
     },
@@ -96103,8 +96117,8 @@
       "path": "turbo.json",
       "area": "infra",
       "kind": "json",
-      "lines": 55,
-      "bytes": 1297,
+      "lines": 56,
+      "bytes": 1314,
       "doc": "",
       "symbols": []
     },

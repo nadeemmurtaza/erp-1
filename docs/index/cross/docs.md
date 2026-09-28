@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**460** markdown documents. These explain **why**; this index only says **where**.
+**461** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2943,7 +2943,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,189 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,246 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3027,6 +3027,7 @@ _no second-level headings_
 - ADR-076 — Doc 207 (checkout admission queue): "prevent overselling during rush hours" corrected — overselling is already structurally impossible via `InventoryService.applyMovement()`'s predicate-on-write; the real problem is checkout UX and lock contention on a hot SKU's two rows, addressed with a per-variant admission queue that fails open, never a second stock guard  <sub>:8967</sub>
 - ADR-077 — Doc 208 (L1/L2/L3 caching): each tier attached to a found hot path, not applied blindly — permission resolution's uncached three-query call on every authenticated request as the real L1/L2 target, `VariantSalesStat`'s eager-materialization pattern generalized as the L3 strategy, a real cross-replica settings-staleness bug found and closed along the way  <sub>:9039</sub>
 - ADR-078 — Doc 209 (semantic caching): applied to exactly one of ten AiFeature call sites — RAG_GENERATION, the only one where the answer depends solely on question meaning — and explicitly refused for WHATSAPP_ASSISTANT, where every prompt is already personalized per contact and a semantic cache would risk leaking one customer's data into another's answer  <sub>:9123</sub>
+- ADR-079 — Doc 210: caching third-party API calls to save charges — checked every real integration in this codebase and found exactly one billable, cacheable target (the AI provider), already covered by docs 208/209; two future non-AI targets named with their trigger condition, neither built now  <sub>:9190</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3827,16 +3828,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>659 lines</sub>
+### `docs/implementation/README.md`  <sub>668 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:512</sub>
-- The two module groups  <sub>:541</sub>
-- How a work order runs  <sub>:578</sub>
-- Known gaps not yet owned by a phase  <sub>:596</sub>
-- When a brief is wrong  <sub>:623</sub>
-- Scope, honestly  <sub>:636</sub>
-- Gap-analysis roadmap references  <sub>:643</sub>
+- Dependency order  <sub>:521</sub>
+- The two module groups  <sub>:550</sub>
+- How a work order runs  <sub>:587</sub>
+- Known gaps not yet owned by a phase  <sub>:605</sub>
+- When a brief is wrong  <sub>:632</sub>
+- Scope, honestly  <sub>:645</sub>
+- Gap-analysis roadmap references  <sub>:652</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 
@@ -3924,6 +3925,14 @@ _no second-level headings_
 - Work orders  <sub>:145</sub>
 - Acceptance  <sub>:158</sub>
 - Out of scope  <sub>:172</sub>
+
+### `docs/implementation/resilience-scalability/210-third-party-api-call-caching-status.md`  <sub>81 lines</sub>
+
+- 1. What was checked, and why each is not a target  <sub>:12</sub>
+- 2. The one real target, and where it already lives  <sub>:41</sub>
+- 3. Where a future non-AI cache attaches, and the exact trigger  <sub>:52</sub>
+- Acceptance  <sub>:70</sub>
+- Out of scope  <sub>:77</sub>
 
 ### `docs/implementation/resilience-scalability/37-scalability-future-upgrades.md`  <sub>306 lines</sub>
 

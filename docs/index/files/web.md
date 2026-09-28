@@ -1647,12 +1647,12 @@ All 428 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `admin-client.ts` | utility | 191 |  |
+| `admin-client.ts` | utility | 196 |  |
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
 | `api.ts` | utility | 200 |  |
 | `cart-client.ts` | utility | 99 |  |
-| `customer-client.ts` | utility | 268 |  |
+| `customer-client.ts` | utility | 273 |  |
 | `download-csv.ts` | utility | 36 |  |
 | `download-file.ts` | utility | 23 |  |
 | `onsite-messages-client.ts` | utility | 24 |  |

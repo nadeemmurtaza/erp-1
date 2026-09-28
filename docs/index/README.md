@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,462 files / 386,625 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,463 files / 387,039 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -58,10 +58,10 @@ single fact — the page is the right tool when you need the shape of something.
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.9k | every script in every package.json (85) |
 | “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~5.3k | 118 migrations, newest last |
 | “What is already tested?” | [cross/tests.md](cross/tests.md) | ~13.4k | 341 spec files → what each one pins down |
-| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~50.1k | every document of record, with its outline |
+| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~50.3k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (65) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~650.9k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~651.0k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -120,12 +120,12 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
 | apps/api | 1,165 | 155,597 | [api](areas/api.md) |
-| apps/web | 428 | 72,506 | [web](areas/web.md) |
-| apps/pos | 33 | 2,667 | [pos](areas/pos.md) |
-| apps/mobile | 49 | 6,900 | [mobile](areas/mobile.md) |
-| packages/* | 80 | 8,765 | [packages](areas/packages.md) |
-| docs/* | 434 | 88,015 | [docs](areas/docs.md) |
-| scripts, CI, deployment and container configuration | 60 | 30,714 | [infra](areas/infra.md) |
+| apps/web | 428 | 72,516 | [web](areas/web.md) |
+| apps/pos | 33 | 2,668 | [pos](areas/pos.md) |
+| apps/mobile | 49 | 6,906 | [mobile](areas/mobile.md) |
+| packages/* | 80 | 8,791 | [packages](areas/packages.md) |
+| docs/* | 435 | 88,162 | [docs](areas/docs.md) |
+| scripts, CI, deployment and container configuration | 60 | 30,938 | [infra](areas/infra.md) |
 | repository root files | 213 | 21,461 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see

@@ -33,18 +33,18 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 | Path | Files | Lines | What it is |
 |---|---|---|---|
 | `apps/api` | 1,165 | 155,597 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 434 | 88,015 | documents of record — implementation plans, house rules, brand |
-| `apps/web` | 428 | 72,506 | Next.js — admin console and customer storefront in one app |
-| `(root)` | 42 | 28,829 | workspace manifests, docker compose/stack files, env templates |
+| `docs` | 435 | 88,162 | documents of record — implementation plans, house rules, brand |
+| `apps/web` | 428 | 72,516 | Next.js — admin console and customer storefront in one app |
+| `(root)` | 42 | 29,033 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
 | `scripts` | 25 | 9,621 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 62 | 7,982 | brand, money, permissions, measurements, entities |
-| `apps/mobile` | 49 | 6,900 | Expo — customer mobile app |
-| `apps/pos` | 33 | 2,667 | Next.js PWA — offline-first point of sale |
+| `packages/shared` | 62 | 8,008 | brand, money, permissions, measurements, entities |
+| `apps/mobile` | 49 | 6,906 | Expo — customer mobile app |
+| `apps/pos` | 33 | 2,668 | Next.js PWA — offline-first point of sale |
 | `.claude` | 22 | 1,064 |  |
 | `packages/pos-core` | 14 | 682 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
-| `.github` | 3 | 336 | CI and deployment workflows |
+| `.github` | 3 | 356 | CI and deployment workflows |
 | `packages/config` | 4 | 101 | shared tsconfig and eslint bases |
 | `.junie` | 1 | 81 |  |
 | `.cursor` | 1 | 0 |  |

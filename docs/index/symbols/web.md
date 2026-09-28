@@ -1721,15 +1721,15 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `admin-client.ts` | `getAccessToken` | function | :21 | Browser-side API client for the back office. |
-| `admin-client.ts` | `getStoredUser` | function | :25 |  |
-| `admin-client.ts` | `clearSession` | function | :43 |  |
-| `admin-client.ts` | `login` | function | :61 |  |
-| `admin-client.ts` | `listSsoSignInOptions` | function | :89 | The single sign-on buttons the sign-in screen offers. |
-| `admin-client.ts` | `ssoStartUrl` | function | :98 | Where a "Sign in with …" button navigates: the API redirects the browser on to the identity provide… |
-| `admin-client.ts` | `completeSsoSignIn` | function | :103 | Redeems a just-completed single sign-on for a session, and stores it the way `login()` does. |
-| `admin-client.ts` | `logout` | function | :121 |  |
-| `admin-client.ts` | `adminFetch` | function | :162 |  |
+| `admin-client.ts` | `getAccessToken` | function | :22 | Browser-side API client for the back office. |
+| `admin-client.ts` | `getStoredUser` | function | :26 |  |
+| `admin-client.ts` | `clearSession` | function | :44 |  |
+| `admin-client.ts` | `login` | function | :62 |  |
+| `admin-client.ts` | `listSsoSignInOptions` | function | :90 | The single sign-on buttons the sign-in screen offers. |
+| `admin-client.ts` | `ssoStartUrl` | function | :99 | Where a "Sign in with …" button navigates: the API redirects the browser on to the identity provide… |
+| `admin-client.ts` | `completeSsoSignIn` | function | :104 | Redeems a just-completed single sign-on for a session, and stores it the way `login()` does. |
+| `admin-client.ts` | `logout` | function | :122 |  |
+| `admin-client.ts` | `adminFetch` | function | :167 |  |
 | `analytics-client.ts` | `getSessionId` | function | :27 | Reads (or mints and persists) this browser's opaque analytics session id. |
 | `analytics-client.ts` | `TrackedEventType` | type | :44 |  |
 | `analytics-client.ts` | `trackEvent` | function | :58 | Fires one tracking event. |
@@ -1756,30 +1756,30 @@ Every top-level export in `web`, with the line to open.
 | `cart-client.ts` | `updateCartItem` | function | :74 |  |
 | `cart-client.ts` | `removeCartItem` | function | :82 |  |
 | `cart-client.ts` | `updateGuestContact` | function | :92 | WO-8.5 — captures a guest's phone and marketing consent onto the cart as soon as they're typed at c… |
-| `customer-client.ts` | `getCustomerToken` | function | :20 |  |
-| `customer-client.ts` | `getStoredCustomerUser` | function | :24 |  |
-| `customer-client.ts` | `clearCustomerSession` | function | :42 |  |
-| `customer-client.ts` | `loginCustomer` | function | :48 |  |
-| `customer-client.ts` | `registerCustomer` | function | :61 |  |
-| `customer-client.ts` | `forgotPassword` | function | :80 |  |
-| `customer-client.ts` | `resetPassword` | function | :89 |  |
-| `customer-client.ts` | `verifyEmail` | function | :98 |  |
-| `customer-client.ts` | `unsubscribeFromMarketing` | function | :107 |  |
-| `customer-client.ts` | `SerialVerifyResult` | interface | :116 |  |
-| `customer-client.ts` | `verifySerial` | function | :126 | 158-serialized-unit-tracking.md §3 — status/date/warranty only, never a branch or employee. |
-| `customer-client.ts` | `logoutCustomer` | function | :132 |  |
-| `customer-client.ts` | `getMyOrder` | function | :152 | One order, for whoever is allowed to see it. |
-| `customer-client.ts` | `trackOrder` | function | :156 |  |
-| `customer-client.ts` | `listReturnReasons` | function | :166 | WO-6.6 — the customer's own side of returns/RMA. |
-| `customer-client.ts` | `listMyReturns` | function | :170 |  |
-| `customer-client.ts` | `getMyReturn` | function | :174 |  |
-| `customer-client.ts` | `createReturnRequest` | function | :178 |  |
-| `customer-client.ts` | `listMySupportTickets` | function | :187 | 148-external-customer-support-portal.md — the customer's own side of the support ticket portal. |
-| `customer-client.ts` | `getMySupportTicket` | function | :191 |  |
-| `customer-client.ts` | `raiseSupportTicket` | function | :195 |  |
-| `customer-client.ts` | `replySupportTicket` | function | :205 |  |
-| `customer-client.ts` | `reopenSupportTicket` | function | :209 |  |
-| `customer-client.ts` | `customerFetch` | function | :245 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
+| `customer-client.ts` | `getCustomerToken` | function | :21 |  |
+| `customer-client.ts` | `getStoredCustomerUser` | function | :25 |  |
+| `customer-client.ts` | `clearCustomerSession` | function | :43 |  |
+| `customer-client.ts` | `loginCustomer` | function | :49 |  |
+| `customer-client.ts` | `registerCustomer` | function | :62 |  |
+| `customer-client.ts` | `forgotPassword` | function | :81 |  |
+| `customer-client.ts` | `resetPassword` | function | :90 |  |
+| `customer-client.ts` | `verifyEmail` | function | :99 |  |
+| `customer-client.ts` | `unsubscribeFromMarketing` | function | :108 |  |
+| `customer-client.ts` | `SerialVerifyResult` | interface | :117 |  |
+| `customer-client.ts` | `verifySerial` | function | :127 | 158-serialized-unit-tracking.md §3 — status/date/warranty only, never a branch or employee. |
+| `customer-client.ts` | `logoutCustomer` | function | :133 |  |
+| `customer-client.ts` | `getMyOrder` | function | :153 | One order, for whoever is allowed to see it. |
+| `customer-client.ts` | `trackOrder` | function | :157 |  |
+| `customer-client.ts` | `listReturnReasons` | function | :167 | WO-6.6 — the customer's own side of returns/RMA. |
+| `customer-client.ts` | `listMyReturns` | function | :171 |  |
+| `customer-client.ts` | `getMyReturn` | function | :175 |  |
+| `customer-client.ts` | `createReturnRequest` | function | :179 |  |
+| `customer-client.ts` | `listMySupportTickets` | function | :188 | 148-external-customer-support-portal.md — the customer's own side of the support ticket portal. |
+| `customer-client.ts` | `getMySupportTicket` | function | :192 |  |
+| `customer-client.ts` | `raiseSupportTicket` | function | :196 |  |
+| `customer-client.ts` | `replySupportTicket` | function | :206 |  |
+| `customer-client.ts` | `reopenSupportTicket` | function | :210 |  |
+| `customer-client.ts` | `customerFetch` | function | :250 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
 | `download-csv.ts` | `downloadCsv` | function | :17 | Pull a CSV from an admin endpoint and hand it to the browser. |
 | `download-file.ts` | `downloadFile` | function | :10 | Pull a binary file (a PDF, here — H2/L20's own RAG source download) from an admin endpoint and hand… |
 | `onsite-messages-client.ts` | `fetchActiveOnsiteMessages` | function | :13 | WO-8.6. |

@@ -509,6 +509,15 @@ skipped:
 |---|---|
 | [`209-semantic-caching-rag-generation.md`](./resilience-scalability/209-semantic-caching-rag-generation.md) | **Proposed, not yet built.** `RAG_GENERATION` is the only `AiFeature` where an answer depends solely on question meaning (`RagScope` is `{ organizationId, corpus }`, no per-user dimension) — gets a pgvector-backed `RagAnswerCache` (reusing the existing `vector(1536)` capability, not a new Redis vector index), 0.95 cosine-similarity threshold, 24h TTL backstopped by explicit invalidation on ingestion completion, cached citations carried forward unchanged. `WHATSAPP_ASSISTANT` is explicitly refused: every prompt bakes in per-contact grounding context, so a semantic cache there would risk serving one customer's cached answer, containing another customer's order data, to a similar question from someone else. `SEMANTIC_SEARCH` is also refused: its only AI cost is one cheap embedding call with no completion step, already covered by doc 208's general L2 cache. ADR-078 |
 
+**Number 210** is a finding, not a system: every real third-party
+integration in this codebase was checked for a cacheable, billable-per-call
+read, and exactly one exists — the AI provider, already covered by docs
+208/209:
+
+| File | What it is |
+|---|---|
+| [`210-third-party-api-call-caching-status.md`](./resilience-scalability/210-third-party-api-call-caching-status.md) | **Investigated, nothing built.** `PaymentProvider.feeFor()` is a hardcoded 0 in both real providers — no network call to cache. `PaymentProvider.initiate()` must never be cached — each is a unique transaction. `CourierProvider.track()` is real and polling-shaped but only `manual` is built — no real courier account exists in this deployment. The ingestion/connector system (docs 160/162/172) is specified, not built. Two future targets named with their exact trigger (a real courier, a real connector, actually landing) — reusing doc 208's own cache mechanism, not a third one, and not built speculatively now. ADR-079 |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

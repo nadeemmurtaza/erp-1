@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-60 files · 30,714 lines
+60 files · 30,938 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,9 +19,9 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 20,356 | file, example, json, yaml |
+| `.` | 20 | 20,560 | file, example, json, yaml |
 | `.github` | 1 | 81 | doc |
-| `.github/workflows` | 2 | 255 | yaml |
+| `.github/workflows` | 2 | 275 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
@@ -53,8 +53,8 @@ on them.
 | `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
-| `.env.example` | 180 | example |  |
-| `.github/workflows/ci.yml` | 164 | yaml |  |
+| `.env.example` | 193 | example |  |
+| `.github/workflows/ci.yml` | 184 | yaml |  |
 
 
 ---

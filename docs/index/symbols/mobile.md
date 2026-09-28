@@ -86,19 +86,19 @@ Every top-level export in `mobile`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `client.ts` | `API_URL` | const | :17 | The one place the app talks to the API. |
-| `client.ts` | `SITE_URL` | const | :27 | The storefront's own origin — used only to open the browser-print invoice page (WO-7.2) in the syst… |
-| `client.ts` | `ApiError` | class | :42 |  |
-| `client.ts` | `setSignOutHandler` | function | :56 | Lets the auth provider clear its state when a refresh finally fails. |
-| `client.ts` | `getAccessToken` | function | :79 |  |
-| `client.ts` | `storeTokens` | function | :83 |  |
-| `client.ts` | `clearTokens` | function | :88 |  |
-| `client.ts` | `getCartToken` | function | :93 |  |
-| `client.ts` | `setCartToken` | function | :97 |  |
-| `client.ts` | `clearCartToken` | function | :101 |  |
-| `client.ts` | `RequestOptions` | interface | :105 |  |
-| `client.ts` | `toQuery` | function | :114 |  |
-| `client.ts` | `api` | function | :126 |  |
+| `client.ts` | `API_URL` | const | :18 | The one place the app talks to the API. |
+| `client.ts` | `SITE_URL` | const | :28 | The storefront's own origin — used only to open the browser-print invoice page (WO-7.2) in the syst… |
+| `client.ts` | `ApiError` | class | :43 |  |
+| `client.ts` | `setSignOutHandler` | function | :57 | Lets the auth provider clear its state when a refresh finally fails. |
+| `client.ts` | `getAccessToken` | function | :80 |  |
+| `client.ts` | `storeTokens` | function | :84 |  |
+| `client.ts` | `clearTokens` | function | :89 |  |
+| `client.ts` | `getCartToken` | function | :94 |  |
+| `client.ts` | `setCartToken` | function | :98 |  |
+| `client.ts` | `clearCartToken` | function | :102 |  |
+| `client.ts` | `RequestOptions` | interface | :106 |  |
+| `client.ts` | `toQuery` | function | :115 |  |
+| `client.ts` | `api` | function | :127 |  |
 | `resources.ts` | `listProducts` | function | :36 | --- Catalogue -------------------------------------------------------------- |
 | `resources.ts` | `getProduct` | function | :48 |  |
 | `resources.ts` | `listStitchingServices` | function | :52 |  |

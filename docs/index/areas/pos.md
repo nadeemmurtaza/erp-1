@@ -3,7 +3,7 @@
 
 # apps/pos — Next.js offline-first point of sale
 
-33 files · 2,667 lines
+33 files · 2,668 lines
 
 
 Next.js PWA for a physical till. **Offline-first**: a sale that already happened
@@ -24,7 +24,7 @@ outbox and replay when the network returns. The register maths itself lives in
 |---|---|---|---|
 | `apps/pos` | 6 | 165 | script, json, module |
 | `apps/pos/public` | 2 | 46 | asset, script |
-| `apps/pos/src` | 25 | 2,456 | page, error, global-error, stylesheet |
+| `apps/pos/src` | 25 | 2,457 | page, error, global-error, stylesheet |
 
 
 ## Entry points
@@ -51,8 +51,8 @@ outbox and replay when the network returns. The register maths itself lives in
 | `apps/pos/src/app/receipt/[orderId]/page.tsx` | 74 | page |  |
 | `apps/pos/src/app/globals.css` | 73 | stylesheet |  |
 | `apps/pos/src/app/shift/open/page.tsx` | 71 | page |  |
+| `apps/pos/src/lib/api-client.ts` | 68 | utility |  |
 | `apps/pos/src/app/terminal/page.tsx` | 67 | page |  |
-| `apps/pos/src/lib/api-client.ts` | 67 | utility |  |
 | `apps/pos/src/app/login/page.tsx` | 63 | page |  |
 | `apps/pos/src/lib/outbox-db.ts` | 55 | utility |  |
 

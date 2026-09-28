@@ -70,7 +70,7 @@ All 80 tracked files in `packages/*`, by directory.
 | `enums.ts` | module | 121 | Enum values mirrored from the Prisma schema. |
 | `fabric-estimate.spec.ts` | unit test | 79 | ((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833... |
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
-| `http-client.ts` | module | 201 | The one HTTP layer for a signed-in browser client. |
+| `http-client.ts` | module | 227 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
 | `index.ts` | module | 42 |  |
 | `markdown-suggestion.spec.ts` | unit test | 86 |  |

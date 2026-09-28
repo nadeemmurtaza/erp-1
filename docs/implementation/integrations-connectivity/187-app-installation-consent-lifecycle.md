@@ -69,7 +69,7 @@ proxy (doc 185 §6); doc 188's delivery engine. No new dependency.
 
 ### Risks
 A consent screen that misstates the grant is worse than none, so the
-rendered list and the enforced list come from one computation (§2.1). An
+rendered list and the enforced list come from one computation (§2). An
 install that half-completes across two databases (platform record written,
 tenant transaction failed) must never bill or grant (§3). An uninstall that
 waits on anything external stops being a revocation, so it waits on nothing

@@ -136,8 +136,8 @@ works, how it recovers, and who acts.
   app, doc 191 §4.4); widen an existing grant (consent is per tenant); add a
   signing key or change a URL for an existing app without the publisher's
   domain agreeing (doc 191 §4.3); or write into any tenant database (the
-  only boundary crossing is §5's read-only reconciliation query).
-- **This is the one failure where §4.3's two-party rule is load-bearing**, and
+  only boundary crossing is doc 191 §5's read-only reconciliation query).
+- **This is the one failure where doc 191 §4.3's two-party rule is load-bearing**, and
   why it exists.
 
 ### 2.8 The control plane is unreachable

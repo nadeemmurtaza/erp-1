@@ -3444,6 +3444,10 @@ every route that issues, rotates or installs a credential.
 ### Status
 **Accepted.** Service accounts: **deferred** — reopen by superseding this entry
 when an integration must outlive the person who set it up.
+**Partially superseded by ADR-073** — the service-account deferral only: an
+installed third-party app is exactly an integration that must outlive the person
+who set it up, so doc 34's `ApiClient` is now specified for completion (docs
+187/189/193). Every personal-key decision above stands unchanged.
 
 ---
 
@@ -8497,3 +8501,378 @@ one does.
 
 ### Status
 **Accepted.**
+
+---
+
+## ADR-073 — Third-party apps (docs 184–195): an open, reviewed directory of remote services — never in-process code — installed per tenant with consent onto doc 34's `ApiClient`, completed now; ADR-037's service-account deferral superseded
+
+### Context
+The owner asked for a system where any tenant can connect to any external
+partner it chooses, compared directly to "apps in GitHub" — GitHub Apps and
+GitHub Marketplace. That means any outside developer or company can build an
+app, submit it for review, and any tenant can discover it and install it in one
+step, on a consent screen naming exactly what it is granted. NEWAX building
+integrations itself is not the ask. The platform is built for more than 50,000
+tenants' financial and operational data (`PRD.md`), so how an outsider's app
+reaches that data is the decision.
+
+The repository already has an in-process extension mechanism: module packs
+(`apps/api/src/modules/module-packs.ts`, `SDK-CONTRACT.md`,
+`example-hello-world-pack`, doc 37 §3), for NEWAX's own sector packs and a
+vetted client's bespoke pack committed through NEWAX's repository and review.
+It also has two relevant deferrals. Doc 34's `ApiClient` — an
+organisation-level principal that survives its creator — was deferred by
+ADR-037 "until an integration must outlive the person who set it up". Doc 36's
+Out of scope named "a connector marketplace/catalogue of pre-built
+integrations" as a natural future layer. Long-form: docs 184–195 in
+`docs/implementation/integrations-connectivity/`.
+
+### Options Considered
+1. **Open the in-process module-pack mechanism to third-party submission.** It is
+   the only mechanism that lets an app change behaviour anywhere. Rejected:
+   code in the API process runs with the process's authority — every table,
+   `APP_ENCRYPTION_KEY`, any service called directly past `PermissionsGuard`.
+   No review makes an anonymous developer's code safe there: a reviewed
+   version is replaced, a dependency is compromised after approval. ADR-027
+   already withdrew a far narrower sandbox for "partner-authored formulas"
+   over exactly this exposure. The same reasoning excludes browser-side
+   federation of third-party JavaScript (doc 143) into the admin's
+   authenticated origin.
+2. **Remote-service-only apps over the connector, webhook and API-client
+   plumbing this repository already specifies, completing doc 34.** An app runs
+   on its publisher's infrastructure. NEWAX calls it (signed webhooks, provider
+   calls through NEWAX-written adapters), and it calls NEWAX with a scoped,
+   individually revocable credential checked by the existing guards.
+3. **A separate third-party-integration microservice outside the modular
+   monolith**, brokering all app traffic. Rejected: it contradicts ADR-001's
+   deliberate modular monolith (`ENTERPRISE-SCALE.md`, `RETAIL-ERP.md`), adds
+   a network trust boundary and a second place authorization is decided, and
+   buys no isolation that is not already stronger elsewhere — tenants are
+   isolated per database (doc 39, "a tenant is a node"), not per service.
+
+Within option 2, four narrower choices were also taken on evidence:
+- **Principal:** doc 34's `ApiClient` plus a login-disabled actor `User`, over
+  extending personal keys (doc 163). A personal key is capped by and dies with
+  one person — the opposite of an installed app. A bare `ApiClient` id in
+  `request.user.id` would violate the 75 `User` foreign keys every attributed
+  write sets. Doc 170 §4.1 already chose the login-disabled `User` for the
+  support session.
+- **Event delivery:** a per-subscriber `OutboxDelivery` layer fanned out by the
+  existing outbox, over an HTTP call inside an `@OnDomainEvent` listener.
+  `OutboxDispatcher` retries a whole event for every listener, delivers
+  sequentially, and gives up after 8 attempts, so one app would stall or lose
+  events for all. `TradingPartnersService.pushOutbound()` is that anti-pattern
+  already, swallowing failures while doc 18 §18.3 says otherwise.
+- **Credential:** short-lived tokens minted with the publisher's private key,
+  over a long-lived per-tenant secret held at the app.
+- **Kill switch:** a public, pulled, append-only status feed, over a platform
+  push. `apps/platform` has no outbox (ADR-059), and doc 39 requires that a
+  tenant need no code awareness of the control plane.
+
+### Decision
+**Option 2.** A third-party app is always a remote service, and nothing from
+any app ever runs in any NEWAX process. The directory (publishers, listings,
+versioned manifests, review, reports, the status feed, installation records,
+prices) lives in `apps/platform`'s own database. An installation (consent
+evidence, topics, provider bindings, and its `ApiClient`) lives in the
+installing tenant's own database. Specifically:
+
+- Scopes are real `PERMISSION_CATALOG` keys, enforced by the same
+  `PermissionsGuard`/`decideApiKeyAccess()`. `NON_DELEGATABLE_PERMISSIONS`
+  gains `apps.manage`, `api-access.manage` and `api-access.approve_scope`. A new
+  `API_CLIENT_EXCLUDED_PERMISSIONS` keeps every maker-checker "approve" key and
+  `org.access.grant` off any non-person.
+- Data scope is the whole node only until `ENTERPRISE-SCALE.md`'s L2
+  branch-scoped reads are enforced.
+- Webhook payloads are thin (ids and transitions), from an explicit
+  `APP_EVENT_TOPICS` allowlist.
+- A grant touching `medium`+ sensitivity needs a second approver, with ruling
+  16's recorded fallback.
+- A key or URL change needs the app's own well-known document to agree with
+  the control plane.
+- Paid apps are add-on lines on the one `PlatformInvoice`, billed in arrears.
+- The private connectors (docs 36/132/160/162) and doc 34's service account
+  remain the escape hatch for any partner without an app.
+
+Rollout is gated (doc 195): core first, then NEWAX's own three apps
+invite-only, then contracted partners, then paid apps, and only then public
+publishers and revenue share.
+
+### Reasoning
+- **The boundary is the control.** Over HTTP an app can do exactly what its
+  grant permits on exactly the tenants that consented, and the grant is
+  enforced by code NEWAX wrote. In-process, no such bound exists.
+- **Every piece reuses a precedent that is already built:**
+  - `PermissionsGuard` and fail-closed `decideApiKeyAccess()`, `@SessionOnly()`,
+    and `NON_DELEGATABLE_PERMISSIONS` (doc 163);
+  - the transactional outbox, its backoff formula and `EventEmitter2.onAny()`
+    (`TaskEventIntakeService`);
+  - `CircuitBreakerService` (doc 38);
+  - doc 166's ops-issued, hash-only publisher credential and its
+    never-auto-applied flag;
+  - `SupportAccessGrant`'s clock-bound grant that never trusts a cron for
+    liveness;
+  - `PlatformInvoice`/`PlatformInvoiceCreditNote` and `BillingService`;
+  - doc 155's trade payable in place of custody;
+  - `SeatCounterService`'s single read-only query as the only boundary
+    crossing.
+
+  No second authorization system, event system or billing system is added.
+- **ADR-037's reopening condition is met on its own terms.** An installed app
+  must outlive its installer, or every tenant loses its integrations at the
+  next staff change.
+- **A directory is only safe if review is honest.** Review verifies what a
+  remote service lets NEWAX verify — contract minimality, protocol behaviour
+  in a sandbox tenant, signature verification, publisher identity, policy on
+  paper. The consent screen says what the badge does not mean.
+
+### Consequences
+- **Doc 34's deferred work is now required, not optional**, with four
+  corrections: no `organizationId`; a login-disabled actor `User`
+  (`User.principalKind`); token-based credentials; and a flushed request log.
+  Core changes accompany it: a `JwtAuthGuard` branch; refusals in `AuthService`,
+  `JwtStrategy`, `UsersAdminService`, `RolesService` and
+  `ApprovalService.start()`; a metadata argument on `EventBusService.dispatch()`;
+  and a lease on `OutboxEvent`, which doc 163 §7 already asked for.
+- **Review of arbitrary third parties is a permanent operational cost**, not a
+  one-time build: staffed queues with SLAs, a sandbox tenant, report
+  handling, suspension decisions, fast-tracked key rotations. Phase 4 cannot
+  open until that capacity exists.
+- **The private-connector escape hatch is preserved deliberately.** No tenant
+  is ever blocked on nobody having published an app. The directory and the
+  connectors share one delivery engine and nothing else.
+- **Doc 36 is realised, and corrected, rather than built separately.** Its
+  `ConnectorDelivery` becomes `OutboxDelivery` rows of kind `CONNECTOR`. Its
+  in-process 8-attempt ceiling for external targets is replaced by a 72-hour
+  window, because the old ceiling lost events after 8.5 minutes of target
+  downtime, contradicting its own "four hours down" lens.
+- **Recorded as found and not fixed here:**
+  - doc 18 §18.3 and doc 166 §2 describe `pushOutbound()` as retried and
+    at-least-once, and it is neither (WO-188.10);
+  - doc 166's "no frontend of any kind" and "the platform's own storage
+    driver" are both inaccurate;
+  - `TenantsService.reactivate()` erases suspension history.
+- **Open for doc 163's owner, not decided here:** whether personal keys should
+  also lose `org.access.grant`, whose grants outlive the key that issued them.
+- **Stated risks, not hidden:**
+  - the kill switch fails open when the control plane is unreachable
+    (< 2 min bound when it is reachable; warned at 30 min and 24 h);
+  - enrolling a tenant in the directory is a manual ops step until WO-195.1;
+  - revenue share cannot pay out until WO-192.0's legal/accounting
+    confirmation and a general "invoice paid" record (WO-192.6) exist;
+  - evidence-class audit is transactional, not tamper-evident, until
+    `AuditLog` immutability (ruling 1).
+- **Supersedes ADR-037's service-account deferral only.** ADR-037's
+  personal-key decisions stand, and its status line points here.
+
+### Status
+**Accepted** — the architecture and the remote-only rule. Every work order in
+docs 184–195 is proposed, not yet built.
+
+---
+
+## ADR-074 — Doc 205 (video rooms for doc 24's meetings): self-host LiveKit as NEWAX's own SFU behind a new `VideoConferenceProvider` core seam, run as its own Coolify resource and off by default in every deployment; LiveKit's built-in TURN rather than coturn; recording deferred
+
+### Context
+
+The owner asked for NEWAX to host video for its own meetings rather than
+depend on Zoom, Google Meet or Microsoft Teams, and scoped the work small
+deliberately:
+
+- **In scope:** real video rooms wired into doc 24's existing `Meeting`
+  (ADR-060).
+- **Explicitly declined:** a standalone product, a Zoom-competitor business
+  line, multi-region, native apps, webinars, breakout rooms and virtual
+  backgrounds.
+
+The question this entry settles is **which media engine, and where it lives**.
+`docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md`
+is the design.
+
+The evidence, checked against the code while writing doc 205:
+
+- **No video anywhere.** `Meeting.location` is a bare `String?`, and no room,
+  provider, URL or join mechanism exists in the schema, services or web app.
+- **Doc 24 has no invitee-facing surface.** Nothing in `apps/web` calls
+  `POST admin/notify/meetings/:id/respond`, no `GET` for meetings exists, and
+  the only nav entry is gated on `notify.send`.
+- **Doc 24's meetings are not NEWAX-only.** `notify` is in every client
+  deployment's `MODULES` (`.env.production.example`).
+- **Production runs on Coolify.** `DEPLOYMENT.md`'s own banner says so, and
+  the one self-hosted third-party engine already running, Stalwart mail, is a
+  Coolify Docker Compose resource (`docker-compose.mail.yml`,
+  `docs/email.md`). Doc 13 is that choice's business intent, not its
+  mechanism.
+- **The typed-provider pattern is proven in code** by `PaymentProvider`,
+  `CourierProvider`, `IdentityVerificationProvider`, `AiProvider` and
+  `StorageDriver`. `FiscalComplianceProvider` (doc 15) is specified but
+  unbuilt: WO-15.5 is blocked.
+- **LiveKit's own source shows two facts that shape the access design:**
+  - a connected participant's token is re-signed every five minutes, with at
+    least ten minutes' validity (`pkg/service/roommanager.go`), so a short
+    join-token TTL never ends a live session;
+  - rooms auto-create on join by default (`room.auto_create`).
+
+### Options Considered
+
+1. **Integrate exclusively with a third-party API: Zoom, Meet or Teams.**
+   Rejected.
+   - The owner wants to own the infrastructure and avoid per-seat third-party
+     licensing.
+   - It would also move admission out of this codebase. A vendor meeting link
+     is a bearer URL, and the vendor, not `MeetingInvitation`, decides who is
+     let in.
+   - It would send every internal conversation and its participant list
+     through a vendor.
+   - The honest trade: it is the option with the least operational work.
+2. **Hand-build a WebRTC media engine.** Rejected. An SFU with congestion
+   control, simulcast, adaptive layer selection, TURN, ICE-TCP fallback,
+   reconnection and browser interoperability is a multi-year effort. It
+   offers no differentiated benefit over an actively maintained open-source
+   engine. `CLAUDE.md`'s "can the existing system already solve this?"
+   applies to existing open-source systems as much as to this repository's
+   own.
+3. **Self-host LiveKit (Apache-2.0, Go) as NEWAX's own SFU, behind a new
+   `VideoConferenceProvider` extension point.** Chosen.
+
+Choices within option 3, each also weighed:
+
+- **TURN.** LiveKit's embedded TURN (chosen) or a separate coturn.
+- **Seam placement.** `apps/api/src/core/video/` (chosen) or inside `notify`.
+- **Topology.** One LiveKit per enabling deployment (chosen) or one LiveKit
+  shared across deployments.
+- **Recording.** Now or deferred (deferred).
+
+### Decision
+
+Option 3.
+
+1. **The seam.** `VideoConferenceProvider` has
+   `createRoom`/`generateJoinToken`/`endRoom`/`listParticipants`/
+   `removeParticipant`/`handleWebhook`/`ping`, with one implementation,
+   `LiveKitVideoConferenceProvider`. It is selected by a
+   `VIDEO_CONFERENCE_PROVIDERS` env allowlist that **defaults to empty**, so
+   every deployment is byte-for-byte doc 24 until an operator enables it.
+2. **Mechanism in core, policy in `notify`.** `core/video` knows rooms,
+   grants and webhooks, and nothing of `Meeting`. `notify`'s
+   `MeetingVideoService` decides who may join, when, and how many. The result
+   is zero new `KNOWN_MODULE_COUPLINGS`, zero new domain events and zero new
+   permission keys.
+3. **Access.**
+   - A join credential is minted only for a `MeetingInvitation` row, and the
+     row's id is the LiveKit identity.
+   - The route is `@AuthenticatedOnly()` + `@SessionOnly()` (pinned in
+     `session-only-routes.spec.ts`) + throttled.
+   - Issuance is audited evidence-class (ruling 9).
+   - No token ever carries admin, recording, room-creation or hidden grants.
+   - Sessions end server-side: `room.auto_create: false`, `endRoom()` at window
+     close, on cancel and by the host, plus an admission re-check on every
+     `participant_joined` and a per-minute removal sweep for deactivated users.
+4. **Deployment.**
+   - LiveKit runs as its **own Coolify Docker Compose resource**, like
+     Stalwart, never as in-process code in `apps/api`. No media packet
+     touches the API.
+   - One instance per enabling deployment, with no Redis.
+   - TURN/TLS on 443 through a Traefik TCP router with PROXY protocol.
+   - It starts co-located, capped by container limits and a **measured**
+     `limit.bytes_per_sec`.
+5. **Recording is deferred** to its own later phase and ADR.
+6. **Scope boundary.** Doc 205 owes doc 24 its missing invitee surface
+   ("My meetings"), because a Join button needs somewhere to live.
+7. **Not a product.** It is enforced by configuration and by what is not
+   built: no plan, module toggle, listing, pricing or metering.
+
+### Reasoning
+
+- **It is doc 13's decision, taken again for a second kind of
+  infrastructure.** Doc 13 chose a specific open-source engine (Stalwart) over
+  a paid service. `docs/email.md` then deployed it as a Coolify resource beside
+  the existing Postgres and Redis, rather than inside the app. LiveKit follows
+  the same shape, and needs even less: no database and no Redis at one node.
+  Real-time media is different in kind from a CRUD process, exactly as
+  `RETAIL-ERP.md` gives a node its own database. So it gets its own deployable
+  unit, and the modular monolith is not reopened.
+- **House Rule 8, applied as the codebase already applies it.**
+  `IdentityVerificationProvider`'s own header states the rule this follows: a
+  single implementation still gets the interface, because it is the kind of
+  external integration that gets a second one. `AiService`'s allowlist, its
+  timeouts and `isAvailable()`-before-render are copied, not reinvented.
+- **The seam goes in core because it knows nothing about meetings.** It
+  mirrors `core/notifications` (delivery) beside `notify`'s `AudienceService`
+  (who).
+  - Placing it in `notify` would cost nothing today. But a later consumer
+    outside `notify` (a sector pack that needs a room) would then have to
+    import `notify`, which the boundary checker refuses, or wait for a move.
+  - Placing it in core keeps that door open at zero cost now.
+  - This document builds no second consumer. That would be speculative.
+- **Built-in TURN** issues per-participant credentials that expire in 300
+  seconds by default. It relays only to the SFU, and it enforces a
+  per-participant relay-allocation quota.
+  - A coturn deployment would need a long-lived shared secret, a second
+    credential path, and deliberate peer-range denial so it is not an open
+    relay into the Coolify network.
+  - Coturn's advantages, independent scaling and a separate IP, belong to a
+    scale this feature explicitly does not target.
+- **One LiveKit per deployment, because the webhook stream is data.**
+  LiveKit's `webhook.urls` is server-global. A shared instance would send each
+  tenant's participant names and room activity to every other tenant. That is
+  doc 39's "shares infrastructure, never a database" rule, applied to the
+  thing that here plays the database's role.
+- **Recording is deferred for concrete reasons,** each detailed in doc 205
+  §10:
+  - Egress is a second, CPU-heavy service that needs Redis;
+  - `StorageDriver.put()` takes a whole `Buffer`, and production's
+    `STORAGE_DRIVER=local` volume is unreachable from another container;
+  - consent and notice policy is unwritten;
+  - no table in the repository has a retention column (ruling 1's
+    prerequisite is open);
+  - playback needs a new permission and read-audit.
+
+  Building it halfway would leave one of those five answered by accident.
+
+### Consequences
+
+- **Ongoing operational spend, not a one-time cost.**
+  - Media bandwidth and CPU grow roughly with *N* × (*N* − 1) per room.
+  - Every TURN-relayed participant crosses the host's interface twice.
+  - This is recurring spend on the Coolify host's bandwidth, and it may force a
+    dedicated server. Doc 205 requires the capacity figure be measured on the
+    real host (`lk load-test`) before any deployment enables video, not
+    estimated.
+- **New infrastructure the team must operate, not just new code.**
+  - A network-facing service with newly opened public UDP and TCP ports.
+  - Its image updates and security releases.
+  - Zero-downtime API-key rotation.
+  - A Traefik TCP router for TURN/TLS.
+  - Firewall rules, log rotation, and re-measuring capacity.
+
+  `docs/video.md` (WO-205.7) is the runbook, and whoever operates the Coolify
+  project owns it.
+- **Monitoring is only structured logs plus a container healthcheck.** No
+  metrics backend exists in this codebase. LiveKit's Prometheus endpoint stays
+  off until one is adopted here as its own decision.
+- **Every deployment carries the code, dormant.** Nothing changes until an
+  operator sets the allowlist and runs a LiveKit resource. Doing that for a
+  client deployment is an operator decision with its own cost line, not taken
+  here.
+- **A stated residual on deactivation.** A deactivated user already in a room
+  may hear it for up to 60 seconds, until the next sweep. Closing that gap
+  needs a `UserDeactivated` domain event from `users`, a separate decision
+  named in doc 205's Out of scope.
+- **Hosts can now see who actually attended their meeting.** That is a new
+  visibility, limited to the meeting's caller by the same check
+  `MeetingsService.cancel()` makes.
+- **Doc 24 gains its first invitee-facing surface.** Its `respond()` route
+  becomes reachable from a screen for the first time.
+- **Three pre-existing doc-24 gaps are flagged, not fixed:**
+  - `GET :id/shortfall` has no caller or reach check;
+  - its two quorum settings have no editing route;
+  - its erasure lens cites doc 25, which is payroll.
+- **Three new dependencies,** each with a dependency-standard block in doc
+  205: `livekit-server-sdk` (API), and `livekit-client` and
+  `@livekit/components-react` (web, room route only, hooks and primitives
+  only, never `@livekit/components-styles`).
+
+### Status
+**Accepted** — the engine, the seam and the deployment decision. Doc 205's
+work orders (WO-205.1–205.7) are proposed, not yet built.

@@ -91,7 +91,7 @@ model AppPublisherCredential {
 deleting its row (its deviation 2). Here revocation sets `revokedAt`,
 because every `AppVersion.submittedByCredentialId` must keep resolving:
 "which credential submitted the version that is now suspected" is the first
-question in a compromise investigation (doc 194 §5). That is also the
+question in a compromise investigation (doc 194 §2.5). That is also the
 repository's standing preference for a reversible, attributable step over a
 delete.
 
@@ -128,7 +128,7 @@ designed under deadline:
   configuration.
 - **A second factor, proven** — the IdP's `amr` claim must show MFA, or
   sign-in is refused. A publisher account that can submit a version to
-  50,000 tenants must not fall to one phished password (doc 194 §6).
+  50,000 tenants must not fall to one phished password (doc 194 §2.6).
 - **Email verification before any listing exists** — doc 51's
   `SignupVerification` shape (a token hash, consumed once, expiring).
 - **The session mints `AppPublisherCredential`s** for CI. The credential
@@ -271,7 +271,7 @@ quotes (doc 50).
 translation text (`diffManifests()` says so) skips the conformance run
 unless the webhook URL also changed. It goes to the top of the queue with an
 SLA of 4 business hours: a compromised key must be replaceable the same
-day (doc 194 §5).
+day (doc 194 §2.5).
 
 ### 3.4 Review SLAs and capacity — an ongoing cost, stated
 

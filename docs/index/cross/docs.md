@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**461** markdown documents. These explain **why**; this index only says **where**.
+**463** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -1899,6 +1899,15 @@ _no second-level headings_
 - Acceptance  <sub>:272</sub>
 - Out of scope  <sub>:288</sub>
 
+### `docs/implementation/access-control-identity/212-role-scope-enforcement-gap.md`  <sub>129 lines</sub>
+
+- 1. The concern, in the owner's own words  <sub>:9</sub>
+- 2. What's confirmed, against the real code  <sub>:17</sub>
+- 3. What this means concretely  <sub>:70</sub>
+- 4. Decision  <sub>:83</sub>
+- 5. Out of scope (this pass)  <sub>:109</sub>
+- Acceptance criteria (for the work order that builds this)  <sub>:121</sub>
+
 ### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>253 lines</sub>
 
 - Why  <sub>:16</sub>
@@ -2627,6 +2636,17 @@ _no second-level headings_
 - Acceptance  <sub>:361</sub>
 - Out of scope  <sub>:376</sub>
 
+### `docs/implementation/commercial-licensing-agency/211-cloud-subscription-offline-license-separation.md`  <sub>124 lines</sub>
+
+- 1. The instruction  <sub>:10</sub>
+- 2. What's shipped today, and where it violates the instruction  <sub>:18</sub>
+- 3. Decision  <sub>:36</sub>
+- 4. The real blocker this exposes: doc 48 doesn't exist yet  <sub>:55</sub>
+- 5. License shape for the offline product  <sub>:70</sub>
+- 6. What doesn't change  <sub>:85</sub>
+- 7. Out of scope (this pass)  <sub>:96</sub>
+- Acceptance criteria (for the work order that eventually builds this)  <sub>:113</sub>
+
 ### `docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md`  <sub>417 lines</sub>
 
 - The one design decision that makes this safe: shared compute, never shared data  <sub>:64</sub>
@@ -2943,7 +2963,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,349 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,487 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3028,6 +3048,8 @@ _no second-level headings_
 - ADR-077 — Doc 208 (L1/L2/L3 caching): each tier attached to a found hot path, not applied blindly — permission resolution's uncached three-query call on every authenticated request as the real L1/L2 target, `VariantSalesStat`'s eager-materialization pattern generalized as the L3 strategy, a real cross-replica settings-staleness bug found and closed along the way  <sub>:9088</sub>
 - ADR-078 — Doc 209 (semantic caching): applied to exactly one of ten AiFeature call sites — RAG_GENERATION, the only one where the answer depends solely on question meaning — and explicitly refused for WHATSAPP_ASSISTANT, where every prompt is already personalized per contact and a semantic cache would risk leaking one customer's data into another's answer  <sub>:9226</sub>
 - ADR-079 — Doc 210: caching third-party API calls to save charges — checked every real integration in this codebase and found exactly one billable, cacheable target (the AI provider), already covered by docs 208/209; two future non-AI targets named with their trigger condition, neither built now  <sub>:9293</sub>
+- ADR-080 — Doc 211: cloud (subscription) and offline (license) locked to strictly separate `PricingModel`/`licenseDeploymentMode` pairings, retracting doc 154's "Lifetime License, ONLINE variant" row and naming doc 48 a precondition of a plan already on the public pricing page  <sub>:9350</sub>
+- ADR-081 — Doc 212: role/permission scope enforcement confirmed as a live adoption gap, not a hypothetical — `AdminScope` has exactly one production caller, `orgUnitScopeFilterFor()` has zero, and `check-route-permissions.mjs` has no awareness of either  <sub>:9414</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3828,16 +3850,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>668 lines</sub>
+### `docs/implementation/README.md`  <sub>687 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:521</sub>
-- The two module groups  <sub>:550</sub>
-- How a work order runs  <sub>:587</sub>
-- Known gaps not yet owned by a phase  <sub>:605</sub>
-- When a brief is wrong  <sub>:632</sub>
-- Scope, honestly  <sub>:645</sub>
-- Gap-analysis roadmap references  <sub>:652</sub>
+- Dependency order  <sub>:540</sub>
+- The two module groups  <sub>:569</sub>
+- How a work order runs  <sub>:606</sub>
+- Known gaps not yet owned by a phase  <sub>:624</sub>
+- When a brief is wrong  <sub>:651</sub>
+- Scope, honestly  <sub>:664</sub>
+- Gap-analysis roadmap references  <sub>:671</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 

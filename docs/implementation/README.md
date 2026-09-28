@@ -518,6 +518,25 @@ read, and exactly one exists — the AI provider, already covered by docs
 |---|---|
 | [`210-third-party-api-call-caching-status.md`](./resilience-scalability/210-third-party-api-call-caching-status.md) | **Investigated, nothing built.** `PaymentProvider.feeFor()` is a hardcoded 0 in both real providers — no network call to cache. `PaymentProvider.initiate()` must never be cached — each is a unique transaction. `CourierProvider.track()` is real and polling-shaped but only `manual` is built — no real courier account exists in this deployment. The ingestion/connector system (docs 160/162/172) is specified, not built. Two future targets named with their exact trigger (a real courier, a real connector, actually landing) — reusing doc 208's own cache mechanism, not a third one, and not built speculatively now. ADR-079 |
 
+**Number 211** answers the owner's direct instruction — do not mix cloud
+and offline at all, cloud on a monthly/yearly subscription, offline on a
+license — by locking doc 50's `pricingModel`/`licenseDeploymentMode`
+fields together in both directions and retracting doc 154's own shipped
+"Lifetime License, `ONLINE` variant" row:
+
+| File | What it is |
+|---|---|
+| [`211-cloud-subscription-offline-license-separation.md`](./commercial-licensing-agency/211-cloud-subscription-offline-license-separation.md) | **Proposed, not yet built.** Every recurring `PricingModel` (`FLAT_MONTHLY`/`PER_SEAT`/`USAGE_BASED`) locked to `licenseDeploymentMode: ONLINE`; `ONE_TIME_LICENSE` locked to `OFFLINE`. Doc 154's "Lifetime License, `ONLINE` variant" row and its `hostingMode: 'EITHER'` type value are retracted. Doc 48 (native desktop deployment, still unbuilt) named a precondition of a plan already on the public `/pricing` page. Exact recommended license terms for the offline product — 12-month term, 30-day grace period, node-locked — recorded but not implemented. ADR-080 |
+
+**Number 212** investigates a named concern about role/permission scope
+— confirms two existing scoping mechanisms (`AdminScope`, `OrgUnitGrant`)
+are correct but adopted in only one module and zero modules respectively,
+with no automated check covering the gap:
+
+| File | What it is |
+|---|---|
+| [`212-role-scope-enforcement-gap.md`](./access-control-identity/212-role-scope-enforcement-gap.md) | **Investigated, nothing built.** `Role`/`UserRoleAssignment` carry no company or department scope by design — that's `scope.guard.ts`'s job. Confirmed by grep: `assertCanManageAtScope`/`scopeFilterFor` have exactly one production caller (`organization.service.ts`); `orgUnitScopeFilterFor` has zero, only its own spec. `check-route-permissions.mjs` verifies a permission decorator exists, not that a handler also scopes its query — a route can pass lint while being exposed to exactly the cross-company/cross-department access the owner asked about. Proposes a new `check-route-scoping.mjs` static check, same enforcement class as `check-module-boundaries.mjs`; no code built in this pass. ADR-081 |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

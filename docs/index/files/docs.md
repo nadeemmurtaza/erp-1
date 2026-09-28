@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 435 tracked files in `docs/*`, by directory.
+All 437 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,18 +563,18 @@ All 435 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 9349 |  |
+| `DECISIONS.md` | doc | 9487 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 668 |  |
+| `README.md` | doc | 687 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
-### `docs/implementation/access-control-identity` (7)
+### `docs/implementation/access-control-identity` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -585,6 +585,7 @@ All 435 tracked files in `docs/*`, by directory.
 | `163-personal-api-keys.md` | doc | 635 |  |
 | `18-identity-verification.md` | doc | 149 |  |
 | `21-access-over-the-org-tree.md` | doc | 294 |  |
+| `212-role-scope-enforcement-gap.md` | doc | 129 |  |
 
 ### `docs/implementation/admin-platform` (5)
 
@@ -691,7 +692,7 @@ All 435 tracked files in `docs/*`, by directory.
 | `150-product-kitting-bundles.md` | doc | 222 |  |
 | `47-preconfigured-sector-taxonomy.md` | doc | 175 |  |
 
-### `docs/implementation/commercial-licensing-agency` (14)
+### `docs/implementation/commercial-licensing-agency` (15)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -701,6 +702,7 @@ All 435 tracked files in `docs/*`, by directory.
 | `153-usage-based-pricing-model.md` | doc | 298 |  |
 | `154-three-headline-commercial-plans.md` | doc | 188 |  |
 | `155-wallet-stored-value-merchant-escrow.md` | doc | 385 |  |
+| `211-cloud-subscription-offline-license-separation.md` | doc | 124 |  |
 | `39-shared-cross-tenant-hosting-tier.md` | doc | 417 |  |
 | `50-commercial-pricing-licensing-models.md` | doc | 243 |  |
 | `51-free-demo-sandbox-onboarding.md` | doc | 225 |  |

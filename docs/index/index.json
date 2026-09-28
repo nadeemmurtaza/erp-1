@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2491,
-    "lines": 391729,
+    "files": 2493,
+    "lines": 392139,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 435,
-      "lines": 88596,
-      "bytes": 5351372,
+      "files": 437,
+      "lines": 89006,
+      "bytes": 5374973,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -92096,8 +92096,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 9349,
-      "bytes": 549817,
+      "lines": 9487,
+      "bytes": 557077,
       "doc": "",
       "symbols": []
     },
@@ -92150,8 +92150,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 668,
-      "bytes": 101806,
+      "lines": 687,
+      "bytes": 103989,
       "doc": "",
       "symbols": []
     },
@@ -92242,6 +92242,15 @@
       "kind": "doc",
       "lines": 294,
       "bytes": 16032,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/access-control-identity/212-role-scope-enforcement-gap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 129,
+      "bytes": 6921,
       "doc": "",
       "symbols": []
     },
@@ -92926,6 +92935,15 @@
       "kind": "doc",
       "lines": 385,
       "bytes": 21315,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/commercial-licensing-agency/211-cloud-subscription-offline-license-separation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 124,
+      "bytes": 7237,
       "doc": "",
       "symbols": []
     },

@@ -12,14 +12,14 @@ Source: `apps/api/src/core/health/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (3 · 96 lines)
+## Files (3 · 135 lines)
 
 All paths relative to `apps/api/src/core/health`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `health.controller.spec.ts` | unit test | 38 | — |  |
-| `health.controller.ts` | controller | 52 | 1 |  |
+| `health.controller.spec.ts` | unit test | 67 | — |  |
+| `health.controller.ts` | controller | 62 | 1 |  |
 | `health.module.ts` | nest module | 6 | 1 |  |
 
 
@@ -27,8 +27,8 @@ All paths relative to `apps/api/src/core/health`.
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/health` | **PUBLIC** | `HealthController.live` :16 | Liveness probe |
-| GET | `/health/ready` | **PUBLIC** | `HealthController.ready` :28 | Readiness probe — checks the database |
+| GET | `/health` | **PUBLIC** | `HealthController.live` :20 | Liveness probe |
+| GET | `/health/ready` | **PUBLIC** | `HealthController.ready` :32 | Readiness probe — checks the database and the rate-limit Redis |
 
 
 ## Domain events
@@ -62,14 +62,14 @@ _none_
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `health.controller.spec.ts` | 3 | HealthController — 38-resilience-engineering.md WO-38.1, degradation matrix row |
+| `health.controller.spec.ts` | 5 | HealthController — 38-resilience-engineering.md WO-38.1, degradation matrix row · HealthController — degradation matrix… |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `HealthController` | class | `health.controller.ts:8` |  |
+| `HealthController` | class | `health.controller.ts:9` |  |
 | `HealthModule` | class | `health.module.ts:5` |  |
 
 

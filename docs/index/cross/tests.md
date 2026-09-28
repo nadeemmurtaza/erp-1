@@ -3,7 +3,7 @@
 
 # Tests
 
-**341** spec files, **3,260** cases. What is already pinned down — and what is not.
+**341** spec files, **3,277** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -69,7 +69,7 @@ regression or an N+1.
 | `apps/api/src/core/auth/api-keys/api-key-access.spec.ts` | core/auth | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements —… |
 | `apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts` | core/auth | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says wh… |
 | `apps/api/src/core/auth/api-keys/api-keys.service.spec.ts` | core/auth | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do righ… |
-| `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 7 | AuthService.login — enforceSso (WO-165.6) · parseDuration |
+| `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 22 | AuthService.login — enforceSso (WO-165.6) · AuthService.login — per-account attempt bucket (WO-206.… |
 | `apps/api/src/core/auth/guards.spec.ts` | core/auth | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a se… |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
 | `apps/api/src/core/auth/password.util.spec.ts` | core/auth | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
@@ -86,7 +86,7 @@ regression or an N+1.
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
 | `apps/api/src/core/feature-flags/feature-flags.service.spec.ts` | core/feature-flags | 10 | FeatureFlagsService — WO-37.2 |
 | `apps/api/src/core/feed/feed-registry.service.spec.ts` | core/feed | 6 | FeedRegistryService — WO-58.2 |
-| `apps/api/src/core/health/health.controller.spec.ts` | core/health | 3 | HealthController — 38-resilience-engineering.md WO-38.1, degradation matrix row |
+| `apps/api/src/core/health/health.controller.spec.ts` | core/health | 5 | HealthController — 38-resilience-engineering.md WO-38.1, degradation matrix row · HealthController… |
 | `apps/api/src/core/idempotency/idempotency-key.constraint.spec.ts` | core/idempotency | 1 | IdempotencyKey — @@unique([scope, key]) race guard |
 | `apps/api/src/core/idempotency/idempotency.cron.spec.ts` | core/idempotency | 2 | IdempotencyCron — WO-157.4 |
 | `apps/api/src/core/idempotency/idempotency.interceptor.spec.ts` | core/idempotency | 8 | IdempotencyInterceptor — WO-157.2 |

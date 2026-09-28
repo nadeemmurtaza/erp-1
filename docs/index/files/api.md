@@ -817,10 +817,10 @@ All 1,165 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `auth.constants.ts` | module | 116 |  |
-| `auth.controller.ts` | controller | 208 |  |
+| `auth.controller.ts` | controller | 229 |  |
 | `auth.module.ts` | nest module | 67 |  |
-| `auth.service.spec.ts` | unit test | 111 |  |
-| `auth.service.ts` | service | 461 |  |
+| `auth.service.spec.ts` | unit test | 450 |  |
+| `auth.service.ts` | service | 671 |  |
 | `bearer-token.ts` | module | 31 |  |
 | `decorators.ts` | module | 91 |  |
 | `guards.spec.ts` | unit test | 212 |  |
@@ -973,8 +973,8 @@ All 1,165 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `health.controller.spec.ts` | unit test | 38 |  |
-| `health.controller.ts` | controller | 52 |  |
+| `health.controller.spec.ts` | unit test | 67 |  |
+| `health.controller.ts` | controller | 62 |  |
 | `health.module.ts` | nest module | 6 |  |
 
 ### `apps/api/src/core/idempotency` (7)

@@ -450,7 +450,7 @@ never authorization.
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
 | GET | `/health` | **PUBLIC** | `HealthController.live` | Liveness probe |
-| GET | `/health/ready` | **PUBLIC** | `HealthController.ready` | Readiness probe — checks the database |
+| GET | `/health/ready` | **PUBLIC** | `HealthController.ready` | Readiness probe — checks the database and the rate-limit Redis |
 
 ### [`core/notifications`](../core/notifications.md) (14)
 

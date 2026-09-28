@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (41 · 8,165 lines)
+## Files (41 · 8,735 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -28,10 +28,10 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `api-keys.service.ts` | service | 712 | 9 |  |
 | `api-key.dto.ts` | dto | 114 | 5 | Shape and bounds only. |
 | `auth.constants.ts` | module | 116 | 18 |  |
-| `auth.controller.ts` | controller | 208 | 3 | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 password gue… |
+| `auth.controller.ts` | controller | 229 | 3 | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 password gue… |
 | `auth.module.ts` | nest module | 67 | 1 |  |
-| `auth.service.spec.ts` | unit test | 111 | — |  |
-| `auth.service.ts` | service | 461 | 6 |  |
+| `auth.service.spec.ts` | unit test | 450 | — |  |
+| `auth.service.ts` | service | 671 | 9 | doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within 10 s of its own rotation is a race — two tabs,… |
 | `bearer-token.ts` | module | 31 | 2 | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machine auth pa… |
 | `decorators.ts` | module | 91 | 7 | Audits this credential route's per-IP 429s as `auth.rate_limited` (206-rate-limiting-caching-compression-hardening.md §… |
 | `auth.dto.ts` | dto | 126 | 8 |  |
@@ -84,21 +84,21 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | PATCH | `/api-keys/:id` | signed-in | `ApiKeysController.update` :48 | Rename a key, or replace its scopes — re-checked against what you hold now |
 | POST | `/api-keys/:id/revoke` | signed-in | `ApiKeysController.revoke` :63 | Revoke a key — final; its next request is refused |
 | POST | `/api-keys/:id/rotate` | signed-in | `ApiKeysController.rotate` :56 | Issue a new secret and expiry for a key — same scopes; the old secret stops working at on… |
-| POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` :162 | Change your password and sign out other devices |
-| POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` :174 | Request a password reset link by email |
-| POST | `/auth/login` | **PUBLIC** | `AuthController.login` :83 | Sign in with an email or phone number |
-| POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` :113 | Revoke the current refresh token |
-| GET | `/auth/me` | signed-in | `AuthController.me` :131 | The signed-in user |
-| PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :152 | Update your own profile fields |
-| POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` :93 | Exchange a refresh token for a new access token |
-| POST | `/auth/register` | **PUBLIC** | `AuthController.register` :69 | Create a customer account |
-| POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :200 | Resend the email verification link |
-| POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` :183 | Set a new password using a reset link token |
+| POST | `/auth/change-password` | `account.change_own_password` | `AuthController.changePassword` :183 | Change your password and sign out other devices |
+| POST | `/auth/forgot-password` | **PUBLIC** | `AuthController.forgotPassword` :195 | Request a password reset link by email |
+| POST | `/auth/login` | **PUBLIC** | `AuthController.login` :100 | Sign in with an email or phone number |
+| POST | `/auth/logout` | **PUBLIC** | `AuthController.logout` :134 | Revoke the current refresh token |
+| GET | `/auth/me` | signed-in | `AuthController.me` :152 | The signed-in user |
+| PATCH | `/auth/me` | signed-in | `AuthController.updateProfile` :173 | Update your own profile fields |
+| POST | `/auth/refresh` | **PUBLIC** | `AuthController.refresh` :114 | Exchange a refresh token for a new access token |
+| POST | `/auth/register` | **PUBLIC** | `AuthController.register` :78 | Create a customer account |
+| POST | `/auth/resend-verification` | signed-in | `AuthController.resendVerification` :221 | Resend the email verification link |
+| POST | `/auth/reset-password` | **PUBLIC** | `AuthController.resetPassword` :204 | Set a new password using a reset link token |
 | GET | `/auth/sso/:connectionId/start` | **PUBLIC** | `SsoController.start` :78 | Begin single sign-on — redirects to the identity provider |
 | GET | `/auth/sso/callback` | **PUBLIC** | `SsoController.callback` :92 | Where the identity provider returns — completes single sign-on and redirects to the admin… |
 | GET | `/auth/sso/connections` | **PUBLIC** | `SsoController.signInOptions` :70 | The single sign-on buttons the admin sign-in screen shows — id and label only |
 | POST | `/auth/sso/session` | **PUBLIC** | `SsoController.session` :133 | Exchange a completed single sign-on for a session — the same result a password sign-in re… |
-| POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` :191 | Confirm an email address using a verification link token |
+| POST | `/auth/verify-email` | **PUBLIC** | `AuthController.verifyEmail` :212 | Confirm an email address using a verification link token |
 
 
 ## Domain events
@@ -107,10 +107,10 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `UserRegistered` | `user.registered` | `auth.service.ts:103` |
-| `PasswordChanged` | `user.password_changed` | `auth.service.ts:218`, `auth.service.ts:273` |
-| `PasswordResetRequested` | `user.password_reset_requested` | `auth.service.ts:243` |
-| `EmailVerificationRequested` | `user.email_verification_requested` | `auth.service.ts:294` |
+| `UserRegistered` | `user.registered` | `auth.service.ts:131` |
+| `PasswordChanged` | `user.password_changed` | `auth.service.ts:302`, `auth.service.ts:357` |
+| `PasswordResetRequested` | `user.password_reset_requested` | `auth.service.ts:327` |
+| `EmailVerificationRequested` | `user.email_verification_requested` | `auth.service.ts:378` |
 | `ApiKeyIssued` | `user.api_key_issued` | `api-keys.service.ts:255`, `api-keys.service.ts:386` |
 | `SsoAccountLinked` | `user.sso_account_linked` | `sso.service.ts:614`, `sso.service.ts:634` |
 | `SsoUserProvisioned` | `user.sso_user_provisioned` | `sso.service.ts:674` |
@@ -151,7 +151,7 @@ check there before adding another.
 | `api-key-access.spec.ts` | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements — the handler overrid… |
 | `api-key-auth.service.spec.ts` | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says why · failed attempts… |
 | `api-keys.service.spec.ts` | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do right now · update · rot… |
-| `auth.service.spec.ts` | 7 | AuthService.login — enforceSso (WO-165.6) · parseDuration |
+| `auth.service.spec.ts` | 22 | AuthService.login — enforceSso (WO-165.6) · AuthService.login — per-account attempt bucket (WO-206.2) · AuthService.ref… |
 | `guards.spec.ts` | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a session — unchanged ·… |
 | `ownership.guard.spec.ts` | 5 | assertCanManage |
 | `password.util.spec.ts` | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
@@ -210,16 +210,19 @@ check there before adding another.
 | `LEGACY_REFRESH_COOKIE` | const | `auth.constants.ts:105` | Single sign-on (161-sso-identity-federation.md). |
 | `LEGACY_CART_COOKIE` | const | `auth.constants.ts:106` |  |
 | `readCookie` | function | `auth.constants.ts:109` | The current cookie, or the one written before the rename. |
-| `CREDENTIAL_THROTTLE` | const | `auth.controller.ts:43` | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 pa… |
-| `setRefreshCookie` | function | `auth.controller.ts:46` | The refresh-token cookie every sign-in path writes — password here, single sign-on in sso.controller.ts. |
-| `AuthController` | class | `auth.controller.ts:58` |  |
+| `CREDENTIAL_THROTTLE` | const | `auth.controller.ts:51` | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 pa… |
+| `setRefreshCookie` | function | `auth.controller.ts:54` | The refresh-token cookie every sign-in path writes — password here, single sign-on in sso.controller.ts. |
+| `AuthController` | class | `auth.controller.ts:66` |  |
 | `AuthModule` | class | `auth.module.ts:66` |  |
-| `AuthTokens` | interface | `auth.service.ts:20` |  |
-| `AuthResult` | interface | `auth.service.ts:26` |  |
-| `RegisterInput` | interface | `auth.service.ts:30` |  |
-| `UpdateProfileInput` | interface | `auth.service.ts:38` |  |
-| `AuthService` | class | `auth.service.ts:47` |  |
-| `parseDuration` | function | `auth.service.ts:448` | "30d" -> milliseconds. |
+| `REFRESH_REUSE_GRACE_MS` | const | `auth.service.ts:29` | doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within 10 s of its own rotation is a race —… |
+| `REFRESH_REUSE_DETECTED_AUDIT_ACTION` | const | `auth.service.ts:31` | doc 206 §2.2 (WO-206.3): a rotated refresh token presented again within 10 s of its own rotation is a race —… |
+| `SessionRequestContext` | interface | `auth.service.ts:39` | Where a session request came from — for the audit trail only, never for a decision. |
+| `AuthTokens` | interface | `auth.service.ts:46` |  |
+| `AuthResult` | interface | `auth.service.ts:52` |  |
+| `RegisterInput` | interface | `auth.service.ts:56` |  |
+| `UpdateProfileInput` | interface | `auth.service.ts:64` |  |
+| `AuthService` | class | `auth.service.ts:73` |  |
+| `parseDuration` | function | `auth.service.ts:658` | "30d" -> milliseconds. |
 | `bearerToken` | function | `bearer-token.ts:10` | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machi… |
 | `bearerCredential` | function | `bearer-token.ts:26` | The credential in an `Authorization: Bearer <credential>` header, or undefined — never throws. |
 | `AuditRateLimit` | const | `decorators.ts:20` | Audits this credential route's per-IP 429s as `auth.rate_limited` (206-rate-limiting-caching-compression-hard… |

@@ -3,19 +3,19 @@
 
 # Every tracked file
 
-All **2,461** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,462** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,165 | 154,988 | [files/api.md](../files/api.md) |
+| apps/api | 1,165 | 155,597 | [files/api.md](../files/api.md) |
 | apps/web | 428 | 72,506 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,667 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 80 | 8,765 | [files/packages.md](../files/packages.md) |
-| docs/* | 433 | 87,758 | [files/docs.md](../files/docs.md) |
+| docs/* | 434 | 88,015 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 60 | 30,714 | [files/infra.md](../files/infra.md) |
 | repository root files | 213 | 21,461 | [files/root.md](../files/root.md) |
 
@@ -28,7 +28,7 @@ name a new file: the convention is what makes it findable.
 
 | Kind | Count |
 |---|---|
-| doc | 458 |
+| doc | 459 |
 | unit test | 321 |
 | page | 228 |
 | service | 208 |

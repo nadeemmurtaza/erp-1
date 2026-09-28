@@ -501,6 +501,14 @@ generically — and closes a real, previously-silent bug found along the way:
 |---|---|
 | [`208-l1-l2-l3-caching-architecture.md`](./resilience-scalability/208-l1-l2-l3-caching-architecture.md) | **Proposed, not yet built**, except `InProcessCache`'s pattern (`SettingsService`'s existing 30s TTL Map, generalized here, not duplicated) and `VariantSalesStat`'s eager-materialization pattern (already real, cited as the L3 model). L1/L2: `PermissionsService.resolveForUser()` — three uncached queries on every authenticated request, found via `jwt.strategy.ts`'s `validate()` — gets a 10s L1 (capped 10,000 entries) and 60s L2 (`permissions:{userId}`), both invalidated by explicit delete-on-write at the two real revocation sites, the security trade-off stated plainly rather than hidden. Doc 206 §5's API-response cache is reclassified as this architecture's L2, unchanged. A real gap found and fixed: `SettingsService.set()` only ever cleared the *writing* replica's own cache, leaving every other replica stale for up to 30s per write with no correction — closed with a 300s L2 tier. L3: no new target built — `VariantSalesStat`'s own shape stated as the criterion for the next real candidate, not invented speculatively. Pub/sub cross-replica L1 invalidation named and deliberately not built. ADR-077 |
 
+**Number 209** checks all ten `AiFeature` call sites for semantic caching and
+applies it to exactly one — with the two refusals recorded, not silently
+skipped:
+
+| File | What it is |
+|---|---|
+| [`209-semantic-caching-rag-generation.md`](./resilience-scalability/209-semantic-caching-rag-generation.md) | **Proposed, not yet built.** `RAG_GENERATION` is the only `AiFeature` where an answer depends solely on question meaning (`RagScope` is `{ organizationId, corpus }`, no per-user dimension) — gets a pgvector-backed `RagAnswerCache` (reusing the existing `vector(1536)` capability, not a new Redis vector index), 0.95 cosine-similarity threshold, 24h TTL backstopped by explicit invalidation on ingestion completion, cached citations carried forward unchanged. `WHATSAPP_ASSISTANT` is explicitly refused: every prompt bakes in per-contact grounding context, so a semantic cache there would risk serving one customer's cached answer, containing another customer's order data, to a similar question from someone else. `SEMANTIC_SEARCH` is also refused: its only AI cost is one cheap embedding call with no completion step, already covered by doc 208's general L2 cache. ADR-078 |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

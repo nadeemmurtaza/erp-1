@@ -70,6 +70,8 @@ export const ROUTES = {
     returns: '/returns',
     terms: '/terms',
     privacy: '/privacy',
+    /** 158-serialized-unit-tracking.md §3 — public warranty-verify lookup. */
+    verifyPurchase: '/verify-purchase',
 
     // CMS-driven (WO-8.1).
     blog: '/blog',
@@ -162,6 +164,15 @@ export const ROUTES = {
     featureFlags: '/admin/feature-flags',
     featureFlag: (id: string) => `/admin/feature-flags/${id}`,
 
+    /**
+     * 38-resilience-engineering.md. Named distinctly from `resilience`
+     * above (144-supply-chain-resilience-planning-engine.md's own,
+     * unrelated "Resilience Planning" screen) — two different documents
+     * both happened to pick the word "resilience," and the existing route
+     * wins the shorter name since it shipped first.
+     */
+    platformResilience: '/admin/platform-resilience',
+
     /** hr-people-org/19-org-structure-offices-departments.md. */
     orgStructure: '/admin/org-structure',
     /** access-control-identity/21-access-over-the-org-tree.md WO-21.6 — one access screen per unit, reached by clicking from the tree. */
@@ -188,6 +199,12 @@ export const ROUTES = {
     inventorySlowMovers: '/admin/inventory/slow-movers',
     /** Retired hand-built page (WO-D.4/E.2) — now the analytics report. */
     inventoryInsights: '/admin/analytics/inventory/valuation',
+    /** 32-lots-batch-expiry-fefo.md. */
+    lots: '/admin/inventory/lots',
+    lot: (id: string) => `/admin/inventory/lots/${id}`,
+    /** 158-serialized-unit-tracking.md. Keyed by serialNumber, not id — the API's own identifier for a unit. */
+    serials: '/admin/inventory/serials',
+    serial: (serialNumber: string) => `/admin/inventory/serials/${encodeURIComponent(serialNumber)}`,
 
     purchaseOrders: '/admin/purchase-orders',
     purchaseOrderNew: '/admin/purchase-orders/new',

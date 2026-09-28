@@ -13,7 +13,7 @@ Source: `apps/api/src/core/ai/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (6 · 822 lines)
+## Files (6 · 853 lines)
 
 All paths relative to `apps/api/src/core/ai`.
 
@@ -21,8 +21,8 @@ All paths relative to `apps/api/src/core/ai`.
 |---|---|---|---|---|
 | `ai-provider.ts` | module | 67 | 5 | Extension point: AI providers (Phase 9, 09-ai-layer.md, House Rule 8 — same idiom as PaymentProvider and StorageDriver). |
 | `ai.module.ts` | nest module | 13 | 1 |  |
-| `ai.service.spec.ts` | unit test | 278 | — |  |
-| `ai.service.ts` | service | 206 | 2 |  |
+| `ai.service.spec.ts` | unit test | 298 | — |  |
+| `ai.service.ts` | service | 217 | 2 |  |
 | `anthropic.provider.ts` | module | 143 | 1 | Anthropic's Messages API. |
 | `openai.provider.ts` | module | 115 | 1 | OpenAI's chat completions and embeddings APIs. |
 
@@ -59,6 +59,7 @@ _none_
 
 ## Reaches out to
 
+- **module `resilience`** ⚠ direct import
 - **module `settings`** ⚠ direct import
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -70,7 +71,7 @@ check there before adding another.
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `ai.service.spec.ts` | 16 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpendPaisa |
+| `ai.service.spec.ts` | 17 | AiService · isAvailable · no provider configured · complete · embed · underBudget · monthToDateSpendPaisa |
 
 
 ## Every export in this unit
@@ -83,8 +84,8 @@ check there before adding another.
 | `DescribeImageResult` | interface | `ai-provider.ts:47` |  |
 | `AiProvider` | interface | `ai-provider.ts:54` |  |
 | `AiModule` | class | `ai.module.ts:12` |  |
-| `AiCapability` | type | `ai.service.ts:37` |  |
-| `AiService` | class | `ai.service.ts:58` | Front door for every AI call in the codebase (09-ai-layer.md). |
+| `AiCapability` | type | `ai.service.ts:38` |  |
+| `AiService` | class | `ai.service.ts:59` | Front door for every AI call in the codebase (09-ai-layer.md). |
 | `AnthropicProvider` | class | `anthropic.provider.ts:33` | Anthropic's Messages API. |
 | `OpenAiProvider` | class | `openai.provider.ts:35` | OpenAI's chat completions and embeddings APIs. |
 

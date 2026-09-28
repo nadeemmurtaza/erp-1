@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PurchasingService } from './purchasing.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { InventoryService } from '../inventory/inventory.service';
+import { LotsService } from '../inventory/lots.service';
+import { SerializedUnitsService } from '../inventory/serialized-units.service';
 import { PartiesService } from '../parties/parties.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { EventBusService } from '../../core/events/event-bus.service';
@@ -34,6 +36,8 @@ describe('PurchasingService — supplier bills', () => {
         PurchasingService,
         { provide: PrismaService, useValue: prisma },
         { provide: InventoryService, useValue: {} },
+        { provide: LotsService, useValue: {} },
+        { provide: SerializedUnitsService, useValue: {} },
         { provide: PartiesService, useValue: {} },
         { provide: SettingsService, useValue: {} },
         { provide: AppConfigService, useValue: {} },

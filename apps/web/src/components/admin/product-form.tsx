@@ -46,6 +46,9 @@ interface VariantDraft {
   costPrice: string;
   reorderPoint: string;
   reorderQuantity: string;
+  lotTracked: boolean;
+  tracksSerials: boolean;
+  warrantyMonths: string;
 }
 
 const BLANK_VARIANT: VariantDraft = {
@@ -61,6 +64,9 @@ const BLANK_VARIANT: VariantDraft = {
   costPrice: '',
   reorderPoint: '',
   reorderQuantity: '',
+  lotTracked: false,
+  tracksSerials: false,
+  warrantyMonths: '',
 };
 
 interface ProductFormProps {
@@ -333,6 +339,9 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
             costPrice: variant.costPrice ? toMinor(Number(variant.costPrice)) : undefined,
             reorderPoint: variant.reorderPoint ? Number(variant.reorderPoint) : undefined,
             reorderQuantity: variant.reorderQuantity ? Number(variant.reorderQuantity) : undefined,
+            lotTracked: variant.lotTracked,
+            tracksSerials: variant.tracksSerials,
+            warrantyMonths: variant.warrantyMonths ? Number(variant.warrantyMonths) : undefined,
           })),
       };
 
@@ -1124,6 +1133,36 @@ export function ProductForm({ product, categories, garmentTypes, brands }: Produ
                       onChange={(value) => updateVariant(setVariants, index, { reorderQuantity: value })}
                     />
                   </div>
+
+                  <div className="mt-3 grid gap-3 border-t border-neutral-100 pt-3 sm:grid-cols-4">
+                    <label className="flex items-center gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={variant.lotTracked}
+                        onChange={(event) => updateVariant(setVariants, index, { lotTracked: event.target.checked })}
+                        className="field-check"
+                      />
+                      Batch/lot tracked
+                    </label>
+                    <label className="flex items-center gap-2 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={variant.tracksSerials}
+                        onChange={(event) => updateVariant(setVariants, index, { tracksSerials: event.target.checked })}
+                        className="field-check"
+                      />
+                      Serial-number tracked
+                    </label>
+                    {variant.tracksSerials ? (
+                      <LabelledInput
+                        label="Warranty (months)"
+                        type="number"
+                        value={variant.warrantyMonths}
+                        onChange={(value) => updateVariant(setVariants, index, { warrantyMonths: value })}
+                        placeholder="0"
+                      />
+                    ) : null}
+                  </div>
                 </Disclosure>
               </div>
             </div>
@@ -1252,6 +1291,9 @@ function toDraft(variant: AdminVariant): VariantDraft {
     costPrice: variant.costPrice ? String(toMajor(variant.costPrice)) : '',
     reorderPoint: variant.reorderPoint !== null ? String(variant.reorderPoint) : '',
     reorderQuantity: variant.reorderQuantity !== null ? String(variant.reorderQuantity) : '',
+    lotTracked: variant.lotTracked,
+    tracksSerials: variant.tracksSerials,
+    warrantyMonths: variant.warrantyMonths !== null ? String(variant.warrantyMonths) : '',
   };
 }
 

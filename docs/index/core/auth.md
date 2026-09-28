@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (41 · 8,053 lines)
+## Files (41 · 8,137 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -45,8 +45,8 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `ownership.guard.ts` | guard | 24 | 2 |  |
 | `password.util.spec.ts` | unit test | 80 | — |  |
 | `password.util.ts` | module | 89 | 6 |  |
-| `permissions.service.spec.ts` | unit test | 129 | — |  |
-| `permissions.service.ts` | service | 86 | 2 |  |
+| `permissions.service.spec.ts` | unit test | 175 | — |  |
+| `permissions.service.ts` | service | 124 | 2 |  |
 | `oidc.provider.spec.ts` | unit test | 205 | — |  |
 | `oidc.provider.ts` | module | 195 | 2 | Every OIDC provider — Google Workspace, Microsoft Entra ID, Okta — through one class, chosen by `SsoConnection.protocol… |
 | `roles.controller.ts` | controller | 44 | 1 | Custom roles (owner's request) — create, edit, delete a named permission bundle, freely, without a deploy. |
@@ -155,7 +155,7 @@ check there before adding another.
 | `guards.spec.ts` | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a session — unchanged ·… |
 | `ownership.guard.spec.ts` | 5 | assertCanManage |
 | `password.util.spec.ts` | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
-| `permissions.service.spec.ts` | 10 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) |
+| `permissions.service.spec.ts` | 14 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) · usersWithPermission — the inverse bat… |
 | `oidc.provider.spec.ts` | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityFromClaims |
 | `roles.service.spec.ts` | 22 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orphan guard · assertLock… |
 | `scope.guard.spec.ts` | 24 | resolveScope · assertCanManageAtScope · scopeFilterFor · orgUnitScopeFilterFor |

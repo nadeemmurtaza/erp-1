@@ -113,6 +113,22 @@ export async function unsubscribeFromMarketing(userId: string, token: string): P
   });
 }
 
+export interface SerialVerifyResult {
+  serialNumber: string;
+  status: 'IN_STOCK' | 'SOLD' | 'RETURNED' | 'RMA_TO_SUPPLIER' | 'WRITTEN_OFF';
+  soldOn: string | null;
+  orderId: string | null;
+  orderNumber: string | null;
+  warrantyEndsOn: string | null;
+}
+
+/** 158-serialized-unit-tracking.md §3 — status/date/warranty only, never a branch or employee. */
+export async function verifySerial(serialNumber: string): Promise<SerialVerifyResult> {
+  return request(`/public/serials/${encodeURIComponent(serialNumber)}`, {
+    fallbackMessage: 'That serial number is not recorded in this system.',
+  });
+}
+
 export async function logoutCustomer(): Promise<void> {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   clearCustomerSession();

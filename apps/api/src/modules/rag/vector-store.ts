@@ -67,3 +67,12 @@ export interface VectorStore {
 }
 
 export const VECTOR_STORE = Symbol('VECTOR_STORE');
+
+/**
+ * 38-resilience-engineering.md §2, WO-38.2 — the one `CircuitBreakerService`
+ * key both `RagRetrievalService.retrieve()` and `RagIngestionService`'s own
+ * `upsertChunks()` call wrap with, since every `VECTOR_STORE` binding today
+ * is the same `PgVectorStore` (`rag.module.ts`) — one dependency, one
+ * circuit, not one per caller.
+ */
+export const VECTOR_STORE_CIRCUIT_KEY = 'vector.store';

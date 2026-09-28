@@ -17,7 +17,9 @@ import { MetricsModule } from './metrics/metrics.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ReplicationModule } from './replication/replication.module';
+import { ResilienceModule } from './resilience/resilience.module';
 import { SettingsModule } from './settings/settings.module';
+import { SloModule } from './slo/slo.module';
 import { StorageModule } from './storage/storage.module';
 import { VersioningModule } from './versioning/versioning.module';
 
@@ -51,6 +53,8 @@ import { VersioningModule } from './versioning/versioning.module';
     ActionHubModule,
     FeedModule,
     VersioningModule,
+    ResilienceModule,
+    SloModule,
   ],
 })
 export class CoreModule {}

@@ -2,7 +2,7 @@
 
 > **Status: proposed (2026-09-27), not yet built.** This document builds
 > nothing. It frames docs 169–183 and records, in its own words, the argument
-> behind `DECISIONS.md` ADR-069 (build inside erp-1 as new modules over
+> behind `DECISIONS.md` ADR-071 (build inside erp-1 as new modules over
 > shipped infrastructure — never a separate greenfield repository, never a
 > fork). Most of what the program needs is **already built** and is cited
 > here by file and function; what is genuinely new is named as new, and every
@@ -56,7 +56,7 @@ Payments are an execution channel for this product, never the product
 (Layer 6, doc 175): du's own licensed entities move money; NEWAX never holds
 funds.
 
-## 2. Why this repository — the argument ADR-069 records
+## 2. Why this repository — the argument ADR-071 records
 
 A greenfield repository was the alternative on the table. It loses on
 evidence, not on taste: the two hardest pieces of this product already exist
@@ -142,7 +142,7 @@ built as specified, before anything ingestion-specific lands on top.
 
 The program brief was written from the documents. Checking each premise
 against the code while writing this set turned up the following. None
-weakens the decision in ADR-069; several strengthen it; all of them change
+weakens the decision in ADR-071; several strengthen it; all of them change
 what the program must actually build, so each is carried into the doc that
 owns it.
 
@@ -380,7 +380,7 @@ and doc 179 §5.2's three-signature cutover.
 **The toxic pair, caught at grant or at act** — n/a here; doc 170 §2.1 reasons
 each new key pair, doc 179 refuses one person signing twice at the act.
 **Authority and blast radius** — this document's one authority is a decision:
-ADR-069 and the two decisions WO-168.3 opens can be changed only by a new
+ADR-071 and the two decisions WO-168.3 opens can be changed only by a new
 `DECISIONS.md` entry, never inside an implementation PR (§3a).
 **Audience is a capability, not an address** — n/a here: nothing is sent; doc
 172 resolves every audience by key (`holdersOf`, WO-172.9).
@@ -420,7 +420,7 @@ the program.
 **The reversal document, not the reversal flag** — n/a here; doc 175 §6 (partial
 refunds) and doc 172 (compensating rows, superseded links).
 **The undo fan-out** — n/a here; docs 172, 174 and 179 each enumerate theirs.
-**The version stamp** — this document's stamp is ADR-069 itself; the program's
+**The version stamp** — this document's stamp is ADR-071 itself; the program's
 are `cp-1`, mapping versions, `derivability-policy-1` and `PlatformRelease`.
 **The erasure the ledger cannot obey** — n/a here; doc 181 §6's per-table
 disposition.
@@ -429,7 +429,7 @@ doc 176 §3.
 
 ## Work orders
 
-**WO-168.1 — Record the decision.** `DECISIONS.md` ADR-069, and the
+**WO-168.1 — Record the decision.** `DECISIONS.md` ADR-071, and the
 `docs/implementation/README.md` rows for 168–183. (Done by the change that
 adds this document.)
 **WO-168.2 — Sequence the preconditions before any UAE tenant exists.** The
@@ -450,7 +450,7 @@ rather than edited now (this set does not touch other docs' rows).
 
 - Every claim in §2 resolves to a file and function a reader can open; every
   correction in §3 cites the line it was found at.
-- ADR-069 exists at the end of `DECISIONS.md` with Context, Options
+- ADR-071 exists at the end of `DECISIONS.md` with Context, Options
   Considered, Decision, Reasoning, Consequences and Status.
 - No document in 169–183 claims "built" for anything this document lists as
   unbuilt (connectors, doc 38, `FiscalComplianceProvider`).
@@ -464,5 +464,5 @@ prices, revenue share and liability are negotiated, not specified). Any
 change to `PRD.md`, `CLAUDE.md`, `RETAIL-ERP.md` or another document of
 record — where this set finds one of them wrong or stale (R22's "per rupee"
 wording; the NADRA row), it says so and leaves the edit to the owner. A
-separate greenfield repository or a du fork (ADR-069 rejects both now; doc
+separate greenfield repository or a du fork (ADR-071 rejects both now; doc
 181 keeps the fork door open through doc 11's handover model).

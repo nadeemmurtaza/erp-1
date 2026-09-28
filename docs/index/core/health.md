@@ -3,7 +3,7 @@
 
 # Core: `health`
 
-Shared platform — available to every module, part of no feature · 2 files
+Shared platform — available to every module, part of no feature · 3 files
 
 
 
@@ -12,12 +12,13 @@ Source: `apps/api/src/core/health/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (2 · 58 lines)
+## Files (3 · 96 lines)
 
 All paths relative to `apps/api/src/core/health`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `health.controller.spec.ts` | unit test | 38 | — |  |
 | `health.controller.ts` | controller | 52 | 1 |  |
 | `health.module.ts` | nest module | 6 | 1 |  |
 
@@ -57,9 +58,11 @@ _none_
 
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `health.controller.spec.ts` | 3 | HealthController — 38-resilience-engineering.md WO-38.1, degradation matrix row |
 
 
 ## Every export in this unit

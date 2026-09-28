@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { AppConfigService } from '../config/app-config.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { AiCallKind, AiFeature } from '../prisma/client';
+import { CircuitBreakerService } from '../resilience/circuit-breaker.service';
 import { SettingsService } from '../settings/settings.service';
 import { SettingKey } from '../settings/settings.defaults';
 import { startOfShopMonth } from '../time/shop-time';
@@ -63,6 +64,7 @@ export class AiService {
     config: AppConfigService,
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
+    private readonly circuitBreaker: CircuitBreakerService,
     anthropic: AnthropicProvider,
     openai: OpenAiProvider,
   ) {
@@ -87,7 +89,12 @@ export class AiService {
     if (!(await this.underBudget())) return null;
 
     try {
-      const result = await withTimeout(provider.complete(input), CALL_TIMEOUT_MS);
+      // 38-resilience-engineering.md §2, WO-38.2 — the one funnel every AI
+      // caller already goes through, so this is the single wrap point for
+      // every AiProvider consumer in the codebase.
+      const result = await this.circuitBreaker.execute(`ai.${provider.key}`, () =>
+        withTimeout(provider.complete(input), CALL_TIMEOUT_MS),
+      );
       await this.logUsage(feature, AiCallKind.COMPLETION, provider, result.model, result.inputTokens, result.outputTokens);
       return result;
     } catch (error) {
@@ -102,7 +109,9 @@ export class AiService {
     if (!(await this.underBudget())) return null;
 
     try {
-      const result = await withTimeout(provider.embed(texts), CALL_TIMEOUT_MS);
+      const result = await this.circuitBreaker.execute(`ai.${provider.key}`, () =>
+        withTimeout(provider.embed!(texts), CALL_TIMEOUT_MS),
+      );
       await this.logUsage(feature, AiCallKind.EMBEDDING, provider, result.model, result.inputTokens, 0);
       return result;
     } catch (error) {
@@ -121,7 +130,9 @@ export class AiService {
     if (!(await this.underBudget())) return null;
 
     try {
-      const result = await withTimeout(provider.describeImage(imageUrl, prompt), CALL_TIMEOUT_MS);
+      const result = await this.circuitBreaker.execute(`ai.${provider.key}`, () =>
+        withTimeout(provider.describeImage!(imageUrl, prompt), CALL_TIMEOUT_MS),
+      );
       await this.logUsage(feature, AiCallKind.VISION, provider, result.model, result.inputTokens, result.outputTokens);
       return result;
     } catch (error) {

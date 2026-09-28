@@ -112,8 +112,8 @@ order" is a new file, not an edit to checkout.
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:58` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:165` | `accounting` |
-| `apps/api/src/modules/orders/orders.service.ts:524` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:785` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:545` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:806` | `orders` |
 
 
 **Subscribed by**
@@ -135,8 +135,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/orders/orders.service.ts:812` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:997` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:833` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:1018` | `orders` |
 
 
 **Subscribed by**
@@ -156,7 +156,7 @@ order" is a new file, not an edit to checkout.
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/finance/finance.listener.ts:9` | `finance` |
-| `apps/api/src/modules/orders/orders.service.ts:997` | `orders` |
+| `apps/api/src/modules/orders/orders.service.ts:1018` | `orders` |
 
 
 **Subscribed by**
@@ -176,10 +176,10 @@ order" is a new file, not an edit to checkout.
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:125` | `accounting` |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:162` | `accounting` |
 | `apps/api/src/modules/orders/instalment-plan.service.ts:90` | `orders` |
-| `apps/api/src/modules/orders/orders.service.ts:756` | `orders` |
-| `apps/api/src/modules/payments/payments.service.ts:193` | `payments` |
-| `apps/api/src/modules/payments/payments.service.ts:295` | `payments` |
-| `apps/api/src/modules/payments/payments.service.ts:343` | `payments` |
+| `apps/api/src/modules/orders/orders.service.ts:777` | `orders` |
+| `apps/api/src/modules/payments/payments.service.ts:199` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:301` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:349` | `payments` |
 
 
 **Subscribed by**
@@ -196,8 +196,8 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:193` | `payments` |
-| `apps/api/src/modules/payments/payments.service.ts:295` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:199` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:301` | `payments` |
 
 
 **Subscribed by**
@@ -213,7 +213,7 @@ order" is a new file, not an edit to checkout.
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:118` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:124` | `payments` |
 
 
 **Subscribed by**
@@ -227,7 +227,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/payments/payments.service.ts:402` | `payments` |
+| `apps/api/src/modules/payments/payments.service.ts:408` | `payments` |
 
 
 **Subscribed by**
@@ -466,7 +466,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:197` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:200` | `catalog` |
 
 
 **Subscribed by**
@@ -484,7 +484,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/catalog/product-admin.service.ts:356` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:359` | `catalog` |
 
 
 **Subscribed by**
@@ -503,8 +503,8 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/catalog/ai-suggestions.service.ts:296` | `catalog` |
-| `apps/api/src/modules/catalog/product-admin.service.ts:207` | `catalog` |
-| `apps/api/src/modules/catalog/product-admin.service.ts:364` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:210` | `catalog` |
+| `apps/api/src/modules/catalog/product-admin.service.ts:367` | `catalog` |
 
 
 **Subscribed by**
@@ -556,7 +556,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/purchasing.service.ts:448` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:517` | `purchasing` |
 
 
 **Subscribed by**
@@ -604,7 +604,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/bom/production.service.ts:200` | `bom` |
+| `apps/api/src/modules/bom/production.service.ts:350` | `bom` |
 
 
 **Subscribed by**
@@ -621,7 +621,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:186` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:599` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:668` | `purchasing` |
 
 
 **Subscribed by**
@@ -638,7 +638,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts:236` | `accounting` |
-| `apps/api/src/modules/purchasing/purchasing.service.ts:663` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:732` | `purchasing` |
 
 
 **Subscribed by**
@@ -655,7 +655,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/purchasing/purchasing.service.ts:182` | `purchasing` |
+| `apps/api/src/modules/purchasing/purchasing.service.ts:186` | `purchasing` |
 
 
 **Subscribed by**

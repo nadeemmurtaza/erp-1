@@ -148,7 +148,7 @@ _no second-level headings_
 - Before you push  <sub>:104</sub>
 - Local setup  <sub>:114</sub>
 
-### `DEPLOYMENT.md`  <sub>492 lines</sub>
+### `DEPLOYMENT.md`  <sub>529 lines</sub>
 
 - 1. Provision the VPS  <sub>:39</sub>
 - 2. First login: base setup, a deploy user, and firewall  <sub>:53</sub>
@@ -159,10 +159,10 @@ _no second-level headings_
 - 7. GitHub Actions: secrets for automatic deploys  <sub>:240</sub>
 - 8. Day-to-day deploys  <sub>:283</sub>
 - 9. Backups, restore tests and off-site copies  <sub>:324</sub>
-- 10. Disk threshold alerts  <sub>:401</sub>
-- 11. Automatic restart at boot  <sub>:423</sub>
-- 12. Resource limits and connection pooling  <sub>:441</sub>
-- 13. Troubleshooting  <sub>:474</sub>
+- 10. Disk threshold alerts  <sub>:438</sub>
+- 11. Automatic restart at boot  <sub>:460</sub>
+- 12. Resource limits and connection pooling  <sub>:478</sub>
+- 13. Troubleshooting  <sub>:511</sub>
 
 ### `Design.md`  <sub>41 lines</sub>
 
@@ -2703,7 +2703,7 @@ _no second-level headings_
 ### `docs/implementation/composable-resilience-platform/168-00-overview-and-decision-to-build-here.md`  <sub>469 lines</sub>
 
 - 1. The thesis  <sub>:12</sub>
-- 2. Why this repository — the argument ADR-069 records  <sub>:59</sub>
+- 2. Why this repository — the argument ADR-071 records  <sub>:59</sub>
 - 3. Premises corrected against the code  <sub>:141</sub>
 - 3a. The one architectural decision this program does *not* get to make quietly  <sub>:240</sub>
 - 4. The seven layers, and what each reuses  <sub>:264</sub>
@@ -2943,7 +2943,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>7,954 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>8,309 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3017,7 +3017,9 @@ _no second-level headings_
 - ADR-066 — Doc 144 (R20–R26 supply-chain resilience planning engine): built as a pure read/recommendation engine, generating only the two action kinds this graph has real data to back  <sub>:7388</sub>
 - ADR-067 — Docs 31/66/67/76 (`pos-hardware/` category): the till hardware layer as extension points, ad-hoc modifiers over a hardcoded list, and a corrected permission claim  <sub>:7526</sub>
 - ADR-068 — Doc 37 (scalability future upgrades): the versioning policy ships inert, `FeatureFlag` gains two fields its own sketch omitted, and the rollout threshold reuses the settlements/bank-facilities maker-checker shape rather than inventing a third  <sub>:7685</sub>
-- ADR-069 — Docs 168–183 (a composable, resilience-first SME platform for du): built inside erp-1 as new core-classified modules over the shipped planning engine (doc 144) and hosting control plane (doc 39), not a greenfield repository or a fork; zero new module couplings, and the program brief's premises corrected against the code  <sub>:7809</sub>
+- ADR-069 — Docs 32/71/158 (`lots-serials-traceability/`): the `move()` call-site scoping boundary, a doc-158 internal contradiction corrected in `SerializedUnit.stockMovementId`'s own favour, per-unit receiving proved cost-equivalent to batch receiving, and serialized sale deliberately left out of ordinary checkout  <sub>:7809</sub>
+- ADR-070 — Doc 38 (resilience engineering): a table-driven contract test over the real source tree instead of 69 hand-written files, `RequestOutcome` instead of forcing SLO data through the business-metrics registry, and a genuine `/admin/resilience` naming collision resolved by renaming the newer screen  <sub>:8025</sub>
+- ADR-071 — Docs 168–183 (a composable, resilience-first SME platform for du): built inside erp-1 as new core-classified modules over the shipped planning engine (doc 144) and hosting control plane (doc 39), not a greenfield repository or a fork; zero new module couplings, and the program brief's premises corrected against the code  <sub>:8164</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3503,37 +3505,37 @@ _no second-level headings_
 - Acceptance  <sub>:62</sub>
 - Out of scope  <sub>:73</sub>
 
-### `docs/implementation/lots-serials-traceability/158-serialized-unit-tracking.md`  <sub>305 lines</sub>
+### `docs/implementation/lots-serials-traceability/158-serialized-unit-tracking.md`  <sub>324 lines</sub>
 
-- Why this is a real gap, not a smaller version of `lots`  <sub>:15</sub>
-- 1. `SerializedUnit` — a sub-ledger under the existing stock row, never a second stock model  <sub>:29</sub>
-- 2. Capture points — three, and only three, moments a serial is ever written  <sub>:88</sub>
-- 3. `getUnitHistory()` — the warranty and authenticity lookup this data makes possible  <sub>:144</sub>
-- 4. Strengthens doc 156 for free — a variance can now name the exact unit, not just the SKU  <sub>:168</sub>
-- Scope lenses  <sub>:185</sub>
-- Work orders  <sub>:263</sub>
-- Acceptance  <sub>:280</sub>
-- Out of scope  <sub>:294</sub>
+- Why this is a real gap, not a smaller version of `lots`  <sub>:34</sub>
+- 1. `SerializedUnit` — a sub-ledger under the existing stock row, never a second stock model  <sub>:48</sub>
+- 2. Capture points — three, and only three, moments a serial is ever written  <sub>:107</sub>
+- 3. `getUnitHistory()` — the warranty and authenticity lookup this data makes possible  <sub>:163</sub>
+- 4. Strengthens doc 156 for free — a variance can now name the exact unit, not just the SKU  <sub>:187</sub>
+- Scope lenses  <sub>:204</sub>
+- Work orders  <sub>:282</sub>
+- Acceptance  <sub>:299</sub>
+- Out of scope  <sub>:313</sub>
 
-### `docs/implementation/lots-serials-traceability/32-lots-batch-expiry-fefo.md`  <sub>245 lines</sub>
+### `docs/implementation/lots-serials-traceability/32-lots-batch-expiry-fefo.md`  <sub>265 lines</sub>
 
-- 1. A lot is a sub-ledger under the existing stock row, never a second stock model  <sub>:18</sub>
-- 2. Allocation is FEFO by default, and it is the one writer  <sub>:82</sub>
-- 3. A recall query is a read path this ledger makes possible, not a new model  <sub>:98</sub>
-- Scope lenses  <sub>:113</sub>
-- Work orders  <sub>:201</sub>
-- Acceptance  <sub>:222</sub>
-- Out of scope  <sub>:236</sub>
+- 1. A lot is a sub-ledger under the existing stock row, never a second stock model  <sub>:38</sub>
+- 2. Allocation is FEFO by default, and it is the one writer  <sub>:102</sub>
+- 3. A recall query is a read path this ledger makes possible, not a new model  <sub>:118</sub>
+- Scope lenses  <sub>:133</sub>
+- Work orders  <sub>:221</sub>
+- Acceptance  <sub>:242</sub>
+- Out of scope  <sub>:256</sub>
 
-### `docs/implementation/lots-serials-traceability/71-recipe-batch-traceability.md`  <sub>255 lines</sub>
+### `docs/implementation/lots-serials-traceability/71-recipe-batch-traceability.md`  <sub>270 lines</sub>
 
-- 1. Consumption draws from specific input lots; production creates one output lot  <sub>:21</sub>
-- 2. The write happens inside `production.service.ts`'s own existing transaction, never a second write path  <sub>:73</sub>
-- 3. Genealogy is then a graph walk over rows that now exist  <sub>:103</sub>
-- Scope lenses  <sub>:128</sub>
-- Work orders  <sub>:220</sub>
-- Acceptance  <sub>:233</sub>
-- Out of scope  <sub>:248</sub>
+- 1. Consumption draws from specific input lots; production creates one output lot  <sub>:36</sub>
+- 2. The write happens inside `production.service.ts`'s own existing transaction, never a second write path  <sub>:88</sub>
+- 3. Genealogy is then a graph walk over rows that now exist  <sub>:118</sub>
+- Scope lenses  <sub>:143</sub>
+- Work orders  <sub>:235</sub>
+- Acceptance  <sub>:248</sub>
+- Out of scope  <sub>:263</sub>
 
 ### `docs/implementation/MULTI-SECTOR.md`  <sub>854 lines</sub>
 
@@ -3715,17 +3717,17 @@ _no second-level headings_
 - Acceptance  <sub>:277</sub>
 - Out of scope  <sub>:294</sub>
 
-### `docs/implementation/resilience-scalability/38-resilience-engineering.md`  <sub>238 lines</sub>
+### `docs/implementation/resilience-scalability/38-resilience-engineering.md`  <sub>379 lines</sub>
 
-- 1. The degradation matrix: what actually happens when each dependency is down  <sub>:15</sub>
-- 2. Circuit breakers, generalized from the one pattern the outbox already proves  <sub>:39</sub>
-- 3. SLOs and error budgets for the paths that actually matter  <sub>:64</sub>
-- 4. Disaster recovery, naming the numbers `deploy/backup.sh` already earns  <sub>:85</sub>
-- 5. Contract tests: the module-boundary guarantee, extended to behavior  <sub>:105</sub>
-- Scope lenses  <sub>:118</sub>
-- Work orders  <sub>:188</sub>
-- Acceptance  <sub>:209</sub>
-- Out of scope  <sub>:224</sub>
+- 1. The degradation matrix: what actually happens when each dependency is down  <sub>:156</sub>
+- 2. Circuit breakers, generalized from the one pattern the outbox already proves  <sub>:180</sub>
+- 3. SLOs and error budgets for the paths that actually matter  <sub>:205</sub>
+- 4. Disaster recovery, naming the numbers `deploy/backup.sh` already earns  <sub>:226</sub>
+- 5. Contract tests: the module-boundary guarantee, extended to behavior  <sub>:246</sub>
+- Scope lenses  <sub>:259</sub>
+- Work orders  <sub>:329</sub>
+- Acceptance  <sub>:350</sub>
+- Out of scope  <sub>:365</sub>
 
 ### `docs/implementation/resilience-scalability/48-native-desktop-deployment.md`  <sub>184 lines</sub>
 

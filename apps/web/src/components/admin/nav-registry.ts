@@ -637,6 +637,20 @@ export const ADMIN_NAV: AdminNavItem[] = [
         group: 'stock',
         module: 'wishlist',
       },
+      {
+        key: 'inventory-lots',
+        label: 'Lots & Batches',
+        href: '/admin/inventory/lots',
+        permissions: ['inventory.lots.manage'],
+        group: 'stock',
+      },
+      {
+        key: 'inventory-serials',
+        label: 'Serial Numbers',
+        href: '/admin/inventory/serials',
+        permissions: ['inventory.manage'],
+        group: 'stock',
+      },
     ],
   },
   {
@@ -1015,6 +1029,21 @@ export const ADMIN_NAV: AdminNavItem[] = [
     permissions: ['platform.flags.manage'],
     group: 'settings',
     module: 'feature-flags',
+  },
+  {
+    // 38-resilience-engineering.md. Same shape as Feature flags just
+    // above — engineering-ops tooling (doc 38's own "Whose rows" scope-
+    // lens), so it sits beside it under Settings rather than a new group.
+    // Named "Platform Resilience" and routed to /admin/platform-resilience,
+    // distinct from the unrelated "Resilience Planning" entry above
+    // (144-supply-chain-resilience-planning-engine.md), which already
+    // holds /admin/resilience.
+    key: 'platform-resilience',
+    label: 'Platform Resilience',
+    href: '/admin/platform-resilience',
+    permissions: ['platform.resilience.view'],
+    group: 'settings',
+    module: 'resilience',
   },
   {
     // WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md).

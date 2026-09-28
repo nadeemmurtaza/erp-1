@@ -1,10 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
+import { PermissionsResolverService } from '../../core/auth/permissions.service';
+import { NotificationsService } from '../../core/notifications/notifications.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { computeDemandForecast, computeMarkdownSuggestion, resolveLeadTimeDays } from '@newax/shared';
+import { LotsService } from './lots.service';
 import { SpotCheckService } from './spot-check.service';
+
+const EXPIRING_LOT_WINDOW_DAYS = 30;
 
 @Injectable()
 export class InventoryCron {
@@ -14,7 +19,62 @@ export class InventoryCron {
     private readonly prisma: PrismaService,
     private readonly settings: SettingsService,
     private readonly spotChecks: SpotCheckService,
+    private readonly lots: LotsService,
+    private readonly permissions: PermissionsResolverService,
+    private readonly notifications: NotificationsService,
   ) {}
+
+  /**
+   * 32-lots-batch-expiry-fefo.md WO-32.5. One consolidated digest to every
+   * `inventory.manage` holder — never a ping per expiring lot — resolved as
+   * a capability, not `store.supportEmail` (CLAUDE.md's own named
+   * counter-example). A zero-holder deployment still gets the escalation
+   * this codebase's tooling can actually do today: a structured error log,
+   * since no APM/pager is wired (CLAUDE.md's Observable row).
+   */
+  @Cron('0 6 * * *')
+  async alertExpiringLots() {
+    try {
+      const expiring = await this.lots.expiringLotsWithStock(EXPIRING_LOT_WINDOW_DAYS);
+      if (expiring.length === 0) return;
+
+      const holders = await this.permissions.usersWithPermission('inventory.manage');
+      if (holders.length === 0) {
+        this.logger.error(
+          `${expiring.length} lot(s) expiring within ${EXPIRING_LOT_WINDOW_DAYS} days with unsold stock, but no user currently holds inventory.manage to be notified.`,
+        );
+        return;
+      }
+
+      const lines = expiring
+        .map(
+          (lot) =>
+            `${lot.lotCode} — ${lot.label} (${lot.sku}): ${lot.unsoldQuantity} unit(s), expires ${lot.expiresOn.toISOString().slice(0, 10)}`,
+        )
+        .join('\n');
+      const subject = `${expiring.length} lot(s) expiring within ${EXPIRING_LOT_WINDOW_DAYS} days`;
+      const body = `The following lots have unsold stock and expire within ${EXPIRING_LOT_WINDOW_DAYS} days:\n\n${lines}`;
+
+      await Promise.all(
+        holders.map((holder) =>
+          this.notifications.send({
+            template: 'inventory.lots_expiring',
+            recipient: {
+              name: [holder.firstName, holder.lastName].filter(Boolean).join(' ') || null,
+              email: holder.email,
+              userId: holder.id,
+            },
+            subject,
+            body,
+            data: { lotIds: expiring.map((lot) => lot.lotId) },
+          }),
+        ),
+      );
+      this.logger.log(`Sent expiring-lot digest for ${expiring.length} lot(s) to ${holders.length} inventory.manage holder(s).`);
+    } catch (error) {
+      this.logger.error('alertExpiringLots failed', error instanceof Error ? error.stack : String(error));
+    }
+  }
 
   // 156-single-employee-branch-loss-prevention.md §3. Checked hourly, but
   // only sometimes fires — the point is unpredictability, not the cron

@@ -94,4 +94,27 @@ describe('NotificationsService', () => {
       channelsAttempted: 1,
     });
   });
+
+  it('38-resilience-engineering.md WO-38.1, degradation matrix row "SmsProvider/WhatsAppProvider down": one channel throwing never stops another matched channel from sending — each is attempted and awaited independently', async () => {
+    const failingSms = fakeChannel('sms', true, jest.fn().mockRejectedValue(new Error('gateway down')));
+    const workingLog = fakeChannel('log', true, jest.fn().mockResolvedValue(undefined));
+    const service = new NotificationsService(
+      makeConfig(['sms', 'log']),
+      workingLog,
+      fakeChannel('expo_push', false),
+      fakeChannel('email', false),
+      fakeChannel('whatsapp', false),
+      failingSms,
+      events as any,
+    );
+
+    await service.send(message);
+
+    expect(failingSms.send).toHaveBeenCalledTimes(1);
+    expect(workingLog.send).toHaveBeenCalledTimes(1);
+    expect(events.publish).toHaveBeenCalledWith(DomainEvent.NotificationSent, {
+      template: 'order.confirmed',
+      channelsAttempted: 2,
+    });
+  });
 });

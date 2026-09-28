@@ -286,6 +286,25 @@ model ProductVariant {
   /// schema file (production.prisma) and must not be typed here.
   producedInHouse Boolean @default(false)
 
+  /// 32-lots-batch-expiry-fefo.md, DECISIONS.md ADR-068. Off by default,
+  /// and off means byte-identical to today's behavior — only a variant a
+  /// merchant explicitly flags (perishables, pharma, anything with a real
+  /// expiry) gains the extra receiving/FEFO step. A category-level default
+  /// is a deliberately deferred refinement (see the ADR); this flag is the
+  /// per-SKU override every deployment can use today.
+  lotTracked Boolean @default(false)
+
+  /// 158-serialized-unit-tracking.md, DECISIONS.md ADR-068. Off by default;
+  /// the same "absent collaborator" discipline as lotTracked above — a
+  /// t-shirt or a bag of rice never asks for a serial number, only a
+  /// variant a merchant explicitly flags (phones, laptops, appliances,
+  /// anything IMEI-regulated or individually warrantied).
+  tracksSerials  Boolean @default(false)
+  /// Null = no warranty tracked for this variant. Used only to compute
+  /// `getUnitHistory()`'s own read-only warrantyEndsOn (soldOn + this) —
+  /// never a claims workflow of its own (out of scope, doc 158).
+  warrantyMonths Int?
+
   /// Null = the store's default tax class (Setting `tax.default_class`).
   /// Most products never set this. Tax is core (MULTI-SECTOR.md), so this
   /// relation is a normal core-to-core reference, not a pack boundary.
@@ -332,6 +351,9 @@ model ProductVariant {
   /// Phase 9 (09-ai-layer.md) — inventory.prisma's own cache/advisory rows.
   forecast            VariantForecast?
   markdownSuggestions MarkdownSuggestion[]
+  /// 32-lots-batch-expiry-fefo.md / 158-serialized-unit-tracking.md.
+  lots                Lot[]
+  serializedUnits     SerializedUnit[]
 
   @@index([productId])
   @@index([stock])

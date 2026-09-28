@@ -33,6 +33,7 @@ export default function NewProductionRunPage() {
   const [recipeId, setRecipeId] = useState('');
   const [runs, setRuns] = useState('1');
   const [notes, setNotes] = useState('');
+  const [outputLotCode, setOutputLotCode] = useState('');
   const [availability, setAvailability] = useState<Availability | null>(null);
   const [confirming, setConfirming] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -62,7 +63,12 @@ export default function NewProductionRunPage() {
     try {
       const created = await adminFetch<{ id: string }>('/admin/bom/production-runs', {
         method: 'POST',
-        body: { recipeId, runs: Math.max(1, Math.round(Number(runs) || 1)), notes: notes.trim() || undefined },
+        body: {
+          recipeId,
+          runs: Math.max(1, Math.round(Number(runs) || 1)),
+          notes: notes.trim() || undefined,
+          outputLotCode: outputLotCode.trim() || undefined,
+        },
       });
       addToast('Production run recorded.', 'success');
       router.push(`/admin/bom/production/${created.id}`);
@@ -135,6 +141,15 @@ export default function NewProductionRunPage() {
             value={runs}
             onChange={(event) => setRuns(event.target.value)}
             className="field-input"
+          />
+        </label>
+        <label className="block lg:col-span-2">
+          <span className="field-label">Output batch/lot code (optional)</span>
+          <input
+            value={outputLotCode}
+            onChange={(event) => setOutputLotCode(event.target.value)}
+            className="field-input"
+            placeholder="Defaults to this run's own number"
           />
         </label>
         <label className="block lg:col-span-4">

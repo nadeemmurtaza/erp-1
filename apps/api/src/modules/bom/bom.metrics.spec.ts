@@ -5,6 +5,7 @@ import { AuditService } from '../../core/audit/audit.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { InventoryService } from '../inventory/inventory.service';
+import { LotsService } from '../inventory/lots.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 import { IntentRouterService } from '../../core/intent/intent-router.service';
 import { EntityEnrichmentRegistry } from '../../core/extension-points/entity-enrichment.registry';
@@ -43,6 +44,7 @@ describe('BomMetricsService — raw usage', () => {
         SettingsService,
         AuditService,
         InventoryService,
+        LotsService,
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'main' } },
         { provide: EventBusService, useValue: { publish: jest.fn() } },
         { provide: StockIntakeRegistry, useValue: { register: jest.fn() } },

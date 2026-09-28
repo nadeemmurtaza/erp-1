@@ -143,6 +143,10 @@ export const MODULE_PACKS: Record<string, PackName> = {
   // 37-scalability-future-upgrades.md (WO-37.2) — the FeatureFlag primitive.
   // Core infrastructure, never a sector concept.
   'feature-flags': 'core',
+  // 38-resilience-engineering.md (WO-38.1/38.3) — the degradation matrix,
+  // circuit-breaker states and SLO/error-budget/DR dashboard's admin read
+  // surface. Core infrastructure, never a sector concept.
+  resilience: 'core',
 
   // Apparel & boutique — what makes this particular shop what it is.
   measurements: 'apparel',

@@ -6,6 +6,8 @@ import { AuditService } from '../../core/audit/audit.service';
 import { EventBusService } from '../../core/events/event-bus.service';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { InventoryService } from '../inventory/inventory.service';
+import { LotsService } from '../inventory/lots.service';
+import { SerializedUnitsService } from '../inventory/serialized-units.service';
 import { StockIntakeRegistry } from '../../core/extension-points/stock-intake.registry';
 import { IntentRouterService } from '../../core/intent/intent-router.service';
 import { BranchPolicyRegistry } from '../../core/extension-points/branch-policy.registry';
@@ -59,6 +61,8 @@ describe('bom module — raw materials', () => {
         SettingsService,
         AuditService,
         InventoryService,
+        LotsService,
+        SerializedUnitsService,
         { provide: PartiesService, useValue: {} },
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'main' } },
         { provide: EventBusService, useValue: { publish: jest.fn() } },

@@ -14,6 +14,7 @@ interface ProductionRunLine {
   quantityBase: number;
   unitCost: number;
   lineCost: number;
+  lotAllocations: Array<{ lotId: string; lotCode: string; quantityBase: number }>;
 }
 
 interface ProductionRunDetail {
@@ -30,6 +31,8 @@ interface ProductionRunDetail {
   producedUnitCost: number;
   notes: string | null;
   producedAt: string;
+  outputLotId: string | null;
+  outputLotCode: string | null;
   lines: ProductionRunLine[];
 }
 
@@ -67,9 +70,16 @@ export default function ProductionRunDetailPage({ params }: { params: Promise<{ 
         title={run.number}
         description={`${run.sku} · ${run.runs} run(s), ${run.quantityProduced} unit(s) produced`}
         action={
-          <Link href={`/admin/bom/${run.recipeId}`} className="btn-secondary">
-            View recipe
-          </Link>
+          <div className="flex items-center gap-3">
+            {run.outputLotId ? (
+              <Link href={`/admin/inventory/lots/${run.outputLotId}`} className="btn-secondary">
+                Output lot: {run.outputLotCode}
+              </Link>
+            ) : null}
+            <Link href={`/admin/bom/${run.recipeId}`} className="btn-secondary">
+              View recipe
+            </Link>
+          </div>
         }
       />
 
@@ -103,6 +113,26 @@ export default function ProductionRunDetailPage({ params }: { params: Promise<{ 
             { header: 'Material', cell: (line) => line.name },
             { header: 'SKU', muted: true, cell: (line) => line.sku },
             { header: 'Base qty consumed', numeric: true, align: 'end', cell: (line) => line.quantityBase },
+            {
+              header: 'Input lot(s)',
+              muted: true,
+              cell: (line) =>
+                line.lotAllocations.length > 0 ? (
+                  <span className="space-x-2">
+                    {line.lotAllocations.map((allocation) => (
+                      <Link
+                        key={allocation.lotId}
+                        href={`/admin/inventory/lots/${allocation.lotId}`}
+                        className="text-accent-hover hover:underline"
+                      >
+                        {allocation.lotCode}
+                      </Link>
+                    ))}
+                  </span>
+                ) : (
+                  '—'
+                ),
+            },
             { header: 'Unit cost', numeric: true, align: 'end', cell: (line) => formatMoney(line.unitCost) },
             { header: 'Line cost', numeric: true, align: 'end', cell: (line) => formatMoney(line.lineCost) },
           ]}

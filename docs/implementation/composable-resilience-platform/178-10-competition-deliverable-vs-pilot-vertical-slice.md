@@ -30,7 +30,7 @@
 | Control center | `/admin/resilience` (simulate-only), `planning.propagation.view` | persisted runs, Accept/Modify/Dismiss, pickers by name, decisions log | doc 174 |
 | Sandbox payment flow | `PaymentProvider`, `PaymentsService`, `SettlementsService` (`SHORT`), `/admin/payments`, `/admin/settlements` | fail-closed callbacks; the du-rail provider and settlement connector against the rail's sandbox — **or**, if sandbox access is not granted by submission, a signed test-double rail implementing the same two interfaces, labelled as such on screen and absent from every production `PAYMENT_PROVIDERS` value | doc 175 |
 | Tenancy | `apps/platform`: `ProvisioningService`, `HostnameResolverService`, `SupportAccessGrant` | none — two demo tenants are provisioned through the existing path | doc 39 |
-| Documentation | this set (168–183), ADR-069 | — | — |
+| Documentation | this set (168–183), ADR-071 | — | — |
 | Live failure demonstration | — | the fault-injection suite and a demo harness whose fault toggles exist only when `DEMO_FAULTS_ENABLED=true` (refused in any production template by a rule WO-178.4 adds to `scripts/check-env-templates.mjs`, which today checks only `MODULES` discoverability) | doc 176 §3, WO-176.3 |
 
 **Preconditions, before any of the above is shown to anyone as UAE-ready:**

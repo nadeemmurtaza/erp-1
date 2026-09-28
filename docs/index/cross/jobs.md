@@ -3,7 +3,7 @@
 
 # Background work
 
-**28** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
+**30** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
 
 
 Background work is invisible in the UI and easy to forget exists. Anything here
@@ -15,6 +15,7 @@ runs on every node that has its module enabled.
 |---|---|---|---|---|
 | `0 3 * * *` | `purgeExpiredIdempotencyKeys()` | core/`idempotency` | `apps/api/src/core/idempotency/idempotency.cron.ts:23` |  |
 | `*/5 * * * *` | `reapStuckInProgressKeys()` | core/`idempotency` | `apps/api/src/core/idempotency/idempotency.cron.ts:39` | A narrower sweep than the nightly purge above — reaps only rows stuck `IN_PROGRESS` well past any r… |
+| `30 3 * * *` | `prune()` | core/`slo` | `apps/api/src/core/slo/request-outcome-prune.cron.ts:22` |  |
 | `0 2 1 * *` | `run()` | `accounting` | `apps/api/src/modules/accounting/asset-depreciation.cron.ts:18` |  |
 | `0 1 * * *` | `sendSupplierDigests()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:36` | --- 1. |
 | `0 7 * * 1` | `sendSupplierScorecards()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:124` | --- 2. |
@@ -27,8 +28,9 @@ runs on every node that has its module enabled.
 | `0 * * * *` | `generateRecurringExpenses()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:27` |  |
 | `EVERY_` | `pollActiveShipments()` | `fulfilment` | `apps/api/src/modules/fulfilment/fulfilment.cron.ts:30` |  |
 | `0 3 * * *` | `reconcile()` | `giftcards` | `apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts:16` |  |
-| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:23` | 156-single-employee-branch-loss-prevention.md §3. |
-| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:33` |  |
+| `0 6 * * *` | `alertExpiringLots()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:35` | 32-lots-batch-expiry-fefo.md WO-32.5. |
+| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:83` | 156-single-employee-branch-loss-prevention.md §3. |
+| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:93` |  |
 | `EVERY_MINUTE` | `run()` | `marketing` | `apps/api/src/modules/marketing/campaign-dispatch.cron.ts:23` |  |
 | `0 3 * * *` | `run()` | `marketing` | `apps/api/src/modules/marketing/marketing-automation.cron.ts:72` |  |
 | `*/10 * * * *` | `run()` | `notify` | `apps/api/src/modules/notify/escalation.cron.ts:34` |  |

@@ -8,6 +8,8 @@ import { CreateSupplierDto, UpdateSupplierDto, AddSupplierProductDto } from './d
 import { CreatePurchaseOrderDto, ReceiveGoodsDto } from './dto/purchase-order.dto';
 import { CreateSupplierBillDto, RecordSupplierBillPaymentDto } from './dto/supplier-bill.dto';
 import { InventoryService } from '../inventory/inventory.service';
+import { LotsService } from '../inventory/lots.service';
+import { SerializedUnitsService } from '../inventory/serialized-units.service';
 import { PartiesService } from '../parties/parties.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { Prisma } from '../../core/prisma/client';
@@ -71,6 +73,8 @@ export class PurchasingService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly inventoryService: InventoryService,
+    private readonly lots: LotsService,
+    private readonly serializedUnits: SerializedUnitsService,
     private readonly parties: PartiesService,
     private readonly settingsService: SettingsService,
     private readonly config: AppConfigService,
@@ -384,33 +388,98 @@ export class PurchasingService {
         },
       });
 
-      const sortedItems = [...receiptItemsData].sort((a, b) => a.variantId.localeCompare(b.variantId));
+      // 32-lots-batch-expiry-fefo.md / 158-serialized-unit-tracking.md — each
+      // line travels with its own lot/serial input, correlated back to
+      // receiptItemsData BY INDEX: itemsToReceive and receiptItemsData are
+      // both built from dto.items in the same order and never re-sorted
+      // before this point, so this join is exact.
+      const lineInputs = receiptItemsData.map((item, index) => ({
+        ...item,
+        lotCode: itemsToReceive[index].reqItem.lotCode,
+        expiresOn: itemsToReceive[index].reqItem.expiresOn ? new Date(itemsToReceive[index].reqItem.expiresOn) : null,
+        serials: itemsToReceive[index].reqItem.serials,
+      }));
 
-      const movements = await this.inventoryService.moveMany(
-        sortedItems.map(item => ({
-          variantId: item.variantId,
-          locationId,
-          delta: item.quantity,
-          reason: 'PURCHASE_RECEIPT',
-          refType: 'GoodsReceipt',
-          refId: receipt.id,
-          // What we actually paid per unit, freight and duty included. This is
-          // what the stock valuation report reconciles against.
-          unitCost: item.landedUnitCost,
-          actorId: userId,
-        })),
-        tx,
-      );
+      const variantIds = [...new Set(lineInputs.map((item) => item.variantId))];
+      const variantsBefore = await tx.productVariant.findMany({
+        where: { id: { in: variantIds } },
+        select: { id: true, stock: true, costPrice: true, lotTracked: true, tracksSerials: true },
+      });
+      const variantById = new Map(variantsBefore.map((variant) => [variant.id, variant]));
 
-      for (const item of receiptItemsData) {
-        const movement = movements.find(m => m.variantId === item.variantId);
-        if (!movement) throw new Error('Missing movement');
-        const stockBefore = movement.resultingStock - item.quantity;
-        
-        const variant = await tx.productVariant.findUnique({ where: { id: item.variantId } });
+      for (const item of lineInputs) {
+        const variant = variantById.get(item.variantId);
+        if (variant?.tracksSerials && (item.serials?.length ?? 0) !== item.quantity) {
+          throw new BadRequestException(
+            `${item.quantity} units received but ${item.serials?.length ?? 0} serial numbers given for this line — counts must match exactly.`,
+          );
+        }
+      }
+
+      const serializedLines = lineInputs.filter((item) => variantById.get(item.variantId)?.tracksSerials);
+      const ordinaryLines = lineInputs.filter((item) => !variantById.get(item.variantId)?.tracksSerials);
+
+      // Ordinary (non-serialized) lines keep the exact batched, deadlock-safe
+      // moveMany() this screen has always used.
+      const sortedOrdinary = [...ordinaryLines].sort((a, b) => a.variantId.localeCompare(b.variantId));
+      if (sortedOrdinary.length > 0) {
+        await this.inventoryService.moveMany(
+          sortedOrdinary.map(item => ({
+            variantId: item.variantId,
+            locationId,
+            delta: item.quantity,
+            reason: 'PURCHASE_RECEIPT',
+            refType: 'GoodsReceipt',
+            refId: receipt.id,
+            // What we actually paid per unit, freight and duty included. This is
+            // what the stock valuation report reconciles against.
+            unitCost: item.landedUnitCost,
+            actorId: userId,
+          })),
+          tx,
+        );
+      }
+
+      // A lot-tracked ordinary line registers its own Lot alongside the
+      // movement above, inside the SAME transaction — LotsService.recordReceipt()
+      // is a no-op-safe upsert, never a second stock write.
+      for (const item of ordinaryLines) {
+        if (variantById.get(item.variantId)?.lotTracked && item.lotCode) {
+          await this.lots.recordReceipt(
+            { variantId: item.variantId, locationId, lotCode: item.lotCode, expiresOn: item.expiresOn, quantity: item.quantity, sourceReceiptId: receipt.id },
+            tx,
+          );
+        }
+      }
+
+      // Serialized lines: one StockMovement PER PHYSICAL UNIT
+      // (SerializedUnitsService.receiveUnits()'s own reasoning — DECISIONS.md
+      // ADR-068), never folded into the batched moveMany() above.
+      for (const item of serializedLines) {
+        let lotId: string | null = null;
+        if (variantById.get(item.variantId)?.lotTracked && item.lotCode) {
+          const lot = await this.lots.recordReceipt(
+            { variantId: item.variantId, locationId, lotCode: item.lotCode, expiresOn: item.expiresOn, quantity: item.quantity, sourceReceiptId: receipt.id },
+            tx,
+          );
+          lotId = lot.id;
+        }
+        await this.serializedUnits.receiveUnits(
+          { variantId: item.variantId, locationId, serials: item.serials!, unitCost: item.landedUnitCost, lotId, refType: 'GoodsReceipt', refId: receipt.id, actorId: userId },
+          tx,
+        );
+      }
+
+      // Cost rolls forward the SAME weighted-average helper regardless of
+      // path — telescoping N single-unit moves (serialized) gives the
+      // identical result as one N-unit move (ordinary), so both read the
+      // PRE-receipt stock/cost captured above rather than a movement's own
+      // resultingStock.
+      for (const item of lineInputs) {
+        const variant = variantById.get(item.variantId);
         if (!variant) throw new Error('Missing variant');
 
-        const newCost = weightedAverageCost(stockBefore, variant.costPrice, item.quantity, item.landedUnitCost);
+        const newCost = weightedAverageCost(variant.stock, variant.costPrice, item.quantity, item.landedUnitCost);
 
         await tx.productVariant.update({
           where: { id: item.variantId },

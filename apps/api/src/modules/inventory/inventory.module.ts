@@ -15,6 +15,10 @@ import { SpotCheckController, SpotCheckPolicyController } from './spot-check.con
 import { SpotCheckService } from './spot-check.service';
 import { SuspiciousTrafficController } from './suspicious-traffic.controller';
 import { SuspiciousTrafficService } from './suspicious-traffic.service';
+import { LotsController } from './lots.controller';
+import { LotsService } from './lots.service';
+import { SerializedUnitsController, SerializedUnitsPublicController } from './serialized-units.controller';
+import { SerializedUnitsService } from './serialized-units.service';
 
 @Module({
   controllers: [
@@ -25,6 +29,9 @@ import { SuspiciousTrafficService } from './suspicious-traffic.service';
     SpotCheckPolicyController,
     SuspiciousTrafficController,
     MarkdownSuggestionsController,
+    LotsController,
+    SerializedUnitsController,
+    SerializedUnitsPublicController,
   ],
   providers: [
     InventoryService,
@@ -37,7 +44,9 @@ import { SuspiciousTrafficService } from './suspicious-traffic.service';
     SpotCheckService,
     SuspiciousTrafficService,
     MarkdownSuggestionsService,
+    LotsService,
+    SerializedUnitsService,
   ],
-  exports: [InventoryService],
+  exports: [InventoryService, LotsService, SerializedUnitsService],
 })
 export class InventoryModule {}

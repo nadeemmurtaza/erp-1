@@ -1,6 +1,7 @@
 import { ServiceUnavailableException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { AiService } from '../../core/ai/ai.service';
+import { CircuitBreakerService } from '../../core/resilience/circuit-breaker.service';
 import { RagRetrievalService } from './rag-retrieval.service';
 import { VECTOR_STORE } from './vector-store';
 
@@ -18,6 +19,7 @@ describe('RagRetrievalService', () => {
         RagRetrievalService,
         { provide: AiService, useValue: ai },
         { provide: VECTOR_STORE, useValue: vectorStore },
+        CircuitBreakerService,
       ],
     }).compile();
     service = module.get(RagRetrievalService);
@@ -59,6 +61,25 @@ describe('RagRetrievalService', () => {
       await expect(service.retrieve('query', { organizationId: null, corpus: 'KNOWLEDGE_BASE' })).rejects.toThrow(
         ServiceUnavailableException,
       );
+    });
+
+    it('WO-38.1/38.2 — degradation matrix row "VectorStore down": once the circuit opens, the store is never called again while every retrieval keeps degrading the same documented way', async () => {
+      ai.embed.mockResolvedValue({ vectors: [[1, 2, 3]], inputTokens: 5, model: 'x' });
+      vectorStore.query.mockRejectedValue(new Error('connection reset'));
+
+      for (let i = 0; i < 5; i++) {
+        await expect(
+          service.retrieve('query', { organizationId: null, corpus: 'KNOWLEDGE_BASE' }),
+        ).rejects.toThrow(ServiceUnavailableException);
+      }
+      expect(vectorStore.query).toHaveBeenCalledTimes(5);
+
+      // Circuit now OPEN: the store is never reached again, but the caller
+      // still sees the identical, already-documented degraded behavior.
+      await expect(
+        service.retrieve('query', { organizationId: null, corpus: 'KNOWLEDGE_BASE' }),
+      ).rejects.toThrow(ServiceUnavailableException);
+      expect(vectorStore.query).toHaveBeenCalledTimes(5);
     });
 
     it('scopes to organizationId: null for a Solo/Chain deployment', async () => {

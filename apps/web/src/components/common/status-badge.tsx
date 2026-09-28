@@ -96,6 +96,14 @@ const TONES: Record<string, BadgeTone> = {
   // (the one allowed backward move), CLOSED cannot.
   RESOLVED: 'success',
   CLOSED: 'success',
+  // SerializedUnitStatus (158-serialized-unit-tracking.md) — IN_STOCK is the
+  // ordinary, sellable state; SOLD ended well; RETURNED shares the tone
+  // every other reversal already gets above; RMA_TO_SUPPLIER is in transit,
+  // not yet resolved either way.
+  IN_STOCK: 'success',
+  SOLD: 'info',
+  RMA_TO_SUPPLIER: 'warning',
+  WRITTEN_OFF: 'danger',
 };
 
 /** `READY_TO_SHIP` -> `Ready to ship`. */

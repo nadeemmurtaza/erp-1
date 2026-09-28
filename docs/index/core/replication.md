@@ -12,7 +12,7 @@ Source: `apps/api/src/core/replication/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (21 · 1,617 lines)
+## Files (21 · 1,652 lines)
 
 All paths relative to `apps/api/src/core/replication/dto`.
 
@@ -31,8 +31,8 @@ All paths relative to `apps/api/src/core/replication/dto`.
 | `replication-log.service.ts` | service | 81 | 1 | The log's write side (WO-20.1). |
 | `replication-quarantine.service.spec.ts` | unit test | 72 | — |  |
 | `replication-quarantine.service.ts` | service | 48 | 1 | Where a record that failed to apply lands — never dropped, never retried forever (WO-20.1's own scope, see replication.… |
-| `replication-sync.agent.spec.ts` | unit test | 220 | — |  |
-| `replication-sync.agent.ts` | agent | 174 | 1 | The child side of WO-20.2's transport: pushes this node's own FACT log up to its parent, and pulls the parent's POLICY… |
+| `replication-sync.agent.spec.ts` | unit test | 245 | — |  |
+| `replication-sync.agent.ts` | agent | 184 | 1 | The child side of WO-20.2's transport: pushes this node's own FACT log up to its parent, and pulls the parent's POLICY… |
 | `replication.controller.spec.ts` | unit test | 104 | — |  |
 | `replication.controller.ts` | controller | 109 | 1 | What a child node's own sync agent calls (WO-20.2) — authenticated by a node credential (`NodeCredentialService`), neve… |
 | `replication.module.ts` | nest module | 49 | 1 |  |
@@ -86,7 +86,7 @@ _none_
 | `replication-cursor.service.spec.ts` | 8 | ReplicationCursorService — WO-20.1 / WO-20.2 / WO-20.5 · get · advance · reset — WO-20.5 resync |
 | `replication-log.service.spec.ts` | 4 | ReplicationLogService — WO-20.1 |
 | `replication-quarantine.service.spec.ts` | 4 | ReplicationQuarantineService — WO-20.1 · resolve |
-| `replication-sync.agent.spec.ts` | 14 | ReplicationSyncAgent — WO-20.2 / WO-20.5 · tick · pushFacts · pullPolicy |
+| `replication-sync.agent.spec.ts` | 16 | ReplicationSyncAgent — WO-20.2 / WO-20.5 · tick · pushFacts · pullPolicy |
 | `replication.controller.spec.ts` | 7 | ReplicationController — WO-20.2 · push · pull |
 | `replication.registry.spec.ts` | 5 | ReplicationRegistry — WO-20.1 |
 
@@ -104,7 +104,7 @@ _none_
 | `ReplicationCursorService` | class | `replication-cursor.service.ts:15` | "The highest sequence I've already synced with this peer, in this direction" — read by `ReplicationSyncAgent`… |
 | `ReplicationLogService` | class | `replication-log.service.ts:21` | The log's write side (WO-20.1). |
 | `ReplicationQuarantineService` | class | `replication-quarantine.service.ts:13` | Where a record that failed to apply lands — never dropped, never retried forever (WO-20.1's own scope, see re… |
-| `ReplicationSyncAgent` | class | `replication-sync.agent.ts:46` | The child side of WO-20.2's transport: pushes this node's own FACT log up to its parent, and pulls the parent… |
+| `ReplicationSyncAgent` | class | `replication-sync.agent.ts:47` | The child side of WO-20.2's transport: pushes this node's own FACT log up to its parent, and pulls the parent… |
 | `ReplicationController` | class | `replication.controller.ts:22` | What a child node's own sync agent calls (WO-20.2) — authenticated by a node credential (`NodeCredentialServi… |
 | `ReplicationModule` | class | `replication.module.ts:48` |  |
 | `ReplicationRegistry` | class | `replication.registry.ts:18` | Where a module states what it replicates — the same keyed-registration shape as `CartLineValidatorRegistry` (… |

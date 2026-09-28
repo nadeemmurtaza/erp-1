@@ -563,7 +563,7 @@ All 417 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 7954 |  |
+| `DECISIONS.md` | doc | 8309 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -814,9 +814,9 @@ All 417 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `158-serialized-unit-tracking.md` | doc | 305 |  |
-| `32-lots-batch-expiry-fefo.md` | doc | 245 |  |
-| `71-recipe-batch-traceability.md` | doc | 255 |  |
+| `158-serialized-unit-tracking.md` | doc | 324 |  |
+| `32-lots-batch-expiry-fefo.md` | doc | 265 |  |
+| `71-recipe-batch-traceability.md` | doc | 270 |  |
 
 ### `docs/implementation/payroll` (4)
 
@@ -851,7 +851,7 @@ All 417 tracked files in `docs/*`, by directory.
 | `124-infrastructure-as-code.md` | doc | 64 |  |
 | `144-supply-chain-resilience-planning-engine.md` | doc | 392 |  |
 | `37-scalability-future-upgrades.md` | doc | 306 |  |
-| `38-resilience-engineering.md` | doc | 238 |  |
+| `38-resilience-engineering.md` | doc | 379 |  |
 | `48-native-desktop-deployment.md` | doc | 184 |  |
 | `90-automatic-backups-local-support.md` | doc | 56 |  |
 

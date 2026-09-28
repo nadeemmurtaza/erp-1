@@ -3,24 +3,26 @@
 
 # Core: `events`
 
-Shared platform — available to every module, part of no feature · 5 files
+Shared platform — available to every module, part of no feature · 7 files
 
 
-> The catalogue of domain events.
+> The static analysis behind `event-contracts.spec.ts` (WO-38.5).
 
 Source: `apps/api/src/core/events/`
 
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (5 · 977 lines)
+## Files (7 · 1,644 lines)
 
 All paths relative to `apps/api/src/core/events`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
+| `contract-analyzer.ts` | module | 399 | 12 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
 | `domain-events.ts` | module | 769 | 63 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 | 2 | Anything that can run a query: the PrismaService or an open transaction. |
+| `event-contracts.spec.ts` | unit test | 268 | 4 |  |
 | `events.module.ts` | nest module | 19 | 1 |  |
 | `on-domain-event.decorator.ts` | module | 16 | 1 | Subscribes a method to a domain event. |
 | `outbox.dispatcher.ts` | dispatcher | 120 | 1 | Drains the outbox: claims pending events, hands them to subscribers, and retries failures with exponential backoff up t… |
@@ -60,15 +62,29 @@ _none_
 
 
 
-## Tests (0)
+## Tests (1)
 
-_No spec files in this unit._
+| Spec | Cases | Covers |
+|---|---|---|
+| `event-contracts.spec.ts` | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
+| `PayloadShape` | interface | `contract-analyzer.ts:24` | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
+| `PayloadParseResult` | interface | `contract-analyzer.ts:29` |  |
+| `HandlerInfo` | interface | `contract-analyzer.ts:36` |  |
+| `maskSource` | function | `contract-analyzer.ts:55` | Replaces every comment and every plain string's contents with spaces, keeping length and newlines identical t… |
+| `parseDomainEventKeys` | function | `contract-analyzer.ts:172` | Parses `export const DomainEvent = { ... |
+| `findNamedInterfaceFields` | function | `contract-analyzer.ts:191` | Finds `export interface <name> { ... |
+| `parsePayloadShapes` | function | `contract-analyzer.ts:207` | Parses `export interface DomainEventPayloads { [DomainEvent.X]: Type; ... |
+| `extractAccessedFields` | function | `contract-analyzer.ts:241` | Every field a handler body reads off its own payload parameter: `payload.x` (anywhere, including inside a tem… |
+| `parseHandlers` | function | `contract-analyzer.ts:272` | Finds every `@OnDomainEvent(DomainEvent.X)`-decorated method in `rawSource` and extracts its event key, its d… |
+| `ContractViolation` | interface | `contract-analyzer.ts:316` |  |
+| `ContractCheckResult` | interface | `contract-analyzer.ts:323` |  |
+| `checkContracts` | function | `contract-analyzer.ts:335` | The check itself: every handler's declared inline fields, and every field its body actually reads off `payloa… |
 | `DomainEvent` | const | `domain-events.ts:23` | The catalogue of domain events. |
 | `DomainEventName` | type | `domain-events.ts:182` |  |
 | `OrderPlacedPayload` | interface | `domain-events.ts:184` |  |
@@ -134,6 +150,10 @@ _No spec files in this unit._
 | `BulletinPublishedPayload` | interface | `domain-events.ts:764` |  |
 | `PrismaLike` | type | `event-bus.service.ts:8` | Anything that can run a query: the PrismaService or an open transaction. |
 | `EventBusService` | class | `event-bus.service.ts:22` | Publishes domain events through a transactional outbox. |
+| `DomainEvent` | const | `event-contracts.spec.ts:116` |  |
+| `DomainEventName` | type | `event-contracts.spec.ts:120` |  |
+| `WidgetPayload` | interface | `event-contracts.spec.ts:122` |  |
+| `DomainEventPayloads` | interface | `event-contracts.spec.ts:127` |  |
 | `EventsModule` | class | `events.module.ts:18` |  |
 | `OnDomainEvent` | const | `on-domain-event.decorator.ts:14` | Subscribes a method to a domain event. |
 | `OutboxDispatcher` | class | `outbox.dispatcher.ts:19` | Drains the outbox: claims pending events, hands them to subscribers, and retries failures with exponential ba… |

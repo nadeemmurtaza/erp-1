@@ -108,6 +108,7 @@ const orderInclude = {
 } satisfies Prisma.OrderInclude;
 
 import { InventoryService, InsufficientStockError } from '../inventory/inventory.service';
+import { LotsService } from '../inventory/lots.service';
 import { CodRiskService } from './cod-risk.service';
 import { PricingService } from '../pricing/pricing.service';
 import { BundlesService } from '../catalog/bundles.service';
@@ -124,6 +125,7 @@ export class OrdersService {
     private readonly audit: AuditService,
     private readonly payments: PaymentsService,
     private readonly inventory: InventoryService,
+    private readonly lots: LotsService,
     private readonly enrichment: EntityEnrichmentRegistry,
     private readonly checkoutValidators: CheckoutValidatorRegistry,
     private readonly tax: TaxService,
@@ -304,10 +306,14 @@ export class OrdersService {
       const variantIds = [...new Set(priced.lines.map(l => l.variantId))];
       const variants = await tx.productVariant.findMany({
         where: { id: { in: variantIds } },
-        select: { id: true, costPrice: true, producedInHouse: true },
+        select: { id: true, costPrice: true, producedInHouse: true, lotTracked: true },
       });
       const costMap = new Map(variants.map(v => [v.id, v.costPrice]));
       const producedInHouseMap = new Map(variants.map(v => [v.id, v.producedInHouse]));
+      // 32-lots-batch-expiry-fefo.md — same batched-lookup discipline as
+      // costMap/producedInHouseMap above: one query per order, never one
+      // per line.
+      const lotTrackedMap = new Map(variants.map(v => [v.id, v.lotTracked]));
 
       const created = await tx.order.create({
         data: {
@@ -405,7 +411,7 @@ export class OrdersService {
           if (bundle) {
             await this.bundles.sellBundle(bundle, item.quantity, created.id, locationId, tx);
           } else {
-            await this.inventory.move({
+            const movement = await this.inventory.move({
               variantId: item.variantId,
               locationId,
               delta: -item.quantity,
@@ -414,6 +420,21 @@ export class OrdersService {
               refId: created.id,
               unitCost: costMap.get(item.variantId) ?? 0,
             }, tx);
+
+            // 32-lots-batch-expiry-fefo.md WO-32.2. A no-op (returns []) for
+            // any variant with no Lot rows at this location — an ordinary,
+            // non-lot-tracked sale behaves exactly as it did before this
+            // document, proven by inventory.service.spec.ts running
+            // unchanged. Bundle lines are out of scope here: a bundle's own
+            // component fan-out (BundlesService.sellBundle()) would need its
+            // own lot-awareness, real, separately-scoped work — see
+            // DECISIONS.md ADR-068.
+            if (lotTrackedMap.get(item.variantId)) {
+              await this.lots.recordDeduction(
+                { variantId: item.variantId, locationId, quantity: item.quantity, stockMovementId: movement.id },
+                tx,
+              );
+            }
           }
         } catch (error) {
           if (error instanceof InsufficientStockError) {

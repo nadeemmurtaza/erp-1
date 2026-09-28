@@ -7806,7 +7806,362 @@ the v1-usage report stay unbuilt, named in doc 37's own status blockquote.
 ### Status
 **Accepted.**
 
-## ADR-069 — Docs 168–183 (a composable, resilience-first SME platform for du): built inside erp-1 as new core-classified modules over the shipped planning engine (doc 144) and hosting control plane (doc 39), not a greenfield repository or a fork; zero new module couplings, and the program brief's premises corrected against the code
+## ADR-069 — Docs 32/71/158 (`lots-serials-traceability/`): the `move()` call-site scoping boundary, a doc-158 internal contradiction corrected in `SerializedUnit.stockMovementId`'s own favour, per-unit receiving proved cost-equivalent to batch receiving, and serialized sale deliberately left out of ordinary checkout
+
+### Context
+
+The `docs/implementation/lots-serials-traceability/` category holds three
+documents built as one unit of work: doc 32 (batch/lot identity, FEFO
+allocation, expiry alerting), doc 71 (connecting doc 32's lots to `bom`'s
+production runs — batch genealogy), and doc 158 (one-row-per-physical-unit
+serial tracking, IMEI-style). All three share one root fact: `Lot`/
+`SerializedUnit` are sub-ledgers UNDER the existing `VariantLocationStock`
+row, never a second stock model — `InventoryService.move()` stays the only
+writer of stock itself, exactly as it already is for every other caller.
+That single fact still left four genuine decisions doc 32/71/158's own text
+did not settle on its own.
+
+### Options Considered
+
+1. **Wire lot/serial awareness into `InventoryService.move()`'s own
+   signature**, so every one of its ~16 existing call sites gained the
+   capability at once. Rejected — `move()` is deliberately generic (a
+   variant, a location, a delta); teaching it about `Lot`/`SerializedUnit`
+   would make the ledger primitive know about two optional sub-ledgers it
+   has no reason to know about, and every one of the ~16 call sites would
+   need to decide what to pass whether or not it is lot/serial-relevant.
+   The one-writer-per-invariant rule this codebase already applies to
+   `move()` itself extends naturally to `LotsService`/
+   `SerializedUnitsService` as the ONLY writers of their OWN sub-ledgers,
+   called alongside `move()` — never inside it.
+2. **Wire that alongside-call into every one of `move()`'s ~16 call
+   sites**, so a manual adjustment, a transfer, or a bundle-component
+   deduction would also draw down a lot or retire a serial. Rejected as
+   more than doc 32/71/158 actually ask for: the three documents' own
+   worked examples are purchasing receipt, an order's sale deduction, and
+   BOM production consumption/output — the transaction types a lot or
+   serial genuinely changes hands on. Wiring a manual stock-count
+   adjustment or an inter-branch transfer into lot/serial bookkeeping is a
+   real, separately-scoped capability (which lot moved with a transfer? is
+   an adjustment ever lot-specific?) that neither document poses or
+   answers, and building it here would be exactly the speculative
+   functionality CLAUDE.md's own protocol forbids.
+3. **Wire `SerializedUnitsService.sellUnit()` directly into
+   `orders.service.ts`'s own checkout deduction loop**, so an ordinary sale
+   of a serial-tracked variant would auto-select a unit the way an
+   ordinary lot-tracked sale auto-allocates via FEFO. Rejected — unlike a
+   lot (fungible units, FEFO makes the choice), a serialized unit is NOT
+   fungible: automatically picking "the next `IN_STOCK` unit" the moment an
+   order places would frequently pick the wrong physical unit relative to
+   what a courier or in-store handoff actually hands the customer, with no
+   way to correct it short of a manual return-then-resell. Checkout's own
+   sale path is therefore left alone; a staff member reconciles the
+   specific serial against the order afterward via the manual
+   sell/return/write-off screen doc 158 itself scopes as its own
+   capability.
+4. **Trust doc 158's own prose that `SerializedUnit.stockMovementId` should
+   be `@unique`.** Rejected after finding the document's own §2 code sketch
+   contradicts its prose: the sketch shares ONE `StockMovement` across N
+   serials received on the same line, which a unique constraint on that
+   column would reject outright the first time two serials share a
+   receiving movement. The prose is the error; the sketch is correct. This
+   repository's own precedent (this whole task's prior sessions) is to
+   trust a document's worked code over its own summary claim when the two
+   conflict — the code sketch is treated as the more authoritative source
+   of truth about what the writer actually intended.
+5. **Follow doc 158's sketch literally and create exactly one
+   `StockMovement` per receiving line, with delta = the full line
+   quantity, then fan the N serials out against that one movement.**
+   Rejected in favour of one `StockMovement` per physical unit (delta 1
+   each, N movements for N serials) — proved cost-equivalent below — because
+   a single-movement-per-line design leaves no natural per-unit audit row:
+   `StockMovement` is this codebase's own ledger of physical events, and "20
+   units of one IMEI-tracked phone arrived in one receiving event" is
+   itself 20 physical arrivals, not one. `SerializedUnit.stockMovementId`
+   stays a plain, non-unique foreign key precisely so a genuinely shared
+   receiving movement (a bulk delivery note, for instance) remains
+   representable without contradiction, but the actual receiving path this
+   codebase's own `PurchasingService.receiveGoods()` takes is N individual
+   `move()` calls.
+6. **Build the whole capability as scoped above** — `LotsService`/
+   `SerializedUnitsService` as the only writers of their own sub-ledgers,
+   wired alongside `move()` at exactly the purchasing/orders/production
+   call sites the documents' own worked examples name; the
+   `stockMovementId` contradiction resolved in the code sketch's favour;
+   per-unit receiving with the cost-equivalence proof below; and
+   serialized sale left out of ordinary checkout, stated here rather than
+   silently assumed. **Chosen.**
+
+### Decision
+
+**Doc 32.** `Lot`/`LotStock`/`LotAllocation` (inventory.prisma) are
+additive, cascading from `ProductVariant`/`Location`/`StockMovement`.
+`LotsService.recordReceipt()`/`recordDeduction()` are the only writers,
+called from `PurchasingService.receiveGoods()` (receipt) and
+`OrdersService`'s sale-deduction loop (deduction) inside the SAME
+transaction as the `move()` call each already makes — never a second
+write path. `lot-allocation.ts`'s `allocateFefo()` is a pure function
+(sorts eligible lots by `expiresOn` ascending, nulls last) with an
+optional `preferredLotId` manual override drawing from that lot first.
+`LotsService.recallLookup()` joins `LotAllocation -> StockMovement ->
+Order` via `StockMovement`'s own bare `refType`/`refId` scalars (no Prisma
+relation across the inventory/orders module boundary — the identical
+decoupling `InventoryService.getChainStatus()` already uses), gated by the
+narrower `inventory.recall` rather than `inventory.lots.manage`.
+`InventoryCron.alertExpiringLots()` reads `LotsService
+.expiringLotsWithStock()` and sends ONE consolidated digest — never a ping
+per expiring lot — to every `inventory.manage` holder, resolved through a
+new `PermissionsResolverService.usersWithPermission()` batch query (the
+inverse of the resolver's own existing per-user `resolveForUser()`) rather
+than a fixed address, the exact anti-pattern CLAUDE.md itself names
+(`inventory.listener.ts`'s `store.supportEmail`). A zero-holder deployment
+gets a structured `Logger.error()` — the escalation this codebase's
+tooling can actually perform today, since no APM/pager is wired.
+
+**Doc 71.** `BomProductionLineLot` (bom.prisma) connects one production
+line's consumption to the specific input lot(s) `LotsService
+.recordDeduction()` drew from, inside `ProductionService.create()`'s own
+existing transaction; `BomProductionRun.outputLotId` is set the same way
+via `LotsService.recordReceipt()` for a lot-tracked output variant.
+`ProductionService.traceOutputLot()`/`traceInputLotForward()` are read-only
+graph walks over rows already written at production time — never
+recomputed or inferred — answering both directions of a recall
+symmetrically, exposed as `GET /admin/bom/lots/:lotId/trace-output` and
+`.../trace-forward`.
+
+**Doc 158.** `SerializedUnit` (inventory.prisma) is a one-row-per-unit
+sub-ledger; `SerializedUnitsService.receiveUnits()` is the only writer at
+receipt time, called from `PurchasingService.receiveGoods()` as N
+individual `move()` calls (delta 1 each) rather than one `moveMany()` call
+for the whole line, for the reason in Option 5 above and the cost-math
+proof below. `sellUnit()`/`returnUnit()`/`writeOff()` are manual staff
+actions reached from `/admin/inventory/serials/:serialNumber`, deliberately
+NOT wired into `orders.service.ts`'s own checkout deduction loop (Option 3
+above). `returnUnit()` refuses unless `status === 'SOLD'` AND `orderId`
+matches the order named exactly — the same toxic-pair self-dealing guard
+`StockVariance.resolve()` already established. `getUnitHistory()` returns
+exactly `{ serialNumber, status, soldOn, orderId, orderNumber,
+warrantyEndsOn }` for both the staff-side history route and the public
+`GET /public/serials/:serialNumber` warranty-verify lookup — never a
+branch or an employee — reachable from the storefront footer's "Verify
+your purchase" link.
+
+**Cost-equivalence proof (Option 5).** `weightedAverageCost(stockBefore,
+oldCost, quantity, newUnitCost)` is linear in `quantity`: applying it once
+with `quantity = N` computes `(stockBefore·oldCost + N·newUnitCost) /
+(stockBefore + N)`. Applying it N times with `quantity = 1` each, folding
+the running stock/cost forward after each step, telescopes to the
+identical numerator and denominator — each step adds exactly one
+`newUnitCost` to the running total and one unit to the running stock, so N
+steps of 1 sum to the same N·newUnitCost and N as one step of N. Receiving
+N serialized units as N separate `move()` calls therefore produces the
+IDENTICAL `costPrice` result a single batched receipt would, with no
+per-unit-precision cost machinery needed beyond what already exists.
+
+**lotTracked/tracksSerials/warrantyMonths.** New `ProductVariant` boolean/
+integer fields (catalog.prisma), editable from the raw-material edit form
+and the product-variant editor's own "Barcode, cost & reorder" advanced
+section — the same discoverable-but-not-in-the-way placement
+`reorderPoint`/`reorderQuantity` already use, per Law 2 ("hide complexity
+in depth").
+
+### Reasoning
+
+Every one of the four decisions above follows the same rule already
+binding elsewhere in this codebase: a sub-ledger's own writer stays the
+only writer of that sub-ledger, called alongside the existing stock
+primitive rather than folded into it. Scoping which of `move()`'s call
+sites gain lot/serial awareness to exactly the three the documents'
+own worked examples name — rather than either the smallest one call site
+or literally all sixteen — is the same "build the whole capability, not a
+narrower or a wider slice" balance CLAUDE.md's own feature-scope section
+asks for: doc 32/71/158 each name purchasing receipt, order sale, and (for
+lots) BOM production explicitly; none of them name a manual adjustment or
+a transfer, so building those would be scope invented, not scope shipped.
+Leaving serialized sale out of ordinary checkout is the same honesty this
+whole task's prior sessions already established for boundaries a document
+doesn't fully resolve: a wrong-but-automatic behavior (mis-selecting which
+physical IMEI a sale consumed) is worse than a manual step named plainly
+as a limitation, exactly the standard `10-admin-dashboard.md`'s own
+"Request or record" lens sets for any write that cannot be safely
+automated yet.
+
+### Consequences
+
+- A manual stock-count adjustment, an inter-branch transfer, and a bundle
+  component's own deduction do NOT draw down a lot or retire a serial
+  today — a lot-tracked or serial-tracked variant moved through any of
+  those three paths behaves exactly as an untracked one does. This is a
+  real, named gap: the day this sector needs adjustment- or
+  transfer-level lot/serial awareness, it is new, separately-scoped work
+  against `LotsService`/`SerializedUnitsService`'s own existing methods,
+  not a rewrite of them.
+- Checkout's own sale path never automatically marks a `SerializedUnit`
+  `SOLD` — a serial-tracked variant's stock count still decrements
+  correctly through the ordinary `move()` call, but the specific unit sold
+  is reconciled by a staff member afterward via the manual
+  sell/return/write-off screen. A future point-of-sale or storefront
+  redesign that needs this automated (e.g., choosing a specific IMEI at
+  checkout) is real, scoped, separate work, not fabricated here.
+- `PermissionsResolverService.usersWithPermission()` is now a reusable
+  primitive for any future "notify whoever holds permission X" need —
+  deliberately omitting `OrgUnitGrant`-derived access, matching
+  `resolveForUser()`'s own doc comment that no deployment today has any
+  such grant; a caller needing that reach too composes `resolveForUser()`
+  per candidate instead.
+- `inventory.lots.override`'s own catalogue entry (medium sensitivity) is
+  seeded to ADMIN but gates no dedicated override endpoint yet —
+  `LotsService.previewAllocation()`'s own `preferredLotId` parameter is
+  the only manual-override surface built; a standalone override screen or
+  route is real, separately-scoped future work, not fabricated here to
+  make the permission "used".
+- All three documents' own status blockquotes and `docs/implementation/
+  README.md`'s three rows state exactly what shipped, per this session's
+  own standing documentation discipline.
+
+### Status
+**Accepted.**
+
+## ADR-070 — Doc 38 (resilience engineering): a table-driven contract test over the real source tree instead of 69 hand-written files, `RequestOutcome` instead of forcing SLO data through the business-metrics registry, and a genuine `/admin/resilience` naming collision resolved by renaming the newer screen
+
+### Context
+
+Doc 38 asks for six work orders: the degradation matrix proven by test
+(WO-38.1), a `CircuitBreaker` wrapping `AiProvider`/`PaymentProvider`/
+`OutboundConnector`/`VectorStore` (WO-38.2), SLO/error-budget
+instrumentation on three named critical paths (WO-38.3), real DR numbers
+(WO-38.4), a domain-event contract test suite (WO-38.5), and three new
+`platform.resilience.*` permissions (WO-38.6). Several of its own asks are
+underspecified on purpose (doc 38 explicitly invites judgment on the
+contract-test suite's shape) or run into a fact this document could not
+have known at the time it was written: `OutboundConnector` does not exist,
+`core/metrics`'s existing extension point was built for a different shape
+of data, and a completely unrelated document (144) had already claimed the
+`/admin/resilience` route for a different feature.
+
+### Options Considered
+
+1. **One hand-written contract test per domain event (69 files).** Doc 38
+   §5 literally suggests this shape, then explicitly says to use judgment.
+   Rejected: every event's assertion is structurally identical (a
+   subscriber's assumed fields must be a subset of the real payload's
+   fields), so 69 files would be 69 copies of one check, not a new
+   contract per event — a maintenance cost the same discipline
+   `check-module-boundaries.mjs` already rejects for cross-module checks.
+2. **A single, table-driven static analyzer** (`contract-analyzer.ts`) that
+   parses the real `domain-events.ts` and every `@OnDomainEvent` handler in
+   the real source tree, character-scanning rather than using the
+   TypeScript compiler API. Chosen. The existing `check-*.mjs` scripts are
+   all line/character-based scanners by established convention
+   (`CLAUDE.md`: "the scanners are line-based, not a type checker"); this
+   codebase's payload interfaces are uniformly flat (confirmed by reading
+   every one in `domain-events.ts`), making a character scanner tractable
+   and lower-risk than standing up the TypeScript compiler API for one
+   test suite. A naive line-based version was tried first and produced
+   false positives from stray braces inside comments and lost real
+   `payload.x` accesses written inside template-literal interpolations
+   (`posting-rules.subscriber.ts`'s own `` `${payload.billId}:${payload
+   .paidAt}` `` sourceRef) — both fixed by masking comments/plain strings
+   to blanks while keeping a template literal's own `${...}` code live,
+   proven against the real tree (0 violations, 71 real handlers checked)
+   and proven to actually catch a break (`PasswordChangedPayload.userId`
+   was temporarily renamed, the suite failed naming the exact broken
+   subscriber, then the rename was reverted — see doc 38's own status
+   blockquote).
+3. **Force SLO/error-budget data through `core/metrics`'s existing
+   `MetricProvider` extension point**, since it already exists and this
+   session built it. Rejected on inspection: `MetricContext`/`MetricValue`
+   are shaped around a permission-gated, previous-period-compared
+   *business* number computed on demand for a dashboard card — there is no
+   way to express "record this one request's outcome, right now,
+   non-blocking" through it, and forcing that shape through an interface
+   built for something else would be exactly the wrong-abstraction
+   `CLAUDE.md`'s "before creating a new abstraction" question warns
+   against answering by reflex. A new, minimal `RequestOutcome` table plus
+   `SloRecorderService` was built instead, purpose-built for a
+   fire-and-forget outcome/latency record with a trailing-window
+   aggregate query.
+4. **Wrap every extension point doc 38's matrix cites**
+   (`StorageDriver`, `SmsProvider`, `WhatsAppProvider`) in a circuit
+   breaker too, since the matrix mentions them.** Rejected: doc 38's own
+   §2 names exactly four — `AiProvider`, `PaymentProvider`,
+   `OutboundConnector`, `VectorStore` — and expanding that list silently
+   would be scope creep past what the document itself asked for.
+   `NotificationsService`'s existing `Promise.all`-per-channel fan-out
+   already isolates one channel's failure from another with no shared
+   state to trip a breaker against; `StorageDriver` has no retry path for
+   a breaker to protect (see the found gap below). Both are named,
+   reasoned exclusions in doc 38's own status blockquote, not silent
+   omissions.
+5. **Route `/admin/resilience` on the web app for doc 38's new dashboard**,
+   the literal name the work order's own brief suggested. Investigated
+   first: `apps/web/src/constants/routes.ts` and `nav-registry.ts` already
+   held a `resilience` key at that exact path for
+   `144-supply-chain-resilience-planning-engine.md`'s own "Resilience
+   Planning" screen — a real collision (confirmed live: a first attempt at
+   this route silently overwrote doc 144's page, caught by `git status`
+   showing the file as modified rather than new, and reverted with `git
+   checkout` before being rebuilt at a new path). Doc 144's screen shipped
+   first and keeps the shorter name; doc 38's screen is named "Platform
+   Resilience" at `/admin/platform-resilience` instead — a naming
+   collision resolved by renaming the newer, unshipped screen, never by
+   overwriting the existing one.
+6. **A dry-run `CircuitBreaker.simulate()` fed by live historical call
+   data**, as doc 38 §2's own "dry run before live" lens asks for. Found
+   genuinely unbuildable against real data today: no call-outcome log
+   exists for `AiProvider`/`PaymentProvider`/`VectorStore` calls (WO-38.3's
+   own `RequestOutcome` table instruments three different, named business
+   paths — checkout, POS sale, replication sync — never these four
+   extension points). Chosen instead: `simulate()` is a real, pure,
+   unit-tested replay function taking a caller-supplied history, ready to
+   wire to a live log the day one exists, honestly unable to answer
+   "would this have tripped last month" until then — named explicitly
+   rather than faked against data that does not exist.
+
+### Decision
+
+**2, 3, 4, 5, 6** — see this session's changes and doc 38's own status
+blockquote for the full account of what shipped, what was found missing,
+and what was deliberately left out.
+
+- **A parser proven against the real tree, not just a happy-path fixture.**
+  `event-contracts.spec.ts` runs `contract-analyzer.ts` against every real
+  `@OnDomainEvent` handler in `apps/api/src`, not a curated sample — the
+  same "the scanner is checked against the actual codebase, not a mock of
+  it" discipline `check-module-boundaries.mjs`'s own self-test already
+  establishes for module boundaries.
+- **A found gap is reported, not silently fixed or silently ignored.**
+  `StorageDriver`'s "queue for retry" claim in doc 38's own §1 table does
+  not match `storage.service.ts`'s real behavior — surfaced in the status
+  blockquote and via a new test proving the actual current behavior,
+  rather than either fabricating a passing test for code that does not
+  exist or quietly building a retry queue as an unscoped side effect.
+- **A route collision is caught and fixed before merge, not shipped.** The
+  `/admin/resilience` overwrite was caught by reading `git status` after
+  the first write, reverted, and the new screen was given a distinct name
+  — exactly the "review the complete diff" discipline `CLAUDE.md`'s Git
+  discipline section asks for, applied to a collision a plan alone would
+  not have surfaced.
+
+### Consequences
+
+- `OutboundConnector`'s circuit-breaker wrap remains unbuilt until doc 36
+  ships — tracked in doc 38's own status blockquote, the identical shape
+  ADR-068 already records for doc 37's own `ApiClient` gap.
+- The deploy-freeze on a breached error budget is a computed boolean and a
+  dashboard banner, not an enforced CI/CD gate — a future CI workflow can
+  read `GET /admin/resilience/slo`'s `overBudget` field, but none does
+  today, named honestly rather than claimed.
+- RTO stays unmeasured, and the real number will not exist until the first
+  quarterly game-day actually runs against a live Docker Swarm stack —
+  `DEPLOYMENT.md` §9 states this as pending, not as a placeholder to
+  forget.
+- A second, unrelated document now shares the word "resilience" with two
+  different admin screens at two different routes
+  (`/admin/resilience` for doc 144, `/admin/platform-resilience` for doc
+  38) — a naming seam future readers should know about, recorded here
+  rather than left to be rediscovered as a surprise.
+## ADR-071 — Docs 168–183 (a composable, resilience-first SME platform for du): built inside erp-1 as new core-classified modules over the shipped planning engine (doc 144) and hosting control plane (doc 39), not a greenfield repository or a fork; zero new module couplings, and the program brief's premises corrected against the code
 
 ### Context
 

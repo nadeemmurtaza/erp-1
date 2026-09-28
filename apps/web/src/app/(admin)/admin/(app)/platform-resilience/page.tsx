@@ -44,6 +44,7 @@ interface DrInfo {
  */
 const DEGRADATION_MATRIX: Array<{ dependency: string; stillWorks: string; degrades: string }> = [
   { dependency: 'Postgres (primary)', stillWorks: 'Nothing writes; /health/ready fails', degrades: 'Total — the one dependency with no degraded mode, by design' },
+  { dependency: 'Redis (rate limiting)', stillWorks: 'Every route on the global limit, counted per process; signed-in sessions and token refresh', degrades: 'Sign-in and routes with their own rate limit answer 503 — never an unlimited guess' },
   { dependency: 'AiProvider', stillWorks: 'Every non-AI feature, unaffected', degrades: 'All AI features fall back to their stated non-AI path' },
   { dependency: 'VectorStore / pgvector index', stillWorks: 'Keyword search, catalogue browsing', degrades: 'Semantic/RAG retrieval only' },
   { dependency: 'PaymentProvider (Easypaisa/JazzCash)', stillWorks: 'Cash tender at POS, other configured providers', degrades: "The specific down provider's checkout option only" },

@@ -1,7 +1,10 @@
 # 206 — Rate limiting, caching, compression and resource-limit hardening
 
 > **Status: proposed (2026-09-28), not yet built**, except where a section
-> says otherwise. This document exists because `CLAUDE.md`'s own "Exact
+> says otherwise. **§1 and §2 (WO-206.1–206.4) were built on 2026-09-28** —
+> §8 records what the code does, the parameters it added, and the two
+> places it departs from §1–§2 with the reason for each; where §8 and
+> §1–§2 differ, §8 is what runs. This document exists because `CLAUDE.md`'s own "Exact
 > parameters, every time" rule (added the same day, at the owner's direct
 > instruction) requires every security/performance parameter to carry its
 > exact value and reasoning, recorded here rather than left in a chat
@@ -19,6 +22,11 @@
 | Everything else (account lockout, queueing for token refresh, RAM ceilings on scripts, API response caching, component lazy-loading, response compression) | Nothing found — greenfield. | New, specified below. |
 
 ## 1. Login-attempt rate limiting — the missing account-level layer, and why it's a second layer, not a replacement
+
+> **Built (WO-206.1, WO-206.2).** See §8.1 for what changed from the text
+> below: the storage fails closed on credential routes rather than on
+> every route, and the audit records one row per throttling episode rather
+> than one per refused request.
 
 ### 1.1 The gap in what exists, precisely
 
@@ -90,6 +98,9 @@ Approval Required: yes — new runtime dependency, new infrastructure
 - Whether `/auth/reset-password` and `/auth/forgot-password` get the same per-account bucket (they're also credential-adjacent and already share `CREDENTIAL_THROTTLE`'s per-IP limit) is recommended yes, not yet decided — a password-reset flood is the same class of attack.
 
 ## 2. "Sudden logout" — this is refresh-token-rotation race handling, not a message queue
+
+> **Built (WO-206.3, WO-206.4).** §8.2 records how "the same new token pair"
+> is reproduced without storing a token in plaintext, and the columns added.
 
 ### 2.1 Reframing the request
 
@@ -173,6 +184,144 @@ I don't recognize "TERA" as a specific product — closest real matches for "a c
 
 **Parameter: Minimum size before compressing at all.**
 **Exact value:** **1024 bytes (1KB).** Responses smaller than this are sent uncompressed — compression overhead (CPU cost, and the encoding header itself) can exceed the transfer savings on a tiny payload; 1KB is the same threshold Express's own `compression` middleware already defaults to, kept rather than invented.
+
+## 8. As built — WO-206.1 to WO-206.4 (2026-09-28)
+
+Every number §1.2 and §2.2 decided is implemented unchanged: the 300/60 s
+and 10/60 s limits, a 5-token bucket refilling 1 token per 300 s, the reset
+on a correct password, the 429 body and `Retry-After`, the 10 s grace window,
+family revocation. What follows is what the code needed that the text did
+not decide, and the two places the text was wrong once the real code was
+in view.
+
+### 8.1 Rate limiting (WO-206.1, WO-206.2)
+
+**Where it lives.** `apps/api/src/core/redis/` — `RedisModule` (global),
+`RedisService.client(keyspace)`, `.isReady(keyspace)`, `.ping(keyspace)`;
+keyspaces in `redis.keyspaces.ts` (`rateLimit` = db 0; WO-206.8's cache is
+to add `cache: { db: 1 }` there). `core/throttling/` —
+`SharedThrottlerStorage` wraps `@nest-lab/throttler-storage-redis` 1.2.0's
+`ThrottlerStorageRedisService`, used unmodified, over `ioredis` 5.11.1;
+`AppThrottlerGuard` replaces `ThrottlerGuard` as the APP_GUARD, adding only
+the audit. `core/auth/login-throttle.service.ts` holds the bucket — a check
+inside `AuthService.login()` (§1.4's open point), spent before the account
+lookup so a refused attempt costs no query and no bcrypt round.
+
+**Package versions.** `@nest-lab/throttler-storage-redis` 1.2.0 (released
+2026-02-03, `jmcdo29/nest-lab`, MIT, ~100 lines). `ioredis` pinned to the
+5.x line (5.11.1, 2026-06-04), not 6.0.0 (2026-07-31): 6 switches the wire
+protocol to RESP3 by default and the adapter declares only `ioredis >=5`,
+built and tested against 5.4.1.
+
+**Departure 1 — fail closed on credential routes, not on every route.**
+§1.2 had the storage "reject the request path" whenever Redis is down. The
+global 300/60 s limit guards *every* route, so that would make a Redis
+outage an outage of the whole API — POS sale sync and payment webhooks
+included — and 38-resilience-engineering.md §1's rule is that the only
+total outage is Postgres. So: a route that declares its own `@Throttle`
+(every one today guards something guessable — sign-in and password routes,
+gift-card and promo codes, API-key issue, an unauthenticated webhook) fails
+closed with 503; a route on the module-wide limit alone keeps counting in
+process memory, which is exactly the pre-WO-206.1 behaviour — weaker by the
+replica count, never unlimited. Both are logged once per outage. The
+degradation matrix in doc 38 §1 carries the row.
+
+**Departure 2 — one audit row per throttling episode, not per 429.** §1.2
+wrote one `auth.rate_limited` row per 429. `AuditService.record()` is a
+synchronous Postgres INSERT; once a limit trips, a flood's every further
+request would each become a write — the cheapest refusal turned into the
+most expensive one, until the 10-connection pool starves every route. So
+the first refusal of an episode is recorded and a Redis `SET NX PX` marker
+holds the rest back: at most one row per route per IP per block (60 s) and
+one per identifier per refill interval (300 s). A campaign against one
+account still shows as a steady pattern of rows.
+
+**Kept as written — per-identifier keys.** Keying the bucket by the
+resolved account instead (so email and phone share one bucket) was
+considered and refused: draining the bucket through an email, then trying a
+phone number, would reveal whether that number belongs to the same account.
+An account with both identifiers therefore has two buckets — at worst
+2 × 5 guesses up front and 2 × 12 an hour after.
+
+| Parameter | Exact value | Why this number | Enforced in | Degrades |
+|---|---|---|---|---|
+| Offline queue | disabled | A command sent while disconnected is refused at once instead of parked until Redis returns — a parked queue is how an outage becomes a request pile-up | `REDIS_CLIENT_OPTIONS` | Caller decides: 503 or per-process fallback |
+| Retries per command | 0, and never resent after a reconnect | A replayed `EVAL` would spend a second sign-in token; a replayed `INCR` counts a request twice | same | In-flight commands fail on the first drop |
+| Command timeout | 500 ms | Same-network round trip is < 1 ms; Linux's 200 ms minimum TCP retransmit still fits once. A hung Redis costs a request at most 0.5 s | same | Timed-out command = Redis down for that request |
+| Connect timeout | 2 000 ms (ioredis default 10 000) | ~1 ms same-network connect, room for a cold DNS lookup; bounds a black-holed address per attempt | same | Next attempt per the backoff |
+| Reconnect backoff | 50 ms × attempt, capped at 2 000 ms, forever | ioredis's own default, restated: recovery is noticed within 2 s | `redisReconnectDelayMs` | — |
+| Boot wait for first connection | 2 000 ms, then boot anyway | Healthy Redis answers in ms, so first sign-ins after a deploy never hit a half-open connection; an absent one delays boot 2 s, never blocks it | `REDIS_BOOT_READY_WAIT_MS` | Boots degraded, logs once |
+| Instance memory | `--maxmemory 64mb`, container 128M | ~200 B per rate-limit key; 64 MB ≈ 300k keys, ~3× a busy single-brand minute; 128M covers fragmentation + ~5 MB base | compose/stack `redis` service | Full = writes refused = treated as down |
+| Eviction | `noeviction` | Evicting a counter silently resets someone's limit — a fail-open | same | Same as full. **WO-206.8 note:** the cache will share this instance, so cache writes fail rather than evict when full — which cache-aside tolerates as a miss |
+| Persistence | none (`--save ''`, no AOF) | Nothing in it is a fact; a restart only resets counters | same | Counters restart from zero |
+| Audit episode | per-IP: the block's own length (60 s); per-account: 300 s | One row per episode bounds audit writes by distinct IPs/identifiers × time, never by request count | `RateLimitAuditService` | If the marker cannot be set, the row is written anyway |
+
+**`REDIS_URL`.** Names the instance only; a `/N` path or `?db=` is refused
+at boot, because ioredis lets it override every keyspace's `db`. Defaults to
+`redis://localhost:6379` outside production (docker-compose.yml's `redis`);
+production refuses to boot without an explicit value. docker-compose.prod.yml,
+both swarm stacks and docker-compose.branch.yml run a `redis` service and
+build `REDIS_URL` from `REDIS_PASSWORD`; on Coolify it is a new Redis
+resource, never the mail server's.
+
+**§1.4's second open point stays open**: `/auth/forgot-password` and
+`/auth/reset-password` still have only the per-IP `CREDENTIAL_THROTTLE`.
+
+### 8.2 Refresh-token reuse detection (WO-206.3, WO-206.4)
+
+**Columns** (`RefreshToken`, migration `20260928100000_wo206_refresh_token_reuse_detection`):
+`familyId` (every token from one sign-in; pre-existing rows backfilled to
+their own id), `rotatedAt` (null = never rotated — live, or revoked by
+logout/password change/deactivation, none of which is reuse),
+`replacedById` (the successor, unique, `ON DELETE SET NULL`).
+
+**"The same new token pair."** Only a hash of each refresh token is stored,
+so a replay cannot look the successor up in plaintext. The successor is
+therefore derived from the token it replaces — HMAC-SHA256 under
+`JWT_REFRESH_SECRET` (previously required but unused), label
+`newax.refresh-rotation.v1` — and the access token's `iat` is pinned to the
+rotation moment, so HS256 re-signs it byte for byte. Deriving a successor
+takes both the presented token and that secret, which sits beside
+`JWT_ACCESS_SECRET` — itself enough to sign any access token — so this adds
+nothing a leaked environment did not already give. Sign-ins still start
+from 48 random bytes.
+
+**Concurrency.** Rotation is predicate-on-write
+(`updateMany where rotatedAt IS NULL AND revokedAt IS NULL`); the loser of a
+race re-reads the row and is answered as a replay. Proven against Postgres
+with five simultaneous refreshes of one token: five 200s, one pair, one
+successor row. Rotation and family revocation also both take a
+transaction-scoped advisory lock on the family (`pg_advisory_xact_lock`,
+namespace `8_241_160`, keyed by `hashtext(familyId)`). Without it, a
+revocation that waited on the row lock of a token being rotated would read
+with its old READ COMMITTED snapshot and miss the successor that rotation
+created — leaving it live in the hands of whoever rotated. The e2e suite
+holds a rotation open mid-transaction, replays the stale token, and asserts
+the successor is revoked; with the revocation's lock removed, that test
+fails.
+
+**Window boundary.** Inclusive: a reuse at exactly 10 000 ms is a race,
+10 001 ms is reuse. Inside the window, a successor that has since been
+signed out is not handed back (401) and is not treated as reuse either.
+
+**The single sign-on handoff keeps single use.** `POST /auth/sso/session`
+redeems its handoff through the same rotation, but with `singleUse`: §2.2
+scopes the grace window to `POST /auth/refresh`, and doc 161's handoff
+"redeems once". A second redemption inside the window is refused (401,
+nothing revoked); after it, it is reuse like any other. This is stricter
+than before WO-206.3, whose read-then-update let two concurrent redemptions
+of one handoff both succeed.
+
+**Audit.** `auth.refresh_reuse_detected`, entity `User`, the family,
+seconds since rotation, tokens revoked, source IP. Operational class
+(canonical ruling 9), written after the revocation commits: a failed audit
+write must never be able to leave a stolen token live.
+
+**Client single-flight (WO-206.4).** `singleFlight()` in
+`packages/shared/src/http-client.ts` wraps the refresh call in all four
+clients: web admin (`admin-client.ts`), web storefront (`customer-client.ts`),
+POS (`api-client.ts`, replacing its own earlier hand-rolled copy) and the
+mobile storefront app (`apps/mobile/src/api/client.ts`).
 
 ## Work orders
 

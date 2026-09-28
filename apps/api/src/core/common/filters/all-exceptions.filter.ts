@@ -15,6 +15,12 @@ interface ErrorBody {
   error: string;
   path: string;
   timestamp: string;
+  /**
+   * Whole seconds until the refused request may be retried — present only
+   * when the exception knows (LoginRateLimitedException, doc 206 §1.2), and
+   * mirrored into a `Retry-After` header so a client need not parse the body.
+   */
+  retryAfterSeconds?: number;
 }
 
 /**
@@ -46,6 +52,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       );
     }
 
+    if (body.retryAfterSeconds !== undefined) {
+      response.setHeader('Retry-After', String(body.retryAfterSeconds));
+    }
     response.status(body.statusCode).json(body);
   }
 
@@ -59,6 +68,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         typeof payload === 'string'
           ? payload
           : ((payload as { message?: string | string[] }).message ?? exception.message);
+      const retryAfterSeconds =
+        payload !== null && typeof payload === 'object'
+          ? (payload as { retryAfterSeconds?: unknown }).retryAfterSeconds
+          : undefined;
 
       return {
         statusCode: status,
@@ -66,6 +79,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
         error: HttpStatus[status] ?? 'Error',
         path,
         timestamp,
+        ...(typeof retryAfterSeconds === 'number' && Number.isInteger(retryAfterSeconds) && retryAfterSeconds >= 0
+          ? { retryAfterSeconds }
+          : {}),
       };
     }
 

@@ -3,7 +3,7 @@
 
 # Migrations
 
-**118** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**119** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -26,22 +26,7 @@ CI's own seed step.
 This section compares the two sides. It is a statement of fact, not a gate:
 nothing here fails a build.
 
-> [!WARNING]
-> The schema declares **0 table(s)**, **3 column(s)** and **0 enum(s)** that no committed migration creates.
-> A database built from `migrations/` alone will be missing them.
-
-
-
-### Columns with no migration (3)
-
-| Table | Column | Type | Declared at |
-|---|---|---|---|
-| `RefreshToken` | `familyId` | `String` | `apps/api/prisma/schema/core.prisma:192` |
-| `RefreshToken` | `rotatedAt` | `DateTime?` | `apps/api/prisma/schema/core.prisma:192` |
-| `RefreshToken` | `replacedById` | `String?` | `apps/api/prisma/schema/core.prisma:192` |
-
-
-
+**In step.** Every model, column and enum the schema declares is built by a migration.
 
 
 ## Every migration
@@ -166,6 +151,7 @@ nothing here fails a build.
 | 2026-09-27 | `wo32_wo71_wo158_lots_serials_traceability` | 37 | CREATE TYPE, CREATE TABLE, ALTER TABLE, CREATE UNIQUE INDEX, CREATE INDEX | BomProductionLineLot, BomProductionRun, Lot, LotAllocation, LotStock, ProductVariant, SerializedUnit, StockVa… |
 | 2026-09-27 | `wo37_feature_flags` | 4 | CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | FeatureFlag |
 | 2026-09-27 | `wo38_request_outcomes` | 3 | CREATE TABLE, CREATE INDEX | RequestOutcome |
+| 2026-09-28 | `wo206_refresh_token_reuse_detection` | 10 | ALTER TABLE, UPDATE, CREATE UNIQUE INDEX, CREATE INDEX | RefreshToken |
 
 
 ---

@@ -22,7 +22,15 @@ import {
   readCookie,
   type AuthenticatedUser,
 } from './auth.constants';
-import { AuthenticatedOnly, CurrentUser, CustomerScope, Public, RequirePermission, SessionOnly } from './decorators';
+import {
+  AuditRateLimit,
+  AuthenticatedOnly,
+  CurrentUser,
+  CustomerScope,
+  Public,
+  RequirePermission,
+  SessionOnly,
+} from './decorators';
 import {
   ChangePasswordDto,
   ForgotPasswordDto,
@@ -63,6 +71,7 @@ export class AuthController {
   ) {}
 
   @Throttle(CREDENTIAL_THROTTLE)
+  @AuditRateLimit('email')
   @Public()
   @Post('register')
   @ApiOperation({ summary: 'Create a customer account' })
@@ -75,13 +84,25 @@ export class AuthController {
     return result;
   }
 
+  /**
+   * Two limits stand in front of a password guess (206-rate-limiting-caching-compression-hardening.md
+   * §1): CREDENTIAL_THROTTLE per client IP, then — inside AuthService.login()
+   * — a 5-attempt, one-per-5-minutes bucket per identifier, which a guesser
+   * spreading attempts over many addresses cannot step around. Either answers
+   * 429 with a Retry-After; either one's refusals are audited.
+   */
   @Throttle(CREDENTIAL_THROTTLE)
+  @AuditRateLimit('identifier')
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Sign in with an email or phone number' })
-  async login(@Body() dto: LoginDto, @Res({ passthrough: true }) response: Response) {
-    const result = await this.auth.login(dto.identifier, dto.password);
+  async login(
+    @Body() dto: LoginDto,
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const result = await this.auth.login(dto.identifier, dto.password, { ip: request.ip });
     this.setRefreshCookie(response, result.refreshToken);
     return result;
   }
@@ -101,7 +122,7 @@ export class AuthController {
       throw new UnauthorizedException('No refresh token was supplied.');
     }
 
-    const result = await this.auth.refresh(token);
+    const result = await this.auth.refresh(token, { ip: request.ip });
     this.setRefreshCookie(response, result.refreshToken);
     return result;
   }

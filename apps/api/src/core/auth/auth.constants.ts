@@ -6,6 +6,8 @@ export const PERMISSIONS_KEY = 'auth:permissions';
 export const SESSION_ONLY_KEY = 'auth:sessionOnly';
 /** @see CustomerScope — which storefront API keys may reach a customer route. */
 export const CUSTOMER_SCOPES_KEY = 'auth:customerScopes';
+/** @see AuditRateLimit — which body field names the identifier a throttled credential route was guessing at. */
+export const RATE_LIMIT_AUDIT_KEY = 'auth:rateLimitAudit';
 
 /**
  * What a verified access token carries. No `role`/`roles` here on purpose —

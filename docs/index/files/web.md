@@ -826,7 +826,7 @@ All 428 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 213 |  |
+| `page.tsx` | page | 214 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products` (2)
 

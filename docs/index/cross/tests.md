@@ -3,7 +3,7 @@
 
 # Tests
 
-**341** spec files, **3,277** cases. What is already pinned down — and what is not.
+**350** spec files, **3,345** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -30,7 +30,7 @@ such exemption.
 - [`tracking`](../modules/tracking.md)
 - [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (20)
+## End-to-end (21)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -39,6 +39,7 @@ regression or an N+1.
 |---|---|---|
 | `apps/api/test/accounting.e2e-spec.ts` | 15 | Accounting ledger invariants (integration) · WO-19.5 — closing a period redirects a fact dated inside it to the next OP… |
 | `apps/api/test/api-keys.e2e-spec.ts` | 21 | Personal API keys (e2e) · an admin key · what can never go into a key · a storefront key · oversight (users.manage) and… |
+| `apps/api/test/auth-throttle.e2e-spec.ts` | 20 | Sign-in rate limiting and refresh-token reuse detection (e2e) · the per-account bucket, on a real Redis (WO-206.2) · a… |
 | `apps/api/test/auth.e2e-spec.ts` | 11 | Account security (e2e) · registration and email verification · change password · forgot / reset password |
 | `apps/api/test/cart.e2e-spec.ts` | 28 | Cart (e2e) · guest cart · stitching add-on · inline measurements · pricing without a service product · custom design te… |
 | `apps/api/test/catalog.e2e-spec.ts` | 26 | Catalog (e2e) · health · authentication · storefront · admin access control · creating a product · measurement profiles… |
@@ -59,7 +60,7 @@ regression or an N+1.
 | `apps/api/test/stitching.e2e-spec.ts` | 26 | Stitching operations (e2e) · jobs from orders · the workshop · bookings for the customer · promised dates |
 
 
-## Unit and integration (321)
+## Unit and integration (329)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -69,18 +70,22 @@ regression or an N+1.
 | `apps/api/src/core/auth/api-keys/api-key-access.spec.ts` | core/auth | 16 | decideApiKeyAccess — an ADMIN key · decideApiKeyAccess — a STOREFRONT key · readRouteRequirements —… |
 | `apps/api/src/core/auth/api-keys/api-key-auth.service.spec.ts` | core/auth | 20 | ApiKeyAuthService.authenticate · a key never exceeds its owner · refusals — each a 401 that says wh… |
 | `apps/api/src/core/auth/api-keys/api-keys.service.spec.ts` | core/auth | 39 | ApiKeysService · create · refuses what a key may never carry · listMine — what each key can do righ… |
-| `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 22 | AuthService.login — enforceSso (WO-165.6) · AuthService.login — per-account attempt bucket (WO-206.… |
+| `apps/api/src/core/auth/auth.service.spec.ts` | core/auth | 26 | AuthService.login — enforceSso (WO-165.6) · AuthService.login — per-account attempt bucket (WO-206.… |
 | `apps/api/src/core/auth/guards.spec.ts` | core/auth | 19 | JwtAuthGuard · a session JWT — the path is unchanged · a personal API key · PermissionsGuard · a se… |
+| `apps/api/src/core/auth/login-identifier.spec.ts` | core/auth | 3 | login identifiers as the rate limiter and the audit trail see them (doc 206 §1.2) |
+| `apps/api/src/core/auth/login-throttle.service.spec.ts` | core/auth | 9 | LoginThrottleService (doc 206 §1.2) |
 | `apps/api/src/core/auth/ownership.guard.spec.ts` | core/auth | 5 | assertCanManage |
 | `apps/api/src/core/auth/password.util.spec.ts` | core/auth | 7 | password hashing (126-pluggable-cryptography.md, WO-126.1) |
 | `apps/api/src/core/auth/permissions.service.spec.ts` | core/auth | 14 | PermissionsResolverService.resolveForUser · explicit OrgUnitGrant keys (doc 21) · usersWithPermissi… |
 | `apps/api/src/core/auth/providers/oidc.provider.spec.ts` | core/auth | 10 | OidcProvider · handleCallback · trusting the discovery document · buildAuthorizationUrl · identityF… |
+| `apps/api/src/core/auth/rate-limit-audit.service.spec.ts` | core/auth | 5 | RateLimitAuditService — auth.rate_limited, one row per throttling episode (doc 206 §1.2) |
 | `apps/api/src/core/auth/roles.service.spec.ts` | core/auth | 22 | RolesService · create · toxic-pair refusal (doc 21) · update / delete — the locked-permission orpha… |
 | `apps/api/src/core/auth/scope.guard.spec.ts` | core/auth | 24 | resolveScope · assertCanManageAtScope · scopeFilterFor · orgUnitScopeFilterFor |
 | `apps/api/src/core/auth/sso.controller.spec.ts` | core/auth | 8 | SsoController · start · callback · session |
 | `apps/api/src/core/auth/sso.service.spec.ts` | core/auth | 34 | SsoService · the domain gate (§2) · CSRF · resolve-or-provision (§3) · a suspended or missing conne… |
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
+| `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 3 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 24 | validateEnv · REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2) |
 | `apps/api/src/core/events/event-contracts.spec.ts` | core/events | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
@@ -96,6 +101,7 @@ regression or an N+1.
 | `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 30 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
 | `apps/api/src/core/notifications/notifications.service.spec.ts` | core/notifications | 3 | NotificationsService |
 | `apps/api/src/core/prisma/enums.spec.ts` | core/prisma | 0 | shared enums stay in sync with the Prisma schema |
+| `apps/api/src/core/redis/redis.service.spec.ts` | core/redis | 6 | RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum) |
 | `apps/api/src/core/replication/node-credential.service.spec.ts` | core/replication | 5 | NodeCredentialService — WO-20.2 |
 | `apps/api/src/core/replication/policy-quarantine.service.spec.ts` | core/replication | 4 | PolicyQuarantineService — WO-23.3c/e, RETAIL-ERP.md R9, ADR-023 · resolve |
 | `apps/api/src/core/replication/replication-apply.service.spec.ts` | core/replication | 3 | ReplicationApplyService — WO-20.1 |
@@ -112,6 +118,8 @@ regression or an N+1.
 | `apps/api/src/core/slo/slo-recorder.service.spec.ts` | core/slo | 8 | SloRecorderService — WO-38.3 · time() · recordReplicationTick() · computeBudget() |
 | `apps/api/src/core/storage/files.controller.spec.ts` | core/storage | 3 | FilesController |
 | `apps/api/src/core/storage/storage.service.spec.ts` | core/storage | 12 | StorageService.putImage · StorageService.putDocument · StorageService — 38-resilience-engineering.m… |
+| `apps/api/src/core/throttling/app-throttler.guard.spec.ts` | core/throttling | 5 | AppThrottlerGuard — per-IP 429s on credential routes become auth.rate_limited (doc 206 §1.2) |
+| `apps/api/src/core/throttling/shared-throttler-storage.spec.ts` | core/throttling | 8 | SharedThrottlerStorage |
 | `apps/api/src/core/time/metric-window.spec.ts` | core/time | 18 | weekKeyOf · monthKeyOf · bucketKeyOf · rollUpDays · previousWindow |
 | `apps/api/src/core/time/shop-time.spec.ts` | core/time | 19 | shopDayKey · startOfShopDay · startOfShopDaysAgo · shopDayKeys · shopDayExpr · shopLocalHour · asse… |
 | `apps/api/src/core/versioning/api-version-policy.service.spec.ts` | core/versioning | 5 | ApiVersionPolicyService — WO-37.1 |
@@ -374,6 +382,7 @@ regression or an N+1.
 | `packages/shared/src/entities/product.spec.ts` | packages | 22 | getProductName / getProductDescription · getProductPrimaryImage · getVariantDisplayLabel · getVaria… |
 | `packages/shared/src/entities/supplier.spec.ts` | packages | 7 | getSupplierContactLabel · getSupplierFormattedLocation · getSupplierLeadTimeDays · getSupplierName |
 | `packages/shared/src/fabric-estimate.spec.ts` | packages | 10 | computeFabricEstimate |
+| `packages/shared/src/http-client.spec.ts` | packages | 5 | singleFlight — at most one refresh in flight per tab (206-rate-limiting-caching-compression-hardeni… |
 | `packages/shared/src/markdown-suggestion.spec.ts` | packages | 10 | computeMarkdownSuggestion |
 | `packages/shared/src/measurements/schema.spec.ts` | packages | 21 | default garment definitions · validateMeasurements · convertMeasurement · kameez definition |
 | `packages/shared/src/measurements/size-recommendation.spec.ts` | packages | 11 | recommendSize |

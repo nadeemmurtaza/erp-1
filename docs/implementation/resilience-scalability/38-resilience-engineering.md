@@ -161,6 +161,7 @@ already committed to the answer, made queryable in one place:
 | Dependency down | What still works | What degrades | Source |
 |---|---|---|---|
 | Postgres (primary) | Nothing writes; `health.controller.ts`'s `/health/ready` fails, load balancer stops routing | Total — this is the one dependency with no degraded mode, by design (it is the single source of truth) | `core/health` |
+| Redis (the API's dedicated rate-limit instance, added 2026-09-28) | Every route on the module-wide 300/60 s limit — browsing, checkout, POS sale sync, webhooks — counted per process instead of shared; existing sessions and token refresh (refresh never touches Redis) | Password sign-in and every route that declares its own `@Throttle` answer 503 — fail closed, never an unlimited guess; `/health/ready` reports `checks.redis.ok: false`, liveness unaffected; recovery is automatic within 2 s of Redis returning | `core/redis`, `core/throttling`, doc 206 §1 |
 | `AiProvider` | Every non-AI feature, unaffected | All AI features (search ranking, RAG — doc 35, WhatsApp assistant) fall back to their stated non-AI path | `09-ai-layer.md` |
 | `VectorStore`/`pgvector` index | Keyword search, catalogue browsing | Semantic/RAG retrieval only | doc 35 |
 | `PaymentProvider` (Easypaisa/JazzCash) | Cash tender at POS, other configured providers | The specific down provider's checkout option, hidden or shown as unavailable | `payments` module |

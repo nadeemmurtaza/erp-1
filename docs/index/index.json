@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2463,
-    "lines": 387039,
+    "files": 2482,
+    "lines": 389215,
     "routes": 877,
     "controllers": 161,
     "models": 314,
     "enums": 145,
-    "migrations": 118,
+    "migrations": 119,
     "events": 69,
     "permissions": 130,
     "screens": 277,
     "crons": 30,
-    "specs": 341,
+    "specs": 350,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1165,
-      "lines": 155597,
-      "bytes": 6074986,
+      "files": 1183,
+      "lines": 157483,
+      "bytes": 6158417,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -51,20 +51,20 @@
     },
     "web": {
       "files": 428,
-      "lines": 72516,
-      "bytes": 2625790,
+      "lines": 72517,
+      "bytes": 2626037,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 435,
-      "lines": 88162,
-      "bytes": 5321568,
+      "lines": 88361,
+      "bytes": 5335815,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 80,
-      "lines": 8791,
-      "bytes": 316800,
+      "files": 81,
+      "lines": 8881,
+      "bytes": 320823,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1534,6 +1534,10 @@
         "apps/api/src/core/auth/guards.ts",
         "apps/api/src/core/auth/identity-provider.ts",
         "apps/api/src/core/auth/jwt.strategy.ts",
+        "apps/api/src/core/auth/login-identifier.spec.ts",
+        "apps/api/src/core/auth/login-identifier.ts",
+        "apps/api/src/core/auth/login-throttle.service.spec.ts",
+        "apps/api/src/core/auth/login-throttle.service.ts",
         "apps/api/src/core/auth/ownership.guard.spec.ts",
         "apps/api/src/core/auth/ownership.guard.ts",
         "apps/api/src/core/auth/password.util.spec.ts",
@@ -1542,6 +1546,8 @@
         "apps/api/src/core/auth/permissions.service.ts",
         "apps/api/src/core/auth/providers/oidc.provider.spec.ts",
         "apps/api/src/core/auth/providers/oidc.provider.ts",
+        "apps/api/src/core/auth/rate-limit-audit.service.spec.ts",
+        "apps/api/src/core/auth/rate-limit-audit.service.ts",
         "apps/api/src/core/auth/roles.controller.ts",
         "apps/api/src/core/auth/roles.service.spec.ts",
         "apps/api/src/core/auth/roles.service.ts",
@@ -1570,6 +1576,7 @@
         "apps/api/src/core/common/cost-fields.spec.ts",
         "apps/api/src/core/common/cost-fields.ts",
         "apps/api/src/core/common/dto/pagination.dto.ts",
+        "apps/api/src/core/common/filters/all-exceptions.filter.spec.ts",
         "apps/api/src/core/common/filters/all-exceptions.filter.ts",
         "apps/api/src/core/common/sales-revenue.ts"
       ],
@@ -1726,6 +1733,16 @@
       "page": "docs/index/core/prisma.md"
     },
     {
+      "name": "redis",
+      "files": [
+        "apps/api/src/core/redis/redis.keyspaces.ts",
+        "apps/api/src/core/redis/redis.module.ts",
+        "apps/api/src/core/redis/redis.service.spec.ts",
+        "apps/api/src/core/redis/redis.service.ts"
+      ],
+      "page": "docs/index/core/redis.md"
+    },
+    {
       "name": "replication",
       "files": [
         "apps/api/src/core/replication/dto/push-replication.dto.ts",
@@ -1808,6 +1825,17 @@
         "apps/api/src/core/storage/storage.service.ts"
       ],
       "page": "docs/index/core/storage.md"
+    },
+    {
+      "name": "throttling",
+      "files": [
+        "apps/api/src/core/throttling/app-throttler.guard.spec.ts",
+        "apps/api/src/core/throttling/app-throttler.guard.ts",
+        "apps/api/src/core/throttling/global-throttle.ts",
+        "apps/api/src/core/throttling/shared-throttler-storage.spec.ts",
+        "apps/api/src/core/throttling/shared-throttler-storage.ts"
+      ],
+      "page": "docs/index/core/throttling.md"
     },
     {
       "name": "time",
@@ -18223,7 +18251,7 @@
       "name": "user.registered",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:131"
+        "apps/api/src/core/auth/auth.service.ts:153"
       ],
       "subscribers": [
         "apps/api/src/modules/users/notification.subscriber.ts:21 onRegistered()"
@@ -18234,8 +18262,8 @@
       "name": "user.password_changed",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:302",
-        "apps/api/src/core/auth/auth.service.ts:357"
+        "apps/api/src/core/auth/auth.service.ts:329",
+        "apps/api/src/core/auth/auth.service.ts:384"
       ],
       "subscribers": [
         "apps/api/src/modules/users/security-notification.subscriber.ts:36 onPasswordChanged()"
@@ -18246,7 +18274,7 @@
       "name": "user.password_reset_requested",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:327"
+        "apps/api/src/core/auth/auth.service.ts:354"
       ],
       "subscribers": [
         "apps/api/src/modules/users/security-notification.subscriber.ts:58 onPasswordResetRequested()"
@@ -18257,7 +18285,7 @@
       "name": "user.email_verification_requested",
       "doc": "",
       "publishers": [
-        "apps/api/src/core/auth/auth.service.ts:378"
+        "apps/api/src/core/auth/auth.service.ts:405"
       ],
       "subscribers": [
         "apps/api/src/modules/users/security-notification.subscriber.ts:81 onEmailVerificationRequested()"
@@ -50052,39 +50080,27 @@
       "tables": [
         "RequestOutcome"
       ]
+    },
+    {
+      "folder": "20260928100000_wo206_refresh_token_reuse_detection",
+      "file": "apps/api/prisma/schema/migrations/20260928100000_wo206_refresh_token_reuse_detection/migration.sql",
+      "date": "2026-09-28",
+      "slug": "wo206_refresh_token_reuse_detection",
+      "statements": 10,
+      "kinds": [
+        "ALTER TABLE",
+        "UPDATE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "RefreshToken"
+      ]
     }
   ],
   "schemaMigrationDrift": {
     "missingTables": [],
-    "missingColumns": [
-      {
-        "model": "RefreshToken",
-        "table": "RefreshToken",
-        "field": "familyId",
-        "column": "familyId",
-        "type": "String",
-        "file": "apps/api/prisma/schema/core.prisma",
-        "line": 192
-      },
-      {
-        "model": "RefreshToken",
-        "table": "RefreshToken",
-        "field": "rotatedAt",
-        "column": "rotatedAt",
-        "type": "DateTime?",
-        "file": "apps/api/prisma/schema/core.prisma",
-        "line": 192
-      },
-      {
-        "model": "RefreshToken",
-        "table": "RefreshToken",
-        "field": "replacedById",
-        "column": "replacedById",
-        "type": "String?",
-        "file": "apps/api/prisma/schema/core.prisma",
-        "line": 192
-      }
-    ],
+    "missingColumns": [],
     "missingEnums": [],
     "missingEnumValues": [
       {
@@ -53420,11 +53436,12 @@
       "file": "apps/api/src/core/auth/auth.service.spec.ts",
       "module": "core/auth",
       "kind": "unit test",
-      "cases": 22,
+      "cases": 26,
       "describes": [
         "AuthService.login — enforceSso (WO-165.6)",
         "AuthService.login — per-account attempt bucket (WO-206.2)",
         "AuthService.refresh — rotation, grace window, reuse detection (WO-206.3)",
+        "singleUse — the single sign-on handoff redeems once (161-sso-identity-federation.md)",
         "parseDuration"
       ]
     },
@@ -53441,6 +53458,24 @@
         "a session — unchanged",
         "an ADMIN key",
         "a STOREFRONT key"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/auth/login-identifier.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "login identifiers as the rate limiter and the audit trail see them (doc 206 §1.2)"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/auth/login-throttle.service.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "LoginThrottleService (doc 206 §1.2)"
       ]
     },
     {
@@ -53483,6 +53518,15 @@
         "trusting the discovery document",
         "buildAuthorizationUrl",
         "identityFromClaims"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/auth/rate-limit-audit.service.spec.ts",
+      "module": "core/auth",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "RateLimitAuditService — auth.rate_limited, one row per throttling episode (doc 206 §1.2)"
       ]
     },
     {
@@ -53564,6 +53608,15 @@
       "describes": [
         "stripCodRiskFields",
         "stripCodRiskFieldsList"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/common/filters/all-exceptions.filter.spec.ts",
+      "module": "core/common",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2)"
       ]
     },
     {
@@ -53720,6 +53773,15 @@
       "cases": 0,
       "describes": [
         "shared enums stay in sync with the Prisma schema"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/redis/redis.service.spec.ts",
+      "module": "core/redis",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum)"
       ]
     },
     {
@@ -53880,6 +53942,24 @@
         "StorageService.putImage",
         "StorageService.putDocument",
         "StorageService — 38-resilience-engineering.md WO-38.1, degradation matrix row "
+      ]
+    },
+    {
+      "file": "apps/api/src/core/throttling/app-throttler.guard.spec.ts",
+      "module": "core/throttling",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "AppThrottlerGuard — per-IP 429s on credential routes become auth.rate_limited (doc 206 §1.2)"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/throttling/shared-throttler-storage.spec.ts",
+      "module": "core/throttling",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "SharedThrottlerStorage"
       ]
     },
     {
@@ -56204,6 +56284,20 @@
       ]
     },
     {
+      "file": "apps/api/test/auth-throttle.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 20,
+      "describes": [
+        "Sign-in rate limiting and refresh-token reuse detection (e2e)",
+        "the per-account bucket, on a real Redis (WO-206.2)",
+        "a distributed attack on one account, over HTTP (doc 206 acceptance)",
+        "Redis unreachable: sign-in fails closed (doc 206 §1.2)",
+        "two API replicas share one rate-limit counter (WO-206.1, doc 206 §1.1)",
+        "refresh-token rotation against real Postgres (WO-206.3)"
+      ]
+    },
+    {
       "file": "apps/api/test/auth.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
@@ -57003,6 +57097,16 @@
       "cases": 10,
       "describes": [
         "computeFabricEstimate"
+      ]
+    },
+    {
+      "file": "packages/shared/src/http-client.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "singleFlight — at most one refresh in flight per tab (206-rate-limiting-caching-compression-hardening.md §2.2, WO-206.4)",
+        "requestWithRefresh + singleFlight — five simultaneous 401s send one /auth/refresh"
       ]
     },
     {
@@ -58906,6 +59010,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260928100000_wo206_refresh_token_reuse_detection/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 40,
+      "bytes": 2046,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -59863,8 +59976,8 @@
       "path": "apps/api/src/core/auth/auth.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 450,
-      "bytes": 18346,
+      "lines": 516,
+      "bytes": 21507,
       "doc": "",
       "symbols": []
     },
@@ -59872,8 +59985,8 @@
       "path": "apps/api/src/core/auth/auth.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 671,
-      "bytes": 25148,
+      "lines": 712,
+      "bytes": 27142,
       "doc": "",
       "symbols": [
         {
@@ -59887,39 +60000,49 @@
           "line": 31
         },
         {
+          "name": "REFRESH_FAMILY_LOCK_NAMESPACE",
+          "kind": "const",
+          "line": 44
+        },
+        {
           "name": "SessionRequestContext",
           "kind": "interface",
-          "line": 39
+          "line": 49
+        },
+        {
+          "name": "RefreshOptions",
+          "kind": "interface",
+          "line": 54
         },
         {
           "name": "AuthTokens",
           "kind": "interface",
-          "line": 46
+          "line": 68
         },
         {
           "name": "AuthResult",
           "kind": "interface",
-          "line": 52
+          "line": 74
         },
         {
           "name": "RegisterInput",
           "kind": "interface",
-          "line": 56
+          "line": 78
         },
         {
           "name": "UpdateProfileInput",
           "kind": "interface",
-          "line": 64
+          "line": 86
         },
         {
           "name": "AuthService",
           "kind": "class",
-          "line": 73
+          "line": 95
         },
         {
           "name": "parseDuration",
           "kind": "function",
-          "line": 658
+          "line": 699
         }
       ]
     },
@@ -60193,6 +60316,94 @@
       ]
     },
     {
+      "path": "apps/api/src/core/auth/login-identifier.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 39,
+      "bytes": 1982,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/login-identifier.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 38,
+      "bytes": 1942,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "normalizeLoginIdentifier",
+          "kind": "function",
+          "line": 23
+        },
+        {
+          "name": "hashLoginIdentifier",
+          "kind": "function",
+          "line": 28
+        },
+        {
+          "name": "loginIdentifierHash",
+          "kind": "function",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/login-throttle.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 111,
+      "bytes": 4549,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/login-throttle.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 168,
+      "bytes": 6483,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LOGIN_ATTEMPT_BUCKET",
+          "kind": "const",
+          "line": 23
+        },
+        {
+          "name": "LOGIN_UNAVAILABLE_MESSAGE",
+          "kind": "const",
+          "line": 25
+        },
+        {
+          "name": "CONSUME_LOGIN_TOKEN_LUA",
+          "kind": "const",
+          "line": 40
+        },
+        {
+          "name": "LoginRateLimitedException",
+          "kind": "class",
+          "line": 74
+        },
+        {
+          "name": "LoginAttemptContext",
+          "kind": "interface",
+          "line": 83
+        },
+        {
+          "name": "LoginThrottleService",
+          "kind": "class",
+          "line": 100
+        },
+        {
+          "name": "loginBucketKey",
+          "kind": "function",
+          "line": 165
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/auth/ownership.guard.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -60325,6 +60536,50 @@
           "name": "identityFromClaims",
           "kind": "function",
           "line": 161
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/auth/rate-limit-audit.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 76,
+      "bytes": 2774,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/auth/rate-limit-audit.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 85,
+      "bytes": 3690,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RATE_LIMITED_AUDIT_ACTION",
+          "kind": "const",
+          "line": 5
+        },
+        {
+          "name": "AUTH_IDENTIFIER_AUDIT_ENTITY",
+          "kind": "const",
+          "line": 7
+        },
+        {
+          "name": "RateLimitLayer",
+          "kind": "type",
+          "line": 10
+        },
+        {
+          "name": "RateLimitRefusal",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "RateLimitAuditService",
+          "kind": "class",
+          "line": 49
         }
       ]
     },
@@ -60465,8 +60720,8 @@
       "path": "apps/api/src/core/auth/sso.controller.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 221,
-      "bytes": 9796,
+      "lines": 223,
+      "bytes": 9978,
       "doc": "",
       "symbols": []
     },
@@ -60474,8 +60729,8 @@
       "path": "apps/api/src/core/auth/sso.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 227,
-      "bytes": 8971,
+      "lines": 230,
+      "bytes": 9192,
       "doc": "",
       "symbols": [
         {
@@ -60701,6 +60956,15 @@
           "line": 59
         }
       ]
+    },
+    {
+      "path": "apps/api/src/core/common/filters/all-exceptions.filter.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 59,
+      "bytes": 2631,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "apps/api/src/core/common/filters/all-exceptions.filter.ts",
@@ -62612,6 +62876,85 @@
       ]
     },
     {
+      "path": "apps/api/src/core/redis/redis.keyspaces.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 28,
+      "bytes": 1413,
+      "doc": "The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardening.md §1.2, §5).",
+      "symbols": [
+        {
+          "name": "REDIS_KEYSPACES",
+          "kind": "const",
+          "line": 16
+        },
+        {
+          "name": "RedisKeyspace",
+          "kind": "type",
+          "line": 27
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/redis/redis.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 21,
+      "bytes": 727,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RedisModule",
+          "kind": "class",
+          "line": 20
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/redis/redis.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 79,
+      "bytes": 3316,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/redis/redis.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 202,
+      "bytes": 7808,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "REDIS_CLIENT_OPTIONS",
+          "kind": "const",
+          "line": 14
+        },
+        {
+          "name": "redisReconnectDelayMs",
+          "kind": "function",
+          "line": 52
+        },
+        {
+          "name": "REDIS_BOOT_READY_WAIT_MS",
+          "kind": "const",
+          "line": 64
+        },
+        {
+          "name": "RedisPing",
+          "kind": "interface",
+          "line": 66
+        },
+        {
+          "name": "RedisService",
+          "kind": "class",
+          "line": 82
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/replication/dto/push-replication.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -63387,6 +63730,79 @@
           "name": "StorageService",
           "kind": "class",
           "line": 28
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/throttling/app-throttler.guard.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 96,
+      "bytes": 4487,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/throttling/app-throttler.guard.ts",
+      "area": "api",
+      "kind": "guard",
+      "lines": 78,
+      "bytes": 3277,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AppThrottlerGuard",
+          "kind": "class",
+          "line": 29
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/throttling/global-throttle.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 14,
+      "bytes": 763,
+      "doc": "The module-wide rate limit every route gets unless it declares its own `@Throttle`: 300 requests per 60 s per client IP — a coarse abuse ceiling, not a credential control (credential routes declare their own, far tighte…",
+      "symbols": [
+        {
+          "name": "GLOBAL_THROTTLE",
+          "kind": "const",
+          "line": 13
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/throttling/shared-throttler-storage.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 102,
+      "bytes": 4889,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/throttling/shared-throttler-storage.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 107,
+      "bytes": 4790,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ModuleThrottle",
+          "kind": "interface",
+          "line": 8
+        },
+        {
+          "name": "RATE_LIMIT_STORE_UNAVAILABLE_MESSAGE",
+          "kind": "const",
+          "line": 14
+        },
+        {
+          "name": "SharedThrottlerStorage",
+          "kind": "class",
+          "line": 47
         }
       ]
     },
@@ -76482,6 +76898,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/test/auth-throttle.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 431,
+      "bytes": 20306,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/test/auth.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
@@ -83198,14 +83623,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/platform-resilience/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 213,
-      "bytes": 9863,
+      "lines": 214,
+      "bytes": 10110,
       "doc": "",
       "symbols": [
         {
           "name": "PlatformResiliencePage",
           "kind": "default",
-          "line": 77
+          "line": 78
         }
       ]
     },
@@ -91446,8 +91871,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 9246,
-      "bytes": 542861,
+      "lines": 9295,
+      "bytes": 546218,
       "doc": "",
       "symbols": []
     },
@@ -93192,8 +93617,8 @@
       "path": "docs/implementation/resilience-scalability/206-rate-limiting-caching-compression-hardening.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 202,
-      "bytes": 26040,
+      "lines": 351,
+      "bytes": 36362,
       "doc": "",
       "symbols": []
     },
@@ -93246,8 +93671,8 @@
       "path": "docs/implementation/resilience-scalability/38-resilience-engineering.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 379,
-      "bytes": 24241,
+      "lines": 380,
+      "bytes": 24809,
       "doc": "",
       "symbols": []
     },
@@ -94745,6 +95170,15 @@
           "line": 42
         }
       ]
+    },
+    {
+      "path": "packages/shared/src/http-client.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 90,
+      "bytes": 4023,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "packages/shared/src/http-client.ts",

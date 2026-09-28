@@ -138,8 +138,11 @@ export class SsoController {
     }
 
     // Rotates the just-issued refresh token and re-checks the account is
-    // still active — the ordinary refresh path, nothing SSO-specific.
-    const result = await this.auth.refresh(handoff.refreshToken);
+    // still active — the ordinary refresh path, nothing SSO-specific, except
+    // that the handoff redeems once: no 10-second grace replay (doc 206 §2.2
+    // scopes that to POST /auth/refresh), so a second redemption is refused
+    // even when it races the first.
+    const result = await this.auth.refresh(handoff.refreshToken, { ip: request.ip }, { singleUse: true });
     setRefreshCookie(response, result.refreshToken, this.config);
     return result;
   }

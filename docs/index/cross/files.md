@@ -3,19 +3,19 @@
 
 # Every tracked file
 
-All **2,463** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,482** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,165 | 155,597 | [files/api.md](../files/api.md) |
-| apps/web | 428 | 72,516 | [files/web.md](../files/web.md) |
+| apps/api | 1,183 | 157,483 | [files/api.md](../files/api.md) |
+| apps/web | 428 | 72,517 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,668 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 80 | 8,791 | [files/packages.md](../files/packages.md) |
-| docs/* | 435 | 88,162 | [files/docs.md](../files/docs.md) |
+| packages/* | 81 | 8,881 | [files/packages.md](../files/packages.md) |
+| docs/* | 435 | 88,361 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 60 | 30,938 | [files/infra.md](../files/infra.md) |
 | repository root files | 213 | 21,461 | [files/root.md](../files/root.md) |
 
@@ -29,15 +29,15 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 460 |
-| unit test | 321 |
+| unit test | 329 |
 | page | 228 |
-| service | 208 |
-| module | 173 |
+| service | 211 |
+| module | 177 |
 | controller | 151 |
 | dto | 135 |
 | component | 121 |
-| migration | 118 |
-| nest module | 104 |
+| migration | 119 |
+| nest module | 105 |
 | prisma schema | 65 |
 | script | 42 |
 | event subscriber | 36 |
@@ -46,13 +46,13 @@ name a new file: the convention is what makes it findable.
 | react | 29 |
 | asset | 26 |
 | utility | 25 |
-| e2e test | 20 |
+| e2e test | 21 |
 | file | 13 |
 | yaml | 12 |
 | registry | 12 |
 | config | 11 |
 | loading | 11 |
-| guard | 8 |
+| guard | 9 |
 | constants | 7 |
 | layout | 6 |
 | hook | 5 |

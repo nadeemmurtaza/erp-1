@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 80 tracked files in `packages/*`, by directory.
+All 81 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -50,7 +50,7 @@ All 80 tracked files in `packages/*`, by directory.
 | `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (41)
+### `packages/shared/src` (42)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -70,6 +70,7 @@ All 80 tracked files in `packages/*`, by directory.
 | `enums.ts` | module | 121 | Enum values mirrored from the Prisma schema. |
 | `fabric-estimate.spec.ts` | unit test | 79 | ((40 + 3) * 2 + (23 + 2)) / 36 = (86 + 25) / 36 = 3.0833... |
 | `fabric-estimate.ts` | module | 95 | Fabric yardage estimator, per the tailor's Tech-Pack benchmarks. |
+| `http-client.spec.ts` | unit test | 90 |  |
 | `http-client.ts` | module | 227 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
 | `index.ts` | module | 42 |  |

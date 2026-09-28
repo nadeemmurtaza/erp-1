@@ -30,6 +30,10 @@ env:
   MODULES: catalog,measurements,cart,orders,payments,stitching,crm,analytics,reports
   PAYMENT_PROVIDERS: cod,bank_transfer
   NOTIFICATION_CHANNELS: log
+  # The API's dedicated rate-limit Redis (the `redis` service below). Sign-in
+  # fails closed without it, and both jobs sign in — the e2e suites and the
+  # overflow sweep alike (206-rate-limiting-caching-compression-hardening.md).
+  REDIS_URL: redis://localhost:6379
 
 jobs:
   verify:
@@ -45,6 +49,14 @@ jobs:
         ports: ['5432:5432']
         options: >-
           --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
@@ -112,6 +124,14 @@ jobs:
         ports: ['5432:5432']
         options: >-
           --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,165 tracked files in `apps/api`, by directory.
+All 1,183 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -758,6 +758,12 @@ All 1,165 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 18 |  |
 
+### `apps/api/prisma/schema/migrations/20260928100000_wo206_refresh_token_reuse_detection` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 40 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -812,35 +818,41 @@ All 1,165 tracked files in `apps/api`, by directory.
 | `audit.module.ts` | nest module | 10 |  |
 | `audit.service.ts` | service | 69 |  |
 
-### `apps/api/src/core/auth` (27)
+### `apps/api/src/core/auth` (33)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `auth.constants.ts` | module | 116 |  |
 | `auth.controller.ts` | controller | 229 |  |
 | `auth.module.ts` | nest module | 67 |  |
-| `auth.service.spec.ts` | unit test | 450 |  |
-| `auth.service.ts` | service | 671 |  |
+| `auth.service.spec.ts` | unit test | 516 |  |
+| `auth.service.ts` | service | 712 |  |
 | `bearer-token.ts` | module | 31 |  |
 | `decorators.ts` | module | 91 |  |
 | `guards.spec.ts` | unit test | 212 |  |
 | `guards.ts` | module | 167 |  |
 | `identity-provider.ts` | module | 91 |  |
 | `jwt.strategy.ts` | auth strategy | 44 |  |
+| `login-identifier.spec.ts` | unit test | 39 |  |
+| `login-identifier.ts` | module | 38 |  |
+| `login-throttle.service.spec.ts` | unit test | 111 |  |
+| `login-throttle.service.ts` | service | 168 |  |
 | `ownership.guard.spec.ts` | unit test | 49 |  |
 | `ownership.guard.ts` | guard | 24 |  |
 | `password.util.spec.ts` | unit test | 80 |  |
 | `password.util.ts` | module | 89 |  |
 | `permissions.service.spec.ts` | unit test | 175 |  |
 | `permissions.service.ts` | service | 124 |  |
+| `rate-limit-audit.service.spec.ts` | unit test | 76 |  |
+| `rate-limit-audit.service.ts` | service | 85 |  |
 | `roles.controller.ts` | controller | 44 |  |
 | `roles.service.spec.ts` | unit test | 277 |  |
 | `roles.service.ts` | service | 332 |  |
 | `scope.guard.spec.ts` | unit test | 195 |  |
 | `scope.guard.ts` | guard | 170 |  |
 | `sso-admin.controller.ts` | controller | 82 |  |
-| `sso.controller.spec.ts` | unit test | 221 |  |
-| `sso.controller.ts` | controller | 227 |  |
+| `sso.controller.spec.ts` | unit test | 223 |  |
+| `sso.controller.ts` | controller | 230 |  |
 | `sso.service.spec.ts` | unit test | 656 |  |
 | `sso.service.ts` | service | 869 |  |
 
@@ -900,10 +912,11 @@ All 1,165 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `pagination.dto.ts` | dto | 77 |  |
 
-### `apps/api/src/core/common/filters` (1)
+### `apps/api/src/core/common/filters` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `all-exceptions.filter.spec.ts` | unit test | 59 |  |
 | `all-exceptions.filter.ts` | module | 152 |  |
 
 ### `apps/api/src/core/config` (6)
@@ -1054,6 +1067,15 @@ All 1,165 tracked files in `apps/api`, by directory.
 | `prisma.module.ts` | nest module | 10 |  |
 | `prisma.service.ts` | service | 46 |  |
 
+### `apps/api/src/core/redis` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `redis.keyspaces.ts` | module | 28 | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardenin… |
+| `redis.module.ts` | nest module | 21 |  |
+| `redis.service.spec.ts` | unit test | 79 |  |
+| `redis.service.ts` | service | 202 |  |
+
 ### `apps/api/src/core/replication` (20)
 
 | File | Kind | Lines | Purpose |
@@ -1136,6 +1158,16 @@ All 1,165 tracked files in `apps/api`, by directory.
 | `storage.module.ts` | nest module | 14 |  |
 | `storage.service.spec.ts` | unit test | 224 |  |
 | `storage.service.ts` | service | 143 |  |
+
+### `apps/api/src/core/throttling` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `app-throttler.guard.spec.ts` | unit test | 96 |  |
+| `app-throttler.guard.ts` | guard | 78 |  |
+| `global-throttle.ts` | module | 14 | The module-wide rate limit every route gets unless it declares its own `@Throttle`: 300 requests per 60 s per client IP… |
+| `shared-throttler-storage.spec.ts` | unit test | 102 |  |
+| `shared-throttler-storage.ts` | module | 107 |  |
 
 ### `apps/api/src/core/time` (4)
 
@@ -2570,12 +2602,13 @@ All 1,165 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `wishlist.dto.ts` | dto | 30 |  |
 
-### `apps/api/test` (26)
+### `apps/api/test` (27)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
 | `api-keys.e2e-spec.ts` | e2e test | 362 |  |
+| `auth-throttle.e2e-spec.ts` | e2e test | 431 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |
 | `backfill-product-options.spec.ts` | unit test | 114 |  |
 | `cart.e2e-spec.ts` | e2e test | 800 |  |

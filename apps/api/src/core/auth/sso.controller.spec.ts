@@ -198,7 +198,9 @@ describe('SsoController', () => {
         controller.session(request({ [SSO_HANDOFF_COOKIE]: sealed({ refreshToken: 'from-callback' }) }), res as unknown as Response),
       ).resolves.toBe(result);
 
-      expect(auth.refresh).toHaveBeenCalledWith('from-callback');
+      // Single use: no grace-window replay for a handoff. The request's
+      // address rides along for the refresh path's own audit trail.
+      expect(auth.refresh).toHaveBeenCalledWith('from-callback', { ip: undefined }, { singleUse: true });
       expect(res.cleared).toContain(SSO_HANDOFF_COOKIE);
       expect(res.cookies[REFRESH_COOKIE].value).toBe('rotated');
       expect(res.cookies[REFRESH_COOKIE].options).toEqual(expect.objectContaining({ httpOnly: true, path: '/' }));

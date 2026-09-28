@@ -16,6 +16,7 @@ import { IntentRouterModule } from './intent/intent-router.module';
 import { MetricsModule } from './metrics/metrics.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { RedisModule } from './redis/redis.module';
 import { ReplicationModule } from './replication/replication.module';
 import { ResilienceModule } from './resilience/resilience.module';
 import { SettingsModule } from './settings/settings.module';
@@ -34,6 +35,7 @@ import { VersioningModule } from './versioning/versioning.module';
   imports: [
     AppConfigModule,
     PrismaModule,
+    RedisModule,
     ScheduleModule.forRoot(),
     EventsModule,
     ExtensionPointsModule,

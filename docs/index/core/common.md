@@ -3,7 +3,7 @@
 
 # Core: `common`
 
-Shared platform — available to every module, part of no feature · 7 files
+Shared platform — available to every module, part of no feature · 8 files
 
 
 > FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control account (Accounts Receivable or Accounts Payable), so it is unit-testable without a database.
@@ -13,7 +13,7 @@ Source: `apps/api/src/core/common/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (7 · 539 lines)
+## Files (8 · 598 lines)
 
 All paths relative to `apps/api/src/core/common`.
 
@@ -24,6 +24,7 @@ All paths relative to `apps/api/src/core/common`.
 | `cost-fields.spec.ts` | unit test | 44 | — |  |
 | `cost-fields.ts` | module | 98 | 7 | The permission that gates visibility of cost / margin data. |
 | `pagination.dto.ts` | dto | 77 | 4 |  |
+| `all-exceptions.filter.spec.ts` | unit test | 59 | — |  |
 | `all-exceptions.filter.ts` | module | 152 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
 | `sales-revenue.ts` | module | 17 | 1 | The one place "does this order count as revenue" is decided. |
 
@@ -61,12 +62,13 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (2)
+## Tests (3)
 
 | Spec | Cases | Covers |
 |---|---|---|
 | `aging.spec.ts` | 7 | ageMovements |
 | `cost-fields.spec.ts` | 3 | stripCodRiskFields · stripCodRiskFieldsList |
+| `all-exceptions.filter.spec.ts` | 3 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) |
 
 
 ## Every export in this unit

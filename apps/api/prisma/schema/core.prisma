@@ -198,11 +198,28 @@ model RefreshToken {
   userAgent String?
   ip        String?
   createdAt DateTime  @default(now())
+  /// Every token descended from one sign-in shares its familyId: a fresh
+  /// value at login, inherited on every rotation. Reuse of a rotated token
+  /// outside the grace window revokes the whole family at once
+  /// (206-rate-limiting-caching-compression-hardening.md §2.2). Tokens issued
+  /// before WO-206.3 were backfilled with their own id — each its own family.
+  familyId     String
+  /// When this token was exchanged for its successor. Null for a token that
+  /// was never rotated — live, or revoked some other way (logout, password
+  /// change, deactivation), which is never treated as reuse.
+  rotatedAt    DateTime?
+  /// The token that superseded this one. Set in the same transaction as
+  /// rotatedAt, so a replay inside the grace window can hand back the very
+  /// same successor instead of minting a second one.
+  replacedById String?       @unique
+  replacedBy   RefreshToken? @relation("RefreshTokenRotation", fields: [replacedById], references: [id], onDelete: SetNull)
+  replaces     RefreshToken? @relation("RefreshTokenRotation")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([expiresAt])
+  @@index([familyId])
 }
 
 /**

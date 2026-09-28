@@ -8964,6 +8964,55 @@ existing behavior to preserve.
 ### Status
 **Accepted.**
 
+### Addendum — 2026-09-28: WO-206.1 to WO-206.4 as built
+
+Every value decided above is implemented unchanged. Building it against the
+real code settled what the ADR left open: items 1 and 2 correct it, 3 and 4
+record choices so they are not re-litigated. The full record, with each
+parameter's reasoning, is doc 206 §8.
+
+**Settled while building.**
+1. *Fail closed where the limit is a credential control, not everywhere.*
+   The global 300/60 s throttle guards every route, so a storage that
+   fails closed on all of them turns a Redis outage into a total API
+   outage — contradicting doc 38 §1 (the only total outage is Postgres).
+   Routes that declare their own `@Throttle` fail closed (503); the
+   module-wide limit falls back to per-process counting, the
+   pre-WO-206.1 behaviour. Doc 38's degradation matrix has the row.
+2. *One `auth.rate_limited` row per throttling episode, not per 429.* A
+   synchronous INSERT per refused request would let a login flood exhaust
+   the Postgres pool; a Redis `SET NX` marker records the first refusal of
+   each episode (60 s per route per IP; 300 s per identifier).
+3. *Per-identifier bucket keys kept over per-account keys*, recorded so it
+   is not re-litigated: a shared account bucket would reveal whether a
+   phone number and an email belong to one account.
+4. *The grace window stays on `POST /auth/refresh`, as §2.2 scopes it.* The
+   single sign-on handoff (`POST /auth/sso/session`, doc 161) redeems a
+   refresh token through the same rotation but keeps single use: a second
+   redemption inside 10 s is refused, not replayed.
+
+**Parameters added** (Parameter — exact value — why — where — degrades):
+
+| Parameter | Value | Why | Where | Degrades |
+|---|---|---|---|---|
+| Redis offline queue | disabled | never park requests on a dead socket | `core/redis/redis.service.ts` | command refused at once |
+| Retries / resend per command | 0 / never | a replayed EVAL double-spends a sign-in token | same | fails on first drop |
+| Command timeout | 500 ms | < 1 ms RTT; one 200 ms TCP retransmit still fits | same | treated as Redis down |
+| Connect timeout | 2 000 ms | ~1 ms connect plus a cold DNS lookup | same | retried with backoff |
+| Reconnect backoff | 50 ms × attempt, cap 2 000 ms | recovery noticed within 2 s | same | — |
+| Boot wait | 2 000 ms, then boot | Redis is never a boot dependency | same | boots degraded |
+| Instance memory | 64 MB data, 128M container | ~300k keys at ~200 B, ~3× a busy minute | compose/stack `redis` | full = refused writes |
+| Eviction | `noeviction` | eviction resets a limit silently | same | as full |
+| Persistence | none | counters are not facts | same | counters reset on restart |
+| Refresh successor | HMAC-SHA256(`JWT_REFRESH_SECRET`, token) | replays return the same pair with no plaintext stored | `AuthService.successorOf` | secret change mid-window → plain 401 |
+| Grace boundary | ≤ 10 000 ms inclusive | the ADR's 10 s, made exact | `REFRESH_REUSE_GRACE_MS` | — |
+
+**Dependencies added by this build**: `@nest-lab/throttler-storage-redis`
+1.2.0 and `ioredis` 5.11.1 (the 5.x line the adapter is built against;
+6.0.0 switched to RESP3 by default two months before this). Doc 206 §1.3
+names these, and the new Redis instance, as needing the owner's sign-off;
+this addendum records what was built, not that sign-off.
+
 ## ADR-076 — Doc 207 (checkout admission queue): "prevent overselling during rush hours" corrected — overselling is already structurally impossible via `InventoryService.applyMovement()`'s predicate-on-write; the real problem is checkout UX and lock contention on a hot SKU's two rows, addressed with a per-variant admission queue that fails open, never a second stock guard
 
 ### Context

@@ -315,7 +315,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:131` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:153` | core/`auth` |
 
 
 **Subscribed by**
@@ -331,8 +331,8 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:302` | core/`auth` |
-| `apps/api/src/core/auth/auth.service.ts:357` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:329` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:384` | core/`auth` |
 
 
 **Subscribed by**
@@ -348,7 +348,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:327` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:354` | core/`auth` |
 
 
 **Subscribed by**
@@ -364,7 +364,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/core/auth/auth.service.ts:378` | core/`auth` |
+| `apps/api/src/core/auth/auth.service.ts:405` | core/`auth` |
 
 
 **Subscribed by**

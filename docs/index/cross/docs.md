@@ -2943,7 +2943,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,246 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,295 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3024,10 +3024,10 @@ _no second-level headings_
 - ADR-073 — Third-party apps (docs 184–195): an open, reviewed directory of remote services — never in-process code — installed per tenant with consent onto doc 34's `ApiClient`, completed now; ADR-037's service-account deferral superseded  <sub>:8507</sub>
 - ADR-074 — Doc 205 (video rooms for doc 24's meetings): self-host LiveKit as NEWAX's own SFU behind a new `VideoConferenceProvider` core seam, run as its own Coolify resource and off by default in every deployment; LiveKit's built-in TURN rather than coturn; recording deferred  <sub>:8674</sub>
 - ADR-075 — Doc 206 (rate limiting, sudden-logout, RAM ceilings, connection pooling, API caching, lazy loading, compression): eight requests investigated against the real code first — three extend what's already built, five are genuinely new, every parameter stated with its exact value  <sub>:8880</sub>
-- ADR-076 — Doc 207 (checkout admission queue): "prevent overselling during rush hours" corrected — overselling is already structurally impossible via `InventoryService.applyMovement()`'s predicate-on-write; the real problem is checkout UX and lock contention on a hot SKU's two rows, addressed with a per-variant admission queue that fails open, never a second stock guard  <sub>:8967</sub>
-- ADR-077 — Doc 208 (L1/L2/L3 caching): each tier attached to a found hot path, not applied blindly — permission resolution's uncached three-query call on every authenticated request as the real L1/L2 target, `VariantSalesStat`'s eager-materialization pattern generalized as the L3 strategy, a real cross-replica settings-staleness bug found and closed along the way  <sub>:9039</sub>
-- ADR-078 — Doc 209 (semantic caching): applied to exactly one of ten AiFeature call sites — RAG_GENERATION, the only one where the answer depends solely on question meaning — and explicitly refused for WHATSAPP_ASSISTANT, where every prompt is already personalized per contact and a semantic cache would risk leaking one customer's data into another's answer  <sub>:9123</sub>
-- ADR-079 — Doc 210: caching third-party API calls to save charges — checked every real integration in this codebase and found exactly one billable, cacheable target (the AI provider), already covered by docs 208/209; two future non-AI targets named with their trigger condition, neither built now  <sub>:9190</sub>
+- ADR-076 — Doc 207 (checkout admission queue): "prevent overselling during rush hours" corrected — overselling is already structurally impossible via `InventoryService.applyMovement()`'s predicate-on-write; the real problem is checkout UX and lock contention on a hot SKU's two rows, addressed with a per-variant admission queue that fails open, never a second stock guard  <sub>:9016</sub>
+- ADR-077 — Doc 208 (L1/L2/L3 caching): each tier attached to a found hot path, not applied blindly — permission resolution's uncached three-query call on every authenticated request as the real L1/L2 target, `VariantSalesStat`'s eager-materialization pattern generalized as the L3 strategy, a real cross-replica settings-staleness bug found and closed along the way  <sub>:9088</sub>
+- ADR-078 — Doc 209 (semantic caching): applied to exactly one of ten AiFeature call sites — RAG_GENERATION, the only one where the answer depends solely on question meaning — and explicitly refused for WHATSAPP_ASSISTANT, where every prompt is already personalized per contact and a semantic cache would risk leaking one customer's data into another's answer  <sub>:9172</sub>
+- ADR-079 — Doc 210: caching third-party API calls to save charges — checked every real integration in this codebase and found exactly one billable, cacheable target (the AI provider), already covered by docs 208/209; two future non-AI targets named with their trigger condition, neither built now  <sub>:9239</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3880,19 +3880,20 @@ _no second-level headings_
 - Acceptance  <sub>:370</sub>
 - Out of scope  <sub>:385</sub>
 
-### `docs/implementation/resilience-scalability/206-rate-limiting-caching-compression-hardening.md`  <sub>202 lines</sub>
+### `docs/implementation/resilience-scalability/206-rate-limiting-caching-compression-hardening.md`  <sub>351 lines</sub>
 
-- 0. What's already real — checked before proposing anything new  <sub>:12</sub>
-- 1. Login-attempt rate limiting — the missing account-level layer, and why it's a second layer, not a replacement  <sub>:21</sub>
-- 2. "Sudden logout" — this is refresh-token-rotation race handling, not a message queue  <sub>:92</sub>
-- 3. RAM ceilings — container limits already exist; the gap is the Node process's own heap flag  <sub>:114</sub>
-- 4. Central connection pooling — the real answer, since "TERA" doesn't match a technology I can find  <sub>:126</sub>
-- 5. API response caching — Redis-backed, cache-aside, never for session-scoped data  <sub>:139</sub>
-- 6. Preventing irrelevant component loading — exact threshold, not a vague "lazy load heavy stuff"  <sub>:150</sub>
-- 7. Response compression — the exact stack, in the requested priority order  <sub>:159</sub>
-- Work orders  <sub>:177</sub>
-- Acceptance  <sub>:190</sub>
-- Out of scope  <sub>:199</sub>
+- 0. What's already real — checked before proposing anything new  <sub>:15</sub>
+- 1. Login-attempt rate limiting — the missing account-level layer, and why it's a second layer, not a replacement  <sub>:24</sub>
+- 2. "Sudden logout" — this is refresh-token-rotation race handling, not a message queue  <sub>:100</sub>
+- 3. RAM ceilings — container limits already exist; the gap is the Node process's own heap flag  <sub>:125</sub>
+- 4. Central connection pooling — the real answer, since "TERA" doesn't match a technology I can find  <sub>:137</sub>
+- 5. API response caching — Redis-backed, cache-aside, never for session-scoped data  <sub>:150</sub>
+- 6. Preventing irrelevant component loading — exact threshold, not a vague "lazy load heavy stuff"  <sub>:161</sub>
+- 7. Response compression — the exact stack, in the requested priority order  <sub>:170</sub>
+- 8. As built — WO-206.1 to WO-206.4 (2026-09-28)  <sub>:188</sub>
+- Work orders  <sub>:326</sub>
+- Acceptance  <sub>:339</sub>
+- Out of scope  <sub>:348</sub>
 
 ### `docs/implementation/resilience-scalability/207-checkout-admission-queue-hot-sku-contention.md`  <sub>229 lines</sub>
 
@@ -3943,17 +3944,17 @@ _no second-level headings_
 - Acceptance  <sub>:277</sub>
 - Out of scope  <sub>:294</sub>
 
-### `docs/implementation/resilience-scalability/38-resilience-engineering.md`  <sub>379 lines</sub>
+### `docs/implementation/resilience-scalability/38-resilience-engineering.md`  <sub>380 lines</sub>
 
 - 1. The degradation matrix: what actually happens when each dependency is down  <sub>:156</sub>
-- 2. Circuit breakers, generalized from the one pattern the outbox already proves  <sub>:180</sub>
-- 3. SLOs and error budgets for the paths that actually matter  <sub>:205</sub>
-- 4. Disaster recovery, naming the numbers `deploy/backup.sh` already earns  <sub>:226</sub>
-- 5. Contract tests: the module-boundary guarantee, extended to behavior  <sub>:246</sub>
-- Scope lenses  <sub>:259</sub>
-- Work orders  <sub>:329</sub>
-- Acceptance  <sub>:350</sub>
-- Out of scope  <sub>:365</sub>
+- 2. Circuit breakers, generalized from the one pattern the outbox already proves  <sub>:181</sub>
+- 3. SLOs and error budgets for the paths that actually matter  <sub>:206</sub>
+- 4. Disaster recovery, naming the numbers `deploy/backup.sh` already earns  <sub>:227</sub>
+- 5. Contract tests: the module-boundary guarantee, extended to behavior  <sub>:247</sub>
+- Scope lenses  <sub>:260</sub>
+- Work orders  <sub>:330</sub>
+- Acceptance  <sub>:351</sub>
+- Out of scope  <sub>:366</sub>
 
 ### `docs/implementation/resilience-scalability/48-native-desktop-deployment.md`  <sub>184 lines</sub>
 

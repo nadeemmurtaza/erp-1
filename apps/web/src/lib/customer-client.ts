@@ -1,5 +1,6 @@
 'use client';
 
+import { singleFlight } from '@newax/shared';
 import { API_URL } from './api';
 import { request, requestWithRefresh } from './api-client';
 import type {
@@ -217,8 +218,12 @@ export async function reopenSupportTicket(id: string): Promise<void> {
  * request must not surface as an error. Refresh cannot go through the client
  * that calls it without recursing, and it answers a boolean rather than
  * throwing, which is the opposite of what `request` is for.
+ *
+ * Refresh is also single-flight: however many requests hit a 401 together,
+ * one refresh is sent and they all await it
+ * (206-rate-limiting-caching-compression-hardening.md §2.2).
  */
-async function refreshCustomerSession(): Promise<boolean> {
+const refreshCustomerSession = singleFlight(async (): Promise<boolean> => {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   if (!refreshToken) return false;
 
@@ -233,7 +238,7 @@ async function refreshCustomerSession(): Promise<boolean> {
 
   storeSession((await response.json()) as AuthResult);
   return true;
-}
+});
 
 interface CustomerRequestOptions {
   method?: string;

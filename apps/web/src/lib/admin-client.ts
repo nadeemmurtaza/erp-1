@@ -1,5 +1,6 @@
 'use client';
 
+import { singleFlight } from '@newax/shared';
 import { ApiError, API_URL } from './api';
 import { request, requestWithRefresh } from './api-client';
 import type { AuthResult, AuthUser, SsoSignInOption } from '@/types/api';
@@ -130,7 +131,11 @@ export async function logout(): Promise<void> {
   }).catch(() => undefined);
 }
 
-async function refreshSession(): Promise<boolean> {
+/**
+ * One refresh in flight per tab, however many requests hit a 401 together —
+ * they all await it (206-rate-limiting-caching-compression-hardening.md §2.2).
+ */
+const refreshSession = singleFlight(async (): Promise<boolean> => {
   const refreshToken = localStorage.getItem(REFRESH_KEY);
   if (!refreshToken) return false;
 
@@ -145,7 +150,7 @@ async function refreshSession(): Promise<boolean> {
 
   storeSession((await response.json()) as AuthResult);
   return true;
-}
+});
 
 interface AdminRequestOptions {
   method?: string;

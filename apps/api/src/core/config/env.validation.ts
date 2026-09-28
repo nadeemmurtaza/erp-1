@@ -27,10 +27,46 @@ const bool = (fallback: 'true' | 'false') =>
 const port = (fallback: number) =>
   z.coerce.number().int().min(1).max(65535).default(fallback);
 
+/**
+ * The dedicated Redis instance (206-rate-limiting-caching-compression-hardening.md
+ * §1.2). It names the instance only: the logical database is chosen per
+ * keyspace in core/redis/redis.keyspaces.ts. ioredis lets a `/N` path (or a
+ * `?db=` parameter) in the URL override an explicit `db` option, so a URL
+ * that names a database would silently put every keyspace on that one index
+ * — refused here rather than discovered the day a cache flush clears the
+ * rate-limit counters.
+ */
+const redisUrl = z
+  .string()
+  .refine((value) => {
+    try {
+      const url = new URL(value);
+      return (
+        (url.protocol === 'redis:' || url.protocol === 'rediss:') &&
+        (url.pathname === '' || url.pathname === '/') &&
+        !url.searchParams.has('db')
+      );
+    } catch {
+      return false;
+    }
+  }, 'REDIS_URL must be redis://[user:password@]host:port (or rediss:// for TLS) with no database number — the database is chosen per keyspace in core/redis/redis.keyspaces.ts');
+
+/** Local development and the test suites: docker-compose.yml's `redis` service. Never used in production — see validateEnv. */
+const DEFAULT_DEV_REDIS_URL = 'redis://localhost:6379';
+
 export const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
+
+  /**
+   * Rate-limit state: @nestjs/throttler's counters (shared across API
+   * replicas) and the per-account login bucket. A dedicated instance — never
+   * the mail server's Redis (docker-compose.mail.yml's MAIL_REDIS_URL).
+   * Defaults to a local instance outside production; production must name
+   * one explicitly (validateEnv below).
+   */
+  REDIS_URL: redisUrl.default(DEFAULT_DEV_REDIS_URL),
 
   API_PORT: port(3001),
   API_PREFIX: z.string().default('api'),
@@ -237,6 +273,10 @@ const SETUP_HINTS: Record<string, string> = {
   JWT_REFRESH_SECRET:
     'Generate with: openssl rand -base64 48 (must differ from the access secret)',
   DATABASE_URL: 'Shape: postgresql://USER:PASSWORD@HOST:5432/DBNAME?schema=public',
+  REDIS_URL:
+    'Shape: redis://:PASSWORD@HOST:6379 - a dedicated instance, never the mail server\'s ' +
+    'Redis (MAIL_REDIS_URL). docker-compose.prod.yml and the swarm stacks already run one ' +
+    'as their `redis` service; on Coolify, add a new Redis resource for it.',
 };
 
 export function validateEnv(raw: Record<string, unknown>): Env {
@@ -276,6 +316,16 @@ export function validateEnv(raw: Record<string, unknown>): Env {
     result.data.APP_ENCRYPTION_KEY.toLowerCase().includes('change-me')
   ) {
     throw new Error('Refusing to start in production with the example APP_ENCRYPTION_KEY.');
+  }
+
+  // The localhost default exists for a developer's machine and the test
+  // suites. In a production container nothing listens there, so falling back
+  // to it would boot an API whose sign-in answers 503 forever — a silent
+  // misconfiguration this check turns into a loud one at deploy time.
+  if (result.data.NODE_ENV === 'production' && !raw.REDIS_URL) {
+    throw new Error(
+      `REDIS_URL is required in production.${NEWLINE}      ${SETUP_HINTS.REDIS_URL}`,
+    );
   }
 
   if (result.data.NOTIFICATION_CHANNELS.includes('email')) {

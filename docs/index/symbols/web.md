@@ -775,7 +775,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PlatformResiliencePage` | default | :77 | 38-resilience-engineering.md. |
+| `page.tsx` | `PlatformResiliencePage` | default | :78 | 38-resilience-engineering.md. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/products`
 

@@ -563,7 +563,7 @@ All 435 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 9246 |  |
+| `DECISIONS.md` | doc | 9295 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -862,13 +862,13 @@ All 435 tracked files in `docs/*`, by directory.
 | `123-automated-degradation-resilience.md` | doc | 73 |  |
 | `124-infrastructure-as-code.md` | doc | 64 |  |
 | `144-supply-chain-resilience-planning-engine.md` | doc | 392 |  |
-| `206-rate-limiting-caching-compression-hardening.md` | doc | 202 |  |
+| `206-rate-limiting-caching-compression-hardening.md` | doc | 351 |  |
 | `207-checkout-admission-queue-hot-sku-contention.md` | doc | 229 |  |
 | `208-l1-l2-l3-caching-architecture.md` | doc | 203 |  |
 | `209-semantic-caching-rag-generation.md` | doc | 182 |  |
 | `210-third-party-api-call-caching-status.md` | doc | 81 |  |
 | `37-scalability-future-upgrades.md` | doc | 306 |  |
-| `38-resilience-engineering.md` | doc | 379 |  |
+| `38-resilience-engineering.md` | doc | 380 |  |
 | `48-native-desktop-deployment.md` | doc | 184 |  |
 | `90-automatic-backups-local-support.md` | doc | 56 |  |
 

@@ -5,9 +5,20 @@ import {
   CUSTOMER_SCOPES_KEY,
   IS_PUBLIC_KEY,
   PERMISSIONS_KEY,
+  RATE_LIMIT_AUDIT_KEY,
   SESSION_ONLY_KEY,
   type AuthenticatedUser,
 } from './auth.constants';
+
+/**
+ * Audits this credential route's per-IP 429s as `auth.rate_limited`
+ * (206-rate-limiting-caching-compression-hardening.md §1.2), identified by the
+ * hashed value of the named request-body field — never the value itself, and
+ * never the password beside it. AppThrottlerGuard reads it; the per-account
+ * bucket on /auth/login audits its own refusals.
+ */
+export const AuditRateLimit = (identifierField: 'identifier' | 'email'): MethodDecorator =>
+  SetMetadata(RATE_LIMIT_AUDIT_KEY, identifierField);
 
 /**
  * Marks a route as reachable without a token.

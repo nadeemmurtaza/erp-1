@@ -148,6 +148,32 @@ export async function request<T>(baseUrl: string, path: string, options: Request
 }
 
 /**
+ * At most one run of `task` in flight at a time: a call made while a run is
+ * pending gets that run's own promise, and the first call after it settles
+ * starts a fresh one. A failed run is shared the same way and never wedges
+ * the next call.
+ *
+ * Every client wraps its refresh-token exchange in this
+ * (206-rate-limiting-caching-compression-hardening.md §2.2, WO-206.4). A page
+ * whose five requests all get a 401 at once must send one `/auth/refresh`,
+ * not five: five would each present the same refresh token, and that is the
+ * rotation race that signs a person out for no reason. The API's 10-second
+ * grace window catches what gets past this — two tabs, a retried request —
+ * but one tab never needs it.
+ */
+export function singleFlight<T>(task: () => Promise<T>): () => Promise<T> {
+  let inFlight: Promise<T> | null = null;
+  return () => {
+    if (!inFlight) {
+      inFlight = task().finally(() => {
+        inFlight = null;
+      });
+    }
+    return inFlight;
+  };
+}
+
+/**
  * Wraps `request` with a 401 retry.
  *
  * Every signed-in client needs the same dance — try, and if the token has

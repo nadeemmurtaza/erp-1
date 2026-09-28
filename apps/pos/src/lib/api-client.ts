@@ -1,6 +1,12 @@
 'use client';
 
-import { ApiError, request as sharedRequest, requestWithRefresh as sharedRequestWithRefresh, type RequestOptions } from '@newax/shared';
+import {
+  ApiError,
+  request as sharedRequest,
+  requestWithRefresh as sharedRequestWithRefresh,
+  singleFlight,
+  type RequestOptions,
+} from '@newax/shared';
 import { STORAGE_KEYS } from '@/constants/storage';
 
 export { ApiError };
@@ -27,33 +33,28 @@ export function publicRequest<T>(path: string, options: RequestOptions = {}): Pr
   return sharedRequest<T>(API_URL, path, options);
 }
 
-let refreshInFlight: Promise<boolean> | null = null;
-
-async function refresh(): Promise<boolean> {
+/**
+ * Two calls racing a 401 at once must not both spend the refresh token — the
+ * second would present an already-rotated one and could log the cashier out
+ * mid-sale for no real reason. singleFlight is the same guard web and mobile
+ * use (206-rate-limiting-caching-compression-hardening.md §2.2).
+ */
+const refresh = singleFlight(async (): Promise<boolean> => {
   const refreshToken = getRefreshToken();
   if (!refreshToken) return false;
 
-  // Two calls racing a 401 at once must not both spend the refresh token —
-  // the second refresh would fail against an already-rotated one and log
-  // the cashier out mid-sale for no real reason.
-  if (!refreshInFlight) {
-    refreshInFlight = sharedRequest<{ accessToken: string; refreshToken: string }>(API_URL, '/auth/refresh', {
+  try {
+    const result = await sharedRequest<{ accessToken: string; refreshToken: string }>(API_URL, '/auth/refresh', {
       method: 'POST',
       body: { refreshToken },
-    })
-      .then((result: { accessToken: string; refreshToken: string }) => {
-        localStorage.setItem(STORAGE_KEYS.access, result.accessToken);
-        localStorage.setItem(STORAGE_KEYS.refresh, result.refreshToken);
-        return true;
-      })
-      .catch(() => false)
-      .finally(() => {
-        refreshInFlight = null;
-      });
+    });
+    localStorage.setItem(STORAGE_KEYS.access, result.accessToken);
+    localStorage.setItem(STORAGE_KEYS.refresh, result.refreshToken);
+    return true;
+  } catch {
+    return false;
   }
-
-  return refreshInFlight ?? Promise.resolve(false);
-}
+});
 
 /** The one HTTP call every authenticated screen makes — a 401 refreshes once and retries once, then signs out. */
 export function request<T>(path: string, options: RequestOptions = {}): Promise<T> {

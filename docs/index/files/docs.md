@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 401 tracked files in `docs/*`, by directory.
+All 417 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,13 +563,13 @@ All 401 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 8167 |  |
+| `DECISIONS.md` | doc | 8309 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 546 |  |
+| `README.md` | doc | 577 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 217 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
@@ -709,6 +709,27 @@ All 401 tracked files in `docs/*`, by directory.
 | `83-entry-level-pos-deployment.md` | doc | 71 |  |
 | `84-micro-saas-hr-per-user-pricing.md` | doc | 65 |  |
 | `89-rapid-onboarding-customizable-reports.md` | doc | 87 |  |
+
+### `docs/implementation/composable-resilience-platform` (16)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `168-00-overview-and-decision-to-build-here.md` | doc | 469 |  |
+| `169-01-layer0-canonical-data-spine.md` | doc | 661 |  |
+| `170-02-layer1-stable-core-deltas.md` | doc | 533 |  |
+| `171-03-layer2-versioned-module-packs-build-manifest.md` | doc | 441 |  |
+| `172-04-layer3-ingestion-boundary-confidence-provenance.md` | doc | 940 |  |
+| `173-05-layer4-resilience-engine-extensions.md` | doc | 459 |  |
+| `174-06-layer5-control-center.md` | doc | 432 |  |
+| `175-07-layer6-settlement-execution-channel.md` | doc | 460 |  |
+| `176-08-platform-resilience-failure-modes.md` | doc | 377 |  |
+| `177-09-graph-derivability-pilot-scope-control.md` | doc | 235 |  |
+| `178-10-competition-deliverable-vs-pilot-vertical-slice.md` | doc | 187 |  |
+| `179-11-pilot-rollout-waves.md` | doc | 330 |  |
+| `180-12-metrics-success-criteria.md` | doc | 403 |  |
+| `181-13-risk-compliance-continuity-uae.md` | doc | 370 |  |
+| `182-14-commercial-partnership-rationale.md` | doc | 239 |  |
+| `183-15-engineering-governance-two-agent-split.md` | doc | 233 |  |
 
 ### `docs/implementation/content-marketing-search` (1)
 

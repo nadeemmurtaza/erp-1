@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-401 files · 71,575 lines
+417 files · 78,517 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 11 | 12,537 | doc, file |
+| `docs/implementation` | 11 | 12,710 | doc, file |
 | `docs/implementation/access-control-identity` | 7 | 1,896 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -94,6 +94,7 @@ has a bug.
 | `docs/implementation/b2b-wholesale-multientity` | 5 | 1,148 | doc |
 | `docs/implementation/catalog-variants-pricing` | 3 | 963 | doc |
 | `docs/implementation/commercial-licensing-agency` | 14 | 2,741 | doc |
+| `docs/implementation/composable-resilience-platform` | 16 | 6,769 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
 | `docs/implementation/finance-accounting` | 10 | 2,325 | doc |
@@ -116,21 +117,21 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 8,167 | doc |  |
+| `docs/implementation/DECISIONS.md` | 8,309 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
+| `docs/implementation/composable-resilience-platform/172-04-layer3-ingestion-boundary-confidence-provenance.md` | 940 | doc |  |
 | `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md` | 937 | doc |  |
 | `docs/implementation/MULTI-SECTOR.md` | 854 | doc |  |
 | `docs/design/principles-laws/10-laws.md` | 850 | doc |  |
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
+| `docs/implementation/composable-resilience-platform/169-01-layer0-canonical-data-spine.md` | 661 | doc |  |
 | `docs/erp-lenses/_meta/_conflicts.md` | 645 | doc |  |
 | `docs/implementation/access-control-identity/163-personal-api-keys.md` | 625 | doc |  |
 | `docs/implementation/architecture-patterns/166-unified-product-reference-registry.md` | 610 | doc |  |
-| `docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md` | 566 | doc |  |
-| `docs/erp-lenses/_meta/_index.md` | 550 | doc |  |
-| `docs/implementation/README.md` | 546 | doc |  |
+| `docs/implementation/README.md` | 577 | doc |  |
 
 
 ---

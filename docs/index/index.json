@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2493,
-    "lines": 392139,
+    "lines": 392142,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -51,8 +51,8 @@
     },
     "web": {
       "files": 428,
-      "lines": 72517,
-      "bytes": 2626037,
+      "lines": 72520,
+      "bytes": 2626056,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -86314,8 +86314,8 @@
       "path": "apps/web/src/components/admin/dashboard/card-group.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 121,
-      "bytes": 4362,
+      "lines": 124,
+      "bytes": 4381,
       "doc": "",
       "symbols": [
         {

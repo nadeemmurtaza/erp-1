@@ -98,7 +98,10 @@ export function CardGroup({
       </div>
 
       {!collapsed ? (
-        <div id={panelId} className="grid grid-cols-2 gap-3 border-t border-neutral-100 p-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div
+          id={panelId}
+          className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3 border-t border-neutral-100 p-4"
+        >
           {cards.map((card) =>
             card.sparkline ? (
               <MetricCardWithSparkline

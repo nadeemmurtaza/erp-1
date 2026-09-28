@@ -1515,7 +1515,7 @@ All 428 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `action-hub-widget.tsx` | component | 70 |  |
-| `card-group.tsx` | component | 121 |  |
+| `card-group.tsx` | component | 124 |  |
 | `card-registry.ts` | component | 705 |  |
 | `comparison-panel.tsx` | component | 46 |  |
 | `gross-profit-today-widget.tsx` | component | 95 |  |

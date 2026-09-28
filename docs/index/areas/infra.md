@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-60 files · 30,938 lines
+60 files · 30,941 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,7 +19,7 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 20,560 | file, example, json, yaml |
+| `.` | 20 | 20,563 | file, example, json, yaml |
 | `.github` | 1 | 81 | doc |
 | `.github/workflows` | 2 | 275 | yaml |
 | `deploy` | 3 | 263 | sh |

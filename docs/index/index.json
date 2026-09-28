@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2492,
-    "lines": 391726,
+    "files": 2491,
+    "lines": 391729,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -20,15 +20,15 @@
   "designLaws": [],
   "areas": {
     "root": {
-      "files": 214,
+      "files": 213,
       "lines": 21461,
-      "bytes": 1230080,
+      "bytes": 1226645,
       "label": "repository root files"
     },
     "infra": {
       "files": 60,
-      "lines": 30938,
-      "bytes": 1218347,
+      "lines": 30941,
+      "bytes": 1218443,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -57618,8 +57618,8 @@
       "path": ".gitignore",
       "area": "infra",
       "kind": "file",
-      "lines": 68,
-      "bytes": 1693,
+      "lines": 71,
+      "bytes": 1789,
       "doc": "",
       "symbols": []
     },
@@ -94015,15 +94015,6 @@
       "kind": "doc",
       "lines": 69,
       "bytes": 3299,
-      "doc": "",
-      "symbols": []
-    },
-    {
-      "path": "dump.rdb",
-      "area": "root",
-      "kind": "rdb",
-      "lines": 0,
-      "bytes": 3435,
       "doc": "",
       "symbols": []
     },

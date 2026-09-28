@@ -484,6 +484,15 @@ are extended, not duplicated; five are new. It also records the standing
 |---|---|
 | [`206-rate-limiting-caching-compression-hardening.md`](./resilience-scalability/206-rate-limiting-caching-compression-hardening.md) | **Proposed, not yet built**, except image compression (already shipped, `StorageService`'s WebP-at-quality-75 pipeline — no action). A Redis-backed shared store for the existing IP-keyed login throttle plus a new 5-token/5-minute-refill per-account bucket keyed by a hashed identifier, both fail-closed. "Prevent sudden logout" reframed as refresh-token reuse detection (10-second grace window) plus a client-side single-flight refresh mutex, not a message queue. `--max-old-space-size` at 75% of each service's container memory ceiling. PgBouncer (transaction pooling) plus a shared keep-alive HTTP agent, in place of the unrecognized "TERA central connection." A 5-minute Redis cache-aside layer, never for session-scoped data. A 50KB-gzipped dynamic-import threshold for component loading. A zstd→brotli→gzip→identity compression stack with per-context quality levels, unlocked by an `engines.node` bump to `>=22.15.0` rather than a new dependency. ADR-075 |
 
+**Number 207** corrects "prevent overselling during rush hours": overselling
+is already structurally impossible via `InventoryService.applyMovement()`'s
+predicate-on-write (House Rule 10) — the real gap is checkout UX and lock
+contention on a hot SKU's two rows, not stock correctness:
+
+| File | What it is |
+|---|---|
+| [`207-checkout-admission-queue-hot-sku-contention.md`](./resilience-scalability/207-checkout-admission-queue-hot-sku-contention.md) | **Proposed, not yet built.** A per-variant checkout admission queue: rush mode triggers at 10+ concurrent in-flight attempts within 5 seconds (or manually via a new `HighDemandWindow`), admits 5 concurrent sessions at a time — sized to the per-replica Prisma pool from doc 206/ADR-075 — each with a 90-second completion window, deactivates below 3 concurrent attempts for 30 seconds or immediately on zero stock (an honest sold-out message to everyone still queued, never a doomed admission). Fails open on Redis unavailability — the opposite posture from doc 206's rate limiter, reasoned explicitly, since nothing about stock correctness depends on this feature. Reuses doc 206/WO-206.1's Redis module rather than a second one. ADR-076 |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

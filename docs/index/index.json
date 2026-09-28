@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2459,
-    "lines": 384912,
+    "files": 2460,
+    "lines": 385222,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 431,
-      "lines": 87153,
-      "bytes": 5260927,
+      "files": 432,
+      "lines": 87463,
+      "bytes": 5279023,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -91353,8 +91353,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 8966,
-      "bytes": 527257,
+      "lines": 9038,
+      "bytes": 531280,
       "doc": "",
       "symbols": []
     },
@@ -91407,8 +91407,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 634,
-      "bytes": 96922,
+      "lines": 643,
+      "bytes": 98125,
       "doc": "",
       "symbols": []
     },
@@ -93101,6 +93101,15 @@
       "kind": "doc",
       "lines": 202,
       "bytes": 26040,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/resilience-scalability/207-checkout-admission-queue-hot-sku-contention.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 229,
+      "bytes": 12870,
       "doc": "",
       "symbols": []
     },

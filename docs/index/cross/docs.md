@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**457** markdown documents. These explain **why**; this index only says **where**.
+**458** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2943,7 +2943,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>8,966 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,038 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3024,6 +3024,7 @@ _no second-level headings_
 - ADR-073 — Third-party apps (docs 184–195): an open, reviewed directory of remote services — never in-process code — installed per tenant with consent onto doc 34's `ApiClient`, completed now; ADR-037's service-account deferral superseded  <sub>:8507</sub>
 - ADR-074 — Doc 205 (video rooms for doc 24's meetings): self-host LiveKit as NEWAX's own SFU behind a new `VideoConferenceProvider` core seam, run as its own Coolify resource and off by default in every deployment; LiveKit's built-in TURN rather than coturn; recording deferred  <sub>:8674</sub>
 - ADR-075 — Doc 206 (rate limiting, sudden-logout, RAM ceilings, connection pooling, API caching, lazy loading, compression): eight requests investigated against the real code first — three extend what's already built, five are genuinely new, every parameter stated with its exact value  <sub>:8880</sub>
+- ADR-076 — Doc 207 (checkout admission queue): "prevent overselling during rush hours" corrected — overselling is already structurally impossible via `InventoryService.applyMovement()`'s predicate-on-write; the real problem is checkout UX and lock contention on a hot SKU's two rows, addressed with a per-variant admission queue that fails open, never a second stock guard  <sub>:8967</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3824,16 +3825,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>634 lines</sub>
+### `docs/implementation/README.md`  <sub>643 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:487</sub>
-- The two module groups  <sub>:516</sub>
-- How a work order runs  <sub>:553</sub>
-- Known gaps not yet owned by a phase  <sub>:571</sub>
-- When a brief is wrong  <sub>:598</sub>
-- Scope, honestly  <sub>:611</sub>
-- Gap-analysis roadmap references  <sub>:618</sub>
+- Dependency order  <sub>:496</sub>
+- The two module groups  <sub>:525</sub>
+- How a work order runs  <sub>:562</sub>
+- Known gaps not yet owned by a phase  <sub>:580</sub>
+- When a brief is wrong  <sub>:607</sub>
+- Scope, honestly  <sub>:620</sub>
+- Gap-analysis roadmap references  <sub>:627</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 
@@ -3889,6 +3890,17 @@ _no second-level headings_
 - Work orders  <sub>:177</sub>
 - Acceptance  <sub>:190</sub>
 - Out of scope  <sub>:199</sub>
+
+### `docs/implementation/resilience-scalability/207-checkout-admission-queue-hot-sku-contention.md`  <sub>229 lines</sub>
+
+- 1. Why overselling is not the real problem — read the guard first  <sub>:14</sub>
+- 2. What this document actually builds  <sub>:50</sub>
+- 3. Exact parameters  <sub>:72</sub>
+- 4. What the user actually sees  <sub>:151</sub>
+- 5. Failure modes  <sub>:171</sub>
+- Work orders  <sub>:191</sub>
+- Acceptance  <sub>:205</sub>
+- Out of scope  <sub>:221</sub>
 
 ### `docs/implementation/resilience-scalability/37-scalability-future-upgrades.md`  <sub>306 lines</sub>
 

@@ -315,7 +315,7 @@ against a real database.
 | [`RawMaterial`](../data/bom.md#rawmaterial) | `bom` | 13 | 1 | id |  |
 | [`Redirect`](../data/catalog.md#redirect) | `catalog` | 7 | 0 | id | A storefront path that now 301s somewhere else — created automatically when a live produc… |
 | [`Referral`](../data/loyalty.md#referral) | `loyalty` | 8 | 2 | id | One referee can be referred exactly once (`@@unique([refereeId])`) — the actual guard aga… |
-| [`RefreshToken`](../data/core.md#refreshtoken) | `core` | 9 | 1 | id |  |
+| [`RefreshToken`](../data/core.md#refreshtoken) | `core` | 14 | 3 | id |  |
 | [`ReplicationCursor`](../data/replication.md#replicationcursor) | `replication` | 4 | 0 | — | "The highest sequence I've already synced with this peer, in this direction" — read and a… |
 | [`ReplicationQuarantine`](../data/replication.md#replicationquarantine) | `replication` | 12 | 0 | id | Where an incoming record lands when it fails to apply — never dropped, never retried fore… |
 | [`ReplicationRecord`](../data/replication.md#replicationrecord) | `replication` | 12 | 0 | id | The log. |

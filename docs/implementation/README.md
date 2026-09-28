@@ -493,6 +493,14 @@ contention on a hot SKU's two rows, not stock correctness:
 |---|---|
 | [`207-checkout-admission-queue-hot-sku-contention.md`](./resilience-scalability/207-checkout-admission-queue-hot-sku-contention.md) | **Proposed, not yet built.** A per-variant checkout admission queue: rush mode triggers at 10+ concurrent in-flight attempts within 5 seconds (or manually via a new `HighDemandWindow`), admits 5 concurrent sessions at a time — sized to the per-replica Prisma pool from doc 206/ADR-075 — each with a 90-second completion window, deactivates below 3 concurrent attempts for 30 seconds or immediately on zero stock (an honest sold-out message to everyone still queued, never a doomed admission). Fails open on Redis unavailability — the opposite posture from doc 206's rate limiter, reasoned explicitly, since nothing about stock correctness depends on this feature. Reuses doc 206/WO-206.1's Redis module rather than a second one. ADR-076 |
 
+**Number 208** answers "implement L1, L2, L3 caching where needed" with each
+tier attached to a read path actually found in the code, not applied
+generically — and closes a real, previously-silent bug found along the way:
+
+| File | What it is |
+|---|---|
+| [`208-l1-l2-l3-caching-architecture.md`](./resilience-scalability/208-l1-l2-l3-caching-architecture.md) | **Proposed, not yet built**, except `InProcessCache`'s pattern (`SettingsService`'s existing 30s TTL Map, generalized here, not duplicated) and `VariantSalesStat`'s eager-materialization pattern (already real, cited as the L3 model). L1/L2: `PermissionsService.resolveForUser()` — three uncached queries on every authenticated request, found via `jwt.strategy.ts`'s `validate()` — gets a 10s L1 (capped 10,000 entries) and 60s L2 (`permissions:{userId}`), both invalidated by explicit delete-on-write at the two real revocation sites, the security trade-off stated plainly rather than hidden. Doc 206 §5's API-response cache is reclassified as this architecture's L2, unchanged. A real gap found and fixed: `SettingsService.set()` only ever cleared the *writing* replica's own cache, leaving every other replica stale for up to 30s per write with no correction — closed with a 300s L2 tier. L3: no new target built — `VariantSalesStat`'s own shape stated as the criterion for the next real candidate, not invented speculatively. Pub/sub cross-replica L1 invalidation named and deliberately not built. ADR-077 |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

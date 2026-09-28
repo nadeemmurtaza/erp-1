@@ -25,13 +25,13 @@ root, Prisma tooling, and the e2e suite.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `app.module.ts` | `AppModule` | class | :39 |  |
+| `app.module.ts` | `AppModule` | class | :54 |  |
 
 ### `apps/api/src/core`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `core.module.ts` | `CoreModule` | class | :60 |  |
+| `core.module.ts` | `CoreModule` | class | :62 |  |
 
 ### `apps/api/src/modules`
 

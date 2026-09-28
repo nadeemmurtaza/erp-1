@@ -9035,3 +9035,87 @@ stock is written.
 
 ### Status
 **Accepted.**
+
+## ADR-077 — Doc 208 (L1/L2/L3 caching): each tier attached to a found hot path, not applied blindly — permission resolution's uncached three-query call on every authenticated request as the real L1/L2 target, `VariantSalesStat`'s eager-materialization pattern generalized as the L3 strategy, a real cross-replica settings-staleness bug found and closed along the way
+
+### Context
+
+The owner asked to "implement L1, L2, L3 caching where needed." Investigated
+before designing: `SettingsService` already hand-rolls an in-process TTL
+cache (30s) with no reusable primitive; `PermissionsService.resolveForUser()`
+runs three uncached queries on every authenticated request (called from
+`jwt.strategy.ts`'s `validate()`); `VariantSalesStat` is already an eagerly-
+maintained materialized aggregate, not a TTL cache. "Where needed" is
+answered by what these traces actually show, not by applying three generic
+cache layers uniformly.
+
+### Options Considered
+
+1. **A single generic Redis caching layer wrapping arbitrary endpoints**,
+   labeled L1/L2/L3 by convention without each tier solving a distinct
+   problem. Rejected — this is exactly the "cache added with no stated
+   invalidation strategy is a defect" failure CLAUDE.md's own performance
+   rule already names, and duplicates `SettingsService`'s existing pattern
+   under a different name instead of generalizing it.
+2. **Build a new in-process cache for permission resolution without
+   extracting `SettingsService`'s existing one into a shared primitive.**
+   Rejected on the same "duplicate implementation is a defect" ground — two
+   independently hand-rolled TTL-map caches, one already existing.
+3. **Real cross-replica L1 invalidation via a new Redis pub/sub broadcast**,
+   so a permission revocation is instant on every replica, not TTL-bounded.
+   Rejected for this pass — no pub/sub mechanism exists anywhere in this
+   codebase today, and building one solely to shrink an already-short
+   10-second worst case is speculative infrastructure for a marginal
+   benefit; named as a real future option if instant propagation is ever
+   actually required, not built speculatively now.
+4. **Extract `InProcessCache` as a shared L1 primitive, apply it to the
+   found permission-resolution hot path with an explicit, reasoned TTL and
+   delete-on-write invalidation at the real write sites, add an L2 Redis
+   tier for both permissions and general API responses (doc 206 §5) in a
+   shared safe-to-evict keyspace, and state the L3 criterion from
+   `VariantSalesStat`'s own already-working shape rather than inventing a
+   fourth pattern.** Chosen.
+
+### Decision
+
+Doc 208, as written. L1: `InProcessCache<K,V>`, extracted from
+`SettingsService`'s existing hand-rolled cache; permission resolution gets
+a 10-second L1 (capped 10,000 entries, LRU) and a 60-second L2
+(`permissions:{userId}`), both invalidated by explicit delete-on-write at
+the two real revocation call sites (`users-admin.service.ts`,
+`roles.service.ts`) rather than TTL alone. Settings gains an L2 tier
+(300s, `settings:{key}`) closing a real, previously-silent cross-replica
+staleness gap: `SettingsService.set()` today only clears the *writing*
+replica's own L1, leaving every other replica stale for up to 30 seconds
+per write with no correction. Doc 206 §5's general API-response cache is
+reclassified as this architecture's L2, parameters unchanged. L3 is
+`VariantSalesStat`'s existing eager-materialization pattern, generalized
+as a named criterion for future candidates rather than a fourth cache
+tier — no speculative L3 target is built in this pass.
+
+### Reasoning
+
+Every parameter traces to either an already-shipped constant
+(`SettingsService`'s real 30s TTL, kept unchanged) or a stated, specific
+reason (10s for permissions because a stale revocation is a live
+over-permission window, shorter than a stale setting's merely cosmetic
+delay). The decision not to build pub/sub invalidation is argued
+explicitly rather than left as a silent gap — the accepted staleness
+bound is written down, not assumed safe without reasoning, per this
+repo's own "never hardcode an assumption... without writing down why."
+
+### Consequences
+
+Permission-resolution caching introduces a real, bounded security trade-
+off (up to a 60-second window where a revoked permission could still be
+honored on a replica that hasn't independently expired its entry) — stated
+here as a standing, reviewable fact of this design, not hidden inside an
+implementation detail. The settings cross-replica staleness fix is a
+correction to already-shipped behavior, not new functionality — worth
+noting in case anything downstream was silently relying on the old,
+looser cross-replica settings consistency. Implementation is sequenced
+after doc 206/WO-206.1's Redis module (same dependency doc 207 already
+states), adding one keyspace (`cache: { db: 1 }`) rather than a third.
+
+### Status
+**Accepted.**

@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 432 tracked files in `docs/*`, by directory.
+All 433 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,13 +563,13 @@ All 432 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 9038 |  |
+| `DECISIONS.md` | doc | 9122 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 643 |  |
+| `README.md` | doc | 651 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
@@ -854,7 +854,7 @@ All 432 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `05-promotions-giftcards.md` | doc | 347 |  |
 
-### `docs/implementation/resilience-scalability` (10)
+### `docs/implementation/resilience-scalability` (11)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -864,6 +864,7 @@ All 432 tracked files in `docs/*`, by directory.
 | `144-supply-chain-resilience-planning-engine.md` | doc | 392 |  |
 | `206-rate-limiting-caching-compression-hardening.md` | doc | 202 |  |
 | `207-checkout-admission-queue-hot-sku-contention.md` | doc | 229 |  |
+| `208-l1-l2-l3-caching-architecture.md` | doc | 203 |  |
 | `37-scalability-future-upgrades.md` | doc | 306 |  |
 | `38-resilience-engineering.md` | doc | 379 |  |
 | `48-native-desktop-deployment.md` | doc | 184 |  |

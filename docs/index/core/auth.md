@@ -12,7 +12,7 @@ Source: `apps/api/src/core/auth/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (41 · 8,137 lines)
+## Files (41 · 8,165 lines)
 
 All paths relative to `apps/api/src/core/auth/api-keys`.
 
@@ -27,13 +27,13 @@ All paths relative to `apps/api/src/core/auth/api-keys`.
 | `api-keys.service.spec.ts` | unit test | 546 | — |  |
 | `api-keys.service.ts` | service | 712 | 9 |  |
 | `api-key.dto.ts` | dto | 114 | 5 | Shape and bounds only. |
-| `auth.constants.ts` | module | 114 | 17 |  |
+| `auth.constants.ts` | module | 116 | 18 |  |
 | `auth.controller.ts` | controller | 208 | 3 | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 password gue… |
-| `auth.module.ts` | nest module | 52 | 1 |  |
+| `auth.module.ts` | nest module | 67 | 1 |  |
 | `auth.service.spec.ts` | unit test | 111 | — |  |
 | `auth.service.ts` | service | 461 | 6 |  |
 | `bearer-token.ts` | module | 31 | 2 | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machine auth pa… |
-| `decorators.ts` | module | 80 | 6 | Marks a route as reachable without a token. |
+| `decorators.ts` | module | 91 | 7 | Audits this credential route's per-IP 429s as `auth.rate_limited` (206-rate-limiting-caching-compression-hardening.md §… |
 | `auth.dto.ts` | dto | 126 | 8 |  |
 | `role.dto.ts` | dto | 44 | 2 |  |
 | `sso.dto.ts` | dto | 188 | 8 | Shape and bounds only. |
@@ -130,8 +130,8 @@ _none_
 **`AuthModule`** (`auth.module.ts`)
 - imports: `PassportModule`, `JwtModule`
 - controllers: `AuthController`, `RolesController`, `ApiKeysController`, `ApiKeysAdminController`, `SsoController`, `SsoAdminController`
-- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `SsoService`, `OidcProvider`
-- exports: `AuthService`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`
+- providers: `AuthService`, `JwtStrategy`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `SsoService`, `OidcProvider`, `LoginThrottleService`, `RateLimitAuditService`
+- exports: `AuthService`, `PermissionsResolverService`, `RolesService`, `ApiKeyAuthService`, `ApiKeysService`, `RateLimitAuditService`
 
 
 ## Reaches out to
@@ -196,23 +196,24 @@ check there before adding another.
 | `PERMISSIONS_KEY` | const | `auth.constants.ts:4` |  |
 | `SESSION_ONLY_KEY` | const | `auth.constants.ts:6` | @see SessionOnly — refused to every API key, whatever it carries. |
 | `CUSTOMER_SCOPES_KEY` | const | `auth.constants.ts:8` | @see CustomerScope — which storefront API keys may reach a customer route. |
-| `JwtPayload` | interface | `auth.constants.ts:18` | What a verified access token carries. |
-| `ApiKeyPrincipal` | interface | `auth.constants.ts:31` | The personal API key a request authenticated with, when it did not come from a session (163-personal-api-keys… |
-| `AuthenticatedUser` | interface | `auth.constants.ts:44` | The authenticated principal attached to the request. |
-| `AUTHENTICATED_ONLY_KEY` | const | `auth.constants.ts:83` | Marks a route as deliberately open to any signed-in user. |
-| `REFRESH_COOKIE` | const | `auth.constants.ts:85` | Marks a route as deliberately open to any signed-in user. |
-| `CART_COOKIE` | const | `auth.constants.ts:86` |  |
-| `SSO_STATE_COOKIE` | const | `auth.constants.ts:98` | Single sign-on (161-sso-identity-federation.md). |
-| `SSO_HANDOFF_COOKIE` | const | `auth.constants.ts:99` | Single sign-on (161-sso-identity-federation.md). |
-| `SSO_STATE_TTL_MS` | const | `auth.constants.ts:100` | Single sign-on (161-sso-identity-federation.md). |
-| `SSO_HANDOFF_TTL_MS` | const | `auth.constants.ts:101` | Single sign-on (161-sso-identity-federation.md). |
-| `LEGACY_REFRESH_COOKIE` | const | `auth.constants.ts:103` | Single sign-on (161-sso-identity-federation.md). |
-| `LEGACY_CART_COOKIE` | const | `auth.constants.ts:104` |  |
-| `readCookie` | function | `auth.constants.ts:107` | The current cookie, or the one written before the rename. |
+| `RATE_LIMIT_AUDIT_KEY` | const | `auth.constants.ts:10` | @see AuditRateLimit — which body field names the identifier a throttled credential route was guessing at. |
+| `JwtPayload` | interface | `auth.constants.ts:20` | What a verified access token carries. |
+| `ApiKeyPrincipal` | interface | `auth.constants.ts:33` | The personal API key a request authenticated with, when it did not come from a session (163-personal-api-keys… |
+| `AuthenticatedUser` | interface | `auth.constants.ts:46` | The authenticated principal attached to the request. |
+| `AUTHENTICATED_ONLY_KEY` | const | `auth.constants.ts:85` | Marks a route as deliberately open to any signed-in user. |
+| `REFRESH_COOKIE` | const | `auth.constants.ts:87` | Marks a route as deliberately open to any signed-in user. |
+| `CART_COOKIE` | const | `auth.constants.ts:88` |  |
+| `SSO_STATE_COOKIE` | const | `auth.constants.ts:100` | Single sign-on (161-sso-identity-federation.md). |
+| `SSO_HANDOFF_COOKIE` | const | `auth.constants.ts:101` | Single sign-on (161-sso-identity-federation.md). |
+| `SSO_STATE_TTL_MS` | const | `auth.constants.ts:102` | Single sign-on (161-sso-identity-federation.md). |
+| `SSO_HANDOFF_TTL_MS` | const | `auth.constants.ts:103` | Single sign-on (161-sso-identity-federation.md). |
+| `LEGACY_REFRESH_COOKIE` | const | `auth.constants.ts:105` | Single sign-on (161-sso-identity-federation.md). |
+| `LEGACY_CART_COOKIE` | const | `auth.constants.ts:106` |  |
+| `readCookie` | function | `auth.constants.ts:109` | The current cookie, or the one written before the rename. |
 | `CREDENTIAL_THROTTLE` | const | `auth.controller.ts:43` | Credential endpoints are rate limited far tighter than the global 300/min, which on a login form is 18,000 pa… |
 | `setRefreshCookie` | function | `auth.controller.ts:46` | The refresh-token cookie every sign-in path writes — password here, single sign-on in sso.controller.ts. |
 | `AuthController` | class | `auth.controller.ts:58` |  |
-| `AuthModule` | class | `auth.module.ts:51` |  |
+| `AuthModule` | class | `auth.module.ts:66` |  |
 | `AuthTokens` | interface | `auth.service.ts:20` |  |
 | `AuthResult` | interface | `auth.service.ts:26` |  |
 | `RegisterInput` | interface | `auth.service.ts:30` |  |
@@ -221,12 +222,13 @@ check there before adding another.
 | `parseDuration` | function | `auth.service.ts:448` | "30d" -> milliseconds. |
 | `bearerToken` | function | `bearer-token.ts:10` | Extracts the raw credential from an `Authorization: Bearer <token>` header — shared by every machine-to-machi… |
 | `bearerCredential` | function | `bearer-token.ts:26` | The credential in an `Authorization: Bearer <credential>` header, or undefined — never throws. |
-| `Public` | const | `decorators.ts:18` | Marks a route as reachable without a token. |
-| `RequirePermission` | const | `decorators.ts:27` | Restricts a route to callers holding at least one of the given permissions. |
-| `AuthenticatedOnly` | const | `decorators.ts:43` | Marks a route as deliberately open to any signed-in user. |
-| `SessionOnly` | const | `decorators.ts:56` | Refuses the route to every personal API key, whatever permission or scope it carries — only a signed-in sessi… |
-| `CustomerScope` | const | `decorators.ts:68` | Lets a storefront API key reach this customer self-service route when it carries any one of the named scopes… |
-| `CurrentUser` | const | `decorators.ts:72` | Injects the authenticated user, or undefined on a @Public route. |
+| `AuditRateLimit` | const | `decorators.ts:20` | Audits this credential route's per-IP 429s as `auth.rate_limited` (206-rate-limiting-caching-compression-hard… |
+| `Public` | const | `decorators.ts:29` | Marks a route as reachable without a token. |
+| `RequirePermission` | const | `decorators.ts:38` | Restricts a route to callers holding at least one of the given permissions. |
+| `AuthenticatedOnly` | const | `decorators.ts:54` | Marks a route as deliberately open to any signed-in user. |
+| `SessionOnly` | const | `decorators.ts:67` | Refuses the route to every personal API key, whatever permission or scope it carries — only a signed-in sessi… |
+| `CustomerScope` | const | `decorators.ts:79` | Lets a storefront API key reach this customer self-service route when it carries any one of the named scopes… |
+| `CurrentUser` | const | `decorators.ts:83` | Injects the authenticated user, or undefined on a @Public route. |
 | `RegisterDto` | class | `auth.dto.ts:11` |  |
 | `LoginDto` | class | `auth.dto.ts:41` |  |
 | `RefreshDto` | class | `auth.dto.ts:56` |  |

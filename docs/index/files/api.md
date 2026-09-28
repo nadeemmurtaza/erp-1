@@ -16,7 +16,7 @@ All 1,165 tracked files in `apps/api`, by directory.
 | `eslint.config.mjs` | script | 36 | Nest resolves constructor parameter types at runtime through decorator |
 | `jest.config.js` | script | 26 | @type {import('jest').Config} |
 | `nest-cli.json` | json | 18 |  |
-| `package.json` | json | 81 |  |
+| `package.json` | json | 83 |  |
 | `prisma.config.ts` | module | 19 | A Prisma config file switches OFF Prisma's automatic .env loading, so we do |
 | `report.20260921.035047.1334.0.001.json` | json | 548 |  |
 | `tsconfig.build.json` | json | 5 |  |
@@ -45,7 +45,7 @@ All 1,165 tracked files in `apps/api`, by directory.
 | `cart.prisma` | prisma schema | 102 | Cart. Guest carts are keyed by an opaque token held in a cookie and merged |
 | `catalog.prisma` | prisma schema | 788 | Catalog: categories, products, variants, images. |
 | `content.prisma` | prisma schema | 166 | Content: pages, blog posts, banners, menus. WO-8.1, |
-| `core.prisma` | prisma schema | 671 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
+| `core.prisma` | prisma schema | 688 | Core: identity, addresses, runtime settings, audit trail and the event outbox. |
 | `crm.prisma` | prisma schema | 269 | CRM: one customer record, whatever door the customer came in through. |
 | `custom-fields.prisma` | prisma schema | 33 | Custom fields: a narrow, bounded JSONB overlay, never a general EAV model |
 | `embeds.prisma` | prisma schema | 19 | Embedding a third-party dashboard: a narrow iframe pattern, not a |
@@ -762,14 +762,14 @@ All 1,165 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `app.module.ts` | nest module | 40 |  |
+| `app.module.ts` | nest module | 55 |  |
 | `main.ts` | module | 113 | Must come before AppModule: the module registry reads MODULES from the |
 
 ### `apps/api/src/core` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 61 |  |
+| `core.module.ts` | nest module | 63 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -816,13 +816,13 @@ All 1,165 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auth.constants.ts` | module | 114 |  |
+| `auth.constants.ts` | module | 116 |  |
 | `auth.controller.ts` | controller | 208 |  |
-| `auth.module.ts` | nest module | 52 |  |
+| `auth.module.ts` | nest module | 67 |  |
 | `auth.service.spec.ts` | unit test | 111 |  |
 | `auth.service.ts` | service | 461 |  |
 | `bearer-token.ts` | module | 31 |  |
-| `decorators.ts` | module | 80 |  |
+| `decorators.ts` | module | 91 |  |
 | `guards.spec.ts` | unit test | 212 |  |
 | `guards.ts` | module | 167 |  |
 | `identity-provider.ts` | module | 91 |  |
@@ -904,7 +904,7 @@ All 1,165 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `all-exceptions.filter.ts` | module | 136 |  |
+| `all-exceptions.filter.ts` | module | 152 |  |
 
 ### `apps/api/src/core/config` (6)
 
@@ -912,8 +912,8 @@ All 1,165 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `app-config.service.ts` | service | 72 |  |
 | `config.module.ts` | nest module | 23 |  |
-| `env.validation.spec.ts` | unit test | 154 |  |
-| `env.validation.ts` | config | 350 |  |
+| `env.validation.spec.ts` | unit test | 190 |  |
+| `env.validation.ts` | config | 400 |  |
 | `load-env.ts` | config | 14 |  |
 | `meta.controller.ts` | controller | 41 |  |
 

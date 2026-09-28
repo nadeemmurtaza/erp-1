@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2460,
-    "lines": 385222,
+    "files": 2461,
+    "lines": 385759,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -27,14 +27,14 @@
     },
     "infra": {
       "files": 60,
-      "lines": 30638,
-      "bytes": 1206246,
+      "lines": 30714,
+      "bytes": 1209617,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
       "files": 1165,
-      "lines": 154822,
-      "bytes": 6041668,
+      "lines": 154988,
+      "bytes": 6049761,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 432,
-      "lines": 87463,
-      "bytes": 5279023,
+      "files": 433,
+      "lines": 87758,
+      "bytes": 5297717,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -18972,7 +18972,7 @@
     {
       "name": "Address",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 324,
+      "line": 341,
       "doc": "",
       "fields": [
         {
@@ -19231,7 +19231,7 @@
     {
       "name": "AiUsageLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 651,
+      "line": 668,
       "doc": "",
       "fields": [
         {
@@ -19320,7 +19320,7 @@
     {
       "name": "AnalyticsEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 602,
+      "line": 619,
       "doc": "Anonymous, aggregate first-party analytics — page views, add-to-cart, checkout-started.",
       "fields": [
         {
@@ -19381,7 +19381,7 @@
     {
       "name": "ApiKey",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 274,
+      "line": 291,
       "doc": "A personal API key: a credential that acts as `user`, never as anyone more powerful.",
       "fields": [
         {
@@ -20431,7 +20431,7 @@
     {
       "name": "AuditLog",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 414,
+      "line": 431,
       "doc": "",
       "fields": [
         {
@@ -24585,7 +24585,7 @@
     {
       "name": "DeviceToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 582,
+      "line": 599,
       "doc": "A push notification target: one installation of the mobile app.",
       "fields": [
         {
@@ -25142,7 +25142,7 @@
     {
       "name": "EmailAccount",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 369,
+      "line": 386,
       "doc": "A connected mailbox: SMTP to send, optionally IMAP to receive.",
       "fields": [
         {
@@ -25328,7 +25328,7 @@
     {
       "name": "EmailVerificationToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 230,
+      "line": 247,
       "doc": "A one-time token mailed to confirm an email address.",
       "fields": [
         {
@@ -32815,7 +32815,7 @@
     {
       "name": "OutboxEvent",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 555,
+      "line": 572,
       "doc": "Transactional outbox.",
       "fields": [
         {
@@ -33202,7 +33202,7 @@
     {
       "name": "PasswordResetToken",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 213,
+      "line": 230,
       "doc": "A one-time token mailed to reset a forgotten password.",
       "fields": [
         {
@@ -33757,7 +33757,7 @@
     {
       "name": "Permission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 435,
+      "line": 452,
       "doc": "A single grantable capability, e.g.",
       "fields": [
         {
@@ -38439,6 +38439,41 @@
           "relation": false
         },
         {
+          "name": "familyId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "rotatedAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "replacedById",
+          "type": "String?",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "replacedBy",
+          "type": "RefreshToken?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "replaces",
+          "type": "RefreshToken?",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
           "name": "user",
           "type": "User",
           "id": false,
@@ -38448,7 +38483,8 @@
       ],
       "indexes": [
         "@@index([userId])",
-        "@@index([expiresAt])"
+        "@@index([expiresAt])",
+        "@@index([familyId])"
       ]
     },
     {
@@ -39552,7 +39588,7 @@
     {
       "name": "Role",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 501,
+      "line": 518,
       "doc": "A named, reusable bundle of permissions a super admin defines — \"roles are data, not code\" (House Rule 9) taken to its actual conclusion.",
       "fields": [
         {
@@ -39610,7 +39646,7 @@
     {
       "name": "RoleGrant",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 515,
+      "line": 532,
       "doc": "Which permissions a `Role` holds — the direct successor to the old enum-keyed `RolePermission`, just pointing at a real `Role` row instead of a fixed enum value.",
       "fields": [
         {
@@ -39664,7 +39700,7 @@
     {
       "name": "RolePermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 451,
+      "line": 468,
       "doc": "Which roles currently hold a given permission.",
       "fields": [
         {
@@ -40009,7 +40045,7 @@
     {
       "name": "Setting",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 347,
+      "line": 364,
       "doc": "Runtime configuration edited from the admin dashboard: store name, shipping zones, COD fee, stitching lead times.",
       "fields": [
         {
@@ -45335,7 +45371,7 @@
     {
       "name": "UserPermission",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 472,
+      "line": 489,
       "doc": "A per-user adjustment layered on top of their role's grants: GRANT adds a permission their role doesn't have, REVOKE takes one away that it does.",
       "fields": [
         {
@@ -45396,7 +45432,7 @@
     {
       "name": "UserRoleAssignment",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 530,
+      "line": 547,
       "doc": "Which `Role` rows a user holds.",
       "fields": [
         {
@@ -46310,7 +46346,7 @@
     {
       "name": "AiCallKind",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 645,
+      "line": 662,
       "values": [
         "COMPLETION",
         "EMBEDDING",
@@ -46320,7 +46356,7 @@
     {
       "name": "AiFeature",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 620,
+      "line": 637,
       "values": [
         "ALT_TEXT",
         "SEO_COPY",
@@ -46365,7 +46401,7 @@
     {
       "name": "ApiKeyRevocationReason",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 255,
+      "line": 272,
       "values": [
         "OWNER",
         "ADMINISTRATOR",
@@ -46375,7 +46411,7 @@
     {
       "name": "ApiKeySurface",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 248,
+      "line": 265,
       "values": [
         "ADMIN",
         "STOREFRONT"
@@ -46672,7 +46708,7 @@
     {
       "name": "DevicePlatform",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 570,
+      "line": 587,
       "values": [
         "IOS",
         "ANDROID",
@@ -46717,7 +46753,7 @@
     {
       "name": "EmailAccountPurpose",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 358,
+      "line": 375,
       "values": [
         "TRANSACTIONAL",
         "MARKETING",
@@ -47163,7 +47199,7 @@
     {
       "name": "OutboxStatus",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 544,
+      "line": 561,
       "values": [
         "PENDING",
         "PROCESSING",
@@ -47218,7 +47254,7 @@
     {
       "name": "PermissionEffect",
       "file": "apps/api/prisma/schema/core.prisma",
-      "line": 463,
+      "line": 480,
       "values": [
         "GRANT",
         "REVOKE"
@@ -50020,7 +50056,35 @@
   ],
   "schemaMigrationDrift": {
     "missingTables": [],
-    "missingColumns": [],
+    "missingColumns": [
+      {
+        "model": "RefreshToken",
+        "table": "RefreshToken",
+        "field": "familyId",
+        "column": "familyId",
+        "type": "String",
+        "file": "apps/api/prisma/schema/core.prisma",
+        "line": 192
+      },
+      {
+        "model": "RefreshToken",
+        "table": "RefreshToken",
+        "field": "rotatedAt",
+        "column": "rotatedAt",
+        "type": "DateTime?",
+        "file": "apps/api/prisma/schema/core.prisma",
+        "line": 192
+      },
+      {
+        "model": "RefreshToken",
+        "table": "RefreshToken",
+        "field": "replacedById",
+        "column": "replacedById",
+        "type": "String?",
+        "file": "apps/api/prisma/schema/core.prisma",
+        "line": 192
+      }
+    ],
     "missingEnums": [],
     "missingEnumValues": [
       {
@@ -53504,9 +53568,10 @@
       "file": "apps/api/src/core/config/env.validation.spec.ts",
       "module": "core/config",
       "kind": "unit test",
-      "cases": 20,
+      "cases": 24,
       "describes": [
-        "validateEnv"
+        "validateEnv",
+        "REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2)"
       ]
     },
     {
@@ -57548,8 +57613,8 @@
       "path": "apps/api/package.json",
       "area": "api",
       "kind": "json",
-      "lines": 81,
-      "bytes": 2570,
+      "lines": 83,
+      "bytes": 2645,
       "doc": "",
       "symbols": []
     },
@@ -57680,8 +57745,8 @@
       "path": "apps/api/prisma/schema/core.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 671,
-      "bytes": 28924,
+      "lines": 688,
+      "bytes": 30012,
       "doc": "Core: identity, addresses, runtime settings, audit trail and the event outbox.",
       "symbols": []
     },
@@ -59156,14 +59221,14 @@
       "path": "apps/api/src/app.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 40,
-      "bytes": 1997,
+      "lines": 55,
+      "bytes": 2957,
       "doc": "",
       "symbols": [
         {
           "name": "AppModule",
           "kind": "class",
-          "line": 39
+          "line": 54
         }
       ]
     },
@@ -59655,8 +59720,8 @@
       "path": "apps/api/src/core/auth/auth.constants.ts",
       "area": "api",
       "kind": "module",
-      "lines": 114,
-      "bytes": 4523,
+      "lines": 116,
+      "bytes": 4697,
       "doc": "",
       "symbols": [
         {
@@ -59680,69 +59745,74 @@
           "line": 8
         },
         {
+          "name": "RATE_LIMIT_AUDIT_KEY",
+          "kind": "const",
+          "line": 10
+        },
+        {
           "name": "JwtPayload",
           "kind": "interface",
-          "line": 18
+          "line": 20
         },
         {
           "name": "ApiKeyPrincipal",
           "kind": "interface",
-          "line": 31
+          "line": 33
         },
         {
           "name": "AuthenticatedUser",
           "kind": "interface",
-          "line": 44
+          "line": 46
         },
         {
           "name": "AUTHENTICATED_ONLY_KEY",
           "kind": "const",
-          "line": 83
+          "line": 85
         },
         {
           "name": "REFRESH_COOKIE",
           "kind": "const",
-          "line": 85
+          "line": 87
         },
         {
           "name": "CART_COOKIE",
           "kind": "const",
-          "line": 86
+          "line": 88
         },
         {
           "name": "SSO_STATE_COOKIE",
           "kind": "const",
-          "line": 98
+          "line": 100
         },
         {
           "name": "SSO_HANDOFF_COOKIE",
           "kind": "const",
-          "line": 99
+          "line": 101
         },
         {
           "name": "SSO_STATE_TTL_MS",
           "kind": "const",
-          "line": 100
+          "line": 102
         },
         {
           "name": "SSO_HANDOFF_TTL_MS",
           "kind": "const",
-          "line": 101
+          "line": 103
         },
         {
           "name": "LEGACY_REFRESH_COOKIE",
           "kind": "const",
-          "line": 103
+          "line": 105
         },
         {
           "name": "LEGACY_CART_COOKIE",
           "kind": "const",
-          "line": 104
+          "line": 106
         },
         {
           "name": "readCookie",
           "kind": "function",
-          "line": 107
+          "line": 109
         }
       ]
     },
@@ -59775,14 +59845,14 @@
       "path": "apps/api/src/core/auth/auth.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 52,
-      "bytes": 1954,
+      "lines": 67,
+      "bytes": 2442,
       "doc": "",
       "symbols": [
         {
           "name": "AuthModule",
           "kind": "class",
-          "line": 51
+          "line": 66
         }
       ]
     },
@@ -59859,39 +59929,44 @@
       "path": "apps/api/src/core/auth/decorators.ts",
       "area": "api",
       "kind": "module",
-      "lines": 80,
-      "bytes": 3422,
+      "lines": 91,
+      "bytes": 3958,
       "doc": "",
       "symbols": [
         {
+          "name": "AuditRateLimit",
+          "kind": "const",
+          "line": 20
+        },
+        {
           "name": "Public",
           "kind": "const",
-          "line": 18
+          "line": 29
         },
         {
           "name": "RequirePermission",
           "kind": "const",
-          "line": 27
+          "line": 38
         },
         {
           "name": "AuthenticatedOnly",
           "kind": "const",
-          "line": 43
+          "line": 54
         },
         {
           "name": "SessionOnly",
           "kind": "const",
-          "line": 56
+          "line": 67
         },
         {
           "name": "CustomerScope",
           "kind": "const",
-          "line": 68
+          "line": 79
         },
         {
           "name": "CurrentUser",
           "kind": "const",
-          "line": 72
+          "line": 83
         }
       ]
     },
@@ -60613,14 +60688,14 @@
       "path": "apps/api/src/core/common/filters/all-exceptions.filter.ts",
       "area": "api",
       "kind": "module",
-      "lines": 136,
-      "bytes": 3849,
+      "lines": 152,
+      "bytes": 4604,
       "doc": "",
       "symbols": [
         {
           "name": "AllExceptionsFilter",
           "kind": "class",
-          "line": 26
+          "line": 32
         }
       ]
     },
@@ -60673,8 +60748,8 @@
       "path": "apps/api/src/core/config/env.validation.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 154,
-      "bytes": 5180,
+      "lines": 190,
+      "bytes": 6773,
       "doc": "",
       "symbols": []
     },
@@ -60682,24 +60757,24 @@
       "path": "apps/api/src/core/config/env.validation.ts",
       "area": "api",
       "kind": "config",
-      "lines": 350,
-      "bytes": 15754,
+      "lines": 400,
+      "bytes": 18109,
       "doc": "",
       "symbols": [
         {
           "name": "envSchema",
           "kind": "const",
-          "line": 30
+          "line": 57
         },
         {
           "name": "Env",
           "kind": "type",
-          "line": 216
+          "line": 252
         },
         {
           "name": "validateEnv",
           "kind": "function",
-          "line": 242
+          "line": 282
         }
       ]
     },
@@ -60731,14 +60806,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 61,
-      "bytes": 2226,
+      "lines": 63,
+      "bytes": 2295,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 60
+          "line": 62
         }
       ]
     },
@@ -91353,8 +91428,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 9038,
-      "bytes": 531280,
+      "lines": 9122,
+      "bytes": 536203,
       "doc": "",
       "symbols": []
     },
@@ -91407,8 +91482,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 643,
-      "bytes": 98125,
+      "lines": 651,
+      "bytes": 99611,
       "doc": "",
       "symbols": []
     },
@@ -93110,6 +93185,15 @@
       "kind": "doc",
       "lines": 229,
       "bytes": 12870,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/resilience-scalability/208-l1-l2-l3-caching-architecture.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 203,
+      "bytes": 12285,
       "doc": "",
       "symbols": []
     },
@@ -95428,8 +95512,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 19006,
-      "bytes": 693853,
+      "lines": 19082,
+      "bytes": 697224,
       "doc": "",
       "symbols": []
     },

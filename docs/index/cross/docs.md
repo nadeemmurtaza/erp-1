@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**458** markdown documents. These explain **why**; this index only says **where**.
+**459** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2943,7 +2943,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,038 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,122 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3025,6 +3025,7 @@ _no second-level headings_
 - ADR-074 — Doc 205 (video rooms for doc 24's meetings): self-host LiveKit as NEWAX's own SFU behind a new `VideoConferenceProvider` core seam, run as its own Coolify resource and off by default in every deployment; LiveKit's built-in TURN rather than coturn; recording deferred  <sub>:8674</sub>
 - ADR-075 — Doc 206 (rate limiting, sudden-logout, RAM ceilings, connection pooling, API caching, lazy loading, compression): eight requests investigated against the real code first — three extend what's already built, five are genuinely new, every parameter stated with its exact value  <sub>:8880</sub>
 - ADR-076 — Doc 207 (checkout admission queue): "prevent overselling during rush hours" corrected — overselling is already structurally impossible via `InventoryService.applyMovement()`'s predicate-on-write; the real problem is checkout UX and lock contention on a hot SKU's two rows, addressed with a per-variant admission queue that fails open, never a second stock guard  <sub>:8967</sub>
+- ADR-077 — Doc 208 (L1/L2/L3 caching): each tier attached to a found hot path, not applied blindly — permission resolution's uncached three-query call on every authenticated request as the real L1/L2 target, `VariantSalesStat`'s eager-materialization pattern generalized as the L3 strategy, a real cross-replica settings-staleness bug found and closed along the way  <sub>:9039</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3825,16 +3826,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>643 lines</sub>
+### `docs/implementation/README.md`  <sub>651 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:496</sub>
-- The two module groups  <sub>:525</sub>
-- How a work order runs  <sub>:562</sub>
-- Known gaps not yet owned by a phase  <sub>:580</sub>
-- When a brief is wrong  <sub>:607</sub>
-- Scope, honestly  <sub>:620</sub>
-- Gap-analysis roadmap references  <sub>:627</sub>
+- Dependency order  <sub>:504</sub>
+- The two module groups  <sub>:533</sub>
+- How a work order runs  <sub>:570</sub>
+- Known gaps not yet owned by a phase  <sub>:588</sub>
+- When a brief is wrong  <sub>:615</sub>
+- Scope, honestly  <sub>:628</sub>
+- Gap-analysis roadmap references  <sub>:635</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 
@@ -3901,6 +3902,17 @@ _no second-level headings_
 - Work orders  <sub>:191</sub>
 - Acceptance  <sub>:205</sub>
 - Out of scope  <sub>:221</sub>
+
+### `docs/implementation/resilience-scalability/208-l1-l2-l3-caching-architecture.md`  <sub>203 lines</sub>
+
+- 0. What the three tiers are actually for — not three arbitrary layers  <sub>:17</sub>
+- 1. The reusable L1 primitive — extracted from `SettingsService`, not duplicated  <sub>:41</sub>
+- 2. Permission resolution — the actual hottest read path in this codebase  <sub>:57</sub>
+- 3. General API response caching — this is doc 206 §5, reclassified as L2, unchanged  <sub>:134</sub>
+- 4. L3 — where eager materialization applies, and where it doesn't  <sub>:143</sub>
+- Work orders  <sub>:165</sub>
+- Acceptance  <sub>:181</sub>
+- Out of scope  <sub>:195</sub>
 
 ### `docs/implementation/resilience-scalability/37-scalability-future-upgrades.md`  <sub>306 lines</sub>
 

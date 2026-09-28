@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**445** markdown documents. These explain **why**; this index only says **where**.
+**456** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3434,6 +3434,155 @@ _no second-level headings_
 - Acceptance  <sub>:340</sub>
 - Out of scope  <sub>:351</sub>
 
+### `docs/implementation/integrations-connectivity/185-app-manifest-and-directory-catalog.md`  <sub>554 lines</sub>
+
+- 1. Listing, version, manifest — three things, not one  <sub>:11</sub>
+- 2. The manifest  <sub>:168</sub>
+- 3. Event topics — an explicit allowlist, never "any domain event"  <sub>:266</sub>
+- 4. Provider capabilities  <sub>:345</sub>
+- 5. Versioning — which changes need the installer's consent again  <sub>:365</sub>
+- 6. The directory a tenant browses  <sub>:402</sub>
+- Scope lenses  <sub>:474</sub>
+- Work orders  <sub>:505</sub>
+- Acceptance  <sub>:529</sub>
+- Out of scope  <sub>:544</sub>
+
+### `docs/implementation/integrations-connectivity/186-app-publisher-program-review-moderation.md`  <sub>571 lines</sub>
+
+- 1. A publisher is its own principal, and usually not a tenant  <sub>:14</sub>
+- 2. How a publisher gets in — by phase  <sub>:108</sub>
+- 3. The review pipeline — honest about what it can and cannot verify  <sub>:137</sub>
+- 4. The directory policy — the policy layer this program enforces  <sub>:286</sub>
+- 5. After approval — complaints, signals, suspension, termination  <sub>:315</sub>
+- 6. Where NEWAX staff do this  <sub>:390</sub>
+- Scope lenses  <sub>:418</sub>
+- Work orders  <sub>:516</sub>
+- Acceptance  <sub>:549</sub>
+- Out of scope  <sub>:563</sub>
+
+### `docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md`  <sub>818 lines</sub>
+
+- Implementation plan  <sub>:14</sub>
+- 1. What an installation is, in rows  <sub>:81</sub>
+- 2. The consent screen — never a blind click  <sub>:220</sub>
+- 3. The install sequence — a REQUEST across two databases, made safe  <sub>:281</sub>
+- 4. Who may install, and who must agree  <sub>:347</sub>
+- 5. After install: upgrades, price changes, tenant suspension  <sub>:424</sub>
+- 6. Uninstall — a RECORD, never refused, never waiting on anything  <sub>:473</sub>
+- 7. Screens and reachability  <sub>:501</sub>
+- 8. Permissions, seeded all the way through  <sub>:517</sub>
+- Scope lenses  <sub>:552</sub>
+- Work orders  <sub>:751</sub>
+- Acceptance  <sub>:781</sub>
+- Out of scope  <sub>:808</sub>
+
+### `docs/implementation/integrations-connectivity/188-app-runtime-event-delivery-to-apps.md`  <sub>587 lines</sub>
+
+- 1. Why the outbox cannot simply get an HTTP listener  <sub>:15</sub>
+- 2. The design: the outbox fans out once; each external subscriber gets its own row  <sub>:50</sub>
+- 3. On the wire  <sub>:299</sub>
+- 4. Egress safety — NEWAX's servers must never be pointed inward  <sub>:334</sub>
+- 5. Three subscriber kinds, one engine  <sub>:357</sub>
+- 6. What the operator sees and does  <sub>:381</sub>
+- Scope lenses  <sub>:414</sub>
+- Work orders  <sub>:525</sub>
+- Acceptance  <sub>:555</sub>
+- Out of scope  <sub>:578</sub>
+
+### `docs/implementation/integrations-connectivity/189-app-runtime-scoped-client-credential.md`  <sub>568 lines</sub>
+
+- 1. `ApiClient`, with the four corrections doc 34 needs  <sub>:14</sub>
+- 2. How an app authenticates — its private key mints short-lived tokens  <sub>:145</sub>
+- 3. What an app can never hold  <sub>:256</sub>
+- 4. Quota, usage and the signal of an app reaching for more  <sub>:309</sub>
+- 5. Tenant isolation, by construction  <sub>:343</sub>
+- 6. Revocation in the middle of a request  <sub>:359</sub>
+- 7. Keeping the actor `User` an actor and never a login  <sub>:377</sub>
+- Scope lenses  <sub>:397</sub>
+- Work orders  <sub>:505</sub>
+- Acceptance  <sub>:541</sub>
+- Out of scope  <sub>:560</sub>
+
+### `docs/implementation/integrations-connectivity/190-app-runtime-apps-as-extension-point-providers.md`  <sub>436 lines</sub>
+
+- 1. The shape, and the line it must not cross  <sub>:16</sub>
+- 2. Which interface methods may be remote — decided per call site, from the code  <sub>:40</sub>
+- 3. The binding — per installation, per extension point, off until switched on  <sub>:66</sub>
+- 4. The registry, and the two services it plugs into  <sub>:125</sub>
+- 5. Uninstall with money or parcels in flight — a narrow, time-boxed, verified grace  <sub>:226</sub>
+- 6. What makes another interface bindable  <sub>:257</sub>
+- Scope lenses  <sub>:290</sub>
+- Work orders  <sub>:393</sub>
+- Acceptance  <sub>:412</sub>
+- Out of scope  <sub>:428</sub>
+
+### `docs/implementation/integrations-connectivity/191-app-revocation-kill-switch-tenant-isolation.md`  <sub>602 lines</sub>
+
+- Implementation plan  <sub>:14</sub>
+- 1. Four levers, four scopes  <sub>:67</sub>
+- 2. Uninstall — the complete revocation, one transaction, waiting on nothing  <sub>:76</sub>
+- 3. The kill switch — NEWAX stops an app on every tenant without touching any tenant's database  <sub>:118</sub>
+- 4. Blast radius — what each compromise can reach, and what stops it  <sub>:238</sub>
+- 5. The platform's record, and reconciliation that catches what delivery missed  <sub>:312</sub>
+- 6. Data already sent — the one thing revocation cannot reach, said plainly  <sub>:367</sub>
+- Scope lenses  <sub>:385</sub>
+- Work orders  <sub>:547</sub>
+- Acceptance  <sub>:576</sub>
+- Out of scope  <sub>:594</sub>
+
+### `docs/implementation/integrations-connectivity/192-app-commercial-model-billing.md`  <sub>468 lines</sub>
+
+- 1. The principle  <sub>:17</sub>
+- 2. How a publisher prices an app  <sub>:39</sub>
+- 3. Subscriptions — created when the install is real, ended when it is gone  <sub>:87</sub>
+- 4. What suspension, removal and termination do to the bill  <sub>:138</sub>
+- 5. On the invoice  <sub>:152</sub>
+- 6. Revenue share — a trade payable, created on collection, paid in runs  <sub>:225</sub>
+- 7. NEWAX's own books  <sub>:290</sub>
+- 8. Deliberately later  <sub>:302</sub>
+- Scope lenses  <sub>:317</sub>
+- Work orders  <sub>:415</sub>
+- Acceptance  <sub>:445</sub>
+- Out of scope  <sub>:461</sub>
+
+### `docs/implementation/integrations-connectivity/193-app-private-connection-escape-hatch.md`  <sub>226 lines</sub>
+
+- 1. The promise  <sub>:13</sub>
+- 2. Two directions, and the mechanism for each  <sub>:25</sub>
+- 3. The private app: a service account, with the app's safeguards and none of the directory  <sub>:43</sub>
+- 4. Which one to use — the screen answers it, not a manual  <sub>:84</sub>
+- 5. Graduating a private connection into an app  <sub>:105</sub>
+- 6. Why the directory does not simply become "shared connectors"  <sub>:114</sub>
+- Scope lenses  <sub>:125</sub>
+- Work orders  <sub>:194</sub>
+- Acceptance  <sub>:209</sub>
+- Out of scope  <sub>:221</sub>
+
+### `docs/implementation/integrations-connectivity/194-app-platform-failure-modes.md`  <sub>282 lines</sub>
+
+- 1. Rows added to doc 38's degradation matrix  <sub>:15</sub>
+- 2. Each failure, specifically  <sub>:34</sub>
+- 3. Circuit keys this program adds  <sub>:212</sub>
+- Scope lenses  <sub>:227</sub>
+- Work orders  <sub>:253</sub>
+- Acceptance  <sub>:267</sub>
+- Out of scope  <sub>:277</sub>
+
+### `docs/implementation/integrations-connectivity/195-app-platform-rollout-sequencing.md`  <sub>241 lines</sub>
+
+- 1. The ordering principle  <sub>:8</sub>
+- 2. Phase 0 — the foundation, invisible to users  <sub>:23</sub>
+- 3. Phase 1 — NEWAX's own apps, invite-only, free  <sub>:57</sub>
+- 4. Phase 2 — contracted partner publishers  <sub>:112</sub>
+- 5. Phase 3 — paid apps, NEWAX-collected, no payouts  <sub>:137</sub>
+- 6. Phase 4 — the open directory and revenue share  <sub>:148</sub>
+- 7. Deliberately later, and deliberately never  <sub>:167</sub>
+- 8. Dependencies on documents that are themselves unbuilt  <sub>:180</sub>
+- Scope lenses  <sub>:192</sub>
+- Work orders  <sub>:214</sub>
+- Acceptance  <sub>:226</sub>
+- Out of scope  <sub>:235</sub>
+
 ### `docs/implementation/integrations-connectivity/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
 
 - 1. Two channels, one interface, no caller changes  <sub>:19</sub>
@@ -3444,26 +3593,26 @@ _no second-level headings_
 - Acceptance  <sub>:226</sub>
 - Out of scope  <sub>:241</sub>
 
-### `docs/implementation/integrations-connectivity/34-partner-developer-api-access.md`  <sub>246 lines</sub>
+### `docs/implementation/integrations-connectivity/34-partner-developer-api-access.md`  <sub>262 lines</sub>
 
-- 1. An API key is a principal with a scope, never a `User` in disguise  <sub>:24</sub>
-- 2. Scoped read/write, never a bypass of tenant or branch isolation  <sub>:84</sub>
-- 3. Rate limiting protects the platform; scoping protects the data  <sub>:93</sub>
-- Scope lenses  <sub>:102</sub>
-- Work orders  <sub>:205</sub>
-- Acceptance  <sub>:223</sub>
-- Out of scope  <sub>:236</sub>
+- 1. An API key is a principal with a scope, never a `User` in disguise  <sub>:40</sub>
+- 2. Scoped read/write, never a bypass of tenant or branch isolation  <sub>:100</sub>
+- 3. Rate limiting protects the platform; scoping protects the data  <sub>:109</sub>
+- Scope lenses  <sub>:118</sub>
+- Work orders  <sub>:221</sub>
+- Acceptance  <sub>:239</sub>
+- Out of scope  <sub>:252</sub>
 
-### `docs/implementation/integrations-connectivity/36-universal-connectivity-integration-framework.md`  <sub>264 lines</sub>
+### `docs/implementation/integrations-connectivity/36-universal-connectivity-integration-framework.md`  <sub>283 lines</sub>
 
-- The pattern, named once so it stops being reinvented per module  <sub>:14</sub>
-- 1. The generic outbound connector: HTTP, templated, retried, never bespoke code per target  <sub>:33</sub>
-- 2. OAuth2 client-credentials, because a static key is not always an option  <sub>:100</sub>
-- 3. Inbound stays doc 34's territory; this document is the outbound mirror  <sub>:117</sub>
-- Scope lenses  <sub>:128</sub>
-- Work orders  <sub>:225</sub>
-- Acceptance  <sub>:241</sub>
-- Out of scope  <sub>:253</sub>
+- The pattern, named once so it stops being reinvented per module  <sub>:33</sub>
+- 1. The generic outbound connector: HTTP, templated, retried, never bespoke code per target  <sub>:52</sub>
+- 2. OAuth2 client-credentials, because a static key is not always an option  <sub>:119</sub>
+- 3. Inbound stays doc 34's territory; this document is the outbound mirror  <sub>:136</sub>
+- Scope lenses  <sub>:147</sub>
+- Work orders  <sub>:244</sub>
+- Acceptance  <sub>:260</sub>
+- Out of scope  <sub>:272</sub>
 
 ### `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md`  <sub>937 lines</sub>
 
@@ -3674,16 +3823,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>593 lines</sub>
+### `docs/implementation/README.md`  <sub>624 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:446</sub>
-- The two module groups  <sub>:475</sub>
-- How a work order runs  <sub>:512</sub>
-- Known gaps not yet owned by a phase  <sub>:530</sub>
-- When a brief is wrong  <sub>:557</sub>
-- Scope, honestly  <sub>:570</sub>
-- Gap-analysis roadmap references  <sub>:577</sub>
+- Dependency order  <sub>:477</sub>
+- The two module groups  <sub>:506</sub>
+- How a work order runs  <sub>:543</sub>
+- Known gaps not yet owned by a phase  <sub>:561</sub>
+- When a brief is wrong  <sub>:588</sub>
+- Scope, honestly  <sub>:601</sub>
+- Gap-analysis roadmap references  <sub>:608</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 
@@ -3779,12 +3928,12 @@ _no second-level headings_
 - Part 8 — The briefs this spawns  <sub>:946</sub>
 - Acceptance  <sub>:1006</sub>
 
-### `docs/implementation/SDK-CONTRACT.md`  <sub>217 lines</sub>
+### `docs/implementation/SDK-CONTRACT.md`  <sub>226 lines</sub>
 
-- 1. The extension-point interfaces  <sub>:18</sub>
-- 2. The domain-event catalogue's stable subset  <sub>:117</sub>
-- 3. The module-registration checklist  <sub>:165</sub>
-- 4. The reference pack — proof, not prose  <sub>:194</sub>
+- 1. The extension-point interfaces  <sub>:27</sub>
+- 2. The domain-event catalogue's stable subset  <sub>:126</sub>
+- 3. The module-registration checklist  <sub>:174</sub>
+- 4. The reference pack — proof, not prose  <sub>:203</sub>
 
 ### `docs/implementation/shipping-fulfilment-returns/06-shipping-fulfilment-returns.md`  <sub>335 lines</sub>
 

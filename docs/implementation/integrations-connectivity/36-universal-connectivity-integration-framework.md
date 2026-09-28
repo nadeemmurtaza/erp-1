@@ -1,5 +1,24 @@
 # 36 — Universal connectivity: one framework for connecting to any external system
 
+> **Note (2026-09-28, ADR-073).** Still unbuilt, and still the tenant's private
+> escape hatch beside the third-party app directory of docs 184–195 (see
+> [doc 193](./193-app-private-connection-escape-hatch.md)). Two things below
+> are realised differently when built:
+> - **WO-36.2's delivery worker and `ConnectorDelivery`** become
+>   [doc 188](./188-app-runtime-event-delivery-to-apps.md)'s core
+>   `OutboxDelivery` engine, as rows of kind `CONNECTOR`. That is one external
+>   delivery mechanism for connectors and apps alike, which is this
+>   document's own intent ("the existing one pointed at an external HTTP
+>   target").
+> - **§1's retry ceiling** for external targets is a 72-hour window, not the
+>   in-process `MAX_ATTEMPTS = 8`: eight attempts give up after about 8.5
+>   minutes of target downtime, contradicting this document's own "Four hours
+>   down" lens.
+>
+> The Out of scope item "a connector marketplace/catalogue of pre-built
+> integrations" is docs 184–195. The permission name is `connectors.manage`,
+> per doc 170 §2, not `integrations.manage`.
+
 "Connect to any system in the world" is not a feature to build — it is a
 **shape every integration in this repository already follows**, made
 explicit so the next one is a class, not a design meeting. This document

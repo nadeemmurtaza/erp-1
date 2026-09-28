@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 419 tracked files in `docs/*`, by directory.
+All 430 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -569,9 +569,9 @@ All 419 tracked files in `docs/*`, by directory.
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 593 |  |
+| `README.md` | doc | 624 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
-| `SDK-CONTRACT.md` | doc | 217 |  |
+| `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
 ### `docs/implementation/access-control-identity` (7)
@@ -782,7 +782,7 @@ All 419 tracked files in `docs/*`, by directory.
 | `80-employee-training-certification.md` | doc | 161 |  |
 | `91-staff-portal-mobile-access.md` | doc | 55 |  |
 
-### `docs/implementation/integrations-connectivity` (14)
+### `docs/implementation/integrations-connectivity` (25)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -797,9 +797,20 @@ All 419 tracked files in `docs/*`, by directory.
 | `162-file-based-connector-integration.md` | doc | 271 |  |
 | `18-trading-partner-network.md` | doc | 87 |  |
 | `184-app-platform-overview-and-remote-only-decision.md` | doc | 359 |  |
+| `185-app-manifest-and-directory-catalog.md` | doc | 554 |  |
+| `186-app-publisher-program-review-moderation.md` | doc | 571 |  |
+| `187-app-installation-consent-lifecycle.md` | doc | 818 |  |
+| `188-app-runtime-event-delivery-to-apps.md` | doc | 587 |  |
+| `189-app-runtime-scoped-client-credential.md` | doc | 568 |  |
+| `190-app-runtime-apps-as-extension-point-providers.md` | doc | 436 |  |
+| `191-app-revocation-kill-switch-tenant-isolation.md` | doc | 602 |  |
+| `192-app-commercial-model-billing.md` | doc | 468 |  |
+| `193-app-private-connection-escape-hatch.md` | doc | 226 |  |
+| `194-app-platform-failure-modes.md` | doc | 282 |  |
+| `195-app-platform-rollout-sequencing.md` | doc | 241 |  |
 | `33-sms-whatsapp-channels.md` | doc | 249 |  |
-| `34-partner-developer-api-access.md` | doc | 246 |  |
-| `36-universal-connectivity-integration-framework.md` | doc | 264 |  |
+| `34-partner-developer-api-access.md` | doc | 262 |  |
+| `36-universal-connectivity-integration-framework.md` | doc | 283 |  |
 
 ### `docs/implementation/inventory-purchasing` (5)
 

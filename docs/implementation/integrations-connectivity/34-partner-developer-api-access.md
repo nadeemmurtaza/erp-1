@@ -10,6 +10,22 @@
 > deliberately defers. This document stays its starting design; doc 163 §9
 > lists what it will have to answer that a personal key does not. Nothing below
 > is built.
+>
+> **Update (2026-09-28): the deferral is lifted — ADR-073.** An installed
+> third-party app (docs 184–195) is exactly "an integration [that] must
+> outlive the person who set it up", ADR-037's own reopening condition. This
+> design is now specified for completion in
+> [`189-app-runtime-scoped-client-credential.md`](./189-app-runtime-scoped-client-credential.md),
+> with two kinds (`SERVICE_ACCOUNT`, this document's own case —
+> [doc 193](./193-app-private-connection-escape-hatch.md) — and
+> `APP_INSTALLATION`). Four things below change. There is **no
+> `organizationId`** (ADR-044/040). The principal gets a **login-disabled
+> actor `User`**: this document's `ApiClient` has no `User` row, and 75
+> `User` foreign keys make that unbuildable for any attributed write. **Tokens
+> live in `ApiClientToken`**, not a single `keyHash`. And the request log is
+> **flushed per minute** from memory instead of written per request. The
+> permission names `api-access.manage` and `api-access.approve_scope` are
+> kept exactly as WO-34.5 wrote them.
 
 This repository already has API-key authentication — `TradingPartner.
 inboundApiKeyHash` and `Node.inboundApiKeyHash`, both built on

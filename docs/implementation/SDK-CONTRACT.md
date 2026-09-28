@@ -15,6 +15,15 @@ repository's own admin *decides*. See `MULTI-SECTOR.md` for the full
 reasoning; this document exists to be the checklist and reference table, not
 to re-argue it.
 
+**A pack is never a third-party app, and a third-party app is never a pack**
+(`DECISIONS.md` ADR-073). "A third-party vendor" above means a vendor
+contracted to contribute a pack through this repository's own review and
+deployment. It never means a developer submitting to the App Directory. A
+directory app is always a remote service NEWAX calls and is called by over
+HTTP, and nothing from it runs in any NEWAX process —
+[`integrations-connectivity/184-app-platform-overview-and-remote-only-decision.md`](./integrations-connectivity/184-app-platform-overview-and-remote-only-decision.md)
+§2. No pack is ever registered from directory data.
+
 ## 1. The extension-point interfaces
 
 Each one is a stable seam: implement the interface, register the new class

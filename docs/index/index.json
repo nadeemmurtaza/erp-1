@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2447,
-    "lines": 379156,
+    "files": 2458,
+    "lines": 384584,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 419,
-      "lines": 81426,
-      "bytes": 4909581,
+      "files": 430,
+      "lines": 86854,
+      "bytes": 5228296,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -91407,8 +91407,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 593,
-      "bytes": 87692,
+      "lines": 624,
+      "bytes": 95414,
       "doc": "",
       "symbols": []
     },
@@ -91425,8 +91425,8 @@
       "path": "docs/implementation/SDK-CONTRACT.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 217,
-      "bytes": 11974,
+      "lines": 226,
+      "bytes": 12620,
       "doc": "",
       "symbols": []
     },
@@ -92776,7 +92776,106 @@
       "area": "docs",
       "kind": "doc",
       "lines": 359,
-      "bytes": 28205,
+      "bytes": 28232,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/185-app-manifest-and-directory-catalog.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 554,
+      "bytes": 30599,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/186-app-publisher-program-review-moderation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 571,
+      "bytes": 31621,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 818,
+      "bytes": 48461,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/188-app-runtime-event-delivery-to-apps.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 587,
+      "bytes": 34421,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/189-app-runtime-scoped-client-credential.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 568,
+      "bytes": 32072,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/190-app-runtime-apps-as-extension-point-providers.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 436,
+      "bytes": 25806,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/191-app-revocation-kill-switch-tenant-isolation.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 602,
+      "bytes": 35746,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/192-app-commercial-model-billing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 468,
+      "bytes": 25312,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/193-app-private-connection-escape-hatch.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 226,
+      "bytes": 13895,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/194-app-platform-failure-modes.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 282,
+      "bytes": 16039,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/195-app-platform-rollout-sequencing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 241,
+      "bytes": 14213,
       "doc": "",
       "symbols": []
     },
@@ -92793,8 +92892,8 @@
       "path": "docs/implementation/integrations-connectivity/34-partner-developer-api-access.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 246,
-      "bytes": 13614,
+      "lines": 262,
+      "bytes": 14667,
       "doc": "",
       "symbols": []
     },
@@ -92802,8 +92901,8 @@
       "path": "docs/implementation/integrations-connectivity/36-universal-connectivity-integration-framework.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 264,
-      "bytes": 14549,
+      "lines": 283,
+      "bytes": 15631,
       "doc": "",
       "symbols": []
     },

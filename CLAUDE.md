@@ -1001,3 +1001,32 @@ REMAINING RISKS
 FINAL STATUS
 Verified Locally / Blocked / Complete
 ```
+
+### Exact parameters, every time — no vague numbers on a security or performance decision
+
+Added at the owner's own direct instruction, binding on every agent. A rate
+limit, a cache TTL, a connection pool size, a compression level, a retry
+count, a memory ceiling, a token-bucket capacity or refill rate — any
+parameter that decides how the system behaves under load or under attack —
+is never described as "reasonable," "a sensible limit," or "tuned
+appropriately." State the exact number, the exact unit, and the one or two
+sentences of reasoning behind it, in the same reply that introduces it:
+
+```
+Parameter: / Exact value: / Applies to: / Why this number (not a smaller
+or larger one): / Where it's enforced: / How it degrades or fails:
+```
+
+This applies whether the parameter is being introduced for the first time
+or changed. "Rate limiting is now in place" is not a complete answer;
+"10 requests per 60 seconds per IP on `/auth/login`, enforced by
+`CREDENTIAL_THROTTLE` in `auth.controller.ts`, chosen because a login form
+is the one place an attacker gets to guess a secret" is. The reasoning
+does not need to be long — it needs to exist and be specific to the actual
+system, never copied from a generic security checklist unexamined.
+
+Every such decision is also recorded in `DECISIONS.md` as an ADR (existing
+template) or, where it's a small addition to an already-decided ADR, as a
+dated addendum to that ADR rather than a new one — never left to live only
+in a chat reply or a PR description, where it stops being discoverable by
+the next agent or the next session.

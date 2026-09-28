@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**456** markdown documents. These explain **why**; this index only says **where**.
+**457** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -127,7 +127,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `CLAUDE.md`  <sub>1,004 lines</sub>
+### `CLAUDE.md`  <sub>1,033 lines</sub>
 
 - Vision and scale  <sub>:13</sub>
 - The seven laws  <sub>:39</sub>
@@ -2943,7 +2943,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>8,879 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>8,966 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3023,6 +3023,7 @@ _no second-level headings_
 - ADR-072 — Docs 168–183 revised: NEWAX's own product, not a du-owned platform — du was a quality-bar reference only, never a counterparty; ADR-071's build-here decision carried forward unchanged  <sub>:8314</sub>
 - ADR-073 — Third-party apps (docs 184–195): an open, reviewed directory of remote services — never in-process code — installed per tenant with consent onto doc 34's `ApiClient`, completed now; ADR-037's service-account deferral superseded  <sub>:8507</sub>
 - ADR-074 — Doc 205 (video rooms for doc 24's meetings): self-host LiveKit as NEWAX's own SFU behind a new `VideoConferenceProvider` core seam, run as its own Coolify resource and off by default in every deployment; LiveKit's built-in TURN rather than coturn; recording deferred  <sub>:8674</sub>
+- ADR-075 — Doc 206 (rate limiting, sudden-logout, RAM ceilings, connection pooling, API caching, lazy loading, compression): eight requests investigated against the real code first — three extend what's already built, five are genuinely new, every parameter stated with its exact value  <sub>:8880</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3823,16 +3824,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>624 lines</sub>
+### `docs/implementation/README.md`  <sub>634 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:477</sub>
-- The two module groups  <sub>:506</sub>
-- How a work order runs  <sub>:543</sub>
-- Known gaps not yet owned by a phase  <sub>:561</sub>
-- When a brief is wrong  <sub>:588</sub>
-- Scope, honestly  <sub>:601</sub>
-- Gap-analysis roadmap references  <sub>:608</sub>
+- Dependency order  <sub>:487</sub>
+- The two module groups  <sub>:516</sub>
+- How a work order runs  <sub>:553</sub>
+- Known gaps not yet owned by a phase  <sub>:571</sub>
+- When a brief is wrong  <sub>:598</sub>
+- Scope, honestly  <sub>:611</sub>
+- Gap-analysis roadmap references  <sub>:618</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 
@@ -3874,6 +3875,20 @@ _no second-level headings_
 - Work orders  <sub>:349</sub>
 - Acceptance  <sub>:370</sub>
 - Out of scope  <sub>:385</sub>
+
+### `docs/implementation/resilience-scalability/206-rate-limiting-caching-compression-hardening.md`  <sub>202 lines</sub>
+
+- 0. What's already real — checked before proposing anything new  <sub>:12</sub>
+- 1. Login-attempt rate limiting — the missing account-level layer, and why it's a second layer, not a replacement  <sub>:21</sub>
+- 2. "Sudden logout" — this is refresh-token-rotation race handling, not a message queue  <sub>:92</sub>
+- 3. RAM ceilings — container limits already exist; the gap is the Node process's own heap flag  <sub>:114</sub>
+- 4. Central connection pooling — the real answer, since "TERA" doesn't match a technology I can find  <sub>:126</sub>
+- 5. API response caching — Redis-backed, cache-aside, never for session-scoped data  <sub>:139</sub>
+- 6. Preventing irrelevant component loading — exact threshold, not a vague "lazy load heavy stuff"  <sub>:150</sub>
+- 7. Response compression — the exact stack, in the requested priority order  <sub>:159</sub>
+- Work orders  <sub>:177</sub>
+- Acceptance  <sub>:190</sub>
+- Out of scope  <sub>:199</sub>
 
 ### `docs/implementation/resilience-scalability/37-scalability-future-upgrades.md`  <sub>306 lines</sub>
 

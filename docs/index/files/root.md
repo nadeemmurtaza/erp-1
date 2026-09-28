@@ -19,7 +19,7 @@ All 213 tracked files in `repository root files`, by directory.
 | `AGENTS.md` | doc | 81 |  |
 | `Architecture.md` | doc | 32 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 1004 |  |
+| `CLAUDE.md` | doc | 1033 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |

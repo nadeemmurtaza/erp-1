@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,458 files / 384,584 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,459 files / 384,912 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -58,7 +58,7 @@ single fact — the page is the right tool when you need the shape of something.
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | ~1.9k | every script in every package.json (85) |
 | “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~5.2k | 118 migrations, newest last |
 | “What is already tested?” | [cross/tests.md](cross/tests.md) | ~13.4k | 341 spec files → what each one pins down |
-| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~49.0k | every document of record, with its outline |
+| “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~49.4k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (65) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
 | “I need a machine-readable form.” | [index.json](index.json) | ~650.0k | the whole index as JSON — grep or jq it |
@@ -124,9 +124,9 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 | apps/pos | 33 | 2,667 | [pos](areas/pos.md) |
 | apps/mobile | 49 | 6,900 | [mobile](areas/mobile.md) |
 | packages/* | 80 | 8,765 | [packages](areas/packages.md) |
-| docs/* | 430 | 86,854 | [docs](areas/docs.md) |
+| docs/* | 431 | 87,153 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 60 | 30,638 | [infra](areas/infra.md) |
-| repository root files | 213 | 21,432 | [root](areas/root.md) |
+| repository root files | 213 | 21,461 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see
 [`cross/files.md`](cross/files.md) for the complete

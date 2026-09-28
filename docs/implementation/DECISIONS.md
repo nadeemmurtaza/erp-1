@@ -8876,3 +8876,90 @@ Option 3.
 ### Status
 **Accepted** — the engine, the seam and the deployment decision. Doc 205's
 work orders (WO-205.1–205.7) are proposed, not yet built.
+
+## ADR-075 — Doc 206 (rate limiting, sudden-logout, RAM ceilings, connection pooling, API caching, lazy loading, compression): eight requests investigated against the real code first — three extend what's already built, five are genuinely new, every parameter stated with its exact value
+
+### Context
+
+The owner asked for eight separate hardening measures in one message: a
+Redis-backed token-bucket rate limiter for login attempts with a 429
+response; a queueing mechanism to stop sessions being suddenly logged out;
+a RAM ceiling for scripts; a "TERA type central connection" system for
+faster connections; API response caching; prevention of irrelevant
+component loading plus lazy loading; an image compressor; and a
+zstd-over-brotli-over-gzip-over-uncompressed compression stack for server
+responses — plus a standing instruction, now recorded in `CLAUDE.md`
+itself, to always state the exact parameters and reasoning behind any
+future security or performance decision rather than a vague description.
+
+### Options Considered
+
+1. **Treat all eight as greenfield and design each from first principles.**
+   Rejected — a fast grep found real, partially-built systems already
+   covering two of the eight (login rate limiting, image compression) and
+   a third partially (Prisma's own connection pool). Designing over these
+   without reading them first would have duplicated a security-relevant
+   primitive (`@nestjs/throttler`'s own credential throttle) and an
+   already-correct image pipeline (`StorageService`'s WebP conversion at
+   quality 75) — exactly the "duplicate implementation is a defect" trap
+   this repo's own house rules already name.
+2. **Interpret "a queue system to prevent sudden logout" literally as a
+   message queue (BullMQ or similar).** Rejected on inspection — nothing
+   in this codebase's actual session/logout behavior is queue-shaped; the
+   real, well-documented cause of an unexpected logout in a system that
+   already rotates refresh tokens on use is a race between concurrent
+   refresh requests, which a message queue does nothing to address. Doc
+   206 §2 reframes this as refresh-token reuse-detection with a grace
+   window, the actual mechanism that solves the described symptom.
+3. **Investigate what exists, extend rather than duplicate the three
+   partially-built systems, and specify exact parameters for the five
+   genuinely new ones, all in one consolidated document (doc 206) rather
+   than a document per system.** Chosen — proportional to eight related
+   but individually contained hardening measures, none of which rises to
+   the scale of a new module or a new business capability.
+
+### Decision
+
+Doc 206, as written. In one line per system: Redis-backed shared storage
+for the existing IP-keyed throttler (unchanged limits, shared counters)
+plus a new 5-token/5-minute-refill per-account bucket keyed by a hashed
+login identifier, both fail-closed; refresh-token reuse detection with a
+10-second grace window plus a client-side single-flight refresh mutex,
+replacing the literal "queue" request; `--max-old-space-size` at 75% of
+each service's own container memory ceiling; PgBouncer in transaction-
+pooling mode plus a shared keep-alive HTTP agent for outbound connector
+calls, in place of the unrecognized "TERA"; a 5-minute cache-aside Redis
+layer for non-personalized reads, explicitly never for session-scoped
+data; a 50KB-gzipped dynamic-import threshold for component loading;
+image compression confirmed already built, no action; and a zstd→brotli→
+gzip→identity negotiated compression stack with per-context quality
+levels (fast for dynamic responses, maximum for build-time static
+assets), enabled by a one-line `engines.node` bump to `>=22.15.0` rather
+than a new native dependency.
+
+### Reasoning
+
+Every number above is justified in doc 206 itself, against the actual
+code (real file paths, real existing constants like `WEBP_QUALITY = 75`
+and `CREDENTIAL_THROTTLE`'s `{ limit: 10, ttl: 60_000 }`), not asserted
+in the abstract. The recurring pattern across all eight: fail closed
+rather than silently open when a new dependency (Redis, PgBouncer) is
+unreachable, because an unlimited/uncached/unpooled system during an
+infrastructure incident is a worse failure mode than a temporarily
+degraded one, matching this repo's own `FeatureFlagsService` precedent.
+
+### Consequences
+
+Two new runtime dependencies this program requires sign-off on before
+work starts: a dedicated Redis instance (rate limiting §1 and caching §5,
+separate logical DBs, never the mail Redis) and PgBouncer (§4) — named in
+doc 206's own dependency-justification block, not silently assumed
+approved. `engines.node`'s tightening to `>=22.15.0` is a one-line,
+low-risk change but does narrow which Node patch versions this repo
+accepts — stated so CI/deployment images are checked against it. Every
+other change is additive to already-shipped behavior (the existing
+throttle limits are unchanged in value) or purely new capability with no
+existing behavior to preserve.
+
+### Status
+**Accepted.**

@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **2,458** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,459** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -15,9 +15,9 @@ Split by area so you load one, not all of them.
 | apps/pos | 33 | 2,667 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,900 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 80 | 8,765 | [files/packages.md](../files/packages.md) |
-| docs/* | 430 | 86,854 | [files/docs.md](../files/docs.md) |
+| docs/* | 431 | 87,153 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 60 | 30,638 | [files/infra.md](../files/infra.md) |
-| repository root files | 213 | 21,432 | [files/root.md](../files/root.md) |
+| repository root files | 213 | 21,461 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -28,7 +28,7 @@ name a new file: the convention is what makes it findable.
 
 | Kind | Count |
 |---|---|
-| doc | 455 |
+| doc | 456 |
 | unit test | 321 |
 | page | 228 |
 | service | 208 |

@@ -474,6 +474,16 @@ starting a program:
 |---|---|
 | [`205-self-hosted-video-meetings-livekit.md`](./tasks-notifications-support/205-self-hosted-video-meetings-livekit.md) | **Proposed, not yet built.** Self-hosted LiveKit (Apache-2.0 SFU) as NEWAX's own media server, behind a new `VideoConferenceProvider` seam in `core/video` with one implementation. It runs as its own Coolify resource, as Stalwart mail does (`docker-compose.mail.yml`, `docs/email.md`), never inside `apps/api`, and is off by default in every deployment (`VIDEO_CONFERENCE_PROVIDERS` empty). **Access:** a join credential only for a `MeetingInvitation` row, `@SessionOnly()`, evidence-class issuance audit, no admin or recording grant in any token, and sessions ended server-side (`auto_create: false`, window close, cancel, host, deactivation sweep). **Deployment:** LiveKit's built-in TURN on 443 through a Traefik TCP router, not coturn; capacity measured before enabling. **Also:** the invitee-facing "My meetings" surface doc 24 never shipped; recording deferred with reasons; full scope-lens pass. ADR-074 |
 
+**Number 206** answers eight hardening requests in one message, each checked
+against the real code before any parameter was set — three already exist
+(login rate limiting, image compression, Prisma's own connection pool) and
+are extended, not duplicated; five are new. It also records the standing
+"exact parameters, every time" rule `CLAUDE.md` itself now carries:
+
+| File | What it is |
+|---|---|
+| [`206-rate-limiting-caching-compression-hardening.md`](./resilience-scalability/206-rate-limiting-caching-compression-hardening.md) | **Proposed, not yet built**, except image compression (already shipped, `StorageService`'s WebP-at-quality-75 pipeline — no action). A Redis-backed shared store for the existing IP-keyed login throttle plus a new 5-token/5-minute-refill per-account bucket keyed by a hashed identifier, both fail-closed. "Prevent sudden logout" reframed as refresh-token reuse detection (10-second grace window) plus a client-side single-flight refresh mutex, not a message queue. `--max-old-space-size` at 75% of each service's container memory ceiling. PgBouncer (transaction pooling) plus a shared keep-alive HTTP agent, in place of the unrecognized "TERA central connection." A 5-minute Redis cache-aside layer, never for session-scoped data. A 50KB-gzipped dynamic-import threshold for component loading. A zstd→brotli→gzip→identity compression stack with per-context quality levels, unlocked by an `engines.node` bump to `>=22.15.0` rather than a new dependency. ADR-075 |
+
 ## Dependency order
 
 Phases are ordered by dependency, not by appeal. Do not reorder them without

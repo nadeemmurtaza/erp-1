@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2458,
-    "lines": 384584,
+    "files": 2459,
+    "lines": 384912,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -21,8 +21,8 @@
   "areas": {
     "root": {
       "files": 213,
-      "lines": 21432,
-      "bytes": 1225054,
+      "lines": 21461,
+      "bytes": 1226645,
       "label": "repository root files"
     },
     "infra": {
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 430,
-      "lines": 86854,
-      "bytes": 5228310,
+      "files": 431,
+      "lines": 87153,
+      "bytes": 5260927,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -57413,8 +57413,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 1004,
-      "bytes": 52979,
+      "lines": 1033,
+      "bytes": 54570,
       "doc": "",
       "symbols": []
     },
@@ -91353,8 +91353,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 8879,
-      "bytes": 522188,
+      "lines": 8966,
+      "bytes": 527257,
       "doc": "",
       "symbols": []
     },
@@ -91407,8 +91407,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 624,
-      "bytes": 95414,
+      "lines": 634,
+      "bytes": 96922,
       "doc": "",
       "symbols": []
     },
@@ -93092,6 +93092,15 @@
       "kind": "doc",
       "lines": 392,
       "bytes": 20821,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/resilience-scalability/206-rate-limiting-caching-compression-hardening.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 202,
+      "bytes": 26040,
       "doc": "",
       "symbols": []
     },

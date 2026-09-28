@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2445,
-    "lines": 376588,
+    "files": 2446,
+    "lines": 376945,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 417,
-      "lines": 78858,
-      "bytes": 4763853,
+      "files": 418,
+      "lines": 79215,
+      "bytes": 4791757,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -92768,6 +92768,15 @@
       "kind": "doc",
       "lines": 87,
       "bytes": 4940,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/184-app-platform-overview-and-remote-only-decision.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 357,
+      "bytes": 27904,
       "doc": "",
       "symbols": []
     },

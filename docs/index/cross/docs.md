@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**443** markdown documents. These explain **why**; this index only says **where**.
+**444** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3416,6 +3416,21 @@ _no second-level headings_
 
 - Work orders  <sub>:24</sub>
 - Out of scope (for now)  <sub>:80</sub>
+
+### `docs/implementation/integrations-connectivity/184-app-platform-overview-and-remote-only-decision.md`  <sub>357 lines</sub>
+
+- 1. The ask, and what it means here  <sub>:16</sub>
+- 2. The non-negotiable rule: an app is a remote service, never code inside NEWAX  <sub>:41</sub>
+- 3. The shape: three places, three trust boundaries  <sub>:97</sub>
+- 4. What is reused and what is genuinely new  <sub>:133</sub>
+- 5. Names this program reserves — searched first  <sub>:148</sub>
+- 6. What the research found the documents of record get wrong  <sub>:189</sub>
+- 7. Documents outside this range that this program touches  <sub>:250</sub>
+- 8. Reading order  <sub>:265</sub>
+- Scope lenses  <sub>:282</sub>
+- Work orders  <sub>:315</sub>
+- Acceptance  <sub>:338</sub>
+- Out of scope  <sub>:349</sub>
 
 ### `docs/implementation/integrations-connectivity/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
 

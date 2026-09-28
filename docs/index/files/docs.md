@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 417 tracked files in `docs/*`, by directory.
+All 418 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -782,7 +782,7 @@ All 417 tracked files in `docs/*`, by directory.
 | `80-employee-training-certification.md` | doc | 161 |  |
 | `91-staff-portal-mobile-access.md` | doc | 55 |  |
 
-### `docs/implementation/integrations-connectivity` (13)
+### `docs/implementation/integrations-connectivity` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -796,6 +796,7 @@ All 417 tracked files in `docs/*`, by directory.
 | `160-dynamic-external-system-connectivity.md` | doc | 274 |  |
 | `162-file-based-connector-integration.md` | doc | 271 |  |
 | `18-trading-partner-network.md` | doc | 87 |  |
+| `184-app-platform-overview-and-remote-only-decision.md` | doc | 357 |  |
 | `33-sms-whatsapp-channels.md` | doc | 249 |  |
 | `34-partner-developer-api-access.md` | doc | 246 |  |
 | `36-universal-connectivity-integration-framework.md` | doc | 264 |  |

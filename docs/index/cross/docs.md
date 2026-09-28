@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**444** markdown documents. These explain **why**; this index only says **where**.
+**445** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2943,7 +2943,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>8,500 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>8,879 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -2986,41 +2986,43 @@ _no second-level headings_
 - ADR-036 — WO-145 (receivables: CreditNote/DebitNote, credit limits, dunning) keys the customer to `Contact`, not R18's own `Invoice`; ships undimensioned like its siblings; dunning gets its own cron, not doc 54's unbuilt registry  <sub>:3143</sub>
 - ADR-035 — Phase 8 (content, marketing and search) audited and confirmed built; the ranking rule's missing availability tier fixed; the phantom "Phase 8 status note" several files already cited now exists  <sub>:3269</sub>
 - ADR-037 — Personal API keys: a user-bound token capped live by its owner, an explicit non-delegatable list, and no service account yet  <sub>:3374</sub>
-- ADR-038 — Doc 153 (usage-based pricing): metering reads a tenant's own transactional outbox through `apps/platform`'s existing connection-per-call mechanism, never a new tenant→platform push credential; dunning reuses doc 145's shape only, not its code  <sub>:3450</sub>
-- ADR-040 — `finance-accounting` docs 04/56/68/79/137/147/151/49 completed; a department-permission planning doc (164) added, deliberately not built  <sub>:3607</sub>
-- ADR-039 — Doc 14 (managed services) built in full, overriding its own "not now": `PlatformTenant`/`PlatformInvoice` extended rather than a parallel `AgencyClient` registry and invoice cache, real Stripe collection bridged in decoupled from `BillingService`  <sub>:3771</sub>
-- ADR-041 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call  <sub>:3951</sub>
-- ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:4049</sub>
-- ADR-043 — `access-control-identity` docs 126/161 built; 16/18/163 re-verified; 125 corrected; 21 reported blocked on missing docs 19/20  <sub>:4183</sub>
-- ADR-044 — Docs 19/20 (org tree, positions and ranks): `OrgUnit` kept orthogonal to `Node` exactly as specified; no separate `Employee` model — every posting keys to `User`, matching payroll's and doc 79's own precedent  <sub>:4340</sub>
-- ADR-045 — Doc 21 (access over the org tree): `OrgUnitGrant` built exactly as specified; `MAX_GRANT_DAYS` as a plain Setting, not a `BrandPolicy` column; `org.access.grant` seeded to no role by default; the granter's own reach treats "no posting" as unrestricted; existing list endpoints are NOT retrofitted to scope by `OrgUnit`  <sub>:4476</sub>
-- ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify  <sub>:4612</sub>
-- ADR-050 — Doc 23 (task allotment, status and tracking): built exactly as specified, with `Employee` translated to `User` per ADR-044, a new `hr.posting_ended` domain event added since doc 20's build didn't need one, and the toxic pair kept out of `TOXIC_PERMISSION_PAIRS`  <sub>:4804</sub>
-- ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo  <sub>:4885</sub>
-- ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism  <sub>:4996</sub>
-- ADR-049 — Docs 140–143 (general EAV, metadata-driven UI, BPMN workflow editor, micro-frontend fragments): the four mechanisms `architecture-patterns/00-*` names as explicitly owner-overridden (ADR-026) against this repository's own engineering recommendation, built with the corrections that recommendation still turns out to require  <sub>:5127</sub>
-- ADR-051 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)  <sub>:5486</sub>
-- ADR-052 — Docs 127/128/136 (hardcoded-policy sweep, extension-point coverage audit, database/cache portability audit): two real policy gaps converted; both of doc 128's own "gaps found" turn out to already be closed by prior work it never checked against; 170+ raw-SQL call sites triaged, none rewritten  <sub>:5593</sub>
-- ADR-053 — Doc 149 (`accounts`/`approvals` sector packs): a genuine REQUEST/RECORD split (`B2BOrderRequest`) rather than gating the generic checkout endpoint; the doc's own self-approval-refusal claim corrected against `ApprovalService`'s real behavior; an approval step widened to a Contact set, never a second chain mechanism  <sub>:5715</sub>
-- ADR-054 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected  <sub>:5915</sub>
-- ADR-055 — Doc 117 (choreography and idempotency) and doc 118 (headless, composable, agent-consumable capabilities): both theses stand, but doc 117's own worked-example table was three-quarters fabricated, and doc 118 (plus doc 115, its own source) cite a deferred model as already shipped  <sub>:6040</sub>
-- ADR-056 — Docs 122 (data lake), 130 (capability manifest) and 131 (versioned domain events): one more fabricated citation, one more deferred-model repeat, one small real work order actually shipped  <sub>:6146</sub>
-- ADR-057 — Docs 133 (dry-run harness), 134 (hexagonal-purity CI check) and 138 (technology substitution playbook): a naming convention shipped with better evidence than it cited, a real static check built and wired into `pnpm lint`, one CI overclaim corrected  <sub>:6256</sub>
-- ADR-058 — Doc 165 (cross-tenant marketplace directory), part two: WO-165.1/165.2/165.6 built; WO-165.3/165.4/165.5 deferred together as ADR-047 already scoped them; the publisher credential is ops-issued, not self-service; `enforceSso` gates by legacy `User.role`, exempting whoever turned it on  <sub>:6365</sub>
-- ADR-059 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6492</sub>
-- ADR-060 — Doc 24 (internal notifications, meetings and escalation): built in full, with one new model beyond its own sketch and a countersignature routed to a named person rather than a role  <sub>:6629</sub>
-- ADR-061 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6751</sub>
-- ADR-062 — Doc 61 (policy communications bulletin board): built inside the `notify` module rather than `hr`, an author-side reach check the document's own sketch omits, and a read-side visibility rule distinct from a sender's reach  <sub>:6866</sub>
-- ADR-063 — Doc 167 (bank facility management): promoted from a gap report to a built capability, mirroring doc 49's own settlements shape rather than inventing a new one  <sub>:6978</sub>
-- ADR-064 — Doc 64 (in-app help desk): built as a new standalone module, with a per-instance transition-authority rule and a name-resolution step the document's own sketch does not specify  <sub>:7108</sub>
-- ADR-065 — Doc 148 (external customer support portal): built as a second, `Contact`-keyed model alongside doc 64's own `SupportTicket`, sharing its handler permissions and its action-hub source rather than inventing either again  <sub>:7223</sub>
-- ADR-066 — Doc 144 (R20–R26 supply-chain resilience planning engine): built as a pure read/recommendation engine, generating only the two action kinds this graph has real data to back  <sub>:7388</sub>
-- ADR-067 — Docs 31/66/67/76 (`pos-hardware/` category): the till hardware layer as extension points, ad-hoc modifiers over a hardcoded list, and a corrected permission claim  <sub>:7526</sub>
-- ADR-068 — Doc 37 (scalability future upgrades): the versioning policy ships inert, `FeatureFlag` gains two fields its own sketch omitted, and the rollout threshold reuses the settlements/bank-facilities maker-checker shape rather than inventing a third  <sub>:7685</sub>
-- ADR-069 — Docs 32/71/158 (`lots-serials-traceability/`): the `move()` call-site scoping boundary, a doc-158 internal contradiction corrected in `SerializedUnit.stockMovementId`'s own favour, per-unit receiving proved cost-equivalent to batch receiving, and serialized sale deliberately left out of ordinary checkout  <sub>:7809</sub>
-- ADR-070 — Doc 38 (resilience engineering): a table-driven contract test over the real source tree instead of 69 hand-written files, `RequestOutcome` instead of forcing SLO data through the business-metrics registry, and a genuine `/admin/resilience` naming collision resolved by renaming the newer screen  <sub>:8025</sub>
-- ADR-071 — Docs 168–183 (a composable, resilience-first SME platform for du): built inside erp-1 as new core-classified modules over the shipped planning engine (doc 144) and hosting control plane (doc 39), not a greenfield repository or a fork; zero new module couplings, and the program brief's premises corrected against the code  <sub>:8164</sub>
-- ADR-072 — Docs 168–183 revised: NEWAX's own product, not a du-owned platform — du was a quality-bar reference only, never a counterparty; ADR-071's build-here decision carried forward unchanged  <sub>:8310</sub>
+- ADR-038 — Doc 153 (usage-based pricing): metering reads a tenant's own transactional outbox through `apps/platform`'s existing connection-per-call mechanism, never a new tenant→platform push credential; dunning reuses doc 145's shape only, not its code  <sub>:3454</sub>
+- ADR-040 — `finance-accounting` docs 04/56/68/79/137/147/151/49 completed; a department-permission planning doc (164) added, deliberately not built  <sub>:3611</sub>
+- ADR-039 — Doc 14 (managed services) built in full, overriding its own "not now": `PlatformTenant`/`PlatformInvoice` extended rather than a parallel `AgencyClient` registry and invoice cache, real Stripe collection bridged in decoupled from `BillingService`  <sub>:3775</sub>
+- ADR-041 — An `IntentRouter` core extension point: one dispatch shape for every future calling modality, proven against one real service call  <sub>:3955</sub>
+- ADR-042 — Doc 154 (three headline commercial plans): public pricing-page copy lives as four columns on `PlatformPlan` itself, not a JSON blob or a second table; the read endpoint joins the existing `billing` module rather than a new one  <sub>:4053</sub>
+- ADR-043 — `access-control-identity` docs 126/161 built; 16/18/163 re-verified; 125 corrected; 21 reported blocked on missing docs 19/20  <sub>:4187</sub>
+- ADR-044 — Docs 19/20 (org tree, positions and ranks): `OrgUnit` kept orthogonal to `Node` exactly as specified; no separate `Employee` model — every posting keys to `User`, matching payroll's and doc 79's own precedent  <sub>:4344</sub>
+- ADR-045 — Doc 21 (access over the org tree): `OrgUnitGrant` built exactly as specified; `MAX_GRANT_DAYS` as a plain Setting, not a `BrandPolicy` column; `org.access.grant` seeded to no role by default; the granter's own reach treats "no posting" as unrestricted; existing list endpoints are NOT retrofitted to scope by `OrgUnit`  <sub>:4480</sub>
+- ADR-046 — Doc 22 (attendance, shifts and leave): `AttendanceEvent` partitioned by month exactly as specified; `AttendanceDevice` added as the missing WO-22.4 model; `employeeId` corrected to `userId`; `hr.attendance.reconcile` seeded to no role by default; the classification and adjustment rules concretised where the doc names a mechanism it does not fully specify  <sub>:4616</sub>
+- ADR-050 — Doc 23 (task allotment, status and tracking): built exactly as specified, with `Employee` translated to `User` per ADR-044, a new `hr.posting_ended` domain event added since doc 20's build didn't need one, and the toxic pair kept out of `TOXIC_PERMISSION_PAIRS`  <sub>:4808</sub>
+- ADR-047 — Doc 165 (cross-tenant marketplace directory): a new `apps/platform` module, not a shared `Product` table; the "Facebook" ask read as publish/discover, not merge; login-centralization split into two distinct pieces, one blocked on nID's own repo  <sub>:4889</sub>
+- ADR-048 — Doc 166 (unified product reference registry): a `GlobalProductReference` keyed by barcode in the same platform module as doc 165, text cached locally but images referenced by shared URL, never re-uploaded, as the actual storage-saving mechanism  <sub>:5000</sub>
+- ADR-049 — Docs 140–143 (general EAV, metadata-driven UI, BPMN workflow editor, micro-frontend fragments): the four mechanisms `architecture-patterns/00-*` names as explicitly owner-overridden (ADR-026) against this repository's own engineering recommendation, built with the corrections that recommendation still turns out to require  <sub>:5131</sub>
+- ADR-051 — Docs 47, 146, 150 (category presets, wholesale pricing, product bundles): three independently-scoped catalog/commerce gaps built together; a repeated schema deviation (no `organizationId`) and a repeated permission deviation (reuse an existing key, never invent a narrower one nobody asked for)  <sub>:5490</sub>
+- ADR-052 — Docs 127/128/136 (hardcoded-policy sweep, extension-point coverage audit, database/cache portability audit): two real policy gaps converted; both of doc 128's own "gaps found" turn out to already be closed by prior work it never checked against; 170+ raw-SQL call sites triaged, none rewritten  <sub>:5597</sub>
+- ADR-053 — Doc 149 (`accounts`/`approvals` sector packs): a genuine REQUEST/RECORD split (`B2BOrderRequest`) rather than gating the generic checkout endpoint; the doc's own self-approval-refusal claim corrected against `ApprovalService`'s real behavior; an approval step widened to a Contact set, never a second chain mechanism  <sub>:5719</sub>
+- ADR-054 — Doc 139 (WebSocket/SSE gateway) verified, deliberately left unbuilt; doc 157 (client `Idempotency-Key`) built, with `organizationId` dropped per ADR-044/040 and the sketch's non-atomic race guard corrected  <sub>:5919</sub>
+- ADR-055 — Doc 117 (choreography and idempotency) and doc 118 (headless, composable, agent-consumable capabilities): both theses stand, but doc 117's own worked-example table was three-quarters fabricated, and doc 118 (plus doc 115, its own source) cite a deferred model as already shipped  <sub>:6044</sub>
+- ADR-056 — Docs 122 (data lake), 130 (capability manifest) and 131 (versioned domain events): one more fabricated citation, one more deferred-model repeat, one small real work order actually shipped  <sub>:6150</sub>
+- ADR-057 — Docs 133 (dry-run harness), 134 (hexagonal-purity CI check) and 138 (technology substitution playbook): a naming convention shipped with better evidence than it cited, a real static check built and wired into `pnpm lint`, one CI overclaim corrected  <sub>:6260</sub>
+- ADR-058 — Doc 165 (cross-tenant marketplace directory), part two: WO-165.1/165.2/165.6 built; WO-165.3/165.4/165.5 deferred together as ADR-047 already scoped them; the publisher credential is ops-issued, not self-service; `enforceSso` gates by legacy `User.role`, exempting whoever turned it on  <sub>:6369</sub>
+- ADR-059 — Doc 166 (unified product reference registry), the erp-1-side pieces: `adopt()`/`apply()` split instead of one method; WO-166.5 (moderation) is not erp-1's work; the platform's own outbound dispatcher stays unbuilt for the same reason apps/platform has no other outbox infrastructure  <sub>:6496</sub>
+- ADR-060 — Doc 24 (internal notifications, meetings and escalation): built in full, with one new model beyond its own sketch and a countersignature routed to a named person rather than a role  <sub>:6633</sub>
+- ADR-061 — Docs 47 and 150 (category presets, product bundles), the missing admin UI: "start from a template" and the bundle-builder screen, both reachable now; a `withLabels()` enrichment step so a bare scalar id never reaches an admin screen  <sub>:6755</sub>
+- ADR-062 — Doc 61 (policy communications bulletin board): built inside the `notify` module rather than `hr`, an author-side reach check the document's own sketch omits, and a read-side visibility rule distinct from a sender's reach  <sub>:6870</sub>
+- ADR-063 — Doc 167 (bank facility management): promoted from a gap report to a built capability, mirroring doc 49's own settlements shape rather than inventing a new one  <sub>:6982</sub>
+- ADR-064 — Doc 64 (in-app help desk): built as a new standalone module, with a per-instance transition-authority rule and a name-resolution step the document's own sketch does not specify  <sub>:7112</sub>
+- ADR-065 — Doc 148 (external customer support portal): built as a second, `Contact`-keyed model alongside doc 64's own `SupportTicket`, sharing its handler permissions and its action-hub source rather than inventing either again  <sub>:7227</sub>
+- ADR-066 — Doc 144 (R20–R26 supply-chain resilience planning engine): built as a pure read/recommendation engine, generating only the two action kinds this graph has real data to back  <sub>:7392</sub>
+- ADR-067 — Docs 31/66/67/76 (`pos-hardware/` category): the till hardware layer as extension points, ad-hoc modifiers over a hardcoded list, and a corrected permission claim  <sub>:7530</sub>
+- ADR-068 — Doc 37 (scalability future upgrades): the versioning policy ships inert, `FeatureFlag` gains two fields its own sketch omitted, and the rollout threshold reuses the settlements/bank-facilities maker-checker shape rather than inventing a third  <sub>:7689</sub>
+- ADR-069 — Docs 32/71/158 (`lots-serials-traceability/`): the `move()` call-site scoping boundary, a doc-158 internal contradiction corrected in `SerializedUnit.stockMovementId`'s own favour, per-unit receiving proved cost-equivalent to batch receiving, and serialized sale deliberately left out of ordinary checkout  <sub>:7813</sub>
+- ADR-070 — Doc 38 (resilience engineering): a table-driven contract test over the real source tree instead of 69 hand-written files, `RequestOutcome` instead of forcing SLO data through the business-metrics registry, and a genuine `/admin/resilience` naming collision resolved by renaming the newer screen  <sub>:8029</sub>
+- ADR-071 — Docs 168–183 (a composable, resilience-first SME platform for du): built inside erp-1 as new core-classified modules over the shipped planning engine (doc 144) and hosting control plane (doc 39), not a greenfield repository or a fork; zero new module couplings, and the program brief's premises corrected against the code  <sub>:8168</sub>
+- ADR-072 — Docs 168–183 revised: NEWAX's own product, not a du-owned platform — du was a quality-bar reference only, never a counterparty; ADR-071's build-here decision carried forward unchanged  <sub>:8314</sub>
+- ADR-073 — Third-party apps (docs 184–195): an open, reviewed directory of remote services — never in-process code — installed per tenant with consent onto doc 34's `ApiClient`, completed now; ADR-037's service-account deferral superseded  <sub>:8507</sub>
+- ADR-074 — Doc 205 (video rooms for doc 24's meetings): self-host LiveKit as NEWAX's own SFU behind a new `VideoConferenceProvider` core seam, run as its own Coolify resource and off by default in every deployment; LiveKit's built-in TURN rather than coturn; recording deferred  <sub>:8674</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3417,20 +3419,20 @@ _no second-level headings_
 - Work orders  <sub>:24</sub>
 - Out of scope (for now)  <sub>:80</sub>
 
-### `docs/implementation/integrations-connectivity/184-app-platform-overview-and-remote-only-decision.md`  <sub>357 lines</sub>
+### `docs/implementation/integrations-connectivity/184-app-platform-overview-and-remote-only-decision.md`  <sub>359 lines</sub>
 
 - 1. The ask, and what it means here  <sub>:16</sub>
 - 2. The non-negotiable rule: an app is a remote service, never code inside NEWAX  <sub>:41</sub>
 - 3. The shape: three places, three trust boundaries  <sub>:97</sub>
 - 4. What is reused and what is genuinely new  <sub>:133</sub>
 - 5. Names this program reserves — searched first  <sub>:148</sub>
-- 6. What the research found the documents of record get wrong  <sub>:189</sub>
-- 7. Documents outside this range that this program touches  <sub>:250</sub>
-- 8. Reading order  <sub>:265</sub>
-- Scope lenses  <sub>:282</sub>
-- Work orders  <sub>:315</sub>
-- Acceptance  <sub>:338</sub>
-- Out of scope  <sub>:349</sub>
+- 6. What the research found the documents of record get wrong  <sub>:191</sub>
+- 7. Documents outside this range that this program touches  <sub>:252</sub>
+- 8. Reading order  <sub>:267</sub>
+- Scope lenses  <sub>:284</sub>
+- Work orders  <sub>:317</sub>
+- Acceptance  <sub>:340</sub>
+- Out of scope  <sub>:351</sub>
 
 ### `docs/implementation/integrations-connectivity/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
 
@@ -3672,16 +3674,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>582 lines</sub>
+### `docs/implementation/README.md`  <sub>593 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:435</sub>
-- The two module groups  <sub>:464</sub>
-- How a work order runs  <sub>:501</sub>
-- Known gaps not yet owned by a phase  <sub>:519</sub>
-- When a brief is wrong  <sub>:546</sub>
-- Scope, honestly  <sub>:559</sub>
-- Gap-analysis roadmap references  <sub>:566</sub>
+- Dependency order  <sub>:446</sub>
+- The two module groups  <sub>:475</sub>
+- How a work order runs  <sub>:512</sub>
+- Known gaps not yet owned by a phase  <sub>:530</sub>
+- When a brief is wrong  <sub>:557</sub>
+- Scope, honestly  <sub>:570</sub>
+- Gap-analysis roadmap references  <sub>:577</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 
@@ -3807,6 +3809,26 @@ _no second-level headings_
 - Acceptance  <sub>:209</sub>
 - Out of scope  <sub>:218</sub>
 
+### `docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md`  <sub>1,813 lines</sub>
+
+- 1. What exists today, verified  <sub>:68</sub>
+- 2. Who this is for, and what "not a product" means when `notify` ships everywhere  <sub>:99</sub>
+- 3. Architecture: three pieces, one boundary  <sub>:132</sub>
+- 4. The `VideoConferenceProvider` interface  <sub>:189</sub>
+- 5. Access control  <sub>:370</sub>
+- 6. Schema changes  <sub>:577</sub>
+- 7. The flows  <sub>:698</sub>
+- 8. Deployment  <sub>:853</sub>
+- 9. Failure modes  <sub>:1141</sub>
+- 10. Recording: deferred, and why  <sub>:1173</sub>
+- 11. UI: the minimum that makes it reachable  <sub>:1221</sub>
+- Dependencies  <sub>:1315</sub>
+- Pillars touched  <sub>:1351</sub>
+- Scope lenses  <sub>:1366</sub>
+- Work orders  <sub>:1702</sub>
+- Acceptance  <sub>:1716</sub>
+- Out of scope  <sub>:1778</sub>
+
 ### `docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md`  <sub>239 lines</sub>
 
 - 1. Work is assigned to a post, and optionally to a person  <sub>:28</sub>
@@ -3819,15 +3841,15 @@ _no second-level headings_
 - Acceptance  <sub>:221</sub>
 - Out of scope  <sub>:233</sub>
 
-### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>258 lines</sub>
+### `docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md`  <sub>264 lines</sub>
 
-- The new part: an audience is a query over the org tree  <sub>:48</sub>
-- Meetings are a notification that expects an answer  <sub>:81</sub>
-- Escalation: the timer that makes a stalled approval visible  <sub>:127</sub>
-- Scope lenses  <sub>:161</sub>
-- Work orders  <sub>:225</sub>
-- Acceptance  <sub>:240</sub>
-- Out of scope  <sub>:253</sub>
+- The new part: an audience is a query over the org tree  <sub>:54</sub>
+- Meetings are a notification that expects an answer  <sub>:87</sub>
+- Escalation: the timer that makes a stalled approval visible  <sub>:133</sub>
+- Scope lenses  <sub>:167</sub>
+- Work orders  <sub>:231</sub>
+- Acceptance  <sub>:246</sub>
+- Out of scope  <sub>:259</sub>
 
 ### `docs/implementation/tasks-notifications-support/61-policy-communications-bulletin.md`  <sub>232 lines</sub>
 

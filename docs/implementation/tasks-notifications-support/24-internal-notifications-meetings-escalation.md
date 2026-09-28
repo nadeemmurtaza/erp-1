@@ -32,6 +32,12 @@
 > mechanise: `NotifyAnnounceQuorumRankLevel` and
 > `NotifyAnnounceQuorumRecipientCount` (`SettingKey`, client-editable, no
 > deploy needed to retune either threshold).
+>
+> **Video rooms for these meetings are
+> [`205-self-hosted-video-meetings-livekit.md`](./205-self-hosted-video-meetings-livekit.md)**
+> (proposed, not yet built, ADR-074). It extends `Meeting`/`MeetingInvitation`
+> and changes nothing above; a meeting with no room stays exactly what this
+> document built.
 
 This repository already delivers notifications. `NotificationChannel`
 (`apps/api/src/core/notifications/notification-channel.ts`) is the interface,

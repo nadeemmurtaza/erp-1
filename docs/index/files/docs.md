@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 418 tracked files in `docs/*`, by directory.
+All 419 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,13 +563,13 @@ All 418 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 8500 |  |
+| `DECISIONS.md` | doc | 8879 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 582 |  |
+| `README.md` | doc | 593 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 217 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
@@ -796,7 +796,7 @@ All 418 tracked files in `docs/*`, by directory.
 | `160-dynamic-external-system-connectivity.md` | doc | 274 |  |
 | `162-file-based-connector-integration.md` | doc | 271 |  |
 | `18-trading-partner-network.md` | doc | 87 |  |
-| `184-app-platform-overview-and-remote-only-decision.md` | doc | 357 |  |
+| `184-app-platform-overview-and-remote-only-decision.md` | doc | 359 |  |
 | `33-sms-whatsapp-channels.md` | doc | 249 |  |
 | `34-partner-developer-api-access.md` | doc | 246 |  |
 | `36-universal-connectivity-integration-framework.md` | doc | 264 |  |
@@ -862,13 +862,14 @@ All 418 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `06-shipping-fulfilment-returns.md` | doc | 335 |  |
 
-### `docs/implementation/tasks-notifications-support` (5)
+### `docs/implementation/tasks-notifications-support` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `148-external-customer-support-portal.md` | doc | 224 |  |
+| `205-self-hosted-video-meetings-livekit.md` | doc | 1813 |  |
 | `23-tasks-allotment-tracking.md` | doc | 239 |  |
-| `24-internal-notifications-meetings-escalation.md` | doc | 258 |  |
+| `24-internal-notifications-meetings-escalation.md` | doc | 264 |  |
 | `61-policy-communications-bulletin.md` | doc | 232 |  |
 | `64-help-desk-support-ticketing.md` | doc | 224 |  |
 

@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2446,
-    "lines": 376945,
+    "files": 2447,
+    "lines": 379156,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 418,
-      "lines": 79215,
-      "bytes": 4791757,
+      "files": 419,
+      "lines": 81426,
+      "bytes": 4909581,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -91353,8 +91353,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 8500,
-      "bytes": 500588,
+      "lines": 8879,
+      "bytes": 522188,
       "doc": "",
       "symbols": []
     },
@@ -91407,8 +91407,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 582,
-      "bytes": 86253,
+      "lines": 593,
+      "bytes": 87692,
       "doc": "",
       "symbols": []
     },
@@ -92775,8 +92775,8 @@
       "path": "docs/implementation/integrations-connectivity/184-app-platform-overview-and-remote-only-decision.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 357,
-      "bytes": 27904,
+      "lines": 359,
+      "bytes": 28205,
       "doc": "",
       "symbols": []
     },
@@ -93051,6 +93051,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 1813,
+      "bytes": 94175,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/tasks-notifications-support/23-tasks-allotment-tracking.md",
       "area": "docs",
       "kind": "doc",
@@ -93063,8 +93072,8 @@
       "path": "docs/implementation/tasks-notifications-support/24-internal-notifications-meetings-escalation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 258,
-      "bytes": 13097,
+      "lines": 264,
+      "bytes": 13406,
       "doc": "",
       "symbols": []
     },

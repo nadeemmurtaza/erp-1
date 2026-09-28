@@ -131,8 +131,8 @@ because it is withheld from a role.
 
 Doc 38 reserved `platform.resilience.view`, `.oncall` and `.tune` (WO-38.6) and
 never added them. Doc 176 uses those names when its SLO surface is built,
-placed in `PLATFORM_PERMISSIONS` because the surface is du operations', not a
-tenant's.
+placed in `PLATFORM_PERMISSIONS` because the surface is NEWAX hosting
+operations', not a tenant's.
 
 ## 3. Principal types — four deltas
 
@@ -238,15 +238,16 @@ the UAE channel's actual API is — which endpoint, which signature scheme — i
 taken from that channel's own documentation when a contract names it, never
 guessed here (doc 15's discipline).
 
-### 3.4 du operations staff in the control plane
+### 3.4 NEWAX hosting-operations staff in the control plane
 
 `apps/platform` authenticates only `PlatformOpsClient` — a key-hash principal
 for tooling, with scopes on the row and "no role/seed system" (doc 39 status).
-A du-owned control plane is operated by people, and doc 39 itself names the
-gap ("a true tenant self-service portal is named, not invented"; "this control
-plane has no tenant-login principal yet"). The delta is a staff sign-in for
-`apps/platform` that reuses doc 161's OIDC design against **du's own workforce
-IdP** (`EMAIL_DOMAIN` binding is correct there), resolving to the same
+NEWAX's control plane is operated by people — doc 39's own "Newax's own
+hosting-operations staff" — and doc 39 itself names the gap ("a true tenant
+self-service portal is named, not invented"; "this control plane has no
+tenant-login principal yet"). The delta is a staff sign-in for
+`apps/platform` that reuses doc 161's OIDC design against **NEWAX's own
+workforce IdP** (`EMAIL_DOMAIN` binding is correct there), resolving to the same
 `PLATFORM_PERMISSIONS` scopes `OpsAuthGuard` already checks. Key-hash
 `PlatformOpsClient` stays for automation. This is net-new code in
 `apps/platform` (it has no staff login of any kind today), specified here and
@@ -308,7 +309,7 @@ enum SupportAccessPurpose {
   INGESTION_MAPPING_ASSIST     // draft a mapping version on the SME's behalf; never confirm it
   CONNECTOR_CREDENTIAL_ROTATE  // rotate (never read) a connector credential
   TENANT_DATA_EXPORT           // run TenantExportService for the tenant
-  CUTOVER_SIGNOFF              // du's and NEWAX's own signatures on a system-of-record cutover (doc 179 §5.3) — sign only
+  CUTOVER_SIGNOFF              // NEWAX's implementation lead's and program owner's signatures on a system-of-record cutover (doc 179 §5.3) — sign only
 }
 
 model SupportAccessGrant {
@@ -374,7 +375,7 @@ work, not code.
 
 ## 6. The SME's legal identity at runtime — bounded, and needing its own ADR
 
-At 50,000 tenants on one du image, the fields an SME's own tax invoice prints —
+At 50,000 tenants on one NEWAX image, the fields an SME's own tax invoice prints —
 legal name, TRN (tax label + number), registration label + number, address,
 banking, logo — cannot be compiled per tenant from `brand.ts`. Today:
 
@@ -385,8 +386,8 @@ banking, logo — cannot be compiled per tenant from `brand.ts`. Today:
   taxNumber/registrationLabel/registrationNumber` and `BRAND.banking` at
   compile time, "flattened for the ~60 call sites that read them".
 
-The bounded change: `brand.ts` keeps **du's product identity and the UAE
-locale block** (one build per country, not per SME — dozens of images at
+The bounded change: `brand.ts` keeps **the product's own identity (NEWAX's,
+as sold in that market) and the UAE locale block** (one build per country, not per SME — dozens of images at
 international scale, never 50,000); the SME's **legal identity** moves into its
 own runtime `SettingKey.Store` (extended with `legalName`, `taxLabel`,
 `taxNumber`, `registrationLabel`, `registrationNumber`, `address`, `banking`),
@@ -435,7 +436,7 @@ hold `connectors.ingestion.confirm` (§4.2).
 **Authority and blast radius** — `SUPPORT_ACCESS_PUBLIC_KEY` is the widest
 setting introduced: whoever controls its private half can open every tenant's
 support door. It is an operator secret held only by the control plane, rotated
-by du operations, and its rotation is the emergency revocation path.
+by NEWAX hosting operations, and its rotation is the emergency revocation path.
 **Audience is a capability, not an address** — n/a: no message is introduced
 here.
 **Request or record — classify every write** — issuing a grant, an invite, a
@@ -471,14 +472,14 @@ live grant only; bounded by grant hours.
 invite after a recorded unbind, never an edit of `subject`.
 **The undo fan-out** — revoking a grant: support tokens stop being minted
 (automatic), live ones lapse within 15 minutes (automatic), key rotation for
-immediacy (human, du operations).
+immediacy (human, NEWAX hosting operations).
 **The version stamp** — each support audit row names the `grantId` and its
 purposes as they were when the token was minted.
 **The erasure the ledger cannot obey** — `SsoSubjectBinding.subject` is a
 national identifier; on `User` erasure it is pseudonymised in place (ruling 1),
 never left behind.
 **The failure path, and who is allowed to walk it** — a refused support token
-lands in the tenant's `AuditLog` with the reason; du operations see it through
+lands in the tenant's `AuditLog` with the reason; NEWAX hosting operations see it through
 the control plane's grant history, keyed by ticket reference.
 
 ## Work orders
@@ -501,7 +502,7 @@ implementation once a contract names the channel.
 `SUPPORT_ACCESS_PUBLIC_KEY`, the provisioned support `User`, evidence-class
 audit per request; `SupportAccessGrant.purposes`; token minting in
 `SupportAccessService`.
-**WO-170.7 — Control-plane staff sign-in** (`apps/platform`, OIDC, du's
+**WO-170.7 — Control-plane staff sign-in** (`apps/platform`, OIDC, NEWAX's
 workforce IdP), resolving to `PLATFORM_PERMISSIONS`.
 **WO-170.8 — Arabic enablement inventory → tickets**: the `*Ur`/`nameEn` list
 in §5 turned into per-module translation-row changes; `ar.json`.

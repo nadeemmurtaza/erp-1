@@ -20,15 +20,15 @@ each producing an artifact a reviewer can check:
 |---|---|---|---|
 | 1 | **Requirement** | A work-order id from docs 169–182 (e.g. WO-172.4) in the PR title | No code without one — "code with no documented reason is speculative functionality" (`CLAUDE.md`) |
 | 2 | **Acceptance criteria** | The WO's own "Acceptance" bullets, copied into the PR, each mapped to the test that proves it | A bullet with no test fails review |
-| 3 | **ADR, when one is required** | A new `DECISIONS.md` entry | Required for: a new core extension point (`CanonicalRecordSinkRegistry`, the `CircuitBreaker`); any posting-rule change (the clearing account, WO-175.10; partial refunds, WO-175.6); runtime tenant legal identity (WO-168.3, Br1-adjacent); compute density (WO-168.3); any new `KNOWN_MODULE_COUPLINGS` entry. **ADR-071 covers where this program is built, and nothing else** |
+| 3 | **ADR, when one is required** | A new `DECISIONS.md` entry | Required for: a new core extension point (`CanonicalRecordSinkRegistry`, the `CircuitBreaker`); any posting-rule change (the clearing account, WO-175.10; partial refunds, WO-175.6); runtime tenant legal identity (WO-168.3, Br1-adjacent); compute density (WO-168.3); any new `KNOWN_MODULE_COUPLINGS` entry. **ADR-071 (carried forward on the corrected premise by ADR-072) covers where this program is built, and nothing else** |
 | 4 | **Implementation** | The diff | Inside module boundaries; `pnpm lint` green with **zero new `KNOWN_MODULE_COUPLINGS` entries** unless step 3 produced an ADR for one |
 | 5 | **Tests** | Unit specs for every pure function (`parse`, `map`, `scoreRecord`, the partition, `validateModification`, `DerivabilityAssessment`), integration specs against a real Postgres for every atomicity claim (promotion chunks, constraints, cutover), determinism specs where a document claims determinism, contract specs for every new event (doc 176 §7) | `pnpm test` green |
 | 6 | **Failure tests** | The fault-injection cases of doc 176 §3 relevant to the change | **Merge gate** for any WO touching `connectors/**`, `payments/**`, `settlements/**`, `planning/**` or `apps/platform/src/modules/releases/**` |
-| 7 | **Security** | A review by the `security` agent (`.claude/agents/security.md`, routed per `docs/index/cross/model-routing.md`: "permissions, authentication, tenant or branch isolation, payment and refund paths, anything handling secrets") | Mandatory for doc 170 §3–§4 (principals, UAE PASS, support sessions), connector credentials, callback verification (WO-175.1), the du-rail provider and connector |
+| 7 | **Security** | A review by the `security` agent (`.claude/agents/security.md`, routed per `docs/index/cross/model-routing.md`: "permissions, authentication, tenant or branch isolation, payment and refund paths, anything handling secrets") | Mandatory for doc 170 §3–§4 (principals, UAE PASS, support sessions), connector credentials, callback verification (WO-175.1), each PSP's provider and settlement connector |
 | 8 | **Preview** | A preview environment running doc 178's two demo tenants | Doc 178's end-to-end journey (WO-178.3) passes there |
 | 9 | **Evidence** | The PR description: the commands run and their counts ("verify by counting, not by reading" — `CLAUDE.md`), the `### Scope lenses` block for a named feature, the pillars touched, and the ratchet counts (doc 170 §5's currency words; `rupeesSpentMinor` after WO-173.1) | A claim without a command behind it is not evidence |
 | 10 | **Human review** | Approval by the owner or a person the owner delegates | **An agent's approval is never consent.** Agent-to-agent review (§2.4) is advisory input to the human, never a substitute for one |
-| 11 | **Merge** | The merge to `main` | In this repository `main` deploys nothing (`CLAUDE.md`'s Deployment section). For du's production, a merge becomes a `PlatformRelease` (doc 171) and reaches tenants only through rings — merging is not releasing |
+| 11 | **Merge** | The merge to `main` | In this repository `main` deploys nothing (`CLAUDE.md`'s Deployment section). For NEWAX's hosted production fleet, a merge becomes a `PlatformRelease` (doc 171) and reaches tenants only through rings — merging is not releasing |
 
 **Program-level gates** — no work order in a later gate starts before the earlier
 gate is merged and verified:
@@ -37,9 +37,9 @@ gate is merged and verified:
 |---|---|---|
 | **G0 — correctness preconditions** | WO-170.3 (currency sweep), WO-175.1 (fail-closed callbacks), WO-173.1–173.4 (rename, unknown cost, AP in base, honest cash and AR) | Each writes a wrong fact the moment a non-PKR tenant transacts |
 | **G1 — foundation** | Docs 160/162 built as corrected (WO-172.1–172.3), `CanonicalRecordSinkRegistry` (WO-172.6's registry half), doc 38's `CircuitBreaker` (WO-176.2) | Everything in Layer 3 stands on it |
-| **G2 — the new capability** | The ingestion pipeline (WO-172.4–172.11), provenance partition (WO-173.5–173.9), control-center persistence (doc 174), derivability (doc 177) | The slice (doc 178) |
-| **G3 — money** | The du rail (WO-175.2–175.8) | Needs G0's callback fix and G1's breaker |
-| **G4 — fleet** | Build Manifest and Update Agent (doc 171), SLIs (doc 176 §5), milestones (doc 180), continuity (doc 181 §7) | Needed for Wave 1, not for the submission |
+| **G2 — the new capability** | The ingestion pipeline (WO-172.4–172.11), provenance partition (WO-173.5–173.9), control-center persistence (doc 174), derivability (doc 177) | The MVP slice (doc 178) |
+| **G3 — money** | The first licensed PSP's integration (WO-175.2–175.8) | Needs G0's callback fix and G1's breaker |
+| **G4 — fleet** | Build Manifest and Update Agent (doc 171), SLIs (doc 176 §5), milestones (doc 180), continuity (doc 181 §7) | Needed for Wave 1, not for the MVP slice |
 | **Wave gates** | Doc 179 §2–§6 | Business gates on top of engineering gates |
 
 ## 2. The two-agent split
@@ -55,7 +55,7 @@ paths the other does not edit.
 | Agent | Owns (writes) | Layers / docs |
 |---|---|---|
 | **A — core & engine** | `apps/api/src/core/extension-points/**` (the sink registry), `apps/api/src/core/resilience/**` (the breaker — built by A, consumed by B), `apps/api/src/modules/planning/**`, `apps/api/prisma/schema/planning.prisma`, the **sinks inside owning modules** (`purchasing`, `crm`, `parties`, `catalog`, `inventory`, `tradingpartners` — core-module code, one `onModuleInit()` registration each), the doc 169 changes to existing models (`Invoice`, `Contact`, `Party`), `packages/shared/src/permissions.ts`, `core/auth/**` (support sessions, UAE PASS binding), `apps/platform/src/modules/releases/**` and the control-plane schema for docs 171/176/180, `apps/web/src/app/(admin)/admin/(app)/resilience/**` | 0, 1, 2, 4, 5 — docs 169, 170, 171, 173, 174, 177, 180 |
-| **B — connectors, rails, failure** | `apps/api/src/modules/connectors/**`, `apps/api/prisma/schema/connectors.prisma`, `apps/api/src/modules/payments/providers/<du-rail>.provider.ts`, `apps/api/src/modules/settlements/connectors/**`, the settlement-expectation cron, `apps/web/src/app/(admin)/admin/(app)/connections/**`, the fault-injection suite and demo harness (WO-176.3, WO-178.4), the end-to-end journey (WO-178.3), the SLI sampler's queries | 3, 6 — docs 172, 175, 176, 178, 179's comparator |
+| **B — connectors, rails, failure** | `apps/api/src/modules/connectors/**`, `apps/api/prisma/schema/connectors.prisma`, `apps/api/src/modules/payments/providers/<psp>.provider.ts`, `apps/api/src/modules/settlements/connectors/**`, the settlement-expectation cron, `apps/web/src/app/(admin)/admin/(app)/connections/**`, the fault-injection suite and demo harness (WO-176.3, WO-178.4), the end-to-end journey (WO-178.3), the SLI sampler's queries | 3, 6 — docs 172, 175, 176, 178, 179's comparator |
 
 **Shared, edited only through a PR the other agent reviews:**
 `apps/api/src/core/events/domain-events.ts` (both add events),
@@ -84,7 +84,7 @@ before either side implements against it:
 | 1 (G0) | WO-170.3 currency sweep; WO-173.1–173.4 | WO-175.1 fail-closed callbacks; WO-175.2 labels |
 | 2 (G1) | Sink registry + candidate types; `CircuitBreaker`; WO-169.2/169.3 model changes; permissions (WO-170.1) | WO-172.1 schema; WO-172.3 transports; WO-176.3 fault-injection harness skeleton |
 | 3 (G2) | Sinks in owning modules; WO-173.5–173.9; doc 174; doc 177 | WO-172.4–172.11 pipeline and UI; e2e journey |
-| 4 (G3) | Reviews B's rail work for the security list | WO-175.3–175.8 du rail |
+| 4 (G3) | Reviews B's rail work for the security list | WO-175.3–175.8 first PSP |
 | 5 (G4) | Doc 171; doc 180; control-plane staff sign-in (WO-170.7) | SLI queries; comparator (WO-179.2); runbooks' failure drills |
 
 ### 2.4 Rules of engagement
@@ -163,8 +163,8 @@ visibility is answered in the document that introduces it.
 **The toxic pair, caught at grant or at act** — the agent that wrote a change
 cannot be its only reviewer; the human approves.
 **Authority and blast radius** — the widest authority here is merging to `main`;
-in this repository it deploys nothing, and for du it reaches tenants only through
-rings.
+in this repository it deploys nothing, and for NEWAX's hosted fleet it reaches
+tenants only through rings.
 **Audience is a capability, not an address** — n/a: this process sends no
 message of its own; a red gate reaches people through CI's own notification to
 the PR's author and reviewers, not through anything this program builds.

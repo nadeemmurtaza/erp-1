@@ -426,6 +426,6 @@ WO-170.1); the existing nav entry kept; the action-hub source.
 
 Executing any action from the control center (Part 4's rule). A `REQUESTED`
 state on `StockTransfer` (a transfers-module change, named). Causal attribution
-of outcomes. A cross-tenant resilience dashboard for du (doc 180's metrics are
+of outcomes. A cross-tenant resilience dashboard for NEWAX's own operations (doc 180's metrics are
 program measures, not an SME-facing feature). Alerts pushed to SMEs by SMS or
 WhatsApp (the action hub and in-app notification only in this program).

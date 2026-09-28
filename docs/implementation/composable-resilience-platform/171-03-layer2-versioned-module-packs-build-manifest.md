@@ -104,7 +104,7 @@ enum ReleaseMigrationSafety {
 }
 
 enum ReleaseRing {
-  CANARY    // du's and NEWAX's own internal tenants
+  CANARY    // NEWAX's own internal tenants
   EARLY     // tenants who opted in
   GENERAL
   PINNED    // never moved by the Update Agent; only an explicit, approved change
@@ -120,7 +120,7 @@ model TenantBuildManifest {
   /// control plane renders it into the instance's environment; the tenant
   /// reports it back through GET /meta (drift check, §5 VERIFY).
   modules          String[]
-  nodeRole         String      @default("STANDALONE") // every du SME is Solo edition (R14)
+  nodeRole         String      @default("STANDALONE") // every pilot SME is Solo edition (R14)
   ring             ReleaseRing @default(GENERAL)
   /// The tenant's own business-hours-safe window, in its StoreTimezone —
   /// the Update Agent never starts a MIGRATE/ROLL step outside it.
@@ -305,7 +305,7 @@ this stops being theoretical: a release that fails to boot for one module
 combination breaks every tenant with that combination at once.
 
 The representative sets are not guessed. They are the **distinct `modules`
-arrays present in `TenantBuildManifest`** — a du SME fleet will share a small
+arrays present in `TenantBuildManifest`** — the pilot SME fleet will share a small
 number (connect-only, invoicing-migrated, full-engine; doc 179's waves), and
 the control plane exports that list to CI. A CI job boots `apps/api` against a
 freshly migrated database once per set and requires `/health/ready` and
@@ -321,7 +321,7 @@ lines below answer what this document's own artifacts introduce: the four
 control-plane tables, the Update Agent, `/meta.release`, and the per-set boot
 test.
 
-**The actor with three tables** — du operations staff (doc 170 §3.4) and
+**The actor with three tables** — NEWAX hosting-operations staff (doc 170 §3.4) and
 `PlatformOpsClient` automation are the only actors; a tenant never writes its
 own manifest.
 **The principal with no permission key** — the Update Agent runs as the
@@ -363,7 +363,7 @@ ring as a report ("which tenants would this release reach, and which would it
 refuse, and why") before any rollout percent moves.
 **Click the number** — a ring's "37 of 1,200 updated" links to the exact
 `TenantUpdateAttempt` rows.
-**Three silhouettes, and the day the tier above appears** — every du SME is
+**Three silhouettes, and the day the tier above appears** — every pilot SME is
 `STANDALONE`; the manifest's `nodeRole` column exists so a chain SME's BRAND and
 BRANCH nodes are managed by the same table the day one appears.
 **The absent collaborator** — no manifest row: the tenant is simply not managed
@@ -433,7 +433,7 @@ sets; writes `bootTestedModuleSets`.
 ## Out of scope
 
 The orchestrator itself (doc 39 and doc 37 both leave it to the operator —
-du's platform team chooses it; this layer calls it through
+NEWAX's own hosting-operations team chooses it; this layer calls it through
 `rollApplication()`). Per-module independent versions (refused by R1, §2).
 Automatic database rollback (forward-only by ADR-008). Rolling releases to
 self-hosted or desktop nodes (doc 48) — they update through doc 11/12's

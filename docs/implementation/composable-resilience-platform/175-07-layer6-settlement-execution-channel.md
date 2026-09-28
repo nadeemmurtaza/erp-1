@@ -1,4 +1,4 @@
-# 175 — Layer 6: payments as an execution channel — a du rail on `PaymentProvider`, doc 49's `SHORT` loop, and a custody boundary NEWAX never crosses
+# 175 — Layer 6: payments as an execution channel — licensed third-party PSPs on `PaymentProvider`, doc 49's `SHORT` loop, and a custody boundary NEWAX never crosses
 
 > **Status: proposed (2026-09-27), not yet built.** Both extension points this
 > layer needs already exist: `PaymentProvider`
@@ -8,18 +8,28 @@
 > and doc 49's `SettlementsService` — expected batch, reconcile, a named `SHORT`
 > variance, a maker-checker write-off posting through
 > `SettlementShortfallWrittenOff` — is built. This document specifies **one
-> du-rail implementation of each interface**, two fixes to shipped code that a
-> live online rail makes mandatory (callback verification that fails closed;
-> provider labels as translation rows), and the forecast change that stops
-> un-settled gateway money being counted as cash in the bank. It states, call by
-> call, how NEWAX never holds funds. It is the second genuinely new named
-> capability in the program and carries a full scope-lens pass.
+> implementation of each interface per licensed third-party payment service
+> provider (PSP) NEWAX integrates in a market** — the first being the PSP NEWAX
+> selects for its own UAE entry — two fixes to shipped code that a live online
+> rail makes mandatory (callback verification that fails closed; provider labels
+> as translation rows), and the forecast change that stops un-settled gateway
+> money being counted as cash in the bank. It states, call by call, how NEWAX
+> never holds funds. It is the second genuinely new named capability in the
+> program and carries a full scope-lens pass.
+>
+> **Revised (2026-09-28), ADR-072.** Earlier drafts assumed one specific
+> telecom-owned rail as *the* rail and that party's licensed entities as the
+> custody boundary. There is no such counterparty. NEWAX is a technology
+> platform that integrates licensed PSPs through the existing extension point
+> and never becomes a money transmitter or wallet-holder itself for this
+> program; doc 155's wallet/stored-value/escrow model stays out of it (§4).
 
 ## Implementation plan
 
 ### Objective
 Close the resilience loop with real money: a customer pays an SME's document
-through du's licensed rail; the payment is verified, recorded and posted; the
+through a licensed third-party PSP's rail; the payment is verified, recorded
+and posted; the
 rail's payout is reconciled against it with a named, never-silent variance; and
 the SME's resilience position (doc 173's liquidity forecast) reflects cash that
 has actually arrived — while no money ever passes through a NEWAX account.
@@ -29,9 +39,9 @@ has actually arrived — while no money ever passes through a NEWAX account.
   `bank_transfer` live; `jazzcash` and `easypaisa` "written against their
   hosted-checkout flow and stay dark until the merchant credentials exist"
   (`payment-provider.ts:4–10`); `giftkarta`; `account` (doc 149). **None is a
-  live online gateway today** — a du rail would be the first to run in
-  production, which is why §3's verification fix is a precondition, not a
-  polish.
+  live online gateway today** — the first PSP this program integrates would be
+  the first to run in production, which is why §3's verification fix is a
+  precondition, not a polish.
 - `FinancialInstitutionConnector` has **zero** implementations: "`this.connectors`
   is a permanently empty map until then" (doc 49 status); `reconcile()` and
   `pollExpectedBatches()` refuse when no connector is registered.
@@ -49,8 +59,8 @@ has actually arrived — while no money ever passes through a NEWAX account.
 §2–§6.
 
 ### Files likely affected
-New: `payments/providers/<du-rail>.provider.ts`,
-`settlements/connectors/<du-rail>.connector.ts`, a settlement-expectation cron in
+New, per integrated PSP: `payments/providers/<psp>.provider.ts`,
+`settlements/connectors/<psp>.connector.ts`; once: a settlement-expectation cron in
 `settlements`. Changed: `payments.service.ts` (fail-closed check),
 `payment-provider.ts` (labels → translation keys; `verified` documented as
 required), `jazzcash.provider.ts`/`easypaisa.provider.ts` (return
@@ -99,31 +109,41 @@ doc 169 §6).
 | Step | What happens | Real code | New here |
 |---|---|---|---|
 | 1. Document | The SME's demand for payment | `Order` — the AR document of record (`receivables.prisma` header); `Payment.orderId` is required | Nothing. Invoice-keyed collection (`Payment.invoiceId`) is an R18 step that makes `orderId` nullable across every payment consumer — named as WO-175.9, sequenced after Wave 2's invoicing migration, not in the slice |
-| 2. Rails | A hosted payment session at the licensed entity | `PaymentsService.createForOrder(tx, key, context)` → `provider.initiate(context)` returns `{ status: 'PENDING', reference, redirectUrl }`; `Payment` row with `reference @unique` | The du-rail provider (§3) |
+| 2. Rails | A hosted payment session at the licensed entity | `PaymentsService.createForOrder(tx, key, context)` → `provider.initiate(context)` returns `{ status: 'PENDING', reference, redirectUrl }`; `Payment` row with `reference @unique` | The PSP's provider (§3) |
 | 3. Proof | The rail tells us the payment happened | `POST /payments/callback/:provider` → `PaymentsService.handleCallback()` → `provider.handleCallback(payload)` → `PAID`/`FAILED` + `PaymentSucceeded`/`PaymentFailed` via the outbox | Verification fails closed (§3) |
 | 4. Books | The receipt posts | `onPaymentSucceeded()`: Dr `1000` / Cr `1100`, idempotent on `findPostedEntry(source, paymentId)` | Nothing — R15's rule, unchanged |
 | 5. Payout | The rail pays the SME's bank, net of its fees, in a batch | `SettlementsService.createExpectedBatch()` → `SettlementBatch` (`EXPECTED`) with `SettlementBatchLine`s per `Payment` | A settlement-expectation cron that creates the expected batch per payout cycle (§5.1) |
-| 6. Reconciliation | Expected vs. paid out | `reconcile()`/`pollExpectedBatches()` → `FinancialInstitutionConnector.reconcileBatch(externalBatchRef)` → `CONFIRMED` or **`SHORT`**; `SHORT` never auto-resolves; write-off above `FinanceSettlementWriteoffApprovalThresholdMinor` needs a second approver; posts Dr `5700` / Cr `1000` through `SettlementShortfallWrittenOff` | The du-rail connector (§5.2) |
+| 6. Reconciliation | Expected vs. paid out | `reconcile()`/`pollExpectedBatches()` → `FinancialInstitutionConnector.reconcileBatch(externalBatchRef)` → `CONFIRMED` or **`SHORT`**; `SHORT` never auto-resolves; write-off above `FinanceSettlementWriteoffApprovalThresholdMinor` needs a second approver; posts Dr `5700` / Cr `1000` through `SettlementShortfallWrittenOff` | The PSP's settlement connector (§5.2) |
 | 7. Position | The resilience engine sees real cash | `LiquidityForecastService.forecast()` | Cash in transit separated from cash in the bank (§5.3) |
 
-## 3. The du-rail `PaymentProvider`
+## 3. A licensed PSP's `PaymentProvider`
 
-`PaymentProvider`'s own header states the whole cost: "implement this interface,
-add the class to `PaymentsService`'s constructor list, add its key to the
-allowlist. Nothing else in the codebase changes." The du rail — du Pay and/or
-the acquirer behind it (the brief names Network International) — is one class,
-`providers/<du-rail>.provider.ts`, its key fixed by the contract (for example
-`du_pay`), switched on per tenant by the `PAYMENT_PROVIDERS` allowlist:
+NEWAX integrates with licensed third-party PSPs and payment gateways, market by
+market, through the extension point that already exists —
+`export interface PaymentProvider` at
+`apps/api/src/modules/payments/payment-provider.ts:73` — and never becomes a
+money transmitter or wallet-holder itself for this program. Its own header
+states the whole cost: "implement this interface, add the class to
+`PaymentsService`'s constructor list, add its key to the allowlist. Nothing else
+in the codebase changes." Each PSP is one class, `providers/<psp>.provider.ts`,
+under a stable key naming that PSP, switched on per tenant by the
+`PAYMENT_PROVIDERS` allowlist. Which PSP NEWAX integrates first in the UAE is
+NEWAX's own commercial choice when it enters the market; a regional rail such
+as Network International or du Pay is an illustration of what this extension
+point could plug into, never an assumed or required rail. Because the
+allowlist is a list, a market can have more than one PSP at once, and an SME
+that already holds a merchant account with a supported PSP uses that one. Each
+PSP's class implements:
 
 | Member | Implementation |
 |---|---|
 | `key`, labels | See "labels" below |
 | `feeFor(amount)` | `0`. The rail's merchant discount is netted from the payout by the rail and appears as the expected-vs-settled difference the SME agreed to (a configured fee rate on the `SettlementProvider`, §5.2) — never an extra charge added to the customer's total |
 | `initiate(context)` | A server-to-server call to the licensed entity's payment-order API with the **SME's own merchant credentials** (encrypted in the tenant database with `secret-crypto`), returning the entity's hosted payment page as `redirectUrl` and our `reference` — the JazzCash/Easypaisa shape ("only ever prepare a redirect; the actual settlement arrives later, via `handleCallback`", `payment-provider.ts:106–108`) |
-| `handleCallback(payload)` | Verifies the rail's own documented authentication (a signature over the raw body, a callback token, or mutual TLS — **whichever the licensed entity's API specifies, taken from its documentation when the contract provides it, never assumed here**, doc 15's discipline); returns `verified: true` only on proof |
+| `handleCallback(payload)` | Verifies the rail's own documented authentication (a signature over the raw body, a callback token, or mutual TLS — **whichever the licensed entity's API specifies, taken from its documentation when NEWAX's integration agreement with that PSP provides it, never assumed here**, doc 15's discipline); returns `verified: true` only on proof |
 | `redeemCode` | not implemented |
 
-Wrapped in doc 38 §2's `CircuitBreaker` (key `payment.<du-rail key>`), so a rail
+Wrapped in doc 38 §2's `CircuitBreaker` (key `payment.<psp key>`), so a rail
 outage hides the option at checkout instead of queuing doomed calls — doc 38's
 degradation-matrix row for `PaymentProvider`, made real.
 
@@ -164,7 +184,7 @@ SME's money. Stated as the calls that exist and the calls that do not:
 | Payment authorised | Licensed entity | Callback to the SME tenant's own endpoint, verified (§3) | Records status as data |
 | Funds settle | Licensed entity → **the SME's own bank account** | The SME is the merchant of record, onboarded (KYB) by the licensed entity; payout goes to the account the SME registered *with the entity* | None; reconciles the payout report as data (§5) |
 | Refund | SME → licensed entity | Executed in the entity's merchant portal or API by the SME; `PaymentsService.refund()` records it (§6) | Records the fact |
-| NEWAX's own revenue | du ↔ NEWAX, du ↔ SME | Billed as its own invoice (`PlatformInvoice`, doc 50) through du's own billing — **never netted out of an SME's settlement**, never a split payment in which NEWAX receives a share of a customer's funds | A separate commercial relationship (doc 182) |
+| NEWAX's own revenue | NEWAX ↔ SME | Billed as its own subscription invoice (`PlatformInvoice`, doc 50) from NEWAX's control plane and collected through NEWAX's own billing path (`AgencyStripeChargeCron`, ADR-039) — **never netted out of an SME's settlement**, never a split payment in which NEWAX receives a share of a customer's funds | A separate commercial relationship (doc 182) |
 
 What this platform holds: payment references, statuses and amounts as data; the
 SME's API credentials for the rail (encrypted, write-only); settlement reports
@@ -175,16 +195,20 @@ account into which a third party's money is paid.
 revised structure has "customer payments settle into Newax's own bank account
 only, in exchange for Newax-issued store credit" — a legitimate structure in its
 own context, and exactly what this program must never do. The `wallet` module
-stays out of every du tenant's `MODULES` (doc 171 manifest), and no du tenant's
-Build Manifest may add it. If du wants stored value, it is du's own licensed
-product, integrated — if ever — as one more `PaymentProvider`, never as NEWAX's
+stays out of every program tenant's `MODULES` (doc 171 manifest), and no program
+tenant's Build Manifest may add it. Offering stored value, a wallet or escrow is
+a separate, more heavily regulated business decision the owner has not made —
+doc 155 carries its own legal gate (WO-155.0) — and this program does not make
+it by the back door. If a licensed PSP's own stored-value product is ever offered
+to SMEs, it is integrated as one more `PaymentProvider`, never as NEWAX's
 ledger.
 
-**Who the licensed party is** — du Pay, the acquirer, or both, and under which
-Central Bank of the UAE licence category — is a fact the contract states; this
-document does not assert it. The design's only requirement is that every
-money-moving call in the table above terminates at a licensed entity and never
-at NEWAX.
+**Who the licensed party is** — which PSP NEWAX integrates in a market, and
+under which Central Bank of the UAE licence category that PSP operates — is a
+fact NEWAX's integration agreement with the PSP and the SME's own merchant
+agreement with it state; this document does not assert it. The design's only
+requirement is that every money-moving call in the table above terminates at a
+licensed entity and never at NEWAX.
 
 ## 5. Settlement reconciliation — doc 49's pattern, reused, and one gap closed
 
@@ -199,9 +223,9 @@ lag, a `SettlementProvider` configuration column), and calls the same
 by `externalBatchRef` once known, and by a deterministic expectation key
 (`<provider>:<payout date>`) before it is.
 
-### 5.2 The du-rail `FinancialInstitutionConnector`
+### 5.2 The PSP's `FinancialInstitutionConnector`
 
-`settlements/connectors/<du-rail>.connector.ts` implements
+`settlements/connectors/<psp>.connector.ts` implements
 `reconcileBatch(externalBatchRef): Promise<{ settledAmountMinor; settledAt }>` —
 from the rail's payout-report API, or, where the rail delivers files, from a
 camt.053/camt.054 statement through doc 162's `FileFormatHandler` (the ISO 20022
@@ -211,8 +235,8 @@ receive from the institution is never written as `settledAmountMinor`"
 on `SettlementProvider` (new column `expectedFeeBps Int?`) so the expectation is
 *net*: a batch short by exactly the agreed fee is `CONFIRMED`, and only a
 shortfall beyond it is `SHORT`. That is not a tolerance that hides variance — it
-is the contract's own figure, versioned by the batch's own row (the
-version-stamp lens).
+is the SME's merchant agreement's own figure, versioned by the batch's own row
+(the version-stamp lens).
 
 `SHORT` is exactly doc 49 §3: "never auto-resolved: a `SHORT` batch surfaces on
 a reconciliation screen (`finance.settlement.reconcile`), with the specific
@@ -220,7 +244,7 @@ a reconciliation screen (`finance.settlement.reconcile`), with the specific
 changes none of it.
 
 Doc 49's WO-49.2 webhook path (a signed settlement notification) is unbuilt; it
-is built here for the du rail only if the rail offers one, fail-closed from the
+is built here for a PSP only if that PSP offers one, fail-closed from the
 start, and `@@unique([settlementProviderId, externalBatchRef])` already makes a
 redelivery idempotent. Polling (WO-49.3, built) is the default.
 
@@ -305,7 +329,7 @@ same threshold follows the credit-note maker-checker shape (WO-175.7).
 `approveWriteoff()`'s distinct-actor check (doc 49, built), the same enforcement
 point, unchanged.
 **Authority and blast radius** — who may enable the rail for a tenant: the
-Build Manifest's `PAYMENT_PROVIDERS` (du operations, doc 171) plus the SME's
+Build Manifest's `PAYMENT_PROVIDERS` (NEWAX hosting operations, doc 171) plus the SME's
 own credential entry (`settings.manage`); who may change `expectedFeeBps`:
 `finance.settlement.reconcile`, audited evidence-class with old and new value;
 the worst value is a fee rate set so high every short batch reads `CONFIRMED` —
@@ -342,7 +366,7 @@ Named: a fee posting (Dr a payment-fees expense account — none of the 29 accou
 in `accounting/chart-of-accounts.ts` is one / Cr `1000`) is part of the clearing-account ADR (§5.3), not
 invented here.
 **Every column or none** — the write-off line sets `organizationId`/
-`retailBrandId`/`branchNodeId` from the batch's own scope (doc 49); every du SME
+`retailBrandId`/`branchNodeId` from the batch's own scope (doc 49); every pilot SME
 is one brand, one node, so these default to the tenant's own; declared
 undimensioned otherwise.
 **The period that already moved** — a payout confirmed into a closed period
@@ -404,7 +428,7 @@ payouts by `SettlementBatch`; still open for bank statement lines (doc 169
 *The receipt that doesn't find its bill* — a payment is tied to its `Order`
 (`Payment.orderId`); to an `Invoice` only after WO-175.9.
 *Which tier owns the credential* — the SME tenant's own database, encrypted;
-never the control plane, never du's ops.
+never the control plane, never NEWAX's hosting operations.
 *Delivery is a fact, not a hope* — a payout is a fact only when the connector
 reports it; an expectation is never shown as settled.
 
@@ -414,18 +438,19 @@ reports it; an expectation is never shown as settled.
 check, JazzCash/Easypaisa returning `verified: true`, the new spec case.
 **WO-175.2 — Provider labels as translation keys** across all six providers
 and the storefront method picker; `ar.json` entries.
-**WO-175.3 — The du-rail `PaymentProvider`** against the rail's sandbox, behind
-the `CircuitBreaker`, credentials entered by the SME (`settings.manage`),
-encrypted.
+**WO-175.3 — The first PSP's `PaymentProvider`** — the PSP NEWAX selects for its
+UAE entry — against that PSP's sandbox, behind the `CircuitBreaker`, credentials
+entered by the SME (`settings.manage`), encrypted. Each further PSP is a repeat
+of this work order, never a change to the interface.
 **WO-175.4 — Pending-payment status poll** for callbacks that never arrive.
 **WO-175.5 — Cash in transit** in `LiquidityForecastService` (§5.3).
 **WO-175.6 — Partial-refund posting**: `onPaymentRefunded()` reverses
 `refundAmount` proportionally; spec with a 30% refund.
 **WO-175.7 — Refund maker-checker above threshold**, mirroring
 `CreditNotesService.approve()`.
-**WO-175.8 — The du-rail `FinancialInstitutionConnector`**,
+**WO-175.8 — The first PSP's `FinancialInstitutionConnector`**,
 `SettlementProvider.expectedFeeBps`, the settlement lag column, and
-`SettlementExpectationCron`; the signed settlement webhook if the rail offers
+`SettlementExpectationCron`; the signed settlement webhook if the PSP offers
 one.
 **WO-175.9 — `Payment.invoiceId`** (R18), sequenced after Wave 2's invoicing
 migration; every payment consumer reviewed.
@@ -435,7 +460,7 @@ migration; every payment consumer reviewed.
 ## Acceptance
 
 - A callback whose provider returns no `verified` field is refused and writes
-  nothing; a forged du-rail callback is refused; a genuine one marks the payment
+  nothing; a forged PSP callback is refused; a genuine one marks the payment
   `PAID` exactly once even if delivered three times.
 - An AED payment's row reads `currency: 'AED'`.
 - A payout short by exactly `expectedFeeBps` is `CONFIRMED`; short by more is
@@ -447,13 +472,19 @@ migration; every payment consumer reviewed.
 - A 30% refund reverses 30% of the receipt and the sale in the ledger.
 - No code path in this program writes a payment into, or reads funds from, any
   account the SME did not register with the licensed entity — reviewed against
-  §4's table, and no `wallet` entry appears in any du tenant manifest.
+  §4's table, and no `wallet` entry appears in any program tenant manifest.
+- The PSP integrated first is reached only through `PaymentProvider` and
+  `FinancialInstitutionConnector`: outside its own provider and connector
+  classes, its key appears only as data (the `PAYMENT_PROVIDERS` allowlist, its
+  `SettlementProvider` row, its message keys) — never in a conditional.
 
 ## Out of scope
 
 Lending, cash advances and working-capital products (doc 49's own
-out-of-scope). Stored value, wallets and escrow (§4). Paying suppliers from this
+out-of-scope). Stored value, wallets and escrow (§4) — NEWAX becoming a money
+transmitter, payment institution or wallet issuer for this program in any form. Paying suppliers from this
 platform (autonomous payment execution — a non-goal, doc 178; ISO 20022 pain.001
 generation is named in doc 169 §9 and not built). Card data handling of any kind.
-The clearing-account posting change (its own ADR). Naming the licensed party and
-its licence category (the contract's facts, not this document's).
+The clearing-account posting change (its own ADR). Choosing which licensed PSP(s)
+to integrate per market, and their licence categories (NEWAX's commercial choice
+and the PSP's own facts, not this document's).

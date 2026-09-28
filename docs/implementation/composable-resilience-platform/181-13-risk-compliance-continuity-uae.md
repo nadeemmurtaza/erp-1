@@ -6,19 +6,26 @@
 > `FiscalComplianceProvider` extension point, the `PaymentProvider` custody
 > boundary — and names, rather than asserts away, every place a mechanism is
 > missing. It then specifies the continuity package that replaces any
-> single-vendor-lock-in story, and the IP boundary between du and NEWAX. **It is
-> an engineering mapping, not legal advice:** the obligations are stated as
-> this program understands them and are to be confirmed by counsel for the
-> contract; where a figure (a retention period, a mandate date) is legal rather
-> than technical, it is marked for confirmation, never presented as settled.
+> single-vendor-lock-in story, and the IP boundary between NEWAX and its
+> customers. **It is an engineering mapping, not legal advice:** the obligations
+> are stated as this program understands them and are to be confirmed by
+> counsel before NEWAX's UAE launch; where a figure (a retention period, a
+> mandate date) is legal rather than technical, it is marked for confirmation,
+> never presented as settled.
+>
+> **Revised (2026-09-28), ADR-072.** The UAE is NEWAX's own chosen second
+> market. Every obligation below is one NEWAX takes on by choosing to enter it,
+> hosted on NEWAX's own control-plane infrastructure (doc 39) — not a
+> requirement any telecom or channel owner imposes or brokers. The regulatory
+> research is unchanged; only who stands in which role is corrected.
 
 ## 1. Who is who under data-protection law
 
 | Party | Role for SME business data (customers, suppliers, staff contacts) | Instrument |
 |---|---|---|
 | **The SME** | Controller — it decides why its customers' and suppliers' data is processed | Its own obligations under the law that applies to it |
-| **du** | Processor — hosts and operates the platform on the SME's instructions; controller only for its own customer relationship with the SME | A data-processing agreement between du and each SME, part of the service terms |
-| **NEWAX** | Sub-processor — software, support, maintenance | A sub-processing agreement with du; access only through §3.2's mechanisms |
+| **NEWAX** | Processor — builds, hosts and operates the platform on its own control plane (doc 39) on the SME's instructions, and provides support and maintenance; controller only for its own customer relationship with the SME (billing, account contacts) | A data-processing agreement between NEWAX and each SME, part of NEWAX's service terms; support access only through §3.2's mechanisms |
+| **NEWAX's infrastructure providers** — the cloud or data-centre operator whose UAE region NEWAX chooses to host in | Sub-processors — they run the infrastructure, never the application, and never see an SME's data in the clear beyond what storage requires | NEWAX's own sub-processing agreements, listed in the sub-processor register NEWAX publishes to its customers (§4) |
 | **Licensed payment entities** | Independent controllers of payment data under their own licences | Their own terms with the SME (doc 175 §4) |
 | **An ASP (e-invoicing)** | Processor/independent per the ASP accreditation regime | The SME's own ASP contract (§5) |
 
@@ -27,17 +34,17 @@
 | Layer | Applies when | How it enters this program |
 |---|---|---|
 | **UAE PDPL** — Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data | Baseline for processing in the UAE outside the financial free zones | §3's control map |
-| **DIFC Data Protection Law** (DIFC Law No. 5 of 2020) | Only where an SME or a processing entity is established in the DIFC | Same mechanisms; additional registration/notification and transfer duties handled per tenant by the contract (a `DEDICATED`-tier deployment where the SME's regulator requires it) |
+| **DIFC Data Protection Law** (DIFC Law No. 5 of 2020) | Only where an SME or a processing entity is established in the DIFC | Same mechanisms; additional registration/notification and transfer duties handled per tenant under that SME's service terms (a `DEDICATED`-tier deployment where the SME's regulator requires it) |
 | **ADGM Data Protection Regulations 2021** | Only where established in ADGM | As DIFC |
-| **du's own contractual security requirements** | Always, for du's product | §4 — du supplies them; each is answered with a mechanism or a named gap |
-| **ISO/IEC 27001:2022-aligned controls** | Always, as the control vocabulary du and its auditors will use | §3.3 |
+| **NEWAX's own published security commitments**, and any security schedule an enterprise customer supplies | Always, for every UAE-hosted tenant; a customer schedule when a customer's procurement supplies one | §4 — NEWAX states its own commitments; each customer-supplied requirement is answered with a mechanism or a named gap |
+| **ISO/IEC 27001:2022-aligned controls** | Always, as the control vocabulary enterprise customers and auditors use | §3.3 |
 | **UAE VAT record-keeping and e-invoicing** | Every SME registered for VAT; e-invoicing per the Ministry of Finance's phased mandate | §5 |
 | **Central Bank of the UAE payment regulation** | Money movement | Carried entirely by licensed entities; this platform never moves funds (doc 175 §4) |
 
 The executive regulations and supervisory guidance under the PDPL, and the exact
 e-invoicing phases, are to be taken from the authorities' own current
-publications at contract time; this document maps mechanisms to principles that
-are stable across those details.
+publications when NEWAX prepares its UAE launch; this document maps mechanisms
+to principles that are stable across those details.
 
 ## 3. Controls, mapped to real mechanisms
 
@@ -52,18 +59,20 @@ are stable across those details.
 | **Integrity and confidentiality** | Isolated database per tenant (doc 39); secrets AES-256-GCM (`@newax/shared` `secret-crypto`; `TenantDeploymentCredential` under `PLATFORM_ENCRYPTION_KEY`); PBAC on every route (`PermissionsGuard`, `scripts/check-route-permissions.mjs`); `NON_DELEGATABLE_PERMISSIONS`; fail-closed callback and webhook verification (docs 170, 175) | `AuditLog` is not immutable at the database — `AuditService`'s own comment: "this trail is transactional, not tamper-evident"; ruling 1 names the migration. WO-181.3 |
 | **Accountability / records** | `AuditService.record()` (operational) and `.recordEvidence(tx, …)` (evidence-class, ruling 9) — every confirmation, decision, grant, cutover signature in this program is evidence-class | No read-access log for sensitive records (the lens index: "No read-access logging anywhere") — a support session's *reads* are logged by doc 170 §4.1's per-request audit; an SME user's reads are not |
 | **Data-subject rights** — access, rectification, erasure, portability | Rectification through ordinary edits; erasure per ruling 1 (§6's per-table disposition); tenant-level portability through `TenantExportService` (`pg_dump`) | **No data-subject-request model or endpoint** (the lens index). WO-181.5: a request workflow in the tenant — find the person across §6's tables, produce their record set, apply §6's dispositions — run by the SME as controller |
-| **Cross-border transfer** | Tenant databases, the control plane, object storage and backups on du's UAE cloud (§3.2); `AiProvider` degrades to absent | Five flows could leave the UAE and each needs a decision: **AI** (`AI_PROVIDERS` — `anthropic`/`openai` are foreign APIs; **off by default for du tenants**, or an in-country provider behind the same interface); **SMS/WhatsApp** providers (doc 33; choose UAE-hosted or contract for transfer); **e-mail** (the self-hosted server's location, `docs/email.md`); **off-site backups** (`S3_TARGET`'s region); **support access by staff outside the UAE** (NEWAX engineers) — permitted only through purpose-scoped grants (doc 170 §4) under the sub-processing agreement's transfer terms, or restricted to UAE-located staff if du requires it — a contract decision, not a code one |
+| **Cross-border transfer** | Tenant databases, the control plane, object storage and backups on NEWAX's own control-plane infrastructure in a UAE region (§3.2); `AiProvider` degrades to absent | Five flows could leave the UAE and each needs a decision: **AI** (`AI_PROVIDERS` — `anthropic`/`openai` are foreign APIs; **off by default for UAE tenants**, or an in-country provider behind the same interface); **SMS/WhatsApp** providers (doc 33; choose UAE-hosted or contract for transfer); **e-mail** (the self-hosted server's location, `docs/email.md`); **off-site backups** (`S3_TARGET`'s region); **support access by staff outside the UAE** (NEWAX engineers) — permitted only through purpose-scoped grants (doc 170 §4) under the transfer terms of NEWAX's data-processing agreement with each SME, or restricted to UAE-located staff where an enterprise customer's terms require it — a contract decision, not a code one |
 | **Breach notification** | Audit trails; tenant isolation limits blast radius to one tenant | **No monitoring backend** (ADR-017, Open) — detection relies on logs and SLIs computed from rows (doc 176 §5); an incident runbook with the notification path to the regulator is part of §7 |
 
-### 3.2 Residency, isolation and support access — the doc 39 model on du's cloud
+### 3.2 Residency, isolation and support access — the doc 39 model, deployed in a UAE region
 
 - **A tenant is a node** (doc 39, `RETAIL-ERP.md` R2/R7): residency is a
   property of *where each tenant's database runs*, decided per tenant, not a
-  filter on shared tables. On du's sovereign cloud, every component that stores
-  tenant data — the tenant database cluster, `StorageService`'s bucket, backup
-  archives, `TenantDataExport` archives — is placed in a UAE region; the control
-  plane (`apps/platform`) holds metadata *about* tenants, never their business
-  data, and is placed there too.
+  filter on shared tables. For its UAE tenants, NEWAX deploys its own control
+  plane and tenant fleet in a UAE region of the infrastructure provider it
+  chooses (§1): every component that stores tenant data — the tenant database
+  cluster, `StorageService`'s bucket, backup archives, `TenantDataExport`
+  archives — is placed in that region; the control plane (`apps/platform`)
+  holds metadata *about* tenants, never their business data, and is placed
+  there too.
 - **`DEDICATED` tier** (`ResourceTier.DEDICATED`) for an SME whose regulator or
   contract requires dedicated infrastructure — shared compute opted out,
   control plane still used, second approval required for support access
@@ -94,23 +103,26 @@ are stable across those details.
 | 8.25 / 8.28 Secure development and coding | `pnpm lint` guards, `security` review routing for access-control changes, `CLAUDE.md`'s protocol | Built |
 | 8.10 Information deletion | Ruling 1's dispositions (§6) | **Specified**; no deletion job exists today |
 | 5.34 Privacy and protection of PII | §3.1 | Partly built, gaps named |
-| 5.19–5.22 Supplier relationships | Sub-processor list: AI (off), SMS/WhatsApp, e-mail, the payment rail, the ASP | Contractual, §4 |
+| 5.19–5.22 Supplier relationships | Supplier list: NEWAX's infrastructure provider, AI (off), SMS/WhatsApp, e-mail, the integrated payment PSPs, the ASP | NEWAX's own agreements, §4 |
 
-## 4. du's own contractual security requirements
+## 4. NEWAX's own security commitments — and answering a customer's schedule
 
-du will supply its security schedule; this program does not guess it. What the
-program commits to answer, requirement by requirement, with a mechanism or a
-named gap: the data-residency clause (§3.2); sub-processor approval (§3.1's five
-cross-border flows are the complete list of outbound data paths this codebase
-has); incident notification timelines (§7's runbook; detection limits stated
-per ADR-017); right to audit (evidence-class audit trails, the per-request
-support audit, and this document set); penetration-testing cadence and
+NEWAX publishes its own security commitments for UAE-hosted tenants as part of
+its service terms; an enterprise customer's procurement may add a security
+schedule of its own, which this program does not guess. Either way, the
+commitments are answered requirement by requirement, with a mechanism or a
+named gap: the data-residency commitment (§3.2); the sub-processor register
+and change notice (§3.1's five cross-border flows are the complete list of
+outbound data paths this codebase has); incident notification timelines (§7's
+runbook; detection limits stated per ADR-017); right to audit for customers
+whose terms grant it (evidence-class audit trails, the per-request support
+audit, and this document set); penetration-testing cadence and
 vulnerability-fix SLAs (release rings let a fix reach every tenant through a
-controlled, recorded path, doc 171); any UAE information-assurance standard du
-is itself bound to as a telecom operator (mapped onto §3.3's controls when du
-names it); encryption at rest (the cluster's storage encryption is the
-operator's; application-level encryption covers credentials, not whole tables —
-stated, not overstated).
+controlled, recorded path, doc 171); any UAE information-assurance standard an
+enterprise customer or its sector regulator names (mapped onto §3.3's controls
+when named); encryption at rest (the cluster's storage encryption is provided
+by NEWAX's infrastructure provider and configured by NEWAX; application-level
+encryption covers credentials, not whole tables — stated, not overstated).
 
 ## 5. E-invoicing through `FiscalComplianceProvider` — never a parallel tax system
 
@@ -217,7 +229,7 @@ still hold a person after the `User`/`Contact` is erased, one disposition:
 | `IdentityVerification` (`nidSubjectId`), `SsoSubjectBinding.subject` | external identity references | Pseudonymise |
 | `InboundEmail.bodyText/fromName/fromAddress` | free text | Destroy (ruling 1) |
 | Backups and `TenantDataExport` archives | point-in-time copies | **Retain** for the backup retention period under a named basis (continuity); a restore re-applies recorded erasures before the tenant is routed — WO-181.6 records erasures in a replayable log so a restore cannot resurrect a person |
-| `ReplicationRecord.payload` | n/a for Solo-edition du tenants (no replication) | — |
+| `ReplicationRecord.payload` | n/a for Solo-edition pilot tenants (no replication) | — |
 
 A legal hold (none modelled today — the lens index: "No `LegalHold` model")
 stops every disposition above and is answered with a dated refusal; modelling it
@@ -225,32 +237,35 @@ is WO-181.7.
 
 ## 7. The continuity package — replacing any lock-in narrative
 
-du must be able to run, repair and — if it ever chose to — leave, without NEWAX's
-permission. Each item is a real artifact or a named work order, never a promise:
+Every SME must be able to leave with its data without NEWAX's permission, and an
+enterprise customer that contracts for it must be able to run and repair its
+own deployment if NEWAX ever could not. Each item is a real artifact or a named
+work order, never a promise:
 
 | Item | What it is, concretely | Status today |
 |---|---|---|
-| **Data ownership** | Each SME owns its data; du holds it as processor. Any tenant can be exported whole (`TenantExportService.requestExport()`, `pg_dump --format=custom`) at any time and automatically on deprovisioning, with `TenantRetentionCron` never tearing down a database without a `COMPLETE` export (doc 39 WO-39.7). The schema is documented and generated (`docs/index/data/*.md`) | **Built** |
-| **Source escrow** | The generic platform (this repository at each release tag), its lockfile, and build instructions deposited with an escrow agent at every `PlatformRelease` (doc 171), verified by the agent's own clean build and test run (`pnpm install && pnpm build && pnpm test`) | **Specified** — WO-181.8 |
-| **Escrow release triggers** | Named: NEWAX's insolvency or cessation of business; failure to remedy a severity-1 defect within the contracted period; termination for NEWAX's material breach; a change of control du has a contractual right to object to — the list negotiated, but always named, never "at NEWAX's discretion" | Contractual |
+| **Data ownership** | Each SME owns its data; NEWAX holds it as processor (§1). Any tenant can be exported whole (`TenantExportService.requestExport()`, `pg_dump --format=custom`) at any time and automatically on deprovisioning, with `TenantRetentionCron` never tearing down a database without a `COMPLETE` export (doc 39 WO-39.7). The schema is documented and generated (`docs/index/data/*.md`) | **Built** |
+| **Source escrow** | Offered to enterprise customers that contract for it: the generic platform (this repository at each release tag), its lockfile, and build instructions deposited with an escrow agent at every `PlatformRelease` (doc 171), verified by the agent's own clean build and test run (`pnpm install && pnpm build && pnpm test`) | **Specified** — WO-181.8 |
+| **Escrow release triggers** | Named: NEWAX's insolvency or cessation of business; failure to remedy a severity-1 defect within the contracted period; termination for NEWAX's material breach; a change of control the escrow beneficiary has a contractual right to object to — the list agreed per customer, but always named, never "at NEWAX's discretion" | Contractual |
 | **Architecture documentation** | This set (168–183), the documents of record (`RETAIL-ERP.md`, `ENTERPRISE-SCALE.md`, `MULTI-SECTOR.md`, `00-HOUSE-RULES.md`), `DECISIONS.md` (ADR-001 onward), and the generated index (`docs/index/`, regenerated on every commit) | **Built** |
-| **Infrastructure as code** | Doc 124's honest status: `deploy/` (`backup.sh`, `disk-alert.sh`, `swarm-init.sh`, `systemd/` units) and the Compose files are version-controlled; **declarative provisioning is not** | **Gap** — WO-181.9: declarative definitions for du's control plane, tenant cluster, object storage and archiving, in the operator's chosen tool, committed beside `deploy/` |
-| **Deployment runbook** | `DEPLOYMENT.md` exists — for the single-VPS, single-stack model (13 sections, from provisioning to troubleshooting) | **Partial** — WO-181.10: the du-scale runbook (control plane, tenant fleet, release rings, keep-warm) |
+| **Infrastructure as code** | Doc 124's honest status: `deploy/` (`backup.sh`, `disk-alert.sh`, `swarm-init.sh`, `systemd/` units) and the Compose files are version-controlled; **declarative provisioning is not** | **Gap** — WO-181.9: declarative definitions for NEWAX's UAE control plane, tenant cluster, object storage and archiving, in the tool NEWAX's hosting operations choose, committed beside `deploy/` |
+| **Deployment runbook** | `DEPLOYMENT.md` exists — for the single-VPS, single-stack model (13 sections, from provisioning to troubleshooting) | **Partial** — WO-181.10: the fleet-scale runbook (control plane, tenant fleet, release rings, keep-warm) |
 | **Operational runbooks** | One runbook per degradation-matrix row (doc 176 §2): symptom, check, action, escalation, including the regulator-notification path for a breach | **Gap** — the lens index: "no runbook referenced from code". WO-181.11 |
 | **Dependency register** | Every runtime dependency with its licence, maintainer status and the rule that admitted it (`.claude/rules/dependencies.md`'s template) | **Gap** — `package.json`s and `pnpm-lock.yaml` exist; no register. WO-181.12 generates it with the repository index, so it cannot drift |
 | **DR procedures** | Doc 176 §6: the fleet targets (RPO ≤ 15 min, RTO ≤ 4 h per tenant), the sampled nightly restore, the quarterly game-day; the single-stack `backup.sh` restore test that already exists | **Targets specified; measured only after the first game-day** |
-| **Handover rights** | Doc 11's two tracks, both real: **Agency-Managed** (du hosts, NEWAX maintains the Blueprint — this program's default) and **Self-Hosted / extracted** (`scripts/sync-client.mjs`, doc 12, built: a client-specific repository generated from the Blueprint, upgraded by pull request with the "engine vs glass" rules). If a contract ever requires full separation, the extractor produces a du repository from the same `main` — the door ADR-071 keeps open without walking through it now | **Built** (extractor); the du-specific extraction is contractual |
+| **Handover rights** | Doc 11's two tracks, both real: **Agency-Managed** (NEWAX provisions and hosts on its own control plane and maintains the Blueprint — this program's default) and **Self-Hosted / extracted** (`scripts/sync-client.mjs`, doc 12, built: a client-specific repository generated from the Blueprint, upgraded by pull request with the "engine vs glass" rules). If an enterprise customer's contract ever requires full separation, the extractor produces that customer's repository from the same `main` — the door ADR-071 keeps open without walking through it now | **Built** (extractor); a customer-specific extraction is contractual |
 
 ## 8. The IP boundary
 
 | Asset | Owner | Notes |
 |---|---|---|
-| SME data and tenant records | **du** as the operator of the service, holding on the SMEs' behalf; each SME owns its own business data | Exportable at any time (§7) |
-| The du-specific deployment — configuration, the Build Manifests, du's `brand.ts` block, du's infrastructure definitions, du's runbooks derived from §7 | **du** | |
-| The generic NEWAX platform and engine — this repository's code, including docs 144/39 and everything this program adds to the generic platform | **NEWAX** | Licensed to du; escrowed (§7) |
-| Custom extensions built for du beyond the generic platform | **Negotiated** per extension | Default proposal: generic capability → NEWAX (licensed to du); du-only integrations (du's own BSS, du Pay) → du |
-| Runbooks and operational documentation | **du has perpetual, irrevocable rights** to use and modify | Survives termination |
-| Source escrow | Deposited by NEWAX, releasable to du on the named triggers | §7 |
+| SME business data | **Each SME** owns its own business data; NEWAX holds it as processor (§1) | Exportable at any time (§7) |
+| Tenant records in the control plane — plans, invoices, manifests, support-grant history | **NEWAX**, as operator of its own control plane; never an SME's business figures | An SME's own billing records are available to it (doc 14's billing dashboard) |
+| The generic NEWAX platform and engine — this repository's code, including docs 144/39 and everything this program adds to the generic platform | **NEWAX** | Licensed to each customer under NEWAX's own terms and pricing models (doc 182); escrowed for enterprise customers that contract for it (§7) |
+| NEWAX's hosted deployment — configuration, Build Manifests, the product's `brand.ts` block, infrastructure definitions, runbooks | **NEWAX** | |
+| Custom extensions built for a specific enterprise customer beyond the generic platform | **Agreed** per extension | Default: generic capability → NEWAX (licensed to the customer); integrations with that customer's own internal systems → the customer |
+| Runbooks and operational documentation, for a customer on doc 11's Self-Hosted/extracted track | **That customer has perpetual, irrevocable rights** to use and modify them for its own deployment | Survives termination |
+| Source escrow | Deposited by NEWAX, releasable to the contracting customer on the named triggers | §7 |
 
 ## Scope lenses
 
@@ -342,8 +357,8 @@ permission, seeded.
 **WO-181.6 — Replayable erasure log** re-applied on any restore before routing.
 **WO-181.7 — `LegalHold`** model and its checks before erase/anonymise/close.
 **WO-181.8 — Source escrow automation** at every `PlatformRelease`.
-**WO-181.9 — Infrastructure as code** for du's estate.
-**WO-181.10 — du-scale deployment runbook.**
+**WO-181.9 — Infrastructure as code** for NEWAX's UAE hosting estate.
+**WO-181.10 — Fleet-scale deployment runbook.**
 **WO-181.11 — Operational runbooks** per degradation row, including the breach
 notification path.
 **WO-181.12 — Generated dependency register** alongside `docs/index/`.
@@ -357,13 +372,14 @@ notification path.
   the queue with no duplicate submission.
 - An erasure pseudonymises every §6 row and redacts raw files, and a restore of
   a backup taken before the erasure re-applies it before the tenant is routed.
-- With `AI_PROVIDERS` empty (the du default), no request leaves the tenant's
+- With `AI_PROVIDERS` empty (the UAE-tenant default), no request leaves the tenant's
   deployment for an AI vendor — proven by a network-egress test.
 - The escrow agent's clean build from a deposited release passes.
 
 ## Out of scope
 
 Legal advice and final legal positions. Choosing the ASP, the SMS/e-mail
-vendors or the cloud tooling (operator and contract decisions). Consent
-management for marketing (no marketing in this program). Certifying anything —
-this document maps controls; certification is an audit du commissions.
+vendors, the infrastructure provider or the cloud tooling (NEWAX's own
+operational and contract decisions). Consent management for marketing (no
+marketing in this program). Certifying anything — this document maps controls;
+certification is an audit NEWAX commissions if and when it chooses to certify.

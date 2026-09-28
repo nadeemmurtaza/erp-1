@@ -41,7 +41,7 @@ dependency this program adds. Doc 38's own rows stand unchanged.
 | **An OAuth token revoked or expired** | Everything already promoted | Connector `REAUTH_REQUIRED`; `ConnectorNeedsReauth`; action-hub item | doc 172 §10 |
 | **A pushing POS's webhook path** (our endpoint unreachable) | The POS keeps selling; its own retries | Deliveries arrive late; applied idempotently; a vendor that stops retrying leaves a gap that the next full export (or a reconciliation pull) closes | doc 132, doc 172 |
 | **`AiProvider`** (or absent by residency policy) | Every engine figure; deterministic mapping suggestions | No narration (`narrate()` returns `null`); no AI mapping suggestion | doc 09, doc 144 R23, doc 172 §4 |
-| **The du payment rail** | Cash, bank transfer; every recorded payment | The rail's option hides at checkout (circuit open); `PENDING` payments resolved by the status poll when it returns | doc 175 §3, WO-175.4 |
+| **A licensed PSP's payment rail** | Cash, bank transfer; every recorded payment | The rail's option hides at checkout (circuit open); `PENDING` payments resolved by the status poll when it returns | doc 175 §3, WO-175.4 |
 | **The rail's payout report** | Payments and their posting | Batches stay `EXPECTED`; the forecast shows them as cash in transit, not cash | doc 175 §5 |
 | **The e-invoicing ASP** | Sales; invoices issued as documents | Submission queues in `FiscalSubmission` with retry/backoff (doc 15's own design) — a sale is never blocked by a tax authority | doc 15, doc 181 |
 | **UAE PASS** | Password sign-in; every other IdP | UAE-PASS-only users cannot sign in; the sign-in screen says so | doc 170 §3.2 |
@@ -128,7 +128,7 @@ undermined:
 | A support engineer reaching a tenant without a live grant | Doc 170 §4.1: signed, ≤ 15-minute support tokens verified inside the tenant; unset key = no door |
 | A noisy neighbour on shared compute | `ResourceTierQuota`/`ResourceQuotaAlert` alert before a hard cap (doc 39 WO-39.6); **enforcement is the orchestrator's** (doc 39 out of scope), so the protection is alerting plus the operator's own limits — stated, not claimed |
 | One tenant's backlog starving others | Per-tenant crons run in per-tenant processes; the control plane's pollers cap work per tenant per run (`MAX_BATCHES_PER_TENANT_PER_RUN = 20` in `usage-metering.service.ts` is the precedent reused) |
-| A shared AI key leaking one tenant's data to another | AI calls carry only the calling tenant's data, and each tenant's `AiUsageLog` and monthly budget are in its own database; for du tenants AI is off by default (doc 181) |
+| A shared AI key leaking one tenant's data to another | AI calls carry only the calling tenant's data, and each tenant's `AiUsageLog` and monthly budget are in its own database; for UAE tenants AI is off by default (doc 181) |
 
 **Proved by:** doc 39's own acceptance test (two tenants, a forced
 misconfiguration, a request that can only reach its own database), extended to
@@ -211,7 +211,7 @@ model TenantSliSample {
 | # | Path | SLI (good / total) — computed from | SLO | 30-day budget |
 |---|---|---|---|---|
 | 1 | **Connector runs on schedule** | runs that *started* within 2× the connector's `intervalMinutes` of the previous one ÷ expected runs; from `PollConnectorRun`/`FileConnectorRun` start times. Vendor-caused failures (5xx, timeout) still count as "started" — this measures *our* scheduling; §3.7 is what it catches | **99.5%** | 3.6 h of missed schedule per connector |
-| 2 | **Connector success, vendor-attributed** | runs not failed by vendor error ÷ runs; same tables, error class | **reported, no target** — a vendor's availability is du's vendor-management fact, not this platform's promise | — |
+| 2 | **Connector success, vendor-attributed** | runs not failed by vendor error ÷ runs; same tables, error class | **reported, no target** — a vendor's availability is NEWAX's vendor-management fact, not a promise this platform makes to an SME | — |
 | 3 | **Promotion latency** | batches under a confirmed mapping, not held, reaching `PROMOTED` within 10 min of their run's completion ÷ such batches; `IngestionBatch.completedAt` vs the run's finish time | **p95 ≤ 10 min** (≥ 95% good at the 10-min threshold), and **99% within 30 min** | 5% / 1% of batches |
 | 4 | **Simulation latency** | runs with `durationMs ≤ 5,000` ÷ runs, for `edgeCount ≤ 50,000`; from `ResilienceSimulation` (doc 174) | **95% ≤ 5 s**, **99% ≤ 15 s** | 5% / 1% |
 | 5 | **Callback applied** | verified callbacks whose `Payment` status changed within 60 s of receipt ÷ verified callbacks | **99.9%** | 43 min of slow application per 30 days |
@@ -249,8 +249,8 @@ not built (doc 180 names it NOT MEASURED).
 | RPO, the single-stack deployment `backup.sh` serves | **Implied by config, not measured as a promise** | ≈ 24 h (nightly 03:00, ±5 min) |
 | RTO, same | **Unmeasured** | WO-38.4 |
 | RPO, the doc 39 tenant fleet | **No mechanism** | — |
-| **Target** RPO for du tenants | a target the operator must meet and this program measures | **≤ 15 min** — continuous WAL archiving / point-in-time recovery on the cluster (the operator's choice of tool), because a nightly dump loses a trading day |
-| **Target** RTO for one du tenant | measured at the quarterly game-day doc 38 §4 already requires | **≤ 4 h** to a restored, routed tenant |
+| **Target** RPO for hosted tenants | a target NEWAX, as operator, must meet and this program measures | **≤ 15 min** — continuous WAL archiving / point-in-time recovery on the cluster (the operator's choice of tool), because a nightly dump loses a trading day |
+| **Target** RTO for one hosted tenant | measured at the quarterly game-day doc 38 §4 already requires | **≤ 4 h** to a restored, routed tenant |
 | Restore test per backup | **Built** for the single stack (`backup.sh` restores every dump into a throwaway database) | carried to the fleet as a sampled nightly restore of N tenants (WO-176.8) |
 
 The targets are labelled targets. They become figures only when WO-176.8's

@@ -1,16 +1,25 @@
-# 178 — The competition deliverable and the pilot's vertical slice, mapped to screens that exist and to what is genuinely new
+# 178 — The MVP vertical slice and the full rollout, mapped to screens that exist and to what is genuinely new
 
-> **Status: proposed (2026-09-27), not yet built.** Most of the vertical slice
-> **already ships**: the canonical models, the deterministic graph and
-> propagation (doc 144), the control center screen and its permission, the
-> liquidity forecast, supplier/customer/inventory/invoice screens, the payment
-> and settlement extension points, and the multi-tenant control plane. What is
-> genuinely new for the slice is the ingestion boundary (doc 172), confidence
-> scoring, the du-rail sandbox provider and connector (doc 175), the control
-> center's persistence and decisions (doc 174), and the correctness
-> preconditions (currency, callback verification). This document maps each
-> slice component to the real screen or service, walks the demo journey step by
-> step, and lists the non-goals with the reason each one is out.
+> **Status: proposed (2026-09-27), not yet built.** The MVP vertical slice is
+> the smallest end-to-end version of this product that NEWAX can put in front
+> of its first SMEs and its own review: every layer present, thinly, on real
+> code. Most of it **already ships**: the canonical models, the deterministic
+> graph and propagation (doc 144), the control center screen and its
+> permission, the liquidity forecast, supplier/customer/inventory/invoice
+> screens, the payment and settlement extension points, and the multi-tenant
+> control plane. What is genuinely new for the slice is the ingestion boundary
+> (doc 172), confidence scoring, the first PSP's sandbox provider and
+> connector (doc 175), the control center's persistence and decisions
+> (doc 174), and the correctness preconditions (currency, callback
+> verification). This document maps each slice component to the real screen or
+> service, walks the demo journey step by step, lists the non-goals with the
+> reason each one is out, and states what waits for the full rollout (doc 179).
+>
+> **Revised (2026-09-28), ADR-072.** Previously titled and framed as a
+> competition deliverable (file `178-10-competition-deliverable-vs-pilot-vertical-slice.md`);
+> there is no competition and no submission. The technical content — built
+> versus new, the journey, the non-goals — is unchanged; only its purpose is
+> restated as MVP sequencing.
 
 ## 1. The slice, component by component
 
@@ -28,9 +37,9 @@
 | Cash | `/admin/resilience` liquidity tab, `LiquidityForecastService.forecast()` | `cashSource`, `ObservedCashBalance`, cash in transit, AP in base currency | doc 173 §4, doc 175 §5.3 |
 | Deterministic graph + propagation | `DependencyGraphService.build()`, `propagate()`, `rankActions()`, specs | provenance partition, `cashSpentMinor`, revenue at risk, `SPLIT_PO_ALTERNATE_SUPPLIER` | doc 173 |
 | Control center | `/admin/resilience` (simulate-only), `planning.propagation.view` | persisted runs, Accept/Modify/Dismiss, pickers by name, decisions log | doc 174 |
-| Sandbox payment flow | `PaymentProvider`, `PaymentsService`, `SettlementsService` (`SHORT`), `/admin/payments`, `/admin/settlements` | fail-closed callbacks; the du-rail provider and settlement connector against the rail's sandbox — **or**, if sandbox access is not granted by submission, a signed test-double rail implementing the same two interfaces, labelled as such on screen and absent from every production `PAYMENT_PROVIDERS` value | doc 175 |
+| Sandbox payment flow | `PaymentProvider`, `PaymentsService`, `SettlementsService` (`SHORT`), `/admin/payments`, `/admin/settlements` | fail-closed callbacks; the first PSP's provider and settlement connector against that PSP's sandbox — **or**, if sandbox access is not yet granted when the slice is cut, a signed test-double rail implementing the same two interfaces, labelled as such on screen and absent from every production `PAYMENT_PROVIDERS` value | doc 175 |
 | Tenancy | `apps/platform`: `ProvisioningService`, `HostnameResolverService`, `SupportAccessGrant` | none — two demo tenants are provisioned through the existing path | doc 39 |
-| Documentation | this set (168–183), ADR-071 | — | — |
+| Documentation | this set (168–183), ADR-071 and ADR-072 | — | — |
 | Live failure demonstration | — | the fault-injection suite and a demo harness whose fault toggles exist only when `DEMO_FAULTS_ENABLED=true` (refused in any production template by a rule WO-178.4 adds to `scripts/check-env-templates.mjs`, which today checks only `MODULES` discoverability) | doc 176 §3, WO-176.3 |
 
 **Preconditions, before any of the above is shown to anyone as UAE-ready:**
@@ -38,7 +47,7 @@ the currency sweep (WO-170.3) and fail-closed callback verification (WO-175.1).
 A demo that records an AED payment as PKR, or accepts an unsigned callback, is
 not a demo of this architecture.
 
-**Not in the slice** (in the pilot, later waves): the Build Manifest and Update
+**Not in the slice** (in the full rollout — doc 179's pilot waves): the Build Manifest and Update
 Agent (doc 171 — two demo tenants do not need them), the SLI sampler (doc 176
 §5), UAE PASS and Emirates ID (doc 170 §3), submitting PINT AE invoices to a
 live ASP (doc 181; the slice may *generate and validate* a PINT AE document from
@@ -71,7 +80,7 @@ part of the demo, not hidden.
 | 13 | Accepts the split (acknowledging the one `WARNING` record it rests on) → a pre-filled requisition opens → creates it | `planning.recommendations.decide`; `/admin/requisitions` (`purchasing.requisitions.create`) |
 | 14 | Links the requisition to the decision; the decision shows `EXECUTED` | doc 174 §3.4 (bare-read proposal, confirmed by a holder) |
 | 15 | Switches to beta-retail; runs a `LocationDown` on one branch; a `TRANSFER_STOCK` recommendation appears (the setup transfer created the lateral edge) | `rankActions()` over `StockTransfer` history |
-| 16 | beta issues an order to a B2B customer and pays it through the du-rail sandbox | `PaymentsService.createForOrder()` → provider `initiate()` → the rail's hosted page |
+| 16 | beta issues an order to a B2B customer and pays it through the PSP's sandbox | `PaymentsService.createForOrder()` → provider `initiate()` → the rail's hosted page |
 | 17 | The callback arrives, is verified, the payment is `PAID`, the receipt posts | `PaymentsService.handleCallback()` (fail-closed) → `PaymentSucceeded` → `onPaymentSucceeded()` Dr 1000 / Cr 1100 |
 | 18 | The liquidity forecast shows the amount as **cash in transit**, not cash | WO-175.5 |
 | 19 | The sandbox payout arrives short by more than the agreed fee: the batch is `SHORT`, listed with its lines; nobody can resolve it silently | `SettlementExpectationCron` → connector `reconcileBatch()` → `SettlementsService.reconcile()` → `/admin/settlements` |
@@ -100,13 +109,13 @@ assertion, so the demo cannot drift from the code.
 | **Marketplace** | Doc 165's cross-tenant directory is partially built and unrelated to resilience; it would add a cross-tenant surface to a demo whose point is isolation |
 | **ML models in phase 1** | R21: "Prediction is an input to [propagation], never a substitute"; `computeDemandForecast()` is a seasonal heuristic and the ±30% band is labelled a heuristic (`propagation.ts:11–20`); doc 144's out-of-scope excludes a trained forecasting model. The slice's credibility is determinism and traceability, which a model would weaken before it strengthened anything |
 
-## 4. Competition submission vs pilot
+## 4. MVP slice vs full rollout
 
-| | Competition submission | Pilot (doc 179) |
+| | MVP vertical slice | Full rollout (doc 179's waves) |
 |---|---|---|
 | Tenants | Two, provisioned by hand through the existing path | 10 → 40 → 150 → full, through the Build Manifest |
 | Connectors | Spreadsheet + one accounting sandbox + one POS export | Ten integration patterns, real vendor accounts |
-| Payment rail | du-rail sandbox (or a labelled test double) | du's production rail, under contract |
+| Payment rail | The first PSP's sandbox (or a labelled test double) | That PSP's production rail, under each SME's own merchant agreement with it (doc 175 §4) |
 | Measurement | The demo's own assertions | Doc 180's metrics, doc 176's SLIs |
 | Releases | One build | Rings, canary, auto-halt (doc 171) |
 | DR | Not demonstrated | Measured RTO before Wave 1 (doc 176 §6) |
@@ -177,10 +186,10 @@ discoverability and reference completeness), with a `--self-test` case.
   test-double rail in `PAYMENT_PROVIDERS` — enforced by WO-178.4's new
   `check-env-templates` rule.
 - Every "already built" cell in §1 names a screen or service that exists at the
-  commit the submission is cut from, verified by `docs/index/cross/ui-routes.md`
+  commit the slice is cut from, verified by `docs/index/cross/ui-routes.md`
   and `docs/index/cross/routes.md`.
 
 ## Out of scope
 
-Everything in §3. Production du rails, live ASP submission, UAE PASS, and the
-release machinery — pilot, not submission.
+Everything in §3. Production PSP rails, live ASP submission, UAE PASS, and the
+release machinery — full rollout, not the MVP slice.

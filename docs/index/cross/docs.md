@@ -2700,20 +2700,20 @@ _no second-level headings_
 - Acceptance  <sub>:73</sub>
 - Out of scope  <sub>:81</sub>
 
-### `docs/implementation/composable-resilience-platform/168-00-overview-and-decision-to-build-here.md`  <sub>469 lines</sub>
+### `docs/implementation/composable-resilience-platform/168-00-overview-and-decision-to-build-here.md`  <sub>496 lines</sub>
 
-- 1. The thesis  <sub>:12</sub>
-- 2. Why this repository — the argument ADR-071 records  <sub>:59</sub>
-- 3. Premises corrected against the code  <sub>:141</sub>
-- 3a. The one architectural decision this program does *not* get to make quietly  <sub>:240</sub>
-- 4. The seven layers, and what each reuses  <sub>:264</sub>
-- 5. The international proof: every country-specific seam takes an unrelated second implementation  <sub>:276</sub>
-- 6. Relationship to the documents of record  <sub>:302</sub>
-- 7. The document set  <sub>:328</sub>
-- Scope lenses  <sub>:348</sub>
-- Work orders  <sub>:430</sub>
-- Acceptance  <sub>:449</sub>
-- Out of scope  <sub>:460</sub>
+- 1. The thesis  <sub>:23</sub>
+- 2. Why this repository — the argument ADR-071 records  <sub>:75</sub>
+- 3. Premises corrected against the code  <sub>:158</sub>
+- 3a. The one architectural decision this program does *not* get to make quietly  <sub>:257</sub>
+- 4. The seven layers, and what each reuses  <sub>:281</sub>
+- 5. The international proof: every country-specific seam takes an unrelated second implementation  <sub>:293</sub>
+- 6. Relationship to the documents of record  <sub>:320</sub>
+- 7. The document set  <sub>:346</sub>
+- Scope lenses  <sub>:366</sub>
+- Work orders  <sub>:450</sub>
+- Acceptance  <sub>:470</sub>
+- Out of scope  <sub>:486</sub>
 
 ### `docs/implementation/composable-resilience-platform/169-01-layer0-canonical-data-spine.md`  <sub>661 lines</sub>
 
@@ -2731,18 +2731,18 @@ _no second-level headings_
 - Acceptance  <sub>:642</sub>
 - Out of scope  <sub>:655</sub>
 
-### `docs/implementation/composable-resilience-platform/170-02-layer1-stable-core-deltas.md`  <sub>533 lines</sub>
+### `docs/implementation/composable-resilience-platform/170-02-layer1-stable-core-deltas.md`  <sub>534 lines</sub>
 
 - 1. Reused with zero change  <sub>:13</sub>
 - 2. Permission keys — checked against both catalogues first  <sub>:36</sub>
 - 3. Principal types — four deltas  <sub>:137</sub>
-- 4. Expiring grants for the program's highest-trust operations  <sub>:256</sub>
-- 5. The currency-neutrality sweep (mandatory before the first UAE tenant)  <sub>:326</sub>
-- 6. The SME's legal identity at runtime — bounded, and needing its own ADR  <sub>:375</sub>
-- Scope lenses  <sub>:407</sub>
-- Work orders  <sub>:484</sub>
-- Acceptance  <sub>:510</sub>
-- Out of scope  <sub>:526</sub>
+- 4. Expiring grants for the program's highest-trust operations  <sub>:257</sub>
+- 5. The currency-neutrality sweep (mandatory before the first UAE tenant)  <sub>:327</sub>
+- 6. The SME's legal identity at runtime — bounded, and needing its own ADR  <sub>:376</sub>
+- Scope lenses  <sub>:408</sub>
+- Work orders  <sub>:485</sub>
+- Acceptance  <sub>:511</sub>
+- Out of scope  <sub>:527</sub>
 
 ### `docs/implementation/composable-resilience-platform/171-03-layer2-versioned-module-packs-build-manifest.md`  <sub>441 lines</sub>
 
@@ -2771,7 +2771,7 @@ _no second-level headings_
 - 8. Writing into the modules that own the data — an extension point, not an import  <sub>:508</sub>
 - 9. `KNOWN_MODULE_COUPLINGS` — the entry the brief expected, and why it is not added  <sub>:592</sub>
 - 10. Failure modes, and what each one leaves behind  <sub>:673</sub>
-- 11. What the SME and du support actually use  <sub>:689</sub>
+- 11. What the SME and NEWAX support actually use  <sub>:689</sub>
 - Scope lenses  <sub>:705</sub>
 - Work orders  <sub>:866</sub>
 - Acceptance  <sub>:907</sub>
@@ -2802,19 +2802,19 @@ _no second-level headings_
 - Acceptance  <sub>:408</sub>
 - Out of scope  <sub>:425</sub>
 
-### `docs/implementation/composable-resilience-platform/175-07-layer6-settlement-execution-channel.md`  <sub>460 lines</sub>
+### `docs/implementation/composable-resilience-platform/175-07-layer6-settlement-execution-channel.md`  <sub>491 lines</sub>
 
-- Implementation plan  <sub>:18</sub>
-- 1. Execution channel, never the product  <sub>:81</sub>
-- 2. The loop, on real code  <sub>:92</sub>
-- 3. The du-rail `PaymentProvider`  <sub>:109</sub>
-- 4. The custody boundary — concretely  <sub>:156</sub>
-- 5. Settlement reconciliation — doc 49's pattern, reused, and one gap closed  <sub>:189</sub>
-- 6. Refunds, and the reversal they post  <sub>:246</sub>
-- Scope lenses  <sub>:268</sub>
-- Work orders  <sub>:411</sub>
-- Acceptance  <sub>:435</sub>
-- Out of scope  <sub>:452</sub>
+- Implementation plan  <sub>:27</sub>
+- 1. Execution channel, never the product  <sub>:91</sub>
+- 2. The loop, on real code  <sub>:102</sub>
+- 3. A licensed PSP's `PaymentProvider`  <sub>:119</sub>
+- 4. The custody boundary — concretely  <sub>:176</sub>
+- 5. Settlement reconciliation — doc 49's pattern, reused, and one gap closed  <sub>:213</sub>
+- 6. Refunds, and the reversal they post  <sub>:270</sub>
+- Scope lenses  <sub>:292</sub>
+- Work orders  <sub>:435</sub>
+- Acceptance  <sub>:460</sub>
+- Out of scope  <sub>:481</sub>
 
 ### `docs/implementation/composable-resilience-platform/176-08-platform-resilience-failure-modes.md`  <sub>377 lines</sub>
 
@@ -2841,29 +2841,29 @@ _no second-level headings_
 - Acceptance  <sub>:218</sub>
 - Out of scope  <sub>:230</sub>
 
-### `docs/implementation/composable-resilience-platform/178-10-competition-deliverable-vs-pilot-vertical-slice.md`  <sub>187 lines</sub>
+### `docs/implementation/composable-resilience-platform/178-10-mvp-vertical-slice-vs-full-rollout.md`  <sub>196 lines</sub>
 
-- 1. The slice, component by component  <sub>:15</sub>
-- 2. The demo journey  <sub>:47</sub>
-- 3. Non-goals — each out for a reason in this codebase  <sub>:90</sub>
-- 4. Competition submission vs pilot  <sub>:103</sub>
-- Scope lenses  <sub>:114</sub>
-- Work orders  <sub>:158</sub>
-- Acceptance  <sub>:172</sub>
-- Out of scope  <sub>:183</sub>
+- 1. The slice, component by component  <sub>:24</sub>
+- 2. The demo journey  <sub>:56</sub>
+- 3. Non-goals — each out for a reason in this codebase  <sub>:99</sub>
+- 4. MVP slice vs full rollout  <sub>:112</sub>
+- Scope lenses  <sub>:123</sub>
+- Work orders  <sub>:167</sub>
+- Acceptance  <sub>:181</sub>
+- Out of scope  <sub>:192</sub>
 
-### `docs/implementation/composable-resilience-platform/179-11-pilot-rollout-waves.md`  <sub>330 lines</sub>
+### `docs/implementation/composable-resilience-platform/179-11-pilot-rollout-waves.md`  <sub>344 lines</sub>
 
-- 1. Select patterns, not companies  <sub>:12</sub>
-- 2. Wave 0 — ten patterns, one SME each  <sub>:21</sub>
-- 3. Wave 1 — connect-only, 40 tenants  <sub>:54</sub>
-- 4. Wave 2 — invoicing migrated, 150 tenants  <sub>:79</sub>
-- 5. Parallel running and the financial cutover  <sub>:99</sub>
-- 6. Wave 3 — the full engine  <sub>:209</sub>
-- Scope lenses  <sub>:222</sub>
-- Work orders  <sub>:297</sub>
-- Acceptance  <sub>:312</sub>
-- Out of scope  <sub>:324</sub>
+- 1. Select patterns, not companies  <sub>:17</sub>
+- 2. Wave 0 — ten patterns, one SME each  <sub>:26</sub>
+- 3. Wave 1 — connect-only, 40 tenants  <sub>:62</sub>
+- 4. Wave 2 — invoicing migrated, 150 tenants  <sub>:88</sub>
+- 5. Parallel running and the financial cutover  <sub>:109</sub>
+- 6. Wave 3 — the full engine  <sub>:223</sub>
+- Scope lenses  <sub>:236</sub>
+- Work orders  <sub>:311</sub>
+- Acceptance  <sub>:326</sub>
+- Out of scope  <sub>:338</sub>
 
 ### `docs/implementation/composable-resilience-platform/180-12-metrics-success-criteria.md`  <sub>403 lines</sub>
 
@@ -2879,32 +2879,32 @@ _no second-level headings_
 - Acceptance  <sub>:385</sub>
 - Out of scope  <sub>:399</sub>
 
-### `docs/implementation/composable-resilience-platform/181-13-risk-compliance-continuity-uae.md`  <sub>370 lines</sub>
+### `docs/implementation/composable-resilience-platform/181-13-risk-compliance-continuity-uae.md`  <sub>386 lines</sub>
 
-- 1. Who is who under data-protection law  <sub>:15</sub>
-- 2. The obligation stack  <sub>:25</sub>
-- 3. Controls, mapped to real mechanisms  <sub>:42</sub>
-- 4. du's own contractual security requirements  <sub>:99</sub>
-- 5. E-invoicing through `FiscalComplianceProvider` — never a parallel tax system  <sub>:115</sub>
-- 6. The erasure the ledger cannot obey — a per-table disposition  <sub>:197</sub>
-- 7. The continuity package — replacing any lock-in narrative  <sub>:226</sub>
-- 8. The IP boundary  <sub>:244</sub>
-- Scope lenses  <sub>:255</sub>
-- Work orders  <sub>:329</sub>
-- Acceptance  <sub>:351</sub>
-- Out of scope  <sub>:364</sub>
+- 1. Who is who under data-protection law  <sub>:22</sub>
+- 2. The obligation stack  <sub>:32</sub>
+- 3. Controls, mapped to real mechanisms  <sub>:49</sub>
+- 4. NEWAX's own security commitments — and answering a customer's schedule  <sub>:108</sub>
+- 5. E-invoicing through `FiscalComplianceProvider` — never a parallel tax system  <sub>:127</sub>
+- 6. The erasure the ledger cannot obey — a per-table disposition  <sub>:209</sub>
+- 7. The continuity package — replacing any lock-in narrative  <sub>:238</sub>
+- 8. The IP boundary  <sub>:258</sub>
+- Scope lenses  <sub>:270</sub>
+- Work orders  <sub>:344</sub>
+- Acceptance  <sub>:366</sub>
+- Out of scope  <sub>:379</sub>
 
-### `docs/implementation/composable-resilience-platform/182-14-commercial-partnership-rationale.md`  <sub>239 lines</sub>
+### `docs/implementation/composable-resilience-platform/182-14-why-newax-builds-and-owns-this.md`  <sub>286 lines</sub>
 
-- 1. What NEWAX brings — the strongest card, stated plainly  <sub>:13</sub>
-- 2. Why du — and not NEWAX building this alone  <sub>:46</sub>
-- 3. Versus a marketplace of third-party applications  <sub>:62</sub>
-- 4. Economics — the shapes that already exist  <sub>:89</sub>
-- 5. Commercial risks, and what already mitigates them  <sub>:133</sub>
-- Scope lenses  <sub>:143</sub>
-- Work orders  <sub>:215</sub>
-- Acceptance  <sub>:226</sub>
-- Out of scope  <sub>:234</sub>
+- 1. What NEWAX already has — the strongest card, stated plainly  <sub>:22</sub>
+- 2. Why NEWAX builds and owns this directly  <sub>:58</sub>
+- 3. Why one owner of the canonical foundation beats a stack of point tools  <sub>:105</sub>
+- 4. Economics — the shapes that already exist, priced by NEWAX  <sub>:130</sub>
+- 5. Commercial risks, and what already mitigates them  <sub>:170</sub>
+- Scope lenses  <sub>:181</sub>
+- Work orders  <sub>:259</sub>
+- Acceptance  <sub>:271</sub>
+- Out of scope  <sub>:280</sub>
 
 ### `docs/implementation/composable-resilience-platform/183-15-engineering-governance-two-agent-split.md`  <sub>233 lines</sub>
 
@@ -2943,7 +2943,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>8,309 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>8,500 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3020,6 +3020,7 @@ _no second-level headings_
 - ADR-069 — Docs 32/71/158 (`lots-serials-traceability/`): the `move()` call-site scoping boundary, a doc-158 internal contradiction corrected in `SerializedUnit.stockMovementId`'s own favour, per-unit receiving proved cost-equivalent to batch receiving, and serialized sale deliberately left out of ordinary checkout  <sub>:7809</sub>
 - ADR-070 — Doc 38 (resilience engineering): a table-driven contract test over the real source tree instead of 69 hand-written files, `RequestOutcome` instead of forcing SLO data through the business-metrics registry, and a genuine `/admin/resilience` naming collision resolved by renaming the newer screen  <sub>:8025</sub>
 - ADR-071 — Docs 168–183 (a composable, resilience-first SME platform for du): built inside erp-1 as new core-classified modules over the shipped planning engine (doc 144) and hosting control plane (doc 39), not a greenfield repository or a fork; zero new module couplings, and the program brief's premises corrected against the code  <sub>:8164</sub>
+- ADR-072 — Docs 168–183 revised: NEWAX's own product, not a du-owned platform — du was a quality-bar reference only, never a counterparty; ADR-071's build-here decision carried forward unchanged  <sub>:8310</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3656,16 +3657,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>577 lines</sub>
+### `docs/implementation/README.md`  <sub>582 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:430</sub>
-- The two module groups  <sub>:459</sub>
-- How a work order runs  <sub>:496</sub>
-- Known gaps not yet owned by a phase  <sub>:514</sub>
-- When a brief is wrong  <sub>:541</sub>
-- Scope, honestly  <sub>:554</sub>
-- Gap-analysis roadmap references  <sub>:561</sub>
+- Dependency order  <sub>:435</sub>
+- The two module groups  <sub>:464</sub>
+- How a work order runs  <sub>:501</sub>
+- Known gaps not yet owned by a phase  <sub>:519</sub>
+- When a brief is wrong  <sub>:546</sub>
+- Scope, honestly  <sub>:559</sub>
+- Gap-analysis roadmap references  <sub>:566</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
 

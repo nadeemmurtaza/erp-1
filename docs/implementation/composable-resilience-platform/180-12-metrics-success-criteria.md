@@ -1,7 +1,7 @@
 # 180 — Metrics: each one a query over real tables, or labelled NOT MEASURED
 
-> **Status: proposed (2026-09-27), not yet built.** This document defines the
-> du program's pilot metrics — not the platform's KPIs, which `PRD.md` leaves
+> **Status: proposed (2026-09-27), not yet built.** This document defines
+> this program's pilot metrics — not the platform's KPIs, which `PRD.md` leaves
 > "not yet defined" as the owner's decision, unchanged here. Every metric below
 > is given as a query shape over named tables: tenant-side tables (each SME's
 > own database) or control-plane tables (`apps/platform`). Where today's schema
@@ -176,7 +176,7 @@ simulation on the SME's own ingested data** — all of:
   (by construction nothing else reaches the graph, doc 172 §6, but the flag is
   stored so the metric does not depend on reasoning);
 - run by the SME's own user, not a support session (`runBySupportSession =
-  false`) — a demo run by du or NEWAX staff on the SME's behalf does not count;
+  false`) — a demo run by NEWAX staff on the SME's behalf does not count;
 - a real shock (`shock.kind` not null) — not a scenario-less view.
 
 Read from the tenant outbox as `planning.simulation_recorded` →
@@ -304,7 +304,7 @@ acceptance rate is itself information about the ingestion layer).
 | Value created by accepted actions | The counterfactual is unobservable | Nothing honest in this program; a controlled comparison design is a research question, not a metric |
 | Payment callback application latency | No receipt timestamp is recorded | WO-176.5 (`callbackReceivedAt`) |
 | SME satisfaction / NPS | Not a system fact | A survey instrument outside this codebase |
-| Revenue per SME to du, churn | du's own billing system is the record if du bills SMEs; `PlatformInvoice` is authoritative only where the control plane bills | Named in doc 182 as a contract question |
+| Revenue per SME to NEWAX, churn | Commercial figures, not pilot-program measures — `PRD.md` leaves the platform's KPIs to the owner, and this document does not define them | Already readable where they would come from: NEWAX's control plane bills each SME directly (doc 182 §4), so `PlatformInvoice` is the record of revenue, and `PlatformTenant.status = DEPROVISIONED` with `deprovisionedAt` is the record of churn — defined as KPIs only once the owner decides them |
 | Accuracy of the ±30% demand band | The band is a labelled heuristic (`propagation.ts:11–20`), not a model with a claimed accuracy | Back-testing `ObservedSale` against past bands — a later work order, only once there is history to test |
 
 ## Scope lenses
@@ -317,7 +317,7 @@ and `PlatformTenant`'s derivability class — and the metric queries.
 **The actor with three tables / The principal with no permission key / The
 grant that ends itself** — the poller acts as the control plane, reading per
 tenant per call, read-only; no new actor.
-**Whose rows, and which columns** — milestones and samples are visible to du's
+**Whose rows, and which columns** — milestones and samples are visible to NEWAX's
 program owners through `PLATFORM_PERMISSIONS` (`platform.resilience.view`,
 doc 176); **they carry timestamps and counts, never an SME's business figures**
 — the revenue-coverage *ratio* is sampled, never the revenue.
@@ -380,7 +380,7 @@ five are published by the work orders §0's table names. All seven get payload
 contract tests (doc 176 §7), including the assertion that none carries an
 amount or a user id.
 **WO-180.5 — The metric queries** as versioned, read-only functions with specs
-over fixtures, and the program report for du (doc 179 WO-179.5).
+over fixtures, and the program report for NEWAX's program owner (doc 179 WO-179.5).
 
 ## Acceptance
 

@@ -61,7 +61,7 @@ So the answers to "whose record is this?" are, precisely:
 | Which of that SME's brands (a group SME only) | `retailBrandId` | `Location.retailBrandId`, `JournalLine.retailBrandId` |
 | Which node, at chain scale | `originNodeId` / `branchNodeId` | `PurchaseOrder.originNodeId`, `JournalLine.branchNodeId` |
 
-Every du SME is a Solo-edition node (`RETAIL-ERP.md` R14, `NODE_ROLE=STANDALONE`);
+Every pilot SME is a Solo-edition node (`RETAIL-ERP.md` R14, `NODE_ROLE=STANDALONE`);
 the within-tenant scope columns above already default correctly for it (the
 `MAIN` `Location` every deployment has, ruling 4). A multi-branch SME uses the
 same columns with more than one `Location` row — no new column either way.

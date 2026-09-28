@@ -1,4 +1,4 @@
-# 168 — A composable, resilience-first SME platform for du: the program, and why it is built inside this repository
+# 168 — A composable, resilience-first SME platform, built and owned by NEWAX: the program, and why it is built inside this repository
 
 > **Status: proposed (2026-09-27), not yet built.** This document builds
 > nothing. It frames docs 169–183 and records, in its own words, the argument
@@ -8,6 +8,17 @@
 > here by file and function; what is genuinely new is named as new, and every
 > place the program's own brief assumed something the code does not bear out
 > is corrected in §3 below rather than carried forward.
+>
+> **Revised (2026-09-28), `DECISIONS.md` ADR-072.** This set was first
+> written on the premise of a du-owned platform (UAE telecom) as a
+> counterparty — tenant recruitment, payment rails, a compliance mandate, a
+> competition submission. The owner has corrected that premise directly: du
+> was only ever a reference for the ambition and quality bar, never a
+> counterparty. This is **NEWAX's own product**, built and owned by NEWAX and
+> sold to SMEs and enterprises directly and through NEWAX's own
+> hosting/agency model (docs 11, 39, 50, 153–154). ADR-071's build-here
+> decision stands unchanged; its premise is superseded by ADR-072, and every
+> document in the set has been revised to match.
 
 ## 1. The thesis
 
@@ -34,9 +45,11 @@ wording is itself the root of the currency-literal defect doc 173 fixes in
 code; editing the document of record's own wording is left to the owner, see
 §3 item 8.)
 
-The program this document set specifies is that pipeline, offered by du to
-50,000+ SMEs as a du-owned product, with **three additions the pipeline never
-needed while it served one Pakistani retailer's own database**:
+The program this document set specifies is that pipeline, offered by NEWAX as
+its own product to SMEs at the PRD's 50,000+-business scale — sold directly
+and through NEWAX's own Agency-Managed hosting model (doc 11 §5, doc 39) — with
+**three additions the pipeline never needed while it served one Pakistani
+retailer's own database**:
 
 1. **An ingestion boundary** (Layer 3, doc 172). The SME's facts live in
    *other* systems — a spreadsheet, an accounting package, a POS — and must
@@ -46,15 +59,18 @@ needed while it served one Pakistani retailer's own database**:
    simulation is shown as trustworthy.
 2. **A second-market proof of every country-specific extension point**
    (§5). Tax filing, identity verification, payment collection and locale all
-   sit behind interfaces today; the UAE forces each one to take an unrelated
-   implementation.
-3. **A du-operated control plane** at 50,000-tenant scale (Layer 2, doc 171;
-   doc 39's shipped control plane, extended with a per-tenant Build Manifest
-   and a controlled Update Agent).
+   sit behind interfaces today; the UAE — NEWAX's own chosen second market —
+   forces each one to take an unrelated implementation.
+3. **NEWAX's own control plane** at 50,000-tenant scale (Layer 2, doc 171;
+   doc 39's shipped control plane, already operated by "Newax's own
+   hosting-operations staff", extended with a per-tenant Build Manifest and a
+   controlled Update Agent).
 
 Payments are an execution channel for this product, never the product
-(Layer 6, doc 175): du's own licensed entities move money; NEWAX never holds
-funds.
+(Layer 6, doc 175): licensed third-party payment service providers, integrated
+per market through the existing `PaymentProvider` extension point, move money.
+NEWAX is a technology platform — never a money transmitter or wallet-holder for
+this program — and never holds funds.
 
 ## 2. Why this repository — the argument ADR-071 records
 
@@ -84,7 +100,8 @@ engine; it does not replace one line of its contract.
 ### 2.2 The multi-tenant control plane is already built (doc 39 and its siblings)
 
 `apps/platform` is a separate NestJS app with its own database, and it is
-exactly the shape du needs to own: **shared compute, never shared data — a
+exactly the shape NEWAX needs to operate this product itself: **shared compute,
+never shared data — a
 tenant is a node with its own database** (doc 39 §"The one design decision";
 `DECISIONS.md` rejects shared-schema multi-tenancy in writing).
 
@@ -213,8 +230,8 @@ owns it.
    `PaymentsService.handleCallback()` refuses only `result.verified === false`
    (`payments.service.ts:149`); `verified` is optional
    (`payment-provider.ts:70`) and no provider ever sets it `true`. A provider
-   that forgets the field is trusted. Doc 175 tightens this before a du rail
-   is wired.
+   that forgets the field is trusted. Doc 175 tightens this before the first
+   live online payment gateway is wired.
 10. **`SupportAccessGrant` is enforced in the control plane only.**
     `SupportAccessService.recordAccess()` checks liveness and appends to
     `accessedAt` (`support-access.service.ts:82`), but nothing in `apps/api`
@@ -244,13 +261,13 @@ deliberately left open or settled differently, and they are named here so
 nobody discovers them in a pilot:
 
 - **An SME's legal identity on its own tax invoice.** `brand.ts` is
-  compile-time (Br1). At 50,000 tenants on one du image, the six identity
+  compile-time (Br1). At 50,000 tenants on one NEWAX image, the six identity
   fields a tax invoice prints — legal name, TRN, registration number,
   address, banking, logo — cannot be compiled per tenant. They already
   half-exist at runtime (`SettingKey.Store`, seeded *from* `BRAND` in
   `settings.defaults.ts:362`), but `apps/web/src/config/business-profile.ts`
   reads `BRAND.legal.*` and `BRAND.banking` directly. Doc 170 §6 specifies the
-  bounded change (brand.ts keeps du's product identity and the UAE locale
+  bounded change (brand.ts keeps the product's own identity and the UAE locale
   block; the SME's legal identity moves to its own runtime settings) and
   names it as needing its **own** ADR, because it touches Br1's wording.
 - **Compute density at 50,000 tenants.** Doc 39 routes each tenant to "its
@@ -271,22 +288,23 @@ nobody discovers them in a pilot:
 | 3 — Ingestion boundary | Read-only connectors, confidence, provenance, human confirmation | Doc 160/162 designs; `csv-parse`; `ProductImportService`'s dry-run shape; `AiFeature.IMPORT_CLEANUP`; `StorageService`; the action hub | `FileTransport += UPLOAD`, `FileFormat += XLSX`, `ExternalRecordLink` provenance, doc 160's unique key corrected | `IngestionMapping`, `IngestionBatch`, `IngestionRecord`, `CanonicalRecordSinkRegistry`, the confidence scorer | 172 |
 | 4 — Resilience engine | Doc 144, extended | `propagate()`/`rankActions()` purity, `assertNoOriginatedFigures()` | Confidence-partitioned graph; `cashSpentMinor`; revenue at risk; currency-safe AP weights; honest cash-unknown | Two action kinds with real sources named (§ doc 173) | 173 |
 | 5 — Control center | Five questions; Simulate → Accept → Modify | `/admin/resilience`, `planning.propagation.view`, `AuditService.recordEvidence()` | Labels instead of raw ids; persisted runs | `ResilienceSimulation`, `ResilienceRecommendation`, `RecommendationDecision`, `planning.recommendations.decide` | 174 |
-| 6 — Settlement execution channel | Invoice → rails → reconciliation → updated position | `PaymentProvider`, `FinancialInstitutionConnector`, `SettlementsService` (`SHORT`), posting rules | `handleCallback` fail-closed; provider labels as translation rows | A du-rail `PaymentProvider`, a du-rail settlement connector | 175 |
+| 6 — Settlement execution channel | Invoice → rails → reconciliation → updated position | `PaymentProvider`, `FinancialInstitutionConnector`, `SettlementsService` (`SHORT`), posting rules | `handleCallback` fail-closed; provider labels as translation rows | A `PaymentProvider` and a settlement connector per licensed third-party PSP NEWAX integrates in a market | 175 |
 
 ## 5. The international proof: every country-specific seam takes an unrelated second implementation
 
 The platform's concrete implementations today are Pakistan-centric — nID
 (Pakistani tenant #1), JazzCash/Easypaisa, an FBR regime sketched but
 unbuilt, PKR as the one currency anyone has run it with, Urdu as the second
-locale. That is not a gap to apologise for. It is what makes the UAE the
-right proof: an interface that has only ever had one implementation has not
-yet been shown to be an interface. The table below is the test, and it is
-honest about where the second implementation needs an additive change.
+locale. That is not a gap to apologise for. It is what makes the UAE — the
+second market NEWAX has chosen to enter, on its own initiative — the right
+proof: an interface that has only ever had one implementation has not yet been
+shown to be an interface. The table below is the test, and it is honest about
+where the second implementation needs an additive change.
 
 | Seam | Where | Implementations today | UAE implementation | Honest delta |
 |---|---|---|---|---|
-| Payment collection | `PaymentProvider` — `payments/payment-provider.ts` | `cod`, `bank_transfer`, `jazzcash`, `easypaisa`, `giftkarta`, `account` | A du rail (du Pay and/or its acquirer) — doc 175 | `verified` must become mandatory-true (security fix); `labelUr`/`descriptionUr` (`payment-provider.ts:77/80`) move to translation rows (ADR-006) |
-| Settlement | `FinancialInstitutionConnector` — `settlements/settlement-connector.ts` | none ("stays dark until credentials exist") | The du rail's payout report — doc 175 | none to the interface; the first real implementation |
+| Payment collection | `PaymentProvider` — `payments/payment-provider.ts` | `cod`, `bank_transfer`, `jazzcash`, `easypaisa`, `giftkarta`, `account` | A licensed UAE PSP/gateway NEWAX selects — a regional rail such as Network International or du Pay is an illustration of what could plug in, not an assumed rail — doc 175 | `verified` must become mandatory-true (security fix); `labelUr`/`descriptionUr` (`payment-provider.ts:77/80`) move to translation rows (ADR-006) |
+| Settlement | `FinancialInstitutionConnector` — `settlements/settlement-connector.ts` | none ("stays dark until credentials exist") | That PSP's payout report — doc 175 | none to the interface; the first real implementation |
 | Fiscal filing | `FiscalComplianceProvider` — doc 15 sketch | **none** (WO-15.5 unbuilt) | A UAE Accredited Service Provider (PINT AE) — doc 181 | The sketch is order-shaped; must become document-shaped before its first build |
 | Identity verification | `IdentityVerificationProvider` — `identity-verification/identity-verification-provider.ts` | `nid` | Emirates ID — doc 170 §3.3 | `IdentityVerificationStart` gains an optional `redirectUrl`; `submitOtp` becomes optional (both additive) |
 | Staff sign-in | `SsoConnection` + `OidcProvider` (doc 161) | any OIDC workforce IdP | UAE PASS for SME users — doc 170 §3.2 | The `allowedEmailDomains` gate is wrong for a national IdP; a subject-binding mode is required |
@@ -307,8 +325,8 @@ the rows above does.
   defines metrics for *this program's pilot*, not the platform's KPIs, which
   remain the owner's decision.
 - **`RETAIL-ERP.md`** — the document of record for Layers 0, 4 and 5 (Part 4,
-  R20–R26), for the edition model (R14: every du SME is a `STANDALONE`, Solo-
-  edition node), for "facts flow up" (R2), for invoicing as a document distinct
+  R20–R26), for the edition model (R14: every pilot SME is a `STANDALONE`,
+  Solo-edition node), for "facts flow up" (R2), for invoicing as a document distinct
   from orders (R18 — doc 169 takes one real step toward it), and for Part 4's
   safety property ("read-only over the operational schema… zero module
   couplings… Accept creates drafts, it does not execute"), which docs 172–174
@@ -335,14 +353,14 @@ the rows above does.
 | [172](./172-04-layer3-ingestion-boundary-confidence-provenance.md) | Layer 3 — ingestion boundary | Read-only connectors on docs 160/162, the confidence tiers, provenance, human confirmation, every failure mode; full scope-lens pass |
 | [173](./173-05-layer4-resilience-engine-extensions.md) | Layer 4 — engine extensions | Confidence-partitioned propagation, the `rupeesSpentMinor` rename, which action kinds gain real sources |
 | [174](./174-06-layer5-control-center.md) | Layer 5 — control center | Five questions, Simulate → Accept → Modify, persisted and audited |
-| [175](./175-07-layer6-settlement-execution-channel.md) | Layer 6 — settlement channel | A du rail on `PaymentProvider`, doc 49's `SHORT` loop, the custody boundary; full scope-lens pass |
+| [175](./175-07-layer6-settlement-execution-channel.md) | Layer 6 — settlement channel | Licensed third-party PSPs on `PaymentProvider`, doc 49's `SHORT` loop, the custody boundary NEWAX never crosses; full scope-lens pass |
 | [176](./176-08-platform-resilience-failure-modes.md) | Platform resilience | Doc 38's matrix extended to connectors and tenancy, with SLOs computed from rows |
 | [177](./177-09-graph-derivability-pilot-scope-control.md) | Graph derivability | Which sectors the graph is derivable for from invoices and stock, and which are excluded on purpose |
-| [178](./178-10-competition-deliverable-vs-pilot-vertical-slice.md) | Competition slice | What ships for the submission, mapped to real screens, the demo journey, the non-goals |
+| [178](./178-10-mvp-vertical-slice-vs-full-rollout.md) | MVP slice vs full rollout | What ships in the MVP vertical slice, mapped to real screens, the demo journey, the non-goals, and what waits for the full rollout |
 | [179](./179-11-pilot-rollout-waves.md) | Pilot waves | Ten integration patterns, 40 → 150 → full engine, parallel running and cutover gates |
 | [180](./180-12-metrics-success-criteria.md) | Metrics | Each metric as a query over real tables, or labelled NOT MEASURED |
-| [181](./181-13-risk-compliance-continuity-uae.md) | Risk, compliance, continuity | PDPL/DIFC/ADGM/ISO 27001 mapped to real mechanisms; e-invoicing; residency; the continuity package; the IP boundary |
-| [182](./182-14-commercial-partnership-rationale.md) | Commercial rationale | Why du, what NEWAX brings, economics on the existing pricing shapes |
+| [181](./181-13-risk-compliance-continuity-uae.md) | Risk, compliance, continuity | PDPL/DIFC/ADGM/ISO 27001 mapped to real mechanisms for NEWAX's own UAE entry; e-invoicing; residency on NEWAX's control plane; the continuity package; the IP boundary |
+| [182](./182-14-why-newax-builds-and-owns-this.md) | Commercial rationale | Why NEWAX builds and owns this directly — against a spreadsheet, a point-solution BI tool, or no visibility at all — and economics on the existing pricing shapes |
 | [183](./183-15-engineering-governance-two-agent-split.md) | Governance | The operating sequence with this program's gates, the two-agent split, modular monolith first |
 
 ## Scope lenses
@@ -365,7 +383,8 @@ lens and names where the program answers it.
 **The actor with three tables** — n/a here: no actor is introduced. The
 program's actors are placed in doc 169 §3 (counterparties as `Supplier`+`Party`
 or `Contact`+`Party` CUSTOMER) and doc 170 §3 (a pushing POS as
-`InboundWebhookEndpoint`, du staff as control-plane principals).
+`InboundWebhookEndpoint`, NEWAX hosting-operations staff as control-plane
+principals).
 **The principal with no permission key** — n/a here; doc 170 §3 answers it for
 the push source (fail-closed HMAC), UAE PASS subject binding and the support
 session.
@@ -380,7 +399,7 @@ and doc 179 §5.2's three-signature cutover.
 **The toxic pair, caught at grant or at act** — n/a here; doc 170 §2.1 reasons
 each new key pair, doc 179 refuses one person signing twice at the act.
 **Authority and blast radius** — this document's one authority is a decision:
-ADR-071 and the two decisions WO-168.3 opens can be changed only by a new
+ADR-071 (its premise superseded by ADR-072) and the two decisions WO-168.3 opens can be changed only by a new
 `DECISIONS.md` entry, never inside an implementation PR (§3a).
 **Audience is a capability, not an address** — n/a here: nothing is sent; doc
 172 resolves every audience by key (`holdersOf`, WO-172.9).
@@ -391,7 +410,7 @@ each program write is classified in its own document (docs 172, 174, 175, 179).
 so `InventoryService.defaultLocationId()` is reached on no new path.
 **Four hours down, the counter stays open** — n/a here; doc 176 §2's degradation
 matrix, one row per dependency this program adds.
-**The unwritten posting rule** — n/a here; doc 175 (the du rail's postings and the
+**The unwritten posting rule** — n/a here; doc 175 (a PSP payment's postings and the
 clearing-account ADR it names) and doc 179 (the opening-balance door).
 **Every column or none** — n/a here; doc 175 and doc 179 set the dimensions on
 every line they write.
@@ -420,7 +439,8 @@ the program.
 **The reversal document, not the reversal flag** — n/a here; doc 175 §6 (partial
 refunds) and doc 172 (compensating rows, superseded links).
 **The undo fan-out** — n/a here; docs 172, 174 and 179 each enumerate theirs.
-**The version stamp** — this document's stamp is ADR-071 itself; the program's
+**The version stamp** — this document's stamp is ADR-071 and its supersession,
+ADR-072; the program's
 are `cp-1`, mapping versions, `derivability-policy-1` and `PlatformRelease`.
 **The erasure the ledger cannot obey** — n/a here; doc 181 §6's per-table
 disposition.
@@ -431,7 +451,8 @@ doc 176 §3.
 
 **WO-168.1 — Record the decision.** `DECISIONS.md` ADR-071, and the
 `docs/implementation/README.md` rows for 168–183. (Done by the change that
-adds this document.)
+adds this document; the premise correction is ADR-072, done by the change
+that revised the set.)
 **WO-168.2 — Sequence the preconditions before any UAE tenant exists.** The
 currency-neutrality sweep (WO-170.3), the `handleCallback` fail-closed change
 (WO-175.1) and the planning currency fixes (WO-173.1–173.4) are
@@ -450,8 +471,13 @@ rather than edited now (this set does not touch other docs' rows).
 
 - Every claim in §2 resolves to a file and function a reader can open; every
   correction in §3 cites the line it was found at.
-- ADR-071 exists at the end of `DECISIONS.md` with Context, Options
-  Considered, Decision, Reasoning, Consequences and Status.
+- ADR-071 exists in `DECISIONS.md` with Context, Options Considered,
+  Decision, Reasoning, Consequences and Status, marked superseded by ADR-072,
+  which carries its build-here decision forward on the corrected premise.
+- No document in 168–183 names du — or any other telecom or channel owner — as
+  a counterparty, owner, payment rail or compliance mandate; du Pay and Network
+  International appear only as illustrations of a regional rail the
+  `PaymentProvider` extension point could plug into (doc 175 §3).
 - No document in 169–183 claims "built" for anything this document lists as
   unbuilt (connectors, doc 38, `FiscalComplianceProvider`).
 - The two open decisions in §3a appear in `DECISIONS.md` as **Open** entries
@@ -459,10 +485,11 @@ rather than edited now (this set does not touch other docs' rows).
 
 ## Out of scope
 
-The du commercial contract itself (doc 182 names the economics shapes;
-prices, revenue share and liability are negotiated, not specified). Any
-change to `PRD.md`, `CLAUDE.md`, `RETAIL-ERP.md` or another document of
-record — where this set finds one of them wrong or stale (R22's "per rupee"
-wording; the NADRA row), it says so and leaves the edit to the owner. A
-separate greenfield repository or a du fork (ADR-071 rejects both now; doc
-181 keeps the fork door open through doc 11's handover model).
+Final prices and customer contract terms (doc 182 names the economics shapes
+on NEWAX's existing pricing models; the amounts are NEWAX's own decision, not
+specified here). Any change to `PRD.md`, `CLAUDE.md`, `RETAIL-ERP.md` or
+another document of record — where this set finds one of them wrong or stale
+(R22's "per rupee" wording; the NADRA row), it says so and leaves the edit to
+the owner. A separate greenfield repository or a per-client fork (ADR-071
+rejects both; doc 181 keeps the extraction door open for an enterprise
+customer through doc 11's handover model).

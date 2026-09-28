@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2445,
-    "lines": 376247,
+    "lines": 376588,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 417,
-      "lines": 78517,
-      "bytes": 4736851,
+      "lines": 78858,
+      "bytes": 4763853,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -91353,8 +91353,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 8309,
-      "bytes": 488426,
+      "lines": 8500,
+      "bytes": 500588,
       "doc": "",
       "symbols": []
     },
@@ -91407,8 +91407,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 577,
-      "bytes": 85486,
+      "lines": 582,
+      "bytes": 86253,
       "doc": "",
       "symbols": []
     },
@@ -92262,8 +92262,8 @@
       "path": "docs/implementation/composable-resilience-platform/168-00-overview-and-decision-to-build-here.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 469,
-      "bytes": 35559,
+      "lines": 496,
+      "bytes": 37855,
       "doc": "",
       "symbols": []
     },
@@ -92272,7 +92272,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 661,
-      "bytes": 41804,
+      "bytes": 41807,
       "doc": "",
       "symbols": []
     },
@@ -92280,8 +92280,8 @@
       "path": "docs/implementation/composable-resilience-platform/170-02-layer1-stable-core-deltas.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 533,
-      "bytes": 31735,
+      "lines": 534,
+      "bytes": 31923,
       "doc": "",
       "symbols": []
     },
@@ -92290,7 +92290,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 441,
-      "bytes": 25593,
+      "bytes": 25623,
       "doc": "",
       "symbols": []
     },
@@ -92299,7 +92299,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 940,
-      "bytes": 59672,
+      "bytes": 59684,
       "doc": "",
       "symbols": []
     },
@@ -92308,7 +92308,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 459,
-      "bytes": 30151,
+      "bytes": 30155,
       "doc": "",
       "symbols": []
     },
@@ -92317,7 +92317,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 432,
-      "bytes": 25174,
+      "bytes": 25194,
       "doc": "",
       "symbols": []
     },
@@ -92325,8 +92325,8 @@
       "path": "docs/implementation/composable-resilience-platform/175-07-layer6-settlement-execution-channel.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 460,
-      "bytes": 30045,
+      "lines": 491,
+      "bytes": 32475,
       "doc": "",
       "symbols": []
     },
@@ -92335,7 +92335,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 377,
-      "bytes": 26474,
+      "bytes": 26519,
       "doc": "",
       "symbols": []
     },
@@ -92344,16 +92344,16 @@
       "area": "docs",
       "kind": "doc",
       "lines": 235,
-      "bytes": 18304,
+      "bytes": 18309,
       "doc": "",
       "symbols": []
     },
     {
-      "path": "docs/implementation/composable-resilience-platform/178-10-competition-deliverable-vs-pilot-vertical-slice.md",
+      "path": "docs/implementation/composable-resilience-platform/178-10-mvp-vertical-slice-vs-full-rollout.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 187,
-      "bytes": 17262,
+      "lines": 196,
+      "bytes": 17945,
       "doc": "",
       "symbols": []
     },
@@ -92361,8 +92361,8 @@
       "path": "docs/implementation/composable-resilience-platform/179-11-pilot-rollout-waves.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 330,
-      "bytes": 21015,
+      "lines": 344,
+      "bytes": 21975,
       "doc": "",
       "symbols": []
     },
@@ -92371,7 +92371,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 403,
-      "bytes": 25258,
+      "bytes": 25545,
       "doc": "",
       "symbols": []
     },
@@ -92379,17 +92379,17 @@
       "path": "docs/implementation/composable-resilience-platform/181-13-risk-compliance-continuity-uae.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 370,
-      "bytes": 31845,
+      "lines": 386,
+      "bytes": 34314,
       "doc": "",
       "symbols": []
     },
     {
-      "path": "docs/implementation/composable-resilience-platform/182-14-commercial-partnership-rationale.md",
+      "path": "docs/implementation/composable-resilience-platform/182-14-why-newax-builds-and-owns-this.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 239,
-      "bytes": 16384,
+      "lines": 286,
+      "bytes": 20901,
       "doc": "",
       "symbols": []
     },
@@ -92398,7 +92398,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 233,
-      "bytes": 17882,
+      "bytes": 18006,
       "doc": "",
       "symbols": []
     },

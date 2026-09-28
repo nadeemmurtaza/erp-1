@@ -68,7 +68,7 @@ Wrong data trusted (mitigated by §5–§6); duplicate or partial imports (§10)
 a second writer for an invariant (§8's system-of-record rule, doc 169 §5); a
 cron that never fires in a scaled-to-zero tenant (doc 176); cross-border
 transfer of SME data through an AI mapping call (doc 181 — AI off by default
-for du tenants).
+for UAE tenants).
 
 ### Acceptance criteria
 See "Acceptance" at the end — every criterion is a test.
@@ -100,7 +100,7 @@ The full pass is the `## Scope lenses` section below.
   itself rules that "a pack exists only where a vertical owns genuine domain
   data that core cannot express"; connectivity is cross-sector, the same
   reasoning that put `marketplace`, `managed-services` and `accounts` in core.
-  A du SME's Build Manifest (doc 171) adds `connectors` to its `MODULES`.
+  A tenant SME's Build Manifest (doc 171) adds `connectors` to its `MODULES`.
 - **Why one module, not `connectors` + `ingestion`.** Doc 160 makes
   `ExternalRecordLink` "one generic mapping table every stateful sync reuses".
   Splitting the inbound pipeline into its own module would give that table two
@@ -367,7 +367,7 @@ one namespace across schema files).
 deterministically (exact and alias header matches — `supplier_name`,
 `vendor`, `Vendor Name` → `SUPPLIER.name`, an alias table in code, reviewed)
 and, only when `AI_PROVIDERS` is configured **and** the tenant's manifest allows
-AI (doc 181: off by default for du tenants for residency), by
+AI (doc 181: off by default for UAE tenants for residency), by
 `AiService.complete(AiFeature.IMPORT_CLEANUP, …)` — reusing the feature value
 doc 09 WO-9.10 defined for exactly this ("infer column mappings, normalise
 inconsistent values… flag likely duplicates"), not a new `AiFeature`.
@@ -686,7 +686,7 @@ its comment, and would need this document amended first.
 | **Owning module absent** | `CanonicalRecordSinkRegistry.get(kind)` returns null | Records of that kind stay `STAGED`, `errorCode = NO_SINK_REGISTERED` | Visible, not an error | Add the module to the manifest (doc 171) |
 | **Tenant isolation** | By construction | Connectors run inside the tenant's own deployment against its own database; credentials are encrypted with that deployment's own key; there is no path to another tenant's database (doc 39) | — | — |
 
-## 11. What the SME and du support actually use
+## 11. What the SME and NEWAX support actually use
 
 - **Settings → Connections** (`/admin/connections`, nav key `connections`,
   group `settings`, permission `connectors.manage`): register a connector,
@@ -707,7 +707,7 @@ its comment, and would need this document amended first.
 **The five shop-scale lenses first.**
 *The transaction, start to finish* — connect → map → preview → confirm →
 promote → the engine uses it → the SME sees its own supplier in a simulation;
-every step has a screen (§11). *The other side of the same transaction* — du
+every step has a screen (§11). *The other side of the same transaction* — NEWAX
 support's view is a purpose-scoped support session (doc 170 §4) onto the same
 review screens; the SME's owner is the confirmer. *What happens after "done"* —
 disconnect a connector (status `SUSPENDED`, data stays and ages, links remain);

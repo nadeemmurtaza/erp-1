@@ -320,7 +320,7 @@ doc 144 would expect something the code does not do.
 
 And one inherited, not new: `DependencyGraphService.build()` takes no
 `organizationId` or location scope, while doc 144's own scope-lens text says
-"`buildDependencyGraph()` never spans organizations". Under doc 39 every du SME
+"`buildDependencyGraph()` never spans organizations". Under doc 39 every tenant SME
 is its own database, so cross-SME isolation holds by construction; within a
 multi-branch SME, branch-scoped reads are unenforced here exactly as
 `ENTERPRISE-SCALE.md`'s L2 gap says they are everywhere else. Named, not fixed

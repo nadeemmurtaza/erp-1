@@ -4,10 +4,15 @@
 > one new artifact: the evidence record of a system-of-record cutover (§5.3).
 > Everything each wave runs is specified in docs 169–176; this document decides
 > **which SMEs, in which posture, in which order, and what must be true before
-> the next wave starts.** It gives no calendar dates: those depend on du's
-> contract and, for Wave 2, on the UAE Ministry of Finance's published
-> e-invoicing phases, which are to be taken from the Ministry's own
-> publications when the contract is signed — never assumed here.
+> the next wave starts.** It gives no calendar dates: those depend on NEWAX's
+> own UAE launch plan and, for Wave 2, on the UAE Ministry of Finance's
+> published e-invoicing phases, which are to be taken from the Ministry's own
+> publications at the time — never assumed here.
+>
+> **Revised (2026-09-28), ADR-072.** SMEs reach every wave through NEWAX's own
+> sales, onboarding and agency channel (doc 11's Agency-Managed track, the
+> self-serve trial of docs 51/154) — not through any telecom's bundled
+> distribution; the cutover's third signatory is NEWAX's own program owner.
 
 ## 1. Select patterns, not companies
 
@@ -33,8 +38,11 @@ pattern.
 | 9 | **Multi-branch retail, one POS per branch** (2–5 branches) | One `FileConnector` per branch export | `LOCATION` per branch, per-location `STOCK_POSITION`/`SALE_LINE` | `authoritativeLocationIds` per mapping; per-location freshness; later, a branch moving onto the platform alone (Wave 3) | Derivable; transfers only once done on the platform |
 | 10 | **B2B wholesaler with credit terms** | Accounting API (item-level sales invoices) + bank feed | `CUSTOMER` with TRN → `Party` CUSTOMER (doc 169 §3.1), `SALES_INVOICE`, `CASH_BALANCE` | AR authority (doc 173 §4.2), customer concentration (doc 174 question 1), the B2B buyer identity PINT AE needs | Derivable |
 
-**How an SME is chosen for a slot:** du's account team nominates; the SME
-confirms it controls the data (doc 177 §3's last exclusion); the pre-pilot sample
+**How an SME is chosen for a slot:** NEWAX's own sales and onboarding team
+nominates, from SMEs that reach NEWAX directly, through the public `/pricing`
+page and trial sign-up (`PlansService.getPlanComparison()`, doc 154;
+`SignupService`, `TenantStatus.TRIAL`, doc 51), or through an Agency-Managed
+engagement (doc 11 §5); the SME confirms it controls the data (doc 177 §3's last exclusion); the pre-pilot sample
 run (WO-177.3) through doc 172's pure front half shows the pattern's
 derivability; the SME accepts the pilot's data terms (doc 181). The accounting
 package and POS for patterns 2, 3, 6, 7 and 10 are chosen from what the
@@ -59,10 +67,11 @@ systems stay the system of record for every fact (doc 169 §5); this platform
 observes, scores, simulates and recommends. No payments, no invoices issued here.
 
 **Composition.** Four SMEs per surviving Wave 0 pattern, weighted toward the
-patterns du's market team expects to dominate; a mix of Solo and 2–5-branch
+patterns NEWAX's own pipeline shows most often (Wave 0's nominations and the
+trial sign-ups are the evidence, not a forecast); a mix of Solo and 2–5-branch
 tenants.
 
-**Running.** Rings on (doc 171): du's and NEWAX's internal tenants in `CANARY`;
+**Running.** Rings on (doc 171): NEWAX's own internal tenants in `CANARY`;
 Wave 1 tenants in `EARLY`. The SLI sampler (doc 176 §5) on. Support only through
 purpose-scoped grants (doc 170 §4).
 
@@ -79,7 +88,8 @@ purpose-scoped grants (doc 170 §4).
 ## 4. Wave 2 — invoicing migrated, 150 tenants
 
 **Posture.** SMEs issue their sales documents on this platform (native `Order`
-→ `Invoice`, doc 169 §3.4); du's rail collects (doc 175); PINT AE submission
+→ `Invoice`, doc 169 §3.4); a licensed PSP integrated through `PaymentProvider`
+collects (doc 175); PINT AE submission
 through an ASP once the SME's mandate applies (doc 181). **Their legacy
 accounting package stays the ledger through parallel running**; `accounting` is
 added to the manifest only at cutover (§5).
@@ -146,7 +156,11 @@ already enforce):
 |---|---|
 | The SME's owner or finance lead | these are our books — the reconciled figures are correct |
 | NEWAX's implementation lead | every difference in the window was classified and every defect fixed |
-| du's program owner | the gate's criteria 1–6 are met for this tenant |
+| NEWAX's program owner — never the same person as the implementation lead | the gate's criteria 1–6 are met for this tenant |
+
+Both NEWAX signatories work for the same company, so the distinct-person rule is
+what keeps the program owner's signature a check on the implementation lead's
+work rather than a second copy of it.
 
 ### 5.3 The cutover evidence record
 
@@ -173,7 +187,7 @@ model SystemOfRecordCutover {
   /// difference, every reason) — the evidence, retained with the SME's
   /// financial records.
   varianceReportKey String?
-  /// [{ role: "SME_OWNER" | "NEWAX_LEAD" | "DU_OWNER", userId, signedAt }]
+  /// [{ role: "SME_OWNER" | "NEWAX_LEAD" | "NEWAX_PROGRAM_OWNER", userId, signedAt }]
   /// — three distinct userIds, enforced at sign time.
   signoffs          Json
   effectiveAt       DateTime?
@@ -192,7 +206,7 @@ transaction publishes `connectors.cutover_effective` (`{ cutoverId, factScope,
 effectiveAt }` — a record kind and at most a location id, no amount) through
 the outbox; doc 180 §0's poller reads it for the `CUTOVER_EFFECTIVE`
 milestone. Each signature
-is an evidence-class audit row. The du and NEWAX signatories sign inside the
+is an evidence-class audit row. The two NEWAX signatories sign inside the
 tenant under a purpose-scoped support session (doc 170 §4.2's grant gains the
 purpose `CUTOVER_SIGNOFF`, and nothing else) — the SME's own signatory is an
 ordinary user holding the existing `accounting.manage_periods` ("Open, close and
@@ -224,12 +238,12 @@ native ledger with its month-end closes completed on the platform, and no
 Ingestion lenses are doc 172's, money lenses doc 175's. These answer this
 document's own artifact — `SystemOfRecordCutover` — and the wave gates.
 
-**The actor with three tables** — the three signatories are `User`s (du and
+**The actor with three tables** — the three signatories are `User`s (the two
 NEWAX signatories acting through a support session with the single purpose
 `CUTOVER_SIGNOFF`); no new actor type.
 **The principal with no permission key** — n/a: no keyless principal is
 introduced. The SME's signatory signs under `accounting.manage_periods` on a
-`@SessionOnly()` route; du's and NEWAX's sign through a support session whose
+`@SessionOnly()` route; NEWAX's two sign through a support session whose
 grant names `CUTOVER_SIGNOFF` and nothing else (doc 170 §4.2).
 **The grant that ends itself** — the signing support session ends with its
 grant; `frozenUntil` ends the manifest freeze without a human remembering.
@@ -239,14 +253,14 @@ control plane sees only the status.
 **The threshold nobody approves alone** — the cutover needs three distinct
 signatories (§5.2), enforced at sign time; the record stores all three.
 **The toxic pair, caught at grant or at act** — the NEWAX implementation lead
-who classified the variances cannot also sign as du's owner: distinct `userId`s
-are enforced at the act.
+who classified the variances cannot also sign as the program owner: distinct
+`userId`s are enforced at the act.
 **Authority and blast radius** — moving the system of record is the widest act
 in the program; it is bounded to one tenant and one fact scope per record.
 **Audience is a capability, not an address** — a day with an unexplained
 difference notifies the tenant's `accounting.view` holders and the implementation
 lead through the action hub; a stalled parallel run (no comparison for 2 days)
-escalates to du's program owner.
+escalates to NEWAX's program owner.
 **Request or record — classify every write** — signing is a REQUEST; the
 variance report is a RECORD; `EFFECTIVE` is a RECORD of the authorised switch.
 **The movement with no address** — `factScope` names the location for
@@ -280,7 +294,7 @@ variance report is a file, not rows.
 **The reversal document, not the reversal flag** — moving back is a new cutover
 record in the other direction, never an edited status.
 **The undo fan-out** — `EFFECTIVE` ends the legacy mapping's authority
-(automatic), adds `accounting` to the manifest (human, du operations, doc 171),
+(automatic), adds `accounting` to the manifest (human, NEWAX hosting operations, doc 171),
 posts opening balances (automatic, once), and publishes
 `connectors.cutover_effective`, whose milestone is deliberately irreversible
 (doc 180) — moving back is a new cutover, so it gets its own record.
@@ -307,7 +321,7 @@ in the `EFFECTIVE` transaction (payload contract test in doc 176 §7).
 **WO-179.4 — Opening-balance door** into `postEntry()` (an `accounting` work
 order, prerequisite of the first cutover).
 **WO-179.5 — Wave gate reports**: each gate's criteria computed from doc 180's
-metrics and doc 176's SLIs, rendered for du's program owner.
+metrics and doc 176's SLIs, rendered for NEWAX's program owner.
 
 ## Acceptance
 

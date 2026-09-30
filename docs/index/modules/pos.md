@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 26 files
 
 **Registry note** (`modules.registry.ts`): Off by default — a deployment turns it on once it actually runs a physical till (RETAIL-ERP.md R14: invisible until then).
 
-Source: `apps/api/src/modules/pos/`
+Source: `apps/api/src/modules/sales/pos/`
 
 ## Files (26 · 2,178 lines)
 
-All paths relative to `apps/api/src/modules/pos/dto`.
+All paths relative to `apps/api/src/modules/sales/pos/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

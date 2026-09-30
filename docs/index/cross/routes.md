@@ -26,11 +26,11 @@ never authorization.
 
 | Method | Path | Handler | File |
 |---|---|---|---|
-| GET | `/admin/accounts/b2b` | `B2BAccountsAdminController.findAll` | `apps/api/src/modules/accounts/accounts.controller.ts:31` |
-| POST | `/admin/accounts/b2b` | `B2BAccountsAdminController.create` | `apps/api/src/modules/accounts/accounts.controller.ts:45` |
-| GET | `/admin/accounts/b2b/:id` | `B2BAccountsAdminController.findOne` | `apps/api/src/modules/accounts/accounts.controller.ts:38` |
-| POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/accounts/accounts.controller.ts:59` |
-| POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/accounts/accounts.controller.ts:52` |
+| GET | `/admin/accounts/b2b` | `B2BAccountsAdminController.findAll` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:31` |
+| POST | `/admin/accounts/b2b` | `B2BAccountsAdminController.create` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:45` |
+| GET | `/admin/accounts/b2b/:id` | `B2BAccountsAdminController.findOne` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:38` |
+| POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:59` |
+| POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/sales/accounts/accounts.controller.ts:52` |
 
 - **Public routes: 77** — every one is an intentional decision; changing one changes the product's attack surface.
 

@@ -110,7 +110,7 @@ reads only `RoleGrant`.
 ## Money, documents and the ledger
 
 One writer: `AccountingService.postEntry()`
-(`modules/accounting/accounting.service.ts`), called only by
+(`modules/money/accounting/accounting.service.ts`), called only by
 `PostingRulesSubscriber` and `FiscalPeriodsService.closeFiscalYear()`. No
 manual-journal endpoint; `accounting` is off unless listed in `MODULES`.
 Seven posting rules, all `@OnDomainEvent`, each idempotent via

@@ -81,7 +81,7 @@ not just the quantity delta that gets written off?
 **Why:** `StockTransferLine` (`apps/api/prisma/schema/transfers.prisma:82`)
 has exactly `quantityDispatched`, `quantityReceived` and `unitCost` — no
 reason, no evidence column. `receive()`
-(`apps/api/src/modules/transfers/transfers.service.ts:166`, shortfall handled
+(`apps/api/src/modules/supply-chain/transfers/transfers.service.ts:166`, shortfall handled
 at line 233) hardcodes `reason: 'WRITE_OFF'` for every short receipt.
 `StockMovementReason` (`inventory.prisma:5-20`) already distinguishes
 `DAMAGE`, `COUNT` and `WRITE_OFF` as separate values elsewhere in the ledger —
@@ -100,7 +100,7 @@ write-off posts, because a corporate warehouse team files an insurance claim
 against a carrier using exactly that distinction, and "WRITE_OFF" alone
 cannot tell finance which brand or which driver to charge back.
 
-**Done test:** `grep -n "reason: 'WRITE_OFF'" apps/api/src/modules/transfers/transfers.service.ts` matches today (line 233, unconditionally); the PR either makes that reason a parameter sourced from a new column on `StockTransferLine` (with an evidence reference alongside it) or states, in writing, that all in-transit shortage is treated as one undifferentiated write-off for this release.
+**Done test:** `grep -n "reason: 'WRITE_OFF'" apps/api/src/modules/supply-chain/transfers/transfers.service.ts` matches today (line 233, unconditionally); the PR either makes that reason a parameter sourced from a new column on `StockTransferLine` (with an evidence reference alongside it) or states, in writing, that all in-transit shortage is treated as one undifferentiated write-off for this release.
 
 **Breaks without:** At 100+ locations moving stock between each other daily,
 every damaged, stolen and miscounted shipment lands in the same 5100

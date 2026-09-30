@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 **Registry note** (`modules.registry.ts`): Same allowlist tier as payments/finance (not offByDefault): checkout couples to both directly, in the same transaction as order creation (`orders -> promotions`, `orders -> giftcards` in KNOWN_MODULE…
 
-Source: `apps/api/src/modules/promotions/`
+Source: `apps/api/src/modules/sales/promotions/`
 
 ## Files (7 · 969 lines)
 
-All paths relative to `apps/api/src/modules/promotions/dto`.
+All paths relative to `apps/api/src/modules/sales/promotions/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

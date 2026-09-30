@@ -29,7 +29,7 @@ capability: the payment posts against a named receivable, the AR credit line
 carries the same counterparty key the debit line does, a partial payment
 leaves the remainder open and dated from the original sale, and
 `agedReceivables()` reflects it same-day.
-**Done test:** `grep -n "creditMinor: payload.amount" apps/api/src/modules/accounting/posting-rules.subscriber.ts`
+**Done test:** `grep -n "creditMinor: payload.amount" apps/api/src/modules/money/accounting/posting-rules.subscriber.ts`
 shows a line object with no `contactId` today; the PR adds one plus a test
 that posts a real payment through `onPaymentSucceeded` — not a hand-built
 `aging.ts` fixture — then calls `agedReceivables()` and asserts the balance
@@ -57,7 +57,7 @@ in `PERMISSION_CATALOG`.
 staff can see the flag. Complete capability: `place()` checks the contact's
 standing before creating the order, refuses or holds it with a named reason,
 requires a distinct permission to lift the hold, and audits who did it.
-**Done test:** `grep -rn "ContactStatus.BLOCKED" apps/api/src/modules/orders`
+**Done test:** `grep -rn "ContactStatus.BLOCKED" apps/api/src/modules/sales/orders`
 — the PR must show a real read, not just the enum, and must state the
 permission key gating a lift, checkable against `PERMISSION_CATALOG`.
 **Breaks without:** A delinquent B2B account keeps ordering on credit

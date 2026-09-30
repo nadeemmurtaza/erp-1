@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 
 
-Source: `apps/api/src/modules/giftcards/`
+Source: `apps/api/src/modules/sales/giftcards/`
 
 ## Files (9 · 618 lines)
 
-All paths relative to `apps/api/src/modules/giftcards/dto`.
+All paths relative to `apps/api/src/modules/sales/giftcards/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

@@ -15,7 +15,7 @@ burst (an exact string followed by Enter, arriving well inside any client
 debounce), name what happens on an exact match versus a fuzzy one, and how
 many taps separate a successful scan from the item landing in the basket.
 
-**Why:** `PosCatalogService.searchVariants()` (`apps/api/src/modules/pos/pos-catalog.service.ts:37-44`)
+**Why:** `PosCatalogService.searchVariants()` (`apps/api/src/modules/sales/pos/pos-catalog.service.ts:37-44`)
 already distinguishes an exact `barcode: { equals: trimmed }` from a fuzzy
 `sku`/name `contains`. But `TillPage` (`apps/pos/src/app/till/page.tsx:63-74`)
 debounces every keystroke 250ms regardless, then always renders a tappable
@@ -92,9 +92,9 @@ field, and where it is checked.
 
 **Why:** `sell()` (`apps/pos/src/lib/pos-client.ts:160-161`) posts
 `PosSaleRequest` with no client-generated id in its body, and
-`OrdersService.placeFromPos()` (`apps/api/src/modules/orders/orders.service.ts:394`)
+`OrdersService.placeFromPos()` (`apps/api/src/modules/sales/orders/orders.service.ts:394`)
 has no idempotency check anywhere in the file (`grep -n idempot
-apps/api/src/modules/orders/orders.service.ts` returns nothing). The
+apps/api/src/modules/sales/orders/orders.service.ts` returns nothing). The
 outbox's own transitions (`outbox.ts:52-71`) assume a clean success or fail
 response; a timeout on a slow or dropping connection leaves the entry
 `SYNCING` with the true server outcome unknown, and the next retry replays
@@ -141,7 +141,7 @@ reconciliation days later.
 **Kept (3 of 3):**
 
 - **The barcode that already decided** — verified `PosCatalogService.searchVariants()`
-  (`apps/api/src/modules/pos/pos-catalog.service.ts:31-49`, exact/fuzzy branches
+  (`apps/api/src/modules/sales/pos/pos-catalog.service.ts:31-49`, exact/fuzzy branches
   at lines 39-40) against `TillPage` (`apps/pos/src/app/till/page.tsx`: 250ms
   debounce at line 72, `addToBasket()` at line 80, unconditional `<ul>` render
   at `results.length > 0` line 191). Citations accurate; kept as written.
@@ -160,8 +160,8 @@ reconciliation days later.
   (`apps/pos/src/lib/pos-client.ts:160`) posts `PosSaleRequest`
   (`lines`, `customerName`, `customerPhone`, `customerEmail` only — no id
   field, lines 77-82) and `placeFromPos()`
-  (`apps/api/src/modules/orders/orders.service.ts:394`) with zero idempotency
-  handling (`grep -n idempot apps/api/src/modules/orders/orders.service.ts`
+  (`apps/api/src/modules/sales/orders/orders.service.ts:394`) with zero idempotency
+  handling (`grep -n idempot apps/api/src/modules/sales/orders/orders.service.ts`
   returns nothing). Its differentiation from the existing concurrency lens
   "The second copy of the write" (confirmed present,
   `docs/erp-lenses/master-data-taxonomy/18-master-data-taxonomy.md`) is stated and correct: that
@@ -175,12 +175,12 @@ a grep result, a DTO field) rather than a yes/no.
 
 **Corrections:** none. Every path, method, and line range cited in the file
 was opened and matches what is claimed:
-`apps/api/src/modules/pos/pos-catalog.service.ts` (searchVariants, exact vs.
+`apps/api/src/modules/sales/pos/pos-catalog.service.ts` (searchVariants, exact vs.
 fuzzy match), `apps/pos/src/app/till/page.tsx` (debounce, addToBasket, result
 list, completeSale/outbox calls), `packages/pos-core/src/outbox.ts` (status
 machine), `apps/pos/src/app/returns/page.tsx` (confirmReturn's two sequential
 calls and single error string), `apps/pos/src/lib/pos-client.ts` (`sell()`,
-`PosSaleRequest` shape), `apps/api/src/modules/orders/orders.service.ts`
+`PosSaleRequest` shape), `apps/api/src/modules/sales/orders/orders.service.ts`
 (`placeFromPos()`, absence of any idempotency check), and
-`apps/api/src/modules/pos/pos-shifts.service.ts` (exists; no outbox usage,
+`apps/api/src/modules/sales/pos/pos-shifts.service.ts` (exists; no outbox usage,
 confirmed by the same repo-wide grep above).

@@ -4,7 +4,7 @@
 > DECISIONS.md ADR-045 before most of them were written, per this
 > document's own architecture.** `OrgUnitGrant`/`GrantMode`
 > (`apps/api/prisma/schema/org-structure.prisma`) ship exactly as specified.
-> `GrantService.issue()` (`apps/api/src/modules/orgstructure/`) refuses
+> `GrantService.issue()` (`apps/api/src/modules/people/orgstructure/`) refuses
 > unless all four checks hold (five for `ACTING`), each its own named
 > `GrantRefusalCode` with its own spec — 18 specs in
 > `org-unit-grant.service.spec.ts` cover every refusal, `previewIssue()`'s

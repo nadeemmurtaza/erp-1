@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 
 
-Source: `apps/api/src/modules/collections/`
+Source: `apps/api/src/modules/merchandising/collections/`
 
 ## Files (6 · 688 lines)
 
-All paths relative to `apps/api/src/modules/collections`.
+All paths relative to `apps/api/src/modules/merchandising/collections`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

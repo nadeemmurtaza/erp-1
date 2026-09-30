@@ -433,7 +433,7 @@ would be the in-process-code problem of doc 184 §2 in its smallest form.
 
 **Tenant side** (`apps/api/src/modules/app-installations/`).
 `AppDirectoryClient` is a server-side proxy with the identical shape of
-`MarketplaceService` (`apps/api/src/modules/marketplace/marketplace.service.ts`):
+`MarketplaceService` (`apps/api/src/modules/supply-chain/marketplace/marketplace.service.ts`):
 `MARKETPLACE_API_URL` + `MARKETPLACE_API_KEY` from
 `core/config/env.validation.ts`, the key never reaching the browser. It is
 exposed as `GET /admin/apps/directory`, `GET /admin/apps/directory/:slug`

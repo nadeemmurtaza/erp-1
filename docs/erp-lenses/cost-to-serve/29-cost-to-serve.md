@@ -13,7 +13,7 @@ serves three editions; a feature's cost profile must be stated for the
 transaction reads or aggregates over besides the one that sold the unit, and
 state whether that count grows with the SKU's location count or stays fixed.
 
-**Why:** `applyMovement()` (`apps/api/src/modules/inventory/inventory.service.ts:220-304`,
+**Why:** `applyMovement()` (`apps/api/src/modules/supply-chain/inventory/inventory.service.ts:220-304`,
 confirmed by reading it) ends every `move()`/`postUnconditional()` call with
 `UPDATE "ProductVariant" SET stock = (SELECT SUM(quantity) FROM
 "VariantLocationStock" WHERE "variantId" = …)` — a synchronous, in-transaction

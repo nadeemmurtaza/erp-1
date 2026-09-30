@@ -17,7 +17,7 @@ repository, inside this one, or in a fork of this one.
 
 The evidence, checked against the code while writing the document set:
 
-- **The resilience engine already exists.** `apps/api/src/modules/planning/` is
+- **The resilience engine already exists.** `apps/api/src/modules/supply-chain/planning/` is
   `RETAIL-ERP.md` R20–R26 built (doc 144, ADR-066): `DependencyGraphService.build()`,
   the pure `propagate()` and `rankActions()` with determinism and non-invention
   proven by spec, `NarrationService` with `assertNoOriginatedFigures()`,

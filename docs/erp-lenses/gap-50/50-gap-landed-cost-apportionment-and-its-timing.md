@@ -31,7 +31,7 @@ apportionment basis per shipment (value/weight/volume/unit), a weight or
 volume field on the line, and the allocator apportions against that
 declared basis instead of always against `quantity * unitCost`.
 
-**Done test:** `grep -n "apportionBasis\|allocationBasis" apps/api/prisma/schema/purchasing.prisma apps/api/src/modules/purchasing` finds a stored
+**Done test:** `grep -n "apportionBasis\|allocationBasis" apps/api/prisma/schema/purchasing.prisma apps/api/src/modules/supply-chain/purchasing` finds a stored
 basis field and an allocator keyed off it, or the PR states in writing why
 every receipt in this deployment is fairly apportioned by value alone.
 
@@ -51,17 +51,17 @@ rule restates `ProductVariant.costPrice`, and by what key does it find the
 `GoodsReceiptItem` rows the correction belongs to?
 
 **Why:** `PurchasingService.createSupplierBill`
-(`apps/api/src/modules/purchasing/purchasing.service.ts:516-546`) records
+(`apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:516-546`) records
 only `supplierId`, `purchaseOrderId` and a lump `amount` — no
 `goodsReceiptId`, no per-variant line, confirmed by reading its full
 `tx.supplierBill.create` payload. `onSupplierBillRaised`
-(`apps/api/src/modules/accounting/posting-rules.subscriber.ts:173-206`, not
+(`apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:173-206`, not
 `finance/`) posts one Dr 1200 Inventory / Cr 2200 AP for `baseAmountMinor`
 and calls neither `weightedAverageCost` nor anything touching
 `ProductVariant` — confirmed by grep, zero hits for
 `weightedAverageCost` in that file. The only writer of `costPrice` in the
 whole codebase is `receiveGoods`
-(`apps/api/src/modules/purchasing/purchasing.service.ts:384-389`), run once
+(`apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:384-389`), run once
 at receipt time off the PO line's estimate, never re-run by a later bill.
 
 **Worked example:** Narrow slice: goods receipt posts at the PO's quoted
@@ -95,7 +95,7 @@ how much of the originating receipt's quantity is still on hand in
 1200 Inventory (units on hand) and 5000 COGS (units already sold)?
 
 **Why:** `onSupplierBillRaised`'s own comment
-(`apps/api/src/modules/accounting/posting-rules.subscriber.ts:165-171`)
+(`apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:165-171`)
 admits "No Goods-Received-Not-Invoiced clearing account yet: nothing posts
 a matching GRNI entry for `GoodsReceived` today," and posts the whole
 `baseAmountMinor` to Inventory regardless — it reads no
@@ -182,7 +182,7 @@ original lenses or the thirty from WO-22.
 **Citations corrected:**
 - Claimed `onSupplierBillRaised` at `posting-rules.subscriber.ts:173-205`
   with the file left ambiguous about its module directory; actual path is
-  `apps/api/src/modules/accounting/posting-rules.subscriber.ts` (not a
+  `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts` (not a
   `finance` module — no such directory exists in this repo), and the
   function body actually runs to line 206, not 205.
 - Claimed `allocateLandedCost` at `pricing.ts:200-249`; the function itself

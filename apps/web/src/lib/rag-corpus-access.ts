@@ -2,7 +2,7 @@ import type { PermissionKey } from '@/constants/permissions';
 import type { DocumentCorpus } from '@/types/api';
 
 /**
- * Mirrors the API's own `apps/api/src/modules/rag/rag-corpus-access.ts`
+ * Mirrors the API's own `apps/api/src/modules/system/rag/rag-corpus-access.ts`
  * (H1, security review). The server is still what enforces this — this is
  * only so the corpus dropdowns here never OFFER, and so never tempt someone
  * into picking, a corpus their own session cannot actually reach (a STAFF

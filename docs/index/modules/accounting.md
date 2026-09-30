@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 24 files
 
 **Registry note** (`modules.registry.ts`): Off by default — a deployment turns it on once it wants a real GL instead of the sum-of-tables reports in `finance`/`reports`.
 
-Source: `apps/api/src/modules/accounting/`
+Source: `apps/api/src/modules/money/accounting/`
 
 ## Files (24 · 4,669 lines)
 
-All paths relative to `apps/api/src/modules/accounting`.
+All paths relative to `apps/api/src/modules/money/accounting`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

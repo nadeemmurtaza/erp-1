@@ -70,7 +70,7 @@ What changes is who stands where:
 
 - **Owner and operator:** NEWAX, on its own doc 39 control plane.
 - **Payments:** licensed third-party PSPs, integrated per market through the
-  existing `PaymentProvider` (`apps/api/src/modules/payments/payment-provider.ts:73`)
+  existing `PaymentProvider` (`apps/api/src/modules/sales/payments/payment-provider.ts:73`)
   and `FinancialInstitutionConnector`. NEWAX never becomes a money transmitter
   or wallet-holder for this program. du Pay and Network International appear
   only as illustrations of a regional rail the extension point could plug into.

@@ -16,7 +16,7 @@
  * unconsumed on each origination ages from that origination's own date.
  *
  * Lives in core/common rather than the accounting module: WO-4.6's own CSV
- * exports (apps/api/src/modules/reports/reports.service.ts) age the same
+ * exports (apps/api/src/modules/money/reports/reports.service.ts) age the same
  * ledger movements for a spreadsheet, and core is the one place any module
  * may depend on (scripts/check-module-boundaries.mjs) — moved here rather
  * than added to KNOWN_MODULE_COUPLINGS, which is reserved for same-

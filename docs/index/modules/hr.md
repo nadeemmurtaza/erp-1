@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 **Registry note** (`modules.registry.ts`): hr-people-org/79-employee-asset-management.md — standalone, no dependency on any other optional module.
 
-Source: `apps/api/src/modules/hr/`
+Source: `apps/api/src/modules/people/hr/`
 
 ## Files (9 · 1,110 lines)
 
-All paths relative to `apps/api/src/modules/hr`.
+All paths relative to `apps/api/src/modules/people/hr`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

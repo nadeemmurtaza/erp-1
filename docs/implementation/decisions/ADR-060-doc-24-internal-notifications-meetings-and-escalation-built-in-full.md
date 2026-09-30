@@ -16,7 +16,7 @@ separate ad-hoc mechanisms.
 
 ### Decision — built: `Audience`, `NotifyService`, `MeetingsService`, `EscalationCron`, three permissions, admin UI
 
-`apps/api/src/modules/notify/` now holds `AudienceService` (`resolve()`,
+`apps/api/src/modules/customers/notify/` now holds `AudienceService` (`resolve()`,
 reach-intersected against the sender's own open postings via the same
 `reachOf()` pattern `GrantService` already established, and shared
 unchanged between preview and the real send), `NotifyService`
@@ -113,7 +113,7 @@ permission approving their own broadcast.
   departures from its own sketch, following this session's own
   established discipline of naming every deviation rather than letting a
   document imply something was built exactly as first written.
-- 27 new spec files under `apps/api/src/modules/notify/` bring the suite
+- 27 new spec files under `apps/api/src/modules/customers/notify/` bring the suite
   to 243 suites / 2,538 tests, all passing; `pnpm lint`, `pnpm typecheck`
   and `pnpm build` are all clean, including the `check-hexagonal-purity.mjs`
   and `check-env-templates.mjs` checks ADR-057 and this repository's own

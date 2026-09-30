@@ -21,7 +21,7 @@
 > impossible to create on the Solo/Chain shape this repository actually
 > ships; this follows the same single-tenant idiom already used in
 > `receivables.prisma`/`settlements.prisma` (ADR-040). `OrgUnitService`
-> (`apps/api/src/modules/orgstructure/org-unit.service.ts`) is the sole
+> (`apps/api/src/modules/people/orgstructure/org-unit.service.ts`) is the sole
 > writer of `path`/`depth`/`parentId`: `move()` refuses a unit becoming
 > its own ancestor and rewrites the whole affected subtree in one
 > transaction, proven by 13 specs including the cycle refusal and a

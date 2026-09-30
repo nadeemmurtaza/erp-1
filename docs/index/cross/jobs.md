@@ -16,33 +16,33 @@ runs on every node that has its module enabled.
 | `0 3 * * *` | `purgeExpiredIdempotencyKeys()` | core/`idempotency` | `apps/api/src/core/idempotency/idempotency.cron.ts:23` |  |
 | `*/5 * * * *` | `reapStuckInProgressKeys()` | core/`idempotency` | `apps/api/src/core/idempotency/idempotency.cron.ts:39` | A narrower sweep than the nightly purge above — reaps only rows stuck `IN_PROGRESS` well past any r… |
 | `30 3 * * *` | `prune()` | core/`slo` | `apps/api/src/core/slo/request-outcome-prune.cron.ts:22` |  |
-| `0 2 1 * *` | `run()` | `accounting` | `apps/api/src/modules/accounting/asset-depreciation.cron.ts:18` |  |
-| `0 1 * * *` | `sendSupplierDigests()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:36` | --- 1. |
-| `0 7 * * 1` | `sendSupplierScorecards()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:124` | --- 2. |
-| `0 8 * * 1` | `sendDemandAlerts()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:190` | --- 3. |
-| `0 5 1 * *` | `ensureFuturePartitions()` | `attendance` | `apps/api/src/modules/attendance/attendance-partition.cron.ts:31` |  |
-| `0 2 1 * *` | `run()` | `bankfacilities` | `apps/api/src/modules/bankfacilities/bankfacilities.cron.ts:18` |  |
-| `EVERY_DAY_AT_` | `run()` | `crm` | `apps/api/src/modules/crm/rfm-scoring.cron.ts:22` |  |
-| `0 3 * * *` | `auditStaleFlags()` | `feature-flags` | `apps/api/src/modules/feature-flags/feature-flag-audit.cron.ts:28` |  |
-| `0 3 * * *` | `generateRecurringInstances()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:13` |  |
-| `0 * * * *` | `generateRecurringExpenses()` | `finance` | `apps/api/src/modules/finance/finance.cron.ts:27` |  |
-| `EVERY_` | `pollActiveShipments()` | `fulfilment` | `apps/api/src/modules/fulfilment/fulfilment.cron.ts:30` |  |
-| `0 3 * * *` | `reconcile()` | `giftcards` | `apps/api/src/modules/giftcards/store-credit-reconcile.cron.ts:16` |  |
-| `0 6 * * *` | `alertExpiringLots()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:35` | 32-lots-batch-expiry-fefo.md WO-32.5. |
-| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:83` | 156-single-employee-branch-loss-prevention.md §3. |
-| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/inventory/inventory.cron.ts:93` |  |
-| `EVERY_MINUTE` | `run()` | `marketing` | `apps/api/src/modules/marketing/campaign-dispatch.cron.ts:23` |  |
-| `0 3 * * *` | `run()` | `marketing` | `apps/api/src/modules/marketing/marketing-automation.cron.ts:72` |  |
-| `*/10 * * * *` | `run()` | `notify` | `apps/api/src/modules/notify/escalation.cron.ts:34` |  |
-| `0 1 * * *` | `computeCityCodRiskStats()` | `orders` | `apps/api/src/modules/orders/cod-risk.cron.ts:22` |  |
-| `0 4 * * *` | `sweep()` | `orgstructure` | `apps/api/src/modules/orgstructure/org-access.cron.ts:17` |  |
-| `0 * * * *` | `run()` | `payroll` | `apps/api/src/modules/payroll/leave-accrual.cron.ts:25` |  |
-| `0 3 * * *` | `sweepReorderCandidates()` | `purchasing` | `apps/api/src/modules/purchasing/purchasing.cron.ts:36` |  |
-| `*/5 * * * *` | `run()` | `rag` | `apps/api/src/modules/rag/rag-ingestion.cron.ts:19` |  |
-| `0 4 * * *` | `sweep()` | `receivables` | `apps/api/src/modules/receivables/dunning.cron.ts:44` |  |
-| `0 4 * * *` | `recompute()` | `recommendations` | `apps/api/src/modules/recommendations/recommendations.cron.ts:30` |  |
-| `*/10 * * * *` | `embedPending()` | `search` | `apps/api/src/modules/search/search-embedding.cron.ts:25` |  |
-| `0 * * * *` | `run()` | `settlements` | `apps/api/src/modules/settlements/settlements.cron.ts:18` |  |
+| `EVERY_DAY_AT_` | `run()` | `crm` | `apps/api/src/modules/customers/crm/rfm-scoring.cron.ts:22` |  |
+| `*/10 * * * *` | `run()` | `notify` | `apps/api/src/modules/customers/notify/escalation.cron.ts:34` |  |
+| `EVERY_MINUTE` | `run()` | `marketing` | `apps/api/src/modules/merchandising/marketing/campaign-dispatch.cron.ts:23` |  |
+| `0 3 * * *` | `run()` | `marketing` | `apps/api/src/modules/merchandising/marketing/marketing-automation.cron.ts:72` |  |
+| `0 4 * * *` | `recompute()` | `recommendations` | `apps/api/src/modules/merchandising/recommendations/recommendations.cron.ts:30` |  |
+| `*/10 * * * *` | `embedPending()` | `search` | `apps/api/src/modules/merchandising/search/search-embedding.cron.ts:25` |  |
+| `0 2 1 * *` | `run()` | `accounting` | `apps/api/src/modules/money/accounting/asset-depreciation.cron.ts:18` |  |
+| `0 1 * * *` | `sendSupplierDigests()` | `analytics` | `apps/api/src/modules/money/analytics/supply-chain-digest.cron.ts:36` | --- 1. |
+| `0 7 * * 1` | `sendSupplierScorecards()` | `analytics` | `apps/api/src/modules/money/analytics/supply-chain-digest.cron.ts:124` | --- 2. |
+| `0 8 * * 1` | `sendDemandAlerts()` | `analytics` | `apps/api/src/modules/money/analytics/supply-chain-digest.cron.ts:190` | --- 3. |
+| `0 2 1 * *` | `run()` | `bankfacilities` | `apps/api/src/modules/money/bankfacilities/bankfacilities.cron.ts:18` |  |
+| `0 3 * * *` | `generateRecurringInstances()` | `finance` | `apps/api/src/modules/money/finance/finance.cron.ts:13` |  |
+| `0 * * * *` | `generateRecurringExpenses()` | `finance` | `apps/api/src/modules/money/finance/finance.cron.ts:27` |  |
+| `0 4 * * *` | `sweep()` | `receivables` | `apps/api/src/modules/money/receivables/dunning.cron.ts:44` |  |
+| `0 * * * *` | `run()` | `settlements` | `apps/api/src/modules/money/settlements/settlements.cron.ts:18` |  |
+| `0 5 1 * *` | `ensureFuturePartitions()` | `attendance` | `apps/api/src/modules/people/attendance/attendance-partition.cron.ts:31` |  |
+| `0 4 * * *` | `sweep()` | `orgstructure` | `apps/api/src/modules/people/orgstructure/org-access.cron.ts:17` |  |
+| `0 * * * *` | `run()` | `payroll` | `apps/api/src/modules/people/payroll/leave-accrual.cron.ts:25` |  |
+| `EVERY_` | `pollActiveShipments()` | `fulfilment` | `apps/api/src/modules/sales/fulfilment/fulfilment.cron.ts:30` |  |
+| `0 3 * * *` | `reconcile()` | `giftcards` | `apps/api/src/modules/sales/giftcards/store-credit-reconcile.cron.ts:16` |  |
+| `0 1 * * *` | `computeCityCodRiskStats()` | `orders` | `apps/api/src/modules/sales/orders/cod-risk.cron.ts:22` |  |
+| `0 6 * * *` | `alertExpiringLots()` | `inventory` | `apps/api/src/modules/supply-chain/inventory/inventory.cron.ts:35` | 32-lots-batch-expiry-fefo.md WO-32.5. |
+| `0 * * * *` | `maybeTriggerSpotCheck()` | `inventory` | `apps/api/src/modules/supply-chain/inventory/inventory.cron.ts:83` | 156-single-employee-branch-loss-prevention.md §3. |
+| `0 2 * * *` | `computeNightlyStats()` | `inventory` | `apps/api/src/modules/supply-chain/inventory/inventory.cron.ts:93` |  |
+| `0 3 * * *` | `sweepReorderCandidates()` | `purchasing` | `apps/api/src/modules/supply-chain/purchasing/purchasing.cron.ts:36` |  |
+| `0 3 * * *` | `auditStaleFlags()` | `feature-flags` | `apps/api/src/modules/system/feature-flags/feature-flag-audit.cron.ts:28` |  |
+| `*/5 * * * *` | `run()` | `rag` | `apps/api/src/modules/system/rag/rag-ingestion.cron.ts:19` |  |
 
 
 ## Continuous workers

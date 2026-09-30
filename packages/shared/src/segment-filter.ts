@@ -2,7 +2,7 @@
  * The filter shape `Segment.filter` (crm.prisma) holds. `Segment` shipped
  * with the CRM as a `Json` filter column and nothing that ever evaluated it
  * — no service, no controller, no UI (confirmed empty before WO-8.4). This
- * is the shape SegmentsService.resolveMembers() (apps/api/src/modules/crm)
+ * is the shape SegmentsService.resolveMembers() (apps/api/src/modules/customers/crm)
  * actually evaluates, built now because Phase 8's campaign audiences are the
  * first real consumer.
  *

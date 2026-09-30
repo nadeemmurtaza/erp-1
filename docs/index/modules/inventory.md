@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 38 files
 
 
 
-Source: `apps/api/src/modules/inventory/`
+Source: `apps/api/src/modules/supply-chain/inventory/`
 
 ## Files (38 · 4,965 lines)
 
-All paths relative to `apps/api/src/modules/inventory/dto`.
+All paths relative to `apps/api/src/modules/supply-chain/inventory/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

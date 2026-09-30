@@ -29,7 +29,7 @@ docs/erp-lenses/pricing-discount-governance/11-pricing-discount-governance.md
 
 **Question:** At the counter, name the permission key that gates a below-list price, the ceiling it cannot exceed, and the record a manager later queries for every override one cashier made that shift.
 
-**Grounding:** pos.prisma:10 comment: till-side price override remains unbuilt; grep discount under apps/api/src/modules/pos returns nothing; placeFromPos() at orders.service.ts:846 reads the same priceOverride ?? basePrice; pos.operate (permissions.ts:77) has no ceiling; OrderItem.discountUnit (orders.prisma:128) and Order.orderDiscount (orders.prisma:56) exist but POS never sets them
+**Grounding:** pos.prisma:10 comment: till-side price override remains unbuilt; grep discount under apps/api/src/modules/sales/pos returns nothing; placeFromPos() at orders.service.ts:846 reads the same priceOverride ?? basePrice; pos.operate (permissions.ts:77) has no ceiling; OrderItem.discountUnit (orders.prisma:128) and Order.orderDiscount (orders.prisma:56) exist but POS never sets them
 
 ## Absences
 

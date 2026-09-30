@@ -6,13 +6,13 @@
 ### Context
 RETAIL-ERP.md's Tranche 6 names `23.2` `bom` — "build `10-admin-dashboard.md`
 §C as written." Before starting, a survey of the current repository found
-`apps/api/src/modules/production/` already implements a working, tested,
+`apps/api/src/modules/supply-chain/production/` already implements a working, tested,
 **actively depended-on** BOM-and-manufacturing mechanism: `BillOfMaterial`/
 `BillOfMaterialLine` (a `ProductVariant` built from other `ProductVariant`s,
 generic float quantities, no raw-material concept) and `WorkOrder`
 (DRAFT → RELEASED → COMPLETED, consuming and producing stock through
 `InventoryService.move()`/`moveMany()`). Two other modules call into it:
-`apps/api/src/modules/production/reorder-work-order.listener.ts` and
+`apps/api/src/modules/supply-chain/production/reorder-work-order.listener.ts` and
 `stitching-cascade.listener.ts` both create `WorkOrder`s as a live part of
 the reorder and stitching pipelines — this is not dead or scaffolded code.
 

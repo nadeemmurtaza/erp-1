@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 4 files
 
 
 
-Source: `apps/api/src/modules/tax/`
+Source: `apps/api/src/modules/money/tax/`
 
 ## Files (4 · 332 lines)
 
-All paths relative to `apps/api/src/modules/tax/dto`.
+All paths relative to `apps/api/src/modules/money/tax/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

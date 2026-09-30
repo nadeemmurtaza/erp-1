@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 21 files
 
 **Registry note** (`modules.registry.ts`): WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md) — reads AiService/StorageService directly (both core, global), never another feature module.
 
-Source: `apps/api/src/modules/rag/`
+Source: `apps/api/src/modules/system/rag/`
 
 ## Files (21 · 3,139 lines)
 
-All paths relative to `apps/api/src/modules/rag`.
+All paths relative to `apps/api/src/modules/system/rag`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

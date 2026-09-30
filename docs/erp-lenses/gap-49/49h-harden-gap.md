@@ -25,7 +25,7 @@ docs/erp-lenses/gap-49/49-gap-financial-close-as-a-managed-process-not.md
 
 **Question:** Name the second userId lockPeriod() must require to differ from the closePeriod() caller, and the row storing both.
 
-**Citations:** fiscal-periods.service.ts:109-115 (lockPeriod takes only id, verified); grep for AuditService under apps/api/src/modules/accounting/ returns nothing (verified); journal_line_immutable trigger confirmed at apps/api/prisma/schema/migrations/20260917070552_add_accounting_ledger/migration.sql:228
+**Citations:** fiscal-periods.service.ts:109-115 (lockPeriod takes only id, verified); grep for AuditService under apps/api/src/modules/money/accounting/ returns nothing (verified); journal_line_immutable trigger confirmed at apps/api/prisma/schema/migrations/20260917070552_add_accounting_ledger/migration.sql:228
 
 **Strength:** strong
 

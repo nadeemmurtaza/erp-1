@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 
 
-Source: `apps/api/src/modules/loyalty/`
+Source: `apps/api/src/modules/sales/loyalty/`
 
 ## Files (6 · 487 lines)
 
-All paths relative to `apps/api/src/modules/loyalty/dto`.
+All paths relative to `apps/api/src/modules/sales/loyalty/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

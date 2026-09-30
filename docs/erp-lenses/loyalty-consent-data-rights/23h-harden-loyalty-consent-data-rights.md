@@ -22,7 +22,7 @@ by default; what survives below survived that.
 
 **Question:** For a data-deletion/export request, name every table still holding the customer's identifying data once User is gone, and whether it cascades, nulls, or must retain.
 
-**Verified against:** Cascade/SetNull behavior verified across core.prisma, orders.prisma, accounting.prisma; forbid_journal_line_mutation trigger confirmed in migration 20260917070552; no erasure/export code in apps/api/src/modules/users/ confirmed by grep.
+**Verified against:** Cascade/SetNull behavior verified across core.prisma, orders.prisma, accounting.prisma; forbid_journal_line_mutation trigger confirmed in migration 20260917070552; no erasure/export code in apps/api/src/modules/system/users/ confirmed by grep.
 
 ## Killed (0)
 

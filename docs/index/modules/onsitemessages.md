@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 
 
-Source: `apps/api/src/modules/onsitemessages/`
+Source: `apps/api/src/modules/customers/onsitemessages/`
 
 ## Files (5 · 604 lines)
 
-All paths relative to `apps/api/src/modules/onsitemessages/dto`.
+All paths relative to `apps/api/src/modules/customers/onsitemessages/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

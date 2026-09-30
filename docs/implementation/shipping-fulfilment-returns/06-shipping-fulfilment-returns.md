@@ -3,7 +3,7 @@
 **Read `00-HOUSE-RULES.md` first.** Depends on Phase 1.
 
 > **Status (2026-09-24): built.** New core module `fulfilment`
-> (`apps/api/src/modules/fulfilment/`) — shipping zones/rates/methods/classes
+> (`apps/api/src/modules/sales/fulfilment/`) — shipping zones/rates/methods/classes
 > as real tables (WO-6.1), the `CourierProvider` interface with only
 > `manual` implemented (WO-6.2 — WO-6.3's own text says build the one the
 > shop uses and no more; there is no real courier account here to integrate

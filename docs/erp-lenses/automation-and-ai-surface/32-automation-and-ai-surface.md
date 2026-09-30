@@ -15,7 +15,7 @@ values (from `packages/shared/src/permissions.ts`) does it carry, and where
 in the request path is that list checked?
 
 **Why:** The only machine caller wired today, `TradingPartnerPortalController`
-(`apps/api/src/modules/tradingpartners/trading-partner-portal.controller.ts`),
+(`apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.ts`),
 puts every route behind `@Public()` and authenticates by hashing the bearer
 token (`verifyInboundKey`, `trading-partners.service.ts:137`). `@Public()`
 routes still run `JwtAuthGuard` and `PermissionsGuard` (both are global

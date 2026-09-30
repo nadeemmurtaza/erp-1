@@ -21,7 +21,7 @@ WO-1.3 (cost price, barcode).
 >
 > **WO-3.2 — dual-write shipped, unconditional; the read-switch is a config
 > flag, not a soak timer.** `syncOptionModel` (moved from the old
-> `prisma/backfill-product-options.ts` into `src/modules/catalog/` so
+> `prisma/backfill-product-options.ts` into `src/modules/merchandising/catalog/` so
 > product-admin.service.ts can call it) now runs inside every product
 > create/update transaction — every write derives `ProductOption`/
 > `ProductOptionValue` from `size`/`color` unconditionally, not just once.

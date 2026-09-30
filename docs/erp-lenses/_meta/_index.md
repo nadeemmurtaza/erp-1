@@ -448,7 +448,7 @@ each check only that status. No actor argument on `lockPeriod()` and no
 second-signer column, so one holder can close and permanently lock alone. No
 `branchNodeId`/`retailBrandId` on `FiscalPeriod`, and no `AdminScope`
 narrowing anywhere in the accounting module. `AuditService` is called from
-nowhere under `apps/api/src/modules/accounting/`. No per-`RetailBrand` home
+nowhere under `apps/api/src/modules/money/accounting/`. No per-`RetailBrand` home
 for tax label, registration number, currency or default tax classes — all
 four are compile-time constants today. No `CreditNote`/`DebitNote` model. No
 declared tax-point date. No brand-scoped number-series key. No brand or org

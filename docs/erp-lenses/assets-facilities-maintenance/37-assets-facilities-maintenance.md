@@ -13,7 +13,7 @@ person, and to the branch's ability to trade.
 which model instance carries its acquisition cost, depreciation method and
 net book value, and which GL account absorbs the periodic depreciation
 entry?
-**Why:** `CHART_OF_ACCOUNTS` (`apps/api/src/modules/accounting/chart-of-accounts.ts:20-32`)
+**Why:** `CHART_OF_ACCOUNTS` (`apps/api/src/modules/money/accounting/chart-of-accounts.ts:20-32`)
 seeds exactly 13 accounts; only 1000/1100/1200 are type `ASSET` and none is
 named Fixed Assets or Accumulated Depreciation. `AccountingService.postEntry()`
 has exactly seven posting-rule subscribers plus year-end close — none posts
@@ -43,7 +43,7 @@ that field when the person who held it leaves or the device moves branches.
 `code`, `label`, `locationId` (a bare scalar), `deviceKeyHash`, `status`,
 `lastSeenAt` — no `custodianUserId`, no assignment history. `AuditLog`
 (`core.prisma:220`) exists but none of the five files under
-`apps/api/src/modules/pos/` that touch `PosTerminal` import `AuditService`.
+`apps/api/src/modules/sales/pos/` that touch `PosTerminal` import `AuditService`.
 Since no Asset model exists at all (prior lens), the same absence covers a
 van or a sewing machine.
 **Worked example:** Narrow slice: a "Devices" list showing `PosTerminal.locationId`
@@ -109,7 +109,7 @@ degraded trading capacity only when someone calls.
   version applied.
 - **Custody has no holder** — verified: `PosTerminal`
   (`pos.prisma:27-46`) has no `custodianUserId` or assignment history field;
-  `grep -rn AuditService apps/api/src/modules/pos` hits only
+  `grep -rn AuditService apps/api/src/modules/sales/pos` hits only
   `pos-receipts.service.ts`, none of the five files that actually touch
   `PosTerminal` (`pos.module.ts`, `pos-terminals.service.ts`,
   `pos-terminals.service.spec.ts`, `pos-terminals.controller.ts`,

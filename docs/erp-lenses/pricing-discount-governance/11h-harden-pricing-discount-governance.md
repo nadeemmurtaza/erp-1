@@ -22,7 +22,7 @@ by default; what survives below survived that.
 
 **Question:** At the counter, name the permission key that gates a below-list price, the ceiling it cannot exceed, and the record a manager later queries for every override one cashier made that shift.
 
-**Verified against:** pos.prisma:10 comment verified verbatim; discount grep under apps/api/src/modules/pos confirmed empty; permissions.ts:77 (pos.operate) verified; orders.prisma:56 (orderDiscount) and :128 (discountUnit) verified; pos-shifts.service.ts cash-movements-only X/Z report verified.
+**Verified against:** pos.prisma:10 comment verified verbatim; discount grep under apps/api/src/modules/sales/pos confirmed empty; permissions.ts:77 (pos.operate) verified; orders.prisma:56 (orderDiscount) and :128 (discountUnit) verified; pos-shifts.service.ts cash-movements-only X/Z report verified.
 
 ## Killed (0)
 

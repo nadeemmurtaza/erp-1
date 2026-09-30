@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**548** markdown documents. These explain **why**; this index only says **where**.
+**549** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -123,6 +123,10 @@ _no second-level headings_
 - Three rules about the index  <sub>:56</sub>
 - Commands  <sub>:68</sub>
 
+### `apps/api/src/modules/README.md`  <sub>35 lines</sub>
+
+_no second-level headings_
+
 ### `Architecture.md`  <sub>32 lines</sub>
 
 _no second-level headings_
@@ -140,13 +144,13 @@ _no second-level headings_
 - Deployment  <sub>:634</sub>
 - NEWAX Engineering Operating Protocol  <sub>:647</sub>
 
-### `CONTRIBUTING.md`  <sub>127 lines</sub>
+### `CONTRIBUTING.md`  <sub>130 lines</sub>
 
 - Layout  <sub>:6</sub>
-- Adding a module  <sub>:21</sub>
-- The rules that keep this working  <sub>:52</sub>
-- Before you push  <sub>:104</sub>
-- Local setup  <sub>:114</sub>
+- Adding a module  <sub>:22</sub>
+- The rules that keep this working  <sub>:55</sub>
+- Before you push  <sub>:107</sub>
+- Local setup  <sub>:117</sub>
 
 ### `DEPLOYMENT.md`  <sub>529 lines</sub>
 

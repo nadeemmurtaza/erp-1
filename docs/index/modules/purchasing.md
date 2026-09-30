@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 24 files
 
 
 
-Source: `apps/api/src/modules/purchasing/`
+Source: `apps/api/src/modules/supply-chain/purchasing/`
 
 ## Files (24 · 3,527 lines)
 
-All paths relative to `apps/api/src/modules/purchasing/dto`.
+All paths relative to `apps/api/src/modules/supply-chain/purchasing/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 **Registry note** (`modules.registry.ts`): 49-financial-institution-settlement-partnerships.md — off by default, same tier as accounting: no real FinancialInstitutionConnector exists yet, so a deployment gains nothing by enabling this until o…
 
-Source: `apps/api/src/modules/settlements/`
+Source: `apps/api/src/modules/money/settlements/`
 
 ## Files (7 · 697 lines)
 
-All paths relative to `apps/api/src/modules/settlements/dto`.
+All paths relative to `apps/api/src/modules/money/settlements/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

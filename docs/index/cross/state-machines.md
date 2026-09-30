@@ -27,35 +27,17 @@ methods for those.
 
 | Table | Entity status type | Module | Where |
 |---|---|---|---|
-| `ALLOWED_TRANSITIONS` | `OrderStatus` | `orders` | `apps/api/src/modules/orders/orders.service.ts:83` |
-| `ALLOWED_TRANSITIONS` | `CustomerTicketStatus` | `support` | `apps/api/src/modules/support/customer-support.service.ts:40` |
-| `ALLOWED_TRANSITIONS` | `TicketStatus` | `support` | `apps/api/src/modules/support/support-tickets.service.ts:27` |
+| `ALLOWED_TRANSITIONS` | `CustomerTicketStatus` | `support` | `apps/api/src/modules/customers/support/customer-support.service.ts:40` |
+| `ALLOWED_TRANSITIONS` | `TicketStatus` | `support` | `apps/api/src/modules/customers/support/support-tickets.service.ts:27` |
+| `ALLOWED_TRANSITIONS` | `OrderStatus` | `orders` | `apps/api/src/modules/sales/orders/orders.service.ts:83` |
 
 
 ## Detail
 
-### `ALLOWED_TRANSITIONS` (`orders`)
-
-> Which status may follow which.
-`apps/api/src/modules/orders/orders.service.ts:83`
-
-```ts
-const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
-  PENDING: ['CONFIRMED', 'CANCELLED'],
-  CONFIRMED: ['PROCESSING', 'CANCELLED'],
-  PROCESSING: ['READY_TO_SHIP', 'CANCELLED'],
-  READY_TO_SHIP: ['SHIPPED', 'CANCELLED'],
-  SHIPPED: ['DELIVERED', 'RETURNED'],
-  DELIVERED: ['RETURNED'],
-  CANCELLED: [],
-  RETURNED: [],
-};
-```
-
 ### `ALLOWED_TRANSITIONS` (`support`)
 
 > The document's own state machine (§1): forward-only, RESOLVED -> IN_PROGRESS the one allowed backward move, plus AWAITING_CUSTOMER as the one extra holding state doc 64's internal ticket never needed.
-`apps/api/src/modules/support/customer-support.service.ts:40`
+`apps/api/src/modules/customers/support/customer-support.service.ts:40`
 
 ```ts
 const ALLOWED_TRANSITIONS: Record<CustomerTicketStatus, CustomerTicketStatus[]> = {
@@ -70,7 +52,7 @@ const ALLOWED_TRANSITIONS: Record<CustomerTicketStatus, CustomerTicketStatus[]> 
 ### `ALLOWED_TRANSITIONS` (`support`)
 
 > WO-64.1's own state machine: forward-only, RESOLVED -> IN_PROGRESS the one allowed backward move.
-`apps/api/src/modules/support/support-tickets.service.ts:27`
+`apps/api/src/modules/customers/support/support-tickets.service.ts:27`
 
 ```ts
 const ALLOWED_TRANSITIONS: Record<TicketStatus, TicketStatus[]> = {
@@ -78,6 +60,24 @@ const ALLOWED_TRANSITIONS: Record<TicketStatus, TicketStatus[]> = {
   IN_PROGRESS: ['RESOLVED'],
   RESOLVED: ['CLOSED', 'IN_PROGRESS'],
   CLOSED: [],
+};
+```
+
+### `ALLOWED_TRANSITIONS` (`orders`)
+
+> Which status may follow which.
+`apps/api/src/modules/sales/orders/orders.service.ts:83`
+
+```ts
+const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
+  PENDING: ['CONFIRMED', 'CANCELLED'],
+  CONFIRMED: ['PROCESSING', 'CANCELLED'],
+  PROCESSING: ['READY_TO_SHIP', 'CANCELLED'],
+  READY_TO_SHIP: ['SHIPPED', 'CANCELLED'],
+  SHIPPED: ['DELIVERED', 'RETURNED'],
+  DELIVERED: ['RETURNED'],
+  CANCELLED: [],
+  RETURNED: [],
 };
 ```
 

@@ -1,4 +1,4 @@
-import { checkPublishGate, type PublishGateInput } from '../src/modules/catalog/publish-gate';
+import { checkPublishGate, type PublishGateInput } from '../src/modules/merchandising/catalog/publish-gate';
 
 function complete(): PublishGateInput {
   return {

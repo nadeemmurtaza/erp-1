@@ -77,7 +77,7 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2558 |  |
+| `build-index.mjs` | script | 2567 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-chart-imports.mjs` | script | 72 |  |
 | `check-contrast.mjs` | script | 425 |  |
@@ -88,7 +88,7 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-hexagonal-purity.mjs` | script | 149 |  |
 | `check-links.mjs` | script | 409 |  |
 | `check-metadata-renderer.mjs` | script | 134 |  |
-| `check-module-boundaries.mjs` | script | 624 |  |
+| `check-module-boundaries.mjs` | script | 652 |  |
 | `check-overflow.mjs` | script | 644 |  |
 | `check-permission-checks.mjs` | script | 127 |  |
 | `check-rebrand.mjs` | script | 292 |  |
@@ -98,7 +98,7 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |
 | `nested-borders.py` | py | — |  |
-| `sync-client.mjs` | script | 701 | scripts/sync-client.mjs — the Extractor. |
+| `sync-client.mjs` | script | 723 | scripts/sync-client.mjs — the Extractor. |
 
 ### `scripts/lib` (3)
 

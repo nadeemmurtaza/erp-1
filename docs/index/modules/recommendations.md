@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 **Registry note** (`modules.registry.ts`): WO-9.6 (09-ai-layer.md) — reads ProductTranslation.embedding (WO-9.5) and OrderItem directly via Prisma, never a service import, same INDEPENDENCE pattern as every other cross-module read in this cod…
 
-Source: `apps/api/src/modules/recommendations/`
+Source: `apps/api/src/modules/merchandising/recommendations/`
 
 ## Files (7 · 838 lines)
 
-All paths relative to `apps/api/src/modules/recommendations/dto`.
+All paths relative to `apps/api/src/modules/merchandising/recommendations/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

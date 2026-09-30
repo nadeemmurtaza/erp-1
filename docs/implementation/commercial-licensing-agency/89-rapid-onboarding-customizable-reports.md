@@ -3,7 +3,7 @@
 > **Status: confirmed (2026-09-25). No work order.** Doc 51's provisioning
 > claim re-verified against `ProvisioningService.provisionTenant()` as
 > before. **Correction to this document's own count**: `ReportsController`
-> (`apps/api/src/modules/reports/reports.controller.ts`) now exposes
+> (`apps/api/src/modules/money/reports/reports.controller.ts`) now exposes
 > **twelve** CSV export endpoints, not eight — profit-and-loss, payables,
 > expense-register and sales-register (all `04-finance.md` WO-4.6) were
 > added since this document was written. Ten of the twelve accept
@@ -31,7 +31,7 @@ summary of `ProvisioningService`) already fulfills.
 
 ## 2. "Customizable cloud-based reports" — already twelve, mostly with date-range filtering
 
-`ReportsController` (`apps/api/src/modules/reports/reports.controller.ts`)
+`ReportsController` (`apps/api/src/modules/money/reports/reports.controller.ts`)
 already exposes twelve CSV export endpoints — orders, sales-by-day,
 stitching bookings, stock, stock valuation, purchases-by-supplier, stock
 ledger, slow-movers, profit-and-loss, payables, expense-register and

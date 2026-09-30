@@ -9,11 +9,11 @@ Pack **core** · always on · 7 files
 
 **Registry note** (`modules.registry.ts`): 140-general-eav-extensibility-model.md — a general EAV model, built by explicit owner override (ADR-026).
 
-Source: `apps/api/src/modules/entity-attributes/`
+Source: `apps/api/src/modules/merchandising/entity-attributes/`
 
 ## Files (7 · 304 lines)
 
-All paths relative to `apps/api/src/modules/entity-attributes/dto`.
+All paths relative to `apps/api/src/modules/merchandising/entity-attributes/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

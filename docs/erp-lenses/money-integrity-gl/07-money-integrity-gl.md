@@ -72,7 +72,7 @@ account. Complete capability: `onOrderPlaced` is changed to set
 on every line it creates, so the filtered query returns the branch's real
 total instead of zero rows or the whole deployment's total.
 
-**Done test:** `grep -n "retailBrandId" apps/api/src/modules/accounting/posting-rules.subscriber.ts`
+**Done test:** `grep -n "retailBrandId" apps/api/src/modules/money/accounting/posting-rules.subscriber.ts`
 shows the new rule setting it; a query summing `baseAmountMinor` on the
 Sales Revenue account `WHERE "retailBrandId" = X` is nonzero for brand X and
 strictly less than the deployment-wide sum once a second brand has posted.
@@ -180,7 +180,7 @@ lenses or the thirty WO-22 lenses.
   `costCentreId` columns — present at accounting.prisma:185-188, exactly as
   cited.
 - `work-orders.service.ts complete()` — exists in
-  `apps/api/src/modules/production/work-orders.service.ts` (the doc cites it
+  `apps/api/src/modules/supply-chain/production/work-orders.service.ts` (the doc cites it
   by filename only, no directory, so no path correction needed); it calls
   `this.inventory.move(..., reason: 'PRODUCTION_RECEIPT')` inside a
   transaction with no accompanying journal call, confirming the gap.

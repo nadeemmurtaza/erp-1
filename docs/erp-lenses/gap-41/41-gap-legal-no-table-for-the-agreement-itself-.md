@@ -45,7 +45,7 @@ and the location goes dark, not sixty days before.
 days" over the table above, which permission key gates seeing the result,
 and what audience mechanism (not a hardcoded email address) receives it?
 **Why:** The codebase already has the job pattern — `@Cron('0 3 * * *')`
-in `apps/api/src/modules/purchasing/purchasing.cron.ts` and
+in `apps/api/src/modules/supply-chain/purchasing/purchasing.cron.ts` and
 `supply-chain-digest.cron.ts` — but nothing analogous exists for a legal
 date, because there is no `Agreement` table for a cron to scan. This is
 sharper than lens 13's "boolean is not a lifecycle": that one guards
@@ -119,8 +119,8 @@ operational failure, not a legal one.
 - `Party` model — `parties.prisma:15-41`, fields `address String?`,
   `taxId`, `notes` confirmed present, confirmed free text with no
   structured term field.
-- `apps/api/src/modules/purchasing/purchasing.cron.ts` and
-  `apps/api/src/modules/analytics/supply-chain-digest.cron.ts` both
+- `apps/api/src/modules/supply-chain/purchasing/purchasing.cron.ts` and
+  `apps/api/src/modules/money/analytics/supply-chain-digest.cron.ts` both
   confirmed to exist and use `@Cron(...)`.
 - `packages/shared/src/permissions.ts` confirmed to hold exactly 50
   permission keys (`grep -c "key: '"`) and zero `legal.*` keys.

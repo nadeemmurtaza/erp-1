@@ -26,7 +26,7 @@ Three tests, applied in this order:
 ### Reasoning, one line per score
 
 **terse — fidelity 8.** Names methods at their real owners. `InventoryService`
-does define `defaultLocationId()` (`apps/api/src/modules/inventory/inventory.service.ts:161`,
+does define `defaultLocationId()` (`apps/api/src/modules/supply-chain/inventory/inventory.service.ts:161`,
 "The MAIN location's id"); `RolesService` does have both `create` (line 60) and
 `update` (line 91), so "`RolesService.create`/`.update`" is exact where auditor's
 "`RolesService` at role-save time" is not; `findPostedEntry(source, sourceRef)`

@@ -14,7 +14,7 @@ unaddressed gap, narrow enough to scope directly.
 > `AssetAssignment` (`apps/api/prisma/schema/hr.prisma`,
 > `AssetAssignment.userId` → `User`, not `Employee.employeeId`) follow that
 > existing precedent rather than fragmenting a second employee concept;
-> `AssetsService` (`apps/api/src/modules/hr/`) implements `issue()`/
+> `AssetsService` (`apps/api/src/modules/people/hr/`) implements `issue()`/
 > `returnAsset()`/`writeOff()`/`unreturnedAssetsFor()` exactly as specified,
 > proven by 12 specs (`assets.service.spec.ts`) including the two named
 > acceptance criteria (an already-`ASSIGNED` asset refuses a second issue;

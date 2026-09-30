@@ -29,7 +29,7 @@ docs/erp-lenses/audit-evidence-hold/05-audit-evidence-hold.md
 
 **Question:** When a legal hold is active on an entity (an Order or SupplierBill under litigation), which code path checks for it before a delete, an anonymize, or a period-close sweep runs, and what happens when the hold and a data-subject erasure request collide on the same row?
 
-**Grounding:** grep for legalHold|retention|LegalHold|Retention across apps/api/prisma/schema/*.prisma returns nothing; apps/api/src/modules/accounting/fiscal-periods.service.ts closeFiscalYear() sweeps/closes fiscal years with no hold check
+**Grounding:** grep for legalHold|retention|LegalHold|Retention across apps/api/prisma/schema/*.prisma returns nothing; apps/api/src/modules/money/accounting/fiscal-periods.service.ts closeFiscalYear() sweeps/closes fiscal years with no hold check
 
 ## Absences
 

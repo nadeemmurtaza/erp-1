@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 **Registry note** (`modules.registry.ts`): Off by default — 149-b2b-accounts-approvals-sector-packs.md.
 
-Source: `apps/api/src/modules/accounts/`
+Source: `apps/api/src/modules/sales/accounts/`
 
 ## Files (5 · 932 lines)
 
-All paths relative to `apps/api/src/modules/accounts`.
+All paths relative to `apps/api/src/modules/sales/accounts`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

@@ -17,7 +17,7 @@ docs/erp-lenses/production-bom-subcontract/16-production-bom-subcontract.md
 
 **Question:** When a WorkOrder's components are issued to a subcontracted tailor instead of consumed on our own floor, which Location row or Party row holds that stock while it is out, and which permission key lets someone list everything currently outside our four walls?
 
-**Grounding:** WorkOrder.locationId (production.prisma:72) -> Location, whose LocationType enum is only STORE|WAREHOUSE|IN_TRANSIT; StitchingJob.assignedTailorId (stitching.prisma:132) points at User, not Party; PartyRoleName (parties.prisma:8) is SUPPLIER|MANUFACTURER|DISTRIBUTOR|RETAILER with no subcontractor role; confirmed no inventory.move() call exists under modules/stitching/
+**Grounding:** WorkOrder.locationId (production.prisma:72) -> Location, whose LocationType enum is only STORE|WAREHOUSE|IN_TRANSIT; StitchingJob.assignedTailorId (stitching.prisma:132) points at User, not Party; PartyRoleName (parties.prisma:8) is SUPPLIER|MANUFACTURER|DISTRIBUTOR|RETAILER with no subcontractor role; confirmed no inventory.move() call exists under modules/sales/stitching/
 
 ### The posting that never fires
 

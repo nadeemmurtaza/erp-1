@@ -195,7 +195,7 @@ against a real database.
 | [`GoodsReceiptItem`](../data/purchasing.md#goodsreceiptitem) | `purchasing` | 10 | 3 | id |  |
 | [`IdempotencyKey`](../data/idempotency.md#idempotencykey) | `idempotency` | 9 | 0 | id |  |
 | [`IdentityVerification`](../data/identity-verification.md#identityverification) | `identity-verification` | 12 | 1 | id |  |
-| [`InboundEmail`](../data/crm.md#inboundemail) | `crm` | 17 | 3 | id | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-i… |
+| [`InboundEmail`](../data/crm.md#inboundemail) | `crm` | 17 | 3 | id | A message pulled from a connected mailbox's IMAP inbox by the poller (modules/customers/c… |
 | [`InboundEmailReply`](../data/crm.md#inboundemailreply) | `crm` | 7 | 2 | id | A staff reply sent from the Support Inbox, over the SAME connected mailbox the original m… |
 | [`InstalmentPayment`](../data/instalments.md#instalmentpayment) | `instalments` | 7 | 2 | id | One row per actual payment received — never assumed to match the schedule exactly; a cust… |
 | [`InstalmentPlan`](../data/instalments.md#instalmentplan) | `instalments` | 12 | 1 | id |  |

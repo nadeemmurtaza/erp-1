@@ -58,7 +58,7 @@ To add a module called `purchasing`:
 
 1. `apps/api/prisma/schema/purchasing.prisma` — only the models it owns.
    **Never add a model to another module's file.**
-2. `apps/api/src/modules/purchasing/` with this exact shape:
+2. `apps/api/src/modules/supply-chain/purchasing/` with this exact shape:
    ```
    purchasing.module.ts        the NestJS module
    purchasing.service.ts       the PUBLIC surface other modules may import
@@ -79,7 +79,7 @@ That is the entire wiring step. If you find yourself editing `app.module.ts` or
 ### Rule 2 — Modules do not import each other's internals
 
 `scripts/check-module-boundaries.mjs` runs in `pnpm lint` and in CI. From inside
-`apps/api/src/modules/<name>/` you may import:
+`apps/api/src/modules/<domain>/<name>/` you may import:
 
 - anything in your own folder
 - anything under `src/core/`
@@ -239,8 +239,8 @@ const updated = await tx.productVariant.updateMany({
 if (updated.count === 0) throw new BadRequestException('Sold out while you were checking out.');
 ```
 
-`apps/api/src/modules/inventory/inventory.service.ts:75` and
-`apps/api/src/modules/orders/orders.service.ts:139` both use this idiom. Copy it.
+`apps/api/src/modules/supply-chain/inventory/inventory.service.ts:75` and
+`apps/api/src/modules/sales/orders/orders.service.ts:139` both use this idiom. Copy it.
 Preserve it in any refactor.
 
 ### Rule 11 — Shared rules live in `@newax/shared` and every app calls them

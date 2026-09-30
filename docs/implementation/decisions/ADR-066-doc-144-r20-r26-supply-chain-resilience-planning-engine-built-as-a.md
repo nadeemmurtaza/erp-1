@@ -50,7 +50,7 @@ the same pass; doc 144 is this ADR's own subject.
 ### Decision
 
 Built in full as a new, always-on `planning` module
-(`apps/api/src/modules/planning/`): `DependencyGraphService.build()`
+(`apps/api/src/modules/supply-chain/planning/`): `DependencyGraphService.build()`
 (R20) projects five real edge types — Supplier→SKU (`SupplierProduct`),
 RawMaterial→SKU (`BomComponent`, extending the document's own type union
 since this schema's raw materials are a distinct model from a finished

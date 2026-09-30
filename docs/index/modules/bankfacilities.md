@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 6 files
 
 **Registry note** (`modules.registry.ts`): 167-bank-facility-management.md — off by default: a Solo shop with no bank borrowing must not see this concept at all.
 
-Source: `apps/api/src/modules/bankfacilities/`
+Source: `apps/api/src/modules/money/bankfacilities/`
 
 ## Files (6 · 831 lines)
 
-All paths relative to `apps/api/src/modules/bankfacilities`.
+All paths relative to `apps/api/src/modules/money/bankfacilities`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

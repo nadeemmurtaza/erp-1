@@ -60,7 +60,7 @@ and ship it exactly the way this repository already ships a capability
 that is real but not yet appropriate for every deployment:
 
 1. **`wallet` is a new, independent module**
-   (`apps/api/src/modules/wallet/`), registered in `modules.registry.ts`
+   (`apps/api/src/modules/sales/wallet/`), registered in `modules.registry.ts`
    with `offByDefault: true` and classified `core` in `module-packs.ts`.
    It is listed on the `# Available:` line of all three `.env*.example`
    templates and enabled in none of them. No deployment's `MODULES`

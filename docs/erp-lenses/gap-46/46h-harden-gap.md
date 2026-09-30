@@ -42,7 +42,7 @@ docs/erp-lenses/gap-46/46-gap-no-lens-asks-what-a-quorum-dual-custody-.md
 ## Corrections
 
 - Cited the version-stamp comparison lens as local file "(19)" using this catalogue's own docs/erp-lenses/NN-*.md numbering; no file 19 is about version stamps (19-channels-franchise-wholesale.md is unrelated). Corrected to point directly at docs/implementation/WO-22-lens-workflow-results.md:279, where 'The version stamp' actually lives as the 19th lens in that document's separate list.
-- pos-shifts.service.ts was cited by bare filename with no path in the lens bodies; confirmed the real path is apps/api/src/modules/pos/pos-shifts.service.ts (not apps/api/src/pos/...). Line numbers (closeShift:72, ACTIVE check:35-36) matched exactly, so this was an incomplete citation rather than a wrong one — filled in the full path in the appended Hardening record.
+- pos-shifts.service.ts was cited by bare filename with no path in the lens bodies; confirmed the real path is apps/api/src/modules/sales/pos/pos-shifts.service.ts (not apps/api/src/pos/...). Line numbers (closeShift:72, ACTIVE check:35-36) matched exactly, so this was an incomplete citation rather than a wrong one — filled in the full path in the appended Hardening record.
 
 ## Absences
 

@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 **Registry note** (`modules.registry.ts`): Off by default — a single-location deployment has nothing to transfer between (RETAIL-ERP.md R14).
 
-Source: `apps/api/src/modules/transfers/`
+Source: `apps/api/src/modules/supply-chain/transfers/`
 
 ## Files (5 · 1,508 lines)
 
-All paths relative to `apps/api/src/modules/transfers/dto`.
+All paths relative to `apps/api/src/modules/supply-chain/transfers/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

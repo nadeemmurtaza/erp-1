@@ -256,11 +256,28 @@ if (fs.existsSync(modulePacksFileSrc)) {
   fs.copyFileSync(modulePacksFileSrc, path.join(BUILD_DIR, 'apps/api/src/modules/module-packs.ts'));
 }
 
+// Modules live at src/modules/<domain>/<name>/. The domain is only a grouping
+// folder; every other part of this script, like MODULE_PACKS and the MODULES
+// allowlist, knows a module by its bare NAME. This finds each name's domain.
+function moduleDomains(modulesDir) {
+  const domains = new Map(); // module name -> domain folder name
+  if (!fs.existsSync(modulesDir)) return domains;
+  for (const domain of fs.readdirSync(modulesDir, { withFileTypes: true })) {
+    if (!domain.isDirectory()) continue;
+    for (const mod of fs.readdirSync(path.join(modulesDir, domain.name), { withFileTypes: true })) {
+      if (mod.isDirectory()) domains.set(mod.name, domain.name);
+    }
+  }
+  return domains;
+}
+const blueprintDomains = moduleDomains(path.join(BLUEPRINT_DIR, 'apps/api/src/modules'));
+
 // Targeted Copy of Modules (requested modules plus anything the app cannot boot without)
 for (const mod of effectiveModules) {
-  const modSrc = path.join(BLUEPRINT_DIR, 'apps/api/src/modules', mod);
-  if (fs.existsSync(modSrc)) {
-    copyDir(modSrc, path.join(BUILD_DIR, 'apps/api/src/modules', mod));
+  const domain = blueprintDomains.get(mod);
+  const modSrc = domain && path.join(BLUEPRINT_DIR, 'apps/api/src/modules', domain, mod);
+  if (modSrc && fs.existsSync(modSrc)) {
+    copyDir(modSrc, path.join(BUILD_DIR, 'apps/api/src/modules', domain, mod));
   } else {
     console.warn('Warning: Requested module ' + mod + ' not found in Blueprint.');
   }
@@ -269,14 +286,16 @@ for (const mod of effectiveModules) {
 // Active Pruning — never touches an always-on module
 const clientModulesDir = path.join(BUILD_DIR, 'apps/api/src/modules');
 if (fs.existsSync(clientModulesDir)) {
-  const existingModules = fs.readdirSync(clientModulesDir, { withFileTypes: true })
-    .filter(d => d.isDirectory())
-    .map(d => d.name);
-  for (const mod of existingModules) {
+  for (const [mod, domain] of moduleDomains(clientModulesDir)) {
     if (!effectiveModules.includes(mod)) {
       console.log('Pruning unrequested module: ' + mod);
-      fs.rmSync(path.join(clientModulesDir, mod), { recursive: true, force: true });
+      fs.rmSync(path.join(clientModulesDir, domain, mod), { recursive: true, force: true });
     }
+  }
+  // A domain folder left empty by pruning carries nothing; drop it.
+  for (const domain of fs.readdirSync(clientModulesDir, { withFileTypes: true })) {
+    const dir = path.join(clientModulesDir, domain.name);
+    if (domain.isDirectory() && fs.readdirSync(dir).length === 0) fs.rmdirSync(dir);
   }
 }
 
@@ -448,7 +467,10 @@ if (fs.existsSync(registryFileSrc)) {
   imports.forEach(imp => {
     const moduleSpecifier = imp.getModuleSpecifierValue();
     if (moduleSpecifier.startsWith('./')) {
-      const moduleName = moduleSpecifier.split('/')[1];
+      // './<domain>/<name>/<file>' — the module name is the third segment.
+      // A two-segment specifier ('./module-packs') keeps its old meaning.
+      const parts = moduleSpecifier.split('/');
+      const moduleName = parts.length >= 4 ? parts[2] : parts[1];
       if (moduleName && !effectiveModules.includes(moduleName)) {
         imp.remove();
       }

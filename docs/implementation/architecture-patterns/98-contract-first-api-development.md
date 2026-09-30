@@ -36,7 +36,7 @@ predictable interface" true here instead.
   route, never a silent behavior change under the same path, so a
   third-party integrator's existing calls do not break out from under
   them.
-- **The trading-partners module** (`apps/api/src/modules/tradingpartners/`)
+- **The trading-partners module** (`apps/api/src/modules/supply-chain/tradingpartners/`)
   — the closest real external-contract surface this repository has:
   offers, quotes and invoices exposed to a linked `TradingPartner` through
   their own DTO-validated endpoints, insulated from internal schema

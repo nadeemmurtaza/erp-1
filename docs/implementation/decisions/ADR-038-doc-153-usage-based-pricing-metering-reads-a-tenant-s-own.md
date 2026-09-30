@@ -28,7 +28,7 @@ tenant-reporting credential would itself be exactly the new actor the same
 document says not to introduce. Separately, WO-153.3 asks to reuse doc
 145's "Invoice/aging/dunning design pattern... in `apps/platform`" — but
 doc 145's actual `CreditNote`/`DunningCron`/`CustomerCreditTerm` code lives
-in `apps/api/src/modules/receivables/`, a different app with a different
+in `apps/api/src/modules/money/receivables/`, a different app with a different
 Prisma schema; importing it into `apps/platform` is not merely undesirable,
 it is impossible (two separate `package.json`s, two separate generated
 Prisma clients, no shared runtime).

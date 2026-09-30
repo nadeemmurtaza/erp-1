@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 22 files
 
 
 
-Source: `apps/api/src/modules/bom/`
+Source: `apps/api/src/modules/supply-chain/bom/`
 
 ## Files (22 · 3,756 lines)
 
-All paths relative to `apps/api/src/modules/bom`.
+All paths relative to `apps/api/src/modules/supply-chain/bom`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

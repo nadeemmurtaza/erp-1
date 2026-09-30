@@ -28,7 +28,7 @@ shows everything a manager needs" stays visible rather than assumed away.
   never a hard import. `ActionHubRegistryService` collects from every
   registered source, tolerates one source failing without blanking the
   rest, and sorts the merged queue by due date.
-- **Leave requests** (`LeaveRequest`, `apps/api/src/modules/payroll/
+- **Leave requests** (`LeaveRequest`, `apps/api/src/modules/people/payroll/
   leave-request-action.source.ts`) — the only source registered. Gated on
   `payroll.manage`; links to `/admin/payroll/leave`.
 - The dashboard widget (`action-hub-widget.tsx`) and its overflow screen

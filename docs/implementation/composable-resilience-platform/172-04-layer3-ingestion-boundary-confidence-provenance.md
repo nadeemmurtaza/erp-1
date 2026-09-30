@@ -658,7 +658,7 @@ own cursor), and the connectors module's own `ConnectorsListener`, which
 handles `ingestion_held` and `needs_reauth` with `@OnDomainEvent` and notifies
 the holders the audience lens names through core's `NotificationsService` —
 exactly how `InventoryListener` handles its own module's `ProductLowStock`
-(`modules/inventory/inventory.listener.ts:19`). The action-hub item is
+(`modules/supply-chain/inventory/inventory.listener.ts:19`). The action-hub item is
 separate and needs no event: the hub is pull-based
 (`ActionHubRegistryService.collect()` calls each registered source's
 `fetchFor(user)`), so the connectors module registers a `ConnectorsActionSource`

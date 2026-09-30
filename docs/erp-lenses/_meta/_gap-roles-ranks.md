@@ -8,7 +8,7 @@ every question in that chain no lens in this catalogue forces an answer to.
 Read in full: `_index.md`, `_claude-md-feature-scope.md`, `01`/`01g`/`01h`,
 `02`/`02g`/`02h`, `03`, `04`/`04g`/`04h`, `05`, `06`, `_canonical-decisions.md`,
 `_agent-cluster.md`, `_conflicts.md`, and `WO-22-lens-workflow-results.md`.
-Also read the live source: `apps/api/src/modules/users/users-admin.{service,controller}.ts`,
+Also read the live source: `apps/api/src/modules/system/users/users-admin.{service,controller}.ts`,
 `apps/api/src/core/auth/{guards,decorators,permissions.service}.ts`,
 `apps/api/prisma/schema/{core,organization}.prisma`.
 
@@ -59,7 +59,7 @@ whether the granter holds one flat key that lets them touch the endpoint at
 all?
 
 **Verified against the code, not the schema notes:**
-`UsersAdminController` (`apps/api/src/modules/users/users-admin.controller.ts:9-10`)
+`UsersAdminController` (`apps/api/src/modules/system/users/users-admin.controller.ts:9-10`)
 gates its entire surface — including `assignRole`/`unassignRole` — with one
 class-level `@RequirePermission('users.manage')`. `UsersAdminService.assignRole()`
 (`users-admin.service.ts:86-98`) takes `actorId, targetId, roleId`, calls

@@ -96,7 +96,7 @@ one blended rate and hope it happens to balance. Complete capability: a
 and a consolidation posting that books the imbalance from mixed-rate
 translation to it explicitly, so `journal_line_balance_check` sees a
 zero-sum entry.
-**Done test:** `grep -n "CTA\|Translation Adjustment" apps/api/src/modules/accounting/chart-of-accounts.ts`
+**Done test:** `grep -n "CTA\|Translation Adjustment" apps/api/src/modules/money/accounting/chart-of-accounts.ts`
 returns nothing today. The PR must add the account and a named posting path
 (distinct from the seven existing posting rules) that writes to it.
 **Breaks without:** The first time a translated balance sheet does not net to

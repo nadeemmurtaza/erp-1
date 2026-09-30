@@ -17,7 +17,7 @@ docs/erp-lenses/gap-51/51-gap-the-approval-that-stalls-without-a-leave.md
 
 **Question:** For a pending approval step assigned to a still-active user, name the timestamp that marks when its clock starts, the cron or interval job that scans for steps older than a configured threshold, and the Settings key holding that threshold per document type.
 
-**Grounding:** apps/api/src/modules/marketing/marketing-automation.cron.ts (MarketingAutomationCron, the one real idle-timer precedent in this codebase); settings.defaults.ts:118/120 (MarketingAbandonedCartReminderHours/IncentiveHours); confirmed via grep that no Approval/ApprovalStep model or PENDING_APPROVAL status exists in any .prisma file, so there is no assignedAt column to measure against yet
+**Grounding:** apps/api/src/modules/merchandising/marketing/marketing-automation.cron.ts (MarketingAutomationCron, the one real idle-timer precedent in this codebase); settings.defaults.ts:118/120 (MarketingAbandonedCartReminderHours/IncentiveHours); confirmed via grep that no Approval/ApprovalStep model or PENDING_APPROVAL status exists in any .prisma file, so there is no assignedAt column to measure against yet
 
 ### Store time is not the approver's time
 

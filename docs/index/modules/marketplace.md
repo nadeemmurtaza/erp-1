@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 14 files
 
 **Registry note** (`modules.registry.ts`): 165-cross-tenant-marketplace-directory.md (WO-165.2) — off by default: a deployment turns it on once ops has issued it a MarketplacePublisherCredential and handed over MARKETPLACE_API_URL/ MARKETPLAC…
 
-Source: `apps/api/src/modules/marketplace/`
+Source: `apps/api/src/modules/supply-chain/marketplace/`
 
 ## Files (14 · 1,331 lines)
 
-All paths relative to `apps/api/src/modules/marketplace/dto`.
+All paths relative to `apps/api/src/modules/supply-chain/marketplace/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

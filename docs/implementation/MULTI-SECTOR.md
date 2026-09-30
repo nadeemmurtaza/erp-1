@@ -128,7 +128,7 @@ could not enforce **direction**, because it had no record of which modules were
 core and which were apparel. So this passed lint:
 
 ```ts
-// apps/api/src/modules/inventory/inventory.service.ts   (core)
+// apps/api/src/modules/supply-chain/inventory/inventory.service.ts   (core)
 import { StitchingService } from '../stitching/stitching.service';   // apparel — wrong, but green
 ```
 
@@ -785,7 +785,7 @@ capability with none of the retail-facing surface. **There is no module
 named `hr` in `FEATURE_MODULES`**
 (`apps/api/src/modules/modules.registry.ts`): compensation rates, leave
 policy/balances and pay runs are all one module, `payroll`
-(`apps/api/src/modules/payroll/`), so the recommended allowlist is just:
+(`apps/api/src/modules/people/payroll/`), so the recommended allowlist is just:
 
 ```bash
 # HR-only — no catalog, no orders, no pos; payroll alone carries

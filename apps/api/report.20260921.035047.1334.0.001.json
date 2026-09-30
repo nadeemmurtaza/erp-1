@@ -13,7 +13,7 @@
     "commandLine": [
       "node",
       "/home/user/erp-1/apps/api/node_modules/.bin/../jest/bin/jest.js",
-      "src/modules/transfers/transfers.service.spec.ts",
+      "src/modules/supply-chain/transfers/transfers.service.spec.ts",
       "-t",
       "settlementMode NONE",
       "--runInBand",

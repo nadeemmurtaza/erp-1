@@ -211,7 +211,7 @@ searching for every write to `UserRoleAssignment`, `RoleGrant`, `Role`,
 `UserPermission` and `OrgUnitGrant`: `RolesService.assign()`, `.unassign()`,
 `.update()` (grants or name), `.delete()`; `UsersAdminService
 .updatePermissions()`; and `GrantService.issue()`, `.revoke()` in
-`modules/orgstructure/org-unit-grant.service.ts`, which §2 did not name. Each
+`modules/people/orgstructure/org-unit-grant.service.ts`, which §2 did not name. Each
 invalidates after its commit, never inside it (a concurrent read would
 re-cache the pre-write set as current). `assign()` inside a caller's own
 transaction leaves invalidation to that caller; its one such caller,

@@ -404,7 +404,7 @@ model EmailAccount {
   smtpVerifiedAt        DateTime?
 
   /// IMAP is optional per account. When configured, the mailbox poller
-  /// (modules/crm/email-inbox) logs in on a schedule and pulls new mail —
+  /// (modules/customers/crm/email-inbox) logs in on a schedule and pulls new mail —
   /// see imapLastPolledAt/imapLastUid below for its resume cursor.
   imapHost              String?
   imapPort              Int?

@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 20 files
 
 
 
-Source: `apps/api/src/modules/analytics/`
+Source: `apps/api/src/modules/money/analytics/`
 
 ## Files (20 · 6,336 lines)
 
-All paths relative to `apps/api/src/modules/analytics`.
+All paths relative to `apps/api/src/modules/money/analytics`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

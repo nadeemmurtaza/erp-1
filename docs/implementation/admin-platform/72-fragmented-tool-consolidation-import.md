@@ -17,7 +17,7 @@ spreadsheets (Excel), manual paper logs, and informal chat messaging
 narrow, real, buildable thing: **a client with a working spreadsheet or
 paper log needs to get that data into this system without hand-typing every
 row.** `ProductImportService`
-(`apps/api/src/modules/catalog/product-import.service.ts`) already does
+(`apps/api/src/modules/merchandising/catalog/product-import.service.ts`) already does
 exactly this for the catalogue — a fixed `COLUMNS` array, `csv-parse`,
 per-row validation producing `created`/`updated`/`skipped` outcomes, an
 `ImportSummary` report, all attributed through `AuditService`. This

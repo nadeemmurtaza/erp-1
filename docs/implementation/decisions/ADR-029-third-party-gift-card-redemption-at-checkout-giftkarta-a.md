@@ -15,7 +15,7 @@ when this was written.
 ### Decisions
 
 1. **A third-party gift card is a `PaymentProvider`
-   (`apps/api/src/modules/payments/`), not another WO-5-style partial-tender
+   (`apps/api/src/modules/sales/payments/`), not another WO-5-style partial-tender
    field on `PlaceOrderDto`.** WO-5's own gift card and store credit reduce
    `remainingToPay` and still let the customer pick a real payment method for
    whatever is left — that shape fits an asset THIS SHOP owns the ledger for.

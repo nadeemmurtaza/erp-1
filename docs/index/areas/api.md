@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,192 files · 159,759 lines
+1,193 files · 159,794 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -12,7 +12,8 @@ so a route with no `@RequirePermission` is authenticated-but-unrestricted,
 which CLAUDE.md calls "almost never intended".
 
 Structure: `src/core/` is the shared platform every deployment runs;
-`src/modules/<name>/` is one feature module, independent of every other one.
+`src/modules/<domain>/<name>/` is one feature module, independent of every other one;
+the domain folder (sales, merchandising, supply-chain, money, people, customers, system) only groups them.
 
 ## Go deeper
 
@@ -32,7 +33,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/prisma/schema` | 173 | 17,604 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 168 | nest module, module |
 | `apps/api/src/core` | 223 | 28,532 | unit test, service, module, controller |
-| `apps/api/src/modules` | 749 | 100,041 | nest module, unit test, service, controller |
+| `apps/api/src/modules` | 750 | 100,076 | doc, unit test, service, controller |
 | `apps/api/test` | 30 | 9,192 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
@@ -51,20 +52,20 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `apps/api/prisma/seed.ts` | 3,199 | module |  |
-| `apps/api/src/modules/analytics/analytics.service.ts` | 2,590 | service |  |
-| `apps/api/src/modules/orders/orders.service.ts` | 1,400 | service |  |
+| `apps/api/src/modules/money/analytics/analytics.service.ts` | 2,590 | service |  |
+| `apps/api/src/modules/sales/orders/orders.service.ts` | 1,400 | service |  |
 | `apps/api/src/core/notifications/email/templates.ts` | 1,124 | module |  |
 | `apps/api/test/orders.e2e-spec.ts` | 1,088 | e2e test |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
 | `apps/api/src/core/auth/sso.service.ts` | 869 | service |  |
-| `apps/api/src/modules/transfers/transfers.service.spec.ts` | 823 | unit test |  |
+| `apps/api/src/modules/supply-chain/transfers/transfers.service.spec.ts` | 823 | unit test |  |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
 | `apps/api/prisma/schema/catalog.prisma` | 788 | prisma schema | Catalog: categories, products, variants, images. |
-| `apps/api/src/modules/accounting/posting-rules.subscriber.ts` | 771 | event subscriber |  |
+| `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts` | 771 | event subscriber |  |
 | `apps/api/src/core/events/domain-events.ts` | 769 | module | The catalogue of domain events. |
-| `apps/api/src/modules/catalog/product-admin.service.ts` | 751 | service |  |
-| `apps/api/src/modules/purchasing/purchasing.service.ts` | 749 | service |  |
+| `apps/api/src/modules/merchandising/catalog/product-admin.service.ts` | 751 | service |  |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts` | 749 | service |  |
 
 
 ---

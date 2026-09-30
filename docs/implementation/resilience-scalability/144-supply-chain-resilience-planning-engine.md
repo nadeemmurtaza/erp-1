@@ -10,7 +10,7 @@ lead-time as a distribution, and OTIF scorecards. This document is the
 buildable brief R20–R26 never got, and is now built against it.
 
 > **Status (2026-09-27): built, WO-144.1–144.8.** A new, always-on
-> `planning` module (`apps/api/src/modules/planning/`) — a pure read/
+> `planning` module (`apps/api/src/modules/supply-chain/planning/`) — a pure read/
 > recommendation engine over rows every other module already writes, no
 > reason for a deployment to run without it. `DependencyGraphService.build()`
 > (R20) projects five real edge types (Supplier→SKU, RawMaterial→SKU via
@@ -243,7 +243,7 @@ async onlineStockFor(variantId: string, organizationId: string): Promise<number>
 
 async assignFulfillingBranch(orderId: string, locationId: string): Promise<void> {
   // Decrements that branch's allotment through InventoryService.move()
-  // (apps/api/src/modules/inventory/inventory.service.ts:204) — THE
+  // (apps/api/src/modules/supply-chain/inventory/inventory.service.ts:204) — THE
   // SAME writer every other sale already uses, per R26's own "like any
   // other sale — no separate online reservation ledger."
 }

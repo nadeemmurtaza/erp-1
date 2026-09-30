@@ -6,7 +6,7 @@
 > `20260925170000_add_receivables_credit_notes_dunning`), served by
 > `CreditNotesService`/`DebitNotesService`/`CreditTermsService`/
 > `DunningService`/`DunningCron`/`StatementsService`
-> (`apps/api/src/modules/receivables/`), a new `receivables` module (on by
+> (`apps/api/src/modules/money/receivables/`), a new `receivables` module (on by
 > default — `apps/api/src/modules/modules.registry.ts`,
 > `module-packs.ts: 'core'`). Posting goes through the existing
 > `AccountingService.postEntry()`/`findPostedEntry()` idempotent-posting key

@@ -3,7 +3,7 @@
 
 # repository root files
 
-208 files · 15,661 lines
+208 files · 15,664 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,7 +17,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 17 | 2,670 | file, doc |
+| `.` | 17 | 2,673 | file, doc |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 8 | 342 | doc |
 | `.claude/hooks` | 2 | 139 | hook |

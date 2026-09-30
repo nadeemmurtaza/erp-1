@@ -4,8 +4,8 @@
 
 > **Status: shipped.** Verified against the running code on 2026-09-03 — the
 > ledger, cost/COGS, `purchasing` module, the nightly job, stock counts and
-> every screen and report below exist (`apps/api/src/modules/purchasing/`,
-> `apps/api/src/modules/inventory/{inventory.service,inventory.cron,
+> every screen and report below exist (`apps/api/src/modules/supply-chain/purchasing/`,
+> `apps/api/src/modules/supply-chain/inventory/{inventory.service,inventory.cron,
 > inventory.listener,stock-count.service}.ts`, `packages/shared/src/pricing.ts`
 > has `lineMargin`/`allocateLandedCost`/`weightedAverageCost`, all nine
 > `/admin/{inventory,suppliers,purchase-orders}/**` routes exist). This brief
@@ -206,7 +206,7 @@ expand/contract.
 
 ### The service
 
-Rewrite `apps/api/src/modules/inventory/inventory.service.ts`:
+Rewrite `apps/api/src/modules/supply-chain/inventory/inventory.service.ts`:
 
 ```ts
 export interface StockMoveInput {
@@ -268,7 +268,7 @@ Implementation notes, in order of how easy they are to get wrong:
 
 ### Wire orders through it
 
-`apps/api/src/modules/orders/orders.service.ts`:
+`apps/api/src/modules/sales/orders/orders.service.ts`:
 
 - Replace the direct `updateMany` at 139-142 with
   `this.inventory.move({ …, delta: -qty, reason: 'SALE', refType: 'Order', refId: order.id }, tx)`.
@@ -904,7 +904,7 @@ in a component.
 
 ## WO-1.9 — Reports
 
-Add to the existing `reports` module (`apps/api/src/modules/reports/`), following
+Add to the existing `reports` module (`apps/api/src/modules/money/reports/`), following
 `csv.util.ts` and the three existing exports:
 
 - **Stock valuation** — variant, stock, cost, `stock × cost`, with a grand total.

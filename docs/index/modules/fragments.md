@@ -9,11 +9,11 @@ Pack **core** · always on · 5 files
 
 **Registry note** (`modules.registry.ts`): 143-micro-frontend-architecture.md — micro-frontend fragments, built by explicit owner override (ADR-026); the mount mechanism is doc 113's own iframe + embed-token pattern (see DECISIONS.md ADR-049)…
 
-Source: `apps/api/src/modules/fragments/`
+Source: `apps/api/src/modules/merchandising/fragments/`
 
 ## Files (5 · 403 lines)
 
-All paths relative to `apps/api/src/modules/fragments/dto`.
+All paths relative to `apps/api/src/modules/merchandising/fragments/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

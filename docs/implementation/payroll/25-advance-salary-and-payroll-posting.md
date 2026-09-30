@@ -13,7 +13,7 @@ extinguished by recovery from a later payroll, never by an expense entry.
 ## The chart does not have the accounts
 
 `CHART_OF_ACCOUNTS`
-(`apps/api/src/modules/accounting/chart-of-accounts.ts:20-32`) has thirteen
+(`apps/api/src/modules/money/accounting/chart-of-accounts.ts:20-32`) has thirteen
 accounts. Not one of them is payroll: there is no salary expense, no salaries
 payable, and no employee receivable. The scope rule requires this to be named
 rather than assumed, so it is named. **This work order adds three:**

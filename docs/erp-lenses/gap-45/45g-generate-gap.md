@@ -23,7 +23,7 @@ docs/erp-lenses/gap-45/45-gap-the-catalogue-s-only-rank-lens-contradic.md
 
 **Question:** Name the query — table, column, GROUP BY — that answers 'how many people are at each grade' or 'average approval ceiling per grade' once this feature ships. If the answer routes through Role.name string matching instead of a RankId foreign key, say so explicitly.
 
-**Grounding:** GlReportsService (apps/api/src/modules/accounting/gl-reports.service.ts), PERMISSION_CATALOG's two parallel taxonomies (category, PERMISSION_GROUPS in packages/shared/src/permissions.ts) as precedent for bolted-on grouping axes, and the absence of any Rank/Grade model in apps/api/prisma/schema/*.prisma.
+**Grounding:** GlReportsService (apps/api/src/modules/money/accounting/gl-reports.service.ts), PERMISSION_CATALOG's two parallel taxonomies (category, PERMISSION_GROUPS in packages/shared/src/permissions.ts) as precedent for bolted-on grouping axes, and the absence of any Rank/Grade model in apps/api/prisma/schema/*.prisma.
 
 ### Escalation across roles needs a number, not a name
 

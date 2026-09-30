@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 21 files
 
 
 
-Source: `apps/api/src/modules/orders/`
+Source: `apps/api/src/modules/sales/orders/`
 
 ## Files (21 · 3,858 lines)
 
-All paths relative to `apps/api/src/modules/orders`.
+All paths relative to `apps/api/src/modules/sales/orders`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

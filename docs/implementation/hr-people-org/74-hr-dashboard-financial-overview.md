@@ -4,7 +4,7 @@
 131-189) already carry every figure this widget needs: `PayRunStatus`
 (`DRAFT`/`APPROVED`/`POSTED`), and per-line `grossMinor`, `deductionsMinor`,
 `netMinor`. No dashboard tile today sums them — a grep across
-`apps/api/src/modules/payroll` and `analytics.service.ts` for
+`apps/api/src/modules/people/payroll` and `analytics.service.ts` for
 `totalNet`/`netPay`/a payroll summary aggregate found nothing. This is the
 missing read, not a new payroll fact.
 

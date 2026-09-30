@@ -7,7 +7,7 @@ import { AppModule } from '../src/app.module';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
 import { OutboxDispatcher } from '../src/core/events/outbox.dispatcher';
 import { PrismaService } from '../src/core/prisma/prisma.service';
-import { addWorkingDays } from '../src/modules/stitching/jobs.service';
+import { addWorkingDays } from '../src/modules/sales/stitching/jobs.service';
 import { setVariantStock } from './support/stock';
 
 /**

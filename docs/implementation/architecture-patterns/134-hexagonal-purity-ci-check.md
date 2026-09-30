@@ -26,7 +26,7 @@ already exists becomes resilience that *cannot silently erode* PR by PR.
 // references anything HTTP-specific (Request, Response, an Express/
 // Fastify type) or React-specific — evidence the "core" has started
 // assuming a specific caller.
-// apps/api/src/modules/orders/orders.service.ts
+// apps/api/src/modules/sales/orders/orders.service.ts
 import { Request } from 'express'; // <- VIOLATION: a service importing a transport-layer type
 
 // Correct: the controller extracts what it needs and passes plain,

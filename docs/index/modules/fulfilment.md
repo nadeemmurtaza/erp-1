@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 17 files
 
 **Registry note** (`modules.registry.ts`): Hard-imported by orders.module.ts directly (same reasoning as tax above — checkout always needs ShippingService.quote()), but still listed here so its own admin routes/nav follow the allowlist like e…
 
-Source: `apps/api/src/modules/fulfilment/`
+Source: `apps/api/src/modules/sales/fulfilment/`
 
 ## Files (17 · 2,827 lines)
 
-All paths relative to `apps/api/src/modules/fulfilment`.
+All paths relative to `apps/api/src/modules/sales/fulfilment`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

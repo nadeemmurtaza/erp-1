@@ -5,12 +5,12 @@
 > additive — `invoicing.prisma` untouched, since doc 145's own `CreditNote`/
 > `DebitNote` was being built in that same file by a different agent in
 > parallel), `WalletService`/`MerchantPayableService`
-> (`apps/api/src/modules/wallet/`), permissions
+> (`apps/api/src/modules/sales/wallet/`), permissions
 > (`finance.wallets.adjust`/`.adjust.approve`,
 > `finance.merchant-payables.dispute`, seeded to `STAFF`/`ADMIN`), full
 > spec coverage (`wallet.service.spec.ts`, `merchant-payable.service.spec.ts`,
 > `wallet-credit-note.port.spec.ts`,
-> `apps/api/src/modules/accounting/wallet-posting-rules.subscriber.spec.ts`),
+> `apps/api/src/modules/money/accounting/wallet-posting-rules.subscriber.spec.ts`),
 > and UI (`/account/wallet`, `/admin/wallet`, `/admin/merchant-payables`)
 > all exist and are tested. **Shipped module-off**: `wallet` is registered
 > in `modules.registry.ts` with `offByDefault: true` and is in no

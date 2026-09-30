@@ -96,7 +96,7 @@ Indexes: `@@index([isDone, dueAt])` · `@@index([assigneeId, isDone])`
 
 ### `InboundEmail`  <sub>`apps/api/prisma/schema/crm.prisma:168`</sub>
 
-> A message pulled from a connected mailbox's IMAP inbox by the poller (modules/crm/email-inbox) — a customer's reply to an order or support email.
+> A message pulled from a connected mailbox's IMAP inbox by the poller (modules/customers/crm/email-inbox) — a customer's reply to an order or support email.
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

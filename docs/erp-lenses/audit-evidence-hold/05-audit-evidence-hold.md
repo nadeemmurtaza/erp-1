@@ -74,7 +74,7 @@ the hold and a data-subject erasure request collide on the same row?
 `apps/api/prisma/schema/*.prisma` returns nothing — no `LegalHold` model, no
 retention column on `AuditLog`, `JournalEntry` or `Order`.
 `FiscalPeriodsService.closeFiscalYear()` sweeps and closes fiscal years with
-no hold check of any kind (`apps/api/src/modules/accounting/fiscal-periods.service.ts`).
+no hold check of any kind (`apps/api/src/modules/money/accounting/fiscal-periods.service.ts`).
 Nothing in the codebase can refuse a deletion because a case is open.
 **Worked example:** Narrow slice: a "delete this customer's data" feature
 deletes the `User` row and cascades. Complete capability: a `LegalHold`
@@ -128,7 +128,7 @@ destroyed exactly when it is most needed — a legal liability, not a bug.
   `LegalHold` or `Retention` symbol anywhere under
   `apps/api/prisma/schema/*.prisma` (verified by grep, zero hits), and
   `FiscalPeriodsService.closeFiscalYear()`
-  (`apps/api/src/modules/accounting/fiscal-periods.service.ts:128-170`) sweeps
+  (`apps/api/src/modules/money/accounting/fiscal-periods.service.ts:128-170`) sweeps
   and posts a closing journal entry with no hold check of any kind. Distinct
   from "Dry run before live" (policy simulation) and "Who may unmake it"
   (reversal authority) — this is about a hold blocking destruction outright,

@@ -1,4 +1,4 @@
-import { ageMovements, totalAgingBuckets } from '../../core/common/aging';
+import { ageMovements, totalAgingBuckets } from './aging';
 
 const day = (n: number) => new Date(2026, 0, n);
 const ASOF = new Date(2026, 3, 1); // 2026-04-01

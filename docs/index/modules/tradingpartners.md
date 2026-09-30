@@ -7,11 +7,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 23 files
 
 
 
-Source: `apps/api/src/modules/tradingpartners/`
+Source: `apps/api/src/modules/supply-chain/tradingpartners/`
 
 ## Files (23 · 2,061 lines)
 
-All paths relative to `apps/api/src/modules/tradingpartners/dto`.
+All paths relative to `apps/api/src/modules/supply-chain/tradingpartners/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

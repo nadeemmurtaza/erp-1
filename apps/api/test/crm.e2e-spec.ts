@@ -11,7 +11,7 @@ import { PrismaService } from '../src/core/prisma/prisma.service';
 import { SettingKey } from '../src/core/settings/settings.defaults';
 import { SettingsService } from '../src/core/settings/settings.service';
 import { shopDayKey } from '../src/core/time/shop-time';
-import { CrmService } from '../src/modules/crm/crm.service';
+import { CrmService } from '../src/modules/customers/crm/crm.service';
 import { setVariantStock } from './support/stock';
 
 /**

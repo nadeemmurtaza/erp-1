@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 10 files
 
 **Registry note** (`modules.registry.ts`): Phase 7 (docs/implementation/customer-portal-loyalty/07-customer-portal.md) — same allowlist tier as the rest of the customer-facing core: nothing else imports these directly except `loyalty -> giftc…
 
-Source: `apps/api/src/modules/reviews/`
+Source: `apps/api/src/modules/sales/reviews/`
 
 ## Files (10 · 862 lines)
 
-All paths relative to `apps/api/src/modules/reviews/dto`.
+All paths relative to `apps/api/src/modules/sales/reviews/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

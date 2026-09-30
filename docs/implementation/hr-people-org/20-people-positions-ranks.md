@@ -24,7 +24,7 @@
 > now means "a `User` holding a `Posting`, optionally with an
 > `EmployeeProfile` row" — ADR-044 states this for docs 28/42/53 by name.
 >
-> **`PeopleService.assign()` (`apps/api/src/modules/hr/people.service.ts`)
+> **`PeopleService.assign()` (`apps/api/src/modules/people/hr/people.service.ts`)
 > refuses a second open primary posting rather than silently ending the
 > first** — this document's own acceptance criterion ("rejected by the
 > index") and its "undo fan-out" answer ("reassigns nothing... needs a

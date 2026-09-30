@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 11 files
 
 **Registry note** (`modules.registry.ts`): Off by default — WO-155.0 (docs/implementation/commercial-licensing-agency/ 155-wallet-stored-value-merchant-escrow.md) has not yet had its own legal confirmation recorded (DECISIONS.md).
 
-Source: `apps/api/src/modules/wallet/`
+Source: `apps/api/src/modules/sales/wallet/`
 
 ## Files (11 · 1,878 lines)
 
-All paths relative to `apps/api/src/modules/wallet/dto`.
+All paths relative to `apps/api/src/modules/sales/wallet/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

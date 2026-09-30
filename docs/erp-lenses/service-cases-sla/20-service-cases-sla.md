@@ -78,7 +78,7 @@ from the case, and a ledger reversal scaled to the refunded amount — not
 a full reversal triggered by a partial `Payment` field.
 
 **Done test:** The PR names the column holding the authorized amount and
-the approver-ceiling comparison; `grep -n "reverseEntry" apps/api/src/modules/accounting/posting-rules.subscriber.ts`
+the approver-ceiling comparison; `grep -n "reverseEntry" apps/api/src/modules/money/accounting/posting-rules.subscriber.ts`
 today shows `onPaymentRefunded` never reads `payload.amount` before
 reversing — the PR must change that or add the partial-amount ledger
 entry it is missing.

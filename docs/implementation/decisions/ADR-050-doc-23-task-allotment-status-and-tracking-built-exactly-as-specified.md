@@ -11,7 +11,7 @@ event. Neither exists as the doc's own literal text assumes: ADR-044
 (this document, ~150 lines above) already resolved docs 19/20 with no
 `Employee` model at all — `Position`/`Posting` key straight to `User.id`,
 with `EmployeeProfile` (1:1 `User`) holding the HR-specific fields.
-Checked directly against `apps/api/src/modules/hr/people.service.ts`:
+Checked directly against `apps/api/src/modules/people/hr/people.service.ts`:
 `PostingService.end()` exists and works, but publishes no domain event —
 doc 20's own acceptance criteria never needed one, so nobody added it.
 

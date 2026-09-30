@@ -29,7 +29,7 @@ docs/erp-lenses/gap-38/38-gap-hr-payroll-no-posting-artifact-for-compe.md
 
 **Question:** State how a payroll overpayment posted to the ledger is recovered — a distinct reversal document, a deduction on the next PayRun, or a manual journal — and how that survives a fiscal period that has since CLOSED.
 
-**Grounding:** apps/api/src/modules/accounting/accounting.service.ts's reverseEntry() is full-entry-only by its own comment ('marks the original REVERSED... both writes commit in one transaction'), matching the ground-truth note that payment.refunded is 'full reversal only; no partial-refund path.'
+**Grounding:** apps/api/src/modules/money/accounting/accounting.service.ts's reverseEntry() is full-entry-only by its own comment ('marks the original REVERSED... both writes commit in one transaction'), matching the ground-truth note that payment.refunded is 'full reversal only; no partial-refund path.'
 
 ## Absences
 

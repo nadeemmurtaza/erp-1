@@ -9,11 +9,11 @@ Pack **core** · enabled by the `MODULES` allowlist · 7 files
 
 **Registry note** (`modules.registry.ts`): Off by default — see docs/implementation/access-control-identity/18-identity-verification.md.
 
-Source: `apps/api/src/modules/identity-verification/`
+Source: `apps/api/src/modules/system/identity-verification/`
 
 ## Files (7 · 615 lines)
 
-All paths relative to `apps/api/src/modules/identity-verification/dto`.
+All paths relative to `apps/api/src/modules/system/identity-verification/dto`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

@@ -56,7 +56,6 @@ _none_
 
 ## Reaches out to
 
-- **module `settings`** ⚠ direct import
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`

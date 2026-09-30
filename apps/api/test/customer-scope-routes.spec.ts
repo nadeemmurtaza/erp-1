@@ -6,21 +6,21 @@ import { Reflector } from '@nestjs/core';
 import { CUSTOMER_SCOPE_CATALOG, CUSTOMER_SCOPE_KEYS } from '@newax/shared';
 import { readRouteRequirements } from '../src/core/auth/api-keys/api-key-access';
 import { CustomerScope } from '../src/core/auth/decorators';
-import { B2BAccountsController } from '../src/modules/accounts/accounts.controller';
+import { B2BAccountsController } from '../src/modules/sales/accounts/accounts.controller';
 import { AuthController } from '../src/core/auth/auth.controller';
 import { DevicesController } from '../src/core/notifications/devices.controller';
-import { AddressesController } from '../src/modules/addresses/addresses.controller';
-import { ReturnsController } from '../src/modules/fulfilment/returns.controller';
-import { GiftCardsAccountController } from '../src/modules/giftcards/giftcards-account.controller';
-import { StoreCreditAccountController } from '../src/modules/giftcards/store-credit-account.controller';
-import { IdentityVerificationController } from '../src/modules/identity-verification/identity-verification.controller';
-import { LoyaltyController } from '../src/modules/loyalty/loyalty.controller';
-import { MeasurementsController } from '../src/modules/measurements/measurements.controller';
-import { NotificationPreferencesController } from '../src/modules/notification-preferences/notification-preferences.controller';
-import { OrdersController } from '../src/modules/orders/orders.controller';
-import { ReviewsPublicController } from '../src/modules/reviews/reviews-public.controller';
-import { CustomerSupportController } from '../src/modules/support/customer-support.controller';
-import { WishlistController } from '../src/modules/wishlist/wishlist.controller';
+import { AddressesController } from '../src/modules/sales/addresses/addresses.controller';
+import { ReturnsController } from '../src/modules/sales/fulfilment/returns.controller';
+import { GiftCardsAccountController } from '../src/modules/sales/giftcards/giftcards-account.controller';
+import { StoreCreditAccountController } from '../src/modules/sales/giftcards/store-credit-account.controller';
+import { IdentityVerificationController } from '../src/modules/system/identity-verification/identity-verification.controller';
+import { LoyaltyController } from '../src/modules/sales/loyalty/loyalty.controller';
+import { MeasurementsController } from '../src/modules/sales/measurements/measurements.controller';
+import { NotificationPreferencesController } from '../src/modules/customers/notification-preferences/notification-preferences.controller';
+import { OrdersController } from '../src/modules/sales/orders/orders.controller';
+import { ReviewsPublicController } from '../src/modules/sales/reviews/reviews-public.controller';
+import { CustomerSupportController } from '../src/modules/customers/support/customer-support.controller';
+import { WishlistController } from '../src/modules/sales/wishlist/wishlist.controller';
 
 /**
  * The storefront scope catalogue, pinned to the routes that carry it

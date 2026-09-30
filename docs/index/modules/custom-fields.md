@@ -9,11 +9,11 @@ Pack **core** · always on · 5 files
 
 **Registry note** (`modules.registry.ts`): 104-jsonb-eav-extensibility.md — a bounded custom-field overlay, not a sector-specific pack.
 
-Source: `apps/api/src/modules/custom-fields/`
+Source: `apps/api/src/modules/merchandising/custom-fields/`
 
 ## Files (5 · 402 lines)
 
-All paths relative to `apps/api/src/modules/custom-fields`.
+All paths relative to `apps/api/src/modules/merchandising/custom-fields`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|

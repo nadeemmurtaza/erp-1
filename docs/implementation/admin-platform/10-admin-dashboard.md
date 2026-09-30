@@ -725,19 +725,19 @@ entirely by data.
 
 **Created**
 ```
-apps/api/src/modules/analytics/analytics.metrics.ts     sales/orders/products/customers/workshop
-apps/api/src/modules/analytics/dto/cards.dto.ts
-apps/api/src/modules/inventory/inventory.metrics.ts
-apps/api/src/modules/purchasing/purchasing.metrics.ts
-apps/api/src/modules/analytics/analytics.metrics.spec.ts
+apps/api/src/modules/money/analytics/analytics.metrics.ts     sales/orders/products/customers/workshop
+apps/api/src/modules/money/analytics/dto/cards.dto.ts
+apps/api/src/modules/supply-chain/inventory/inventory.metrics.ts
+apps/api/src/modules/supply-chain/purchasing/purchasing.metrics.ts
+apps/api/src/modules/money/analytics/analytics.metrics.spec.ts
 apps/web/src/components/admin/dashboard/{card-registry.ts,metric-card.tsx,
                                          card-group.tsx,use-dashboard-metrics.ts,range-picker.tsx}
 ```
 **Modified**
 ```
-apps/api/src/modules/analytics/{analytics.controller,analytics.service,analytics.module}.ts
-apps/api/src/modules/inventory/inventory.module.ts        register provider onModuleInit
-apps/api/src/modules/purchasing/purchasing.module.ts      register provider onModuleInit
+apps/api/src/modules/money/analytics/{analytics.controller,analytics.service,analytics.module}.ts
+apps/api/src/modules/supply-chain/inventory/inventory.module.ts        register provider onModuleInit
+apps/api/src/modules/supply-chain/purchasing/purchasing.module.ts      register provider onModuleInit
 apps/web/src/app/(admin)/admin/(app)/page.tsx             REWRITTEN
 apps/web/src/app/(admin)/admin/(app)/loading.tsx          card-grid skeleton
 apps/web/src/lib/api-types.ts                             + DashboardCardsResponse
@@ -802,7 +802,7 @@ apps/web/src/components/admin/analytics/blocks/{kpis,timeseries,share,ranking,ta
 apps/web/src/components/admin/analytics/resolve-path.ts + .spec.ts
 apps/web/src/app/(admin)/admin/(app)/analytics/page.tsx              report index
 apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx
-apps/api/src/modules/analytics/reports/{sales,orders}.reports.ts
+apps/api/src/modules/money/analytics/reports/{sales,orders}.reports.ts
 ```
 
 **Endpoints** — controller-level `@RequirePermission('analytics.view')`, extras
@@ -851,9 +851,9 @@ A.2–A.5.
 **Created**
 ```
 apps/api/prisma/schema/finance.prisma
-apps/api/src/modules/finance/{finance.module,finance.service,finance.controller}.ts
-apps/api/src/modules/finance/dto/{expense,expense-category}.dto.ts
-apps/api/src/modules/finance/finance.spec.ts
+apps/api/src/modules/money/finance/{finance.module,finance.service,finance.controller}.ts
+apps/api/src/modules/money/finance/dto/{expense,expense-category}.dto.ts
+apps/api/src/modules/money/finance/finance.spec.ts
 apps/api/prisma/schema/migrations/<ts>_add_finance_expenses/migration.sql
 apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx
 apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories/page.tsx
@@ -1107,7 +1107,7 @@ Reports: `expenses/overview`; `expenses/by-category` with
 
 **Purpose.** The owner's headline request.
 **Depends on.** WO-A.4, WO-B.1. (Purchasing shipped in Phase 1.)
-**Created**: `apps/api/src/modules/analytics/reports/comparison.reports.ts`,
+**Created**: `apps/api/src/modules/money/analytics/reports/comparison.reports.ts`,
 `apps/web/src/components/admin/dashboard/comparison-panel.tsx`.
 
 ```
@@ -1163,9 +1163,9 @@ panel is reused as the `overview/comparison` full report with a breakdown table.
 **Created**
 ```
 apps/api/prisma/schema/bom.prisma
-apps/api/src/modules/bom/{bom.module,bom.service,bom.controller,raw-material.service}.ts
-apps/api/src/modules/bom/dto/raw-material.dto.ts
-apps/api/src/modules/bom/bom.spec.ts
+apps/api/src/modules/supply-chain/bom/{bom.module,bom.service,bom.controller,raw-material.service}.ts
+apps/api/src/modules/supply-chain/bom/dto/raw-material.dto.ts
+apps/api/src/modules/supply-chain/bom/bom.spec.ts
 apps/api/prisma/schema/migrations/<ts>_add_bom_raw_materials/migration.sql
 packages/shared/src/units.ts + units.spec.ts
 apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx
@@ -1560,7 +1560,7 @@ a migration that runs itself.**
       `refId`.
 - [ ] **Nothing writes `ProductVariant.stock` except `InventoryService.move()`.**
       Assert that a grep for `productVariant.update` under
-      `apps/api/src/modules/bom` returns only the `costPrice` write from step 6 —
+      `apps/api/src/modules/supply-chain/bom` returns only the `costPrice` write from step 6 —
       no `stock` field anywhere in the module.
 - [ ] Insufficient raw stock rolls the whole run back: no run row, no movements,
       no cost change. Verify inside a real transaction, not a mock.

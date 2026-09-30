@@ -1,7 +1,7 @@
 # 68 — Instant gross profit: OrderEconomics exists, but never fires for POS
 
 > **Status: shipped (2026-09-25), WO-68.1.** `placeFromPos()`
-> (`apps/api/src/modules/orders/orders.service.ts`) now publishes
+> (`apps/api/src/modules/sales/orders/orders.service.ts`) now publishes
 > `DomainEvent.OrderStatusChanged` with `fromStatus: null, toStatus:
 > 'DELIVERED'` inside the same transaction as order creation, immediately
 > after `OrderPlaced`. `fromStatus` is `null` rather than a prior status
@@ -39,11 +39,11 @@
 already stores exactly what "instant gross margin and net profit
 calculation per transaction" needs — `revenue`, `cogs`, `contribution` —
 computed by `OrderEconomicsService` and fired from `FinanceListener`
-(`apps/api/src/modules/finance/finance.listener.ts`). But that listener
+(`apps/api/src/modules/money/finance/finance.listener.ts`). But that listener
 subscribes to exactly one event: `DomainEvent.OrderStatusChanged`, firing
 `computeForOrder()` only `if (payload.toStatus === 'DELIVERED')`. A POS
 till sale never publishes that event for its own delivery — confirmed at
-`apps/api/src/modules/orders/orders.service.ts` lines 445-484: a POS sale
+`apps/api/src/modules/sales/orders/orders.service.ts` lines 445-484: a POS sale
 is `tx.order.create({ data: { status: 'DELIVERED', channel: 'POS', ... },
 statusEvents: { create: { toStatus: 'DELIVERED', ... } } })`, created
 **directly** at `DELIVERED`, never transitioned into it through

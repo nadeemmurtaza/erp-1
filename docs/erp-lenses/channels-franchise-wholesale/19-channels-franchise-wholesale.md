@@ -103,7 +103,7 @@ given `TradingPartner` may query) that `getLiveStock` resolves before it
 touches `ProductVariant`, so a marketplace seller and a national wholesaler
 connected today do not see the same catalog.
 
-**Done test:** Grep `apps/api/src/modules/tradingpartners/*.ts` for a field
+**Done test:** Grep `apps/api/src/modules/supply-chain/tradingpartners/*.ts` for a field
 or table narrower than `TradingPartner.kind` that `getLiveStock` reads
 before returning a SKU. None exists today; the PR must add one and show
 `getLiveStock` denying a SKU outside a partner's grant.

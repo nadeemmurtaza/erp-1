@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**549** markdown documents. These explain **why**; this index only says **where**.
+**551** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -124,6 +124,10 @@ _no second-level headings_
 - Commands  <sub>:68</sub>
 
 ### `apps/api/src/modules/README.md`  <sub>35 lines</sub>
+
+_no second-level headings_
+
+### `apps/mobile/README.md`  <sub>36 lines</sub>
 
 _no second-level headings_
 
@@ -4415,6 +4419,10 @@ _no second-level headings_
 - Grounded Context (partial, from ground:4 retries)  <sub>:510</sub>
 - Recommendation  <sub>:524</sub>
 
+### `docs/security/security-architecture.md`  <sub>59 lines</sub>
+
+_no second-level headings_
+
 ### `GEMINI.md`  <sub>81 lines</sub>
 
 - Read the rules first  <sub>:9</sub>
@@ -4442,30 +4450,29 @@ _no second-level headings_
 - Success metrics  <sub>:167</sub>
 - References  <sub>:179</sub>
 
-### `README.md`  <sub>349 lines</sub>
+### `README.md`  <sub>213 lines</sub>
 
-- Read this before touching anything  <sub>:12</sub>
-- Documentation map  <sub>:101</sub>
-- What is here today  <sub>:131</sub>
-- Running it  <sub>:152</sub>
-- Design decisions worth knowing  <sub>:223</sub>
-- Security architecture  <sub>:255</sub>
-- Commands  <sub>:309</sub>
-- Where the project is going  <sub>:323</sub>
-- Repository layout  <sub>:337</sub>
+- Where it is heading  <sub>:17</sub>
+- Run it  <sub>:37</sub>
+- What exists today  <sub>:75</sub>
+- The rules that bind everyone  <sub>:96</sub>
+- Design decisions worth knowing  <sub>:141</sub>
+- Commands  <sub>:167</sub>
+- Read next  <sub>:182</sub>
+- Repository layout  <sub>:197</sub>
 
 ### `Rules.md`  <sub>30 lines</sub>
 
 _no second-level headings_
 
-### `START-HERE.md`  <sub>106 lines</sub>
+### `START-HERE.md`  <sub>107 lines</sub>
 
 - What this is  <sub>:7</sub>
 - The map  <sub>:23</sub>
 - Five ideas that explain the rest  <sub>:40</sub>
 - Where the documents are  <sub>:53</sub>
-- Run it locally  <sub>:70</sub>
-- State of the organization (honest)  <sub>:87</sub>
+- Run it locally  <sub>:71</sub>
+- State of the organization (honest)  <sub>:88</sub>
 
 
 ---

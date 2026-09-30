@@ -22,20 +22,20 @@ and brands are a new folder, not a fork.
 
 ## The map
 
-| Folder | What it is |
-|---|---|
-| `apps/api` | The business backend (NestJS + PostgreSQL via Prisma). One module per business area: orders, inventory, purchasing, accounting, HR and more. |
-| `apps/web` | The storefront and the admin back office (Next.js). |
-| `apps/pos` | The point-of-sale till (Next.js), able to keep selling offline. |
-| `apps/mobile` | The customer and staff mobile app (Expo). |
-| `apps/platform` | The control plane above all deployments: tenants, billing, hosting, the shared product reference, the marketplace. It never touches a client's business data directly. |
-| `packages/shared` | Code every app uses: brand values, money, types. |
-| `packages/pos-core` | Till logic shared by the POS and mobile. |
-| `packages/desktop-runtime` | Runs a deployment on one computer, including local Postgres and receipt printers. |
-| `packages/config` | Shared lint and TypeScript settings. |
-| `docs/` | All documentation (see below). |
-| `scripts/` | Repository checks and the index generator. |
-| `deploy/` and `docker-*.yml` | Hosting and deployment files. |
+| Folder                       | What it is                                                                                                                                                             |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/api`                   | The business backend (NestJS + PostgreSQL via Prisma). One module per business area: orders, inventory, purchasing, accounting, HR and more.                           |
+| `apps/web`                   | The storefront and the admin back office (Next.js).                                                                                                                    |
+| `apps/pos`                   | The point-of-sale till (Next.js), able to keep selling offline.                                                                                                        |
+| `apps/mobile`                | The customer and staff mobile app (Expo).                                                                                                                              |
+| `apps/platform`              | The control plane above all deployments: tenants, billing, hosting, the shared product reference, the marketplace. It never touches a client's business data directly. |
+| `packages/shared`            | Code every app uses: brand values, money, types.                                                                                                                       |
+| `packages/pos-core`          | Till logic shared by the POS and mobile.                                                                                                                               |
+| `packages/desktop-runtime`   | Runs a deployment on one computer, including local Postgres and receipt printers.                                                                                      |
+| `packages/config`            | Shared lint and TypeScript settings.                                                                                                                                   |
+| `docs/`                      | All documentation (see below).                                                                                                                                         |
+| `scripts/`                   | Repository checks and the index generator.                                                                                                                             |
+| `deploy/` and `docker-*.yml` | Hosting and deployment files.                                                                                                                                          |
 
 ## Five ideas that explain the rest
 
@@ -52,16 +52,17 @@ and brands are a new folder, not a fork.
 
 ## Where the documents are
 
-| You want | Open |
-|---|---|
-| The rules everyone follows | [`CLAUDE.md`](./CLAUDE.md), then [`docs/implementation/00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md) |
-| Why a decision was made | [`docs/implementation/DECISIONS.md`](./docs/implementation/DECISIONS.md) (the index; each decision is its own file in `docs/implementation/decisions/`) |
-| The product vision | [`PRD.md`](./PRD.md) |
-| How it scales across sectors and chains | [`docs/implementation/ENTERPRISE-SCALE.md`](./docs/implementation/ENTERPRISE-SCALE.md), [`MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md), [`RETAIL-ERP.md`](./docs/implementation/RETAIL-ERP.md) |
-| Build briefs, one per capability | [`docs/implementation/README.md`](./docs/implementation/README.md) |
-| How screens must look and behave | [`docs/design/README.md`](./docs/design/README.md) |
-| How to add a feature | [`CONTRIBUTING.md`](./CONTRIBUTING.md) |
-| Where any file, route, table or permission is | [`docs/index/README.md`](./docs/index/README.md), or run `pnpm idx` |
+| You want                                      | Open                                                                                                                                                                                                       |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The rules everyone follows                    | [`CLAUDE.md`](./CLAUDE.md), then [`docs/implementation/00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md)                                                                                        |
+| Why a decision was made                       | [`docs/implementation/DECISIONS.md`](./docs/implementation/DECISIONS.md) (the index; each decision is its own file in `docs/implementation/decisions/`)                                                    |
+| The product vision                            | [`PRD.md`](./PRD.md)                                                                                                                                                                                       |
+| How it scales across sectors and chains       | [`docs/implementation/ENTERPRISE-SCALE.md`](./docs/implementation/ENTERPRISE-SCALE.md), [`MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md), [`RETAIL-ERP.md`](./docs/implementation/RETAIL-ERP.md) |
+| Build briefs, one per capability              | [`docs/implementation/README.md`](./docs/implementation/README.md)                                                                                                                                         |
+| How screens must look and behave              | [`docs/design/README.md`](./docs/design/README.md)                                                                                                                                                         |
+| How to add a feature                          | [`CONTRIBUTING.md`](./CONTRIBUTING.md)                                                                                                                                                                     |
+| Security rules                                | [`docs/security/security-architecture.md`](./docs/security/security-architecture.md)                                                                                                                       |
+| Where any file, route, table or permission is | [`docs/index/README.md`](./docs/index/README.md), or run `pnpm idx`                                                                                                                                        |
 
 `Architecture.md`, `Design.md`, `Memory.md`, `Phases.md` and `Rules.md` at the
 root are short signposts to the documents above. `AGENTS.md` and `GEMINI.md`
@@ -89,17 +90,17 @@ pnpm lint && pnpm typecheck && pnpm test
 This section lists known problems so they get fixed, not hidden. Status is
 "planned" until a commit says otherwise.
 
-| Area | Problem | Planned fix |
-|---|---|---|
-| Root | Stray output files and one-off scripts were tracked. | **Done:** removed. |
-| Root | `apps/api/report.*.json` is a generated diagnostic report committed to the repo. | Remove and ignore (needs owner confirmation). |
-| Root | `README.md` still describes only the clothing store. | Rewrite it around the platform, keeping the store as the first deployment. |
-| Docs | `DECISIONS.md` was one 9,500-line file. | **Done:** one file per decision in `docs/implementation/decisions/`, with `DECISIONS.md` as the complete index. |
-| Docs | Document numbers 18 and 19 are each used by two unrelated briefs, and the numbered briefs are cited in about 70 places. | Planned: give the four briefs unique numbers and update every citation in one reviewed change. |
-| Docs | Five root signpost files add a hop without adding content. | Fold into this page once links are updated. |
-| Code | 67 API modules sit in one flat folder. | Group by domain (sales, inventory, finance, people, platform) with no change to behaviour. |
-| Code | Partner trading sends whole invoice documents. | Send data events; the receiver builds its own documents. |
-| UI | Visual quality is below the target. | Audit every main screen at the seven widths, then redesign against `docs/design/`. |
+| Area | Problem                                                                                                                 | Planned fix                                                                                                         |
+| ---- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Root | Stray output files and one-off scripts were tracked.                                                                    | **Done:** removed.                                                                                                  |
+| Root | `apps/api/report.*.json` is a generated diagnostic report committed to the repo.                                        | Remove and ignore (needs owner confirmation).                                                                       |
+| Root | `README.md` described only the clothing store and listed stale phase status.                                            | **Done:** rewritten around the platform; security and mobile sections moved to `docs/security/` and `apps/mobile/`. |
+| Docs | `DECISIONS.md` was one 9,500-line file.                                                                                 | **Done:** one file per decision in `docs/implementation/decisions/`, with `DECISIONS.md` as the complete index.     |
+| Docs | Document numbers 18 and 19 are each used by two unrelated briefs, and the numbered briefs are cited in about 70 places. | Planned: give the four briefs unique numbers and update every citation in one reviewed change.                      |
+| Docs | Five root signpost files add a hop without adding content.                                                              | Fold into this page once links are updated.                                                                         |
+| Code | 67 API modules sit in one flat folder.                                                                                  | Group by domain (sales, inventory, finance, people, platform) with no change to behaviour.                          |
+| Code | Partner trading sends whole invoice documents.                                                                          | Send data events; the receiver builds its own documents.                                                            |
+| UI   | Visual quality is below the target.                                                                                     | Audit every main screen at the seven widths, then redesign against `docs/design/`.                                  |
 
 Each item becomes its own small, reviewed change. Nothing is moved or deleted
 without the owner confirming it by name.

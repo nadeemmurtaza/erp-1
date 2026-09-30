@@ -26,9 +26,9 @@ All 208 tracked files in `repository root files`, by directory.
 | `Memory.md` | doc | 28 |  |
 | `Phases.md` | doc | 48 |  |
 | `PRD.md` | doc | 185 |  |
-| `README.md` | doc | 349 |  |
+| `README.md` | doc | 213 |  |
 | `Rules.md` | doc | 30 |  |
-| `START-HERE.md` | doc | 106 |  |
+| `START-HERE.md` | doc | 107 |  |
 
 ### `.claude` (2)
 

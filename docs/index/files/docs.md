@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 521 tracked files in `docs/*`, by directory.
+All 522 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -988,6 +988,12 @@ All 521 tracked files in `docs/*`, by directory.
 | `15-tax-module.md` | doc | 232 |  |
 | `46-fbr-verification-qr-codes.md` | doc | 143 |  |
 | `88-pral-fbr-pra-tax-compliance.md` | doc | 69 |  |
+
+### `docs/security` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `security-architecture.md` | doc | 59 |  |
 
 
 ---

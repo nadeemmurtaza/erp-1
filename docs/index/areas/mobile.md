@@ -3,7 +3,7 @@
 
 # apps/mobile — Expo/React Native customer app
 
-49 files · 6,906 lines
+50 files · 6,942 lines
 
 
 Expo / React Native customer app, file-routed under `app/`. Talks to the same
@@ -20,7 +20,7 @@ API as the web storefront through `src/api/`.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `apps/mobile` | 6 | 230 | json, script |
+| `apps/mobile` | 7 | 266 | doc, json, script |
 | `apps/mobile/app` | 24 | 3,911 | react |
 | `apps/mobile/assets` | 3 | 0 | asset |
 | `apps/mobile/src` | 16 | 2,765 | unit test, module, component, react |

@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-521 files · 89,563 lines
+522 files · 89,622 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -110,6 +110,7 @@ has a bug.
 | `docs/implementation/shipping-fulfilment-returns` | 1 | 335 | doc |
 | `docs/implementation/tasks-notifications-support` | 6 | 2,996 | doc |
 | `docs/implementation/tax-compliance` | 4 | 495 | doc |
+| `docs/security` | 1 | 59 | doc |
 
 
 

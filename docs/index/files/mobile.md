@@ -3,12 +3,12 @@
 
 # Files — mobile
 
-All 49 tracked files in `apps/mobile`, by directory.
+All 50 tracked files in `apps/mobile`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `apps/mobile` (6)
+### `apps/mobile` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -17,6 +17,7 @@ All 49 tracked files in `apps/mobile`, by directory.
 | `jest.setup.js` | script | 34 | The native modules the app talks to have no implementation under Jest, and |
 | `metro.config.js` | script | 29 | Metro, taught about the monorepo. |
 | `package.json` | json | 53 |  |
+| `README.md` | doc | 36 |  |
 | `tsconfig.json` | json | 21 |  |
 
 ### `apps/mobile/app` (9)

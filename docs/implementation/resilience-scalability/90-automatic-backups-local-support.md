@@ -1,5 +1,20 @@
 # 90 — Automatic backups: real infrastructure; "local support": a business commitment, not code
 
+> **Status (2026-09-30): confirmed, no code change, per this document's own
+> "Acceptance."** Doc 38 is now built (WO-38.1–38.6): `deploy/backup.sh` and
+> `deploy/systemd/yaseen-backup.timer` remain real, unmodified, restore-tested
+> infrastructure. Doc 38's own WO-38.4 closed the one measurement gap this
+> document named — RPO is real and stated (24 hours, from the timer's nightly
+> 03:00 UTC schedule, in `DEPLOYMENT.md` §9); RTO stayed **honestly
+> unmeasured** (`backup.sh`'s restore-test needs a live Docker Swarm stack
+> neither this sandbox nor CI provides — doc 38's own status blockquote says
+> so plainly rather than asserting a number from memory), with the quarterly
+> game-day recorded as the scheduled commitment whose first real run produces
+> it. Doc 64 (`help-desk-support-ticketing.md`) is confirmed **Built**
+> (`docs/implementation/README.md`, ADR-063) — the one concrete piece of
+> infrastructure "local support" implies. Nothing here changes: this
+> document's own point stands exactly as written.
+
 "Assurances of reliable data security through automatic cloud backups and
 the promise of 'Local support you can trust'" splits into one already-
 built engineering fact and one claim this document cannot honestly

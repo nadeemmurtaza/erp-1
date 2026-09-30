@@ -1,5 +1,27 @@
 # 123 — Graceful degradation: the "absent collaborator" lens, already answered in every document this session
 
+> **Status (2026-09-30): re-verified against real code, and corrected —
+> three of the original five citations described a mechanism that isn't
+> actually built or a scenario that can't occur, found by checking each
+> row against the repository rather than trusting the doc's own prior
+> text.** `FaceMatchProvider` is not implemented anywhere — the one place
+> it's mentioned (`camera-people-count.registry.ts:13`) is a comment
+> pointing at doc 30's own separate design, not working code; replaced
+> below with the real, tested extension point in that same file.
+> "`crm` module off" cannot happen at all: `apps/api/src/modules/
+> module-packs.ts:74` classifies `crm` as **`core`**, never a pack, so
+> `Contact`/`totalCustomers` is never an absent collaborator to begin
+> with — removed, not replaced, since there is no real scenario to cite
+> for it, and doing so is itself an instance of this document's own
+> deeper point ("core... never optional"). `OutboundConnector` (doc 36)
+> still does not exist in this codebase (confirmed again via
+> `core/resilience/circuit-breaker.service.ts`'s own header comment,
+> which says exactly this while explaining why it isn't wrapped) —
+> replaced with a real, freshly-tested case from the now-built doc 38.
+> The two citations that were already accurate (`ReceiptPrinter`/
+> `CashDrawer`, the notification fan-out) are unchanged below, now with
+> exact file citations.
+
 "Design services to fail gracefully. If a non-critical microservice
 crashes, the core transaction ledger and inventory management systems
 must continue operating uninterrupted on a localized fallback state"
@@ -17,11 +39,11 @@ the evidence that it is actually followed, not just required on paper.
 
 | Optional component absent | Core system's behavior |
 |---|---|
-| `FaceMatchProvider` unregistered (doc 30) | Attendance continues from other sources; "a correct, silent absence, not an error" |
-| `ReceiptPrinter`/`CashDrawer` (doc 31) | A cash sale completes normally; print/kick silently no-op |
-| `crm` module off (doc 76) | The POS dashboard's "Total Customers" tile simply omits itself; Daily Sales/Low Stock render normally |
-| A notification channel down (doc 24/61) | The underlying record (a bulletin, a leave request) is still created; only the "you have a new item" ping is silent |
-| `OutboundConnector`/n8n target down (doc 36/102) | Retried per the outbox's own backoff; the domain event and its originating transaction are entirely unaffected — a failed *notification about* a fact never un-happens the fact itself |
+| `CameraPeopleCountProvider` unregistered (doc 156 §4, `apps/api/src/core/extension-points/camera-people-count.registry.ts`) | `countForDate()` resolves to `null`; the loss-prevention report degrades to an explicit "not available" state, never a fabricated ratio |
+| `ReceiptPrinter`/`CashDrawer` (doc 31, built — `apps/pos/src/lib/hardware.ts`) | A cash sale completes normally; `printReceipt()`/`kickCashDrawer()` resolve to `{ printed: false }`/`{ kicked: false }` with nothing registered, never throw |
+| `AiProvider`/`VectorStore` unreachable (doc 38, built — `ai.service.spec.ts`, `rag-retrieval.service.spec.ts`) | The circuit trips and every AI/RAG feature falls back to its stated non-AI path; every other feature is unaffected |
+| A notification channel down (doc 24/61) | The underlying record (a bulletin, a leave request) is still created; only the "you have a new item" ping is silent — `notifications.service.ts`'s `Promise.all`-per-channel fan-out, proven with a throwing channel by doc 38's own new test |
+| A replication parent unreachable (`RETAIL-ERP.md` R5/R9, `replication-sync.agent.spec.ts`) | The branch's own local sale, stock and attendance all still record; facts queue for sync and policy reads fall back to the last-cached value — the agent never throws when the parent is unreachable |
 
 **The core transaction ledger and inventory are never optional
 collaborators of anything** — this is the deeper reason "the core...

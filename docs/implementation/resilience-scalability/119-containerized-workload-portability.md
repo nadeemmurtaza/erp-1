@@ -1,5 +1,16 @@
 # 119 — Container portability: already real, and already proven by a second, non-containerized deployment shape
 
+> **Status (2026-09-30): confirmed against the now-built doc 48.** Doc 48
+> (WO-48.1/48.3/48.4/48.5) shipped as a new, separate `packages/desktop-runtime`
+> package — `git show --stat` on its merge commit confirms **zero files under
+> `apps/api/` were touched**. This document's central claim ("unmodified
+> `apps/api`... no environment-specific code branch... distinguishing
+> container from desktop install") holds exactly as written, now verified
+> against the real build rather than the doc's own prior description. Doc 94
+> remains a real coverage note (Dockerfiles + five compose files exist,
+> `docs/implementation/README.md`). No code or schema change from this
+> document, as its own "Acceptance" already states.
+
 "Standardize deployments using containerized architecture to ensure
 applications can migrate seamlessly across managed cloud providers or
 self-hosted bare-metal environments without core rewrites" restates doc

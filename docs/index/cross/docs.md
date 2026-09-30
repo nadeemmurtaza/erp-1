@@ -3862,32 +3862,32 @@ _no second-level headings_
 - Scope, honestly  <sub>:664</sub>
 - Gap-analysis roadmap references  <sub>:671</sub>
 
-### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>69 lines</sub>
+### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 
-- The strongest evidence for "no core rewrites": doc 48 already exists  <sub>:12</sub>
-- What portability already covers, and the one thing it does not claim  <sub>:27</sub>
-- Scope lenses  <sub>:47</sub>
-- Work orders  <sub>:52</sub>
-- Acceptance  <sub>:57</sub>
-- Out of scope  <sub>:63</sub>
+- The strongest evidence for "no core rewrites": doc 48 already exists  <sub>:23</sub>
+- What portability already covers, and the one thing it does not claim  <sub>:38</sub>
+- Scope lenses  <sub>:58</sub>
+- Work orders  <sub>:63</sub>
+- Acceptance  <sub>:68</sub>
+- Out of scope  <sub>:74</sub>
 
-### `docs/implementation/resilience-scalability/123-automated-degradation-resilience.md`  <sub>73 lines</sub>
+### `docs/implementation/resilience-scalability/123-automated-degradation-resilience.md`  <sub>95 lines</sub>
 
-- The evidence, collected from this session's own documents  <sub>:16</sub>
-- "A localized fallback state" — this repository's own name for it  <sub>:38</sub>
-- Scope lenses  <sub>:47</sub>
-- Work orders  <sub>:53</sub>
-- Acceptance  <sub>:58</sub>
-- Out of scope  <sub>:67</sub>
+- The evidence, collected from this session's own documents  <sub>:38</sub>
+- "A localized fallback state" — this repository's own name for it  <sub>:60</sub>
+- Scope lenses  <sub>:69</sub>
+- Work orders  <sub>:75</sub>
+- Acceptance  <sub>:80</sub>
+- Out of scope  <sub>:89</sub>
 
-### `docs/implementation/resilience-scalability/124-infrastructure-as-code.md`  <sub>64 lines</sub>
+### `docs/implementation/resilience-scalability/124-infrastructure-as-code.md`  <sub>73 lines</sub>
 
-- What already exists, version-controlled, in this repository  <sub>:9</sub>
-- The honest gap: no declarative infrastructure-provisioning tool  <sub>:22</sub>
-- Scope lenses  <sub>:35</sub>
-- Work orders  <sub>:41</sub>
-- Acceptance  <sub>:51</sub>
-- Out of scope  <sub>:59</sub>
+- What already exists, version-controlled, in this repository  <sub>:18</sub>
+- The honest gap: no declarative infrastructure-provisioning tool  <sub>:31</sub>
+- Scope lenses  <sub>:44</sub>
+- Work orders  <sub>:50</sub>
+- Acceptance  <sub>:60</sub>
+- Out of scope  <sub>:68</sub>
 
 ### `docs/implementation/resilience-scalability/144-supply-chain-resilience-planning-engine.md`  <sub>392 lines</sub>
 
@@ -3991,14 +3991,14 @@ _no second-level headings_
 - Acceptance  <sub>:289</sub>
 - Out of scope  <sub>:304</sub>
 
-### `docs/implementation/resilience-scalability/90-automatic-backups-local-support.md`  <sub>56 lines</sub>
+### `docs/implementation/resilience-scalability/90-automatic-backups-local-support.md`  <sub>71 lines</sub>
 
-- 1. Automatic cloud backups — `deploy/backup.sh`, already real, already restore-tested  <sub>:8</sub>
-- 2. "Local support you can trust" is a support-organization commitment, named honestly as out of scope  <sub>:20</sub>
-- Scope lenses  <sub>:32</sub>
-- Work orders  <sub>:38</sub>
-- Acceptance  <sub>:44</sub>
-- Out of scope  <sub>:50</sub>
+- 1. Automatic cloud backups — `deploy/backup.sh`, already real, already restore-tested  <sub>:23</sub>
+- 2. "Local support you can trust" is a support-organization commitment, named honestly as out of scope  <sub>:35</sub>
+- Scope lenses  <sub>:47</sub>
+- Work orders  <sub>:53</sub>
+- Acceptance  <sub>:59</sub>
+- Out of scope  <sub>:65</sub>
 
 ### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
 

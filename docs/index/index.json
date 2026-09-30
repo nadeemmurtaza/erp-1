@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2514,
-    "lines": 395692,
+    "lines": 395749,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 437,
-      "lines": 89252,
-      "bytes": 5390602,
+      "lines": 89309,
+      "bytes": 5395300,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -92269,7 +92269,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 687,
-      "bytes": 104456,
+      "bytes": 104868,
       "doc": "",
       "symbols": []
     },
@@ -93942,8 +93942,8 @@
       "path": "docs/implementation/resilience-scalability/119-containerized-workload-portability.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 69,
-      "bytes": 3430,
+      "lines": 80,
+      "bytes": 4155,
       "doc": "",
       "symbols": []
     },
@@ -93951,8 +93951,8 @@
       "path": "docs/implementation/resilience-scalability/123-automated-degradation-resilience.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 73,
-      "bytes": 4019,
+      "lines": 95,
+      "bytes": 5999,
       "doc": "",
       "symbols": []
     },
@@ -93960,8 +93960,8 @@
       "path": "docs/implementation/resilience-scalability/124-infrastructure-as-code.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 64,
-      "bytes": 3071,
+      "lines": 73,
+      "bytes": 3619,
       "doc": "",
       "symbols": []
     },
@@ -94050,8 +94050,8 @@
       "path": "docs/implementation/resilience-scalability/90-automatic-backups-local-support.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 56,
-      "bytes": 2662,
+      "lines": 71,
+      "bytes": 3695,
       "doc": "",
       "symbols": []
     },

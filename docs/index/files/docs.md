@@ -860,9 +860,9 @@ All 437 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `119-containerized-workload-portability.md` | doc | 69 |  |
-| `123-automated-degradation-resilience.md` | doc | 73 |  |
-| `124-infrastructure-as-code.md` | doc | 64 |  |
+| `119-containerized-workload-portability.md` | doc | 80 |  |
+| `123-automated-degradation-resilience.md` | doc | 95 |  |
+| `124-infrastructure-as-code.md` | doc | 73 |  |
 | `144-supply-chain-resilience-planning-engine.md` | doc | 392 |  |
 | `206-rate-limiting-caching-compression-hardening.md` | doc | 351 |  |
 | `207-checkout-admission-queue-hot-sku-contention.md` | doc | 229 |  |
@@ -872,7 +872,7 @@ All 437 tracked files in `docs/*`, by directory.
 | `37-scalability-future-upgrades.md` | doc | 306 |  |
 | `38-resilience-engineering.md` | doc | 380 |  |
 | `48-native-desktop-deployment.md` | doc | 312 |  |
-| `90-automatic-backups-local-support.md` | doc | 56 |  |
+| `90-automatic-backups-local-support.md` | doc | 71 |  |
 
 ### `docs/implementation/shipping-fulfilment-returns` (1)
 

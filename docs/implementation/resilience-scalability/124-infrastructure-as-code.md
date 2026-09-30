@@ -1,5 +1,14 @@
 # 124 — Infrastructure as Code: version-controlled scripts already exist; declarative provisioning does not
 
+> **Status (2026-09-30): confirmed, no code change.** `deploy/backup.sh`,
+> `disk-alert.sh`, `swarm-init.sh` and `systemd/` all still exist, version-
+> controlled. `ProvisioningService` (`apps/platform/src/modules/tenants/
+> provisioning.service.ts`) is real. No Terraform/Pulumi/equivalent tool
+> exists anywhere in this repository (checked again) — the honest gap
+> this document names still holds exactly as written. WO-124.1 remains
+> correctly unbuilt: no multi-data-center failover requirement has been
+> recorded to justify adopting one.
+
 "Treat server provisioning, networking, and deployment pipelines as
 version-controlled code. This allows the entire system state to be
 instantly rebuilt, cloned, or rolled back in an alternate data center

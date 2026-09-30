@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 102 tracked files in `packages/*`, by directory.
+All 113 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -86,13 +86,13 @@ All 102 tracked files in `packages/*`, by directory.
 | `package.json` | json | 41 |  |
 | `tsconfig.json` | json | 17 |  |
 
-### `packages/shared/src` (42)
+### `packages/shared/src` (53)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `api-keys.spec.ts` | unit test | 231 |  |
 | `api-keys.ts` | module | 334 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
-| `brand.ts` | module | 345 | THE BRAND FILE. |
+| `brand.ts` | module | 568 | THE BRAND FILE. |
 | `cod-risk.spec.ts` | unit test | 199 |  |
 | `cod-risk.ts` | module | 167 |  |
 | `collection-rules.ts` | module | 16 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually cu… |
@@ -109,7 +109,7 @@ All 102 tracked files in `packages/*`, by directory.
 | `http-client.spec.ts` | unit test | 90 |  |
 | `http-client.ts` | module | 227 | The one HTTP layer for a signed-in browser client. |
 | `human-code.ts` | module | 37 | No O/0, no I/1/l — the ambiguous-character exclusion both PromoCode's bulk generation and GiftCard's own code need (05-… |
-| `index.ts` | module | 42 |  |
+| `index.ts` | module | 50 |  |
 | `markdown-suggestion.spec.ts` | unit test | 86 |  |
 | `markdown-suggestion.ts` | module | 85 | WO-9.8 (09-ai-layer.md) — "recommend the discount that clears [ageing stock] at the least margin loss, showing the trad… |
 | `onsite-messaging.ts` | module | 33 | On-site messaging kinds and popup triggers (WO-8.6), mirroring `OnsiteMessageKind`/`OnsitePopupTrigger` in apps/api/pri… |
@@ -125,8 +125,19 @@ All 102 tracked files in `packages/*`, by directory.
 | `sku.spec.ts` | unit test | 52 |  |
 | `sku.ts` | module | 80 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
 | `slug.ts` | module | 44 | URL slugs. |
-| `theme-colors.ts` | module | 18 |  |
+| `theme-colors.ts` | module | 29 |  |
+| `theme-contrast.spec.ts` | unit test | 155 |  |
+| `theme-contrast.ts` | module | 47 |  |
+| `theme-elevation.ts` | module | 12 |  |
+| `theme-layers.ts` | module | 9 |  |
+| `theme-motion.ts` | module | 22 |  |
 | `theme-radii.ts` | module | 17 |  |
+| `theme-runtime.spec.ts` | unit test | 76 |  |
+| `theme-runtime.ts` | module | 63 | How a surface decides which theme it is in — plain functions, no framework. |
+| `theme-size.ts` | module | 28 |  |
+| `theme-space.spec.ts` | unit test | 83 |  |
+| `theme-space.ts` | module | 22 |  |
+| `theme-tailwind.ts` | module | 330 |  |
 | `theme-type.ts` | module | 42 |  |
 | `units.spec.ts` | unit test | 43 |  |
 | `units.ts` | module | 58 | Raw-material quantities. |

@@ -4,7 +4,14 @@
 
 @layer base {
   :root {
-    color-scheme: light;
+    /*
+     * The colour, shadow and motion custom properties are NOT declared here
+     * either. `color-scheme`, every `--color-*`, `--shadow-*` and `--motion-*`
+     * come from packages/shared through tailwind.config.ts, for both themes —
+     * a second declaration in this file would win the tie on specificity and
+     * silently pin one theme. Switching theme is `data-theme` on <html>; see
+     * docs/design/foundations/01-foundations.md, "Theming".
+     */
 
     /*
      * --radius and --radius-lg are NOT declared here. They are injected into
@@ -19,10 +26,11 @@
      * The hover sweep. `--fill-duration` is long enough to read as a fill
      * rather than a flick, and the easing decelerates so it settles instead of
      * slamming — the difference between this feeling like a progress bar and
-     * feeling like a flash.
+     * feeling like a flash. Both are motion tokens (`sweep`, `decelerate`),
+     * aliased here only because the component layer below reads these names.
      */
-    --fill-duration: 420ms;
-    --fill-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --fill-duration: var(--motion-duration-sweep);
+    --fill-ease: var(--motion-easing-decelerate);
   }
 
   html {
@@ -38,6 +46,52 @@
 
   body {
     @apply bg-neutral-50 text-neutral-900 antialiased;
+  }
+
+  /*
+   * Headings balance their lines instead of leaving a one-word widow; a
+   * paragraph avoids a short last line. Both are pure progressive
+   * enhancement — an engine that does not know them wraps as before.
+   */
+  :where(h1, h2, h3) {
+    text-wrap: balance;
+  }
+
+  :where(p) {
+    text-wrap: pretty;
+  }
+
+  /* Selected text in the brand ink, in either theme, at a tint that keeps the text readable. */
+  ::selection {
+    background-color: rgb(var(--color-accent-ink) / 0.25);
+  }
+
+  /*
+   * A native control that was not given `.field-input` still has to belong to
+   * the theme. @tailwindcss/forms paints every text-like control white with a
+   * grey edge (#fff / #6b7280) — correct on paper, a glowing slab in dark.
+   * Same selectors as the plugin's own, placed after it, so they win the
+   * specificity tie without `!important` and `.field-*` still beats both.
+   */
+  [type='text'],
+  input:where(:not([type])),
+  [type='email'],
+  [type='url'],
+  [type='password'],
+  [type='number'],
+  [type='date'],
+  [type='datetime-local'],
+  [type='month'],
+  [type='search'],
+  [type='tel'],
+  [type='time'],
+  [type='week'],
+  [multiple],
+  textarea,
+  select,
+  [type='checkbox'],
+  [type='radio'] {
+    @apply border-neutral-200 bg-white;
   }
 
   /*
@@ -100,9 +154,9 @@
    */
   .lift {
     transition:
-      transform 300ms var(--fill-ease),
-      box-shadow 300ms var(--fill-ease),
-      border-color 300ms var(--fill-ease);
+      transform var(--motion-duration-slow) var(--fill-ease),
+      box-shadow var(--motion-duration-slow) var(--fill-ease),
+      border-color var(--motion-duration-slow) var(--fill-ease);
   }
 
   .lift:hover,
@@ -126,20 +180,20 @@
   .btn {
     @apply relative inline-flex items-center justify-center gap-2 font-medium disabled:cursor-not-allowed disabled:opacity-50;
     /*
-     * Sized per tier rather than once. min-h-11 is 44px, the smallest target
+     * Sized per tier rather than once. min-h-touch is 44px, the smallest target
      * a thumb hits reliably, and it is the floor everywhere a touch screen is
      * plausible — that is most of the range here, not a mobile special case.
      * Text steps up only at lg, where a pointer is the likely input and 14px
      * stops looking generous and starts looking small.
      */
-    @apply min-h-11 px-4 py-2 text-sm xs:px-5 fold:min-h-10 lg:px-5 lg:py-2.5 lg:text-[0.9375rem];
+    @apply min-h-touch px-4 py-2 text-sm xs:px-5 fold:min-h-control-md lg:px-5 lg:py-2.5 lg:text-[0.9375rem];
     border-radius: var(--radius);
     isolation: isolate;
     overflow: hidden;
     transition:
-      color 240ms var(--fill-ease),
-      background-color 240ms var(--fill-ease),
-      border-color 240ms var(--fill-ease);
+      color var(--motion-duration-normal) var(--fill-ease),
+      background-color var(--motion-duration-normal) var(--fill-ease),
+      border-color var(--motion-duration-normal) var(--fill-ease);
   }
 
   .btn::before {
@@ -167,25 +221,31 @@
     display: none;
   }
 
+  /*
+   * `--btn-fill` reads `backgroundColor.*`, not `colors.*`, everywhere below.
+   * A fill keeps its depth in both themes so the white label on it keeps
+   * reading; `colors.accent` is the INK, which is lighter in dark. Using the
+   * ink here would sweep a pale teal under a white label.
+   */
   .btn-primary {
     @apply btn bg-accent text-white;
-    --btn-fill: theme('colors.accent.hover');
+    --btn-fill: theme('backgroundColor.accent.hover');
   }
 
   /* The white button the fill was designed for. */
   .btn-secondary {
     @apply btn border border-neutral-200 bg-white text-neutral-900 hover:text-white;
-    --btn-fill: theme('colors.accent.DEFAULT');
+    --btn-fill: theme('backgroundColor.accent.DEFAULT');
   }
 
   .btn-ghost {
     @apply btn bg-transparent text-neutral-900;
-    --btn-fill: theme('colors.neutral.100');
+    --btn-fill: rgb(var(--color-neutral-100));
   }
 
   .btn-danger {
     @apply btn border border-red-600 bg-white text-red-700 hover:text-white;
-    --btn-fill: theme('colors.red.600');
+    --btn-fill: theme('backgroundColor.red.600');
   }
 
   .card {
@@ -205,7 +265,7 @@
      * `fold` would otherwise leave the label sitting at the top of a tall
      * pill instead of centred in it.
      */
-    @apply min-h-11 px-3 py-1.5 xs:px-4 fold:min-h-0 fold:py-1.5;
+    @apply min-h-touch px-3 py-1.5 xs:px-4 fold:min-h-0 fold:py-1.5;
     border-radius: var(--radius);
   }
 
@@ -228,7 +288,7 @@
   .icon-btn {
     @apply inline-flex items-center justify-center bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
     /* 44px on touch, back to the tighter 36px once a pointer is likely. */
-    @apply h-11 w-11 fold:h-9 fold:w-9;
+    @apply h-touch w-touch fold:h-9 fold:w-9;
     border-radius: var(--radius);
   }
 
@@ -245,7 +305,7 @@
      * any field on an iPhone threw the layout. Above `sm` a phone keyboard is
      * no longer the likely input and 14px reads correctly again.
      */
-    @apply min-h-11 text-base sm:min-h-0 sm:text-sm;
+    @apply min-h-touch text-base sm:min-h-0 sm:text-sm;
     border-radius: var(--radius);
   }
 
@@ -258,7 +318,13 @@
    * use; accent-hover is the pressed shade and does not belong here.
    */
   .field-check {
-    @apply border-neutral-200 text-accent focus:ring-accent disabled:opacity-50;
+    @apply border-neutral-200 focus:ring-accent disabled:opacity-50;
+    /*
+     * The checked box is painted with `currentColor`, so this is a FILL and
+     * takes the fill token, not `text-accent` (the ink, pale in dark) — a
+     * white tick on a pale teal box is a 2:1 tick.
+     */
+    color: theme('backgroundColor.accent.DEFAULT');
     border-radius: var(--radius);
   }
 
@@ -368,7 +434,7 @@
    */
   .metric.metric-open {
     @apply bg-white;
-    box-shadow: inset 0 -2px 0 0 theme('colors.accent.DEFAULT');
+    box-shadow: inset 0 -2px 0 0 rgb(var(--color-accent-ink));
   }
 
   /*
@@ -403,7 +469,7 @@
    * that competition is what the single-primary-action rule exists to stop.
    */
   .btn-text {
-    @apply inline-flex min-h-11 items-center gap-2 text-2xs font-semibold uppercase tracking-wider transition-colors fold:min-h-0;
+    @apply inline-flex min-h-touch items-center gap-2 text-2xs font-semibold uppercase tracking-wider transition-colors fold:min-h-0;
     @apply text-neutral-900/70 hover:text-neutral-900 disabled:cursor-not-allowed disabled:opacity-40;
   }
 
@@ -415,7 +481,7 @@
   .field-inline {
     @apply w-full border-0 border-b border-neutral-100 bg-transparent px-0 text-neutral-900 shadow-none transition-colors;
     @apply placeholder:text-neutral-900/35 focus:border-accent focus:ring-0;
-    @apply min-h-11 text-base sm:min-h-0 sm:text-sm;
+    @apply min-h-touch text-base sm:min-h-0 sm:text-sm;
     border-radius: 0;
   }
 
@@ -427,7 +493,7 @@
   .field-flat {
     @apply w-full border-0 bg-neutral-50 text-neutral-900 shadow-none transition-colors;
     @apply placeholder:text-neutral-900/35 focus:bg-white focus:ring-1 focus:ring-accent;
-    @apply min-h-11 px-3 py-2.5 text-base sm:min-h-0 sm:text-sm;
+    @apply min-h-touch px-3 py-2.5 text-base sm:min-h-0 sm:text-sm;
     border-radius: var(--radius);
   }
 

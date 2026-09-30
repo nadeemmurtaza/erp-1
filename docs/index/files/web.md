@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 428 tracked files in `apps/web`, by directory.
+All 438 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -18,7 +18,7 @@ All 428 tracked files in `apps/web`, by directory.
 | `next.config.mjs` | script | 62 |  |
 | `package.json` | json | 44 |  |
 | `postcss.config.mjs` | script | 8 | @type {import('postcss-load-config').Config} |
-| `tailwind.config.ts` | module | 188 |  |
+| `tailwind.config.ts` | module | 224 |  |
 | `tsconfig.json` | json | 25 |  |
 | `vitest.config.mts` | mts | — |  |
 
@@ -26,8 +26,8 @@ All 428 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 768 |  |
-| `ur.json` | json | 768 |  |
+| `en.json` | json | 776 |  |
+| `ur.json` | json | 776 |  |
 
 ### `apps/web/public` (1)
 
@@ -71,7 +71,7 @@ All 428 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `global-error.tsx` | global-error | 82 |  |
-| `globals.css` | stylesheet | 603 |  |
+| `globals.css` | stylesheet | 669 |  |
 | `icon.svg` | asset | — |  |
 | `not-found.tsx` | not-found | 79 |  |
 | `robots.ts` | module | 33 |  |
@@ -82,7 +82,7 @@ All 428 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `error.tsx` | error | 51 |  |
-| `layout.tsx` | layout | 24 |  |
+| `layout.tsx` | layout | 28 |  |
 | `not-found.tsx` | not-found | 21 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)` (3)
@@ -392,7 +392,7 @@ All 428 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 197 |  |
+| `page.tsx` | page | 201 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/embeds` (1)
 
@@ -1117,6 +1117,12 @@ All 428 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `page.tsx` | page | 191 |  |
 
+### `apps/web/src/app/(admin)/admin/design-system` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 23 |  |
+
 ### `apps/web/src/app/(admin)/admin/login` (1)
 
 | File | Kind | Lines | Purpose |
@@ -1134,7 +1140,7 @@ All 428 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `error.tsx` | error | 62 |  |
-| `layout.tsx` | layout | 194 |  |
+| `layout.tsx` | layout | 198 |  |
 | `loading.tsx` | loading | 66 |  |
 | `not-found.tsx` | not-found | 37 |  |
 | `page.tsx` | page | 265 |  |
@@ -1441,8 +1447,8 @@ All 428 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `admin-shell.tsx` | component | 469 |  |
-| `bpmn-editor.tsx` | component | 118 |  |
+| `admin-shell.tsx` | component | 473 |  |
+| `bpmn-editor.tsx` | component | 123 |  |
 | `command-palette.tsx` | component | 285 |  |
 | `cross-sell-manager.tsx` | component | 256 |  |
 | `csv-import-card.tsx` | component | 209 |  |
@@ -1451,8 +1457,8 @@ All 428 tracked files in `apps/web`, by directory.
 | `embedded-widget-frame.tsx` | component | 64 |  |
 | `entity-attribute-editor.tsx` | component | 160 |  |
 | `fragment-mount-point.tsx` | component | 98 |  |
-| `funnel-chart.tsx` | component | 81 |  |
-| `gauge-chart.tsx` | component | 69 |  |
+| `funnel-chart.tsx` | component | 82 |  |
+| `gauge-chart.tsx` | component | 70 |  |
 | `image-manager.tsx` | component | 543 |  |
 | `metadata-driven-entity-form.tsx` | component | 120 |  |
 | `metadata-driven-form.tsx` | component | 147 |  |
@@ -1503,7 +1509,7 @@ All 428 tracked files in `apps/web`, by directory.
 | `category-bar-chart.tsx` | component | 79 |  |
 | `chart-data-table.tsx` | component | 40 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-reader-only table whos… |
 | `chart-marker.tsx` | component | 59 |  |
-| `chart-theme.ts` | component | 92 |  |
+| `chart-theme.ts` | component | 86 |  |
 | `comparison-chart.tsx` | component | 119 |  |
 | `index.ts` | component | 29 | The whole charting vocabulary for the back office (10-admin-dashboard.md D9). |
 | `share-chart.tsx` | component | 95 |  |
@@ -1545,7 +1551,16 @@ All 428 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 104 |  |
 
-### `apps/web/src/components/storefront` (37)
+### `apps/web/src/components/design-system` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `foundations.tsx` | component | 438 |  |
+| `gallery.tsx` | component | 100 |  |
+| `live-tokens.ts` | component | 60 |  |
+| `specimens.tsx` | component | 304 |  |
+
+### `apps/web/src/components/storefront` (38)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1553,17 +1568,17 @@ All 428 tracked files in `apps/web`, by directory.
 | `animated-section.tsx` | component | 96 |  |
 | `auth-page.tsx` | component | 62 |  |
 | `block-renderer.tsx` | component | 91 |  |
-| `bottom-nav.tsx` | component | 150 |  |
+| `bottom-nav.tsx` | component | 157 |  |
 | `cart-badge.tsx` | component | 30 |  |
 | `cart-provider.tsx` | component | 104 |  |
 | `customer-nav.tsx` | component | 87 |  |
 | `customer-session.tsx` | component | 36 |  |
 | `filter-panel.tsx` | component | 358 |  |
-| `footer.tsx` | component | 150 |  |
+| `footer.tsx` | component | 155 |  |
 | `frequently-bought-together.tsx` | component | 149 |  |
 | `grid-toggle-wrapper.tsx` | component | 13 |  |
 | `grid-toggle.tsx` | component | 41 |  |
-| `header.tsx` | component | 208 |  |
+| `header.tsx` | component | 210 |  |
 | `json-ld.tsx` | component | 15 | Renders one JSON-LD `<script>` tag. |
 | `legal-page.tsx` | component | 72 |  |
 | `locale-switcher.tsx` | component | 75 |  |
@@ -1585,9 +1600,10 @@ All 428 tracked files in `apps/web`, by directory.
 | `sort-select.tsx` | component | 64 |  |
 | `stitching-panel.tsx` | component | 969 |  |
 | `stitching-timeline.tsx` | component | 105 |  |
+| `theme-switch.tsx` | component | 28 |  |
 | `visual-search-button.tsx` | component | 89 |  |
 
-### `apps/web/src/components/ui` (17)
+### `apps/web/src/components/ui` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1599,7 +1615,7 @@ All 428 tracked files in `apps/web`, by directory.
 | `disclosure.tsx` | component | 69 |  |
 | `empty-state.tsx` | component | 40 |  |
 | `filter-bar.tsx` | component | 191 |  |
-| `index.ts` | component | 39 | Design-system primitives. |
+| `index.ts` | component | 40 | Design-system primitives. |
 | `list-page-skeleton.tsx` | component | 66 | The shape of a list page, before the list page. |
 | `loading.tsx` | loading | 31 |  |
 | `metric-strip.tsx` | component | 158 |  |
@@ -1608,6 +1624,8 @@ All 428 tracked files in `apps/web`, by directory.
 | `section-rail.tsx` | component | 154 |  |
 | `section.tsx` | component | 59 |  |
 | `tabs.tsx` | component | 116 |  |
+| `theme-init-script.tsx` | component | 22 |  |
+| `theme-toggle.tsx` | component | 115 |  |
 
 ### `apps/web/src/config` (3)
 
@@ -1625,14 +1643,15 @@ All 428 tracked files in `apps/web`, by directory.
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
 | `routes.ts` | constants | 314 | Every internal path the app links to, in one place. |
-| `storage.ts` | constants | 61 | Browser storage keys. |
+| `storage.ts` | constants | 69 | Browser storage keys. |
 
-### `apps/web/src/hooks` (3)
+### `apps/web/src/hooks` (4)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `use-cart.ts` | hook | 13 | The cart, from anywhere in the storefront. |
 | `use-order-status-label.ts` | hook | 23 |  |
+| `use-theme.ts` | hook | 117 |  |
 | `use-toast.ts` | hook | 36 |  |
 
 ### `apps/web/src/i18n` (3)
@@ -1676,11 +1695,12 @@ All 428 tracked files in `apps/web`, by directory.
 | `index.ts` | types | 14 | Barrel for the app's type surface, so a component can pull several shapes from one specifier instead of three parallel… |
 | `stitching.ts` | types | 176 |  |
 
-### `apps/web/src/utils` (5)
+### `apps/web/src/utils` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `cn.ts` | utility | 21 |  |
+| `cn.spec.ts` | unit test | 39 |  |
+| `cn.ts` | utility | 45 |  |
 | `design-drafts.ts` | utility | 91 |  |
 | `email-account-form.ts` | utility | 100 |  |
 | `garment-drafts.ts` | utility | 76 |  |

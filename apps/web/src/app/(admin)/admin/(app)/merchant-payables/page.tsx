@@ -151,7 +151,7 @@ export default function MerchantPayablesPage() {
                 key={candidate || 'ALL'}
                 type="button"
                 onClick={() => setStatus(candidate)}
-                className={status === candidate ? 'chip bg-neutral-900 text-white' : 'chip'}
+                className={status === candidate ? 'chip bg-inverse text-on-inverse' : 'chip'}
               >
                 {candidate || 'All'}
               </button>

@@ -95,24 +95,24 @@ export function ProductCard({
         {/* Covers the photograph so it is still a link, but sits under the buttons. */}
         <Link
           href={`/product/${product.slug}`}
-          className="absolute inset-0 z-10"
+          className="absolute inset-0 z-raised"
           aria-label={product.name}
         />
 
         {/* Status badges stack at the reading-start corner, clear of the heart button opposite. */}
-        <div className="pointer-events-none absolute start-3 top-3 z-20 flex flex-col items-start gap-2">
+        <div className="pointer-events-none absolute start-3 top-3 z-raised-2 flex flex-col items-start gap-2">
           {discount !== null ? (
-            <span className="rounded bg-neutral-900 px-2.5 py-1 text-xs font-semibold text-white">
+            <span data-theme="light" className="rounded bg-neutral-900 px-2.5 py-1 text-xs font-semibold text-white">
               -{discount}%
             </span>
           ) : null}
 
           {!product.inStock ? (
-            <span className="rounded bg-neutral-900/90 px-2.5 py-1 text-xs font-medium text-white">
+            <span data-theme="light" className="rounded bg-neutral-900/90 px-2.5 py-1 text-xs font-medium text-white">
               {t('outOfStock')}
             </span>
           ) : product.stitchingAvailable ? (
-            <span className="rounded bg-neutral-700 px-2.5 py-1 text-xs font-medium text-white">
+            <span data-theme="light" className="rounded bg-neutral-700 px-2.5 py-1 text-xs font-medium text-white">
               {t('getItStitched')}
             </span>
           ) : null}
@@ -130,7 +130,7 @@ export function ProductCard({
             event.preventDefault();
             toggle(product.id);
           }}
-          className="absolute end-3 top-3 z-30 icon-btn"
+          className="absolute end-3 top-3 z-raised-3 icon-btn"
           aria-label={saved ? t('removeFromFavourites') : t('addToFavourites')}
           aria-pressed={saved}
         >
@@ -153,12 +153,12 @@ export function ProductCard({
         {/*
           `pointer-events-none` keeps the full-bleed scrim transparent to clicks.
           Only the buttons and size strip get pointer-events-auto on hover so
-          they're clickable while the dead space falls through to the z-10 link.
+          they're clickable while the dead space falls through to the z-raised link.
           focus-within ensures the overlay opens when keyboard focus lands in the
           button group, making the focus ring visible. Sits below the wishlist
-          button's z-30 so that toggle stays reachable while the scrim is up.
+          button's z-raised-3 so that toggle stays reachable while the scrim is up.
         */}
-        <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center gap-4 bg-neutral-900/30 opacity-0 transition-opacity duration-300 ease-out group-hover/media:opacity-100 group-focus-within/media:opacity-100">
+        <div className="pointer-events-none absolute inset-0 z-raised-2 flex flex-col items-center justify-center gap-4 bg-scrim/30 opacity-0 transition-opacity duration-300 ease-out group-hover/media:opacity-100 group-focus-within/media:opacity-100">
           <div className="pointer-events-none flex items-center gap-3 group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto">
             {onQuickView ? (
               <button

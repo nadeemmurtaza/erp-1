@@ -49,35 +49,33 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 
 | Signal | Today | Note |
 |---|---|---|
-| Token files | 3 (77 lines) | Token groups that exist at all — see the table below |
-| Primitives | 16 | `apps/web/src/components/ui` — the ladder's second rung |
+| Token files | 11 (621 lines) | Token groups that exist at all — see the table below |
+| Primitives | 18 | `apps/web/src/components/ui` — the ladder's second rung |
 | `framer-motion` importers | 1 | `apps/web/src/components/storefront/animated-section.tsx` |
 | CSS `transition` | 4 | declared transitions across every stylesheet |
-| Tailwind `transition-*` classes | 95 | the actual motion surface today — utility classes, not a token |
+| Tailwind `transition-*` classes | 99 | the actual motion surface today — utility classes, not a token |
 | CSS `@keyframes` | 1 | named animations |
 | `prefers-reduced-motion` blocks | 2 | chapter 05 and 07 both require this on every motion |
-| `aria-*` attributes | 205 | written by hand; **no accessibility lint runs** |
-| `role=` attributes | 288 |  |
-| RTL / `dir` references | 40 | Urdu ships; chapter 07 says this is scattered, not systematic |
-| Inline `style={{` | 23 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |
+| `aria-*` attributes | 219 | written by hand; **no accessibility lint runs** |
+| `role=` attributes | 291 |  |
+| RTL / `dir` references | 42 | Urdu ships; chapter 07 says this is scattered, not systematic |
+| Inline `style={{` | 27 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |
 
 
 ## Token groups
 
-The ladder in chapter 03 starts at tokens. Five of the eight groups it needs
-do not exist yet, which is why several chapters are specifications rather than
-descriptions.
+The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is a thin view onto `packages/shared/src/brand.ts`, the one source, and colour has a dark half (`theme-tailwind.ts` turns both into the CSS the two themes read).
 
 | Group | File | Size | State |
 |---|---|---|---|
-| `colour` | `packages/shared/src/theme-colors.ts` | 18 lines | exists |
+| `colour` | `packages/shared/src/theme-colors.ts` | 29 lines | exists |
 | `radius` | `packages/shared/src/theme-radii.ts` | 17 lines | exists |
 | `type` | `packages/shared/src/theme-type.ts` | 42 lines | exists |
-| `space` | — | **unbuilt** | Chapter 01 specifies it; nothing implements it |
-| `size` | — | **unbuilt** | Chapter 01 specifies it; nothing implements it |
-| `shadow` | — | **unbuilt** | Chapter 01 specifies it; nothing implements it |
-| `z-index` | — | **unbuilt** | Chapter 01 specifies it; nothing implements it |
-| `motion` | — | **unbuilt** | Chapter 01 specifies it; nothing implements it |
+| `space` | `packages/shared/src/theme-space.ts` | 22 lines | exists |
+| `size` | `packages/shared/src/theme-size.ts` | 28 lines | exists |
+| `shadow` | `packages/shared/src/theme-elevation.ts` | 12 lines | exists |
+| `z-index` | `packages/shared/src/theme-layers.ts` | 9 lines | exists |
+| `motion` | `packages/shared/src/theme-motion.ts` | 22 lines | exists |
 
 
 ## Outlines

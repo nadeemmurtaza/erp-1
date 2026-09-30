@@ -14,6 +14,7 @@ import {
   type AdminNavItem,
 } from './nav-registry';
 import { CommandPalette } from './command-palette';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { AdminProviders } from '@/providers/admin-providers';
 import { ROUTES } from '@/constants/routes';
 import { BRAND } from '@newax/shared';
@@ -94,13 +95,13 @@ export function AdminShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen bg-neutral-50">
       {/* Mobile Drawer */}
       {isNavOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-overlay lg:hidden">
           <div
-            className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className="fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity animate-fadeIn"
             onClick={() => setIsNavOpen(false)}
             aria-hidden="true"
           />
-          <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl flex flex-col animate-slideInLeft">
+          <div className="fixed inset-y-0 left-0 w-64 bg-overlay shadow-xl flex flex-col animate-slideInLeft">
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
               <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover" onClick={() => setIsNavOpen(false)}>
                 {BRAND.identity.adminName}
@@ -168,6 +169,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <CommandPalette permissions={user.permissions} enabledModules={enabledModules} />
 
           <div className="ms-auto flex items-center gap-3 text-sm">
+            {/* All three choices where there is room; one flip button where there is not. */}
+            <ThemeToggle className="hidden sm:inline-flex" />
+            <ThemeToggle variant="icon" className="sm:hidden" />
             <Link href="/en" className="text-neutral-900/60 hover:text-accent-hover">
               View store
             </Link>

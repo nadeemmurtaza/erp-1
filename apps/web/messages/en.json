@@ -459,6 +459,14 @@
     "retry": "Try again",
     "currencyNote": "Prices in Pakistani Rupees"
   },
+  "theme": {
+    "group": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "Match device",
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme"
+  },
   "stitching": {
     "getStitched": "Get it stitched to your measurements",
     "explainer": "We cut and stitch this fabric for you. Choose the style below; the price updates as you pick.",

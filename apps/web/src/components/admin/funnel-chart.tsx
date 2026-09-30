@@ -1,18 +1,19 @@
 'use client';
 
-import { THEME_COLORS, formatNumber } from '@newax/shared';
+import { formatNumber, themeColorVar } from '@newax/shared';
 
 /**
  * Stepped conversion funnel: each stage's bar narrower than the last, width
  * encoding its count against the largest stage. Matches sales-chart.tsx's
- * idiom — inline SVG, a single accent-teal fill (from THEME_COLORS, since SVG
- * can't take a Tailwind class), minimal direct labels.
+ * idiom — inline SVG, a single accent-teal fill (a theme custom property, since
+ * SVG can't take a Tailwind class and a var() repaints with the theme), minimal direct labels.
  *
  * The count and conversion percentage are drawn above the bar rather than
  * inside it, so a near-zero final stage never has to carry its own
  * (illegibly cramped) label.
  */
-const FILL = THEME_COLORS.accent.DEFAULT;
+// Ink, not fill: a graphic drawn on a surface needs to read against it.
+const FILL = themeColorVar('accent-ink');
 
 const WIDTH = 320;
 const ROW_HEIGHT = 52;

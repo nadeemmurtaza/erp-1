@@ -25,6 +25,15 @@
  *      code actually uses. A foreground that misses the floor on *every* one
  *      of them cannot be correct anywhere, which again is a fact.
  *
+ * Both themes are checked. A class names a role, not a colour, so it means
+ * two colours (`themePalettes`): every use is evaluated against the light
+ * palette and again against the dark one, each with its own baseline. A
+ * region pinned with `data-theme="light"` or `"dark"` is judged only against
+ * the theme it holds (`pinnedRegions`). What this catches that nothing else
+ * does is the inverse-fill trap — a `bg-neutral-900` fill with `text-white`
+ * reads 17.9:1 in light and 1.07:1 in dark, because the ramp flips and the
+ * white label does not.
+ *
  * What it cannot check, stated so the gap is not mistaken for a pass: which
  * surface a given element is actually on, and how big its text renders. Both
  * need the DOM. That is check 6 in the build order (a render harness) and it
@@ -76,14 +85,22 @@ const composite = (fg, bg, alpha) => fg.map((v, i) => v * alpha + bg[i] * (1 - a
 
 /* ── the palette, read from the brand file ─────────────────────────────── */
 
+/** `onInverse` → `on-inverse`, the spelling Tailwind generates the class under. */
+const kebab = (name) => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+
 /**
- * Every `token: '#rrggbb'` under BRAND.theme.colors, flattened to the names
- * Tailwind actually generates: `neutral-500`, `accent`, `accent-hover`,
- * `white`, `feedback-negative`.
+ * Every `token: '#rrggbb'` under a theme's colour block (`const colors` for
+ * light, `const colorsDark` for dark), flattened to the names Tailwind
+ * actually generates: `neutral-500`, `accent`, `accent-hover`, `white`,
+ * `feedback-negative`, `on-inverse`, `accent-ink`.
+ *
+ * camelCase keys are kebab-cased on the way out. Before dark mode this check
+ * lower-cased them instead, so `text-on-inverse` never matched anything and a
+ * pair built on it was silently skipped.
  */
-function readPalette(source) {
-  const start = source.indexOf('const colors = {');
-  if (start === -1) throw new Error(`no 'const colors' block in ${BRAND_FILE}`);
+function readPalette(source, block = 'const colors = {') {
+  const start = source.indexOf(block);
+  if (start === -1) throw new Error(`no '${block}' block in ${BRAND_FILE}`);
 
   const palette = new Map();
   let depth = 0;
@@ -103,7 +120,7 @@ function readPalette(source) {
       const [, name, value] = hex;
       const group = groupAt[depth - 1];
       const token = group ? (name === 'DEFAULT' ? group : `${group}-${name}`) : name;
-      palette.set(token.toLowerCase(), parseHex(value));
+      palette.set(kebab(token), parseHex(value));
     } else if (key) {
       groupAt[depth] = depth >= 1 ? key[1] : null;
     }
@@ -143,6 +160,17 @@ const BASELINE = [
   { token: 'neutral-800', max: 1, reason: '1.10:1 — the dark footer\'s top border.' },
   { token: 'neutral-300', max: 1, reason: '2.10:1 — a gallery thumbnail edge.' },
   { token: 'neutral-400', max: 1, reason: '2.99:1 on neutral-50 — a gallery placeholder (paired bg-neutral-50 text-neutral-400).' },
+];
+
+/**
+ * The same ratchet for the dark theme. Empty on purpose: dark mode was built
+ * to the floors, so it starts with no debt, and anything this check finds in
+ * dark is a real regression — usually an inverse pair written as
+ * `bg-neutral-900 text-white`, which is dark-on-dark once the ramp flips.
+ * Use `bg-inverse text-on-inverse` (brand.ts) for a fill that must flip.
+ */
+const DARK_BASELINE = [
+  { token: 'neutral-100', max: 39, reason: '1.26:1 — the same dividers and card outlines as light (1.23:1). Dark keeps the hairline at the same weight on purpose: it conveys nothing the spacing beside it does not.' },
 ];
 
 // ── retired entries, kept as a record rather than deleted outright ───────
@@ -225,6 +253,54 @@ export function scanColours(source, palette) {
   return uses;
 }
 
+/* ── pinned regions ────────────────────────────────────────────────────── */
+
+/**
+ * A region that holds one theme whatever the page is in: an element carrying
+ * `data-theme="light"` (or `"dark"`). Its descendants resolve every token
+ * against THAT palette, so checking them against the other theme reports
+ * failures that cannot happen — a dark footer whose `text-neutral-300` is
+ * written for a dark surface is correct, and the same class on the flipped
+ * ramp is not the footer's problem.
+ *
+ * Returns the 1-based line range of each pinned element, found the way
+ * prettier lays JSX out rather than by parsing it: the element starts at the
+ * nearest line at or above the attribute that opens with `<tag`, and ends at
+ * its own line when it closes there, else at the first later line back at the
+ * same indentation that opens with `</` or `/>`. Cheap, and proven by the
+ * self-test; a layout it cannot follow yields no region, which only means
+ * the file is checked in both themes — the strict direction.
+ */
+export function pinnedRegions(source) {
+  const lines = source.split('\n');
+  const regions = [];
+  lines.forEach((line, i) => {
+    const attr = line.match(/\bdata-theme=(?:"(light|dark)"|'(light|dark)'|\{['"](light|dark)['"]\})/);
+    if (!attr) return;
+    if (/^\s*(\/\/|\*|\/\*)/.test(line)) return; // a comment mentioning the attribute
+    const theme = attr[1] ?? attr[2] ?? attr[3];
+
+    let start = i;
+    while (start > 0 && !/^\s*<[A-Za-z]/.test(lines[start])) start -= 1;
+    if (!/^\s*<[A-Za-z]/.test(lines[start])) return;
+    const indent = lines[start].match(/^\s*/)[0].length;
+
+    // Closes on the line it opens: `<span …>text</span>` or `<hr … />`.
+    let end = -1;
+    if (start === i && (/<\/[A-Za-z]/.test(lines[start]) || /\/>\s*$/.test(lines[start]))) end = start;
+    // A multi-line opening tag that self-closes: `/>` back at the tag's own indent.
+    for (let j = start + 1; end === -1 && j < lines.length; j += 1) {
+      const t = lines[j];
+      if (!t.trim()) continue;
+      const here = t.match(/^\s*/)[0].length;
+      if (here < indent) break;
+      if (here === indent && /^\s*(<\/|\/>)/.test(t)) end = j;
+    }
+    if (end !== -1) regions.push({ theme, from: start + 1, to: end + 1 });
+  });
+  return regions;
+}
+
 /* ── self-test ─────────────────────────────────────────────────────────── */
 
 function selfTest() {
@@ -249,60 +325,102 @@ function selfTest() {
   if (!ok) failed += 1;
   console.log(`  ${ok ? 'ok  ' : 'FAIL'}  50% black composited over white: ${half.toFixed(2)}:1 (expected ~3.95)`);
 
+  // The dark half: the trap the whole two-theme pass exists to catch, the
+  // fill/ink split, the kebab-casing, and pinned regions.
+  const check = (ok, what) => {
+    if (!ok) failed += 1;
+    console.log(`  ${ok ? 'ok  ' : 'FAIL'}  ${what}`);
+  };
+  check(kebab('onInverse') === 'on-inverse' && kebab('accentInk-hover') === 'accent-ink-hover', 'camelCase palette keys become the class spelling');
+
+  const L = new Map(Object.entries({ white: '#ffffff', surface: '#ffffff', 'neutral-50': '#f2f2f2', 'neutral-900': '#121111', accent: '#0e8294', 'accent-hover': '#095865' }).map(([k, v]) => [k, parseHex(v)]));
+  const D = new Map(Object.entries({ white: '#ffffff', surface: '#171516', 'neutral-50': '#0c0b0b', 'neutral-900': '#f9f7f8', accent: '#0e8294', 'accent-hover': '#095865', 'accent-ink': '#3db8cb', 'accent-ink-hover': '#8fdae6' }).map(([k, v]) => [k, parseHex(v)]));
+  const palettes = themePalettes(L, D);
+  check(palettes.dark.fill.get('white') === D.get('surface'), 'dark: `bg-white` is the surface, not paper');
+  check(palettes.dark.fill.get('accent') === L.get('accent') && palettes.dark.ink.get('accent') === D.get('accent-ink'), 'dark: `bg-accent` keeps the brand fill, `text-accent` is the lighter ink');
+
+  const trap = [
+    { kind: 'bg', token: 'neutral-900', alpha: 1, pairedBg: null, line: 1, file: 'x' },
+    { kind: 'text', token: 'white', alpha: 1, pairedBg: { kind: 'bg', token: 'neutral-900', alpha: 1 }, line: 1, file: 'x' },
+  ];
+  const inLight = analyse(trap, palettes.light, 'neutral-50', 'light');
+  const inDark = analyse(trap, palettes.dark, 'neutral-50', 'dark');
+  check(inLight.failures.length === 0, 'a neutral-900 fill with white text passes in light (17.9:1)');
+  check(inDark.failures.length === 1, 'the same pair fails in dark (white on near-white) — the trap this pass exists for');
+  const pinned = analyse([{ ...trap[1], pin: 'light' }, trap[0]], palettes.dark, 'neutral-50', 'dark');
+  check(pinned.failures.length === 0 && pinned.pinnedElsewhere === 1, 'a use inside a region pinned to light is not judged against dark');
+
+  const fixture = ['<div>', '  <footer', '    data-theme="light"', '    className="a"', '  >', '    <p className="b">x</p>', '  </footer>', '  <span data-theme="dark" className="c">y</span>', '  <p className="d">z</p>', '</div>'].join('\n');
+  const regions = pinnedRegions(fixture);
+  check(
+    regions.length === 2 && regions[0].theme === 'light' && regions[0].from === 2 && regions[0].to === 7 && regions[1].theme === 'dark' && regions[1].from === 8 && regions[1].to === 8,
+    'pinned regions are found for a multi-line element and a one-line element, and nothing else',
+  );
+  check(pinnedRegions('// data-theme="light" is documented here\n<p className="a">x</p>').length === 0, 'a comment that mentions the attribute pins nothing');
+
   if (failed) {
     console.error(`\n${failed} self-test case(s) failed — the contrast maths is wrong, so every result it prints is wrong.\n`);
     process.exit(1);
   }
-  console.log(`\nSelf-test OK (${cases.length + 1} cases) — ratios and alpha compositing match the published values.`);
+  console.log(`\nSelf-test OK — ratios and alpha compositing match the published values, and the two-theme pass catches the inverse-fill trap.`);
 }
 
 /* ── main ──────────────────────────────────────────────────────────────── */
 
-function main() {
-  const brandPath = join(ROOT, BRAND_FILE);
-  if (!existsSync(brandPath)) {
-    console.error(`\nCannot find ${BRAND_FILE}. This check reads the palette from the brand\nfile; without it there is nothing to check, and printing OK would be a lie.\n`);
-    process.exit(1);
-  }
+/**
+ * The two palettes a theme paints with. They differ only in dark, and only for
+ * the two tokens whose fill and ink are different colours:
+ *
+ *   - `bg-white` is the surface, not paper (`bg-white` → dark `surface`).
+ *   - `bg-accent` is the brand fill in both themes (a white label has to keep
+ *     reading on it); `text-accent`, `border-accent` and `ring-accent` are the
+ *     brand INK, which lightens in dark so it keeps reading on the surface.
+ *
+ * This mirrors `createThemeTailwind` in packages/shared/src/theme-tailwind.ts,
+ * which is what makes the same class mean two colours. If that split changes,
+ * this function changes with it.
+ */
+function themePalettes(light, dark) {
+  const fill = new Map(dark);
+  fill.set('accent', light.get('accent'));
+  fill.set('accent-hover', light.get('accent-hover'));
+  fill.set('white', dark.get('surface'));
+  const ink = new Map(dark);
+  ink.set('accent', dark.get('accent-ink'));
+  ink.set('accent-hover', dark.get('accent-ink-hover'));
+  return { light: { fill: light, ink: light }, dark: { fill, ink } };
+}
 
-  if (process.argv.includes('--self-test')) return selfTest();
-
-  let palette;
-  try {
-    palette = readPalette(readFileSync(brandPath, 'utf8'));
-  } catch (error) {
-    console.error(`\nCould not read the palette: ${error.message}\n\nThis check is only as good as the colours it reads from ${BRAND_FILE}.\nIt fails rather than passing vacuously.\n`);
-    process.exit(1);
-  }
-
-  const uses = [];
-  let scanned = 0;
-  for (const dir of sourceRoots()) {
-    for (const file of sourceFiles(dir)) {
-      scanned += 1;
-      const rel = relative(ROOT, file);
-      for (const u of scanColours(readFileSync(file, 'utf8'), palette)) uses.push({ ...u, file: rel });
-    }
-  }
-
+/**
+ * The whole analysis for ONE theme. `uses` is theme-independent (a class is a
+ * class); what a theme changes is the colour each token resolves to.
+ */
+function analyse(uses, { fill, ink }, bodyBg, theme) {
   // The surfaces this product actually paints: the body background plus every
   // `bg-*` token the code uses. A foreground lands on one of these or on
   // nothing.
-  const painted = new Set(uses.filter((u) => u.kind === 'bg' && u.alpha === 1).map((u) => u.token));
-  const bodyBg = (readFileSync(join(ROOT, 'apps/web/src/app/globals.css'), 'utf8').match(/body\s*\{[^}]*?\bbg-([a-z0-9-]+)/s) ?? [])[1];
-  if (bodyBg && palette.has(bodyBg)) painted.add(bodyBg);
+  const painted = new Set(uses.filter((u) => u.kind === 'bg' && u.alpha === 1 && fill.has(u.token)).map((u) => u.token));
+  if (bodyBg && fill.has(bodyBg)) painted.add(bodyBg);
   if (!painted.size) painted.add('white');
 
   const failures = [];
   const counts = new Map();
   /** Below the floor on the body surface, but clears it somewhere painted. */
   const notable = new Map();
-  const bodySurface = bodyBg && palette.has(bodyBg) ? bodyBg : 'white';
+  const bodySurface = bodyBg && fill.has(bodyBg) ? bodyBg : 'white';
+  /** Uses inside a region pinned to the OTHER theme: not this pass's to judge. */
+  let pinnedElsewhere = 0;
 
   for (const u of uses) {
     if (u.kind === 'bg') continue;
+    if (!ink.has(u.token)) continue;
+    if (u.pin && u.pin !== theme) {
+      pinnedElsewhere += 1;
+      continue;
+    }
     const floor = u.kind === 'text' ? FLOOR.text : FLOOR.boundary;
     const name = u.alpha === 1 ? u.token : `${u.token}/${Math.round(u.alpha * 100)}`;
+    const fg = ink.get(u.token);
 
     // 1. A stated pair: both colours are known, so the answer is certain.
     //
@@ -311,18 +429,18 @@ function main() {
     //    reports a failure that does not exist. Composite it over each
     //    painted surface first and take the best case, exactly as an opaque
     //    foreground is handled below.
-    if (u.pairedBg) {
-      const base = palette.get(u.pairedBg.token);
+    if (u.pairedBg && fill.has(u.pairedBg.token)) {
+      const base = fill.get(u.pairedBg.token);
       const surfaces =
         u.pairedBg.alpha === 1
           ? [{ colour: base, via: u.pairedBg.token }]
           : [...painted].map((sfc) => ({
-              colour: composite(base, palette.get(sfc), u.pairedBg.alpha),
+              colour: composite(base, fill.get(sfc), u.pairedBg.alpha),
               via: `${u.pairedBg.token}/${Math.round(u.pairedBg.alpha * 100)} over ${sfc}`,
             }));
       const best = surfaces.reduce(
         (acc, sfc) => {
-          const ratio = contrast(composite(palette.get(u.token), sfc.colour, u.alpha), sfc.colour);
+          const ratio = contrast(composite(fg, sfc.colour, u.alpha), sfc.colour);
           return ratio > acc.ratio ? { ratio, via: sfc.via } : acc;
         },
         { ratio: 0, via: '' },
@@ -337,8 +455,8 @@ function main() {
     // 2. No stated background: it lands on one of the painted surfaces. Only
     //    a token that misses on every one of them is certainly wrong.
     const best = [...painted].reduce((acc, surface) => {
-      const bg = palette.get(surface);
-      const ratio = contrast(composite(palette.get(u.token), bg, u.alpha), bg);
+      const bg = fill.get(surface);
+      const ratio = contrast(composite(fg, bg, u.alpha), bg);
       return ratio > acc.ratio ? { ratio, surface } : acc;
     }, { ratio: 0, surface: '' });
 
@@ -353,8 +471,8 @@ function main() {
     // dark footer still fails on every page. That cannot be proven without
     // rendering, so it is reported rather than enforced: the body background
     // is where most text lands, and missing the floor there is worth knowing.
-    const body = palette.get(bodySurface);
-    const composited = composite(palette.get(u.token), body, u.alpha);
+    const body = fill.get(bodySurface);
+    const composited = composite(fg, body, u.alpha);
     const onBody = contrast(composited, body);
 
     // Only worth saying for a colour that could plausibly be meant for this
@@ -370,53 +488,136 @@ function main() {
       notable.set(name, seen);
     }
   }
+  return { failures, counts, notable, painted, bodySurface, pinnedElsewhere };
+}
 
-  // The ratchet: known debt may shrink, never grow; anything new fails.
-  const allowed = new Map(BASELINE.map((b) => [b.token, b]));
-  const newTokens = [...counts.keys()].filter((t) => !allowed.has(t));
-  const grown = [...counts.entries()].filter(([t, n]) => allowed.has(t) && n > allowed.get(t).max);
-  const shrunk = BASELINE.filter((b) => (counts.get(b.token) ?? 0) < b.max);
+function main() {
+  const brandPath = join(ROOT, BRAND_FILE);
+  if (!existsSync(brandPath)) {
+    console.error(`\nCannot find ${BRAND_FILE}. This check reads the palette from the brand\nfile; without it there is nothing to check, and printing OK would be a lie.\n`);
+    process.exit(1);
+  }
 
-  if (!newTokens.length && !grown.length) {
-    const debt = [...counts.values()].reduce((a, b) => a + b, 0);
-    console.log(
-      `Contrast OK (${scanned} files, ${palette.size} palette colours from ${BRAND_FILE}, ` +
-      `${painted.size} painted surface(s); ${debt} known-below-floor use(s) within baseline)`,
-    );
-    for (const b of shrunk) {
-      console.log(`  ↓ \`${b.token}\` is now ${counts.get(b.token) ?? 0} use(s), under its baseline of ${b.max} — lower the baseline in scripts/check-contrast.mjs.`);
+  if (process.argv.includes('--self-test')) return selfTest();
+
+  let lightPalette;
+  let darkPalette;
+  try {
+    const source = readFileSync(brandPath, 'utf8');
+    lightPalette = readPalette(source);
+    darkPalette = readPalette(source, 'const colorsDark = {');
+    // A dark block that lost a role would make every pair built on it vanish
+    // from the scan rather than fail. Say so instead.
+    for (const role of ['surface', 'overlay', 'inverse', 'on-inverse', 'accent-ink', 'neutral-50', 'neutral-900', 'white']) {
+      if (!darkPalette.has(role)) throw new Error(`the dark palette has no '${role}' — the dark half cannot be checked`);
     }
-    if (notable.size) {
-      const total = [...notable.values()].reduce((a, b) => a + b.count, 0);
-      console.log(
-        `  ⚠ ${notable.size} token(s), ${total} use(s), clear the floor on some painted surface but NOT on\n` +
-        `    the body surface (\`${bodySurface}\`), which is where most text lands. Not enforced — proving it\n` +
-        `    needs a render (docs/design/process-governance/15-integrity.md, check 6). Worth a look:`,
-      );
-      for (const [token, v] of [...notable.entries()].sort((a, b) => b[1].count - a[1].count)) {
-        console.log(`      \`${token}\`  ${v.ratio.toFixed(2)}:1 on ${bodySurface} (floor ${v.floor})  ×${v.count}  e.g. ${v.sample[0]}`);
+  } catch (error) {
+    console.error(`\nCould not read the palette: ${error.message}\n\nThis check is only as good as the colours it reads from ${BRAND_FILE}.\nIt fails rather than passing vacuously.\n`);
+    process.exit(1);
+  }
+
+  // A class is scanned against the union of both themes' names: a token that
+  // only one theme defines is still a token the code can use.
+  const names = new Map([...darkPalette, ...lightPalette]);
+  const uses = [];
+  let scanned = 0;
+  for (const dir of sourceRoots()) {
+    for (const file of sourceFiles(dir)) {
+      scanned += 1;
+      const rel = relative(ROOT, file);
+      const text = readFileSync(file, 'utf8');
+      const regions = pinnedRegions(text);
+      for (const u of scanColours(text, names)) {
+        const pin = regions.find((r) => u.line >= r.from && u.line <= r.to)?.theme ?? null;
+        uses.push({ ...u, file: rel, pin });
+      }
+    }
+  }
+
+  const bodyBg = (readFileSync(join(ROOT, 'apps/web/src/app/globals.css'), 'utf8').match(/body\s*\{[^}]*?\bbg-([a-z0-9-]+)/s) ?? [])[1];
+  const palettes = themePalettes(lightPalette, darkPalette);
+  const baselines = { light: BASELINE, dark: DARK_BASELINE };
+
+  const problems = [];
+  const summary = [];
+  for (const theme of ['light', 'dark']) {
+    const { failures, counts, notable, painted, bodySurface, pinnedElsewhere } = analyse(uses, palettes[theme], bodyBg, theme);
+    const baseline = baselines[theme];
+    const allowed = new Map(baseline.map((b) => [b.token, b]));
+    problems.push({
+      theme,
+      failures,
+      counts,
+      allowed,
+      newTokens: [...counts.keys()].filter((t) => !allowed.has(t)),
+      grown: [...counts.entries()].filter(([t, n]) => allowed.has(t) && n > allowed.get(t).max),
+    });
+    summary.push({
+      theme,
+      painted,
+      bodySurface,
+      notable,
+      pinnedElsewhere,
+      debt: [...counts.values()].reduce((a, b) => a + b, 0),
+      shrunk: baseline.filter((b) => (counts.get(b.token) ?? 0) < b.max).map((b) => ({ b, now: counts.get(b.token) ?? 0 })),
+    });
+  }
+
+  // `--explain=<token>` lists every below-floor use of one token, in each theme:
+  // the answer to "which forty?" when a baseline count moves.
+  const explain = process.argv.find((a) => a.startsWith('--explain='))?.slice('--explain='.length);
+  if (explain) {
+    for (const { theme, failures } of problems) {
+      const hits = failures.filter((f) => f.name === explain);
+      console.log(`[${theme}] ${hits.length} use(s) of \`${explain}\` below its floor`);
+      for (const f of hits) console.log(`  ${f.file}:${f.line}  ${f.ratio.toFixed(2)}:1 on ${f.on}`);
+    }
+    return;
+  }
+
+  if (problems.every((p) => !p.newTokens.length && !p.grown.length)) {
+    console.log(
+      `Contrast OK in both themes (${scanned} files, ${lightPalette.size} light + ${darkPalette.size} dark palette colours ` +
+      `from ${BRAND_FILE}; ${summary.map((t) => `${t.theme}: ${t.painted.size} painted surface(s), ${t.debt} known-below-floor use(s) within baseline, ${t.pinnedElsewhere} use(s) skipped as pinned to the other theme`).join('; ')})`,
+    );
+    for (const t of summary) {
+      for (const { b, now } of t.shrunk) {
+        console.log(`  ↓ [${t.theme}] \`${b.token}\` is now ${now} use(s), under its baseline of ${b.max} — lower the baseline in scripts/check-contrast.mjs.`);
+      }
+      if (t.notable.size) {
+        const total = [...t.notable.values()].reduce((a, b) => a + b.count, 0);
+        console.log(
+          `  ⚠ [${t.theme}] ${t.notable.size} token(s), ${total} use(s), clear the floor on some painted surface but NOT on\n` +
+          `    the body surface (\`${t.bodySurface}\`), which is where most text lands. Not enforced — proving it\n` +
+          `    needs a render (docs/design/process-governance/15-integrity.md, check 6). Worth a look:`,
+        );
+        for (const [token, v] of [...t.notable.entries()].sort((a, b) => b[1].count - a[1].count)) {
+          console.log(`      \`${token}\`  ${v.ratio.toFixed(2)}:1 on ${t.bodySurface} (floor ${v.floor})  ×${v.count}  e.g. ${v.sample[0]}`);
+        }
       }
     }
     return;
   }
 
   console.error('\nCOL-3 violations — contrast below the WCAG 2.2 AA floor:\n');
-  for (const token of newTokens) {
-    const sample = failures.filter((f) => f.name === token).slice(0, 4);
-    console.error(`  \`${token}\` — ${counts.get(token)} use(s), ${sample[0].ratio.toFixed(2)}:1 on ${sample[0].on}, floor ${sample[0].floor}:1`);
-    for (const s of sample) console.error(`      ${s.file}:${s.line}`);
-    if (counts.get(token) > sample.length) console.error(`      … and ${counts.get(token) - sample.length} more`);
-    console.error('');
-  }
-  for (const [token, n] of grown) {
-    console.error(`  \`${token}\` — ${n} use(s), up from a baseline of ${allowed.get(token).max}.\n      ${allowed.get(token).reason}\n      The debt may shrink; it may not grow.\n`);
+  for (const { theme, failures, counts, allowed, newTokens, grown } of problems) {
+    for (const token of newTokens) {
+      const sample = failures.filter((f) => f.name === token).slice(0, 4);
+      console.error(`  [${theme}] \`${token}\` — ${counts.get(token)} use(s), ${sample[0].ratio.toFixed(2)}:1 on ${sample[0].on}, floor ${sample[0].floor}:1`);
+      for (const s of sample) console.error(`      ${s.file}:${s.line}`);
+      if (counts.get(token) > sample.length) console.error(`      … and ${counts.get(token) - sample.length} more`);
+      console.error('');
+    }
+    for (const [token, n] of grown) {
+      console.error(`  [${theme}] \`${token}\` — ${n} use(s), up from a baseline of ${allowed.get(token).max}.\n      ${allowed.get(token).reason}\n      The debt may shrink; it may not grow.\n`);
+    }
   }
   console.error(
     `Text needs ${FLOOR.text}:1; large text and a meaningful boundary need ${FLOOR.boundary}:1\n` +
     `(docs/design/principles-laws/10-laws.md COL-3, docs/design/accessibility/07-accessibility.md).\n\n` +
     `Use a tone that meets the floor, or — if this colour genuinely carries no\n` +
-    `meaning a user must perceive — say so by adding it to BASELINE in this file,\n` +
-    `with the reason. A baseline entry is debt that is written down, not a pass.\n`,
+    `meaning a user must perceive — say so by adding it to BASELINE (light) or DARK_BASELINE\n` +
+    `(dark) in this file, with the reason. A baseline entry is debt that is written down, not a pass.\n`,
   );
   process.exit(1);
 }

@@ -425,7 +425,7 @@ export default function TillPage() {
           )}
           {parkedSales.length > 0 && (
             <button
-              className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-800"
+              className="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent-hover"
               onClick={() => setShowParked((s) => !s)}
             >
               {parkedSales.length} parked

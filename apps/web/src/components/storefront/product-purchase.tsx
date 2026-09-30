@@ -311,12 +311,12 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
         The page root (product/[slug]/page.tsx) reserves bottom space for
         both so scrolled-to-bottom content is never hidden behind either.
       */}
-      <div className="fixed inset-x-0 bottom-[calc(max(1rem,env(safe-area-inset-bottom))+4.75rem)] z-30 px-4 md:hidden">
+      <div className="fixed inset-x-0 bottom-[calc(max(1rem,env(safe-area-inset-bottom))+4.75rem)] z-sticky px-4 md:hidden">
         <button
           type="button"
           onClick={() => void onAdd()}
           disabled={addDisabled}
-          className="btn-primary w-full justify-between gap-3 py-4 shadow-lg shadow-neutral-900/30"
+          className="btn-primary w-full justify-between gap-3 py-4 shadow-lg"
         >
           <span className="text-sm font-semibold">{busy ? t('adding') : t('addToCart')}</span>
           <span className="flex items-baseline gap-2">

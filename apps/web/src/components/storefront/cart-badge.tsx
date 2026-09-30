@@ -20,7 +20,7 @@ export function CartBadge() {
       </svg>
       {/* Hidden while the first load is in flight so it does not flash 0. */}
       {!loading && count > 0 ? (
-        <span className="inline-flex absolute -top-1 -end-1 min-w-[20px] h-5 items-center justify-center rounded-full bg-neutral-900 text-xs font-bold text-white animate-scaleIn shadow-md">
+        <span className="inline-flex absolute -top-1 -end-1 min-w-[20px] h-5 items-center justify-center rounded-full bg-inverse text-xs font-bold text-on-inverse animate-scaleIn shadow-md">
           {count > 99 ? '99+' : count}
         </span>
       ) : null}

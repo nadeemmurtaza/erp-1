@@ -26,7 +26,7 @@ repeated here. This system is the long form around them, not a second copy —
 | # | Chapter | Governs | Enforced today |
 |---|---|---|---|
 | 00 | [Principles](./principles-laws/00-principles.md) | how a design decision is made at all | by review |
-| 01 | [Foundations](./foundations/01-foundations.md) | the token layer: colour, type, space, size, radius, shadow, z, motion | colour/radius/type partly; **the rest is unbuilt** |
+| 01 | [Foundations](./foundations/01-foundations.md) | the token layer: colour (light and dark), type, space, size, radius, shadow, z, motion, and **theming** | built; contrast in both themes by `check-contrast.mjs`; POS and mobile dark mode unbuilt |
 | 02 | [Layout & responsive](./layout-composition/02-layout.md) | grid, density, the seven screens, reflow | breakpoints in `tailwind.config.ts` |
 | 03 | [Components](./components-states/03-components.md) | primitives → components → patterns → templates | `.claude/rules/ui.md` + review |
 | 04 | [States & behaviour](./components-states/04-states.md) | every state an element can be in, and what each one promises | partly, by `EmptyState`/`Loading` |

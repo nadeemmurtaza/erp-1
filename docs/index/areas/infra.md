@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-60 files · 31,354 lines
+60 files · 31,565 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -25,7 +25,7 @@ on them.
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 22 | 7,977 | script, py |
+| `scripts` | 22 | 8,188 | script, py |
 | `scripts/lib` | 3 | 1,644 | utility |
 
 
@@ -41,14 +41,14 @@ on them.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `pnpm-lock.yaml` | 19,483 | yaml |  |
-| `scripts/build-index.mjs` | 2,558 | script |  |
+| `scripts/build-index.mjs` | 2,561 | script |  |
 | `scripts/lib/index-scan.mjs` | 944 | utility | Scanners for the repository index. |
 | `scripts/sync-client.mjs` | 701 | script | scripts/sync-client.mjs — the Extractor. |
 | `scripts/check-overflow.mjs` | 644 | script |  |
+| `scripts/check-contrast.mjs` | 626 | script |  |
 | `scripts/check-module-boundaries.mjs` | 624 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
-| `scripts/check-contrast.mjs` | 425 | script |  |
-| `scripts/check-links.mjs` | 409 | script |  |
+| `scripts/check-links.mjs` | 416 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
 | `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |

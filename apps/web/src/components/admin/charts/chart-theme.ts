@@ -1,16 +1,18 @@
-import { THEME_COLORS, toMajor } from '@newax/shared';
+import { THEME_COLORS, themeColorVar, toMajor } from '@newax/shared';
 
 /**
  * WO-A.2 (10-admin-dashboard.md D9) — the one place a chart wrapper reads
  * colour, dash pattern, marker shape and money formatting from. No wrapper
  * hardcodes a hex; every one imports from here.
  *
- * `GRID`/`SURFACE`/`INK` are read live from `THEME_COLORS` rather than the
- * literal values D9's own prose quotes (`#e9e0cd`/`#050505`) — those were
- * accurate to an earlier draft of `brand.ts`; the neutral ramp has since
- * moved (`check-contrast.mjs`'s own contrast fixes), and importing the
- * current token is what keeps a rebrand or a future contrast fix reaching
- * these charts automatically, which is the whole point of Law 1.
+ * Every colour here is a CSS custom-property reference (`themeColorVar`),
+ * not a hex. A chart's strokes, ticks and fills are SVG attributes, which a
+ * Tailwind class cannot reach — but `rgb(var(--color-…))` resolves through
+ * the same property the utilities use, so a chart repaints the moment the
+ * theme flips with no hook and no second copy of the palette. The hex values
+ * live in `brand.ts` (light and dark) and nowhere else, which is the whole
+ * point of Law 1; a rebrand or a contrast fix reaches these charts by
+ * construction.
  */
 /**
  * D1's own type, defined here rather than in `card-registry.ts` — every
@@ -19,14 +21,14 @@ import { THEME_COLORS, toMajor } from '@newax/shared';
  */
 export type ValueFormat = 'money' | 'integer' | 'percent' | 'percent-bps' | 'days' | 'rating' | 'text';
 
-export const CHART_PALETTE: readonly string[] = THEME_COLORS.chart;
-export const GRID = THEME_COLORS.neutral[100];
-export const SURFACE = THEME_COLORS.white;
-export const INK = THEME_COLORS.neutral[900];
-export const INK_SOFT = withAlpha(THEME_COLORS.neutral[900], 0.6);
-export const INK_FAINT = withAlpha(THEME_COLORS.neutral[900], 0.5);
-export const POSITIVE = THEME_COLORS.feedback.positive;
-export const NEGATIVE = THEME_COLORS.feedback.negative;
+export const CHART_PALETTE: readonly string[] = THEME_COLORS.chart.map((_, i) => themeColorVar(`chart-${i}`));
+export const GRID = themeColorVar('neutral-100');
+export const SURFACE = themeColorVar('surface');
+export const INK = themeColorVar('neutral-900');
+export const INK_SOFT = themeColorVar('neutral-900', 0.6);
+export const INK_FAINT = themeColorVar('neutral-900', 0.5);
+export const POSITIVE = themeColorVar('feedback-positive');
+export const NEGATIVE = themeColorVar('feedback-negative');
 
 /**
  * Dash pattern per series index — `strokeDasharray` values, index-aligned
@@ -80,12 +82,4 @@ export function compactRupees(rupees: number): string {
 /** Same lakh notation, taking paisa — what every chart in `charts/` actually receives (D9: "money charts receive paisa"). */
 export function compactMoney(paisa: number): string {
   return compactRupees(toMajor(paisa));
-}
-
-/** #rrggbb -> rgba(...) at the given alpha. Recharts stroke/fill props take a plain CSS colour string, not a class. */
-function withAlpha(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }

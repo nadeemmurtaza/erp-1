@@ -1,13 +1,29 @@
 import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
+import colors from 'tailwindcss/colors';
 import plugin from 'tailwindcss/plugin';
-import { THEME_COLORS, THEME_RADII, TAILWIND_FONT_SIZE, radiusPx } from '@newax/shared';
+import { THEME_RADII, TAILWIND_FONT_SIZE, createThemeTailwind, radiusPx } from '@newax/shared';
 
 /**
- * One palette for admin and storefront both, imported from
- * packages/shared/src/theme-colors.ts rather than declared here — that file
- * is also what apps/mobile and the web chart components import, so every
- * surface renders the same hex values by construction instead of by three
+ * Every colour, shadow, layer, size and motion value below comes from
+ * `createThemeTailwind` (packages/shared/src/theme-tailwind.ts), which reads
+ * them from brand.ts — this file declares none. It is the same function the
+ * POS calls, so both apps resolve the same tokens, in both themes.
+ *
+ * The four hue scales are passed in because shared has no Tailwind dependency
+ * to read them from; they are the only stock hues the product uses.
+ */
+const theme = createThemeTailwind({
+  red: colors.red,
+  green: colors.green,
+  amber: colors.amber,
+  blue: colors.blue,
+});
+
+/**
+ * One palette for admin and storefront both, in two themes, from brand.ts —
+ * that file is also what apps/mobile and the web chart components import, so
+ * every surface renders the same values by construction instead of by three
  * people independently eyeballing "close enough".
  *
  * `neutral` (monochrome ramp) is the whole background/text/border system for
@@ -16,11 +32,32 @@ import { THEME_COLORS, THEME_RADII, TAILWIND_FONT_SIZE, radiusPx } from '@newax/
  * reserved for rating stars — never repurpose it. Error/success/warning use
  * Tailwind's stock `red`/`green`/`amber` scales, already used consistently
  * throughout the app; there is no custom token for those.
+ *
+ * The palette is CLOSED: `colors` replaces Tailwind's rather than extending
+ * it, so a hue with no dark value (`text-orange-600`) generates no CSS at all
+ * instead of being right in light and wrong in dark. See theme-tailwind.ts.
  */
 export default {
   content: ['./src/**/*.{ts,tsx}'],
+  /*
+   * The dark variant keys off the same attribute the colour tokens do, so a
+   * `dark:` utility and a token can never disagree about which theme is live.
+   * It is for the rare refinement a token cannot express; reach for a token
+   * first. Do not use it inside a region pinned with `data-theme='light'` —
+   * the attribute on <html> still matches there.
+   */
+  darkMode: ['selector', "[data-theme='dark']"],
   theme: {
+    colors: theme.colors,
+    zIndex: theme.zIndex,
     extend: {
+      backgroundColor: theme.backgroundColor,
+      borderColor: theme.borderColor,
+      gradientColorStops: theme.gradientColorStops,
+      boxShadow: theme.boxShadow,
+      spacing: theme.spacing,
+      transitionDuration: { ...theme.transitionDuration, 250: '250ms' },
+      transitionTimingFunction: theme.transitionTimingFunction,
       /*
        * Seven tiers, not Tailwind's five, and the two extra ones are the two
        * the stock scale has no answer for.
@@ -59,12 +96,6 @@ export default {
        */
       minHeight: {
         auth: 'calc(100vh - theme(spacing.16))',
-      },
-      colors: {
-        neutral: THEME_COLORS.neutral,
-        accent: THEME_COLORS.accent,
-        star: THEME_COLORS.star,
-        feedback: THEME_COLORS.feedback,
       },
       fontFamily: {
         // Noto Nastaliq renders Urdu properly where it is installed; the rest
@@ -127,12 +158,18 @@ export default {
         '3xl': 'var(--radius-lg)',
         full: '9999px',
       },
+      /*
+       * Durations and easing come from the motion tokens (brand.ts
+       * theme.motion, published as --motion-* by the theme base styles), so
+       * refining the motion language is one edit. `normal` (220ms) for a
+       * fade or a scale, `slow` (320ms) for anything that travels.
+       */
       animation: {
-        fadeIn: 'fadeIn 200ms ease-out',
-        slideUp: 'slideUp 300ms ease-out',
-        slideInLeft: 'slideInLeft 300ms ease-out',
-        slideInRight: 'slideInRight 300ms ease-out',
-        scaleIn: 'scaleIn 200ms ease-out',
+        fadeIn: 'fadeIn var(--motion-duration-normal) var(--motion-easing-standard)',
+        slideUp: 'slideUp var(--motion-duration-slow) var(--motion-easing-standard)',
+        slideInLeft: 'slideInLeft var(--motion-duration-slow) var(--motion-easing-standard)',
+        slideInRight: 'slideInRight var(--motion-duration-slow) var(--motion-easing-standard)',
+        scaleIn: 'scaleIn var(--motion-duration-normal) var(--motion-easing-standard)',
         shimmer: 'shimmer 2s infinite',
       },
       keyframes: {
@@ -161,9 +198,6 @@ export default {
           '100%': { backgroundPosition: '-200% 0' },
         },
       },
-      transitionDuration: {
-        250: '250ms',
-      },
     },
   },
   plugins: [
@@ -182,6 +216,8 @@ export default {
           '--radius-lg': radiusPx(THEME_RADII.lg),
         },
       });
+      // The colour, shadow and motion custom properties, for both themes.
+      addBase(theme.baseStyles());
     }),
   ],
 } satisfies Config;

@@ -3,7 +3,10 @@
 Motion exists to make the system easier to understand. Nothing else justifies
 it.
 
-> **Status: essentially unbuilt.** `framer-motion` 13.1.1 is a dependency and
+> **Status: tokens built, language mostly unbuilt.** Durations and easings are
+> tokens now (`theme-motion.ts`, chapter 01), consumed by Tailwind's `duration-*`
+> and `ease-*` and by the stylesheet; springs and distances are defined with no
+> consumer. `framer-motion` 13.1.1 is a dependency and
 > is imported by **one** file. Motion today is 83 Tailwind `transition-*`
 > utilities, 4 CSS `transition` declarations and 1 `@keyframes`, with no shared
 > vocabulary — and the stylesheets contain **two**

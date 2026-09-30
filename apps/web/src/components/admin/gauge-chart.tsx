@@ -1,13 +1,13 @@
 'use client';
 
-import { THEME_COLORS } from '@newax/shared';
+import { themeColorVar } from '@newax/shared';
 
 /**
  * Semicircular progress gauge for a single percent-of-target metric.
  *
  * Matches sales-chart.tsx's idiom: inline SVG, accent-teal fill against a
- * muted neutral track (both from THEME_COLORS, since SVG can't take a
- * Tailwind class), one direct label (the percent, centered) rather than a
+ * muted neutral track (both theme custom properties, since an SVG stroke
+ * can't take a Tailwind class — and a var() repaints with the theme), one direct label (the percent, centered) rather than a
  * cluttered dial. Supporting figures are passed in as `caption` and rendered
  * below the arc, the same figure/figcaption split sales-chart.tsx uses for
  * its hover readout.
@@ -17,8 +17,9 @@ import { THEME_COLORS } from '@newax/shared';
  * the true figure (DashboardSummary.monthlyTarget.percent is pre-clamped to
  * 0-999 by the API, so it can legitimately read above 100).
  */
-const FILL = THEME_COLORS.accent.DEFAULT;
-const TRACK = THEME_COLORS.neutral[100];
+// Ink, not fill: a graphic drawn on a surface needs to read against it.
+const FILL = themeColorVar('accent-ink');
+const TRACK = themeColorVar('neutral-100');
 
 const WIDTH = 200;
 const HEIGHT = 118;

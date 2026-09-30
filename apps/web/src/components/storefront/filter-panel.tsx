@@ -236,7 +236,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
         </svg>
         {t('filters')}
         {activeCount > 0 ? (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-semibold text-neutral-900">
+          <span data-theme="light" className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-semibold text-neutral-900">
             {activeCount}
           </span>
         ) : null}
@@ -244,14 +244,14 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
 
       {/* Mobile Drawer */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-overlay lg:hidden">
           <div
-            className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className="fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity animate-fadeIn"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
           <div className={cn(
-            'fixed inset-y-0 w-80 bg-white shadow-xl flex flex-col',
+            'fixed inset-y-0 w-80 bg-overlay shadow-xl flex flex-col',
             isRtl ? 'start-0 animate-slideInLeft' : 'end-0 animate-slideInRight'
           )}>
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">

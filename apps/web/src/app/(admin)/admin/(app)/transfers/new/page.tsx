@@ -162,7 +162,7 @@ export default function NewTransferPage() {
             onChange={(event) => setSearch(event.target.value)}
           />
           {results.length > 0 ? (
-            <ul className="absolute z-10 mt-1 w-full rounded bg-white shadow-md">
+            <ul className="absolute z-dropdown mt-1 w-full rounded bg-overlay shadow-md">
               {results.map((variant) => (
                 <li key={variant.id}>
                   <button

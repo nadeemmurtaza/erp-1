@@ -30,8 +30,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `error.tsx` | `AdminError` | default | :15 | Admin error boundary. |
-| `layout.tsx` | `metadata` | const | :6 |  |
-| `layout.tsx` | `AdminRootLayout` | default | :17 | The back office is English-only and sits outside the storefront's [locale] routing, so it renders i… |
+| `layout.tsx` | `metadata` | const | :7 |  |
+| `layout.tsx` | `AdminRootLayout` | default | :18 | The back office is English-only and sits outside the storefront's [locale] routing, so it renders i… |
 | `not-found.tsx` | `AdminNotFound` | default | :5 | Admin 404 — a mistyped admin URL, or a record that no longer exists. |
 
 ### `apps/web/src/app/(admin)/admin/(app)`
@@ -1066,6 +1066,13 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `WalletAdminPage` | default | :33 | doc 155 (WO-155.5) — a customer's wallet balance and full ledger, plus the manual-adjustment and fr… |
 
+### `apps/web/src/app/(admin)/admin/design-system`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `metadata` | const | :4 |  |
+| `page.tsx` | `DesignSystemPage` | default | :20 | The design-system reference: every token and primitive, in whichever theme you are viewing. |
+
 ### `apps/web/src/app/(admin)/admin/login`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1083,8 +1090,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `error.tsx` | `StorefrontError` | default | :21 | Storefront error boundary. |
-| `layout.tsx` | `generateMetadata` | function | :46 | Deliberately no generateStaticParams. |
-| `layout.tsx` | `LocaleLayout` | default | :133 |  |
+| `layout.tsx` | `generateMetadata` | function | :47 | Deliberately no generateStaticParams. |
+| `layout.tsx` | `LocaleLayout` | default | :134 |  |
 | `loading.tsx` | `Loading` | default | :1 |  |
 | `not-found.tsx` | `StorefrontNotFound` | default | :12 | Storefront 404. |
 | `page.tsx` | `revalidate` | const | :13 |  |
@@ -1414,7 +1421,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `admin-shell.tsx` | `AdminShell` | function | :34 | The back office frame: role guard, sidebar and header. |
+| `admin-shell.tsx` | `AdminShell` | function | :35 | The back office frame: role guard, sidebar and header. |
 | `bpmn-editor.tsx` | `BpmnEditor` | function | :46 | architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.2) — a thin React wrapper mounting… |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |
@@ -1425,9 +1432,9 @@ Every top-level export in `web`, with the line to open.
 | `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | function | :15 | architecture-patterns/113-micro-frontend-embedding.md (WO-113.2) — a narrow, reusable iframe contai… |
 | `entity-attribute-editor.tsx` | `EntityAttributeEditor` | function | :19 | architecture-patterns/140-general-eav-extensibility-model.md (WO-140.4) — the general fallback edit… |
 | `fragment-mount-point.tsx` | `FragmentMountPoint` | function | :18 | architecture-patterns/143-micro-frontend-architecture.md (WO-143.4) — the actual mount mechanism fo… |
-| `funnel-chart.tsx` | `FunnelStage` | interface | :23 |  |
-| `funnel-chart.tsx` | `FunnelChart` | function | :28 |  |
-| `gauge-chart.tsx` | `GaugeChart` | function | :32 |  |
+| `funnel-chart.tsx` | `FunnelStage` | interface | :24 |  |
+| `funnel-chart.tsx` | `FunnelChart` | function | :29 |  |
+| `gauge-chart.tsx` | `GaugeChart` | function | :33 |  |
 | `image-manager.tsx` | `ImageManager` | function | :39 | Upload, reorder and delete product photographs. |
 | `image-manager.tsx` | `StagedImage` | interface | :321 | A photo picked before the product exists to attach it to. |
 | `image-manager.tsx` | `ImageStager` | function | :344 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
@@ -1502,22 +1509,22 @@ Every top-level export in `web`, with the line to open.
 | `category-bar-chart.tsx` | `CategoryBarChart` | function | :16 | A ranked horizontal bar list — top sellers, categories, suppliers. |
 | `chart-data-table.tsx` | `ChartDataTable` | function | :7 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
 | `chart-marker.tsx` | `ChartMarker` | function | :8 | A per-series marker shape — the third channel (with colour and dash pattern) that keeps a multi-ser… |
-| `chart-theme.ts` | `ValueFormat` | type | :20 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
-| `chart-theme.ts` | `CHART_PALETTE` | const | :22 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
-| `chart-theme.ts` | `GRID` | const | :23 |  |
-| `chart-theme.ts` | `SURFACE` | const | :24 |  |
-| `chart-theme.ts` | `INK` | const | :25 |  |
-| `chart-theme.ts` | `INK_SOFT` | const | :26 |  |
-| `chart-theme.ts` | `INK_FAINT` | const | :27 |  |
-| `chart-theme.ts` | `POSITIVE` | const | :28 |  |
-| `chart-theme.ts` | `NEGATIVE` | const | :29 |  |
-| `chart-theme.ts` | `DASH_PATTERNS` | const | :38 | Dash pattern per series index — `strokeDasharray` values, index-aligned with `CHART_PALETTE`. |
-| `chart-theme.ts` | `MARKER_SHAPES` | const | :48 | Marker shape per series index, same alignment — the third channel alongside colour and dash. |
-| `chart-theme.ts` | `paletteColor` | function | :57 |  |
-| `chart-theme.ts` | `dashFor` | function | :61 |  |
-| `chart-theme.ts` | `markerFor` | function | :65 |  |
-| `chart-theme.ts` | `compactRupees` | function | :74 | Ported verbatim from `sales-chart.tsx` (retired in WO-E.2) — a Pakistan-specific asset (lakh notati… |
-| `chart-theme.ts` | `compactMoney` | function | :81 | Same lakh notation, taking paisa — what every chart in `charts/` actually receives (D9: "money char… |
+| `chart-theme.ts` | `ValueFormat` | type | :22 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
+| `chart-theme.ts` | `CHART_PALETTE` | const | :24 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
+| `chart-theme.ts` | `GRID` | const | :25 |  |
+| `chart-theme.ts` | `SURFACE` | const | :26 |  |
+| `chart-theme.ts` | `INK` | const | :27 |  |
+| `chart-theme.ts` | `INK_SOFT` | const | :28 |  |
+| `chart-theme.ts` | `INK_FAINT` | const | :29 |  |
+| `chart-theme.ts` | `POSITIVE` | const | :30 |  |
+| `chart-theme.ts` | `NEGATIVE` | const | :31 |  |
+| `chart-theme.ts` | `DASH_PATTERNS` | const | :40 | Dash pattern per series index — `strokeDasharray` values, index-aligned with `CHART_PALETTE`. |
+| `chart-theme.ts` | `MARKER_SHAPES` | const | :50 | Marker shape per series index, same alignment — the third channel alongside colour and dash. |
+| `chart-theme.ts` | `paletteColor` | function | :59 |  |
+| `chart-theme.ts` | `dashFor` | function | :63 |  |
+| `chart-theme.ts` | `markerFor` | function | :67 |  |
+| `chart-theme.ts` | `compactRupees` | function | :76 | Ported verbatim from `sales-chart.tsx` (retired in WO-E.2) — a Pakistan-specific asset (lakh notati… |
+| `chart-theme.ts` | `compactMoney` | function | :83 | Same lakh notation, taking paisa — what every chart in `charts/` actually receives (D9: "money char… |
 | `comparison-chart.tsx` | `ComparisonBucketPoint` | interface | :10 |  |
 | `comparison-chart.tsx` | `ComparisonChart` | function | :25 | WO-B.5's own headline chart, and the dashboard's empty comparison slot (WO-A.4). |
 | `index.ts` | `TimeSeriesChart` `type TimeSeriesSeriesDef` | re-export |  | from `./time-series-chart` |
@@ -1583,6 +1590,21 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | function | :59 |  |
 
+### `apps/web/src/components/design-system`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `foundations.tsx` | `GallerySection` | function | :21 | ── frame ─────────────────────────────────────────────────────────────── |
+| `foundations.tsx` | `Group` | function | :46 |  |
+| `foundations.tsx` | `ColourFoundations` | function | :109 |  |
+| `foundations.tsx` | `ContrastTable` | function | :207 |  |
+| `foundations.tsx` | `TypeFoundations` | function | :265 |  |
+| `foundations.tsx` | `SpaceFoundations` | function | :297 | ── space, size, radius ───────────────────────────────────────────────── |
+| `foundations.tsx` | `ElevationFoundations` | function | :359 |  |
+| `gallery.tsx` | `DesignSystemGallery` | function | :31 | The design system, rendered by the system it describes. |
+| `live-tokens.ts` | `useLiveTokens` | function | :17 | Reads the theme's colours back out of the browser, not out of brand.ts. |
+| `specimens.tsx` | `ComponentSpecimens` | function | :46 |  |
+
 ### `apps/web/src/components/storefront`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1603,7 +1625,7 @@ Every top-level export in `web`, with the line to open.
 | `frequently-bought-together.tsx` | `FrequentlyBoughtTogether` | function | :29 | WO-9.6 — "Frequently bought together — co-occurrence in OrderItem, no AI needed at all." A distinct… |
 | `grid-toggle-wrapper.tsx` | `GridToggleWrapper` | function | :10 |  |
 | `grid-toggle.tsx` | `GridToggle` | function | :16 |  |
-| `header.tsx` | `Header` | function | :38 |  |
+| `header.tsx` | `Header` | function | :39 |  |
 | `json-ld.tsx` | `JsonLd` | function | :7 | Renders one JSON-LD `<script>` tag. |
 | `legal-page.tsx` | `LegalPage` | function | :22 | The shape the three policy pages share. |
 | `locale-switcher.tsx` | `LocaleSwitcher` | function | :20 | Switches language while staying on the same page — a customer reading a product in English lands on… |
@@ -1630,6 +1652,7 @@ Every top-level export in `web`, with the line to open.
 | `stitching-panel.tsx` | `prepareStitching` | function | :777 | Saves the typed measurements as a reusable profile, then hands back what the cart accepts. |
 | `stitching-timeline.tsx` | `TimelineEvent` | type | :9 | Declared in types/api.ts with the other wire shapes; kept here as a name. |
 | `stitching-timeline.tsx` | `StitchingTimeline` | function | :21 | How far along one garment is. |
+| `theme-switch.tsx` | `ThemeSwitch` | function | :12 | The storefront's theme control: the shared `ThemeToggle` in its one-button shape, with the words in… |
 | `visual-search-button.tsx` | `VisualSearchButton` | function | :22 | WO-9.5 (09-ai-layer.md) — "Visual search via image embedding: upload a photo, find the nearest prod… |
 
 ### `apps/web/src/components/ui`
@@ -1666,6 +1689,7 @@ Every top-level export in `web`, with the line to open.
 | `index.ts` | `Dialog` | re-export |  | from `./dialog` |
 | `index.ts` | `ConfirmDialog` | re-export |  | from `./confirm-dialog` |
 | `index.ts` | `Loading` | re-export |  | from `./loading` |
+| `index.ts` | `ThemeToggle` `type ThemeToggleLabels` | re-export |  | from `./theme-toggle` |
 | `index.ts` | `ListPageSkeleton` | re-export |  | from `./list-page-skeleton` |
 | `index.ts` | `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` `type FilterDef` | re-export |  | from `./filter-bar` |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | function | :20 | The shape of a list page, before the list page. |
@@ -1680,6 +1704,9 @@ Every top-level export in `web`, with the line to open.
 | `section.tsx` | `Section` | function | :19 | A titled region of a page, with no box around it. |
 | `tabs.tsx` | `TabItem` | interface | :6 |  |
 | `tabs.tsx` | `Tabs` | function | :37 | Splits one page into several, without splitting the route. |
+| `theme-init-script.tsx` | `ThemeInitScript` | function | :19 | Inline this in the `<head>` of every root layout that renders `<html>`. |
+| `theme-toggle.tsx` | `ThemeToggleLabels` | interface | :25 | The control that switches theme. |
+| `theme-toggle.tsx` | `ThemeToggle` | function | :51 |  |
 
 ### `apps/web/src/config`
 
@@ -1708,6 +1735,8 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `use-cart.ts` | `useCart` | re-export |  | from `@/components/storefront/cart-provider` |
 | `use-order-status-label.ts` | `useOrderStatusLabel` | function | :17 | An order status in the reader's language. |
+| `use-theme.ts` | `UseTheme` | interface | :86 |  |
+| `use-theme.ts` | `useTheme` | function | :96 |  |
 | `use-toast.ts` | `Toast` | interface | :5 |  |
 | `use-toast.ts` | `useToast` | function | :12 |  |
 
@@ -2020,7 +2049,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `cn.ts` | `cn` | function | :18 | Joins class names and resolves Tailwind conflicts, last one winning. |
+| `cn.ts` | `cn` | function | :42 | Joins class names and resolves Tailwind conflicts, last one winning. |
 | `design-drafts.ts` | `DesignArea` | type | :12 | Design groups as form state. |
 | `design-drafts.ts` | `AREAS` | const | :22 | The regions, ordered the way a tailor reads down a garment rather than alphabetically — the list ar… |
 | `design-drafts.ts` | `ANYWHERE` | const | :36 | Groups with no area apply wherever the storefront chooses to show them. |

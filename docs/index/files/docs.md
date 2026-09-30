@@ -47,7 +47,7 @@ All 437 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `03-components.md` | doc | 113 |  |
+| `03-components.md` | doc | 116 |  |
 | `04-states.md` | doc | 141 |  |
 
 ### `docs/design/content` (1)
@@ -60,7 +60,7 @@ All 437 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `01-foundations.md` | doc | 175 |  |
+| `01-foundations.md` | doc | 280 |  |
 
 ### `docs/design/layout-composition` (3)
 
@@ -74,7 +74,7 @@ All 437 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `05-motion.md` | doc | 193 |  |
+| `05-motion.md` | doc | 196 |  |
 
 ### `docs/design/principles-laws` (2)
 
@@ -563,7 +563,7 @@ All 437 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 9605 |  |
+| `DECISIONS.md` | doc | 9790 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |

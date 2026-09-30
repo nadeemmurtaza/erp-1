@@ -686,7 +686,7 @@ export default function CheckoutPage() {
           submitLabel={busy ? t('placing') : t('placeOrder')}
           submitBusy={busy}
           submitDisabled={busy || !method}
-          accentClassName="bg-neutral-900 text-white"
+          accentClassName="bg-inverse text-on-inverse"
           backLabel={t('back')}
           nextLabel={t('next')}
           error={

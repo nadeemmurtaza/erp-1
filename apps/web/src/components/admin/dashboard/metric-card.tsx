@@ -101,7 +101,7 @@ export function MetricCard({
       {delta !== null ? (
         <span
           className={`inline-flex items-center gap-1 text-xs font-medium ${
-            deltaIsGood === null ? 'text-neutral-900/60' : deltaIsGood ? 'text-emerald-700' : 'text-rose-700'
+            deltaIsGood === null ? 'text-neutral-900/60' : deltaIsGood ? 'text-feedback-positive' : 'text-feedback-negative'
           }`}
         >
           <span aria-hidden="true">{isUp ? '↑' : isDown ? '↓' : '→'}</span>

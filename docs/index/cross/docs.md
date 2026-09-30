@@ -192,15 +192,15 @@ _no second-level headings_
 - Internationalisation beyond direction  <sub>:133</sub>
 - What would make this real  <sub>:140</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>113 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>116 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
-- Choosing between them  <sub>:53</sub>
-- Patterns — *undocumented*  <sub>:64</sub>
-- Templates — *undocumented*  <sub>:81</sub>
-- Component contract  <sub>:92</sub>
-- What never gets hand-rolled  <sub>:107</sub>
+- Choosing between them  <sub>:56</sub>
+- Patterns — *undocumented*  <sub>:67</sub>
+- Templates — *undocumented*  <sub>:84</sub>
+- Component contract  <sub>:95</sub>
+- What never gets hand-rolled  <sub>:110</sub>
 
 ### `docs/design/components-states/04-states.md`  <sub>141 lines</sub>
 
@@ -227,19 +227,20 @@ _no second-level headings_
 - Localisation  <sub>:95</sub>
 - Verifying  <sub>:108</sub>
 
-### `docs/design/foundations/01-foundations.md`  <sub>175 lines</sub>
+### `docs/design/foundations/01-foundations.md`  <sub>280 lines</sub>
 
-- Why tokens and not values  <sub>:12</sub>
-- Colour  <sub>:22</sub>
-- Typography  <sub>:36</sub>
-- Spacing — *unbuilt*  <sub>:49</sub>
-- Size — *unbuilt*  <sub>:71</sub>
-- Radius  <sub>:82</sub>
-- Shadow and elevation — *unbuilt*  <sub>:89</sub>
-- Z-index / layering — *unbuilt*  <sub>:101</sub>
-- Breakpoints  <sub>:121</sub>
-- Motion tokens — *unbuilt*  <sub>:132</sub>
-- Where tokens live  <sub>:165</sub>
+- Why tokens and not values  <sub>:16</sub>
+- Colour  <sub>:26</sub>
+- Typography  <sub>:47</sub>
+- Spacing  <sub>:60</sub>
+- Size  <sub>:82</sub>
+- Radius  <sub>:93</sub>
+- Shadow and elevation  <sub>:100</sub>
+- Z-index / layering  <sub>:120</sub>
+- Breakpoints  <sub>:141</sub>
+- Motion tokens  <sub>:152</sub>
+- Theming  <sub>:184</sub>
+- Where tokens live  <sub>:267</sub>
 
 ### `docs/design/layout-composition/02-layout.md`  <sub>121 lines</sub>
 
@@ -268,21 +269,21 @@ _no second-level headings_
 - What must be built  <sub>:178</sub>
 - Sources  <sub>:191</sub>
 
-### `docs/design/motion/05-motion.md`  <sub>193 lines</sub>
+### `docs/design/motion/05-motion.md`  <sub>196 lines</sub>
 
-- The one test  <sub>:13</sub>
-- What motion may communicate  <sub>:28</sub>
-- The language  <sub>:43</sub>
-- Hierarchy of motion  <sub>:61</sub>
-- Continuity over replacement  <sub>:78</sub>
-- Orchestration  <sub>:94</sub>
-- Micro-interactions  <sub>:103</sub>
-- Scroll  <sub>:119</sub>
-- Responsive motion  <sub>:131</sub>
-- Reduced motion — required  <sub>:142</sub>
-- Performance  <sub>:161</sub>
-- Rejection list  <sub>:172</sub>
-- Benchmark, not template  <sub>:183</sub>
+- The one test  <sub>:16</sub>
+- What motion may communicate  <sub>:31</sub>
+- The language  <sub>:46</sub>
+- Hierarchy of motion  <sub>:64</sub>
+- Continuity over replacement  <sub>:81</sub>
+- Orchestration  <sub>:97</sub>
+- Micro-interactions  <sub>:106</sub>
+- Scroll  <sub>:122</sub>
+- Responsive motion  <sub>:134</sub>
+- Reduced motion — required  <sub>:145</sub>
+- Performance  <sub>:164</sub>
+- Rejection list  <sub>:175</sub>
+- Benchmark, not template  <sub>:186</sub>
 
 ### `docs/design/principles-laws/00-principles.md`  <sub>83 lines</sub>
 
@@ -2963,7 +2964,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,605 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,790 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3051,6 +3052,7 @@ _no second-level headings_
 - ADR-080 — Doc 211: cloud (subscription) and offline (license) locked to strictly separate `PricingModel`/`licenseDeploymentMode` pairings, retracting doc 154's "Lifetime License, ONLINE variant" row and naming doc 48 a precondition of a plan already on the public pricing page  <sub>:9350</sub>
 - ADR-081 — Doc 212: role/permission scope enforcement confirmed as a live adoption gap, not a hypothetical — `AdminScope` has exactly one production caller, `orgUnitScopeFilterFor()` has zero, and `check-route-permissions.mjs` has no awareness of either  <sub>:9414</sub>
 - ADR-082 — Doc 48 (native desktop deployment): WO-48.1/48.3/48.4/48.5 built as real code in a new `packages/desktop-runtime`; the Electron/Tauri shell and auto-update stay unbuilt, exactly as the document's own text already scoped  <sub>:9488</sub>
+- ADR-083 — A two-theme design system: one source in `brand.ts`, themes as scoped CSS custom properties, fill and ink split, a closed Tailwind palette, and contrast enforced in both themes  <sub>:9607</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 

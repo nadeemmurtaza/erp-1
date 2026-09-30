@@ -167,16 +167,16 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 2558 |  |
+| `scripts/build-index.mjs` | 2561 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
 | `scripts/check-chart-imports.mjs` | 72 |  |
-| `scripts/check-contrast.mjs` | 425 |  |
+| `scripts/check-contrast.mjs` | 626 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
 | `scripts/check-hardcoded-policy.mjs` | 85 |  |
 | `scripts/check-hexagonal-purity.mjs` | 149 |  |
-| `scripts/check-links.mjs` | 409 |  |
+| `scripts/check-links.mjs` | 416 |  |
 | `scripts/check-metadata-renderer.mjs` | 134 |  |
 | `scripts/check-module-boundaries.mjs` | 624 |  |
 | `scripts/check-overflow.mjs` | 644 |  |

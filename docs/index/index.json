@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2514,
-    "lines": 395749,
+    "files": 2535,
+    "lines": 398773,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -12,9 +12,9 @@
     "migrations": 119,
     "events": 69,
     "permissions": 130,
-    "screens": 277,
+    "screens": 278,
     "crons": 30,
-    "specs": 365,
+    "specs": 369,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,8 +27,8 @@
     },
     "infra": {
       "files": 60,
-      "lines": 31354,
-      "bytes": 1232665,
+      "lines": 31565,
+      "bytes": 1244519,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -46,25 +46,25 @@
     "pos": {
       "files": 33,
       "lines": 2668,
-      "bytes": 95029,
+      "bytes": 95030,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 428,
-      "lines": 72520,
-      "bytes": 2626056,
+      "files": 438,
+      "lines": 73948,
+      "bytes": 2684080,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 89309,
-      "bytes": 5395300,
+      "lines": 89605,
+      "bytes": 5416522,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 102,
-      "lines": 11772,
-      "bytes": 435471,
+      "files": 113,
+      "lines": 12861,
+      "bytes": 480345,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -51447,6 +51447,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/design-system",
+      "file": "apps/web/src/app/(admin)/admin/design-system/page.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/designs",
       "file": "apps/web/src/app/(admin)/admin/(app)/designs/page.tsx",
       "client": true,
@@ -57049,6 +57058,15 @@
       ]
     },
     {
+      "file": "apps/web/src/utils/cn.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "cn with the design system’s names"
+      ]
+    },
+    {
       "file": "packages/desktop-runtime/src/backup-scheduler.integration.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -57400,6 +57418,40 @@
       "cases": 7,
       "describes": [
         "generateSku"
+      ]
+    },
+    {
+      "file": "packages/shared/src/theme-contrast.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "contrast maths",
+        "dark palette",
+        "dark stock hues — inverted in lightness, not in hue"
+      ]
+    },
+    {
+      "file": "packages/shared/src/theme-runtime.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "resolveTheme",
+        "isThemePreference",
+        "themeInitScript"
+      ]
+    },
+    {
+      "file": "packages/shared/src/theme-space.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 11,
+      "describes": [
+        "spacing and size tokens",
+        "layers",
+        "elevation",
+        "motion"
       ]
     },
     {
@@ -81378,7 +81430,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 789,
-      "bytes": 32634,
+      "bytes": 32635,
       "doc": "",
       "symbols": [
         {
@@ -81872,8 +81924,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 768,
-      "bytes": 30512,
+      "lines": 776,
+      "bytes": 30713,
       "doc": "",
       "symbols": []
     },
@@ -81881,8 +81933,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 768,
-      "bytes": 42069,
+      "lines": 776,
+      "bytes": 42325,
       "doc": "",
       "symbols": []
     },
@@ -82257,7 +82309,7 @@
       "area": "web",
       "kind": "page",
       "lines": 190,
-      "bytes": 6347,
+      "bytes": 6350,
       "doc": "",
       "symbols": [
         {
@@ -82317,7 +82369,7 @@
       "area": "web",
       "kind": "page",
       "lines": 205,
-      "bytes": 7481,
+      "bytes": 7484,
       "doc": "",
       "symbols": [
         {
@@ -82347,7 +82399,7 @@
       "area": "web",
       "kind": "page",
       "lines": 281,
-      "bytes": 9180,
+      "bytes": 9183,
       "doc": "",
       "symbols": [
         {
@@ -82362,7 +82414,7 @@
       "area": "web",
       "kind": "page",
       "lines": 330,
-      "bytes": 10939,
+      "bytes": 10942,
       "doc": "",
       "symbols": [
         {
@@ -82811,8 +82863,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/email-templates/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 197,
-      "bytes": 7714,
+      "lines": 201,
+      "bytes": 7965,
       "doc": "",
       "symbols": [
         {
@@ -82887,7 +82939,7 @@
       "area": "web",
       "kind": "page",
       "lines": 214,
-      "bytes": 6860,
+      "bytes": 6863,
       "doc": "",
       "symbols": [
         {
@@ -82917,7 +82969,7 @@
       "area": "web",
       "kind": "page",
       "lines": 474,
-      "bytes": 16181,
+      "bytes": 16184,
       "doc": "",
       "symbols": [
         {
@@ -83172,7 +83224,7 @@
       "area": "web",
       "kind": "page",
       "lines": 250,
-      "bytes": 8696,
+      "bytes": 8699,
       "doc": "",
       "symbols": [
         {
@@ -83232,7 +83284,7 @@
       "area": "web",
       "kind": "page",
       "lines": 200,
-      "bytes": 7266,
+      "bytes": 7274,
       "doc": "",
       "symbols": [
         {
@@ -83277,7 +83329,7 @@
       "area": "web",
       "kind": "page",
       "lines": 271,
-      "bytes": 9682,
+      "bytes": 9685,
       "doc": "",
       "symbols": [
         {
@@ -83292,7 +83344,7 @@
       "area": "web",
       "kind": "page",
       "lines": 189,
-      "bytes": 6734,
+      "bytes": 6742,
       "doc": "",
       "symbols": [
         {
@@ -83517,7 +83569,7 @@
       "area": "web",
       "kind": "page",
       "lines": 182,
-      "bytes": 5917,
+      "bytes": 5920,
       "doc": "",
       "symbols": [
         {
@@ -83577,7 +83629,7 @@
       "area": "web",
       "kind": "page",
       "lines": 183,
-      "bytes": 7149,
+      "bytes": 7150,
       "doc": "",
       "symbols": [
         {
@@ -83877,7 +83929,7 @@
       "area": "web",
       "kind": "page",
       "lines": 220,
-      "bytes": 8144,
+      "bytes": 8147,
       "doc": "",
       "symbols": [
         {
@@ -83892,7 +83944,7 @@
       "area": "web",
       "kind": "page",
       "lines": 156,
-      "bytes": 5801,
+      "bytes": 5805,
       "doc": "",
       "symbols": [
         {
@@ -83907,7 +83959,7 @@
       "area": "web",
       "kind": "page",
       "lines": 205,
-      "bytes": 7765,
+      "bytes": 7768,
       "doc": "",
       "symbols": [
         {
@@ -83922,7 +83974,7 @@
       "area": "web",
       "kind": "page",
       "lines": 264,
-      "bytes": 9657,
+      "bytes": 9660,
       "doc": "",
       "symbols": [
         {
@@ -83937,7 +83989,7 @@
       "area": "web",
       "kind": "page",
       "lines": 139,
-      "bytes": 4845,
+      "bytes": 4848,
       "doc": "",
       "symbols": [
         {
@@ -84552,7 +84604,7 @@
       "area": "web",
       "kind": "page",
       "lines": 379,
-      "bytes": 13507,
+      "bytes": 13510,
       "doc": "",
       "symbols": [
         {
@@ -84597,7 +84649,7 @@
       "area": "web",
       "kind": "page",
       "lines": 132,
-      "bytes": 4499,
+      "bytes": 4496,
       "doc": "",
       "symbols": [
         {
@@ -84627,7 +84679,7 @@
       "area": "web",
       "kind": "page",
       "lines": 241,
-      "bytes": 8274,
+      "bytes": 8282,
       "doc": "",
       "symbols": [
         {
@@ -84642,7 +84694,7 @@
       "area": "web",
       "kind": "page",
       "lines": 118,
-      "bytes": 4097,
+      "bytes": 4098,
       "doc": "",
       "symbols": [
         {
@@ -84713,6 +84765,26 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/design-system/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 23,
+      "bytes": 887,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "metadata",
+          "kind": "const",
+          "line": 4
+        },
+        {
+          "name": "DesignSystemPage",
+          "kind": "default",
+          "line": 20
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/error.tsx",
       "area": "web",
       "kind": "error",
@@ -84731,19 +84803,19 @@
       "path": "apps/web/src/app/(admin)/admin/layout.tsx",
       "area": "web",
       "kind": "layout",
-      "lines": 24,
-      "bytes": 779,
+      "lines": 28,
+      "bytes": 928,
       "doc": "",
       "symbols": [
         {
           "name": "metadata",
           "kind": "const",
-          "line": 6
+          "line": 7
         },
         {
           "name": "AdminRootLayout",
           "kind": "default",
-          "line": 17
+          "line": 18
         }
       ]
     },
@@ -85317,7 +85389,7 @@
       "area": "web",
       "kind": "page",
       "lines": 754,
-      "bytes": 29156,
+      "bytes": 29157,
       "doc": "",
       "symbols": [
         {
@@ -85386,19 +85458,19 @@
       "path": "apps/web/src/app/(storefront)/[locale]/layout.tsx",
       "area": "web",
       "kind": "layout",
-      "lines": 194,
-      "bytes": 7128,
+      "lines": 198,
+      "bytes": 7282,
       "doc": "",
       "symbols": [
         {
           "name": "generateMetadata",
           "kind": "function",
-          "line": 46
+          "line": 47
         },
         {
           "name": "LocaleLayout",
           "kind": "default",
-          "line": 133
+          "line": 134
         }
       ]
     },
@@ -85452,7 +85524,7 @@
       "area": "web",
       "kind": "page",
       "lines": 265,
-      "bytes": 11382,
+      "bytes": 11389,
       "doc": "",
       "symbols": [
         {
@@ -85801,8 +85873,8 @@
       "path": "apps/web/src/app/globals.css",
       "area": "web",
       "kind": "stylesheet",
-      "lines": 603,
-      "bytes": 20471,
+      "lines": 669,
+      "bytes": 23087,
       "doc": "",
       "symbols": []
     },
@@ -85869,14 +85941,14 @@
       "path": "apps/web/src/components/admin/admin-shell.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 469,
-      "bytes": 16413,
+      "lines": 473,
+      "bytes": 16696,
       "doc": "",
       "symbols": [
         {
           "name": "AdminShell",
           "kind": "function",
-          "line": 34
+          "line": 35
         }
       ]
     },
@@ -86104,7 +86176,7 @@
       "area": "web",
       "kind": "component",
       "lines": 363,
-      "bytes": 13804,
+      "bytes": 13807,
       "doc": "",
       "symbols": [
         {
@@ -86118,8 +86190,8 @@
       "path": "apps/web/src/components/admin/bpmn-editor.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 118,
-      "bytes": 4701,
+      "lines": 123,
+      "bytes": 4945,
       "doc": "",
       "symbols": [
         {
@@ -86183,89 +86255,89 @@
       "path": "apps/web/src/components/admin/charts/chart-theme.ts",
       "area": "web",
       "kind": "component",
-      "lines": 92,
-      "bytes": 3629,
+      "lines": 86,
+      "bytes": 3446,
       "doc": "",
       "symbols": [
         {
           "name": "ValueFormat",
           "kind": "type",
-          "line": 20
+          "line": 22
         },
         {
           "name": "CHART_PALETTE",
           "kind": "const",
-          "line": 22
+          "line": 24
         },
         {
           "name": "GRID",
           "kind": "const",
-          "line": 23
+          "line": 25
         },
         {
           "name": "SURFACE",
           "kind": "const",
-          "line": 24
+          "line": 26
         },
         {
           "name": "INK",
           "kind": "const",
-          "line": 25
+          "line": 27
         },
         {
           "name": "INK_SOFT",
           "kind": "const",
-          "line": 26
+          "line": 28
         },
         {
           "name": "INK_FAINT",
           "kind": "const",
-          "line": 27
+          "line": 29
         },
         {
           "name": "POSITIVE",
           "kind": "const",
-          "line": 28
+          "line": 30
         },
         {
           "name": "NEGATIVE",
           "kind": "const",
-          "line": 29
+          "line": 31
         },
         {
           "name": "DASH_PATTERNS",
           "kind": "const",
-          "line": 38
+          "line": 40
         },
         {
           "name": "MARKER_SHAPES",
           "kind": "const",
-          "line": 48
+          "line": 50
         },
         {
           "name": "paletteColor",
           "kind": "function",
-          "line": 57
+          "line": 59
         },
         {
           "name": "dashFor",
           "kind": "function",
-          "line": 61
+          "line": 63
         },
         {
           "name": "markerFor",
           "kind": "function",
-          "line": 65
+          "line": 67
         },
         {
           "name": "compactRupees",
           "kind": "function",
-          "line": 74
+          "line": 76
         },
         {
           "name": "compactMoney",
           "kind": "function",
-          "line": 81
+          "line": 83
         }
       ]
     },
@@ -86533,7 +86605,7 @@
       "area": "web",
       "kind": "component",
       "lines": 140,
-      "bytes": 4824,
+      "bytes": 4839,
       "doc": "",
       "symbols": [
         {
@@ -86662,19 +86734,19 @@
       "path": "apps/web/src/components/admin/funnel-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 81,
-      "bytes": 2638,
+      "lines": 82,
+      "bytes": 2754,
       "doc": "",
       "symbols": [
         {
           "name": "FunnelStage",
           "kind": "interface",
-          "line": 23
+          "line": 24
         },
         {
           "name": "FunnelChart",
           "kind": "function",
-          "line": 28
+          "line": 29
         }
       ]
     },
@@ -86682,14 +86754,14 @@
       "path": "apps/web/src/components/admin/gauge-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 69,
-      "bytes": 2201,
+      "lines": 70,
+      "bytes": 2334,
       "doc": "",
       "symbols": [
         {
           "name": "GaugeChart",
           "kind": "function",
-          "line": 32
+          "line": 33
         }
       ]
     },
@@ -86848,7 +86920,7 @@
       "area": "web",
       "kind": "component",
       "lines": 117,
-      "bytes": 4253,
+      "bytes": 4261,
       "doc": "",
       "symbols": [
         {
@@ -86883,7 +86955,7 @@
       "area": "web",
       "kind": "component",
       "lines": 1614,
-      "bytes": 61684,
+      "bytes": 61690,
       "doc": "",
       "symbols": [
         {
@@ -87003,7 +87075,7 @@
       "area": "web",
       "kind": "component",
       "lines": 39,
-      "bytes": 1302,
+      "bytes": 1305,
       "doc": "",
       "symbols": [
         {
@@ -87053,7 +87125,7 @@
       "area": "web",
       "kind": "component",
       "lines": 60,
-      "bytes": 1675,
+      "bytes": 1678,
       "doc": "",
       "symbols": [
         {
@@ -87068,7 +87140,7 @@
       "area": "web",
       "kind": "component",
       "lines": 146,
-      "bytes": 4376,
+      "bytes": 4394,
       "doc": "",
       "symbols": [
         {
@@ -87095,6 +87167,96 @@
           "name": "DashboardNav",
           "kind": "function",
           "line": 59
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/foundations.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 438,
+      "bytes": 17976,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GallerySection",
+          "kind": "function",
+          "line": 21
+        },
+        {
+          "name": "Group",
+          "kind": "function",
+          "line": 46
+        },
+        {
+          "name": "ColourFoundations",
+          "kind": "function",
+          "line": 109
+        },
+        {
+          "name": "ContrastTable",
+          "kind": "function",
+          "line": 207
+        },
+        {
+          "name": "TypeFoundations",
+          "kind": "function",
+          "line": 265
+        },
+        {
+          "name": "SpaceFoundations",
+          "kind": "function",
+          "line": 297
+        },
+        {
+          "name": "ElevationFoundations",
+          "kind": "function",
+          "line": 359
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/gallery.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 100,
+      "bytes": 3453,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DesignSystemGallery",
+          "kind": "function",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/live-tokens.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 60,
+      "bytes": 2166,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "useLiveTokens",
+          "kind": "function",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/specimens.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 304,
+      "bytes": 13785,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ComponentSpecimens",
+          "kind": "function",
+          "line": 46
         }
       ]
     },
@@ -87162,8 +87324,8 @@
       "path": "apps/web/src/components/storefront/bottom-nav.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 150,
-      "bytes": 5308,
+      "lines": 157,
+      "bytes": 5623,
       "doc": "",
       "symbols": [
         {
@@ -87178,7 +87340,7 @@
       "area": "web",
       "kind": "component",
       "lines": 30,
-      "bytes": 1270,
+      "bytes": 1271,
       "doc": "",
       "symbols": [
         {
@@ -87213,7 +87375,7 @@
       "area": "web",
       "kind": "component",
       "lines": 87,
-      "bytes": 3435,
+      "bytes": 3443,
       "doc": "",
       "symbols": [
         {
@@ -87248,7 +87410,7 @@
       "area": "web",
       "kind": "component",
       "lines": 358,
-      "bytes": 11577,
+      "bytes": 11597,
       "doc": "",
       "symbols": [
         {
@@ -87262,8 +87424,8 @@
       "path": "apps/web/src/components/storefront/footer.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 150,
-      "bytes": 6273,
+      "lines": 155,
+      "bytes": 6639,
       "doc": "",
       "symbols": [
         {
@@ -87308,7 +87470,7 @@
       "area": "web",
       "kind": "component",
       "lines": 41,
-      "bytes": 1241,
+      "bytes": 1242,
       "doc": "",
       "symbols": [
         {
@@ -87322,14 +87484,14 @@
       "path": "apps/web/src/components/storefront/header.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 208,
-      "bytes": 9543,
+      "lines": 210,
+      "bytes": 9625,
       "doc": "",
       "symbols": [
         {
           "name": "Header",
           "kind": "function",
-          "line": 38
+          "line": 39
         }
       ]
     },
@@ -87368,7 +87530,7 @@
       "area": "web",
       "kind": "component",
       "lines": 75,
-      "bytes": 2662,
+      "bytes": 2670,
       "doc": "",
       "symbols": [
         {
@@ -87398,7 +87560,7 @@
       "area": "web",
       "kind": "component",
       "lines": 190,
-      "bytes": 6817,
+      "bytes": 6818,
       "doc": "",
       "symbols": [
         {
@@ -87413,7 +87575,7 @@
       "area": "web",
       "kind": "component",
       "lines": 209,
-      "bytes": 7368,
+      "bytes": 7394,
       "doc": "",
       "symbols": [
         {
@@ -87458,7 +87620,7 @@
       "area": "web",
       "kind": "component",
       "lines": 239,
-      "bytes": 9597,
+      "bytes": 9680,
       "doc": "",
       "symbols": [
         {
@@ -87473,7 +87635,7 @@
       "area": "web",
       "kind": "component",
       "lines": 137,
-      "bytes": 4764,
+      "bytes": 4772,
       "doc": "",
       "symbols": [
         {
@@ -87488,7 +87650,7 @@
       "area": "web",
       "kind": "component",
       "lines": 509,
-      "bytes": 17917,
+      "bytes": 17899,
       "doc": "",
       "symbols": [
         {
@@ -87553,7 +87715,7 @@
       "area": "web",
       "kind": "component",
       "lines": 134,
-      "bytes": 5355,
+      "bytes": 5356,
       "doc": "",
       "symbols": [
         {
@@ -87583,7 +87745,7 @@
       "area": "web",
       "kind": "component",
       "lines": 219,
-      "bytes": 8651,
+      "bytes": 8665,
       "doc": "",
       "symbols": [
         {
@@ -87674,11 +87836,26 @@
       ]
     },
     {
+      "path": "apps/web/src/components/storefront/theme-switch.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 28,
+      "bytes": 754,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ThemeSwitch",
+          "kind": "function",
+          "line": 12
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/storefront/visual-search-button.tsx",
       "area": "web",
       "kind": "component",
       "lines": 89,
-      "bytes": 3217,
+      "bytes": 3223,
       "doc": "",
       "symbols": [
         {
@@ -87768,7 +87945,7 @@
       "area": "web",
       "kind": "component",
       "lines": 197,
-      "bytes": 6675,
+      "bytes": 6687,
       "doc": "",
       "symbols": [
         {
@@ -87852,8 +88029,8 @@
       "path": "apps/web/src/components/ui/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 39,
-      "bytes": 1329,
+      "lines": 40,
+      "bytes": 1399,
       "doc": "Design-system primitives.",
       "symbols": []
     },
@@ -87998,6 +88175,41 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/theme-init-script.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 22,
+      "bytes": 1021,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ThemeInitScript",
+          "kind": "function",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/theme-toggle.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 115,
+      "bytes": 3911,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ThemeToggleLabels",
+          "kind": "interface",
+          "line": 25
+        },
+        {
+          "name": "ThemeToggle",
+          "kind": "function",
+          "line": 51
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/config/business-profile.ts",
       "area": "web",
       "kind": "config",
@@ -88115,8 +88327,8 @@
       "path": "apps/web/src/constants/storage.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 61,
-      "bytes": 2505,
+      "lines": 69,
+      "bytes": 2872,
       "doc": "Browser storage keys.",
       "symbols": [
         {
@@ -88147,6 +88359,26 @@
           "name": "useOrderStatusLabel",
           "kind": "function",
           "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/hooks/use-theme.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 117,
+      "bytes": 3938,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UseTheme",
+          "kind": "interface",
+          "line": 86
+        },
+        {
+          "name": "useTheme",
+          "kind": "function",
+          "line": 96
         }
       ]
     },
@@ -89822,17 +90054,26 @@
       ]
     },
     {
+      "path": "apps/web/src/utils/cn.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 39,
+      "bytes": 1471,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/web/src/utils/cn.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 21,
-      "bytes": 904,
+      "lines": 45,
+      "bytes": 1818,
       "doc": "",
       "symbols": [
         {
           "name": "cn",
           "kind": "function",
-          "line": 18
+          "line": 42
         }
       ]
     },
@@ -90000,8 +90241,8 @@
       "path": "apps/web/tailwind.config.ts",
       "area": "web",
       "kind": "module",
-      "lines": 188,
-      "bytes": 7560,
+      "lines": 224,
+      "bytes": 9584,
       "doc": "",
       "symbols": []
     },
@@ -90289,7 +90530,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 109,
-      "bytes": 7312,
+      "bytes": 7384,
       "doc": "",
       "symbols": []
     },
@@ -90306,8 +90547,8 @@
       "path": "docs/design/components-states/03-components.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 113,
-      "bytes": 4298,
+      "lines": 116,
+      "bytes": 4602,
       "doc": "",
       "symbols": []
     },
@@ -90333,8 +90574,8 @@
       "path": "docs/design/foundations/01-foundations.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 175,
-      "bytes": 6659,
+      "lines": 280,
+      "bytes": 14477,
       "doc": "",
       "symbols": []
     },
@@ -90369,8 +90610,8 @@
       "path": "docs/design/motion/05-motion.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 193,
-      "bytes": 7375,
+      "lines": 196,
+      "bytes": 7593,
       "doc": "",
       "symbols": []
     },
@@ -92214,8 +92455,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 9605,
-      "bytes": 563831,
+      "lines": 9790,
+      "bytes": 576641,
       "doc": "",
       "symbols": []
     },
@@ -95119,19 +95360,19 @@
       "path": "packages/shared/src/brand.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 345,
-      "bytes": 12937,
+      "lines": 568,
+      "bytes": 21371,
       "doc": "THE BRAND FILE.",
       "symbols": [
         {
           "name": "BRAND",
           "kind": "const",
-          "line": 332
+          "line": 555
         },
         {
           "name": "Brand",
           "kind": "type",
-          "line": 344
+          "line": 567
         }
       ]
     },
@@ -96042,8 +96283,8 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 42,
-      "bytes": 1748,
+      "lines": 50,
+      "bytes": 2009,
       "doc": "",
       "symbols": []
     },
@@ -96613,8 +96854,8 @@
       "path": "packages/shared/src/theme-colors.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 18,
-      "bytes": 774,
+      "lines": 29,
+      "bytes": 1283,
       "doc": "",
       "symbols": [
         {
@@ -96626,6 +96867,130 @@
           "name": "ThemeColors",
           "kind": "type",
           "line": 17
+        },
+        {
+          "name": "THEME_COLORS_DARK",
+          "kind": "const",
+          "line": 25
+        },
+        {
+          "name": "ThemeColorsDark",
+          "kind": "type",
+          "line": 26
+        },
+        {
+          "name": "THEME_PALETTES",
+          "kind": "const",
+          "line": 28
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/theme-contrast.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 155,
+      "bytes": 7155,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/theme-contrast.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 47,
+      "bytes": 1911,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "relativeLuminance",
+          "kind": "function",
+          "line": 13
+        },
+        {
+          "name": "contrastRatio",
+          "kind": "function",
+          "line": 22
+        },
+        {
+          "name": "compositeRgb",
+          "kind": "function",
+          "line": 28
+        },
+        {
+          "name": "contrastRatioHex",
+          "kind": "function",
+          "line": 37
+        },
+        {
+          "name": "wcagLevel",
+          "kind": "function",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/theme-elevation.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 12,
+      "bytes": 460,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "THEME_ELEVATION",
+          "kind": "const",
+          "line": 10
+        },
+        {
+          "name": "ElevationStep",
+          "kind": "type",
+          "line": 11
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/theme-layers.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 9,
+      "bytes": 293,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "THEME_LAYERS",
+          "kind": "const",
+          "line": 7
+        },
+        {
+          "name": "Layer",
+          "kind": "type",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/theme-motion.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 22,
+      "bytes": 716,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "THEME_MOTION",
+          "kind": "const",
+          "line": 11
+        },
+        {
+          "name": "cubicBezier",
+          "kind": "function",
+          "line": 14
+        },
+        {
+          "name": "ms",
+          "kind": "function",
+          "line": 19
         }
       ]
     },
@@ -96646,6 +97011,199 @@
           "name": "radiusPx",
           "kind": "function",
           "line": 14
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/theme-runtime.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 76,
+      "bytes": 3111,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/theme-runtime.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 63,
+      "bytes": 2909,
+      "doc": "How a surface decides which theme it is in — plain functions, no framework.",
+      "symbols": [
+        {
+          "name": "THEME_PREFERENCES",
+          "kind": "const",
+          "line": 14
+        },
+        {
+          "name": "ThemePreference",
+          "kind": "type",
+          "line": 15
+        },
+        {
+          "name": "ResolvedTheme",
+          "kind": "type",
+          "line": 16
+        },
+        {
+          "name": "THEME_ATTRIBUTE",
+          "kind": "const",
+          "line": 19
+        },
+        {
+          "name": "DEFAULT_THEME_PREFERENCE",
+          "kind": "const",
+          "line": 22
+        },
+        {
+          "name": "isThemePreference",
+          "kind": "function",
+          "line": 24
+        },
+        {
+          "name": "resolveTheme",
+          "kind": "function",
+          "line": 29
+        },
+        {
+          "name": "themeInitScript",
+          "kind": "function",
+          "line": 52
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/theme-size.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 28,
+      "bytes": 961,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "THEME_SIZE",
+          "kind": "const",
+          "line": 11
+        },
+        {
+          "name": "SIZE_SPACING_PX",
+          "kind": "const",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/theme-space.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 83,
+      "bytes": 3197,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/theme-space.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 22,
+      "bytes": 718,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "THEME_SPACE",
+          "kind": "const",
+          "line": 10
+        },
+        {
+          "name": "SpaceStep",
+          "kind": "type",
+          "line": 11
+        },
+        {
+          "name": "spaceRem",
+          "kind": "function",
+          "line": 14
+        },
+        {
+          "name": "tailwindSpacingKey",
+          "kind": "function",
+          "line": 19
+        }
+      ]
+    },
+    {
+      "path": "packages/shared/src/theme-tailwind.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 330,
+      "bytes": 14239,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CssRules",
+          "kind": "interface",
+          "line": 41
+        },
+        {
+          "name": "StockHues",
+          "kind": "interface",
+          "line": 46
+        },
+        {
+          "name": "STOCK_HUE_NAMES",
+          "kind": "const",
+          "line": 53
+        },
+        {
+          "name": "StockHueName",
+          "kind": "type",
+          "line": 54
+        },
+        {
+          "name": "hexToRgb",
+          "kind": "function",
+          "line": 80
+        },
+        {
+          "name": "rgbToHex",
+          "kind": "function",
+          "line": 86
+        },
+        {
+          "name": "mixHex",
+          "kind": "function",
+          "line": 91
+        },
+        {
+          "name": "channels",
+          "kind": "function",
+          "line": 98
+        },
+        {
+          "name": "darkHueScale",
+          "kind": "function",
+          "line": 117
+        },
+        {
+          "name": "themeColorVar",
+          "kind": "function",
+          "line": 142
+        },
+        {
+          "name": "themeVars",
+          "kind": "function",
+          "line": 166
+        },
+        {
+          "name": "staticVars",
+          "kind": "function",
+          "line": 198
+        },
+        {
+          "name": "createThemeTailwind",
+          "kind": "function",
+          "line": 221
         }
       ]
     },
@@ -96812,8 +97370,8 @@
       "path": "scripts/build-index.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 2558,
-      "bytes": 117379,
+      "lines": 2561,
+      "bytes": 117928,
       "doc": "",
       "symbols": []
     },
@@ -96839,19 +97397,24 @@
       "path": "scripts/check-contrast.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 425,
-      "bytes": 20830,
+      "lines": 626,
+      "bytes": 31816,
       "doc": "",
       "symbols": [
         {
           "name": "contrast",
           "kind": "const",
-          "line": 69
+          "line": 78
         },
         {
           "name": "scanColours",
           "kind": "function",
-          "line": 213
+          "line": 241
+        },
+        {
+          "name": "pinnedRegions",
+          "kind": "function",
+          "line": 274
         }
       ]
     },
@@ -96904,8 +97467,8 @@
       "path": "scripts/check-links.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 409,
-      "bytes": 18063,
+      "lines": 416,
+      "bytes": 18382,
       "doc": "",
       "symbols": [
         {
@@ -96916,27 +97479,27 @@
         {
           "name": "routeUrl",
           "kind": "function",
-          "line": 84
+          "line": 91
         },
         {
           "name": "routeInventory",
           "kind": "function",
-          "line": 100
+          "line": 107
         },
         {
           "name": "matches",
           "kind": "function",
-          "line": 133
+          "line": 140
         },
         {
           "name": "resolve1",
           "kind": "function",
-          "line": 174
+          "line": 181
         },
         {
           "name": "scanLinks",
           "kind": "function",
-          "line": 219
+          "line": 226
         }
       ]
     },

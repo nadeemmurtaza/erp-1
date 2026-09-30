@@ -22,7 +22,7 @@ export function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
       role="region"
       aria-live="polite"
       aria-label="Notifications"
-      className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"
+      className="fixed bottom-4 right-4 z-toast flex flex-col gap-2 max-w-sm pointer-events-none"
     >
       {toasts.map((toast) => (
         <div

@@ -9602,3 +9602,188 @@ brief stop this design requires.
 
 ### Status
 **Accepted.**
+
+
+## ADR-083 — A two-theme design system: one source in `brand.ts`, themes as scoped CSS custom properties, fill and ink split, a closed Tailwind palette, and contrast enforced in both themes
+
+### Context
+
+The design system (`docs/design/`) specified eight token groups and built
+three (colour, radius, type), all light-only. There was no dark theme, no
+spacing/size/elevation/layer/motion token a surface could import, stock Tailwind
+colours and numeric z-indexes were in use beside the brand palette, and
+`scripts/check-contrast.mjs` measured only one theme. The request was a complete
+premium design system with light and dark modes. This repository is one
+deployment per brand (`CLAUDE.md`, "Scale: the three axes"), so the system had
+to stay a build-time value per brand, not a runtime multi-tenant theme.
+
+### Options Considered
+
+1. **Tailwind `dark:` variants in every component.** The obvious route. Rejected:
+   about 1,700 existing `neutral-*` call sites would each need a second class,
+   every future component would have to remember it, and "forgot the `dark:`" is
+   invisible in review. It also makes a component know which theme it is in.
+2. **A codemod to rewrite call sites to semantic names, then theme the names.**
+   Rejected as a first step: a 1,700-site diff is not reviewable, and it buys
+   nothing the next option does not.
+3. **Scoped CSS custom properties behind the existing class names (chosen).**
+   `text-neutral-900` keeps its name and resolves through
+   `rgb(var(--color-neutral-900) / <alpha-value>)`; the theme redefines the
+   variable. No call site needs to change for the flip, `bg-neutral-900/60` still
+   works, and a region can be pinned to one theme.
+4. **A runtime theming library or CSS-in-JS.** Rejected: a dependency
+   (`dependencies.md`) for something the platform does, and it would not reach
+   `apps/mobile`, which consumes `packages/shared` but not Tailwind.
+
+### Decision
+
+- **One source.** `packages/shared/src/brand.ts` holds `colors` (light) and
+  `colorsDark`, plus new `space`, `size`, `elevation` (per theme), `layers` and
+  `motion`. The `theme-*.ts` files are thin views; `theme-tailwind.ts` turns the
+  source into CSS variables and a Tailwind theme; `theme-runtime.ts` is the
+  framework-free preference logic and the no-flash script.
+- **Theme = `data-theme` on `<html>`**, scopes `:root`, `[data-theme='light']`,
+  `[data-theme='dark']`, plus an `@media (prefers-color-scheme: dark)` fallback
+  on `:root:not([data-theme])` for the case the script never ran.
+- **Fill and ink are separate.** `bg-accent` is the brand fill in both themes;
+  `text-/border-/ring-accent` are the ink (lighter in dark). Status-hue washes and
+  ink follow the theme; solid fills keep their stock value.
+- **Closed palette.** `theme.colors` and `theme.zIndex` are replaced, not
+  extended. An unlisted colour or a numeric z-index generates nothing.
+- **`cn()` knows the new names.** `tailwind-merge` only knows stock Tailwind:
+  it kept both of `z-raised z-modal`, and read `text-metric` as a text colour,
+  so `cn('text-metric', 'text-neutral-900')` silently dropped the metric size.
+  `cn.ts` now extends it from the same token lists Tailwind is built from
+  (`cn.spec.ts` holds the cases).
+- **Two new semantic pairs** so a fill can survive the flip: `inverse` /
+  `on-inverse`, and `scrim` for veils; `surface` and `overlay` so elevation can
+  be said with lightness in dark.
+- **Contrast enforced in both themes**: `theme-contrast.spec.ts` (every role
+  pair; editing a dark value to break a floor was confirmed by hand to fail it) and
+  `check-contrast.mjs` (every class use, each theme with its own baseline).
+- **Reference page** `/admin/design-system`: public, `noindex`, reads no data,
+  rendering the tokens and the real components and measuring contrast live.
+
+### Parameters
+
+| Parameter | Exact value | Why this number |
+|---|---|---|
+| Contrast floors | text 4.5:1; a control's boundary, a chart mark 3:1 | WCAG 2.2 AA (1.4.3, 1.4.11). The repo's existing `FLOOR` in `check-contrast.mjs`, unchanged. |
+| Dark page / surface / overlay | `#0c0b0b` / `#171516` / `#242122` | Each step is lighter than the last: a shadow cannot say "higher" on near-black. Neutral-tinted, same hue family as the light ramp (`#121111` ink). |
+| Dark neutral ramp | 50 `#0c0b0b` · 100 `#2b292a` · 200 `#6d6b6c` · 300 `#7b797a` · 400 `#8c8a8b` · 500 `#a3a1a2` · 600 `#bbb9ba` · 700 `#d1cfd0` · 800 `#e6e4e5` · 900 `#f9f7f8` | Monotonic (tested). 200 is 3.44:1 on the surface (control outline floor); 300 is 4.55:1 on the page (it was `#7a7879`, 4.48:1, and the two-theme check found it); 400 and up clear 4.5:1 on page, surface and overlay. |
+| Dark brand ink | `#3db8cb` / hover `#8fdae6` | 7.72:1 on the surface. The fill stays `#0e8294` so a white label keeps 4.53:1. |
+| Dark status tint mix | 10 / 16 / 26 / 40 % of the hue's 500 into the surface (steps 50/100/200/300) | Above about 16 % a red notice reads as an alarm lamp on a dark card; 26 vs 10 keeps `border-red-200` a visible hairline against its own 50 wash. |
+| Elevation (light) | raised `0 1px 2px 0 / 0 1px 3px 0` at 6 %; overlay `0 4px 8px -2px` 8 % + `0 12px 24px -6px` 12 %; modal `0 8px 16px -4px` 12 % + `0 24px 56px -12px` 30 %, all `rgb(18 17 17)` | Two-layer shadows (contact + ambient), neutral-tinted rather than pure black. |
+| Elevation (dark) | raised 50 % / 40 %; overlay 50 % / 55 %; modal 55 % / 70 %, `rgb(0 0 0)` | Higher opacity because a shadow on near-black is otherwise invisible; it is the secondary cue after surface lightness. |
+| Layers | base 0 · raised 1 · raised-2 2 · raised-3 3 · sticky 10 · dropdown 20 · overlay 30 · modal 40 · toast 50 · debug 90 | The chapter-01 list, plus three in-card steps the storefront product card needed (link, badges and scrim, heart). |
+| Durations | instant 80 · fast 140 · normal 220 · slow 320 · sweep 420 ms | Chapter 01's values, plus `sweep` for the button fill that was a literal in `globals.css`. |
+| Space / size | 0, 2, 4, 8, 12, 16, 24, 32, 48, 64 px; control 32 / 40 / 48; icon 16 / 20 / 24; touch 44, POS 48 | Chapter 01 and 07, unchanged. |
+| Theme storage | `localStorage` key `newax.theme`; values `light` \| `dark` \| `system`; default `system` | Per device, not per user (see lenses). Anything else stored is treated as `system`. |
+
+### Reasoning
+
+The fill/ink split is the decision the rest depends on. The teal dark enough
+for a white button label (`#0e8294`, 4.53:1) reads only 4.02:1 as text on the
+dark surface `#171516`, under the 4.5:1 floor; the teal light enough for that
+(`#3db8cb`, 7.72:1) gives a white label just 2.36:1. No single value satisfies
+both, so the same token name resolves differently for a background and for ink. Everything else follows from wanting no call site to
+know which theme it is in.
+
+The closed palette is a trade: it makes a stray `text-orange-600` produce no
+style rather than a correct-in-light, wrong-in-dark colour, at the cost of one
+more edit when a hue is genuinely needed. The hues in use (red, green, amber,
+blue) are listed; adding one is a change to `createThemeTailwind`, which is the
+point.
+
+The two-theme contrast check paid for itself in the same change: it found a real
+failure in dark (`bg-neutral-200 text-neutral-900/80` on the trading-partners
+page, 3.84:1, now the shared neutral badge colours) and a marginal one
+(dark `neutral-300`, 4.48:1), and it cannot be satisfied by an inverse fill
+written as `bg-neutral-900 text-white` (its self-test proves it fails in dark).
+
+### Consequences
+
+- Existing call sites flip without edits; the call sites that cannot survive a
+  flip (roughly seventy files) were migrated by hand: inverse fills, scrims, floating surfaces,
+  off-palette stock hues, `z-50`-style literals, and the chart colours.
+- Regions that must not flip are pinned with `data-theme="light"`: product-card
+  badges, the announcement bar, the footer, the bottom-nav pill, the filter
+  count badge, the email-template preview iframe and the BPMN canvas.
+- **Known gaps, named rather than hidden:**
+  1. **Light control outline is 1.72:1** against a 3:1 floor. It was before this
+     work. The fix (darken light `neutral-200`, or add a dedicated control-edge
+     token) changes the look of every input and is a brand decision.
+  2. **POS and mobile have no dark mode.** The tokens are in `packages/shared`;
+     adopting them is per-app work (POS has its own Tailwind config and root
+     layout; mobile reads the tokens as numbers).
+  3. `global-error.tsx` and `not-found.tsx` render before any stylesheet and stay
+     light.
+  3a. The reference page is reachable in production. It was written to 404
+     there, but `check-frontend-secrets.mjs` (House Rule 12) rejects any
+     non-`NEXT_PUBLIC_` `process.env` read in `apps/web/src`, `NODE_ENV`
+     included, and loosening a security check to gate a reference page is the
+     wrong trade. Options if it should not be public: move it behind sign-in
+     (inside `(app)`), or add `NODE_ENV` to that check's public-by-definition
+     list. Left as an owner decision.
+  4. Urdu strings added for the toggle (`theme` namespace in `ur.json`) need a
+     native reviewer.
+  5. No page-level Content-Security-Policy exists today (`next.config.mjs`'s
+     policy is the image optimizer's). The day one is adopted, the inline
+     no-flash script needs a hash or nonce; its text is constant, so a hash is
+     straightforward.
+- No visual-regression tooling exists; the reference page was checked in
+  Chromium at 280, 380, 640, 768, 1024 and 1536 px in both themes (no horizontal
+  overflow at any width), and the dialogs, toasts, charts and pinned regions by
+  hand. Focus order, reduced motion and RTL remain unchecked by any command, as
+  `.claude/rules/design.md` already says.
+
+### Pillars and scope lenses
+
+**Pillars touched.** *Proper architecture*: tokens stay in `packages/shared`,
+no module imports another (`check-module-boundaries` unaffected). *Scalable*: one
+stylesheet, repaint by attribute change, no per-component JS. *Secure*: no server
+change, one new unauthenticated page (the reference: no data, no API call, only values
+already public in the stylesheet), and the inline script is a constant with a
+JSON-escaped key. *Stable*: every failure mode of the
+no-flash script (storage throws, `matchMedia` missing, script fails) degrades to
+the OS preference. *Observable*: n/a, nothing server-side.
+
+**Scope lenses.**
+- The actor: n/a, no new actor; the preference belongs to a browser, not a `User`.
+  A per-user server-side preference is a separable follow-up (a `User` column and
+  an endpoint), sequenced after this.
+- The principal with no permission key: the reference page reads no rows and
+  calls no API, so it carries no `@RequirePermission`; the
+  theme toggle is a presentation preference, not a capability, and adds no
+  `PERMISSION_CATALOG` key.
+- The grant that ends itself: n/a, grants nothing.
+- Whose rows, and which columns: n/a, reads and writes no rows.
+- The threshold nobody approves alone / toxic pair: n/a, commits no money or stock.
+- Authority and blast radius: a palette change is a PR to `brand.ts`; the worst
+  value one can set reaches every screen, and the build stops it at the floors
+  (`theme-contrast.spec.ts`, `check-contrast.mjs`).
+- Audience is a capability: n/a, sends no message.
+- Request or record: the one write (`localStorage`) is a REQUEST the browser may
+  refuse; the refusal path is the `system` fallback.
+- The movement with no address / four hours down: n/a, no stock or cash write;
+  the theme works offline.
+- The money lenses (posting rule, dimensions, closed period, second legal entity,
+  dry run, click the number): n/a, posts no journal line and shows no figure.
+- Three silhouettes: a Solo, Chain or Organization deployment reads the same
+  tokens; a second brand supplies its own `colors`/`colorsDark` at build time.
+- The absent collaborator: depends on no module; a deployment without any pack
+  renders the same theme.
+- The second copy of the write: the init script and `setPreference` are
+  idempotent.
+- The hundred-thousandth row / the adoption test: n/a, no table, no generated code.
+- The reversal document / undo fan-out: a theme is reversed by choosing another.
+- The version stamp: the palette is versioned by git; no record stores a colour.
+- The erasure the ledger cannot obey: the only stored datum is the `newax.theme`
+  key, which holds no personal data.
+- The failure path: a storage failure is silent and recoverable (follows the OS).
+- Reachable: the toggle is in the admin header (`admin-shell.tsx`) and the
+  storefront header (`theme-switch.tsx`); the reference page is opened by URL from
+  `docs/design/` and is allow-listed in `check-links.mjs` with that reason.
+
+### Status
+**Accepted.**

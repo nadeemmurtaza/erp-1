@@ -89,7 +89,7 @@ export function ProductGallery({ images, alt, productId, backHref }: ProductGall
         <Link
           href={backHref}
           aria-label={t('backToShop')}
-          className="absolute start-3 top-3 z-20 h-10 w-10 icon-btn md:hidden"
+          className="absolute start-3 top-3 z-raised h-10 w-10 icon-btn md:hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +113,7 @@ export function ProductGallery({ images, alt, productId, backHref }: ProductGall
           onClick={() => toggle(productId)}
           aria-label={saved ? t('removeFromFavourites') : t('addToFavourites')}
           aria-pressed={saved}
-          className="absolute end-3 top-3 z-20 h-10 w-10 icon-btn"
+          className="absolute end-3 top-3 z-raised h-10 w-10 icon-btn"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

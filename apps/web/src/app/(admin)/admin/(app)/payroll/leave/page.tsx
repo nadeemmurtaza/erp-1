@@ -67,7 +67,7 @@ export default function PayrollLeavePage() {
   return (
     <>
       {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
+        <div className="fixed top-4 right-4 z-toast flex flex-col gap-2">
           {toasts.map((t) => (
             <button
               key={t.id}
@@ -99,7 +99,7 @@ export default function PayrollLeavePage() {
             key={f}
             type="button"
             onClick={() => setFilter(f)}
-            className={cn('chip', filter === f ? 'bg-neutral-900 text-white' : undefined)}
+            className={cn('chip', filter === f ? 'bg-inverse text-on-inverse' : undefined)}
           >
             {f === 'ALL' ? 'All' : f.charAt(0) + f.slice(1).toLowerCase()}
           </button>

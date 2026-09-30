@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-428 files · 72,520 lines
+438 files · 73,948 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -25,22 +25,22 @@ through `@newax/shared`'s `BRAND`.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `apps/web` | 9 | 411 | file, script, json, module |
-| `apps/web/messages` | 2 | 1,536 | json |
+| `apps/web` | 9 | 447 | file, script, json, module |
+| `apps/web/messages` | 2 | 1,552 | json |
 | `apps/web/public` | 1 | 0 | asset |
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 246 | 47,821 | page, loading, layout, error |
-| `apps/web/src/components` | 117 | 18,086 | component, unit test, loading |
+| `apps/web/src/app` | 247 | 47,922 | page, loading, layout, error |
+| `apps/web/src/components` | 124 | 19,173 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
-| `apps/web/src/constants` | 5 | 466 | constants |
-| `apps/web/src/hooks` | 3 | 72 | hook |
+| `apps/web/src/constants` | 5 | 474 | constants |
+| `apps/web/src/hooks` | 4 | 189 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
 | `apps/web/src/lib` | 11 | 1,214 | utility |
 | `apps/web/src/providers` | 2 | 82 | react |
 | `apps/web/src/types` | 5 | 2,176 | types |
-| `apps/web/src/utils` | 5 | 306 | utility |
+| `apps/web/src/utils` | 6 | 369 | unit test, utility |
 
 
 ## Entry points
@@ -71,14 +71,14 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx` | 853 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 791 | page |  |
-| `apps/web/messages/en.json` | 768 | json |  |
-| `apps/web/messages/ur.json` | 768 | json |  |
+| `apps/web/messages/en.json` | 776 | json |  |
+| `apps/web/messages/ur.json` | 776 | json |  |
 | `apps/web/src/app/(storefront)/[locale]/checkout/page.tsx` | 754 | page |  |
 | `apps/web/src/components/admin/analytics/report-registry.ts` | 713 | component |  |
 | `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
+| `apps/web/src/app/globals.css` | 669 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 658 | page |  |
 | `apps/web/src/app/(admin)/admin/(app)/inbox/page.tsx` | 625 | page |  |
-| `apps/web/src/app/globals.css` | 603 | stylesheet |  |
 
 
 ---

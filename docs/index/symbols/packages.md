@@ -143,8 +143,8 @@ Every top-level export in `packages`, with the line to open.
 | `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :306 |  |
 | `api-keys.ts` | `expandCustomerScopes` | function | :319 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
 | `api-keys.ts` | `unknownCustomerScopes` | function | :331 | Requested scopes the catalogue does not know — refused at create and edit. |
-| `brand.ts` | `BRAND` | const | :332 | --------------------------------------------------------------------------- |
-| `brand.ts` | `Brand` | type | :344 |  |
+| `brand.ts` | `BRAND` | const | :555 | --------------------------------------------------------------------------- |
+| `brand.ts` | `Brand` | type | :567 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
 | `cod-risk.ts` | `CodRiskCityStats` | interface | :11 |  |
 | `cod-risk.ts` | `CodRiskCustomerHistory` | interface | :18 |  |
@@ -261,7 +261,15 @@ Every top-level export in `packages`, with the line to open.
 | `index.ts` | `*` | re-export |  | from `./brand` |
 | `index.ts` | `*` | re-export |  | from `./http-client` |
 | `index.ts` | `*` | re-export |  | from `./theme-colors` |
+| `index.ts` | `*` | re-export |  | from `./theme-contrast` |
+| `index.ts` | `*` | re-export |  | from `./theme-elevation` |
+| `index.ts` | `*` | re-export |  | from `./theme-layers` |
+| `index.ts` | `*` | re-export |  | from `./theme-motion` |
 | `index.ts` | `*` | re-export |  | from `./theme-radii` |
+| `index.ts` | `*` | re-export |  | from `./theme-runtime` |
+| `index.ts` | `*` | re-export |  | from `./theme-size` |
+| `index.ts` | `*` | re-export |  | from `./theme-space` |
+| `index.ts` | `*` | re-export |  | from `./theme-tailwind` |
 | `index.ts` | `*` | re-export |  | from `./theme-type` |
 | `index.ts` | `*` | re-export |  | from `./units` |
 | `index.ts` | `*` | re-export |  | from `./measurements/types` |
@@ -325,8 +333,50 @@ Every top-level export in `packages`, with the line to open.
 | `slug.ts` | `uniqueSlug` | function | :34 | Appends a numeric suffix until the slug is not in `taken`. |
 | `theme-colors.ts` | `THEME_COLORS` | const | :16 | The palette — a view onto BRAND.theme.colors. |
 | `theme-colors.ts` | `ThemeColors` | type | :17 | The palette — a view onto BRAND.theme.colors. |
+| `theme-colors.ts` | `THEME_COLORS_DARK` | const | :25 | The dark palette — the same roles, re-derived for a dark surface (COL-5). |
+| `theme-colors.ts` | `ThemeColorsDark` | type | :26 | The dark palette — the same roles, re-derived for a dark surface (COL-5). |
+| `theme-colors.ts` | `THEME_PALETTES` | const | :28 | The dark palette — the same roles, re-derived for a dark surface (COL-5). |
+| `theme-contrast.ts` | `relativeLuminance` | function | :13 | Relative luminance of an sRGB colour, 0 (black) to 1 (white). |
+| `theme-contrast.ts` | `contrastRatio` | function | :22 | Contrast ratio between two colours, order-independent, 1:1 to 21:1. |
+| `theme-contrast.ts` | `compositeRgb` | function | :28 | `fg` at `alpha` over an opaque `bg` — a translucent colour has no contrast of its own until it is c… |
+| `theme-contrast.ts` | `contrastRatioHex` | function | :37 | Same as `contrastRatio`, from hex strings. |
+| `theme-contrast.ts` | `wcagLevel` | function | :42 | WCAG conformance label for a ratio at a text size. |
+| `theme-elevation.ts` | `THEME_ELEVATION` | const | :10 | The four elevation steps — a view onto BRAND.theme.elevation. |
+| `theme-elevation.ts` | `ElevationStep` | type | :11 | The four elevation steps — a view onto BRAND.theme.elevation. |
+| `theme-layers.ts` | `THEME_LAYERS` | const | :7 | Stacking layers — a view onto BRAND.theme.layers. |
+| `theme-layers.ts` | `Layer` | type | :8 | Stacking layers — a view onto BRAND.theme.layers. |
+| `theme-motion.ts` | `THEME_MOTION` | const | :11 | The motion tokens — a view onto BRAND.theme.motion. |
+| `theme-motion.ts` | `cubicBezier` | function | :14 | `[0.2, 0, 0, 1]` -> `'cubic-bezier(0.2, 0, 0, 1)'`, for CSS. |
+| `theme-motion.ts` | `ms` | function | :19 | `220` -> `'220ms'`, for CSS. |
 | `theme-radii.ts` | `THEME_RADII` | const | :11 | The radius scale — a view onto BRAND.theme.radii. |
 | `theme-radii.ts` | `radiusPx` | function | :14 | `2` -> `'2px'`, for the CSS side. |
+| `theme-runtime.ts` | `THEME_PREFERENCES` | const | :14 | How a surface decides which theme it is in — plain functions, no framework. |
+| `theme-runtime.ts` | `ThemePreference` | type | :15 |  |
+| `theme-runtime.ts` | `ResolvedTheme` | type | :16 |  |
+| `theme-runtime.ts` | `THEME_ATTRIBUTE` | const | :19 | The attribute on `<html>` that the CSS keys off (`[data-theme='dark']`). |
+| `theme-runtime.ts` | `DEFAULT_THEME_PREFERENCE` | const | :22 | Where no choice has been made: follow the device. |
+| `theme-runtime.ts` | `isThemePreference` | function | :24 | Where no choice has been made: follow the device. |
+| `theme-runtime.ts` | `resolveTheme` | function | :29 | The one rule: an explicit choice wins, `system` defers to the device. |
+| `theme-runtime.ts` | `themeInitScript` | function | :52 | The script a root layout inlines in `<head>`, so `data-theme` is on `<html>` before the first paint. |
+| `theme-size.ts` | `THEME_SIZE` | const | :11 | Control heights, icon sizes and touch-target floors — a view onto BRAND.theme.size. |
+| `theme-size.ts` | `SIZE_SPACING_PX` | const | :18 | The spacing keys the size tokens generate, with their pixel size: one list for Tailwind (`h-control… |
+| `theme-space.ts` | `THEME_SPACE` | const | :10 | The spacing scale — a view onto BRAND.theme.space. |
+| `theme-space.ts` | `SpaceStep` | type | :11 | The spacing scale — a view onto BRAND.theme.space. |
+| `theme-space.ts` | `spaceRem` | function | :14 | `8` -> `'0.5rem'`, for the CSS side. |
+| `theme-space.ts` | `tailwindSpacingKey` | function | :19 | Tailwind's spacing key for a px value on its 4px grid: `8` -> `'2'`, `2` -> `'0.5'`. |
+| `theme-tailwind.ts` | `CssRules` | interface | :41 | The shape Tailwind's `addBase` takes, restated so shared needs no Tailwind types. |
+| `theme-tailwind.ts` | `StockHues` | interface | :46 | The stock Tailwind scales this product uses, passed in by the app. |
+| `theme-tailwind.ts` | `STOCK_HUE_NAMES` | const | :53 |  |
+| `theme-tailwind.ts` | `StockHueName` | type | :54 |  |
+| `theme-tailwind.ts` | `hexToRgb` | function | :80 | ── colour maths ──────────────────────────────────────────────────────── |
+| `theme-tailwind.ts` | `rgbToHex` | function | :86 |  |
+| `theme-tailwind.ts` | `mixHex` | function | :91 | `fg` over `bg` at `alpha`, as an opaque hex. |
+| `theme-tailwind.ts` | `channels` | function | :98 | `#0e8294` -> `'14 130 148'`, the form `rgb(var(--x) / <alpha-value>)` needs. |
+| `theme-tailwind.ts` | `darkHueScale` | function | :117 | A stock hue scale, re-derived for a dark surface. |
+| `theme-tailwind.ts` | `themeColorVar` | function | :142 | A theme colour as a plain CSS value, for the places a class cannot reach: an SVG `stroke`, a Rechar… |
+| `theme-tailwind.ts` | `themeVars` | function | :166 | Every custom property that changes between themes: the colours, and the shadows (which are colours… |
+| `theme-tailwind.ts` | `staticVars` | function | :198 | Custom properties that do not change between themes: motion. |
+| `theme-tailwind.ts` | `createThemeTailwind` | function | :221 |  |
 | `theme-type.ts` | `TypeStep` | interface | :14 | The type scale — a view onto BRAND.theme.type. |
 | `theme-type.ts` | `THEME_TYPE` | const | :21 |  |
 | `theme-type.ts` | `THEME_FONTS` | const | :24 | Font families, for the Tailwind config and mobile's theme. |

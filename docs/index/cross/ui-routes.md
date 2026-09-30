@@ -3,7 +3,7 @@
 
 # Screens
 
-All **277** routable files across the web app, the till and the mobile app.
+All **278** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (182)
+### admin (183)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -84,6 +84,7 @@ _none_
 | `/admin/debit-notes` | page | client | `apps/web/src/app/(admin)/admin/(app)/debit-notes/page.tsx` |
 | `/admin/debit-notes/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/debit-notes/[id]/page.tsx` |
 | `/admin/debit-notes/new` | page | client | `apps/web/src/app/(admin)/admin/(app)/debit-notes/new/page.tsx` |
+| `/admin/design-system` | page | server | `apps/web/src/app/(admin)/admin/design-system/page.tsx` |
 | `/admin/designs` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/page.tsx` |
 | `/admin/designs/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx` |
 | `/admin/dunning-policy` | page | client | `apps/web/src/app/(admin)/admin/(app)/dunning-policy/page.tsx` |

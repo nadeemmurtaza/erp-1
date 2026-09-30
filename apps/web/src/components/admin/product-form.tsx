@@ -1454,7 +1454,7 @@ function BarcodeReferencePreview({
   }
 
   if (check.accepted) {
-    return <p className="mt-1 text-xs text-emerald-700">Filled from the shared listing.</p>;
+    return <p className="mt-1 text-xs text-feedback-positive">Filled from the shared listing.</p>;
   }
 
   const name = check.reference?.translations.find((t) => t.locale === 'en')?.name ?? check.reference?.translations[0]?.name;

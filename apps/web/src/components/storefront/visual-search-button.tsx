@@ -79,7 +79,7 @@ export function VisualSearchButton() {
         }}
       />
       {error ? (
-        <p role="alert" className="absolute end-0 top-full z-10 mt-1 w-56 rounded-md bg-red-50 p-2 text-xs text-red-700 shadow-sm">
+        <p role="alert" className="absolute end-0 top-full z-dropdown mt-1 w-56 rounded-md bg-red-50 p-2 text-xs text-red-700 shadow-sm">
           {error}
         </p>
       ) : null}

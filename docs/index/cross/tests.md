@@ -3,7 +3,7 @@
 
 # Tests
 
-**365** spec files, **3,513** cases. What is already pinned down — and what is not.
+**369** spec files, **3,551** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -63,7 +63,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (341)
+## Unit and integration (345)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -374,6 +374,7 @@ regression or an N+1.
 | `apps/platform/src/modules/trials/signup.service.spec.ts` | root | 7 | SignupService · requestSignup · verifyAndProvision |
 | `apps/platform/src/modules/trials/trials.service.spec.ts` | root | 8 | TrialsService · extend · convert · expireToSuspended · listExtendedMoreThanOnce |
 | `apps/web/src/components/admin/analytics/resolve-path.spec.ts` | web | 13 | resolvePath · interpolateHref |
+| `apps/web/src/utils/cn.spec.ts` | web | 4 | cn with the design system’s names |
 | `packages/desktop-runtime/src/backup-scheduler.integration.spec.ts` | packages | 2 | TarBackupArchiver (real tar package, no Postgres) |
 | `packages/desktop-runtime/src/backup-scheduler.spec.ts` | packages | 15 | LocalBackupScheduler · runOnce — the happy path · failure paths — never silently report success · s… |
 | `packages/desktop-runtime/src/hardware/escpos.spec.ts` | packages | 8 | escpos byte-command builders |
@@ -406,6 +407,9 @@ regression or an N+1.
 | `packages/shared/src/pricing.spec.ts` | packages | 35 | computeStitchingFee · computeLineItem · lineMargin · computeOrderTotals · taxExclusive · taxInclusi… |
 | `packages/shared/src/secret-crypto.spec.ts` | packages | 5 | secret-crypto |
 | `packages/shared/src/sku.spec.ts` | packages | 7 | generateSku |
+| `packages/shared/src/theme-contrast.spec.ts` | packages | 14 | contrast maths · dark palette · dark stock hues — inverted in lightness, not in hue |
+| `packages/shared/src/theme-runtime.spec.ts` | packages | 9 | resolveTheme · isThemePreference · themeInitScript |
+| `packages/shared/src/theme-space.spec.ts` | packages | 11 | spacing and size tokens · layers · elevation · motion |
 | `packages/shared/src/units.spec.ts` | packages | 7 | toBaseUnits · fromBaseUnits · formatQuantity |
 | `packages/shared/src/variant-matrix.spec.ts` | packages | 7 | generateVariantCombinations · newCombinationsOnly · removedCombinations |
 

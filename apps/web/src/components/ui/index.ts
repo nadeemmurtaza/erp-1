@@ -27,6 +27,7 @@ export { Button, type ButtonProps } from './button';
 export { Dialog } from './dialog';
 export { ConfirmDialog } from './confirm-dialog';
 export { Loading } from './loading';
+export { ThemeToggle, type ThemeToggleLabels } from './theme-toggle';
 export { ListPageSkeleton } from './list-page-skeleton';
 export {
   FilterBar,

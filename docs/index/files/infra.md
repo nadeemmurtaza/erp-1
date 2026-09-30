@@ -77,16 +77,16 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2558 |  |
+| `build-index.mjs` | script | 2561 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-chart-imports.mjs` | script | 72 |  |
-| `check-contrast.mjs` | script | 425 |  |
+| `check-contrast.mjs` | script | 626 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
 | `check-hardcoded-policy.mjs` | script | 85 |  |
 | `check-hexagonal-purity.mjs` | script | 149 |  |
-| `check-links.mjs` | script | 409 |  |
+| `check-links.mjs` | script | 416 |  |
 | `check-metadata-renderer.mjs` | script | 134 |  |
 | `check-module-boundaries.mjs` | script | 624 |  |
 | `check-overflow.mjs` | script | 644 |  |

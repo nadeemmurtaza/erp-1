@@ -119,12 +119,12 @@ export function Dialog({
   return (
     <div
       className={cn(
-        'fixed inset-0 z-50 flex justify-center p-4',
+        'fixed inset-0 z-modal flex justify-center p-4',
         align === 'top' ? 'items-start pt-[10vh]' : 'items-center',
       )}
     >
       <div
-        className="absolute inset-0 bg-neutral-900/40 backdrop-blur-sm animate-fadeIn"
+        className="absolute inset-0 bg-scrim/40 backdrop-blur-sm animate-fadeIn"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -151,7 +151,7 @@ export function Dialog({
         tabIndex={-1}
         onKeyDown={onKeyDown}
         className={cn(
-          'card relative z-10 flex max-h-[85vh] w-full max-w-lg flex-col outline-none animate-scaleIn',
+          'card relative z-raised flex max-h-[85vh] w-full max-w-lg flex-col bg-overlay outline-none animate-scaleIn',
           className,
         )}
       >

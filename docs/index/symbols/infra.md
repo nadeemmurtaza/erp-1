@@ -12,14 +12,15 @@ Every top-level export in `infra`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `check-contrast.mjs` | `contrast` | const | :69 | WCAG 2.x contrast ratio. |
-| `check-contrast.mjs` | `scanColours` | function | :213 | Every colour utility in a file, with the className it shared, if any. |
+| `check-contrast.mjs` | `contrast` | const | :78 | WCAG 2.x contrast ratio. |
+| `check-contrast.mjs` | `scanColours` | function | :241 | Every colour utility in a file, with the className it shared, if any. |
+| `check-contrast.mjs` | `pinnedRegions` | function | :274 | A region that holds one theme whatever the page is in: an element carrying `data-theme="light"` (or… |
 | `check-links.mjs` | `APPS` | const | :37 | The apps with a Next.js app router, and where each one's assets live. |
-| `check-links.mjs` | `routeUrl` | function | :84 | The URL a `page.tsx` / `route.ts` serves: route groups vanish, `[id]` stays. |
-| `check-links.mjs` | `routeInventory` | function | :100 | Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`. |
-| `check-links.mjs` | `matches` | function | :133 | Does `link` land on `route`? |
-| `check-links.mjs` | `resolve1` | function | :174 | The route Next.js would pick for this link, or null. |
-| `check-links.mjs` | `scanLinks` | function | :219 | Every internal path a file refers to, with the line it is on. |
+| `check-links.mjs` | `routeUrl` | function | :91 | The URL a `page.tsx` / `route.ts` serves: route groups vanish, `[id]` stays. |
+| `check-links.mjs` | `routeInventory` | function | :107 | Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`. |
+| `check-links.mjs` | `matches` | function | :140 | Does `link` land on `route`? |
+| `check-links.mjs` | `resolve1` | function | :181 | The route Next.js would pick for this link, or null. |
+| `check-links.mjs` | `scanLinks` | function | :226 | Every internal path a file refers to, with the line it is on. |
 | `check-metadata-renderer.mjs` | `TARGET_FILE` | const | :31 |  |
 | `check-metadata-renderer.mjs` | `findViolations` | function | :38 |  |
 | `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :63 |  |

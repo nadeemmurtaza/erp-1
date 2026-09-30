@@ -10,6 +10,7 @@ import { CustomerNav } from './customer-nav';
 import { LocaleSwitcher } from './locale-switcher';
 import { Logo } from './logo';
 import { SearchBox } from './search-box';
+import { ThemeSwitch } from './theme-switch';
 
 import { MobileNav } from './mobile-nav';
 import { ROUTES } from '@/constants/routes';
@@ -72,7 +73,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-neutral-100 bg-white shadow-sm">
+      <header className="sticky top-0 z-sticky border-b border-neutral-100 bg-white shadow-sm">
         <div className="container-page">
           <div className="flex items-center justify-between py-3 md:py-5">
             <div className="flex items-center gap-3 md:gap-8" suppressHydrationWarning>
@@ -119,7 +120,7 @@ export function Header() {
                               </button>
                             );
                           })()}
-                          <div className="invisible absolute start-0 top-full overflow-hidden rounded-md border border-neutral-100 bg-white opacity-0 shadow-md transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                          <div className="invisible absolute start-0 top-full overflow-hidden rounded-md border border-neutral-100 bg-overlay opacity-0 shadow-md transition-all duration-200 group-hover:visible group-hover:opacity-100">
                             {item.submenu.map((subitem) => {
                               const subActive = isActive(subitem.href);
                               return (
@@ -190,6 +191,7 @@ export function Header() {
                 <CartBadge />
               </div>
               <div className="hidden h-6 w-px bg-neutral-200 lg:block" />
+              <ThemeSwitch />
               {/*
                 The switcher reads the query string so filters survive a language
                 change, which opts it out of prerendering without this boundary.

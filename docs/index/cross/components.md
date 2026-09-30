@@ -3,7 +3,7 @@
 
 # Components
 
-All **114** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **120** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 247 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 250 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 6 |  |
 
 ### `apps/pos/src/components` (2)
@@ -68,7 +68,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
 | `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 76 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
-| `toast-stack.tsx` | `ToastStack` | client | 18 |  |
+| `toast-stack.tsx` | `ToastStack` | client | 19 |  |
 
 ### `apps/web/src/components/admin/analytics` (1)
 
@@ -131,7 +131,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | client | 2 |  |
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 66 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 67 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 6 |  |
 
@@ -141,7 +141,15 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/storefront` (37)
+### `apps/web/src/components/design-system` (3)
+
+| Component file | Exports | Client? | Imported by | Purpose |
+|---|---|---|---|---|
+| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 2 |  |
+| `gallery.tsx` | `DesignSystemGallery` | client | 2 |  |
+| `specimens.tsx` | `ComponentSpecimens` | client | 1 |  |
+
+### `apps/web/src/components/storefront` (38)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -181,13 +189,14 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `sort-select.tsx` | `SortSelect` | client | 1 |  |
 | `stitching-panel.tsx` | `StitchingSelection` `CartStitchingRequest` `StitchingPanel` `prepareStitching` | client | 1 |  |
 | `stitching-timeline.tsx` | `TimelineEvent` `StitchingTimeline` | client | 2 |  |
+| `theme-switch.tsx` | `ThemeSwitch` | client | 1 |  |
 | `visual-search-button.tsx` | `VisualSearchButton` | client | 1 |  |
 
-### `apps/web/src/components/ui` (16)
+### `apps/web/src/components/ui` (18)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 71 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 72 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 7 |  |
@@ -203,6 +212,8 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 1 |  |
 | `section.tsx` | `Section` | server | 6 |  |
 | `tabs.tsx` | `TabItem` `Tabs` | client | 1 |  |
+| `theme-init-script.tsx` | `ThemeInitScript` | server | 2 |  |
+| `theme-toggle.tsx` | `ThemeToggleLabels` `ThemeToggle` | client | 3 |  |
 
 
 ---

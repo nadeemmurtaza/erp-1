@@ -32,8 +32,13 @@ export function Footer({
   const t = useTranslations('footer');
   const tSite = useTranslations('site');
 
+  // Pinned to the light palette (`data-theme="light"`). The footer is a dark
+  // band in both themes, and everything in it — neutral-200 links, neutral-500
+  // eyebrows, `text-white` hovers — is written against the light ramp's values
+  // (light text on #121111). A dark theme must not turn it into a pale band
+  // with the same classes.
   return (
-    <footer className="mt-20 border-t border-neutral-800 bg-neutral-900">
+    <footer data-theme="light" className="mt-20 border-t border-neutral-800 bg-neutral-900">
       <div className="container-page py-16 sm:py-20">
         <div className="grid gap-12 sm:gap-16 sm:grid-cols-2 lg:grid-cols-4 mb-12">
           <div className="lg:col-span-1">

@@ -42,11 +42,18 @@ export function BottomNav() {
   return (
     <nav
       aria-label={t('bottomNav')}
-      className="fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex justify-center px-4 md:hidden"
+      className="fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-sticky flex justify-center px-4 md:hidden"
     >
+      {/*
+        Pinned to the light palette: this is a dark pill floating over content
+        in BOTH themes, and its `text-white` icons and white badge are written
+        against the light ramp's values. Without the pin, `bg-neutral-700`
+        would flip to a pale grey under white icons.
+      */}
       <div
         dir="ltr"
-        className="inline-flex items-center gap-1 rounded bg-neutral-700 px-2 py-2 shadow-lg shadow-neutral-900/30"
+        data-theme="light"
+        className="inline-flex items-center gap-1 rounded bg-neutral-700 px-2 py-2 shadow-lg"
       >
         <TabLink href="/" label={t('home')} active={cleanPath === '/'}>
           <HomeIcon />

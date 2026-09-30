@@ -2206,12 +2206,13 @@ let designLaws = [];
     ['colour', 'packages/shared/src/theme-colors.ts'],
     ['radius', 'packages/shared/src/theme-radii.ts'],
     ['type', 'packages/shared/src/theme-type.ts'],
-    ['space', null],
-    ['size', null],
-    ['shadow', null],
-    ['z-index', null],
-    ['motion', null],
+    ['space', 'packages/shared/src/theme-space.ts'],
+    ['size', 'packages/shared/src/theme-size.ts'],
+    ['shadow', 'packages/shared/src/theme-elevation.ts'],
+    ['z-index', 'packages/shared/src/theme-layers.ts'],
+    ['motion', 'packages/shared/src/theme-motion.ts'],
   ];
+  const unbuiltGroups = TOKEN_GROUPS.filter(([, file]) => !file || !byPath.get(file)).length;
   const tokenRows = TOKEN_GROUPS.map(([group, file]) => {
     const r = file ? byPath.get(file) : null;
     return [
@@ -2294,9 +2295,11 @@ ${table(['Signal', 'Today', 'Note'], measured)}
 
 ## Token groups
 
-The ladder in chapter 03 starts at tokens. Five of the eight groups it needs
-do not exist yet, which is why several chapters are specifications rather than
-descriptions.
+The ladder in chapter 03 starts at tokens. ${
+  unbuiltGroups === 0
+    ? `All ${TOKEN_GROUPS.length} groups it needs exist. Each is a thin view onto \`packages/shared/src/brand.ts\`, the one source, and colour has a dark half (\`theme-tailwind.ts\` turns both into the CSS the two themes read).`
+    : `${unbuiltGroups} of the ${TOKEN_GROUPS.length} groups it needs do not exist yet, which is why some chapters are specifications rather than descriptions.`
+}
 
 ${table(['Group', 'File', 'Size', 'State'], tokenRows)}
 

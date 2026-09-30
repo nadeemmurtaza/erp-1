@@ -69,17 +69,17 @@ export function MobileNav({
       </button>
 
       {isOpen && typeof document !== 'undefined' ? createPortal(
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-overlay lg:hidden">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className="fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity animate-fadeIn"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
 
           {/* Panel */}
           <div className={cn(
-            'fixed inset-y-0 w-4/5 max-w-sm bg-white shadow-xl flex flex-col',
+            'fixed inset-y-0 w-4/5 max-w-sm bg-overlay shadow-xl flex flex-col',
             isRtl ? 'end-0 animate-slideInRight' : 'start-0 animate-slideInLeft'
           )}>
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">

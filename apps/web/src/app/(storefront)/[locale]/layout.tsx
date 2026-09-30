@@ -12,6 +12,7 @@ import { Header } from '@/components/storefront/header';
 import { JsonLd } from '@/components/storefront/json-ld';
 import { OnsiteMessages } from '@/components/storefront/onsite-messages';
 import { SmoothScroller } from '@/components/storefront/smooth-scroller';
+import { ThemeInitScript } from '@/components/ui/theme-init-script';
 import { StorefrontProviders } from '@/providers/storefront-providers';
 import { businessProfile } from '@/config/business-profile';
 import { getMenu } from '@/lib/api';
@@ -162,7 +163,10 @@ export default async function LocaleLayout({
   ]);
 
   return (
-    <html lang={locale} dir={directionFor(locale as Locale)}>
+    <html lang={locale} dir={directionFor(locale as Locale)} suppressHydrationWarning>
+      <head>
+        <ThemeInitScript />
+      </head>
       <body
         className={`flex min-h-screen flex-col pb-24 md:pb-0 ${encodeSans.variable}`}
         suppressHydrationWarning
@@ -175,7 +179,7 @@ export default async function LocaleLayout({
             <AnalyticsBeacon />
             <a
               href="#main"
-              className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow"
+              className="sr-only focus:not-sr-only focus:absolute focus:z-toast focus:m-2 focus:rounded focus:bg-overlay focus:px-4 focus:py-2 focus:shadow"
             >
               {t('skipToContent')}
             </a>

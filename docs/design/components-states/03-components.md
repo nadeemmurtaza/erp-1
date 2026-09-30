@@ -32,7 +32,7 @@ already existed.
 
 ## Primitives
 
-Twelve, in `apps/web/src/components/ui`:
+The primitives, in `apps/web/src/components/ui`:
 
 | Import | For |
 |---|---|
@@ -42,10 +42,13 @@ Twelve, in `apps/web/src/components/ui`:
 | `Tabs` | separate tasks on one object — one at a time |
 | `Disclosure` | rare, advanced or destructive — closed by default |
 | `MetricStrip` | a row of figures; `detail` makes an item open a panel |
+| `ThemeToggle` | the light / dark / system choice — `segmented` where there is room, `icon` where there is not; it is the only place a person picks a theme |
 | `DataTable` `EmptyState` `Badge` `Button` `Dialog` `Loading` | as named |
 
 Cross-surface: `components/common/status-badge` is **the** status pill.
 `components/common/wizard` is **the** wizard.
+
+**Every primitive, in both themes, as shipped:** `/admin/design-system`. If a component looks wrong in dark, it is wrong there first.
 
 **Before writing markup, grep for the literal.** That is not advice; it is in
 the binding rules.

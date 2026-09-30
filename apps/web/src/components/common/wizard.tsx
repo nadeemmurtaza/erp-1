@@ -40,7 +40,7 @@ export function Wizard({
   submitBusy,
   submitDisabled,
   error,
-  accentClassName = 'bg-neutral-900 text-white',
+  accentClassName = 'bg-inverse text-on-inverse',
   backLabel = 'Back',
   nextLabel = 'Next',
 }: WizardProps) {
@@ -76,7 +76,7 @@ export function Wizard({
           const active = i === index;
           return (
             <li key={s.id} className="flex items-center">
-              {i > 0 ? <span className="mx-1.5 h-px w-4 bg-zinc-200" aria-hidden /> : null}
+              {i > 0 ? <span className="mx-1.5 h-px w-4 bg-neutral-200" aria-hidden /> : null}
               <button
                 type="button"
                 role="tab"
@@ -88,14 +88,14 @@ export function Wizard({
                   active
                     ? accentClassName
                     : reachable
-                      ? 'text-zinc-600 hover:text-zinc-900'
-                      : 'text-zinc-300',
+                      ? 'text-neutral-600 hover:text-neutral-900'
+                      : 'text-neutral-300',
                 )}
               >
                 <span
                   className={cn(
                     'flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-semibold',
-                    active ? 'bg-white/25' : 'border border-current',
+                    active ? 'bg-on-inverse/25' : 'border border-current',
                   )}
                 >
                   {i + 1}

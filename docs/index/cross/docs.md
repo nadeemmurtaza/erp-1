@@ -3303,7 +3303,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/decisions/ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>86 lines</sub>
+### `docs/implementation/decisions/ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>88 lines</sub>
 
 _no second-level headings_
 
@@ -3874,7 +3874,7 @@ _no second-level headings_
 - Acceptance  <sub>:226</sub>
 - Out of scope  <sub>:235</sub>
 
-### `docs/implementation/integrations-connectivity/213-partner-fact-exchange.md`  <sub>272 lines</sub>
+### `docs/implementation/integrations-connectivity/213-partner-fact-exchange.md`  <sub>319 lines</sub>
 
 - Objective  <sub>:10</sub>
 - Existing state (verified in code, 2026-09-30)  <sub>:19</sub>

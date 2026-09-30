@@ -9,7 +9,7 @@ Pack **core** · enabled by the `MODULES` allowlist · 30 files
 
 Source: `apps/api/src/modules/supply-chain/tradingpartners/`
 
-## Files (30 · 3,468 lines)
+## Files (30 · 3,334 lines)
 
 All paths relative to `apps/api/src/modules/supply-chain/tradingpartners/dto`.
 
@@ -17,8 +17,8 @@ All paths relative to `apps/api/src/modules/supply-chain/tradingpartners/dto`.
 |---|---|---|---|---|
 | `invoice.dto.ts` | dto | 77 | 3 |  |
 | `offer.dto.ts` | dto | 25 | 1 |  |
-| `partner-fact.dto.spec.ts` | unit test | 93 | — |  |
-| `partner-fact.dto.ts` | dto | 166 | 6 | The fact types a partner may send (WO-213.1, 213-partner-fact-exchange.md). |
+| `partner-fact.dto.spec.ts` | unit test | 80 | — |  |
+| `partner-fact.dto.ts` | dto | 157 | 6 | The fact types a partner may send (WO-213.1, 213-partner-fact-exchange.md). |
 | `quote.dto.ts` | dto | 56 | 2 |  |
 | `trading-partner.dto.ts` | dto | 55 | 8 |  |
 | `invoice.service.spec.ts` | unit test | 150 | — |  |
@@ -27,11 +27,11 @@ All paths relative to `apps/api/src/modules/supply-chain/tradingpartners/dto`.
 | `offer.service.spec.ts` | unit test | 73 | — |  |
 | `offer.service.ts` | service | 53 | 1 | The "forth" direction's marketing push (WO-18.3) — the same broadcast shape as `ProductAlertsListener`, fanned out to e… |
 | `offers.controller.ts` | controller | 25 | 1 |  |
-| `partner-fact-inbox.integration.spec.ts` | unit test | 248 | — |  |
-| `partner-fact-inbox.service.spec.ts` | unit test | 337 | — |  |
-| `partner-fact-inbox.service.ts` | service | 230 | 4 | What the partner is told. |
-| `partner-fact-status.listener.spec.ts` | unit test | 80 | — |  |
-| `partner-fact-status.listener.ts` | event subscriber | 65 | 1 | Keeps `PartnerFactInbox.status` in step with what the subscriber that owns a fact's effect decided (WO-213.1). |
+| `partner-fact-inbox.integration.spec.ts` | unit test | 223 | — |  |
+| `partner-fact-inbox.service.spec.ts` | unit test | 299 | — |  |
+| `partner-fact-inbox.service.ts` | service | 190 | 4 | What the partner is told. |
+| `partner-fact-status.listener.spec.ts` | unit test | 69 | — |  |
+| `partner-fact-status.listener.ts` | event subscriber | 67 | 1 | Keeps `PartnerFactInbox.status` in step with what the subscriber that owns a fact's effect decided (WO-213.1). |
 | `product-alerts.listener.spec.ts` | unit test | 72 | — |  |
 | `product-alerts.listener.ts` | event subscriber | 44 | 1 | The "forth" direction: a new product going live, or a price changing, pushed to every connected CUSTOMER (or BOTH) part… |
 | `quote.service.spec.ts` | unit test | 111 | — |  |
@@ -79,7 +79,7 @@ All paths relative to `apps/api/src/modules/supply-chain/tradingpartners/dto`.
 
 | Event | Name | Published at |
 |---|---|---|
-| `PartnerFactReceived` | `partners.fact_received` | `partner-fact-inbox.service.ts:112` |
+| `PartnerFactReceived` | `partners.fact_received` | `partner-fact-inbox.service.ts:94` |
 
 
 **Subscribes** — handlers must be idempotent; delivery is at-least-once:
@@ -148,11 +148,11 @@ check there before adding another.
 | `InvoiceQueryDto` | class | `invoice.dto.ts:69` |  |
 | `CreateOfferDto` | class | `offer.dto.ts:4` |  |
 | `PARTNER_FACT_TYPES` | const | `partner-fact.dto.ts:24` | The fact types a partner may send (WO-213.1, 213-partner-fact-exchange.md). |
-| `PartnerFactType` | type | `partner-fact.dto.ts:28` |  |
-| `PARTNER_FACT_SCHEMA_VERSIONS` | const | `partner-fact.dto.ts:31` | The shape version this deployment understands. |
-| `PARTNER_FACT_MAX_LINES` | const | `partner-fact.dto.ts:39` | 500 lines is about 85 KiB at roughly 170 bytes a line — inside the platform's existing 100 KiB JSON body limi… |
-| `PartnerFactLineDto` | class | `partner-fact.dto.ts:49` | One line of a fact. |
-| `SubmitPartnerFactDto` | class | `partner-fact.dto.ts:110` |  |
+| `PartnerFactType` | type | `partner-fact.dto.ts:25` | The fact types a partner may send (WO-213.1, 213-partner-fact-exchange.md). |
+| `PARTNER_FACT_SCHEMA_VERSIONS` | const | `partner-fact.dto.ts:28` | The shape version this deployment understands. |
+| `PARTNER_FACT_MAX_LINES` | const | `partner-fact.dto.ts:36` | 500 lines is about 85 KiB at roughly 170 bytes a line — inside the platform's existing 100 KiB JSON body limi… |
+| `PartnerFactLineDto` | class | `partner-fact.dto.ts:46` | One line of a fact. |
+| `SubmitPartnerFactDto` | class | `partner-fact.dto.ts:103` |  |
 | `QuoteLineDto` | class | `quote.dto.ts:16` |  |
 | `CreateQuoteDto` | class | `quote.dto.ts:38` |  |
 | `TRADING_PARTNER_KINDS` | const | `trading-partner.dto.ts:4` |  |
@@ -167,10 +167,10 @@ check there before adding another.
 | `InvoicesController` | class | `invoices.controller.ts:10` |  |
 | `OfferService` | class | `offer.service.ts:14` | The "forth" direction's marketing push (WO-18.3) — the same broadcast shape as `ProductAlertsListener`, fanne… |
 | `OffersController` | class | `offers.controller.ts:10` |  |
-| `PartnerFactReceipt` | interface | `partner-fact-inbox.service.ts:23` | What the partner is told. |
-| `canonicalJson` | function | `partner-fact-inbox.service.ts:34` | A key-sorted JSON string, so two senders that list the same fields in a different order produce the same hash. |
-| `hashFact` | function | `partner-fact-inbox.service.ts:45` |  |
-| `PartnerFactInboxService` | class | `partner-fact-inbox.service.ts:76` | "Store first, apply second" (WO-213.1, 213-partner-fact-exchange.md, ADR-083). |
+| `PartnerFactReceipt` | interface | `partner-fact-inbox.service.ts:11` | What the partner is told. |
+| `canonicalJson` | function | `partner-fact-inbox.service.ts:22` | A key-sorted JSON string, so two senders that list the same fields in a different order produce the same hash. |
+| `hashFact` | function | `partner-fact-inbox.service.ts:33` |  |
+| `PartnerFactInboxService` | class | `partner-fact-inbox.service.ts:61` | "Store first, apply second" (WO-213.1, 213-partner-fact-exchange.md, ADR-083). |
 | `PartnerFactStatusListener` | class | `partner-fact-status.listener.ts:24` | Keeps `PartnerFactInbox.status` in step with what the subscriber that owns a fact's effect decided (WO-213.1). |
 | `ProductAlertsListener` | class | `product-alerts.listener.ts:20` | The "forth" direction: a new product going live, or a price changing, pushed to every connected CUSTOMER (or… |
 | `QuoteService` | class | `quote.service.ts:40` | The "forth" direction's price-quotation document (WO-18.3) — issuing one auto-pushes it to the linked Trading… |

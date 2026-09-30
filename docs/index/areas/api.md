@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,201 files · 161,430 lines
+1,209 files · 162,747 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -30,10 +30,10 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 |---|---|---|---|
 | `apps/api` | 10 | 847 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,294 | module |
-| `apps/api/prisma/schema` | 174 | 17,747 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 175 | 17,773 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 168 | nest module, module |
-| `apps/api/src/core` | 223 | 28,618 | unit test, service, module, controller |
-| `apps/api/src/modules` | 757 | 101,483 | doc, unit test, service, controller |
+| `apps/api/src/core` | 223 | 28,623 | unit test, service, module, controller |
+| `apps/api/src/modules` | 764 | 102,769 | doc, unit test, service, controller |
 | `apps/api/test` | 30 | 9,192 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
@@ -64,8 +64,8 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
 | `apps/api/prisma/schema/catalog.prisma` | 788 | prisma schema | Catalog: categories, products, variants, images. |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts` | 771 | event subscriber |  |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts` | 770 | service |  |
 | `apps/api/src/modules/merchandising/catalog/product-admin.service.ts` | 751 | service |  |
-| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts` | 749 | service |  |
 
 
 ---

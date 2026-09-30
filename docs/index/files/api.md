@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,201 tracked files in `apps/api`, by directory.
+All 1,209 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -78,7 +78,7 @@ All 1,201 tracked files in `apps/api`, by directory.
 | `pricing.prisma` | prisma schema | 58 | The `pricing` module — 146-wholesale-tiered-pricing.md |
 | `production.prisma` | prisma schema | 96 | Production: bills of materials and work orders for variants made in-house |
 | `promotions.prisma` | prisma schema | 113 | Phase 5 WO-5.1/5.2/5.3 (docs/implementation/promotions-giftcards/05-promotions-giftcards.md). |
-| `purchasing.prisma` | prisma schema | 325 |  |
+| `purchasing.prisma` | prisma schema | 333 |  |
 | `rag.prisma` | prisma schema | 159 | WO-35 (docs/implementation/ai-layer/35-scalable-rag-document-retrieval.md). |
 | `receivables.prisma` | prisma schema | 142 | Receivables: CreditNote/DebitNote, customer credit limits, and dunning — |
 | `replication.prisma` | prisma schema | 185 | The replication engine (RETAIL-ERP.md Part 6, WO-20.1: "log, cursors, |
@@ -770,6 +770,12 @@ All 1,201 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 62 |  |
 
+### `apps/api/prisma/schema/migrations/20260930110000_wo213_2_purchase_order_source_fact` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 18 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -1147,7 +1153,7 @@ All 1,201 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 543 |  |
+| `settings.defaults.ts` | module | 548 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.spec.ts` | unit test | 125 |  |
 | `settings.service.ts` | service | 146 |  |
@@ -2389,12 +2395,19 @@ All 1,201 tracked files in `apps/api`, by directory.
 | `bom.dto.ts` | dto | 24 |  |
 | `work-order.dto.ts` | dto | 26 |  |
 
-### `apps/api/src/modules/supply-chain/purchasing` (20)
+### `apps/api/src/modules/supply-chain/purchasing` (27)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `goods-receipt-replication.listener.spec.ts` | unit test | 127 |  |
 | `goods-receipt-replication.listener.ts` | event subscriber | 82 |  |
+| `partner-fact-applier.integration.spec.ts` | unit test | 314 |  |
+| `partner-fact-applier.service.spec.ts` | unit test | 277 |  |
+| `partner-fact-applier.service.ts` | service | 206 |  |
+| `partner-fact-plan.spec.ts` | unit test | 311 |  |
+| `partner-fact-plan.ts` | module | 230 |  |
+| `partner-fact.listener.spec.ts` | unit test | 31 |  |
+| `partner-fact.listener.ts` | event subscriber | 26 |  |
 | `purchase-order-feed.source.spec.ts` | unit test | 69 |  |
 | `purchase-order-feed.source.ts` | module | 62 |  |
 | `purchasing.controller.ts` | controller | 151 |  |
@@ -2402,8 +2415,8 @@ All 1,201 tracked files in `apps/api`, by directory.
 | `purchasing.cron.ts` | scheduled job | 118 |  |
 | `purchasing.metrics.spec.ts` | unit test | 74 |  |
 | `purchasing.metrics.ts` | module | 135 |  |
-| `purchasing.module.ts` | nest module | 34 |  |
-| `purchasing.service.ts` | service | 749 |  |
+| `purchasing.module.ts` | nest module | 38 |  |
+| `purchasing.service.ts` | service | 770 |  |
 | `purchasing.spec.ts` | unit test | 369 |  |
 | `reorder.listener.spec.ts` | unit test | 146 |  |
 | `reorder.listener.ts` | event subscriber | 83 |  |
@@ -2446,11 +2459,11 @@ All 1,201 tracked files in `apps/api`, by directory.
 | `offer.service.spec.ts` | unit test | 73 |  |
 | `offer.service.ts` | service | 53 |  |
 | `offers.controller.ts` | controller | 25 |  |
-| `partner-fact-inbox.integration.spec.ts` | unit test | 248 |  |
-| `partner-fact-inbox.service.spec.ts` | unit test | 337 |  |
-| `partner-fact-inbox.service.ts` | service | 230 |  |
-| `partner-fact-status.listener.spec.ts` | unit test | 80 |  |
-| `partner-fact-status.listener.ts` | event subscriber | 65 |  |
+| `partner-fact-inbox.integration.spec.ts` | unit test | 223 |  |
+| `partner-fact-inbox.service.spec.ts` | unit test | 299 |  |
+| `partner-fact-inbox.service.ts` | service | 190 |  |
+| `partner-fact-status.listener.spec.ts` | unit test | 69 |  |
+| `partner-fact-status.listener.ts` | event subscriber | 67 |  |
 | `product-alerts.listener.spec.ts` | unit test | 72 |  |
 | `product-alerts.listener.ts` | event subscriber | 44 |  |
 | `quote.service.spec.ts` | unit test | 111 |  |
@@ -2471,8 +2484,8 @@ All 1,201 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `invoice.dto.ts` | dto | 77 |  |
 | `offer.dto.ts` | dto | 25 |  |
-| `partner-fact.dto.spec.ts` | unit test | 93 |  |
-| `partner-fact.dto.ts` | dto | 166 |  |
+| `partner-fact.dto.spec.ts` | unit test | 80 |  |
+| `partner-fact.dto.ts` | dto | 157 |  |
 | `quote.dto.ts` | dto | 56 |  |
 | `trading-partner.dto.ts` | dto | 55 |  |
 

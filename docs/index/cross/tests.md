@@ -3,7 +3,7 @@
 
 # Tests
 
-**369** spec files, **3,565** cases. What is already pinned down — and what is not.
+**373** spec files, **3,612** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -63,7 +63,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (345)
+## Unit and integration (349)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -300,6 +300,10 @@ regression or an N+1.
 | `apps/api/src/modules/supply-chain/production/stitching-cascade.listener.spec.ts` | production | 8 | StitchingCascadeListener · onStitchingJobCreated · onStitchingJobStageChanged |
 | `apps/api/src/modules/supply-chain/production/work-orders.service.spec.ts` | production | 11 | WorkOrdersService · create · release · complete · cancel |
 | `apps/api/src/modules/supply-chain/purchasing/goods-receipt-replication.listener.spec.ts` | purchasing | 5 | GoodsReceiptReplicationListener — WO-23.3c/e, RETAIL-ERP.md R2/R9/R13, ADR-023 · onModuleInit · onG… |
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.integration.spec.ts` | purchasing | 10 | Partner fact applier — real database (WO-213.2) |
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.service.spec.ts` | purchasing | 14 | PartnerFactApplierService · apply — a fact that checks out · apply — a fact that is not ours to app… |
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-plan.spec.ts` | purchasing | 20 | planSaleFact · when everything checks out · the supplier · the currency · matching lines to product… |
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact.listener.spec.ts` | purchasing | 3 | PartnerFactListener |
 | `apps/api/src/modules/supply-chain/purchasing/purchase-order-feed.source.spec.ts` | purchasing | 5 | PurchaseOrderFeedSource — WO-58.2 |
 | `apps/api/src/modules/supply-chain/purchasing/purchasing.cron.spec.ts` | purchasing | 5 | PurchasingCron |
 | `apps/api/src/modules/supply-chain/purchasing/purchasing.metrics.spec.ts` | purchasing | 4 | PurchasingMetricsProvider · PurchasingSpendMetricsProvider |

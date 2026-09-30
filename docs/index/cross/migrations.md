@@ -3,7 +3,7 @@
 
 # Migrations
 
-**120** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
+**121** migrations, oldest first. Hand-written and forward-only — never `prisma migrate diff` against a real database.
 
 
 Location: `apps/api/prisma/schema/migrations/` ·
@@ -153,6 +153,7 @@ nothing here fails a build.
 | 2026-09-27 | `wo38_request_outcomes` | 3 | CREATE TABLE, CREATE INDEX | RequestOutcome |
 | 2026-09-28 | `wo206_refresh_token_reuse_detection` | 10 | ALTER TABLE, UPDATE, CREATE UNIQUE INDEX, CREATE INDEX | RefreshToken |
 | 2026-09-30 | `wo213_1_partner_fact_inbox` | 9 | CREATE TYPE, ALTER TABLE, CREATE TABLE, CREATE UNIQUE INDEX, CREATE INDEX | PartnerFactInbox, TradingPartner |
+| 2026-09-30 | `wo213_2_purchase_order_source_fact` | 3 | ALTER TABLE, CREATE UNIQUE INDEX | PurchaseOrder |
 
 
 ---

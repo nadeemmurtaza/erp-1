@@ -269,3 +269,50 @@ deployments directly, as the partner brief already scoped).
 **Verified against a running API** (built, started on a local Postgres 16 and Redis, called with `curl`): a valid fact `202`; the same fact again `202` with `duplicate: true`; the same `factId` with different content `409`; no header, unknown key, expired key and suspended partner each `401`; a customer sending a sale fact `403`; a bad UUID, an unknown field and a sale with no currency each `400`; a 108 KB body `413`. An `applied` and a `needs review` event inserted through the real outbox moved the stored facts to `APPLIED` (with the purchase-order id) and `NEEDS_REVIEW` (with the reason) within the dispatcher's 2-second poll.
 
 **Not yet true** (the next work orders): nothing applies a fact, so every stored fact stays `RECEIVED`; there is no durable sender, no seller dispatch, and no screen. The 400-day payload purge is sequenced with WO-213.4.
+
+### WO-213.2 — Buyer applier, in `purchasing` (design, settled before building)
+
+`purchasing` subscribes to `PartnerFactReceived`, reads the stored fact, and either applies it in one transaction or parks it for a person. It imports nothing from `tradingpartners`; it reads `PartnerFactInbox` the way `SupplierDigestListener` already reads `Supplier`, and answers with `PartnerFactApplied` or `PartnerFactNeedsReview`.
+
+**The plan is one pure function.** `planSaleFact()` takes the fact, the linked suppliers, the variants found by barcode and the review threshold, and returns `APPLY` or `REVIEW` with operator-readable reasons. It writes nothing and publishes nothing, so the same function serves the real apply, a dry run (`preview()`), and a replay over last month's inbox.
+
+**A fact is applied only when every check passes; otherwise the whole fact waits.** Nothing is partially applied and nothing is guessed:
+
+1. exactly one active `Supplier` is linked to the partner (none, or several, goes to review);
+2. the fact's currency is the base currency and equals the supplier's billing currency (a foreign-currency bill needs an exchange rate that a fact does not carry, so it goes to review, which is a stated limit of version 1);
+3. every line has a barcode that matches exactly one active `ProductVariant.barcode`. **A line is never matched by SKU**, because two businesses can use one SKU for different products;
+4. no line's price is more than `partners.price_review_threshold_percent` (**25**) away from the variant's current `costPrice`. 25% is wide enough that an ordinary supplier price change passes and narrow enough that a decimal slip, a wrong currency or a typo does not; a variant with no cost yet (`costPrice` 0) has nothing to compare and is not flagged; `0` switches the check off;
+5. every line total and the fact total fit the `Int` columns they will be written to.
+
+**On apply, in one transaction:** a purchase order (status `SENT`, the buyer's own number from `nextPONumber`, `unitCost` = the seller's price, created by the system with no user), a supplier bill for the fact's total including tax (`reference` = the seller's document number, raised through the existing `createSupplierBill()` so the existing ledger rule posts it), and `PartnerFactApplied` carrying the purchase order id. The existing rule books a bill as Dr Inventory / Cr Accounts Payable with no goods-received-not-invoiced account, so raising the bill when the seller's fact (its invoice) arrives matches how a supplier's invoice is already treated; stock itself still moves only at receipt.
+
+**Deviations from the original brief, and why**
+
+- **One new nullable column, `PurchaseOrder.sourceFactInboxId`, unique** (null means "not created from a fact"). The brief said the purchase order gets no new column and relied on a status predicate on the inbox write, but that predicate would have `purchasing` writing `tradingpartners`' table, which the module boundary forbids, and an event is asynchronous, so a redelivered `PartnerFactReceived` could create a second order before the first `PartnerFactApplied` was processed. The unique column makes the second copy of the write a no-op by constraint, and gives the order a link back to its fact.
+- **The `receipt.confirmed` reply moves to WO-213.4.** Sending it needs the durable sender and its `PartnerDelivery` table, which do not exist yet; sending it through today's fire-and-forget `pushOutbound()` would put the same lossy path back under a money fact.
+- **The preview's HTTP route ships with the review screen (WO-213.5).** The read-only `preview()` method is built now, with tests, as the pure plan's second caller.
+- **`receiveGoods()` is untouched** and stock does not move until staff receive the goods.
+
+### WO-213.2 — Buyer applier (built 2026-09-30)
+
+**Shipped**
+
+- `planSaleFact()` (`purchasing/partner-fact-plan.ts`): the pure decision described above, plus `parseSaleFact()` to read a stored payload back defensively. 35 tests, including every boundary of the price limit and the rule that a line is never matched by SKU.
+- `PartnerFactApplierService.apply()` and `.preview()`, and `PartnerFactListener` subscribing to `PartnerFactReceived`. One transaction creates the purchase order (status `SENT`, the buyer's own number, `createdById` null, the seller's price as `unitCost`), the supplier bill (the tax-inclusive total, the seller's document number as `reference`) and the `PartnerFactApplied` event; anything that needs a person writes nothing and publishes `PartnerFactNeedsReview` with every reason at once.
+- `PurchaseOrder.sourceFactInboxId` (unique, nullable) and its additive migration `20260930110000_wo213_2_purchase_order_source_fact`; the setting `partners.price_review_threshold_percent` (25).
+- `PurchasingService.createPurchaseOrder()` now accepts a null user (system-raised; a BRANCH-scope order is still refused without a person) and an options argument (`status`, `sourceFactInboxId`); `createSupplierBill()` accepts an optional outer transaction. Both are backward compatible: the new fields are written only when supplied, and every existing purchasing test passes unchanged.
+- `PartnerFactStatusListener` now also refreshes the reason on a fact that is still `NEEDS_REVIEW`, so a retry that still cannot apply shows what is wrong now; it still never touches an `APPLIED` or `REJECTED` fact.
+
+**Verified**
+
+- 141 tests across `purchasing` and the status listener, and a real-Postgres spec of 10 tests that drives the real chain (fact stored, outbox delivered, order and bill created, inbox marked). It proves: one order and one bill from a fact, stock and cost and selling price untouched, no second order on a repeat, eight simultaneous applications giving one order and seven no-ops, an unknown barcode and a tenfold price both held with their reasons, a retry after a person fixes the supplier link applying, and a failed bill rolling the order back. Dropping the unique index on a scratch database makes 3 of those 10 fail, which is how they were checked to be real.
+- Against a running API: a fact became `PO-2026-0001` (status `SENT`, 40 at 349,900, 1 bill) and its inbox row became `APPLIED` with the order id; a fact with an unknown barcode became `NEEDS_REVIEW` with "no product has barcode 4006381333931"; the first fact sent again was answered `duplicate: true` and changed nothing; the variant's stock stayed 5 and its cost 340,000.
+- `purchasing` gained no module coupling (the approved list is still 24) and imports nothing from `tradingpartners`.
+
+**Limits of version 1, stated plainly**
+
+- Automatic application handles base-currency facts from a supplier that bills in the base currency; anything else is held for review because a foreign-currency bill needs an exchange rate a fact does not carry.
+- Tax is billed but not treated as recoverable input tax (as planned).
+- A fact whose supplier link, product or price needs fixing waits in `NEEDS_REVIEW` until WO-213.5 adds the screen and the "retry" action; today the retry is calling `apply()` again (as the integration test does) or re-queuing the event.
+- In the verification run the `accounting` module was not in the `MODULES` list, so the bill raised its existing `SupplierBillRaised` event but no journal entry was posted; with `accounting` enabled the existing rule posts it (Dr Inventory, Cr Accounts Payable) as it does for any bill.
+- The `receipt.confirmed` reply and its durable delivery are WO-213.4, as planned above.

@@ -80,6 +80,8 @@ Nothing in this feature writes a selling price.
 
 ### Status
 
-Accepted (2026-09-30), on the owner's approval of the plan in doc 213. WO-213.1 (the inbox and the inbound endpoint) is built and verified; the remaining work orders follow in order.
+Accepted (2026-09-30), on the owner's approval of the plan in doc 213. WO-213.1 (the inbox and the inbound endpoint) and WO-213.2 (the buyer applier) are built and verified; the remaining work orders follow in order.
+
+WO-213.2 added one nullable, unique column, `PurchaseOrder.sourceFactInboxId`, which the plan had said the order would not need: the status predicate on the inbox cannot be written by `purchasing` (module boundary), and an event is asynchronous, so a redelivered `PartnerFactReceived` could otherwise create a second order. It also added the setting `partners.price_review_threshold_percent` (25: wide enough that an ordinary supplier price change passes, narrow enough that a decimal slip or a wrong currency does not), and moved the `receipt.confirmed` reply to WO-213.4, where the durable sender it needs is built.
 
 Three things were corrected while building WO-213.1, having been checked against the code: the request body cap is the platform's existing 100 KiB JSON limit (Express default, unchanged) rather than the 256 KiB first proposed, and the inbound rate limit is enforced per source IP by the existing throttler rather than per partner. And the platform's global exception filter answered an over-limit body with a `500`, which a sender would retry for 72 hours; it now answers `413`, so the sender splits the fact instead.

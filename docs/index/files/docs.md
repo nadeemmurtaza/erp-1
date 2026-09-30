@@ -831,7 +831,7 @@ All 524 tracked files in `docs/*`, by directory.
 | `ADR-080-doc-211-cloud-subscription-and-offline-license-locked-to-strictly.md` | doc | 67 |  |
 | `ADR-081-doc-212-role-permission-scope-enforcement-confirmed-as-a-live.md` | doc | 77 |  |
 | `ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md` | doc | 121 |  |
-| `ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 86 |  |
+| `ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
 
@@ -900,7 +900,7 @@ All 524 tracked files in `docs/*`, by directory.
 | `193-app-private-connection-escape-hatch.md` | doc | 226 |  |
 | `194-app-platform-failure-modes.md` | doc | 282 |  |
 | `195-app-platform-rollout-sequencing.md` | doc | 241 |  |
-| `213-partner-fact-exchange.md` | doc | 272 |  |
+| `213-partner-fact-exchange.md` | doc | 319 |  |
 | `33-sms-whatsapp-channels.md` | doc | 249 |  |
 | `34-partner-developer-api-access.md` | doc | 262 |  |
 | `36-universal-connectivity-integration-framework.md` | doc | 283 |  |

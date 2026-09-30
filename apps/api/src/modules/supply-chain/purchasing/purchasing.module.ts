@@ -9,6 +9,8 @@ import { GoodsReceiptReplicationListener } from './goods-receipt-replication.lis
 import { RequisitionTaskSource } from './requisition-task-source';
 import { PurchasingMetricsProvider, PurchasingSpendMetricsProvider } from './purchasing.metrics';
 import { PurchaseOrderFeedSource } from './purchase-order-feed.source';
+import { PartnerFactApplierService } from './partner-fact-applier.service';
+import { PartnerFactListener } from './partner-fact.listener';
 
 import { InventoryModule } from '../inventory/inventory.module';
 import { PartiesModule } from '../../customers/parties/parties.module';
@@ -27,6 +29,8 @@ import { SettingsModule } from '../../../core/settings/settings.module';
     PurchasingMetricsProvider,
     PurchasingSpendMetricsProvider,
     PurchaseOrderFeedSource,
+    PartnerFactApplierService,
+    PartnerFactListener,
   ],
   exports: [PurchasingService, RequisitionService],
 })

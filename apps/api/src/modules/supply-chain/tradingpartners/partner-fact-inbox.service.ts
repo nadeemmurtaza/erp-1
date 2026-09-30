@@ -1,23 +1,11 @@
-import {
-  BadRequestException,
-  ConflictException,
-  ForbiddenException,
-  Injectable,
-  Logger,
-} from "@nestjs/common";
-import { createHash } from "node:crypto";
-import { DomainEvent } from "../../../core/events/domain-events";
-import { EventBusService } from "../../../core/events/event-bus.service";
-import { Prisma } from "../../../core/prisma/client";
-import type {
-  PartnerFactStatus,
-  TradingPartner,
-} from "../../../core/prisma/client";
-import { PrismaService } from "../../../core/prisma/prisma.service";
-import type {
-  PartnerFactType,
-  SubmitPartnerFactDto,
-} from "./dto/partner-fact.dto";
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { createHash } from 'node:crypto';
+import { DomainEvent } from '../../../core/events/domain-events';
+import { EventBusService } from '../../../core/events/event-bus.service';
+import { Prisma } from '../../../core/prisma/client';
+import type { PartnerFactStatus, TradingPartner } from '../../../core/prisma/client';
+import { PrismaService } from '../../../core/prisma/prisma.service';
+import type { PartnerFactType, SubmitPartnerFactDto } from './dto/partner-fact.dto';
 
 /** What the partner is told. `duplicate: true` means we already had this exact fact. */
 export interface PartnerFactReceipt {
@@ -32,25 +20,22 @@ export interface PartnerFactReceipt {
  * strings, numbers, booleans) ever reaches this.
  */
 export function canonicalJson(value: unknown): string {
-  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
-  if (value && typeof value === "object") {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
+  if (value && typeof value === 'object') {
     const entries = Object.entries(value as Record<string, unknown>)
       .filter(([, v]) => v !== undefined)
       .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
-    return `{${entries.map(([k, v]) => `${JSON.stringify(k)}:${canonicalJson(v)}`).join(",")}}`;
+    return `{${entries.map(([k, v]) => `${JSON.stringify(k)}:${canonicalJson(v)}`).join(',')}}`;
   }
   return JSON.stringify(value);
 }
 
 export function hashFact(payload: unknown): string {
-  return createHash("sha256").update(canonicalJson(payload)).digest("hex");
+  return createHash('sha256').update(canonicalJson(payload)).digest('hex');
 }
 
 function isUniqueViolation(error: unknown): boolean {
-  return (
-    error instanceof Prisma.PrismaClientKnownRequestError &&
-    error.code === "P2002"
-  );
+  return error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002';
 }
 
 /**
@@ -81,10 +66,7 @@ export class PartnerFactInboxService {
     private readonly eventBus: EventBusService,
   ) {}
 
-  async accept(
-    partner: TradingPartner,
-    dto: SubmitPartnerFactDto,
-  ): Promise<PartnerFactReceipt> {
+  async accept(partner: TradingPartner, dto: SubmitPartnerFactDto): Promise<PartnerFactReceipt> {
     this.assertPartnerMaySend(partner, dto.type);
     this.assertFactShape(dto);
 
@@ -144,37 +126,27 @@ export class PartnerFactInboxService {
     if (!existing) {
       // The unique violation said the row exists; it vanished between the two
       // statements. Surface it rather than guess — the sender will retry.
-      throw new ConflictException(
-        "This fact could not be stored; retry it unchanged.",
-      );
+      throw new ConflictException('This fact could not be stored; retry it unchanged.');
     }
     if (existing.payloadHash !== payloadHash) {
       this.logger.warn(
         `partner fact refused: partner=${tradingPartnerId} factId=${factId} reused with different content`,
       );
       throw new ConflictException(
-        "This factId was already received with different content. A fact is never edited: send a correction as a new fact with a new factId.",
+        'This factId was already received with different content. A fact is never edited: send a correction as a new fact with a new factId.',
       );
     }
     return { factId, status: existing.status, duplicate: true };
   }
 
   /** A supplier tells us what it sold us; a customer tells us what it received. Anyone else sending either is a mistake or an attack. */
-  private assertPartnerMaySend(
-    partner: TradingPartner,
-    type: PartnerFactType,
-  ): void {
-    const allowed: Record<
-      PartnerFactType,
-      ReadonlyArray<TradingPartner["kind"]>
-    > = {
-      "sale.dispatched": ["SUPPLIER", "BOTH"],
-      "receipt.confirmed": ["CUSTOMER", "BOTH"],
+  private assertPartnerMaySend(partner: TradingPartner, type: PartnerFactType): void {
+    const allowed: Record<PartnerFactType, ReadonlyArray<TradingPartner['kind']>> = {
+      'sale.dispatched': ['SUPPLIER', 'BOTH'],
+      'receipt.confirmed': ['CUSTOMER', 'BOTH'],
     };
     if (!allowed[type].includes(partner.kind)) {
-      throw new ForbiddenException(
-        `A ${partner.kind} trading partner may not send a "${type}" fact.`,
-      );
+      throw new ForbiddenException(`A ${partner.kind} trading partner may not send a "${type}" fact.`);
     }
   }
 
@@ -188,40 +160,28 @@ export class PartnerFactInboxService {
       throw new BadRequestException(message);
     };
 
-    if (dto.type === "sale.dispatched") {
-      if (!dto.currency) fail("A sale.dispatched fact needs a currency.");
-      if (dto.inReplyToFactId)
-        fail("A sale.dispatched fact cannot reply to another fact.");
+    if (dto.type === 'sale.dispatched') {
+      if (!dto.currency) fail('A sale.dispatched fact needs a currency.');
+      if (dto.inReplyToFactId) fail('A sale.dispatched fact cannot reply to another fact.');
       dto.lines.forEach((line, i) => {
         const at = `lines[${i}]`;
-        if (!line.gtin && !line.sellerSku)
-          fail(`${at} needs a gtin or a sellerSku.`);
+        if (!line.gtin && !line.sellerSku) fail(`${at} needs a gtin or a sellerSku.`);
         if (!line.name) fail(`${at} needs a name.`);
         if (line.quantity === undefined) fail(`${at} needs a quantity.`);
-        if (line.unitPriceMinor === undefined)
-          fail(`${at} needs a unitPriceMinor.`);
-        if (line.quantityDelivered !== undefined)
-          fail(`${at}: quantityDelivered belongs on a receipt.confirmed fact.`);
+        if (line.unitPriceMinor === undefined) fail(`${at} needs a unitPriceMinor.`);
+        if (line.quantityDelivered !== undefined) fail(`${at}: quantityDelivered belongs on a receipt.confirmed fact.`);
       });
       return;
     }
 
     // receipt.confirmed
-    if (!dto.inReplyToFactId)
-      fail("A receipt.confirmed fact needs inReplyToFactId.");
-    if (dto.currency)
-      fail("A receipt.confirmed fact carries no prices, so no currency.");
+    if (!dto.inReplyToFactId) fail('A receipt.confirmed fact needs inReplyToFactId.');
+    if (dto.currency) fail('A receipt.confirmed fact carries no prices, so no currency.');
     dto.lines.forEach((line, i) => {
       const at = `lines[${i}]`;
-      if (!line.gtin && !line.sellerSku)
-        fail(`${at} needs a gtin or a sellerSku.`);
-      if (line.quantityDelivered === undefined)
-        fail(`${at} needs quantityDelivered.`);
-      if (
-        line.quantity !== undefined ||
-        line.unitPriceMinor !== undefined ||
-        line.taxMinor !== undefined
-      ) {
+      if (!line.gtin && !line.sellerSku) fail(`${at} needs a gtin or a sellerSku.`);
+      if (line.quantityDelivered === undefined) fail(`${at} needs quantityDelivered.`);
+      if (line.quantity !== undefined || line.unitPriceMinor !== undefined || line.taxMinor !== undefined) {
         fail(`${at}: a receipt.confirmed line carries quantityDelivered only.`);
       }
     });

@@ -107,6 +107,8 @@ export const SettingKey = {
   PurchasingOverReceiptTolerance: 'purchasing.over_receipt_tolerance',
   /** WO-213.1 — days a newly issued trading-partner inbound API key stays valid. 0 means it never expires. A key already issued keeps whatever expiry it was given. */
   PartnersKeyTtlDays: 'partners.key_ttl_days',
+  /** WO-213.2 — a partner's fact is held for review when a line's price is more than this many percent away from our current cost for that product. 0 switches the check off. */
+  PartnersPriceReviewThresholdPercent: 'partners.price_review_threshold_percent',
   PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
   /** Off until an owner turns it on — checkout keeps its "stock lands or none of it does" behavior by default. */
   OrdersAllowBackorder: 'checkout.allow_backorder',
@@ -437,6 +439,9 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.PurchasingOverReceiptTolerance]: 0,
   // One rotation per audit year (213-partner-fact-exchange.md, ADR-083).
   [SettingKey.PartnersKeyTtlDays]: 365,
+  // Wide enough that an ordinary supplier price change passes, narrow enough
+  // that a decimal slip or a wrong currency does not (213-partner-fact-exchange.md).
+  [SettingKey.PartnersPriceReviewThresholdPercent]: 25,
   [SettingKey.PurchasingAutoDraftReorder]: true,
   [SettingKey.OrdersAllowBackorder]: false,
 

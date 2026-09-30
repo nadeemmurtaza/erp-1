@@ -258,10 +258,23 @@ export class PurchasingService {
    * and claim the requisition atomically — "the second copy of the write"
    * lens) compose into it instead of opening a second, unrelated one.
    * Without one, this method opens its own, exactly as before.
+   *
+   * `userId` is null only when the SYSTEM raises the order (WO-213.2: a
+   * connected partner's fact, no person involved). A null actor can never
+   * raise a BRANCH-scope order — branch-local purchasing is a permission a
+   * person holds — so that combination is refused rather than waved through.
+   * `options.status` lets that caller create the order already SENT (it
+   * records goods the supplier has already dispatched); `sourceFactInboxId` is
+   * the unique link back to the fact (purchasing.prisma's own note).
    */
-  async createPurchaseOrder(dto: CreatePurchaseOrderDto, userId: string, tx?: Prisma.TransactionClient) {
+  async createPurchaseOrder(
+    dto: CreatePurchaseOrderDto,
+    userId: string | null,
+    tx?: Prisma.TransactionClient,
+    options: { status?: 'DRAFT' | 'SENT'; sourceFactInboxId?: string } = {},
+  ) {
     const scopeLevel = dto.scopeLevel ?? 'BRAND';
-    if (scopeLevel === 'BRANCH' && !(await this.branchPolicy.allowsBranchLocalPurchasing(userId))) {
+    if (scopeLevel === 'BRANCH' && (!userId || !(await this.branchPolicy.allowsBranchLocalPurchasing(userId)))) {
       throw new ForbiddenException(
         "This brand does not allow branch-local purchasing — ask a brand admin to turn it on, or create this purchase order at BRAND scope instead.",
       );
@@ -279,7 +292,11 @@ export class PurchasingService {
         data: {
           number,
           supplierId: dto.supplierId,
-          status: 'DRAFT',
+          status: options.status ?? 'DRAFT',
+          // Only written for an order created already SENT, so an ordinary
+          // DRAFT order's data is exactly what it always was.
+          ...(options.status === 'SENT' ? { sentAt: new Date() } : {}),
+          ...(options.sourceFactInboxId ? { sourceFactInboxId: options.sourceFactInboxId } : {}),
           subtotal,
           freightCost,
           dutyCost,
@@ -627,8 +644,11 @@ export class PurchasingService {
    * re-derived (House Rule 7), so a later FX rate move shows up as a
    * realised gain/loss at payment time, not a silent rewrite of this bill.
    */
-  async createSupplierBill(dto: CreateSupplierBillDto) {
-    return this.prisma.$transaction(async (tx) => {
+  async createSupplierBill(dto: CreateSupplierBillDto, outerTx?: Prisma.TransactionClient) {
+    // `outerTx` lets a caller that already opened a transaction (WO-213.2 raises
+    // the bill in the same one that creates the order and answers the fact) compose
+    // into it; without one this opens its own, exactly as before.
+    const run = async (tx: Prisma.TransactionClient) => {
       const supplier = await tx.supplier.findUnique({ where: { id: dto.supplierId } });
       if (!supplier) throw new NotFoundException('Supplier not found');
 
@@ -680,7 +700,8 @@ export class PurchasingService {
       );
 
       return bill;
-    });
+    };
+    return outerTx ? run(outerTx) : this.prisma.$transaction(run);
   }
 
   /**

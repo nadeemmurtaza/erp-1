@@ -23,8 +23,8 @@ order" is a new file, not an edit to checkout.
 
 ## Attention list
 
-- Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`, `partners.fact_applied`, `partners.fact_needs_review`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `user.sso_user_provisioned`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `partners.fact_received`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`, `notification.sent`
+- Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `user.sso_user_provisioned`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`, `notification.sent`
 
 ## Summary
 
@@ -65,9 +65,9 @@ order" is a new file, not an edit to checkout.
 | `purchasing.supplier_deleted` | `SupplierDeleted` | `purchasing` | `entity-attributes` |
 | `transfers.inter_branch_invoiced` | `InterBranchTransferInvoiced` | `accounting`, `transfers` | `accounting` |
 | `analytics.supplier_digest_ready` | `SupplierDigestReady` | `analytics` | `tradingpartners` |
-| `partners.fact_received` | `PartnerFactReceived` | `tradingpartners` | _none_ |
-| `partners.fact_applied` | `PartnerFactApplied` | **none** | `tradingpartners` |
-| `partners.fact_needs_review` | `PartnerFactNeedsReview` | **none** | `tradingpartners` |
+| `partners.fact_received` | `PartnerFactReceived` | `tradingpartners` | `purchasing` |
+| `partners.fact_applied` | `PartnerFactApplied` | `purchasing` | `tradingpartners` |
+| `partners.fact_needs_review` | `PartnerFactNeedsReview` | `purchasing` | `tradingpartners` |
 | `production.work_order_created` | `WorkOrderCreated` | `production` | _none_ |
 | `production.work_order_released` | `WorkOrderReleased` | `production` | _none_ |
 | `production.work_order_completed` | `WorkOrderCompleted` | `production` | _none_ |
@@ -559,7 +559,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:517` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:534` | `purchasing` |
 
 
 **Subscribed by**
@@ -624,7 +624,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:186` | `accounting` |
-| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:668` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:688` | `purchasing` |
 
 
 **Subscribed by**
@@ -641,7 +641,7 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Where | Module |
 |---|---|
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts:236` | `accounting` |
-| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:732` | `purchasing` |
+| `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts:753` | `purchasing` |
 
 
 **Subscribed by**
@@ -710,12 +710,14 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 | Where | Module |
 |---|---|
-| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.ts:112` | `tradingpartners` |
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.ts:94` | `tradingpartners` |
 
 
 **Subscribed by**
 
-_Nothing subscribes. Publishing it is a no-op today._
+| Handler | Where | Module |
+|---|---|---|
+| `onPartnerFactReceived()` | `apps/api/src/modules/supply-chain/purchasing/partner-fact.listener.ts:20` | `purchasing` |
 
 ### `partners.fact_applied`
 
@@ -723,7 +725,9 @@ _Nothing subscribes. Publishing it is a no-op today._
 
 **Published by**
 
-_Nothing publishes this event._
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.service.ts:113` | `purchasing` |
 
 
 **Subscribed by**
@@ -738,7 +742,9 @@ _Nothing publishes this event._
 
 **Published by**
 
-_Nothing publishes this event._
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/purchasing/partner-fact-applier.service.ts:196` | `purchasing` |
 
 
 **Subscribed by**

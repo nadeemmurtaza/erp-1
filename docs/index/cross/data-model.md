@@ -307,7 +307,7 @@ against a real database.
 | [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 56 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PromoCode`](../data/promotions.md#promocode) | `promotions` | 12 | 1 | id |  |
-| [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 26 | 2 | id |  |
+| [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 27 | 2 | id |  |
 | [`PurchaseOrderItem`](../data/purchasing.md#purchaseorderitem) | `purchasing` | 11 | 2 | id |  |
 | [`PurchaseRequisition`](../data/purchasing.md#purchaserequisition) | `purchasing` | 12 | 2 | id |  |
 | [`Quote`](../data/invoicing.md#quote) | `invoicing` | 9 | 0 | id |  |

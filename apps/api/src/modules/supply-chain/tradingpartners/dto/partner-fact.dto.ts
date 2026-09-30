@@ -1,5 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Type } from "class-transformer";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -14,17 +14,14 @@ import {
   MaxLength,
   Min,
   ValidateNested,
-} from "class-validator";
+} from 'class-validator';
 
 /**
  * The fact types a partner may send (WO-213.1, 213-partner-fact-exchange.md).
  * A string list, not a database enum: a new type is a new entry here and a new
  * subscriber, never a migration.
  */
-export const PARTNER_FACT_TYPES = [
-  "sale.dispatched",
-  "receipt.confirmed",
-] as const;
+export const PARTNER_FACT_TYPES = ['sale.dispatched', 'receipt.confirmed'] as const;
 export type PartnerFactType = (typeof PARTNER_FACT_TYPES)[number];
 
 /** The shape version this deployment understands. The applier for version n is kept forever. */
@@ -48,16 +45,14 @@ const MAX_INT = 2_000_000_000;
  */
 export class PartnerFactLineDto {
   @ApiPropertyOptional({
-    description:
-      "The barcode (GTIN/UPC/EAN, 8 to 14 digits) — the key that means the same product in every business.",
+    description: 'The barcode (GTIN/UPC/EAN, 8 to 14 digits) — the key that means the same product in every business.',
   })
   @IsOptional()
-  @Matches(/^\d{8,14}$/, { message: "gtin must be 8 to 14 digits" })
+  @Matches(/^\d{8,14}$/, { message: 'gtin must be 8 to 14 digits' })
   gtin?: string;
 
   @ApiPropertyOptional({
-    description:
-      "The sender's own SKU. Display and fallback matching only — SKUs are per business.",
+    description: "The sender's own SKU. Display and fallback matching only — SKUs are per business.",
   })
   @IsOptional()
   @IsString()
@@ -70,7 +65,7 @@ export class PartnerFactLineDto {
   @MaxLength(200)
   name?: string;
 
-  @ApiPropertyOptional({ description: "sale.dispatched: units shipped." })
+  @ApiPropertyOptional({ description: 'sale.dispatched: units shipped.' })
   @IsOptional()
   @IsInt()
   @Min(1)
@@ -78,8 +73,7 @@ export class PartnerFactLineDto {
   quantity?: number;
 
   @ApiPropertyOptional({
-    description:
-      "sale.dispatched: price per unit in minor units (paisa), before tax.",
+    description: 'sale.dispatched: price per unit in minor units (paisa), before tax.',
   })
   @IsOptional()
   @IsInt()
@@ -88,8 +82,7 @@ export class PartnerFactLineDto {
   unitPriceMinor?: number;
 
   @ApiPropertyOptional({
-    description:
-      "sale.dispatched: tax on the whole line in minor units. Defaults to 0.",
+    description: 'sale.dispatched: tax on the whole line in minor units. Defaults to 0.',
   })
   @IsOptional()
   @IsInt()
@@ -98,7 +91,7 @@ export class PartnerFactLineDto {
   taxMinor?: number;
 
   @ApiPropertyOptional({
-    description: "receipt.confirmed: units actually counted in.",
+    description: 'receipt.confirmed: units actually counted in.',
   })
   @IsOptional()
   @IsInt()
@@ -110,9 +103,9 @@ export class PartnerFactLineDto {
 export class SubmitPartnerFactDto {
   @ApiProperty({
     description:
-      "A UUID v4 the SENDER generated. The same factId is always the same fact: a retry sends it again unchanged.",
+      'A UUID v4 the SENDER generated. The same factId is always the same fact: a retry sends it again unchanged.',
   })
-  @IsUUID("4")
+  @IsUUID('4')
   factId!: string;
 
   @ApiProperty({ enum: PARTNER_FACT_TYPES })
@@ -124,8 +117,7 @@ export class SubmitPartnerFactDto {
   schemaVersion!: number;
 
   @ApiProperty({
-    description:
-      "When it happened at the sender (ISO 8601), not when it was sent.",
+    description: 'When it happened at the sender (ISO 8601), not when it was sent.',
   })
   @IsISO8601({ strict: true })
   occurredAt!: string;
@@ -140,20 +132,19 @@ export class SubmitPartnerFactDto {
   documentRef?: string;
 
   @ApiPropertyOptional({
-    description: "sale.dispatched: ISO 4217 currency of the prices.",
+    description: 'sale.dispatched: ISO 4217 currency of the prices.',
   })
   @IsOptional()
   @Matches(/^[A-Z]{3}$/, {
-    message: "currency must be an ISO 4217 code such as PKR",
+    message: 'currency must be an ISO 4217 code such as PKR',
   })
   currency?: string;
 
   @ApiPropertyOptional({
-    description:
-      "receipt.confirmed: the factId of the sale.dispatched fact being answered.",
+    description: 'receipt.confirmed: the factId of the sale.dispatched fact being answered.',
   })
   @IsOptional()
-  @IsUUID("4")
+  @IsUUID('4')
   inReplyToFactId?: string;
 
   @ApiProperty({ type: [PartnerFactLineDto] })

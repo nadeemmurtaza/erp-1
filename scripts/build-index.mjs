@@ -2331,8 +2331,8 @@ ${BACK(self)}`);
    \`ENTERPRISE-SCALE.md\` overlap.
 4. Everything else, by topic.
 
-Architectural decisions go in \`docs/implementation/DECISIONS.md\` — a settled
-decision is not reopened without new evidence.
+Architectural decisions go in \`docs/implementation/decisions/\` (one file each, indexed by
+\`docs/implementation/DECISIONS.md\`) — a settled decision is not reopened without new evidence.
 
 ## Outlines
 

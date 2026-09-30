@@ -105,7 +105,7 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index-scan.mjs` | utility | 944 | Scanners for the repository index. |
-| `model-routing.mjs` | utility | 363 | Which model and how much effort each kind of job in this repository deserves. |
+| `model-routing.mjs` | utility | 364 | Which model and how much effort each kind of job in this repository deserves. |
 | `render-harness.mjs` | utility | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — th… |
 
 

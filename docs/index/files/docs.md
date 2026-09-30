@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 437 tracked files in `docs/*`, by directory.
+All 521 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,7 +563,7 @@ All 437 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 9605 |  |
+| `DECISIONS.md` | doc | 126 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -744,6 +744,95 @@ All 437 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
+
+### `docs/implementation/decisions` (84)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `ADR-001-a-modular-monolith-one-process-per-node.md` | doc | 43 |  |
+| `ADR-002-a-sector-is-a-module-pack-behind-an-allowlist.md` | doc | 42 |  |
+| `ADR-003-modules-are-independent-side-effects-cross-through-events.md` | doc | 42 |  |
+| `ADR-004-events-are-delivered-through-a-transactional-outbox.md` | doc | 37 |  |
+| `ADR-005-money-is-an-integer-in-minor-units.md` | doc | 36 |  |
+| `ADR-006-customer-facing-text-is-a-row-not-a-column.md` | doc | 35 |  |
+| `ADR-007-access-control-is-permission-based-and-the-grants-are-data.md` | doc | 41 |  |
+| `ADR-008-migrations-are-hand-written-and-forward-only.md` | doc | 40 |  |
+| `ADR-009-a-branch-is-a-node-with-its-own-database-not-a-tenant-row.md` | doc | 41 |  |
+| `ADR-010-in-transit-stock-is-a-location-not-a-flag.md` | doc | 40 |  |
+| `ADR-011-a-till-sale-is-a-channel-of-orders.md` | doc | 36 |  |
+| `ADR-012-cross-module-references-are-bare-scalars-not-foreign-keys.md` | doc | 39 |  |
+| `ADR-013-one-deployment-serves-one-brand.md` | doc | 34 |  |
+| `ADR-014-the-repository-index-is-generated-and-enforced-not-written.md` | doc | 43 |  |
+| `ADR-015-model-and-effort-are-routed-per-job-from-one-policy.md` | doc | 44 |  |
+| `ADR-016-rules-that-apply-to-one-kind-of-file-are-path-scoped.md` | doc | 43 |  |
+| `ADR-017-an-observability-backend.md` | doc | 38 |  |
+| `ADR-018-horizontal-replicas-and-load-balancing.md` | doc | 37 |  |
+| `ADR-019-wo-b-4-ships-against-the-live-reports-idiom-not-track-a-s-unbuilt.md` | doc | 105 |  |
+| `ADR-020-bom-track-c-ships-as-a-new-module-production-stays-as-is.md` | doc | 92 |  |
+| `ADR-021-wo-23-3-s-scopelevel-pattern-a-new-core-owned-enum-fail-closed-on-the.md` | doc | 178 |  |
+| `ADR-022-wo-23-3b-enforces-allowbranchlocalpurchasing-through-a-new.md` | doc | 119 |  |
+| `ADR-023-wo-23-3c-e-node-retailbrandid-a-separate-policyquarantine-table-and.md` | doc | 138 |  |
+| `ADR-024-wo-23-3d-org-central-purchasing-recognized-narrowly-in.md` | doc | 145 |  |
+| `ADR-025-wo-e-2-is-not-executed-its-own-prerequisites-wo-a-1-wo-a-2-were-never.md` | doc | 126 |  |
+| `ADR-026-seven-heavier-extensibility-mechanisms-adopted-by-explicit-owner.md` | doc | 111 |  |
+| `ADR-027-the-three-highest-risk-items-from-adr-026-withdrawn-no-wasm-sandbox.md` | doc | 89 |  |
+| `ADR-028-wo-5-phase-5-discounts-promo-codes-gift-cards-store-credit-built-from.md` | doc | 135 |  |
+| `ADR-029-third-party-gift-card-redemption-at-checkout-giftkarta-a.md` | doc | 90 |  |
+| `ADR-030-docs-implementation-docs-erp-lenses-and-docs-design-reorganized-into.md` | doc | 76 |  |
+| `ADR-031-wo-7-phase-7-customer-portal-reviews-wishlist-returns-loyalty-mobile.md` | doc | 305 |  |
+| `ADR-032-phase-10-track-a-built-end-to-end-wo-a-1-a-5-superseding-adr-019-adr.md` | doc | 206 |  |
+| `ADR-033-admin-platform-docs-02-44-72-75-completed-doc-75-s-own-claims.md` | doc | 180 |  |
+| `ADR-034-the-wallet-module-doc-155-built-in-full-shipped-module-off-and.md` | doc | 203 |  |
+| `ADR-035-phase-8-content-marketing-and-search-audited-and-confirmed-built-the.md` | doc | 106 |  |
+| `ADR-036-wo-145-receivables-creditnote-debitnote-credit-limits-dunning-keys.md` | doc | 127 |  |
+| `ADR-037-personal-api-keys-a-user-bound-token-capped-live-by-its-owner-an.md` | doc | 81 |  |
+| `ADR-038-doc-153-usage-based-pricing-metering-reads-a-tenant-s-own.md` | doc | 158 |  |
+| `ADR-039-doc-14-managed-services-built-in-full-overriding-its-own-not-now.md` | doc | 181 |  |
+| `ADR-040-finance-accounting-docs-04-56-68-79-137-147-151-49-completed-a.md` | doc | 165 |  |
+| `ADR-041-an-intentrouter-core-extension-point-one-dispatch-shape-for-every.md` | doc | 99 |  |
+| `ADR-042-doc-154-three-headline-commercial-plans-public-pricing-page-copy.md` | doc | 137 |  |
+| `ADR-043-access-control-identity-docs-126-161-built-16-18-163-re-verified-125.md` | doc | 160 |  |
+| `ADR-044-docs-19-20-org-tree-positions-and-ranks-orgunit-kept-orthogonal-to.md` | doc | 139 |  |
+| `ADR-045-doc-21-access-over-the-org-tree-orgunitgrant-built-exactly-as.md` | doc | 139 |  |
+| `ADR-046-doc-22-attendance-shifts-and-leave-attendanceevent-partitioned-by.md` | doc | 195 |  |
+| `ADR-047-doc-165-cross-tenant-marketplace-directory-a-new-apps-platform-module.md` | doc | 114 |  |
+| `ADR-048-doc-166-unified-product-reference-registry-a-globalproductreference.md` | doc | 134 |  |
+| `ADR-049-docs-140-143-general-eav-metadata-driven-ui-bpmn-workflow-editor.md` | doc | 363 |  |
+| `ADR-050-doc-23-task-allotment-status-and-tracking-built-exactly-as-specified.md` | doc | 84 |  |
+| `ADR-051-docs-47-146-150-category-presets-wholesale-pricing-product-bundles.md` | doc | 110 |  |
+| `ADR-052-docs-127-128-136-hardcoded-policy-sweep-extension-point-coverage.md` | doc | 125 |  |
+| `ADR-053-doc-149-accounts-approvals-sector-packs-a-genuine-request-record.md` | doc | 203 |  |
+| `ADR-054-doc-139-websocket-sse-gateway-verified-deliberately-left-unbuilt-doc.md` | doc | 128 |  |
+| `ADR-055-doc-117-choreography-and-idempotency-and-doc-118-headless-composable.md` | doc | 109 |  |
+| `ADR-056-docs-122-data-lake-130-capability-manifest-and-131-versioned-domain.md` | doc | 113 |  |
+| `ADR-057-docs-133-dry-run-harness-134-hexagonal-purity-ci-check-and-138.md` | doc | 112 |  |
+| `ADR-058-doc-165-cross-tenant-marketplace-directory-part-two-wo-165-1-165-2.md` | doc | 130 |  |
+| `ADR-059-doc-166-unified-product-reference-registry-the-erp-1-side-pieces.md` | doc | 140 |  |
+| `ADR-060-doc-24-internal-notifications-meetings-and-escalation-built-in-full.md` | doc | 124 |  |
+| `ADR-061-docs-47-and-150-category-presets-product-bundles-the-missing-admin-ui.md` | doc | 118 |  |
+| `ADR-062-doc-61-policy-communications-bulletin-board-built-inside-the-notify.md` | doc | 115 |  |
+| `ADR-063-doc-167-bank-facility-management-promoted-from-a-gap-report-to-a.md` | doc | 133 |  |
+| `ADR-064-doc-64-in-app-help-desk-built-as-a-new-standalone-module-with-a-per.md` | doc | 118 |  |
+| `ADR-065-doc-148-external-customer-support-portal-built-as-a-second-contact.md` | doc | 168 |  |
+| `ADR-066-doc-144-r20-r26-supply-chain-resilience-planning-engine-built-as-a.md` | doc | 141 |  |
+| `ADR-067-docs-31-66-67-76-pos-hardware-category-the-till-hardware-layer-as.md` | doc | 162 |  |
+| `ADR-068-doc-37-scalability-future-upgrades-the-versioning-policy-ships-inert.md` | doc | 127 |  |
+| `ADR-069-docs-32-71-158-lots-serials-traceability-the-move-call-site-scoping.md` | doc | 219 |  |
+| `ADR-070-doc-38-resilience-engineering-a-table-driven-contract-test-over-the.md` | doc | 143 |  |
+| `ADR-071-docs-168-183-a-composable-resilience-first-sme-platform-for-du-built.md` | doc | 149 |  |
+| `ADR-072-docs-168-183-revised-newax-s-own-product-not-a-du-owned-platform-du.md` | doc | 194 |  |
+| `ADR-073-third-party-apps-docs-184-195-an-open-reviewed-directory-of-remote.md` | doc | 168 |  |
+| `ADR-074-doc-205-video-rooms-for-doc-24-s-meetings-self-host-livekit-as-newax.md` | doc | 209 |  |
+| `ADR-075-doc-206-rate-limiting-sudden-logout-ram-ceilings-connection-pooling.md` | doc | 139 |  |
+| `ADR-076-doc-207-checkout-admission-queue-prevent-overselling-during-rush.md` | doc | 75 |  |
+| `ADR-077-doc-208-l1-l2-l3-caching-each-tier-attached-to-a-found-hot-path-not.md` | doc | 141 |  |
+| `ADR-078-doc-209-semantic-caching-applied-to-exactly-one-of-ten-aifeature-call.md` | doc | 70 |  |
+| `ADR-079-doc-210-caching-third-party-api-calls-to-save-charges-checked-every.md` | doc | 60 |  |
+| `ADR-080-doc-211-cloud-subscription-and-offline-license-locked-to-strictly.md` | doc | 67 |  |
+| `ADR-081-doc-212-role-permission-scope-enforcement-confirmed-as-a-live.md` | doc | 77 |  |
+| `ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md` | doc | 121 |  |
+| `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
+| `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
 
 ### `docs/implementation/finance-accounting` (10)
 

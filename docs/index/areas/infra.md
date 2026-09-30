@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-60 files · 31,358 lines
+60 files · 31,359 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -26,7 +26,7 @@ on them.
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
 | `scripts` | 22 | 7,977 | script, py |
-| `scripts/lib` | 3 | 1,644 | utility |
+| `scripts/lib` | 3 | 1,645 | utility |
 
 
 ## Entry points
@@ -50,7 +50,7 @@ on them.
 | `scripts/check-contrast.mjs` | 425 | script |  |
 | `scripts/check-links.mjs` | 409 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
-| `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/lib/model-routing.mjs` | 364 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
 | `.env.example` | 193 | example |  |

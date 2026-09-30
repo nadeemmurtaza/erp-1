@@ -68,11 +68,11 @@ Every top-level export in `infra`, with the line to open.
 | `index-scan.mjs` | `a` `b` | re-export |  | from `./x` |
 | `index-scan.mjs` | `*` | re-export |  | from `./x` |
 | `model-routing.mjs` | `ROUTING_POLICY` | const | :54 | @typedef {'low'\|'medium'\|'high'\|'xhigh'\|'max'} EffortLevel |
-| `model-routing.mjs` | `ADVISORY_SIGNALS` | const | :312 | The advisory hook only speaks up for jobs where the wrong choice is costly. |
-| `model-routing.mjs` | `CACHE_TTL_BY_EFFORT` | const | :351 | The TTL each effort level earns. |
-| `model-routing.mjs` | `cacheTtlFor` | const | :359 |  |
-| `model-routing.mjs` | `MODEL_ORDER` | const | :361 |  |
-| `model-routing.mjs` | `EFFORT_ORDER` | const | :362 |  |
+| `model-routing.mjs` | `ADVISORY_SIGNALS` | const | :313 | The advisory hook only speaks up for jobs where the wrong choice is costly. |
+| `model-routing.mjs` | `CACHE_TTL_BY_EFFORT` | const | :352 | The TTL each effort level earns. |
+| `model-routing.mjs` | `cacheTtlFor` | const | :360 |  |
+| `model-routing.mjs` | `MODEL_ORDER` | const | :362 |  |
+| `model-routing.mjs` | `EFFORT_ORDER` | const | :363 |  |
 | `render-harness.mjs` | `WIDTHS` | const | :59 | Law 4's own numbers, read from `CLAUDE.md` / `docs/design/layout-composition/02-layout.md`, NOT fro… |
 | `render-harness.mjs` | `spawnServer` | function | :100 | Spawn a long-running server process. |
 | `render-harness.mjs` | `login` | function | :148 | `POST /auth/login` against a running API. |

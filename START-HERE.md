@@ -55,7 +55,7 @@ and brands are a new folder, not a fork.
 | You want | Open |
 |---|---|
 | The rules everyone follows | [`CLAUDE.md`](./CLAUDE.md), then [`docs/implementation/00-HOUSE-RULES.md`](./docs/implementation/00-HOUSE-RULES.md) |
-| Why a decision was made | [`docs/implementation/DECISIONS.md`](./docs/implementation/DECISIONS.md) |
+| Why a decision was made | [`docs/implementation/DECISIONS.md`](./docs/implementation/DECISIONS.md) (the index; each decision is its own file in `docs/implementation/decisions/`) |
 | The product vision | [`PRD.md`](./PRD.md) |
 | How it scales across sectors and chains | [`docs/implementation/ENTERPRISE-SCALE.md`](./docs/implementation/ENTERPRISE-SCALE.md), [`MULTI-SECTOR.md`](./docs/implementation/MULTI-SECTOR.md), [`RETAIL-ERP.md`](./docs/implementation/RETAIL-ERP.md) |
 | Build briefs, one per capability | [`docs/implementation/README.md`](./docs/implementation/README.md) |
@@ -94,7 +94,8 @@ This section lists known problems so they get fixed, not hidden. Status is
 | Root | Stray output files and one-off scripts were tracked. | **Done:** removed. |
 | Root | `apps/api/report.*.json` is a generated diagnostic report committed to the repo. | Remove and ignore (needs owner confirmation). |
 | Root | `README.md` still describes only the clothing store. | Rewrite it around the platform, keeping the store as the first deployment. |
-| Docs | 629 markdown files; `DECISIONS.md` is about 9,500 lines; two document numbers (18, 19) are each used twice. | One file per decision; renumber the four collisions; one numbered index. |
+| Docs | `DECISIONS.md` was one 9,500-line file. | **Done:** one file per decision in `docs/implementation/decisions/`, with `DECISIONS.md` as the complete index. |
+| Docs | Document numbers 18 and 19 are each used by two unrelated briefs, and the numbered briefs are cited in about 70 places. | Planned: give the four briefs unique numbers and update every citation in one reviewed change. |
 | Docs | Five root signpost files add a hop without adding content. | Fold into this page once links are updated. |
 | Code | 67 API modules sit in one flat folder. | Group by domain (sales, inventory, finance, people, platform) with no change to behaviour. |
 | Code | Partner trading sends whole invoice documents. | Send data events; the receiver builds its own documents. |

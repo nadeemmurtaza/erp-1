@@ -28,7 +28,7 @@ All 208 tracked files in `repository root files`, by directory.
 | `PRD.md` | doc | 185 |  |
 | `README.md` | doc | 349 |  |
 | `Rules.md` | doc | 30 |  |
-| `START-HERE.md` | doc | 105 |  |
+| `START-HERE.md` | doc | 106 |  |
 
 ### `.claude` (2)
 
@@ -41,7 +41,7 @@ All 208 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `architect.md` | doc | 48 |  |
+| `architect.md` | doc | 49 |  |
 | `debug.md` | doc | 38 |  |
 | `feature.md` | doc | 44 |  |
 | `implement.md` | doc | 37 |  |
@@ -63,7 +63,7 @@ All 208 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `configuration.md` | doc | 20 |  |
 | `database.md` | doc | 19 |  |
-| `decisions.md` | doc | 26 |  |
+| `decisions.md` | doc | 28 |  |
 | `dependencies.md` | doc | 23 |  |
 | `design.md` | doc | 136 |  |
 | `performance.md` | doc | 42 |  |

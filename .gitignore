@@ -68,3 +68,7 @@ yaseen-backup-before-reset.sql
 
 # Redis local persistence dump (created by a local redis-server run, never committed)
 dump.rdb
+
+# Stray command-output captures
+check_output.txt
+raw_output.txt

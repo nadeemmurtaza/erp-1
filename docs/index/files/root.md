@@ -3,12 +3,12 @@
 
 # Files — root
 
-All 213 tracked files in `repository root files`, by directory.
+All 207 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `.` (22)
+### `.` (16)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -18,22 +18,16 @@ All 213 tracked files in `repository root files`, by directory.
 | `.windsurfrules` | file | — |  |
 | `AGENTS.md` | doc | 81 |  |
 | `Architecture.md` | doc | 32 |  |
-| `check_output.txt` | txt | — |  |
 | `CLAUDE.md` | doc | 1033 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |
-| `fix-all.js` | script | 15 | Get all files from git grep |
-| `fix-db.js` | script | 15 |  |
-| `fix.js` | script | 9 | Use regex to remove duplicate users block |
 | `GEMINI.md` | doc | 81 |  |
 | `Memory.md` | doc | 28 |  |
 | `Phases.md` | doc | 48 |  |
 | `PRD.md` | doc | 185 |  |
-| `raw_output.txt` | txt | — |  |
 | `README.md` | doc | 349 |  |
 | `Rules.md` | doc | 30 |  |
-| `yaseen-backup-before-reset.sql` | sql | 5870 |  |
 
 ### `.claude` (2)
 

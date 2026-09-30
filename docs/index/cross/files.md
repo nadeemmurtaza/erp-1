@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **2,514** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,508** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -16,8 +16,8 @@ Split by area so you load one, not all of them.
 | apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 102 | 11,772 | [files/packages.md](../files/packages.md) |
 | docs/* | 437 | 89,309 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 60 | 31,354 | [files/infra.md](../files/infra.md) |
-| repository root files | 213 | 21,461 | [files/root.md](../files/root.md) |
+| scripts, CI, deployment and container configuration | 60 | 31,358 | [files/infra.md](../files/infra.md) |
+| repository root files | 207 | 15,552 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -39,7 +39,7 @@ name a new file: the convention is what makes it findable.
 | migration | 119 |
 | nest module | 105 |
 | prisma schema | 65 |
-| script | 44 |
+| script | 41 |
 | event subscriber | 36 |
 | scheduled job | 34 |
 | json | 31 |
@@ -69,13 +69,12 @@ name a new file: the convention is what makes it findable.
 | global-error | 2 |
 | stylesheet | 2 |
 | route handler | 2 |
-| txt | 2 |
-| sql | 2 |
 | mdc | 1 |
 | auth strategy | 1 |
 | dispatcher | 1 |
 | agent | 1 |
 | mts | 1 |
+| sql | 1 |
 | py | 1 |
 
 

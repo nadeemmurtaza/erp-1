@@ -3,7 +3,7 @@
 
 # repository root files
 
-213 files · 21,461 lines
+207 files · 15,552 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,7 +17,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 22 | 8,473 | file, doc, txt, script |
+| `.` | 16 | 2,564 | file, doc |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 8 | 341 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
@@ -44,7 +44,6 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
 | `CLAUDE.md` | 1,033 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `DEPLOYMENT.md` | 529 | doc |  |
@@ -59,6 +58,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
 | `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | 195 | unit test |  |
 | `PRD.md` | 185 | doc |  |
+| `apps/platform/src/modules/agency/agency-stripe.service.ts` | 180 | service |  |
 
 
 ---

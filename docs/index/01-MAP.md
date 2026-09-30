@@ -32,8 +32,8 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,193 | 159,794 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `docs` | 524 | 89,956 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 1,201 | 161,430 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `docs` | 524 | 89,982 | documents of record — implementation plans, house rules, brand |
 | `apps/web` | 428 | 72,520 | Next.js — admin console and customer storefront in one app |
 | `(root)` | 37 | 23,518 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
@@ -120,7 +120,7 @@ Each is independent: no module imports another except through a named
 | [`tasks`](modules/tasks.md) | core | MODULES allowlist | 11 | 3 |
 | [`tax`](modules/tax.md) | core | MODULES allowlist | 8 | 2 |
 | [`tracking`](modules/tracking.md) | core | MODULES allowlist | 1 | — |
-| [`tradingpartners`](modules/tradingpartners.md) | core | MODULES allowlist | 19 | — |
+| [`tradingpartners`](modules/tradingpartners.md) | core | MODULES allowlist | 20 | — |
 | [`transfers`](modules/transfers.md) | core | MODULES allowlist | 5 | 5 |
 | [`users`](modules/users.md) | core | always on | 8 | — |
 | [`wallet`](modules/wallet.md) | core | MODULES allowlist | 17 | 4 |

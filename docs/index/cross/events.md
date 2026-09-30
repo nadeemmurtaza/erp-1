@@ -3,7 +3,7 @@
 
 # Domain events
 
-All **69** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
+All **72** events in the catalogue, with every publisher and subscriber. This is how modules reach each other — nothing calls another module's service for a side effect.
 
 
 Catalogue: `apps/api/src/core/events/domain-events.ts` ·
@@ -23,8 +23,8 @@ order" is a new file, not an edit to checkout.
 
 ## Attention list
 
-- Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`
-- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `user.sso_user_provisioned`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`, `notification.sent`
+- Events **nothing publishes**: `crm.contact_upserted`, `crm.lead_created`, `partners.fact_applied`, `partners.fact_needs_review`
+- Events **nothing subscribes to**: `payment.awaiting_approval`, `stitching.order_created`, `crm.contact_upserted`, `crm.lead_created`, `user.sso_user_provisioned`, `purchasing.requisition_created`, `purchasing.requisition_converted`, `partners.fact_received`, `production.work_order_created`, `production.work_order_released`, `production.work_order_completed`, `email.reply_received`, `identity_verification.approved`, `identity_verification.rejected`, `identity_verification.expired`, `finance.order_economics_computed`, `promotions.discount_redeemed`, `wallet.merchant_payable_created`, `wallet.merchant_payable_paid`, `receivables.credit_hold_applied`, `notification.sent`
 
 ## Summary
 
@@ -65,6 +65,9 @@ order" is a new file, not an edit to checkout.
 | `purchasing.supplier_deleted` | `SupplierDeleted` | `purchasing` | `entity-attributes` |
 | `transfers.inter_branch_invoiced` | `InterBranchTransferInvoiced` | `accounting`, `transfers` | `accounting` |
 | `analytics.supplier_digest_ready` | `SupplierDigestReady` | `analytics` | `tradingpartners` |
+| `partners.fact_received` | `PartnerFactReceived` | `tradingpartners` | _none_ |
+| `partners.fact_applied` | `PartnerFactApplied` | **none** | `tradingpartners` |
+| `partners.fact_needs_review` | `PartnerFactNeedsReview` | **none** | `tradingpartners` |
 | `production.work_order_created` | `WorkOrderCreated` | `production` | _none_ |
 | `production.work_order_released` | `WorkOrderReleased` | `production` | _none_ |
 | `production.work_order_completed` | `WorkOrderCompleted` | `production` | _none_ |
@@ -698,6 +701,51 @@ _Nothing subscribes. Publishing it is a no-op today._
 | Handler | Where | Module |
 |---|---|---|
 | `onSupplierDigestReady()` | `apps/api/src/modules/supply-chain/tradingpartners/supplier-digest.listener.ts:22` | `tradingpartners` |
+
+### `partners.fact_received`
+
+> A connected trading partner's fact was stored in PartnerFactInbox and acknowledged (WO-213.1, 213-partner-fact-exchange.md).
+
+**Published by**
+
+| Where | Module |
+|---|---|
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.ts:112` | `tradingpartners` |
+
+
+**Subscribed by**
+
+_Nothing subscribes. Publishing it is a no-op today._
+
+### `partners.fact_applied`
+
+> The subscriber that owns the effect applied the fact — for `sale.dispatched`, a purchase order now exists (WO-213.2).
+
+**Published by**
+
+_Nothing publishes this event._
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onApplied()` | `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts:29` | `tradingpartners` |
+
+### `partners.fact_needs_review`
+
+> The subscriber could not apply the fact without a person — an unknown barcode, a price far from the last (WO-213.2).
+
+**Published by**
+
+_Nothing publishes this event._
+
+
+**Subscribed by**
+
+| Handler | Where | Module |
+|---|---|---|
+| `onNeedsReview()` | `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts:49` | `tradingpartners` |
 
 ### `production.work_order_created`
 

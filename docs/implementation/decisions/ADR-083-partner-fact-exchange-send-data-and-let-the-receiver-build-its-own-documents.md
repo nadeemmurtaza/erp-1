@@ -41,8 +41,9 @@ seller-generated UUID `factId`, stored in a `PartnerFactInbox` with
 applied. `purchasing` applies it by subscribing to `PartnerFactReceived`;
 `tradingpartners` never imports it. Delivery uses a new durable sender with the
 exact parameters in doc 213 (retry delay `min(30 s × 2^(n−1), 3,600 s)`, give-up
-at 72 hours, 10 s request timeout, 256 KiB body, 500 lines per fact, 600
-requests per 60 s per partner, keys valid 365 days, payload retained 400 days).
+at 72 hours, 10 s request timeout, 100 KiB body (the platform's existing JSON
+limit), 500 lines per fact, 600 requests per 60 s per source IP, keys valid 365
+days through the `partners.key_ttl_days` setting, payload retained 400 days).
 The seller's stock-out, `Invoice` and outbox row are written in one transaction,
 which adds one approved `tradingpartners -> inventory` entry to
 `KNOWN_MODULE_COUPLINGS` for the same reason `orders -> inventory` has one.
@@ -79,4 +80,6 @@ Nothing in this feature writes a selling price.
 
 ### Status
 
-Proposed. Awaiting the owner's approval of the plan in doc 213; nothing is built.
+Accepted (2026-09-30), on the owner's approval of the plan in doc 213. WO-213.1 (the inbox and the inbound endpoint) is built and verified; the remaining work orders follow in order.
+
+Three things were corrected while building WO-213.1, having been checked against the code: the request body cap is the platform's existing 100 KiB JSON limit (Express default, unchanged) rather than the 256 KiB first proposed, and the inbound rate limit is enforced per source IP by the existing throttler rather than per partner. And the platform's global exception filter answered an over-limit body with a `500`, which a sender would retry for 72 hours; it now answers `413`, so the sender splits the fact instead.

@@ -1,13 +1,20 @@
-import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { AppConfigService } from '../../../core/config/app-config.service';
 import { generateApiKey, hashApiKey } from '../../../core/security/api-token';
 import { decryptSecret, encryptSecret } from '@newax/shared/secret-crypto';
 import { PrismaService } from '../../../core/prisma/prisma.service';
+import { Prisma } from '../../../core/prisma/client';
 import type { TradingPartner } from '../../../core/prisma/client';
+import { SettingsService } from '../../../core/settings/settings.service';
+import { SettingKey } from '../../../core/settings/settings.defaults';
 import { CreateTradingPartnerDto, PartyRoleNameDto, UpdateTradingPartnerDto } from './dto/trading-partner.dto';
 
 const INBOUND_KEY_PREFIX = 'tp';
 const INVITE_TOKEN_PREFIX = 'tpi';
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+/** Used only if the `partners.key_ttl_days` setting holds something that is not a whole number of days >= 0. */
+const FALLBACK_KEY_TTL_DAYS = 365;
 
 /**
  * SUPPLIER/MANUFACTURER sell to us; DISTRIBUTOR/RETAILER buy from us. `kind`
@@ -34,6 +41,7 @@ export class TradingPartnersService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly config: AppConfigService,
+    private readonly settings: SettingsService,
   ) {}
 
   async findAll() {
@@ -96,7 +104,20 @@ export class TradingPartnersService {
     await this.assertExists(id);
     // onDelete: SetNull on Supplier.tradingPartner — unlinking every
     // supplier that pointed here is the database's job, not this method's.
-    await this.prisma.tradingPartner.delete({ where: { id } });
+    //
+    // PartnerFactInbox is the opposite: ON DELETE RESTRICT. A received fact is
+    // an audit record, so a partner that has sent one cannot be deleted;
+    // suspending it stops its key working and keeps the history.
+    try {
+      await this.prisma.tradingPartner.delete({ where: { id } });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2003') {
+        throw new ConflictException(
+          'This partner has sent facts we keep as a record, so it cannot be deleted. Suspend it instead.',
+        );
+      }
+      throw error;
+    }
     return { deleted: true };
   }
 
@@ -104,15 +125,30 @@ export class TradingPartnersService {
    * Issues a fresh inbound key and returns it once, raw — only its SHA-256
    * is kept. Rotating invalidates whatever key was issued before, since the
    * hash column is overwritten, not appended to.
+   *
+   * The new key expires after `partners.key_ttl_days` (default 365; 0 means
+   * never). `actorUserId` is recorded so whoever minted a partner's key
+   * cannot also clear that partner's review queue (WO-213.5).
    */
-  async rotateInboundKey(id: string): Promise<{ apiKey: string }> {
+  async rotateInboundKey(id: string, actorUserId: string | null = null): Promise<{ apiKey: string; expiresAt: Date | null }> {
     await this.assertExists(id);
     const apiKey = generateApiKey(INBOUND_KEY_PREFIX);
+    const ttlDays = await this.keyTtlDays();
+    const expiresAt = ttlDays > 0 ? new Date(Date.now() + ttlDays * DAY_MS) : null;
     await this.prisma.tradingPartner.update({
       where: { id },
-      data: { inboundApiKeyHash: hashApiKey(apiKey) },
+      data: {
+        inboundApiKeyHash: hashApiKey(apiKey),
+        inboundKeyExpiresAt: expiresAt,
+        inboundKeyRotatedByUserId: actorUserId,
+      },
     });
-    return { apiKey };
+    return { apiKey, expiresAt };
+  }
+
+  private async keyTtlDays(): Promise<number> {
+    const raw = await this.settings.get(SettingKey.PartnersKeyTtlDays);
+    return typeof raw === 'number' && Number.isInteger(raw) && raw >= 0 ? raw : FALLBACK_KEY_TTL_DAYS;
   }
 
   /** Stores the credential THEY gave us, encrypted — never echoed back out. */
@@ -143,6 +179,12 @@ export class TradingPartnersService {
     if (!partner) throw new UnauthorizedException('Invalid API key.');
     if (partner.status !== 'ACTIVE') {
       throw new UnauthorizedException('This trading partner is not active.');
+    }
+    // Null means "never expires": a key issued before inboundKeyExpiresAt
+    // existed, or issued while the TTL setting was 0. Checked here, with the
+    // status check, so no inbound route can forget it.
+    if (partner.inboundKeyExpiresAt && partner.inboundKeyExpiresAt.getTime() <= Date.now()) {
+      throw new UnauthorizedException('This API key has expired. Ask the operator to issue a new one.');
     }
     return partner;
   }

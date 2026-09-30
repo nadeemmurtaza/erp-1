@@ -105,6 +105,8 @@ export const SettingKey = {
   Documents: 'documents',
   MonthlyRevenueTarget: 'analytics.monthly_revenue_target',
   PurchasingOverReceiptTolerance: 'purchasing.over_receipt_tolerance',
+  /** WO-213.1 — days a newly issued trading-partner inbound API key stays valid. 0 means it never expires. A key already issued keeps whatever expiry it was given. */
+  PartnersKeyTtlDays: 'partners.key_ttl_days',
   PurchasingAutoDraftReorder: 'purchasing.auto_draft_reorder',
   /** Off until an owner turns it on — checkout keeps its "stock lands or none of it does" behavior by default. */
   OrdersAllowBackorder: 'checkout.allow_backorder',
@@ -433,6 +435,8 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.MonthlyRevenueTarget]: toMinor(1_000_000),
 
   [SettingKey.PurchasingOverReceiptTolerance]: 0,
+  // One rotation per audit year (213-partner-fact-exchange.md, ADR-083).
+  [SettingKey.PartnersKeyTtlDays]: 365,
   [SettingKey.PurchasingAutoDraftReorder]: true,
   [SettingKey.OrdersAllowBackorder]: false,
 

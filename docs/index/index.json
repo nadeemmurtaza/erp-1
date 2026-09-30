@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2598,
-    "lines": 390599,
-    "routes": 877,
+    "files": 2606,
+    "lines": 392261,
+    "routes": 878,
     "controllers": 161,
-    "models": 314,
-    "enums": 145,
-    "migrations": 119,
-    "events": 69,
+    "models": 315,
+    "enums": 146,
+    "migrations": 120,
+    "events": 72,
     "permissions": 130,
     "screens": 277,
     "crons": 30,
-    "specs": 365,
+    "specs": 369,
     "designLaws": 0
   },
   "designLaws": [],
@@ -32,9 +32,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1193,
-      "lines": 159794,
-      "bytes": 6267083,
+      "files": 1201,
+      "lines": 161430,
+      "bytes": 6328022,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -57,8 +57,8 @@
     },
     "docs": {
       "files": 524,
-      "lines": 89956,
-      "bytes": 5455561,
+      "lines": 89982,
+      "bytes": 5461585,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1371,6 +1371,8 @@
       "files": [
         "apps/api/src/modules/supply-chain/tradingpartners/dto/invoice.dto.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/dto/offer.dto.ts",
+        "apps/api/src/modules/supply-chain/tradingpartners/dto/partner-fact.dto.spec.ts",
+        "apps/api/src/modules/supply-chain/tradingpartners/dto/partner-fact.dto.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/dto/quote.dto.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/dto/trading-partner.dto.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/invoice.service.spec.ts",
@@ -1379,6 +1381,11 @@
         "apps/api/src/modules/supply-chain/tradingpartners/offer.service.spec.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/offer.service.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/offers.controller.ts",
+        "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.integration.spec.ts",
+        "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.spec.ts",
+        "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.ts",
+        "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.spec.ts",
+        "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/product-alerts.listener.spec.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/product-alerts.listener.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/quote.service.spec.ts",
@@ -1393,7 +1400,7 @@
         "apps/api/src/modules/supply-chain/tradingpartners/trading-partners.service.spec.ts",
         "apps/api/src/modules/supply-chain/tradingpartners/trading-partners.service.ts"
       ],
-      "routes": 19,
+      "routes": 20,
       "page": "docs/index/modules/tradingpartners.md"
     },
     {
@@ -15477,12 +15484,26 @@
       "controller": "TradingPartnerPortalController",
       "handler": "accept",
       "file": "apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.ts",
-      "line": 41,
+      "line": 68,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
       "authOnly": false,
       "summary": "\"They accept\" — the second half of the first-connection handshake, starts the relation"
+    },
+    {
+      "method": "POST",
+      "path": "/trading-partners/facts",
+      "module": "tradingpartners",
+      "controller": "TradingPartnerPortalController",
+      "handler": "submitFact",
+      "file": "apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.ts",
+      "line": 60,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Send a fact (sale.dispatched, receipt.confirmed) — stored and acknowledged, applied afterwards"
     },
     {
       "method": "GET",
@@ -15491,7 +15512,7 @@
       "controller": "TradingPartnerPortalController",
       "handler": "stock",
       "file": "apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.ts",
-      "line": 25,
+      "line": 31,
       "access": "PUBLIC",
       "permissions": [],
       "public": true,
@@ -18519,6 +18540,33 @@
       ],
       "subscribers": [
         "apps/api/src/modules/supply-chain/tradingpartners/supplier-digest.listener.ts:22 onSupplierDigestReady()"
+      ]
+    },
+    {
+      "symbol": "PartnerFactReceived",
+      "name": "partners.fact_received",
+      "doc": "A connected trading partner's fact was stored in PartnerFactInbox and acknowledged (WO-213.1, 213-partner-fact-exchange.md).",
+      "publishers": [
+        "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.ts:112"
+      ],
+      "subscribers": []
+    },
+    {
+      "symbol": "PartnerFactApplied",
+      "name": "partners.fact_applied",
+      "doc": "The subscriber that owns the effect applied the fact — for `sale.dispatched`, a purchase order now exists (WO-213.2).",
+      "publishers": [],
+      "subscribers": [
+        "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts:29 onApplied()"
+      ]
+    },
+    {
+      "symbol": "PartnerFactNeedsReview",
+      "name": "partners.fact_needs_review",
+      "doc": "The subscriber could not apply the fact without a person — an unknown barcode, a price far from the last (WO-213.2).",
+      "publishers": [],
+      "subscribers": [
+        "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts:49 onNeedsReview()"
       ]
     },
     {
@@ -31053,7 +31101,7 @@
     {
       "name": "Offer",
       "file": "apps/api/prisma/schema/trading-partners.prisma",
-      "line": 84,
+      "line": 165,
       "doc": "A marketing push to the retail end of the chain (WO-18.3's third \"forth\" document, alongside the product-alerts push) — never targeted, never a coupon engine: one broadcast row, fanned out to every A…",
       "fields": [
         {
@@ -33074,6 +33122,123 @@
       ],
       "indexes": [
         "@@unique([pageId, locale])"
+      ]
+    },
+    {
+      "name": "PartnerFactInbox",
+      "file": "apps/api/prisma/schema/trading-partners.prisma",
+      "line": 116,
+      "doc": "One fact a connected partner sent us (WO-213.1, 213-partner-fact-exchange.md and ADR-083).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "tradingPartnerId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "factId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "schemaVersion",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "documentRef",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "occurredAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payloadHash",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "payload",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "PartnerFactStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "statusReason",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "appliedPurchaseOrderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "receivedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "partner",
+          "type": "TradingPartner",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([tradingPartnerId, factId])",
+        "@@index([tradingPartnerId, receivedAt])"
       ]
     },
     {
@@ -44489,6 +44654,20 @@
           "relation": false
         },
         {
+          "name": "inboundKeyExpiresAt",
+          "type": "DateTime?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "inboundKeyRotatedByUserId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "status",
           "type": "TradingPartnerStatus",
           "id": false,
@@ -44512,6 +44691,13 @@
         {
           "name": "suppliers",
           "type": "Supplier[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "facts",
+          "type": "PartnerFactInbox[]",
           "id": false,
           "unique": false,
           "relation": false
@@ -47245,6 +47431,17 @@
         "PROCESSING",
         "DONE",
         "FAILED"
+      ]
+    },
+    {
+      "name": "PartnerFactStatus",
+      "file": "apps/api/prisma/schema/trading-partners.prisma",
+      "line": 90,
+      "values": [
+        "RECEIVED",
+        "APPLIED",
+        "NEEDS_REVIEW",
+        "REJECTED"
       ]
     },
     {
@@ -50107,6 +50304,24 @@
       ],
       "tables": [
         "RefreshToken"
+      ]
+    },
+    {
+      "folder": "20260930100000_wo213_1_partner_fact_inbox",
+      "file": "apps/api/prisma/schema/migrations/20260930100000_wo213_1_partner_fact_inbox/migration.sql",
+      "date": "2026-09-30",
+      "slug": "wo213_1_partner_fact_inbox",
+      "statements": 9,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "PartnerFactInbox",
+        "TradingPartner"
       ]
     }
   ],
@@ -53699,9 +53914,10 @@
       "file": "apps/api/src/core/common/filters/all-exceptions.filter.spec.ts",
       "module": "core/common",
       "kind": "unit test",
-      "cases": 3,
+      "cases": 5,
       "describes": [
-        "AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2)"
+        "AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2)",
+        "an over-limit request body"
       ]
     },
     {
@@ -56074,6 +56290,15 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/supply-chain/tradingpartners/dto/partner-fact.dto.spec.ts",
+      "module": "tradingpartners",
+      "kind": "unit test",
+      "cases": 4,
+      "describes": [
+        "SubmitPartnerFactDto"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/supply-chain/tradingpartners/invoice.service.spec.ts",
       "module": "tradingpartners",
       "kind": "unit test",
@@ -56094,6 +56319,39 @@
       "describes": [
         "OfferService",
         "publish"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.integration.spec.ts",
+      "module": "tradingpartners",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "PartnerFactInbox — real database (WO-213.1)"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.spec.ts",
+      "module": "tradingpartners",
+      "kind": "unit test",
+      "cases": 22,
+      "describes": [
+        "PartnerFactInboxService",
+        "accept — the normal case",
+        "accept — who may send what",
+        "accept — the second copy of the same fact",
+        "assertFactShape — sale.dispatched",
+        "assertFactShape — receipt.confirmed",
+        "canonicalJson / hashFact"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.spec.ts",
+      "module": "tradingpartners",
+      "kind": "unit test",
+      "cases": 6,
+      "describes": [
+        "PartnerFactStatusListener"
       ]
     },
     {
@@ -56129,9 +56387,10 @@
       "file": "apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.spec.ts",
       "module": "tradingpartners",
       "kind": "unit test",
-      "cases": 6,
+      "cases": 9,
       "describes": [
         "TradingPartnerPortalController",
+        "submitFact — WO-213.1",
         "accept"
       ]
     },
@@ -56139,7 +56398,7 @@
       "file": "apps/api/src/modules/supply-chain/tradingpartners/trading-partners.service.spec.ts",
       "module": "tradingpartners",
       "kind": "unit test",
-      "cases": 32,
+      "cases": 39,
       "describes": [
         "TradingPartnersService",
         "create",
@@ -59233,6 +59492,15 @@
       "symbols": []
     },
     {
+      "path": "apps/api/prisma/schema/migrations/20260930100000_wo213_1_partner_fact_inbox/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 62,
+      "bytes": 2902,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/prisma/schema/migrations/migration_lock.toml",
       "area": "api",
       "kind": "toml",
@@ -59488,8 +59756,8 @@
       "path": "apps/api/prisma/schema/trading-partners.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 95,
-      "bytes": 3951,
+      "lines": 176,
+      "bytes": 8170,
       "doc": "The trading-partner network (18-trading-partner-network.md, WO-18) — lets",
       "symbols": []
     },
@@ -61262,8 +61530,8 @@
       "path": "apps/api/src/core/common/filters/all-exceptions.filter.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 59,
-      "bytes": 2631,
+      "lines": 83,
+      "bytes": 3678,
       "doc": "",
       "symbols": []
     },
@@ -61271,8 +61539,8 @@
       "path": "apps/api/src/core/common/filters/all-exceptions.filter.ts",
       "area": "api",
       "kind": "module",
-      "lines": 152,
-      "bytes": 4604,
+      "lines": 169,
+      "bytes": 5239,
       "doc": "",
       "symbols": [
         {
@@ -61489,8 +61757,8 @@
       "path": "apps/api/src/core/events/domain-events.ts",
       "area": "api",
       "kind": "module",
-      "lines": 769,
-      "bytes": 32907,
+      "lines": 810,
+      "bytes": 34782,
       "doc": "The catalogue of domain events.",
       "symbols": [
         {
@@ -61501,312 +61769,327 @@
         {
           "name": "DomainEventName",
           "kind": "type",
-          "line": 182
+          "line": 188
         },
         {
           "name": "OrderPlacedPayload",
           "kind": "interface",
-          "line": 184
+          "line": 190
         },
         {
           "name": "OrderStatusChangedPayload",
           "kind": "interface",
-          "line": 197
+          "line": 203
         },
         {
           "name": "PaymentPayload",
           "kind": "interface",
-          "line": 205
+          "line": 211
         },
         {
           "name": "StitchingJobPayload",
           "kind": "interface",
-          "line": 213
+          "line": 219
         },
         {
           "name": "ContactUpsertedPayload",
           "kind": "interface",
-          "line": 233
+          "line": 239
         },
         {
           "name": "LeadCreatedPayload",
           "kind": "interface",
-          "line": 239
+          "line": 245
         },
         {
           "name": "UserRegisteredPayload",
           "kind": "interface",
-          "line": 246
+          "line": 252
         },
         {
           "name": "PasswordChangedPayload",
           "kind": "interface",
-          "line": 253
+          "line": 259
         },
         {
           "name": "PasswordResetRequestedPayload",
           "kind": "interface",
-          "line": 257
+          "line": 263
         },
         {
           "name": "EmailVerificationRequestedPayload",
           "kind": "interface",
-          "line": 263
+          "line": 269
         },
         {
           "name": "ApiKeyIssuedPayload",
           "kind": "interface",
-          "line": 274
+          "line": 280
         },
         {
           "name": "SsoAccountLinkedPayload",
           "kind": "interface",
-          "line": 287
+          "line": 293
         },
         {
           "name": "SsoUserProvisionedPayload",
           "kind": "interface",
-          "line": 292
+          "line": 298
         },
         {
           "name": "PaymentRefundedPayload",
           "kind": "interface",
-          "line": 297
+          "line": 303
         },
         {
           "name": "ShipmentStatusChangedPayload",
           "kind": "interface",
-          "line": 304
+          "line": 310
         },
         {
           "name": "ShipmentReturnedToOriginPayload",
           "kind": "interface",
-          "line": 314
+          "line": 320
         },
         {
           "name": "ReturnRequestStatusChangedPayload",
           "kind": "interface",
-          "line": 323
+          "line": 329
         },
         {
           "name": "ReturnRequestFullyRefundedPayload",
           "kind": "interface",
-          "line": 332
+          "line": 338
         },
         {
           "name": "ProductLowStockPayload",
           "kind": "interface",
-          "line": 340
+          "line": 346
         },
         {
           "name": "ProductReorderPointReachedPayload",
           "kind": "interface",
-          "line": 348
+          "line": 354
         },
         {
           "name": "StockReplenishedPayload",
           "kind": "interface",
-          "line": 359
+          "line": 365
         },
         {
           "name": "StockVarianceRecordedPayload",
           "kind": "interface",
-          "line": 366
+          "line": 372
         },
         {
           "name": "ProductPublishedPayload",
           "kind": "interface",
-          "line": 375
+          "line": 381
         },
         {
           "name": "ProductChangedPayload",
           "kind": "interface",
-          "line": 383
+          "line": 389
         },
         {
           "name": "ProductPriceChangedPayload",
           "kind": "interface",
-          "line": 388
+          "line": 394
         },
         {
-          "name": "SupplierDigestReadyPayload",
+          "name": "PartnerFactReceivedPayload",
           "kind": "interface",
-          "line": 396
+          "line": 409
         },
         {
-          "name": "RequisitionCreatedPayload",
+          "name": "PartnerFactAppliedPayload",
           "kind": "interface",
-          "line": 401
+          "line": 416
         },
         {
-          "name": "RequisitionConvertedPayload",
-          "kind": "interface",
-          "line": 407
-        },
-        {
-          "name": "GoodsReceivedPayload",
-          "kind": "interface",
-          "line": 413
-        },
-        {
-          "name": "SupplierDeletedPayload",
+          "name": "PartnerFactNeedsReviewPayload",
           "kind": "interface",
           "line": 425
         },
         {
+          "name": "SupplierDigestReadyPayload",
+          "kind": "interface",
+          "line": 434
+        },
+        {
+          "name": "RequisitionCreatedPayload",
+          "kind": "interface",
+          "line": 439
+        },
+        {
+          "name": "RequisitionConvertedPayload",
+          "kind": "interface",
+          "line": 445
+        },
+        {
+          "name": "GoodsReceivedPayload",
+          "kind": "interface",
+          "line": 451
+        },
+        {
+          "name": "SupplierDeletedPayload",
+          "kind": "interface",
+          "line": 463
+        },
+        {
           "name": "BomProductionCompletedPayload",
           "kind": "interface",
-          "line": 429
+          "line": 467
         },
         {
           "name": "WorkOrderPayload",
           "kind": "interface",
-          "line": 444
+          "line": 482
         },
         {
           "name": "SupplierBillRaisedPayload",
           "kind": "interface",
-          "line": 452
+          "line": 490
         },
         {
           "name": "InterBranchTransferInvoicedPayload",
           "kind": "interface",
-          "line": 466
+          "line": 504
         },
         {
           "name": "SupplierBillPaidPayload",
           "kind": "interface",
-          "line": 479
+          "line": 517
         },
         {
           "name": "ExpenseRecordedPayload",
           "kind": "interface",
-          "line": 492
+          "line": 530
         },
         {
           "name": "OrderEconomicsComputedPayload",
           "kind": "interface",
-          "line": 508
+          "line": 546
         },
         {
           "name": "PayrollRunPostedPayload",
           "kind": "interface",
-          "line": 516
+          "line": 554
         },
         {
           "name": "PayrollAdjustmentPostedPayload",
           "kind": "interface",
-          "line": 528
+          "line": 566
         },
         {
           "name": "DiscountRedeemedPayload",
           "kind": "interface",
-          "line": 539
+          "line": 577
         },
         {
           "name": "EmailReplyReceivedPayload",
           "kind": "interface",
-          "line": 550
+          "line": 588
         },
         {
           "name": "ReviewModeratedPayload",
           "kind": "interface",
-          "line": 557
+          "line": 595
         },
         {
           "name": "WalletCreditPurchasedPayload",
           "kind": "interface",
-          "line": 563
+          "line": 601
         },
         {
           "name": "WalletCreditRedeemedPayload",
           "kind": "interface",
-          "line": 571
+          "line": 609
         },
         {
           "name": "WalletCreditRefundedPayload",
           "kind": "interface",
-          "line": 580
+          "line": 618
         },
         {
           "name": "MerchantPayableCreatedPayload",
           "kind": "interface",
-          "line": 591
+          "line": 629
         },
         {
           "name": "MerchantPayablePaidPayload",
           "kind": "interface",
-          "line": 598
+          "line": 636
         },
         {
           "name": "IdentityVerificationPayload",
           "kind": "interface",
-          "line": 605
+          "line": 643
         },
         {
           "name": "PostingEndedPayload",
           "kind": "interface",
-          "line": 612
+          "line": 650
         },
         {
           "name": "DomainEventPayloads",
           "kind": "interface",
-          "line": 620
+          "line": 658
         },
         {
           "name": "CreditNoteIssuedPayload",
           "kind": "interface",
-          "line": 692
+          "line": 733
         },
         {
           "name": "CreditNoteVoidedPayload",
           "kind": "interface",
-          "line": 701
+          "line": 742
         },
         {
           "name": "DebitNoteIssuedPayload",
           "kind": "interface",
-          "line": 705
+          "line": 746
         },
         {
           "name": "DebitNoteVoidedPayload",
           "kind": "interface",
-          "line": 713
+          "line": 754
         },
         {
           "name": "CreditHoldAppliedPayload",
           "kind": "interface",
-          "line": 717
+          "line": 758
         },
         {
           "name": "NotificationSentPayload",
           "kind": "interface",
-          "line": 722
+          "line": 763
         },
         {
           "name": "SettlementShortfallWrittenOffPayload",
           "kind": "interface",
-          "line": 733
+          "line": 774
         },
         {
           "name": "BankFacilityDrawdownPostedPayload",
           "kind": "interface",
-          "line": 740
+          "line": 781
         },
         {
           "name": "BankFacilityRepaymentRecordedPayload",
           "kind": "interface",
-          "line": 748
+          "line": 789
         },
         {
           "name": "BankFacilityMarkupAccruedPayload",
           "kind": "interface",
-          "line": 757
+          "line": 798
         },
         {
           "name": "BulletinPublishedPayload",
           "kind": "interface",
-          "line": 764
+          "line": 805
         }
       ]
     },
@@ -63732,8 +64015,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 539,
-      "bytes": 30715,
+      "lines": 543,
+      "bytes": 31046,
       "doc": "",
       "symbols": [
         {
@@ -63769,12 +64052,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 353
+          "line": 355
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 355
+          "line": 357
         }
       ]
     },
@@ -75789,6 +76072,55 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/supply-chain/tradingpartners/dto/partner-fact.dto.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 93,
+      "bytes": 3231,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/supply-chain/tradingpartners/dto/partner-fact.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 166,
+      "bytes": 4283,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PARTNER_FACT_TYPES",
+          "kind": "const",
+          "line": 24
+        },
+        {
+          "name": "PartnerFactType",
+          "kind": "type",
+          "line": 28
+        },
+        {
+          "name": "PARTNER_FACT_SCHEMA_VERSIONS",
+          "kind": "const",
+          "line": 31
+        },
+        {
+          "name": "PARTNER_FACT_MAX_LINES",
+          "kind": "const",
+          "line": 39
+        },
+        {
+          "name": "PartnerFactLineDto",
+          "kind": "class",
+          "line": 49
+        },
+        {
+          "name": "SubmitPartnerFactDto",
+          "kind": "class",
+          "line": 110
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/supply-chain/tradingpartners/dto/quote.dto.ts",
       "area": "api",
       "kind": "dto",
@@ -75937,6 +76269,78 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.integration.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 248,
+      "bytes": 8432,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 337,
+      "bytes": 11368,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 230,
+      "bytes": 8441,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PartnerFactReceipt",
+          "kind": "interface",
+          "line": 23
+        },
+        {
+          "name": "canonicalJson",
+          "kind": "function",
+          "line": 34
+        },
+        {
+          "name": "hashFact",
+          "kind": "function",
+          "line": 45
+        },
+        {
+          "name": "PartnerFactInboxService",
+          "kind": "class",
+          "line": 76
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 80,
+      "bytes": 2518,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.ts",
+      "area": "api",
+      "kind": "event subscriber",
+      "lines": 65,
+      "bytes": 2433,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PartnerFactStatusListener",
+          "kind": "class",
+          "line": 24
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/modules/supply-chain/tradingpartners/product-alerts.listener.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -76027,8 +76431,8 @@
       "path": "apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 63,
-      "bytes": 2769,
+      "lines": 91,
+      "bytes": 4334,
       "doc": "",
       "symbols": []
     },
@@ -76036,14 +76440,14 @@
       "path": "apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 46,
-      "bytes": 1895,
+      "lines": 73,
+      "bytes": 3242,
       "doc": "",
       "symbols": [
         {
           "name": "TradingPartnerPortalController",
           "kind": "class",
-          "line": 17
+          "line": 20
         }
       ]
     },
@@ -76052,7 +76456,7 @@
       "area": "api",
       "kind": "controller",
       "lines": 79,
-      "bytes": 3224,
+      "bytes": 3280,
       "doc": "",
       "symbols": [
         {
@@ -76066,14 +76470,14 @@
       "path": "apps/api/src/modules/supply-chain/tradingpartners/trading-partners.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 53,
-      "bytes": 2379,
+      "lines": 57,
+      "bytes": 2587,
       "doc": "",
       "symbols": [
         {
           "name": "TradingPartnersModule",
           "kind": "class",
-          "line": 52
+          "line": 56
         }
       ]
     },
@@ -76081,8 +76485,8 @@
       "path": "apps/api/src/modules/supply-chain/tradingpartners/trading-partners.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 385,
-      "bytes": 15636,
+      "lines": 472,
+      "bytes": 19528,
       "doc": "",
       "symbols": []
     },
@@ -76090,14 +76494,14 @@
       "path": "apps/api/src/modules/supply-chain/tradingpartners/trading-partners.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 299,
-      "bytes": 11031,
+      "lines": 341,
+      "bytes": 13187,
       "doc": "",
       "symbols": [
         {
           "name": "TradingPartnersService",
           "kind": "class",
-          "line": 31
+          "line": 38
         }
       ]
     },
@@ -92287,7 +92691,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 688,
-      "bytes": 105455,
+      "bytes": 105494,
       "doc": "",
       "symbols": []
     },
@@ -94059,8 +94463,8 @@
       "path": "docs/implementation/decisions/ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 83,
-      "bytes": 4381,
+      "lines": 86,
+      "bytes": 5084,
       "doc": "",
       "symbols": []
     },
@@ -94545,8 +94949,8 @@
       "path": "docs/implementation/integrations-connectivity/213-partner-fact-exchange.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 249,
-      "bytes": 29993,
+      "lines": 272,
+      "bytes": 35275,
       "doc": "",
       "symbols": []
     },

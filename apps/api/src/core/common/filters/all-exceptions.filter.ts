@@ -89,6 +89,23 @@ export class AllExceptionsFilter implements ExceptionFilter {
       return { ...this.fromPrisma(exception), path, timestamp };
     }
 
+    // The body parser rejects an over-limit JSON body (Express's default is
+    // 100 KiB) with a plain `http-errors` error, not an HttpException. That is
+    // the caller's mistake, so it is a 413 they can act on (a partner's sender
+    // splits the fact), never a 500 that reads as "we are failing, retry".
+    if (
+      exception instanceof Error &&
+      (exception as { type?: unknown }).type === 'entity.too.large'
+    ) {
+      return {
+        statusCode: HttpStatus.PAYLOAD_TOO_LARGE,
+        message: 'The request body is too large.',
+        error: 'PAYLOAD_TOO_LARGE',
+        path,
+        timestamp,
+      };
+    }
+
     if (exception instanceof Prisma.PrismaClientValidationError) {
       return {
         statusCode: HttpStatus.BAD_REQUEST,

@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,193 files · 159,794 lines
+1,201 files · 161,430 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -30,10 +30,10 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 |---|---|---|---|
 | `apps/api` | 10 | 847 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,294 | module |
-| `apps/api/prisma/schema` | 173 | 17,604 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 174 | 17,747 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 168 | nest module, module |
-| `apps/api/src/core` | 223 | 28,532 | unit test, service, module, controller |
-| `apps/api/src/modules` | 750 | 100,076 | doc, unit test, service, controller |
+| `apps/api/src/core` | 223 | 28,618 | unit test, service, module, controller |
+| `apps/api/src/modules` | 757 | 101,483 | doc, unit test, service, controller |
 | `apps/api/test` | 30 | 9,192 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
@@ -59,11 +59,11 @@ the domain folder (sales, merchandising, supply-chain, money, people, customers,
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
 | `apps/api/src/core/auth/sso.service.ts` | 869 | service |  |
 | `apps/api/src/modules/supply-chain/transfers/transfers.service.spec.ts` | 823 | unit test |  |
+| `apps/api/src/core/events/domain-events.ts` | 810 | module | The catalogue of domain events. |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
 | `apps/api/prisma/schema/catalog.prisma` | 788 | prisma schema | Catalog: categories, products, variants, images. |
 | `apps/api/src/modules/money/accounting/posting-rules.subscriber.ts` | 771 | event subscriber |  |
-| `apps/api/src/core/events/domain-events.ts` | 769 | module | The catalogue of domain events. |
 | `apps/api/src/modules/merchandising/catalog/product-admin.service.ts` | 751 | service |  |
 | `apps/api/src/modules/supply-chain/purchasing/purchasing.service.ts` | 749 | service |  |
 

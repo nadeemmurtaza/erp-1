@@ -5,6 +5,8 @@ import { InvoicesController } from './invoices.controller';
 import { QuotesController } from './quotes.controller';
 import { OffersController } from './offers.controller';
 import { TradingPartnersService } from './trading-partners.service';
+import { PartnerFactInboxService } from './partner-fact-inbox.service';
+import { PartnerFactStatusListener } from './partner-fact-status.listener';
 import { InvoiceService } from './invoice.service';
 import { QuoteService } from './quote.service';
 import { OfferService } from './offer.service';
@@ -41,6 +43,8 @@ import { ProductAlertsListener } from './product-alerts.listener';
   ],
   providers: [
     TradingPartnersService,
+    PartnerFactInboxService,
+    PartnerFactStatusListener,
     InvoiceService,
     QuoteService,
     OfferService,

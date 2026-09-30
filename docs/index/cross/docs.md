@@ -3303,7 +3303,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/decisions/ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>83 lines</sub>
+### `docs/implementation/decisions/ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>86 lines</sub>
 
 _no second-level headings_
 
@@ -3874,7 +3874,7 @@ _no second-level headings_
 - Acceptance  <sub>:226</sub>
 - Out of scope  <sub>:235</sub>
 
-### `docs/implementation/integrations-connectivity/213-partner-fact-exchange.md`  <sub>249 lines</sub>
+### `docs/implementation/integrations-connectivity/213-partner-fact-exchange.md`  <sub>272 lines</sub>
 
 - Objective  <sub>:10</sub>
 - Existing state (verified in code, 2026-09-30)  <sub>:19</sub>
@@ -3887,6 +3887,7 @@ _no second-level headings_
 - Acceptance criteria  <sub>:182</sub>
 - Out of scope (named and sequenced, not silently skipped)  <sub>:193</sub>
 - Scope lenses  <sub>:203</sub>
+- Build log  <sub>:250</sub>
 
 ### `docs/implementation/integrations-connectivity/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
 

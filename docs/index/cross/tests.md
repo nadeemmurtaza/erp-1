@@ -3,7 +3,7 @@
 
 # Tests
 
-**365** spec files, **3,513** cases. What is already pinned down — and what is not.
+**369** spec files, **3,565** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -63,7 +63,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (341)
+## Unit and integration (345)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -91,7 +91,7 @@ regression or an N+1.
 | `apps/api/src/core/cache/tiered-cache.spec.ts` | core/cache | 12 | TieredCache without a working Redis · Redis not connected · a read in flight when this process inva… |
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
-| `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 3 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) |
+| `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 5 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · an ov… |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 24 | validateEnv · REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2) |
 | `apps/api/src/core/events/event-contracts.spec.ts` | core/events | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
@@ -308,13 +308,17 @@ regression or an N+1.
 | `apps/api/src/modules/supply-chain/purchasing/requisition-task-source.spec.ts` | purchasing | 4 | RequisitionTaskSource |
 | `apps/api/src/modules/supply-chain/purchasing/requisition.service.spec.ts` | purchasing | 13 | RequisitionService — 152-purchase-requisition.md · create · approve / reject — the toxic-pair refus… |
 | `apps/api/src/modules/supply-chain/purchasing/supplier-bill.spec.ts` | purchasing | 12 | PurchasingService — supplier bills · createSupplierBill · recordSupplierBillPayment |
+| `apps/api/src/modules/supply-chain/tradingpartners/dto/partner-fact.dto.spec.ts` | tradingpartners | 4 | SubmitPartnerFactDto |
 | `apps/api/src/modules/supply-chain/tradingpartners/invoice.service.spec.ts` | tradingpartners | 8 | InvoiceService · issue · findOne · overdueInvoicesSummary — WO-56.1 · findAll — overdue filter |
 | `apps/api/src/modules/supply-chain/tradingpartners/offer.service.spec.ts` | tradingpartners | 3 | OfferService · publish |
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.integration.spec.ts` | tradingpartners | 8 | PartnerFactInbox — real database (WO-213.1) |
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-inbox.service.spec.ts` | tradingpartners | 22 | PartnerFactInboxService · accept — the normal case · accept — who may send what · accept — the seco… |
+| `apps/api/src/modules/supply-chain/tradingpartners/partner-fact-status.listener.spec.ts` | tradingpartners | 6 | PartnerFactStatusListener |
 | `apps/api/src/modules/supply-chain/tradingpartners/product-alerts.listener.spec.ts` | tradingpartners | 4 | ProductAlertsListener |
 | `apps/api/src/modules/supply-chain/tradingpartners/quote.service.spec.ts` | tradingpartners | 5 | QuoteService · send · findOne |
 | `apps/api/src/modules/supply-chain/tradingpartners/supplier-digest.listener.spec.ts` | tradingpartners | 3 | SupplierDigestListener |
-| `apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 6 | TradingPartnerPortalController · accept |
-| `apps/api/src/modules/supply-chain/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 32 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
+| `apps/api/src/modules/supply-chain/tradingpartners/trading-partner-portal.controller.spec.ts` | tradingpartners | 9 | TradingPartnerPortalController · submitFact — WO-213.1 · accept |
+| `apps/api/src/modules/supply-chain/tradingpartners/trading-partners.service.spec.ts` | tradingpartners | 39 | TradingPartnersService · create · findOne / update / remove — the not-found guard · rotateInboundKe… |
 | `apps/api/src/modules/supply-chain/transfers/transfers.service.spec.ts` | transfers | 25 | TransfersService · dispatch/receive/cancel (WO-22.1) · brand-policy gating (WO-22.2) · settlement m… |
 | `apps/api/src/modules/system/bpmn-workflows/bpmn-compiler.spec.ts` | bpmn-workflows | 9 | compileBpmnToApprovalSteps — WO-142.1 |
 | `apps/api/src/modules/system/bpmn-workflows/bpmn-workflows.service.spec.ts` | bpmn-workflows | 4 | BpmnWorkflowsService — WO-142.3 |

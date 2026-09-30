@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { RequirePermission, SessionOnly } from '../../../core/auth/decorators';
+import { CurrentUser, RequirePermission, SessionOnly } from '../../../core/auth/decorators';
 import { TradingPartnersService } from './trading-partners.service';
 import { CreateTradingPartnerDto, SetOutboundApiKeyDto, UpdateTradingPartnerDto } from './dto/trading-partner.dto';
 
@@ -57,8 +57,8 @@ export class TradingPartnersController {
   @Post(':id/rotate-inbound-key')
   @SessionOnly()
   @ApiOperation({ summary: 'Issue a fresh key for them to call us with — shown once, never retrievable again' })
-  async rotateInboundKey(@Param('id') id: string) {
-    return this.tradingPartners.rotateInboundKey(id);
+  async rotateInboundKey(@Param('id') id: string, @CurrentUser('id') userId: string) {
+    return this.tradingPartners.rotateInboundKey(id, userId);
   }
 
   @Post(':id/outbound-key')

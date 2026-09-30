@@ -1,10 +1,12 @@
-import { BadRequestException, ForbiddenException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { hashApiKey } from '../../../core/security/api-token';
 import { encryptSecret } from '@newax/shared/secret-crypto';
 import { TradingPartnersService } from './trading-partners.service';
 import { PrismaService } from '../../../core/prisma/prisma.service';
 import { AppConfigService } from '../../../core/config/app-config.service';
+import { SettingsService } from '../../../core/settings/settings.service';
+import { Prisma } from '../../../core/prisma/client';
 
 const ENCRYPTION_KEY = 'dev-app-encryption-key-32-bytes0';
 
@@ -12,6 +14,7 @@ describe('TradingPartnersService', () => {
   let service: TradingPartnersService;
   let prisma: any;
   let config: any;
+  let settings: { get: jest.Mock };
 
   beforeEach(async () => {
     prisma = {
@@ -26,6 +29,7 @@ describe('TradingPartnersService', () => {
         findMany: jest.fn().mockResolvedValue([]),
       },
     };
+    settings = { get: jest.fn().mockResolvedValue(365) };
     config = {
       get: jest.fn((key: string) => (key === 'STOREFRONT_URL' ? 'https://yaseen.pk' : 'dev-app-encryption-key-32-bytes0')),
     };
@@ -35,6 +39,7 @@ describe('TradingPartnersService', () => {
         TradingPartnersService,
         { provide: PrismaService, useValue: prisma },
         { provide: AppConfigService, useValue: config },
+        { provide: SettingsService, useValue: settings },
       ],
     }).compile();
 
@@ -86,6 +91,22 @@ describe('TradingPartnersService', () => {
       expect(result).toEqual({ deleted: true });
       expect(prisma.tradingPartner.delete).toHaveBeenCalledWith({ where: { id: 'tp1' } });
     });
+
+    it('answers 409, not a 500, when the partner has sent facts we keep as a record (ON DELETE RESTRICT)', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1' });
+      prisma.tradingPartner.delete.mockRejectedValue(
+        new Prisma.PrismaClientKnownRequestError('Foreign key constraint failed', { code: 'P2003', clientVersion: 'test' }),
+      );
+
+      await expect(service.remove('tp1')).rejects.toBeInstanceOf(ConflictException);
+    });
+
+    it('does not hide an unrelated database error behind that 409', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1' });
+      prisma.tradingPartner.delete.mockRejectedValue(new Error('connection reset'));
+
+      await expect(service.remove('tp1')).rejects.toThrow('connection reset');
+    });
   });
 
   describe('rotateInboundKey', () => {
@@ -100,6 +121,46 @@ describe('TradingPartnersService', () => {
       expect(call.data.inboundApiKeyHash).toHaveLength(64); // hex sha256
       expect(call.data.inboundApiKeyHash).not.toBe(apiKey);
     });
+
+    it('expires the new key after partners.key_ttl_days and records who issued it', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1' });
+      prisma.tradingPartner.update.mockResolvedValue({});
+      settings.get.mockResolvedValue(365);
+      const before = Date.now();
+
+      const { expiresAt } = await service.rotateInboundKey('tp1', 'user42');
+
+      const data = prisma.tradingPartner.update.mock.calls[0][0].data;
+      expect(data.inboundKeyRotatedByUserId).toBe('user42');
+      expect(data.inboundKeyExpiresAt).toEqual(expiresAt);
+      const days = (expiresAt!.getTime() - before) / 86_400_000;
+      expect(days).toBeGreaterThan(364.99);
+      expect(days).toBeLessThan(365.01);
+    });
+
+    it('a TTL of 0 means the new key never expires', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1' });
+      prisma.tradingPartner.update.mockResolvedValue({});
+      settings.get.mockResolvedValue(0);
+
+      const { expiresAt } = await service.rotateInboundKey('tp1', 'user42');
+
+      expect(expiresAt).toBeNull();
+      expect(prisma.tradingPartner.update.mock.calls[0][0].data.inboundKeyExpiresAt).toBeNull();
+    });
+
+    it.each([['a negative number', -5], ['a fraction', 1.5], ['text', 'soon'], ['nothing', undefined]])(
+      'falls back to 365 days when the setting holds %s, never to "no expiry"',
+      async (_label, value) => {
+        prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1' });
+        prisma.tradingPartner.update.mockResolvedValue({});
+        settings.get.mockResolvedValue(value);
+
+        const { expiresAt } = await service.rotateInboundKey('tp1');
+
+        expect(expiresAt).not.toBeNull();
+      },
+    );
 
     it('404s rotating a key for a partner that does not exist', async () => {
       await expect(service.rotateInboundKey('missing')).rejects.toBeInstanceOf(NotFoundException);
@@ -167,6 +228,32 @@ describe('TradingPartnersService', () => {
       prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1', status: 'SUSPENDED' });
 
       await expect(service.verifyInboundKey('tp_theirrawkey')).rejects.toBeInstanceOf(UnauthorizedException);
+    });
+
+    it('accepts a key that has no expiry — every key issued before the column existed', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({ id: 'tp1', status: 'ACTIVE', inboundKeyExpiresAt: null });
+
+      await expect(service.verifyInboundKey('tp_theirrawkey')).resolves.toMatchObject({ id: 'tp1' });
+    });
+
+    it('accepts a key whose expiry is still ahead', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({
+        id: 'tp1',
+        status: 'ACTIVE',
+        inboundKeyExpiresAt: new Date(Date.now() + 60_000),
+      });
+
+      await expect(service.verifyInboundKey('tp_theirrawkey')).resolves.toMatchObject({ id: 'tp1' });
+    });
+
+    it('refuses an expired key even though its partner is ACTIVE and the hash matches', async () => {
+      prisma.tradingPartner.findUnique.mockResolvedValue({
+        id: 'tp1',
+        status: 'ACTIVE',
+        inboundKeyExpiresAt: new Date(Date.now() - 1_000),
+      });
+
+      await expect(service.verifyInboundKey('tp_theirrawkey')).rejects.toThrow(/expired/);
     });
 
     it('refuses a PENDING partner — registered but never activated', async () => {

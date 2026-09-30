@@ -1,9 +1,12 @@
-import { Body, Controller, Get, Headers, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpCode, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 import { Public } from '../../../core/auth/decorators';
 import { bearerToken } from '../../../core/auth/bearer-token';
 import { TradingPartnersService } from './trading-partners.service';
+import { PartnerFactInboxService } from './partner-fact-inbox.service';
 import { AcceptConnectionDto } from './dto/trading-partner.dto';
+import { SubmitPartnerFactDto } from './dto/partner-fact.dto';
 
 /**
  * What a connected trading partner's own system calls — authenticated by
@@ -15,7 +18,10 @@ import { AcceptConnectionDto } from './dto/trading-partner.dto';
 @ApiTags('Trading Partner Portal')
 @Controller('trading-partners')
 export class TradingPartnerPortalController {
-  constructor(private readonly tradingPartners: TradingPartnersService) {}
+  constructor(
+    private readonly tradingPartners: TradingPartnersService,
+    private readonly factInbox: PartnerFactInboxService,
+  ) {}
 
   @Get('stock')
   @Public()
@@ -33,6 +39,27 @@ export class TradingPartnerPortalController {
       .filter(Boolean);
 
     return { data: await this.tradingPartners.getLiveStock(partner, list) };
+  }
+
+  /**
+   * WO-213.1 (213-partner-fact-exchange.md). A connected partner tells us a
+   * fact — goods it dispatched to us, or goods it received from us. Answers
+   * 202: the fact is STORED, not applied, so a slow or absent purchasing
+   * module cannot fail the partner's delivery. Sending the same factId again
+   * is answered from what was stored.
+   *
+   * 600 requests / 60 s per source IP: room for a partner flushing a 72-hour
+   * backlog of 500-line facts (10 a second) after an outage, without being
+   * able to flood. The body cap is the platform's existing 100 KiB JSON limit.
+   */
+  @Post('facts')
+  @Public()
+  @HttpCode(202)
+  @Throttle({ default: { limit: 600, ttl: 60_000 } })
+  @ApiOperation({ summary: 'Send a fact (sale.dispatched, receipt.confirmed) — stored and acknowledged, applied afterwards' })
+  async submitFact(@Headers('authorization') authorization: string | undefined, @Body() dto: SubmitPartnerFactDto) {
+    const partner = await this.tradingPartners.verifyInboundKey(bearerToken(authorization));
+    return this.factInbox.accept(partner, dto);
   }
 
   @Post('accept')

@@ -74,6 +74,12 @@ export const DomainEvent = {
   InterBranchTransferInvoiced: 'transfers.inter_branch_invoiced',
   /** SupplyChainDigestCron's own nightly per-supplier stock/velocity computation, republished as an event so a connected TradingPartner can receive it structured, not only as the email it already sends. */
   SupplierDigestReady: 'analytics.supplier_digest_ready',
+  /** A connected trading partner's fact was stored in PartnerFactInbox and acknowledged (WO-213.1, 213-partner-fact-exchange.md). `purchasing` subscribes to apply a `sale.dispatched` fact. Published in the SAME transaction as the inbox row. */
+  PartnerFactReceived: 'partners.fact_received',
+  /** The subscriber that owns the effect applied the fact — for `sale.dispatched`, a purchase order now exists (WO-213.2). `tradingpartners` subscribes to record it on the inbox row. */
+  PartnerFactApplied: 'partners.fact_applied',
+  /** The subscriber could not apply the fact without a person — an unknown barcode, a price far from the last (WO-213.2). `tradingpartners` subscribes to park it in the review queue (WO-213.5). */
+  PartnerFactNeedsReview: 'partners.fact_needs_review',
 
   WorkOrderCreated: 'production.work_order_created',
   WorkOrderReleased: 'production.work_order_released',
@@ -393,6 +399,38 @@ export interface ProductPriceChangedPayload {
   newPriceMinor: number;
 }
 
+/**
+ * Identifies one stored fact. The fact's own content is read from
+ * PartnerFactInbox by `inboxId`, never carried on the event. The three partner
+ * fact payloads repeat these four fields rather than `extends` one another:
+ * the event catalogue is kept flat so each payload is readable, and parseable
+ * by `event-contracts.spec.ts`, on its own.
+ */
+export interface PartnerFactReceivedPayload {
+  inboxId: string;
+  tradingPartnerId: string;
+  factId: string;
+  type: string;
+}
+
+export interface PartnerFactAppliedPayload {
+  inboxId: string;
+  tradingPartnerId: string;
+  factId: string;
+  type: string;
+  /** Set when the fact produced a purchase order. */
+  purchaseOrderId?: string;
+}
+
+export interface PartnerFactNeedsReviewPayload {
+  inboxId: string;
+  tradingPartnerId: string;
+  factId: string;
+  type: string;
+  /** In words an operator can act on. */
+  reason: string;
+}
+
 export interface SupplierDigestReadyPayload {
   supplierId: string;
   items: Array<{ sku: string; stock: number; soldToday: number; soldThisWeek: number; actionNeeded: boolean }>;
@@ -656,6 +694,9 @@ export interface DomainEventPayloads {
   [DomainEvent.SupplierDeleted]: SupplierDeletedPayload;
   [DomainEvent.InterBranchTransferInvoiced]: InterBranchTransferInvoicedPayload;
   [DomainEvent.SupplierDigestReady]: SupplierDigestReadyPayload;
+  [DomainEvent.PartnerFactReceived]: PartnerFactReceivedPayload;
+  [DomainEvent.PartnerFactApplied]: PartnerFactAppliedPayload;
+  [DomainEvent.PartnerFactNeedsReview]: PartnerFactNeedsReviewPayload;
   [DomainEvent.EmailReplyReceived]: EmailReplyReceivedPayload;
   [DomainEvent.IdentityVerificationApproved]: IdentityVerificationPayload;
   [DomainEvent.IdentityVerificationRejected]: IdentityVerificationPayload;

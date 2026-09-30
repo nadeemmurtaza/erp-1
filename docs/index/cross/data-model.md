@@ -3,7 +3,7 @@
 
 # Data model
 
-All **314** Prisma models and **145** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **315** Prisma models and **146** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -83,7 +83,7 @@ against a real database.
 | [`support.prisma`](../data/support.md) | 4 | 4 | [`support`](../modules/support.md) | CustomerSupportMessage, CustomerSupportTicket, SupportTicket, TicketMessage |
 | [`tasks.prisma`](../data/tasks.md) | 3 | 1 | [`tasks`](../modules/tasks.md) | Task, TaskStageDefinition, TaskTransition |
 | [`tax.prisma`](../data/tax.md) | 2 | 0 | [`tax`](../modules/tax.md) | TaxClass, TaxRate |
-| [`trading-partners.prisma`](../data/trading-partners.md) | 2 | 2 | core platform | Offer, TradingPartner |
+| [`trading-partners.prisma`](../data/trading-partners.md) | 3 | 3 | core platform | Offer, PartnerFactInbox, TradingPartner |
 | [`transfers.prisma`](../data/transfers.md) | 5 | 2 | [`transfers`](../modules/transfers.md) | InterBranchInvoice, InterBranchInvoiceNumberCounter, StockTransfer, StockTransferLine, TransferNumberCounter |
 | [`wallet.prisma`](../data/wallet.md) | 4 | 4 | [`wallet`](../modules/wallet.md) | MerchantPayable, WalletAccount, WalletAdjustmentRequest, WalletEntry |
 | [`whatsapp-assistant.prisma`](../data/whatsapp-assistant.md) | 2 | 1 | core platform | WhatsAppConversation, WhatsAppMessage |
@@ -258,6 +258,7 @@ against a real database.
 | [`OutboxEvent`](../data/core.md#outboxevent) | `core` | 9 | 0 | id | Transactional outbox. |
 | [`Page`](../data/content.md#page) | `content` | 9 | 0 | id |  |
 | [`PageTranslation`](../data/content.md#pagetranslation) | `content` | 9 | 1 | id |  |
+| [`PartnerFactInbox`](../data/trading-partners.md#partnerfactinbox) | `trading-partners` | 15 | 1 | id | One fact a connected partner sent us (WO-213.1, 213-partner-fact-exchange.md and ADR-083). |
 | [`Party`](../data/parties.md#party) | `parties` | 16 | 0 | id |  |
 | [`PartyRoleAssignment`](../data/parties.md#partyroleassignment) | `parties` | 4 | 1 | id |  |
 | [`PasswordResetToken`](../data/core.md#passwordresettoken) | `core` | 7 | 1 | id | A one-time token mailed to reset a forgotten password. |
@@ -389,7 +390,7 @@ against a real database.
 | [`TenantDataExport`](../data/platform.md#tenantdataexport) | `platform` | 13 | 1 | id |  |
 | [`TenantDeploymentCredential`](../data/platform.md#tenantdeploymentcredential) | `platform` | 6 | 1 | id | The secrets-manager role doc 39 §1 names but leaves unspecified: an encrypted (AES-256-GC… |
 | [`TicketMessage`](../data/support.md#ticketmessage) | `support` | 6 | 1 | id | An append-only reply thread — a correction is a new message, never an edit in place, the… |
-| [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 15 | 0 | id | The business on the other end of a document exchange. |
+| [`TradingPartner`](../data/trading-partners.md#tradingpartner) | `trading-partners` | 18 | 0 | id | The business on the other end of a document exchange. |
 | [`TransferNumberCounter`](../data/transfers.md#transfernumbercounter) | `transfers` | 2 | 0 | year | Same shape as OrderNumberCounter (orders.prisma) — an `INSERT ... |
 | [`TrialExtension`](../data/platform.md#trialextension) | `platform` | 8 | 1 | id | WO-51.5's own audit trail: `platform.trials.extend` lets an ops principal push `trialExpi… |
 | [`UsageMeter`](../data/platform.md#usagemeter) | `platform` | 8 | 1 | id | One row per (tenant, metric, billing period) — the accumulator `UsageMeteringService` inc… |
@@ -496,6 +497,7 @@ against a real database.
 | [`OrderItemFulfillmentStatus`](../data/orders.md#orderitemfulfillmentstatus) | `orders` | `READY` `AWAITING_STOCK` `AWAITING_PRODUCTION` |
 | [`OrderStatus`](../data/orders.md#orderstatus) | `orders` | `PENDING` `CONFIRMED` `PROCESSING` `READY_TO_SHIP` `SHIPPED` `DELIVERED` `CANCELLED` `RETURNED` |
 | [`OutboxStatus`](../data/core.md#outboxstatus) | `core` | `PENDING` `PROCESSING` `DONE` `FAILED` |
+| [`PartnerFactStatus`](../data/trading-partners.md#partnerfactstatus) | `trading-partners` | `RECEIVED` `APPLIED` `NEEDS_REVIEW` `REJECTED` |
 | [`PartyRoleName`](../data/parties.md#partyrolename) | `parties` | `SUPPLIER` `MANUFACTURER` `DISTRIBUTOR` `RETAILER` |
 | [`PaymentStatus`](../data/payments.md#paymentstatus) | `payments` | `PENDING` `AWAITING_APPROVAL` `PAID` `FAILED` `REFUNDED` `CANCELLED` |
 | [`PayRunAdjustmentReason`](../data/payroll.md#payrunadjustmentreason) | `payroll` | `OVERPAYMENT` `UNDERPAYMENT` `CORRECTION` |

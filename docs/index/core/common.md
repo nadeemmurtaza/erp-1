@@ -13,7 +13,7 @@ Source: `apps/api/src/core/common/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (8 · 598 lines)
+## Files (8 · 639 lines)
 
 All paths relative to `apps/api/src/core/common`.
 
@@ -24,8 +24,8 @@ All paths relative to `apps/api/src/core/common`.
 | `cost-fields.spec.ts` | unit test | 44 | — |  |
 | `cost-fields.ts` | module | 98 | 7 | The permission that gates visibility of cost / margin data. |
 | `pagination.dto.ts` | dto | 77 | 4 |  |
-| `all-exceptions.filter.spec.ts` | unit test | 59 | — |  |
-| `all-exceptions.filter.ts` | module | 152 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
+| `all-exceptions.filter.spec.ts` | unit test | 83 | — |  |
+| `all-exceptions.filter.ts` | module | 169 | 1 | Turns every thrown value into one predictable JSON shape, and translates Prisma's error codes into the right HTTP statu… |
 | `sales-revenue.ts` | module | 17 | 1 | The one place "does this order count as revenue" is decided. |
 
 
@@ -67,7 +67,7 @@ check there before adding another.
 |---|---|---|
 | `aging.spec.ts` | 7 | ageMovements |
 | `cost-fields.spec.ts` | 3 | stripCodRiskFields · stripCodRiskFieldsList |
-| `all-exceptions.filter.spec.ts` | 3 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) |
+| `all-exceptions.filter.spec.ts` | 5 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · an over-limit request body |
 
 
 ## Every export in this unit

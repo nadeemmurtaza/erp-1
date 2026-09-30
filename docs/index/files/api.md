@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,193 tracked files in `apps/api`, by directory.
+All 1,201 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -92,7 +92,7 @@ All 1,193 tracked files in `apps/api`, by directory.
 | `support.prisma` | prisma schema | 143 | In-app help desk (internal) — tasks-notifications-support/64-help-desk- |
 | `tasks.prisma` | prisma schema | 134 | Task allotment, status and tracking |
 | `tax.prisma` | prisma schema | 38 | Tax: rate/class definitions and the pricing-mode setting. Universal |
-| `trading-partners.prisma` | prisma schema | 95 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
+| `trading-partners.prisma` | prisma schema | 176 | The trading-partner network (18-trading-partner-network.md, WO-18) — lets |
 | `transfers.prisma` | prisma schema | 167 | Inter-branch stock transfers (RETAIL-ERP.md R4, Tranche 5). Off by default |
 | `wallet.prisma` | prisma schema | 185 | 155-wallet-stored-value-merchant-escrow.md |
 | `whatsapp-assistant.prisma` | prisma schema | 62 | WO-9.7, docs/implementation/ai-layer/09-ai-layer.md. |
@@ -764,6 +764,12 @@ All 1,193 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 40 |  |
 
+### `apps/api/prisma/schema/migrations/20260930100000_wo213_1_partner_fact_inbox` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 62 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -926,8 +932,8 @@ All 1,193 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `all-exceptions.filter.spec.ts` | unit test | 59 |  |
-| `all-exceptions.filter.ts` | module | 152 |  |
+| `all-exceptions.filter.spec.ts` | unit test | 83 |  |
+| `all-exceptions.filter.ts` | module | 169 |  |
 
 ### `apps/api/src/core/config` (6)
 
@@ -951,7 +957,7 @@ All 1,193 tracked files in `apps/api`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `contract-analyzer.ts` | module | 399 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
-| `domain-events.ts` | module | 769 | The catalogue of domain events. |
+| `domain-events.ts` | module | 810 | The catalogue of domain events. |
 | `event-bus.service.ts` | service | 53 |  |
 | `event-contracts.spec.ts` | unit test | 268 |  |
 | `events.module.ts` | nest module | 19 |  |
@@ -1141,7 +1147,7 @@ All 1,193 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 539 |  |
+| `settings.defaults.ts` | module | 543 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.spec.ts` | unit test | 125 |  |
 | `settings.service.ts` | service | 146 |  |
@@ -2430,7 +2436,7 @@ All 1,193 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `resilience.dto.ts` | dto | 48 |  |
 
-### `apps/api/src/modules/supply-chain/tradingpartners` (19)
+### `apps/api/src/modules/supply-chain/tradingpartners` (24)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -2440,6 +2446,11 @@ All 1,193 tracked files in `apps/api`, by directory.
 | `offer.service.spec.ts` | unit test | 73 |  |
 | `offer.service.ts` | service | 53 |  |
 | `offers.controller.ts` | controller | 25 |  |
+| `partner-fact-inbox.integration.spec.ts` | unit test | 248 |  |
+| `partner-fact-inbox.service.spec.ts` | unit test | 337 |  |
+| `partner-fact-inbox.service.ts` | service | 230 |  |
+| `partner-fact-status.listener.spec.ts` | unit test | 80 |  |
+| `partner-fact-status.listener.ts` | event subscriber | 65 |  |
 | `product-alerts.listener.spec.ts` | unit test | 72 |  |
 | `product-alerts.listener.ts` | event subscriber | 44 |  |
 | `quote.service.spec.ts` | unit test | 111 |  |
@@ -2447,19 +2458,21 @@ All 1,193 tracked files in `apps/api`, by directory.
 | `quotes.controller.ts` | controller | 31 |  |
 | `supplier-digest.listener.spec.ts` | unit test | 51 |  |
 | `supplier-digest.listener.ts` | event subscriber | 35 |  |
-| `trading-partner-portal.controller.spec.ts` | unit test | 63 |  |
-| `trading-partner-portal.controller.ts` | controller | 46 |  |
+| `trading-partner-portal.controller.spec.ts` | unit test | 91 |  |
+| `trading-partner-portal.controller.ts` | controller | 73 |  |
 | `trading-partners.controller.ts` | controller | 79 |  |
-| `trading-partners.module.ts` | nest module | 53 |  |
-| `trading-partners.service.spec.ts` | unit test | 385 |  |
-| `trading-partners.service.ts` | service | 299 |  |
+| `trading-partners.module.ts` | nest module | 57 |  |
+| `trading-partners.service.spec.ts` | unit test | 472 |  |
+| `trading-partners.service.ts` | service | 341 |  |
 
-### `apps/api/src/modules/supply-chain/tradingpartners/dto` (4)
+### `apps/api/src/modules/supply-chain/tradingpartners/dto` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `invoice.dto.ts` | dto | 77 |  |
 | `offer.dto.ts` | dto | 25 |  |
+| `partner-fact.dto.spec.ts` | unit test | 93 |  |
+| `partner-fact.dto.ts` | dto | 166 |  |
 | `quote.dto.ts` | dto | 56 |  |
 | `trading-partner.dto.ts` | dto | 55 |  |
 

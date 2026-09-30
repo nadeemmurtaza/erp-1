@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 522 tracked files in `docs/*`, by directory.
+All 524 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,13 +563,13 @@ All 522 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 126 |  |
+| `DECISIONS.md` | doc | 127 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 687 |  |
+| `README.md` | doc | 688 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
@@ -745,7 +745,7 @@ All 522 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
 
-### `docs/implementation/decisions` (84)
+### `docs/implementation/decisions` (85)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -831,6 +831,7 @@ All 522 tracked files in `docs/*`, by directory.
 | `ADR-080-doc-211-cloud-subscription-and-offline-license-locked-to-strictly.md` | doc | 67 |  |
 | `ADR-081-doc-212-role-permission-scope-enforcement-confirmed-as-a-live.md` | doc | 77 |  |
 | `ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md` | doc | 121 |  |
+| `ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 83 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
 
@@ -873,7 +874,7 @@ All 522 tracked files in `docs/*`, by directory.
 | `80-employee-training-certification.md` | doc | 161 |  |
 | `91-staff-portal-mobile-access.md` | doc | 55 |  |
 
-### `docs/implementation/integrations-connectivity` (25)
+### `docs/implementation/integrations-connectivity` (26)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -899,6 +900,7 @@ All 522 tracked files in `docs/*`, by directory.
 | `193-app-private-connection-escape-hatch.md` | doc | 226 |  |
 | `194-app-platform-failure-modes.md` | doc | 282 |  |
 | `195-app-platform-rollout-sequencing.md` | doc | 241 |  |
+| `213-partner-fact-exchange.md` | doc | 249 |  |
 | `33-sms-whatsapp-channels.md` | doc | 249 |  |
 | `34-partner-developer-api-access.md` | doc | 262 |  |
 | `36-universal-connectivity-integration-framework.md` | doc | 283 |  |

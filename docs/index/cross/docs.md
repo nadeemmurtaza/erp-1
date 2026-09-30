@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**551** markdown documents. These explain **why**; this index only says **where**.
+**553** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2971,7 +2971,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>126 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>127 lines</sub>
 
 - How to read this  <sub>:13</sub>
 
@@ -3300,6 +3300,10 @@ _no second-level headings_
 _no second-level headings_
 
 ### `docs/implementation/decisions/ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md`  <sub>121 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>83 lines</sub>
 
 _no second-level headings_
 
@@ -3870,6 +3874,20 @@ _no second-level headings_
 - Acceptance  <sub>:226</sub>
 - Out of scope  <sub>:235</sub>
 
+### `docs/implementation/integrations-connectivity/213-partner-fact-exchange.md`  <sub>249 lines</sub>
+
+- Objective  <sub>:10</sub>
+- Existing state (verified in code, 2026-09-30)  <sub>:19</sub>
+- The design  <sub>:39</sub>
+- Parameters (exact)  <sub>:127</sub>
+- Required change (work orders)  <sub>:144</sub>
+- Files likely affected  <sub>:157</sub>
+- Dependencies reused (nothing rebuilt)  <sub>:166</sub>
+- Risks  <sub>:174</sub>
+- Acceptance criteria  <sub>:182</sub>
+- Out of scope (named and sequenced, not silently skipped)  <sub>:193</sub>
+- Scope lenses  <sub>:203</sub>
+
 ### `docs/implementation/integrations-connectivity/33-sms-whatsapp-channels.md`  <sub>249 lines</sub>
 
 - 1. Two channels, one interface, no caller changes  <sub>:19</sub>
@@ -4110,16 +4128,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>687 lines</sub>
+### `docs/implementation/README.md`  <sub>688 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:540</sub>
-- The two module groups  <sub>:569</sub>
-- How a work order runs  <sub>:606</sub>
-- Known gaps not yet owned by a phase  <sub>:624</sub>
-- When a brief is wrong  <sub>:651</sub>
-- Scope, honestly  <sub>:664</sub>
-- Gap-analysis roadmap references  <sub>:671</sub>
+- Dependency order  <sub>:541</sub>
+- The two module groups  <sub>:570</sub>
+- How a work order runs  <sub>:607</sub>
+- Known gaps not yet owned by a phase  <sub>:625</sub>
+- When a brief is wrong  <sub>:652</sub>
+- Scope, honestly  <sub>:665</sub>
+- Gap-analysis roadmap references  <sub>:672</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

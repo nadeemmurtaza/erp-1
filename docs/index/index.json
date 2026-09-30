@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2596,
-    "lines": 390265,
+    "files": 2598,
+    "lines": 390599,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -56,9 +56,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 522,
-      "lines": 89622,
-      "bytes": 5420392,
+      "files": 524,
+      "lines": 89956,
+      "bytes": 5455561,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -92232,8 +92232,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 126,
-      "bytes": 20798,
+      "lines": 127,
+      "bytes": 21006,
       "doc": "",
       "symbols": []
     },
@@ -92286,8 +92286,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 687,
-      "bytes": 104868,
+      "lines": 688,
+      "bytes": 105455,
       "doc": "",
       "symbols": []
     },
@@ -94056,6 +94056,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/decisions/ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 83,
+      "bytes": 4381,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/decisions/unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md",
       "area": "docs",
       "kind": "doc",
@@ -94529,6 +94538,15 @@
       "kind": "doc",
       "lines": 241,
       "bytes": 14213,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/integrations-connectivity/213-partner-fact-exchange.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 249,
+      "bytes": 29993,
       "doc": "",
       "symbols": []
     },

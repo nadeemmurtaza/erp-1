@@ -123,3 +123,4 @@ survives. Each entry is its own file so it can be read, linked and reviewed alon
 | [ADR-080](./decisions/ADR-080-doc-211-cloud-subscription-and-offline-license-locked-to-strictly.md) | Doc 211: cloud (subscription) and offline (license) locked to strictly separate… | **Accepted.** |
 | [ADR-081](./decisions/ADR-081-doc-212-role-permission-scope-enforcement-confirmed-as-a-live.md) | Doc 212: role/permission scope enforcement confirmed as a live adoption gap, not a hypothetical — `AdminScope` has… | **Accepted.** |
 | [ADR-082](./decisions/ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md) | Doc 48 (native desktop deployment): WO-48.1/48.3/48.4/48.5 built as real code in a new `packages/desktop-runtime`;… | **Accepted.** |
+| [ADR-083](./decisions/ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md) | Partner fact exchange: send data, and let the receiver build its own documents | Proposed. |

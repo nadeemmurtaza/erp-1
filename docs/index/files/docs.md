@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 437 tracked files in `docs/*`, by directory.
+All 438 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -587,12 +587,13 @@ All 437 tracked files in `docs/*`, by directory.
 | `21-access-over-the-org-tree.md` | doc | 294 |  |
 | `212-role-scope-enforcement-gap.md` | doc | 129 |  |
 
-### `docs/implementation/admin-platform` (5)
+### `docs/implementation/admin-platform` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `02-admin-shell.md` | doc | 253 |  |
 | `10-admin-dashboard.md` | doc | 1854 |  |
+| `220-admin-ui-gemini-ideas-design-spec.md` | doc | 244 |  |
 | `44-manager-action-hub.md` | doc | 176 |  |
 | `72-fragmented-tool-consolidation-import.md` | doc | 184 |  |
 | `75-managerial-todo-widget-coverage-note.md` | doc | 86 |  |

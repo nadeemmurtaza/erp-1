@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-81 files · 8,881 lines
+102 files · 11,772 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -20,6 +20,8 @@ file may hard-code one.
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `packages/config` | 4 | 101 | config |
+| `packages/desktop-runtime` | 4 | 76 | script, json |
+| `packages/desktop-runtime/src` | 17 | 2,815 | unit test, module |
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 10 | 613 | unit test, module |
 | `packages/shared` | 4 | 75 | script, json |
@@ -31,6 +33,8 @@ file may hard-code one.
 | File | Kind | Purpose |
 |---|---|---|
 | `packages/config/package.json` | config |  |
+| `packages/desktop-runtime/package.json` | json |  |
+| `packages/desktop-runtime/src/index.ts` | module |  |
 | `packages/pos-core/package.json` | json |  |
 | `packages/pos-core/src/index.ts` | module |  |
 | `packages/shared/package.json` | json |  |
@@ -43,20 +47,20 @@ file may hard-code one.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `packages/shared/src/permissions.ts` | 1,487 | module | The permission catalog for PBAC (Permission-Based Access Control). |
+| `packages/desktop-runtime/src/postgres-lifecycle.ts` | 481 | module |  |
 | `packages/shared/src/measurements/defaults.ts` | 448 | module |  |
+| `packages/desktop-runtime/src/backup-scheduler.ts` | 387 | module |  |
 | `packages/shared/src/brand.ts` | 345 | module | THE BRAND FILE. |
 | `packages/shared/src/api-keys.ts` | 334 | module | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a… |
 | `packages/shared/src/discounts.ts` | 322 | module | The discount rules engine. |
+| `packages/desktop-runtime/src/setup-wizard.ts` | 314 | module |  |
 | `packages/shared/src/pricing.spec.ts` | 307 | unit test |  |
+| `packages/desktop-runtime/src/postgres-lifecycle.spec.ts` | 303 | unit test |  |
 | `packages/shared/src/pricing.ts` | 275 | module | Order maths. |
+| `packages/desktop-runtime/src/setup-wizard.spec.ts` | 244 | unit test |  |
+| `packages/desktop-runtime/src/backup-scheduler.spec.ts` | 240 | unit test |  |
 | `packages/shared/src/api-keys.spec.ts` | 231 | unit test |  |
 | `packages/shared/src/http-client.ts` | 227 | module | The one HTTP layer for a signed-in browser client. |
-| `packages/shared/src/discounts.spec.ts` | 215 | unit test |  |
-| `packages/shared/src/cod-risk.spec.ts` | 199 | unit test |  |
-| `packages/shared/src/constants.ts` | 199 | module |  |
-| `packages/shared/src/demand-forecast.spec.ts` | 179 | unit test |  |
-| `packages/shared/src/cod-risk.ts` | 167 | module |  |
-| `packages/shared/src/measurements/schema.spec.ts` | 166 | unit test |  |
 
 
 ---

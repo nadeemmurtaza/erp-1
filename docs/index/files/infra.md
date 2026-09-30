@@ -28,8 +28,8 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 | `docker-stack.prod.yml` | yaml | 124 |  |
 | `docker-stack.staging.yml` | yaml | 124 |  |
 | `package.json` | json | 62 |  |
-| `pnpm-lock.yaml` | yaml | 19082 |  |
-| `pnpm-workspace.yaml` | yaml | 12 |  |
+| `pnpm-lock.yaml` | yaml | 19483 |  |
+| `pnpm-workspace.yaml` | yaml | 24 |  |
 | `turbo.json` | json | 56 |  |
 | `wrangler.toml` | toml | 17 |  |
 

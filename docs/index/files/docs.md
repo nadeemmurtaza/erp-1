@@ -563,7 +563,7 @@ All 437 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 9487 |  |
+| `DECISIONS.md` | doc | 9605 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -871,7 +871,7 @@ All 437 tracked files in `docs/*`, by directory.
 | `210-third-party-api-call-caching-status.md` | doc | 81 |  |
 | `37-scalability-future-upgrades.md` | doc | 306 |  |
 | `38-resilience-engineering.md` | doc | 380 |  |
-| `48-native-desktop-deployment.md` | doc | 184 |  |
+| `48-native-desktop-deployment.md` | doc | 312 |  |
 | `90-automatic-backups-local-support.md` | doc | 56 |  |
 
 ### `docs/implementation/shipping-fulfilment-returns` (1)

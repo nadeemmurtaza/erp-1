@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2493,
-    "lines": 392142,
+    "files": 2514,
+    "lines": 395692,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -14,7 +14,7 @@
     "permissions": 130,
     "screens": 277,
     "crons": 30,
-    "specs": 357,
+    "specs": 365,
     "designLaws": 0
   },
   "designLaws": [],
@@ -27,8 +27,8 @@
     },
     "infra": {
       "files": 60,
-      "lines": 30941,
-      "bytes": 1218443,
+      "lines": 31354,
+      "bytes": 1232665,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -57,14 +57,14 @@
     },
     "docs": {
       "files": 437,
-      "lines": 89006,
-      "bytes": 5374973,
+      "lines": 89252,
+      "bytes": 5390602,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 81,
-      "lines": 8881,
-      "bytes": 320823,
+      "files": 102,
+      "lines": 11772,
+      "bytes": 435471,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -53307,6 +53307,42 @@
       "cmd": "node scripts/install-git-hooks.mjs"
     },
     {
+      "pkg": "@newax/desktop-runtime",
+      "file": "packages/desktop-runtime/package.json",
+      "name": "build",
+      "cmd": "tsc -p tsconfig.json"
+    },
+    {
+      "pkg": "@newax/desktop-runtime",
+      "file": "packages/desktop-runtime/package.json",
+      "name": "dev",
+      "cmd": "tsc -p tsconfig.json --watch"
+    },
+    {
+      "pkg": "@newax/desktop-runtime",
+      "file": "packages/desktop-runtime/package.json",
+      "name": "typecheck",
+      "cmd": "tsc -p tsconfig.json --noEmit"
+    },
+    {
+      "pkg": "@newax/desktop-runtime",
+      "file": "packages/desktop-runtime/package.json",
+      "name": "lint",
+      "cmd": "eslint src"
+    },
+    {
+      "pkg": "@newax/desktop-runtime",
+      "file": "packages/desktop-runtime/package.json",
+      "name": "test",
+      "cmd": "jest --passWithNoTests"
+    },
+    {
+      "pkg": "@newax/desktop-runtime",
+      "file": "packages/desktop-runtime/package.json",
+      "name": "test:integration",
+      "cmd": "NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests"
+    },
+    {
       "pkg": "@newax/pos-core",
       "file": "packages/pos-core/package.json",
       "name": "build",
@@ -57010,6 +57046,88 @@
       "describes": [
         "resolvePath",
         "interpolateHref"
+      ]
+    },
+    {
+      "file": "packages/desktop-runtime/src/backup-scheduler.integration.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": [
+        "TarBackupArchiver (real tar package, no Postgres)"
+      ]
+    },
+    {
+      "file": "packages/desktop-runtime/src/backup-scheduler.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 15,
+      "describes": [
+        "LocalBackupScheduler",
+        "runOnce — the happy path",
+        "failure paths — never silently report success",
+        "start() — catch-up for a process that is not always running",
+        "prune — retention, without ever losing the last known-good backup"
+      ]
+    },
+    {
+      "file": "packages/desktop-runtime/src/hardware/escpos.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "escpos byte-command builders"
+      ]
+    },
+    {
+      "file": "packages/desktop-runtime/src/hardware/serial-cash-drawer.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 5,
+      "describes": [
+        "SerialPortCashDrawer"
+      ]
+    },
+    {
+      "file": "packages/desktop-runtime/src/hardware/serial-receipt-printer.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "buildReceiptBytes (pure)",
+        "SerialPortReceiptPrinter"
+      ]
+    },
+    {
+      "file": "packages/desktop-runtime/src/postgres-lifecycle.integration.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 2,
+      "describes": []
+    },
+    {
+      "file": "packages/desktop-runtime/src/postgres-lifecycle.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 22,
+      "describes": [
+        "PostgresLifecycleManager",
+        "credentials — never a shared default",
+        "ensureInitialised",
+        "start",
+        "start — database bootstrap (initdb never creates the application database)",
+        "isHealthy",
+        "stop"
+      ]
+    },
+    {
+      "file": "packages/desktop-runtime/src/setup-wizard.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 19,
+      "describes": [
+        "validateNodeConfig — mirrors env.validation.ts exactly",
+        "FirstRunSetupWizard"
       ]
     },
     {
@@ -92096,8 +92214,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 9487,
-      "bytes": 557077,
+      "lines": 9605,
+      "bytes": 563831,
       "doc": "",
       "symbols": []
     },
@@ -92151,7 +92269,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 687,
-      "bytes": 103989,
+      "bytes": 104456,
       "doc": "",
       "symbols": []
     },
@@ -93923,8 +94041,8 @@
       "path": "docs/implementation/resilience-scalability/48-native-desktop-deployment.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 184,
-      "bytes": 10186,
+      "lines": 312,
+      "bytes": 18594,
       "doc": "",
       "symbols": []
     },
@@ -94105,6 +94223,443 @@
       "kind": "config",
       "lines": 15,
       "bytes": 392,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/eslint.config.mjs",
+      "area": "packages",
+      "kind": "script",
+      "lines": 4,
+      "bytes": 109,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/jest.config.js",
+      "area": "packages",
+      "kind": "script",
+      "lines": 13,
+      "bytes": 356,
+      "doc": "@type {import('jest').Config}",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/package.json",
+      "area": "packages",
+      "kind": "json",
+      "lines": 44,
+      "bytes": 1067,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/backup-scheduler.integration.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 121,
+      "bytes": 4475,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/backup-scheduler.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 240,
+      "bytes": 9609,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/backup-scheduler.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 387,
+      "bytes": 16055,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BackupArchiver",
+          "kind": "interface",
+          "line": 52
+        },
+        {
+          "name": "TarBackupArchiver",
+          "kind": "class",
+          "line": 67
+        },
+        {
+          "name": "BackupResult",
+          "kind": "interface",
+          "line": 82
+        },
+        {
+          "name": "LocalBackupOptions",
+          "kind": "interface",
+          "line": 94
+        },
+        {
+          "name": "LocalBackupScheduler",
+          "kind": "class",
+          "line": 136
+        }
+      ]
+    },
+    {
+      "path": "packages/desktop-runtime/src/hardware/escpos.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 39,
+      "bytes": 1503,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/hardware/escpos.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 71,
+      "bytes": 3423,
+      "doc": "48-native-desktop-deployment.md WO-48.4 — the ESC/POS byte-command set, as pure functions.",
+      "symbols": [
+        {
+          "name": "ESC",
+          "kind": "const",
+          "line": 22
+        },
+        {
+          "name": "GS",
+          "kind": "const",
+          "line": 23
+        },
+        {
+          "name": "LF",
+          "kind": "const",
+          "line": 24
+        },
+        {
+          "name": "initCommand",
+          "kind": "function",
+          "line": 30
+        },
+        {
+          "name": "textLineCommand",
+          "kind": "function",
+          "line": 43
+        },
+        {
+          "name": "CutMode",
+          "kind": "type",
+          "line": 47
+        },
+        {
+          "name": "cutCommand",
+          "kind": "function",
+          "line": 54
+        },
+        {
+          "name": "DrawerPin",
+          "kind": "type",
+          "line": 58
+        },
+        {
+          "name": "drawerKickCommand",
+          "kind": "function",
+          "line": 68
+        }
+      ]
+    },
+    {
+      "path": "packages/desktop-runtime/src/hardware/serial-cash-drawer.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 83,
+      "bytes": 3071,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/hardware/serial-cash-drawer.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 67,
+      "bytes": 2526,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SerialCashDrawerOptions",
+          "kind": "interface",
+          "line": 32
+        },
+        {
+          "name": "SerialPortCashDrawer",
+          "kind": "class",
+          "line": 42
+        }
+      ]
+    },
+    {
+      "path": "packages/desktop-runtime/src/hardware/serial-port-io.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 83,
+      "bytes": 3454,
+      "doc": "48-native-desktop-deployment.md WO-48.4 — the seam over the `serialport` npm package shared by both native drivers below.",
+      "symbols": [
+        {
+          "name": "SerialWritable",
+          "kind": "interface",
+          "line": 17
+        },
+        {
+          "name": "SerialPortFactoryOptions",
+          "kind": "interface",
+          "line": 24
+        },
+        {
+          "name": "SerialPortFactory",
+          "kind": "type",
+          "line": 29
+        },
+        {
+          "name": "defaultSerialPortFactory",
+          "kind": "const",
+          "line": 31
+        },
+        {
+          "name": "waitForOpen",
+          "kind": "function",
+          "line": 46
+        },
+        {
+          "name": "writeAndDrain",
+          "kind": "function",
+          "line": 63
+        },
+        {
+          "name": "closePort",
+          "kind": "function",
+          "line": 78
+        }
+      ]
+    },
+    {
+      "path": "packages/desktop-runtime/src/hardware/serial-receipt-printer.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 140,
+      "bytes": 5333,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/hardware/serial-receipt-printer.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 98,
+      "bytes": 4061,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SerialReceiptPrinterOptions",
+          "kind": "interface",
+          "line": 30
+        },
+        {
+          "name": "SerialPortReceiptPrinter",
+          "kind": "class",
+          "line": 45
+        },
+        {
+          "name": "buildReceiptBytes",
+          "kind": "function",
+          "line": 78
+        }
+      ]
+    },
+    {
+      "path": "packages/desktop-runtime/src/index.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 9,
+      "bytes": 308,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/logger.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 31,
+      "bytes": 1700,
+      "doc": "48-native-desktop-deployment.md — a minimal structured-logging seam.",
+      "symbols": [
+        {
+          "name": "DesktopLogger",
+          "kind": "interface",
+          "line": 15
+        },
+        {
+          "name": "consoleDesktopLogger",
+          "kind": "const",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "packages/desktop-runtime/src/postgres-lifecycle.integration.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 104,
+      "bytes": 4441,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/postgres-lifecycle.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 303,
+      "bytes": 11659,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/postgres-lifecycle.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 481,
+      "bytes": 19191,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PostgresRunner",
+          "kind": "interface",
+          "line": 41
+        },
+        {
+          "name": "PostgresConnectionInfo",
+          "kind": "interface",
+          "line": 47
+        },
+        {
+          "name": "PostgresLifecycleErrorCode",
+          "kind": "type",
+          "line": 55
+        },
+        {
+          "name": "RepairAction",
+          "kind": "type",
+          "line": 71
+        },
+        {
+          "name": "PostgresLifecycleError",
+          "kind": "class",
+          "line": 86
+        },
+        {
+          "name": "PostgresLifecycleOptions",
+          "kind": "interface",
+          "line": 98
+        },
+        {
+          "name": "PostgresCredentialStore",
+          "kind": "class",
+          "line": 133
+        },
+        {
+          "name": "PostgresLifecycleManager",
+          "kind": "class",
+          "line": 169
+        },
+        {
+          "name": "EmbeddedPostgresRunner",
+          "kind": "class",
+          "line": 433
+        }
+      ]
+    },
+    {
+      "path": "packages/desktop-runtime/src/setup-wizard.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 244,
+      "bytes": 9503,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/desktop-runtime/src/setup-wizard.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 314,
+      "bytes": 12430,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "NodeRole",
+          "kind": "type",
+          "line": 20
+        },
+        {
+          "name": "NodeConfig",
+          "kind": "interface",
+          "line": 22
+        },
+        {
+          "name": "validateNodeConfig",
+          "kind": "function",
+          "line": 53
+        },
+        {
+          "name": "WizardStepName",
+          "kind": "type",
+          "line": 83
+        },
+        {
+          "name": "WizardStepResult",
+          "kind": "interface",
+          "line": 89
+        },
+        {
+          "name": "SetupWizardError",
+          "kind": "class",
+          "line": 95
+        },
+        {
+          "name": "WizardResult",
+          "kind": "interface",
+          "line": 106
+        },
+        {
+          "name": "MigrationRunner",
+          "kind": "interface",
+          "line": 116
+        },
+        {
+          "name": "DefaultMigrationRunner",
+          "kind": "class",
+          "line": 126
+        },
+        {
+          "name": "FirstRunSetupWizardOptions",
+          "kind": "interface",
+          "line": 153
+        },
+        {
+          "name": "FirstRunSetupWizard",
+          "kind": "class",
+          "line": 177
+        }
+      ]
+    },
+    {
+      "path": "packages/desktop-runtime/tsconfig.json",
+      "area": "packages",
+      "kind": "json",
+      "lines": 15,
+      "bytes": 374,
       "doc": "",
       "symbols": []
     },
@@ -96230,8 +96785,8 @@
       "path": "pnpm-lock.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 19082,
-      "bytes": 697224,
+      "lines": 19483,
+      "bytes": 710861,
       "doc": "",
       "symbols": []
     },
@@ -96239,8 +96794,8 @@
       "path": "pnpm-workspace.yaml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 12,
-      "bytes": 166,
+      "lines": 24,
+      "bytes": 751,
       "doc": "",
       "symbols": []
     },

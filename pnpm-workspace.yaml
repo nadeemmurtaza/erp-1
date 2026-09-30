@@ -9,3 +9,15 @@ onlyBuiltDependencies:
   - 'esbuild'
   - 'sharp'
   - 'unrs-resolver'
+  # 48-native-desktop-deployment.md — packages/desktop-runtime's own real
+  # dependencies: @embedded-postgres/* downloads the real, platform-
+  # specific Postgres server binary its postinstall script fetches
+  # (WO-48.1's actual Postgres, not a mock); @serialport/bindings-cpp
+  # builds/downloads the native serial-port binding WO-48.4's hardware
+  # drivers need.
+  - '@embedded-postgres/linux-x64'
+  - '@embedded-postgres/linux-arm64'
+  - '@embedded-postgres/darwin-x64'
+  - '@embedded-postgres/darwin-arm64'
+  - '@embedded-postgres/windows-x64'
+  - '@serialport/bindings-cpp'

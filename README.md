@@ -21,13 +21,13 @@ products and services, choose who may see them, and trade with each other
 without re-entering data. A seller's price becomes the buyer's cost, and stock
 moves on both sides from one fact, entered once.
 
-| Piece                                                                        | State                                                      |
-| ---------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| Publish a product or service to a shared marketplace, with upsert and delist | Built (off by default)                                     |
-| One shared product record per barcode, reused instead of copied per retailer | Built on the platform app; retailers still keep local rows |
-| Trading-partner network: an invite handshake and pushed product alerts       | Built; the buyer-side automation is not                    |
-| Seller event creates the buyer's purchase order, receipt, cost and stock     | Planned                                                    |
-| Public discovery feed and a map of live stock and prices                     | Planned                                                    |
+| Piece                                                                        | State                                                                                                                               |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Publish a product or service to a shared marketplace, with upsert and delist | Built (off by default)                                                                                                              |
+| One shared product record per barcode, reused instead of copied per retailer | Built on the platform app; retailers still keep local rows                                                                          |
+| Trading-partner network: an invite handshake and pushed product alerts       | Built; the buyer-side automation is not                                                                                             |
+| Seller event creates the buyer's purchase order, receipt, cost and stock     | Planned, designed in [`213-partner-fact-exchange.md`](./docs/implementation/integrations-connectivity/213-partner-fact-exchange.md) |
+| Public discovery feed and a map of live stock and prices                     | Planned                                                                                                                             |
 
 The design notes are in
 [`docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md`](./docs/implementation/b2b-wholesale-multientity/165-cross-tenant-marketplace-directory.md)

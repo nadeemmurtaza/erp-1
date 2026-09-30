@@ -22,7 +22,7 @@
     "root": {
       "files": 208,
       "lines": 15529,
-      "bytes": 748252,
+      "bytes": 749313,
       "label": "repository root files"
     },
     "infra": {
@@ -57872,7 +57872,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 213,
-      "bytes": 15698,
+      "bytes": 16209,
       "doc": "",
       "symbols": []
     },
@@ -57890,7 +57890,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 107,
-      "bytes": 10889,
+      "bytes": 11439,
       "doc": "",
       "symbols": []
     },

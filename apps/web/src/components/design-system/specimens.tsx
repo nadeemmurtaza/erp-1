@@ -64,7 +64,7 @@ export function ComponentSpecimens() {
         </div>
       </Group>
 
-      <Group title="Form controls" note="Labels above, always visible. The outline is neutral-200 (3:1), the focus ring is the accent, and an error says what happened and what to do.">
+      <Group title="Form controls" note="Labels above, always visible. The outline is neutral-200, the focus ring is the accent, and an error says what happened and what to do.">
         <form className="card grid gap-4 p-4 sm:grid-cols-2" onSubmit={(e) => e.preventDefault()}>
           <div>
             <label className="field-label" htmlFor="ds-name">Name</label>

@@ -43,7 +43,9 @@ The primitives, in `apps/web/src/components/ui`:
 | `Disclosure` | rare, advanced or destructive — closed by default |
 | `MetricStrip` | a row of figures; `detail` makes an item open a panel |
 | `ThemeToggle` | the light / dark / system choice — `segmented` where there is room, `icon` where there is not; it is the only place a person picks a theme |
-| `DataTable` `EmptyState` `Badge` `Button` `Dialog` `Loading` | as named |
+| `DataTable` `EmptyState` `Badge` `Button` `Dialog` `Loading` | as named. `DataTable` takes `stacked` to read as cards below `md` (`02-layout.md`, reflow rule 3) |
+
+A notice has four tones: `notice-error`, `notice-success`, `notice-warning` (waiting on someone, or about to end — the same amber as the Badge `warning` tone) and `notice-info`.
 
 Cross-surface: `components/common/status-badge` is **the** status pill.
 `components/common/wizard` is **the** wizard.
@@ -77,6 +79,14 @@ instance re-derives them and drifts slightly. The ones worth writing down:
 | Receive-against-expected | purchase-order receive |
 | Scan-to-act | stock count, POS till |
 | Filter row + table + empty state | every admin list |
+| Review before commit — count header, filter chips, problems under their cells, a commit button that names its count | `/admin/design-system#patterns` (planned: bulk user import) |
+| Selection bar — appears with the first selection, states the count, sticks while the list is on screen | `/admin/design-system#patterns` (planned: users, rosters) |
+| Difference preview — what is gained, what is lost, the rest as one line | `/admin/design-system#patterns` (planned: access panel) |
+| Access that ends — a persistent notice that turns to warning under an hour | `/admin/design-system#patterns` (planned: temporary access) |
+| Live count — recounting, ready with a link to the rows, unavailable but still savable | `/admin/design-system#patterns` (planned: audience builder) |
+| Profile cards — one job, several cards, one editable at a time | `/admin/design-system#patterns` (planned: company profile) |
+
+The last six are written out from primitives on the reference page, in both themes and at all seven widths, and are **not** components yet. One screen per pattern is a coincidence; the third is when it moves into `ui/`. A side drawer that becomes a full-screen sheet below `md` is also planned (products channels lens) and is deliberately not built: one consumer.
 
 **Rule for a new pattern.** If you find yourself solving a problem a second
 time, it is a pattern — name it here before the third.

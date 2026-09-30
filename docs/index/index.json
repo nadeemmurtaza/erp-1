@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2535,
-    "lines": 398773,
+    "files": 2536,
+    "lines": 399196,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -50,15 +50,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 438,
-      "lines": 73948,
-      "bytes": 2684074,
+      "files": 439,
+      "lines": 74276,
+      "bytes": 2699725,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 89605,
-      "bytes": 5416522,
+      "lines": 89700,
+      "bytes": 5423426,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -85873,8 +85873,8 @@
       "path": "apps/web/src/app/globals.css",
       "area": "web",
       "kind": "stylesheet",
-      "lines": 669,
-      "bytes": 23087,
+      "lines": 678,
+      "bytes": 23381,
       "doc": "",
       "symbols": []
     },
@@ -87219,14 +87219,14 @@
       "path": "apps/web/src/components/design-system/gallery.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 100,
-      "bytes": 3453,
+      "lines": 111,
+      "bytes": 3872,
       "doc": "",
       "symbols": [
         {
           "name": "DesignSystemGallery",
           "kind": "function",
-          "line": 31
+          "line": 33
         }
       ]
     },
@@ -87242,6 +87242,21 @@
           "name": "useLiveTokens",
           "kind": "function",
           "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/patterns.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 262,
+      "bytes": 12282,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AdminPatterns",
+          "kind": "function",
+          "line": 46
         }
       ]
     },
@@ -87924,8 +87939,8 @@
       "path": "apps/web/src/components/ui/data-table.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 191,
-      "bytes": 7275,
+      "lines": 237,
+      "bytes": 9931,
       "doc": "",
       "symbols": [
         {
@@ -87936,7 +87951,7 @@
         {
           "name": "DataTable",
           "kind": "function",
-          "line": 77
+          "line": 87
         }
       ]
     },
@@ -90547,8 +90562,8 @@
       "path": "docs/design/components-states/03-components.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 116,
-      "bytes": 4602,
+      "lines": 126,
+      "bytes": 6153,
       "doc": "",
       "symbols": []
     },
@@ -90583,8 +90598,8 @@
       "path": "docs/design/layout-composition/02-layout.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 121,
-      "bytes": 4762,
+      "lines": 130,
+      "bytes": 5396,
       "doc": "",
       "symbols": []
     },
@@ -92455,8 +92470,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 9790,
-      "bytes": 576641,
+      "lines": 9866,
+      "bytes": 581360,
       "doc": "",
       "symbols": []
     },

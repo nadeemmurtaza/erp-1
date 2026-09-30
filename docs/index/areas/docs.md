@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-437 files · 89,605 lines
+437 files · 89,700 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -23,10 +23,10 @@ has a bug.
 | `docs/brand/logo` | 6 | 0 | asset |
 | `docs/design` | 1 | 109 | doc |
 | `docs/design/accessibility` | 1 | 157 | doc |
-| `docs/design/components-states` | 2 | 257 | doc |
+| `docs/design/components-states` | 2 | 267 | doc |
 | `docs/design/content` | 1 | 121 | doc |
 | `docs/design/foundations` | 1 | 280 | doc |
-| `docs/design/layout-composition` | 3 | 516 | doc |
+| `docs/design/layout-composition` | 3 | 525 | doc |
 | `docs/design/motion` | 1 | 196 | doc |
 | `docs/design/principles-laws` | 2 | 933 | doc |
 | `docs/design/process-governance` | 5 | 1,052 | doc |
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 11 | 14,310 | doc, file |
+| `docs/implementation` | 11 | 14,386 | doc, file |
 | `docs/implementation/access-control-identity` | 8 | 2,035 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -117,7 +117,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 9,790 | doc |  |
+| `docs/implementation/DECISIONS.md` | 9,866 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md` | 1,813 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |

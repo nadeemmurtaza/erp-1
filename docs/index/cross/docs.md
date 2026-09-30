@@ -192,15 +192,15 @@ _no second-level headings_
 - Internationalisation beyond direction  <sub>:133</sub>
 - What would make this real  <sub>:140</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>116 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>126 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
-- Choosing between them  <sub>:56</sub>
-- Patterns — *undocumented*  <sub>:67</sub>
-- Templates — *undocumented*  <sub>:84</sub>
-- Component contract  <sub>:95</sub>
-- What never gets hand-rolled  <sub>:110</sub>
+- Choosing between them  <sub>:58</sub>
+- Patterns — *undocumented*  <sub>:69</sub>
+- Templates — *undocumented*  <sub>:94</sub>
+- Component contract  <sub>:105</sub>
+- What never gets hand-rolled  <sub>:120</sub>
 
 ### `docs/design/components-states/04-states.md`  <sub>141 lines</sub>
 
@@ -242,16 +242,16 @@ _no second-level headings_
 - Theming  <sub>:184</sub>
 - Where tokens live  <sub>:267</sub>
 
-### `docs/design/layout-composition/02-layout.md`  <sub>121 lines</sub>
+### `docs/design/layout-composition/02-layout.md`  <sub>130 lines</sub>
 
 - The page skeleton  <sub>:8</sub>
 - Grid  <sub>:21</sub>
 - Density  <sub>:35</sub>
 - The seven screens  <sub>:50</sub>
 - Reflow rules  <sub>:64</sub>
-- Multi-surface parity  <sub>:79</sub>
-- The POS is a different animal  <sub>:92</sub>
-- Verifying  <sub>:105</sub>
+- Multi-surface parity  <sub>:88</sub>
+- The POS is a different animal  <sub>:101</sub>
+- Verifying  <sub>:114</sub>
 
 ### `docs/design/layout-composition/13-composition.md`  <sub>197 lines</sub>
 
@@ -2964,7 +2964,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,790 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,866 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

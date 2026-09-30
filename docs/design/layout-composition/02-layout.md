@@ -76,6 +76,15 @@ In order of preference, because the first preserves the most meaning:
 **Never** a horizontal page scroll. A table may scroll inside its own bounds;
 the page may not.
 
+**Where rule 3 applies, it is `DataTable`'s `stacked` prop** — opt-in, so no
+existing table changes. Below `md` each row becomes a card (the first column is
+its title, every other column a label and a value); from `md` it is the same
+table. Use it for a list whose rows are read one at a time — a person, an audit
+entry, an import row — and leave it off where rows are compared against each
+other, which is what the rule above already says. The planned admin screens in
+`docs/implementation/admin-platform/220-admin-ui-gemini-ideas-design-spec.md`
+name five such lists; `/admin/design-system#patterns` shows it at every width.
+
 ## Multi-surface parity
 
 Four front ends — `apps/web` (admin + storefront), `apps/pos`, `apps/mobile` —

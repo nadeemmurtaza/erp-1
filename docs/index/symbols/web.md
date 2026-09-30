@@ -1601,8 +1601,9 @@ Every top-level export in `web`, with the line to open.
 | `foundations.tsx` | `TypeFoundations` | function | :265 |  |
 | `foundations.tsx` | `SpaceFoundations` | function | :297 | ── space, size, radius ───────────────────────────────────────────────── |
 | `foundations.tsx` | `ElevationFoundations` | function | :359 |  |
-| `gallery.tsx` | `DesignSystemGallery` | function | :31 | The design system, rendered by the system it describes. |
+| `gallery.tsx` | `DesignSystemGallery` | function | :33 | The design system, rendered by the system it describes. |
 | `live-tokens.ts` | `useLiveTokens` | function | :17 | Reads the theme's colours back out of the browser, not out of brand.ts. |
+| `patterns.tsx` | `AdminPatterns` | function | :46 |  |
 | `specimens.tsx` | `ComponentSpecimens` | function | :46 |  |
 
 ### `apps/web/src/components/storefront`
@@ -1665,7 +1666,7 @@ Every top-level export in `web`, with the line to open.
 | `button.tsx` | `Button` | function | :34 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | function | :30 | The one way a destructive action gets confirmed. |
 | `data-table.tsx` | `DataTableColumn` | interface | :29 | The admin's one table. |
-| `data-table.tsx` | `DataTable` | function | :77 |  |
+| `data-table.tsx` | `DataTable` | function | :87 |  |
 | `dialog.tsx` | `Dialog` | function | :27 | A modal dialog, with the behaviour every modal is supposed to have. |
 | `disclosure.tsx` | `Disclosure` | function | :24 | Advanced options, folded away until asked for. |
 | `empty-state.tsx` | `EmptyState` | function | :17 | What a list shows when it has nothing in it. |

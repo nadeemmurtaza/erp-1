@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,535 files / 398,773 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,536 files / 399,196 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -61,7 +61,7 @@ single fact — the page is the right tool when you need the shape of something.
 | “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~50.9k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (65) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~662.6k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~662.7k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -120,11 +120,11 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
 | apps/api | 1,192 | 159,759 | [api](areas/api.md) |
-| apps/web | 438 | 73,948 | [web](areas/web.md) |
+| apps/web | 439 | 74,276 | [web](areas/web.md) |
 | apps/pos | 33 | 2,668 | [pos](areas/pos.md) |
 | apps/mobile | 49 | 6,906 | [mobile](areas/mobile.md) |
 | packages/* | 113 | 12,861 | [packages](areas/packages.md) |
-| docs/* | 437 | 89,605 | [docs](areas/docs.md) |
+| docs/* | 437 | 89,700 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 60 | 31,565 | [infra](areas/infra.md) |
 | repository root files | 213 | 21,461 | [root](areas/root.md) |
 

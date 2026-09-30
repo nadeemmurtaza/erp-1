@@ -528,6 +528,15 @@
   }
 
   /*
+   * Waiting on a human, or about to end — "access ends in 42 minutes",
+   * "2 rows need attention". The same amber pair as the Badge `warning`
+   * tone, so a warning is one colour whether it is a pill or a banner.
+   */
+  .notice-warning {
+    @apply bg-amber-50 text-amber-700;
+  }
+
+  /*
    * A status pill. Fully round on purpose, and the one place roundness
    * survives: it separates "this is a state" from "this is a control", now
    * that controls are square.

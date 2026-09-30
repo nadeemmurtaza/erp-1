@@ -3,7 +3,7 @@
 
 # Components
 
-All **120** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **121** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 250 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 251 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 6 |  |
 
 ### `apps/pos/src/components` (2)
@@ -141,12 +141,13 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/design-system` (3)
+### `apps/web/src/components/design-system` (4)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 2 |  |
+| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 3 |  |
 | `gallery.tsx` | `DesignSystemGallery` | client | 2 |  |
+| `patterns.tsx` | `AdminPatterns` | client | 1 |  |
 | `specimens.tsx` | `ComponentSpecimens` | client | 1 |  |
 
 ### `apps/web/src/components/storefront` (38)

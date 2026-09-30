@@ -10,6 +10,7 @@ import {
   SpaceFoundations,
   TypeFoundations,
 } from './foundations';
+import { AdminPatterns } from './patterns';
 import { ComponentSpecimens } from './specimens';
 
 const SECTIONS = [
@@ -18,6 +19,7 @@ const SECTIONS = [
   ['space', 'Space'],
   ['depth', 'Depth and motion'],
   ['components', 'Components'],
+  ['patterns', 'Admin patterns'],
 ] as const;
 
 /**
@@ -92,6 +94,15 @@ export function DesignSystemGallery() {
 
         <GallerySection id="components" title="Components" lead="The shared primitives, as shipped. A page composes these; it does not invent its own.">
           <ComponentSpecimens />
+        </GallerySection>
+
+        <GallerySection
+          id="patterns"
+          title="Admin patterns"
+          lead="What the planned admin screens are made of, written out from the components above. A pattern becomes a component when a third screen needs it."
+          columns="xl:grid-cols-2"
+        >
+          <AdminPatterns />
         </GallerySection>
       </main>
     </div>

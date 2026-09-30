@@ -9787,3 +9787,79 @@ the OS preference. *Observable*: n/a, nothing server-side.
 
 ### Status
 **Accepted.**
+
+### Addendum — 2026-09-30: the admin UI spec (220) folded in
+
+**Requirement.** The owner asked for `220-admin-ui-gemini-ideas-design-spec.md`
+to be used as input to this design system. It lives on
+`claude/ecstatic-archimedes-vlkgzk` (commit `ab1ad818`), not on this branch, so
+it is referenced by path and not copied — a second copy would be a duplicate
+document of record. It plans twelve admin screens, each its own work order, and
+lists "new design tokens" as out of scope. So it adds no tokens; it is a consumer
+of this system and the test of whether the system holds what those screens need.
+
+**What was taken, and why each is here.**
+- `DataTable` gains an opt-in `stacked` prop (default `false`). Spec §Shared layout
+  contract: table screens become stacked cards below `md`; five planned lists
+  need it (bulk import review, products feed, users, audit log, roster). Every
+  existing table renders the same markup as before — checked in the built page:
+  seven unstacked tables, none carrying a role attribute or a `max-md` class.
+  Stacked tables restate their ARIA roles, because `display: block` removes table
+  semantics in some browsers.
+- `.notice-warning`, the fourth notice tone, in the same amber pair as the Badge
+  `warning` tone. The access-ending banner (§3), the import "needs attention" line
+  (§1) and "count unavailable" (§5) all need it, and notices had no warning tone
+  while badges did. One existing hand-rolled amber banner
+  (`trading-partners/[id]`) is not migrated here.
+- An "Admin patterns" section on `/admin/design-system`, written out from
+  primitives only: review before commit (§1), selection bar (§7, §10), difference
+  preview (§2), access that ends (§3), live count (§5), profile cards (§4). They
+  are specimens, not components.
+
+**What was deliberately not built.**
+- Any screen, route, endpoint, permission or table from the spec — each is its own
+  work order with its own lenses (spec §Implementation plan).
+- A side drawer that becomes a full-screen sheet below `md` (§6): one consumer.
+  `03-components.md` states the rule of three, and this is the first.
+- A stepper, a drop zone, a split button: already covered by `components/common/wizard`,
+  `CsvImportCard` and plain buttons, or unneeded until the screen exists.
+- Pixel motion (§12): the spec itself calls it decorative and last. It fails Law 6.
+
+**A conflict, and the ruling.** `02-layout.md` says a scrolling table is usually
+better for an ERP than cards, because users compare rows. The spec says cards
+below `md`. Both hold: `stacked` is opt-in, for lists read one row at a time, and
+`02-layout.md` now says so next to the rule it qualifies. The chapter's default
+for compared rows is unchanged.
+
+**Parameters.**
+
+| Parameter | Exact value | Why | Enforced |
+|---|---|---|---|
+| Stacking breakpoint | below `md` = 768 px | the boundary the spec and the seven-screens ladder already use; between `fold` (672) and `md` a four-column table does not fit | `max-md:` variants in `data-table.tsx` |
+| `stacked` default | `false` | changing how seven existing tables look is a behaviour change nobody asked for | prop default |
+| Selection bar offset | `bottom-4` (1 rem), `z-sticky` | clears the page edge and sits in the same layer as the sticky header | `patterns.tsx` only |
+
+The spec's own numbers (a 300 ms count debounce, an "In 48 h" option, a one-hour
+warning threshold) belong to the screens that will use them and are not
+implemented here.
+
+**Verification.** `pnpm lint` exit 0 (contrast within both baselines), web
+typecheck and 23 web tests pass, production build passes. The new section was
+captured at 280, 380, 640, 768, 1024, 1280 and 1536 px in both themes: no
+horizontal overflow at any width, no console errors, cards below 768 and a table
+from 768.
+
+**Noticed, not changed.** `tailwind.config.ts` names its screens `xs` 380, `sm` 640,
+`fold` 672, `md` 768, while `CLAUDE.md` names them `xs` 280, `sm` 380, `fold` 640,
+`md` 768. `md` agrees, which is the only one this change uses; the lower names
+disagree and should be settled in their own ADR before a component leans on them.
+
+**Pillars.** *Architecture*: no module boundary touched. *Scalable*: CSS-only
+reflow, no client JS, no extra DOM. *Secure*: no route or data. *Stable*: opt-in,
+so no regression path for existing tables. *Observable*: n/a.
+
+**Scope lenses.** One opt-in prop on a shared primitive, one CSS class, specimens
+and documentation — not a named feature: the five screens the spec plans run their own
+lenses. n/a for every money, stock, actor and erasure lens: writes no row, reads
+no row, posts nothing. Reachable: the specimens are at `/admin/design-system#patterns`,
+in the page's section nav.

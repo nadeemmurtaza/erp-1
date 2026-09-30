@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 438 tracked files in `apps/web`, by directory.
+All 439 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -71,7 +71,7 @@ All 438 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `global-error.tsx` | global-error | 82 |  |
-| `globals.css` | stylesheet | 669 |  |
+| `globals.css` | stylesheet | 678 |  |
 | `icon.svg` | asset | — |  |
 | `not-found.tsx` | not-found | 79 |  |
 | `robots.ts` | module | 33 |  |
@@ -1551,13 +1551,14 @@ All 438 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 104 |  |
 
-### `apps/web/src/components/design-system` (4)
+### `apps/web/src/components/design-system` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `foundations.tsx` | component | 438 |  |
-| `gallery.tsx` | component | 100 |  |
+| `gallery.tsx` | component | 111 |  |
 | `live-tokens.ts` | component | 60 |  |
+| `patterns.tsx` | component | 262 |  |
 | `specimens.tsx` | component | 304 |  |
 
 ### `apps/web/src/components/storefront` (38)
@@ -1610,7 +1611,7 @@ All 438 tracked files in `apps/web`, by directory.
 | `badge.tsx` | component | 45 |  |
 | `button.tsx` | component | 56 |  |
 | `confirm-dialog.tsx` | component | 103 |  |
-| `data-table.tsx` | component | 191 |  |
+| `data-table.tsx` | component | 237 |  |
 | `dialog.tsx` | component | 197 |  |
 | `disclosure.tsx` | component | 69 |  |
 | `empty-state.tsx` | component | 40 |  |

@@ -8,6 +8,72 @@ Every top-level export in `packages`, with the line to open.
 
 
 
+### `packages/desktop-runtime/src`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `backup-scheduler.ts` | `BackupArchiver` | interface | :52 | 48-native-desktop-deployment.md WO-48.5 — local backup, adapting `deploy/backup.sh`'s own restore-t… |
+| `backup-scheduler.ts` | `TarBackupArchiver` | class | :67 | The real implementation, backed by the `tar` npm package (the same library npm itself uses) — chose… |
+| `backup-scheduler.ts` | `BackupResult` | interface | :82 |  |
+| `backup-scheduler.ts` | `LocalBackupOptions` | interface | :94 |  |
+| `backup-scheduler.ts` | `LocalBackupScheduler` | class | :136 | Mirrors `OutboxDispatcher`'s / `ReplicationSyncAgent`'s own re-entrancy guard shape: a `running` fl… |
+| `index.ts` | `*` | re-export |  | from `./logger` |
+| `index.ts` | `*` | re-export |  | from `./postgres-lifecycle` |
+| `index.ts` | `*` | re-export |  | from `./setup-wizard` |
+| `index.ts` | `*` | re-export |  | from `./backup-scheduler` |
+| `index.ts` | `*` | re-export |  | from `./hardware/escpos` |
+| `index.ts` | `*` | re-export |  | from `./hardware/serial-port-io` |
+| `index.ts` | `*` | re-export |  | from `./hardware/serial-receipt-printer` |
+| `index.ts` | `*` | re-export |  | from `./hardware/serial-cash-drawer` |
+| `logger.ts` | `DesktopLogger` | interface | :15 | 48-native-desktop-deployment.md — a minimal structured-logging seam. |
+| `logger.ts` | `consoleDesktopLogger` | const | :26 | `console.warn`/`console.error` only — both allowed by this repo's own eslint base (`no-console: ['w… |
+| `postgres-lifecycle.ts` | `PostgresRunner` | interface | :41 | The seam `EmbeddedPostgresRunner` implements. |
+| `postgres-lifecycle.ts` | `PostgresConnectionInfo` | interface | :47 |  |
+| `postgres-lifecycle.ts` | `PostgresLifecycleErrorCode` | type | :55 |  |
+| `postgres-lifecycle.ts` | `RepairAction` | type | :71 | What a future desktop shell's "repair/restore" screen (doc 48's own failure-path scope lens, and it… |
+| `postgres-lifecycle.ts` | `PostgresLifecycleError` | class | :86 |  |
+| `postgres-lifecycle.ts` | `PostgresLifecycleOptions` | interface | :98 |  |
+| `postgres-lifecycle.ts` | `PostgresCredentialStore` | class | :133 | Random local superuser credentials, generated once per install and persisted to a file only this OS… |
+| `postgres-lifecycle.ts` | `PostgresLifecycleManager` | class | :169 | The orchestration itself. |
+| `postgres-lifecycle.ts` | `EmbeddedPostgresRunner` | class | :433 | Postgres server binary (via its per-platform `@embedded-postgres ` optional dependency) and drives… |
+| `setup-wizard.ts` | `NodeRole` | type | :20 | 48-native-desktop-deployment.md WO-48.3 — the first-run setup wizard, as real, testable orchestrati… |
+| `setup-wizard.ts` | `NodeConfig` | interface | :22 |  |
+| `setup-wizard.ts` | `validateNodeConfig` | function | :53 | Mirrors `apps/api/src/core/config/env.validation.ts`'s NODE_ROLE / PARENT_URL / PARENT_API_KEY rule… |
+| `setup-wizard.ts` | `WizardStepName` | type | :83 |  |
+| `setup-wizard.ts` | `WizardStepResult` | interface | :89 |  |
+| `setup-wizard.ts` | `SetupWizardError` | class | :95 |  |
+| `setup-wizard.ts` | `WizardResult` | interface | :106 |  |
+| `setup-wizard.ts` | `MigrationRunner` | interface | :116 | The seam over `prisma migrate deploy` / `db:seed` — real by default (`DefaultMigrationRunner`, shel… |
+| `setup-wizard.ts` | `DefaultMigrationRunner` | class | :126 | Shells out inside `apps/api`'s own package directory, using the exact scripts `apps/api/package.jso… |
+| `setup-wizard.ts` | `FirstRunSetupWizardOptions` | interface | :153 |  |
+| `setup-wizard.ts` | `FirstRunSetupWizard` | class | :177 | "Reaches a working till within the setup wizard's own steps" (doc 48's own acceptance criterion) me… |
+
+### `packages/desktop-runtime/src/hardware`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `escpos.ts` | `ESC` | const | :22 | 48-native-desktop-deployment.md WO-48.4 — the ESC/POS byte-command set, as pure functions. |
+| `escpos.ts` | `GS` | const | :23 |  |
+| `escpos.ts` | `LF` | const | :24 |  |
+| `escpos.ts` | `initCommand` | function | :30 | `ESC @` — resets the printer to its power-on defaults. |
+| `escpos.ts` | `textLineCommand` | function | :43 | Plain text, terminated with a line feed. |
+| `escpos.ts` | `CutMode` | type | :47 |  |
+| `escpos.ts` | `cutCommand` | function | :54 | `GS V m` — the simple (no feed-amount) form of the paper cut command: `m = 0` full cut, `m = 1` par… |
+| `escpos.ts` | `DrawerPin` | type | :58 |  |
+| `escpos.ts` | `drawerKickCommand` | function | :68 | `ESC p m t1 t2` — the standard "kick out cash drawer" pulse. |
+| `serial-cash-drawer.ts` | `SerialCashDrawerOptions` | interface | :32 | 48-native-desktop-deployment.md WO-48.4 — a native `CashDrawer` (`packages/pos-core/src/hardware.ts… |
+| `serial-cash-drawer.ts` | `SerialPortCashDrawer` | class | :42 |  |
+| `serial-port-io.ts` | `SerialWritable` | interface | :17 | `serialport` package) and fully fake in tests (`hardware .spec.ts` inject their own in-memory `Seri… |
+| `serial-port-io.ts` | `SerialPortFactoryOptions` | interface | :24 |  |
+| `serial-port-io.ts` | `SerialPortFactory` | type | :29 |  |
+| `serial-port-io.ts` | `defaultSerialPortFactory` | const | :31 |  |
+| `serial-port-io.ts` | `waitForOpen` | function | :46 | Resolves once the port fires `open`, rejects on `error` or timeout — a port that never opens (unplu… |
+| `serial-port-io.ts` | `writeAndDrain` | function | :63 | Writes and waits for the OS to actually flush the bytes (`drain()`) — resolving as soon as `write()… |
+| `serial-port-io.ts` | `closePort` | function | :78 |  |
+| `serial-receipt-printer.ts` | `SerialReceiptPrinterOptions` | interface | :30 | 48-native-desktop-deployment.md WO-48.4 — a native (non-WebUSB) `ReceiptPrinter` (`packages/pos-cor… |
+| `serial-receipt-printer.ts` | `SerialPortReceiptPrinter` | class | :45 |  |
+| `serial-receipt-printer.ts` | `buildReceiptBytes` | function | :78 | Pure — the actual byte layout is exhaustively tested in `serial-receipt-printer.spec.ts` with no se… |
+
 ### `packages/pos-core/src`
 
 | File | Symbol | Kind | Line | Doc |

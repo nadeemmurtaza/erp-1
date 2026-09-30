@@ -3,7 +3,7 @@
 
 # Tests
 
-**357** spec files, **3,431** cases. What is already pinned down — and what is not.
+**365** spec files, **3,513** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -63,7 +63,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (333)
+## Unit and integration (341)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -374,6 +374,14 @@ regression or an N+1.
 | `apps/platform/src/modules/trials/signup.service.spec.ts` | root | 7 | SignupService · requestSignup · verifyAndProvision |
 | `apps/platform/src/modules/trials/trials.service.spec.ts` | root | 8 | TrialsService · extend · convert · expireToSuspended · listExtendedMoreThanOnce |
 | `apps/web/src/components/admin/analytics/resolve-path.spec.ts` | web | 13 | resolvePath · interpolateHref |
+| `packages/desktop-runtime/src/backup-scheduler.integration.spec.ts` | packages | 2 | TarBackupArchiver (real tar package, no Postgres) |
+| `packages/desktop-runtime/src/backup-scheduler.spec.ts` | packages | 15 | LocalBackupScheduler · runOnce — the happy path · failure paths — never silently report success · s… |
+| `packages/desktop-runtime/src/hardware/escpos.spec.ts` | packages | 8 | escpos byte-command builders |
+| `packages/desktop-runtime/src/hardware/serial-cash-drawer.spec.ts` | packages | 5 | SerialPortCashDrawer |
+| `packages/desktop-runtime/src/hardware/serial-receipt-printer.spec.ts` | packages | 9 | buildReceiptBytes (pure) · SerialPortReceiptPrinter |
+| `packages/desktop-runtime/src/postgres-lifecycle.integration.spec.ts` | packages | 2 |  |
+| `packages/desktop-runtime/src/postgres-lifecycle.spec.ts` | packages | 22 | PostgresLifecycleManager · credentials — never a shared default · ensureInitialised · start · start… |
+| `packages/desktop-runtime/src/setup-wizard.spec.ts` | packages | 19 | validateNodeConfig — mirrors env.validation.ts exactly · FirstRunSetupWizard |
 | `packages/pos-core/src/basket.spec.ts` | packages | 16 | basket · modifiers and quantity sources (pos-hardware/31) |
 | `packages/pos-core/src/outbox.spec.ts` | packages | 6 | outbox state machine |
 | `packages/pos-core/src/receipt.spec.ts` | packages | 3 | toReceipt · toKitchenTicket |

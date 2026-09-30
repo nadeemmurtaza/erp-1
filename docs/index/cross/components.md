@@ -32,7 +32,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
 | `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 247 |  |
-| `wizard.tsx` | `WizardStep` `Wizard` | server | 4 |  |
+| `wizard.tsx` | `WizardStep` `Wizard` | server | 6 |  |
 
 ### `apps/pos/src/components` (2)
 
@@ -133,7 +133,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `secret-once.tsx` | `SecretOnce` | client | 2 |  |
 | `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 66 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
-| `wizard.tsx` | `WizardStep` `Wizard` | client | 4 |  |
+| `wizard.tsx` | `WizardStep` `Wizard` | client | 6 |  |
 
 ### `apps/web/src/components/dashboard` (1)
 

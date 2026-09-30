@@ -2963,7 +2963,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,487 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,605 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3050,6 +3050,7 @@ _no second-level headings_
 - ADR-079 — Doc 210: caching third-party API calls to save charges — checked every real integration in this codebase and found exactly one billable, cacheable target (the AI provider), already covered by docs 208/209; two future non-AI targets named with their trigger condition, neither built now  <sub>:9293</sub>
 - ADR-080 — Doc 211: cloud (subscription) and offline (license) locked to strictly separate `PricingModel`/`licenseDeploymentMode` pairings, retracting doc 154's "Lifetime License, ONLINE variant" row and naming doc 48 a precondition of a plan already on the public pricing page  <sub>:9350</sub>
 - ADR-081 — Doc 212: role/permission scope enforcement confirmed as a live adoption gap, not a hypothetical — `AdminScope` has exactly one production caller, `orgUnitScopeFilterFor()` has zero, and `check-route-permissions.mjs` has no awareness of either  <sub>:9414</sub>
+- ADR-082 — Doc 48 (native desktop deployment): WO-48.1/48.3/48.4/48.5 built as real code in a new `packages/desktop-runtime`; the Electron/Tauri shell and auto-update stay unbuilt, exactly as the document's own text already scoped  <sub>:9488</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3980,15 +3981,15 @@ _no second-level headings_
 - Acceptance  <sub>:351</sub>
 - Out of scope  <sub>:366</sub>
 
-### `docs/implementation/resilience-scalability/48-native-desktop-deployment.md`  <sub>184 lines</sub>
+### `docs/implementation/resilience-scalability/48-native-desktop-deployment.md`  <sub>312 lines</sub>
 
-- The decision this document does not make casually  <sub>:14</sub>
-- 1. A desktop install is a node, exactly as a branch already is  <sub>:37</sub>
-- 2. What packaging actually adds, beyond "it's Electron now"  <sub>:56</sub>
-- Scope lenses  <sub>:76</sub>
-- Work orders  <sub>:142</sub>
-- Acceptance  <sub>:161</sub>
-- Out of scope  <sub>:176</sub>
+- The decision this document does not make casually  <sub>:142</sub>
+- 1. A desktop install is a node, exactly as a branch already is  <sub>:165</sub>
+- 2. What packaging actually adds, beyond "it's Electron now"  <sub>:184</sub>
+- Scope lenses  <sub>:204</sub>
+- Work orders  <sub>:270</sub>
+- Acceptance  <sub>:289</sub>
+- Out of scope  <sub>:304</sub>
 
 ### `docs/implementation/resilience-scalability/90-automatic-backups-local-support.md`  <sub>56 lines</sub>
 

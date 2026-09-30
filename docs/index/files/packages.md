@@ -3,7 +3,7 @@
 
 # Files — packages
 
-All 81 tracked files in `packages/*`, by directory.
+All 102 tracked files in `packages/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -16,6 +16,42 @@ All 81 tracked files in `packages/*`, by directory.
 | `package.json` | config | 23 |  |
 | `tsconfig.base.json` | config | 26 |  |
 | `tsconfig.nest.json` | config | 15 |  |
+
+### `packages/desktop-runtime` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `eslint.config.mjs` | script | 4 |  |
+| `jest.config.js` | script | 13 | @type {import('jest').Config} |
+| `package.json` | json | 44 |  |
+| `tsconfig.json` | json | 15 |  |
+
+### `packages/desktop-runtime/src` (10)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `backup-scheduler.integration.spec.ts` | unit test | 121 |  |
+| `backup-scheduler.spec.ts` | unit test | 240 |  |
+| `backup-scheduler.ts` | module | 387 |  |
+| `index.ts` | module | 9 |  |
+| `logger.ts` | module | 31 | 48-native-desktop-deployment.md — a minimal structured-logging seam. |
+| `postgres-lifecycle.integration.spec.ts` | unit test | 104 |  |
+| `postgres-lifecycle.spec.ts` | unit test | 303 |  |
+| `postgres-lifecycle.ts` | module | 481 |  |
+| `setup-wizard.spec.ts` | unit test | 244 |  |
+| `setup-wizard.ts` | module | 314 |  |
+
+### `packages/desktop-runtime/src/hardware` (7)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `escpos.spec.ts` | unit test | 39 |  |
+| `escpos.ts` | module | 71 | 48-native-desktop-deployment.md WO-48.4 — the ESC/POS byte-command set, as pure functions. |
+| `serial-cash-drawer.spec.ts` | unit test | 83 |  |
+| `serial-cash-drawer.ts` | module | 67 |  |
+| `serial-port-io.ts` | module | 83 | 48-native-desktop-deployment.md WO-48.4 — the seam over the `serialport` npm package shared by both native drivers belo… |
+| `serial-receipt-printer.spec.ts` | unit test | 140 |  |
+| `serial-receipt-printer.ts` | module | 98 |  |
 
 ### `packages/pos-core` (4)
 

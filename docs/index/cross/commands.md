@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**85**), plus the repository's own check scripts.
+Every script in every `package.json` (**91**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -43,6 +43,17 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `db:backfill-options` | `ts-node --project tsconfig.seed.json prisma/backfill-product-options.ts` |
 | `db:backfill-parties` | `ts-node --project tsconfig.seed.json prisma/backfill-parties.ts` |
 | `db:studio` | `prisma studio` |
+
+### `@newax/desktop-runtime`  <sub>`packages/desktop-runtime/package.json`</sub>
+
+| Script | Runs |
+|---|---|
+| `build` | `tsc -p tsconfig.json` |
+| `dev` | `tsc -p tsconfig.json --watch` |
+| `typecheck` | `tsc -p tsconfig.json --noEmit` |
+| `lint` | `eslint src` |
+| `test` | `jest --passWithNoTests` |
+| `test:integration` | `NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests` |
 
 ### `@newax/mobile`  <sub>`apps/mobile/package.json`</sub>
 

@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**463** markdown documents. These explain **why**; this index only says **where**.
+**464** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -4202,6 +4202,15 @@ _no second-level headings_
 ### `Rules.md`  <sub>30 lines</sub>
 
 _no second-level headings_
+
+### `START-HERE.md`  <sub>105 lines</sub>
+
+- What this is  <sub>:7</sub>
+- The map  <sub>:23</sub>
+- Five ideas that explain the rest  <sub>:40</sub>
+- Where the documents are  <sub>:53</sub>
+- Run it locally  <sub>:70</sub>
+- State of the organization (honest)  <sub>:87</sub>
 
 
 ---

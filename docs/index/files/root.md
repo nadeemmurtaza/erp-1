@@ -3,12 +3,12 @@
 
 # Files — root
 
-All 207 tracked files in `repository root files`, by directory.
+All 208 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
 
-### `.` (16)
+### `.` (17)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -28,6 +28,7 @@ All 207 tracked files in `repository root files`, by directory.
 | `PRD.md` | doc | 185 |  |
 | `README.md` | doc | 349 |  |
 | `Rules.md` | doc | 30 |  |
+| `START-HERE.md` | doc | 105 |  |
 
 ### `.claude` (2)
 

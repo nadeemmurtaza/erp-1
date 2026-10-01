@@ -47,8 +47,8 @@ All 437 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `03-components.md` | doc | 145 |  |
-| `04-states.md` | doc | 141 |  |
+| `03-components.md` | doc | 387 |  |
+| `04-states.md` | doc | 152 |  |
 
 ### `docs/design/content` (1)
 
@@ -60,7 +60,7 @@ All 437 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `01-foundations.md` | doc | 298 |  |
+| `01-foundations.md` | doc | 322 |  |
 
 ### `docs/design/layout-composition` (3)
 
@@ -74,14 +74,14 @@ All 437 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `05-motion.md` | doc | 318 |  |
+| `05-motion.md` | doc | 339 |  |
 
 ### `docs/design/principles-laws` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-principles.md` | doc | 83 |  |
-| `10-laws.md` | doc | 858 |  |
+| `10-laws.md` | doc | 884 |  |
 
 ### `docs/design/process-governance` (5)
 
@@ -563,7 +563,7 @@ All 437 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 10805 |  |
+| `DECISIONS.md` | doc | 11020 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |

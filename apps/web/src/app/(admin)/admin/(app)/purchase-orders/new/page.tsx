@@ -6,6 +6,7 @@ import { adminFetch } from '@/lib/admin-client';
 import { formatMoney } from '@newax/shared';
 import { PartyPicker } from '@/components/admin/party-picker';
 import { DataTable, Loading } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 interface SupplierProduct {
   id: string;
@@ -143,16 +144,27 @@ export default function NewPurchaseOrderPage() {
         <label htmlFor="po-scope" className="mb-2 mt-4 block text-sm font-medium text-neutral-900">
           Scope
         </label>
-        <select
+        <Select
           id="po-scope"
-          className="field-input max-w-md"
+          label="Scope"
+          className="max-w-md"
           value={scopeLevel}
-          onChange={(e) => setScopeLevel(e.target.value as 'ORG' | 'BRAND' | 'BRANCH')}
-        >
-          <option value="BRAND">Brand (default)</option>
-          <option value="ORG">Organization — central purchasing for several brands</option>
-          <option value="BRANCH">Branch — local purchasing, if this brand allows it</option>
-        </select>
+          onChange={(next) => setScopeLevel(next as 'ORG' | 'BRAND' | 'BRANCH')}
+          options={[
+            { value: 'BRAND', label: 'Brand (default)' },
+            { value: 'ORG', label: 'Organization' },
+            { value: 'BRANCH', label: 'Branch' },
+          ]}
+        />
+        <p className="mt-1 text-sm text-neutral-900/70">
+          {
+            {
+              BRAND: 'This brand buys for itself.',
+              ORG: 'Central purchasing for several brands.',
+              BRANCH: 'Local purchasing, if this brand allows it.',
+            }[scopeLevel]
+          }
+        </p>
       </div>
 
       {supplierId && (

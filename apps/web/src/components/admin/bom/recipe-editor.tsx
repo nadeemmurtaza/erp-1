@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { fromBaseUnits, toBaseUnits, toMajor, toMinor, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
+import { Select } from '@/components/ui/select';
 
 interface RawMaterialOption {
   id: string;
@@ -281,22 +282,20 @@ export function RecipeEditor({ recipeId, initialVariantId }: { recipeId?: string
               const material = materialById(row.rawMaterialId);
               return (
                 <div key={index} className="grid gap-2 border-t border-neutral-100 pt-3 first:border-t-0 first:pt-0 sm:grid-cols-2 lg:grid-cols-6">
-                  <label className="block lg:col-span-2">
-                    <span className="field-label">Raw material</span>
-                    <select
-                      value={row.rawMaterialId}
-                      onChange={(event) => updateRow(index, { rawMaterialId: event.target.value })}
-                      className="field-input"
+                  <div className="lg:col-span-2">
+                    <label htmlFor={`recipe-material-${index}`} className="field-label">
+                      Raw material
+                    </label>
+                    <Select
+                      id={`recipe-material-${index}`}
+                      label="Raw material"
                       required
-                    >
-                      <option value="">Choose…</option>
-                      {materials.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.name} ({option.sku})
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                      placeholder="Choose…"
+                      value={row.rawMaterialId}
+                      onChange={(next) => updateRow(index, { rawMaterialId: next })}
+                      options={materials.map((option) => ({ value: option.id, label: `${option.name} (${option.sku})` }))}
+                    />
+                  </div>
                   <label className="block">
                     <span className="field-label">Quantity {material ? `(${UNIT_LABELS[material.unit]})` : ''}</span>
                     <input

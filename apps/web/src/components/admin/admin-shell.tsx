@@ -15,6 +15,7 @@ import {
   type AdminNavItem,
 } from './nav-registry';
 import { CommandPalette } from './command-palette';
+import { UploadProvider } from './upload-provider';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { AdminProviders } from '@/providers/admin-providers';
 import { ROUTES } from '@/constants/routes';
@@ -94,7 +95,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }, null as AdminNavItem | null);
   const breadcrumbs = breadcrumbTrail(activeItem, items);
 
+  // The upload provider wraps the whole frame, so a transfer started on one page keeps going, and keeps its tray, as the operator moves to another (UPL-6).
   return (
+    <UploadProvider>
     <div className="flex min-h-screen bg-neutral-50">
       {/* Mobile Drawer */}
       {navMounted && (
@@ -212,6 +215,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </main>
       </div>
     </div>
+    </UploadProvider>
   );
 }
 

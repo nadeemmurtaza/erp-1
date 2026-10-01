@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 60 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 62 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -27,7 +27,7 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 | `docker-stack.edge.yml` | yaml | 42 |  |
 | `docker-stack.prod.yml` | yaml | 124 |  |
 | `docker-stack.staging.yml` | yaml | 124 |  |
-| `package.json` | json | 62 |  |
+| `package.json` | json | 64 |  |
 | `pnpm-lock.yaml` | yaml | 19483 |  |
 | `pnpm-workspace.yaml` | yaml | 24 |  |
 | `turbo.json` | json | 56 |  |
@@ -73,7 +73,7 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 | `yaseen-disk-alert.timer` | timer | — |  |
 | `yaseen.service` | service | — |  |
 
-### `scripts` (22)
+### `scripts` (24)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -81,12 +81,14 @@ All 60 tracked files in `scripts, CI, deployment and container configuration`, b
 | `build-logo-raster.mjs` | script | 54 |  |
 | `check-chart-imports.mjs` | script | 72 |  |
 | `check-contrast.mjs` | script | 626 |  |
+| `check-danger.mjs` | script | 213 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
 | `check-hardcoded-policy.mjs` | script | 85 |  |
 | `check-hexagonal-purity.mjs` | script | 149 |  |
 | `check-links.mjs` | script | 416 |  |
+| `check-menus.mjs` | script | 224 |  |
 | `check-metadata-renderer.mjs` | script | 134 |  |
 | `check-module-boundaries.mjs` | script | 624 |  |
 | `check-overflow.mjs` | script | 644 |  |

@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-60 files · 31,565 lines
+62 files · 32,004 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,13 +19,13 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 20,976 | file, example, json, yaml |
+| `.` | 20 | 20,978 | file, example, json, yaml |
 | `.github` | 1 | 81 | doc |
 | `.github/workflows` | 2 | 275 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 22 | 8,188 | script, py |
+| `scripts` | 24 | 8,625 | script, py |
 | `scripts/lib` | 3 | 1,644 | utility |
 
 
@@ -53,8 +53,8 @@ on them.
 | `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
-| `.env.example` | 193 | example |  |
-| `.github/workflows/ci.yml` | 184 | yaml |  |
+| `scripts/check-menus.mjs` | 224 | script |  |
+| `scripts/check-danger.mjs` | 213 | script |  |
 
 
 ---

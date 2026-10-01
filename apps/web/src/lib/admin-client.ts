@@ -164,6 +164,23 @@ interface AdminRequestOptions {
   headers?: Record<string, string>;
 }
 
+/**
+ * How the back office authenticates a request and recovers from a 401: the
+ * bearer token, the single-flight refresh, and what to do when the session is
+ * beyond saving. `adminFetch` passes it to `requestWithRefresh`; the upload
+ * transport (`upload-client.ts`) reads the same object, because `fetch` cannot
+ * report upload progress and a second copy of this would drift.
+ */
+export const adminAuth = {
+  token: getAccessToken,
+  refresh: refreshSession,
+  onExpired: () => {
+    clearSession();
+    if (typeof window !== 'undefined') window.location.href = '/admin/login';
+  },
+  expiredMessage: 'Your session has expired. Please sign in again.',
+};
+
 export async function adminFetch<T>(
   path: string,
   options: AdminRequestOptions = {},
@@ -182,14 +199,6 @@ export async function adminFetch<T>(
         ...options.headers,
       },
     },
-    {
-      token: getAccessToken,
-      refresh: refreshSession,
-      onExpired: () => {
-        clearSession();
-        if (typeof window !== 'undefined') window.location.href = '/admin/login';
-      },
-      expiredMessage: 'Your session has expired. Please sign in again.',
-    },
+    adminAuth,
   );
 }

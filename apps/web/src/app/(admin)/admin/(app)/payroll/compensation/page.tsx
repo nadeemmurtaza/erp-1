@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
 import { DataTable, Dialog, EmptyState, PageHeader } from '@/components/ui';
 import type { CompensationBasis, CompensationRate, EmployeeCompensation } from '@/types/api';
+import { DateField } from '@/components/ui/date-field';
 
 interface CurrentRateRow extends CompensationRate {
   user: { id: string; firstName: string | null; lastName: string | null; email: string | null };
@@ -196,16 +197,12 @@ export default function PayrollCompensationPage() {
                     required
                   />
                 </label>
-                <label className="block col-span-2">
-                  <span className="field-label">Effective from</span>
-                  <input
-                    type="date"
-                    value={effectiveFrom}
-                    onChange={(e) => setEffectiveFrom(e.target.value)}
-                    className="field-input"
-                    required
-                  />
-                </label>
+                <div className="col-span-2">
+                  <label htmlFor="comp-effective" className="field-label">
+                    Effective from
+                  </label>
+                  <DateField id="comp-effective" value={effectiveFrom} onChange={setEffectiveFrom} required />
+                </div>
               </div>
               <button type="submit" disabled={saving} className="btn-primary">
                 {saving ? 'Saving…' : 'Set rate'}

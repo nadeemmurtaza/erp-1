@@ -241,7 +241,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
         onConfirm={handleComplete}
         title="Complete this count?"
         description="Any line left uncounted is ignored, and the count can no longer be edited or re-posted."
-        confirmLabel="Complete"
+        confirmLabel="Complete count"
         busy={completing}
       />
     </>

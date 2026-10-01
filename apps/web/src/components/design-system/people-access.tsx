@@ -625,7 +625,7 @@ export function PeopleAccessSpecimen() {
         }}
         title="Revoke temporary access?"
         description="It ends now. Anything they already exported stays as it is; this only stops further access."
-        confirmLabel="Revoke"
+        confirmLabel="Revoke temporary access"
         variant="danger"
       />
 

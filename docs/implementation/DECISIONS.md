@@ -10802,3 +10802,218 @@ keeps the information.
 Reachable: `/admin/design-system#motion`, in the page's section nav, and the new
 primitives are exported from `components/ui` and listed in `.claude/rules/ui.md`; the
 tokens are in `01-foundations.md` and the language in `05-motion.md`.
+
+
+### Addendum — 2026-10-01 (seventh): nine rule cards, built as thirty laws and the controls they name
+
+**Requirement.** The owner supplied nine rule cards (uploads, dropdowns, danger, the
+login form, the product card, and four sets of UX laws) and asked for them "in design
+system globally". Each rule was turned into a law with a stable ID and a test, and the
+control it names was built, so a review can cite `UPL-3` or `DNG-2` and a lint can fail
+on it. The twelve borrowed UX laws on the cards (Fitts, Hick, chunking, Doherty,
+proximity, Von Restorff, goal gradient, Postel, Tesler, similarity, serial position,
+peak-end) were already `ACT-1`, `COG-1`, `COG-3`, `ACT-3`, `PER-1`, `COG-12`, `COG-10`,
+`ACT-5`, `COG-8`, `PER-3`, `COG-11` and `COG-13`; they are not restated, and the end of
+`10-laws.md` says which artifact makes each true. The long form is "Controls with a
+contract" in `docs/design/components-states/03-components.md` (UPL, MNU, DNG, FRM, CRD:
+thirty laws, 180 in all); the specimens are in `/admin/design-system#controls`.
+
+**What was built.**
+
+| Card | Where | Built on |
+|---|---|---|
+| Uploads: drop zone, honest progress, check before sending, limits upfront, per-file failure, never block the app | `ui/dropzone.tsx`, `ui/upload-tray.tsx`, `hooks/use-upload-queue.ts`, `components/admin/upload-provider.tsx` (wraps the admin shell), `lib/upload.ts`, `lib/upload-queue.ts`, `lib/upload-client.ts`, `lib/upload-rules.ts`; adopted by product images, the three CSV imports, expense receipts, RAG documents and the stitching photo | a pure reducer with an injected clock; an XHR transport because `fetch` cannot report upload progress, authenticated through the one `adminAuth` object `adminFetch` also uses; server limits copied with file and line |
+| Dropdowns: type to filter, typed dates, stay open on pick, collision-aware, reasons not grey, no menu under five | `ui/select.tsx`, `ui/multi-select.tsx`, `ui/menu.tsx`, `ui/date-field.tsx`, `ui/segmented.tsx` (reasoned-disabled), `hooks/use-popover.ts`, `lib/popover-position.ts`, `lib/menu-filter.ts`, `lib/calendar.ts`, `lib/date-parse.ts`; 18 short selects, 32 date inputs and 17 long selects adopted | the Popover API (top layer, so a menu inside a modal is not clipped by z-index), with a portal fallback; placement is a pure function |
+| Danger: hold to confirm, verb labels, off the happy path, red budget, danger zone, cooldown | `ui/hold-to-confirm.tsx`, `ui/danger-zone.tsx`, `ui/cooldown-banner.tsx`, `ui/confirm-dialog.tsx` (verb label required, Cancel focused), `lib/guard.ts`; 16 dialog labels reworded; `bom/[id]` archive moved into a zone | a state machine that takes the time as an argument; `BRAND.safeguards` |
+| Login form recipe | `ui/field.tsx` (`Field`, `FormStack`), `.field-xl`, `Button done`, `useDoneBeat`; the admin login and the four storefront auth forms | `size.control.xl`; labels above, examples as placeholders; one filled button |
+| Product card recipe | `.card-lit`, `.media-concentric`, `Price tone="accent"`, `ProductCard`, `ProductsGrid`, `concentricRadius` in `@newax/shared` | the concentric-corner formula; `fineStaggerDelayMs` |
+| Lint | `scripts/check-danger.mjs` (vague destructive labels, DNG-2), `scripts/check-menus.mjs` (short native selects and native date inputs, MNU-6 and MNU-2); both in `pnpm lint` | the vague-word list is read from `guard.ts`, so there is one list |
+
+**Parameters.**
+
+| Parameter | Exact value | Why this and not another | Enforced | How it degrades |
+|---|---|---|---|---|
+| `safeguards.holdToConfirmMs` | 1000 ms | longer than a phone's long-press (about 500), so a resting thumb cannot fire it; a second is the least a ring can fill in and still be seen filling | `brand.ts`; `HOLD_MS`; `guard.spec.ts` pins it | a `holdMs` of 0 would fire on the first frame, so the spec pins the brand value and only a caller can pass another; NaN never fires (the control is inert, which is the safe side) |
+| Hold, keyboard | Space or Enter held for the same length; a key repeat does not count | the hold has an equivalent for people who cannot point | `HoldToConfirm`; `nextHold` | releasing or leaving the button cancels |
+| Hold, assistive technology | first bare click arms, second confirms; no timeout; ends on blur or Escape | a click with no preceding press cannot hold; a timeout would be its own barrier (WCAG 2.2.1) | `HoldToConfirm` | an armed control that loses focus quietly disarms |
+| `safeguards.deletionCooldownDays` | 14 days (24 h each) | spans two weekends and a month-end close, which is when somebody notices what is missing | `brand.ts`; `COOLDOWN_DAYS`; `cooldownState` | an unreadable date or a bad length reads as expired, so a corrupt row cannot keep something alive; UI-only until a purge job exists |
+| `size.control.xl` | 56 px | seven 8 px steps, above the 44 px touch floor; the form recipe's field height, kept off dense table rows (`md`, 40) | `brand.ts`; `theme-size.ts`; `.field-xl` | none needed |
+| `motion.distance.lift` | 4 px | twice `micro`; enough to read as rising, small enough not to cover the next row; its own token so the card lift and the invalid-field shake (`nudge`) retune apart | `brand.ts`; `.lift` | under reduced motion the card does not lift |
+| `motion.stagger.fine` | 40 ms, at most four steps (160 ms) | a grid of many small peers should not take 320 ms to arrive; the cap is what stops a 200-card grid from animating for seconds | `brand.ts`; `fineStaggerDelayMs`; `motion.spec.ts` | beyond the fourth step peers share one delay; the product grid cascades each row (`index % columns`, so at most 120 ms) |
+| Submit beat | 320 ms (`slow`) | long enough for the check to draw before the page leaves | `MOTION_MS.done`; `useDoneBeat` | no wait and no drawing under reduced motion; the button still says "Signed in" |
+| Focus ring | 2 px, eased in over 140 ms (`fast`) | the existing focus step; never removed | `.field-input` | none |
+| Concurrent uploads | 3 | a browser holds 6 connections per origin; 3 leaves the rest for the app's own requests (UPL-6) | `startable()` in `upload-queue.ts` | the rest wait in order; nothing is dropped |
+| Upload speed window | 3 000 ms | smooths a bursty link and still follows a change | `measure()` | under 2 samples reads 0 B/s |
+| Upload time-left gate | 1 000 ms of samples and speed above 0 | under a second the figure is a guess (UPL-2) | `measure()` | the lane shows no time left |
+| Progress report interval | 250 ms (the last report always passes) | browsers fire about every 50 ms and each report re-renders every reader of the queue; the bar eases over 220 ms, so four a second still glides | `use-upload-queue.ts` | cosmetic only |
+| Tray auto-hide | 4 000 ms after everything succeeded, paused under the pointer or focus | the toast default | `upload-provider.tsx` | a failure never hides on a timer |
+| Refusals listed | 5 names, then "N more" | dropping 200 wrong files must not be a wall of red | `dropzone.tsx` | the rest are counted in one line |
+| Upload size and types | 8 MiB for images and PDFs; JPEG, PNG, WebP, AVIF; PDF alone for RAG; CSV has no byte limit and 5 000 rows (a hint only, checked after parsing) | the server's own numbers, with file and line in `upload-rules.ts` | `checkFile` at drop time | the server checks again; this is a convenience, never authorization |
+| Client upload timeout | none | a slow link legitimately takes minutes, and every lane has Cancel | n/a | a hung connection stays "Uploading" until Cancel or the server gives up |
+| Tray size | 384 px wide (`max-w-sm`) and the viewport minus 2 rem; lanes scroll at 288 px | fits a 280 px screen | `upload-tray.tsx` | lanes scroll, never reorder |
+| Tray layer | `z-dropdown` (20) | above page content and sticky bars, below the drawer and every dialog | `upload-tray.tsx` | n/a |
+| Menu search threshold | search above 10 options | MNU-1; ten rows fit a 20 rem panel without scrolling | `menu-filter.ts` `needsSearch` | `searchable` can force search on, never off for a long list |
+| Segmented limit | below 5 options is a segmented control | MNU-6 | `menuKind` | an empty list is a menu, so it still has a trigger and an empty state |
+| Popover gap and margin | 4 px from the trigger, 8 px from any edge | attached but not touching; never flush to the glass | `popover-position.ts` | the panel is clamped inward and its height and width are capped to the room left |
+| Flip rule | flip up when room below is less than the panel and room above is greater than room below | equal room never flips, so there is no flip-flop at the boundary | `placePopover` | with both sides too small the larger is used and the panel scrolls |
+| Menu panel | at most 20 rem high, 28 rem wide, each capped by the room left | about nine 2.5 rem rows and the search box | `menu.tsx` | falls back to the fixed size without the hook's variable |
+| Placement recompute | one animation frame, coalesced, on scroll, resize and visual-viewport change | at most one layout read a frame | `use-popover.ts` | no debounce, so no stale placement |
+| Type-ahead reset | 700 ms | longer than a typing burst, shorter than a pause to think | `menu-filter.ts` | the buffer clears |
+| Calendar | always 6 rows by 7; years in pages of 12; years 1000 to 9999 | the panel never changes height between months; four-digit ISO strings keep string comparison and UTC maths safe | `calendar.ts` | out-of-range input gives a reason, never a clamp |
+| Two-digit years | 80 years back, 20 forward from today | the usual window; 85 reads as 1985, 46 as 2046 | `date-parse.ts` | three-digit years are refused with a reason |
+| `check-menus` baseline | short native selects 0, native date inputs 1 | short selects reached zero; the one date input is `MetadataDrivenForm`'s, which may compose only plain elements (architecture-patterns/141 §2, `check-metadata-renderer.mjs`) | `scripts/check-menus.mjs` | fails only on growth |
+
+**Failure modes.**
+- *Popover API missing* (an older browser): the panel is portalled into the nearest
+  dialog or `body` with `fixed z-dropdown` and placed by the same function; a menu
+  inside a modal is then in the modal's stacking context, which is why the hook portals
+  into the dialog.
+- *The server refuses what the client let through*: the lane fails with the server's
+  message and a Retry; nothing is retried automatically, so a refusal cannot loop.
+- *The network drops mid-upload*: the lane fails ("Network error"), the others carry
+  on, Retry sends that one file again. A late success for a lane cancelled just as it
+  finished is recorded as done, because the file landed.
+- *A session expiring mid-upload*: the transport refreshes once through the same
+  single-flight refresh `adminFetch` uses and retries the file; if that fails the
+  operator is sent to sign in.
+- *Closing the tab during a transfer*: a `beforeunload` confirm while anything is going.
+- *Concurrent uploads to one product* take the same `order` on the server (the API
+  numbers a new image from a count it reads before it saves), so the product's lanes
+  are sent one at a time (`serialKey`); a failure or cancel never blocks the next. The
+  race across two tabs needs a server transaction and is not fixed here.
+- *Enter on the file input*: `Space` opens a file input natively; `Enter` did not reliably
+  (headless Chromium opened the picker on 1 of 3 fresh pages), so `Dropzone` handles
+  `Enter` itself (`preventDefault`, then `click()` on the input). After the page hydrates it
+  opened the picker on 3 of 3 pages; before hydration the browser's own handling applies,
+  which is not a state a keyboard user reaches.
+- *A hold interrupted* (pointer leaves, focus moves, Escape, pointer cancel): the ring
+  drains and nothing happens; a screen reader is told "Not confirmed".
+- *Reduced motion*: the ring still follows the clock (it is the information), the check
+  is shown without being drawn, the card does not lift, a grid arrives at once.
+- *A typed date that cannot be read*: the text is kept, the reason is shown next to
+  the field and announced, and nothing is committed.
+
+**Deviations from the cards, and why.**
+- *Corners.* The cards use 24 px cards, 12 px fields and a 16 px photograph. The house
+  shape is 2 to 3 px, so the law is the formula (`concentricRadius`), which gives 24, 16
+  and 8 for a soft brand and a square photograph here. A decision card on corner shape
+  was posted; the shape itself is not changed.
+- *Shadow at rest.* The cards draw a border and a soft shadow together. `ui.md` forbids
+  both on one edge, so `.card-lit` has the border and the lit surface, and the shadow
+  arrives with the lift.
+- *Press on a card.* A card is too big to scale (2% of 400 px is 8 px), so a press
+  reverses the lift and the button inside carries the 98% press.
+- *Hold to confirm replaces a dialog only for the middle `ACT-6` tier.* The sixteen
+  existing confirmation dialogs carry a consequence paragraph, a typed name, or both, so
+  they stay and only their labels changed.
+- *The form card* appears only where the page has a backdrop (the admin sign-in); a form
+  that is alone on its page stays boxless (`ui.md`), which is the storefront's case.
+- *Cooldown* is a UI contract and the number a purge job will read; there is no purge job.
+- *Date field.* English month names only; a bare "Oct 2026" is refused with "add the
+  day"; Enter commits the text and does not submit the form; the calendar's cells are
+  44 px tall and about 35 px wide at 280 px.
+- *Uploads.* `Dropzone.disabled` is the reason string, so a zone cannot be disabled
+  without saying why; `maxBytes` may be `Infinity` where the server sets no cap.
+
+**Not adopted.** The storefront visual-search button (an icon-sized control on the public
+API with no admin session or provider, and it needs strings in both catalogues); the
+RAG "Replace file" row action and the party picker (no surface for a zone; an async
+combobox with its own listbox); the 73 native selects of five to ten options or of
+unknown size (the platform's menu is accessible and collision-aware there; the total is
+printed on every `check-menus` run); the product form's selects (a field that wraps its
+own label and a brand select with deactivated-option logic).
+
+**Noticed, not changed.**
+- Every API `FileInterceptor` is created with no `limits.fileSize`, including the public
+  `/search/by-image`. Multer buffers the whole body in memory before the 8 MiB check in
+  `putImage`, so the real cap is after the read. Setting `limits` is the fix and an API
+  change.
+- `lib/upload-rules.ts` copies the API's limits with file and line; they belong in
+  `packages/shared` next to `IMPORT_ROW_CAP` so the API and web read one number.
+- `Dialog`'s focus trap selects `input:not([disabled])`, which also matches the hidden
+  input of a required `Select` if it is the last element in a dialog.
+- A product form left while a photograph is still uploading loses track of that lane;
+  the image lands and appears after a refresh. Fixing it needs a scope tag on lanes.
+- `scripts/build-index.mjs` matched design chapters only at `docs/design/NN-*.md`, so
+  after the chapters moved into group folders `pnpm idx law` indexed no laws; the pattern
+  now allows one folder level.
+- `AnimatedSection` (framer-motion) still carries a 0.8 s duration and a 50 px rise as
+  literals; it predates the tokens and is used across the storefront.
+- `transition-all` remains on `header.tsx` and `stitching-panel.tsx`.
+
+**Verification.** Run on the final tree, after the last edit.
+
+- `pnpm index` regenerated (217 pages, 18 changed); `pnpm index:check` exits 0.
+- `pnpm lint` exits 0. It includes `check-danger` (53 literal labels checked, 9 written as
+  expressions and not checked), `check-menus` (73 native selects in total, 0 short, 1
+  native date input), `check-contrast`, `check-metadata-renderer`, `check-rules` and
+  `check-rebrand`. Two lint failures turned up on the way and were fixed rather than
+  baselined: a `DateField` import into `MetadataDrivenForm` (it may compose only plain
+  elements, so the native date input stays and the `check-menus` baseline says 1), and
+  three uses of `neutral-200` against a baseline of 1 (the `DateField` calendar button is
+  now borderless and the dropzone's dashed edge is `neutral-500`, which clears the 3:1 a
+  control edge needs).
+- `pnpm typecheck` exits 0.
+- `pnpm test`: web 501 passed (17 files), shared 404 passed, pos-core 28 passed. The root
+  command exits 1 because 70 of the 295 `@newax/api` suites fail (684 of 3,068 tests);
+  their log shows Redis refused at `localhost:6379`, and they are the e2e suites that need
+  Postgres and Redis, neither of which this container runs. No file under `apps/api`
+  changed in this work. This was not run against a database, so CI is where those suites
+  are decided.
+- `next build` of `apps/web` passes on the final tree.
+- The four greps in `CLAUDE.md`: inline `style={{` 27, `toLocaleString` 6, bare `fetch` 6,
+  `text-gray` and `bg-gray` 0. The first three are the same numbers `HEAD` has (27, 6, 6),
+  so none was added.
+- Browser, Chromium against the production build of `/admin/design-system`: danger, form
+  and card specimens 63 of 63 checks (seven widths, light and dark, reduced motion);
+  uploads and menus 48 of 48 (limits printed, Enter and drop and paste, refusals by name
+  with a remedy, five files with one failure and exactly one Retry, search focus and
+  filter, Escape and focus return, blocked options with reasons, multi-select staying open,
+  typed dates, calendar jump, a panel opening upward near the bottom edge, a right-to-left
+  380 px panel inside the viewport, and no horizontal overflow at the seven widths in both
+  themes).
+
+*Not verified in a browser:* the XHR transport against the real API (the specimen uses a
+simulated transport, so progress, cancel and retry are verified and the wire is not);
+the storefront sign-in, register and password pages and the storefront product card (they
+need the API); and the roughly sixty admin pages that adopted `Select` and `DateField`,
+and the pages that adopted `Dropzone`: they typecheck and build, and the controls they use
+are the ones verified above, but each page was not opened.
+
+**Scope lenses.**
+The actor with three tables, the principal with no permission key, the grant that ends
+itself: n/a, no actor, principal or grant is created. The upload tray and the danger
+controls are presentation and never replace a server check.
+Whose rows, and which columns, the threshold nobody approves alone, the toxic pair,
+authority and blast radius, audience: n/a, no row is read or committed by the controls
+themselves; each page that adopts one calls the same endpoint with the same permission
+as before, and no `PERMISSION_CATALOG` key was added, so there is no `Permission` row
+without a grant. `DangerZone` renders nothing for a person who may do none of its acts
+(`PRM-5`).
+Request or record: an upload is a REQUEST the server may refuse (the lane shows why);
+a hold is a gate in front of a REQUEST that already existed; nothing here is a RECORD.
+The movement with no address, four hours down, and the money lenses (posting rule,
+columns, period, second legal entity, dry run, click the number): n/a, no stock, cash or
+journal line is read or written.
+The three silhouettes and the absent collaborator: the tokens live in `brand.ts`, so a
+Solo deployment and a group deployment get the same controls; the upload provider
+wraps the admin shell only, and a page that renders a `Dropzone` outside it throws a
+clear error rather than failing silently.
+The second copy of the write: a retried upload is a new request by design (the lane's
+Retry); the server's image routes are not idempotent, which is why a product's lanes
+run serially. A hold fires once per press (`nextHold` ignores a second down).
+The hundred-thousandth row: no list is rendered at size by these controls; a menu of 140
+branches filters in memory, and a product grid animates at most four stagger steps.
+The adoption test, the reversal document, the undo fan-out, the version stamp, the
+erasure the ledger cannot obey: n/a, no number, document or personal datum is created.
+The failure path: see Failure modes above; every refusal states its remedy (`FLO-7`).
+Reachable: `/admin/design-system#controls`, in the page's section nav; the primitives
+are exported from `components/ui` and listed in `.claude/rules/ui.md`; the tokens are in
+`01-foundations.md` and the motion in `05-motion.md`.
+
+**Pillars.** Proper architecture: the controls are primitives behind `components/ui`,
+the rules are pure functions with specs, and the two lints keep them used. Stable and
+reliable: per-file failure, a single-flight refresh, no timeout that could trap a
+person, a fail-safe on a bad hold length. Secure by design: every check at drop time is
+a convenience and the server checks again. Observable: not touched (no APM is wired).
+Scalable: the queue caps concurrency at 3 and the progress renders at 4 a second.

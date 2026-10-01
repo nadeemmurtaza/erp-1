@@ -6,6 +6,7 @@ import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
 import { PageHeader } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 interface RecipeOption {
   id: string;
@@ -121,17 +122,20 @@ export default function NewProductionRunPage() {
       ) : null}
 
       <form onSubmit={submit} className="card grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-4">
-        <label className="block lg:col-span-2">
-          <span className="field-label">Recipe</span>
-          <select value={recipeId} onChange={(event) => setRecipeId(event.target.value)} className="field-input" required>
-            <option value="">Choose…</option>
-            {recipes.map((recipe) => (
-              <option key={recipe.id} value={recipe.id}>
-                {recipe.sku}
-              </option>
-            ))}
-          </select>
-        </label>
+        <div className="lg:col-span-2">
+          <label htmlFor="production-recipe" className="field-label">
+            Recipe
+          </label>
+          <Select
+            id="production-recipe"
+            label="Recipe"
+            required
+            placeholder="Choose…"
+            value={recipeId}
+            onChange={setRecipeId}
+            options={recipes.map((recipe) => ({ value: recipe.id, label: recipe.sku }))}
+          />
+        </div>
         <label className="block">
           <span className="field-label">Runs</span>
           <input

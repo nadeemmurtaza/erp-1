@@ -26,6 +26,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
 import { Group } from './foundations';
+import { Select } from '@/components/ui/select';
 
 const TONES: readonly BadgeTone[] = ['neutral', 'success', 'warning', 'danger', 'info'];
 
@@ -47,6 +48,7 @@ export function ComponentSpecimens() {
   const [dialog, setDialog] = useState<'plain' | 'confirm' | null>(null);
   const [page, setPage] = useState(2);
   const [chip, setChip] = useState('all');
+  const [branch, setBranch] = useState('lhr');
   const { toasts, add, remove } = useToast();
 
   return (
@@ -86,10 +88,16 @@ export function ComponentSpecimens() {
           </div>
           <div>
             <label className="field-label" htmlFor="ds-select">Branch</label>
-            <select id="ds-select" className="field-input" defaultValue="lhr">
-              <option value="lhr">Lahore</option>
-              <option value="khi">Karachi</option>
-            </select>
+            <Select
+              id="ds-select"
+              label="Branch"
+              value={branch}
+              onChange={setBranch}
+              options={[
+                { value: 'lhr', label: 'Lahore' },
+                { value: 'khi', label: 'Karachi' },
+              ]}
+            />
           </div>
           <div>
             <label className="field-label" htmlFor="ds-disabled">Reference</label>

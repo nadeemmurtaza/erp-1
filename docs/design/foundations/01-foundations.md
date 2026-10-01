@@ -83,9 +83,11 @@ space.4   12px     space.9   64px
 
 Source: `theme-size.ts`. Utilities: `h-control-sm|md|lg`, `h-icon-*` / `w-icon-*`, `min-h-touch`, `min-h-touch-pos`.
 
-Three control heights (`sm` 32 · `md` 40 · `lg` 48), three
+Four control heights (`sm` 32 · `md` 40 · `lg` 48 · `xl` 56), three
 icon sizes (16 · 20 · 24), and a single `container-page` max width, which
-already exists as a class.
+already exists as a class. `xl` exists for one job: the field of the form
+recipe (`FRM-2`), reached through `.field-xl`; a dense admin table row stays
+at `md`, so the two are different decisions and one token each.
 
 **Rule.** An interactive control is never smaller than the touch target
 minimum in Chapter 07, whatever its visual size.
@@ -176,7 +178,8 @@ motion.distance.micro     2px     press, nudge
 motion.distance.small     8px     hover lift, tooltip offset
 motion.distance.medium    24px    panel and drawer entrance
 motion.distance.large     64px    route or section transition, side sheet
-motion.distance.nudge     4px     the invalid-field shake, the card lift
+motion.distance.nudge     4px     the invalid-field shake
+motion.distance.lift      4px     how far a card rises under a pointer (CRD-6); its own token, so the lift can be retuned without moving the shake
 
 motion.scale.press        0.98    pressed control
 motion.scale.arrive       0.97    arriving and leaving surfaces
@@ -184,6 +187,7 @@ motion.scale.pop          0.6     a mark too small for 97% to read: a chart poin
 motion.speed.read         48px/s  how fast text may travel while it is being read (a label scrolled to its end)
 motion.stagger.step       80ms    delay between peers
 motion.stagger.steps      4       the cap: peers after the fourth share one delay
+motion.stagger.fine       40ms    the same ramp for a grid of many small peers (CRD-6): four steps is 160ms, not 320
 ```
 
 `settle`, the two scales, `nudge` and the stagger were measured off a
@@ -198,6 +202,25 @@ and over 0.95, `pop` is above 0 and under `arrive`, `read` is between 20 and 100
 **Rule.** A component consumes a token. A duration written into a component is
 the thing this layer exists to prevent — refining the motion language must be
 one edit, not a hundred.
+
+## Safeguards
+
+Source: `brand.ts` (`BRAND.safeguards`), read by `apps/web/src/lib/guard.ts`. Not
+part of the theme, because they are not appearance: they are how much deliberate
+effort a destructive act asks for, and a deployment can change them without
+touching a stylesheet.
+
+```
+safeguards.holdToConfirmMs        1000   how long a danger control is held before it fires (DNG-1)
+safeguards.deletionCooldownDays   14     how long a removed workspace, brand or account can still be restored (DNG-6)
+```
+
+A second is the least a ring can fill in and still be seen filling, and longer
+than the 500 ms of a phone's long-press, so a thumb resting on the button cannot
+fire it. Fourteen days spans two weekends and a month-end close, which is when
+somebody notices what is missing. `guard.spec.ts` pins both to the brand, so a
+retune is one edit that every control follows. The cooling-off period is a UI
+contract until the purge job exists (`DNG-6`); the number is the one it will read.
 
 ## Theming
 
@@ -290,6 +313,7 @@ font, not per step.
 | Space, size, elevation, layers, motion | `theme-space.ts`, `theme-size.ts`, `theme-elevation.ts`, `theme-layers.ts`, `theme-motion.ts` | built |
 | Theme mechanism (CSS variables, Tailwind theme) | `theme-tailwind.ts`, consumed by `apps/web/tailwind.config.ts` | built |
 | Theme preference and no-flash script | `theme-runtime.ts`; `useTheme()`, `ThemeToggle`, `ThemeInitScript` in `apps/web` | built |
+| Safeguards (hold length, cooling-off days) | `brand.ts` → `apps/web/src/lib/guard.ts` | built |
 | Breakpoints | `apps/web/tailwind.config.ts` | built |
 | Dark mode on POS and mobile | — | **unbuilt** (ADR-083) |
 

@@ -9,6 +9,7 @@ import { cn } from '@/utils/cn';
 import type { Location } from '@/types/api';
 import { PageHeader, ConfirmDialog } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
+import { Select } from '@/components/ui/select';
 
 interface UnitHistory {
   serialNumber: string;
@@ -231,16 +232,15 @@ export default function SerialDetailPage({ params }: { params: Promise<{ serialN
               />
             </label>
             {locations.length > 1 ? (
-              <label className="block">
+              <div>
                 <span className="field-label">Returned to</span>
-                <select className="field-input" value={returnLocationId} onChange={(e) => setReturnLocationId(e.target.value)}>
-                  {locations.map((location) => (
-                    <option key={location.id} value={location.id}>
-                      {location.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                <Select
+                  label="Returned to"
+                  value={returnLocationId}
+                  onChange={setReturnLocationId}
+                  options={locations.map((location) => ({ value: location.id, label: location.name }))}
+                />
+              </div>
             ) : null}
           </div>
           <div className="mt-3">
@@ -262,7 +262,7 @@ export default function SerialDetailPage({ params }: { params: Promise<{ serialN
         onConfirm={writeOff}
         title={`Write off ${unit.serialNumber}?`}
         description="This removes it from sellable stock. It cannot be sold or returned again from here."
-        confirmLabel="Write off"
+        confirmLabel="Write off unit"
         busy={submitting}
       />
     </>

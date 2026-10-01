@@ -11,6 +11,7 @@ import type {
   RoleSummary,
 } from '@/types/api';
 import { DataTable, Loading } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 export default function UserDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -277,21 +278,20 @@ export default function UserDetailPage({ params }: { params: Promise<{ id: strin
             />
           </label>
 
-          <label className="block">
+          <div>
             <span className="field-label">Role</span>
-            <select
+            <Select
+              label="Role"
               value={profileDraft.role}
               disabled={isSelf}
-              onChange={(event) =>
-                setProfileDraft({ ...profileDraft, role: event.target.value as BackOfficeRole })
-              }
-              className="field-input disabled:opacity-50"
-            >
-              <option value="STAFF">Staff</option>
-              <option value="TAILOR">Tailor</option>
-              <option value="ADMIN">Admin</option>
-            </select>
-          </label>
+              onChange={(next) => setProfileDraft({ ...profileDraft, role: next as BackOfficeRole })}
+              options={[
+                { value: 'STAFF', label: 'Staff' },
+                { value: 'TAILOR', label: 'Tailor' },
+                { value: 'ADMIN', label: 'Admin' },
+              ]}
+            />
+          </div>
 
           <label className="flex items-center gap-2 text-sm">
             <input

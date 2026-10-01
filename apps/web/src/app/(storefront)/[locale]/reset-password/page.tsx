@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthPage } from '@/components/storefront/auth-page';
+import { Button, Field, FormStack } from '@/components/ui';
 import { useState } from 'react';
 import { Link } from '@/i18n/navigation';
 import { resetPassword } from '@/lib/customer-client';
@@ -48,33 +49,36 @@ export default function ResetPasswordPage() {
             Your password has been reset. Redirecting you to sign in…
           </p>
         ) : (
-          <form onSubmit={onSubmit} className="mt-8 space-y-4">
-            <div>
-              <label className="field-label" htmlFor="newPassword">
-                New password
-              </label>
-              <input
-                id="newPassword"
-                type="password"
-                className="field-input"
-                autoComplete="new-password"
-                minLength={8}
-                value={newPassword}
-                onChange={(event) => setNewPassword(event.target.value)}
-                required
-              />
-            </div>
+          <FormStack
+            onSubmit={onSubmit}
+            className="mt-8"
+            actions={
+              <Button type="submit" loading={busy} loadingLabel="Saving…" className="w-full">
+                Set new password
+              </Button>
+            }
+          >
+            <Field label="New password" hint="At least 8 characters.">
+              {(control) => (
+                <input
+                  {...control}
+                  type="password"
+                  className="field-input field-xl"
+                  autoComplete="new-password"
+                  minLength={8}
+                  value={newPassword}
+                  onChange={(event) => setNewPassword(event.target.value)}
+                  required
+                />
+              )}
+            </Field>
 
             {error ? (
               <p role="alert" className="notice notice-error">
                 {error}
               </p>
             ) : null}
-
-            <button type="submit" disabled={busy} className="btn-primary w-full">
-              {busy ? 'Saving…' : 'Set new password'}
-            </button>
-          </form>
+          </FormStack>
         )}
     </AuthPage>
   );

@@ -8,6 +8,7 @@ import { ROUTES } from '@/constants/routes';
 import { PageHeader, Loading, DataTable, Dialog, MetricStrip } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import { useAdminSession } from '@/components/admin/session';
+import { DateField } from '@/components/ui/date-field';
 
 interface Drawdown {
   id: string;
@@ -291,10 +292,12 @@ export default function BankFacilityDetailPage({ params }: { params: Promise<{ i
             <span className="field-label">Amount</span>
             <input className="field-input w-full" type="number" min="0" value={drawdownAmount} onChange={(e) => setDrawdownAmount(e.target.value)} />
           </label>
-          <label className="block">
-            <span className="field-label">Drawdown date</span>
-            <input className="field-input w-full" type="date" value={drawdownDate} onChange={(e) => setDrawdownDate(e.target.value)} />
-          </label>
+          <div>
+            <label htmlFor="drawdown-date" className="field-label">
+              Drawdown date
+            </label>
+            <DateField id="drawdown-date" value={drawdownDate} onChange={setDrawdownDate} />
+          </div>
           <label className="block">
             <span className="field-label">Note</span>
             <textarea className="field-input w-full" rows={2} value={drawdownNote} onChange={(e) => setDrawdownNote(e.target.value)} placeholder="Optional" />
@@ -322,10 +325,12 @@ export default function BankFacilityDetailPage({ params }: { params: Promise<{ i
               <input className="field-input w-full" type="number" min="0" value={markupAmount} onChange={(e) => setMarkupAmount(e.target.value)} />
             </label>
           </div>
-          <label className="block">
-            <span className="field-label">Repayment date</span>
-            <input className="field-input w-full" type="date" value={repaymentDate} onChange={(e) => setRepaymentDate(e.target.value)} />
-          </label>
+          <div>
+            <label htmlFor="repayment-date" className="field-label">
+              Repayment date
+            </label>
+            <DateField id="repayment-date" value={repaymentDate} onChange={setRepaymentDate} />
+          </div>
           <label className="block">
             <span className="field-label">Note</span>
             <textarea className="field-input w-full" rows={2} value={repaymentNote} onChange={(e) => setRepaymentNote(e.target.value)} placeholder="Optional" />

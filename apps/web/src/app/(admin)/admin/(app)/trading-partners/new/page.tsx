@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
+import { Select } from '@/components/ui/select';
 
 export default function NewTradingPartnerPage() {
   const router = useRouter();
@@ -54,18 +55,28 @@ export default function NewTradingPartnerPage() {
           />
         </label>
 
-        <label className="block">
+        <div>
           <span className="field-label">Kind</span>
-          <select
+          <Select
+            label="Kind"
             value={kind}
-            onChange={(event) => setKind(event.target.value as typeof kind)}
-            className="field-input"
-          >
-            <option value="SUPPLIER">Supplier — we buy from them</option>
-            <option value="CUSTOMER">Customer — they buy from us</option>
-            <option value="BOTH">Both</option>
-          </select>
-        </label>
+            onChange={(next) => setKind(next as typeof kind)}
+            options={[
+              { value: 'SUPPLIER', label: 'Supplier' },
+              { value: 'CUSTOMER', label: 'Customer' },
+              { value: 'BOTH', label: 'Both' },
+            ]}
+          />
+          <p className="mt-1 text-sm text-neutral-900/70">
+            {
+              {
+                SUPPLIER: 'We buy from them.',
+                CUSTOMER: 'They buy from us.',
+                BOTH: 'We buy from them and they buy from us.',
+              }[kind]
+            }
+          </p>
+        </div>
 
         <label className="block">
           <span className="field-label">Their API (optional)</span>

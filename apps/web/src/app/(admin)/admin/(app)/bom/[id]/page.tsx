@@ -4,7 +4,7 @@ import { use, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
-import { ConfirmDialog, PageHeader } from '@/components/ui';
+import { DangerZone, HoldToConfirm, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import { RecipeEditor } from '@/components/admin/bom/recipe-editor';
 import { CostBreakdown } from '@/components/admin/bom/cost-breakdown';
@@ -35,7 +35,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusChanging, setStatusChanging] = useState(false);
-  const [confirmingArchive, setConfirmingArchive] = useState(false);
 
   function load() {
     Promise.all([
@@ -75,7 +74,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
       addToast(cause instanceof Error ? cause.message : 'Could not archive the recipe', 'error');
     } finally {
       setStatusChanging(false);
-      setConfirmingArchive(false);
     }
   }
 
@@ -128,11 +126,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
                   Activate
                 </button>
               ) : null}
-              {recipe.status !== 'ARCHIVED' ? (
-                <button type="button" onClick={() => setConfirmingArchive(true)} disabled={statusChanging} className="btn-ghost text-red-700">
-                  Archive
-                </button>
-              ) : null}
             </div>
           ) : (
             <StatusBadge status={recipe.status} />
@@ -175,15 +168,24 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
       <h2 className="mb-3 text-lg font-medium text-neutral-900">Edit recipe</h2>
       <RecipeEditor recipeId={id} />
 
-      <ConfirmDialog
-        open={confirmingArchive}
-        onClose={() => setConfirmingArchive(false)}
-        onConfirm={archive}
-        title="Archive this recipe?"
-        description="It stops appearing as an option for new production runs. Past runs are unaffected."
-        confirmLabel="Archive"
-        busy={statusChanging}
-      />
+      {/* Archiving lives at the foot of the page, closed, and is confirmed by a hold (DNG-1, DNG-3, DNG-5). */}
+      {canManage && recipe.status !== 'ARCHIVED' ? (
+        <DangerZone
+          className="mt-8"
+          actions={[
+            {
+              id: 'archive',
+              title: 'Archive this recipe',
+              description: 'It stops appearing as an option for new production runs. Past runs are unaffected.',
+              control: (
+                <HoldToConfirm onConfirm={archive} loading={statusChanging} loadingLabel="Archiving…">
+                  Archive recipe
+                </HoldToConfirm>
+              ),
+            },
+          ]}
+        />
+      ) : null}
     </>
   );
 }

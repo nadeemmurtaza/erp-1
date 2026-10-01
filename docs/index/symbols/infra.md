@@ -15,12 +15,20 @@ Every top-level export in `infra`, with the line to open.
 | `check-contrast.mjs` | `contrast` | const | :78 | WCAG 2.x contrast ratio. |
 | `check-contrast.mjs` | `scanColours` | function | :241 | Every colour utility in a file, with the className it shared, if any. |
 | `check-contrast.mjs` | `pinnedRegions` | function | :274 | A region that holds one theme whatever the page is in: an element carrying `data-theme="light"` (or… |
+| `check-danger.mjs` | `readVagueLabels` | function | :39 | The vague words, read from the one place they are defined. |
+| `check-danger.mjs` | `isVague` | function | :46 | Same normalisation as `isVagueLabel`: trim, lower-case, drop trailing punctuation. |
+| `check-danger.mjs` | `findLabels` | function | :78 | Every destructive label written as a literal in `text`, and the count of those that are expressions. |
 | `check-links.mjs` | `APPS` | const | :37 | The apps with a Next.js app router, and where each one's assets live. |
 | `check-links.mjs` | `routeUrl` | function | :91 | The URL a `page.tsx` / `route.ts` serves: route groups vanish, `[id]` stays. |
 | `check-links.mjs` | `routeInventory` | function | :107 | Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`. |
 | `check-links.mjs` | `matches` | function | :140 | Does `link` land on `route`? |
 | `check-links.mjs` | `resolve1` | function | :181 | The route Next.js would pick for this link, or null. |
 | `check-links.mjs` | `scanLinks` | function | :226 | Every internal path a file refers to, with the line it is on. |
+| `check-menus.mjs` | `BASELINE` | const | :51 | The debt on the day this check was written, after the first migration. |
+| `check-menus.mjs` | `blankComments` | function | :80 | Blank comments to spaces, keeping every newline, so line numbers still point at the source. |
+| `check-menus.mjs` | `findSelects` | function | :90 | Every native `<select>` block: its line, how many literal `<option>` it has, and whether it maps mo… |
+| `check-menus.mjs` | `findDateInputs` | function | :106 | The line of every native date input: `type="date"`, `type='date'` or `type={'date'}`. |
+| `check-menus.mjs` | `isShortSelect` | const | :112 | MNU-6: a list written out in full, short enough that it should be visible. |
 | `check-metadata-renderer.mjs` | `TARGET_FILE` | const | :31 |  |
 | `check-metadata-renderer.mjs` | `findViolations` | function | :38 |  |
 | `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :63 |  |

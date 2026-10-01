@@ -26,6 +26,10 @@ describe('spacing and size tokens', () => {
   it('orders control heights, and keeps the touch floors at 44 and 48 (ACT-1, ACC-4)', () => {
     expect(size.control.sm).toBeLessThan(size.control.md);
     expect(size.control.md).toBeLessThan(size.control.lg);
+    // FRM-2: the field of a sign-in form is 56, and it stays above the touch floor.
+    expect(size.control.xl).toBe(56);
+    expect(size.control.lg).toBeLessThan(size.control.xl);
+    expect(size.control.xl).toBeGreaterThan(size.touch.pos);
     expect(size.touch.min).toBe(44);
     expect(size.touch.pos).toBe(48);
     expect(size.touch.pos).toBeGreaterThan(size.touch.min);
@@ -86,6 +90,13 @@ describe('motion', () => {
     expect(speed.read).toBeLessThanOrEqual(100);
     // MOT-6: the whole cascade finishes inside one `slow` step, however many children there are.
     expect(stagger.step * stagger.steps).toBeLessThanOrEqual(duration.slow);
+    // CRD-6: the fine step is for many small peers; it is finer than the step and the cap still holds.
+    expect(stagger.fine).toBe(40);
+    expect(stagger.fine).toBeLessThan(stagger.step);
+    expect(stagger.fine * stagger.steps).toBeLessThanOrEqual(duration.slow);
+    // CRD-6: a card lifts by more than a press sinks and by less than a small movement.
+    expect(distance.lift).toBeGreaterThan(distance.micro);
+    expect(distance.lift).toBeLessThan(distance.small);
   });
 
   it('settles with a strong ease-out that never overshoots', () => {

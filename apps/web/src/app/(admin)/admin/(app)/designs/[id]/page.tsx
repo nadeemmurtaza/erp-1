@@ -14,6 +14,7 @@ import {
   type OptionDraft,
 } from '@/utils/design-drafts';
 import type { AdminStitchingOptionGroup, GarmentType } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 /**
  * One style question, and the answers a customer can give it.
@@ -243,22 +244,23 @@ export default function AdminDesignPage({ params }: { params: Promise<{ id: stri
                     </select>
                   </label>
 
-                  <label className="block">
+                  <div>
                     <span className="field-label">Answers allowed</span>
-                    <select
+                    <Select
+                      label="Answers allowed"
                       value={draft.selectionType}
-                      onChange={(event) =>
+                      onChange={(next) =>
                         setDraft({
                           ...draft,
-                          selectionType: event.target.value as 'SINGLE' | 'MULTI',
+                          selectionType: next as 'SINGLE' | 'MULTI',
                         })
                       }
-                      className="field-input"
-                    >
-                      <option value="SINGLE">One choice</option>
-                      <option value="MULTI">Several choices</option>
-                    </select>
-                  </label>
+                      options={[
+                        { value: 'SINGLE', label: 'One choice' },
+                        { value: 'MULTI', label: 'Several choices' },
+                      ]}
+                    />
+                  </div>
 
                   <div className="flex flex-wrap items-center gap-4 pt-6">
                     <label className="flex items-center gap-2 text-sm text-neutral-900/70">

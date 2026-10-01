@@ -17,7 +17,7 @@ paths:
 ## The design system
 
 The long form is **[`docs/design/`](../../docs/design/README.md)** — sixteen
-chapters and **150 numbered laws**, covering principles, tokens, layout,
+chapters and **180 numbered laws**, covering principles, tokens, layout,
 components, states, motion, content, accessibility, governance, quality
 gates, the borrowed law catalogue, workflow, permissions, composition,
 navigation and integrity. Its measured state, generated from the code, is

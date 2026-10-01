@@ -9,6 +9,7 @@ import { cn } from '@/utils/cn';
 import { DataTable, Dialog, Loading, MetricStrip, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { PayRunAdjustmentReason, PayRunWithLines } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 const ADJUSTMENT_REASONS: PayRunAdjustmentReason[] = ['OVERPAYMENT', 'UNDERPAYMENT', 'CORRECTION'];
 
@@ -224,17 +225,19 @@ export default function PayrollRunDetailPage({ params }: { params: Promise<{ id:
 
       <Dialog open={adjustOpen} onClose={() => setAdjustOpen(false)} title="Post an adjustment">
         <form onSubmit={postAdjustment} className="space-y-3">
-          <label className="block">
-            <span className="field-label">Employee</span>
-            <select value={adjustUserId} onChange={(e) => setAdjustUserId(e.target.value)} className="field-input" required>
-              <option value="">Select…</option>
-              {run.lines.map((line) => (
-                <option key={line.userId} value={line.userId}>
-                  {displayName(line.user)}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div>
+            <label htmlFor="adjust-employee" className="field-label">
+              Employee
+            </label>
+            <Select
+              id="adjust-employee"
+              label="Employee"
+              required
+              value={adjustUserId}
+              onChange={setAdjustUserId}
+              options={run.lines.map((line) => ({ value: line.userId, label: displayName(line.user) }))}
+            />
+          </div>
           <label className="block">
             <span className="field-label">Reason</span>
             <select value={adjustReason} onChange={(e) => setAdjustReason(e.target.value as PayRunAdjustmentReason)} className="field-input">

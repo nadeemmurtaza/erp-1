@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
 import { ConfirmDialog, DataTable, Loading } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 interface TaxRate {
   id: string;
@@ -203,22 +204,24 @@ export default function TaxAdminPage() {
               </label>
 
               <div className="flex flex-wrap items-center gap-4">
-                <label className="flex items-center gap-2 text-sm text-neutral-900/80">
-                  Pricing mode
-                  <select
-                    className="field-input"
+                <div className="flex flex-wrap items-center gap-2 text-sm text-neutral-900/80">
+                  <span>Pricing mode</span>
+                  <Select
+                    label="Pricing mode"
                     value={settings?.pricingMode ?? 'EXCLUSIVE'}
                     disabled={savingSettings}
-                    onChange={(e) =>
-                      saveSettings({ pricingMode: e.target.value as 'INCLUSIVE' | 'EXCLUSIVE' })
-                    }
-                  >
-                    <option value="EXCLUSIVE">Exclusive — tax is added at checkout</option>
-                    <option value="INCLUSIVE">
-                      Inclusive — prices already include tax; nothing the customer pays changes
-                    </option>
-                  </select>
-                </label>
+                    onChange={(next) => saveSettings({ pricingMode: next as 'INCLUSIVE' | 'EXCLUSIVE' })}
+                    options={[
+                      { value: 'EXCLUSIVE', label: 'Exclusive' },
+                      { value: 'INCLUSIVE', label: 'Inclusive' },
+                    ]}
+                  />
+                  <span>
+                    {(settings?.pricingMode ?? 'EXCLUSIVE') === 'EXCLUSIVE'
+                      ? 'Tax is added at checkout.'
+                      : 'Prices already include tax; nothing the customer pays changes.'}
+                  </span>
+                </div>
 
                 <label className="flex items-center gap-2 text-sm text-neutral-900/80">
                   Default class
@@ -370,7 +373,7 @@ export default function TaxAdminPage() {
         }}
         title="Delete this tax class?"
         description="This only works if no product variant uses it — otherwise the delete is refused."
-        confirmLabel="Delete"
+        confirmLabel="Delete tax class"
         busy={deletingClass}
       />
     </>

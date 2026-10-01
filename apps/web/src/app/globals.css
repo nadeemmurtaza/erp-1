@@ -168,7 +168,7 @@
   @media (prefers-reduced-motion: no-preference) {
     .lift:hover,
     .lift:focus-within {
-      transform: translateY(calc(var(--motion-distance-nudge) * -1));
+      transform: translateY(calc(var(--motion-distance-lift) * -1));
     }
 
     /*
@@ -355,9 +355,101 @@
     --btn-fill: theme('backgroundColor.red.600');
   }
 
+  /*
+   * The hold-to-confirm button (DNG-1, `HoldToConfirm`). It looks like the
+   * outlined red button (DNG-4: red only on destruction, outlined until it is
+   * acted on) but never fills on hover: a hover fill would answer "I am about
+   * to do it" before anyone has held anything. Progress is a ring beside the
+   * label and a line along the bottom edge, both read from `--hold` (0 to 1),
+   * which the component writes from the clock each frame, so the label keeps
+   * its contrast the whole time and nothing here depends on an animation.
+   * Only the drain on release is a transition (`fast`); while holding there is
+   * none, or the ring would trail the hand. Text selection and the touch
+   * callout are off because both interrupt a press that is meant to last.
+   */
+  .btn-hold {
+    @apply btn border border-red-600 bg-white text-red-700;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+  }
+
+  .btn-hold::before {
+    display: none;
+  }
+
+  .hold-ring {
+    @apply h-icon-md w-icon-md shrink-0;
+    transform: rotate(-90deg);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+  }
+
+  .hold-ring-track {
+    opacity: 0.25;
+  }
+
+  .hold-ring-fill {
+    stroke-dasharray: 1;
+    stroke-dashoffset: calc(1 - var(--hold, 0));
+    transition: stroke-dashoffset var(--motion-duration-fast) var(--motion-easing-exit);
+  }
+
+  .hold-bar {
+    @apply pointer-events-none absolute inset-x-0 bottom-0 h-0.5 bg-red-600;
+    transform-origin: left center;
+    transform: scaleX(var(--hold, 0));
+    transition: transform var(--motion-duration-fast) var(--motion-easing-exit);
+  }
+
+  [dir='rtl'] .hold-bar {
+    transform-origin: right center;
+  }
+
+  .btn-hold[data-holding] .hold-ring-fill,
+  .btn-hold[data-holding] .hold-bar {
+    transition: none;
+  }
+
+  /* Armed by assistive technology and waiting for the second activation: a steady outline, since nothing is being held. */
+  .btn-hold[data-armed] {
+    @apply ring-2 ring-red-600;
+  }
+
   .card {
     @apply border border-neutral-100 bg-white;
     border-radius: var(--radius-lg);
+  }
+
+  /*
+   * A card lit from the top (CRD-4, FRM-5). One border, soft, as `.card`; the
+   * surface is a little lighter at the top edge and settles to the plain surface
+   * by 96px down. In the dark theme `overlay` is the lighter step, which is what
+   * makes it read as raised; in light the two steps are close and the effect is a
+   * whisper, which is right. No shadow at rest: `ui.md` forbids a border and a
+   * shadow on the same edge, so the shadow arrives with `.lift`, when the card
+   * rises under a pointer. `--inset` is the gap between this card's edge and
+   * what sits inside it (media, an inner panel), so `.media-concentric` can curve
+   * with it (CRD-5).
+   */
+  .card-lit {
+    @apply border border-neutral-100 bg-white;
+    --inset: 0.5rem;
+    border-radius: var(--radius-lg);
+    background-image: linear-gradient(to bottom, rgb(var(--color-overlay)), rgb(var(--color-surface)) 6rem);
+  }
+
+  /*
+   * The corner of something set inside a rounded container is the container's
+   * corner minus the gap (CRD-5). Written in CSS so it follows `--radius-lg` and
+   * `--inset` wherever they are set; never negative, so with the house shape
+   * (3px against an 8px inset) the inner corner is square. `concentricRadius` in
+   * @newax/shared is the same rule for the platforms with no CSS variables.
+   */
+  .media-concentric {
+    border-radius: max(0px, calc(var(--radius-lg) - var(--inset, 0px)));
   }
 
   /*
@@ -419,16 +511,16 @@
   }
 
   .field-input {
-    @apply w-full border-neutral-200 bg-white text-neutral-900 shadow-none placeholder:text-neutral-400 focus:border-accent focus:ring-accent;
+    @apply w-full border-neutral-200 bg-white text-neutral-900 shadow-none placeholder:text-neutral-400 focus:border-accent focus:ring-2 focus:ring-accent;
     /*
      * The focus ring is a box-shadow, which Tailwind's `transition-colors` does
      * not list, so it used to pop in while the border eased. Both ease now, on
      * the same curve, so focus reads as one movement.
      */
     transition:
-      border-color var(--motion-duration-normal) var(--motion-easing-settle),
-      background-color var(--motion-duration-normal) var(--motion-easing-settle),
-      box-shadow var(--motion-duration-normal) var(--motion-easing-settle);
+      border-color var(--motion-duration-fast) var(--motion-easing-settle),
+      background-color var(--motion-duration-fast) var(--motion-easing-settle),
+      box-shadow var(--motion-duration-fast) var(--motion-easing-settle);
     /*
      * 16px up to `sm`, and this is not a taste choice: iOS Safari zooms the
      * whole page when a focused input's text is under 16px, and then leaves
@@ -438,6 +530,16 @@
      */
     @apply min-h-touch text-base sm:min-h-0 sm:text-sm;
     border-radius: var(--radius);
+  }
+
+  /*
+   * The 56px field of a sign-in or sign-up form (FRM-2): one decision per
+   * screen, so the control is large. Add it to `.field-input`, never instead of
+   * it. The text stays 16px (iOS zooms below that) and the height holds from
+   * the narrowest screen up, since a 56px target is above the touch floor.
+   */
+  .field-xl {
+    @apply min-h-control-xl px-4 text-base;
   }
 
   /*
@@ -811,6 +913,34 @@
   }
 
   /*
+   * The same ramp at the fine step, for a grid of many small peers (a product
+   * grid, CRD-6). `backwards` fill, not `both`: a card that has arrived must hand
+   * its `transform` back to `.lift`, and an animation that holds its end value
+   * would pin the card in place under the pointer. The same fill keeps a
+   * `transform` off the wrapper once it is finished, which would otherwise turn
+   * it into the containing block of any `position: fixed` child.
+   */
+  .stagger-fine > * {
+    animation: arrive var(--motion-duration-slow) var(--motion-easing-settle) backwards;
+  }
+
+  .stagger-fine > *:nth-child(2) {
+    animation-delay: var(--motion-stagger-fine);
+  }
+
+  .stagger-fine > *:nth-child(3) {
+    animation-delay: calc(var(--motion-stagger-fine) * 2);
+  }
+
+  .stagger-fine > *:nth-child(4) {
+    animation-delay: calc(var(--motion-stagger-fine) * 3);
+  }
+
+  .stagger-fine > *:nth-child(n + 5) {
+    animation-delay: calc(var(--motion-stagger-fine) * 4);
+  }
+
+  /*
    * The keyframes of the motion language. Transform and opacity only (MOT-5),
    * and every distance and scale is a token, so the whole vocabulary is
    * retuned from brand.ts. `arrive` settles in from a small offset and a
@@ -959,7 +1089,7 @@
     }
     to {
       opacity: 0;
-      transform: translateY(calc(var(--motion-distance-nudge) * -1));
+      transform: translateY(calc(var(--motion-distance-lift) * -1));
     }
   }
 

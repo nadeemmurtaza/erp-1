@@ -3,7 +3,7 @@
 
 # Tests
 
-**376** spec files, **3,748** cases. What is already pinned down — and what is not.
+**385** spec files, **3,986** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -63,7 +63,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (352)
+## Unit and integration (361)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -380,7 +380,15 @@ regression or an N+1.
 | `apps/web/src/components/design-system/audience.spec.ts` | web | 15 | estimateAudience · publishFriction · publishBlocker · visibilityUsesAudience |
 | `apps/web/src/components/design-system/department.spec.ts` | web | 24 | suggestCode · departmentErrors · descendantIds · unitPath · nearestOffice · closeBlockers |
 | `apps/web/src/components/design-system/dispatch-machine.spec.ts` | web | 19 | dispatchReducer: the forward path · dispatchReducer: undo · dispatchReducer: failure and its remedi… |
-| `apps/web/src/lib/motion.spec.ts` | web | 38 | bezierEase · clamp01 · countUpValue · revealedCount · staggerDelayMs · noiseGlyph · scrambleFrame ·… |
+| `apps/web/src/lib/calendar.spec.ts` | web | 38 | leap years and month lengths · parseIso / toIso · addDays / addMonths / addYears · weekday and orde… |
+| `apps/web/src/lib/date-parse.spec.ts` | web | 35 | the formats the field must understand (MNU-2) · day order follows the deployment locale · impossibl… |
+| `apps/web/src/lib/guard.spec.ts` | web | 18 | nextHold (DNG-1) · holdProgress · isVagueLabel (DNG-2) · cooldownState (DNG-6) |
+| `apps/web/src/lib/menu-filter.spec.ts` | web | 22 | thresholds · filterOptions · typeAheadIndex |
+| `apps/web/src/lib/motion.spec.ts` | web | 40 | bezierEase · clamp01 · countUpValue · revealedCount · staggerDelayMs · noiseGlyph · scrambleFrame ·… |
+| `apps/web/src/lib/popover-position.spec.ts` | web | 13 | placePopover |
+| `apps/web/src/lib/upload-client.spec.ts` | web | 22 | uploadFile: the request · uploadFile: a 401 (the same two chances as adminFetch) · uploadFile: fail… |
+| `apps/web/src/lib/upload-queue.spec.ts` | web | 49 | add · concurrency · speed and time left · percentOf and isProcessing · failure is per file (UPL-5)… |
+| `apps/web/src/lib/upload.spec.ts` | web | 32 | describeLimits · checkFile · checkFiles · partitionFiles · formatSpeed · formatEta |
 | `apps/web/src/utils/cn.spec.ts` | web | 4 | cn with the design system’s names |
 | `packages/desktop-runtime/src/backup-scheduler.integration.spec.ts` | packages | 2 | TarBackupArchiver (real tar package, no Postgres) |
 | `packages/desktop-runtime/src/backup-scheduler.spec.ts` | packages | 15 | LocalBackupScheduler · runOnce — the happy path · failure paths — never silently report success · s… |
@@ -415,6 +423,7 @@ regression or an N+1.
 | `packages/shared/src/secret-crypto.spec.ts` | packages | 5 | secret-crypto |
 | `packages/shared/src/sku.spec.ts` | packages | 7 | generateSku |
 | `packages/shared/src/theme-contrast.spec.ts` | packages | 16 | contrast maths · dark palette · dark stock hues — inverted in lightness, not in hue |
+| `packages/shared/src/theme-radii.spec.ts` | packages | 7 | concentricRadius (CRD-5) · safeguards (DNG-1, DNG-6) |
 | `packages/shared/src/theme-runtime.spec.ts` | packages | 9 | resolveTheme · isThemePreference · themeInitScript |
 | `packages/shared/src/theme-space.spec.ts` | packages | 13 | spacing and size tokens · layers · elevation · motion |
 | `packages/shared/src/units.spec.ts` | packages | 7 | toBaseUnits · fromBaseUnits · formatQuantity |

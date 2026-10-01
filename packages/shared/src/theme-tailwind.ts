@@ -203,6 +203,7 @@ export function staticVars(): Vars {
   for (const [name, px] of Object.entries(m.distance)) vars[`--motion-distance-${name}`] = `${px}px`;
   for (const [name, value] of Object.entries(m.scale)) vars[`--motion-scale-${name}`] = String(value);
   vars['--motion-stagger-step'] = ms(m.stagger.step);
+  vars['--motion-stagger-fine'] = ms(m.stagger.fine);
   vars['--motion-speed-read'] = `${m.speed.read}px`;
   return vars;
 }

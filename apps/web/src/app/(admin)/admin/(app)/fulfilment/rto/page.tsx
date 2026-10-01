@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { MetricStrip, DataTable, type MetricItem } from '@/components/ui';
+import { DateField } from '@/components/ui/date-field';
 
 interface RateRow {
   key: string;
@@ -63,18 +64,14 @@ export default function RtoRatePage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <input
-            type="date"
+          <DateField
             value={range.from}
-            onChange={(event) => setRange((current) => ({ ...current, from: event.target.value }))}
-            className="field-input py-1.5"
+            onChange={(next) => setRange((current) => ({ ...current, from: next }))}
             aria-label="From date"
           />
-          <input
-            type="date"
+          <DateField
             value={range.to}
-            onChange={(event) => setRange((current) => ({ ...current, to: event.target.value }))}
-            className="field-input py-1.5"
+            onChange={(next) => setRange((current) => ({ ...current, to: next }))}
             aria-label="To date"
           />
         </div>

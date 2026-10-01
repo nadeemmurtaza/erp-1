@@ -33,6 +33,22 @@ export { Skeleton, SkeletonText, SkeletonRegion, type SkeletonShape } from './sk
 export { Switch } from './switch';
 export { Segmented, type SegmentedOption } from './segmented';
 
+// Forms and safeguards — the form recipe (FRM-1..6) and the danger controls (DNG-1..6).
+export { Field, FormStack, type FieldControlProps } from './field';
+export { HoldToConfirm } from './hold-to-confirm';
+export { DangerZone, type DangerAction } from './danger-zone';
+export { CooldownBanner } from './cooldown-banner';
+
+// Uploads — the drop zone and the lanes it feeds (UPL-1..6). The queue is `useUploadQueue`; the admin's shared one is `useUploads`.
+export { Dropzone } from './dropzone';
+export { UploadTray } from './upload-tray';
+
+// Choosing from a list, and dates (MNU-1..6). `Select` picks segmented, menu or menu-with-search from the option count.
+export { Menu, type MenuOption, type OptionBlocker } from './menu';
+export { Select, type SelectOption } from './select';
+export { MultiSelect, type MultiSelectOption } from './multi-select';
+export { DateField } from './date-field';
+
 // Motion — the expressive tier. Functional motion (press, arrive, focus, error)
 // needs no import: it is the shared classes. See `docs/design/motion/05-motion.md`.
 export { PageEnter } from './page-enter';

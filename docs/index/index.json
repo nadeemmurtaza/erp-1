@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2593,
-    "lines": 413282,
+    "files": 2630,
+    "lines": 422452,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -14,21 +14,1282 @@
     "permissions": 130,
     "screens": 278,
     "crons": 30,
-    "specs": 376,
-    "designLaws": 0
+    "specs": 385,
+    "designLaws": 180
   },
-  "designLaws": [],
+  "designLaws": [
+    {
+      "id": "UPL-1",
+      "family": "UPL",
+      "name": "One target, three ways in",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 142
+    },
+    {
+      "id": "UPL-2",
+      "family": "UPL",
+      "name": "Honest progress",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 151
+    },
+    {
+      "id": "UPL-3",
+      "family": "UPL",
+      "name": "Check before sending",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 161
+    },
+    {
+      "id": "UPL-4",
+      "family": "UPL",
+      "name": "Limits upfront",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 171
+    },
+    {
+      "id": "UPL-5",
+      "family": "UPL",
+      "name": "Failure is per file",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 176
+    },
+    {
+      "id": "UPL-6",
+      "family": "UPL",
+      "name": "Never block the app",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 184
+    },
+    {
+      "id": "MNU-1",
+      "family": "MNU",
+      "name": "Type to filter",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 195
+    },
+    {
+      "id": "MNU-2",
+      "family": "MNU",
+      "name": "Typed dates",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 204
+    },
+    {
+      "id": "MNU-3",
+      "family": "MNU",
+      "name": "Stay open on pick",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 213
+    },
+    {
+      "id": "MNU-4",
+      "family": "MNU",
+      "name": "Collision-aware",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 218
+    },
+    {
+      "id": "MNU-5",
+      "family": "MNU",
+      "name": "Reasons, not grey",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 227
+    },
+    {
+      "id": "MNU-6",
+      "family": "MNU",
+      "name": "No menu under 5",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 233
+    },
+    {
+      "id": "DNG-1",
+      "family": "DNG",
+      "name": "Hold to confirm",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 247
+    },
+    {
+      "id": "DNG-2",
+      "family": "DNG",
+      "name": "Verb labels",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 258
+    },
+    {
+      "id": "DNG-3",
+      "family": "DNG",
+      "name": "Off the happy path",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 263
+    },
+    {
+      "id": "DNG-4",
+      "family": "DNG",
+      "name": "Red budget",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 269
+    },
+    {
+      "id": "DNG-5",
+      "family": "DNG",
+      "name": "Danger zone",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 276
+    },
+    {
+      "id": "DNG-6",
+      "family": "DNG",
+      "name": "Cooldown",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 282
+    },
+    {
+      "id": "FRM-1",
+      "family": "FRM",
+      "name": "Hierarchy",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 292
+    },
+    {
+      "id": "FRM-2",
+      "family": "FRM",
+      "name": "Spacing",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 297
+    },
+    {
+      "id": "FRM-3",
+      "family": "FRM",
+      "name": "Labels",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 302
+    },
+    {
+      "id": "FRM-4",
+      "family": "FRM",
+      "name": "Colour",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 307
+    },
+    {
+      "id": "FRM-5",
+      "family": "FRM",
+      "name": "Depth",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 311
+    },
+    {
+      "id": "FRM-6",
+      "family": "FRM",
+      "name": "Motion",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 322
+    },
+    {
+      "id": "CRD-1",
+      "family": "CRD",
+      "name": "Hierarchy",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 330
+    },
+    {
+      "id": "CRD-2",
+      "family": "CRD",
+      "name": "Spacing",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 334
+    },
+    {
+      "id": "CRD-3",
+      "family": "CRD",
+      "name": "Colour",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 338
+    },
+    {
+      "id": "CRD-4",
+      "family": "CRD",
+      "name": "Depth",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 342
+    },
+    {
+      "id": "CRD-5",
+      "family": "CRD",
+      "name": "Corners curve together",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 349
+    },
+    {
+      "id": "CRD-6",
+      "family": "CRD",
+      "name": "Motion",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 358
+    },
+    {
+      "id": "PER-1",
+      "family": "PER",
+      "name": "Proximity",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 64
+    },
+    {
+      "id": "PER-2",
+      "family": "PER",
+      "name": "Common region",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 73
+    },
+    {
+      "id": "PER-3",
+      "family": "PER",
+      "name": "Similarity",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 82
+    },
+    {
+      "id": "PER-4",
+      "family": "PER",
+      "name": "Continuity",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 92
+    },
+    {
+      "id": "PER-5",
+      "family": "PER",
+      "name": "Closure",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 101
+    },
+    {
+      "id": "PER-6",
+      "family": "PER",
+      "name": "Figure / ground",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 109
+    },
+    {
+      "id": "PER-7",
+      "family": "PER",
+      "name": "Uniform connectedness",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 119
+    },
+    {
+      "id": "PER-8",
+      "family": "PER",
+      "name": "Prägnanz (simplicity)",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 129
+    },
+    {
+      "id": "PER-9",
+      "family": "PER",
+      "name": "Focal point",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 139
+    },
+    {
+      "id": "COG-1",
+      "family": "COG",
+      "name": "Hick's law",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 152
+    },
+    {
+      "id": "COG-2",
+      "family": "COG",
+      "name": "Miller's law",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 162
+    },
+    {
+      "id": "COG-3",
+      "family": "COG",
+      "name": "Chunking",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 176
+    },
+    {
+      "id": "COG-4",
+      "family": "COG",
+      "name": "Cognitive load — intrinsic, extraneous, germane",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 186
+    },
+    {
+      "id": "COG-5",
+      "family": "COG",
+      "name": "Progressive disclosure",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 197
+    },
+    {
+      "id": "COG-6",
+      "family": "COG",
+      "name": "Recognition over recall",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 205
+    },
+    {
+      "id": "COG-7",
+      "family": "COG",
+      "name": "Jakob's law",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 214
+    },
+    {
+      "id": "COG-8",
+      "family": "COG",
+      "name": "Tesler's law (conservation of complexity)",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 224
+    },
+    {
+      "id": "COG-9",
+      "family": "COG",
+      "name": "Zeigarnik effect",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 234
+    },
+    {
+      "id": "COG-10",
+      "family": "COG",
+      "name": "Goal-gradient effect",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 244
+    },
+    {
+      "id": "COG-11",
+      "family": "COG",
+      "name": "Serial position effect",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 254
+    },
+    {
+      "id": "COG-12",
+      "family": "COG",
+      "name": "Von Restorff (isolation) effect",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 263
+    },
+    {
+      "id": "COG-13",
+      "family": "COG",
+      "name": "Peak-end rule",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 271
+    },
+    {
+      "id": "COG-14",
+      "family": "COG",
+      "name": "Selective attention / banner blindness",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 280
+    },
+    {
+      "id": "ACT-1",
+      "family": "ACT",
+      "name": "Fitts's law",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 293
+    },
+    {
+      "id": "ACT-2",
+      "family": "ACT",
+      "name": "The consequence–proximity rule",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 302
+    },
+    {
+      "id": "ACT-3",
+      "family": "ACT",
+      "name": "The Doherty threshold",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 311
+    },
+    {
+      "id": "ACT-4",
+      "family": "ACT",
+      "name": "Response-time limits — 0.1 s / 1 s / 10 s",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 322
+    },
+    {
+      "id": "ACT-5",
+      "family": "ACT",
+      "name": "Postel's law (robustness)",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 336
+    },
+    {
+      "id": "ACT-6",
+      "family": "ACT",
+      "name": "The undo-over-confirm rule",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 345
+    },
+    {
+      "id": "ACT-7",
+      "family": "ACT",
+      "name": "Pareto (the 80/20 rule)",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 360
+    },
+    {
+      "id": "ACT-8",
+      "family": "ACT",
+      "name": "Occam's razor",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 370
+    },
+    {
+      "id": "HEU-1",
+      "family": "HEU",
+      "name": "Visibility of system status",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 386
+    },
+    {
+      "id": "HEU-2",
+      "family": "HEU",
+      "name": "Match the real world",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 391
+    },
+    {
+      "id": "HEU-3",
+      "family": "HEU",
+      "name": "User control and freedom",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 396
+    },
+    {
+      "id": "HEU-4",
+      "family": "HEU",
+      "name": "Consistency and standards",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 401
+    },
+    {
+      "id": "HEU-5",
+      "family": "HEU",
+      "name": "Error prevention",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 406
+    },
+    {
+      "id": "HEU-6",
+      "family": "HEU",
+      "name": "Recognition over recall",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 413
+    },
+    {
+      "id": "HEU-7",
+      "family": "HEU",
+      "name": "Flexibility and efficiency",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 416
+    },
+    {
+      "id": "HEU-8",
+      "family": "HEU",
+      "name": "Aesthetic and minimalist design",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 422
+    },
+    {
+      "id": "HEU-9",
+      "family": "HEU",
+      "name": "Recognise, diagnose, recover",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 427
+    },
+    {
+      "id": "HEU-10",
+      "family": "HEU",
+      "name": "Help and documentation",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 432
+    },
+    {
+      "id": "TYP-1",
+      "family": "TYP",
+      "name": "Measure (line length)",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 441
+    },
+    {
+      "id": "TYP-2",
+      "family": "TYP",
+      "name": "Leading follows measure",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 451
+    },
+    {
+      "id": "TYP-3",
+      "family": "TYP",
+      "name": "A scale, not sizes",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 457
+    },
+    {
+      "id": "TYP-4",
+      "family": "TYP",
+      "name": "Hierarchy is contrast, not size alone",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 464
+    },
+    {
+      "id": "TYP-5",
+      "family": "TYP",
+      "name": "Tabular numerals for tabular data",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 471
+    },
+    {
+      "id": "TYP-6",
+      "family": "TYP",
+      "name": "Case carries meaning",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 480
+    },
+    {
+      "id": "TYP-7",
+      "family": "TYP",
+      "name": "Alignment: one edge",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 486
+    },
+    {
+      "id": "TYP-8",
+      "family": "TYP",
+      "name": "Type must survive the font not loading",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 492
+    },
+    {
+      "id": "COL-1",
+      "family": "COL",
+      "name": "Colour is semantic, never decorative",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 503
+    },
+    {
+      "id": "COL-2",
+      "family": "COL",
+      "name": "Never colour alone",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 513
+    },
+    {
+      "id": "COL-3",
+      "family": "COL",
+      "name": "Contrast floors",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 522
+    },
+    {
+      "id": "COL-4",
+      "family": "COL",
+      "name": "Accent scarcity (the 60–30–10 heuristic)",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 532
+    },
+    {
+      "id": "COL-5",
+      "family": "COL",
+      "name": "Dark mode inverts lightness, not the palette",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 541
+    },
+    {
+      "id": "COL-6",
+      "family": "COL",
+      "name": "Neutral does the work",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 548
+    },
+    {
+      "id": "SPA-1",
+      "family": "SPA",
+      "name": "The 8-point grid, with a 4-point half step",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 559
+    },
+    {
+      "id": "SPA-2",
+      "family": "SPA",
+      "name": "Space encodes relation",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 567
+    },
+    {
+      "id": "SPA-3",
+      "family": "SPA",
+      "name": "Density is a mode, not a value",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 575
+    },
+    {
+      "id": "SPA-4",
+      "family": "SPA",
+      "name": "Centre of gravity — *no ring of content around a void*",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 583
+    },
+    {
+      "id": "SPA-5",
+      "family": "SPA",
+      "name": "Whitespace is structure, not leftovers",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 595
+    },
+    {
+      "id": "SPA-5a",
+      "family": "SPA",
+      "name": "Density and emptiness are different failures",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 602
+    },
+    {
+      "id": "SPA-6",
+      "family": "SPA",
+      "name": "Optical alignment beats mathematical alignment",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 612
+    },
+    {
+      "id": "SPA-7",
+      "family": "SPA",
+      "name": "Ratio: one scale for space, one for type, one for size",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 618
+    },
+    {
+      "id": "SPA-8",
+      "family": "SPA",
+      "name": "Intrinsic layout before breakpoints",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 625
+    },
+    {
+      "id": "SPA-9",
+      "family": "SPA",
+      "name": "Fluid type has a ceiling",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 634
+    },
+    {
+      "id": "MOT-1",
+      "family": "MOT",
+      "name": "Motion communicates or it does not ship",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 646
+    },
+    {
+      "id": "MOT-2",
+      "family": "MOT",
+      "name": "Duration scales with distance and size",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 653
+    },
+    {
+      "id": "MOT-3",
+      "family": "MOT",
+      "name": "Easing carries meaning",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 662
+    },
+    {
+      "id": "MOT-4",
+      "family": "MOT",
+      "name": "Reduced motion is a requirement, and it preserves information",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 669
+    },
+    {
+      "id": "MOT-5",
+      "family": "MOT",
+      "name": "Never animate a property that forces layout",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 678
+    },
+    {
+      "id": "MOT-6",
+      "family": "MOT",
+      "name": "Orchestration, not simultaneity",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 689
+    },
+    {
+      "id": "ACC-1",
+      "family": "ACC",
+      "name": "Keyboard reaches everything",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 703
+    },
+    {
+      "id": "ACC-2",
+      "family": "ACC",
+      "name": "Focus is visible, and not obscured",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 710
+    },
+    {
+      "id": "ACC-3",
+      "family": "ACC",
+      "name": "Focus goes somewhere sensible",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 718
+    },
+    {
+      "id": "ACC-4",
+      "family": "ACC",
+      "name": "Target size",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 725
+    },
+    {
+      "id": "ACC-5",
+      "family": "ACC",
+      "name": "Accessible authentication",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 731
+    },
+    {
+      "id": "ACC-6",
+      "family": "ACC",
+      "name": "Semantics before ARIA",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 738
+    },
+    {
+      "id": "ACC-7",
+      "family": "ACC",
+      "name": "Never rely on hover or pointer alone",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 745
+    },
+    {
+      "id": "ACC-8",
+      "family": "ACC",
+      "name": "Motion, contrast and text size are user settings",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 752
+    },
+    {
+      "id": "GLO-1",
+      "family": "GLO",
+      "name": "Text expands",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 764
+    },
+    {
+      "id": "GLO-2",
+      "family": "GLO",
+      "name": "Logical properties, never physical",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 772
+    },
+    {
+      "id": "GLO-3",
+      "family": "GLO",
+      "name": "Mirroring is not flipping",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 779
+    },
+    {
+      "id": "GLO-4",
+      "family": "GLO",
+      "name": "Locale is not language",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 786
+    },
+    {
+      "id": "GLO-5",
+      "family": "GLO",
+      "name": "Scripts have different metrics",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 793
+    },
+    {
+      "id": "GLO-6",
+      "family": "GLO",
+      "name": "Never concatenate a sentence",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 799
+    },
+    {
+      "id": "GLO-7",
+      "family": "GLO",
+      "name": "Formatting goes through the formatter",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 806
+    },
+    {
+      "id": "GLO-8",
+      "family": "GLO",
+      "name": "Personal and postal data have no universal shape",
+      "file": "docs/design/principles-laws/10-laws.md",
+      "line": 814
+    },
+    {
+      "id": "FLO-1",
+      "family": "FLO",
+      "name": "Every state has a forward action and a marked exit",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 35
+    },
+    {
+      "id": "FLO-2",
+      "family": "FLO",
+      "name": "Back is never destructive, and never a lie",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 45
+    },
+    {
+      "id": "FLO-3",
+      "family": "FLO",
+      "name": "Work is durable from the first meaningful action",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 54
+    },
+    {
+      "id": "FLO-4",
+      "family": "FLO",
+      "name": "An unfinished thing is findable without its URL",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 63
+    },
+    {
+      "id": "FLO-5",
+      "family": "FLO",
+      "name": "Position is always answerable",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 74
+    },
+    {
+      "id": "FLO-6",
+      "family": "FLO",
+      "name": "A step carries its own context",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 84
+    },
+    {
+      "id": "FLO-7",
+      "family": "FLO",
+      "name": "A refusal states its remedy",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 94
+    },
+    {
+      "id": "FLO-8",
+      "family": "FLO",
+      "name": "The state machine is explicit, and the user sees fewer states",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 104
+    },
+    {
+      "id": "FLO-9",
+      "family": "FLO",
+      "name": "Long flows are interruptible by design, not by accident",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 115
+    },
+    {
+      "id": "FLO-10",
+      "family": "FLO",
+      "name": "Hand-off is a first-class step",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 122
+    },
+    {
+      "id": "FLO-11",
+      "family": "FLO",
+      "name": "Every committed action is attributable and reconstructable",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 129
+    },
+    {
+      "id": "FLO-12",
+      "family": "FLO",
+      "name": "Parallel is shown as parallel",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 138
+    },
+    {
+      "id": "FLO-13",
+      "family": "FLO",
+      "name": "A dry run precedes an expensive commit",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 144
+    },
+    {
+      "id": "FLO-14",
+      "family": "FLO",
+      "name": "Time is shown where time matters",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 151
+    },
+    {
+      "id": "FLO-15",
+      "family": "FLO",
+      "name": "The end of a flow is designed",
+      "file": "docs/design/process-governance/11-workflow.md",
+      "line": 156
+    },
+    {
+      "id": "PRM-1",
+      "family": "PRM",
+      "name": "The server decides; the interface only reflects",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 37
+    },
+    {
+      "id": "PRM-2",
+      "family": "PRM",
+      "name": "Hide navigation, disable action, explain both",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 46
+    },
+    {
+      "id": "PRM-3",
+      "family": "PRM",
+      "name": "A page with nothing to do is not that page",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 67
+    },
+    {
+      "id": "PRM-4",
+      "family": "PRM",
+      "name": "Design for the smallest viable holder, then add",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 77
+    },
+    {
+      "id": "PRM-5",
+      "family": "PRM",
+      "name": "Layout closes over absence",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 89
+    },
+    {
+      "id": "PRM-6",
+      "family": "PRM",
+      "name": "Permission state is not an error state",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 99
+    },
+    {
+      "id": "PRM-7",
+      "family": "PRM",
+      "name": "One capability, one name, everywhere",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 105
+    },
+    {
+      "id": "PRM-8",
+      "family": "PRM",
+      "name": "Granting is a design surface, not a data grid",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 113
+    },
+    {
+      "id": "PRM-9",
+      "family": "PRM",
+      "name": "Templates over assembly",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 128
+    },
+    {
+      "id": "PRM-10",
+      "family": "PRM",
+      "name": "Separation of duties is shown, not just enforced",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 138
+    },
+    {
+      "id": "PRM-11",
+      "family": "PRM",
+      "name": "Never leak existence through absence",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 144
+    },
+    {
+      "id": "PRM-12",
+      "family": "PRM",
+      "name": "Scope is part of the permission, and it is visible",
+      "file": "docs/design/process-governance/12-permissions.md",
+      "line": 154
+    },
+    {
+      "id": "MOD-1",
+      "family": "MOD",
+      "name": "A page is correct when a module it mentions is absent",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 40
+    },
+    {
+      "id": "MOD-2",
+      "family": "MOD",
+      "name": "The composition is data, never a conditional",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 50
+    },
+    {
+      "id": "MOD-3",
+      "family": "MOD",
+      "name": "Navigation is composed, never authored",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 58
+    },
+    {
+      "id": "MOD-4",
+      "family": "MOD",
+      "name": "No cross-module link without a fallback",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 70
+    },
+    {
+      "id": "MOD-5",
+      "family": "MOD",
+      "name": "The core is complete on its own",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 80
+    },
+    {
+      "id": "MOD-6",
+      "family": "MOD",
+      "name": "Brand is a value, branch is a row, sector is a folder",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 89
+    },
+    {
+      "id": "MOD-7",
+      "family": "MOD",
+      "name": "Multi-party screens name the party's side",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 106
+    },
+    {
+      "id": "MOD-8",
+      "family": "MOD",
+      "name": "An integration is a capability, not a brand",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 116
+    },
+    {
+      "id": "MOD-9",
+      "family": "MOD",
+      "name": "One component, many densities and surfaces — never a fork",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 129
+    },
+    {
+      "id": "MOD-10",
+      "family": "MOD",
+      "name": "Capability discovery is honest",
+      "file": "docs/design/layout-composition/13-composition.md",
+      "line": 138
+    },
+    {
+      "id": "NAV-1",
+      "family": "NAV",
+      "name": "Organise by job, not by org chart",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 32
+    },
+    {
+      "id": "NAV-2",
+      "family": "NAV",
+      "name": "Breadth over depth, within reason",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 45
+    },
+    {
+      "id": "NAV-3",
+      "family": "NAV",
+      "name": "Search is a first-class path, not a fallback",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 55
+    },
+    {
+      "id": "NAV-4",
+      "family": "NAV",
+      "name": "The current position is always stated",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 64
+    },
+    {
+      "id": "NAV-5",
+      "family": "NAV",
+      "name": "One destination, one route",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 74
+    },
+    {
+      "id": "NAV-6",
+      "family": "NAV",
+      "name": "Every screen is reachable by clicking",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 80
+    },
+    {
+      "id": "NAV-7",
+      "family": "NAV",
+      "name": "Navigation state survives the task",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 87
+    },
+    {
+      "id": "NAV-8",
+      "family": "NAV",
+      "name": "Depth is a promise of specificity",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 96
+    },
+    {
+      "id": "NAV-9",
+      "family": "NAV",
+      "name": "The tree is composed, not authored",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 102
+    },
+    {
+      "id": "NAV-10",
+      "family": "NAV",
+      "name": "Recency and pinning belong to the user",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 108
+    },
+    {
+      "id": "NAV-11",
+      "family": "NAV",
+      "name": "Label like the business speaks",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 114
+    },
+    {
+      "id": "NAV-12",
+      "family": "NAV",
+      "name": "A cross-surface concept keeps its place",
+      "file": "docs/design/layout-composition/14-navigation.md",
+      "line": 120
+    },
+    {
+      "id": "ITG-1",
+      "family": "ITG",
+      "name": "No dead end",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 37
+    },
+    {
+      "id": "ITG-2",
+      "family": "ITG",
+      "name": "Every internal link resolves",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 45
+    },
+    {
+      "id": "ITG-3",
+      "family": "ITG",
+      "name": "Every image has a source, dimensions, and a fallback",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 55
+    },
+    {
+      "id": "ITG-4",
+      "family": "ITG",
+      "name": "Nothing overflows at any of the seven widths",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 68
+    },
+    {
+      "id": "ITG-5",
+      "family": "ITG",
+      "name": "Every screen is reachable by clicking",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 81
+    },
+    {
+      "id": "ITG-6",
+      "family": "ITG",
+      "name": "Every page renders with every module absent",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 89
+    },
+    {
+      "id": "ITG-7",
+      "family": "ITG",
+      "name": "Every page renders at minimum privilege",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 98
+    },
+    {
+      "id": "ITG-8",
+      "family": "ITG",
+      "name": "No layout depends on string length",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 105
+    },
+    {
+      "id": "ITG-9",
+      "family": "ITG",
+      "name": "Every user-visible string is translatable",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 112
+    },
+    {
+      "id": "ITG-10",
+      "family": "ITG",
+      "name": "Colour is never the only channel",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 120
+    },
+    {
+      "id": "ITG-11",
+      "family": "ITG",
+      "name": "Contrast meets its floor",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 127
+    },
+    {
+      "id": "ITG-12",
+      "family": "ITG",
+      "name": "Focus is never obscured, and never lost",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 136
+    },
+    {
+      "id": "ITG-13",
+      "family": "ITG",
+      "name": "Nothing is reachable by hover alone",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 143
+    },
+    {
+      "id": "ITG-14",
+      "family": "ITG",
+      "name": "A check that cannot run is a failing check",
+      "file": "docs/design/process-governance/15-integrity.md",
+      "line": 149
+    }
+  ],
   "areas": {
     "root": {
       "files": 213,
-      "lines": 21494,
-      "bytes": 1230897,
+      "lines": 21501,
+      "bytes": 1233257,
       "label": "repository root files"
     },
     "infra": {
-      "files": 60,
-      "lines": 31565,
-      "bytes": 1244519,
+      "files": 62,
+      "lines": 32004,
+      "bytes": 1263188,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -50,21 +1311,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 496,
-      "lines": 87088,
-      "bytes": 3186352,
+      "files": 530,
+      "lines": 95170,
+      "bytes": 3493709,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 90815,
-      "bytes": 5522045,
+      "lines": 91354,
+      "bytes": 5562814,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 113,
-      "lines": 12987,
-      "bytes": 486187,
+      "files": 114,
+      "lines": 13090,
+      "bytes": 490707,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -53145,7 +54406,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-danger.mjs && node scripts/check-menus.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -53224,6 +54485,18 @@
       "file": "package.json",
       "name": "check:links",
       "cmd": "node scripts/check-links.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:danger",
+      "cmd": "node scripts/check-danger.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:menus",
+      "cmd": "node scripts/check-menus.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -57146,10 +58419,65 @@
       ]
     },
     {
-      "file": "apps/web/src/lib/motion.spec.ts",
+      "file": "apps/web/src/lib/calendar.spec.ts",
       "module": "",
       "kind": "unit test",
       "cases": 38,
+      "describes": [
+        "leap years and month lengths",
+        "parseIso / toIso",
+        "addDays / addMonths / addYears",
+        "weekday and ordering",
+        "monthGrid",
+        "yearPage",
+        "navigate",
+        "locale facts"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/date-parse.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 35,
+      "describes": [
+        "the formats the field must understand (MNU-2)",
+        "day order follows the deployment locale",
+        "impossible dates say what to type",
+        "month-end and leap-day arithmetic",
+        "two-digit years",
+        "min and max (a reason, never a silent clamp)",
+        "text it cannot read",
+        "inputs"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/guard.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 18,
+      "describes": [
+        "nextHold (DNG-1)",
+        "holdProgress",
+        "isVagueLabel (DNG-2)",
+        "cooldownState (DNG-6)"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/menu-filter.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 22,
+      "describes": [
+        "thresholds",
+        "filterOptions",
+        "typeAheadIndex"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/motion.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 40,
       "describes": [
         "bezierEase",
         "clamp01",
@@ -57166,7 +58494,62 @@
         "revealRun",
         "nextSwap",
         "originOffset",
-        "reelParts"
+        "reelParts",
+        "fineStaggerDelayMs (CRD-6)"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/popover-position.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 13,
+      "describes": [
+        "placePopover"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/upload-client.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 22,
+      "describes": [
+        "uploadFile: the request",
+        "uploadFile: a 401 (the same two chances as adminFetch)",
+        "uploadFile: failures end in words a person can act on (FLO-7)",
+        "uploadFile: cancel",
+        "uploadFile: serialKey (a route whose server reads before it saves)"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/upload-queue.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 49,
+      "describes": [
+        "add",
+        "concurrency",
+        "speed and time left",
+        "percentOf and isProcessing",
+        "failure is per file (UPL-5)",
+        "cancel",
+        "clear",
+        "summarize",
+        "outcomeAnnouncement",
+        "allSucceeded, activeCount and hasActive"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/upload.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 32,
+      "describes": [
+        "describeLimits",
+        "checkFile",
+        "checkFiles",
+        "partitionFiles",
+        "formatSpeed",
+        "formatEta"
       ]
     },
     {
@@ -57545,6 +58928,16 @@
       ]
     },
     {
+      "file": "packages/shared/src/theme-radii.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 7,
+      "describes": [
+        "concentricRadius (CRD-5)",
+        "safeguards (DNG-1, DNG-6)"
+      ]
+    },
+    {
       "file": "packages/shared/src/theme-runtime.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -57775,8 +59168,8 @@
       "path": ".claude/rules/ui.md",
       "area": "root",
       "kind": "doc",
-      "lines": 184,
-      "bytes": 11077,
+      "lines": 191,
+      "bytes": 13437,
       "doc": "",
       "symbols": []
     },
@@ -82256,14 +83649,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/accounting/fiscal-periods/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 545,
-      "bytes": 17389,
+      "lines": 522,
+      "bytes": 16917,
       "doc": "",
       "symbols": [
         {
           "name": "FiscalPeriodsPage",
           "kind": "default",
-          "line": 36
+          "line": 37
         }
       ]
     },
@@ -82316,14 +83709,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 103,
-      "bytes": 3750,
+      "lines": 105,
+      "bytes": 3739,
       "doc": "",
       "symbols": [
         {
           "name": "SuspiciousTrafficPage",
           "kind": "default",
-          "line": 16
+          "line": 18
         }
       ]
     },
@@ -82391,14 +83784,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bank-facilities/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 350,
-      "bytes": 13032,
+      "lines": 355,
+      "bytes": 13068,
       "doc": "",
       "symbols": [
         {
           "name": "BankFacilityDetailPage",
           "kind": "default",
-          "line": 62
+          "line": 63
         }
       ]
     },
@@ -82406,14 +83799,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bank-facilities/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 350,
-      "bytes": 13047,
+      "lines": 355,
+      "bytes": 13099,
       "doc": "",
       "symbols": [
         {
           "name": "BankFacilitiesPage",
           "kind": "default",
-          "line": 49
+          "line": 50
         }
       ]
     },
@@ -82421,8 +83814,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 190,
-      "bytes": 6350,
+      "lines": 192,
+      "bytes": 6347,
       "doc": "",
       "symbols": [
         {
@@ -82451,14 +83844,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 247,
-      "bytes": 7908,
+      "lines": 249,
+      "bytes": 7946,
       "doc": "",
       "symbols": [
         {
           "name": "RecipesPage",
           "kind": "default",
-          "line": 46
+          "line": 47
         }
       ]
     },
@@ -82481,14 +83874,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/production/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 205,
-      "bytes": 7484,
+      "lines": 209,
+      "bytes": 7524,
       "doc": "",
       "symbols": [
         {
           "name": "NewProductionRunPage",
           "kind": "default",
-          "line": 28
+          "line": 29
         }
       ]
     },
@@ -82512,7 +83905,7 @@
       "area": "web",
       "kind": "page",
       "lines": 281,
-      "bytes": 9183,
+      "bytes": 9192,
       "doc": "",
       "symbols": [
         {
@@ -82526,14 +83919,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 330,
-      "bytes": 10942,
+      "lines": 332,
+      "bytes": 10979,
       "doc": "",
       "symbols": [
         {
           "name": "RawMaterialsPage",
           "kind": "default",
-          "line": 41
+          "line": 42
         }
       ]
     },
@@ -82541,14 +83934,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/bom/raw-usage/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 139,
-      "bytes": 4629,
+      "lines": 146,
+      "bytes": 4700,
       "doc": "",
       "symbols": [
         {
           "name": "RawUsagePage",
           "kind": "default",
-          "line": 34
+          "line": 35
         }
       ]
     },
@@ -82556,14 +83949,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/br/[branchId]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 113,
-      "bytes": 3689,
+      "lines": 108,
+      "bytes": 3600,
       "doc": "",
       "symbols": [
         {
           "name": "BranchDashboardPage",
           "kind": "default",
-          "line": 18
+          "line": 19
         }
       ]
     },
@@ -82736,14 +84129,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/content/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 523,
-      "bytes": 19851,
+      "lines": 530,
+      "bytes": 20107,
       "doc": "",
       "symbols": [
         {
           "name": "ContentAdminPage",
           "kind": "default",
-          "line": 285
+          "line": 292
         }
       ]
     },
@@ -82901,14 +84294,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/designs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 458,
-      "bytes": 17536,
+      "lines": 460,
+      "bytes": 17579,
       "doc": "",
       "symbols": [
         {
           "name": "AdminDesignPage",
           "kind": "default",
-          "line": 30
+          "line": 31
         }
       ]
     },
@@ -83036,14 +84429,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/cash-flow/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 156,
-      "bytes": 5529,
+      "lines": 153,
+      "bytes": 5429,
       "doc": "",
       "symbols": [
         {
           "name": "FinanceCashFlowPage",
           "kind": "default",
-          "line": 48
+          "line": 49
         }
       ]
     },
@@ -83081,14 +84474,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 474,
-      "bytes": 16184,
+      "lines": 468,
+      "bytes": 16406,
       "doc": "",
       "symbols": [
         {
           "name": "ExpensesPage",
           "kind": "default",
-          "line": 61
+          "line": 67
         }
       ]
     },
@@ -83186,14 +84579,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/fulfilment/rto/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 124,
-      "bytes": 4072,
+      "lines": 121,
+      "bytes": 3972,
       "doc": "",
       "symbols": [
         {
           "name": "RtoRatePage",
           "kind": "default",
-          "line": 36
+          "line": 37
         }
       ]
     },
@@ -83231,14 +84624,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/garments/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 505,
-      "bytes": 19602,
+      "lines": 507,
+      "bytes": 19827,
       "doc": "",
       "symbols": [
         {
           "name": "AdminGarmentPage",
           "kind": "default",
-          "line": 35
+          "line": 36
         }
       ]
     },
@@ -83261,14 +84654,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 853,
-      "bytes": 26262,
+      "lines": 845,
+      "bytes": 26149,
       "doc": "",
       "symbols": [
         {
           "name": "AssetDetailPage",
           "kind": "default",
-          "line": 50
+          "line": 52
         }
       ]
     },
@@ -83291,14 +84684,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/import/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 367,
-      "bytes": 13717,
+      "lines": 371,
+      "bytes": 13851,
       "doc": "",
       "symbols": [
         {
           "name": "AdminImportPage",
           "kind": "default",
-          "line": 24
+          "line": 26
         }
       ]
     },
@@ -83337,7 +84730,7 @@
       "area": "web",
       "kind": "page",
       "lines": 250,
-      "bytes": 8699,
+      "bytes": 8705,
       "doc": "",
       "symbols": [
         {
@@ -83442,13 +84835,13 @@
       "area": "web",
       "kind": "page",
       "lines": 271,
-      "bytes": 9685,
+      "bytes": 9634,
       "doc": "",
       "symbols": [
         {
           "name": "SerialDetailPage",
           "kind": "default",
-          "line": 29
+          "line": 30
         }
       ]
     },
@@ -83502,13 +84895,13 @@
       "area": "web",
       "kind": "page",
       "lines": 173,
-      "bytes": 6203,
+      "bytes": 6179,
       "doc": "",
       "symbols": [
         {
           "name": "SpotChecksPage",
           "kind": "default",
-          "line": 28
+          "line": 29
         }
       ]
     },
@@ -83711,14 +85104,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/marketplace/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 262,
-      "bytes": 9735,
+      "lines": 268,
+      "bytes": 10048,
       "doc": "",
       "symbols": [
         {
           "name": "MarketplacePage",
           "kind": "default",
-          "line": 31
+          "line": 32
         }
       ]
     },
@@ -83846,14 +85239,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/o/[orgId]/access/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 249,
-      "bytes": 8593,
+      "lines": 233,
+      "bytes": 8122,
       "doc": "",
       "symbols": [
         {
           "name": "AdminScopesPage",
           "kind": "default",
-          "line": 32
+          "line": 33
         }
       ]
     },
@@ -83921,14 +85314,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/options/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 226,
-      "bytes": 7908,
+      "lines": 238,
+      "bytes": 8326,
       "doc": "",
       "symbols": [
         {
           "name": "OptionTemplatesPage",
           "kind": "default",
-          "line": 27
+          "line": 28
         }
       ]
     },
@@ -83981,14 +85374,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/org-structure/[unitId]/access/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 318,
-      "bytes": 11412,
+      "lines": 321,
+      "bytes": 11463,
       "doc": "",
       "symbols": [
         {
           "name": "OrgUnitAccessPage",
           "kind": "default",
-          "line": 50
+          "line": 51
         }
       ]
     },
@@ -83997,7 +85390,7 @@
       "area": "web",
       "kind": "page",
       "lines": 328,
-      "bytes": 11608,
+      "bytes": 11613,
       "doc": "",
       "symbols": [
         {
@@ -84041,14 +85434,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/payroll/compensation/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 220,
-      "bytes": 8147,
+      "lines": 217,
+      "bytes": 8107,
       "doc": "",
       "symbols": [
         {
           "name": "PayrollCompensationPage",
           "kind": "default",
-          "line": 27
+          "line": 28
         }
       ]
     },
@@ -84071,14 +85464,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/payroll/me/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 205,
-      "bytes": 7768,
+      "lines": 210,
+      "bytes": 7800,
       "doc": "",
       "symbols": [
         {
           "name": "MyPayPage",
           "kind": "default",
-          "line": 18
+          "line": 19
         }
       ]
     },
@@ -84086,14 +85479,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 264,
+      "lines": 267,
       "bytes": 9660,
       "doc": "",
       "symbols": [
         {
           "name": "PayrollRunDetailPage",
           "kind": "default",
-          "line": 24
+          "line": 25
         }
       ]
     },
@@ -84101,14 +85494,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/payroll/runs/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 139,
-      "bytes": 4848,
+      "lines": 144,
+      "bytes": 4876,
       "doc": "",
       "symbols": [
         {
           "name": "PayrollRunsPage",
           "kind": "default",
-          "line": 19
+          "line": 20
         }
       ]
     },
@@ -84116,14 +85509,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/people/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 397,
-      "bytes": 13889,
+      "lines": 404,
+      "bytes": 13863,
       "doc": "",
       "symbols": [
         {
           "name": "PeoplePage",
           "kind": "default",
-          "line": 53
+          "line": 54
         }
       ]
     },
@@ -84222,13 +85615,13 @@
       "area": "web",
       "kind": "page",
       "lines": 317,
-      "bytes": 12256,
+      "bytes": 12276,
       "doc": "",
       "symbols": [
         {
           "name": "ReceiveGoodsPage",
           "kind": "default",
-          "line": 30
+          "line": 32
         }
       ]
     },
@@ -84236,14 +85629,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/purchase-orders/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 315,
-      "bytes": 11482,
+      "lines": 327,
+      "bytes": 11783,
       "doc": "",
       "symbols": [
         {
           "name": "NewPurchaseOrderPage",
           "kind": "default",
-          "line": 24
+          "line": 25
         }
       ]
     },
@@ -84266,14 +85659,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/rag/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 287,
-      "bytes": 10980,
+      "lines": 289,
+      "bytes": 11089,
       "doc": "",
       "symbols": [
         {
           "name": "RagSourcesPage",
           "kind": "default",
-          "line": 30
+          "line": 32
         }
       ]
     },
@@ -84326,14 +85719,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/requisitions/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 240,
-      "bytes": 7948,
+      "lines": 241,
+      "bytes": 7929,
       "doc": "",
       "symbols": [
         {
           "name": "NewRequisitionPage",
           "kind": "default",
-          "line": 27
+          "line": 28
         }
       ]
     },
@@ -84417,7 +85810,7 @@
       "area": "web",
       "kind": "page",
       "lines": 228,
-      "bytes": 7661,
+      "bytes": 7670,
       "doc": "",
       "symbols": [
         {
@@ -84431,14 +85824,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/settings/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 1424,
-      "bytes": 51106,
+      "lines": 1429,
+      "bytes": 51178,
       "doc": "",
       "symbols": [
         {
           "name": "AdminSettingsPage",
           "kind": "default",
-          "line": 30
+          "line": 31
         }
       ]
     },
@@ -84462,7 +85855,7 @@
       "area": "web",
       "kind": "page",
       "lines": 585,
-      "bytes": 21948,
+      "bytes": 21967,
       "doc": "",
       "symbols": [
         {
@@ -84521,14 +85914,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/statements/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 171,
-      "bytes": 6129,
+      "lines": 172,
+      "bytes": 6061,
       "doc": "",
       "symbols": [
         {
           "name": "StatementsPage",
           "kind": "default",
-          "line": 31
+          "line": 32
         }
       ]
     },
@@ -84566,14 +85959,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/stitching/jobs/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 298,
-      "bytes": 10379,
+      "lines": 300,
+      "bytes": 10513,
       "doc": "",
       "symbols": [
         {
           "name": "JobDetailPage",
           "kind": "default",
-          "line": 27
+          "line": 29
         }
       ]
     },
@@ -84596,14 +85989,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/suppliers/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 195,
-      "bytes": 7402,
+      "lines": 193,
+      "bytes": 7373,
       "doc": "No clsx import needed",
       "symbols": [
         {
           "name": "SupplierDetailPage",
           "kind": "default",
-          "line": 35
+          "line": 36
         }
       ]
     },
@@ -84716,14 +86109,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/tax/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 379,
-      "bytes": 13510,
+      "lines": 382,
+      "bytes": 13694,
       "doc": "",
       "symbols": [
         {
           "name": "TaxAdminPage",
           "kind": "default",
-          "line": 36
+          "line": 37
         }
       ]
     },
@@ -84746,14 +86139,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/trading-partners/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 90,
-      "bytes": 3053,
+      "lines": 101,
+      "bytes": 3332,
       "doc": "",
       "symbols": [
         {
           "name": "NewTradingPartnerPage",
           "kind": "default",
-          "line": 7
+          "line": 8
         }
       ]
     },
@@ -84792,13 +86185,13 @@
       "area": "web",
       "kind": "page",
       "lines": 241,
-      "bytes": 8282,
+      "bytes": 8263,
       "doc": "",
       "symbols": [
         {
           "name": "NewTransferPage",
           "kind": "default",
-          "line": 25
+          "line": 26
         }
       ]
     },
@@ -84822,13 +86215,13 @@
       "area": "web",
       "kind": "page",
       "lines": 457,
-      "bytes": 15943,
+      "bytes": 15917,
       "doc": "",
       "symbols": [
         {
           "name": "UserDetailPage",
           "kind": "default",
-          "line": 15
+          "line": 16
         }
       ]
     },
@@ -84851,14 +86244,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/users/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 246,
-      "bytes": 8005,
+      "lines": 248,
+      "bytes": 8030,
       "doc": "",
       "symbols": [
         {
           "name": "AdminUsersPage",
           "kind": "default",
-          "line": 29
+          "line": 30
         }
       ]
     },
@@ -84936,14 +86329,14 @@
       "path": "apps/web/src/app/(admin)/admin/login/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 125,
-      "bytes": 4429,
+      "lines": 142,
+      "bytes": 5121,
       "doc": "",
       "symbols": [
         {
           "name": "AdminLoginPage",
           "kind": "default",
-          "line": 14
+          "line": 16
         }
       ]
     },
@@ -84996,14 +86389,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/api-keys/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 468,
-      "bytes": 16344,
+      "lines": 470,
+      "bytes": 16404,
       "doc": "",
       "symbols": [
         {
           "name": "AccountApiKeysPage",
           "kind": "default",
-          "line": 77
+          "line": 78
         }
       ]
     },
@@ -85556,14 +86949,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/forgot-password/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 83,
-      "bytes": 2567,
+      "lines": 88,
+      "bytes": 2725,
       "doc": "",
       "symbols": [
         {
           "name": "ForgotPasswordPage",
           "kind": "default",
-          "line": 9
+          "line": 10
         }
       ]
     },
@@ -85606,14 +86999,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/login/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 114,
-      "bytes": 3591,
+      "lines": 121,
+      "bytes": 3829,
       "doc": "",
       "symbols": [
         {
           "name": "LoginPage",
           "kind": "default",
-          "line": 12
+          "line": 14
         }
       ]
     },
@@ -85746,14 +87139,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/register/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 159,
-      "bytes": 4991,
+      "lines": 163,
+      "bytes": 5252,
       "doc": "",
       "symbols": [
         {
           "name": "RegisterPage",
           "kind": "default",
-          "line": 12
+          "line": 14
         }
       ]
     },
@@ -85761,14 +87154,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/reset-password/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 82,
-      "bytes": 2628,
+      "lines": 86,
+      "bytes": 2758,
       "doc": "",
       "symbols": [
         {
           "name": "ResetPasswordPage",
           "kind": "default",
-          "line": 10
+          "line": 11
         }
       ]
     },
@@ -85986,8 +87379,8 @@
       "path": "apps/web/src/app/globals.css",
       "area": "web",
       "kind": "stylesheet",
-      "lines": 1380,
-      "bytes": 48233,
+      "lines": 1510,
+      "bytes": 53055,
       "doc": "",
       "symbols": []
     },
@@ -86054,14 +87447,14 @@
       "path": "apps/web/src/components/admin/admin-shell.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 484,
-      "bytes": 17176,
+      "lines": 488,
+      "bytes": 17428,
       "doc": "",
       "symbols": [
         {
           "name": "AdminShell",
           "kind": "function",
-          "line": 36
+          "line": 37
         }
       ]
     },
@@ -86288,14 +87681,14 @@
       "path": "apps/web/src/components/admin/bom/recipe-editor.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 363,
-      "bytes": 13807,
+      "lines": 362,
+      "bytes": 13814,
       "doc": "",
       "symbols": [
         {
           "name": "RecipeEditor",
           "kind": "function",
-          "line": 55
+          "line": 56
         }
       ]
     },
@@ -87104,14 +88497,14 @@
       "path": "apps/web/src/components/admin/csv-import-card.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 209,
-      "bytes": 7387,
+      "lines": 213,
+      "bytes": 7521,
       "doc": "",
       "symbols": [
         {
           "name": "CsvImportCard",
           "kind": "function",
-          "line": 29
+          "line": 31
         }
       ]
     },
@@ -87119,14 +88512,14 @@
       "path": "apps/web/src/components/admin/custom-field-form-section.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 179,
-      "bytes": 5905,
+      "lines": 181,
+      "bytes": 6109,
       "doc": "",
       "symbols": [
         {
           "name": "CustomFieldFormSection",
           "kind": "function",
-          "line": 18
+          "line": 19
         }
       ]
     },
@@ -87414,34 +88807,34 @@
       "path": "apps/web/src/components/admin/image-manager.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 543,
-      "bytes": 18669,
+      "lines": 529,
+      "bytes": 19069,
       "doc": "",
       "symbols": [
         {
           "name": "ImageManager",
           "kind": "function",
-          "line": 39
+          "line": 50
         },
         {
           "name": "StagedImage",
           "kind": "interface",
-          "line": 321
+          "line": 317
         },
         {
           "name": "ImageStager",
           "kind": "function",
-          "line": 344
+          "line": 340
         },
         {
           "name": "StagedImageUploadResult",
           "kind": "interface",
-          "line": 492
+          "line": 478
         },
         {
           "name": "uploadStagedImages",
           "kind": "function",
-          "line": 510
+          "line": 496
         }
       ]
     },
@@ -87449,34 +88842,34 @@
       "path": "apps/web/src/components/admin/marketing/discount-form.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 414,
-      "bytes": 14978,
+      "lines": 417,
+      "bytes": 15014,
       "doc": "",
       "symbols": [
         {
           "name": "DiscountType",
           "kind": "type",
-          "line": 9
+          "line": 10
         },
         {
           "name": "DiscountScope",
           "kind": "type",
-          "line": 10
+          "line": 11
         },
         {
           "name": "DiscountFormValues",
           "kind": "interface",
-          "line": 12
+          "line": 13
         },
         {
           "name": "EMPTY_DISCOUNT",
           "kind": "const",
-          "line": 35
+          "line": 36
         },
         {
           "name": "DiscountForm",
           "kind": "function",
-          "line": 97
+          "line": 98
         }
       ]
     },
@@ -87727,6 +89120,31 @@
           "name": "ToastStack",
           "kind": "function",
           "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/upload-provider.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 127,
+      "bytes": 4962,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Uploads",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "useUploads",
+          "kind": "function",
+          "line": 33
+        },
+        {
+          "name": "UploadProvider",
+          "kind": "function",
+          "line": 55
         }
       ]
     },
@@ -88064,6 +89482,31 @@
       ]
     },
     {
+      "path": "apps/web/src/components/design-system/controls-specimens.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 258,
+      "bytes": 9752,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FormRecipeSpecimen",
+          "kind": "function",
+          "line": 23
+        },
+        {
+          "name": "DangerSpecimens",
+          "kind": "function",
+          "line": 110
+        },
+        {
+          "name": "CardRecipeSpecimen",
+          "kind": "function",
+          "line": 199
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/design-system/data-concepts.tsx",
       "area": "web",
       "kind": "component",
@@ -88325,14 +89768,14 @@
       "path": "apps/web/src/components/design-system/gallery.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 321,
-      "bytes": 13460,
+      "lines": 352,
+      "bytes": 14990,
       "doc": "",
       "symbols": [
         {
           "name": "DesignSystemGallery",
           "kind": "function",
-          "line": 61
+          "line": 65
         }
       ]
     },
@@ -88387,6 +89830,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/design-system/menu-specimens.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 284,
+      "bytes": 9248,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MenuSpecimens",
+          "kind": "function",
+          "line": 236
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/design-system/motion-specimens.tsx",
       "area": "web",
       "kind": "component",
@@ -88426,7 +89884,7 @@
       "area": "web",
       "kind": "component",
       "lines": 638,
-      "bytes": 23246,
+      "bytes": 23263,
       "doc": "",
       "symbols": [
         {
@@ -88441,7 +89899,7 @@
       "area": "web",
       "kind": "component",
       "lines": 419,
-      "bytes": 16625,
+      "bytes": 16638,
       "doc": "",
       "symbols": [
         {
@@ -88485,14 +89943,29 @@
       "path": "apps/web/src/components/design-system/specimens.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 304,
-      "bytes": 13779,
+      "lines": 312,
+      "bytes": 13975,
       "doc": "",
       "symbols": [
         {
           "name": "ComponentSpecimens",
           "kind": "function",
-          "line": 46
+          "line": 47
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/upload-specimens.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 141,
+      "bytes": 5338,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UploadSpecimens",
+          "kind": "function",
+          "line": 72
         }
       ]
     },
@@ -88840,14 +90313,14 @@
       "path": "apps/web/src/components/storefront/price.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 39,
-      "bytes": 1149,
+      "lines": 47,
+      "bytes": 1513,
       "doc": "",
       "symbols": [
         {
           "name": "Price",
           "kind": "function",
-          "line": 25
+          "line": 31
         }
       ]
     },
@@ -88855,8 +90328,8 @@
       "path": "apps/web/src/components/storefront/product-card.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 239,
-      "bytes": 9712,
+      "lines": 253,
+      "bytes": 10305,
       "doc": "",
       "symbols": [
         {
@@ -88920,14 +90393,14 @@
       "path": "apps/web/src/components/storefront/products-grid.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 70,
-      "bytes": 2481,
+      "lines": 77,
+      "bytes": 2816,
       "doc": "",
       "symbols": [
         {
           "name": "ProductsGrid",
           "kind": "function",
-          "line": 44
+          "line": 45
         }
       ]
     },
@@ -89155,19 +90628,19 @@
       "path": "apps/web/src/components/ui/button.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 66,
-      "bytes": 1950,
+      "lines": 94,
+      "bytes": 3031,
       "doc": "",
       "symbols": [
         {
           "name": "ButtonProps",
           "kind": "interface",
-          "line": 29
+          "line": 38
         },
         {
           "name": "Button",
           "kind": "function",
-          "line": 37
+          "line": 49
         }
       ]
     },
@@ -89175,14 +90648,29 @@
       "path": "apps/web/src/components/ui/confirm-dialog.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 103,
-      "bytes": 3229,
+      "lines": 125,
+      "bytes": 4678,
       "doc": "",
       "symbols": [
         {
           "name": "ConfirmDialog",
           "kind": "function",
-          "line": 30
+          "line": 46
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/cooldown-banner.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 81,
+      "bytes": 2741,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CooldownBanner",
+          "kind": "function",
+          "line": 26
         }
       ]
     },
@@ -89198,6 +90686,26 @@
           "name": "CountUp",
           "kind": "function",
           "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/danger-zone.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 103,
+      "bytes": 3698,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DangerAction",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "DangerZone",
+          "kind": "function",
+          "line": 37
         }
       ]
     },
@@ -89218,6 +90726,26 @@
           "name": "DataTable",
           "kind": "function",
           "line": 95
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/date-field.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 560,
+      "bytes": 20584,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DateFieldProps",
+          "kind": "interface",
+          "line": 50
+        },
+        {
+          "name": "DateField",
+          "kind": "function",
+          "line": 102
         }
       ]
     },
@@ -89267,6 +90795,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/dropzone.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 249,
+      "bytes": 10770,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Dropzone",
+          "kind": "function",
+          "line": 62
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/ui/empty-state.tsx",
       "area": "web",
       "kind": "component",
@@ -89278,6 +90821,31 @@
           "name": "EmptyState",
           "kind": "function",
           "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/field.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 104,
+      "bytes": 3571,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FieldControlProps",
+          "kind": "interface",
+          "line": 5
+        },
+        {
+          "name": "Field",
+          "kind": "function",
+          "line": 34
+        },
+        {
+          "name": "FormStack",
+          "kind": "function",
+          "line": 87
         }
       ]
     },
@@ -89322,11 +90890,26 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/hold-to-confirm.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 224,
+      "bytes": 7890,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "HoldToConfirm",
+          "kind": "function",
+          "line": 39
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/ui/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 58,
-      "bytes": 2250,
+      "lines": 74,
+      "bytes": 3151,
       "doc": "Design-system primitives.",
       "symbols": []
     },
@@ -89361,6 +90944,41 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/menu.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 448,
+      "bytes": 15608,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "OptionBlocker",
+          "kind": "interface",
+          "line": 24
+        },
+        {
+          "name": "MenuOption",
+          "kind": "interface",
+          "line": 29
+        },
+        {
+          "name": "Menu",
+          "kind": "function",
+          "line": 62
+        },
+        {
+          "name": "MENU_TRIGGER_CLASS",
+          "kind": "const",
+          "line": 404
+        },
+        {
+          "name": "ValueProxy",
+          "kind": "function",
+          "line": 416
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/ui/metric-strip.tsx",
       "area": "web",
       "kind": "component",
@@ -89377,6 +90995,31 @@
           "name": "MetricStrip",
           "kind": "function",
           "line": 47
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/multi-select.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 134,
+      "bytes": 4704,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MultiSelectOption",
+          "kind": "type",
+          "line": 9
+        },
+        {
+          "name": "MultiSelectProps",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "MultiSelect",
+          "kind": "function",
+          "line": 48
         }
       ]
     },
@@ -89514,19 +91157,44 @@
       "path": "apps/web/src/components/ui/segmented.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 121,
-      "bytes": 4484,
+      "lines": 188,
+      "bytes": 7422,
       "doc": "",
       "symbols": [
         {
           "name": "SegmentedOption",
           "kind": "interface",
-          "line": 27
+          "line": 39
         },
         {
           "name": "Segmented",
           "kind": "function",
-          "line": 34
+          "line": 49
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/select.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 168,
+      "bytes": 5640,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SelectOption",
+          "kind": "type",
+          "line": 10
+        },
+        {
+          "name": "SelectProps",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "Select",
+          "kind": "function",
+          "line": 58
         }
       ]
     },
@@ -89681,6 +91349,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/upload-tray.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 248,
+      "bytes": 9556,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UploadTray",
+          "kind": "function",
+          "line": 141
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/config/business-profile.ts",
       "area": "web",
       "kind": "config",
@@ -89819,6 +91502,21 @@
       "symbols": []
     },
     {
+      "path": "apps/web/src/hooks/use-done-beat.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 37,
+      "bytes": 1398,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "useDoneBeat",
+          "kind": "function",
+          "line": 26
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/hooks/use-exit-transition.ts",
       "area": "web",
       "kind": "hook",
@@ -89860,6 +91558,31 @@
           "name": "useOrderStatusLabel",
           "kind": "function",
           "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/hooks/use-popover.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 230,
+      "bytes": 9759,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PopoverCloseReason",
+          "kind": "type",
+          "line": 49
+        },
+        {
+          "name": "UsePopoverOptions",
+          "kind": "interface",
+          "line": 58
+        },
+        {
+          "name": "usePopover",
+          "kind": "function",
+          "line": 71
         }
       ]
     },
@@ -89924,6 +91647,46 @@
       ]
     },
     {
+      "path": "apps/web/src/hooks/use-upload-queue.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 201,
+      "bytes": 7557,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UploadContext",
+          "kind": "interface",
+          "line": 20
+        },
+        {
+          "name": "UploadSend",
+          "kind": "type",
+          "line": 27
+        },
+        {
+          "name": "EnqueueOptions",
+          "kind": "interface",
+          "line": 29
+        },
+        {
+          "name": "EnqueueResult",
+          "kind": "interface",
+          "line": 37
+        },
+        {
+          "name": "useUploadQueue",
+          "kind": "function",
+          "line": 64
+        },
+        {
+          "name": "UploadQueue",
+          "kind": "type",
+          "line": 200
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/i18n/navigation.ts",
       "area": "web",
       "kind": "module",
@@ -89960,8 +91723,8 @@
       "path": "apps/web/src/lib/admin-client.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 196,
-      "bytes": 6753,
+      "lines": 205,
+      "bytes": 7143,
       "doc": "",
       "symbols": [
         {
@@ -90005,9 +91768,14 @@
           "line": 122
         },
         {
+          "name": "adminAuth",
+          "kind": "const",
+          "line": 174
+        },
+        {
           "name": "adminFetch",
           "kind": "function",
-          "line": 167
+          "line": 184
         }
       ]
     },
@@ -90133,6 +91901,175 @@
           "name": "getMenu",
           "kind": "function",
           "line": 197
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/calendar.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 291,
+      "bytes": 10747,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/calendar.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 292,
+      "bytes": 10011,
+      "doc": "Calendar arithmetic for the date field (MNU-2): a month's grid, a week's start, keyboard movement by day, week, month and year, and the locale facts the parser needs.",
+      "symbols": [
+        {
+          "name": "DateOrder",
+          "kind": "type",
+          "line": 14
+        },
+        {
+          "name": "Ymd",
+          "kind": "interface",
+          "line": 16
+        },
+        {
+          "name": "MIN_YEAR",
+          "kind": "const",
+          "line": 23
+        },
+        {
+          "name": "MAX_YEAR",
+          "kind": "const",
+          "line": 24
+        },
+        {
+          "name": "MIN_ISO",
+          "kind": "const",
+          "line": 25
+        },
+        {
+          "name": "MAX_ISO",
+          "kind": "const",
+          "line": 26
+        },
+        {
+          "name": "YEAR_PAGE_SIZE",
+          "kind": "const",
+          "line": 34
+        },
+        {
+          "name": "WEEK_START_FALLBACK",
+          "kind": "const",
+          "line": 41
+        },
+        {
+          "name": "toIso",
+          "kind": "function",
+          "line": 45
+        },
+        {
+          "name": "isLeapYear",
+          "kind": "function",
+          "line": 49
+        },
+        {
+          "name": "daysInMonth",
+          "kind": "function",
+          "line": 53
+        },
+        {
+          "name": "parseIso",
+          "kind": "function",
+          "line": 59
+        },
+        {
+          "name": "addDays",
+          "kind": "function",
+          "line": 89
+        },
+        {
+          "name": "addMonths",
+          "kind": "function",
+          "line": 98
+        },
+        {
+          "name": "addYears",
+          "kind": "function",
+          "line": 109
+        },
+        {
+          "name": "weekdayOf",
+          "kind": "function",
+          "line": 114
+        },
+        {
+          "name": "compareIso",
+          "kind": "function",
+          "line": 119
+        },
+        {
+          "name": "clampIso",
+          "kind": "function",
+          "line": 123
+        },
+        {
+          "name": "inRange",
+          "kind": "function",
+          "line": 130
+        },
+        {
+          "name": "GridCell",
+          "kind": "interface",
+          "line": 134
+        },
+        {
+          "name": "monthGrid",
+          "kind": "function",
+          "line": 146
+        },
+        {
+          "name": "weekdayOrder",
+          "kind": "function",
+          "line": 163
+        },
+        {
+          "name": "yearPageStart",
+          "kind": "function",
+          "line": 168
+        },
+        {
+          "name": "yearPage",
+          "kind": "function",
+          "line": 172
+        },
+        {
+          "name": "NavigateOptions",
+          "kind": "interface",
+          "line": 177
+        },
+        {
+          "name": "navigate",
+          "kind": "function",
+          "line": 192
+        },
+        {
+          "name": "weekStartFromInfo",
+          "kind": "function",
+          "line": 231
+        },
+        {
+          "name": "weekStartFor",
+          "kind": "function",
+          "line": 243
+        },
+        {
+          "name": "dateOrderFor",
+          "kind": "function",
+          "line": 259
+        },
+        {
+          "name": "isoInZone",
+          "kind": "function",
+          "line": 281
         }
       ]
     },
@@ -90312,6 +92249,55 @@
       ]
     },
     {
+      "path": "apps/web/src/lib/date-parse.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 262,
+      "bytes": 9666,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/date-parse.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 261,
+      "bytes": 10009,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ParseFailure",
+          "kind": "type",
+          "line": 28
+        },
+        {
+          "name": "ParseResult",
+          "kind": "type",
+          "line": 30
+        },
+        {
+          "name": "ParseOptions",
+          "kind": "interface",
+          "line": 32
+        },
+        {
+          "name": "TWO_DIGIT_YEAR_LOOKAHEAD",
+          "kind": "const",
+          "line": 50
+        },
+        {
+          "name": "expandTwoDigitYear",
+          "kind": "function",
+          "line": 70
+        },
+        {
+          "name": "parseDateInput",
+          "kind": "function",
+          "line": 228
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/lib/download-csv.ts",
       "area": "web",
       "kind": "utility",
@@ -90342,11 +92328,149 @@
       ]
     },
     {
+      "path": "apps/web/src/lib/guard.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 154,
+      "bytes": 5737,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/guard.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 137,
+      "bytes": 5249,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "HoldState",
+          "kind": "type",
+          "line": 18
+        },
+        {
+          "name": "HoldEvent",
+          "kind": "type",
+          "line": 21
+        },
+        {
+          "name": "HOLD_IDLE",
+          "kind": "const",
+          "line": 24
+        },
+        {
+          "name": "nextHold",
+          "kind": "function",
+          "line": 35
+        },
+        {
+          "name": "holdProgress",
+          "kind": "function",
+          "line": 57
+        },
+        {
+          "name": "HOLD_MS",
+          "kind": "const",
+          "line": 65
+        },
+        {
+          "name": "isVagueLabel",
+          "kind": "function",
+          "line": 89
+        },
+        {
+          "name": "Cooldown",
+          "kind": "interface",
+          "line": 101
+        },
+        {
+          "name": "cooldownState",
+          "kind": "function",
+          "line": 120
+        },
+        {
+          "name": "COOLDOWN_DAYS",
+          "kind": "const",
+          "line": 136
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/menu-filter.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 136,
+      "bytes": 5138,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/menu-filter.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 169,
+      "bytes": 6750,
+      "doc": "What a menu does with a list of options (MNU-1, MNU-6): which control the count asks for, and how typing narrows it.",
+      "symbols": [
+        {
+          "name": "FILTER_THRESHOLD",
+          "kind": "const",
+          "line": 15
+        },
+        {
+          "name": "SEGMENT_LIMIT",
+          "kind": "const",
+          "line": 24
+        },
+        {
+          "name": "MenuKind",
+          "kind": "type",
+          "line": 26
+        },
+        {
+          "name": "needsSearch",
+          "kind": "function",
+          "line": 29
+        },
+        {
+          "name": "menuKind",
+          "kind": "function",
+          "line": 38
+        },
+        {
+          "name": "MatchRange",
+          "kind": "type",
+          "line": 45
+        },
+        {
+          "name": "FilterResult",
+          "kind": "interface",
+          "line": 47
+        },
+        {
+          "name": "filterOptions",
+          "kind": "function",
+          "line": 120
+        },
+        {
+          "name": "typeAheadIndex",
+          "kind": "function",
+          "line": 149
+        },
+        {
+          "name": "TYPE_AHEAD_RESET_MS",
+          "kind": "const",
+          "line": 168
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/lib/motion.spec.ts",
       "area": "web",
       "kind": "unit test",
-      "lines": 319,
-      "bytes": 10666,
+      "lines": 331,
+      "bytes": 11171,
       "doc": "",
       "symbols": []
     },
@@ -90354,8 +92478,8 @@
       "path": "apps/web/src/lib/motion.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 251,
-      "bytes": 10065,
+      "lines": 262,
+      "bytes": 10581,
       "doc": "",
       "symbols": [
         {
@@ -90389,74 +92513,79 @@
           "line": 103
         },
         {
+          "name": "fineStaggerDelayMs",
+          "kind": "function",
+          "line": 112
+        },
+        {
           "name": "noiseGlyph",
           "kind": "function",
-          "line": 117
+          "line": 126
         },
         {
           "name": "scrambleFrame",
           "kind": "function",
-          "line": 127
+          "line": 136
         },
         {
           "name": "typedFrame",
           "kind": "function",
-          "line": 134
+          "line": 143
         },
         {
           "name": "typedWordsFrame",
           "kind": "function",
-          "line": 144
+          "line": 153
         },
         {
           "name": "progressFraction",
           "kind": "function",
-          "line": 156
+          "line": 165
         },
         {
           "name": "REVEAL_MAX_MS",
           "kind": "const",
-          "line": 162
+          "line": 171
         },
         {
           "name": "revealRun",
           "kind": "function",
-          "line": 171
+          "line": 180
         },
         {
           "name": "SwapState",
           "kind": "interface",
-          "line": 185
+          "line": 194
         },
         {
           "name": "nextSwap",
           "kind": "function",
-          "line": 191
+          "line": 200
         },
         {
           "name": "originOffset",
           "kind": "function",
-          "line": 202
+          "line": 211
         },
         {
           "name": "ReelPart",
           "kind": "type",
-          "line": 220
+          "line": 229
         },
         {
           "name": "reelParts",
           "kind": "function",
-          "line": 222
+          "line": 231
         },
         {
           "name": "ringStroke",
           "kind": "function",
-          "line": 233
+          "line": 242
         },
         {
           "name": "MOTION_MS",
           "kind": "const",
-          "line": 243
+          "line": 252
         }
       ]
     },
@@ -90477,6 +92606,55 @@
           "name": "subscribeToNewsletter",
           "kind": "function",
           "line": 21
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/popover-position.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 127,
+      "bytes": 5283,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/popover-position.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 109,
+      "bytes": 4222,
+      "doc": "Where a floating panel goes, as arithmetic (MNU-4).",
+      "symbols": [
+        {
+          "name": "Rect",
+          "kind": "interface",
+          "line": 22
+        },
+        {
+          "name": "PlaceInput",
+          "kind": "interface",
+          "line": 31
+        },
+        {
+          "name": "Placement",
+          "kind": "interface",
+          "line": 43
+        },
+        {
+          "name": "POPOVER_GAP",
+          "kind": "const",
+          "line": 66
+        },
+        {
+          "name": "POPOVER_MARGIN",
+          "kind": "const",
+          "line": 73
+        },
+        {
+          "name": "placePopover",
+          "kind": "function",
+          "line": 75
         }
       ]
     },
@@ -90507,6 +92685,298 @@
           "name": "armReveal",
           "kind": "function",
           "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/upload-client.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 338,
+      "bytes": 13490,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/upload-client.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 198,
+      "bytes": 8471,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UploadRequest",
+          "kind": "interface",
+          "line": 33
+        },
+        {
+          "name": "NETWORK_MESSAGE",
+          "kind": "const",
+          "line": 64
+        },
+        {
+          "name": "isUploadAbort",
+          "kind": "function",
+          "line": 72
+        },
+        {
+          "name": "uploadFile",
+          "kind": "function",
+          "line": 176
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/upload-queue.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 584,
+      "bytes": 21484,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/upload-queue.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 370,
+      "bytes": 14806,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MAX_CONCURRENT_UPLOADS",
+          "kind": "const",
+          "line": 25
+        },
+        {
+          "name": "SPEED_WINDOW_MS",
+          "kind": "const",
+          "line": 28
+        },
+        {
+          "name": "ETA_MIN_SAMPLE_MS",
+          "kind": "const",
+          "line": 31
+        },
+        {
+          "name": "TRAY_HIDE_MS",
+          "kind": "const",
+          "line": 38
+        },
+        {
+          "name": "PROGRESS_INTERVAL_MS",
+          "kind": "const",
+          "line": 48
+        },
+        {
+          "name": "TICK_MS",
+          "kind": "const",
+          "line": 55
+        },
+        {
+          "name": "UploadStatus",
+          "kind": "type",
+          "line": 57
+        },
+        {
+          "name": "UploadItem",
+          "kind": "interface",
+          "line": 64
+        },
+        {
+          "name": "UploadState",
+          "kind": "type",
+          "line": 90
+        },
+        {
+          "name": "EMPTY_UPLOADS",
+          "kind": "const",
+          "line": 92
+        },
+        {
+          "name": "UploadEntry",
+          "kind": "interface",
+          "line": 94
+        },
+        {
+          "name": "UploadAction",
+          "kind": "type",
+          "line": 102
+        },
+        {
+          "name": "uploadReducer",
+          "kind": "function",
+          "line": 146
+        },
+        {
+          "name": "startable",
+          "kind": "function",
+          "line": 264
+        },
+        {
+          "name": "hasActive",
+          "kind": "function",
+          "line": 274
+        },
+        {
+          "name": "activeCount",
+          "kind": "function",
+          "line": 279
+        },
+        {
+          "name": "allSucceeded",
+          "kind": "function",
+          "line": 284
+        },
+        {
+          "name": "percentOf",
+          "kind": "function",
+          "line": 293
+        },
+        {
+          "name": "isProcessing",
+          "kind": "function",
+          "line": 300
+        },
+        {
+          "name": "SummaryTone",
+          "kind": "type",
+          "line": 304
+        },
+        {
+          "name": "UploadSummary",
+          "kind": "interface",
+          "line": 306
+        },
+        {
+          "name": "summarize",
+          "kind": "function",
+          "line": 329
+        },
+        {
+          "name": "outcomeAnnouncement",
+          "kind": "function",
+          "line": 360
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/upload-rules.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 73,
+      "bytes": 3332,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "IMAGE_UPLOAD_RULES",
+          "kind": "const",
+          "line": 30
+        },
+        {
+          "name": "RECEIPT_UPLOAD_RULES",
+          "kind": "const",
+          "line": 40
+        },
+        {
+          "name": "PDF_UPLOAD_RULES",
+          "kind": "const",
+          "line": 51
+        },
+        {
+          "name": "CSV_IMPORT_RULES",
+          "kind": "const",
+          "line": 65
+        },
+        {
+          "name": "CSV_IMPORT_HINT",
+          "kind": "const",
+          "line": 72
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/upload.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 246,
+      "bytes": 9922,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/upload.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 283,
+      "bytes": 10535,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "UploadRules",
+          "kind": "interface",
+          "line": 16
+        },
+        {
+          "name": "FileLike",
+          "kind": "type",
+          "line": 34
+        },
+        {
+          "name": "RefusalCode",
+          "kind": "type",
+          "line": 36
+        },
+        {
+          "name": "Refusal",
+          "kind": "interface",
+          "line": 43
+        },
+        {
+          "name": "FileCheck",
+          "kind": "type",
+          "line": 50
+        },
+        {
+          "name": "refusalMessage",
+          "kind": "function",
+          "line": 53
+        },
+        {
+          "name": "acceptAttribute",
+          "kind": "function",
+          "line": 58
+        },
+        {
+          "name": "describeLimits",
+          "kind": "function",
+          "line": 119
+        },
+        {
+          "name": "checkFile",
+          "kind": "function",
+          "line": 181
+        },
+        {
+          "name": "checkFiles",
+          "kind": "function",
+          "line": 220
+        },
+        {
+          "name": "partitionFiles",
+          "kind": "function",
+          "line": 242
+        },
+        {
+          "name": "formatSpeed",
+          "kind": "function",
+          "line": 258
+        },
+        {
+          "name": "formatEta",
+          "kind": "function",
+          "line": 267
         }
       ]
     },
@@ -92202,8 +94672,8 @@
       "path": "docs/design/components-states/03-components.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 145,
-      "bytes": 12327,
+      "lines": 387,
+      "bytes": 24440,
       "doc": "",
       "symbols": []
     },
@@ -92211,8 +94681,8 @@
       "path": "docs/design/components-states/04-states.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 141,
-      "bytes": 5983,
+      "lines": 152,
+      "bytes": 7066,
       "doc": "",
       "symbols": []
     },
@@ -92229,8 +94699,8 @@
       "path": "docs/design/foundations/01-foundations.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 298,
-      "bytes": 16099,
+      "lines": 322,
+      "bytes": 17630,
       "doc": "",
       "symbols": []
     },
@@ -92265,8 +94735,8 @@
       "path": "docs/design/motion/05-motion.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 318,
-      "bytes": 17683,
+      "lines": 339,
+      "bytes": 19843,
       "doc": "",
       "symbols": []
     },
@@ -92283,8 +94753,8 @@
       "path": "docs/design/principles-laws/10-laws.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 858,
-      "bytes": 45013,
+      "lines": 884,
+      "bytes": 47906,
       "doc": "",
       "symbols": []
     },
@@ -94110,8 +96580,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 10805,
-      "bytes": 660846,
+      "lines": 11020,
+      "bytes": 681835,
       "doc": "",
       "symbols": []
     },
@@ -96081,8 +98551,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 62,
-      "bytes": 2681,
+      "lines": 64,
+      "bytes": 2850,
       "doc": "",
       "symbols": []
     },
@@ -97015,19 +99485,19 @@
       "path": "packages/shared/src/brand.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 595,
-      "bytes": 22769,
+      "lines": 630,
+      "bytes": 24403,
       "doc": "THE BRAND FILE.",
       "symbols": [
         {
           "name": "BRAND",
           "kind": "const",
-          "line": 582
+          "line": 616
         },
         {
           "name": "Brand",
           "kind": "type",
-          "line": 594
+          "line": 629
         }
       ]
     },
@@ -98660,11 +101130,20 @@
       ]
     },
     {
+      "path": "packages/shared/src/theme-radii.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 43,
+      "bytes": 1515,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "packages/shared/src/theme-radii.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 17,
-      "bytes": 557,
+      "lines": 29,
+      "bytes": 1119,
       "doc": "",
       "symbols": [
         {
@@ -98676,6 +101155,11 @@
           "name": "radiusPx",
           "kind": "function",
           "line": 14
+        },
+        {
+          "name": "concentricRadius",
+          "kind": "function",
+          "line": 26
         }
       ]
     },
@@ -98742,8 +101226,8 @@
       "path": "packages/shared/src/theme-size.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 28,
-      "bytes": 961,
+      "lines": 29,
+      "bytes": 1000,
       "doc": "",
       "symbols": [
         {
@@ -98762,8 +101246,8 @@
       "path": "packages/shared/src/theme-space.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 107,
-      "bytes": 4465,
+      "lines": 118,
+      "bytes": 5181,
       "doc": "",
       "symbols": []
     },
@@ -98801,8 +101285,8 @@
       "path": "packages/shared/src/theme-tailwind.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 343,
-      "bytes": 14929,
+      "lines": 344,
+      "bytes": 14983,
       "doc": "",
       "symbols": [
         {
@@ -98868,7 +101352,7 @@
         {
           "name": "createThemeTailwind",
           "kind": "function",
-          "line": 225
+          "line": 226
         }
       ]
     },
@@ -99036,7 +101520,7 @@
       "area": "infra",
       "kind": "script",
       "lines": 2561,
-      "bytes": 117928,
+      "bytes": 117940,
       "doc": "",
       "symbols": []
     },
@@ -99080,6 +101564,31 @@
           "name": "pinnedRegions",
           "kind": "function",
           "line": 274
+        }
+      ]
+    },
+    {
+      "path": "scripts/check-danger.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 213,
+      "bytes": 8157,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "readVagueLabels",
+          "kind": "function",
+          "line": 39
+        },
+        {
+          "name": "isVague",
+          "kind": "function",
+          "line": 46
+        },
+        {
+          "name": "findLabels",
+          "kind": "function",
+          "line": 78
         }
       ]
     },
@@ -99165,6 +101674,41 @@
           "name": "scanLinks",
           "kind": "function",
           "line": 226
+        }
+      ]
+    },
+    {
+      "path": "scripts/check-menus.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 224,
+      "bytes": 10331,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BASELINE",
+          "kind": "const",
+          "line": 51
+        },
+        {
+          "name": "blankComments",
+          "kind": "function",
+          "line": 80
+        },
+        {
+          "name": "findSelects",
+          "kind": "function",
+          "line": 90
+        },
+        {
+          "name": "findDateInputs",
+          "kind": "function",
+          "line": 106
+        },
+        {
+          "name": "isShortSelect",
+          "kind": "const",
+          "line": 112
         }
       ]
     },

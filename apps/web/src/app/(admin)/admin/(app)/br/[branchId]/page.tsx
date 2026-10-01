@@ -6,6 +6,7 @@ import { adminFetch } from '@/lib/admin-client';
 import type { MyScope } from '@/types/api';
 import { Loading, PageHeader, Section } from '@/components/ui';
 import { useAdminSession } from '@/components/admin/session';
+import { Select } from '@/components/ui/select';
 
 /**
  * The branch-level dashboard (RETAIL-ERP.md R19) — the leaf. No chips: this
@@ -87,20 +88,14 @@ export default function BranchDashboardPage() {
         description="Which brand this branch belongs to — governs its BrandPolicy checks (branch-local purchasing and the like)."
       >
         {canManage ? (
-          <select
-            aria-label="Brand"
-            className="field-input max-w-xs"
+          <Select
+            label="Brand"
+            className="max-w-xs"
             value={branch?.retailBrandId ?? ''}
             disabled={savingBrand}
-            onChange={(event) => void setBrand(event.target.value)}
-          >
-            <option value="">No brand set</option>
-            {scope.brands.map((candidate) => (
-              <option key={candidate.id} value={candidate.id}>
-                {candidate.name}
-              </option>
-            ))}
-          </select>
+            onChange={(next) => void setBrand(next)}
+            options={[{ value: '', label: 'No brand set' }, ...scope.brands.map((candidate) => ({ value: candidate.id, label: candidate.name }))]}
+          />
         ) : (
           <p className="text-sm text-neutral-900">
             {scope.brands.find((candidate) => candidate.id === branch?.retailBrandId)?.name ?? 'No brand set'}

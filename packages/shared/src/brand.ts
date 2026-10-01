@@ -412,14 +412,16 @@ const space = {
 /**
  * Sizes that belong to a control, not to a layout, in px.
  *
- * `control` is a control's visual height; `touch` is the smallest target a
+ * `control` is a control's visual height (`xl` is the field of a sign-in or
+ * sign-up form, FRM-2: one decision per screen, so each control may be large);
+ * `touch` is the smallest target a
  * finger hits reliably and it floors the control height wherever a touch
  * screen is plausible (ACT-1, ACC-4) — which is why `.btn` is 44 tall on a
  * phone and 40 once a pointer is likely. `pos` is the till's own floor: a
  * cashier taps without looking, on glass, in a hurry.
  */
 const size = {
-  control: { sm: 32, md: 40, lg: 48 },
+  control: { sm: 32, md: 40, lg: 48, xl: 56 },
   icon: { sm: 16, md: 20, lg: 24 },
   touch: { min: 44, pos: 48 },
 } as const;
@@ -511,8 +513,13 @@ const motion = {
     soft: { stiffness: 260, damping: 30 },
     gentle: { stiffness: 180, damping: 26 },
   },
-  /** `nudge` is the amplitude of the error attention shake: a quarter of `small`'s travel each way. */
-  distance: { micro: 2, small: 8, medium: 24, large: 64, nudge: 4 },
+  /**
+   * `nudge` is the amplitude of the error attention shake: a quarter of `small`'s travel each way.
+   * `lift` is how far a card rises under a pointer (CRD-6): twice `micro`, enough to read as
+   * "this will take my hand" with the shadow step, and half of `small`, so a grid of cards never
+   * jumps.
+   */
+  distance: { micro: 2, small: 8, medium: 24, large: 64, nudge: 4, lift: 4 },
   /**
    * Scale endpoints. A press compresses to 98%; a card or notice arriving starts at 97%;
    * a mark too small for 97% to read (a chart point, a badge dot) starts at 60%.
@@ -528,9 +535,11 @@ const motion = {
   /**
    * Orchestration (MOT-6): each child starts `step` ms after the one before it,
    * and only the first `steps` children are staggered; the rest arrive with the
-   * last. The cap is what stops a 200-row table from animating.
+   * last. The cap is what stops a 200-row table from animating. `fine` is the
+   * step for a grid of peers that are small and many (product cards, CRD-6): half of
+   * `step`, so four of them still finish inside 160 ms.
    */
-  stagger: { step: 80, steps: 4 },
+  stagger: { step: 80, steps: 4, fine: 40 },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -578,6 +587,31 @@ const commerce = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// Safeguards
+//
+// How much a person is made to do, or made to wait, before something that cannot
+// be taken back happens (DNG-1, DNG-6). Starting values, in the same sense as the
+// commerce defaults: a deployment retunes them here, and a later settings row can
+// override them per tenant without a new rule.
+// ---------------------------------------------------------------------------
+
+const safeguards = {
+  /**
+   * How long a destructive control is held before it fires, in ms. Long enough
+   * that a stray press or a tap with a thumb cannot do it (a long-press on a
+   * phone is about 500), short enough that a person who means it is not made to
+   * wait: a second is the least a ring can fill in and still be seen filling.
+   */
+  holdToConfirmMs: 1000,
+  /**
+   * How many days a removed workspace, brand or account stays recoverable
+   * before it is purged. Two weeks spans two weekends and a month-end close,
+   * which is when somebody notices what is missing.
+   */
+  deletionCooldownDays: 14,
+} as const;
+
+// ---------------------------------------------------------------------------
 
 export const BRAND = {
   identity,
@@ -589,6 +623,7 @@ export const BRAND = {
   theme: { colors, colorsDark, radii, type, fonts, space, size, elevation, layers, motion },
   assets,
   commerce,
+  safeguards,
 } as const;
 
 export type Brand = typeof BRAND;

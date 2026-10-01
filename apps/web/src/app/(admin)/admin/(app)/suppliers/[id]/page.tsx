@@ -8,6 +8,7 @@ import { CustomFieldFormSection } from '@/components/admin/custom-field-form-sec
 import { EntityAttributeEditor } from '@/components/admin/entity-attribute-editor';
 import { FragmentMountPoint } from '@/components/admin/fragment-mount-point';
 import { MetadataDrivenEntityForm } from '@/components/admin/metadata-driven-entity-form';
+import { Select } from '@/components/ui/select';
 
 interface SupplierDetail {
   id: string;
@@ -154,24 +155,21 @@ export default function SupplierDetailPage({ params }: { params: Promise<{ id: s
             unlinked for manual entry, exactly as before.
           </p>
           <div className="flex max-w-md items-end gap-3">
-            <label className="block flex-1">
+            <div className="block min-w-0 flex-1">
               <span className="field-label">Trading partner</span>
-              <select
+              <Select
+                label="Trading partner"
                 value={selectedPartnerId}
-                onChange={(event) => {
-                  setSelectedPartnerId(event.target.value);
+                onChange={(next) => {
+                  setSelectedPartnerId(next);
                   setLinkSaved(false);
                 }}
-                className="field-input"
-              >
-                <option value="">Not linked (manual entry)</option>
-                {partnerOptions.map((partner) => (
-                  <option key={partner.id} value={partner.id}>
-                    {partner.name} ({partner.status})
-                  </option>
-                ))}
-              </select>
-            </label>
+                options={[
+                  { value: '', label: 'Not linked (manual entry)' },
+                  ...partnerOptions.map((partner) => ({ value: partner.id, label: `${partner.name} (${partner.status})` })),
+                ]}
+              />
+            </div>
             <button
               type="button"
               onClick={() => void saveTradingPartnerLink()}

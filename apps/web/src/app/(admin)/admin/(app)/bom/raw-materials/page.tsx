@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
 import { DataTable, PageHeader } from '@/components/ui';
 import type { PaginatedResponse } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 const RAW_MATERIAL_KINDS = ['fabric', 'trim', 'packaging', 'consumable'] as const;
 type RawMaterialKind = (typeof RAW_MATERIAL_KINDS)[number];
@@ -240,19 +241,20 @@ export default function RawMaterialsPage() {
             </option>
           ))}
         </select>
-        <select
+        <Select
+          label="Status"
           value={filter}
-          onChange={(event) => {
+          onChange={(next) => {
             setPage(1);
-            setFilter(event.target.value as 'active' | 'inactive' | 'all');
+            setFilter(next as 'active' | 'inactive' | 'all');
           }}
-          className="field-input w-auto"
-          aria-label="Status"
-        >
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-          <option value="all">All</option>
-        </select>
+          className="w-auto"
+          options={[
+            { value: 'active', label: 'Active' },
+            { value: 'inactive', label: 'Inactive' },
+            { value: 'all', label: 'All' },
+          ]}
+        />
       </div>
 
       <div className="overflow-hidden">

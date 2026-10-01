@@ -95,8 +95,19 @@ people to click through it, so it stops protecting anything.
 | Reversibility | Treatment |
 |---|---|
 | Reversible | do it, offer undo |
-| Irreversible, low stakes | confirm with a plain dialog |
-| Irreversible, high stakes | confirm by typing the object's name |
+| Irreversible or wide, not financial, and the label says all there is to say | hold to confirm (`DNG-1`): `HoldToConfirm`, labelled with the act and its object, replaces the dialog |
+| Irreversible, with consequences a person should read, or a count | a plain dialog whose confirm button is the verb and its object (`DNG-2`), the cancel button focused |
+| Irreversible and high stakes | confirm by typing the object's name |
+| Removing a whole account, workspace or brand | a cooling-off period (`DNG-6`): the request is accepted, the thing is hidden, and `CooldownBanner` says when it is purged and offers to restore it |
+
+Every one of these stays on the page that owns the object, off the happy path
+(`DNG-3`): a danger control is never the primary action, never beside it, and
+the ones that belong together sit in a `DangerZone` at the end of the page
+(`DNG-5`), closed by default. The state a danger control passes through is part
+of its design: **idle**, **holding** (the ring filling), **released early**
+(draining, nothing happened, and a screen reader is told so), **armed**
+(assistive technology's first activation, with no time limit), **running**
+(the control's own `loading`) and **cooling off**.
 
 Irreversible here means irreversible in the domain, not in the UI: closing a
 fiscal period is locking, and `accounting.manage_periods` says so in its own

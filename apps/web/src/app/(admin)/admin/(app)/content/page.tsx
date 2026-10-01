@@ -6,6 +6,7 @@ import { CONTENT_BLOCK_TYPES, type ContentBlockType } from '@newax/shared';
 import { DataTable, Dialog, Loading, PageHeader, Tabs } from '@/components/ui';
 import { ToastStack } from '@/components/admin/toast-stack';
 import { useToast } from '@/hooks/use-toast';
+import { Select } from '@/components/ui/select';
 
 interface Translation {
   locale: 'en' | 'ur';
@@ -221,14 +222,20 @@ function DocumentEditor<T extends Page>({
             Slug
             <input className="field-input" value={slug} disabled={Boolean(document)} onChange={(e) => setSlug(e.target.value)} />
           </label>
-          <label className="field-label">
-            Status
-            <select className="field-input" value={status} onChange={(e) => setStatus(e.target.value as T['status'])}>
-              <option value="DRAFT">Draft</option>
-              <option value="PUBLISHED">Published</option>
-              <option value="ARCHIVED">Archived</option>
-            </select>
-          </label>
+          {/* A div and a span, not a label: a label around the segmented options would send a click on its text to the first one. */}
+          <div>
+            <span className="field-label">Status</span>
+            <Select
+              label="Status"
+              value={status}
+              onChange={(next) => setStatus(next as T['status'])}
+              options={[
+                { value: 'DRAFT', label: 'Draft' },
+                { value: 'PUBLISHED', label: 'Published' },
+                { value: 'ARCHIVED', label: 'Archived' },
+              ]}
+            />
+          </div>
         </div>
 
         {extraFields}

@@ -8,6 +8,7 @@ import { ROUTES } from '@/constants/routes';
 import { DataTable, EmptyState, FilterBar, PageHeader, Dialog, MetricStrip, useFilterParam } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import { useAdminSession } from '@/components/admin/session';
+import { DateField } from '@/components/ui/date-field';
 
 interface Bank {
   id: string;
@@ -312,14 +313,18 @@ export default function BankFacilitiesPage() {
             />
           </label>
           <div className="grid grid-cols-2 gap-3">
-            <label className="block">
-              <span className="field-label">Start date</span>
-              <input className="field-input w-full" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-            </label>
-            <label className="block">
-              <span className="field-label">Maturity date</span>
-              <input className="field-input w-full" type="date" value={maturityDate} onChange={(e) => setMaturityDate(e.target.value)} />
-            </label>
+            <div>
+              <label htmlFor="facility-start" className="field-label">
+                Start date
+              </label>
+              <DateField id="facility-start" value={startDate} onChange={setStartDate} />
+            </div>
+            <div>
+              <label htmlFor="facility-maturity" className="field-label">
+                Maturity date
+              </label>
+              <DateField id="facility-maturity" value={maturityDate} onChange={setMaturityDate} />
+            </div>
           </div>
         </div>
         <div className="mt-4 flex justify-end gap-2">

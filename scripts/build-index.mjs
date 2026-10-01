@@ -438,7 +438,7 @@ const BACK = (self) => `\n---\n\n[← index home](${link(self, 'docs/index/READM
 /* ── counts used in several places ─────────────────────────────────────── */
 
 /** Design-system chapters, counted early because the README routes to them. */
-const DESIGN_CHAPTER_RE = /^docs\/design\/\d\d-.+\.md$/;
+const DESIGN_CHAPTER_RE = /^docs\/design\/(?:[^/]+\/)?\d\d-.+\.md$/;
 const designChapterCount = records.filter((r) => DESIGN_CHAPTER_RE.test(r.rel)).length;
 
 const areaStats = {};

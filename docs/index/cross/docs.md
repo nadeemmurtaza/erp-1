@@ -96,11 +96,11 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>184 lines</sub>
+### `.claude/rules/ui.md`  <sub>191 lines</sub>
 
 - Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:97</sub>
-- No dead ends  <sub>:137</sub>
+- Borders and boxes  <sub>:104</sub>
+- No dead ends  <sub>:144</sub>
 
 ### `.github/copilot-instructions.md`  <sub>81 lines</sub>
 
@@ -192,17 +192,18 @@ _no second-level headings_
 - Internationalisation beyond direction  <sub>:133</sub>
 - What would make this real  <sub>:140</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>145 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>387 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
 - Choosing between them  <sub>:61</sub>
 - Patterns — *undocumented*  <sub>:72</sub>
 - Templates — *undocumented*  <sub>:113</sub>
-- Component contract  <sub>:124</sub>
-- What never gets hand-rolled  <sub>:139</sub>
+- Controls with a contract  <sub>:124</sub>
+- Component contract  <sub>:366</sub>
+- What never gets hand-rolled  <sub>:381</sub>
 
-### `docs/design/components-states/04-states.md`  <sub>141 lines</sub>
+### `docs/design/components-states/04-states.md`  <sub>152 lines</sub>
 
 - The rule  <sub>:8</sub>
 - The state matrix  <sub>:14</sub>
@@ -212,9 +213,9 @@ _no second-level headings_
 - Loading  <sub>:66</sub>
 - Validation  <sub>:81</sub>
 - Confirmation and destructive actions  <sub>:90</sub>
-- Permission states  <sub>:105</sub>
-- Notifications and system feedback  <sub>:119</sub>
-- Offline and degraded — the POS case  <sub>:127</sub>
+- Permission states  <sub>:116</sub>
+- Notifications and system feedback  <sub>:130</sub>
+- Offline and degraded — the POS case  <sub>:138</sub>
 
 ### `docs/design/content/06-content.md`  <sub>121 lines</sub>
 
@@ -227,20 +228,21 @@ _no second-level headings_
 - Localisation  <sub>:95</sub>
 - Verifying  <sub>:108</sub>
 
-### `docs/design/foundations/01-foundations.md`  <sub>298 lines</sub>
+### `docs/design/foundations/01-foundations.md`  <sub>322 lines</sub>
 
 - Why tokens and not values  <sub>:16</sub>
 - Colour  <sub>:26</sub>
 - Typography  <sub>:47</sub>
 - Spacing  <sub>:60</sub>
 - Size  <sub>:82</sub>
-- Radius  <sub>:93</sub>
-- Shadow and elevation  <sub>:100</sub>
-- Z-index / layering  <sub>:120</sub>
-- Breakpoints  <sub>:141</sub>
-- Motion tokens  <sub>:152</sub>
-- Theming  <sub>:202</sub>
-- Where tokens live  <sub>:285</sub>
+- Radius  <sub>:95</sub>
+- Shadow and elevation  <sub>:102</sub>
+- Z-index / layering  <sub>:122</sub>
+- Breakpoints  <sub>:143</sub>
+- Motion tokens  <sub>:154</sub>
+- Safeguards  <sub>:206</sub>
+- Theming  <sub>:225</sub>
+- Where tokens live  <sub>:308</sub>
 
 ### `docs/design/layout-composition/02-layout.md`  <sub>130 lines</sub>
 
@@ -269,22 +271,22 @@ _no second-level headings_
 - What must be built  <sub>:187</sub>
 - Sources  <sub>:200</sub>
 
-### `docs/design/motion/05-motion.md`  <sub>318 lines</sub>
+### `docs/design/motion/05-motion.md`  <sub>339 lines</sub>
 
 - The one test  <sub>:19</sub>
 - What motion may communicate  <sub>:34</sub>
 - The language  <sub>:49</sub>
 - Hierarchy of motion  <sub>:67</sub>
 - The reel, and the two tiers  <sub>:84</sub>
-- Continuity over replacement  <sub>:186</sub>
-- Orchestration  <sub>:202</sub>
-- Micro-interactions  <sub>:211</sub>
-- Scroll  <sub>:227</sub>
-- Responsive motion  <sub>:239</sub>
-- Reduced motion — required  <sub>:250</sub>
-- Performance  <sub>:286</sub>
-- Rejection list  <sub>:297</sub>
-- Benchmark, not template  <sub>:308</sub>
+- Continuity over replacement  <sub>:207</sub>
+- Orchestration  <sub>:223</sub>
+- Micro-interactions  <sub>:232</sub>
+- Scroll  <sub>:248</sub>
+- Responsive motion  <sub>:260</sub>
+- Reduced motion — required  <sub>:271</sub>
+- Performance  <sub>:307</sub>
+- Rejection list  <sub>:318</sub>
+- Benchmark, not template  <sub>:329</sub>
 
 ### `docs/design/principles-laws/00-principles.md`  <sub>83 lines</sub>
 
@@ -295,7 +297,7 @@ _no second-level headings_
 - Visual principles  <sub>:56</sub>
 - Decision principles  <sub>:67</sub>
 
-### `docs/design/principles-laws/10-laws.md`  <sub>858 lines</sub>
+### `docs/design/principles-laws/10-laws.md`  <sub>884 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
@@ -308,8 +310,9 @@ _no second-level headings_
 - MOT · Motion  <sub>:642</sub>
 - ACC · Accessibility  <sub>:698</sub>
 - GLO · Globalization  <sub>:760</sub>
-- What this chapter does not settle  <sub>:823</sub>
-- Sources  <sub>:838</sub>
+- Where the card-deck laws are built  <sub>:823</sub>
+- What this chapter does not settle  <sub>:849</sub>
+- Sources  <sub>:864</sub>
 
 ### `docs/design/process-governance/08-governance.md`  <sub>145 lines</sub>
 
@@ -2965,7 +2968,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>10,805 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,020 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

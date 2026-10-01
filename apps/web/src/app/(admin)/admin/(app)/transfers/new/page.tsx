@@ -6,6 +6,7 @@ import { adminFetch } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
 import type { InventoryVariantRow, Location } from '@/types/api';
 import { DataTable, PageHeader, Section } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 interface Line {
   variantId: string;
@@ -115,39 +116,38 @@ export default function NewTransferPage() {
             <label htmlFor="transfer-source" className="field-label">
               From
             </label>
-            <select
+            <Select
               id="transfer-source"
-              className="field-input"
+              label="From"
+              placeholder="Choose a source…"
               value={sourceLocationId}
-              onChange={(event) => setSourceLocationId(event.target.value)}
-            >
-              <option value="">Choose a source…</option>
-              {locations.map((location) => (
-                <option key={location.id} value={location.id}>
-                  {location.name} ({location.type === 'WAREHOUSE' && !location.retailBrandId ? 'org warehouse' : location.type.toLowerCase()})
-                </option>
-              ))}
-            </select>
+              onChange={setSourceLocationId}
+              options={[
+                { value: '', label: 'Choose a source…' },
+                ...locations.map((location) => ({
+                  value: location.id,
+                  label: `${location.name} (${location.type === 'WAREHOUSE' && !location.retailBrandId ? 'org warehouse' : location.type.toLowerCase()})`,
+                })),
+              ]}
+            />
           </div>
           <div>
             <label htmlFor="transfer-destination" className="field-label">
               To
             </label>
-            <select
+            <Select
               id="transfer-destination"
-              className="field-input"
+              label="To"
+              placeholder="Choose a destination…"
               value={destinationLocationId}
-              onChange={(event) => setDestinationLocationId(event.target.value)}
-            >
-              <option value="">Choose a destination…</option>
-              {locations
-                .filter((location) => location.id !== sourceLocationId)
-                .map((location) => (
-                  <option key={location.id} value={location.id}>
-                    {location.name}
-                  </option>
-                ))}
-            </select>
+              onChange={setDestinationLocationId}
+              options={[
+                { value: '', label: 'Choose a destination…' },
+                ...locations
+                  .filter((location) => location.id !== sourceLocationId)
+                  .map((location) => ({ value: location.id, label: location.name })),
+              ]}
+            />
           </div>
         </div>
       </Section>

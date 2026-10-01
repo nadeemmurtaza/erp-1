@@ -143,8 +143,8 @@ Every top-level export in `packages`, with the line to open.
 | `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :306 |  |
 | `api-keys.ts` | `expandCustomerScopes` | function | :319 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
 | `api-keys.ts` | `unknownCustomerScopes` | function | :331 | Requested scopes the catalogue does not know — refused at create and edit. |
-| `brand.ts` | `BRAND` | const | :582 | --------------------------------------------------------------------------- |
-| `brand.ts` | `Brand` | type | :594 |  |
+| `brand.ts` | `BRAND` | const | :616 | --------------------------------------------------------------------------- |
+| `brand.ts` | `Brand` | type | :629 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
 | `cod-risk.ts` | `CodRiskCityStats` | interface | :11 |  |
 | `cod-risk.ts` | `CodRiskCustomerHistory` | interface | :18 |  |
@@ -352,6 +352,7 @@ Every top-level export in `packages`, with the line to open.
 | `theme-motion.ts` | `ms` | function | :19 | `220` -> `'220ms'`, for CSS. |
 | `theme-radii.ts` | `THEME_RADII` | const | :11 | The radius scale — a view onto BRAND.theme.radii. |
 | `theme-radii.ts` | `radiusPx` | function | :14 | `2` -> `'2px'`, for the CSS side. |
+| `theme-radii.ts` | `concentricRadius` | function | :26 | The corner of something set inside a rounded container (CRD-5): the outer corner minus the gap betw… |
 | `theme-runtime.ts` | `THEME_PREFERENCES` | const | :14 | How a surface decides which theme it is in — plain functions, no framework. |
 | `theme-runtime.ts` | `ThemePreference` | type | :15 |  |
 | `theme-runtime.ts` | `ResolvedTheme` | type | :16 |  |
@@ -378,7 +379,7 @@ Every top-level export in `packages`, with the line to open.
 | `theme-tailwind.ts` | `themeColorVar` | function | :142 | A theme colour as a plain CSS value, for the places a class cannot reach: an SVG `stroke`, a Rechar… |
 | `theme-tailwind.ts` | `themeVars` | function | :166 | Every custom property that changes between themes: the colours, and the shadows (which are colours… |
 | `theme-tailwind.ts` | `staticVars` | function | :198 | Custom properties that do not change between themes: motion. |
-| `theme-tailwind.ts` | `createThemeTailwind` | function | :225 |  |
+| `theme-tailwind.ts` | `createThemeTailwind` | function | :226 |  |
 | `theme-type.ts` | `TypeStep` | interface | :14 | The type scale — a view onto BRAND.theme.type. |
 | `theme-type.ts` | `THEME_TYPE` | const | :21 |  |
 | `theme-type.ts` | `THEME_FONTS` | const | :24 | Font families, for the Tailwind config and mobile's theme. |

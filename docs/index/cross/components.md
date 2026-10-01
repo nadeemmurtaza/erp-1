@@ -3,7 +3,7 @@
 
 # Components
 
-All **159** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **173** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 276 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 282 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 7 |  |
 
 ### `apps/pos/src/components` (2)
@@ -41,7 +41,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `receipt-view.tsx` | `ReceiptView` | server | 1 |  |
 | `service-worker-registration.tsx` | `ServiceWorkerRegistration` | client | 1 |  |
 
-### `apps/web/src/components/admin` (24)
+### `apps/web/src/components/admin` (25)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -69,6 +69,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 76 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 | `toast-stack.tsx` | `ToastStack` | client | 20 |  |
+| `upload-provider.tsx` | `Uploads` `useUploads` `UploadProvider` | client | 3 |  |
 
 ### `apps/web/src/components/admin/analytics` (1)
 
@@ -153,27 +154,30 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/design-system` (17)
+### `apps/web/src/components/design-system` (20)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `chart-concepts.tsx` | `ChartRuleSpecimen` `FunnelSpecimen` `PointLineSpecimen` `RangeSpecimen` `ForecastSpecimen` `GaugeSpecimen` `StackedAreaSpecimen` `HeatmapSpecimen` `RadarSpecimen` `SalesComparisonSpecimen` | client | 1 |  |
 | `choice-cards.tsx` | `ChoiceOption` `ChoiceCards` | client | 2 |  |
+| `controls-specimens.tsx` | `FormRecipeSpecimen` `DangerSpecimens` `CardRecipeSpecimen` | client | 1 |  |
 | `data-concepts.tsx` | `ColumnManagerSpecimen` `RegionalPerformanceSpecimen` `ShareSpecimen` | client | 1 |  |
 | `department-page.tsx` | `DepartmentPageSpecimen` | client | 1 |  |
 | `dispatch-flow.tsx` | `DispatchFlowSpecimen` | client | 1 |  |
 | `flow-concepts.tsx` | `RoutingCanvasSpecimen` `JourneyTiersSpecimen` | client | 1 |  |
-| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 6 |  |
+| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 9 |  |
 | `gallery.tsx` | `DesignSystemGallery` | client | 2 |  |
 | `layering.tsx` | `LayeringSpecimen` | client | 1 |  |
 | `layout-loading.tsx` | `BentoSpecimen` `SkeletonSpecimen` | client | 1 |  |
+| `menu-specimens.tsx` | `MenuSpecimens` | client | 1 |  |
 | `motion-specimens.tsx` | `MotionSpecimens` | client | 1 |  |
 | `patterns.tsx` | `FROSTED` `AdminPatterns` | client | 2 |  |
 | `people-access.tsx` | `PeopleAccessSpecimen` | client | 1 |  |
 | `publish-audience.tsx` | `PublishAudienceSpecimen` | client | 1 |  |
 | `scope-chip-editor.tsx` | `ScopeChipEditor` | client | 1 |  |
 | `scoped-bento.tsx` | `ScopedBentoSpecimen` | client | 1 |  |
-| `specimens.tsx` | `ComponentSpecimens` | client | 2 |  |
+| `specimens.tsx` | `ComponentSpecimens` | client | 5 |  |
+| `upload-specimens.tsx` | `UploadSpecimens` | client | 1 |  |
 
 ### `apps/web/src/components/storefront` (38)
 
@@ -201,7 +205,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `mobile-nav.tsx` | `MobileNav` | client | 1 |  |
 | `onsite-messages.tsx` | `OnsiteMessages` | client | 1 |  |
 | `personalized-recommendations.tsx` | `PersonalizedRecommendations` | client | 1 |  |
-| `price.tsx` | `Price` | server | 3 |  |
+| `price.tsx` | `Price` | server | 4 |  |
 | `product-card.tsx` | `ProductCard` | client | 7 |  |
 | `product-gallery.tsx` | `ProductGallery` | client | 1 |  |
 | `product-purchase.tsx` | `FabricNeedRow` `ProductPurchase` | client | 1 |  |
@@ -218,41 +222,51 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `theme-switch.tsx` | `ThemeSwitch` | client | 1 |  |
 | `visual-search-button.tsx` | `VisualSearchButton` | client | 1 |  |
 
-### `apps/web/src/components/ui` (31)
+### `apps/web/src/components/ui` (41)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `badge.tsx` | `BadgeTone` `Badge` | server | 75 |  |
 | `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 2 |  |
-| `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
+| `button.tsx` | `ButtonProps` `Button` | server | 6 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
+| `cooldown-banner.tsx` | `CooldownBanner` | client | 1 |  |
 | `count-up.tsx` | `CountUp` | client | 1 |  |
+| `danger-zone.tsx` | `DangerAction` `DangerZone` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 16 |  |
+| `date-field.tsx` | `DateFieldProps` `DateField` | client | 19 |  |
 | `dialog.tsx` | `Dialog` | client | 3 |  |
 | `disclosure.tsx` | `Disclosure` | client | 1 |  |
-| `draw-icon.tsx` | `DrawIcon` | client | 1 |  |
+| `draw-icon.tsx` | `DrawIcon` | client | 3 |  |
+| `dropzone.tsx` | `Dropzone` | client | 8 |  |
 | `empty-state.tsx` | `EmptyState` | server | 1 |  |
+| `field.tsx` | `FieldControlProps` `Field` `FormStack` | server | 20 |  |
 | `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 3 |  |
+| `hold-to-confirm.tsx` | `HoldToConfirm` | client | 1 |  |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 1 | The shape of a list page, before the list page. |
 | `loading.tsx` | `Loading` | server | 2 |  |
+| `menu.tsx` | `OptionBlocker` `MenuOption` `Menu` `MENU_TRIGGER_CLASS` `ValueProxy` | client | 4 |  |
 | `metric-strip.tsx` | `MetricItem` `MetricStrip` | client | 1 |  |
+| `multi-select.tsx` | `MultiSelectOption` `MultiSelectProps` `MultiSelect` | client | 2 |  |
 | `page-enter.tsx` | `PageEnter` | client | 3 |  |
 | `page-header.tsx` | `PageHeader` | server | 1 |  |
 | `pagination.tsx` | `PaginationMeta` `Pagination` | server | 1 |  |
-| `progress-bar.tsx` | `ProgressBar` | server | 1 |  |
+| `progress-bar.tsx` | `ProgressBar` | server | 2 |  |
 | `progress-ring.tsx` | `ProgressRing` | client | 1 |  |
 | `reveal-scope.tsx` | `RevealScope` | client | 2 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 1 |  |
 | `section.tsx` | `Section` | server | 6 |  |
-| `segmented.tsx` | `SegmentedOption` `Segmented` | client | 1 |  |
+| `segmented.tsx` | `SegmentedOption` `Segmented` | client | 2 |  |
+| `select.tsx` | `SelectOption` `SelectProps` `Select` | client | 35 |  |
 | `skeleton.tsx` | `SkeletonShape` `Skeleton` `SkeletonText` `SkeletonRegion` | server | 2 |  |
-| `swap-text.tsx` | `SwapText` | client | 1 |  |
+| `swap-text.tsx` | `SwapText` | client | 2 |  |
 | `switch.tsx` | `Switch` | client | 2 |  |
 | `tabs.tsx` | `TabItem` `Tabs` | client | 1 |  |
 | `text-motion.tsx` | `ScrambleText` `TypeText` | client | 1 |  |
 | `theme-init-script.tsx` | `ThemeInitScript` | server | 2 |  |
 | `theme-toggle.tsx` | `ThemeToggleLabels` `ThemeToggle` | client | 3 |  |
-| `truncate-reveal.tsx` | `TruncateReveal` | client | 1 |  |
+| `truncate-reveal.tsx` | `TruncateReveal` | client | 3 |  |
+| `upload-tray.tsx` | `UploadTray` | client | 3 |  |
 
 
 ---

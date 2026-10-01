@@ -272,7 +272,7 @@ export default function RawMaterialDetailPage({ params }: { params: Promise<{ id
         onConfirm={deactivate}
         title={`Deactivate "${material.name}"?`}
         description="It stays in stock history but can no longer be purchased or used."
-        confirmLabel="Deactivate"
+        confirmLabel="Deactivate material"
         busy={deactivating}
       />
     </>

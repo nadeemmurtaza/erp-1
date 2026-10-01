@@ -8,6 +8,12 @@ import { ROUTES } from '@/constants/routes';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/utils/cn';
 import { DataTable, MetricStrip, PageHeader } from '@/components/ui';
+import { Dropzone } from '@/components/ui/dropzone';
+import { useUploads } from '@/components/admin/upload-provider';
+import { uploadFile } from '@/lib/upload-client';
+import { RECEIPT_UPLOAD_RULES } from '@/lib/upload-rules';
+import { Select } from '@/components/ui/select';
+import { DateField } from '@/components/ui/date-field';
 
 interface ExpenseCategory {
   id: string;
@@ -81,7 +87,9 @@ export default function ExpensesPage() {
   const [payee, setPayee] = useState('');
   const [recurrence, setRecurrence] = useState<ExpenseRecurrence>('NONE');
   const [recording, setRecording] = useState(false);
-  const [uploadingReceiptFor, setUploadingReceiptFor] = useState<string | null>(null);
+  // Which tray lane is attaching a receipt for which expense: the row shows its own progress, the tray shows the transfer.
+  const uploads = useUploads();
+  const [receiptLanes, setReceiptLanes] = useState<Record<string, string>>({});
 
   const load = useCallback(async () => {
     setBusy(true);
@@ -172,19 +180,25 @@ export default function ExpensesPage() {
     }
   }
 
-  async function uploadReceipt(expense: Expense, file: File) {
-    setUploadingReceiptFor(expense.id);
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      await adminFetch(`/admin/finance/expenses/${expense.id}/receipt`, { method: 'POST', formData });
-      addToast('Receipt attached.', 'success');
-      await load();
-    } catch (cause) {
-      addToast(cause instanceof Error ? cause.message : 'Could not attach the receipt', 'error');
-    } finally {
-      setUploadingReceiptFor(null);
-    }
+  /** Sent through the shell's tray (UPL-6): the operator can leave this page, and a failure keeps its Retry in the tray. */
+  function uploadReceipt(expense: Expense, file: File) {
+    const { ids } = uploads.enqueue([file], {
+      rules: RECEIPT_UPLOAD_RULES,
+      send: (chosen, context) =>
+        uploadFile({ path: `/admin/finance/expenses/${expense.id}/receipt`, file: chosen, ...context }),
+      onDone: () => {
+        addToast('Receipt attached.', 'success');
+        void load();
+      },
+    });
+    const [lane] = ids;
+    if (lane) setReceiptLanes((current) => ({ ...current, [expense.id]: lane }));
+  }
+
+  /** Whether a receipt for this expense is waiting or going now. */
+  function attaching(expenseId: string): boolean {
+    const lane = uploads.items.find((item) => item.id === receiptLanes[expenseId]);
+    return lane?.status === 'queued' || lane?.status === 'uploading';
   }
 
   return (
@@ -295,16 +309,12 @@ export default function ExpensesPage() {
             required
           />
         </label>
-        <label className="block">
-          <span className="field-label">Incurred</span>
-          <input
-            type="date"
-            value={incurredAt}
-            onChange={(event) => setIncurredAt(event.target.value)}
-            className="field-input"
-            required
-          />
-        </label>
+        <div>
+          <label htmlFor="expense-incurred" className="field-label">
+            Incurred
+          </label>
+          <DateField id="expense-incurred" value={incurredAt} onChange={setIncurredAt} required />
+        </div>
         <label className="flex items-center gap-2 pb-2 text-sm text-neutral-900/70">
           <input
             type="checkbox"
@@ -357,16 +367,17 @@ export default function ExpensesPage() {
             </option>
           ))}
         </select>
-        <select
+        <Select
+          label="Paid status"
           value={paidFilter}
-          onChange={(event) => setPaidFilter(event.target.value as '' | 'true' | 'false')}
-          className="field-input w-auto"
-          aria-label="Paid status"
-        >
-          <option value="">Paid and unpaid</option>
-          <option value="true">Paid only</option>
-          <option value="false">Unpaid only</option>
-        </select>
+          onChange={(next) => setPaidFilter(next as '' | 'true' | 'false')}
+          className="w-auto"
+          options={[
+            { value: '', label: 'Paid and unpaid' },
+            { value: 'true', label: 'Paid only' },
+            { value: 'false', label: 'Unpaid only' },
+          ]}
+        />
         <input
           value={search}
           onChange={(event) => setSearch(event.target.value)}
@@ -374,20 +385,8 @@ export default function ExpensesPage() {
           className="field-input w-auto flex-1"
           aria-label="Search"
         />
-        <input
-          type="date"
-          value={fromFilter}
-          onChange={(event) => setFromFilter(event.target.value)}
-          className="field-input w-auto"
-          aria-label="From date"
-        />
-        <input
-          type="date"
-          value={toFilter}
-          onChange={(event) => setToFilter(event.target.value)}
-          className="field-input w-auto"
-          aria-label="To date"
-        />
+        <DateField value={fromFilter} onChange={setFromFilter} className="w-auto" aria-label="From date" />
+        <DateField value={toFilter} onChange={setToFilter} className="w-auto" aria-label="To date" />
       </div>
 
       <div className="overflow-hidden">
@@ -436,20 +435,15 @@ export default function ExpensesPage() {
                     View
                   </a>
                 ) : (
-                  <label className="cursor-pointer text-xs text-neutral-900/60 underline hover:text-neutral-900">
-                    {uploadingReceiptFor === e.id ? 'Uploading…' : 'Attach'}
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png,image/webp,image/avif,application/pdf"
-                      disabled={uploadingReceiptFor === e.id}
-                      onChange={(event) => {
-                        const file = event.target.files?.[0];
-                        event.target.value = '';
-                        if (file) void uploadReceipt(e, file);
-                      }}
-                      className="sr-only"
-                    />
-                  </label>
+                  <Dropzone
+                    compact
+                    rules={RECEIPT_UPLOAD_RULES}
+                    label={attaching(e.id) ? 'Attaching…' : 'Attach a receipt'}
+                    disabled={attaching(e.id) ? 'Uploading. Progress is in the tray.' : undefined}
+                    onFiles={([chosen]) => {
+                      if (chosen) uploadReceipt(e, chosen);
+                    }}
+                  />
                 ),
             },
             {

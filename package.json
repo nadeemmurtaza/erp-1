@@ -9,7 +9,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs",
+    "lint": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-danger.mjs && node scripts/check-menus.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,js,mjs,json,md}\"",
@@ -23,6 +23,8 @@
     "check:rebrand": "node scripts/check-rebrand.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:links": "node scripts/check-links.mjs",
+    "check:danger": "node scripts/check-danger.mjs",
+    "check:menus": "node scripts/check-menus.mjs",
     "check:overflow": "node scripts/check-overflow.mjs",
     "check:rules": "node scripts/check-rules.mjs",
     "check:email": "node scripts/check-email-dns.mjs",

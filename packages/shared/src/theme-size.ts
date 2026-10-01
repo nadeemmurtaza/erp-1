@@ -19,6 +19,7 @@ export const SIZE_SPACING_PX: Readonly<Record<string, number>> = {
   'control-sm': THEME_SIZE.control.sm,
   'control-md': THEME_SIZE.control.md,
   'control-lg': THEME_SIZE.control.lg,
+  'control-xl': THEME_SIZE.control.xl,
   'icon-sm': THEME_SIZE.icon.sm,
   'icon-md': THEME_SIZE.icon.md,
   'icon-lg': THEME_SIZE.icon.lg,

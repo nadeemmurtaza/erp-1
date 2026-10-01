@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { formatMoney, formatDate } from '@newax/shared';
 import { PageHeader, DataTable } from '@/components/ui';
+import { DateField } from '@/components/ui/date-field';
 
 interface ContactOption {
   id: string;
@@ -122,13 +123,13 @@ export default function StatementsPage() {
             <label htmlFor="stmt-from" className="mb-1 block text-sm font-medium text-neutral-900">
               From
             </label>
-            <input id="stmt-from" type="date" className="field-input w-full" value={periodStart} onChange={(e) => setPeriodStart(e.target.value)} />
+            <DateField id="stmt-from" value={periodStart} onChange={setPeriodStart} />
           </div>
           <div className="flex-1">
             <label htmlFor="stmt-to" className="mb-1 block text-sm font-medium text-neutral-900">
               To
             </label>
-            <input id="stmt-to" type="date" className="field-input w-full" value={periodEnd} onChange={(e) => setPeriodEnd(e.target.value)} />
+            <DateField id="stmt-to" value={periodEnd} onChange={setPeriodEnd} />
           </div>
         </div>
         <button onClick={run} disabled={busy || !customer} className="btn-primary">

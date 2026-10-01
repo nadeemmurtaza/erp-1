@@ -51,14 +51,16 @@ export function ProductCard({
 
   return (
     // `lift` is a transition, not a keyframe — so it eases back out on mouse-leave
-    // instead of snapping, which is what an `animate-` class does.
-    <div className="group lift flex flex-col rounded-2xl">
+    // instead of snapping, which is what an `animate-` class does. `card-lit` is
+    // the card recipe's surface (CRD-4) and carries the 8px inset the photograph
+    // sits in (CRD-2); `p-2` is that inset, so the two are one number.
+    <div className="group lift card-lit flex flex-col p-2">
       {/*
         Its own hover group: the zoom, the image swap and the action overlay all
         belong to the photograph, while the lift belongs to the whole card.
       */}
       <div
-        className={`group/media relative overflow-hidden rounded-2xl bg-neutral-50 ${
+        className={`group/media media-concentric relative overflow-hidden bg-neutral-50 ${
           featured ? 'aspect-square' : 'aspect-[3/4]'
         }`}
       >
@@ -188,7 +190,7 @@ export function ProductCard({
 
           <button
             type="button"
-            className="pointer-events-none transition-all hover:scale-105 btn-primary group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto"
+            className="pointer-events-none btn-primary group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -217,8 +219,14 @@ export function ProductCard({
         </div>
       </div>
 
-      <Link href={`/product/${product.slug}`} className="flex flex-1 flex-col gap-1.5 px-2 pb-4 pt-3">
-        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-neutral-900 transition-colors duration-normal group-hover:text-neutral-600">
+      {/*
+        The body (CRD-1, CRD-2): 16px from the card's edge (the card's 8px inset
+        plus this 8px), 16px under the photograph, 8px between lines. The title is
+        the heaviest line of text, the details are the quietest, and the price —
+        the one thing the reader is here to compare — is larger than both.
+      */}
+      <Link href={`/product/${product.slug}`} className="flex flex-1 flex-col gap-2 px-2 pb-2 pt-4">
+        <h3 className="line-clamp-2 text-base font-semibold leading-snug text-neutral-900 transition-colors duration-normal group-hover:text-neutral-600">
           {product.name}
         </h3>
 
@@ -230,7 +238,13 @@ export function ProductCard({
         </p>
 
         <div className="mt-auto pt-1">
-          <Price amount={product.fromPrice} compareAt={product.compareAtPrice} locale={locale} />
+          <Price
+            amount={product.fromPrice}
+            compareAt={product.compareAtPrice}
+            locale={locale}
+            tone="accent"
+            className="text-lg"
+          />
         </div>
       </Link>
     </div>

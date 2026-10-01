@@ -8,6 +8,7 @@ import { ROUTES } from '@/constants/routes';
 import { PageHeader, DataTable, EmptyState, Disclosure } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { Location } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 interface SpotCheckRow {
   id: string;
@@ -98,14 +99,13 @@ export default function SpotChecksPage() {
               <label htmlFor="policy-location" className="mb-1 block text-xs text-neutral-900/70">
                 Location
               </label>
-              <select id="policy-location" className="field-input" value={newLocationId} onChange={(e) => setNewLocationId(e.target.value)}>
-                <option value="">Every location</option>
-                {locations.map((l) => (
-                  <option key={l.id} value={l.id}>
-                    {l.name}
-                  </option>
-                ))}
-              </select>
+              <Select
+                id="policy-location"
+                label="Location"
+                value={newLocationId}
+                onChange={setNewLocationId}
+                options={[{ value: '', label: 'Every location' }, ...locations.map((l) => ({ value: l.id, label: l.name }))]}
+              />
             </div>
             <div>
               <label htmlFor="policy-frequency" className="mb-1 block text-xs text-neutral-900/70">

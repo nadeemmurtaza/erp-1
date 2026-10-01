@@ -820,6 +820,32 @@ never require a postcode, never hardcode a region list.**
 
 ---
 
+## Where the card-deck laws are built
+
+Twelve of the laws above arrived again on the owner's rule cards of 2026-10-01
+(Fitts, Hick, chunking, Doherty, proximity, Von Restorff, the goal gradient,
+Postel, Tesler, similarity, serial position, peak-end). They are not restated in
+chapter 03; this table says which artifact makes each one true, so a review can
+open the file rather than take the claim. "Not enforced by a command" is stated
+where it is the case.
+
+| Law | Where it is built | Held by |
+|---|---|---|
+| `ACT-1` Fitts | `field-xl` (56 px) on every form field; `Dropzone`, whose whole area is the target; the full-width submit in `FormStack` | review; touch size is not linted (`.claude/rules/design.md`) |
+| `COG-1` Hick | `Select` and `Menu` filter past ten rows (`lib/menu-filter.ts`); `Segmented` replaces a menu under five (`MNU-6`) | `lib/menu-filter.spec.ts`; `check-menus` holds short native selects at 0 (a ratchet) |
+| `COG-3` Chunking | `FormStack` groups fields in sixteens; `DangerZone` closes over its acts; `DateField` splits a date into month and year jumps | review |
+| `ACT-3` Doherty | `Button loading`, the `HoldToConfirm` ring and `UploadTray` rows all answer in the frame the input arrives; the result may take as long as it takes | `lib/guard.spec.ts`, `lib/upload-queue.spec.ts` |
+| `PER-1` Proximity | `Field`: label 4 px from its control, 16 px from the field before; the product card: 8 px between lines, 24 between cards | review |
+| `COG-12` Von Restorff | one filled button per form (`FormStack`'s `actions`); the one accent on a card is the price and its button (`Price tone="accent"`); red only on destruction (`DNG-4`) | review; `check-danger` holds the labels, not the red |
+| `COG-10` Goal gradient | `UploadTray` counts real files ("2 of 5"); `Wizard` counts real steps. Progress is never invented to look closer than it is | `lib/upload-queue.spec.ts` |
+| `ACT-5` Postel | `lib/date-parse.ts` reads many shapes of a date and writes one; `Dropzone` takes a drop, a paste or a pick; `normalizePhone` | `lib/date-parse.spec.ts` |
+| `COG-8` Tesler | the system carries the rules so the person does not: `lib/upload-rules.ts` checks type and size at drop time and states the limits first; `lib/guard.ts` decides what a hold is | `lib/upload.spec.ts`, `lib/guard.spec.ts` |
+| `PER-3` Similarity | every form is `Field` inside `FormStack`; every destructive control is the same red, from `ConfirmDialog` to `HoldToConfirm` | `check-danger` (labels); review (shape) |
+| `COG-11` Serial position | the primary is first in `FormStack` and its links follow; `DangerZone` is last on the page; a card reads title, price, button | review |
+| `COG-13` Peak-end | `useDoneBeat` and `Button done` draw the check before the page leaves; `UploadTray` ends on a plain "2 of 5 uploaded · 1 failed"; `CooldownBanner` names the day it ends | `lib/guard.spec.ts` |
+
+---
+
 ## What this chapter does not settle
 
 Five families are large enough to be their own chapters, because in this

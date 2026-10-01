@@ -11,6 +11,7 @@ import { cn } from '@/utils/cn';
 import { DataTable, EmptyState, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { PayRun } from '@/types/api';
+import { DateField } from '@/components/ui/date-field';
 
 /**
  * WO-19.6 (docs/implementation/payroll/19-payroll.md) — every pay run, and the form
@@ -94,14 +95,18 @@ export default function PayrollRunsPage() {
 
       {canManage ? (
         <form onSubmit={build} className="mb-6 flex flex-wrap items-end gap-3">
-          <label className="block">
-            <span className="field-label">Period start</span>
-            <input type="date" value={periodStart} onChange={(e) => setPeriodStart(e.target.value)} className="field-input" required />
-          </label>
-          <label className="block">
-            <span className="field-label">Period end</span>
-            <input type="date" value={periodEnd} onChange={(e) => setPeriodEnd(e.target.value)} className="field-input" required />
-          </label>
+          <div>
+            <label htmlFor="run-start" className="field-label">
+              Period start
+            </label>
+            <DateField id="run-start" value={periodStart} onChange={setPeriodStart} required />
+          </div>
+          <div>
+            <label htmlFor="run-end" className="field-label">
+              Period end
+            </label>
+            <DateField id="run-end" value={periodEnd} onChange={setPeriodEnd} required />
+          </div>
           <button type="submit" disabled={building} className="btn-primary">
             {building ? 'Building…' : 'Build pay run'}
           </button>

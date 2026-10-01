@@ -40,6 +40,13 @@ writing markup, check this list. **Grep for the literal before adding one.**
 | `CountUp mode="reel"` | the odometer: for the one figure a screen is about. Display-only (the strips are not selectable text); keep the default count where a figure is copied |
 | `TypeText unit="word"` | a line of prose said word by word; characters stay for a code or a name |
 | `useFreshOnChange` (hook) | `true` for one `sweep` after a value changes from one value to another; drive `.sheen` with `data-fresh`. Never on first render or on arrival |
+| `Field`, `FormStack` | a form's one labelled field and its rhythm: label above (never in the placeholder), the placeholder an example, 16px between fields and 32px before the one filled button. Pass a `Select`, `DateField` or input as the render-prop control and the label, hint and error are wired for you. Use `field-xl` (56px) on the control. A form on a page with no backdrop gets no box; on a backdrop it takes `card-lit` |
+| `HoldToConfirm` | the middle tier of `ACT-6`: irreversible or wide, not financial. A ring fills while held; the label names the act and its object ("Delete project", "Void 3 sales"), never "Yes" or "Confirm" (`check-danger` fails the build on it). Keyboard (hold Space or Enter) and assistive technology (activate twice) are built in |
+| `DangerZone` | where an object's destructive acts live: bordered, labelled, last on the page, closed by default. Renders nothing for a person who may do none of them |
+| `CooldownBanner` | after a removal of a whole thing: the day it will be gone, the days left, and Restore. The length is `BRAND.safeguards.deletionCooldownDays` |
+| `Dropzone`, `UploadTray`, `useUploadQueue` | an upload: the whole card is the target (drop, pick or paste), limits printed first, type and size checked at drop time, then one lane per file with percent, size, speed and Cancel. One failure is retried alone. The tray is docked, never a modal. `useUploads` (admin) is the shared queue |
+| `Select`, `MultiSelect`, `DateField`, `Menu` | a choice from a list: `Select` picks the control from the count (under five a `Segmented`, five to ten a menu, past ten a menu with search on top), `MultiSelect` stays open on pick with a live count and an explicit Done, `DateField` is a text field that parses what a person types plus a month and year jump. A choice that cannot be made stays in the list and says why. A native `<select>` with fewer than five literal options, and a native `type="date"`, fail `pnpm lint` (`check-menus`); a native select of five to ten options is still allowed, because the platform's own menu is accessible and collision-aware there |
+| `useDoneBeat` (hook) | the beat between "it worked" and "we left": `finish()` marks `Button done` and resolves after one `slow`, so the drawn check is seen before navigation |
 | `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named; `DataTable` takes `stacked` and `stickyFirst`; `Dialog` takes `align="end"` for a full-height side sheet (the detail of one row); `PageHeader` takes `headingLevel` when it sits inside a page that already has an `h1` |
 
 Cross-surface: `components/common/status-badge` (**the** status pill — do not
@@ -55,7 +62,7 @@ Admin: `components/admin/range-picker`.
 `.notice-info` `.eyebrow` `.metric-strip` `.metric` `.table-flat` `.pill`
 `.nav-link` `.nav-tab` `.prose-legal` `.lift` `.skeleton` `.stagger`
 `.no-scrollbar` `.container-page` `.spinner` `.focus-frame` `.toast-timer`
-`.sheet-in` `.sheet-out` `.tab-indicator`
+`.sheet-in` `.sheet-out` `.tab-indicator` `.card-lit` `.media-concentric` `.field-xl` `.stagger-fine` `.btn-hold`
 
 ### Everything else
 

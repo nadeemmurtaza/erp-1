@@ -105,6 +105,15 @@ export function staggerDelayMs(index: number): number {
 }
 
 /**
+ * The same capped ramp at the fine step, for a grid of many small peers (a
+ * product grid, CRD-6). A separate function rather than a second argument:
+ * `array.map(staggerDelayMs)` passes the index as its second argument.
+ */
+export function fineStaggerDelayMs(index: number): number {
+  return Math.min(Math.max(0, index), stagger.steps) * stagger.fine;
+}
+
+/**
  * A glyph of the same kind as `char`, so noise keeps the width and rhythm of
  * the text it will resolve to: a digit becomes a digit, a letter a letter of the
  * same case, and anything else (a space, a comma, a hyphen) stays put. A code
@@ -247,4 +256,6 @@ export const MOTION_MS = {
   exit: duration.fast,
   /** The sheen is one `sweep` across a surface; the flag that plays it is cleared when it has crossed. */
   sheen: duration.sweep,
+  /** A drawn check (`Button done`, FRM-6) is one `slow` stroke; a page that leaves on success waits this long so it is seen. */
+  done: duration.slow,
 } as const;

@@ -5,6 +5,7 @@ import { adminFetch } from '@/lib/admin-client';
 import { downloadCsv } from '@/lib/download-csv';
 import { formatMoney, formatDate } from '@newax/shared';
 import { DataTable, MetricStrip, type MetricItem } from '@/components/ui';
+import { DateField } from '@/components/ui/date-field';
 
 interface CashFlowAccount {
   code: string;
@@ -89,18 +90,14 @@ export default function FinanceCashFlowPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <input
-            type="date"
+          <DateField
             value={range.from}
-            onChange={(event) => setRange((current) => ({ ...current, from: event.target.value }))}
-            className="field-input py-1.5"
+            onChange={(next) => setRange((current) => ({ ...current, from: next }))}
             aria-label="From date"
           />
-          <input
-            type="date"
+          <DateField
             value={range.to}
-            onChange={(event) => setRange((current) => ({ ...current, to: event.target.value }))}
-            className="field-input py-1.5"
+            onChange={(next) => setRange((current) => ({ ...current, to: next }))}
             aria-label="To date"
           />
         </div>

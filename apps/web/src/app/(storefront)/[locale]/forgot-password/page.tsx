@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { AuthPage } from '@/components/storefront/auth-page';
+import { Button, Field, FormStack } from '@/components/ui';
 import { Link } from '@/i18n/navigation';
 import { forgotPassword } from '@/lib/customer-client';
 import { ROUTES } from '@/constants/routes';
@@ -46,35 +47,39 @@ export default function ForgotPasswordPage() {
             expires in one hour.
           </p>
         ) : (
-          <form onSubmit={onSubmit} className="mt-8 space-y-4">
+          <FormStack
+            onSubmit={onSubmit}
+            className="mt-8"
+            actions={
+              <Button type="submit" loading={busy} loadingLabel="Sending…" className="w-full">
+                Send reset link
+              </Button>
+            }
+          >
             <p className="text-center text-sm text-neutral-900/60">
               Enter your email and we&apos;ll send you a link to reset your password.
             </p>
-            <div>
-              <label className="field-label" htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="field-input"
-                autoComplete="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                required
-              />
-            </div>
+            <Field label="Email">
+              {(control) => (
+                <input
+                  {...control}
+                  type="email"
+                  className="field-input field-xl"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
+                />
+              )}
+            </Field>
 
             {error ? (
               <p role="alert" className="notice notice-error">
                 {error}
               </p>
             ) : null}
-
-            <button type="submit" disabled={busy} className="btn-primary w-full">
-              {busy ? 'Sending…' : 'Send reset link'}
-            </button>
-          </form>
+          </FormStack>
         )}
 
     </AuthPage>

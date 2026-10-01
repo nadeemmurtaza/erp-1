@@ -183,6 +183,27 @@ How the new ones are built, so they stay inside the rules:
 - `DrawIcon` marks the strokes of a lucide icon on the client (`pathLength="1"`,
   `.draw-path`); the server and a no-script page show the icon drawn.
 
+### The control cards
+
+The owner's rule cards of 2026-10-01 (`03-components.md`, "Controls with a
+contract") asked for motion in six places. Each is a motion that carries a fact,
+and each is built on tokens that already existed or on the two this round added
+(`distance.lift`, `stagger.fine`).
+
+| Motion on the cards | What it says | Here | Tier |
+|---|---|---|---|
+| A ring that fills while a danger button is held | this will not happen by accident, and how far along it is | `HoldToConfirm`: `--hold` is written from the clock each frame and drawn as a stroke offset (the ring) and a scale (`.hold-bar`), both transform or opacity; the drain on release is `fast`. The same progress under reduced motion, because the ring is the information (`DNG-1`) | Functional |
+| A spinner that becomes a drawn check | it worked | `Button done`: the ring is replaced by a `DrawIcon` tick over `slow`; `useDoneBeat` holds the page for one `slow` so the check is seen before the page leaves (`FRM-6`, `COG-13`) | Functional |
+| A focus ring that eases in | where the keyboard is | `.field-input` `focus:ring-2` over `fast` (`FRM-4`) | Functional |
+| A card that rises under a pointer | this one answers | `.lift`: `distance.lift` (4 px) with the shadow; press puts it back over `instant` rather than scaling a card (`CRD-6`) | Functional |
+| Peers that arrive one after another | these belong together, in this order | `fineStaggerDelayMs` (40 ms a step, four steps) on the product grid, each row cascading from its start edge; `.stagger-fine` for plain CSS | Functional |
+| A lane that fills for its own file | how far this file is, honestly | `ProgressBar` per upload lane, a translate fill from the measured percent; where the browser reports no total the lane shows an empty bar, a spinner and the word "Uploading", and no percent, because a percent it does not have would be invented (`UPL-2`) | Functional |
+
+Nothing here bounces, nothing animates layout, and under reduced motion every
+state still shows: the ring still fills (it is information, tied to the clock),
+the check is still shown (without being drawn), the lift is not made, and a grid
+arrives at once.
+
 ## Continuity over replacement
 
 Prefer:

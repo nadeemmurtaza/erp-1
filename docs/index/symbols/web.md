@@ -58,7 +58,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `FiscalPeriodsPage` | default | :36 | 04-finance.md WO-4.6 — the ledger's own `FiscalPeriod` open/close/reopen/ lock already had a full A… |
+| `page.tsx` | `FiscalPeriodsPage` | default | :37 | 04-finance.md WO-4.6 — the ledger's own `FiscalPeriod` open/close/reopen/ lock already had a full A… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/ai`
 
@@ -82,7 +82,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SuspiciousTrafficPage` | default | :16 |  |
+| `page.tsx` | `SuspiciousTrafficPage` | default | :18 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/attendance`
 
@@ -112,19 +112,19 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `BankFacilitiesPage` | default | :49 | finance-accounting/167-bank-facility-management.md WO-167.6 — the business's own borrowing against… |
+| `page.tsx` | `BankFacilitiesPage` | default | :50 | finance-accounting/167-bank-facility-management.md WO-167.6 — the business's own borrowing against… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bank-facilities/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `BankFacilityDetailPage` | default | :62 | finance-accounting/167-bank-facility-management.md WO-167.6 — one facility's own utilization, drawd… |
+| `page.tsx` | `BankFacilityDetailPage` | default | :63 | finance-accounting/167-bank-facility-management.md WO-167.6 — one facility's own utilization, drawd… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RecipesPage` | default | :46 | Recipes — which raw materials go into a finished product, and the cost that rolls up to. |
+| `page.tsx` | `RecipesPage` | default | :47 | Recipes — which raw materials go into a finished product, and the cost that rolls up to. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/[id]`
 
@@ -154,13 +154,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `NewProductionRunPage` | default | :28 | Recording a run consumes real raw stock and credits real finished stock — repeatable, but not undoa… |
+| `page.tsx` | `NewProductionRunPage` | default | :29 | Recording a run consumes real raw stock and credits real finished stock — repeatable, but not undoa… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RawMaterialsPage` | default | :41 | Raw materials — fabric, trim, packaging, consumables bought in to make finished products. |
+| `page.tsx` | `RawMaterialsPage` | default | :42 | Raw materials — fabric, trim, packaging, consumables bought in to make finished products. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials/[id]`
 
@@ -172,13 +172,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RawUsagePage` | default | :34 | Raw-material consumption over time — the "did this actually get used" question a production run's o… |
+| `page.tsx` | `RawUsagePage` | default | :35 | Raw-material consumption over time — the "did this actually get used" question a production run's o… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/br/[branchId]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `BranchDashboardPage` | default | :18 | The branch-level dashboard (RETAIL-ERP.md R19) — the leaf. |
+| `page.tsx` | `BranchDashboardPage` | default | :19 | The branch-level dashboard (RETAIL-ERP.md R19) — the leaf. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/brands`
 
@@ -245,7 +245,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ContentAdminPage` | default | :285 |  |
+| `page.tsx` | `ContentAdminPage` | default | :292 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/credit-notes`
 
@@ -317,7 +317,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminDesignPage` | default | :30 | One style question, and the answers a customer can give it. |
+| `page.tsx` | `AdminDesignPage` | default | :31 | One style question, and the answers a customer can give it. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/dunning-policy`
 
@@ -371,13 +371,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `FinanceCashFlowPage` | default | :48 | WO-4.4's cash flow + payables ageing (04-finance.md) — a UI over the general ledger's own `cashFlow… |
+| `page.tsx` | `FinanceCashFlowPage` | default | :49 | WO-4.4's cash flow + payables ageing (04-finance.md) — a UI over the general ledger's own `cashFlow… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ExpensesPage` | default | :61 | Record expenses and see what the shop is spending. |
+| `page.tsx` | `ExpensesPage` | default | :67 | Record expenses and see what the shop is spending. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/expenses/categories`
 
@@ -425,7 +425,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RtoRatePage` | default | :36 | WO-6.7's own dashboard requirement — "the input to which cities to require advance payment from, an… |
+| `page.tsx` | `RtoRatePage` | default | :37 | WO-6.7's own dashboard requirement — "the input to which cities to require advance payment from, an… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/fulfilment/shipments`
 
@@ -449,7 +449,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminGarmentPage` | default | :35 | One garment: what it is called, what it costs, and what the tailor measures. |
+| `page.tsx` | `AdminGarmentPage` | default | :36 | One garment: what it is called, what it costs, and what the tailor measures. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/hr/assets`
 
@@ -461,13 +461,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AssetDetailPage` | default | :50 | hr-people-org/79-employee-asset-management.md WO-79.5 — one asset's full custody history, chronolog… |
+| `page.tsx` | `AssetDetailPage` | default | :52 | hr-people-org/79-employee-asset-management.md WO-79.5 — one asset's full custody history, chronolog… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/import`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminImportPage` | default | :24 | Bulk catalogue upload. |
+| `page.tsx` | `AdminImportPage` | default | :26 | Bulk catalogue upload. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inbox`
 
@@ -528,7 +528,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SerialDetailPage` | default | :29 | 158-serialized-unit-tracking.md WO-158.5/158.6. |
+| `page.tsx` | `SerialDetailPage` | default | :30 | 158-serialized-unit-tracking.md WO-158.5/158.6. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/slow-movers`
 
@@ -540,7 +540,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SpotChecksPage` | default | :28 |  |
+| `page.tsx` | `SpotChecksPage` | default | :29 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/spot-checks/[id]`
 
@@ -618,7 +618,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `MarketplacePage` | default | :31 | 165-cross-tenant-marketplace-directory.md §2, WO-165.2 — "Publish to marketplace": the actual UI fo… |
+| `page.tsx` | `MarketplacePage` | default | :32 | 165-cross-tenant-marketplace-directory.md §2, WO-165.2 — "Publish to marketplace": the actual UI fo… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/merchant-payables`
 
@@ -684,7 +684,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminScopesPage` | default | :32 | Who is a super admin, a brand admin, or a branch admin (RETAIL-ERP.md R10, WO-18.6) — the one scree… |
+| `page.tsx` | `AdminScopesPage` | default | :33 | Who is a super admin, a brand admin, or a branch admin (RETAIL-ERP.md R10, WO-18.6) — the one scree… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/o/[orgId]/policy-quarantine`
 
@@ -702,7 +702,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `OptionTemplatesPage` | default | :27 | Catalogue -> Options & attributes (WO-3.1, 03-variants-sku-seo.md). |
+| `page.tsx` | `OptionTemplatesPage` | default | :28 | Catalogue -> Options & attributes (WO-3.1, 03-variants-sku-seo.md). |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders`
 
@@ -727,7 +727,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `OrgUnitAccessPage` | default | :50 | access-control-identity/21-access-over-the-org-tree.md WO-21.6 — "one access screen per unit: who r… |
+| `page.tsx` | `OrgUnitAccessPage` | default | :51 | access-control-identity/21-access-over-the-org-tree.md WO-21.6 — "one access screen per unit: who r… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payments`
 
@@ -739,7 +739,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollCompensationPage` | default | :27 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — every employee's current compensation rate, w… |
+| `page.tsx` | `PayrollCompensationPage` | default | :28 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — every employee's current compensation rate, w… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/leave`
 
@@ -751,25 +751,25 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `MyPayPage` | default | :18 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — self-service: the signed-in user's own compen… |
+| `page.tsx` | `MyPayPage` | default | :19 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — self-service: the signed-in user's own compen… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/runs`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollRunsPage` | default | :19 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — every pay run, and the form to build a new on… |
+| `page.tsx` | `PayrollRunsPage` | default | :20 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — every pay run, and the form to build a new on… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/runs/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollRunDetailPage` | default | :24 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — one pay run: every line, the build/approve/po… |
+| `page.tsx` | `PayrollRunDetailPage` | default | :25 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — one pay run: every line, the build/approve/po… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/people`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PeoplePage` | default | :53 | hr-people-org/20-people-positions-ranks.md WO-20.5 — the people list, one nav entry. |
+| `page.tsx` | `PeoplePage` | default | :54 | hr-people-org/20-people-positions-ranks.md WO-20.5 — the people list, one nav entry. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/platform-resilience`
 
@@ -812,19 +812,19 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ReceiveGoodsPage` | default | :30 |  |
+| `page.tsx` | `ReceiveGoodsPage` | default | :32 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/purchase-orders/new`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `NewPurchaseOrderPage` | default | :24 |  |
+| `page.tsx` | `NewPurchaseOrderPage` | default | :25 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/rag`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RagSourcesPage` | default | :30 | WO-35.1/35.2/35.6 — corpus/source administration: upload a document into a corpus, watch it move th… |
+| `page.tsx` | `RagSourcesPage` | default | :32 | WO-35.1/35.2/35.6 — corpus/source administration: upload a document into a corpus, watch it move th… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/rag/query`
 
@@ -854,7 +854,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `NewRequisitionPage` | default | :27 |  |
+| `page.tsx` | `NewRequisitionPage` | default | :28 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/resilience`
 
@@ -890,7 +890,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminSettingsPage` | default | :30 |  |
+| `page.tsx` | `AdminSettingsPage` | default | :31 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/settings/shipping`
 
@@ -926,7 +926,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `StatementsPage` | default | :31 |  |
+| `page.tsx` | `StatementsPage` | default | :32 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/stitching`
 
@@ -950,7 +950,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `JobDetailPage` | default | :27 | One job: the tailor's worksheet. |
+| `page.tsx` | `JobDetailPage` | default | :29 | One job: the tailor's worksheet. |
 
 ### `apps/web/src/app/(admin)/admin/(app)/suppliers`
 
@@ -962,7 +962,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `SupplierDetailPage` | default | :35 |  |
+| `page.tsx` | `SupplierDetailPage` | default | :36 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/support/customer-tickets`
 
@@ -1004,7 +1004,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `TaxAdminPage` | default | :36 |  |
+| `page.tsx` | `TaxAdminPage` | default | :37 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/trading-partners`
 
@@ -1022,7 +1022,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `NewTradingPartnerPage` | default | :7 |  |
+| `page.tsx` | `NewTradingPartnerPage` | default | :8 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/transfers`
 
@@ -1040,19 +1040,19 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `NewTransferPage` | default | :25 | Dispatch a transfer (RETAIL-ERP.md R4, WO-22.1; org-central purchasing, WO-23.3d) — one local `move… |
+| `page.tsx` | `NewTransferPage` | default | :26 | Dispatch a transfer (RETAIL-ERP.md R4, WO-22.1; org-central purchasing, WO-23.3d) — one local `move… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/users`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminUsersPage` | default | :29 |  |
+| `page.tsx` | `AdminUsersPage` | default | :30 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/users/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `UserDetailPage` | default | :15 |  |
+| `page.tsx` | `UserDetailPage` | default | :16 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/users/api-keys`
 
@@ -1077,7 +1077,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminLoginPage` | default | :14 |  |
+| `page.tsx` | `AdminLoginPage` | default | :16 |  |
 
 ### `apps/web/src/app/(admin)/admin/login/sso-complete`
 
@@ -1120,7 +1120,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AccountApiKeysPage` | default | :77 | A customer's own personal API keys (163-personal-api-keys.md) — for an app, a script or an AI assis… |
+| `page.tsx` | `AccountApiKeysPage` | default | :78 | A customer's own personal API keys (163-personal-api-keys.md) — for an app, a script or an AI assis… |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/b2b`
 
@@ -1306,13 +1306,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ForgotPasswordPage` | default | :9 |  |
+| `page.tsx` | `ForgotPasswordPage` | default | :10 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/login`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `LoginPage` | default | :12 |  |
+| `page.tsx` | `LoginPage` | default | :14 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/pages/[slug]`
 
@@ -1342,13 +1342,13 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RegisterPage` | default | :12 |  |
+| `page.tsx` | `RegisterPage` | default | :14 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/reset-password`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ResetPasswordPage` | default | :10 |  |
+| `page.tsx` | `ResetPasswordPage` | default | :11 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/returns`
 
@@ -1421,12 +1421,12 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `admin-shell.tsx` | `AdminShell` | function | :36 | The back office frame: role guard, sidebar and header. |
+| `admin-shell.tsx` | `AdminShell` | function | :37 | The back office frame: role guard, sidebar and header. |
 | `bpmn-editor.tsx` | `BpmnEditor` | function | :46 | architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.2) — a thin React wrapper mounting… |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |
-| `csv-import-card.tsx` | `CsvImportCard` | function | :29 | Shared upload/preview/commit card for the CSV importers (admin-platform/72-fragmented-tool-consolid… |
-| `custom-field-form-section.tsx` | `CustomFieldFormSection` | function | :18 | architecture-patterns/105-metadata-driven-ui-rendering.md (WO-105.1) — the one piece of metadata-dr… |
+| `csv-import-card.tsx` | `CsvImportCard` | function | :31 | Shared upload/preview/commit card for the CSV importers (admin-platform/72-fragmented-tool-consolid… |
+| `custom-field-form-section.tsx` | `CustomFieldFormSection` | function | :19 | architecture-patterns/105-metadata-driven-ui-rendering.md (WO-105.1) — the one piece of metadata-dr… |
 | `deployment-modules.tsx` | `EnabledModulesProvider` | const | :7 |  |
 | `deployment-modules.tsx` | `useEnabledModules` | function | :18 | Which API modules `GET /meta` reported for this deployment — the same value `AdminShell` already fe… |
 | `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | function | :15 | architecture-patterns/113-micro-frontend-embedding.md (WO-113.2) — a narrow, reusable iframe contai… |
@@ -1435,11 +1435,11 @@ Every top-level export in `web`, with the line to open.
 | `funnel-chart.tsx` | `FunnelStage` | interface | :24 |  |
 | `funnel-chart.tsx` | `FunnelChart` | function | :29 |  |
 | `gauge-chart.tsx` | `GaugeChart` | function | :33 |  |
-| `image-manager.tsx` | `ImageManager` | function | :39 | Upload, reorder and delete product photographs. |
-| `image-manager.tsx` | `StagedImage` | interface | :321 | A photo picked before the product exists to attach it to. |
-| `image-manager.tsx` | `ImageStager` | function | :344 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
-| `image-manager.tsx` | `StagedImageUploadResult` | interface | :492 |  |
-| `image-manager.tsx` | `uploadStagedImages` | function | :510 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
+| `image-manager.tsx` | `ImageManager` | function | :50 | Upload, reorder and delete product photographs. |
+| `image-manager.tsx` | `StagedImage` | interface | :317 | A photo picked before the product exists to attach it to. |
+| `image-manager.tsx` | `ImageStager` | function | :340 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
+| `image-manager.tsx` | `StagedImageUploadResult` | interface | :478 |  |
+| `image-manager.tsx` | `uploadStagedImages` | function | :496 | Uploads every staged image to a now-existing product, in order (the first upload becomes the thumbn… |
 | `metadata-driven-entity-form.tsx` | `MetadataDrivenEntityForm` | function | :17 | architecture-patterns/141-general-metadata-driven-ui-engine.md (WO-141.4) — the one real, wired-up… |
 | `metadata-driven-form.tsx` | `MetadataFieldValue` | type | :5 |  |
 | `metadata-driven-form.tsx` | `MetadataDrivenForm` | function | :25 | architecture-patterns/141-general-metadata-driven-ui-engine.md (WO-141.2). |
@@ -1466,6 +1466,9 @@ Every top-level export in `web`, with the line to open.
 | `session.tsx` | `useAdminSession` | function | :31 | The signed-in staff member. |
 | `stage-badge.tsx` | `StageBadge` | function | :12 | The stage a job is at. |
 | `toast-stack.tsx` | `ToastStack` | function | :26 | The fixed top-end toast stack every `useToast()` caller renders. |
+| `upload-provider.tsx` | `Uploads` | interface | :11 |  |
+| `upload-provider.tsx` | `useUploads` | function | :33 | The page's way to send files: `useUploads().enqueue(files, { rules, send, onDone })`. |
+| `upload-provider.tsx` | `UploadProvider` | function | :55 | Owns the upload queue and its docked tray for the whole back office (UPL-6). |
 
 ### `apps/web/src/components/admin/analytics`
 
@@ -1499,7 +1502,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `cost-breakdown.tsx` | `CostBreakdown` | function | :36 | Per-component cost breakdown — a live recompute (GET .../cost), not the cached rolledUpUnitCost sho… |
-| `recipe-editor.tsx` | `RecipeEditor` | function | :55 | Create or edit a recipe. |
+| `recipe-editor.tsx` | `RecipeEditor` | function | :56 | Create or edit a recipe. |
 
 ### `apps/web/src/components/admin/charts`
 
@@ -1650,11 +1653,11 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `discount-form.tsx` | `DiscountType` | type | :9 |  |
-| `discount-form.tsx` | `DiscountScope` | type | :10 |  |
-| `discount-form.tsx` | `DiscountFormValues` | interface | :12 |  |
-| `discount-form.tsx` | `EMPTY_DISCOUNT` | const | :35 |  |
-| `discount-form.tsx` | `DiscountForm` | function | :97 | The discount builder — one form, shared by "new" and "edit" (Law 5's own job is "define a discount… |
+| `discount-form.tsx` | `DiscountType` | type | :10 |  |
+| `discount-form.tsx` | `DiscountScope` | type | :11 |  |
+| `discount-form.tsx` | `DiscountFormValues` | interface | :13 |  |
+| `discount-form.tsx` | `EMPTY_DISCOUNT` | const | :36 |  |
+| `discount-form.tsx` | `DiscountForm` | function | :98 | The discount builder — one form, shared by "new" and "edit" (Law 5's own job is "define a discount… |
 
 ### `apps/web/src/components/common`
 
@@ -1715,6 +1718,9 @@ Every top-level export in `web`, with the line to open.
 | `chart-concepts.tsx` | `SalesComparisonSpecimen` | function | :374 |  |
 | `choice-cards.tsx` | `ChoiceOption` | interface | :15 | One choice among a few that each need a sentence. |
 | `choice-cards.tsx` | `ChoiceCards` | function | :21 |  |
+| `controls-specimens.tsx` | `FormRecipeSpecimen` | function | :23 | The form recipe (FRM-1 to FRM-6), live: labels above, example placeholders, 16 px between fields, 3… |
+| `controls-specimens.tsx` | `DangerSpecimens` | function | :110 | The danger controls (DNG-1 to DNG-6) in the states a person meets them in. |
+| `controls-specimens.tsx` | `CardRecipeSpecimen` | function | :199 | The product card recipe (CRD-1 to CRD-6), drawn from the same classes and the same `Price` the stor… |
 | `data-concepts.tsx` | `ColumnManagerSpecimen` | function | :255 | The grid and the panel that decides which columns it has. |
 | `data-concepts.tsx` | `RegionalPerformanceSpecimen` | function | :426 | Regional performance: three headline figures, then this period against the last with the table that… |
 | `data-concepts.tsx` | `ShareSpecimen` | function | :482 | Share of a whole, twice: money (a budget) and counts (orders by channel). |
@@ -1749,11 +1755,12 @@ Every top-level export in `web`, with the line to open.
 | `foundations.tsx` | `TypeFoundations` | function | :265 |  |
 | `foundations.tsx` | `SpaceFoundations` | function | :297 | ── space, size, radius ───────────────────────────────────────────────── |
 | `foundations.tsx` | `ElevationFoundations` | function | :359 |  |
-| `gallery.tsx` | `DesignSystemGallery` | function | :61 | The design system, rendered by the system it describes. |
+| `gallery.tsx` | `DesignSystemGallery` | function | :65 | The design system, rendered by the system it describes. |
 | `layering.tsx` | `LayeringSpecimen` | function | :86 |  |
 | `layout-loading.tsx` | `BentoSpecimen` | function | :71 | A tile is one job. |
 | `layout-loading.tsx` | `SkeletonSpecimen` | function | :197 | One card per shape a page waits in: a figure, a person, a table, a chart. |
 | `live-tokens.ts` | `useLiveTokens` | function | :17 | Reads the theme's colours back out of the browser, not out of brand.ts. |
+| `menu-specimens.tsx` | `MenuSpecimens` | function | :236 |  |
 | `motion-specimens.tsx` | `MotionSpecimens` | function | :235 |  |
 | `patterns.tsx` | `FROSTED` | const | :57 | Frosted: 85% of the overlay surface over a blur. |
 | `patterns.tsx` | `AdminPatterns` | function | :68 |  |
@@ -1761,7 +1768,8 @@ Every top-level export in `web`, with the line to open.
 | `publish-audience.tsx` | `PublishAudienceSpecimen` | function | :142 |  |
 | `scope-chip-editor.tsx` | `ScopeChipEditor` | function | :24 | A set of scopes you can take from and add to: removable chips and one "Add" select. |
 | `scoped-bento.tsx` | `ScopedBentoSpecimen` | function | :397 |  |
-| `specimens.tsx` | `ComponentSpecimens` | function | :46 |  |
+| `specimens.tsx` | `ComponentSpecimens` | function | :47 |  |
+| `upload-specimens.tsx` | `UploadSpecimens` | function | :72 | The upload controls, live and API-free: a zone with real rules (drop a PDF, or a photo over 5 MB, a… |
 
 ### `apps/web/src/components/storefront`
 
@@ -1791,13 +1799,13 @@ Every top-level export in `web`, with the line to open.
 | `mobile-nav.tsx` | `MobileNav` | function | :18 |  |
 | `onsite-messages.tsx` | `OnsiteMessages` | function | :37 | WO-8.6 — the storefront half of on-site messaging. |
 | `personalized-recommendations.tsx` | `PersonalizedRecommendations` | function | :28 | WO-9.6 (09-ai-layer.md) — "Personalised homepage from browse... |
-| `price.tsx` | `Price` | function | :25 | Renders a price. |
+| `price.tsx` | `Price` | function | :31 | Renders a price. |
 | `product-card.tsx` | `ProductCard` | function | :22 |  |
 | `product-gallery.tsx` | `ProductGallery` | function | :21 |  |
 | `product-purchase.tsx` | `FabricNeedRow` | interface | :23 | One garment this fabric can become, with the fabric-need range derived from its RTW size chart (XS… |
 | `product-purchase.tsx` | `ProductPurchase` | function | :57 | Variant selection, the stitching panel, and add to cart. |
 | `product-reviews.tsx` | `ProductReviews` | function | :29 | WO-7.5 — reviews and Q&A, on the product's own page. |
-| `products-grid.tsx` | `ProductsGrid` | function | :44 |  |
+| `products-grid.tsx` | `ProductsGrid` | function | :45 |  |
 | `quick-view-modal.tsx` | `QuickViewModal` | function | :22 | Product preview from the shop grid, without leaving the listing. |
 | `search-box.tsx` | `SearchBox` | function | :24 |  |
 | `shop-controls.tsx` | `ShopControls` | function | :17 |  |
@@ -1823,22 +1831,32 @@ Every top-level export in `web`, with the line to open.
 | `bento.tsx` | `BentoSize` | type | :37 |  |
 | `bento.tsx` | `BentoTone` | type | :38 |  |
 | `bento.tsx` | `BentoTile` | function | :62 |  |
-| `button.tsx` | `ButtonProps` | interface | :29 |  |
-| `button.tsx` | `Button` | function | :37 |  |
-| `confirm-dialog.tsx` | `ConfirmDialog` | function | :30 | The one way a destructive action gets confirmed. |
+| `button.tsx` | `ButtonProps` | interface | :38 |  |
+| `button.tsx` | `Button` | function | :49 |  |
+| `confirm-dialog.tsx` | `ConfirmDialog` | function | :46 | The one way a destructive action gets confirmed. |
+| `cooldown-banner.tsx` | `CooldownBanner` | function | :26 | What a page about a scheduled removal says (DNG-6). |
 | `count-up.tsx` | `CountUp` | function | :41 | A figure that counts to its value instead of appearing at it. |
+| `danger-zone.tsx` | `DangerAction` | interface | :6 |  |
+| `danger-zone.tsx` | `DangerZone` | function | :37 | Where an object's destructive acts live (DNG-5). |
 | `data-table.tsx` | `DataTableColumn` | interface | :29 | The admin's one table. |
 | `data-table.tsx` | `DataTable` | function | :95 |  |
+| `date-field.tsx` | `DateFieldProps` | interface | :50 |  |
+| `date-field.tsx` | `DateField` | function | :102 | A date is a text field first (MNU-2, `ACT-5`): it reads what a person types (`2026-10-03`, `3/10/20… |
 | `dialog.tsx` | `Dialog` | function | :36 | A modal dialog, with the behaviour every modal is supposed to have. |
 | `disclosure.tsx` | `Disclosure` | function | :30 | Advanced options, folded away until asked for. |
 | `draw-icon.tsx` | `DrawIcon` | function | :26 | A stroked icon that draws itself, once, when it appears. |
+| `dropzone.tsx` | `Dropzone` | function | :62 | A place to put files: the whole card is the target (UPL-1). |
 | `empty-state.tsx` | `EmptyState` | function | :17 | What a list shows when it has nothing in it. |
+| `field.tsx` | `FieldControlProps` | interface | :5 | What a `Field` hands its control, so the label, hint and error are wired by construction. |
+| `field.tsx` | `Field` | function | :34 | One labelled field (FRM-3, `PER-1`). |
+| `field.tsx` | `FormStack` | function | :87 | A form's rhythm (FRM-2, `SPA-2`): fields 16px apart, and 32px between the last of them and the acti… |
 | `filter-bar.tsx` | `FilterDef` | type | :26 | The filter row every list page hand-rolled with its own `useState`, so a refresh lost the filter, a… |
 | `filter-bar.tsx` | `FilterBar` | function | :36 |  |
 | `filter-bar.tsx` | `useFilterParam` | function | :141 | Reads one filter's current value from the URL — the page's half of the contract, so its fetch effec… |
 | `filter-bar.tsx` | `useSetFilterParam` | function | :151 | Writes one filter param directly, for a control `FilterBar`'s three types don't cover — a segmented… |
 | `filter-bar.tsx` | `useFilterPage` | function | :170 | The page number, from the same URL — `Pagination`'s `onChange` writes it back with `setFilterPage`,… |
 | `filter-bar.tsx` | `useSetFilterPage` | function | :176 |  |
+| `hold-to-confirm.tsx` | `HoldToConfirm` | function | :39 | A destructive control that is confirmed by holding it (DNG-1). |
 | `index.ts` | `PageHeader` | re-export |  | from `./page-header` |
 | `index.ts` | `Section` | re-export |  | from `./section` |
 | `index.ts` | `Disclosure` | re-export |  | from `./disclosure` |
@@ -1858,6 +1876,16 @@ Every top-level export in `web`, with the line to open.
 | `index.ts` | `Skeleton` `SkeletonText` `SkeletonRegion` `type SkeletonShape` | re-export |  | from `./skeleton` |
 | `index.ts` | `Switch` | re-export |  | from `./switch` |
 | `index.ts` | `Segmented` `type SegmentedOption` | re-export |  | from `./segmented` |
+| `index.ts` | `Field` `FormStack` `type FieldControlProps` | re-export |  | from `./field` |
+| `index.ts` | `HoldToConfirm` | re-export |  | from `./hold-to-confirm` |
+| `index.ts` | `DangerZone` `type DangerAction` | re-export |  | from `./danger-zone` |
+| `index.ts` | `CooldownBanner` | re-export |  | from `./cooldown-banner` |
+| `index.ts` | `Dropzone` | re-export |  | from `./dropzone` |
+| `index.ts` | `UploadTray` | re-export |  | from `./upload-tray` |
+| `index.ts` | `Menu` `type MenuOption` `type OptionBlocker` | re-export |  | from `./menu` |
+| `index.ts` | `Select` `type SelectOption` | re-export |  | from `./select` |
+| `index.ts` | `MultiSelect` `type MultiSelectOption` | re-export |  | from `./multi-select` |
+| `index.ts` | `DateField` | re-export |  | from `./date-field` |
 | `index.ts` | `PageEnter` | re-export |  | from `./page-enter` |
 | `index.ts` | `CountUp` | re-export |  | from `./count-up` |
 | `index.ts` | `ProgressRing` | re-export |  | from `./progress-ring` |
@@ -1871,8 +1899,16 @@ Every top-level export in `web`, with the line to open.
 | `index.ts` | `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` `type FilterDef` | re-export |  | from `./filter-bar` |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | function | :20 | The shape of a list page, before the list page. |
 | `loading.tsx` | `Loading` | function | :22 | The "still fetching" line. |
+| `menu.tsx` | `OptionBlocker` | interface | :24 | Why an option cannot be chosen, and the one thing that clears it (MNU-5). |
+| `menu.tsx` | `MenuOption` | interface | :29 |  |
+| `menu.tsx` | `Menu` | function | :62 | The listbox popover that `Select` and `MultiSelect` open: one implementation of the list, so the ke… |
+| `menu.tsx` | `MENU_TRIGGER_CLASS` | const | :404 | The classes of the button that opens a menu: a `.field-input` that reads as a select. |
+| `menu.tsx` | `ValueProxy` | function | :416 | What lets a custom control behave in a `<form>` like the native one it replaced. |
 | `metric-strip.tsx` | `MetricItem` | interface | :6 |  |
 | `metric-strip.tsx` | `MetricStrip` | function | :47 | A row of figures with no boxes in it, and a drawer underneath. |
+| `multi-select.tsx` | `MultiSelectOption` | type | :9 |  |
+| `multi-select.tsx` | `MultiSelectProps` | interface | :11 |  |
+| `multi-select.tsx` | `MultiSelect` | function | :48 | A multiple choice (MNU-3): checkboxes in a menu that STAYS OPEN on each pick, so choosing five thin… |
 | `page-enter.tsx` | `PageEnter` | function | :27 | A page arrives. |
 | `page-header.tsx` | `PageHeader` | function | :21 | The top of every page: context, title, one line of explanation, and the one primary action. |
 | `pagination.tsx` | `PaginationMeta` | interface | :15 | The prev/next/page-count block, written out by hand at the foot of every paged list — eight times,… |
@@ -1883,8 +1919,11 @@ Every top-level export in `web`, with the line to open.
 | `section-rail.tsx` | `RailSection` | interface | :6 |  |
 | `section-rail.tsx` | `SectionRail` | function | :36 | A long object page with a rail to jump around it. |
 | `section.tsx` | `Section` | function | :19 | A titled region of a page, with no box around it. |
-| `segmented.tsx` | `SegmentedOption` | interface | :27 | A short row of mutually exclusive options, the current one filled. |
-| `segmented.tsx` | `Segmented` | function | :34 |  |
+| `segmented.tsx` | `SegmentedOption` | interface | :39 | A short row of mutually exclusive options, the current one filled. |
+| `segmented.tsx` | `Segmented` | function | :49 |  |
+| `select.tsx` | `SelectOption` | type | :10 |  |
+| `select.tsx` | `SelectProps` | interface | :12 |  |
+| `select.tsx` | `Select` | function | :58 | THE select. |
 | `skeleton.tsx` | `SkeletonShape` | type | :26 |  |
 | `skeleton.tsx` | `Skeleton` | function | :28 |  |
 | `skeleton.tsx` | `SkeletonText` | function | :33 | `lines` rows of text; the last is shorter, the way a paragraph ends. |
@@ -1899,6 +1938,7 @@ Every top-level export in `web`, with the line to open.
 | `theme-toggle.tsx` | `ThemeToggleLabels` | interface | :25 | The control that switches theme. |
 | `theme-toggle.tsx` | `ThemeToggle` | function | :51 |  |
 | `truncate-reveal.tsx` | `TruncateReveal` | function | :28 | A label cut short by an ellipsis that scrolls to show the rest while the pointer is on it. |
+| `upload-tray.tsx` | `UploadTray` | function | :141 | The docked list of transfers: one lane per file, summary on top (UPL-5, UPL-6). |
 
 ### `apps/web/src/config`
 
@@ -1926,15 +1966,25 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `use-cart.ts` | `useCart` | re-export |  | from `@/components/storefront/cart-provider` |
+| `use-done-beat.ts` | `useDoneBeat` | function | :26 | The beat between "it worked" and "we left" (FRM-6, `COG-13`). |
 | `use-exit-transition.ts` | `useExitTransition` | function | :22 | Lets something that unmounts get an exit. |
 | `use-fresh-on-change.ts` | `useFreshOnChange` | function | :16 | True for one `sweep` after `changeKey` changes from one value to another; never on first render, an… |
 | `use-order-status-label.ts` | `useOrderStatusLabel` | function | :17 | An order status in the reader's language. |
+| `use-popover.ts` | `PopoverCloseReason` | type | :49 | Lifts a floating panel out of whatever contains it and keeps it next to its trigger (MNU-4). |
+| `use-popover.ts` | `UsePopoverOptions` | interface | :58 |  |
+| `use-popover.ts` | `usePopover` | function | :71 |  |
 | `use-prefers-reduced-motion.ts` | `prefersReducedMotion` | function | :12 | Read once, outside React: for a timer or an event handler that has no render to subscribe from. |
 | `use-prefers-reduced-motion.ts` | `usePrefersReducedMotion` | function | :27 | The stylesheet's reduced-motion rule collapses every CSS animation and transition, but it cannot re… |
 | `use-theme.ts` | `UseTheme` | interface | :86 |  |
 | `use-theme.ts` | `useTheme` | function | :96 |  |
 | `use-toast.ts` | `Toast` | interface | :7 |  |
 | `use-toast.ts` | `useToast` | function | :16 |  |
+| `use-upload-queue.ts` | `UploadContext` | interface | :20 | What `send` is given for one file: a signal that aborts it, and a way to say how far it has got. |
+| `use-upload-queue.ts` | `UploadSend` | type | :27 | Sends one file. |
+| `use-upload-queue.ts` | `EnqueueOptions` | interface | :29 | Sends one file. |
+| `use-upload-queue.ts` | `EnqueueResult` | interface | :37 |  |
+| `use-upload-queue.ts` | `useUploadQueue` | function | :64 | Runs an upload queue: the reducer's lanes plus the requests behind them. |
+| `use-upload-queue.ts` | `UploadQueue` | type | :200 |  |
 
 ### `apps/web/src/i18n`
 
@@ -1954,7 +2004,8 @@ Every top-level export in `web`, with the line to open.
 | `admin-client.ts` | `ssoStartUrl` | function | :99 | Where a "Sign in with …" button navigates: the API redirects the browser on to the identity provide… |
 | `admin-client.ts` | `completeSsoSignIn` | function | :104 | Redeems a just-completed single sign-on for a session, and stores it the way `login()` does. |
 | `admin-client.ts` | `logout` | function | :122 |  |
-| `admin-client.ts` | `adminFetch` | function | :167 |  |
+| `admin-client.ts` | `adminAuth` | const | :174 | How the back office authenticates a request and recovers from a 401: the bearer token, the single-f… |
+| `admin-client.ts` | `adminFetch` | function | :184 |  |
 | `analytics-client.ts` | `getSessionId` | function | :27 | Reads (or mints and persists) this browser's opaque analytics session id. |
 | `analytics-client.ts` | `TrackedEventType` | type | :44 |  |
 | `analytics-client.ts` | `trackEvent` | function | :58 | Fires one tracking event. |
@@ -1974,6 +2025,36 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `getPosts` | function | :184 |  |
 | `api.ts` | `getPost` | function | :192 |  |
 | `api.ts` | `getMenu` | function | :197 | A named footer menu slot — see MENU_KEYS in @newax/shared. |
+| `calendar.ts` | `DateOrder` | type | :14 | Calendar arithmetic for the date field (MNU-2): a month's grid, a week's start, keyboard movement b… |
+| `calendar.ts` | `Ymd` | interface | :16 |  |
+| `calendar.ts` | `MIN_YEAR` | const | :23 | The years a field will hold: four digits, so an ISO string always has a fixed shape. |
+| `calendar.ts` | `MAX_YEAR` | const | :24 | The years a field will hold: four digits, so an ISO string always has a fixed shape. |
+| `calendar.ts` | `MIN_ISO` | const | :25 | The years a field will hold: four digits, so an ISO string always has a fixed shape. |
+| `calendar.ts` | `MAX_ISO` | const | :26 | The years a field will hold: four digits, so an ISO string always has a fixed shape. |
+| `calendar.ts` | `YEAR_PAGE_SIZE` | const | :34 | Parameter: years on one page of the year grid. |
+| `calendar.ts` | `WEEK_START_FALLBACK` | const | :41 | Parameter: week start when the runtime cannot say. |
+| `calendar.ts` | `toIso` | function | :45 |  |
+| `calendar.ts` | `isLeapYear` | function | :49 |  |
+| `calendar.ts` | `daysInMonth` | function | :53 |  |
+| `calendar.ts` | `parseIso` | function | :59 | Strict: `YYYY-MM-DD` and a day that exists. |
+| `calendar.ts` | `addDays` | function | :89 |  |
+| `calendar.ts` | `addMonths` | function | :98 | Moves by whole months and keeps the day where it can. |
+| `calendar.ts` | `addYears` | function | :109 | 29 February plus a year is 28 February, for the same reason. |
+| `calendar.ts` | `weekdayOf` | function | :114 | 0 is Sunday, 6 is Saturday, as `Date#getUTCDay`. |
+| `calendar.ts` | `compareIso` | function | :119 | ISO days sort as strings, which is why they are fixed-width. |
+| `calendar.ts` | `clampIso` | function | :123 |  |
+| `calendar.ts` | `inRange` | function | :130 | Whether `iso` falls inside the optional bounds, both inclusive. |
+| `calendar.ts` | `GridCell` | interface | :134 |  |
+| `calendar.ts` | `monthGrid` | function | :146 | The month as six rows of seven. |
+| `calendar.ts` | `weekdayOrder` | function | :163 | The weekday numbers (0 Sunday) in the order a row runs, starting at `weekStart`. |
+| `calendar.ts` | `yearPageStart` | function | :168 | The first year of the page of years that contains `year`. |
+| `calendar.ts` | `yearPage` | function | :172 |  |
+| `calendar.ts` | `NavigateOptions` | interface | :177 |  |
+| `calendar.ts` | `navigate` | function | :192 | Where a key moves the focused day: arrows by day and week, PageUp and PageDown by month, with Shift… |
+| `calendar.ts` | `weekStartFromInfo` | function | :231 | Convert `getWeekInfo().firstDay` (1 Monday .. |
+| `calendar.ts` | `weekStartFor` | function | :243 | The first day of the week for a BCP 47 tag, from the platform's own locale data. |
+| `calendar.ts` | `dateOrderFor` | function | :259 | The order a locale writes a numeric date in, read from the platform rather than a table of countrie… |
+| `calendar.ts` | `isoInZone` | function | :281 | The calendar day an instant falls on in `timeZone`, as ISO. |
 | `cart-client.ts` | `getCustomerToken` | function | :19 |  |
 | `cart-client.ts` | `fetchCart` | function | :46 |  |
 | `cart-client.ts` | `AddToCartInput` | interface | :50 |  |
@@ -2005,32 +2086,110 @@ Every top-level export in `web`, with the line to open.
 | `customer-client.ts` | `replySupportTicket` | function | :206 |  |
 | `customer-client.ts` | `reopenSupportTicket` | function | :210 |  |
 | `customer-client.ts` | `customerFetch` | function | :250 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
+| `date-parse.ts` | `ParseFailure` | type | :28 | Reads a date out of whatever a person typed (MNU-2, ACT-5: be liberal in what you accept). |
+| `date-parse.ts` | `ParseResult` | type | :30 |  |
+| `date-parse.ts` | `ParseOptions` | interface | :32 |  |
+| `date-parse.ts` | `TWO_DIGIT_YEAR_LOOKAHEAD` | const | :50 | Parameter: how far ahead a two-digit year may point. |
+| `date-parse.ts` | `expandTwoDigitYear` | function | :70 | A two-digit year in the window around `todayYear` (see `TWO_DIGIT_YEAR_LOOKAHEAD`). |
+| `date-parse.ts` | `parseDateInput` | function | :228 | The date the text means, or the reason it cannot be used. |
 | `download-csv.ts` | `downloadCsv` | function | :17 | Pull a CSV from an admin endpoint and hand it to the browser. |
 | `download-file.ts` | `downloadFile` | function | :10 | Pull a binary file (a PDF, here — H2/L20's own RAG source download) from an admin endpoint and hand… |
+| `guard.ts` | `HoldState` | type | :18 | Where a hold is. |
+| `guard.ts` | `HoldEvent` | type | :21 |  |
+| `guard.ts` | `HOLD_IDLE` | const | :24 |  |
+| `guard.ts` | `nextHold` | function | :35 | The next state of a hold, and whether this event is the one that fires it. |
+| `guard.ts` | `holdProgress` | function | :57 | How far round the ring is, 0 to 1. |
+| `guard.ts` | `HOLD_MS` | const | :65 | The hold length from the brand, so one edit retunes every danger control. |
+| `guard.ts` | `isVagueLabel` | function | :89 |  |
+| `guard.ts` | `Cooldown` | interface | :101 |  |
+| `guard.ts` | `cooldownState` | function | :120 | The state of a cooling-off period that began at `requestedAt` and lasts `days`. |
+| `guard.ts` | `COOLDOWN_DAYS` | const | :136 | The cooling-off length from the brand. |
+| `menu-filter.ts` | `FILTER_THRESHOLD` | const | :15 | Parameter: the largest list that opens as a plain list. |
+| `menu-filter.ts` | `SEGMENT_LIMIT` | const | :24 | Parameter: the smallest list that is a menu. |
+| `menu-filter.ts` | `MenuKind` | type | :26 | Parameter: the smallest list that is a menu. |
+| `menu-filter.ts` | `needsSearch` | function | :29 | True when a list this long needs a search field on top (MNU-1). |
+| `menu-filter.ts` | `menuKind` | function | :38 | The control a list of this length is (MNU-6, MNU-1). |
+| `menu-filter.ts` | `MatchRange` | type | :45 | A half-open range `[start, end)` of UTF-16 indices into the original label. |
+| `menu-filter.ts` | `FilterResult` | interface | :47 | A half-open range `[start, end)` of UTF-16 indices into the original label. |
+| `menu-filter.ts` | `filterOptions` | function | :120 | Narrows `options` by what was typed. |
+| `menu-filter.ts` | `typeAheadIndex` | function | :149 | Type-ahead for a list with no search field: the index of the next option whose label starts with wh… |
+| `menu-filter.ts` | `TYPE_AHEAD_RESET_MS` | const | :168 | Parameter: how long a pause ends a type-ahead word. |
 | `motion.ts` | `bezierEase` | function | :29 | A CSS `cubic-bezier(x1, y1, x2, y2)` as a function of time, so a JS-driven value follows exactly th… |
 | `motion.ts` | `settle` | const | :73 | The `settle` curve: fast out of the blocks, long unhurried finish, never an overshoot. |
 | `motion.ts` | `clamp01` | function | :76 | Clamp a progress value into 0–1. |
 | `motion.ts` | `countUpValue` | function | :86 | The value a count-up shows at `progress` (0–1 of its duration). |
 | `motion.ts` | `revealedCount` | function | :93 | How many of `total` units (characters, steps) are revealed at `progress`. |
 | `motion.ts` | `staggerDelayMs` | function | :103 | The delay, in ms, of the item at a zero-based `index` of a staggered group. |
-| `motion.ts` | `noiseGlyph` | function | :117 |  |
-| `motion.ts` | `scrambleFrame` | function | :127 | One frame of a decode: the leading `revealedCount` characters are the real text, the rest are noise. |
-| `motion.ts` | `typedFrame` | function | :134 | One frame of a typed reveal: the leading characters of `target`, nothing else. |
-| `motion.ts` | `typedWordsFrame` | function | :144 | One frame of a word-by-word reveal: the leading whole words of `target`, each with the whitespace t… |
-| `motion.ts` | `progressFraction` | function | :156 | How full a determinate bar is, 0–1. |
-| `motion.ts` | `REVEAL_MAX_MS` | const | :162 | The longest a truncated label may take to scroll, ms: past it the reader has read it or gone. |
-| `motion.ts` | `revealRun` | function | :171 | The scroll that shows the end of a label cut short by an ellipsis. |
-| `motion.ts` | `SwapState` | interface | :185 | The state of a text that swaps in place: what is showing, what is on its way out, and how many time… |
-| `motion.ts` | `nextSwap` | function | :191 |  |
-| `motion.ts` | `originOffset` | function | :202 | Where a dialog opened from a control arrives from: the offset between the centre of that control an… |
-| `motion.ts` | `ReelPart` | type | :220 | The characters of a formatted figure as odometer parts: an ASCII digit rolls (`digit` is its value… |
-| `motion.ts` | `reelParts` | function | :222 | The characters of a formatted figure as odometer parts: an ASCII digit rolls (`digit` is its value… |
-| `motion.ts` | `ringStroke` | function | :233 | Stroke geometry for a progress ring: the dash array is the circumference and the offset is how much… |
-| `motion.ts` | `MOTION_MS` | const | :243 | How long a JS-driven motion runs, by name, from the same tokens CSS reads. |
+| `motion.ts` | `fineStaggerDelayMs` | function | :112 | The same capped ramp at the fine step, for a grid of many small peers (a product grid, CRD-6). |
+| `motion.ts` | `noiseGlyph` | function | :126 |  |
+| `motion.ts` | `scrambleFrame` | function | :136 | One frame of a decode: the leading `revealedCount` characters are the real text, the rest are noise. |
+| `motion.ts` | `typedFrame` | function | :143 | One frame of a typed reveal: the leading characters of `target`, nothing else. |
+| `motion.ts` | `typedWordsFrame` | function | :153 | One frame of a word-by-word reveal: the leading whole words of `target`, each with the whitespace t… |
+| `motion.ts` | `progressFraction` | function | :165 | How full a determinate bar is, 0–1. |
+| `motion.ts` | `REVEAL_MAX_MS` | const | :171 | The longest a truncated label may take to scroll, ms: past it the reader has read it or gone. |
+| `motion.ts` | `revealRun` | function | :180 | The scroll that shows the end of a label cut short by an ellipsis. |
+| `motion.ts` | `SwapState` | interface | :194 | The state of a text that swaps in place: what is showing, what is on its way out, and how many time… |
+| `motion.ts` | `nextSwap` | function | :200 |  |
+| `motion.ts` | `originOffset` | function | :211 | Where a dialog opened from a control arrives from: the offset between the centre of that control an… |
+| `motion.ts` | `ReelPart` | type | :229 | The characters of a formatted figure as odometer parts: an ASCII digit rolls (`digit` is its value… |
+| `motion.ts` | `reelParts` | function | :231 | The characters of a formatted figure as odometer parts: an ASCII digit rolls (`digit` is its value… |
+| `motion.ts` | `ringStroke` | function | :242 | Stroke geometry for a progress ring: the dash array is the circumference and the offset is how much… |
+| `motion.ts` | `MOTION_MS` | const | :252 | How long a JS-driven motion runs, by name, from the same tokens CSS reads. |
 | `onsite-messages-client.ts` | `fetchActiveOnsiteMessages` | function | :13 | WO-8.6. |
 | `onsite-messages-client.ts` | `subscribeToNewsletter` | function | :21 |  |
+| `popover-position.ts` | `Rect` | interface | :22 | A rectangle in viewport coordinates, the shape `getBoundingClientRect()` returns. |
+| `popover-position.ts` | `PlaceInput` | interface | :31 |  |
+| `popover-position.ts` | `Placement` | interface | :43 |  |
+| `popover-position.ts` | `POPOVER_GAP` | const | :66 | Parameter: gap between trigger and panel. |
+| `popover-position.ts` | `POPOVER_MARGIN` | const | :73 | Parameter: least distance to the viewport edge. |
+| `popover-position.ts` | `placePopover` | function | :75 | Parameter: least distance to the viewport edge. |
 | `rag-corpus-access.ts` | `visibleCorpora` | function | :21 | Filters a list of corpus options down to the ones `can` may reach — the same convention `reports/pa… |
 | `reveal.ts` | `armReveal` | function | :22 | Hides a group of elements and reveals each as it scrolls into view, staggered within the batch that… |
+| `upload-client.ts` | `UploadRequest` | interface | :33 | The upload transport: one multipart POST that can say how far it has got. |
+| `upload-client.ts` | `NETWORK_MESSAGE` | const | :64 | What a person is told when the connection fails before any answer: what happened and what to do (FL… |
+| `upload-client.ts` | `isUploadAbort` | function | :72 | Whether `error` is a cancel, which is an outcome and never a failure. |
+| `upload-client.ts` | `uploadFile` | function | :176 | Sends the file and resolves with the parsed response body. |
+| `upload-queue.ts` | `MAX_CONCURRENT_UPLOADS` | const | :25 | At most this many uploads are in flight; the rest wait their turn. |
+| `upload-queue.ts` | `SPEED_WINDOW_MS` | const | :28 | The speed is measured over the last 3 000 ms of samples: long enough to smooth a bursty link, short… |
+| `upload-queue.ts` | `ETA_MIN_SAMPLE_MS` | const | :31 | The time left is shown only once the samples span this long: under a second, the figure is a guess… |
+| `upload-queue.ts` | `TRAY_HIDE_MS` | const | :38 | How long the tray stays after everything succeeded. |
+| `upload-queue.ts` | `PROGRESS_INTERVAL_MS` | const | :48 | The most often one lane's progress is passed to the queue: 250 ms, four times a second. |
+| `upload-queue.ts` | `TICK_MS` | const | :55 | How often a transfer that has gone quiet is re-measured. |
+| `upload-queue.ts` | `UploadStatus` | type | :57 | How often a transfer that has gone quiet is re-measured. |
+| `upload-queue.ts` | `UploadItem` | interface | :64 |  |
+| `upload-queue.ts` | `UploadState` | type | :90 |  |
+| `upload-queue.ts` | `EMPTY_UPLOADS` | const | :92 |  |
+| `upload-queue.ts` | `UploadEntry` | interface | :94 |  |
+| `upload-queue.ts` | `UploadAction` | type | :102 |  |
+| `upload-queue.ts` | `uploadReducer` | function | :146 |  |
+| `upload-queue.ts` | `startable` | function | :264 | The lanes to start now, oldest first: as many queued ones as there is room for under `MAX_CONCURREN… |
+| `upload-queue.ts` | `hasActive` | function | :274 | Whether anything is waiting or in flight. |
+| `upload-queue.ts` | `activeCount` | function | :279 | How many lanes hold a place (the count limit's `alreadyQueued`): waiting or in flight. |
+| `upload-queue.ts` | `allSucceeded` | function | :284 | Everything went through: the one outcome that hides the tray by itself. |
+| `upload-queue.ts` | `percentOf` | function | :293 | Whole percent of the request body sent. |
+| `upload-queue.ts` | `isProcessing` | function | :300 | Every byte is sent and the lane waits on the server's answer. |
+| `upload-queue.ts` | `SummaryTone` | type | :304 |  |
+| `upload-queue.ts` | `UploadSummary` | interface | :306 |  |
+| `upload-queue.ts` | `summarize` | function | :329 | The tray's one line, in numbers and never "an error occurred" (UPL-5): - "Uploading 3 files" everyt… |
+| `upload-queue.ts` | `outcomeAnnouncement` | function | :360 | What a screen reader is told, and only when the batch has an outcome: never a percentage (UPL-6). |
+| `upload-rules.ts` | `IMAGE_UPLOAD_RULES` | const | :30 | An image the API converts and stores: product photographs (`ProductAdminService.addImage`, product-… |
+| `upload-rules.ts` | `RECEIPT_UPLOAD_RULES` | const | :40 | A receipt (`FinanceService.attachReceipt`, finance.service.ts:307) goes through `StorageService.put… |
+| `upload-rules.ts` | `PDF_UPLOAD_RULES` | const | :51 | A document for the knowledge base (`RagCorpusService.createSource` and `replaceFile`, rag-corpus.se… |
+| `upload-rules.ts` | `CSV_IMPORT_RULES` | const | :65 | A CSV import. |
+| `upload-rules.ts` | `CSV_IMPORT_HINT` | const | :72 | The one limit a CSV import has, printed with the zone's own limits: "Up to 5,000 rows". |
+| `upload.ts` | `UploadRules` | interface | :16 | What an upload accepts, and the checks that enforce it at drop time (UPL-3). |
+| `upload.ts` | `FileLike` | type | :34 | The three fields of a `File` the checks read, so a spec needs no DOM. |
+| `upload.ts` | `RefusalCode` | type | :36 | The three fields of a `File` the checks read, so a spec needs no DOM. |
+| `upload.ts` | `Refusal` | interface | :43 | A refused file. |
+| `upload.ts` | `FileCheck` | type | :50 |  |
+| `upload.ts` | `refusalMessage` | function | :53 | "hero.tiff is a TIFF. |
+| `upload.ts` | `acceptAttribute` | function | :58 | The value of the file input's `accept` attribute for these rules. |
+| `upload.ts` | `describeLimits` | function | :119 | The limits as one line, printed inside the drop zone before anyone has done anything wrong (UPL-4):… |
+| `upload.ts` | `checkFile` | function | :181 | One file against the rules. |
+| `upload.ts` | `checkFiles` | function | :220 | A dropped batch against the rules, one result per file in the same order. |
+| `upload.ts` | `partitionFiles` | function | :242 | `checkFiles`, split into the files to send and the refusals to show. |
+| `upload.ts` | `formatSpeed` | function | :258 | A transfer speed: "1.2 MB/s". |
+| `upload.ts` | `formatEta` | function | :267 | The time left, rounded up so it never promises less than it will take: "4 s", "1 min 20 s", "12 min… |
 | `wishlist.ts` | `toggleWishlist` | function | :62 |  |
 | `wishlist.ts` | `WishlistState` | interface | :169 |  |
 | `wishlist.ts` | `useWishlist` | function | :176 |  |

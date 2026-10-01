@@ -8,6 +8,7 @@ import { cn } from '@/utils/cn';
 import { DataTable, EmptyState, MetricStrip, PageHeader, Section } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { EmployeeCompensation, EmployeeLeave, LeaveType } from '@/types/api';
+import { DateField } from '@/components/ui/date-field';
 
 /**
  * WO-19.6 (docs/implementation/payroll/19-payroll.md) — self-service: the signed-in
@@ -153,14 +154,18 @@ export default function MyPayPage() {
               ))}
             </select>
           </label>
-          <label className="block">
-            <span className="field-label">From</span>
-            <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="field-input" required />
-          </label>
-          <label className="block">
-            <span className="field-label">To</span>
-            <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="field-input" required />
-          </label>
+          <div>
+            <label htmlFor="leave-from" className="field-label">
+              From
+            </label>
+            <DateField id="leave-from" value={startDate} onChange={setStartDate} required />
+          </div>
+          <div>
+            <label htmlFor="leave-to" className="field-label">
+              To
+            </label>
+            <DateField id="leave-to" value={endDate} onChange={setEndDate} required />
+          </div>
           <label className="block flex-1 min-w-[12rem]">
             <span className="field-label">Reason (optional)</span>
             <input value={reason} onChange={(e) => setReason(e.target.value)} className="field-input" />

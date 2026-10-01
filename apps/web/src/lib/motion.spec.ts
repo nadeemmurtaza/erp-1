@@ -14,6 +14,7 @@ import {
   ringStroke,
   scrambleFrame,
   settle,
+  fineStaggerDelayMs,
   staggerDelayMs,
   typedFrame,
   typedWordsFrame,
@@ -314,5 +315,16 @@ describe('reelParts', () => {
 
   it('does not roll a digit of another script (it has no strip to roll through)', () => {
     expect(reelParts('٣')).toEqual([{ kind: 'fixed', char: '٣' }]);
+  });
+});
+
+describe('fineStaggerDelayMs (CRD-6)', () => {
+  it('steps at the fine pace, 40 ms, and stops at the same cap as the ordinary ramp', () => {
+    expect([0, 1, 2, 3, 4, 5, 40].map((i) => fineStaggerDelayMs(i))).toEqual([0, 40, 80, 120, 160, 160, 160]);
+  });
+
+  it('never goes negative, and a whole grid still finishes inside one slow step', () => {
+    expect(fineStaggerDelayMs(-2)).toBe(0);
+    expect(fineStaggerDelayMs(999)).toBeLessThanOrEqual(motion.duration.slow);
   });
 });

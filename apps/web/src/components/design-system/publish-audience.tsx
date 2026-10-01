@@ -407,7 +407,7 @@ export function PublishAudienceSpecimen() {
         description={`${name} will be listed and indexed, and ${
           numeric === null ? 'an audience that could not be counted' : `about ${formatNumber(numeric)} partner accounts`
         } can find it. ${CAVEAT}`}
-        confirmLabel="Publish"
+        confirmLabel="Publish to directory"
       />
 
       <p role="status" className="sr-only">

@@ -34,6 +34,9 @@ import { PublishAudienceSpecimen } from './publish-audience';
 import { ScopedBentoSpecimen } from './scoped-bento';
 import { AdminPatterns } from './patterns';
 import { ComponentSpecimens } from './specimens';
+import { CardRecipeSpecimen, DangerSpecimens, FormRecipeSpecimen } from './controls-specimens';
+import { MenuSpecimens } from './menu-specimens';
+import { UploadSpecimens } from './upload-specimens';
 
 const SECTIONS = [
   ['colour', 'Colour'],
@@ -42,6 +45,7 @@ const SECTIONS = [
   ['depth', 'Depth and timing'],
   ['motion', 'Motion'],
   ['components', 'Components'],
+  ['controls', 'Controls'],
   ['patterns', 'Admin patterns'],
   ['screens', 'Admin screens'],
   ['layout', 'Layout and loading'],
@@ -137,6 +141,33 @@ export function DesignSystemGallery() {
 
         <GallerySection id="components" title="Components" lead="The shared primitives, as shipped. A page composes these; it does not invent its own.">
           <ComponentSpecimens />
+        </GallerySection>
+
+        <GallerySection
+          id="controls"
+          title="Controls with a contract"
+          lead="Uploads, menus, danger, forms and cards: five families of laws (UPL, MNU, DNG, FRM, CRD), each as the real control. Try them: drop a file, type to filter, hold a button, submit the form empty."
+        >
+          <Group
+            title="Uploads"
+            note="A drop zone, honest progress, a check at drop time, the limits stated first, and one lane per file so one failure never blocks the others."
+          >
+            <UploadSpecimens />
+          </Group>
+          <MenuSpecimens />
+          <DangerSpecimens />
+          <Group
+            title="The form recipe"
+            note="The sign-in form that every form is cut from: 56 px fields, 16 between them, 32 before the button, a label above and an example inside, a 2 px focus ring, a lit surface, and a ring that becomes a check."
+          >
+            <FormRecipeSpecimen />
+          </Group>
+          <Group
+            title="The card recipe"
+            note="Hover to lift. The card is drawn from the storefront card's own classes; the corners follow one formula, so the photograph's corner is the card's minus the gap."
+          >
+            <CardRecipeSpecimen />
+          </Group>
         </GallerySection>
 
         <GallerySection

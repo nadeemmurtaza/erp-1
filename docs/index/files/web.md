@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 439 tracked files in `apps/web`, by directory.
+All 450 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -71,7 +71,7 @@ All 439 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `global-error.tsx` | global-error | 82 |  |
-| `globals.css` | stylesheet | 678 |  |
+| `globals.css` | stylesheet | 702 |  |
 | `icon.svg` | asset | — |  |
 | `not-found.tsx` | not-found | 79 |  |
 | `robots.ts` | module | 33 |  |
@@ -1502,19 +1502,24 @@ All 439 tracked files in `apps/web`, by directory.
 | `cost-breakdown.tsx` | component | 121 |  |
 | `recipe-editor.tsx` | component | 363 |  |
 
-### `apps/web/src/components/admin/charts` (9)
+### `apps/web/src/components/admin/charts` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `category-bar-chart.tsx` | component | 79 |  |
-| `chart-data-table.tsx` | component | 40 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-reader-only table whos… |
+| `chart-data-table.tsx` | component | 47 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-reader-only table whos… |
 | `chart-marker.tsx` | component | 59 |  |
-| `chart-theme.ts` | component | 86 |  |
+| `chart-math.spec.ts` | unit test | 118 |  |
+| `chart-math.ts` | component | 80 |  |
+| `chart-theme.ts` | component | 96 |  |
+| `chart-tooltip.tsx` | component | 66 |  |
 | `comparison-chart.tsx` | component | 119 |  |
-| `index.ts` | component | 29 | The whole charting vocabulary for the back office (10-admin-dashboard.md D9). |
-| `share-chart.tsx` | component | 95 |  |
+| `index.ts` | component | 32 | The whole charting vocabulary for the back office (10-admin-dashboard.md D9). |
+| `period-comparison-chart.tsx` | component | 267 |  |
+| `share-chart.tsx` | component | 153 |  |
 | `sparkline-chart.tsx` | component | 39 |  |
 | `time-series-chart.tsx` | component | 149 |  |
+| `use-reduced-motion.ts` | component | 24 |  |
 
 ### `apps/web/src/components/admin/dashboard` (9)
 
@@ -1551,12 +1556,15 @@ All 439 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 104 |  |
 
-### `apps/web/src/components/design-system` (5)
+### `apps/web/src/components/design-system` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `data-concepts.tsx` | component | 537 |  |
+| `flow-concepts.tsx` | component | 681 |  |
 | `foundations.tsx` | component | 438 |  |
-| `gallery.tsx` | component | 111 |  |
+| `gallery.tsx` | component | 175 |  |
+| `layout-loading.tsx` | component | 399 |  |
 | `live-tokens.ts` | component | 60 |  |
 | `patterns.tsx` | component | 347 |  |
 | `specimens.tsx` | component | 304 |  |
@@ -1604,19 +1612,20 @@ All 439 tracked files in `apps/web`, by directory.
 | `theme-switch.tsx` | component | 28 |  |
 | `visual-search-button.tsx` | component | 89 |  |
 
-### `apps/web/src/components/ui` (19)
+### `apps/web/src/components/ui` (22)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `badge.tsx` | component | 45 |  |
+| `bento.tsx` | component | 102 |  |
 | `button.tsx` | component | 56 |  |
 | `confirm-dialog.tsx` | component | 103 |  |
-| `data-table.tsx` | component | 237 |  |
+| `data-table.tsx` | component | 260 |  |
 | `dialog.tsx` | component | 197 |  |
 | `disclosure.tsx` | component | 69 |  |
 | `empty-state.tsx` | component | 40 |  |
 | `filter-bar.tsx` | component | 191 |  |
-| `index.ts` | component | 40 | Design-system primitives. |
+| `index.ts` | component | 45 | Design-system primitives. |
 | `list-page-skeleton.tsx` | component | 66 | The shape of a list page, before the list page. |
 | `loading.tsx` | loading | 31 |  |
 | `metric-strip.tsx` | component | 158 |  |
@@ -1624,6 +1633,8 @@ All 439 tracked files in `apps/web`, by directory.
 | `pagination.tsx` | component | 66 |  |
 | `section-rail.tsx` | component | 154 |  |
 | `section.tsx` | component | 59 |  |
+| `skeleton.tsx` | component | 83 |  |
+| `switch.tsx` | component | 82 |  |
 | `tabs.tsx` | component | 116 |  |
 | `theme-init-script.tsx` | component | 22 |  |
 | `theme-toggle.tsx` | component | 115 |  |

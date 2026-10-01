@@ -1,93 +1,151 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip, type TooltipValueType } from 'recharts';
+import { useState } from 'react';
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
+import { cn } from '@/utils/cn';
 import { ChartDataTable } from './chart-data-table';
-import { GRID, INK, paletteColor, type ValueFormat } from './chart-theme';
+import { MAX_NAMED_SLICES, OTHER_LABEL, foldShares, sharePct, type Share } from './chart-math';
+import { CONTEXT, paletteColor, type ValueFormat } from './chart-theme';
+import { usePrefersReducedMotion } from './use-reduced-motion';
 
-export interface ShareItem {
-  label: string;
-  value: number;
-}
+export type ShareItem = Share;
 
-const OTHER_LABEL = 'Other';
-const OTHER_COLOR = INK;
+/** Degrees of empty ring between two slices; 2° is ~2.6 px at the outer edge of the 76 px ring below. */
+const SLICE_GAP_DEG = 2;
 
 /**
- * A categorical share of a whole — `donut-chart.tsx`'s replacement (WO-E.2).
- * Only the top `maxSlices` are drawn; the rest fold into one "Other" slice
- * so a long tail can't crowd the ring or the legend.
+ * A categorical share of a whole.
+ *
+ * Only the top `maxSlices` are drawn (never more than five); the rest fold into
+ * one gray "Other" slice so a long tail can't crowd the ring or the legend. That
+ * keeps the donut at six segments at most, the ceiling dataviz sets for a form
+ * whose slices are compared by angle.
+ *
+ * Flat on purpose. A tilted, extruded donut makes the near slices look larger
+ * than the far ones, so the picture misreports the number it is there to show.
+ * The depth here is the ring's own: rounded slice ends, a gap between slices,
+ * and a centre that is the hero figure.
+ *
+ * The centre reads the total until a slice is chosen, then that slice's value
+ * and share. A slice is chosen by pointing at it, or by pointing at, focusing or
+ * pressing its legend row, so the legend is the keyboard path to the same
+ * readout and nothing is reachable only by mouse. Pressing a row pins it; the
+ * ring dims every other slice rather than recolouring it (colour follows the
+ * entity). The table twin carries every figure for a screen reader.
  */
 export function ShareChart({
   items,
   format = 'integer',
-  maxSlices = 5,
+  maxSlices = MAX_NAMED_SLICES,
 }: {
   items: readonly ShareItem[];
   format?: ValueFormat;
   maxSlices?: number;
 }) {
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [pinned, setPinned] = useState<number | null>(null);
+  const reduced = usePrefersReducedMotion();
+
   if (items.length === 0) {
     return <EmptyState title="No data in this window." />;
   }
 
-  const sorted = [...items].sort((a, b) => b.value - a.value);
-  const top = sorted.slice(0, maxSlices);
-  const rest = sorted.slice(maxSlices);
-  const otherTotal = rest.reduce((sum, item) => sum + item.value, 0);
-  const slices = otherTotal > 0 ? [...top, { label: OTHER_LABEL, value: otherTotal }] : top;
+  const slices = foldShares(items, maxSlices);
   const total = slices.reduce((sum, item) => sum + item.value, 0);
 
+  // Rows that all say zero are not a share of anything; a ring with no arc is a blank, not an answer.
+  if (total <= 0) {
+    return <EmptyState title="No data in this window." />;
+  }
+
   const formatValue = (value: number) => (format === 'money' ? formatMoney(value) : formatNumber(value));
+  const share = (value: number) => sharePct(value, total);
+  const colorOf = (slice: Share, index: number) => (slice.label === OTHER_LABEL ? CONTEXT : paletteColor(index));
+
+  const activeIndex = hovered ?? pinned;
+  const active = activeIndex == null ? null : slices[activeIndex];
+  const headline = active ? formatValue(active.value) : formatValue(total);
   const ariaLabel = `Share of ${formatValue(total)} across ${slices.length} categories`;
 
   return (
-    <figure className="m-0 flex flex-col items-center gap-4 sm:flex-row" role="img" aria-label={ariaLabel}>
-      <ResponsiveContainer width={140} height={140}>
-        <PieChart>
-          <Pie
-            data={slices as ShareItem[]}
-            dataKey="value"
-            nameKey="label"
-            innerRadius={42}
-            outerRadius={62}
-            stroke={GRID}
-            strokeWidth={1}
-          >
-            {slices.map((slice, index) => (
-              <Cell key={slice.label} fill={slice.label === OTHER_LABEL ? OTHER_COLOR : paletteColor(index)} />
-            ))}
-          </Pie>
-          <Tooltip
-            contentStyle={{ border: `1px solid ${GRID}`, borderRadius: 4, fontSize: 12 }}
-            formatter={(value: TooltipValueType | undefined, name: ReactNode) =>
-              [formatValue(Number(value ?? 0)), name] as [string, ReactNode]
-            }
-          />
-        </PieChart>
-      </ResponsiveContainer>
+    <figure className="m-0 flex flex-col items-center gap-6 sm:flex-row">
+      <div role="img" aria-label={ariaLabel} className="relative h-48 w-48 shrink-0">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={slices}
+              dataKey="value"
+              nameKey="label"
+              innerRadius={66}
+              outerRadius={84}
+              paddingAngle={slices.length > 1 ? SLICE_GAP_DEG : 0}
+              cornerRadius={4}
+              stroke="none"
+              startAngle={90}
+              endAngle={-270}
+              isAnimationActive={!reduced}
+              onMouseEnter={(_, index) => setHovered(index)}
+              onMouseLeave={() => setHovered(null)}
+              onClick={(_, index) => setPinned((prev) => (prev === index ? null : index))}
+            >
+              {slices.map((slice, index) => (
+                <Cell
+                  key={slice.label}
+                  fill={colorOf(slice, index)}
+                  fillOpacity={activeIndex == null || activeIndex === index ? 1 : 0.3}
+                />
+              ))}
+            </Pie>
+          </PieChart>
+        </ResponsiveContainer>
 
-      <ul className="w-full min-w-0 flex-1 divide-y divide-neutral-100 text-sm" aria-hidden="true">
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-9 text-center">
+          <span className="eyebrow max-w-full truncate">{active ? active.label : 'Total'}</span>
+          <span
+            className={cn(
+              'font-semibold tabular-nums text-neutral-900',
+              headline.length > 12 ? 'text-sm' : headline.length > 8 ? 'text-base' : 'text-2xl',
+            )}
+          >
+            {headline}
+          </span>
+          {active ? <span className="text-xs tabular-nums text-neutral-900/70">{formatNumber(share(active.value))}%</span> : null}
+        </div>
+      </div>
+
+      <ul className="grid w-full min-w-0 flex-1 grid-cols-1 gap-1 text-sm">
         {slices.map((slice, index) => (
-          <li key={slice.label} className="flex items-center justify-between gap-3 py-1.5">
-            <span className="flex min-w-0 items-center gap-2">
-              <span
-                className="h-2.5 w-2.5 shrink-0 rounded-full"
-                style={{ backgroundColor: slice.label === OTHER_LABEL ? OTHER_COLOR : paletteColor(index) }}
-              />
-              <span className="truncate text-neutral-900">{slice.label}</span>
-            </span>
-            <span className="shrink-0 tabular-nums text-neutral-900/60">{formatValue(slice.value)}</span>
+          <li key={slice.label}>
+            <button
+              type="button"
+              aria-pressed={pinned === index}
+              onClick={() => setPinned((prev) => (prev === index ? null : index))}
+              onMouseEnter={() => setHovered(index)}
+              onMouseLeave={() => setHovered(null)}
+              onFocus={() => setHovered(index)}
+              onBlur={() => setHovered(null)}
+              className="flex min-h-touch w-full flex-wrap items-center gap-x-3 rounded-md px-2 py-1 text-start transition-colors duration-fast ease-standard hover:bg-neutral-50 aria-pressed:bg-neutral-100"
+            >
+              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="shrink-0">
+                <rect width="10" height="10" rx="2" fill={colorOf(slice, index)} />
+              </svg>
+              {/* The figures wrap under the label when the row is too narrow to give a name room, rather than squeezing it to an initial. */}
+              <span className="min-w-28 flex-1 truncate text-neutral-900">{slice.label}</span>
+              <span className="ms-auto flex shrink-0 gap-3">
+                <span className="tabular-nums text-neutral-900">{formatValue(slice.value)}</span>
+                <span className="w-12 text-end tabular-nums text-neutral-900/60">{formatNumber(share(slice.value))}%</span>
+              </span>
+            </button>
           </li>
         ))}
       </ul>
 
       <ChartDataTable
         caption={ariaLabel}
-        columns={['Category', 'Value']}
-        rows={slices.map((slice) => [slice.label, formatValue(slice.value)])}
+        columns={['Category', 'Value', 'Share']}
+        rows={slices.map((slice) => [slice.label, formatValue(slice.value), `${formatNumber(share(slice.value))}%`])}
       />
     </figure>
   );

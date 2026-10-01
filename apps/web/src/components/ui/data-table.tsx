@@ -82,6 +82,14 @@ interface DataTableProps<Row> {
    * re-flows it, so a server-rendered table stays server-rendered.
    */
   stacked?: boolean;
+  /**
+   * Pins the first column while the rest scroll sideways, so a wide grid never
+   * loses the row's name. A soft edge shows where the pinned column ends. Off
+   * by default; with `stacked`, it applies from `md`, where the table is a
+   * table. The header cell and the row cell share one opaque surface so
+   * nothing shows through as they slide under.
+   */
+  stickyFirst?: boolean;
 }
 
 export function DataTable<Row>({
@@ -99,6 +107,7 @@ export function DataTable<Row>({
   groupBy,
   renderGroupHeader,
   stacked = false,
+  stickyFirst = false,
 }: DataTableProps<Row>) {
   // `loading` wins when the caller passes it. Treating a null `rows` as
   // "still loading" unconditionally would strand the table on "Loading…"
@@ -112,6 +121,15 @@ export function DataTable<Row>({
   // roles are restated. Unstacked tables get neither, and render unchanged.
   const role = (name: string) => (stacked ? { role: name } : undefined);
   const block = stacked ? 'max-md:block' : undefined;
+  // The pinned column's own classes: the position (from `md` when stacked), the
+  // paint that hides what slides under it, and the edge that says it is pinned.
+  // Written out in full, twice, because Tailwind only emits classes it can read
+  // as whole strings; a `md:` prefix glued on at runtime would not be generated.
+  const pinned = stickyFirst
+    ? stacked
+      ? 'md:sticky md:start-0 md:z-raised md:after:pointer-events-none md:after:absolute md:after:inset-y-0 md:after:start-full md:after:w-3 md:after:bg-gradient-to-r md:after:from-scrim/5 md:after:to-transparent md:rtl:after:bg-gradient-to-l'
+      : 'sticky start-0 z-raised after:pointer-events-none after:absolute after:inset-y-0 after:start-full after:w-3 after:bg-gradient-to-r after:from-scrim/5 after:to-transparent rtl:after:bg-gradient-to-l'
+    : undefined;
 
   return (
     // The scroll container is the point: a wide table on a phone must scroll
@@ -134,6 +152,8 @@ export function DataTable<Row>({
                 className={cn(
                   'px-3 py-2.5 text-xs font-semibold uppercase tracking-wide text-neutral-900/60',
                   column.align === 'end' ? 'text-end' : 'text-start',
+                  i === 0 && pinned,
+                  i === 0 && stickyFirst && 'bg-neutral-50',
                 )}
               >
                 {column.header}
@@ -186,6 +206,7 @@ export function DataTable<Row>({
                         // selected card keeps its tint instead of going back to surface.
                         stacked && 'max-md:block max-md:rounded-md max-md:p-3 max-md:shadow-raised',
                         stacked && !selected && 'max-md:bg-surface',
+                        stickyFirst && 'group',
                       )}
                     >
                       {columns.map((column, i) => (
@@ -202,6 +223,8 @@ export function DataTable<Row>({
                               (i === 0
                                 ? 'max-md:block max-md:px-0 max-md:pb-2 max-md:pt-0 max-md:font-semibold'
                                 : 'max-md:flex max-md:items-baseline max-md:justify-between max-md:gap-3 max-md:px-0 max-md:py-1'),
+                            i === 0 && pinned,
+                            i === 0 && stickyFirst && (selected ? 'bg-neutral-50' : 'bg-surface group-hover:bg-neutral-50'),
                           )}
                         >
                           {stacked && i > 0 ? (

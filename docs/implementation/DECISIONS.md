@@ -9927,3 +9927,150 @@ the new shared spec covers both themes at both worst-case backdrops.
 **Scope lenses.** Specimens and one spec: reads and writes no row, no money, no
 stock; no actor, permission or erasure lens applies. Reachable at
 `/admin/design-system#patterns`.
+
+### Addendum — 2026-10-01 (second): the eleven concept images, built as primitives, charts and specimens
+
+**Requirement.** The owner shared eleven images (a bento board, skeleton screens, a
+column manager over a dark data grid, an approval-routing canvas, a five-tier
+"Modular ERP Journey Hierarchy" funnel, a "Regional Performance" comparison and a
+3D "Department Budget Allocation" donut) and asked for each to be improved to the
+most premium level and added to the design system. Each was taken apart into what
+it is for, then rebuilt from this system's tokens. None of the images' colours,
+radii or fonts were copied (Law 1).
+
+**What was built.**
+
+| Concept | Where it lives | What kind of thing it is |
+|---|---|---|
+| Bento board | `ui/bento.tsx`: `Bento`, `BentoTile` | primitive: a dashboard, a branch overview and a record home all want the same grid |
+| Skeleton screens | `ui/skeleton.tsx`: `Skeleton`, `SkeletonText`, `SkeletonRegion`; `.skeleton` repainted in `globals.css` | primitive: every list and card has a first-load state |
+| Toggle in the column manager | `ui/switch.tsx`: `Switch` | primitive: `role="switch"`, used by the manager and by any setting that applies now |
+| Pinned first column | `DataTable stickyFirst` | opt-in prop on the existing table |
+| Regional comparison | `admin/charts/period-comparison-chart.tsx`: `PeriodComparisonChart` | chart wrapper, inside the one folder `check-chart-imports.mjs` allows Recharts in |
+| Department budget donut | `admin/charts/share-chart.tsx` upgraded in place | same component, same one consumer, same props |
+| Column manager | `design-system/data-concepts.tsx` | specimen: one consumer so far, so written from primitives (rule of three) |
+| Routing canvas, journey tiers | `design-system/flow-concepts.tsx` | specimens: each has one consumer |
+| Bento and skeleton demos | `design-system/layout-loading.tsx` | specimens |
+
+Shared by the charts: `chart-tooltip.tsx` (the one readout), `chart-math.ts` (the
+change and share arithmetic, with `chart-math.spec.ts`: 19 cases), and
+`use-reduced-motion.ts` (Recharts animates in JavaScript, which the stylesheet's
+reduced-motion rule cannot reach). Two tokens were added to `chart-theme.ts`:
+`CONTEXT` (`neutral-400`, the de-emphasis colour) and `HOVER_WASH`.
+
+**Improved, not copied.**
+- **The 3D donut became a flat one.** A tilted, extruded donut makes the near
+  slices look larger than the far ones, so the picture misreports the number it is
+  for. The premium treatment is spent where it helps reading: rounded slice ends, a
+  gap between slices, the total as the hero figure in the centre (which becomes the
+  chosen slice's value and share), and a legend that is also the keyboard path to a
+  slice. Never more than five named slices and one "Other".
+- **The previous period is a gray.** The comparison is "this one, against context",
+  which is the emphasis form (one hue and a gray), not two categorical slots.
+- **The skeleton was invisible on a white card.** The old `.skeleton` swept
+  white, `neutral-50`, white, which is nothing on a `bg-surface` card. It is now a
+  `neutral-100` base with a surface highlight, and it is only the first of four
+  states in the specimen: empty and failed are designed beside it and never replaced
+  by it.
+- **Reordering is two buttons, not a drag handle.** A drag handle has no keyboard
+  path without a library, and `dependencies.md` asks what a package does that the
+  platform cannot. Move up and move down are keyboard-complete, 44 px on touch and
+  announced in a `role="status"` line. A drag layer can come later as an
+  enhancement over the same state.
+- **The journey funnel uses the product's own five tiers**, not the image's
+  invented ones: Global, Area, Destination, View, Object (`14-navigation.md`, "The
+  shape"). What each tier leaves on screen follows `NAV-4`, `NAV-7`, `NAV-8` and
+  Law 7, and that chapter now says so in one paragraph ("The chrome narrows with the
+  job").
+
+**Parameters.**
+
+| Parameter | Exact value | Why this and not another | Enforced |
+|---|---|---|---|
+| Skeleton sweep | 1.6 s per pass, `ease-standard`, highlight `surface` at 70%, band 50% of the element's width, base `neutral-100` | one pass per 1.6 s is 0.6 Hz, far under the 3 flashes per second of WCAG 2.3.1; 70% is enough to read on `neutral-100` in both themes without a bright flash in dark | `.skeleton` in `globals.css`; the global reduced-motion rule freezes it after one frame |
+| Switch | track 44 × 24 px, thumb 20 px, thumb travel 22 px (1.375 rem), row `min-h-touch` (44 px); off = `neutral-400` (3.34:1 light, 5.30:1 dark on surface), on = `bg-accent` (4.53:1 light, 4.02:1 dark on surface) | a control's state is held to the 3:1 floor for a mark; the 44 px row is the touch target | `ui/switch.tsx`; contrast by `check-contrast.mjs` |
+| Period comparison bars | `maxBarSize` 24 px, 4 px rounded data-end, square base, `barGap` 2 px, hairline `neutral-100` grid, default height 240 px | dataviz marks spec: thin bars, a gap between a pair, quiet grid | `period-comparison-chart.tsx` |
+| Donut geometry | 192 px square, outer radius 84, inner radius 66 (an 18 px ring, and a 132 px hole that fits "Rs 1,075,000" at 16 px), `paddingAngle` 2° (about 2.9 px at the outer edge), `cornerRadius` 4, others dimmed to 0.3 opacity when one is chosen, legend rows 44 px | a ring thin enough to read as a ring, a gap wide enough to read as a gap, rows that are a touch target | `share-chart.tsx`; at most 5 named slices + Other by `MAX_NAMED_SLICES`, tested |
+| Bento grid | 16 px gap, rows `minmax(8rem, auto)`, 2 columns from `md` (768 px), 4 from `xl` (1280 px), tile padding 20 px | the shortest tile (eyebrow, one figure, one note line, two paddings) measures about 128 px; two columns is the narrowest a hero can span | `ui/bento.tsx` |
+| Pinned column edge | 12 px (`w-3`) gradient from `scrim` at 5% | shows where the pin ends without a border and a shadow on the same edge (`ui.md`) | `data-table.tsx` |
+
+**Palette audit: an owner decision, not changed here.** The dataviz validator was
+run on the brand chart palette (`brand.ts`, `chart`) in both themes. It fails, on
+reference surfaces `#fcfcfb` and `#1a1a19` (close to, not the same as, this repo's
+`#ffffff` and `#171516`, so read the figures as indicative):
+
+| Check | Light | Dark |
+|---|---|---|
+| Lightness band | pass | fail: five of six slots outside L 0.43 to 0.77 |
+| Chroma floor | fail: four slots read as gray (`#0e8294`, `#4a6fa5`, `#8a5a44`, `#5f7a4f`) | fail: three slots (`#7c9bd0`, `#c08f77`, `#8fb07a`) |
+| Colour-blind separation of neighbours | fail: `#5f7a4f` against `#8a5a44`, ΔE 2.9 (deutan) | fail: `#8fb07a` against `#c08f77`, ΔE 2.4 (deutan) |
+| Normal-vision floor (hard gate, 15) | fail: same pair, ΔE 10.5 | fail: same pair, ΔE 10.9 |
+| Contrast against the surface | pass | pass |
+
+Swapping the last two slots (`[0, 1, 2, 3, 5, 4]`: teal, gold, blue, brown, purple,
+green) clears colour-blind separation and the normal-vision floor in light (worst
+neighbours ΔE 14.5 and 15.3) and the colour-blind check in dark, but dark still
+sits at ΔE 14.6 against a floor of 15, and the chroma and dark lightness-band
+failures remain. So the reorder is an improvement and not a fix.
+
+The brand palette is a brand decision, so it was not touched. What it means for
+what was built: `PeriodComparisonChart` uses only slot 0 and a gray, so it is not
+affected. `ShareChart` can use up to six slots and relies on the secondary
+encoding the validator accepts for the colour-blind check (a gap between slices,
+a legend with the value and share beside every swatch, the centre readout), but
+the normal-vision floor is "hard to tell apart even with full colour vision" and
+secondary encoding does not excuse it. Three options for the owner: (a) reorder as
+above, cheap and partial; (b) re-derive the six hues against the validator, which
+changes the brand's look; (c) leave it, with the legend carrying identity as it
+does today.
+
+**Failure modes.** `ShareChart` given rows that are all zero shows the empty state
+rather than a ring with no arc. `PeriodComparisonChart` cannot hide its last visible
+series, because an empty chart is not a filter result. A previous value of zero is
+worded "New", never an infinite percentage. Recharts' own animation honours
+`prefers-reduced-motion` through `usePrefersReducedMotion`.
+
+**Not adopted, and why.**
+- The 3D, tilted donut, for the reason above, and a donut past six segments.
+- A drag-and-drop column reorder library: see above.
+- The images' blues, purples, gradients and glows, and their rounder corners: Law 1
+  and the house shape.
+- A "dark data grid" as a separate component: the grid is the same `DataTable`, and
+  the theme makes it dark.
+- Percentage numbers for "focus" on the journey funnel: the image's figures had no
+  source, so the specimen shows tier position (1 of 5 to 5 of 5) and the layers
+  present instead of an invented measure.
+
+**Noticed, not changed.** The older charts (`comparison-chart.tsx`,
+`category-bar-chart.tsx`, `time-series-chart.tsx`, `sparkline-chart.tsx`) wrap
+their table twin inside a `role="img"` figure, which makes the table presentational
+for assistive technology (an image's children are presentational). The new chart and
+the upgraded donut put `role="img"` on the graphic only and the table beside it.
+The older ones are left for a pass of their own.
+
+**Verification.** `pnpm lint` passes (contrast, links, rules, boundaries, chart
+imports), web typecheck passes, web unit tests pass (42, 19 of them new), and the
+gallery was rendered at 280, 380, 640, 768, 1024, 1280 and 1536 px in both themes.
+
+**Scope lenses.**
+The actor with three tables, the principal with no permission key, the grant that
+ends itself: n/a, no actor is introduced; the specimens hold fixed demonstration
+rows and the components render rows their caller already scoped.
+Whose rows, and which columns: `data-concepts.tsx` and `layout-loading.tsx` hold
+fixed demo rows; a real list passes the rows its endpoint already scoped.
+Request or record: writes no row. The column manager's "Save view" moves local
+state only. Saved column views per user need a table and an endpoint, which is its
+own work order and is not stubbed here.
+The movement with no address, the unwritten posting rule, every column or none,
+the period that already moved, the second legal entity: n/a, no stock, cash or
+journal fact is read or written.
+The absent collaborator: every new piece degrades by props, not by module; a chart
+with no rows renders `EmptyState`.
+The second copy of the write: n/a, nothing is written.
+The hundred-thousandth row: n/a, no query; `DataTable` stays a renderer, and its
+pagination is the caller's.
+The reversal document, the undo fan-out, the version stamp, the erasure the ledger
+cannot obey, the failure path: n/a, nothing is written; the routing specimen's undo
+row says a cancelled order reverses with its own document, as the real thing must.
+Reachable: `/admin/design-system#layout`, `#data` and `#flows`, each with a link in
+the page's section nav.

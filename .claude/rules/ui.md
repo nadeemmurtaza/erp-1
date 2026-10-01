@@ -26,7 +26,10 @@ writing markup, check this list. **Grep for the literal before adding one.**
 | `Tabs` | separate tasks on one object — one at a time |
 | `Disclosure` | rare, advanced or destructive — closed by default |
 | `MetricStrip` | a row of figures; give an item `detail` to make it open a panel |
-| `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named |
+| `Bento`, `BentoTile` | a board of tiles of different weight (`hero`, `wide`, `tall`, `sm`) — one job per tile |
+| `Skeleton`, `SkeletonText`, `SkeletonRegion` | the first-load placeholder, shaped like its content — never for empty or failed |
+| `Switch` | an on/off setting that applies now (`role="switch"`) |
+| `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named; `DataTable` takes `stacked` and `stickyFirst` |
 
 Cross-surface: `components/common/status-badge` (**the** status pill — do not
 write an eighth), `components/common/wizard`.

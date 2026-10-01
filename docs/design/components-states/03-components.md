@@ -43,7 +43,10 @@ The primitives, in `apps/web/src/components/ui`:
 | `Disclosure` | rare, advanced or destructive — closed by default |
 | `MetricStrip` | a row of figures; `detail` makes an item open a panel |
 | `ThemeToggle` | the light / dark / system choice — `segmented` where there is room, `icon` where there is not; it is the only place a person picks a theme |
-| `DataTable` `EmptyState` `Badge` `Button` `Dialog` `Loading` | as named. `DataTable` takes `stacked` to read as cards below `md` (`02-layout.md`, reflow rule 3) |
+| `Bento` `BentoTile` | a board of tiles of different weight on one grid: `hero` (2×2), `wide`, `tall`, `sm`, each in a `surface`, `quiet`, `accent` or `inverse` tone. One main job per tile; one column below `md`, so a phone reads them in source order |
+| `Skeleton` `SkeletonText` `SkeletonRegion` | the first-load placeholder, drawn from the content it stands in for. `SkeletonRegion` is the `role="status"` wrapper with a screen-reader label; the pieces inside are `aria-hidden`. Never stands in for an empty or failed state |
+| `Switch` | an on/off setting that takes effect now: `role="switch"`, a label that names the setting (not the action), an optional description, 44 px on touch. A choice that is submitted later is a checkbox, not a switch |
+| `DataTable` `EmptyState` `Badge` `Button` `Dialog` `Loading` | as named. `DataTable` takes `stacked` to read as cards below `md` (`02-layout.md`, reflow rule 3), and `stickyFirst` to pin the first column while the rest scroll sideways |
 
 A notice has four tones: `notice-error`, `notice-success`, `notice-warning` (waiting on someone, or about to end — the same amber as the Badge `warning` tone) and `notice-info`.
 
@@ -88,6 +91,11 @@ instance re-derives them and drifts slightly. The ones worth writing down:
 | Frosted overlay — text over a picture on an 85% overlay surface with a blur, solid under reduced transparency | `/admin/design-system#patterns` (nearest live use: the storefront product card's floating button, which has the opacity but no blur) |
 | Choice cards — a real radio group drawn as cards with a ring, a tint and a tick | `/admin/design-system#patterns` (planned: publish visibility, audience segments) |
 | Live indicator — a pinging dot plus the word "Live", still under reduced motion | `/admin/design-system#patterns` (admin live feed would be the first use) |
+| Column manager — `Switch` rows, move-up and move-down buttons (no drag handle: it has no keyboard path), a fixed first column that says why it cannot be hidden, "n of N shown", Save view disabled while the view matches the saved one | `/admin/design-system#data` (planned: any wide list) |
+| Period comparison — this period against the last as grouped bars (previous is a gray), a legend that is also the filter, and the change table with sign, arrow and tone | `/admin/design-system#data`; the chart is `PeriodComparisonChart` |
+| Share of a whole — a flat donut, at most five named slices and an Other, the total as the centre, a legend that picks a slice by keyboard | `/admin/design-system#data`; the chart is `ShareChart` |
+| Approval routing — nodes, a fork labelled True and False, a test that names the approver an amount reaches and logs it | `/admin/design-system#flows` (planned: approval thresholds) |
+| Journey tiers — Global, Area, Destination, View, Object as a funnel you can operate, with the chrome each tier leaves on screen | `/admin/design-system#flows` (`14-navigation.md`, "The shape") |
 
 The last nine are written out from primitives on the reference page, in both themes and at all seven widths, and are **not** components yet. One screen per pattern is a coincidence; the third is when it moves into `ui/`. A side drawer that becomes a full-screen sheet below `md` is also planned (products channels lens) and is deliberately not built: one consumer.
 

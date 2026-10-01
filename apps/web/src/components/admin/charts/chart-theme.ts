@@ -29,6 +29,16 @@ export const INK_SOFT = themeColorVar('neutral-900', 0.6);
 export const INK_FAINT = themeColorVar('neutral-900', 0.5);
 export const POSITIVE = themeColorVar('feedback-positive');
 export const NEGATIVE = themeColorVar('feedback-negative');
+/**
+ * The de-emphasis colour: the "previous period" beside a current one, and the
+ * "Other" slice of a share. Context, not identity, so it is a neutral and never
+ * a categorical slot (dataviz: emphasis is one hue plus a gray). `neutral-400`
+ * holds 3.3:1 on the light surface and 5.3:1 on the dark one, over the 3:1 floor
+ * for a mark.
+ */
+export const CONTEXT = themeColorVar('neutral-400');
+/** The wash behind the bar or slice under the pointer: a lift, not an outline. */
+export const HOVER_WASH = themeColorVar('neutral-100', 0.6);
 
 /**
  * Dash pattern per series index — `strokeDasharray` values, index-aligned

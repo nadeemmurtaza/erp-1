@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2536,
-    "lines": 399369,
+    "files": 2547,
+    "lines": 402169,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -14,15 +14,15 @@
     "permissions": 130,
     "screens": 278,
     "crons": 30,
-    "specs": 369,
+    "specs": 370,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
       "files": 213,
-      "lines": 21461,
-      "bytes": 1226645,
+      "lines": 21464,
+      "bytes": 1227009,
       "label": "repository root files"
     },
     "infra": {
@@ -50,15 +50,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 439,
-      "lines": 74361,
-      "bytes": 2704474,
+      "files": 450,
+      "lines": 76994,
+      "bytes": 2790268,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 89767,
-      "bytes": 5428533,
+      "lines": 89931,
+      "bytes": 5442192,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -57058,6 +57058,18 @@
       ]
     },
     {
+      "file": "apps/web/src/components/admin/charts/chart-math.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 19,
+      "describes": [
+        "periodChange",
+        "changeTone",
+        "foldShares",
+        "sharePct"
+      ]
+    },
+    {
       "file": "apps/web/src/utils/cn.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -57662,8 +57674,8 @@
       "path": ".claude/rules/ui.md",
       "area": "root",
       "kind": "doc",
-      "lines": 151,
-      "bytes": 6825,
+      "lines": 154,
+      "bytes": 7189,
       "doc": "",
       "symbols": []
     },
@@ -85873,8 +85885,8 @@
       "path": "apps/web/src/app/globals.css",
       "area": "web",
       "kind": "stylesheet",
-      "lines": 678,
-      "bytes": 23381,
+      "lines": 702,
+      "bytes": 24282,
       "doc": "",
       "symbols": []
     },
@@ -86225,14 +86237,14 @@
       "path": "apps/web/src/components/admin/charts/chart-data-table.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 40,
-      "bytes": 977,
+      "lines": 47,
+      "bytes": 1336,
       "doc": "The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: \"a screen-reader-only table whose cells equal the plotted values\").",
       "symbols": [
         {
           "name": "ChartDataTable",
           "kind": "function",
-          "line": 7
+          "line": 12
         }
       ]
     },
@@ -86252,11 +86264,75 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/charts/chart-math.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 118,
+      "bytes": 3578,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/chart-math.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 80,
+      "bytes": 2698,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ChangeKind",
+          "kind": "type",
+          "line": 8
+        },
+        {
+          "name": "PeriodChange",
+          "kind": "interface",
+          "line": 10
+        },
+        {
+          "name": "periodChange",
+          "kind": "function",
+          "line": 23
+        },
+        {
+          "name": "changeTone",
+          "kind": "function",
+          "line": 38
+        },
+        {
+          "name": "Share",
+          "kind": "interface",
+          "line": 43
+        },
+        {
+          "name": "OTHER_LABEL",
+          "kind": "const",
+          "line": 48
+        },
+        {
+          "name": "MAX_NAMED_SLICES",
+          "kind": "const",
+          "line": 54
+        },
+        {
+          "name": "foldShares",
+          "kind": "function",
+          "line": 61
+        },
+        {
+          "name": "sharePct",
+          "kind": "function",
+          "line": 77
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/charts/chart-theme.ts",
       "area": "web",
       "kind": "component",
-      "lines": 86,
-      "bytes": 3446,
+      "lines": 96,
+      "bytes": 3988,
       "doc": "",
       "symbols": [
         {
@@ -86305,39 +86381,64 @@
           "line": 31
         },
         {
-          "name": "DASH_PATTERNS",
+          "name": "CONTEXT",
           "kind": "const",
-          "line": 40
+          "line": 39
         },
         {
-          "name": "MARKER_SHAPES",
+          "name": "HOVER_WASH",
+          "kind": "const",
+          "line": 41
+        },
+        {
+          "name": "DASH_PATTERNS",
           "kind": "const",
           "line": 50
         },
         {
+          "name": "MARKER_SHAPES",
+          "kind": "const",
+          "line": 60
+        },
+        {
           "name": "paletteColor",
           "kind": "function",
-          "line": 59
+          "line": 69
         },
         {
           "name": "dashFor",
           "kind": "function",
-          "line": 63
+          "line": 73
         },
         {
           "name": "markerFor",
           "kind": "function",
-          "line": 67
+          "line": 77
         },
         {
           "name": "compactRupees",
           "kind": "function",
-          "line": 76
+          "line": 86
         },
         {
           "name": "compactMoney",
           "kind": "function",
-          "line": 83
+          "line": 93
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/chart-tooltip.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 66,
+      "bytes": 1921,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ChartTooltip",
+          "kind": "function",
+          "line": 19
         }
       ]
     },
@@ -86365,28 +86466,48 @@
       "path": "apps/web/src/components/admin/charts/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 29,
-      "bytes": 870,
+      "lines": 32,
+      "bytes": 990,
       "doc": "The whole charting vocabulary for the back office (10-admin-dashboard.md D9).",
       "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/period-comparison-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 267,
+      "bytes": 8446,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PeriodComparisonPoint",
+          "kind": "interface",
+          "line": 31
+        },
+        {
+          "name": "PeriodComparisonChart",
+          "kind": "function",
+          "line": 58
+        }
+      ]
     },
     {
       "path": "apps/web/src/components/admin/charts/share-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 95,
-      "bytes": 3464,
+      "lines": 153,
+      "bytes": 6746,
       "doc": "",
       "symbols": [
         {
           "name": "ShareItem",
-          "kind": "interface",
-          "line": 10
+          "kind": "type",
+          "line": 13
         },
         {
           "name": "ShareChart",
           "kind": "function",
-          "line": 23
+          "line": 38
         }
       ]
     },
@@ -86422,6 +86543,21 @@
           "name": "TimeSeriesChart",
           "kind": "function",
           "line": 32
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/use-reduced-motion.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 24,
+      "bytes": 748,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "usePrefersReducedMotion",
+          "kind": "function",
+          "line": 17
         }
       ]
     },
@@ -87171,6 +87307,51 @@
       ]
     },
     {
+      "path": "apps/web/src/components/design-system/data-concepts.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 537,
+      "bytes": 15458,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ColumnManagerSpecimen",
+          "kind": "function",
+          "line": 275
+        },
+        {
+          "name": "RegionalPerformanceSpecimen",
+          "kind": "function",
+          "line": 459
+        },
+        {
+          "name": "ShareSpecimen",
+          "kind": "function",
+          "line": 515
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/flow-concepts.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 681,
+      "bytes": 21406,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RoutingCanvasSpecimen",
+          "kind": "function",
+          "line": 130
+        },
+        {
+          "name": "JourneyTiersSpecimen",
+          "kind": "function",
+          "line": 474
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/design-system/foundations.tsx",
       "area": "web",
       "kind": "component",
@@ -87219,14 +87400,34 @@
       "path": "apps/web/src/components/design-system/gallery.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 111,
-      "bytes": 3872,
+      "lines": 175,
+      "bytes": 6824,
       "doc": "",
       "symbols": [
         {
           "name": "DesignSystemGallery",
           "kind": "function",
-          "line": 33
+          "line": 39
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/layout-loading.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 399,
+      "bytes": 13863,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BentoSpecimen",
+          "kind": "function",
+          "line": 73
+        },
+        {
+          "name": "SkeletonSpecimen",
+          "kind": "function",
+          "line": 220
         }
       ]
     },
@@ -87901,6 +88102,36 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/bento.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 102,
+      "bytes": 2978,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Bento",
+          "kind": "function",
+          "line": 18
+        },
+        {
+          "name": "BentoSize",
+          "kind": "type",
+          "line": 37
+        },
+        {
+          "name": "BentoTone",
+          "kind": "type",
+          "line": 38
+        },
+        {
+          "name": "BentoTile",
+          "kind": "function",
+          "line": 62
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/ui/button.tsx",
       "area": "web",
       "kind": "component",
@@ -87939,8 +88170,8 @@
       "path": "apps/web/src/components/ui/data-table.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 237,
-      "bytes": 9931,
+      "lines": 260,
+      "bytes": 11502,
       "doc": "",
       "symbols": [
         {
@@ -87951,7 +88182,7 @@
         {
           "name": "DataTable",
           "kind": "function",
-          "line": 87
+          "line": 95
         }
       ]
     },
@@ -88044,8 +88275,8 @@
       "path": "apps/web/src/components/ui/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 40,
-      "bytes": 1399,
+      "lines": 45,
+      "bytes": 1610,
       "doc": "Design-system primitives.",
       "symbols": []
     },
@@ -88166,6 +88397,51 @@
           "name": "Section",
           "kind": "function",
           "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/skeleton.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 83,
+      "bytes": 2228,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SkeletonShape",
+          "kind": "type",
+          "line": 26
+        },
+        {
+          "name": "Skeleton",
+          "kind": "function",
+          "line": 28
+        },
+        {
+          "name": "SkeletonText",
+          "kind": "function",
+          "line": 44
+        },
+        {
+          "name": "SkeletonRegion",
+          "kind": "function",
+          "line": 67
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/switch.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 82,
+      "bytes": 2532,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Switch",
+          "kind": "function",
+          "line": 20
         }
       ]
     },
@@ -90562,8 +90838,8 @@
       "path": "docs/design/components-states/03-components.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 129,
-      "bytes": 6735,
+      "lines": 137,
+      "bytes": 8687,
       "doc": "",
       "symbols": []
     },
@@ -90616,8 +90892,8 @@
       "path": "docs/design/layout-composition/14-navigation.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 198,
-      "bytes": 8955,
+      "lines": 207,
+      "bytes": 9584,
       "doc": "",
       "symbols": []
     },
@@ -92470,8 +92746,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 9930,
-      "bytes": 585885,
+      "lines": 10077,
+      "bytes": 596963,
       "doc": "",
       "symbols": []
     },

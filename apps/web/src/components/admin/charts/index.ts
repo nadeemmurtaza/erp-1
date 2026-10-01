@@ -8,6 +8,7 @@ export { TimeSeriesChart, type TimeSeriesSeriesDef } from './time-series-chart';
 export { ComparisonChart, type ComparisonBucketPoint } from './comparison-chart';
 export { CategoryBarChart, type CategoryBarItem } from './category-bar-chart';
 export { ShareChart, type ShareItem } from './share-chart';
+export { PeriodComparisonChart, type PeriodComparisonPoint } from './period-comparison-chart';
 export { SparklineChart } from './sparkline-chart';
 export { ChartDataTable } from './chart-data-table';
 export {
@@ -17,6 +18,8 @@ export {
   INK,
   INK_SOFT,
   INK_FAINT,
+  CONTEXT,
+  HOVER_WASH,
   POSITIVE,
   NEGATIVE,
   compactRupees,

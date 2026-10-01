@@ -96,11 +96,11 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>151 lines</sub>
+### `.claude/rules/ui.md`  <sub>154 lines</sub>
 
 - Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:64</sub>
-- No dead ends  <sub>:104</sub>
+- Borders and boxes  <sub>:67</sub>
+- No dead ends  <sub>:107</sub>
 
 ### `.github/copilot-instructions.md`  <sub>81 lines</sub>
 
@@ -192,15 +192,15 @@ _no second-level headings_
 - Internationalisation beyond direction  <sub>:133</sub>
 - What would make this real  <sub>:140</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>129 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>137 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
-- Choosing between them  <sub>:58</sub>
-- Patterns — *undocumented*  <sub>:69</sub>
-- Templates — *undocumented*  <sub>:97</sub>
-- Component contract  <sub>:108</sub>
-- What never gets hand-rolled  <sub>:123</sub>
+- Choosing between them  <sub>:61</sub>
+- Patterns — *undocumented*  <sub>:72</sub>
+- Templates — *undocumented*  <sub>:105</sub>
+- Component contract  <sub>:116</sub>
+- What never gets hand-rolled  <sub>:131</sub>
 
 ### `docs/design/components-states/04-states.md`  <sub>141 lines</sub>
 
@@ -261,13 +261,13 @@ _no second-level headings_
 - What must be built  <sub>:179</sub>
 - Sources  <sub>:190</sub>
 
-### `docs/design/layout-composition/14-navigation.md`  <sub>198 lines</sub>
+### `docs/design/layout-composition/14-navigation.md`  <sub>207 lines</sub>
 
 - The scale problem  <sub>:13</sub>
 - NAV · The laws  <sub>:30</sub>
 - Patterns  <sub>:127</sub>
-- What must be built  <sub>:178</sub>
-- Sources  <sub>:191</sub>
+- What must be built  <sub>:187</sub>
+- Sources  <sub>:200</sub>
 
 ### `docs/design/motion/05-motion.md`  <sub>196 lines</sub>
 
@@ -2964,7 +2964,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,930 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>10,077 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

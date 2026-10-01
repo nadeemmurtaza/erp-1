@@ -140,6 +140,15 @@ View                  a slice of it: Awaiting approval · Overdue
 Object                one record — and its own tabs (Law 7: detail on click)
 ```
 
+**The chrome narrows with the job.** Each step down the shape leaves less around
+the work: Global shows only the global bar; Area adds the area rail; Destination
+adds its list and, because the hierarchy is now deeper than two levels, the
+breadcrumb (`NAV-4`); View adds the view tabs. At the Object the shell goes quiet
+on purpose: the global bar and area rail compact, the destination list and view
+tabs step aside, and the record's own tabs and breadcrumb carry the position,
+because the record is the job (Law 7). Coming back restores the list as it was
+(`NAV-7`). It is drawn, tier by tier, at `/admin/design-system#flows`.
+
 Areas are the stable layer; adding a module adds destinations inside existing
 areas far more often than it adds an area. When a new area is genuinely
 needed, that is an architecture conversation (`DECISIONS.md`), not a nav

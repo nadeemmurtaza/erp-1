@@ -10,6 +10,9 @@ import {
   SpaceFoundations,
   TypeFoundations,
 } from './foundations';
+import { ColumnManagerSpecimen, RegionalPerformanceSpecimen, ShareSpecimen } from './data-concepts';
+import { JourneyTiersSpecimen, RoutingCanvasSpecimen } from './flow-concepts';
+import { BentoSpecimen, SkeletonSpecimen } from './layout-loading';
 import { AdminPatterns } from './patterns';
 import { ComponentSpecimens } from './specimens';
 
@@ -20,6 +23,9 @@ const SECTIONS = [
   ['depth', 'Depth and motion'],
   ['components', 'Components'],
   ['patterns', 'Admin patterns'],
+  ['layout', 'Layout and loading'],
+  ['data', 'Data and charts'],
+  ['flows', 'Flows and journeys'],
 ] as const;
 
 /**
@@ -103,6 +109,64 @@ export function DesignSystemGallery() {
           columns="xl:grid-cols-2"
         >
           <AdminPatterns />
+        </GallerySection>
+
+        <GallerySection
+          id="layout"
+          title="Layout and loading"
+          lead="How a page is arranged and how it waits. The bento board gives a dashboard tiles of different weight on one grid; the skeleton holds the shape of content that has not arrived, once."
+        >
+          <Group
+            title="Bento board"
+            note="One main job per tile, one grid. The hero carries the figure the room asks about first; below the medium width the tiles stack in source order."
+          >
+            <BentoSpecimen />
+          </Group>
+          <Group
+            title="Skeletons and the states around them"
+            note="A placeholder is drawn from the content it stands in for, and it is only the first of four states. Empty and failed are designed too, and neither is ever a skeleton."
+          >
+            <SkeletonSpecimen />
+          </Group>
+        </GallerySection>
+
+        <GallerySection
+          id="data"
+          title="Data and charts"
+          lead="A grid you can shape, two periods side by side, and a share of a whole. Every chart has its table, every figure has a sign and an arrow as well as a colour."
+        >
+          <Group
+            title="Column manager"
+            note="Show, hide and reorder the columns of a wide grid. The first column is pinned and always shown, because it names the row; the rest scroll under it."
+          >
+            <ColumnManagerSpecimen />
+          </Group>
+          <Group
+            title="Regional performance"
+            note="This period against the last. The previous period is a gray, not a second colour: it is context for the one that matters."
+          >
+            <RegionalPerformanceSpecimen />
+          </Group>
+          <ShareSpecimen />
+        </GallerySection>
+
+        <GallerySection
+          id="flows"
+          title="Flows and journeys"
+          lead="Two ways to show a process: who must approve something, and how the shell narrows as a person goes deeper into the product."
+        >
+          <Group
+            title="Approval routing"
+            note="A threshold nobody approves alone, drawn as a flow. Run the test to see which approver a given amount reaches; the result is announced and logged."
+          >
+            <RoutingCanvasSpecimen />
+          </Group>
+          <Group
+            title="Journey tiers"
+            note="Global, Area, Destination, View, Object: the navigation shape of the product, and the chrome each tier leaves on screen."
+          >
+            <JourneyTiersSpecimen />
+          </Group>
         </GallerySection>
       </main>
     </div>

@@ -3,7 +3,7 @@
 
 # Components
 
-All **121** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **129** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 251 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 256 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 6 |  |
 
 ### `apps/pos/src/components` (2)
@@ -96,14 +96,16 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `cost-breakdown.tsx` | `CostBreakdown` | client | 1 |  |
 | `recipe-editor.tsx` | `RecipeEditor` | client | 2 |  |
 
-### `apps/web/src/components/admin/charts` (7)
+### `apps/web/src/components/admin/charts` (9)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `category-bar-chart.tsx` | `CategoryBarItem` `CategoryBarChart` | client | 1 |  |
-| `chart-data-table.tsx` | `ChartDataTable` | server | 6 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
+| `chart-data-table.tsx` | `ChartDataTable` | server | 7 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
 | `chart-marker.tsx` | `ChartMarker` | server | 1 |  |
-| `comparison-chart.tsx` | `ComparisonBucketPoint` `ComparisonChart` | client | 1 |  |
+| `chart-tooltip.tsx` | `ChartTooltip` | server | 1 |  |
+| `comparison-chart.tsx` | `ComparisonBucketPoint` `ComparisonChart` | client | 2 |  |
+| `period-comparison-chart.tsx` | `PeriodComparisonPoint` `PeriodComparisonChart` | client | 1 |  |
 | `share-chart.tsx` | `ShareItem` `ShareChart` | client | 1 |  |
 | `sparkline-chart.tsx` | `SparklineChart` | client | 1 |  |
 | `time-series-chart.tsx` | `TimeSeriesSeriesDef` `TimeSeriesChart` | client | 1 |  |
@@ -131,7 +133,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | client | 2 |  |
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 67 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 69 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 6 |  |
 
@@ -141,12 +143,15 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/design-system` (4)
+### `apps/web/src/components/design-system` (7)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 3 |  |
+| `data-concepts.tsx` | `ColumnManagerSpecimen` `RegionalPerformanceSpecimen` `ShareSpecimen` | client | 1 |  |
+| `flow-concepts.tsx` | `RoutingCanvasSpecimen` `JourneyTiersSpecimen` | client | 1 |  |
+| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 5 |  |
 | `gallery.tsx` | `DesignSystemGallery` | client | 2 |  |
+| `layout-loading.tsx` | `BentoSpecimen` `SkeletonSpecimen` | client | 1 |  |
 | `patterns.tsx` | `AdminPatterns` | client | 1 |  |
 | `specimens.tsx` | `ComponentSpecimens` | client | 1 |  |
 
@@ -193,25 +198,28 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `theme-switch.tsx` | `ThemeSwitch` | client | 1 |  |
 | `visual-search-button.tsx` | `VisualSearchButton` | client | 1 |  |
 
-### `apps/web/src/components/ui` (18)
+### `apps/web/src/components/ui` (21)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 72 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 74 |  |
+| `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 1 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
-| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 7 |  |
+| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 8 |  |
 | `dialog.tsx` | `Dialog` | client | 3 |  |
 | `disclosure.tsx` | `Disclosure` | client | 1 |  |
 | `empty-state.tsx` | `EmptyState` | server | 1 |  |
 | `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 3 |  |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 1 | The shape of a list page, before the list page. |
-| `loading.tsx` | `Loading` | server | 1 |  |
+| `loading.tsx` | `Loading` | server | 2 |  |
 | `metric-strip.tsx` | `MetricItem` `MetricStrip` | client | 1 |  |
 | `page-header.tsx` | `PageHeader` | server | 1 |  |
 | `pagination.tsx` | `PaginationMeta` `Pagination` | server | 1 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 1 |  |
 | `section.tsx` | `Section` | server | 6 |  |
+| `skeleton.tsx` | `SkeletonShape` `Skeleton` `SkeletonText` `SkeletonRegion` | server | 2 |  |
+| `switch.tsx` | `Switch` | client | 2 |  |
 | `tabs.tsx` | `TabItem` `Tabs` | client | 1 |  |
 | `theme-init-script.tsx` | `ThemeInitScript` | server | 2 |  |
 | `theme-toggle.tsx` | `ThemeToggleLabels` `ThemeToggle` | client | 3 |  |

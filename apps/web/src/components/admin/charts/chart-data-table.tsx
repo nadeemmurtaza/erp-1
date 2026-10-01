@@ -3,6 +3,11 @@
  * acceptance: "a screen-reader-only table whose cells equal the plotted
  * values"). Visually hidden via the existing `sr-only` utility, not
  * `display: none` — a screen reader must still reach it.
+ *
+ * The `sr-only` box is a `div` around the table, not the table itself: a
+ * `display: table` element grows to fit its cells whatever width it is given,
+ * so a three-column twin was 338 px wide at a 280 px viewport and pushed the
+ * page sideways by 29 px. A block box honours the 1 px clip.
  */
 export function ChartDataTable({
   caption,
@@ -14,26 +19,28 @@ export function ChartDataTable({
   rows: ReadonlyArray<readonly (string | number)[]>;
 }) {
   return (
-    <table className="sr-only">
-      <caption>{caption}</caption>
-      <thead>
-        <tr>
-          {columns.map((column) => (
-            <th key={column} scope="col">
-              {column}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, index) => (
-          <tr key={index}>
-            {row.map((cell, cellIndex) => (
-              <td key={cellIndex}>{cell}</td>
+    <div className="sr-only">
+      <table>
+        <caption>{caption}</caption>
+        <thead>
+          <tr>
+            {columns.map((column) => (
+              <th key={column} scope="col">
+                {column}
+              </th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={index}>
+              {row.map((cell, cellIndex) => (
+                <td key={cellIndex}>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

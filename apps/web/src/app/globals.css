@@ -645,10 +645,34 @@
     animation-delay: 320ms;
   }
 
+  /*
+   * A loading placeholder. The old one swept white to neutral-50 to white,
+   * which on a white card is 1.04:1 against its surroundings — invisible, in
+   * light, and in dark it was the card colour itself. This is a real tint
+   * (`neutral-100`) with a highlight band, in the surface colour, that travels
+   * across it: the tint says "something goes here", the band says "it is on its
+   * way". Under reduced motion the global rule below stops the sweep after one
+   * frame and the tint stays, so the shape survives without the movement.
+   */
   .skeleton {
-    @apply bg-gradient-to-r from-white via-neutral-50 to-white;
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite;
+    @apply bg-neutral-100;
+    background-image: linear-gradient(90deg, transparent, rgb(var(--color-surface) / 0.7), transparent);
+    background-repeat: no-repeat;
+    background-size: 50% 100%;
+    animation: skeleton-sweep 1.6s var(--motion-easing-standard) infinite;
+  }
+
+  [dir='rtl'] .skeleton {
+    animation-direction: reverse;
+  }
+
+  @keyframes skeleton-sweep {
+    from {
+      background-position: -100% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
   }
 
   .chart-line {

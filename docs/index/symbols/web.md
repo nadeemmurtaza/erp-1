@@ -1505,19 +1505,42 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
+| `calendar-heatmap.tsx` | `CalendarHeatmap` | function | :46 | How busy each day was, over the last year: tickets opened, orders packed, logins. |
 | `category-bar-chart.tsx` | `CategoryBarItem` | interface | :10 |  |
 | `category-bar-chart.tsx` | `CategoryBarChart` | function | :16 | A ranked horizontal bar list — top sellers, categories, suppliers. |
 | `chart-data-table.tsx` | `ChartDataTable` | function | :12 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
+| `chart-legend.tsx` | `ChartLegendRow` | function | :13 | One row of a legend that is also a way to pick a mark: the swatch, the name, and the figures on the… |
 | `chart-marker.tsx` | `ChartMarker` | function | :8 | A per-series marker shape — the third channel (with colour and dash pattern) that keeps a multi-ser… |
 | `chart-math.ts` | `ChangeKind` | type | :8 | The arithmetic two charts share, kept out of the components so it can be tested without rendering o… |
 | `chart-math.ts` | `PeriodChange` | interface | :10 |  |
 | `chart-math.ts` | `periodChange` | function | :23 | This period against the last, as a direction and a percentage. |
-| `chart-math.ts` | `changeTone` | function | :38 | Which tone a change wears. |
-| `chart-math.ts` | `Share` | interface | :43 |  |
-| `chart-math.ts` | `OTHER_LABEL` | const | :48 |  |
-| `chart-math.ts` | `MAX_NAMED_SLICES` | const | :54 | A donut past six segments stops being a share and becomes a colour wheel (dataviz `choosing-a-form.… |
-| `chart-math.ts` | `foldShares` | function | :61 | Sorts descending, keeps the top `maxSlices` (never more than {@link MAX_NAMED_SLICES}) and folds th… |
-| `chart-math.ts` | `sharePct` | function | :77 | A slice's share of the whole as a percentage to one decimal place; 0 when the whole is 0. |
+| `chart-math.ts` | `changeTone` | function | :36 | Which tone a change wears. |
+| `chart-math.ts` | `Share` | interface | :41 |  |
+| `chart-math.ts` | `OTHER_LABEL` | const | :46 |  |
+| `chart-math.ts` | `MAX_NAMED_SLICES` | const | :52 | A donut past six segments stops being a share and becomes a colour wheel (dataviz `choosing-a-form.… |
+| `chart-math.ts` | `foldShares` | function | :59 | Sorts descending, keeps the top `maxSlices` (never more than {@link MAX_NAMED_SLICES}) and folds th… |
+| `chart-math.ts` | `sharePct` | function | :68 | A slice's share of the whole as a percentage to one decimal place; 0 when the whole is 0. |
+| `chart-math.ts` | `FunnelStage` | interface | :74 | ── funnel ───────────────────────────────────────────────────────────── |
+| `chart-math.ts` | `FunnelStep` | interface | :79 |  |
+| `chart-math.ts` | `funnelSteps` | function | :96 | Stage-by-stage conversion for a sequence where each stage is meant to be a subset of the one before. |
+| `chart-math.ts` | `largestDropIndex` | function | :112 | Index of the stage that lost the most (by percentage), or null when nothing was lost anywhere. |
+| `chart-math.ts` | `GaugeKind` | type | :126 | ── gauge ────────────────────────────────────────────────────────────── |
+| `chart-math.ts` | `GaugeStatus` | type | :127 |  |
+| `chart-math.ts` | `GaugeState` | interface | :129 |  |
+| `chart-math.ts` | `gaugeState` | function | :144 | One value against a fixed goal. |
+| `chart-math.ts` | `HeatDay` | interface | :167 | ── calendar heatmap ─────────────────────────────────────────────────── |
+| `chart-math.ts` | `HeatCell` | interface | :173 |  |
+| `chart-math.ts` | `HeatCalendar` | interface | :180 |  |
+| `chart-math.ts` | `quantileCuts` | function | :213 | The three cut points between the four coloured levels: quartiles of the days that had any activity. |
+| `chart-math.ts` | `heatLevel` | function | :220 |  |
+| `chart-math.ts` | `buildHeatCalendar` | function | :234 | Lays `days` out as `weeks` columns of Monday-to-Sunday, ending with the week that holds the latest… |
+| `chart-math.ts` | `HeatMonth` | interface | :273 |  |
+| `chart-math.ts` | `heatMonthTotals` | function | :286 | Per-month totals over the days a calendar actually shows. |
+| `chart-math.ts` | `niceCeil` | function | :312 | The next round number at or above `value`: 51,000 becomes 60,000, 18 becomes 20. |
+| `chart-series.tsx` | `SeriesDef` | interface | :6 |  |
+| `chart-series.tsx` | `useSeriesVisibility` | function | :17 | Which series are showing. |
+| `chart-series.tsx` | `SeriesToggles` | function | :36 | The legend that is also the filter: one toggle per series, always present for two or more (dataviz… |
+| `chart-series.tsx` | `ViewSwitch` | function | :89 | One view of the same data at a time: a radar or its bars, side by side or overlaid. |
 | `chart-theme.ts` | `ValueFormat` | type | :22 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
 | `chart-theme.ts` | `CHART_PALETTE` | const | :24 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
 | `chart-theme.ts` | `GRID` | const | :25 |  |
@@ -1527,31 +1550,60 @@ Every top-level export in `web`, with the line to open.
 | `chart-theme.ts` | `INK_FAINT` | const | :29 |  |
 | `chart-theme.ts` | `POSITIVE` | const | :30 |  |
 | `chart-theme.ts` | `NEGATIVE` | const | :31 |  |
-| `chart-theme.ts` | `CONTEXT` | const | :39 | The de-emphasis colour: the "previous period" beside a current one, and the "Other" slice of a shar… |
-| `chart-theme.ts` | `HOVER_WASH` | const | :41 | The wash behind the bar or slice under the pointer: a lift, not an outline. |
-| `chart-theme.ts` | `DASH_PATTERNS` | const | :50 | Dash pattern per series index — `strokeDasharray` values, index-aligned with `CHART_PALETTE`. |
-| `chart-theme.ts` | `MARKER_SHAPES` | const | :60 | Marker shape per series index, same alignment — the third channel alongside colour and dash. |
-| `chart-theme.ts` | `paletteColor` | function | :69 |  |
-| `chart-theme.ts` | `dashFor` | function | :73 |  |
-| `chart-theme.ts` | `markerFor` | function | :77 |  |
-| `chart-theme.ts` | `compactRupees` | function | :86 | Ported verbatim from `sales-chart.tsx` (retired in WO-E.2) — a Pakistan-specific asset (lakh notati… |
-| `chart-theme.ts` | `compactMoney` | function | :93 | Same lakh notation, taking paisa — what every chart in `charts/` actually receives (D9: "money char… |
+| `chart-theme.ts` | `WARNING` | const | :39 | The warning step between fine and failing, for a meter or marker whose value can cross a limit. |
+| `chart-theme.ts` | `CONTEXT` | const | :47 | The de-emphasis colour: the "previous period" beside a current one, and the "Other" slice of a shar… |
+| `chart-theme.ts` | `HOVER_WASH` | const | :49 | The wash behind the bar or slice under the pointer: a lift, not an outline. |
+| `chart-theme.ts` | `DASH_PATTERNS` | const | :58 | Dash pattern per series index — `strokeDasharray` values, index-aligned with `CHART_PALETTE`. |
+| `chart-theme.ts` | `MARKER_SHAPES` | const | :68 | Marker shape per series index, same alignment — the third channel alongside colour and dash. |
+| `chart-theme.ts` | `paletteColor` | function | :77 |  |
+| `chart-theme.ts` | `dashFor` | function | :81 |  |
+| `chart-theme.ts` | `markerFor` | function | :85 |  |
+| `chart-theme.ts` | `compactRupees` | function | :94 | Ported verbatim from `sales-chart.tsx` (retired in WO-E.2) — a Pakistan-specific asset (lakh notati… |
+| `chart-theme.ts` | `compactMoney` | function | :101 | Same lakh notation, taking paisa — what every chart in `charts/` actually receives (D9: "money char… |
 | `chart-tooltip.tsx` | `ChartTooltip` | function | :19 | The one readout, every series (dataviz `interaction.md`): the value leads in the strongest ink, the… |
 | `comparison-chart.tsx` | `ComparisonBucketPoint` | interface | :10 |  |
 | `comparison-chart.tsx` | `ComparisonChart` | function | :25 | WO-B.5's own headline chart, and the dashboard's empty comparison slot (WO-A.4). |
+| `funnel-chart.tsx` | `FunnelChart` | function | :33 | A sequence where each stage is meant to be a subset of the one before: leads, qualified, proposals,… |
+| `gauge-chart.tsx` | `GaugeRing` | interface | :13 |  |
+| `gauge-chart.tsx` | `MAX_GAUGE_RINGS` | const | :25 | Four rings is the most the geometry carries: at 8 px strokes on a 13 px pitch the innermost ring le… |
+| `gauge-chart.tsx` | `GaugeChart` | function | :80 | One value against a fixed goal or limit, as an arc; several, as concentric arcs read from the outsi… |
 | `index.ts` | `TimeSeriesChart` `type TimeSeriesSeriesDef` | re-export |  | from `./time-series-chart` |
 | `index.ts` | `ComparisonChart` `type ComparisonBucketPoint` | re-export |  | from `./comparison-chart` |
 | `index.ts` | `CategoryBarChart` `type CategoryBarItem` | re-export |  | from `./category-bar-chart` |
 | `index.ts` | `ShareChart` `type ShareItem` | re-export |  | from `./share-chart` |
 | `index.ts` | `PeriodComparisonChart` `type PeriodComparisonPoint` | re-export |  | from `./period-comparison-chart` |
+| `index.ts` | `SmallMultiplesChart` `type SmallMultiplesSeries` | re-export |  | from `./small-multiples-chart` |
+| `index.ts` | `FunnelChart` `type FunnelStage` | re-export |  | from `./funnel-chart` |
+| `index.ts` | `PointLineChart` `type PointLinePoint` | re-export |  | from `./point-line-chart` |
+| `index.ts` | `RangeChart` `type RangePoint` | re-export |  | from `./range-chart` |
+| `index.ts` | `GaugeChart` `type GaugeRing` | re-export |  | from `./gauge-chart` |
+| `index.ts` | `StackedAreaChart` `type StackedAreaSeries` | re-export |  | from `./stacked-area-chart` |
+| `index.ts` | `CalendarHeatmap` | re-export |  | from `./calendar-heatmap` |
+| `index.ts` | `RadarChart` `type RadarSeries` | re-export |  | from `./radar-chart` |
 | `index.ts` | `SparklineChart` | re-export |  | from `./sparkline-chart` |
 | `index.ts` | `ChartDataTable` | re-export |  | from `./chart-data-table` |
-| `index.ts` | `CHART_PALETTE` `GRID` `SURFACE` `INK` `INK_SOFT` `INK_FAINT` `CONTEXT` `HOVER_WASH` `POSITIVE` `NEGATIVE` `compactRupees` `compactMoney` `paletteColor` `dashFor` `markerFor` `type ValueFormat` | re-export |  | from `./chart-theme` |
-| `period-comparison-chart.tsx` | `PeriodComparisonPoint` | interface | :31 |  |
-| `period-comparison-chart.tsx` | `PeriodComparisonChart` | function | :58 | This period against the last, per category: a grouped bar, the legend that filters it, and the tabl… |
-| `share-chart.tsx` | `ShareItem` | type | :13 |  |
-| `share-chart.tsx` | `ShareChart` | function | :38 | A categorical share of a whole. |
+| `index.ts` | `CHART_PALETTE` `GRID` `SURFACE` `INK` `INK_SOFT` `INK_FAINT` `CONTEXT` `HOVER_WASH` `POSITIVE` `NEGATIVE` `WARNING` `compactRupees` `compactMoney` `paletteColor` `dashFor` `markerFor` `type ValueFormat` | re-export |  | from `./chart-theme` |
+| `period-comparison-chart.tsx` | `PeriodComparisonPoint` | interface | :14 |  |
+| `period-comparison-chart.tsx` | `PeriodComparisonChart` | function | :41 | This period against the last, per category: a grouped bar, the legend that filters it, and the tabl… |
+| `point-line-chart.tsx` | `PointLinePoint` | interface | :12 |  |
+| `point-line-chart.tsx` | `PointLineChart` | function | :34 | A volatile series where the individual readings matter more than the trend: the errors a workflow t… |
+| `radar-chart.tsx` | `RadarSeries` | type | :27 |  |
+| `radar-chart.tsx` | `MIN_RADAR_AXES` | const | :30 | Fewer than five axes is a triangle or a kite, more than seven is a hairball; both read worse than b… |
+| `radar-chart.tsx` | `MAX_RADAR_AXES` | const | :31 | Fewer than five axes is a triangle or a kite, more than seven is a hairball; both read worse than b… |
+| `radar-chart.tsx` | `MAX_AXIS_NAME` | const | :37 | Axis names are drawn outside the polygon, so a long one runs off a narrow card. |
+| `radar-chart.tsx` | `MAX_RADAR_SERIES` | const | :39 | More than three overlapping polygons hide each other, so a fourth series goes to a second chart. |
+| `radar-chart.tsx` | `RadarChart` | function | :61 | A profile across five to seven measures, scored on one shared scale: a client's health, a supplier'… |
+| `range-chart.tsx` | `RangePoint` | interface | :11 |  |
+| `range-chart.tsx` | `RangeChart` | function | :31 | The spread of a measure inside each period: the fastest and slowest deployment in a week, the cheap… |
+| `share-chart.tsx` | `ShareItem` | type | :14 |  |
+| `share-chart.tsx` | `ShareChart` | function | :39 | A categorical share of a whole. |
+| `small-multiples-chart.tsx` | `SmallMultiplesSeries` | type | :14 |  |
+| `small-multiples-chart.tsx` | `MAX_MULTIPLES` | const | :17 | Five panels already ask the eye to compare five things; a sixth series is a table. |
+| `small-multiples-chart.tsx` | `SmallMultiplesChart` | function | :42 | The same measure for several things over the same time: sales by office, load by warehouse. |
 | `sparkline-chart.tsx` | `SparklineChart` | function | :14 | The small trend line inside a dashboard card (D1's `sparkline` field). |
+| `stacked-area-chart.tsx` | `StackedAreaSeries` | type | :12 |  |
+| `stacked-area-chart.tsx` | `MAX_STACKED_SERIES` | const | :15 | More than five layers is a texture, not a chart; the sixth palette slot is reserved for "everything… |
+| `stacked-area-chart.tsx` | `StackedAreaChart` | function | :35 | A total over time and what it is made of: revenue by channel, tickets by queue. |
 | `time-series-chart.tsx` | `TimeSeriesSeriesDef` | interface | :22 |  |
 | `time-series-chart.tsx` | `TimeSeriesChart` | function | :32 | One or several series over time — line, or line-and-area for a single series (matching `sales-chart… |
 | `use-reduced-motion.ts` | `usePrefersReducedMotion` | function | :17 | Recharts animates in JavaScript, which the stylesheet's reduced-motion rule cannot reach, so a char… |
@@ -1610,11 +1662,21 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `data-concepts.tsx` | `ColumnManagerSpecimen` | function | :275 | The grid and the panel that decides which columns it has. |
-| `data-concepts.tsx` | `RegionalPerformanceSpecimen` | function | :459 | Regional performance: three headline figures, then this period against the last with the table that… |
-| `data-concepts.tsx` | `ShareSpecimen` | function | :515 | Share of a whole, twice: money (a budget) and counts (orders by channel). |
-| `flow-concepts.tsx` | `RoutingCanvasSpecimen` | function | :130 |  |
-| `flow-concepts.tsx` | `JourneyTiersSpecimen` | function | :474 | A funnel you can operate: five bars narrowing toward the job, each a tab. |
+| `chart-concepts.tsx` | `ChartRuleSpecimen` | function | :88 |  |
+| `chart-concepts.tsx` | `FunnelSpecimen` | function | :113 |  |
+| `chart-concepts.tsx` | `PointLineSpecimen` | function | :128 |  |
+| `chart-concepts.tsx` | `RangeSpecimen` | function | :153 |  |
+| `chart-concepts.tsx` | `ForecastSpecimen` | function | :183 | Projected against actual is the existing `TimeSeriesChart` with two series: a curve, a dash pattern… |
+| `chart-concepts.tsx` | `GaugeSpecimen` | function | :202 | ── gauge ────────────────────────────────────────────────────────────── |
+| `chart-concepts.tsx` | `StackedAreaSpecimen` | function | :272 |  |
+| `chart-concepts.tsx` | `HeatmapSpecimen` | function | :311 |  |
+| `chart-concepts.tsx` | `RadarSpecimen` | function | :330 |  |
+| `chart-concepts.tsx` | `SalesComparisonSpecimen` | function | :374 |  |
+| `data-concepts.tsx` | `ColumnManagerSpecimen` | function | :255 | The grid and the panel that decides which columns it has. |
+| `data-concepts.tsx` | `RegionalPerformanceSpecimen` | function | :426 | Regional performance: three headline figures, then this period against the last with the table that… |
+| `data-concepts.tsx` | `ShareSpecimen` | function | :482 | Share of a whole, twice: money (a budget) and counts (orders by channel). |
+| `flow-concepts.tsx` | `RoutingCanvasSpecimen` | function | :106 |  |
+| `flow-concepts.tsx` | `JourneyTiersSpecimen` | function | :418 | A funnel you can operate: five bars narrowing toward the job, each a tab. |
 | `foundations.tsx` | `GallerySection` | function | :21 | ── frame ─────────────────────────────────────────────────────────────── |
 | `foundations.tsx` | `Group` | function | :46 |  |
 | `foundations.tsx` | `ColourFoundations` | function | :109 |  |
@@ -1622,11 +1684,12 @@ Every top-level export in `web`, with the line to open.
 | `foundations.tsx` | `TypeFoundations` | function | :265 |  |
 | `foundations.tsx` | `SpaceFoundations` | function | :297 | ── space, size, radius ───────────────────────────────────────────────── |
 | `foundations.tsx` | `ElevationFoundations` | function | :359 |  |
-| `gallery.tsx` | `DesignSystemGallery` | function | :39 | The design system, rendered by the system it describes. |
-| `layout-loading.tsx` | `BentoSpecimen` | function | :73 | A tile is one job. |
-| `layout-loading.tsx` | `SkeletonSpecimen` | function | :220 | One card per shape a page waits in: a figure, a person, a table, a chart. |
+| `gallery.tsx` | `DesignSystemGallery` | function | :53 | The design system, rendered by the system it describes. |
+| `layout-loading.tsx` | `BentoSpecimen` | function | :71 | A tile is one job. |
+| `layout-loading.tsx` | `SkeletonSpecimen` | function | :197 | One card per shape a page waits in: a figure, a person, a table, a chart. |
 | `live-tokens.ts` | `useLiveTokens` | function | :17 | Reads the theme's colours back out of the browser, not out of brand.ts. |
 | `patterns.tsx` | `AdminPatterns` | function | :68 |  |
+| `scoped-bento.tsx` | `ScopedBentoSpecimen` | function | :238 |  |
 | `specimens.tsx` | `ComponentSpecimens` | function | :46 |  |
 
 ### `apps/web/src/components/storefront`
@@ -1686,9 +1749,9 @@ Every top-level export in `web`, with the line to open.
 | `badge.tsx` | `BadgeTone` | type | :13 | A status pill. |
 | `badge.tsx` | `Badge` | function | :24 |  |
 | `bento.tsx` | `Bento` | function | :18 | A bento: one job, shown as a handful of tiles of deliberately different sizes, so the eye finds the… |
-| `bento.tsx` | `BentoSize` | type | :37 |  |
-| `bento.tsx` | `BentoTone` | type | :38 |  |
-| `bento.tsx` | `BentoTile` | function | :62 |  |
+| `bento.tsx` | `BentoSize` | type | :31 |  |
+| `bento.tsx` | `BentoTone` | type | :32 |  |
+| `bento.tsx` | `BentoTile` | function | :56 |  |
 | `button.tsx` | `ButtonProps` | interface | :26 |  |
 | `button.tsx` | `Button` | function | :34 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | function | :30 | The one way a destructive action gets confirmed. |
@@ -1735,8 +1798,8 @@ Every top-level export in `web`, with the line to open.
 | `section.tsx` | `Section` | function | :19 | A titled region of a page, with no box around it. |
 | `skeleton.tsx` | `SkeletonShape` | type | :26 |  |
 | `skeleton.tsx` | `Skeleton` | function | :28 |  |
-| `skeleton.tsx` | `SkeletonText` | function | :44 | `lines` rows of text; the last is shorter, the way a paragraph ends. |
-| `skeleton.tsx` | `SkeletonRegion` | function | :67 | Wraps a skeleton composition: one polite announcement, the boxes hidden from assistive tech. |
+| `skeleton.tsx` | `SkeletonText` | function | :33 | `lines` rows of text; the last is shorter, the way a paragraph ends. |
+| `skeleton.tsx` | `SkeletonRegion` | function | :44 | Wraps a skeleton composition: one polite announcement, the boxes hidden from assistive tech. |
 | `switch.tsx` | `Switch` | function | :20 | An on/off setting that takes effect now. |
 | `tabs.tsx` | `TabItem` | interface | :6 |  |
 | `tabs.tsx` | `Tabs` | function | :37 | Splits one page into several, without splitting the route. |

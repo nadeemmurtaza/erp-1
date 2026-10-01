@@ -96,8 +96,8 @@ All 113 tracked files in `packages/*`, by directory.
 | `cod-risk.spec.ts` | unit test | 199 |  |
 | `cod-risk.ts` | module | 167 |  |
 | `collection-rules.ts` | module | 16 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually cu… |
-| `constants.spec.ts` | unit test | 42 |  |
-| `constants.ts` | module | 199 |  |
+| `constants.spec.ts` | unit test | 61 |  |
+| `constants.ts` | module | 221 |  |
 | `content-blocks.ts` | module | 48 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
 | `demand-forecast.spec.ts` | unit test | 179 |  |
 | `demand-forecast.ts` | module | 112 |  |

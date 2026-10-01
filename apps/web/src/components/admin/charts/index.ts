@@ -9,6 +9,14 @@ export { ComparisonChart, type ComparisonBucketPoint } from './comparison-chart'
 export { CategoryBarChart, type CategoryBarItem } from './category-bar-chart';
 export { ShareChart, type ShareItem } from './share-chart';
 export { PeriodComparisonChart, type PeriodComparisonPoint } from './period-comparison-chart';
+export { SmallMultiplesChart, type SmallMultiplesSeries } from './small-multiples-chart';
+export { FunnelChart, type FunnelStage } from './funnel-chart';
+export { PointLineChart, type PointLinePoint } from './point-line-chart';
+export { RangeChart, type RangePoint } from './range-chart';
+export { GaugeChart, type GaugeRing } from './gauge-chart';
+export { StackedAreaChart, type StackedAreaSeries } from './stacked-area-chart';
+export { CalendarHeatmap } from './calendar-heatmap';
+export { RadarChart, type RadarSeries } from './radar-chart';
 export { SparklineChart } from './sparkline-chart';
 export { ChartDataTable } from './chart-data-table';
 export {
@@ -22,6 +30,7 @@ export {
   HOVER_WASH,
   POSITIVE,
   NEGATIVE,
+  WARNING,
   compactRupees,
   compactMoney,
   paletteColor,

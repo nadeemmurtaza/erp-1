@@ -1,28 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import {
-  ArrowDown,
-  ArrowDownRight,
-  ArrowUp,
-  ArrowUpRight,
-  Check,
-  Minus,
-  RotateCcw,
-} from "lucide-react";
-import { formatDateShort, formatMoney, formatNumber } from "@newax/shared";
-import { PeriodComparisonChart, ShareChart } from "@/components/admin/charts";
-import { StatusBadge } from "@/components/common/status-badge";
-import {
-  Badge,
-  Button,
-  DataTable,
-  MetricStrip,
-  Switch,
-  type BadgeTone,
-  type DataTableColumn,
-} from "@/components/ui";
-import { Group } from "./foundations";
+import { useState } from 'react';
+import { ArrowDown, ArrowDownRight, ArrowUp, ArrowUpRight, Check, Minus, RotateCcw } from 'lucide-react';
+import { formatDateShort, formatMoney, formatNumber } from '@newax/shared';
+import { PeriodComparisonChart, ShareChart } from '@/components/admin/charts';
+import { StatusBadge } from '@/components/common/status-badge';
+import { Badge, Button, DataTable, MetricStrip, Switch, type BadgeTone, type DataTableColumn } from '@/components/ui';
+import { Group } from './foundations';
 
 /**
  * The data concepts from the images, expressed in components that already
@@ -47,97 +31,94 @@ interface Product {
   stock: number;
   price: number;
   status: string;
-  priority: "high" | "medium" | "low";
+  priority: 'high' | 'medium' | 'low';
   updated: string;
 }
 
 const PRODUCTS: Product[] = [
   {
-    id: "1",
-    name: "Linen shirt",
-    sku: "LS-001",
-    category: "Menswear",
+    id: '1',
+    name: 'Linen shirt',
+    sku: 'LS-001',
+    category: 'Menswear',
     stock: 3,
     price: 349_900,
-    status: "ACTIVE",
-    priority: "high",
-    updated: "2026-09-28",
+    status: 'ACTIVE',
+    priority: 'high',
+    updated: '2026-09-28',
   },
   {
-    id: "2",
-    name: "Cotton kurta",
-    sku: "CK-014",
-    category: "Menswear",
+    id: '2',
+    name: 'Cotton kurta',
+    sku: 'CK-014',
+    category: 'Menswear',
     stock: 42,
     price: 289_900,
-    status: "ACTIVE",
-    priority: "low",
-    updated: "2026-09-27",
+    status: 'ACTIVE',
+    priority: 'low',
+    updated: '2026-09-27',
   },
   {
-    id: "3",
-    name: "Silk dupatta",
-    sku: "SD-203",
-    category: "Accessories",
+    id: '3',
+    name: 'Silk dupatta',
+    sku: 'SD-203',
+    category: 'Accessories',
     stock: 8,
     price: 159_900,
-    status: "PENDING",
-    priority: "medium",
-    updated: "2026-09-26",
+    status: 'PENDING',
+    priority: 'medium',
+    updated: '2026-09-26',
   },
   {
-    id: "4",
-    name: "Denim jacket",
-    sku: "DJ-088",
-    category: "Outerwear",
+    id: '4',
+    name: 'Denim jacket',
+    sku: 'DJ-088',
+    category: 'Outerwear',
     stock: 0,
     price: 599_900,
-    status: "BLOCKED",
-    priority: "high",
-    updated: "2026-09-24",
+    status: 'BLOCKED',
+    priority: 'high',
+    updated: '2026-09-24',
   },
   {
-    id: "5",
-    name: "Wool shawl",
-    sku: "WS-120",
-    category: "Accessories",
+    id: '5',
+    name: 'Wool shawl',
+    sku: 'WS-120',
+    category: 'Accessories',
     stock: 17,
     price: 449_900,
-    status: "DRAFT",
-    priority: "low",
-    updated: "2026-09-22",
+    status: 'DRAFT',
+    priority: 'low',
+    updated: '2026-09-22',
   },
   {
-    id: "6",
-    name: "Canvas tote",
-    sku: "CT-031",
-    category: "Accessories",
+    id: '6',
+    name: 'Canvas tote',
+    sku: 'CT-031',
+    category: 'Accessories',
     stock: 64,
     price: 99_900,
-    status: "ACTIVE",
-    priority: "low",
-    updated: "2026-09-21",
+    status: 'ACTIVE',
+    priority: 'low',
+    updated: '2026-09-21',
   },
   {
-    id: "7",
-    name: "Chino trousers",
-    sku: "CT-077",
-    category: "Menswear",
+    id: '7',
+    name: 'Chino trousers',
+    sku: 'CT-077',
+    category: 'Menswear',
     stock: 11,
     price: 329_900,
-    status: "PENDING",
-    priority: "medium",
-    updated: "2026-09-20",
+    status: 'PENDING',
+    priority: 'medium',
+    updated: '2026-09-20',
   },
 ];
 
-const PRIORITY: Record<
-  Product["priority"],
-  { label: string; tone: BadgeTone; Icon: typeof ArrowUp }
-> = {
-  high: { label: "High", tone: "danger", Icon: ArrowUp },
-  medium: { label: "Medium", tone: "warning", Icon: Minus },
-  low: { label: "Low", tone: "neutral", Icon: ArrowDown },
+const PRIORITY: Record<Product['priority'], { label: string; tone: BadgeTone; Icon: typeof ArrowUp }> = {
+  high: { label: 'High', tone: 'danger', Icon: ArrowUp },
+  medium: { label: 'Medium', tone: 'warning', Icon: Minus },
+  low: { label: 'Low', tone: 'neutral', Icon: ArrowDown },
 };
 
 /**
@@ -152,73 +133,73 @@ const COLUMNS: {
   column: DataTableColumn<Product>;
 }[] = [
   {
-    key: "name",
-    label: "Product",
+    key: 'name',
+    label: 'Product',
     locked: true,
     column: {
-      header: "Product",
+      header: 'Product',
       cell: (p) => <span className="font-medium">{p.name}</span>,
-      className: "whitespace-nowrap",
+      className: 'whitespace-nowrap',
     },
   },
   {
-    key: "sku",
-    label: "SKU",
+    key: 'sku',
+    label: 'SKU',
     column: {
-      header: "SKU",
+      header: 'SKU',
       cell: (p) => p.sku,
       muted: true,
       numeric: true,
-      className: "whitespace-nowrap",
+      className: 'whitespace-nowrap',
     },
   },
   {
-    key: "category",
-    label: "Category",
+    key: 'category',
+    label: 'Category',
     column: {
-      header: "Category",
+      header: 'Category',
       cell: (p) => p.category,
       muted: true,
-      className: "whitespace-nowrap",
+      className: 'whitespace-nowrap',
     },
   },
   {
-    key: "stock",
-    label: "In stock",
+    key: 'stock',
+    label: 'In stock',
     column: {
-      header: "In stock",
+      header: 'In stock',
       cell: (p) => formatNumber(p.stock),
-      align: "end",
+      align: 'end',
       numeric: true,
-      className: "whitespace-nowrap",
+      className: 'whitespace-nowrap',
     },
   },
   {
-    key: "price",
-    label: "Price",
+    key: 'price',
+    label: 'Price',
     column: {
-      header: "Price",
+      header: 'Price',
       cell: (p) => formatMoney(p.price),
-      align: "end",
+      align: 'end',
       numeric: true,
-      className: "whitespace-nowrap",
+      className: 'whitespace-nowrap',
     },
   },
   {
-    key: "status",
-    label: "Status",
+    key: 'status',
+    label: 'Status',
     column: {
-      header: "Status",
+      header: 'Status',
       cell: (p) => <StatusBadge status={p.status} />,
-      className: "whitespace-nowrap",
+      className: 'whitespace-nowrap',
     },
   },
   {
-    key: "priority",
-    label: "Priority",
+    key: 'priority',
+    label: 'Priority',
     column: {
-      header: "Priority",
-      className: "whitespace-nowrap",
+      header: 'Priority',
+      className: 'whitespace-nowrap',
       cell: (p) => {
         const { label, tone, Icon } = PRIORITY[p.priority];
         return (
@@ -231,13 +212,13 @@ const COLUMNS: {
     },
   },
   {
-    key: "updated",
-    label: "Updated",
+    key: 'updated',
+    label: 'Updated',
     column: {
-      header: "Updated",
+      header: 'Updated',
       cell: (p) => formatDateShort(p.updated),
       muted: true,
-      className: "whitespace-nowrap",
+      className: 'whitespace-nowrap',
     },
   },
 ];
@@ -249,15 +230,14 @@ interface ColumnState {
 
 const DEFAULT_VIEW: ColumnState[] = COLUMNS.map((c) => ({
   key: c.key,
-  on: ["name", "sku", "category", "stock", "price", "status"].includes(c.key),
+  on: ['name', 'sku', 'category', 'stock', 'price', 'status'].includes(c.key),
 }));
 
 const sameView = (a: ColumnState[], b: ColumnState[]) =>
-  a.length === b.length &&
-  a.every((c, i) => c.key === b[i]!.key && c.on === b[i]!.on);
+  a.length === b.length && a.every((c, i) => c.key === b[i]!.key && c.on === b[i]!.on);
 
 const REORDER_BUTTON =
-  "inline-flex h-touch w-touch items-center justify-center rounded-md text-neutral-900 transition-colors duration-fast ease-standard hover:bg-neutral-100 fold:h-9 fold:w-9 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent";
+  'inline-flex h-touch w-touch items-center justify-center rounded-md text-neutral-900 transition-colors duration-fast ease-standard hover:bg-neutral-100 fold:h-9 fold:w-9 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent';
 
 /**
  * The grid and the panel that decides which columns it has.
@@ -275,7 +255,7 @@ const REORDER_BUTTON =
 export function ColumnManagerSpecimen() {
   const [view, setView] = useState<ColumnState[]>(DEFAULT_VIEW);
   const [saved, setSaved] = useState<ColumnState[]>(DEFAULT_VIEW);
-  const [announce, setAnnounce] = useState("");
+  const [announce, setAnnounce] = useState('');
 
   const byKey = (key: string) => COLUMNS.find((c) => c.key === key)!;
   const dirty = !sameView(view, saved);
@@ -288,15 +268,13 @@ export function ColumnManagerSpecimen() {
     const next = [...view];
     [next[index], next[target]] = [next[target]!, next[index]!];
     setView(next);
-    setAnnounce(
-      `${byKey(view[index]!.key).label} moved to position ${target + 1} of ${view.length}.`,
-    );
+    setAnnounce(`${byKey(view[index]!.key).label} moved to position ${target + 1} of ${view.length}.`);
   };
 
   const toggle = (index: number, on: boolean) => {
     setView(view.map((c, i) => (i === index ? { ...c, on } : c)));
     setAnnounce(
-      `${byKey(view[index]!.key).label} ${on ? "shown" : "hidden"}. ${shown.length + (on ? 1 : -1)} of ${view.length} columns shown.`,
+      `${byKey(view[index]!.key).label} ${on ? 'shown' : 'hidden'}. ${shown.length + (on ? 1 : -1)} of ${view.length} columns shown.`,
     );
   };
 
@@ -321,9 +299,7 @@ export function ColumnManagerSpecimen() {
                   disabled={def.locked}
                   onChange={(next) => toggle(index, next)}
                   label={def.label}
-                  description={
-                    def.locked ? "Fixed: it names the row." : undefined
-                  }
+                  description={def.locked ? 'Fixed: it names the row.' : undefined}
                 />
                 <button
                   type="button"
@@ -332,9 +308,9 @@ export function ColumnManagerSpecimen() {
                   disabled={index <= 1}
                   title={
                     index === 0
-                      ? "This column is fixed first"
+                      ? 'This column is fixed first'
                       : index === 1
-                        ? "Nothing moves above the fixed column"
+                        ? 'Nothing moves above the fixed column'
                         : undefined
                   }
                   onClick={() => move(index, -1)}
@@ -347,11 +323,7 @@ export function ColumnManagerSpecimen() {
                   aria-label={`Move ${def.label} down`}
                   disabled={index === 0 || index === view.length - 1}
                   title={
-                    index === 0
-                      ? "This column is fixed first"
-                      : index === view.length - 1
-                        ? "Already last"
-                        : undefined
+                    index === 0 ? 'This column is fixed first' : index === view.length - 1 ? 'Already last' : undefined
                   }
                   onClick={() => move(index, 1)}
                 >
@@ -366,7 +338,7 @@ export function ColumnManagerSpecimen() {
           <Button
             onClick={() => {
               setSaved(view);
-              setAnnounce("View saved.");
+              setAnnounce('View saved.');
             }}
             disabled={!dirty}
           >
@@ -376,7 +348,7 @@ export function ColumnManagerSpecimen() {
             variant="ghost"
             onClick={() => {
               setView(DEFAULT_VIEW);
-              setAnnounce("Columns reset to the default view.");
+              setAnnounce('Columns reset to the default view.');
             }}
             disabled={sameView(view, DEFAULT_VIEW)}
           >
@@ -385,7 +357,7 @@ export function ColumnManagerSpecimen() {
           </Button>
           <p className="flex items-center gap-1 text-sm text-neutral-900/70">
             {dirty ? (
-              "Unsaved changes"
+              'Unsaved changes'
             ) : (
               <>
                 <Check aria-hidden="true" className="h-4 w-4" />
@@ -400,12 +372,7 @@ export function ColumnManagerSpecimen() {
       </div>
 
       <div className="card min-w-0 self-start p-2">
-        <DataTable
-          stickyFirst
-          rows={PRODUCTS}
-          rowKey={(p) => p.id}
-          columns={shown.map((c) => byKey(c.key).column)}
-        />
+        <DataTable stickyFirst rows={PRODUCTS} rowKey={(p) => p.id} columns={shown.map((c) => byKey(c.key).column)} />
       </div>
     </div>
   );
@@ -414,27 +381,27 @@ export function ColumnManagerSpecimen() {
 /* ── comparison and share ─────────────────────────────────────────────── */
 
 const REGIONS = [
-  { label: "Lahore", current: 18_400_000, previous: 16_100_000 },
-  { label: "Karachi", current: 15_200_000, previous: 15_900_000 },
-  { label: "Islamabad", current: 9_600_000, previous: 7_300_000 },
-  { label: "Faisalabad", current: 6_100_000, previous: 6_100_000 },
-  { label: "Multan", current: 3_800_000, previous: 4_400_000 },
+  { label: 'Lahore', current: 18_400_000, previous: 16_100_000 },
+  { label: 'Karachi', current: 15_200_000, previous: 15_900_000 },
+  { label: 'Islamabad', current: 9_600_000, previous: 7_300_000 },
+  { label: 'Faisalabad', current: 6_100_000, previous: 6_100_000 },
+  { label: 'Multan', current: 3_800_000, previous: 4_400_000 },
 ];
 
 const BUDGET = [
-  { label: "Operations", value: 42_000_000 },
-  { label: "Marketing", value: 24_500_000 },
-  { label: "Technology", value: 18_000_000 },
-  { label: "People", value: 12_500_000 },
-  { label: "Finance", value: 6_000_000 },
-  { label: "Facilities", value: 3_000_000 },
-  { label: "Training", value: 1_500_000 },
+  { label: 'Operations', value: 42_000_000 },
+  { label: 'Marketing', value: 24_500_000 },
+  { label: 'Technology', value: 18_000_000 },
+  { label: 'People', value: 12_500_000 },
+  { label: 'Finance', value: 6_000_000 },
+  { label: 'Facilities', value: 3_000_000 },
+  { label: 'Training', value: 1_500_000 },
 ];
 
 const CHANNELS = [
-  { label: "Storefront", value: 412 },
-  { label: "Point of sale", value: 268 },
-  { label: "Marketplace", value: 97 },
+  { label: 'Storefront', value: 412 },
+  { label: 'Point of sale', value: 268 },
+  { label: 'Marketplace', value: 97 },
 ];
 
 const Delta = ({ up, children }: { up: boolean; children: string }) => (
@@ -465,29 +432,29 @@ export function RegionalPerformanceSpecimen() {
         label="Regional summary"
         items={[
           {
-            key: "revenue",
-            label: "Revenue",
+            key: 'revenue',
+            label: 'Revenue',
             value: formatMoney(revenue),
             delta: {
-              direction: "up",
+              direction: 'up',
               label: <Delta up>+8.6% on last month</Delta>,
             },
           },
           {
-            key: "orders",
-            label: "Orders",
+            key: 'orders',
+            label: 'Orders',
             value: formatNumber(1_284),
             delta: {
-              direction: "up",
+              direction: 'up',
               label: <Delta up>+5.1% on last month</Delta>,
             },
           },
           {
-            key: "returns",
-            label: "Return rate",
-            value: "3.2%",
+            key: 'returns',
+            label: 'Return rate',
+            value: '3.2%',
             delta: {
-              direction: "up",
+              direction: 'up',
               label: <Delta up={false}>0.8 pts lower</Delta>,
             },
           },
@@ -515,10 +482,7 @@ export function RegionalPerformanceSpecimen() {
 export function ShareSpecimen() {
   return (
     <div className="grid min-w-0 grid-cols-1 gap-6 xl:grid-cols-2">
-      <Group
-        title="Department budget"
-        note="Five named departments, the long tail folded into Other."
-      >
+      <Group title="Department budget" note="Five named departments, the long tail folded into Other.">
         <div className="card p-5">
           <ShareChart items={BUDGET} format="money" />
         </div>

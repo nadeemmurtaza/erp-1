@@ -10074,3 +10074,184 @@ cannot obey, the failure path: n/a, nothing is written; the routing specimen's u
 row says a cancelled order reverses with its own document, as the real thing must.
 Reachable: `/admin/design-system#layout`, `#data` and `#flows`, each with a link in
 the page's section nav.
+
+### Addendum — 2026-10-01 (third): eight chart forms, small multiples and a scoped profile board
+
+**Requirement.** The owner shared a ten-widget dashboard reference, two mobile
+"Sales Performance Comparison" screens (one chart per office on a shared scale, and
+the same data overlaid) and a "Corporate Profile" board whose tiles each carry a
+Read and a Write scope. With them came a mapping of eight chart forms to the shape
+of data each is for, and the instruction "add all these too". The mapping is the
+requirement: a chart is chosen by what the data is, not by what looks richest. The
+reference's colours, gradients and glows were not copied (Law 1).
+
+**What was built.** Every chart is in `components/admin/charts/`, the one folder
+`check-chart-imports.mjs` lets Recharts into, and exported from its `index.ts`.
+
+| Form | Component | Data shape it is for | Built on |
+|---|---|---|---|
+| Flow / funnel | `FunnelChart` | ordered stages, each a subset of the one before | plain SVG polygons in a 100-unit viewBox |
+| Point-marked line | `PointLineChart` | one volatile series where each reading matters | Recharts line |
+| Range / candlestick | `RangeChart` | lowest, average and highest per period | Recharts bar of `[min, max]` plus a ringed dot |
+| Smooth multi-line, projected against actual | the existing `TimeSeriesChart` with two series | two to four series on one scale | unchanged; it needed nothing new |
+| Radial gauge, concentric arcs | `GaugeChart` | one value against a fixed goal or limit | plain SVG arcs |
+| Stacked area | `StackedAreaChart` | a total over time and its parts | Recharts stacked area |
+| Calendar heatmap | `CalendarHeatmap` | one count per day | plain SVG grid |
+| Radar | `RadarChart` | five to seven measures on one scale | Recharts radar, and grouped bars as its second view |
+| Small multiples and overlay (the mobile screens) | `SmallMultiplesChart` | the same measure for two to five things | Recharts area and line |
+| Scoped corporate profile board | `design-system/scoped-bento.tsx` | tiles with their own read and write scope | `Bento`, `BentoTile`, `Badge`, `Button` |
+
+Shared by them: `chart-math.ts` (funnel steps, gauge state, heat calendar and
+quartile cuts, month totals, `niceCeil`; the spec is 55 cases and the web package
+now runs 78 tests, 36 of them added here), `chart-series.tsx` (`useSeriesVisibility`,
+`SeriesToggles` and `ViewSwitch`, so the legend-is-the-filter rule is written once),
+`chart-legend.tsx` (`ChartLegendRow`, also now used by the donut), and a `WARNING`
+token in `chart-theme.ts`. `packages/shared` gained `formatMonthShort` and
+`formatWeekdayShort` (3 tests) so no chart calls `toLocaleString` or `Intl` itself.
+The gallery has a new section, `/admin/design-system#charts`, which opens with the
+rule as a table (form, data shape, use it for, not for), then every form in both
+themes. The scoped board is in `#layout`.
+
+**Why no Chart.js, ApexCharts or Vue.** The reference text assumed Vue 3. This is
+Next 15 and React 19 with Recharts already installed, and `dependencies.md` asks
+what a package does that the platform cannot. Recharts has no funnel, gauge or
+calendar form that meets the marks spec, so those three are plain SVG with no
+dependency, and the rest use the library already here. No package was added.
+
+**Improved, not copied.**
+- **The radar has a second view.** Area and angle are the two encodings people
+  judge worst, so "Shape" shows which axis is weak and "Compare" shows the same data
+  as grouped bars on the same 0-to-max scale. Outside five to seven axes the radar is
+  the wrong form and only the bars are offered.
+- **The funnel's text sits beside its shapes, not inside them.** Text on a mark has
+  to clear that mark's contrast in both themes, and a small last stage has no room.
+  The stage that lost the most is named in words with an icon in the table, never by
+  colour.
+- **The gauge says which way is good.** `progress` means full is the goal ("Goal
+  met"); `capacity` means full is a limit ("Filling up", then "Almost full"). A
+  limit's state is a badge with an icon and words, in the legend and the table,
+  and only then also the ring's amber or red. A value past its maximum keeps its true
+  percentage (107% reads 107%).
+- **The heatmap's steps are quartiles of the days that had activity**, not equal
+  slices of the maximum, so one outlier day cannot flatten every other day into the
+  palest step. A day with none is the neutral track.
+- **Small multiples share one scale, and say so.** Side by side prints the same
+  ceiling on every panel's axis and states it above them. Overlaid is the view for
+  "where did they cross".
+- **The profile board explains absence.** A tile the viewer cannot read is left out
+  and the row closes over it (a neighbour widens to take its width); a tile they can
+  read but not change keeps a disabled Edit with the permission written beside it
+  (`PRM-2`, `PRM-5`); an "Your access" tile lists every tile and why.
+
+**Parameters.**
+
+| Parameter | Exact value | Why this and not another | Enforced |
+|---|---|---|---|
+| Gauge geometry | 200-unit viewBox, outer radius 88, sweep 270° opening at the bottom, start 135°; strokes 10 px on a 16 px pitch for one or two rings, 8 px on 13 for three or four; at most 4 rings | a ring that is 270° reads "full" and "empty" at a glance; at 8 px on 13 the innermost ring leaves a centre about 90 px across, room for a figure and a label, and a fifth ring would not | `gauge-chart.tsx`, `MAX_GAUGE_RINGS` |
+| Capacity thresholds | warning from 80% of the limit, critical from 95% | 80% is the usual "plan ahead" line and 95% is where one burst can use what is left. They are arguments of `gaugeState` and tested at the edges; the chart does not expose them as props yet, and a measure billed differently adds the prop when it needs it | `chart-math.ts`, `gaugeState` |
+| Gauge arc motion | `stroke-dasharray` over 320 ms (`duration-slow`), `ease-standard`; none under reduced motion | it eases a change of value, so the ring never jumps; checked: the computed `transition-property` is `none` with `prefers-reduced-motion: reduce` | `motion-reduce:transition-none` |
+| Heatmap cells | 14 px, 3 px gap, 52 weeks by default, Monday first, newest week at the end; steps at the 25th, 50th and 75th percentile of days with activity; level opacities 0.3, 0.55, 0.8, 1 over one hue | 52 weeks is about 910 px (881 px of cells and a 30 px weekday gutter), which fills a wide card and scrolls inside its own box on a phone, starting at the newest week; four tints plus the neutral track, because neighbouring steps already differ by only 1.2:1 to 1.7:1 in contrast (measured in both themes), so a sixth would run into its neighbour | `calendar-heatmap.tsx`, `quantileCuts` |
+| Funnel rows | a 44 px shape per stage, 2 px between stages, from `sm` a name column of 4.5 to 7 rem and a figures column of at least 3.5 rem; below `sm` the name and figures sit above the shape | at 280 px the shape would get about 20 px between the two columns, so the columns become a line above it | `funnel-chart.tsx` |
+| Point line | 2 px straight segments, 8 px circle markers, 13 px diamond for a reading above the level, 12 px peak label, dashed rule for the level | smoothing would invent values nobody measured; the diamond is the second channel, so "above" is never colour alone | `point-line-chart.tsx` |
+| Range capsule | width capped at 14 px, 4 px rounded ends, average dot 8 px with a 2 px ring | thin marks; the ring keeps the dot visible where it sits on the capsule | `range-chart.tsx` |
+| Radar | 5 to 7 axes, at most 3 series, outer radius 80% inside 56 px side margins, fill 12%, axis names cut at 8 characters; Compare bars capped at 24 px with a 4 px rounded top and a 2 px gap | on a 280 px card the polygon leaves about 58 px beside it and eight characters at 11 px is about 48 px; the full names are in the table | `radar-chart.tsx`, `MAX_AXIS_NAME` |
+| Stacked area | at most 6 layers, a 2 px surface line between layers, layers solid, order fixed with the steadiest part at the bottom | a wash would let layers blend where they overlap the grid; only the bottom layer reads precisely against the baseline | `stacked-area-chart.tsx`, `MAX_STACKED_SERIES` |
+| Small multiples | at most 5 things, panel charts 120 px high, overlay 260 px, panels `auto-fit` at a 16 rem minimum with a 16 px gap, one ceiling from `niceCeil` (1, 1.5, 2, 2.5, 3, 4, 5, 6, 8 or 10 times a power of ten) printed at 0 and at the ceiling | a shared ceiling is what lets small charts be compared by eye, and it has to be round enough to read as an axis and tight enough not to leave half the plot empty | `small-multiples-chart.tsx`, `niceCeil` (tested) |
+| Warning ink | `amber-600`: 3.19:1 on the light surface, 10.89:1 on the dark one | `brand.ts` has no warning feedback colour, so this is the step the Badge `warning` tone already uses; it clears the 3:1 floor for a mark, and it is never a series colour | `chart-theme.ts`, `WARNING` |
+
+**Contrast, stated plainly.** The heatmap's two palest steps fall under the 3:1
+floor for a mark: 1.49 and 2.18 on the light surface, 1.64 and 2.74 on the dark one
+(its two darkest clear it: 3.25 and 4.53, then 4.43 and 6.28). That is the nature of
+a sequential ramp, whose low end is pale, and a contrast warning obliges a visible
+label or a table view rather than being dismissed, so: the line under the grid names
+the figure for whichever day is pointed at or focused, every cell has an
+`aria-label` with its date and count, and the table twin lists each month. Raising
+the first step's opacity would help the palest day and shrink its difference from
+"nothing". Left for the owner.
+
+**Palette audit: still an owner decision, still not changed.** These charts draw on
+the same brand chart palette that failed the validator in the second addendum.
+`StackedAreaChart` can use six slots, `SmallMultiplesChart` five and `RadarChart`
+three, so the normal-vision and colour-blind findings reach them. What carries
+identity besides colour: the legend that is also the filter, the table twin, the
+2 px surface line between stacked layers, and in the side-by-side view a name and
+total above every panel, which is why it is the default. The overlaid view relies on
+its legend and tooltip, and says so. The three options in the second addendum stand.
+
+**Deviations from the usual rules, and why.**
+- *Direct labels.* The overlaid view has no end-of-line labels: lines that end close
+  together are the reason to overlay, and their labels would sit on top of each
+  other. The side-by-side view is the directly labelled one.
+- *Rule of three.* Each chart has one consumer, the gallery. They are components
+  and not specimens because `charts/` is the only place Recharts may be imported
+  and because a chart suite was asked for, not examples; a screen imports one from
+  `@/components/admin/charts`. The scoped board is a specimen (one consumer).
+- *`TimeSeriesChart`* keeps its older bordered tooltip and inline-styled legend
+  for projected against actual; changing a shared chart needs every consumer
+  checked, so it is left for its own pass.
+
+**Failure modes.** Every chart renders `EmptyState` for no rows. A funnel needs two
+stages (one is "the number is the chart"). A gauge with a limit of zero or less is an
+empty ring in the `ok` state, not a division by zero. A heatmap treats a day missing
+inside its window as no activity, which is true of a count and false of a gap in the
+feed, so the caller passes the real window. Calendar days carry no zone and are
+parsed and printed as UTC, so they cannot slide a day. A radar given fewer than five
+or more than seven axes offers only bars. The last visible series cannot be
+hidden, because an empty chart is not a filter result. A tooltip formatter is never
+handed an empty label: Recharts renders the tooltip with one while nothing is pointed
+at, and a date formatter throws on it (this crashed the page once, in the first
+build of the small-multiples tooltip, and is guarded in `labelOf`).
+
+**Not adopted.** Chart.js, ApexCharts and Vue (above); a 3D or glowing treatment of
+any form; the reference's purple and peach palette; a donut past six segments; a
+radar as the only view of a profile.
+
+**Noticed, not changed.** The older charts still wrap their table twin inside a
+`role="img"` figure (second addendum). Web typechecks `@newax/shared` from its built
+`dist/`, so a change to a shared formatter needs `pnpm --filter @newax/shared build`
+before the web app sees it.
+
+**Verification.** `pnpm lint` passes (contrast baseline unchanged at 43 light and
+39 dark known-below-floor uses, chart imports, rules, links), `pnpm typecheck`
+passes, `pnpm test` passes for every package except the API (which needs a
+database): web 78 tests, also run under `TZ=Pacific/Auckland` and
+`TZ=America/Los_Angeles`, and shared 395. The gallery was built and rendered at
+280, 380, 640, 768, 1024, 1280 and 1536 px in both themes with no horizontal
+overflow at any of them, and 65 interaction checks were driven against the
+production build with Playwright (funnel and table, point line, range, gauge hover,
+focus and pin, stacked area restacking and the last-layer rule, heatmap arrow keys
+and readout, radar Shape and Compare, small multiples, the board's three viewers
+with the rows still filling the width, reduced motion). Those scripts are not in the
+repository. `pnpm check:overflow` needs a seeded stack and was not run here.
+
+**Scope lenses.**
+The actor with three tables, the principal with no permission key, the grant that
+ends itself: n/a, no actor is introduced; the charts render rows their caller already
+scoped. The board's "view as" switch is the specimen's own device, and a real screen
+has one viewer.
+Whose rows, and which columns: the charts hold fixed demonstration figures; a real
+screen passes what its endpoint returned for the viewer. The board's scopes use
+two real catalogue keys, `organization.view` (STAFF, ADMIN) to read the legal
+identifiers and `settings.manage` (ADMIN) to write any tile, typed as
+`PermissionKey` so a typo fails the build. No key was added.
+The threshold nobody approves alone, the toxic pair, authority and blast radius: n/a
+here, nothing is committed or changed. A real company-profile editor is separate
+work and is named, not stubbed: a table for the profile, an endpoint, an audit row
+carrying the old and new value, and a second signature on the tax and registration
+numbers.
+Audience is a capability, not an address: n/a, no message is sent.
+Request or record, the movement with no address, four hours down: n/a, nothing is
+written; the board's Save changes local state only.
+The unwritten posting rule, every column or none, the period that already moved,
+the second legal entity, dry run before live: n/a, no money fact is read or written.
+Click the number: the funnel, gauge, range and heatmap each carry their own table,
+and a screen that uses one links each figure to the rows that produced it, which is
+the screen's job; no figure here has rows behind it.
+Three silhouettes, the absent collaborator, the second copy of the write, the
+hundred-thousandth row, the adoption test: n/a, no query, table, number series or
+module is touched; a chart with no rows renders `EmptyState`.
+The reversal document, the undo fan-out, the version stamp, the erasure the ledger
+cannot obey, the failure path: n/a, nothing is written.
+Reachable: `/admin/design-system#charts` and `#layout`, each with a link in the
+page's section nav, and the rule and the chart list are in `03-components.md` and
+`.claude/rules/ui.md`.

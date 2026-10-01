@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useId, type ReactNode } from "react";
-import { cn } from "@/utils/cn";
+import { useId, type ReactNode } from 'react';
+import { cn } from '@/utils/cn';
 
 /**
  * An on/off setting that takes effect now.
@@ -36,12 +36,7 @@ export function Switch({
   const descriptionId = useId();
 
   return (
-    <div
-      className={cn(
-        "flex min-h-touch items-center justify-between gap-4",
-        className,
-      )}
-    >
+    <div className={cn('flex min-h-touch items-center justify-between gap-4', className)}>
       <div className="min-w-0">
         <p id={labelId} className="text-sm font-medium text-neutral-900">
           {label}
@@ -61,18 +56,16 @@ export function Switch({
         disabled={disabled}
         onClick={() => onChange(!checked)}
         className={cn(
-          "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-fast ease-standard",
-          "disabled:cursor-not-allowed disabled:opacity-50",
-          checked ? "bg-accent" : "bg-neutral-400",
+          'relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-fast ease-standard',
+          'disabled:cursor-not-allowed disabled:opacity-50',
+          checked ? 'bg-accent' : 'bg-neutral-400',
         )}
       >
         <span
           aria-hidden="true"
           className={cn(
-            "inline-block h-5 w-5 rounded-full bg-white shadow-raised transition-transform duration-fast ease-standard",
-            checked
-              ? "translate-x-[1.375rem] rtl:-translate-x-[1.375rem]"
-              : "translate-x-0.5 rtl:-translate-x-0.5",
+            'inline-block h-5 w-5 rounded-full bg-white shadow-raised transition-transform duration-fast ease-standard',
+            checked ? 'translate-x-[1.375rem] rtl:-translate-x-[1.375rem]' : 'translate-x-0.5 rtl:-translate-x-0.5',
           )}
         />
       </button>

@@ -10,9 +10,22 @@ import {
   SpaceFoundations,
   TypeFoundations,
 } from './foundations';
+import {
+  ChartRuleSpecimen,
+  ForecastSpecimen,
+  FunnelSpecimen,
+  GaugeSpecimen,
+  HeatmapSpecimen,
+  PointLineSpecimen,
+  RadarSpecimen,
+  RangeSpecimen,
+  SalesComparisonSpecimen,
+  StackedAreaSpecimen,
+} from './chart-concepts';
 import { ColumnManagerSpecimen, RegionalPerformanceSpecimen, ShareSpecimen } from './data-concepts';
 import { JourneyTiersSpecimen, RoutingCanvasSpecimen } from './flow-concepts';
 import { BentoSpecimen, SkeletonSpecimen } from './layout-loading';
+import { ScopedBentoSpecimen } from './scoped-bento';
 import { AdminPatterns } from './patterns';
 import { ComponentSpecimens } from './specimens';
 
@@ -25,6 +38,7 @@ const SECTIONS = [
   ['patterns', 'Admin patterns'],
   ['layout', 'Layout and loading'],
   ['data', 'Data and charts'],
+  ['charts', 'Chart types'],
   ['flows', 'Flows and journeys'],
 ] as const;
 
@@ -128,6 +142,12 @@ export function DesignSystemGallery() {
           >
             <SkeletonSpecimen />
           </Group>
+          <Group
+            title="Board with scoped tiles"
+            note="Every tile says who reads it and who writes it. A tile the viewer cannot read is left out and the row closes over it; one they can read but not change keeps a disabled Edit with the permission written beside it."
+          >
+            <ScopedBentoSpecimen />
+          </Group>
         </GallerySection>
 
         <GallerySection
@@ -148,6 +168,78 @@ export function DesignSystemGallery() {
             <RegionalPerformanceSpecimen />
           </Group>
           <ShareSpecimen />
+        </GallerySection>
+
+        <GallerySection
+          id="charts"
+          title="Chart types"
+          lead="Nine forms, each for one shape of data. The shape picks the form; none is chosen because it looks rich. Every chart carries its own table, empty state and keyboard path, and the figures here are illustrative."
+          columns="xl:grid-cols-2"
+        >
+          <Group
+            title="Which form for which data"
+            note="The rule the rest of this section follows. When the data does not fit a form, the form is wrong, not the data."
+            className="xl:col-span-2"
+          >
+            <ChartRuleSpecimen />
+          </Group>
+          <Group
+            title="Funnel"
+            note="Ordered stages. One hue, because the narrowing is the message; the stage that lost the most is named, not coloured."
+          >
+            <FunnelSpecimen />
+          </Group>
+          <Group
+            title="Point line"
+            note="A volatile series where each reading matters. Straight between points, and any reading above the level is a diamond."
+          >
+            <PointLineSpecimen />
+          </Group>
+          <Group
+            title="Range"
+            note="Lowest to highest as a capsule, the average as a ringed dot. A wider week is a taller capsule."
+          >
+            <RangeSpecimen />
+          </Group>
+          <Group
+            title="Projected against actual"
+            note="The existing time series with two series. A dash and a marker shape separate them without colour."
+          >
+            <ForecastSpecimen />
+          </Group>
+          <Group
+            title="Gauge"
+            note="One value against a fixed limit, then four goals as concentric arcs. A limit says Filling up and Almost full in words and icons; a goal says Goal met."
+            className="xl:col-span-2"
+          >
+            <GaugeSpecimen />
+          </Group>
+          <Group
+            title="Stacked area"
+            note="A total and its parts. The top edge is the total; turning a layer off restacks the rest and keeps their colours."
+          >
+            <StackedAreaSpecimen />
+          </Group>
+          <Group
+            title="Radar"
+            note="A profile on one scale. Shape shows which axis is weak; Compare is the same data as bars, for reading values."
+          >
+            <RadarSpecimen />
+          </Group>
+          <Group
+            title="Calendar heatmap"
+            note="Activity per day in five steps of one hue. Arrow keys move by day and week; the line under it names the day."
+            className="xl:col-span-2"
+          >
+            <HeatmapSpecimen />
+          </Group>
+          <Group
+            title="Sales by office"
+            note="The same measure for four offices. Side by side shares one scale across every panel; Overlaid answers where the lines cross."
+            className="xl:col-span-2"
+          >
+            <SalesComparisonSpecimen />
+          </Group>
         </GallerySection>
 
         <GallerySection

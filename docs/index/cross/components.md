@@ -3,7 +3,7 @@
 
 # Components
 
-All **129** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **141** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 256 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 266 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 6 |  |
 
 ### `apps/pos/src/components` (2)
@@ -55,8 +55,8 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | client | 1 |  |
 | `entity-attribute-editor.tsx` | `EntityAttributeEditor` | client | 1 |  |
 | `fragment-mount-point.tsx` | `FragmentMountPoint` | client | 1 |  |
-| `funnel-chart.tsx` | `FunnelStage` `FunnelChart` | client | 1 |  |
-| `gauge-chart.tsx` | `GaugeChart` | client | 2 |  |
+| `funnel-chart.tsx` | `FunnelStage` `FunnelChart` | client | 2 |  |
+| `gauge-chart.tsx` | `GaugeChart` | client | 3 |  |
 | `image-manager.tsx` | `ImageManager` `StagedImage` `ImageStager` `StagedImageUploadResult` `uploadStagedImages` | client | 1 |  |
 | `metadata-driven-entity-form.tsx` | `MetadataDrivenEntityForm` | client | 1 |  |
 | `metadata-driven-form.tsx` | `MetadataFieldValue` `MetadataDrivenForm` | client | 1 |  |
@@ -96,18 +96,28 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `cost-breakdown.tsx` | `CostBreakdown` | client | 1 |  |
 | `recipe-editor.tsx` | `RecipeEditor` | client | 2 |  |
 
-### `apps/web/src/components/admin/charts` (9)
+### `apps/web/src/components/admin/charts` (19)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
+| `calendar-heatmap.tsx` | `CalendarHeatmap` | client | 1 |  |
 | `category-bar-chart.tsx` | `CategoryBarItem` `CategoryBarChart` | client | 1 |  |
-| `chart-data-table.tsx` | `ChartDataTable` | server | 7 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
-| `chart-marker.tsx` | `ChartMarker` | server | 1 |  |
-| `chart-tooltip.tsx` | `ChartTooltip` | server | 1 |  |
+| `chart-data-table.tsx` | `ChartDataTable` | server | 15 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
+| `chart-legend.tsx` | `ChartLegendRow` | client | 2 |  |
+| `chart-marker.tsx` | `ChartMarker` | server | 2 |  |
+| `chart-series.tsx` | `SeriesDef` `useSeriesVisibility` `SeriesToggles` `ViewSwitch` | client | 4 |  |
+| `chart-tooltip.tsx` | `ChartTooltip` | server | 6 |  |
 | `comparison-chart.tsx` | `ComparisonBucketPoint` `ComparisonChart` | client | 2 |  |
+| `funnel-chart.tsx` | `FunnelChart` | client | 2 |  |
+| `gauge-chart.tsx` | `GaugeRing` `MAX_GAUGE_RINGS` `GaugeChart` | client | 3 |  |
 | `period-comparison-chart.tsx` | `PeriodComparisonPoint` `PeriodComparisonChart` | client | 1 |  |
+| `point-line-chart.tsx` | `PointLinePoint` `PointLineChart` | client | 1 |  |
+| `radar-chart.tsx` | `RadarSeries` `MIN_RADAR_AXES` `MAX_RADAR_AXES` `MAX_AXIS_NAME` `MAX_RADAR_SERIES` `RadarChart` | client | 1 |  |
+| `range-chart.tsx` | `RangePoint` `RangeChart` | client | 1 |  |
 | `share-chart.tsx` | `ShareItem` `ShareChart` | client | 1 |  |
+| `small-multiples-chart.tsx` | `SmallMultiplesSeries` `MAX_MULTIPLES` `SmallMultiplesChart` | client | 1 |  |
 | `sparkline-chart.tsx` | `SparklineChart` | client | 1 |  |
+| `stacked-area-chart.tsx` | `StackedAreaSeries` `MAX_STACKED_SERIES` `StackedAreaChart` | client | 1 |  |
 | `time-series-chart.tsx` | `TimeSeriesSeriesDef` `TimeSeriesChart` | client | 1 |  |
 
 ### `apps/web/src/components/admin/dashboard` (7)
@@ -143,16 +153,18 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/design-system` (7)
+### `apps/web/src/components/design-system` (9)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
+| `chart-concepts.tsx` | `ChartRuleSpecimen` `FunnelSpecimen` `PointLineSpecimen` `RangeSpecimen` `ForecastSpecimen` `GaugeSpecimen` `StackedAreaSpecimen` `HeatmapSpecimen` `RadarSpecimen` `SalesComparisonSpecimen` | client | 1 |  |
 | `data-concepts.tsx` | `ColumnManagerSpecimen` `RegionalPerformanceSpecimen` `ShareSpecimen` | client | 1 |  |
 | `flow-concepts.tsx` | `RoutingCanvasSpecimen` `JourneyTiersSpecimen` | client | 1 |  |
 | `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 5 |  |
 | `gallery.tsx` | `DesignSystemGallery` | client | 2 |  |
 | `layout-loading.tsx` | `BentoSpecimen` `SkeletonSpecimen` | client | 1 |  |
 | `patterns.tsx` | `AdminPatterns` | client | 1 |  |
+| `scoped-bento.tsx` | `ScopedBentoSpecimen` | client | 1 |  |
 | `specimens.tsx` | `ComponentSpecimens` | client | 1 |  |
 
 ### `apps/web/src/components/storefront` (38)
@@ -203,10 +215,10 @@ write an eighth. `components/common/wizard` is the only wizard.
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `badge.tsx` | `BadgeTone` `Badge` | server | 74 |  |
-| `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 1 |  |
+| `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 2 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
-| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 8 |  |
+| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 16 |  |
 | `dialog.tsx` | `Dialog` | client | 3 |  |
 | `disclosure.tsx` | `Disclosure` | client | 1 |  |
 | `empty-state.tsx` | `EmptyState` | server | 1 |  |

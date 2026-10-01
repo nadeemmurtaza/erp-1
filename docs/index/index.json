@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2547,
-    "lines": 402169,
+    "files": 2559,
+    "lines": 405046,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -21,8 +21,8 @@
   "areas": {
     "root": {
       "files": 213,
-      "lines": 21464,
-      "bytes": 1227009,
+      "lines": 21465,
+      "bytes": 1227376,
       "label": "repository root files"
     },
     "infra": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 450,
-      "lines": 76994,
-      "bytes": 2790268,
+      "files": 462,
+      "lines": 79646,
+      "bytes": 2896916,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 89931,
-      "bytes": 5442192,
+      "lines": 90114,
+      "bytes": 5459011,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 113,
-      "lines": 12882,
-      "bytes": 481357,
+      "lines": 12923,
+      "bytes": 482831,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -15709,7 +15709,7 @@
         "GET /organization/nodes",
         "GET /organization/policy-quarantine"
       ],
-      "uiSites": 1,
+      "uiSites": 2,
       "roles": [
         "STAFF",
         "ADMIN"
@@ -16558,7 +16558,7 @@
         "GET /managed-services/invoices",
         "GET /managed-services/usage"
       ],
-      "uiSites": 4,
+      "uiSites": 5,
       "roles": [
         "ADMIN"
       ],
@@ -57061,12 +57061,19 @@
       "file": "apps/web/src/components/admin/charts/chart-math.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 19,
+      "cases": 47,
       "describes": [
         "periodChange",
         "changeTone",
         "foldShares",
-        "sharePct"
+        "sharePct",
+        "funnelSteps",
+        "largestDropIndex",
+        "gaugeState",
+        "quantileCuts and heatLevel",
+        "buildHeatCalendar",
+        "heatMonthTotals",
+        "niceCeil"
       ]
     },
     {
@@ -57228,10 +57235,11 @@
       "file": "packages/shared/src/constants.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 8,
+      "cases": 11,
       "describes": [
         "formatMoneyIn",
-        "formatBytes"
+        "formatBytes",
+        "formatMonthShort and formatWeekdayShort"
       ]
     },
     {
@@ -57674,8 +57682,8 @@
       "path": ".claude/rules/ui.md",
       "area": "root",
       "kind": "doc",
-      "lines": 154,
-      "bytes": 7189,
+      "lines": 155,
+      "bytes": 7556,
       "doc": "",
       "symbols": []
     },
@@ -86214,6 +86222,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/charts/calendar-heatmap.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 223,
+      "bytes": 9531,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CalendarHeatmap",
+          "kind": "function",
+          "line": 46
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/charts/category-bar-chart.tsx",
       "area": "web",
       "kind": "component",
@@ -86249,6 +86272,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/charts/chart-legend.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 49,
+      "bytes": 1523,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ChartLegendRow",
+          "kind": "function",
+          "line": 13
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/charts/chart-marker.tsx",
       "area": "web",
       "kind": "component",
@@ -86267,8 +86305,8 @@
       "path": "apps/web/src/components/admin/charts/chart-math.spec.ts",
       "area": "web",
       "kind": "unit test",
-      "lines": 118,
-      "bytes": 3578,
+      "lines": 338,
+      "bytes": 11282,
       "doc": "",
       "symbols": []
     },
@@ -86276,8 +86314,8 @@
       "path": "apps/web/src/components/admin/charts/chart-math.ts",
       "area": "web",
       "kind": "component",
-      "lines": 80,
-      "bytes": 2698,
+      "lines": 319,
+      "bytes": 11788,
       "doc": "",
       "symbols": [
         {
@@ -86298,32 +86336,147 @@
         {
           "name": "changeTone",
           "kind": "function",
-          "line": 38
+          "line": 36
         },
         {
           "name": "Share",
           "kind": "interface",
-          "line": 43
+          "line": 41
         },
         {
           "name": "OTHER_LABEL",
           "kind": "const",
-          "line": 48
+          "line": 46
         },
         {
           "name": "MAX_NAMED_SLICES",
           "kind": "const",
-          "line": 54
+          "line": 52
         },
         {
           "name": "foldShares",
           "kind": "function",
-          "line": 61
+          "line": 59
         },
         {
           "name": "sharePct",
           "kind": "function",
-          "line": 77
+          "line": 68
+        },
+        {
+          "name": "FunnelStage",
+          "kind": "interface",
+          "line": 74
+        },
+        {
+          "name": "FunnelStep",
+          "kind": "interface",
+          "line": 79
+        },
+        {
+          "name": "funnelSteps",
+          "kind": "function",
+          "line": 96
+        },
+        {
+          "name": "largestDropIndex",
+          "kind": "function",
+          "line": 112
+        },
+        {
+          "name": "GaugeKind",
+          "kind": "type",
+          "line": 126
+        },
+        {
+          "name": "GaugeStatus",
+          "kind": "type",
+          "line": 127
+        },
+        {
+          "name": "GaugeState",
+          "kind": "interface",
+          "line": 129
+        },
+        {
+          "name": "gaugeState",
+          "kind": "function",
+          "line": 144
+        },
+        {
+          "name": "HeatDay",
+          "kind": "interface",
+          "line": 167
+        },
+        {
+          "name": "HeatCell",
+          "kind": "interface",
+          "line": 173
+        },
+        {
+          "name": "HeatCalendar",
+          "kind": "interface",
+          "line": 180
+        },
+        {
+          "name": "quantileCuts",
+          "kind": "function",
+          "line": 213
+        },
+        {
+          "name": "heatLevel",
+          "kind": "function",
+          "line": 220
+        },
+        {
+          "name": "buildHeatCalendar",
+          "kind": "function",
+          "line": 234
+        },
+        {
+          "name": "HeatMonth",
+          "kind": "interface",
+          "line": 273
+        },
+        {
+          "name": "heatMonthTotals",
+          "kind": "function",
+          "line": 286
+        },
+        {
+          "name": "niceCeil",
+          "kind": "function",
+          "line": 312
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/chart-series.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 124,
+      "bytes": 3641,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SeriesDef",
+          "kind": "interface",
+          "line": 6
+        },
+        {
+          "name": "useSeriesVisibility",
+          "kind": "function",
+          "line": 17
+        },
+        {
+          "name": "SeriesToggles",
+          "kind": "function",
+          "line": 36
+        },
+        {
+          "name": "ViewSwitch",
+          "kind": "function",
+          "line": 89
         }
       ]
     },
@@ -86331,8 +86484,8 @@
       "path": "apps/web/src/components/admin/charts/chart-theme.ts",
       "area": "web",
       "kind": "component",
-      "lines": 96,
-      "bytes": 3988,
+      "lines": 104,
+      "bytes": 4445,
       "doc": "",
       "symbols": [
         {
@@ -86381,49 +86534,54 @@
           "line": 31
         },
         {
-          "name": "CONTEXT",
+          "name": "WARNING",
           "kind": "const",
           "line": 39
         },
         {
+          "name": "CONTEXT",
+          "kind": "const",
+          "line": 47
+        },
+        {
           "name": "HOVER_WASH",
           "kind": "const",
-          "line": 41
+          "line": 49
         },
         {
           "name": "DASH_PATTERNS",
           "kind": "const",
-          "line": 50
+          "line": 58
         },
         {
           "name": "MARKER_SHAPES",
           "kind": "const",
-          "line": 60
+          "line": 68
         },
         {
           "name": "paletteColor",
           "kind": "function",
-          "line": 69
+          "line": 77
         },
         {
           "name": "dashFor",
           "kind": "function",
-          "line": 73
+          "line": 81
         },
         {
           "name": "markerFor",
           "kind": "function",
-          "line": 77
+          "line": 85
         },
         {
           "name": "compactRupees",
           "kind": "function",
-          "line": 86
+          "line": 94
         },
         {
           "name": "compactMoney",
           "kind": "function",
-          "line": 93
+          "line": 101
         }
       ]
     },
@@ -86431,8 +86589,8 @@
       "path": "apps/web/src/components/admin/charts/chart-tooltip.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 66,
-      "bytes": 1921,
+      "lines": 52,
+      "bytes": 1731,
       "doc": "",
       "symbols": [
         {
@@ -86463,11 +86621,51 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/charts/funnel-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 151,
+      "bytes": 6226,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FunnelChart",
+          "kind": "function",
+          "line": 33
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/gauge-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 264,
+      "bytes": 10512,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "GaugeRing",
+          "kind": "interface",
+          "line": 13
+        },
+        {
+          "name": "MAX_GAUGE_RINGS",
+          "kind": "const",
+          "line": 25
+        },
+        {
+          "name": "GaugeChart",
+          "kind": "function",
+          "line": 80
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/charts/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 32,
-      "bytes": 990,
+      "lines": 41,
+      "bytes": 1547,
       "doc": "The whole charting vocabulary for the back office (10-admin-dashboard.md D9).",
       "symbols": []
     },
@@ -86475,19 +86673,99 @@
       "path": "apps/web/src/components/admin/charts/period-comparison-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 267,
-      "bytes": 8446,
+      "lines": 190,
+      "bytes": 6817,
       "doc": "",
       "symbols": [
         {
           "name": "PeriodComparisonPoint",
           "kind": "interface",
-          "line": 31
+          "line": 14
         },
         {
           "name": "PeriodComparisonChart",
           "kind": "function",
-          "line": 58
+          "line": 41
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/point-line-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 144,
+      "bytes": 5626,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PointLinePoint",
+          "kind": "interface",
+          "line": 12
+        },
+        {
+          "name": "PointLineChart",
+          "kind": "function",
+          "line": 34
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/radar-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 218,
+      "bytes": 7874,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RadarSeries",
+          "kind": "type",
+          "line": 27
+        },
+        {
+          "name": "MIN_RADAR_AXES",
+          "kind": "const",
+          "line": 30
+        },
+        {
+          "name": "MAX_RADAR_AXES",
+          "kind": "const",
+          "line": 31
+        },
+        {
+          "name": "MAX_AXIS_NAME",
+          "kind": "const",
+          "line": 37
+        },
+        {
+          "name": "MAX_RADAR_SERIES",
+          "kind": "const",
+          "line": 39
+        },
+        {
+          "name": "RadarChart",
+          "kind": "function",
+          "line": 61
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/range-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 152,
+      "bytes": 5726,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "RangePoint",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "RangeChart",
+          "kind": "function",
+          "line": 31
         }
       ]
     },
@@ -86495,19 +86773,44 @@
       "path": "apps/web/src/components/admin/charts/share-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 153,
-      "bytes": 6746,
+      "lines": 145,
+      "bytes": 6020,
       "doc": "",
       "symbols": [
         {
           "name": "ShareItem",
           "kind": "type",
-          "line": 13
+          "line": 14
         },
         {
           "name": "ShareChart",
           "kind": "function",
-          "line": 38
+          "line": 39
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/small-multiples-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 220,
+      "bytes": 9226,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SmallMultiplesSeries",
+          "kind": "type",
+          "line": 14
+        },
+        {
+          "name": "MAX_MULTIPLES",
+          "kind": "const",
+          "line": 17
+        },
+        {
+          "name": "SmallMultiplesChart",
+          "kind": "function",
+          "line": 42
         }
       ]
     },
@@ -86523,6 +86826,31 @@
           "name": "SparklineChart",
           "kind": "function",
           "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/stacked-area-chart.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 143,
+      "bytes": 6059,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "StackedAreaSeries",
+          "kind": "type",
+          "line": 12
+        },
+        {
+          "name": "MAX_STACKED_SERIES",
+          "kind": "const",
+          "line": 15
+        },
+        {
+          "name": "StackedAreaChart",
+          "kind": "function",
+          "line": 35
         }
       ]
     },
@@ -87307,27 +87635,87 @@
       ]
     },
     {
+      "path": "apps/web/src/components/design-system/chart-concepts.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 387,
+      "bytes": 12672,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ChartRuleSpecimen",
+          "kind": "function",
+          "line": 88
+        },
+        {
+          "name": "FunnelSpecimen",
+          "kind": "function",
+          "line": 113
+        },
+        {
+          "name": "PointLineSpecimen",
+          "kind": "function",
+          "line": 128
+        },
+        {
+          "name": "RangeSpecimen",
+          "kind": "function",
+          "line": 153
+        },
+        {
+          "name": "ForecastSpecimen",
+          "kind": "function",
+          "line": 183
+        },
+        {
+          "name": "GaugeSpecimen",
+          "kind": "function",
+          "line": 202
+        },
+        {
+          "name": "StackedAreaSpecimen",
+          "kind": "function",
+          "line": 272
+        },
+        {
+          "name": "HeatmapSpecimen",
+          "kind": "function",
+          "line": 311
+        },
+        {
+          "name": "RadarSpecimen",
+          "kind": "function",
+          "line": 330
+        },
+        {
+          "name": "SalesComparisonSpecimen",
+          "kind": "function",
+          "line": 374
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/design-system/data-concepts.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 537,
-      "bytes": 15458,
+      "lines": 501,
+      "bytes": 15204,
       "doc": "",
       "symbols": [
         {
           "name": "ColumnManagerSpecimen",
           "kind": "function",
-          "line": 275
+          "line": 255
         },
         {
           "name": "RegionalPerformanceSpecimen",
           "kind": "function",
-          "line": 459
+          "line": 426
         },
         {
           "name": "ShareSpecimen",
           "kind": "function",
-          "line": 515
+          "line": 482
         }
       ]
     },
@@ -87335,19 +87723,19 @@
       "path": "apps/web/src/components/design-system/flow-concepts.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 681,
-      "bytes": 21406,
+      "lines": 583,
+      "bytes": 20428,
       "doc": "",
       "symbols": [
         {
           "name": "RoutingCanvasSpecimen",
           "kind": "function",
-          "line": 130
+          "line": 106
         },
         {
           "name": "JourneyTiersSpecimen",
           "kind": "function",
-          "line": 474
+          "line": 418
         }
       ]
     },
@@ -87400,14 +87788,14 @@
       "path": "apps/web/src/components/design-system/gallery.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 175,
-      "bytes": 6824,
+      "lines": 267,
+      "bytes": 10506,
       "doc": "",
       "symbols": [
         {
           "name": "DesignSystemGallery",
           "kind": "function",
-          "line": 39
+          "line": 53
         }
       ]
     },
@@ -87415,19 +87803,19 @@
       "path": "apps/web/src/components/design-system/layout-loading.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 399,
-      "bytes": 13863,
+      "lines": 358,
+      "bytes": 13408,
       "doc": "",
       "symbols": [
         {
           "name": "BentoSpecimen",
           "kind": "function",
-          "line": 73
+          "line": 71
         },
         {
           "name": "SkeletonSpecimen",
           "kind": "function",
-          "line": 220
+          "line": 197
         }
       ]
     },
@@ -87458,6 +87846,21 @@
           "name": "AdminPatterns",
           "kind": "function",
           "line": 68
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/scoped-bento.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 332,
+      "bytes": 11079,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ScopedBentoSpecimen",
+          "kind": "function",
+          "line": 238
         }
       ]
     },
@@ -88105,8 +88508,8 @@
       "path": "apps/web/src/components/ui/bento.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 102,
-      "bytes": 2978,
+      "lines": 83,
+      "bytes": 2848,
       "doc": "",
       "symbols": [
         {
@@ -88117,17 +88520,17 @@
         {
           "name": "BentoSize",
           "kind": "type",
-          "line": 37
+          "line": 31
         },
         {
           "name": "BentoTone",
           "kind": "type",
-          "line": 38
+          "line": 32
         },
         {
           "name": "BentoTile",
           "kind": "function",
-          "line": 62
+          "line": 56
         }
       ]
     },
@@ -88404,8 +88807,8 @@
       "path": "apps/web/src/components/ui/skeleton.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 83,
-      "bytes": 2228,
+      "lines": 60,
+      "bytes": 2117,
       "doc": "",
       "symbols": [
         {
@@ -88421,12 +88824,12 @@
         {
           "name": "SkeletonText",
           "kind": "function",
-          "line": 44
+          "line": 33
         },
         {
           "name": "SkeletonRegion",
           "kind": "function",
-          "line": 67
+          "line": 44
         }
       ]
     },
@@ -88434,8 +88837,8 @@
       "path": "apps/web/src/components/ui/switch.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 82,
-      "bytes": 2532,
+      "lines": 75,
+      "bytes": 2468,
       "doc": "",
       "symbols": [
         {
@@ -90838,8 +91241,8 @@
       "path": "docs/design/components-states/03-components.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 137,
-      "bytes": 8687,
+      "lines": 139,
+      "bytes": 9895,
       "doc": "",
       "symbols": []
     },
@@ -92746,8 +93149,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 10077,
-      "bytes": 596963,
+      "lines": 10258,
+      "bytes": 612574,
       "doc": "",
       "symbols": []
     },
@@ -95745,8 +96148,8 @@
       "path": "packages/shared/src/constants.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 42,
-      "bytes": 1457,
+      "lines": 61,
+      "bytes": 2141,
       "doc": "",
       "symbols": []
     },
@@ -95754,8 +96157,8 @@
       "path": "packages/shared/src/constants.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 199,
-      "bytes": 7771,
+      "lines": 221,
+      "bytes": 8561,
       "doc": "",
       "symbols": [
         {
@@ -95839,29 +96242,39 @@
           "line": 109
         },
         {
-          "name": "formatNumber",
+          "name": "formatMonthShort",
           "kind": "function",
-          "line": 132
+          "line": 128
         },
         {
-          "name": "formatMoney",
+          "name": "formatWeekdayShort",
           "kind": "function",
           "line": 137
         },
         {
+          "name": "formatNumber",
+          "kind": "function",
+          "line": 154
+        },
+        {
+          "name": "formatMoney",
+          "kind": "function",
+          "line": 159
+        },
+        {
           "name": "formatMoneyIn",
           "kind": "function",
-          "line": 160
+          "line": 182
         },
         {
           "name": "formatBytes",
           "kind": "function",
-          "line": 177
+          "line": 199
         },
         {
           "name": "IMPORT_ROW_CAP",
           "kind": "const",
-          "line": 198
+          "line": 220
         }
       ]
     },

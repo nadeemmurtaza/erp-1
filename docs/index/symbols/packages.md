@@ -170,11 +170,13 @@ Every top-level export in `packages`, with the line to open.
 | `constants.ts` | `formatDate` | function | :79 | e.g. |
 | `constants.ts` | `formatDateTime` | function | :91 | e.g. |
 | `constants.ts` | `formatDateShort` | function | :109 | A chart axis tick — "7 Sept". |
-| `constants.ts` | `formatNumber` | function | :132 | A plain count, grouped for the locale — 6017 -> "6,017". |
-| `constants.ts` | `formatMoney` | function | :137 | Formats integer paisa as a display string, e.g. |
-| `constants.ts` | `formatMoneyIn` | function | :160 | Formats a minor-unit amount in an EXPLICITLY given currency, e.g. |
-| `constants.ts` | `formatBytes` | function | :177 | A byte count as a human-readable size, e.g. |
-| `constants.ts` | `IMPORT_ROW_CAP` | const | :198 | The row cap every CSV importer enforces (admin-platform/72-fragmented-tool-consolidation-import.md… |
+| `constants.ts` | `formatMonthShort` | function | :128 | A month's short name on its own — "Sept". |
+| `constants.ts` | `formatWeekdayShort` | function | :137 | A weekday's short name on its own — "Mon", for the row labels of a calendar heatmap. |
+| `constants.ts` | `formatNumber` | function | :154 | A plain count, grouped for the locale — 6017 -> "6,017". |
+| `constants.ts` | `formatMoney` | function | :159 | Formats integer paisa as a display string, e.g. |
+| `constants.ts` | `formatMoneyIn` | function | :182 | Formats a minor-unit amount in an EXPLICITLY given currency, e.g. |
+| `constants.ts` | `formatBytes` | function | :199 | A byte count as a human-readable size, e.g. |
+| `constants.ts` | `IMPORT_ROW_CAP` | const | :220 | The row cap every CSV importer enforces (admin-platform/72-fragmented-tool-consolidation-import.md… |
 | `content-blocks.ts` | `ContentBlock` | type | :10 | The block-based body shared by `Page` and `BlogPost` (WO-8.1). |
 | `content-blocks.ts` | `CONTENT_BLOCK_TYPES` | const | :18 |  |
 | `content-blocks.ts` | `ContentBlockType` | type | :27 |  |

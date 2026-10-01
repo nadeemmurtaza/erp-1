@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { cn } from "@/utils/cn";
+import type { ReactNode } from 'react';
+import { cn } from '@/utils/cn';
 
 /**
  * Loading placeholders shaped like what is about to arrive.
@@ -17,47 +17,24 @@ import { cn } from "@/utils/cn";
  *   it never swaps to a skeleton.
  */
 const SHAPES = {
-  line: "h-3 rounded",
-  block: "h-24 rounded-md",
-  circle: "h-10 w-10 rounded-full",
-  pill: "h-8 w-24 rounded-full",
+  line: 'h-3 rounded',
+  block: 'h-24 rounded-md',
+  circle: 'h-10 w-10 rounded-full',
+  pill: 'h-8 w-24 rounded-full',
 } as const;
 
 export type SkeletonShape = keyof typeof SHAPES;
 
-export function Skeleton({
-  shape = "line",
-  className,
-}: {
-  shape?: SkeletonShape;
-  className?: string;
-}) {
-  return (
-    <div
-      aria-hidden="true"
-      className={cn("skeleton", SHAPES[shape], className)}
-    />
-  );
+export function Skeleton({ shape = 'line', className }: { shape?: SkeletonShape; className?: string }) {
+  return <div aria-hidden="true" className={cn('skeleton', SHAPES[shape], className)} />;
 }
 
 /** `lines` rows of text; the last is shorter, the way a paragraph ends. */
-export function SkeletonText({
-  lines = 3,
-  className,
-}: {
-  lines?: number;
-  className?: string;
-}) {
+export function SkeletonText({ lines = 3, className }: { lines?: number; className?: string }) {
   return (
-    <div className={cn("grid gap-2", className)} aria-hidden="true">
+    <div className={cn('grid gap-2', className)} aria-hidden="true">
       {Array.from({ length: lines }, (_, i) => (
-        <div
-          key={i}
-          className={cn(
-            "skeleton h-3 rounded",
-            i === lines - 1 && lines > 1 ? "w-3/5" : "w-full",
-          )}
-        />
+        <div key={i} className={cn('skeleton h-3 rounded', i === lines - 1 && lines > 1 ? 'w-3/5' : 'w-full')} />
       ))}
     </div>
   );
@@ -65,7 +42,7 @@ export function SkeletonText({
 
 /** Wraps a skeleton composition: one polite announcement, the boxes hidden from assistive tech. */
 export function SkeletonRegion({
-  label = "Loading…",
+  label = 'Loading…',
   className,
   children,
 }: {

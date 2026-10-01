@@ -1,25 +1,10 @@
-"use client";
+'use client';
 
-import {
-  useId,
-  useRef,
-  useState,
-  type KeyboardEvent,
-  type ReactNode,
-} from "react";
-import {
-  Check,
-  ChevronDown,
-  GitBranch,
-  Minus,
-  Play,
-  UserCheck,
-  X,
-  type LucideIcon,
-} from "lucide-react";
-import { formatMoney, toMinor } from "@newax/shared";
-import { Badge, Button, EmptyState, Tabs } from "@/components/ui";
-import { cn } from "@/utils/cn";
+import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { Check, ChevronDown, GitBranch, Minus, Play, UserCheck, X, type LucideIcon } from 'lucide-react';
+import { formatMoney, toMinor } from '@newax/shared';
+import { Badge, Button, EmptyState, Tabs } from '@/components/ui';
+import { cn } from '@/utils/cn';
 
 /**
  * The two flow concepts from the images: an approval-routing canvas and the
@@ -34,8 +19,8 @@ import { cn } from "@/utils/cn";
 
 /* ── routing canvas ───────────────────────────────────────────────────── */
 
-type NodeKey = "start" | "check" | "high" | "low" | "done";
-type Route = "high" | "low";
+type NodeKey = 'start' | 'check' | 'high' | 'low' | 'done';
+type Route = 'high' | 'low';
 
 /**
  * The amount (in whole currency units) at or above which a second approver is
@@ -58,66 +43,57 @@ const NODES: Record<
   }
 > = {
   start: {
-    step: "1",
-    title: "Purchase order submitted",
-    kind: "Trigger",
+    step: '1',
+    title: 'Purchase order submitted',
+    kind: 'Trigger',
     Icon: Play,
     rows: [
-      ["Starts when", "A buyer submits a purchase order for approval"],
-      ["Carries", "Supplier, lines, total and the branch it is for"],
+      ['Starts when', 'A buyer submits a purchase order for approval'],
+      ['Carries', 'Supplier, lines, total and the branch it is for'],
     ],
   },
   check: {
-    step: "2",
-    title: "Amount at or above the threshold?",
-    kind: "Condition",
+    step: '2',
+    title: 'Amount at or above the threshold?',
+    kind: 'Condition',
     Icon: GitBranch,
     rows: [
-      ["Compares", "The order total with the approval threshold"],
-      ["Threshold", formatMoney(toMinor(THRESHOLD))],
-      ["True", "Goes to the finance director"],
-      ["False", "Goes to the branch manager"],
+      ['Compares', 'The order total with the approval threshold'],
+      ['Threshold', formatMoney(toMinor(THRESHOLD))],
+      ['True', 'Goes to the finance director'],
+      ['False', 'Goes to the branch manager'],
     ],
   },
   high: {
-    step: "3a",
-    title: "Finance director approves",
-    kind: "Approval",
+    step: '3a',
+    title: 'Finance director approves',
+    kind: 'Approval',
     Icon: UserCheck,
     rows: [
-      [
-        "Who",
-        "Anyone holding the purchasing approval permission at brand scope",
-      ],
-      ["Quorum", "1 approver, never the buyer who submitted it"],
-      ["If nobody acts", "Escalates to the managing director after 24 hours"],
+      ['Who', 'Anyone holding the purchasing approval permission at brand scope'],
+      ['Quorum', '1 approver, never the buyer who submitted it'],
+      ['If nobody acts', 'Escalates to the managing director after 24 hours'],
     ],
   },
   low: {
-    step: "3b",
-    title: "Branch manager approves",
-    kind: "Approval",
+    step: '3b',
+    title: 'Branch manager approves',
+    kind: 'Approval',
     Icon: UserCheck,
     rows: [
-      [
-        "Who",
-        "Anyone holding the purchasing approval permission at the order’s branch",
-      ],
-      ["Quorum", "1 approver, never the buyer who submitted it"],
-      ["If nobody acts", "Escalates to the finance director after 24 hours"],
+      ['Who', 'Anyone holding the purchasing approval permission at the order’s branch'],
+      ['Quorum', '1 approver, never the buyer who submitted it'],
+      ['If nobody acts', 'Escalates to the finance director after 24 hours'],
     ],
   },
   done: {
-    step: "4",
-    title: "Approved",
-    kind: "End",
+    step: '4',
+    title: 'Approved',
+    kind: 'End',
     Icon: Check,
     rows: [
-      ["Then", "The buyer is told and the commitment is recorded"],
-      [
-        "Undo",
-        "A cancelled order reverses the commitment with its own document",
-      ],
+      ['Then', 'The buyer is told and the commitment is recorded'],
+      ['Undo', 'A cancelled order reverses the commitment with its own document'],
     ],
   },
 };
@@ -129,28 +105,25 @@ interface LogEntry {
 
 export function RoutingCanvasSpecimen() {
   const [amount, setAmount] = useState(620_000);
-  const [selected, setSelected] = useState<NodeKey>("check");
+  const [selected, setSelected] = useState<NodeKey>('check');
   const [route, setRoute] = useState<Route | null>(null);
   const [log, setLog] = useState<LogEntry[]>([]);
-  const [announce, setAnnounce] = useState("");
+  const [announce, setAnnounce] = useState('');
   const sliderId = useId();
 
   const run = () => {
-    const next: Route = amount >= THRESHOLD ? "high" : "low";
-    const who = next === "high" ? "the finance director" : "the branch manager";
+    const next: Route = amount >= THRESHOLD ? 'high' : 'low';
+    const who = next === 'high' ? 'the finance director' : 'the branch manager';
     const money = formatMoney(toMinor(amount));
     const limit = formatMoney(toMinor(THRESHOLD));
-    const text = `${money} is ${next === "high" ? "at or above" : "below"} ${limit}: routed to ${who}.`;
+    const text = `${money} is ${next === 'high' ? 'at or above' : 'below'} ${limit}: routed to ${who}.`;
     setRoute(next);
     setAnnounce(text);
-    setLog((prev) =>
-      [{ id: (prev[0]?.id ?? 0) + 1, text }, ...prev].slice(0, 5),
-    );
+    setLog((prev) => [{ id: (prev[0]?.id ?? 0) + 1, text }, ...prev].slice(0, 5));
   };
 
   const onPath = (key: NodeKey) =>
-    route != null &&
-    (key === "start" || key === "check" || key === "done" || key === route);
+    route != null && (key === 'start' || key === 'check' || key === 'done' || key === route);
 
   const node = (key: NodeKey) => {
     const { step, title, kind, Icon } = NODES[key];
@@ -160,10 +133,8 @@ export function RoutingCanvasSpecimen() {
         aria-pressed={selected === key}
         onClick={() => setSelected(key)}
         className={cn(
-          "flex w-full min-w-0 flex-col gap-2 rounded-lg p-4 text-start transition-colors duration-fast ease-standard",
-          selected === key
-            ? "bg-accent/10"
-            : "bg-neutral-50 hover:bg-neutral-100",
+          'flex w-full min-w-0 flex-col gap-2 rounded-lg p-4 text-start transition-colors duration-fast ease-standard',
+          selected === key ? 'bg-accent/10' : 'bg-neutral-50 hover:bg-neutral-100',
         )}
       >
         <span className="flex items-center justify-between gap-2">
@@ -187,9 +158,9 @@ export function RoutingCanvasSpecimen() {
     <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,1fr)_theme(spacing.96)]">
       <div className="card min-w-0 p-5">
         <div className="mx-auto grid max-w-xl gap-0">
-          {node("start")}
-          <Stem active={onPath("check")} />
-          {node("check")}
+          {node('start')}
+          <Stem active={onPath('check')} />
+          {node('check')}
 
           <Stem active={route != null} short />
           <Bracket active={route != null} />
@@ -198,32 +169,27 @@ export function RoutingCanvasSpecimen() {
               <Badge tone="neutral" className="justify-self-center">
                 True
               </Badge>
-              {node("high")}
+              {node('high')}
             </div>
             <div className="grid content-start gap-2">
               <Badge tone="neutral" className="justify-self-center">
                 False
               </Badge>
-              {node("low")}
+              {node('low')}
             </div>
           </div>
           <Bracket active={route != null} flip />
           <Stem active={route != null} short />
-          {node("done")}
+          {node('done')}
         </div>
       </div>
 
       <div className="grid min-w-0 content-start gap-6">
         <div className="card p-5">
           <h4 className="eyebrow">Test the route</h4>
-          <label
-            htmlFor={sliderId}
-            className="field-label mt-3 flex items-baseline justify-between gap-3"
-          >
+          <label htmlFor={sliderId} className="field-label mt-3 flex items-baseline justify-between gap-3">
             <span>Order total</span>
-            <span className="tabular-nums text-neutral-900">
-              {formatMoney(toMinor(amount))}
-            </span>
+            <span className="tabular-nums text-neutral-900">{formatMoney(toMinor(amount))}</span>
           </label>
           <div className="flex min-h-touch items-center">
             <input
@@ -254,20 +220,16 @@ export function RoutingCanvasSpecimen() {
             label="Route details"
             items={[
               {
-                key: "inspector",
-                label: "Node inspector",
+                key: 'inspector',
+                label: 'Node inspector',
                 content: (
                   <div>
-                    <p className="text-sm font-medium">
-                      {NODES[selected].title}
-                    </p>
+                    <p className="text-sm font-medium">{NODES[selected].title}</p>
                     <dl className="mt-3 grid gap-3 text-sm">
                       {NODES[selected].rows.map(([term, value]) => (
                         <div key={term}>
                           <dt className="eyebrow">{term}</dt>
-                          <dd className="mt-0.5 text-neutral-900/80">
-                            {value}
-                          </dd>
+                          <dd className="mt-0.5 text-neutral-900/80">{value}</dd>
                         </div>
                       ))}
                     </dl>
@@ -275,8 +237,8 @@ export function RoutingCanvasSpecimen() {
                 ),
               },
               {
-                key: "log",
-                label: "Execution log",
+                key: 'log',
+                label: 'Execution log',
                 badge: log.length > 0 ? log.length : undefined,
                 content:
                   log.length === 0 ? (
@@ -289,9 +251,7 @@ export function RoutingCanvasSpecimen() {
                     <ol className="grid gap-2 text-sm">
                       {log.map((entry) => (
                         <li key={entry.id} className="flex gap-2">
-                          <span className="shrink-0 tabular-nums text-neutral-900/60">
-                            #{entry.id}
-                          </span>
+                          <span className="shrink-0 tabular-nums text-neutral-900/60">#{entry.id}</span>
                           <span>{entry.text}</span>
                         </li>
                       ))}
@@ -309,14 +269,8 @@ export function RoutingCanvasSpecimen() {
 /** The line and arrowhead between two nodes. */
 function Stem({ active, short = false }: { active: boolean; short?: boolean }) {
   return (
-    <div
-      aria-hidden="true"
-      className={cn(
-        "flex flex-col items-center",
-        active ? "text-accent" : "text-neutral-400",
-      )}
-    >
-      <span className={cn("w-0.5 bg-current", short ? "h-3" : "h-5")} />
+    <div aria-hidden="true" className={cn('flex flex-col items-center', active ? 'text-accent' : 'text-neutral-400')}>
+      <span className={cn('w-0.5 bg-current', short ? 'h-3' : 'h-5')} />
       <ChevronDown className="-mt-1 h-4 w-4" />
     </div>
   );
@@ -326,22 +280,14 @@ function Stem({ active, short = false }: { active: boolean; short?: boolean }) {
  * The fork (or its mirror, the join): a bracket from the middle of the left
  * column to the middle of the right one, so each leg lands on the node under it.
  */
-function Bracket({
-  active,
-  flip = false,
-}: {
-  active: boolean;
-  flip?: boolean;
-}) {
+function Bracket({ active, flip = false }: { active: boolean; flip?: boolean }) {
   return (
     <div aria-hidden="true" className="relative h-4">
       <span
         className={cn(
-          "absolute inset-x-1/4 h-4 border-2",
-          flip
-            ? "bottom-0 rounded-b-lg border-t-0"
-            : "top-0 rounded-t-lg border-b-0",
-          active ? "border-accent" : "border-neutral-400",
+          'absolute inset-x-1/4 h-4 border-2',
+          flip ? 'bottom-0 rounded-b-lg border-t-0' : 'top-0 rounded-t-lg border-b-0',
+          active ? 'border-accent' : 'border-neutral-400',
         )}
       />
     </div>
@@ -350,23 +296,22 @@ function Bracket({
 
 /* ── journey tiers ────────────────────────────────────────────────────── */
 
-type Presence = "full" | "compact" | "absent";
-type LayerKey =
-  "global" | "area" | "destination" | "view" | "breadcrumb" | "record";
+type Presence = 'full' | 'compact' | 'absent';
+type LayerKey = 'global' | 'area' | 'destination' | 'view' | 'breadcrumb' | 'record';
 
 const LAYERS: { key: LayerKey; label: string }[] = [
-  { key: "global", label: "Global bar" },
-  { key: "area", label: "Area rail" },
-  { key: "destination", label: "Destination list" },
-  { key: "view", label: "View tabs" },
-  { key: "breadcrumb", label: "Breadcrumb" },
-  { key: "record", label: "Record tabs" },
+  { key: 'global', label: 'Global bar' },
+  { key: 'area', label: 'Area rail' },
+  { key: 'destination', label: 'Destination list' },
+  { key: 'view', label: 'View tabs' },
+  { key: 'breadcrumb', label: 'Breadcrumb' },
+  { key: 'record', label: 'Record tabs' },
 ];
 
 const PRESENCE: Record<Presence, { label: string; Icon: LucideIcon }> = {
-  full: { label: "Present", Icon: Check },
-  compact: { label: "Compact", Icon: Minus },
-  absent: { label: "Hidden", Icon: X },
+  full: { label: 'Present', Icon: Check },
+  compact: { label: 'Compact', Icon: Minus },
+  absent: { label: 'Hidden', Icon: X },
 };
 
 /**
@@ -386,84 +331,83 @@ const TIERS: {
   chrome: Record<LayerKey, Presence>;
 }[] = [
   {
-    key: "global",
-    name: "Global",
-    asks: "Where can I go from anywhere?",
-    example: "Search · Scope · Account · Help",
-    ignore: "Every area and every record: nothing has been chosen yet.",
+    key: 'global',
+    name: 'Global',
+    asks: 'Where can I go from anywhere?',
+    example: 'Search · Scope · Account · Help',
+    ignore: 'Every area and every record: nothing has been chosen yet.',
     chrome: {
-      global: "full",
-      area: "absent",
-      destination: "absent",
-      view: "absent",
-      breadcrumb: "absent",
-      record: "absent",
+      global: 'full',
+      area: 'absent',
+      destination: 'absent',
+      view: 'absent',
+      breadcrumb: 'absent',
+      record: 'absent',
     },
   },
   {
-    key: "area",
-    name: "Area",
-    asks: "Which job am I doing?",
-    example: "Selling · Stock · Buying · Money · People · Setup",
-    ignore: "Every other area’s destinations.",
+    key: 'area',
+    name: 'Area',
+    asks: 'Which job am I doing?',
+    example: 'Selling · Stock · Buying · Money · People · Setup',
+    ignore: 'Every other area’s destinations.',
     chrome: {
-      global: "full",
-      area: "full",
-      destination: "absent",
-      view: "absent",
-      breadcrumb: "absent",
-      record: "absent",
+      global: 'full',
+      area: 'full',
+      destination: 'absent',
+      view: 'absent',
+      breadcrumb: 'absent',
+      record: 'absent',
     },
   },
   {
-    key: "destination",
-    name: "Destination",
-    asks: "Which thing am I working on?",
-    example: "Orders · Transfers · Suppliers",
-    ignore: "The other destinations in this area.",
+    key: 'destination',
+    name: 'Destination',
+    asks: 'Which thing am I working on?',
+    example: 'Orders · Transfers · Suppliers',
+    ignore: 'The other destinations in this area.',
     chrome: {
-      global: "full",
-      area: "full",
-      destination: "full",
-      view: "absent",
-      breadcrumb: "full",
-      record: "absent",
+      global: 'full',
+      area: 'full',
+      destination: 'full',
+      view: 'absent',
+      breadcrumb: 'full',
+      record: 'absent',
     },
   },
   {
-    key: "view",
-    name: "View",
-    asks: "Which slice of it?",
-    example: "Awaiting approval · Overdue",
-    ignore: "Rows outside the slice.",
+    key: 'view',
+    name: 'View',
+    asks: 'Which slice of it?',
+    example: 'Awaiting approval · Overdue',
+    ignore: 'Rows outside the slice.',
     chrome: {
-      global: "full",
-      area: "full",
-      destination: "full",
-      view: "full",
-      breadcrumb: "full",
-      record: "absent",
+      global: 'full',
+      area: 'full',
+      destination: 'full',
+      view: 'full',
+      breadcrumb: 'full',
+      record: 'absent',
     },
   },
   {
-    key: "object",
-    name: "Object",
-    asks: "What is true of this one record?",
-    example: "One order and its own tabs",
-    ignore:
-      "The list it came from: coming back returns to the same filter, sort and page (NAV-7).",
+    key: 'object',
+    name: 'Object',
+    asks: 'What is true of this one record?',
+    example: 'One order and its own tabs',
+    ignore: 'The list it came from: coming back returns to the same filter, sort and page (NAV-7).',
     chrome: {
-      global: "compact",
-      area: "compact",
-      destination: "absent",
-      view: "absent",
-      breadcrumb: "full",
-      record: "full",
+      global: 'compact',
+      area: 'compact',
+      destination: 'absent',
+      view: 'absent',
+      breadcrumb: 'full',
+      record: 'full',
     },
   },
 ];
 
-const FUNNEL_WIDTH = ["w-full", "w-11/12", "w-5/6", "w-3/4", "w-2/3"] as const;
+const FUNNEL_WIDTH = ['w-full', 'w-11/12', 'w-5/6', 'w-3/4', 'w-2/3'] as const;
 
 /**
  * A funnel you can operate: five bars narrowing toward the job, each a tab.
@@ -480,13 +424,13 @@ export function JourneyTiersSpecimen() {
   const onKeyDown = (event: KeyboardEvent) => {
     const last = TIERS.length - 1;
     const next =
-      event.key === "ArrowDown" || event.key === "ArrowRight"
+      event.key === 'ArrowDown' || event.key === 'ArrowRight'
         ? Math.min(index + 1, last)
-        : event.key === "ArrowUp" || event.key === "ArrowLeft"
+        : event.key === 'ArrowUp' || event.key === 'ArrowLeft'
           ? Math.max(index - 1, 0)
-          : event.key === "Home"
+          : event.key === 'Home'
             ? 0
-            : event.key === "End"
+            : event.key === 'End'
               ? last
               : null;
     if (next == null) return;
@@ -518,24 +462,15 @@ export function JourneyTiersSpecimen() {
             onKeyDown={onKeyDown}
             onClick={() => setIndex(i)}
             className={cn(
-              "flex min-h-touch flex-col items-center justify-center rounded-md px-3 py-2 text-center transition-colors duration-fast ease-standard",
+              'flex min-h-touch flex-col items-center justify-center rounded-md px-3 py-2 text-center transition-colors duration-fast ease-standard',
               FUNNEL_WIDTH[i],
-              i === index
-                ? "bg-accent text-white"
-                : "bg-neutral-100 text-neutral-900 hover:bg-neutral-50",
+              i === index ? 'bg-accent text-white' : 'bg-neutral-100 text-neutral-900 hover:bg-neutral-50',
             )}
           >
             <span className="text-sm font-semibold">
               {i + 1} · {t.name}
             </span>
-            <span
-              className={cn(
-                "text-xs",
-                i === index ? "text-white/80" : "text-neutral-900/70",
-              )}
-            >
-              {t.example}
-            </span>
+            <span className={cn('text-xs', i === index ? 'text-white/80' : 'text-neutral-900/70')}>{t.example}</span>
           </button>
         ))}
       </div>
@@ -549,9 +484,7 @@ export function JourneyTiersSpecimen() {
         <div>
           <h4 className="eyebrow">{tier.name}</h4>
           <p className="mt-1 text-lg font-semibold">{tier.asks}</p>
-          <p className="mt-1 text-sm text-neutral-900/70">
-            You can ignore: {tier.ignore}
-          </p>
+          <p className="mt-1 text-sm text-neutral-900/70">You can ignore: {tier.ignore}</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -560,16 +493,9 @@ export function JourneyTiersSpecimen() {
             {LAYERS.map((layer) => {
               const { label, Icon } = PRESENCE[tier.chrome[layer.key]];
               return (
-                <li
-                  key={layer.key}
-                  className="flex min-h-9 items-center justify-between gap-3"
-                >
+                <li key={layer.key} className="flex min-h-9 items-center justify-between gap-3">
                   <span>{layer.label}</span>
-                  <Badge
-                    tone={
-                      tier.chrome[layer.key] === "absent" ? "neutral" : "info"
-                    }
-                  >
+                  <Badge tone={tier.chrome[layer.key] === 'absent' ? 'neutral' : 'info'}>
                     <Icon aria-hidden="true" className="h-3 w-3" />
                     {label}
                   </Badge>
@@ -594,10 +520,7 @@ export function JourneyTiersSpecimen() {
               <span
                 key={t.key}
                 aria-hidden="true"
-                className={cn(
-                  "h-2 flex-1 rounded-full",
-                  i <= index ? "bg-accent" : "bg-neutral-100",
-                )}
+                className={cn('h-2 flex-1 rounded-full', i <= index ? 'bg-accent' : 'bg-neutral-100')}
               />
             ))}
             <span className="ms-2 text-sm tabular-nums text-neutral-900/70">
@@ -605,8 +528,8 @@ export function JourneyTiersSpecimen() {
             </span>
           </div>
           <p className="mt-2 max-w-prose text-sm text-neutral-900/70">
-            Going one tier down always means more specific, never more of the
-            same and never somewhere else entirely (NAV-8).
+            Going one tier down always means more specific, never more of the same and never somewhere else entirely
+            (NAV-8).
           </p>
         </div>
       </div>
@@ -620,46 +543,25 @@ export function JourneyTiersSpecimen() {
  * An absent layer is not rendered, and the work area takes its space, so the
  * layout closes over what is missing (`PRM-5`, `MOD-1`).
  */
-function Wireframe({
-  chrome,
-}: {
-  chrome: Record<LayerKey, Presence>;
-}): ReactNode {
+function Wireframe({ chrome }: { chrome: Record<LayerKey, Presence> }): ReactNode {
   return (
-    <div
-      aria-hidden="true"
-      className="flex h-56 flex-col gap-1 rounded-lg bg-neutral-50 p-2"
-    >
-      <div
-        className={cn(
-          "shrink-0 rounded bg-neutral-200",
-          chrome.global === "compact" ? "h-2" : "h-4",
-        )}
-      />
+    <div aria-hidden="true" className="flex h-56 flex-col gap-1 rounded-lg bg-neutral-50 p-2">
+      <div className={cn('shrink-0 rounded bg-neutral-200', chrome.global === 'compact' ? 'h-2' : 'h-4')} />
       <div className="flex min-h-0 flex-1 gap-1">
-        {chrome.area !== "absent" ? (
-          <div
-            className={cn(
-              "shrink-0 rounded bg-neutral-100",
-              chrome.area === "compact" ? "w-3" : "w-8",
-            )}
-          />
+        {chrome.area !== 'absent' ? (
+          <div className={cn('shrink-0 rounded bg-neutral-100', chrome.area === 'compact' ? 'w-3' : 'w-8')} />
         ) : null}
-        {chrome.destination !== "absent" ? (
-          <div className="w-14 shrink-0 rounded bg-neutral-100" />
-        ) : null}
+        {chrome.destination !== 'absent' ? <div className="w-14 shrink-0 rounded bg-neutral-100" /> : null}
         <div className="flex min-w-0 flex-1 flex-col gap-1 rounded bg-surface p-2 shadow-raised">
-          {chrome.breadcrumb !== "absent" ? (
-            <div className="h-1.5 w-1/3 shrink-0 rounded bg-neutral-200" />
-          ) : null}
-          {chrome.view !== "absent" ? (
+          {chrome.breadcrumb !== 'absent' ? <div className="h-1.5 w-1/3 shrink-0 rounded bg-neutral-200" /> : null}
+          {chrome.view !== 'absent' ? (
             <div className="flex shrink-0 gap-1">
               <div className="h-2 w-8 rounded bg-accent" />
               <div className="h-2 w-8 rounded bg-neutral-200" />
               <div className="h-2 w-8 rounded bg-neutral-200" />
             </div>
           ) : null}
-          {chrome.record !== "absent" ? (
+          {chrome.record !== 'absent' ? (
             <>
               <div className="h-3 w-1/2 shrink-0 rounded bg-neutral-300" />
               <div className="flex shrink-0 gap-1">

@@ -96,11 +96,11 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>154 lines</sub>
+### `.claude/rules/ui.md`  <sub>155 lines</sub>
 
 - Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:67</sub>
-- No dead ends  <sub>:107</sub>
+- Borders and boxes  <sub>:68</sub>
+- No dead ends  <sub>:108</sub>
 
 ### `.github/copilot-instructions.md`  <sub>81 lines</sub>
 
@@ -192,15 +192,15 @@ _no second-level headings_
 - Internationalisation beyond direction  <sub>:133</sub>
 - What would make this real  <sub>:140</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>137 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>139 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
 - Choosing between them  <sub>:61</sub>
 - Patterns — *undocumented*  <sub>:72</sub>
-- Templates — *undocumented*  <sub>:105</sub>
-- Component contract  <sub>:116</sub>
-- What never gets hand-rolled  <sub>:131</sub>
+- Templates — *undocumented*  <sub>:107</sub>
+- Component contract  <sub>:118</sub>
+- What never gets hand-rolled  <sub>:133</sub>
 
 ### `docs/design/components-states/04-states.md`  <sub>141 lines</sub>
 
@@ -2964,7 +2964,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>10,077 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>10,258 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

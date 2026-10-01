@@ -30,6 +30,14 @@ export const INK_FAINT = themeColorVar('neutral-900', 0.5);
 export const POSITIVE = themeColorVar('feedback-positive');
 export const NEGATIVE = themeColorVar('feedback-negative');
 /**
+ * The warning step between fine and failing, for a meter or marker whose value
+ * can cross a limit. `brand.ts` has no `feedback.warning`, so this is the amber
+ * ink step the Badge `warning` tone already uses (3.2:1 on the light surface),
+ * and it flips with the theme. Reserved for state: it is never a series colour,
+ * and wherever it appears the state is also written in words with an icon.
+ */
+export const WARNING = themeColorVar('amber-600');
+/**
  * The de-emphasis colour: the "previous period" beside a current one, and the
  * "Other" slice of a share. Context, not identity, so it is a neutral and never
  * a categorical slot (dataviz: emphasis is one hue plus a gray). `neutral-400`

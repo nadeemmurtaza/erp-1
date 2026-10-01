@@ -1,32 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { formatMoney, formatNumber } from "@newax/shared";
-import { Badge, DataTable, EmptyState } from "@/components/ui";
-import { cn } from "@/utils/cn";
-import { ChartDataTable } from "./chart-data-table";
-import { changeTone, periodChange } from "./chart-math";
-import { ChartTooltip } from "./chart-tooltip";
-import {
-  CONTEXT,
-  GRID,
-  HOVER_WASH,
-  INK_FAINT,
-  compactMoney,
-  paletteColor,
-  type ValueFormat,
-} from "./chart-theme";
-import { usePrefersReducedMotion } from "./use-reduced-motion";
+import { ArrowDownRight, ArrowUpRight, Minus } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { formatMoney, formatNumber } from '@newax/shared';
+import { Badge, DataTable, EmptyState } from '@/components/ui';
+import { ChartDataTable } from './chart-data-table';
+import { changeTone, periodChange } from './chart-math';
+import { SeriesToggles, useSeriesVisibility, type SeriesDef } from './chart-series';
+import { ChartTooltip } from './chart-tooltip';
+import { CONTEXT, GRID, HOVER_WASH, INK_FAINT, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
+import { usePrefersReducedMotion } from './use-reduced-motion';
 
 export interface PeriodComparisonPoint {
   label: string;
@@ -34,9 +17,9 @@ export interface PeriodComparisonPoint {
   previous: number;
 }
 
-type SeriesKey = "current" | "previous";
+const SERIES_KEYS = ['current', 'previous'] as const;
 
-const MINUS = "−";
+const MINUS = '−';
 
 /**
  * This period against the last, per category: a grouped bar, the legend that
@@ -57,10 +40,10 @@ const MINUS = "−";
  */
 export function PeriodComparisonChart({
   points,
-  format = "money",
-  currentLabel = "Current period",
-  previousLabel = "Previous period",
-  categoryLabel = "Category",
+  format = 'money',
+  currentLabel = 'Current period',
+  previousLabel = 'Previous period',
+  categoryLabel = 'Category',
   upIsGood = true,
   showTable = true,
   height = 240,
@@ -76,71 +59,24 @@ export function PeriodComparisonChart({
   showTable?: boolean;
   height?: number;
 }) {
-  const [hidden, setHidden] = useState<ReadonlySet<SeriesKey>>(new Set());
+  const { isOn, toggle } = useSeriesVisibility(SERIES_KEYS);
   const reduced = usePrefersReducedMotion();
 
   if (points.length === 0) {
     return <EmptyState title="No data in this window." />;
   }
 
-  const formatValue = (value: number) =>
-    format === "money" ? formatMoney(value) : formatNumber(value);
-  const series: { key: SeriesKey; label: string; color: string }[] = [
-    { key: "current", label: currentLabel, color: paletteColor(0) },
-    { key: "previous", label: previousLabel, color: CONTEXT },
+  const formatValue = (value: number) => (format === 'money' ? formatMoney(value) : formatNumber(value));
+  const series: SeriesDef[] = [
+    { key: 'current', label: currentLabel, color: paletteColor(0) },
+    { key: 'previous', label: previousLabel, color: CONTEXT },
   ];
-
-  const toggle = (key: SeriesKey) =>
-    setHidden((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else if (next.size < series.length - 1) next.add(key);
-      return next;
-    });
 
   const ariaLabel = `${currentLabel} against ${previousLabel} across ${points.length} categories`;
 
   return (
     <div className="grid gap-4">
-      <div role="group" aria-label="Series" className="flex flex-wrap gap-2">
-        {series.map((s) => {
-          const on = !hidden.has(s.key);
-          return (
-            <button
-              key={s.key}
-              type="button"
-              aria-pressed={on}
-              onClick={() => toggle(s.key)}
-              className={cn(
-                "inline-flex min-h-touch items-center gap-2 rounded-md px-3 text-sm transition-colors duration-fast ease-standard fold:min-h-9",
-                on
-                  ? "bg-neutral-100 text-neutral-900"
-                  : "text-neutral-900/70 hover:bg-neutral-50",
-              )}
-            >
-              {/* Off is a hollow swatch as well as a dimmer label, so the state is never colour alone. */}
-              <svg
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                aria-hidden="true"
-              >
-                <rect
-                  x="1"
-                  y="1"
-                  width="8"
-                  height="8"
-                  rx="2"
-                  fill={on ? s.color : "none"}
-                  stroke={s.color}
-                  strokeWidth="2"
-                />
-              </svg>
-              {s.label}
-            </button>
-          );
-        })}
-      </div>
+      <SeriesToggles series={series} isOn={isOn} onToggle={toggle} />
 
       <div role="img" aria-label={ariaLabel}>
         <ResponsiveContainer width="100%" height={height}>
@@ -157,9 +93,7 @@ export function PeriodComparisonChart({
               axisLine={{ stroke: GRID }}
             />
             <YAxis
-              tickFormatter={(value: number) =>
-                format === "money" ? compactMoney(value) : formatNumber(value)
-              }
+              tickFormatter={(value: number) => (format === 'money' ? compactMoney(value) : formatNumber(value))}
               tick={{ fontSize: 11, fill: INK_FAINT }}
               tickLine={false}
               axisLine={false}
@@ -177,7 +111,7 @@ export function PeriodComparisonChart({
               )}
             />
             {series.map((s) =>
-              hidden.has(s.key) ? null : (
+              !isOn(s.key) ? null : (
                 <Bar
                   key={s.key}
                   dataKey={s.key}
@@ -201,29 +135,29 @@ export function PeriodComparisonChart({
             { header: categoryLabel, cell: (point) => point.label },
             {
               header: currentLabel,
-              align: "end",
+              align: 'end',
               numeric: true,
               cell: (point) => formatValue(point.current),
             },
             {
               header: previousLabel,
-              align: "end",
+              align: 'end',
               numeric: true,
               muted: true,
               cell: (point) => formatValue(point.previous),
             },
             {
-              header: "Change",
-              align: "end",
+              header: 'Change',
+              align: 'end',
               numeric: true,
               cell: (point) => {
                 const diff = point.current - point.previous;
-                return `${diff > 0 ? "+" : diff < 0 ? MINUS : ""}${formatValue(Math.abs(diff))}`;
+                return `${diff > 0 ? '+' : diff < 0 ? MINUS : ''}${formatValue(Math.abs(diff))}`;
               },
             },
             {
-              header: "Growth",
-              align: "end",
+              header: 'Growth',
+              align: 'end',
               cell: (point) => <Growth point={point} upIsGood={upIsGood} />,
             },
           ]}
@@ -232,34 +166,23 @@ export function PeriodComparisonChart({
         <ChartDataTable
           caption={ariaLabel}
           columns={[categoryLabel, currentLabel, previousLabel]}
-          rows={points.map((p) => [
-            p.label,
-            formatValue(p.current),
-            formatValue(p.previous),
-          ])}
+          rows={points.map((p) => [p.label, formatValue(p.current), formatValue(p.previous)])}
         />
       )}
     </div>
   );
 }
 
-function Growth({
-  point,
-  upIsGood,
-}: {
-  point: PeriodComparisonPoint;
-  upIsGood: boolean;
-}) {
+function Growth({ point, upIsGood }: { point: PeriodComparisonPoint; upIsGood: boolean }) {
   const { kind, pct } = periodChange(point.current, point.previous);
-  if (kind === "new") return <span className="text-neutral-900/60">New</span>;
+  if (kind === 'new') return <span className="text-neutral-900/60">New</span>;
 
-  const Icon =
-    kind === "up" ? ArrowUpRight : kind === "down" ? ArrowDownRight : Minus;
+  const Icon = kind === 'up' ? ArrowUpRight : kind === 'down' ? ArrowDownRight : Minus;
 
   return (
     <Badge tone={changeTone(kind, upIsGood)} className="tabular-nums">
       <Icon aria-hidden="true" className="h-3 w-3" />
-      {kind === "up" ? "+" : kind === "down" ? MINUS : ""}
+      {kind === 'up' ? '+' : kind === 'down' ? MINUS : ''}
       {formatNumber(pct)}%
     </Badge>
   );

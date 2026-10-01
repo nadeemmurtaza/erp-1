@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Plus, RotateCcw } from "lucide-react";
-import { formatMoney, formatNumber } from "@newax/shared";
-import { ROUTES } from "@/constants/routes";
-import { TimeSeriesChart } from "@/components/admin/charts";
-import { StatusBadge } from "@/components/common/status-badge";
+import { useState } from 'react';
+import Link from 'next/link';
+import { ArrowRight, ArrowUpRight, Plus, RotateCcw } from 'lucide-react';
+import { formatMoney, formatNumber } from '@newax/shared';
+import { ROUTES } from '@/constants/routes';
+import { TimeSeriesChart } from '@/components/admin/charts';
+import { StatusBadge } from '@/components/common/status-badge';
 import {
   Badge,
   Bento,
@@ -17,9 +17,9 @@ import {
   Skeleton,
   SkeletonRegion,
   SkeletonText,
-} from "@/components/ui";
-import { cn } from "@/utils/cn";
-import { Group } from "./foundations";
+} from '@/components/ui';
+import { cn } from '@/utils/cn';
+import { Group } from './foundations';
 
 /**
  * Two concepts from the Gemini images that are about how a page is laid out and
@@ -36,27 +36,25 @@ const SALES = [310, 340, 325, 380, 360, 410, 395, 430, 420, 465, 450, 482];
 
 /** The same series in the shape a chart receives: a date and an amount in paisa. */
 const SALES_POINTS = SALES.map((thousands, i) => ({
-  date: `2026-09-${String(19 + i).padStart(2, "0")}`,
+  date: `2026-09-${String(19 + i).padStart(2, '0')}`,
   sales: thousands * 100_000,
 }));
 
-const SALES_SERIES = [
-  { key: "sales", label: "Sales", format: "money" as const },
-];
+const SALES_SERIES = [{ key: 'sales', label: 'Sales', format: 'money' as const }];
 
 const LOW_STOCK = [
-  { sku: "Linen shirt, M", left: 3 },
-  { sku: "Cotton kurta, L", left: 5 },
-  { sku: "Denim jacket, S", left: 6 },
-  { sku: "Silk dupatta", left: 8 },
-  { sku: "Wool shawl", left: 9 },
-  { sku: "Canvas tote", left: 11 },
+  { sku: 'Linen shirt, M', left: 3 },
+  { sku: 'Cotton kurta, L', left: 5 },
+  { sku: 'Denim jacket, S', left: 6 },
+  { sku: 'Silk dupatta', left: 8 },
+  { sku: 'Wool shawl', left: 9 },
+  { sku: 'Canvas tote', left: 11 },
 ];
 
 const TO_FULFIL = [
-  { id: "ORD-2041", who: "Amna Khan", status: "PENDING" },
-  { id: "ORD-2040", who: "Bilal Ahmed", status: "IN_PROGRESS" },
-  { id: "ORD-2038", who: "Chand Bibi", status: "READY" },
+  { id: 'ORD-2041', who: 'Amna Khan', status: 'PENDING' },
+  { id: 'ORD-2040', who: 'Bilal Ahmed', status: 'IN_PROGRESS' },
+  { id: 'ORD-2038', who: 'Chand Bibi', status: 'READY' },
 ];
 
 /**
@@ -103,14 +101,9 @@ export function BentoSpecimen() {
           <div className="flex h-full flex-col justify-between gap-4">
             <ul className="grid gap-3">
               {LOW_STOCK.map((item) => (
-                <li
-                  key={item.sku}
-                  className="flex items-baseline justify-between gap-3 text-sm"
-                >
+                <li key={item.sku} className="flex items-baseline justify-between gap-3 text-sm">
                   <span className="min-w-0 truncate">{item.sku}</span>
-                  <span className="shrink-0 font-semibold tabular-nums">
-                    {formatNumber(item.left)} left
-                  </span>
+                  <span className="shrink-0 font-semibold tabular-nums">{formatNumber(item.left)} left</span>
                 </li>
               ))}
             </ul>
@@ -119,39 +112,25 @@ export function BentoSpecimen() {
               className="btn-text inline-flex min-h-touch items-center gap-1 self-start text-sm"
             >
               See what to reorder
-              <ArrowRight
-                aria-hidden="true"
-                className="h-4 w-4 rtl:rotate-180"
-              />
+              <ArrowRight aria-hidden="true" className="h-4 w-4 rtl:rotate-180" />
             </Link>
           </div>
         </BentoTile>
 
         <BentoTile title="Returns open">
-          <p className="text-3xl font-semibold tabular-nums">
-            {formatNumber(7)}
-          </p>
-          <p className="mt-1 text-sm text-neutral-900/70">
-            {formatNumber(2)} need approval
-          </p>
+          <p className="text-3xl font-semibold tabular-nums">{formatNumber(7)}</p>
+          <p className="mt-1 text-sm text-neutral-900/70">{formatNumber(2)} need approval</p>
         </BentoTile>
 
         <BentoTile tone="quiet" title="Average basket">
-          <p className="text-3xl font-semibold tabular-nums">
-            {formatMoney(384_000)}
-          </p>
-          <p className="mt-1 text-sm text-neutral-900/70">
-            Across {formatNumber(126)} orders
-          </p>
+          <p className="text-3xl font-semibold tabular-nums">{formatMoney(384_000)}</p>
+          <p className="mt-1 text-sm text-neutral-900/70">Across {formatNumber(126)} orders</p>
         </BentoTile>
 
         <BentoTile size="wide" title="To fulfil">
           <ul className="grid gap-2">
             {TO_FULFIL.map((order) => (
-              <li
-                key={order.id}
-                className="flex min-h-touch items-center justify-between gap-3 text-sm"
-              >
+              <li key={order.id} className="flex min-h-touch items-center justify-between gap-3 text-sm">
                 <span className="min-w-0">
                   <span className="font-medium tabular-nums">{order.id}</span>
                   <span className="ms-2 text-neutral-900/70">{order.who}</span>
@@ -175,9 +154,7 @@ export function BentoSpecimen() {
         <BentoTile tone="inverse" title="Stock health">
           <div className="flex h-full flex-col justify-between gap-4">
             <p className="text-3xl font-semibold tabular-nums">94%</p>
-            <p className="text-sm text-on-inverse/70">
-              of lines are above their reorder point
-            </p>
+            <p className="text-sm text-on-inverse/70">of lines are above their reorder point</p>
           </div>
         </BentoTile>
       </Bento>
@@ -185,19 +162,19 @@ export function BentoSpecimen() {
   );
 }
 
-type LoadState = "loaded" | "loading" | "empty" | "error";
+type LoadState = 'loaded' | 'loading' | 'empty' | 'error';
 
 const LOAD_STATES: { key: LoadState; label: string }[] = [
-  { key: "loaded", label: "Loaded" },
-  { key: "loading", label: "First load" },
-  { key: "empty", label: "Empty" },
-  { key: "error", label: "Failed" },
+  { key: 'loaded', label: 'Loaded' },
+  { key: 'loading', label: 'First load' },
+  { key: 'empty', label: 'Empty' },
+  { key: 'error', label: 'Failed' },
 ];
 
 const ORDERS = [
-  { id: "ORD-2041", who: "Amna Khan", total: 482_000 },
-  { id: "ORD-2040", who: "Bilal Ahmed", total: 129_900 },
-  { id: "ORD-2038", who: "Chand Bibi", total: 760_000 },
+  { id: 'ORD-2041', who: 'Amna Khan', total: 482_000 },
+  { id: 'ORD-2040', who: 'Bilal Ahmed', total: 129_900 },
+  { id: 'ORD-2038', who: 'Chand Bibi', total: 760_000 },
 ];
 
 /**
@@ -218,25 +195,18 @@ const ORDERS = [
  * inside are `aria-hidden`.
  */
 export function SkeletonSpecimen() {
-  const [state, setState] = useState<LoadState>("loading");
+  const [state, setState] = useState<LoadState>('loading');
 
   return (
     <div className="grid grid-cols-1 gap-4">
-      <div
-        role="group"
-        aria-label="State to preview"
-        className="flex flex-wrap gap-2"
-      >
+      <div role="group" aria-label="State to preview" className="flex flex-wrap gap-2">
         {LOAD_STATES.map((s) => (
           <button
             key={s.key}
             type="button"
             aria-pressed={state === s.key}
             onClick={() => setState(s.key)}
-            className={cn(
-              "chip px-3 py-1.5",
-              state === s.key ? "chip-selected" : "chip-unselected",
-            )}
+            className={cn('chip px-3 py-1.5', state === s.key ? 'chip-selected' : 'chip-unselected')}
           >
             {s.label}
           </button>
@@ -245,7 +215,7 @@ export function SkeletonSpecimen() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <Group title="A figure" className="card p-5">
-          {state === "loading" ? (
+          {state === 'loading' ? (
             <SkeletonRegion label="Loading sales">
               <div className="grid gap-3">
                 <Skeleton className="w-24" />
@@ -253,11 +223,9 @@ export function SkeletonSpecimen() {
                 <Skeleton className="w-16" />
               </div>
             </SkeletonRegion>
-          ) : state === "loaded" ? (
+          ) : state === 'loaded' ? (
             <div className="grid gap-1">
-              <p className="text-3xl font-semibold tabular-nums">
-                {formatMoney(48_250_000)}
-              </p>
+              <p className="text-3xl font-semibold tabular-nums">{formatMoney(48_250_000)}</p>
               <p className="text-sm text-neutral-900/70">+12.4% on yesterday</p>
             </div>
           ) : (
@@ -266,7 +234,7 @@ export function SkeletonSpecimen() {
         </Group>
 
         <Group title="A person" className="card p-5">
-          {state === "loading" ? (
+          {state === 'loading' ? (
             <SkeletonRegion label="Loading profile">
               <div className="flex items-center gap-3">
                 <Skeleton shape="circle" />
@@ -276,7 +244,7 @@ export function SkeletonSpecimen() {
                 </div>
               </div>
             </SkeletonRegion>
-          ) : state === "loaded" ? (
+          ) : state === 'loaded' ? (
             <div className="flex items-center gap-3">
               <span
                 aria-hidden="true"
@@ -295,7 +263,7 @@ export function SkeletonSpecimen() {
         </Group>
 
         <Group title="A table" className="card p-5">
-          {state === "loading" ? (
+          {state === 'loading' ? (
             <SkeletonRegion label="Loading orders">
               <div className="grid gap-3">
                 {ORDERS.map((o) => (
@@ -307,17 +275,17 @@ export function SkeletonSpecimen() {
                 ))}
               </div>
             </SkeletonRegion>
-          ) : state === "loaded" ? (
+          ) : state === 'loaded' ? (
             <DataTable
               rows={ORDERS}
               rowKey={(o) => o.id}
               columns={[
-                { header: "Order", cell: (o) => o.id, numeric: true },
-                { header: "Customer", cell: (o) => o.who, muted: true },
+                { header: 'Order', cell: (o) => o.id, numeric: true },
+                { header: 'Customer', cell: (o) => o.who, muted: true },
                 {
-                  header: "Total",
+                  header: 'Total',
                   cell: (o) => formatMoney(o.total),
-                  align: "end",
+                  align: 'end',
                   numeric: true,
                 },
               ]}
@@ -328,7 +296,7 @@ export function SkeletonSpecimen() {
         </Group>
 
         <Group title="A chart" className="card p-5">
-          {state === "loading" ? (
+          {state === 'loading' ? (
             <SkeletonRegion label="Loading chart">
               <div className="grid gap-3">
                 <Skeleton shape="block" className="h-32" />
@@ -340,7 +308,7 @@ export function SkeletonSpecimen() {
                 </div>
               </div>
             </SkeletonRegion>
-          ) : state === "loaded" ? (
+          ) : state === 'loaded' ? (
             <TimeSeriesChart
               data={SALES_POINTS}
               x="date"
@@ -364,14 +332,8 @@ export function SkeletonSpecimen() {
   );
 }
 
-function StateBody({
-  state,
-  noun,
-}: {
-  state: "empty" | "error";
-  noun: string;
-}) {
-  if (state === "empty") {
+function StateBody({ state, noun }: { state: 'empty' | 'error'; noun: string }) {
+  if (state === 'empty') {
     return (
       <EmptyState
         className="py-6"
@@ -383,10 +345,7 @@ function StateBody({
   }
   return (
     <div className="notice notice-error grid gap-2" role="alert">
-      <p>
-        Could not load {noun}. The server did not answer, and nothing was
-        changed.
-      </p>
+      <p>Could not load {noun}. The server did not answer, and nothing was changed.</p>
       <div>
         <Button variant="secondary">
           <RotateCcw aria-hidden="true" className="h-4 w-4" />

@@ -6,6 +6,7 @@ import { formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { cn } from '@/utils/cn';
 import { ChartDataTable } from './chart-data-table';
+import { ChartLegendRow } from './chart-legend';
 import { MAX_NAMED_SLICES, OTHER_LABEL, foldShares, sharePct, type Share } from './chart-math';
 import { CONTEXT, paletteColor, type ValueFormat } from './chart-theme';
 import { usePrefersReducedMotion } from './use-reduced-motion';
@@ -118,26 +119,17 @@ export function ShareChart({
       <ul className="grid w-full min-w-0 flex-1 grid-cols-1 gap-1 text-sm">
         {slices.map((slice, index) => (
           <li key={slice.label}>
-            <button
-              type="button"
-              aria-pressed={pinned === index}
-              onClick={() => setPinned((prev) => (prev === index ? null : index))}
-              onMouseEnter={() => setHovered(index)}
-              onMouseLeave={() => setHovered(null)}
-              onFocus={() => setHovered(index)}
-              onBlur={() => setHovered(null)}
-              className="flex min-h-touch w-full flex-wrap items-center gap-x-3 rounded-md px-2 py-1 text-start transition-colors duration-fast ease-standard hover:bg-neutral-50 aria-pressed:bg-neutral-100"
+            <ChartLegendRow
+              color={colorOf(slice, index)}
+              label={slice.label}
+              pressed={pinned === index}
+              onPress={() => setPinned((prev) => (prev === index ? null : index))}
+              onActivate={() => setHovered(index)}
+              onDeactivate={() => setHovered(null)}
             >
-              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" className="shrink-0">
-                <rect width="10" height="10" rx="2" fill={colorOf(slice, index)} />
-              </svg>
-              {/* The figures wrap under the label when the row is too narrow to give a name room, rather than squeezing it to an initial. */}
-              <span className="min-w-28 flex-1 truncate text-neutral-900">{slice.label}</span>
-              <span className="ms-auto flex shrink-0 gap-3">
-                <span className="tabular-nums text-neutral-900">{formatValue(slice.value)}</span>
-                <span className="w-12 text-end tabular-nums text-neutral-900/60">{formatNumber(share(slice.value))}%</span>
-              </span>
-            </button>
+              <span className="tabular-nums text-neutral-900">{formatValue(slice.value)}</span>
+              <span className="w-12 text-end tabular-nums text-neutral-900/60">{formatNumber(share(slice.value))}%</span>
+            </ChartLegendRow>
           </li>
         ))}
       </ul>

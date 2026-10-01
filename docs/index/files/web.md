@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 450 tracked files in `apps/web`, by directory.
+All 462 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -1502,22 +1502,32 @@ All 450 tracked files in `apps/web`, by directory.
 | `cost-breakdown.tsx` | component | 121 |  |
 | `recipe-editor.tsx` | component | 363 |  |
 
-### `apps/web/src/components/admin/charts` (14)
+### `apps/web/src/components/admin/charts` (24)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `calendar-heatmap.tsx` | component | 223 |  |
 | `category-bar-chart.tsx` | component | 79 |  |
 | `chart-data-table.tsx` | component | 47 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-reader-only table whos… |
+| `chart-legend.tsx` | component | 49 |  |
 | `chart-marker.tsx` | component | 59 |  |
-| `chart-math.spec.ts` | unit test | 118 |  |
-| `chart-math.ts` | component | 80 |  |
-| `chart-theme.ts` | component | 96 |  |
-| `chart-tooltip.tsx` | component | 66 |  |
+| `chart-math.spec.ts` | unit test | 338 |  |
+| `chart-math.ts` | component | 319 |  |
+| `chart-series.tsx` | component | 124 |  |
+| `chart-theme.ts` | component | 104 |  |
+| `chart-tooltip.tsx` | component | 52 |  |
 | `comparison-chart.tsx` | component | 119 |  |
-| `index.ts` | component | 32 | The whole charting vocabulary for the back office (10-admin-dashboard.md D9). |
-| `period-comparison-chart.tsx` | component | 267 |  |
-| `share-chart.tsx` | component | 153 |  |
+| `funnel-chart.tsx` | component | 151 |  |
+| `gauge-chart.tsx` | component | 264 |  |
+| `index.ts` | component | 41 | The whole charting vocabulary for the back office (10-admin-dashboard.md D9). |
+| `period-comparison-chart.tsx` | component | 190 |  |
+| `point-line-chart.tsx` | component | 144 |  |
+| `radar-chart.tsx` | component | 218 |  |
+| `range-chart.tsx` | component | 152 |  |
+| `share-chart.tsx` | component | 145 |  |
+| `small-multiples-chart.tsx` | component | 220 |  |
 | `sparkline-chart.tsx` | component | 39 |  |
+| `stacked-area-chart.tsx` | component | 143 |  |
 | `time-series-chart.tsx` | component | 149 |  |
 | `use-reduced-motion.ts` | component | 24 |  |
 
@@ -1556,17 +1566,19 @@ All 450 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 104 |  |
 
-### `apps/web/src/components/design-system` (8)
+### `apps/web/src/components/design-system` (10)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `data-concepts.tsx` | component | 537 |  |
-| `flow-concepts.tsx` | component | 681 |  |
+| `chart-concepts.tsx` | component | 387 |  |
+| `data-concepts.tsx` | component | 501 |  |
+| `flow-concepts.tsx` | component | 583 |  |
 | `foundations.tsx` | component | 438 |  |
-| `gallery.tsx` | component | 175 |  |
-| `layout-loading.tsx` | component | 399 |  |
+| `gallery.tsx` | component | 267 |  |
+| `layout-loading.tsx` | component | 358 |  |
 | `live-tokens.ts` | component | 60 |  |
 | `patterns.tsx` | component | 347 |  |
+| `scoped-bento.tsx` | component | 332 |  |
 | `specimens.tsx` | component | 304 |  |
 
 ### `apps/web/src/components/storefront` (38)
@@ -1617,7 +1629,7 @@ All 450 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `badge.tsx` | component | 45 |  |
-| `bento.tsx` | component | 102 |  |
+| `bento.tsx` | component | 83 |  |
 | `button.tsx` | component | 56 |  |
 | `confirm-dialog.tsx` | component | 103 |  |
 | `data-table.tsx` | component | 260 |  |
@@ -1633,8 +1645,8 @@ All 450 tracked files in `apps/web`, by directory.
 | `pagination.tsx` | component | 66 |  |
 | `section-rail.tsx` | component | 154 |  |
 | `section.tsx` | component | 59 |  |
-| `skeleton.tsx` | component | 83 |  |
-| `switch.tsx` | component | 82 |  |
+| `skeleton.tsx` | component | 60 |  |
+| `switch.tsx` | component | 75 |  |
 | `tabs.tsx` | component | 116 |  |
 | `theme-init-script.tsx` | component | 22 |  |
 | `theme-toggle.tsx` | component | 115 |  |

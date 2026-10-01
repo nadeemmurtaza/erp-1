@@ -34,7 +34,7 @@ the *catalogue*, not any particular deployment's grants.
 |---|---|---|---|---|---|
 | `analytics.view` | View dashboard analytics | low | 32 | 12 | STAFF, ADMIN |
 | `reports.view` | Export CSV reports | low | 11 | 2 | STAFF, ADMIN |
-| `organization.view` | View the organization/brand/branch dashboard | low | 5 | 1 | STAFF, ADMIN |
+| `organization.view` | View the organization/brand/branch dashboard | low | 5 | 2 | STAFF, ADMIN |
 | `organization.manage` | Grant and revoke who is a brand or branch admin | high | 10 | 3 | ADMIN |
 | `accounting.view` | View the general ledger and its reports (trial balance, P&L, balance sheet, cas… | medium | 10 | 2 | ADMIN |
 
@@ -110,7 +110,7 @@ the *catalogue*, not any particular deployment's grants.
 
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
-| `settings.manage` | Access the Settings screen | critical | 18 | 4 | ADMIN |
+| `settings.manage` | Access the Settings screen | critical | 18 | 5 | ADMIN |
 | `settings.sso.manage` | Register, edit and suspend single sign-on connections | critical | 8 | 3 | ADMIN |
 | `settings.custom-fields.manage` | Define custom fields on Suppliers and other wired entities | medium | 4 | — | ADMIN |
 | `settings.embeds.manage` | Register and configure embeddable third-party widgets | medium | 4 | 1 | ADMIN |

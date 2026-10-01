@@ -49,13 +49,14 @@ Admin: `components/admin/range-picker`.
 
 | Concern | Import from |
 |---|---|
-| Money, dates, numbers | `@newax/shared` — `formatMoney` `formatDate` `formatDateTime` `formatDateShort` `formatNumber` |
+| Money, dates, numbers | `@newax/shared` — `formatMoney` `formatDate` `formatDateTime` `formatDateShort` `formatMonthShort` `formatWeekdayShort` `formatNumber` |
 | Brand, locale, theme | `@newax/shared` — `BRAND` |
 | Routes | `@/constants/routes` — `ROUTES` |
 | API calls | `@/lib/api-client` `request()`, `@/lib/admin-client` `adminFetch()` |
 | CSV download | `@/lib/download-csv` |
 | Storage keys | `@/constants/storage` |
 | Permissions | `@/constants/permissions` |
+| Charts | `@/components/admin/charts` — `TimeSeriesChart` `PeriodComparisonChart` `ShareChart` `FunnelChart` `PointLineChart` `RangeChart` `GaugeChart` `StackedAreaChart` `CalendarHeatmap` `RadarChart` `SmallMultiplesChart`; the data shape picks the form (`/admin/design-system#charts`). Recharts is imported nowhere else |
 
 **Never**: a bare `fetch` in a page · `toLocaleString` at a call site · a hex
 in a component · a path literal in an `href` · English in customer-facing JSX

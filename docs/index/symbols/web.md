@@ -1603,7 +1603,7 @@ Every top-level export in `web`, with the line to open.
 | `foundations.tsx` | `ElevationFoundations` | function | :359 |  |
 | `gallery.tsx` | `DesignSystemGallery` | function | :33 | The design system, rendered by the system it describes. |
 | `live-tokens.ts` | `useLiveTokens` | function | :17 | Reads the theme's colours back out of the browser, not out of brand.ts. |
-| `patterns.tsx` | `AdminPatterns` | function | :46 |  |
+| `patterns.tsx` | `AdminPatterns` | function | :68 |  |
 | `specimens.tsx` | `ComponentSpecimens` | function | :46 |  |
 
 ### `apps/web/src/components/storefront`

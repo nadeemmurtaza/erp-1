@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2536,
-    "lines": 399196,
+    "lines": 399369,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -51,20 +51,20 @@
     },
     "web": {
       "files": 439,
-      "lines": 74276,
-      "bytes": 2699725,
+      "lines": 74361,
+      "bytes": 2704474,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 89700,
-      "bytes": 5423426,
+      "lines": 89767,
+      "bytes": 5428533,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 113,
-      "lines": 12861,
-      "bytes": 480345,
+      "lines": 12882,
+      "bytes": 481357,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -57424,7 +57424,7 @@
       "file": "packages/shared/src/theme-contrast.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 14,
+      "cases": 16,
       "describes": [
         "contrast maths",
         "dark palette",
@@ -87249,14 +87249,14 @@
       "path": "apps/web/src/components/design-system/patterns.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 262,
-      "bytes": 12282,
+      "lines": 347,
+      "bytes": 17031,
       "doc": "",
       "symbols": [
         {
           "name": "AdminPatterns",
           "kind": "function",
-          "line": 46
+          "line": 68
         }
       ]
     },
@@ -90562,8 +90562,8 @@
       "path": "docs/design/components-states/03-components.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 126,
-      "bytes": 6153,
+      "lines": 129,
+      "bytes": 6735,
       "doc": "",
       "symbols": []
     },
@@ -92470,8 +92470,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 9866,
-      "bytes": 581360,
+      "lines": 9930,
+      "bytes": 585885,
       "doc": "",
       "symbols": []
     },
@@ -96904,8 +96904,8 @@
       "path": "packages/shared/src/theme-contrast.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 155,
-      "bytes": 7155,
+      "lines": 176,
+      "bytes": 8167,
       "doc": "",
       "symbols": []
     },

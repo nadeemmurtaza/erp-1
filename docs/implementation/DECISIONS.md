@@ -9863,3 +9863,67 @@ and documentation — not a named feature: the five screens the spec plans run t
 lenses. n/a for every money, stock, actor and erasure lens: writes no row, reads
 no row, posts nothing. Reachable: the specimens are at `/admin/design-system#patterns`,
 in the page's section nav.
+
+### Addendum — 2026-10-01: what the "Modern ERP UX Design Blueprint" adds to premium
+
+**Requirement.** The owner asked for the shared document to be mined for
+anything that makes the design more premium. The Google Doc link itself could not
+be opened from this environment (`docs.google.com` is denied by the network
+policy), so this addendum rests on the copy attached to the thread, which is the
+same Gemini transcript spec 220 was written from: 2,677 lines, mostly Vue and
+Quasar for functional screens. Its visual ideas are few. Each was weighed against
+the house rules before it was taken.
+
+**Taken, re-expressed in this system's tokens.**
+
+| Idea in the transcript | What was built | Why it fits |
+|---|---|---|
+| Frosted glass over imagery (`bg-white/85 backdrop-blur-xl`) | `bg-overlay/85 shadow-overlay backdrop-blur-md`, solid under `prefers-reduced-transparency` | text keeps a surface; held to 4.5:1 by `theme-contrast.spec.ts` |
+| Selectable cards with a tinted selected state | choice cards: real radio group, ring + tint + tick | the selected state is never colour alone; no border, per `ui.md` |
+| Pulsing "live" dot | dot plus the word "Live", `motion-safe:animate-ping` | motion that communicates (a live feed), honours reduced motion |
+| Slide-in floating selection bar | `motion-safe:animate-slideUp` on the bar | transform and opacity only, from the existing keyframe and duration tokens |
+
+**Parameters.**
+
+| Parameter | Exact value | Why this and not another | Enforced |
+|---|---|---|---|
+| Frosted surface opacity | 85% | the lowest step tried (85, 70, 60, 50) that keeps primary and secondary text at 4.5:1 over a flat black and a flat white backdrop in both themes; worst case at 85 is 5.52:1 (dark, white backdrop, secondary text), and 70 falls to 3.65:1 there | `theme-contrast.spec.ts`, "frosted surface over a black/white backdrop" |
+| Backdrop blur | `backdrop-blur-md` (12 px) | enough to average away detail behind small text; a blur is also what makes flat black or white the true worst case | specimen |
+| Transparency fallback | solid `bg-overlay`, no blur, under `prefers-reduced-transparency: reduce` | transparency is the thing that setting turns off | arbitrary variant in `patterns.tsx` |
+
+**Failure modes.** No `backdrop-filter` support: the 85% surface is still opaque
+enough for the contrast figures above, the blur simply does not apply. No `:has()`
+support (Firefox before 121): a choice card loses its keyboard focus ring, but
+the ring, tint and tick are driven by state and still show.
+
+**Not adopted, and why.**
+- `rounded-2xl` and `rounded-3xl` cards: the house shape is sharp, with `lg` a hair
+  softer for large panels (`brand.ts` radii). Rounder corners would read as a
+  second design system.
+- A border and a shadow on the same card edge (`border-gray-100 shadow-sm`):
+  forbidden by `ui.md`. Elevation is the shadow alone.
+- `bg-gray-900 text-white` for the floating bar: the pair that cannot survive a
+  theme (17.9:1 in light, 1.07:1 in dark). `bg-overlay` carries it.
+- A coloured glow under the primary button (`shadow-blue-500/30`): decoration that
+  moves with the brand and names a literal colour.
+- `bg-blue-600`, `text-gray-500` and similar literals: Law 1.
+- The WebGL pixel shader, pixel-hover cards and `<PixelHeroBanner/>`: a second GPU
+  context and a per-frame loop on pages whose job is something else, adding no
+  information. Fails Laws 3 and 6, as spec 220 §12 already says.
+- Mock arrays, `req.ip` and a controller-written `audit_logs` table: the functional
+  ideas are already mapped, with their house-rule replacements, in spec 220.
+
+**Noticed, not changed.** `cn()` drops a bare `outline` when `outline-2` follows it:
+`cn('outline outline-2')` returns `outline-2`, which in Tailwind 3 draws nothing
+(`outline-2` sets a width, `outline` sets the style). The merge library is
+tailwind-merge 3, whose class groups follow Tailwind 4, where a width utility also
+sets the style; this repo is on Tailwind 3.4. Nothing in the app combines the two
+today, which is why it has not bitten; the choice cards use a ring, the house focus
+style, and so avoid it. Worth its own look before anyone writes `outline outline-2`.
+
+**Verification.** Web typecheck and lint pass, contrast passes in both themes, and
+the new shared spec covers both themes at both worst-case backdrops.
+
+**Scope lenses.** Specimens and one spec: reads and writes no row, no money, no
+stock; no actor, permission or erasure lens applies. Reachable at
+`/admin/design-system#patterns`.

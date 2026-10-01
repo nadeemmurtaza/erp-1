@@ -192,15 +192,15 @@ _no second-level headings_
 - Internationalisation beyond direction  <sub>:133</sub>
 - What would make this real  <sub>:140</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>126 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>129 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
 - Choosing between them  <sub>:58</sub>
 - Patterns — *undocumented*  <sub>:69</sub>
-- Templates — *undocumented*  <sub>:94</sub>
-- Component contract  <sub>:105</sub>
-- What never gets hand-rolled  <sub>:120</sub>
+- Templates — *undocumented*  <sub>:97</sub>
+- Component contract  <sub>:108</sub>
+- What never gets hand-rolled  <sub>:123</sub>
 
 ### `docs/design/components-states/04-states.md`  <sub>141 lines</sub>
 
@@ -2964,7 +2964,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>9,866 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>9,930 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

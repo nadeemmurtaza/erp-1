@@ -1558,7 +1558,7 @@ All 439 tracked files in `apps/web`, by directory.
 | `foundations.tsx` | component | 438 |  |
 | `gallery.tsx` | component | 111 |  |
 | `live-tokens.ts` | component | 60 |  |
-| `patterns.tsx` | component | 262 |  |
+| `patterns.tsx` | component | 347 |  |
 | `specimens.tsx` | component | 304 |  |
 
 ### `apps/web/src/components/storefront` (38)

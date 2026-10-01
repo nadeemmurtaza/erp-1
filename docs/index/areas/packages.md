@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-113 files · 12,861 lines
+113 files · 12,882 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -25,7 +25,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 10 | 613 | unit test, module |
 | `packages/shared` | 4 | 75 | script, json |
-| `packages/shared/src` | 70 | 9,112 | unit test, module |
+| `packages/shared/src` | 70 | 9,133 | unit test, module |
 
 
 ## Entry points

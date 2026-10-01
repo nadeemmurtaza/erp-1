@@ -126,7 +126,7 @@ All 113 tracked files in `packages/*`, by directory.
 | `sku.ts` | module | 80 | SKU generation (WO-3.3, docs/implementation/catalog-variants-pricing/03-variants-sku-seo.md). |
 | `slug.ts` | module | 44 | URL slugs. |
 | `theme-colors.ts` | module | 29 |  |
-| `theme-contrast.spec.ts` | unit test | 155 |  |
+| `theme-contrast.spec.ts` | unit test | 176 |  |
 | `theme-contrast.ts` | module | 47 |  |
 | `theme-elevation.ts` | module | 12 |  |
 | `theme-layers.ts` | module | 9 |  |

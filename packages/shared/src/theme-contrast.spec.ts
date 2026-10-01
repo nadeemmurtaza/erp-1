@@ -1,5 +1,5 @@
 import { BRAND } from './brand';
-import { contrastRatioHex, relativeLuminance, wcagLevel } from './theme-contrast';
+import { compositeRgb, contrastRatio, contrastRatioHex, relativeLuminance, wcagLevel } from './theme-contrast';
 import { darkHueScale, hexToRgb, mixHex, STOCK_HUE_NAMES, type StockHues } from './theme-tailwind';
 
 /**
@@ -51,6 +51,27 @@ describe.each([
   it('keeps a white label readable on the brand fill and its pressed shade', () => {
     expect(contrast(c.white, c.accent.DEFAULT)).toBeGreaterThanOrEqual(4.5);
     expect(contrast(c.white, c.accent.hover)).toBeGreaterThanOrEqual(4.5);
+  });
+
+  /*
+   * A frosted surface (`bg-overlay/85 backdrop-blur-md`) over an image has no
+   * contrast of its own: it depends on the pixel behind it. A blur averages its
+   * neighbourhood, so the worst a backdrop can be is a flat black or a flat
+   * white. Held to the text floor against both, so the claim "readable over any
+   * picture" is a number and not a hope.
+   */
+  describe.each([['black', [0, 0, 0]], ['white', [255, 255, 255]]] as const)('frosted surface over a %s backdrop', (_label, pixel) => {
+    const FROST = 0.85;
+    const glass = compositeRgb(hexToRgb(c.overlay), pixel, FROST);
+
+    it('keeps primary text at 4.5:1', () => {
+      expect(contrastRatio(hexToRgb(c.neutral[900]), glass)).toBeGreaterThanOrEqual(4.5);
+    });
+
+    it('keeps the secondary ramp (neutral-900 at 70%) at 4.5:1', () => {
+      const secondary = compositeRgb(hexToRgb(c.neutral[900]), glass, 0.7);
+      expect(contrastRatio(secondary, glass)).toBeGreaterThanOrEqual(4.5);
+    });
   });
 
   it('never makes the scrim lighter than the page it dims', () => {

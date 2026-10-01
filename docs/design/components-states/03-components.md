@@ -85,8 +85,11 @@ instance re-derives them and drifts slightly. The ones worth writing down:
 | Access that ends — a persistent notice that turns to warning under an hour | `/admin/design-system#patterns` (planned: temporary access) |
 | Live count — recounting, ready with a link to the rows, unavailable but still savable | `/admin/design-system#patterns` (planned: audience builder) |
 | Profile cards — one job, several cards, one editable at a time | `/admin/design-system#patterns` (planned: company profile) |
+| Frosted overlay — text over a picture on an 85% overlay surface with a blur, solid under reduced transparency | `/admin/design-system#patterns` (nearest live use: the storefront product card's floating button, which has the opacity but no blur) |
+| Choice cards — a real radio group drawn as cards with a ring, a tint and a tick | `/admin/design-system#patterns` (planned: publish visibility, audience segments) |
+| Live indicator — a pinging dot plus the word "Live", still under reduced motion | `/admin/design-system#patterns` (admin live feed would be the first use) |
 
-The last six are written out from primitives on the reference page, in both themes and at all seven widths, and are **not** components yet. One screen per pattern is a coincidence; the third is when it moves into `ui/`. A side drawer that becomes a full-screen sheet below `md` is also planned (products channels lens) and is deliberately not built: one consumer.
+The last nine are written out from primitives on the reference page, in both themes and at all seven widths, and are **not** components yet. One screen per pattern is a coincidence; the third is when it moves into `ui/`. A side drawer that becomes a full-screen sheet below `md` is also planned (products channels lens) and is deliberately not built: one consumer.
 
 **Rule for a new pattern.** If you find yourself solving a problem a second
 time, it is a pattern — name it here before the third.

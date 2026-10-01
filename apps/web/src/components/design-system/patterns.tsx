@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Check } from 'lucide-react';
 import { Badge, Button, DataTable, Disclosure } from '@/components/ui';
 import { cn } from '@/utils/cn';
 import { Group } from './foundations';
@@ -14,6 +15,11 @@ import { Group } from './foundations';
  * themes and at all seven widths. There is no component here that a screen
  * would import — a pattern that shows up a third time is promoted into `ui/`
  * (`03-components.md`), and until then it is written out from primitives.
+ *
+ * The frosted overlay and the choice cards come from the same transcript the
+ * spec was written from (the "Modern ERP UX Design Blueprint"): its glass
+ * overlay, its selectable cards and its live-status dot, re-expressed in this
+ * system's tokens rather than its grey, blue and 2xl-radius literals.
  */
 
 type ImportState = 'valid' | 'error' | 'duplicate';
@@ -35,6 +41,22 @@ const STAFF = [
   { id: 'c', name: 'Hina Shah', scope: 'Karachi' },
 ];
 
+const VISIBILITY = [
+  { key: 'internal', label: 'Internal', hint: 'Only people signed in to the admin.' },
+  { key: 'unlisted', label: 'Unlisted', hint: 'Anyone with the link, until you revoke it.' },
+  { key: 'public', label: 'Public', hint: 'Listed on the storefront and in search.' },
+] as const;
+
+/**
+ * Frosted: 85% of the overlay surface over a blur. 85 is the lowest of the
+ * steps tried that holds 4.5:1 for primary and secondary text over a flat black
+ * and a flat white backdrop in both themes (`theme-contrast.spec.ts`); 70 fails
+ * the secondary ramp in dark. Where transparency is switched off in the OS the
+ * surface goes solid.
+ */
+const FROSTED =
+  'bg-overlay/85 shadow-overlay backdrop-blur-md [@media(prefers-reduced-transparency:reduce)]:bg-overlay [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none';
+
 type CardKey = 'legal' | 'address' | 'contact';
 
 const PROFILE: { key: CardKey; title: string; fields: { label: string; value: string }[] }[] = [
@@ -47,6 +69,7 @@ export function AdminPatterns() {
   const [filter, setFilter] = useState<'all' | ImportState>('all');
   const [picked, setPicked] = useState<ReadonlySet<string>>(new Set(['a', 'b']));
   const [editing, setEditing] = useState<CardKey | null>('address');
+  const [visibility, setVisibility] = useState<(typeof VISIBILITY)[number]['key']>('unlisted');
 
   const attention = IMPORT_ROWS.filter((r) => r.state !== 'valid').length;
   const ready = IMPORT_ROWS.length - attention;
@@ -136,7 +159,7 @@ export function AdminPatterns() {
             ]}
           />
           {picked.size > 0 ? (
-            <div className="sticky bottom-4 z-sticky mx-auto mt-4 flex w-fit max-w-full flex-wrap items-center gap-3 rounded-md bg-overlay px-4 py-3 shadow-overlay">
+            <div className="sticky bottom-4 z-sticky mx-auto mt-4 flex w-fit max-w-full flex-wrap items-center gap-3 rounded-md bg-overlay px-4 py-3 shadow-overlay motion-safe:animate-slideUp">
               <p className="text-sm font-medium text-neutral-900" role="status">{picked.size} selected</p>
               <Button variant="secondary">Change branch</Button>
               <Button variant="danger">Suspend {picked.size}</Button>
@@ -197,6 +220,68 @@ export function AdminPatterns() {
           </p>
           <p className="notice notice-warning">Count unavailable. You can still save this audience.</p>
         </div>
+      </Group>
+
+      <Group
+        title="Frosted overlay"
+        note="Text over a picture sits on a surface, never on the picture. The surface is 85% opaque with a blur, solid when the OS asks for less transparency. The picture keeps the pointer; only the controls take it back."
+      >
+        <div className="relative h-56 overflow-hidden rounded-lg bg-gradient-to-br from-accent/40 via-neutral-100 to-neutral-200">
+          <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-4">
+            <p className={cn('pointer-events-auto flex w-fit items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium text-neutral-900', FROSTED)}>
+              <span className="relative flex h-2 w-2" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-feedback-positive opacity-75 motion-safe:animate-ping" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-feedback-positive" />
+              </span>
+              Live
+            </p>
+            <div className={cn('pointer-events-auto flex flex-wrap items-center justify-between gap-3 rounded-md p-4', FROSTED)}>
+              <div>
+                <p className="text-sm font-semibold text-neutral-900">Embroidered lawn, three piece</p>
+                <p className="text-sm tabular-nums text-neutral-900/70">128 in stock</p>
+              </div>
+              <Button>Reserve</Button>
+            </div>
+          </div>
+        </div>
+      </Group>
+
+      <Group
+        title="Choice cards"
+        note="One choice among a few that need a sentence each. A real radio group underneath, so the arrow keys move between them; the selected card has a ring, a tint and a tick, never colour alone."
+      >
+        <fieldset className="grid gap-3 sm:grid-cols-3">
+          <legend className="field-label">Who can see this?</legend>
+          {VISIBILITY.map((option) => {
+            const selected = visibility === option.key;
+            return (
+              <label
+                key={option.key}
+                className={cn(
+                  'relative flex cursor-pointer flex-col gap-1 rounded-md bg-surface p-4 shadow-raised transition-shadow',
+                  // The radio is visually hidden, so its own focus ring is clipped; the card
+                  // shows the house ring (globals.css `:focus-visible`) on its behalf. Selected
+                  // is a flush ring, focused adds the offset gap, so the two read apart.
+                  'has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-neutral-50',
+                  selected && 'bg-accent/10 ring-2 ring-accent',
+                )}
+              >
+                <input
+                  type="radio"
+                  name="ds-visibility"
+                  className="sr-only"
+                  checked={selected}
+                  onChange={() => setVisibility(option.key)}
+                />
+                <span className="flex items-center justify-between gap-2 text-sm font-semibold text-neutral-900">
+                  {option.label}
+                  {selected ? <Check aria-hidden="true" className="h-4 w-4 text-accent" /> : null}
+                </span>
+                <span className="text-sm text-neutral-900/70">{option.hint}</span>
+              </label>
+            );
+          })}
+        </fieldset>
       </Group>
 
       <Group

@@ -53,10 +53,10 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 | Primitives | 18 | `apps/web/src/components/ui` — the ladder's second rung |
 | `framer-motion` importers | 1 | `apps/web/src/components/storefront/animated-section.tsx` |
 | CSS `transition` | 4 | declared transitions across every stylesheet |
-| Tailwind `transition-*` classes | 99 | the actual motion surface today — utility classes, not a token |
+| Tailwind `transition-*` classes | 100 | the actual motion surface today — utility classes, not a token |
 | CSS `@keyframes` | 1 | named animations |
 | `prefers-reduced-motion` blocks | 2 | chapter 05 and 07 both require this on every motion |
-| `aria-*` attributes | 223 | written by hand; **no accessibility lint runs** |
+| `aria-*` attributes | 225 | written by hand; **no accessibility lint runs** |
 | `role=` attributes | 295 |  |
 | RTL / `dir` references | 42 | Urdu ships; chapter 07 says this is scattered, not systematic |
 | Inline `style={{` | 27 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |

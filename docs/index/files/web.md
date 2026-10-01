@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 462 tracked files in `apps/web`, by directory.
+All 478 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -1466,7 +1466,7 @@ All 462 tracked files in `apps/web`, by directory.
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1614 |  |
-| `range-picker.tsx` | component | 63 |  |
+| `range-picker.tsx` | component | 50 |  |
 | `role-wizard.tsx` | component | 359 |  |
 | `scope-chips.tsx` | component | 71 |  |
 | `session.tsx` | component | 47 |  |
@@ -1513,7 +1513,7 @@ All 462 tracked files in `apps/web`, by directory.
 | `chart-marker.tsx` | component | 59 |  |
 | `chart-math.spec.ts` | unit test | 338 |  |
 | `chart-math.ts` | component | 319 |  |
-| `chart-series.tsx` | component | 124 |  |
+| `chart-series.tsx` | component | 103 |  |
 | `chart-theme.ts` | component | 104 |  |
 | `chart-tooltip.tsx` | component | 52 |  |
 | `comparison-chart.tsx` | component | 119 |  |
@@ -1566,19 +1566,34 @@ All 462 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 104 |  |
 
-### `apps/web/src/components/design-system` (10)
+### `apps/web/src/components/design-system` (25)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `access-draft.spec.ts` | unit test | 159 |  |
+| `access-draft.ts` | component | 138 | The deciding functions behind the people-and-access specimen. |
+| `audience.spec.ts` | unit test | 109 |  |
+| `audience.ts` | component | 109 | The deciding functions behind the publish-and-audience specimen. |
 | `chart-concepts.tsx` | component | 387 |  |
+| `choice-cards.tsx` | component | 76 |  |
 | `data-concepts.tsx` | component | 501 |  |
+| `department-page.tsx` | component | 437 |  |
+| `department.spec.ts` | unit test | 158 |  |
+| `department.ts` | component | 155 | The deciding functions behind the department-page specimen. |
+| `dispatch-flow.tsx` | component | 378 |  |
+| `dispatch-machine.spec.ts` | unit test | 158 |  |
+| `dispatch-machine.ts` | component | 131 | The states of a one-click send, and the only moves between them. |
 | `flow-concepts.tsx` | component | 583 |  |
 | `foundations.tsx` | component | 438 |  |
-| `gallery.tsx` | component | 267 |  |
+| `gallery.tsx` | component | 311 |  |
+| `layering.tsx` | component | 208 |  |
 | `layout-loading.tsx` | component | 358 |  |
 | `live-tokens.ts` | component | 60 |  |
-| `patterns.tsx` | component | 347 |  |
-| `scoped-bento.tsx` | component | 332 |  |
+| `patterns.tsx` | component | 322 |  |
+| `people-access.tsx` | component | 638 |  |
+| `publish-audience.tsx` | component | 419 |  |
+| `scope-chip-editor.tsx` | component | 127 |  |
+| `scoped-bento.tsx` | component | 506 |  |
 | `specimens.tsx` | component | 304 |  |
 
 ### `apps/web/src/components/storefront` (38)
@@ -1624,7 +1639,7 @@ All 462 tracked files in `apps/web`, by directory.
 | `theme-switch.tsx` | component | 28 |  |
 | `visual-search-button.tsx` | component | 89 |  |
 
-### `apps/web/src/components/ui` (22)
+### `apps/web/src/components/ui` (23)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1633,18 +1648,19 @@ All 462 tracked files in `apps/web`, by directory.
 | `button.tsx` | component | 56 |  |
 | `confirm-dialog.tsx` | component | 103 |  |
 | `data-table.tsx` | component | 260 |  |
-| `dialog.tsx` | component | 197 |  |
+| `dialog.tsx` | component | 209 |  |
 | `disclosure.tsx` | component | 69 |  |
 | `empty-state.tsx` | component | 40 |  |
 | `filter-bar.tsx` | component | 191 |  |
-| `index.ts` | component | 45 | Design-system primitives. |
+| `index.ts` | component | 46 | Design-system primitives. |
 | `list-page-skeleton.tsx` | component | 66 | The shape of a list page, before the list page. |
 | `loading.tsx` | loading | 31 |  |
 | `metric-strip.tsx` | component | 158 |  |
-| `page-header.tsx` | component | 53 |  |
+| `page-header.tsx` | component | 56 |  |
 | `pagination.tsx` | component | 66 |  |
 | `section-rail.tsx` | component | 154 |  |
 | `section.tsx` | component | 59 |  |
+| `segmented.tsx` | component | 121 |  |
 | `skeleton.tsx` | component | 60 |  |
 | `switch.tsx` | component | 75 |  |
 | `tabs.tsx` | component | 116 |  |

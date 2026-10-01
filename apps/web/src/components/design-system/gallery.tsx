@@ -23,8 +23,13 @@ import {
   StackedAreaSpecimen,
 } from './chart-concepts';
 import { ColumnManagerSpecimen, RegionalPerformanceSpecimen, ShareSpecimen } from './data-concepts';
+import { DepartmentPageSpecimen } from './department-page';
+import { DispatchFlowSpecimen } from './dispatch-flow';
 import { JourneyTiersSpecimen, RoutingCanvasSpecimen } from './flow-concepts';
 import { BentoSpecimen, SkeletonSpecimen } from './layout-loading';
+import { LayeringSpecimen } from './layering';
+import { PeopleAccessSpecimen } from './people-access';
+import { PublishAudienceSpecimen } from './publish-audience';
 import { ScopedBentoSpecimen } from './scoped-bento';
 import { AdminPatterns } from './patterns';
 import { ComponentSpecimens } from './specimens';
@@ -36,6 +41,7 @@ const SECTIONS = [
   ['depth', 'Depth and motion'],
   ['components', 'Components'],
   ['patterns', 'Admin patterns'],
+  ['screens', 'Admin screens'],
   ['layout', 'Layout and loading'],
   ['data', 'Data and charts'],
   ['charts', 'Chart types'],
@@ -110,6 +116,13 @@ export function DesignSystemGallery() {
           columns="lg:grid-cols-2"
         >
           <ElevationFoundations />
+          <Group
+            className="lg:col-span-2"
+            title="Stacking and pass-through"
+            note="A layer of labels and controls over a surface people work on. The overlay is glass: the wrapper lets every click through, and each control on it takes its own back."
+          >
+            <LayeringSpecimen />
+          </Group>
         </GallerySection>
 
         <GallerySection id="components" title="Components" lead="The shared primitives, as shipped. A page composes these; it does not invent its own.">
@@ -123,6 +136,31 @@ export function DesignSystemGallery() {
           columns="xl:grid-cols-2"
         >
           <AdminPatterns />
+        </GallerySection>
+
+        <GallerySection
+          id="screens"
+          title="Admin screens"
+          lead="Three whole screens, each written from the components above and nothing else, with the states and refusals a picture of a screen leaves out. Each shows what its permission hides and what its refusal says."
+        >
+          <Group
+            title="People and access"
+            note="The list is the overview; changing one person's access is one level down, in a side sheet. A grant always ends, an acting grant needs a second signature, and you cannot change your own access."
+          >
+            <PeopleAccessSpecimen />
+          </Group>
+          <Group
+            title="Publish and audience"
+            note="Where it goes live, who is shown it, and which exactly. Steps that do not apply close up. Going public names its audience first; an unlisted link just happens."
+          >
+            <PublishAudienceSpecimen />
+          </Group>
+          <Group
+            title="Department page"
+            note="Typed field blocks under one header. What is not the page's to type is shown as what it is: where it works comes from where it sits, its head is a post, and closing has refusals that name their fix."
+          >
+            <DepartmentPageSpecimen />
+          </Group>
         </GallerySection>
 
         <GallerySection
@@ -144,7 +182,7 @@ export function DesignSystemGallery() {
           </Group>
           <Group
             title="Board with scoped tiles"
-            note="Every tile says who reads it and who writes it. A tile the viewer cannot read is left out and the row closes over it; one they can read but not change keeps a disabled Edit with the permission written beside it."
+            note="Every tile says who reads it and who writes it. A tile the viewer cannot read is left out and the row closes over it; one they can read but not change keeps a disabled Edit with the permission written beside it. The grid map under it writes the layout out as columns."
           >
             <ScopedBentoSpecimen />
           </Group>
@@ -245,7 +283,7 @@ export function DesignSystemGallery() {
         <GallerySection
           id="flows"
           title="Flows and journeys"
-          lead="Two ways to show a process: who must approve something, and how the shell narrows as a person goes deeper into the product."
+          lead="Three ways to show a process: who must approve something, how the shell narrows as a person goes deeper into the product, and what a send is allowed to claim while it is still happening."
         >
           <Group
             title="Approval routing"
@@ -258,6 +296,12 @@ export function DesignSystemGallery() {
             note="Global, Area, Destination, View, Object: the navigation shape of the product, and the chrome each tier leaves on screen."
           >
             <JourneyTiersSpecimen />
+          </Group>
+          <Group
+            title="One-click send"
+            note="Answers in the same frame, stays undoable for five seconds, then hands over and says only what it knows. A failure says what happened and the one next step, and a retry cannot send twice."
+          >
+            <DispatchFlowSpecimen />
           </Group>
         </GallerySection>
       </main>

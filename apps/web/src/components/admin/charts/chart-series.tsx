@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Segmented } from '@/components/ui';
 import { cn } from '@/utils/cn';
 
 export interface SeriesDef {
@@ -81,10 +82,10 @@ export function SeriesToggles({
 
 /**
  * One view of the same data at a time: a radar or its bars, side by side or
- * overlaid. The same segmented language as `RangePicker` (the chosen button is
- * the accent fill, the rest are plain text), so the two controls read as one
- * family; it differs only in taking its options instead of a day count. The
- * chosen view is `aria-pressed` and filled, so state is never colour alone.
+ * overlaid. It is `ui/Segmented`, the same control `RangePicker` uses, so the
+ * two read as one family; it differs only in taking its options instead of a
+ * day count. The chosen view is `aria-pressed` and filled, so state is never
+ * colour alone.
  */
 export function ViewSwitch<V extends string>({
   options,
@@ -97,27 +98,5 @@ export function ViewSwitch<V extends string>({
   onChange: (value: V) => void;
   label: string;
 }) {
-  return (
-    <div role="group" aria-label={label} className="flex gap-1">
-      {options.map((option) => {
-        const active = option.value === value;
-        return (
-          <button
-            key={option.value}
-            type="button"
-            aria-pressed={active}
-            onClick={() => onChange(option.value)}
-            className={cn(
-              'min-h-11 rounded px-3 py-1.5 text-sm transition-colors fold:min-h-0',
-              active
-                ? 'bg-accent font-medium text-white'
-                : 'text-neutral-900/60 hover:bg-neutral-50 hover:text-neutral-900',
-            )}
-          >
-            {option.label}
-          </button>
-        );
-      })}
-    </div>
-  );
+  return <Segmented options={options} value={value} onChange={onChange} label={label} />;
 }

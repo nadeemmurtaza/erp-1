@@ -47,8 +47,15 @@ export function Dialog({
    * heading above that would be a second thing to read past.
    */
   header?: ReactNode;
-  /** Top for a palette, which should not jump as its result count changes. */
-  align?: 'center' | 'top';
+  /**
+   * `top` for a palette, which should not jump as its result count changes.
+   * `end` for a side sheet: the panel is full height against the inline-end
+   * edge (right in English, left in Urdu) and the page behind stays visible
+   * past its edge — the detail of one row, opened without leaving the list.
+   * It keeps everything a dialog has: Escape, the backdrop, the close button,
+   * the focus trap and the scroll lock.
+   */
+  align?: 'center' | 'top' | 'end';
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
@@ -119,8 +126,10 @@ export function Dialog({
   return (
     <div
       className={cn(
-        'fixed inset-0 z-modal flex justify-center p-4',
-        align === 'top' ? 'items-start pt-[10vh]' : 'items-center',
+        'fixed inset-0 z-modal flex justify-center',
+        align === 'top' && 'items-start p-4 pt-[10vh]',
+        align === 'center' && 'items-center p-4',
+        align === 'end' && 'justify-end',
       )}
     >
       <div
@@ -151,7 +160,10 @@ export function Dialog({
         tabIndex={-1}
         onKeyDown={onKeyDown}
         className={cn(
-          'card relative z-raised flex max-h-[85vh] w-full max-w-lg flex-col bg-overlay outline-none animate-scaleIn',
+          'card relative z-raised flex w-full flex-col bg-overlay outline-none',
+          align === 'end'
+            ? 'h-full max-w-md rounded-none border-y-0 border-e-0 animate-slideInRight'
+            : 'max-h-[85vh] max-w-lg animate-scaleIn',
           className,
         )}
       >

@@ -10255,3 +10255,219 @@ cannot obey, the failure path: n/a, nothing is written.
 Reachable: `/admin/design-system#charts` and `#layout`, each with a link in the
 page's section nav, and the rule and the chart list are in `03-components.md` and
 `.claude/rules/ui.md`.
+
+### Addendum — 2026-10-01 (fourth): six admin screens, read for what each one teaches
+
+**Requirement.** The owner shared six screens and asked for their design concepts to
+be added to the system, or the part already built improved, in this theme and in both
+modes: a corporate profile board with a Read and a Write scope per tile, publishing a
+profile to a chosen audience, a user list with an access drawer, a department page, a
+page where DOM controls sit over a WebGL surface, and one-click invoice dispatch. A
+screen is the unit here, not a widget: each one is built as a specimen from the
+components that exist, in `/admin/design-system#screens` (and `#depth`, `#flows`,
+`#layout`), with the states and refusals a picture of a screen leaves out. The
+mockups' colours, fonts and Vue/Quasar-style code were not copied (Law 1, and this is
+Next 15 and React 19).
+
+**What was built.**
+
+| Concept (screen) | Where | Built on |
+|---|---|---|
+| Segmented control (all six) | `ui/segmented.tsx`: `kind="filter"` (`aria-pressed`) or `kind="choice"` (`radiogroup`, arrow keys that skip disabled options) | promoted because it replaced two copies of one markup: `RangePicker` and the chart `ViewSwitch` now delegate to it; the gate, the mode switches and the grant length use it |
+| Side sheet (user management drawer) | `Dialog align="end"`: full height against the inline-end edge, `w-full max-w-md` | the existing `Dialog`, so Escape, backdrop, labelled Close, focus trap and scroll lock come with it |
+| People and access | `design-system/people-access.tsx`; rules in `access-draft.ts` | `PageHeader`, stacked `DataTable`, `Pagination`, `Dialog`, `ConfirmDialog`, `Segmented`, `ScopeChipEditor` |
+| Publish and audience targeting | `publish-audience.tsx`; rules in `audience.ts`; `choice-cards.tsx` extracted from `patterns.tsx` | `Segmented`, `ChoiceCards`, `Switch`, `Button loading`, `ConfirmDialog`, `Skeleton` classes |
+| Department page | `department-page.tsx`; rules in `department.ts` | `PageHeader`, `Disclosure`, `DataTable`, `ConfirmDialog`, `Segmented`, `Switch` |
+| DOM over a surface (layering) | `layering.tsx`: stage at `z-base`, annotation layer at `z-raised` | `FROSTED`, `Switch`, `DataTable`, the named `layers` tokens |
+| One-click dispatch | `dispatch-flow.tsx`; the moves between states in `dispatch-machine.ts` | `Badge`, `Button`, `Segmented`, `Disclosure` |
+| Corporate profile board, improved | `scoped-bento.tsx`: an identity lead (logo, or a monogram when there is none, with an Active badge), an address tile with an honest "No map preview" slot, and a closed "Grid map" disclosure | `Bento`, `BentoTile`, `Disclosure`, `next/image` on `BRAND.assets.logoRaster` |
+| A nested page's heading | `PageHeader headingLevel` (`h1` to `h4`, `h1` by default) | so a screen shown inside the gallery does not add a second `h1` |
+
+Four pure modules carry every rule a screen enforces, so the rule can be tested
+without a browser and a real screen imports it unchanged: `access-draft.ts` (24
+tests), `audience.ts` (15), `department.ts` (24), `dispatch-machine.ts` (19). That is
+82 new tests; the web package runs 160. `ScopeChipEditor` has one consumer (the
+access sheet) and `ChoiceCards` two (the older patterns page and publishing), so
+neither is in `ui/`: the third consumer promotes it (`design.md`, the rule of three).
+No dependency was added.
+
+**Improved, not copied.**
+- **Access cannot be made to last forever.** "Temporary access" cannot be switched
+  on without an end, which is what the schema already says (`OrgUnitGrant.expiresAt`
+  is `DateTime`, not nullable). It needs a reason that goes to the audit log, and an
+  acting grant needs a countersigner who outranks the recipient. Refusals use the
+  server's own sentences (`org-unit-grant.service.ts`: "A grant cannot run longer than
+  N days from now." and "An ACTING grant needs a countersignature from someone who
+  outranks the recipient.") so the screen and the API cannot disagree. The 30-day
+  preset is shown disabled with the limit written beside it, not hidden (`PRM-2`).
+- **You cannot edit your own access.** Your row opens with every control disabled and
+  the reason written (a person who can grant and use the same access is the toxic
+  pair). A person with no branch has no branch, never every branch.
+- **A dirty sheet asks before it closes**, by Escape, backdrop or Cancel, with
+  "Keep editing" as the first choice. A change is shown as what it adds and what it
+  removes ("+ Karachi", "− Lahore") before Save, not as a list of field names.
+- **Audience only exists for Public.** An unlisted link with an audience is a
+  contradiction, so choosing Unlisted or Internal closes the audience steps (`PRM-5`).
+  Going Public asks first and names how many partner accounts can find it, and says
+  what unpublishing cannot do: a search engine's copy can take days to clear.
+- **The count is advice, not a gate.** It recounts after a pause and shows
+  "Counting" immediately. When it fails the screen says so and Publish stays
+  available; when the filters match nobody Publish is refused with the reason and the
+  fix. Zero is reachable on purpose (`Site audited` is a 1% share).
+- **A department's head is a post, not a column.** `OrgUnit` has no head-user and no
+  cost-centre column, so the page shows the head as the holder of a post with a link
+  to People, and "works in" as the nearest office up the tree, so it cannot disagree
+  with the org chart. A closed unit cannot be a parent, and closing lists every
+  blocker (open units, positions) with the screen that fixes each, in the server's
+  words. "Active" is a badge that follows from the state, not a toggle.
+- **The overlay is glass.** The wrapper is `pointer-events-none` and each control on
+  it opts back in with `pointer-events-auto`, so empty overlay passes a click to the
+  stage and a button on it is still a button. Focus follows source order, not z-order,
+  and the stage works by keyboard on its own.
+- **The send says only what it knows.** The badge goes Draft, Sending, Sent or
+  Failed, never "Dispatched" or "Delivered", because nothing here can know a
+  partner's inbox has it. Send answers in the same frame and becomes Undo for a
+  window in which nothing has left. A bounce offers Correct the email and no Retry
+  (it would bounce again); an outage offers Retry, which carries the same
+  idempotency key so a half-worked first attempt cannot become two emails.
+- **The profile board stays honest about what it has.** A drawn map thumbnail would be
+  a picture of data the profile does not hold, so the address tile carries a slot that
+  says "No map preview". The mockup's grid mapping is a closed disclosure showing, for
+  the viewer, how many of the four blocks they read and write, and what was left out.
+
+**Parameters.**
+
+| Parameter | Exact value | Why this and not another | Enforced |
+|---|---|---|---|
+| Undo window | 5 000 ms | long enough to read the partner's name on the confirmation line and catch a wrong one, short enough that a waiting customer is not made to wait. The design for the real send is the outbox row's own delay: write it with `OutboxEvent.availableAt` that far ahead (`outbox.dispatcher.ts` already selects only rows with `"availableAt" <= NOW()`), so Undo cancels a row nothing has picked up and closing the tab inside the window does not cancel the send. Nothing here writes that row | `dispatch-machine.ts`, `UNDO_WINDOW_MS`, pinned by its spec |
+| Undo clock | ticks every 250 ms, 5 pips (one per second), the counter rounds up | a quarter second keeps the pips from visibly lagging a click, and rounding up means the label never reads 0 s while Undo still works | `dispatch-flow.tsx`, `TICK_MS`, `PIPS` |
+| Mail-service answer, specimen only | 1 400 ms | stands in for real latency so the Sending state is visible; the real wait is whatever the mail service takes | `dispatch-flow.tsx`, `HANDOFF_MS` |
+| Audience count pause | 400 ms after the last change | one slider drag crosses many 10 km steps and should cost one count, and under half a second still feels live | `publish-audience.tsx`, `COUNT_DELAY_MS` |
+| Publish, specimen only | 700 ms | makes the busy button visible; the real wait is the request | `publish-audience.tsx`, `PUBLISH_DELAY_MS` |
+| Audience pool and radius | 4 800 partner accounts, 10 to 500 km in steps of 10, 150 km to start | illustrative figures; 500 km spans the whole network of a country-sized deployment and 10 km is the smallest meaningful catchment | `audience.ts` |
+| Longest temporary grant | 14 days in the specimen; the real limit is a setting (`getOrgAccessMaxGrantDays`) | the screen's text says "set in Settings" because it is; 14 is only the specimen's stand-in | `access-draft.ts`, `MAX_GRANT_DAYS`, pinned by its spec |
+| Grant length presets | 1 day, 1 week, 30 days, 1 week to start | the three lengths people actually mean; the third is disabled past the maximum so the limit is visible | `access-draft.ts`, `GRANT_PRESETS` |
+| Access that ends soon | warning tone under 1 hour | the existing "Access that ends" pattern turns to warning at the same line | `access-draft.ts`, `endsSoon` |
+| List page size, specimen | 4 rows over 12 people | small enough that pagination shows; a real list sizes this to its own endpoint | `people-access.tsx`, `PAGE_SIZE` |
+| Sheet width | 448 px (`max-w-md`), full width below that | three short sections fit without sideways scroll at 280 px, and above that the list stays visible beside it | `dialog.tsx`, `align="end"` |
+| Sheet motion | `slideInRight`, 320 ms (`duration-slow`), an 8 px travel, none under reduced motion | it says where the sheet came from; measured under `prefers-reduced-motion: reduce` the computed animation duration is 0.00001 s | the shared reduced-motion rule |
+| Stacking | stage `z-base` (0), overlay `z-raised` (1), nothing above `z-raised-3`; the stage is wrapped in `isolate` | a stack that needs a fourth step has a structure problem, and `isolate` stops it leaking above the sticky header or below a modal | `brand.ts` `layers`; `layering.tsx` |
+| Touch targets | Close, chip remove and the radio presets are 44 px below `fold` | a finger is the pointer there (`design.md`) | `min-h-11` and `h-11 w-11` with `fold:` overrides |
+
+**Failure modes.**
+- *A second copy of an event.* A double click on Send, a late timer, and a late
+  delivery in the wrong state are no-ops: `dispatchReducer` returns the same state
+  object for any move the state does not accept (19 tests, including that `sent` is
+  final).
+- *The count fails.* A warning in place of the figure, Publish still available.
+- *Publishing while counting.* The button is disabled with the reason beside it, never
+  hidden.
+- *Focus lost to a button that is gone.* Found by driving the sheet with a keyboard:
+  after Revoke the confirmation handed focus back to a button that no longer existed,
+  so Escape stopped working because focus was on the page behind the sheet. The sheet
+  now moves focus to the grant checkbox when a live grant ends. The chip editor does
+  the same for its select after a removal, including when the select did not exist
+  until that removal made room for it.
+- *The same sentence twice.* The footer already announces why Save is off, so the
+  inline refusal beside the field is not a second live region.
+- *Nothing to send to.* An empty or malformed email disables Send and says the form
+  to use. Failure copy always says what happened, why and the one next step, and the
+  next step is never "try again later".
+
+**Not adopted.** Vue, Pinia, Quasar and a ticker or timer library (this is React with
+a reducer); Three.js or any WebGL (the transferable idea is the pass-through rule); the
+mockups' colours, fonts and shadows; a drawn map thumbnail; a cost-centre lookup and
+a head-user column (neither exists on `OrgUnit`); an Active toggle on a department; any
+"Dispatched" or "Delivered" claim; literal z-index numbers.
+
+**Noticed, not changed.**
+- `brand.ts` has no distance unit, so the specimen holds `DISTANCE_UNIT = 'km'` itself.
+  A deployment that uses miles needs a place for it, which is a token decision.
+- `slideInRight` is a physical `translateX(8px)`. In a right-to-left locale the sheet
+  sits against the left edge and still travels from the right by 8 px. It is harmless
+  and physical, so it belongs in a logical-direction pass with the other keyframes.
+- `Dialog` handles Escape on its own panel, so when focus is lost to the page behind a
+  modal Escape does nothing. The sheet was fixed locally; a document-level listener in
+  `Dialog` would change every consumer and is left for its own pass.
+- `Pagination` was written for server pages and at 280 px wraps its centre text to two
+  lines; no text is lost, so it was left alone.
+- The profile board's "Your access" tile has spare room under its rows when it sits
+  beside the taller address tile.
+- There is no send-invoice endpoint. `admin/invoices` creates and reads under
+  `orders.manage`. A real one is its own work order (a route the server checks, a
+  decision whether `orders.manage` is enough or a key of its own, and an outbox
+  handler that sends the mail), named here and not stubbed.
+
+**Verification.** `pnpm lint` passes (contrast baseline unchanged at 43 light and 39
+dark known-below-floor uses, module boundaries, chart imports, rebrand, links, rules),
+`pnpm typecheck` passes, and `pnpm test` passes for every package except the API (which
+needs a database): web 160 tests (78 before, 82 added). The four counts in `CLAUDE.md`
+hold: inline `style={{` 26, `toLocaleString` 6, bare fetch 6, gray palette 0. The
+gallery was built for production and driven with Playwright: 95 interaction checks
+passed with no console error (sheet open and close three ways, focus return, discard
+guard, branch chips and focus, the disabled preset and arrow keys skipping it, acting
+refusals and countersigners, revoke through a second dialog, the count pause and its
+failure, the Public confirmation, live versus draft, the staff view, department
+validation, the code suggestion, the closed-parent option, close blockers and the empty
+path, `elementFromPoint` pass-through, the layer outline, undo, success, bounce,
+outage with the same key, the board's viewers, and reduced motion). A sweep of 7
+widths (280, 380, 640, 768, 1024, 1280, 1536) in both themes found no horizontal
+overflow and no clipped text in the four sections, with the sheet and its confirmation
+open at each width (14 of 14 combinations). Those scripts are not in the repository.
+`pnpm check:overflow` needs a seeded stack and was not run here. Two things the
+screenshots caught that no command would have: the layers table clipped its last
+column inside a narrow column (it now spans the width), and the outline tag covered the
+"12 zones" label.
+
+**Scope lenses.**
+The actor with three tables: no new actor. The person is a `User` and a countersigner
+is a `User`; a partner in the audience is a `TradingPartner`. The specimens hold
+illustrative people and counts, not rows of either.
+The principal with no permission key: every control is checked server-side against a
+real key, shown disabled with its name in the reason (`PRM-2`): `users.manage` to open
+the list, `org.access.grant` for temporary access, `org.structure.view` and
+`org.structure.manage` for the department page, `settings.manage` to publish. All five
+are in the catalogue (`docs/index/cross/permissions.md`) and ADMIN holds each; none was
+added, so there is no `Permission` row without a grant.
+The grant that ends itself: `OrgUnitGrant.expiresAt` is not nullable and the sheet
+cannot issue a grant without it, with `endsSoon` warning under an hour. What deactivating
+a user does to a live grant is not touched here.
+Whose rows, and which columns: the list shows the branches a person can reach and the
+board shows a viewer only the tiles they can read (`Grid map`); a real list passes what
+its endpoint returned for the viewer.
+The threshold nobody approves alone, the toxic pair: an acting grant needs a
+countersigner who outranks the recipient (`countersignCandidates`), and your own access
+cannot be changed by you (`saveBlocker`). The server enforces both, and the screen
+shows its words.
+Authority and blast radius: the longest grant is a setting, and the audit row carrying
+the old and new value is the real screen's job, named in the sheet's reason field.
+Audience is a capability, not an address: the invoice is sent to the partner's billing
+email, a field of the invoice screen, not a literal; no announcement is sent from here.
+Request or record: every write here is a REQUEST the system may refuse (grant, publish,
+create, close, send), and each shows its refusal. None is a RECORD of something that
+already happened; a delivery receipt would be one, and nothing here writes it.
+The movement with no address, four hours down, the money lenses (posting rule,
+columns, period, second legal entity, dry run): n/a, no stock, cash or journal line is
+read or written; the invoice screen sends mail and posts nothing, because issuing is
+the separate `invoice.issued` event.
+Click the number: the audience count links to the list that produced it in a real
+screen; the specimen's link goes to the section because no list exists.
+The three silhouettes, the absent collaborator: a Solo deployment sees the same
+screens with one branch; a pack that adds departments or trading partners is absent
+without breaking the list, because each link is a `ROUTES` entry and not an import.
+The second copy of the write: the idempotency key `invoice-id:send:intent`, with the
+column and unique constraint belonging to the real endpoint.
+The hundred-thousandth row: n/a, no query is made; a real people list pages on the
+server through `Pagination` and its endpoint's own limit.
+The adoption test: no number or code is generated here except the department code,
+which is suggested from the name and checked against taken codes before Save.
+The reversal document, the undo fan-out: Undo cancels an outbox row that has not been
+picked up; after the window the send is irreversible and the screen says "Sending",
+never "Delivered". Revoking a grant ends it now and says what it cannot undo.
+The version stamp, the erasure the ledger cannot obey: n/a, no record is created.
+The failure path: a bounce lands in Failed with its reason and a Correct action; an
+outage lands in Failed with Retry; the real screen adds the outbox row's failed state
+and the permission that opens it.
+Reachable: `/admin/design-system#screens`, `#depth`, `#flows` and `#layout`, each with
+a link in the page's section nav, and the new rows are in `03-components.md` and
+`.claude/rules/ui.md`.

@@ -24,6 +24,7 @@ export function PageHeader({
   context,
   action,
   className,
+  headingLevel: Heading = 'h1',
 }: {
   title: ReactNode;
   /** One line. If it needs two, the page is doing two things. */
@@ -32,6 +33,8 @@ export function PageHeader({
   /** The single primary action. */
   action?: ReactNode;
   className?: string;
+  /** h1 on a page of its own. Drop it where the header sits inside a larger page, such as a specimen in the gallery. */
+  headingLevel?: 'h1' | 'h2' | 'h3' | 'h4';
 }) {
   return (
     <header className={cn('mb-6', className)}>
@@ -39,7 +42,7 @@ export function PageHeader({
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-xl font-semibold text-neutral-900">{title}</h1>
+          <Heading className="text-xl font-semibold text-neutral-900">{title}</Heading>
           {description ? (
             <p className="mt-1 max-w-prose text-sm text-neutral-900/60">{description}</p>
           ) : null}

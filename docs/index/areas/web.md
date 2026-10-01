@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-462 files · 79,646 lines
+478 files · 83,342 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -32,7 +32,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
 | `apps/web/src/app` | 247 | 47,955 | page, loading, layout, error |
-| `apps/web/src/components` | 148 | 24,838 | component, unit test, loading |
+| `apps/web/src/components` | 164 | 28,534 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 5 | 474 | constants |
 | `apps/web/src/hooks` | 4 | 189 | hook |
@@ -78,7 +78,7 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/components/admin/dashboard/card-registry.ts` | 705 | component |  |
 | `apps/web/src/app/globals.css` | 702 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/email-accounts/[id]/page.tsx` | 658 | page |  |
-| `apps/web/src/app/(admin)/admin/(app)/inbox/page.tsx` | 625 | page |  |
+| `apps/web/src/components/design-system/people-access.tsx` | 638 | component |  |
 
 
 ---

@@ -1457,7 +1457,7 @@ Every top-level export in `web`, with the line to open.
 | `range-picker.tsx` | `RANGES` | const | :6 | The windows every analytics screen offers. |
 | `range-picker.tsx` | `DASHBOARD_RANGES` | const | :8 | The dashboard's own fourth option (10-admin-dashboard.md WO-A.4) — a year view nothing else here ne… |
 | `range-picker.tsx` | `RangeDays` | type | :9 | The dashboard's own fourth option (10-admin-dashboard.md WO-A.4) — a year view nothing else here ne… |
-| `range-picker.tsx` | `RangePicker` | function | :24 | How long a window the figures below cover. |
+| `range-picker.tsx` | `RangePicker` | function | :25 | How long a window the figures below cover. |
 | `role-wizard.tsx` | `RoleWizard` | function | :22 | Create-or-edit a role, one permission group per screen (owner's request): name and description firs… |
 | `scope-chips.tsx` | `ScopeChip` | interface | :6 |  |
 | `scope-chips.tsx` | `ScopeChips` | function | :27 | The scope switcher for the three-level admin shell (RETAIL-ERP.md R19, WO-18.5) — brand chips over… |
@@ -1537,10 +1537,10 @@ Every top-level export in `web`, with the line to open.
 | `chart-math.ts` | `HeatMonth` | interface | :273 |  |
 | `chart-math.ts` | `heatMonthTotals` | function | :286 | Per-month totals over the days a calendar actually shows. |
 | `chart-math.ts` | `niceCeil` | function | :312 | The next round number at or above `value`: 51,000 becomes 60,000, 18 becomes 20. |
-| `chart-series.tsx` | `SeriesDef` | interface | :6 |  |
-| `chart-series.tsx` | `useSeriesVisibility` | function | :17 | Which series are showing. |
-| `chart-series.tsx` | `SeriesToggles` | function | :36 | The legend that is also the filter: one toggle per series, always present for two or more (dataviz… |
-| `chart-series.tsx` | `ViewSwitch` | function | :89 | One view of the same data at a time: a radar or its bars, side by side or overlaid. |
+| `chart-series.tsx` | `SeriesDef` | interface | :7 |  |
+| `chart-series.tsx` | `useSeriesVisibility` | function | :18 | Which series are showing. |
+| `chart-series.tsx` | `SeriesToggles` | function | :37 | The legend that is also the filter: one toggle per series, always present for two or more (dataviz… |
+| `chart-series.tsx` | `ViewSwitch` | function | :90 | One view of the same data at a time: a radar or its bars, side by side or overlaid. |
 | `chart-theme.ts` | `ValueFormat` | type | :22 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
 | `chart-theme.ts` | `CHART_PALETTE` | const | :24 | D1's own type, defined here rather than in `card-registry.ts` — every chart wrapper needs it to kno… |
 | `chart-theme.ts` | `GRID` | const | :25 |  |
@@ -1662,6 +1662,32 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
+| `access-draft.ts` | `GrantMode` | type | :11 | The deciding functions behind the people-and-access specimen. |
+| `access-draft.ts` | `MAX_GRANT_DAYS` | const | :18 | The longest a grant may run. |
+| `access-draft.ts` | `GRANT_PRESETS` | const | :20 | The longest a grant may run. |
+| `access-draft.ts` | `Person` | interface | :26 |  |
+| `access-draft.ts` | `GrantDraft` | interface | :43 |  |
+| `access-draft.ts` | `EMPTY_GRANT` | const | :51 |  |
+| `access-draft.ts` | `grantEndsAt` | function | :56 | An absolute end, never "N days": a grant has an `expiresAt`, and it is never null. |
+| `access-draft.ts` | `grantRefusals` | function | :61 | What the server would refuse, in the server's words. |
+| `access-draft.ts` | `countersignCandidates` | function | :83 | People who may countersign for this recipient: strictly higher rank, never the recipient, never the… |
+| `access-draft.ts` | `formatRemaining` | function | :95 | How long a grant has left, in the units a person plans in: days and hours, then hours and minutes,… |
+| `access-draft.ts` | `endsSoon` | function | :107 | Under an hour the notice turns from information to warning, and says so in words as well as colour. |
+| `access-draft.ts` | `scopeDiff` | function | :111 |  |
+| `access-draft.ts` | `saveBlocker` | function | :123 | Why Save is off, or null. |
+| `audience.ts` | `Visibility` | type | :14 | The deciding functions behind the publish-and-audience specimen. |
+| `audience.ts` | `AudienceScope` | type | :15 |  |
+| `audience.ts` | `AUDIENCE_POOL` | const | :18 | Partner accounts in the specimen's world. |
+| `audience.ts` | `MAX_RADIUS_KM` | const | :20 | Widest radius the builder offers, in kilometres. |
+| `audience.ts` | `MIN_RADIUS_KM` | const | :21 | Widest radius the builder offers, in kilometres. |
+| `audience.ts` | `INDUSTRIES` | const | :26 |  |
+| `audience.ts` | `VERIFICATIONS` | const | :33 |  |
+| `audience.ts` | `AudienceFilters` | interface | :40 |  |
+| `audience.ts` | `estimateAudience` | function | :63 | How many accounts an audience reaches. |
+| `audience.ts` | `visibilityUsesAudience` | function | :81 | Whether the audience questions apply. |
+| `audience.ts` | `Friction` | type | :85 |  |
+| `audience.ts` | `publishFriction` | function | :94 | How much it costs to say yes (`ACT-6`). |
+| `audience.ts` | `publishBlocker` | function | :102 | Why Publish is not available yet, or null. |
 | `chart-concepts.tsx` | `ChartRuleSpecimen` | function | :88 |  |
 | `chart-concepts.tsx` | `FunnelSpecimen` | function | :113 |  |
 | `chart-concepts.tsx` | `PointLineSpecimen` | function | :128 |  |
@@ -1672,9 +1698,33 @@ Every top-level export in `web`, with the line to open.
 | `chart-concepts.tsx` | `HeatmapSpecimen` | function | :311 |  |
 | `chart-concepts.tsx` | `RadarSpecimen` | function | :330 |  |
 | `chart-concepts.tsx` | `SalesComparisonSpecimen` | function | :374 |  |
+| `choice-cards.tsx` | `ChoiceOption` | interface | :15 | One choice among a few that each need a sentence. |
+| `choice-cards.tsx` | `ChoiceCards` | function | :21 |  |
 | `data-concepts.tsx` | `ColumnManagerSpecimen` | function | :255 | The grid and the panel that decides which columns it has. |
 | `data-concepts.tsx` | `RegionalPerformanceSpecimen` | function | :426 | Regional performance: three headline figures, then this period against the last with the table that… |
 | `data-concepts.tsx` | `ShareSpecimen` | function | :482 | Share of a whole, twice: money (a budget) and counts (orders by channel). |
+| `department-page.tsx` | `DepartmentPageSpecimen` | function | :85 |  |
+| `department.ts` | `Unit` | interface | :24 | The deciding functions behind the department-page specimen. |
+| `department.ts` | `DepartmentDraft` | interface | :33 |  |
+| `department.ts` | `DepartmentField` | type | :39 |  |
+| `department.ts` | `suggestCode` | function | :49 | A code to offer while the name is typed: lowercase words joined by hyphens. |
+| `department.ts` | `departmentErrors` | function | :59 | One message per broken field, each saying what to do. |
+| `department.ts` | `descendantIds` | function | :86 | The unit and everything beneath it. |
+| `department.ts` | `unitPath` | function | :102 | Where a unit sits, root first, as names. |
+| `department.ts` | `nearestOffice` | function | :115 | The nearest office at or above a unit: where a department placed here is said to work. |
+| `department.ts` | `CloseBlocker` | interface | :126 |  |
+| `department.ts` | `closeBlockers` | function | :133 | What stops a close, in the service's words with the plural handled. |
+| `dispatch-flow.tsx` | `DispatchFlowSpecimen` | function | :122 |  |
+| `dispatch-machine.ts` | `UNDO_WINDOW_MS` | const | :35 | How long a send can be undone, in milliseconds. |
+| `dispatch-machine.ts` | `FailureKind` | type | :37 | How long a send can be undone, in milliseconds. |
+| `dispatch-machine.ts` | `DispatchState` | type | :39 |  |
+| `dispatch-machine.ts` | `DispatchEvent` | type | :46 |  |
+| `dispatch-machine.ts` | `INITIAL_DISPATCH` | const | :55 |  |
+| `dispatch-machine.ts` | `dispatchReducer` | function | :57 |  |
+| `dispatch-machine.ts` | `idempotencyKey` | function | :94 | The key the request carries so the server can recognise a second copy. |
+| `dispatch-machine.ts` | `DispatchTone` | type | :98 |  |
+| `dispatch-machine.ts` | `dispatchBadge` | function | :101 | The badge: a word, always. |
+| `dispatch-machine.ts` | `FAILURE_COPY` | const | :116 | What happened, why, and what to do next (`FLO-7`). |
 | `flow-concepts.tsx` | `RoutingCanvasSpecimen` | function | :106 |  |
 | `flow-concepts.tsx` | `JourneyTiersSpecimen` | function | :418 | A funnel you can operate: five bars narrowing toward the job, each a tab. |
 | `foundations.tsx` | `GallerySection` | function | :21 | ── frame ─────────────────────────────────────────────────────────────── |
@@ -1684,12 +1734,17 @@ Every top-level export in `web`, with the line to open.
 | `foundations.tsx` | `TypeFoundations` | function | :265 |  |
 | `foundations.tsx` | `SpaceFoundations` | function | :297 | ── space, size, radius ───────────────────────────────────────────────── |
 | `foundations.tsx` | `ElevationFoundations` | function | :359 |  |
-| `gallery.tsx` | `DesignSystemGallery` | function | :53 | The design system, rendered by the system it describes. |
+| `gallery.tsx` | `DesignSystemGallery` | function | :59 | The design system, rendered by the system it describes. |
+| `layering.tsx` | `LayeringSpecimen` | function | :86 |  |
 | `layout-loading.tsx` | `BentoSpecimen` | function | :71 | A tile is one job. |
 | `layout-loading.tsx` | `SkeletonSpecimen` | function | :197 | One card per shape a page waits in: a figure, a person, a table, a chart. |
 | `live-tokens.ts` | `useLiveTokens` | function | :17 | Reads the theme's colours back out of the browser, not out of brand.ts. |
+| `patterns.tsx` | `FROSTED` | const | :57 | Frosted: 85% of the overlay surface over a blur. |
 | `patterns.tsx` | `AdminPatterns` | function | :68 |  |
-| `scoped-bento.tsx` | `ScopedBentoSpecimen` | function | :238 |  |
+| `people-access.tsx` | `PeopleAccessSpecimen` | function | :420 | ── the list ──────────────────────────────────────────────────────────── |
+| `publish-audience.tsx` | `PublishAudienceSpecimen` | function | :142 |  |
+| `scope-chip-editor.tsx` | `ScopeChipEditor` | function | :24 | A set of scopes you can take from and add to: removable chips and one "Add" select. |
+| `scoped-bento.tsx` | `ScopedBentoSpecimen` | function | :397 |  |
 | `specimens.tsx` | `ComponentSpecimens` | function | :46 |  |
 
 ### `apps/web/src/components/storefront`
@@ -1784,6 +1839,7 @@ Every top-level export in `web`, with the line to open.
 | `index.ts` | `ListPageSkeleton` | re-export |  | from `./list-page-skeleton` |
 | `index.ts` | `Skeleton` `SkeletonText` `SkeletonRegion` `type SkeletonShape` | re-export |  | from `./skeleton` |
 | `index.ts` | `Switch` | re-export |  | from `./switch` |
+| `index.ts` | `Segmented` `type SegmentedOption` | re-export |  | from `./segmented` |
 | `index.ts` | `Bento` `BentoTile` `type BentoSize` `type BentoTone` | re-export |  | from `./bento` |
 | `index.ts` | `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` `type FilterDef` | re-export |  | from `./filter-bar` |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | function | :20 | The shape of a list page, before the list page. |
@@ -1796,6 +1852,8 @@ Every top-level export in `web`, with the line to open.
 | `section-rail.tsx` | `RailSection` | interface | :6 |  |
 | `section-rail.tsx` | `SectionRail` | function | :36 | A long object page with a rail to jump around it. |
 | `section.tsx` | `Section` | function | :19 | A titled region of a page, with no box around it. |
+| `segmented.tsx` | `SegmentedOption` | interface | :27 | A short row of mutually exclusive options, the current one filled. |
+| `segmented.tsx` | `Segmented` | function | :34 |  |
 | `skeleton.tsx` | `SkeletonShape` | type | :26 |  |
 | `skeleton.tsx` | `Skeleton` | function | :28 |  |
 | `skeleton.tsx` | `SkeletonText` | function | :33 | `lines` rows of text; the last is shorter, the way a paragraph ends. |

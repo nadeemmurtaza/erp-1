@@ -180,7 +180,7 @@ the *catalogue*, not any particular deployment's grants.
 | `hr.assets.manage` | Issue and return company equipment (laptops, phones, uniforms) to staff | medium | 6 | 3 | ADMIN |
 | `hr.assets.writeoff` | Mark an asset retired or lost — a real cost, separate from day-to-day issue/ret… | medium | 1 | 1 | ADMIN |
 | `hr.people.view` | View the people list, positions and the rank ladder | low | 5 | 1 | ADMIN |
-| `hr.people.manage` | Create positions, assign and end postings, manage the rank ladder | medium | 10 | 2 | ADMIN |
+| `hr.people.manage` | Create positions, assign and end postings, manage the rank ladder | medium | 10 | 3 | ADMIN |
 | `hr.attendance.view` | View attendance events, shifts and exceptions | low | 3 | 1 | **none — no live user holds it** |
 | `hr.attendance.record` | Record a punch for someone else, or import paper sign-in sheets | medium | 9 | — | **none — no live user holds it** |
 | `hr.attendance.reconcile` | Clear an attendance exception — link it to a shift or accept it as-is | medium | 4 | 2 | **none — no live user holds it** |
@@ -192,7 +192,7 @@ the *catalogue*, not any particular deployment's grants.
 | Key | Label | Risk | API routes | UI sites | Roles granted at seed |
 |---|---|---|---|---|---|
 | `org.structure.view` | View the organization tree — offices, regions and departments | low | 4 | 1 | ADMIN |
-| `org.structure.manage` | Create, rename, move and close units in the organization tree | high | 9 | 2 | ADMIN |
+| `org.structure.manage` | Create, rename, move and close units in the organization tree | high | 9 | 6 | ADMIN |
 | `org.access.view` | See who reaches an organization unit, by posting or by grant | medium | 1 | 1 | ADMIN |
 | `org.access.grant` | Issue or revoke a time-boxed access grant over an organization unit | high | 4 | 2 | ADMIN |
 | `tasks.view` | View tasks — my work, a post queue, and a task's transition history | low | 4 | 1 | STAFF |

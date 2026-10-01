@@ -3,7 +3,7 @@
 
 # Components
 
-All **141** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **149** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 266 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 273 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 6 |  |
 
 ### `apps/pos/src/components` (2)
@@ -153,17 +153,24 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/design-system` (9)
+### `apps/web/src/components/design-system` (16)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `chart-concepts.tsx` | `ChartRuleSpecimen` `FunnelSpecimen` `PointLineSpecimen` `RangeSpecimen` `ForecastSpecimen` `GaugeSpecimen` `StackedAreaSpecimen` `HeatmapSpecimen` `RadarSpecimen` `SalesComparisonSpecimen` | client | 1 |  |
+| `choice-cards.tsx` | `ChoiceOption` `ChoiceCards` | client | 2 |  |
 | `data-concepts.tsx` | `ColumnManagerSpecimen` `RegionalPerformanceSpecimen` `ShareSpecimen` | client | 1 |  |
+| `department-page.tsx` | `DepartmentPageSpecimen` | client | 1 |  |
+| `dispatch-flow.tsx` | `DispatchFlowSpecimen` | client | 1 |  |
 | `flow-concepts.tsx` | `RoutingCanvasSpecimen` `JourneyTiersSpecimen` | client | 1 |  |
 | `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 5 |  |
 | `gallery.tsx` | `DesignSystemGallery` | client | 2 |  |
+| `layering.tsx` | `LayeringSpecimen` | client | 1 |  |
 | `layout-loading.tsx` | `BentoSpecimen` `SkeletonSpecimen` | client | 1 |  |
-| `patterns.tsx` | `AdminPatterns` | client | 1 |  |
+| `patterns.tsx` | `FROSTED` `AdminPatterns` | client | 2 |  |
+| `people-access.tsx` | `PeopleAccessSpecimen` | client | 1 |  |
+| `publish-audience.tsx` | `PublishAudienceSpecimen` | client | 1 |  |
+| `scope-chip-editor.tsx` | `ScopeChipEditor` | client | 1 |  |
 | `scoped-bento.tsx` | `ScopedBentoSpecimen` | client | 1 |  |
 | `specimens.tsx` | `ComponentSpecimens` | client | 1 |  |
 
@@ -210,7 +217,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `theme-switch.tsx` | `ThemeSwitch` | client | 1 |  |
 | `visual-search-button.tsx` | `VisualSearchButton` | client | 1 |  |
 
-### `apps/web/src/components/ui` (21)
+### `apps/web/src/components/ui` (22)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -230,6 +237,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `pagination.tsx` | `PaginationMeta` `Pagination` | server | 1 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 1 |  |
 | `section.tsx` | `Section` | server | 6 |  |
+| `segmented.tsx` | `SegmentedOption` `Segmented` | client | 1 |  |
 | `skeleton.tsx` | `SkeletonShape` `Skeleton` `SkeletonText` `SkeletonRegion` | server | 2 |  |
 | `switch.tsx` | `Switch` | client | 2 |  |
 | `tabs.tsx` | `TabItem` `Tabs` | client | 1 |  |

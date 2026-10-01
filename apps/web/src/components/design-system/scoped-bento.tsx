@@ -1,10 +1,11 @@
 'use client';
 
-import { useId, useState, type FormEvent } from 'react';
-import { Eye, EyeOff, Lock, Pencil } from 'lucide-react';
+import { useId, useState, type FormEvent, type ReactNode } from 'react';
+import Image from 'next/image';
+import { CircleCheck, Eye, EyeOff, Lock, MapPin, Pencil } from 'lucide-react';
 import { BRAND } from '@newax/shared';
 import type { PermissionKey } from '@/constants/permissions';
-import { Badge, Bento, BentoTile, Button, type BentoSize } from '@/components/ui';
+import { Badge, Bento, BentoTile, Button, Disclosure, type BentoSize } from '@/components/ui';
 import { cn } from '@/utils/cn';
 
 /**
@@ -24,6 +25,15 @@ import { cn } from '@/utils/cn';
  * and written by the same one role. The check that matters is the server's
  * (`PermissionsGuard`); this board only mirrors it, and the keys here are real
  * catalogue entries (`PermissionKey`), not strings.
+ *
+ * Two more things come from the architecture drawing this board was refined
+ * against. A tile may open with a lead: the identity tile leads with the logo and
+ * the master state (Active), the address tile with a media slot. A slot reserves
+ * its size, so a missing or late picture moves nothing, and it has a designed
+ * state for having no picture (the location has no source here, and says so
+ * instead of drawing a fake map). And the grid map under the board writes the
+ * layout out as columns, following the viewer: the row closing over a hidden tile
+ * can be read off it.
  *
  * The "view as" switch is the specimen's own device. A real screen has one viewer.
  */
@@ -50,6 +60,8 @@ interface Field {
   key: string;
   label: string;
   value: string;
+  /** Shown in the tile's lead instead of the list; still edited with the rest. */
+  inHeader?: boolean;
 }
 
 interface ProfileTile {
@@ -65,6 +77,10 @@ interface ProfileTile {
   fields: Field[];
   read: Scope;
   write: Scope;
+  /** What opens the tile before its fields. */
+  lead?: (values: Record<string, string>) => ReactNode;
+  /** Put the lead beside the fields from `sm`, instead of above them. */
+  leadAside?: boolean;
 }
 
 const EVERYONE: Scope = { min: 'public', who: 'Public, all roles' };
@@ -73,13 +89,14 @@ const ADMIN_WRITE: Scope = { min: 'admin', who: 'Master admin', key: 'settings.m
 
 const TILES: ProfileTile[] = [
   {
-    id: 'banner',
-    title: 'Banner',
+    id: 'identity',
+    title: 'Identity',
     size: 'wide',
     read: EVERYONE,
     write: ADMIN_WRITE,
+    lead: (values) => <IdentityLead name={values['identity.name'] ?? ''} />,
     fields: [
-      { key: 'name', label: 'Company name', value: BRAND.identity.name },
+      { key: 'name', label: 'Company name', value: BRAND.identity.name, inHeader: true },
       { key: 'tagline', label: 'Tagline', value: BRAND.identity.tagline },
       { key: 'domain', label: 'Website', value: BRAND.identity.domain },
     ],
@@ -114,6 +131,8 @@ const TILES: ProfileTile[] = [
     size: 'wide',
     read: EVERYONE,
     write: ADMIN_WRITE,
+    lead: () => <LocationSlot />,
+    leadAside: true,
     fields: [
       { key: 'street', label: 'Registered address', value: BRAND.contact.address },
       { key: 'city', label: 'City', value: BRAND.contact.city },
@@ -124,6 +143,77 @@ const TILES: ProfileTile[] = [
 
 const initialValues = () =>
   Object.fromEntries(TILES.flatMap((t) => t.fields.map((f) => [`${t.id}.${f.key}`, f.value])));
+
+const monogram = (name: string) =>
+  name
+    .split(/\s+/)
+    .map((word) => word[0])
+    .filter((letter) => letter && /[\p{L}\p{N}]/u.test(letter))
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+
+/**
+ * The logo, in a box of its own size. If the file is missing the box shows the
+ * name's initials instead, so the tile never collapses or shows a broken image.
+ * The picture is decorative (`alt=""`) because the company name sits beside it.
+ */
+function LogoSlot({ name }: { name: string }) {
+  const [failed, setFailed] = useState(false);
+  return (
+    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-neutral-100">
+      {failed ? (
+        <span
+          aria-hidden="true"
+          className="grid h-full w-full place-items-center text-lg font-semibold text-neutral-900"
+        >
+          {monogram(name)}
+        </span>
+      ) : (
+        <Image
+          src={BRAND.assets.logoRaster}
+          alt=""
+          width={56}
+          height={56}
+          onError={() => setFailed(true)}
+          className="h-full w-full object-cover"
+        />
+      )}
+    </div>
+  );
+}
+
+/** The master state of the profile, with the logo and the name: what this board is about, before any field. */
+function IdentityLead({ name }: { name: string }) {
+  return (
+    <div className="flex min-w-0 items-center gap-3">
+      <LogoSlot name={name} />
+      <div className="min-w-0">
+        <p className="break-words text-lg font-semibold leading-tight text-neutral-900">{name}</p>
+        <Badge tone="success" className="mt-1">
+          <CircleCheck aria-hidden="true" className="h-3 w-3" />
+          Active
+        </Badge>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The slot for a map preview. No static-map source exists in this deployment, so
+ * the slot shows that, in words, at the size a map would take. When a source is
+ * added the picture replaces the contents and nothing around it moves.
+ */
+function LocationSlot() {
+  return (
+    <div className="grid h-24 place-items-center rounded-md bg-neutral-100 text-neutral-900/70 sm:h-full sm:min-h-24">
+      <span className="flex flex-col items-center gap-1 text-xs">
+        <MapPin aria-hidden="true" className="h-5 w-5" />
+        No map preview
+      </span>
+    </div>
+  );
+}
 
 function ScopeChips({ tile }: { tile: ProfileTile }) {
   return (
@@ -194,14 +284,19 @@ function ProfileTileBody({
           </div>
         </form>
       ) : (
-        <dl className="m-0 grid gap-3">
-          {tile.fields.map((f) => (
-            <div key={f.key} className="min-w-0">
-              <dt className="text-xs text-neutral-900/70">{f.label}</dt>
-              <dd className="m-0 break-words text-sm font-medium">{values[`${tile.id}.${f.key}`]}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className={cn('grid min-w-0 gap-4', tile.lead && tile.leadAside && 'sm:grid-cols-[8rem_minmax(0,1fr)]')}>
+          {tile.lead?.(values)}
+          <dl className="m-0 grid gap-3">
+            {tile.fields
+              .filter((f) => !f.inHeader)
+              .map((f) => (
+                <div key={f.key} className="min-w-0">
+                  <dt className="text-xs text-neutral-900/70">{f.label}</dt>
+                  <dd className="m-0 break-words text-sm font-medium">{values[`${tile.id}.${f.key}`]}</dd>
+                </div>
+              ))}
+          </dl>
+        </div>
       )}
 
       {editing ? null : (
@@ -231,6 +326,70 @@ function ProfileTileBody({
           )}
         </div>
       )}
+    </div>
+  );
+}
+
+interface MapBlock {
+  id: string;
+  title: string;
+  span: 1 | 2;
+  /** Omitted for the access tile, which is neither read nor written. */
+  write?: boolean;
+}
+
+/**
+ * The board as columns. It shows what the grid is doing, not a second copy of the
+ * content: each block is a tile, as wide as the columns it takes, with an icon for
+ * what this viewer can do to it (in words for a screen reader).
+ */
+function GridMap({ blocks, hidden }: { blocks: MapBlock[]; hidden: ProfileTile[] }) {
+  return (
+    <div className="grid gap-3">
+      <p className="max-w-prose text-sm text-neutral-900/70">
+        Four columns from xl, two from md, one below. A tile the viewer cannot read is left out and its neighbour
+        widens, so the row still closes.
+      </p>
+      <ol
+        aria-label="Tiles and the columns they take"
+        className="m-0 grid list-none grid-flow-dense grid-cols-4 gap-2 p-0"
+      >
+        {blocks.map((block) => (
+          <li
+            key={block.id}
+            className={cn(
+              'flex min-h-14 min-w-0 flex-col justify-between gap-1 rounded-md bg-neutral-100 p-2',
+              block.span === 2 ? 'col-span-2' : 'col-span-1',
+            )}
+          >
+            <span className="truncate text-xs font-medium text-neutral-900">{block.title}</span>
+            <span className="flex items-center justify-between gap-1 text-2xs tabular-nums text-neutral-900/70">
+              {block.span} of 4
+              {block.write === undefined ? null : (
+                <span className="flex items-center gap-1">
+                  <Eye aria-hidden="true" className="h-3 w-3" />
+                  <span className="sr-only">Can read.</span>
+                  {block.write ? (
+                    <>
+                      <Pencil aria-hidden="true" className="h-3 w-3" />
+                      <span className="sr-only">Can edit.</span>
+                    </>
+                  ) : null}
+                </span>
+              )}
+            </span>
+          </li>
+        ))}
+      </ol>
+      {hidden.length > 0 ? (
+        <p className="text-sm text-neutral-900/70">
+          Left out for this viewer:{' '}
+          {hidden
+            .map((tile) => `${tile.title} (needs ${tile.read.who}${tile.read.key ? `, ${tile.read.key}` : ''})`)
+            .join('; ')}
+          .
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -322,6 +481,21 @@ export function ScopedBentoSpecimen() {
           </ul>
         </BentoTile>
       </Bento>
+
+      <Disclosure label="Grid map" className="mt-0">
+        <GridMap
+          blocks={[
+            ...visible.map((tile) => ({
+              id: tile.id,
+              title: tile.title,
+              span: (sizeOf(tile) === 'wide' ? 2 : 1) as 1 | 2,
+              write: canWrite(tile),
+            })),
+            { id: 'access', title: 'Your access', span: 2 },
+          ]}
+          hidden={TILES.filter((tile) => !canRead(tile))}
+        />
+      </Disclosure>
 
       <p role="status" className="sr-only">
         {announce}

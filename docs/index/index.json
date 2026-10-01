@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2559,
-    "lines": 405046,
+    "files": 2575,
+    "lines": 408965,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -14,15 +14,15 @@
     "permissions": 130,
     "screens": 278,
     "crons": 30,
-    "specs": 370,
+    "specs": 374,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
       "files": 213,
-      "lines": 21465,
-      "bytes": 1227376,
+      "lines": 21466,
+      "bytes": 1227774,
       "label": "repository root files"
     },
     "infra": {
@@ -50,15 +50,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 462,
-      "lines": 79646,
-      "bytes": 2896916,
+      "files": 478,
+      "lines": 83342,
+      "bytes": 3039267,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 90114,
-      "bytes": 5459011,
+      "lines": 90336,
+      "bytes": 5480123,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -17256,7 +17256,7 @@
         "GET /admin/people/ranks",
         "POST /admin/people/ranks"
       ],
-      "uiSites": 2,
+      "uiSites": 3,
       "roles": [
         "ADMIN"
       ],
@@ -17375,7 +17375,7 @@
         "GET /admin/org-structure/tree",
         "GET /admin/org-structure/types"
       ],
-      "uiSites": 2,
+      "uiSites": 6,
       "roles": [
         "ADMIN"
       ],
@@ -57077,6 +57077,61 @@
       ]
     },
     {
+      "file": "apps/web/src/components/design-system/access-draft.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 24,
+      "describes": [
+        "grantEndsAt",
+        "grantRefusals",
+        "countersignCandidates",
+        "scopeDiff",
+        "saveBlocker",
+        "formatRemaining",
+        "endsSoon"
+      ]
+    },
+    {
+      "file": "apps/web/src/components/design-system/audience.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 15,
+      "describes": [
+        "estimateAudience",
+        "publishFriction",
+        "publishBlocker",
+        "visibilityUsesAudience"
+      ]
+    },
+    {
+      "file": "apps/web/src/components/design-system/department.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 24,
+      "describes": [
+        "suggestCode",
+        "departmentErrors",
+        "descendantIds",
+        "unitPath",
+        "nearestOffice",
+        "closeBlockers"
+      ]
+    },
+    {
+      "file": "apps/web/src/components/design-system/dispatch-machine.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 19,
+      "describes": [
+        "dispatchReducer: the forward path",
+        "dispatchReducer: undo",
+        "dispatchReducer: failure and its remedies",
+        "dispatchReducer: the second copy of every event",
+        "idempotencyKey",
+        "what the screen may say"
+      ]
+    },
+    {
       "file": "apps/web/src/utils/cn.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -57682,8 +57737,8 @@
       "path": ".claude/rules/ui.md",
       "area": "root",
       "kind": "doc",
-      "lines": 155,
-      "bytes": 7556,
+      "lines": 156,
+      "bytes": 7954,
       "doc": "",
       "symbols": []
     },
@@ -86454,29 +86509,29 @@
       "path": "apps/web/src/components/admin/charts/chart-series.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 124,
-      "bytes": 3641,
+      "lines": 103,
+      "bytes": 3002,
       "doc": "",
       "symbols": [
         {
           "name": "SeriesDef",
           "kind": "interface",
-          "line": 6
+          "line": 7
         },
         {
           "name": "useSeriesVisibility",
           "kind": "function",
-          "line": 17
+          "line": 18
         },
         {
           "name": "SeriesToggles",
           "kind": "function",
-          "line": 36
+          "line": 37
         },
         {
           "name": "ViewSwitch",
           "kind": "function",
-          "line": 89
+          "line": 90
         }
       ]
     },
@@ -87433,8 +87488,8 @@
       "path": "apps/web/src/components/admin/range-picker.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 63,
-      "bytes": 2098,
+      "lines": 50,
+      "bytes": 1715,
       "doc": "",
       "symbols": [
         {
@@ -87455,7 +87510,7 @@
         {
           "name": "RangePicker",
           "kind": "function",
-          "line": 24
+          "line": 25
         }
       ]
     },
@@ -87635,6 +87690,174 @@
       ]
     },
     {
+      "path": "apps/web/src/components/design-system/access-draft.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 159,
+      "bytes": 6210,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/design-system/access-draft.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 138,
+      "bytes": 5044,
+      "doc": "The deciding functions behind the people-and-access specimen.",
+      "symbols": [
+        {
+          "name": "GrantMode",
+          "kind": "type",
+          "line": 11
+        },
+        {
+          "name": "MAX_GRANT_DAYS",
+          "kind": "const",
+          "line": 18
+        },
+        {
+          "name": "GRANT_PRESETS",
+          "kind": "const",
+          "line": 20
+        },
+        {
+          "name": "Person",
+          "kind": "interface",
+          "line": 26
+        },
+        {
+          "name": "GrantDraft",
+          "kind": "interface",
+          "line": 43
+        },
+        {
+          "name": "EMPTY_GRANT",
+          "kind": "const",
+          "line": 51
+        },
+        {
+          "name": "grantEndsAt",
+          "kind": "function",
+          "line": 56
+        },
+        {
+          "name": "grantRefusals",
+          "kind": "function",
+          "line": 61
+        },
+        {
+          "name": "countersignCandidates",
+          "kind": "function",
+          "line": 83
+        },
+        {
+          "name": "formatRemaining",
+          "kind": "function",
+          "line": 95
+        },
+        {
+          "name": "endsSoon",
+          "kind": "function",
+          "line": 107
+        },
+        {
+          "name": "scopeDiff",
+          "kind": "function",
+          "line": 111
+        },
+        {
+          "name": "saveBlocker",
+          "kind": "function",
+          "line": 123
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/audience.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 109,
+      "bytes": 4267,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/design-system/audience.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 109,
+      "bytes": 4351,
+      "doc": "The deciding functions behind the publish-and-audience specimen.",
+      "symbols": [
+        {
+          "name": "Visibility",
+          "kind": "type",
+          "line": 14
+        },
+        {
+          "name": "AudienceScope",
+          "kind": "type",
+          "line": 15
+        },
+        {
+          "name": "AUDIENCE_POOL",
+          "kind": "const",
+          "line": 18
+        },
+        {
+          "name": "MAX_RADIUS_KM",
+          "kind": "const",
+          "line": 20
+        },
+        {
+          "name": "MIN_RADIUS_KM",
+          "kind": "const",
+          "line": 21
+        },
+        {
+          "name": "INDUSTRIES",
+          "kind": "const",
+          "line": 26
+        },
+        {
+          "name": "VERIFICATIONS",
+          "kind": "const",
+          "line": 33
+        },
+        {
+          "name": "AudienceFilters",
+          "kind": "interface",
+          "line": 40
+        },
+        {
+          "name": "estimateAudience",
+          "kind": "function",
+          "line": 63
+        },
+        {
+          "name": "visibilityUsesAudience",
+          "kind": "function",
+          "line": 81
+        },
+        {
+          "name": "Friction",
+          "kind": "type",
+          "line": 85
+        },
+        {
+          "name": "publishFriction",
+          "kind": "function",
+          "line": 94
+        },
+        {
+          "name": "publishBlocker",
+          "kind": "function",
+          "line": 102
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/design-system/chart-concepts.tsx",
       "area": "web",
       "kind": "component",
@@ -87695,6 +87918,26 @@
       ]
     },
     {
+      "path": "apps/web/src/components/design-system/choice-cards.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 76,
+      "bytes": 2640,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ChoiceOption",
+          "kind": "interface",
+          "line": 15
+        },
+        {
+          "name": "ChoiceCards",
+          "kind": "function",
+          "line": 21
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/design-system/data-concepts.tsx",
       "area": "web",
       "kind": "component",
@@ -87716,6 +87959,174 @@
           "name": "ShareSpecimen",
           "kind": "function",
           "line": 482
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/department-page.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 437,
+      "bytes": 17376,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DepartmentPageSpecimen",
+          "kind": "function",
+          "line": 85
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/department.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 158,
+      "bytes": 6199,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/design-system/department.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 155,
+      "bytes": 5893,
+      "doc": "The deciding functions behind the department-page specimen.",
+      "symbols": [
+        {
+          "name": "Unit",
+          "kind": "interface",
+          "line": 24
+        },
+        {
+          "name": "DepartmentDraft",
+          "kind": "interface",
+          "line": 33
+        },
+        {
+          "name": "DepartmentField",
+          "kind": "type",
+          "line": 39
+        },
+        {
+          "name": "suggestCode",
+          "kind": "function",
+          "line": 49
+        },
+        {
+          "name": "departmentErrors",
+          "kind": "function",
+          "line": 59
+        },
+        {
+          "name": "descendantIds",
+          "kind": "function",
+          "line": 86
+        },
+        {
+          "name": "unitPath",
+          "kind": "function",
+          "line": 102
+        },
+        {
+          "name": "nearestOffice",
+          "kind": "function",
+          "line": 115
+        },
+        {
+          "name": "CloseBlocker",
+          "kind": "interface",
+          "line": 126
+        },
+        {
+          "name": "closeBlockers",
+          "kind": "function",
+          "line": 133
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/dispatch-flow.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 378,
+      "bytes": 14285,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DispatchFlowSpecimen",
+          "kind": "function",
+          "line": 122
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/dispatch-machine.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 158,
+      "bytes": 6412,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/design-system/dispatch-machine.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 131,
+      "bytes": 5554,
+      "doc": "The states of a one-click send, and the only moves between them.",
+      "symbols": [
+        {
+          "name": "UNDO_WINDOW_MS",
+          "kind": "const",
+          "line": 35
+        },
+        {
+          "name": "FailureKind",
+          "kind": "type",
+          "line": 37
+        },
+        {
+          "name": "DispatchState",
+          "kind": "type",
+          "line": 39
+        },
+        {
+          "name": "DispatchEvent",
+          "kind": "type",
+          "line": 46
+        },
+        {
+          "name": "INITIAL_DISPATCH",
+          "kind": "const",
+          "line": 55
+        },
+        {
+          "name": "dispatchReducer",
+          "kind": "function",
+          "line": 57
+        },
+        {
+          "name": "idempotencyKey",
+          "kind": "function",
+          "line": 94
+        },
+        {
+          "name": "DispatchTone",
+          "kind": "type",
+          "line": 98
+        },
+        {
+          "name": "dispatchBadge",
+          "kind": "function",
+          "line": 101
+        },
+        {
+          "name": "FAILURE_COPY",
+          "kind": "const",
+          "line": 116
         }
       ]
     },
@@ -87788,14 +88199,29 @@
       "path": "apps/web/src/components/design-system/gallery.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 267,
-      "bytes": 10506,
+      "lines": 311,
+      "bytes": 12936,
       "doc": "",
       "symbols": [
         {
           "name": "DesignSystemGallery",
           "kind": "function",
-          "line": 53
+          "line": 59
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/layering.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 208,
+      "bytes": 8063,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LayeringSpecimen",
+          "kind": "function",
+          "line": 86
         }
       ]
     },
@@ -87838,10 +88264,15 @@
       "path": "apps/web/src/components/design-system/patterns.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 347,
-      "bytes": 17031,
+      "lines": 322,
+      "bytes": 15656,
       "doc": "",
       "symbols": [
+        {
+          "name": "FROSTED",
+          "kind": "const",
+          "line": 57
+        },
         {
           "name": "AdminPatterns",
           "kind": "function",
@@ -87850,17 +88281,62 @@
       ]
     },
     {
+      "path": "apps/web/src/components/design-system/people-access.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 638,
+      "bytes": 23246,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PeopleAccessSpecimen",
+          "kind": "function",
+          "line": 420
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/publish-audience.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 419,
+      "bytes": 16625,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PublishAudienceSpecimen",
+          "kind": "function",
+          "line": 142
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/design-system/scope-chip-editor.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 127,
+      "bytes": 4411,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ScopeChipEditor",
+          "kind": "function",
+          "line": 24
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/design-system/scoped-bento.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 332,
-      "bytes": 11079,
+      "lines": 506,
+      "bytes": 17559,
       "doc": "",
       "symbols": [
         {
           "name": "ScopedBentoSpecimen",
           "kind": "function",
-          "line": 238
+          "line": 397
         }
       ]
     },
@@ -88593,8 +89069,8 @@
       "path": "apps/web/src/components/ui/dialog.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 197,
-      "bytes": 6687,
+      "lines": 209,
+      "bytes": 7265,
       "doc": "",
       "symbols": [
         {
@@ -88678,8 +89154,8 @@
       "path": "apps/web/src/components/ui/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 45,
-      "bytes": 1610,
+      "lines": 46,
+      "bytes": 1673,
       "doc": "Design-system primitives.",
       "symbols": []
     },
@@ -88737,8 +89213,8 @@
       "path": "apps/web/src/components/ui/page-header.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 53,
-      "bytes": 1782,
+      "lines": 56,
+      "bytes": 1989,
       "doc": "",
       "symbols": [
         {
@@ -88800,6 +89276,26 @@
           "name": "Section",
           "kind": "function",
           "line": 19
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/segmented.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 121,
+      "bytes": 4414,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SegmentedOption",
+          "kind": "interface",
+          "line": 27
+        },
+        {
+          "name": "Segmented",
+          "kind": "function",
+          "line": 34
         }
       ]
     },
@@ -91241,8 +91737,8 @@
       "path": "docs/design/components-states/03-components.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 139,
-      "bytes": 9895,
+      "lines": 145,
+      "bytes": 12327,
       "doc": "",
       "symbols": []
     },
@@ -93149,8 +93645,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 10258,
-      "bytes": 612574,
+      "lines": 10474,
+      "bytes": 631254,
       "doc": "",
       "symbols": []
     },

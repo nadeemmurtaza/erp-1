@@ -29,7 +29,8 @@ writing markup, check this list. **Grep for the literal before adding one.**
 | `Bento`, `BentoTile` | a board of tiles of different weight (`hero`, `wide`, `tall`, `sm`) — one job per tile |
 | `Skeleton`, `SkeletonText`, `SkeletonRegion` | the first-load placeholder, shaped like its content — never for empty or failed |
 | `Switch` | an on/off setting that applies now (`role="switch"`) |
-| `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named; `DataTable` takes `stacked` and `stickyFirst` |
+| `Segmented` | a short, mutually visible set of options: `kind="filter"` for a view or range (`aria-pressed`), `kind="choice"` for one value (`radiogroup`, arrow keys). `RangePicker` and the chart view switch are built on it |
+| `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named; `DataTable` takes `stacked` and `stickyFirst`; `Dialog` takes `align="end"` for a full-height side sheet (the detail of one row); `PageHeader` takes `headingLevel` when it sits inside a page that already has an `h1` |
 
 Cross-surface: `components/common/status-badge` (**the** status pill — do not
 write an eighth), `components/common/wizard`.

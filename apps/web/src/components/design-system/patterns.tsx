@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Check } from 'lucide-react';
 import { Badge, Button, DataTable, Disclosure } from '@/components/ui';
 import { cn } from '@/utils/cn';
+import { ChoiceCards } from './choice-cards';
 import { Group } from './foundations';
 
 /**
@@ -54,7 +54,7 @@ const VISIBILITY = [
  * the secondary ramp in dark. Where transparency is switched off in the OS the
  * surface goes solid.
  */
-const FROSTED =
+export const FROSTED =
   'bg-overlay/85 shadow-overlay backdrop-blur-md [@media(prefers-reduced-transparency:reduce)]:bg-overlay [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none';
 
 type CardKey = 'legal' | 'address' | 'contact';
@@ -250,38 +250,13 @@ export function AdminPatterns() {
         title="Choice cards"
         note="One choice among a few that need a sentence each. A real radio group underneath, so the arrow keys move between them; the selected card has a ring, a tint and a tick, never colour alone."
       >
-        <fieldset className="grid gap-3 sm:grid-cols-3">
-          <legend className="field-label">Who can see this?</legend>
-          {VISIBILITY.map((option) => {
-            const selected = visibility === option.key;
-            return (
-              <label
-                key={option.key}
-                className={cn(
-                  'relative flex cursor-pointer flex-col gap-1 rounded-md bg-surface p-4 shadow-raised transition-shadow',
-                  // The radio is visually hidden, so its own focus ring is clipped; the card
-                  // shows the house ring (globals.css `:focus-visible`) on its behalf. Selected
-                  // is a flush ring, focused adds the offset gap, so the two read apart.
-                  'has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-accent has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-neutral-50',
-                  selected && 'bg-accent/10 ring-2 ring-accent',
-                )}
-              >
-                <input
-                  type="radio"
-                  name="ds-visibility"
-                  className="sr-only"
-                  checked={selected}
-                  onChange={() => setVisibility(option.key)}
-                />
-                <span className="flex items-center justify-between gap-2 text-sm font-semibold text-neutral-900">
-                  {option.label}
-                  {selected ? <Check aria-hidden="true" className="h-4 w-4 text-accent" /> : null}
-                </span>
-                <span className="text-sm text-neutral-900/70">{option.hint}</span>
-              </label>
-            );
-          })}
-        </fieldset>
+        <ChoiceCards
+          legend="Who can see this?"
+          name="ds-visibility"
+          options={VISIBILITY.map((option) => ({ value: option.key, label: option.label, hint: option.hint }))}
+          value={visibility}
+          onChange={setVisibility}
+        />
       </Group>
 
       <Group

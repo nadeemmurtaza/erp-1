@@ -31,6 +31,7 @@ export { ThemeToggle, type ThemeToggleLabels } from './theme-toggle';
 export { ListPageSkeleton } from './list-page-skeleton';
 export { Skeleton, SkeletonText, SkeletonRegion, type SkeletonShape } from './skeleton';
 export { Switch } from './switch';
+export { Segmented, type SegmentedOption } from './segmented';
 
 // Layout
 export { Bento, BentoTile, type BentoSize, type BentoTone } from './bento';

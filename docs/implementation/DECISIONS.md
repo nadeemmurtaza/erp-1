@@ -10641,3 +10641,164 @@ vocabulary is on every page that uses `.btn`, `.field-input`, `.notice`, `Dialog
 `Tabs`, `Segmented`, `MetricStrip`, `Bento` and `ToastStack` without an opt-in. The
 new primitives are in `.claude/rules/ui.md`, and the tokens and laws in
 `05-motion.md`, `01-foundations.md` and `10-laws.md`.
+
+### Addendum — 2026-10-01 (sixth): seven further reels, every motion that fits the language
+
+**Requirement.** The owner supplied seven more reels and asked that none of their
+motion be missed. Each was read motion by motion for what it tells the reader, and the
+seven catalogues were merged against what the fifth addendum already ships. Most rows
+were already covered (arrive, stagger, the text decode and type, the loading ring,
+press, count-up, ring draw-on, reveal on scroll). Twelve motions were new and fit the
+caps, and are built; the rest are not adopted, with reasons. The long form, with the
+motion-to-meaning table and how each is built, is the "seven further reels" section of
+`docs/design/motion/05-motion.md`; the specimens are in
+`/admin/design-system#motion` ("Quantities and changes", "Hand-offs and reveals").
+
+**What was built.**
+
+| Concept | Where | Built on |
+|---|---|---|
+| Sheen on a changed value | `.sheen` + `data-fresh`; `hooks/use-fresh-on-change.ts`; the dashboard `MetricCard` (a range switch refetches in place) and a new row in `LiveFeedWidget` | one gradient on a pseudo-element, transform only; `data-fresh` cleared after `sweep`; never on first render or on arrival |
+| Label swap | `ui/swap-text.tsx`; `StatusBadge` | `nextSwap` (pure, tested); the leaving copy is `aria-hidden` and unmounts after `fast` |
+| Progress bar | `ui/progress-bar.tsx` (`tone`, `head`, `segmented`); the Reports ranking and the Stitching tailor load replace two hand-rolled `width: X%` bars | a translate fill reading `--p`; `progressFraction` (pure, tested) |
+| Truncate reveal | `ui/truncate-reveal.tsx`; Reports labels, Stitching tailor names | `revealRun` (pure, tested); `speed.read` token |
+| Wizard direction | `components/common/wizard.tsx` | `.step-forward` / `.step-back` on a step keyed by its id |
+| Popup from its trigger | `ui/dialog.tsx` | `originOffset` (pure, tested), read in a layout effect; `.arrive-from` |
+| Error ignite | `.ignite`, `.notice-error[role=alert]`, the error toast | a 2px inset ring on a pseudo-element, opacity only |
+| Badge pop | `.pop`; the cart count (keyed by the count) | `scale.pop` token |
+| Chart motion | `components/admin/charts/chart-motion.ts` and every chart | tokenised draw-on, series stagger, tooltip glide, cursor, active dot, marker pop, donut halo; 23 tests |
+| Icon draw-on | `ui/draw-icon.tsx`; the tick on verify-email and unsubscribe | `.draw-path` with `pathLength="1"`, marked on the client |
+| Odometer | `CountUp mode="reel"`; net profit on the P&L page | `.reel-digit` / `.reel-strip`; `reelParts` (pure, tested) |
+| Word reveal | `TypeText unit="word"` | `typedWordsFrame` (pure, tested) |
+| Literal timings | 44 `duration-200/300/700` and `ease-out` classes in 18 files | `duration-normal/slow/sweep`, `ease-decelerate`; no behaviour change except where noted below |
+
+**Parameters.**
+
+| Parameter | Exact value | Why this and not another | Enforced |
+|---|---|---|---|
+| `scale.pop` | 0.6 | a chart point or a count badge is about 8 to 20 px, so 97% of it (`arrive`) moves under half a pixel and reads as nothing; 60% is visible and still lands inside `fast` | `brand.ts`; `theme-space.spec.ts` (above 0, below `arrive`) |
+| `speed.read` | 48 px/s | the two reels that scrolled text ran at 23 and 80; 48 is between, and a 240 px overflow is one pass of five seconds | `brand.ts`; `theme-space.spec.ts` (20 to 100); `revealRun` |
+| Truncate reveal duration | overflow / 48 s, floor 140 ms (`fast`), ceiling 5 000 ms, after a 220 ms beat (`normal`), `linear` | a line being read must move at a steady rate; under 140 ms a few pixels would jerk; past five seconds the reader has read it or left (a long line goes faster, not longer) | `REVEAL_MAX_MS`, `revealRun`; `.reveal-run` |
+| Truncate reveal threshold | 1 px of overflow | under a pixel is rounding, not truncation | `revealRun` |
+| Sheen | 420 ms (`sweep`), `decelerate`, 105 degrees, 40/50/60% stops, accent ink at 14%, once | one pass long enough to follow and short enough to be over before the reader looks away; 14% of the accent ink clears nothing it should not and reads in both themes | `.sheen[data-fresh]::after`; `MOTION_MS.sheen` |
+| Ignite | 2 px inset ring, negative colour, opacity 1 to 0 over 320 ms (`slow`), `settle` | the ring is the information, so it is as thick as a focus ring's step and inset so a clipping toast cannot cut it off | `.ignite::after` |
+| Swap | out 140 ms (`fast`) `exit` over 4 px; in 220 ms (`normal`) `settle` from 4 px | leaving is quicker than arriving; `distance.nudge` is the smallest travel that reads | `.swap-in`, `.swap-out`; `MOTION_MS.exit` |
+| Pop | 140 ms (`fast`), `settle`, `backwards` | a mark this small is done in a beat | `.pop`, `.chart-point` |
+| Progress bar | fill eases 220 ms (`normal`) on `standard`; track 6 px; segmented track 12 px, cells 6 px, gap 3 px; head knob 12 px with a 2 px surface ring; a fraction held to 0 to 1, an unusable `max` draws empty | the bar follows real progress between samples, not a clock; `neutral-100` is the track because it is visible on both card surfaces (`neutral-50` vanished in dark) | the `.progress-*` rules in `globals.css`; `progressFraction` |
+| Wizard / popup arrive | 220 ms (`normal`), `settle`, 8 px, 97% to 100%; popup offset held to 64 px (`distance.large`) per axis | the same as `arrive`; 64 px is the largest travel the language allows for a small idea, so a trigger at a far corner cannot make the panel cross the screen | `.step-forward`, `.step-back`, `.arrive-from`; `originOffset` |
+| Reel | 420 ms (`sweep`), `settle`, digits 80 ms apart for at most four steps (320 ms), window 1.15 em | the one headline figure takes the longest step; the stagger ramp is the language's own, inside `slow` | `.reel-strip`; `staggerDelayMs` |
+| Word reveal | 320 ms in total, at most 80 characters | the total is fixed, so a long line is not slow | `TypeText`; `MAX_ANIMATED_CHARS` |
+| Icon draw-on | 320 ms (`slow`), `settle`, strokes 80 ms apart | a tick is small; a ring around it follows | `.draw-path` |
+| Chart entrance | 420 ms (`sweep`), `settle`, series start 0, 80, 160, 240, 320 ms apart | a chart is a page-level figure; one duration and one curve so it reads as one event | `chartDrawProps` |
+| Chart tooltip | glide 220 ms (`normal`) on `settle` | Recharts' own default is 400 ms on `ease` | `chartTooltipMotion` |
+| Marker pop delay | when the eased line has covered 98% of the way to the point, at most 280 ms (draw less pop) | the line is front-loaded, so a linear share of the draw would pop the dots long after it had passed | `pointPopDelayMs` (inverts `settle`) |
+| Donut halo | 3 px outside the ring, 4 px thick, 35% opacity, fades over 140 ms (`fast`) | stays inside the 96 px half-width of the box (84 + 3 + 4 = 91) | `share-chart.tsx` |
+| Literal timings | `200` to `normal` (220), `300` to `slow` (320), `700` to `sweep` (420), `ease-out` to `decelerate` | nearest token, so one edit now retunes them; the product-card image zoom was 700 ms and is now 420 ms, which is the only change a reader would notice | the 18 files, `.claude/rules/ui.md` |
+
+**Failure modes.**
+- *Scripting off or slow.* Server markup is always the settled state: the reel strips
+  rest on the figure, the icon is drawn, no sheen, no swap.
+- *Reduced motion.* Every one of these asks for itself or is collapsed by the
+  stylesheet; the sheen flag, the leaving label, the reel's starting digits, the icon's
+  stroke marks and the truncate scroll never start, and the information stays (the new
+  value, the figure, the icon, the full text in `title`, the tone in `valueText`).
+- *A popup with no focused trigger* (opened by script, or a browser that does not focus
+  a button on click) arrives from `small` below, which is `arrive` itself; a trigger
+  with no size does the same.
+- *A figure that changes its number of decimals* rolls its strips (keyed from the
+  right) to their new digits from wherever they were, and ends on the right figure.
+- *Copying a reel figure.* The strips are not selectable text, so the reel is for the
+  one display figure of a screen; the default count stays where a figure is copied.
+- *A second change inside 420 ms* does not restart the sheen; a fresh one starts after.
+- *The tooltip's first show* may glide from its previous place (a Recharts trait, also
+  true of its 400 ms default); `chartTooltipMotion` can return `isAnimationActive: false`.
+- *Stagger on replays.* Recharts replays `animationBegin` when data or a legend toggle
+  redraws a series, so a re-enabled third series waits 160 ms; series are indexed by
+  visible position so the first visible one is always immediate.
+
+**Exceptions to the 320 ms cap, and why.** A chart entrance is 420 ms (`sweep`); with
+the stagger the fourth series ends at 660 ms. That is the entrance of a page-level
+figure, not of a control, and each series is still one event on one curve. A truncated
+label scrolls for as long as its text needs (to five seconds), but only under the
+pointer, so nothing waits on it. The progress bar follows data.
+
+**Not adopted.** The playhead scrubbing a timeline (no timeline view exists), an icon
+that wipes open to its label (a `clip-path` animation is paint, not transform or
+opacity, `MOT-5`), bounce, overshoot, tilt and camera zoom, glow and blur, particles,
+brand-gradient watermarks, hard-cut scene edits, dimmed siblings, and a card hover tint
+(`.lift` already carries it). `MetricStrip` takes no `changeKey`: the P&L page unmounts
+its strip while a month loads, so a figure there arrives rather than changes and the
+reel and count-up already mark it.
+
+**Noticed, not changed.**
+- `transition-all` remains on `header.tsx` (nav underlines), `product-card.tsx` and
+  `stitching-panel.tsx`; it can animate layout properties and each needs reviewing one
+  by one.
+- Dead CSS: `.chart-line` / `drawLine` in `globals.css` (again unused, now that the charts
+  are tokenised); deleting it needs the owner's confirmation.
+- `TypeText` (both units) still has no product consumer; `DrawIcon` is on two storefront
+  pages that could not be run here.
+- The design-system pages and `tailwind.config.ts` (`250`) still carry a few literal
+  timings, and mobile and the POS do not use these tokens.
+- A gauge and a funnel chart do not use Recharts' animation: the gauge has its own
+  tokenised transitions and the funnel none.
+
+**Verification.** Rebuilt for production and driven with Playwright against
+`/admin/design-system`. Forty-nine new checks pass: the bar's fill is a translate and
+rests at `--p`, the tone colours equal the feedback tokens, the head and the cells,
+the fill growing from the right in a right-to-left document; the sheen starting on a
+change and clearing after one sweep; the label leaving as `aria-hidden` and unmounting
+after `fast`; the reel resting on its digits, stopping one stagger step apart and
+rolling monotonically without passing its target; the badge pop from 60% landing on 1
+without overshoot; the wizard's first step not animating, then forward and back
+arriving from either side and leaving no transform behind; the popup's offsets (opposite
+signs on a 380 px screen, held to 64 px); the icon's strokes marked and drawing; the
+truncated label running at the reading speed and holding at its end, then restoring
+the plain text; the word reveal showing whole words only; the error notice and error
+toast igniting and fading; the chart tooltip's `transform 220ms cubic-bezier(0.16, 1, 0.3, 1)`
+and its cursor; and, under reduced motion, no sheen, no leaving label, the reel at its
+figure at once, no marked strokes, no scroll, an unseen ring. The earlier 69 motion
+checks, the 95 screen checks and the 14 width-and-theme combinations (280 to 1536,
+light and dark: no horizontal overflow, no offender) still pass, with no console
+error. `pnpm lint`, `pnpm typecheck` and `pnpm test --filter='!@newax/api'` pass
+(web 221 tests, of which 17 are new in `motion.spec.ts` and 23 are `chart-motion.spec.ts`;
+shared 397), `pnpm index:check` is current and the four counts in `CLAUDE.md` are inline
+`style={{` 27, `toLocaleString` 6, bare fetch 6, gray palette 0 (the two hand-rolled
+bars' two inline styles are gone and `ProgressBar` and `TruncateReveal` add two; the
+reel, the marker pop and the chart cursors set custom properties through a variable,
+which that pattern does not count). The two storefront pages that use `DrawIcon`, the
+P&L page, Reports, Stitching, the dashboard and the activity feed need a running API
+and a session, so they were checked by typecheck, lint and the production build only,
+not in a browser. `pnpm check:overflow` needs a seeded stack and was not run. The
+Playwright scripts are not in the repository.
+
+**Scope lenses.**
+The actor with three tables, the principal with no permission key, the grant that
+ends itself: n/a, no actor, principal or grant is created; motion changes no
+authority.
+Whose rows, and which columns, the threshold nobody approves alone, the toxic pair,
+authority and blast radius, audience: n/a, nothing is read, committed or sent; no
+`PERMISSION_CATALOG` key was added, so there is no `Permission` row without a grant.
+Request or record: the sheen flag, the leaving label, the reel and the truncate scroll
+are presentation state, not writes; nothing here is a REQUEST or a RECORD of a business
+fact. The bars read the same numbers the hand-rolled ones did.
+The movement with no address, four hours down, and the money lenses (posting rule,
+columns, period, second legal entity, dry run, click the number): n/a, no stock, cash
+or journal line is read or written. The P&L reel shows the figure the page already
+shows and the figure is also in an `sr-only` copy.
+The three silhouettes and the absent collaborator: a Solo deployment gets the same
+motion; the tokens live in `brand.ts`, which every surface imports, and the activity
+feed and the dashboard render nothing when their module is absent, so the sheen never
+mounts there.
+The second copy of the write, the hundred-thousandth row: a list of any length animates
+at most four stagger steps, `StatusBadge` mounts a small text swap per row (no timer
+until a status changes), and the activity feed keeps at most ten ids.
+The adoption test, the reversal document, the undo fan-out, the version stamp, the
+erasure the ledger cannot obey: n/a, no number, code, document or personal datum is
+created.
+The failure path: a swap that cannot finish is removed by a timer, a popup with no
+trigger falls back to `arrive`, a chart with motion off draws whole, and reduced motion
+keeps the information.
+Reachable: `/admin/design-system#motion`, in the page's section nav, and the new
+primitives are exported from `components/ui` and listed in `.claude/rules/ui.md`; the
+tokens are in `01-foundations.md` and the language in `05-motion.md`.

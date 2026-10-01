@@ -513,8 +513,18 @@ const motion = {
   },
   /** `nudge` is the amplitude of the error attention shake: a quarter of `small`'s travel each way. */
   distance: { micro: 2, small: 8, medium: 24, large: 64, nudge: 4 },
-  /** Scale endpoints. A press compresses to 98%; a thing arriving starts at 97%. */
-  scale: { press: 0.98, arrive: 0.97 },
+  /**
+   * Scale endpoints. A press compresses to 98%; a card or notice arriving starts at 97%;
+   * a mark too small for 97% to read (a chart point, a badge dot) starts at 60%.
+   */
+  scale: { press: 0.98, arrive: 0.97, pop: 0.6 },
+  /**
+   * How fast moving text may travel while someone reads it, in px per second. Used where
+   * a truncated line is scrolled to show its end on hover or focus: slow enough to follow
+   * with the eye, fast enough that a 240px overflow is one pass of 5 seconds. The two
+   * reference reels that did this ran at 23 and 80; this sits between them.
+   */
+  speed: { read: 48 },
   /**
    * Orchestration (MOT-6): each child starts `step` ms after the one before it,
    * and only the first `steps` children are staggered; the rest arrive with the

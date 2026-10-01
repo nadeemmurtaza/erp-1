@@ -3,7 +3,7 @@
 
 # Components
 
-All **155** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **159** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,8 +31,8 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 274 |  |
-| `wizard.tsx` | `WizardStep` `Wizard` | server | 6 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 276 |  |
+| `wizard.tsx` | `WizardStep` `Wizard` | server | 7 |  |
 
 ### `apps/pos/src/components` (2)
 
@@ -104,7 +104,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `category-bar-chart.tsx` | `CategoryBarItem` `CategoryBarChart` | client | 1 |  |
 | `chart-data-table.tsx` | `ChartDataTable` | server | 15 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
 | `chart-legend.tsx` | `ChartLegendRow` | client | 2 |  |
-| `chart-marker.tsx` | `ChartMarker` | server | 2 |  |
+| `chart-marker.tsx` | `MarkerPop` `ChartMarker` | server | 2 |  |
 | `chart-series.tsx` | `SeriesDef` `useSeriesVisibility` `SeriesToggles` `ViewSwitch` | client | 4 |  |
 | `chart-tooltip.tsx` | `ChartTooltip` | server | 6 |  |
 | `comparison-chart.tsx` | `ComparisonBucketPoint` `ComparisonChart` | client | 2 |  |
@@ -143,9 +143,9 @@ write an eighth. `components/common/wizard` is the only wizard.
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | client | 2 |  |
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 69 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 70 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
-| `wizard.tsx` | `WizardStep` `Wizard` | client | 6 |  |
+| `wizard.tsx` | `WizardStep` `Wizard` | client | 7 |  |
 
 ### `apps/web/src/components/dashboard` (1)
 
@@ -218,11 +218,11 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `theme-switch.tsx` | `ThemeSwitch` | client | 1 |  |
 | `visual-search-button.tsx` | `VisualSearchButton` | client | 1 |  |
 
-### `apps/web/src/components/ui` (27)
+### `apps/web/src/components/ui` (31)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 74 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 75 |  |
 | `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 2 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
@@ -230,6 +230,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 16 |  |
 | `dialog.tsx` | `Dialog` | client | 3 |  |
 | `disclosure.tsx` | `Disclosure` | client | 1 |  |
+| `draw-icon.tsx` | `DrawIcon` | client | 1 |  |
 | `empty-state.tsx` | `EmptyState` | server | 1 |  |
 | `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 3 |  |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 1 | The shape of a list page, before the list page. |
@@ -238,17 +239,20 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `page-enter.tsx` | `PageEnter` | client | 3 |  |
 | `page-header.tsx` | `PageHeader` | server | 1 |  |
 | `pagination.tsx` | `PaginationMeta` `Pagination` | server | 1 |  |
+| `progress-bar.tsx` | `ProgressBar` | server | 1 |  |
 | `progress-ring.tsx` | `ProgressRing` | client | 1 |  |
 | `reveal-scope.tsx` | `RevealScope` | client | 2 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 1 |  |
 | `section.tsx` | `Section` | server | 6 |  |
 | `segmented.tsx` | `SegmentedOption` `Segmented` | client | 1 |  |
 | `skeleton.tsx` | `SkeletonShape` `Skeleton` `SkeletonText` `SkeletonRegion` | server | 2 |  |
+| `swap-text.tsx` | `SwapText` | client | 1 |  |
 | `switch.tsx` | `Switch` | client | 2 |  |
 | `tabs.tsx` | `TabItem` `Tabs` | client | 1 |  |
 | `text-motion.tsx` | `ScrambleText` `TypeText` | client | 1 |  |
 | `theme-init-script.tsx` | `ThemeInitScript` | server | 2 |  |
 | `theme-toggle.tsx` | `ThemeToggleLabels` `ThemeToggle` | client | 3 |  |
+| `truncate-reveal.tsx` | `TruncateReveal` | client | 1 |  |
 
 
 ---

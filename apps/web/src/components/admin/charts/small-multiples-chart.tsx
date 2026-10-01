@@ -7,6 +7,7 @@ import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
 import { niceCeil } from './chart-math';
 import { SeriesToggles, ViewSwitch, useSeriesVisibility, type SeriesDef } from './chart-series';
+import { chartActiveDot, chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
 import { ChartTooltip } from './chart-tooltip';
 import { GRID, INK_FAINT, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
 import { usePrefersReducedMotion } from './use-reduced-motion';
@@ -120,7 +121,7 @@ export function SmallMultiplesChart({
 
       {view === 'multiples' ? (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,16rem),1fr))] gap-4">
-          {entities.map((s) => {
+          {entities.map((s, panel) => {
             const total = data.reduce((sum, row) => sum + num(row, s.key), 0);
             const peak = data.reduce((best, row) => (num(row, s.key) > num(best, s.key) ? row : best), data[0]!);
             const summary = `${s.label}: ${formatValue(total)} in total, peaking at ${formatValue(num(peak, s.key))} in ${formatX(String(peak[x] ?? ''))}`;
@@ -144,7 +145,8 @@ export function SmallMultiplesChart({
                     >
                       {axes}
                       <Tooltip
-                        cursor={{ stroke: GRID }}
+                        {...chartTooltipMotion(reduced)}
+                        cursor={chartCursor.crosshair}
                         content={(props) => (
                           <ChartTooltip
                             active={props.active}
@@ -163,8 +165,8 @@ export function SmallMultiplesChart({
                         fill={s.color}
                         fillOpacity={0.1}
                         dot={false}
-                        activeDot={{ r: 4, stroke: 'none' }}
-                        isAnimationActive={!reduced}
+                        activeDot={{ ...chartActiveDot, r: 4 }}
+                        {...chartDrawProps(reduced, panel)}
                       />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -179,7 +181,8 @@ export function SmallMultiplesChart({
             <LineChart data={data as Record<string, unknown>[]} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
               {axes}
               <Tooltip
-                cursor={{ stroke: GRID }}
+                {...chartTooltipMotion(reduced)}
+                cursor={chartCursor.crosshair}
                 content={(props) => (
                   <ChartTooltip
                     active={props.active}
@@ -191,7 +194,7 @@ export function SmallMultiplesChart({
               />
               {entities
                 .filter((s) => isOn(s.key))
-                .map((s) => (
+                .map((s, index) => (
                   <Line
                     key={s.key}
                     dataKey={s.key}
@@ -200,8 +203,8 @@ export function SmallMultiplesChart({
                     stroke={s.color}
                     strokeWidth={2}
                     dot={false}
-                    activeDot={{ r: 4, stroke: 'none' }}
-                    isAnimationActive={!reduced}
+                    activeDot={{ ...chartActiveDot, r: 4 }}
+                    {...chartDrawProps(reduced, index)}
                   />
                 ))}
             </LineChart>

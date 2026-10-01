@@ -180,14 +180,20 @@ motion.distance.nudge     4px     the invalid-field shake, the card lift
 
 motion.scale.press        0.98    pressed control
 motion.scale.arrive       0.97    arriving and leaving surfaces
+motion.scale.pop          0.6     a mark too small for 97% to read: a chart point, a count badge
+motion.speed.read         48px/s  how fast text may travel while it is being read (a label scrolled to its end)
 motion.stagger.step       80ms    delay between peers
 motion.stagger.steps      4       the cap: peers after the fourth share one delay
 ```
 
 `settle`, the two scales, `nudge` and the stagger were measured off a
-reference reel (chapter 05, "The reel"). Tests in `theme-space.spec.ts` pin the
-ranges: `settle` never overshoots, `press` is under 1 and over 0.95, `nudge` is
-under `small`, and the whole stagger ramp fits inside one `slow` duration.
+reference reel (chapter 05, "The reel"). `pop` and `speed.read` came from seven
+further reels: `pop` because a chart point is smaller than 97% of itself can show,
+and `read` because the two reels that scrolled text ran at 23 and 80 px/s, and 48
+sits between them (a 240 px overflow is one pass of five seconds). Tests in
+`theme-space.spec.ts` pin the ranges: `settle` never overshoots, `press` is under 1
+and over 0.95, `pop` is above 0 and under `arrive`, `read` is between 20 and 100,
+`nudge` is under `small`, and the whole stagger ramp fits inside one `slow` duration.
 
 **Rule.** A component consumes a token. A duration written into a component is
 the thing this layer exists to prevent — refining the motion language must be

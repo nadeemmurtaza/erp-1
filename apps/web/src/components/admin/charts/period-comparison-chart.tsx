@@ -7,8 +7,9 @@ import { Badge, DataTable, EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
 import { changeTone, periodChange } from './chart-math';
 import { SeriesToggles, useSeriesVisibility, type SeriesDef } from './chart-series';
+import { chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
 import { ChartTooltip } from './chart-tooltip';
-import { CONTEXT, GRID, HOVER_WASH, INK_FAINT, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
+import { CONTEXT, GRID, INK_FAINT, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
 import { usePrefersReducedMotion } from './use-reduced-motion';
 
 export interface PeriodComparisonPoint {
@@ -100,7 +101,8 @@ export function PeriodComparisonChart({
               width={48}
             />
             <Tooltip
-              cursor={{ fill: HOVER_WASH }}
+              {...chartTooltipMotion(reduced)}
+              cursor={chartCursor.band}
               content={(props) => (
                 <ChartTooltip
                   active={props.active}
@@ -110,8 +112,9 @@ export function PeriodComparisonChart({
                 />
               )}
             />
-            {series.map((s) =>
-              !isOn(s.key) ? null : (
+            {series
+              .filter((s) => isOn(s.key))
+              .map((s, index) => (
                 <Bar
                   key={s.key}
                   dataKey={s.key}
@@ -119,10 +122,9 @@ export function PeriodComparisonChart({
                   fill={s.color}
                   radius={[4, 4, 0, 0]}
                   maxBarSize={24}
-                  isAnimationActive={!reduced}
+                  {...chartDrawProps(reduced, index)}
                 />
-              ),
-            )}
+              ))}
           </BarChart>
         </ResponsiveContainer>
       </div>

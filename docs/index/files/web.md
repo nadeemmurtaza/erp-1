@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 489 tracked files in `apps/web`, by directory.
+All 496 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -71,7 +71,7 @@ All 489 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `global-error.tsx` | global-error | 82 |  |
-| `globals.css` | stylesheet | 1029 |  |
+| `globals.css` | stylesheet | 1380 |  |
 | `icon.svg` | asset | — |  |
 | `not-found.tsx` | not-found | 79 |  |
 | `robots.ts` | module | 33 |  |
@@ -416,7 +416,7 @@ All 489 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 216 |  |
+| `page.tsx` | page | 217 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/cash-flow` (1)
 
@@ -887,7 +887,7 @@ All 489 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 422 |  |
+| `page.tsx` | page | 425 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/requisitions` (1)
 
@@ -983,7 +983,7 @@ All 489 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 246 |  |
+| `page.tsx` | page | 243 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/stitching/bookings` (1)
 
@@ -1417,13 +1417,13 @@ All 489 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 63 |  |
+| `page.tsx` | page | 73 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/verify-email` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 61 |  |
+| `page.tsx` | page | 71 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/verify-purchase` (1)
 
@@ -1502,33 +1502,35 @@ All 489 tracked files in `apps/web`, by directory.
 | `cost-breakdown.tsx` | component | 121 |  |
 | `recipe-editor.tsx` | component | 363 |  |
 
-### `apps/web/src/components/admin/charts` (24)
+### `apps/web/src/components/admin/charts` (26)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `calendar-heatmap.tsx` | component | 223 |  |
-| `category-bar-chart.tsx` | component | 82 |  |
+| `category-bar-chart.tsx` | component | 85 |  |
 | `chart-data-table.tsx` | component | 47 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-reader-only table whos… |
 | `chart-legend.tsx` | component | 49 |  |
-| `chart-marker.tsx` | component | 59 |  |
+| `chart-marker.tsx` | component | 79 |  |
 | `chart-math.spec.ts` | unit test | 338 |  |
 | `chart-math.ts` | component | 319 |  |
+| `chart-motion.spec.ts` | unit test | 167 |  |
+| `chart-motion.ts` | component | 181 |  |
 | `chart-series.tsx` | component | 103 |  |
 | `chart-theme.ts` | component | 104 |  |
 | `chart-tooltip.tsx` | component | 52 |  |
-| `comparison-chart.tsx` | component | 124 |  |
+| `comparison-chart.tsx` | component | 127 |  |
 | `funnel-chart.tsx` | component | 151 |  |
 | `gauge-chart.tsx` | component | 264 |  |
 | `index.ts` | component | 41 | The whole charting vocabulary for the back office (10-admin-dashboard.md D9). |
-| `period-comparison-chart.tsx` | component | 190 |  |
-| `point-line-chart.tsx` | component | 144 |  |
-| `radar-chart.tsx` | component | 218 |  |
-| `range-chart.tsx` | component | 152 |  |
-| `share-chart.tsx` | component | 145 |  |
-| `small-multiples-chart.tsx` | component | 220 |  |
+| `period-comparison-chart.tsx` | component | 192 |  |
+| `point-line-chart.tsx` | component | 160 |  |
+| `radar-chart.tsx` | component | 222 |  |
+| `range-chart.tsx` | component | 158 |  |
+| `share-chart.tsx` | component | 176 |  |
+| `small-multiples-chart.tsx` | component | 223 |  |
 | `sparkline-chart.tsx` | component | 39 |  |
-| `stacked-area-chart.tsx` | component | 143 |  |
-| `time-series-chart.tsx` | component | 154 |  |
+| `stacked-area-chart.tsx` | component | 145 |  |
+| `time-series-chart.tsx` | component | 158 |  |
 | `use-reduced-motion.ts` | component | 9 | Moved to `@/hooks/use-prefers-reduced-motion` when the rest of the system (dialogs, toasts, figures) needed the same an… |
 
 ### `apps/web/src/components/admin/dashboard` (9)
@@ -1540,8 +1542,8 @@ All 489 tracked files in `apps/web`, by directory.
 | `card-registry.ts` | component | 705 |  |
 | `comparison-panel.tsx` | component | 46 |  |
 | `gross-profit-today-widget.tsx` | component | 95 |  |
-| `live-feed-widget.tsx` | component | 79 |  |
-| `metric-card.tsx` | component | 140 |  |
+| `live-feed-widget.tsx` | component | 94 |  |
+| `metric-card.tsx` | component | 144 |  |
 | `needs-attention-strip.tsx` | component | 74 |  |
 | `use-dashboard-metrics.ts` | component | 71 |  |
 
@@ -1556,9 +1558,9 @@ All 489 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `secret-once.tsx` | component | 100 |  |
-| `status-badge.tsx` | component | 117 |  |
+| `status-badge.tsx` | component | 125 |  |
 | `toast-container.tsx` | component | 60 |  |
-| `wizard.tsx` | component | 146 |  |
+| `wizard.tsx` | component | 159 |  |
 
 ### `apps/web/src/components/dashboard` (1)
 
@@ -1589,7 +1591,7 @@ All 489 tracked files in `apps/web`, by directory.
 | `layering.tsx` | component | 208 |  |
 | `layout-loading.tsx` | component | 358 |  |
 | `live-tokens.ts` | component | 60 |  |
-| `motion-specimens.tsx` | component | 543 |  |
+| `motion-specimens.tsx` | component | 809 |  |
 | `patterns.tsx` | component | 322 |  |
 | `people-access.tsx` | component | 638 |  |
 | `publish-audience.tsx` | component | 419 |  |
@@ -1606,7 +1608,7 @@ All 489 tracked files in `apps/web`, by directory.
 | `auth-page.tsx` | component | 62 |  |
 | `block-renderer.tsx` | component | 91 |  |
 | `bottom-nav.tsx` | component | 157 |  |
-| `cart-badge.tsx` | component | 30 |  |
+| `cart-badge.tsx` | component | 34 |  |
 | `cart-provider.tsx` | component | 104 |  |
 | `customer-nav.tsx` | component | 87 |  |
 | `customer-session.tsx` | component | 36 |  |
@@ -1640,7 +1642,7 @@ All 489 tracked files in `apps/web`, by directory.
 | `theme-switch.tsx` | component | 28 |  |
 | `visual-search-button.tsx` | component | 89 |  |
 
-### `apps/web/src/components/ui` (28)
+### `apps/web/src/components/ui` (32)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1648,30 +1650,34 @@ All 489 tracked files in `apps/web`, by directory.
 | `bento.tsx` | component | 92 |  |
 | `button.tsx` | component | 66 |  |
 | `confirm-dialog.tsx` | component | 103 |  |
-| `count-up.tsx` | component | 93 |  |
+| `count-up.tsx` | component | 196 |  |
 | `data-table.tsx` | component | 260 |  |
-| `dialog.tsx` | component | 221 |  |
+| `dialog.tsx` | component | 244 |  |
 | `disclosure.tsx` | component | 75 |  |
+| `draw-icon.tsx` | component | 53 |  |
 | `empty-state.tsx` | component | 40 |  |
 | `filter-bar.tsx` | component | 191 |  |
-| `index.ts` | component | 54 | Design-system primitives. |
+| `index.ts` | component | 58 | Design-system primitives. |
 | `list-page-skeleton.tsx` | component | 66 | The shape of a list page, before the list page. |
 | `loading.tsx` | loading | 36 |  |
 | `metric-strip.tsx` | component | 158 |  |
 | `page-enter.tsx` | component | 35 |  |
 | `page-header.tsx` | component | 56 |  |
 | `pagination.tsx` | component | 66 |  |
+| `progress-bar.tsx` | component | 72 |  |
 | `progress-ring.tsx` | component | 104 |  |
 | `reveal-scope.tsx` | component | 36 |  |
 | `section-rail.tsx` | component | 154 |  |
 | `section.tsx` | component | 59 |  |
 | `segmented.tsx` | component | 121 |  |
 | `skeleton.tsx` | component | 60 |  |
+| `swap-text.tsx` | component | 52 |  |
 | `switch.tsx` | component | 75 |  |
 | `tabs.tsx` | component | 158 |  |
-| `text-motion.tsx` | component | 146 |  |
+| `text-motion.tsx` | component | 160 |  |
 | `theme-init-script.tsx` | component | 22 |  |
 | `theme-toggle.tsx` | component | 115 |  |
+| `truncate-reveal.tsx` | component | 61 |  |
 
 ### `apps/web/src/config` (3)
 
@@ -1691,12 +1697,13 @@ All 489 tracked files in `apps/web`, by directory.
 | `routes.ts` | constants | 314 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 69 | Browser storage keys. |
 
-### `apps/web/src/hooks` (6)
+### `apps/web/src/hooks` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `use-cart.ts` | hook | 13 | The cart, from anywhere in the storefront. |
 | `use-exit-transition.ts` | hook | 41 |  |
+| `use-fresh-on-change.ts` | hook | 33 |  |
 | `use-order-status-label.ts` | hook | 23 |  |
 | `use-prefers-reduced-motion.ts` | hook | 30 |  |
 | `use-theme.ts` | hook | 117 |  |
@@ -1722,8 +1729,8 @@ All 489 tracked files in `apps/web`, by directory.
 | `customer-client.ts` | utility | 273 |  |
 | `download-csv.ts` | utility | 36 |  |
 | `download-file.ts` | utility | 23 |  |
-| `motion.spec.ts` | unit test | 194 |  |
-| `motion.ts` | utility | 160 |  |
+| `motion.spec.ts` | unit test | 319 |  |
+| `motion.ts` | utility | 251 |  |
 | `onsite-messages-client.ts` | utility | 24 |  |
 | `rag-corpus-access.ts` | utility | 27 |  |
 | `reveal.ts` | utility | 59 |  |

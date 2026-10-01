@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2586,
-    "lines": 411278,
+    "files": 2593,
+    "lines": 413282,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -14,15 +14,15 @@
     "permissions": 130,
     "screens": 278,
     "crons": 30,
-    "specs": 375,
+    "specs": 376,
     "designLaws": 0
   },
   "designLaws": [],
   "areas": {
     "root": {
       "files": 213,
-      "lines": 21478,
-      "bytes": 1228975,
+      "lines": 21494,
+      "bytes": 1230897,
       "label": "repository root files"
     },
     "infra": {
@@ -50,21 +50,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 489,
-      "lines": 85333,
-      "bytes": 3116046,
+      "files": 496,
+      "lines": 87088,
+      "bytes": 3186352,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 90598,
-      "bytes": 5501808,
+      "lines": 90815,
+      "bytes": 5522045,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 113,
-      "lines": 12971,
-      "bytes": 485288,
+      "lines": 12987,
+      "bytes": 486187,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -57077,6 +57077,20 @@
       ]
     },
     {
+      "file": "apps/web/src/components/admin/charts/chart-motion.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 23,
+      "describes": [
+        "chartDrawProps",
+        "cubicBezierCss",
+        "chartTooltipMotion",
+        "pointPopDelayMs",
+        "pointPopStyle",
+        "cursors and active dot"
+      ]
+    },
+    {
       "file": "apps/web/src/components/design-system/access-draft.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -57135,7 +57149,7 @@
       "file": "apps/web/src/lib/motion.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 21,
+      "cases": 38,
       "describes": [
         "bezierEase",
         "clamp01",
@@ -57146,7 +57160,13 @@
         "scrambleFrame",
         "typedFrame",
         "ringStroke",
-        "MOTION_MS"
+        "MOTION_MS",
+        "typedWordsFrame",
+        "progressFraction",
+        "revealRun",
+        "nextSwap",
+        "originOffset",
+        "reelParts"
       ]
     },
     {
@@ -57755,8 +57775,8 @@
       "path": ".claude/rules/ui.md",
       "area": "root",
       "kind": "doc",
-      "lines": 168,
-      "bytes": 9155,
+      "lines": 184,
+      "bytes": 11077,
       "doc": "",
       "symbols": []
     },
@@ -83091,8 +83111,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 216,
-      "bytes": 7857,
+      "lines": 217,
+      "bytes": 7987,
       "doc": "",
       "symbols": [
         {
@@ -84276,8 +84296,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/reports/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 422,
-      "bytes": 14973,
+      "lines": 425,
+      "bytes": 15096,
       "doc": "",
       "symbols": [
         {
@@ -84561,8 +84581,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/stitching/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 246,
-      "bytes": 8463,
+      "lines": 243,
+      "bytes": 8415,
       "doc": "",
       "symbols": [
         {
@@ -85452,7 +85472,7 @@
       "area": "web",
       "kind": "page",
       "lines": 325,
-      "bytes": 11299,
+      "bytes": 11314,
       "doc": "",
       "symbols": [
         {
@@ -85482,7 +85502,7 @@
       "area": "web",
       "kind": "page",
       "lines": 754,
-      "bytes": 29157,
+      "bytes": 29160,
       "doc": "",
       "symbols": [
         {
@@ -85617,7 +85637,7 @@
       "area": "web",
       "kind": "page",
       "lines": 265,
-      "bytes": 11389,
+      "bytes": 11395,
       "doc": "",
       "symbols": [
         {
@@ -85866,14 +85886,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/unsubscribe/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 63,
-      "bytes": 2100,
+      "lines": 73,
+      "bytes": 2557,
       "doc": "",
       "symbols": [
         {
           "name": "UnsubscribePage",
           "kind": "default",
-          "line": 10
+          "line": 12
         }
       ]
     },
@@ -85881,14 +85901,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/verify-email/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 61,
-      "bytes": 1954,
+      "lines": 71,
+      "bytes": 2409,
       "doc": "",
       "symbols": [
         {
           "name": "VerifyEmailPage",
           "kind": "default",
-          "line": 11
+          "line": 13
         }
       ]
     },
@@ -85966,8 +85986,8 @@
       "path": "apps/web/src/app/globals.css",
       "area": "web",
       "kind": "stylesheet",
-      "lines": 1029,
-      "bytes": 36462,
+      "lines": 1380,
+      "bytes": 48233,
       "doc": "",
       "symbols": []
     },
@@ -86035,7 +86055,7 @@
       "area": "web",
       "kind": "component",
       "lines": 484,
-      "bytes": 17167,
+      "bytes": 17176,
       "doc": "",
       "symbols": [
         {
@@ -86313,19 +86333,19 @@
       "path": "apps/web/src/components/admin/charts/category-bar-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 82,
-      "bytes": 2799,
+      "lines": 85,
+      "bytes": 2964,
       "doc": "",
       "symbols": [
         {
           "name": "CategoryBarItem",
           "kind": "interface",
-          "line": 11
+          "line": 12
         },
         {
           "name": "CategoryBarChart",
           "kind": "function",
-          "line": 17
+          "line": 18
         }
       ]
     },
@@ -86363,14 +86383,19 @@
       "path": "apps/web/src/components/admin/charts/chart-marker.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 59,
-      "bytes": 1782,
+      "lines": 79,
+      "bytes": 2702,
       "doc": "",
       "symbols": [
         {
+          "name": "MarkerPop",
+          "kind": "interface",
+          "line": 5
+        },
+        {
           "name": "ChartMarker",
           "kind": "function",
-          "line": 8
+          "line": 31
         }
       ]
     },
@@ -86520,6 +86545,95 @@
           "name": "niceCeil",
           "kind": "function",
           "line": 312
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/chart-motion.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 167,
+      "bytes": 5973,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/admin/charts/chart-motion.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 181,
+      "bytes": 7858,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CHART_DRAW_MS",
+          "kind": "const",
+          "line": 33
+        },
+        {
+          "name": "CHART_POP_MS",
+          "kind": "const",
+          "line": 36
+        },
+        {
+          "name": "CHART_TOOLTIP_MS",
+          "kind": "const",
+          "line": 39
+        },
+        {
+          "name": "ChartEasing",
+          "kind": "type",
+          "line": 47
+        },
+        {
+          "name": "cubicBezierCss",
+          "kind": "function",
+          "line": 50
+        },
+        {
+          "name": "CHART_EASING",
+          "kind": "const",
+          "line": 55
+        },
+        {
+          "name": "ChartDrawProps",
+          "kind": "interface",
+          "line": 57
+        },
+        {
+          "name": "chartDrawProps",
+          "kind": "function",
+          "line": 77
+        },
+        {
+          "name": "ChartTooltipMotion",
+          "kind": "interface",
+          "line": 86
+        },
+        {
+          "name": "chartTooltipMotion",
+          "kind": "function",
+          "line": 98
+        },
+        {
+          "name": "pointPopDelayMs",
+          "kind": "function",
+          "line": 141
+        },
+        {
+          "name": "pointPopStyle",
+          "kind": "function",
+          "line": 155
+        },
+        {
+          "name": "chartCursor",
+          "kind": "const",
+          "line": 167
+        },
+        {
+          "name": "chartActiveDot",
+          "kind": "const",
+          "line": 180
         }
       ]
     },
@@ -86677,19 +86791,19 @@
       "path": "apps/web/src/components/admin/charts/comparison-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 124,
-      "bytes": 4840,
+      "lines": 127,
+      "bytes": 5050,
       "doc": "",
       "symbols": [
         {
           "name": "ComparisonBucketPoint",
           "kind": "interface",
-          "line": 11
+          "line": 12
         },
         {
           "name": "ComparisonChart",
           "kind": "function",
-          "line": 26
+          "line": 27
         }
       ]
     },
@@ -86746,19 +86860,19 @@
       "path": "apps/web/src/components/admin/charts/period-comparison-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 190,
-      "bytes": 6817,
+      "lines": 192,
+      "bytes": 6951,
       "doc": "",
       "symbols": [
         {
           "name": "PeriodComparisonPoint",
           "kind": "interface",
-          "line": 14
+          "line": 15
         },
         {
           "name": "PeriodComparisonChart",
           "kind": "function",
-          "line": 41
+          "line": 42
         }
       ]
     },
@@ -86766,19 +86880,19 @@
       "path": "apps/web/src/components/admin/charts/point-line-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 144,
-      "bytes": 5626,
+      "lines": 160,
+      "bytes": 6459,
       "doc": "",
       "symbols": [
         {
           "name": "PointLinePoint",
           "kind": "interface",
-          "line": 12
+          "line": 13
         },
         {
           "name": "PointLineChart",
           "kind": "function",
-          "line": 34
+          "line": 35
         }
       ]
     },
@@ -86786,39 +86900,39 @@
       "path": "apps/web/src/components/admin/charts/radar-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 218,
-      "bytes": 7874,
+      "lines": 222,
+      "bytes": 8113,
       "doc": "",
       "symbols": [
         {
           "name": "RadarSeries",
           "kind": "type",
-          "line": 27
+          "line": 28
         },
         {
           "name": "MIN_RADAR_AXES",
           "kind": "const",
-          "line": 30
+          "line": 31
         },
         {
           "name": "MAX_RADAR_AXES",
           "kind": "const",
-          "line": 31
+          "line": 32
         },
         {
           "name": "MAX_AXIS_NAME",
           "kind": "const",
-          "line": 37
+          "line": 38
         },
         {
           "name": "MAX_RADAR_SERIES",
           "kind": "const",
-          "line": 39
+          "line": 40
         },
         {
           "name": "RadarChart",
           "kind": "function",
-          "line": 61
+          "line": 62
         }
       ]
     },
@@ -86826,19 +86940,19 @@
       "path": "apps/web/src/components/admin/charts/range-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 152,
-      "bytes": 5726,
+      "lines": 158,
+      "bytes": 6218,
       "doc": "",
       "symbols": [
         {
           "name": "RangePoint",
           "kind": "interface",
-          "line": 11
+          "line": 12
         },
         {
           "name": "RangeChart",
           "kind": "function",
-          "line": 31
+          "line": 32
         }
       ]
     },
@@ -86846,19 +86960,19 @@
       "path": "apps/web/src/components/admin/charts/share-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 145,
-      "bytes": 6020,
+      "lines": 176,
+      "bytes": 7507,
       "doc": "",
       "symbols": [
         {
           "name": "ShareItem",
           "kind": "type",
-          "line": 14
+          "line": 15
         },
         {
           "name": "ShareChart",
           "kind": "function",
-          "line": 39
+          "line": 49
         }
       ]
     },
@@ -86866,24 +86980,24 @@
       "path": "apps/web/src/components/admin/charts/small-multiples-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 220,
-      "bytes": 9226,
+      "lines": 223,
+      "bytes": 9474,
       "doc": "",
       "symbols": [
         {
           "name": "SmallMultiplesSeries",
           "kind": "type",
-          "line": 14
+          "line": 15
         },
         {
           "name": "MAX_MULTIPLES",
           "kind": "const",
-          "line": 17
+          "line": 18
         },
         {
           "name": "SmallMultiplesChart",
           "kind": "function",
-          "line": 42
+          "line": 43
         }
       ]
     },
@@ -86906,24 +87020,24 @@
       "path": "apps/web/src/components/admin/charts/stacked-area-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 143,
-      "bytes": 6059,
+      "lines": 145,
+      "bytes": 6207,
       "doc": "",
       "symbols": [
         {
           "name": "StackedAreaSeries",
           "kind": "type",
-          "line": 12
+          "line": 13
         },
         {
           "name": "MAX_STACKED_SERIES",
           "kind": "const",
-          "line": 15
+          "line": 16
         },
         {
           "name": "StackedAreaChart",
           "kind": "function",
-          "line": 35
+          "line": 36
         }
       ]
     },
@@ -86931,19 +87045,19 @@
       "path": "apps/web/src/components/admin/charts/time-series-chart.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 154,
-      "bytes": 5174,
+      "lines": 158,
+      "bytes": 5480,
       "doc": "",
       "symbols": [
         {
           "name": "TimeSeriesSeriesDef",
           "kind": "interface",
-          "line": 23
+          "line": 24
         },
         {
           "name": "TimeSeriesChart",
           "kind": "function",
-          "line": 33
+          "line": 34
         }
       ]
     },
@@ -87120,14 +87234,14 @@
       "path": "apps/web/src/components/admin/dashboard/live-feed-widget.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 79,
-      "bytes": 2901,
+      "lines": 94,
+      "bytes": 3793,
       "doc": "",
       "symbols": [
         {
           "name": "LiveFeedWidget",
           "kind": "function",
-          "line": 20
+          "line": 21
         }
       ]
     },
@@ -87135,29 +87249,29 @@
       "path": "apps/web/src/components/admin/dashboard/metric-card.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 140,
-      "bytes": 4839,
+      "lines": 144,
+      "bytes": 5143,
       "doc": "",
       "symbols": [
         {
           "name": "MetricCardData",
           "kind": "interface",
-          "line": 8
+          "line": 9
         },
         {
           "name": "formatValue",
           "kind": "function",
-          "line": 14
+          "line": 15
         },
         {
           "name": "MetricCard",
           "kind": "function",
-          "line": 49
+          "line": 50
         },
         {
           "name": "MetricCardWithSparkline",
           "kind": "function",
-          "line": 116
+          "line": 120
         }
       ]
     },
@@ -87606,7 +87720,7 @@
       "area": "web",
       "kind": "component",
       "lines": 63,
-      "bytes": 2584,
+      "bytes": 2591,
       "doc": "",
       "symbols": [
         {
@@ -87635,19 +87749,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 117,
-      "bytes": 4755,
+      "lines": 125,
+      "bytes": 5074,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 110
+          "line": 113
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 114
+          "line": 117
         }
       ]
     },
@@ -87670,8 +87784,8 @@
       "path": "apps/web/src/components/common/wizard.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 146,
-      "bytes": 4394,
+      "lines": 159,
+      "bytes": 5113,
       "doc": "",
       "symbols": [
         {
@@ -87682,7 +87796,7 @@
         {
           "name": "Wizard",
           "kind": "function",
-          "line": 36
+          "line": 37
         }
       ]
     },
@@ -88276,14 +88390,14 @@
       "path": "apps/web/src/components/design-system/motion-specimens.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 543,
-      "bytes": 19441,
+      "lines": 809,
+      "bytes": 30242,
       "doc": "",
       "symbols": [
         {
           "name": "MotionSpecimens",
           "kind": "function",
-          "line": 136
+          "line": 235
         }
       ]
     },
@@ -88447,7 +88561,7 @@
       "area": "web",
       "kind": "component",
       "lines": 157,
-      "bytes": 5623,
+      "bytes": 5626,
       "doc": "",
       "symbols": [
         {
@@ -88461,8 +88575,8 @@
       "path": "apps/web/src/components/storefront/cart-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 30,
-      "bytes": 1271,
+      "lines": 34,
+      "bytes": 1430,
       "doc": "",
       "symbols": [
         {
@@ -88497,7 +88611,7 @@
       "area": "web",
       "kind": "component",
       "lines": 87,
-      "bytes": 3443,
+      "bytes": 3449,
       "doc": "",
       "symbols": [
         {
@@ -88532,7 +88646,7 @@
       "area": "web",
       "kind": "component",
       "lines": 365,
-      "bytes": 11951,
+      "bytes": 11961,
       "doc": "",
       "symbols": [
         {
@@ -88592,7 +88706,7 @@
       "area": "web",
       "kind": "component",
       "lines": 41,
-      "bytes": 1242,
+      "bytes": 1245,
       "doc": "",
       "symbols": [
         {
@@ -88607,7 +88721,7 @@
       "area": "web",
       "kind": "component",
       "lines": 210,
-      "bytes": 9625,
+      "bytes": 9666,
       "doc": "",
       "symbols": [
         {
@@ -88652,7 +88766,7 @@
       "area": "web",
       "kind": "component",
       "lines": 75,
-      "bytes": 2670,
+      "bytes": 2676,
       "doc": "",
       "symbols": [
         {
@@ -88742,7 +88856,7 @@
       "area": "web",
       "kind": "component",
       "lines": 239,
-      "bytes": 9680,
+      "bytes": 9712,
       "doc": "",
       "symbols": [
         {
@@ -88757,7 +88871,7 @@
       "area": "web",
       "kind": "component",
       "lines": 137,
-      "bytes": 4772,
+      "bytes": 4775,
       "doc": "",
       "symbols": [
         {
@@ -88772,7 +88886,7 @@
       "area": "web",
       "kind": "component",
       "lines": 509,
-      "bytes": 17899,
+      "bytes": 17908,
       "doc": "",
       "symbols": [
         {
@@ -88837,7 +88951,7 @@
       "area": "web",
       "kind": "component",
       "lines": 134,
-      "bytes": 5356,
+      "bytes": 5366,
       "doc": "",
       "symbols": [
         {
@@ -88897,7 +89011,7 @@
       "area": "web",
       "kind": "component",
       "lines": 64,
-      "bytes": 2396,
+      "bytes": 2399,
       "doc": "",
       "symbols": [
         {
@@ -88912,7 +89026,7 @@
       "area": "web",
       "kind": "component",
       "lines": 969,
-      "bytes": 33948,
+      "bytes": 33952,
       "doc": "",
       "symbols": [
         {
@@ -88977,7 +89091,7 @@
       "area": "web",
       "kind": "component",
       "lines": 89,
-      "bytes": 3223,
+      "bytes": 3226,
       "doc": "",
       "symbols": [
         {
@@ -89076,14 +89190,14 @@
       "path": "apps/web/src/components/ui/count-up.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 93,
-      "bytes": 3188,
+      "lines": 196,
+      "bytes": 7089,
       "doc": "",
       "symbols": [
         {
           "name": "CountUp",
           "kind": "function",
-          "line": 30
+          "line": 41
         }
       ]
     },
@@ -89111,14 +89225,14 @@
       "path": "apps/web/src/components/ui/dialog.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 221,
-      "bytes": 8009,
+      "lines": 244,
+      "bytes": 9363,
       "doc": "",
       "symbols": [
         {
           "name": "Dialog",
           "kind": "function",
-          "line": 34
+          "line": 36
         }
       ]
     },
@@ -89134,6 +89248,21 @@
           "name": "Disclosure",
           "kind": "function",
           "line": 30
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/draw-icon.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 53,
+      "bytes": 2100,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "DrawIcon",
+          "kind": "function",
+          "line": 26
         }
       ]
     },
@@ -89196,8 +89325,8 @@
       "path": "apps/web/src/components/ui/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 54,
-      "bytes": 2072,
+      "lines": 58,
+      "bytes": 2250,
       "doc": "Design-system primitives.",
       "symbols": []
     },
@@ -89298,6 +89427,21 @@
           "name": "Pagination",
           "kind": "function",
           "line": 23
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/progress-bar.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 72,
+      "bytes": 2791,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ProgressBar",
+          "kind": "function",
+          "line": 28
         }
       ]
     },
@@ -89417,6 +89561,21 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/swap-text.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 52,
+      "bytes": 2251,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SwapText",
+          "kind": "function",
+          "line": 22
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/ui/switch.tsx",
       "area": "web",
       "kind": "component",
@@ -89455,8 +89614,8 @@
       "path": "apps/web/src/components/ui/text-motion.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 146,
-      "bytes": 5220,
+      "lines": 160,
+      "bytes": 5713,
       "doc": "",
       "symbols": [
         {
@@ -89467,7 +89626,7 @@
         {
           "name": "TypeText",
           "kind": "function",
-          "line": 94
+          "line": 100
         }
       ]
     },
@@ -89503,6 +89662,21 @@
           "name": "ThemeToggle",
           "kind": "function",
           "line": 51
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/truncate-reveal.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 61,
+      "bytes": 2273,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "TruncateReveal",
+          "kind": "function",
+          "line": 28
         }
       ]
     },
@@ -89656,6 +89830,21 @@
           "name": "useExitTransition",
           "kind": "function",
           "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/hooks/use-fresh-on-change.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 33,
+      "bytes": 1344,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "useFreshOnChange",
+          "kind": "function",
+          "line": 16
         }
       ]
     },
@@ -90156,8 +90345,8 @@
       "path": "apps/web/src/lib/motion.spec.ts",
       "area": "web",
       "kind": "unit test",
-      "lines": 194,
-      "bytes": 6291,
+      "lines": 319,
+      "bytes": 10666,
       "doc": "",
       "symbols": []
     },
@@ -90165,8 +90354,8 @@
       "path": "apps/web/src/lib/motion.ts",
       "area": "web",
       "kind": "utility",
-      "lines": 160,
-      "bytes": 6087,
+      "lines": 251,
+      "bytes": 10065,
       "doc": "",
       "symbols": [
         {
@@ -90215,14 +90404,59 @@
           "line": 134
         },
         {
-          "name": "ringStroke",
+          "name": "typedWordsFrame",
           "kind": "function",
           "line": 144
         },
         {
+          "name": "progressFraction",
+          "kind": "function",
+          "line": 156
+        },
+        {
+          "name": "REVEAL_MAX_MS",
+          "kind": "const",
+          "line": 162
+        },
+        {
+          "name": "revealRun",
+          "kind": "function",
+          "line": 171
+        },
+        {
+          "name": "SwapState",
+          "kind": "interface",
+          "line": 185
+        },
+        {
+          "name": "nextSwap",
+          "kind": "function",
+          "line": 191
+        },
+        {
+          "name": "originOffset",
+          "kind": "function",
+          "line": 202
+        },
+        {
+          "name": "ReelPart",
+          "kind": "type",
+          "line": 220
+        },
+        {
+          "name": "reelParts",
+          "kind": "function",
+          "line": 222
+        },
+        {
+          "name": "ringStroke",
+          "kind": "function",
+          "line": 233
+        },
+        {
           "name": "MOTION_MS",
           "kind": "const",
-          "line": 154
+          "line": 243
         }
       ]
     },
@@ -91995,8 +92229,8 @@
       "path": "docs/design/foundations/01-foundations.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 292,
-      "bytes": 15552,
+      "lines": 298,
+      "bytes": 16099,
       "doc": "",
       "symbols": []
     },
@@ -92031,8 +92265,8 @@
       "path": "docs/design/motion/05-motion.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 268,
-      "bytes": 12812,
+      "lines": 318,
+      "bytes": 17683,
       "doc": "",
       "symbols": []
     },
@@ -93876,8 +94110,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 10644,
-      "bytes": 646027,
+      "lines": 10805,
+      "bytes": 660846,
       "doc": "",
       "symbols": []
     },
@@ -96781,19 +97015,19 @@
       "path": "packages/shared/src/brand.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 585,
-      "bytes": 22280,
+      "lines": 595,
+      "bytes": 22769,
       "doc": "THE BRAND FILE.",
       "symbols": [
         {
           "name": "BRAND",
           "kind": "const",
-          "line": 572
+          "line": 582
         },
         {
           "name": "Brand",
           "kind": "type",
-          "line": 584
+          "line": 594
         }
       ]
     },
@@ -98528,8 +98762,8 @@
       "path": "packages/shared/src/theme-space.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 102,
-      "bytes": 4108,
+      "lines": 107,
+      "bytes": 4465,
       "doc": "",
       "symbols": []
     },
@@ -98567,8 +98801,8 @@
       "path": "packages/shared/src/theme-tailwind.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 342,
-      "bytes": 14876,
+      "lines": 343,
+      "bytes": 14929,
       "doc": "",
       "symbols": [
         {
@@ -98634,7 +98868,7 @@
         {
           "name": "createThemeTailwind",
           "kind": "function",
-          "line": 224
+          "line": 225
         }
       ]
     },

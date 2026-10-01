@@ -39,7 +39,7 @@ export function ToastStack({ toasts, onDismiss }: { toasts: Toast[]; onDismiss: 
             'pointer-events-auto relative w-full cursor-pointer overflow-hidden rounded-md border p-4 text-start text-sm shadow-md',
             t.leaving ? 'pointer-events-none animate-leave' : 'animate-arrive',
             t.type === 'error'
-              ? 'border-red-200 bg-red-50 text-red-800'
+              ? 'ignite border-red-200 bg-red-50 text-red-800'
               : t.type === 'success'
                 ? 'border-green-200 bg-green-50 text-green-800'
                 : 'border-blue-200 bg-blue-50 text-blue-800',

@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useRef, type ReactNode } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 import { useExitTransition } from '@/hooks/use-exit-transition';
+import { originOffset } from '@/lib/motion';
 
 /**
  * A modal dialog, with the behaviour every modal is supposed to have.
@@ -24,7 +25,8 @@ import { useExitTransition } from '@/hooks/use-exit-transition';
  *   - Body scroll is locked, and released even if the component unmounts
  *     while open.
  *   - `role="dialog"` + `aria-modal`, labelled by the title.
- *   - It arrives and it leaves. The panel settles in (`arrive`; a side sheet
+ *   - It arrives and it leaves. The panel settles in (`arrive`, from the side
+ *     of the control that opened it when there is one; a side sheet
  *     slides in from its own edge, in either direction of writing), the scrim
  *     fades, and on close both play the `fast` exit before unmounting
  *     (`useExitTransition`). While leaving, the whole thing is `inert`: focus
@@ -85,6 +87,27 @@ export function Dialog({
       previouslyFocused.current?.focus?.();
     };
   }, [open]);
+
+  // Where the panel arrives from. When a control opened the dialog it still has focus at this point
+  // (the effect above has not moved it yet), so the panel rises from the side that control is on,
+  // by the offset between the two centres held to `distance.large`. No focused control (opened by
+  // script, or from the body) leaves the default, which is `arrive` itself: `small` below.
+  // Read before the first paint and before the animation has moved the panel, so both rects are at rest.
+  useLayoutEffect(() => {
+    const panel = panelRef.current;
+    const trigger = document.activeElement;
+    if (!open || align === 'end' || !panel) return;
+    if (!(trigger instanceof HTMLElement) || trigger === document.body || panel.contains(trigger)) return;
+    const from = trigger.getBoundingClientRect();
+    const to = panel.getBoundingClientRect();
+    if (from.width === 0 && from.height === 0) return;
+    const { dx, dy } = originOffset(
+      { x: from.left + from.width / 2, y: from.top + from.height / 2 },
+      { x: to.left + to.width / 2, y: to.top + to.height / 2 },
+    );
+    panel.style.setProperty('--origin-dx', `${dx}px`);
+    panel.style.setProperty('--origin-dy', `${dy}px`);
+  }, [open, align]);
 
   // Scroll lock. The cleanup restores the previous value rather than clearing
   // it, so a dialog opened from inside another locked context does not free
@@ -175,7 +198,7 @@ export function Dialog({
           'card relative z-raised flex w-full flex-col bg-overlay outline-none',
           align === 'end'
             ? cn('h-full max-w-md rounded-none border-y-0 border-e-0', leaving ? 'sheet-out' : 'sheet-in')
-            : cn('max-h-[85vh] max-w-lg', leaving ? 'animate-leave' : 'animate-arrive'),
+            : cn('max-h-[85vh] max-w-lg', leaving ? 'animate-leave' : 'arrive-from'),
           className,
         )}
       >

@@ -96,11 +96,11 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>168 lines</sub>
+### `.claude/rules/ui.md`  <sub>184 lines</sub>
 
 - Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:81</sub>
-- No dead ends  <sub>:121</sub>
+- Borders and boxes  <sub>:97</sub>
+- No dead ends  <sub>:137</sub>
 
 ### `.github/copilot-instructions.md`  <sub>81 lines</sub>
 
@@ -227,7 +227,7 @@ _no second-level headings_
 - Localisation  <sub>:95</sub>
 - Verifying  <sub>:108</sub>
 
-### `docs/design/foundations/01-foundations.md`  <sub>292 lines</sub>
+### `docs/design/foundations/01-foundations.md`  <sub>298 lines</sub>
 
 - Why tokens and not values  <sub>:16</sub>
 - Colour  <sub>:26</sub>
@@ -239,8 +239,8 @@ _no second-level headings_
 - Z-index / layering  <sub>:120</sub>
 - Breakpoints  <sub>:141</sub>
 - Motion tokens  <sub>:152</sub>
-- Theming  <sub>:196</sub>
-- Where tokens live  <sub>:279</sub>
+- Theming  <sub>:202</sub>
+- Where tokens live  <sub>:285</sub>
 
 ### `docs/design/layout-composition/02-layout.md`  <sub>130 lines</sub>
 
@@ -269,22 +269,22 @@ _no second-level headings_
 - What must be built  <sub>:187</sub>
 - Sources  <sub>:200</sub>
 
-### `docs/design/motion/05-motion.md`  <sub>268 lines</sub>
+### `docs/design/motion/05-motion.md`  <sub>318 lines</sub>
 
 - The one test  <sub>:19</sub>
 - What motion may communicate  <sub>:34</sub>
 - The language  <sub>:49</sub>
 - Hierarchy of motion  <sub>:67</sub>
 - The reel, and the two tiers  <sub>:84</sub>
-- Continuity over replacement  <sub>:138</sub>
-- Orchestration  <sub>:154</sub>
-- Micro-interactions  <sub>:163</sub>
-- Scroll  <sub>:179</sub>
-- Responsive motion  <sub>:191</sub>
-- Reduced motion — required  <sub>:202</sub>
-- Performance  <sub>:236</sub>
-- Rejection list  <sub>:247</sub>
-- Benchmark, not template  <sub>:258</sub>
+- Continuity over replacement  <sub>:186</sub>
+- Orchestration  <sub>:202</sub>
+- Micro-interactions  <sub>:211</sub>
+- Scroll  <sub>:227</sub>
+- Responsive motion  <sub>:239</sub>
+- Reduced motion — required  <sub>:250</sub>
+- Performance  <sub>:286</sub>
+- Rejection list  <sub>:297</sub>
+- Benchmark, not template  <sub>:308</sub>
 
 ### `docs/design/principles-laws/00-principles.md`  <sub>83 lines</sub>
 
@@ -2965,7 +2965,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>10,644 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>10,805 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

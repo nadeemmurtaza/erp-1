@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useId, useState } from 'react';
-import { Bell, Pencil, Trash2 } from 'lucide-react';
+import { Bell, CircleCheck, Pencil, Trash2 } from 'lucide-react';
 import { formatMoney, formatNumber } from '@newax/shared';
 import {
   Badge,
@@ -10,14 +10,20 @@ import {
   Button,
   CountUp,
   Dialog,
+  DrawIcon,
+  ProgressBar,
   ProgressRing,
   ScrambleText,
   Segmented,
   Tabs,
+  TruncateReveal,
   TypeText,
   type BadgeTone,
 } from '@/components/ui';
 import { ToastStack } from '@/components/admin/toast-stack';
+import { StatusBadge } from '@/components/common/status-badge';
+import { Wizard } from '@/components/common/wizard';
+import { useFreshOnChange } from '@/hooks/use-fresh-on-change';
 import { useToast } from '@/hooks/use-toast';
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 import { cn } from '@/utils/cn';
@@ -102,6 +108,99 @@ const REEL: readonly { motion: string; says: string; lives: string; tier: Tier }
     tier: 'Expressive',
   },
   {
+    motion: 'Highlight sweep across a changed value',
+    says: 'This just changed.',
+    lives:
+      'The sheen: a dashboard tile whose figure changes when the range does, and a new row in the activity feed. One pass, 420ms, in the accent ink at 14%.',
+    tier: 'Functional',
+  },
+  {
+    motion: 'A label that hands over in place',
+    says: 'The same thing, now different.',
+    lives: 'SwapText inside StatusBadge: the old label rises out, the new one rises in, 4px each.',
+    tier: 'Functional',
+  },
+  {
+    motion: 'Progress bars: head, complete, failed, LED cells',
+    says: 'How much of the whole, and how it ended.',
+    lives:
+      'ProgressBar: the ranking in Reports and the tailor load in Stitching (over capacity turns negative). Head and segmented are options.',
+    tier: 'Functional',
+  },
+  {
+    motion: 'Labels that scroll to show their end',
+    says: 'There is more, and here it is.',
+    lives: 'TruncateReveal on hover: ranking labels and tailor names, at 48px per second, never over five seconds.',
+    tier: 'Functional',
+  },
+  {
+    motion: 'Step slides in from the way you are going',
+    says: 'You moved forward, or you moved back.',
+    lives: 'Wizard: the next step rises into place, the previous one drops into place.',
+    tier: 'Functional',
+  },
+  {
+    motion: 'Popup that opens out of its trigger',
+    says: 'This came from there.',
+    lives: 'Dialog: the panel arrives from the side of the control that opened it, up to 64px.',
+    tier: 'Functional',
+  },
+  {
+    motion: 'Error outline that flashes once',
+    says: 'Something is wrong, here.',
+    lives: 'An announced error notice and an error toast: a 2px inset ring in the negative colour that fades over 320ms.',
+    tier: 'Functional',
+  },
+  {
+    motion: 'Badge that pops when its count changes',
+    says: 'The number changed.',
+    lives: 'The cart count: it grows from 60% and settles; it does not bounce.',
+    tier: 'Functional',
+  },
+  {
+    motion: 'Charts that draw, then answer the pointer',
+    says: 'Data being plotted; this is the point you are on.',
+    lives:
+      'Every chart: lines and bars draw over 420ms with series 80ms apart, markers pop as the line reaches them, a crosshair or band follows the pointer, a tooltip glides, a donut slice is haloed.',
+    tier: 'Expressive',
+  },
+  {
+    motion: 'Icon strokes that draw themselves',
+    says: 'This just happened.',
+    lives: 'DrawIcon: the confirmation tick on the verify-email and unsubscribe pages.',
+    tier: 'Expressive',
+  },
+  {
+    motion: 'Odometer digits',
+    says: 'The one figure that matters, resolving.',
+    lives: 'CountUp mode="reel": the net profit on the profit and loss page.',
+    tier: 'Expressive',
+  },
+  {
+    motion: 'Words appear one by one',
+    says: 'A sentence being said.',
+    lives: 'TypeText unit="word", for a line of up to 80 characters. No product screen uses it yet.',
+    tier: 'Expressive',
+  },
+  {
+    motion: 'Playhead scrubbing a timeline',
+    says: 'Nothing the product has a place for.',
+    lives: 'There is no timeline view to carry it. Not adopted.',
+    tier: 'Not adopted',
+  },
+  {
+    motion: 'Icon that wipes open to its label',
+    says: 'Nothing a label does not already say.',
+    lives: 'It animates a clip-path, which is paint and not transform or opacity (MOT-5). Not adopted.',
+    tier: 'Not adopted',
+  },
+  {
+    motion: 'Bounce, overshoot, tilt and camera zoom',
+    says: 'Nothing.',
+    lives: 'Motion that says nothing a business control should say. Not adopted.',
+    tier: 'Not adopted',
+  },
+  {
     motion: 'Draw-on highlight ring with dimmed siblings',
     says: 'Look at this one, not those.',
     lives:
@@ -138,7 +237,7 @@ export function MotionSpecimens() {
   return (
     <>
       <Group
-        title="What the reel became"
+        title="What the reels became"
         note={
           reduced
             ? 'Your system asks for reduced motion, so every specimen below shows its end state at once. Nothing is missing: the state arrives, the travel does not.'
@@ -214,6 +313,19 @@ export function MotionSpecimens() {
         note="Opt in, one purpose each, bounded. A figure counts, a ring fills, a board assembles as it scrolls into view, the chosen thing is locked on, a value decodes, a line is typed."
       >
         <ExpressiveSpecimen />
+      </Group>
+      <Group
+        title="Quantities and changes"
+        note="A bar fills to its share and eases to each new value. A figure that changes is marked once: a sweep across the tile, a label that hands over, a count that pops, digits that roll."
+      >
+        <QuantitySpecimen />
+      </Group>
+
+      <Group
+        title="Hand-offs and reveals"
+        note="A step comes from the way you are going; a popup comes out of its trigger; a long label scrolls to its end under the pointer; a tick draws itself; a line arrives word by word."
+      >
+        <HandOffSpecimen />
       </Group>
     </>
   );
@@ -536,6 +648,160 @@ function ExpressiveSpecimen() {
         <p className="text-sm text-neutral-900">
           <TypeText key={`t${text}`} text="Three invoices are overdue and one needs your approval." />
         </p>
+      </div>
+    </div>
+  );
+}
+
+/* ── from the seven reels ───────────────────────────────────────────────── */
+
+const STATUSES = ['PENDING', 'PAID', 'DELIVERED'] as const;
+const TOTALS = [128400, 131900, 127300] as const;
+
+function QuantitySpecimen() {
+  const [value, setValue] = useState(64);
+  const [step, setStep] = useState(0);
+  const [count, setCount] = useState(2);
+  const sliderId = useId();
+  const total = TOTALS[step % TOTALS.length]!;
+  const fresh = useFreshOnChange(total);
+
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      <div className="card grid content-start gap-4 p-4">
+        <div>
+          <label className="field-label" htmlFor={sliderId}>
+            Progress
+          </label>
+          <input
+            id={sliderId}
+            type="range"
+            min={0}
+            max={100}
+            value={value}
+            onChange={(event) => setValue(Number(event.target.value))}
+          />
+        </div>
+        <ProgressBar label="Upload" value={value} valueText={`${value} percent`} />
+        <ProgressBar label="Upload with head" value={value} valueText={`${value} percent`} head />
+        <ProgressBar label="Upload in cells" value={value} valueText={`${value} percent`} segmented />
+        <ProgressBar
+          label="Import"
+          value={value}
+          valueText={value >= 100 ? 'Complete' : `${value} percent`}
+          tone={value >= 100 ? 'positive' : undefined}
+        />
+        <ProgressBar label="Sync" value={40} valueText="Failed at 40 percent" tone="negative" />
+        <p className="text-xs text-neutral-900/70">Slide to 100 for the complete tone. The last bar is a failure.</p>
+      </div>
+
+      <div className="grid content-start gap-4">
+        <div className="card sheen p-4" data-fresh={fresh ? 'true' : undefined}>
+          <p className="eyebrow">Net revenue</p>
+          <p className="mt-1 text-2xl font-medium tabular-nums text-neutral-900">{formatMoney(total)}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <StatusBadge status={STATUSES[step % STATUSES.length]!} />
+            <Button variant="secondary" onClick={() => setStep((n) => n + 1)}>
+              Change both
+            </Button>
+          </div>
+        </div>
+
+        <div className="card flex flex-wrap items-center gap-x-6 gap-y-3 p-4">
+          <div>
+            <p className="eyebrow">Net profit, reel</p>
+            <p className="mt-1 text-2xl font-medium text-neutral-900">
+              <CountUp mode="reel" value={total * 3} format={(n) => formatMoney(Math.round(n))} />
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-neutral-500">
+              <Bell aria-hidden="true" className="h-5 w-5" />
+              {count > 0 ? (
+                <span
+                  key={count}
+                  className="pop absolute -top-1 -end-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-inverse px-1 text-xs font-bold text-on-inverse"
+                >
+                  {count}
+                </span>
+              ) : null}
+            </span>
+            <Button variant="secondary" onClick={() => setCount((n) => n + 1)}>
+              Add one
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HandOffSpecimen() {
+  const [open, setOpen] = useState<'start' | 'end' | null>(null);
+  const [replay, setReplay] = useState(0);
+
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      <div className="card grid content-start gap-3 p-4">
+        <p className="eyebrow">Steps, in the direction of travel</p>
+        <Wizard
+          steps={[
+            { id: 'a', label: 'Details', content: <p className="text-sm text-neutral-900/70">Who is it for?</p>, isValid: true },
+            { id: 'b', label: 'Items', content: <p className="text-sm text-neutral-900/70">What is going out?</p>, isValid: true },
+            { id: 'c', label: 'Review', content: <p className="text-sm text-neutral-900/70">Check it, then send.</p>, isValid: true },
+          ]}
+          onSubmit={() => undefined}
+          submitLabel="Send"
+        />
+      </div>
+
+      <div className="grid content-start gap-4">
+        <div className="card grid gap-3 p-4">
+          <p className="eyebrow">Popup from its trigger</p>
+          <div className="flex items-center justify-between gap-3">
+            <Button variant="secondary" onClick={() => setOpen('start')}>
+              From the start
+            </Button>
+            <Button variant="secondary" onClick={() => setOpen('end')}>
+              From the end
+            </Button>
+          </div>
+          <Dialog
+            open={open !== null}
+            onClose={() => setOpen(null)}
+            title="Where did this come from?"
+            footer={
+              <div className="flex justify-end">
+                <Button variant="secondary" onClick={() => setOpen(null)}>
+                  Close
+                </Button>
+              </div>
+            }
+          >
+            <p className="text-sm text-neutral-900/70">
+              It arrived from the side of the button you used. Where nothing had focus, it rises from below.
+            </p>
+          </Dialog>
+        </div>
+
+        <div className="card grid gap-3 p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="eyebrow">Draw, reveal, word by word</p>
+            <Replay onClick={() => setReplay((n) => n + 1)} />
+          </div>
+          <div className="flex items-center gap-3 text-feedback-positive">
+            <DrawIcon key={`d${replay}`}>
+              <CircleCheck aria-hidden="true" className="h-8 w-8" />
+            </DrawIcon>
+            <span className="text-sm text-neutral-900">Your email address is confirmed.</span>
+          </div>
+          <div className="w-44 text-sm text-neutral-900">
+            <TruncateReveal text="Hover to read: Anwar Ali Stitching and Alterations Workshop" />
+          </div>
+          <p className="text-sm text-neutral-900">
+            <TypeText key={`w${replay}`} unit="word" text="Three invoices are overdue and one needs your approval." />
+          </p>
+        </div>
       </div>
     </div>
   );

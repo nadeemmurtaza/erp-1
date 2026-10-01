@@ -49,15 +49,15 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 
 | Signal | Today | Note |
 |---|---|---|
-| Token files | 11 (633 lines) | Token groups that exist at all — see the table below |
-| Primitives | 27 | `apps/web/src/components/ui` — the ladder's second rung |
+| Token files | 11 (634 lines) | Token groups that exist at all — see the table below |
+| Primitives | 31 | `apps/web/src/components/ui` — the ladder's second rung |
 | `framer-motion` importers | 1 | `apps/web/src/components/storefront/animated-section.tsx` |
-| CSS `transition` | 13 | declared transitions across every stylesheet |
-| Tailwind `transition-*` classes | 118 | the actual motion surface today — utility classes, not a token |
-| CSS `@keyframes` | 9 | named animations |
+| CSS `transition` | 16 | declared transitions across every stylesheet |
+| Tailwind `transition-*` classes | 124 | the actual motion surface today — utility classes, not a token |
+| CSS `@keyframes` | 18 | named animations |
 | `prefers-reduced-motion` blocks | 2 | chapter 05 and 07 both require this on every motion |
-| `aria-*` attributes | 383 | written by hand; **no accessibility lint runs** |
-| `role=` attributes | 340 |  |
+| `aria-*` attributes | 396 | written by hand; **no accessibility lint runs** |
+| `role=` attributes | 341 |  |
 | RTL / `dir` references | 47 | Urdu ships; chapter 07 says this is scattered, not systematic |
 | Inline `style={{` | 27 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |
 

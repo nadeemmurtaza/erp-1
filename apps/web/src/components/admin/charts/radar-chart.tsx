@@ -20,8 +20,9 @@ import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
 import { niceCeil } from './chart-math';
 import { SeriesToggles, ViewSwitch, useSeriesVisibility, type SeriesDef } from './chart-series';
+import { chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
 import { ChartTooltip } from './chart-tooltip';
-import { GRID, HOVER_WASH, INK_FAINT, INK_SOFT, paletteColor } from './chart-theme';
+import { GRID, INK_FAINT, INK_SOFT, paletteColor } from './chart-theme';
 import { usePrefersReducedMotion } from './use-reduced-motion';
 
 export type RadarSeries = Omit<SeriesDef, 'color'>;
@@ -136,6 +137,8 @@ export function RadarChart({
                 tickLine={false}
               />
               <Tooltip
+                {...chartTooltipMotion(reduced)}
+                cursor={chartCursor.crosshair}
                 content={(props) => (
                   <ChartTooltip
                     active={props.active}
@@ -145,7 +148,7 @@ export function RadarChart({
                   />
                 )}
               />
-              {visible.map((s) => (
+              {visible.map((s, index) => (
                 <Radar
                   key={s.key}
                   dataKey={s.key}
@@ -155,7 +158,7 @@ export function RadarChart({
                   fill={s.color}
                   fillOpacity={0.12}
                   dot={{ r: 3, fill: s.color, stroke: 'none' }}
-                  isAnimationActive={!reduced}
+                  {...chartDrawProps(reduced, index)}
                 />
               ))}
             </RechartsRadar>
@@ -181,7 +184,8 @@ export function RadarChart({
                 width={32}
               />
               <Tooltip
-                cursor={{ fill: HOVER_WASH }}
+                {...chartTooltipMotion(reduced)}
+                cursor={chartCursor.band}
                 content={(props) => (
                   <ChartTooltip
                     active={props.active}
@@ -191,7 +195,7 @@ export function RadarChart({
                   />
                 )}
               />
-              {visible.map((s) => (
+              {visible.map((s, index) => (
                 <Bar
                   key={s.key}
                   dataKey={s.key}
@@ -199,7 +203,7 @@ export function RadarChart({
                   fill={s.color}
                   maxBarSize={24}
                   radius={[4, 4, 0, 0]}
-                  isAnimationActive={!reduced}
+                  {...chartDrawProps(reduced, index)}
                 />
               ))}
             </BarChart>

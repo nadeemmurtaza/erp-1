@@ -300,7 +300,7 @@ function Chevron({ open }: { open: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden
-      className={cn('shrink-0 transition-transform duration-200', open && 'rotate-180')}
+      className={cn('shrink-0 transition-transform duration-normal', open && 'rotate-180')}
     >
       <polyline points="6 9 12 15 18 9" />
     </svg>
@@ -376,7 +376,7 @@ function NavGroup({
         aria-expanded={open}
         aria-controls={listId}
         className={cn(
-          'flex w-full items-center gap-2 rounded px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/60 transition-colors duration-200',
+          'flex w-full items-center gap-2 rounded px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/60 transition-colors duration-normal',
           holdsActivePage ? 'cursor-default' : 'hover:text-neutral-900/70',
         )}
       >
@@ -412,7 +412,7 @@ function NavLink({
       aria-current={isActive ? 'page' : undefined}
       onClick={onClick}
       className={cn(
-        'block rounded-md px-3 py-2 text-sm transition-colors duration-200',
+        'block rounded-md px-3 py-2 text-sm transition-colors duration-normal',
         compact && 'whitespace-nowrap',
         isActive
           ? 'bg-neutral-50 font-medium text-accent-hover'

@@ -4,8 +4,9 @@ import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, 
 import { formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
+import { CHART_DRAW_MS, chartCursor, chartDrawProps, chartTooltipMotion, pointPopStyle } from './chart-motion';
 import { ChartTooltip } from './chart-tooltip';
-import { GRID, HOVER_WASH, INK, INK_FAINT, SURFACE, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
+import { GRID, INK, INK_FAINT, SURFACE, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
 import { usePrefersReducedMotion } from './use-reduced-motion';
 
 export interface RangePoint {
@@ -87,7 +88,8 @@ export function RangeChart({
               width={48}
             />
             <Tooltip
-              cursor={{ fill: HOVER_WASH }}
+              {...chartTooltipMotion(reduced)}
+              cursor={chartCursor.crosshair}
               content={(props) => {
                 const row = props.payload?.[0]?.payload as RangePoint | undefined;
                 if (!props.active || !row) return null;
@@ -111,7 +113,7 @@ export function RangeChart({
               fill={paletteColor(0)}
               maxBarSize={14}
               radius={4}
-              isAnimationActive={!reduced}
+              {...chartDrawProps(reduced)}
             />
             <Line
               dataKey="avg"
@@ -119,9 +121,13 @@ export function RangeChart({
               stroke="none"
               isAnimationActive={false}
               activeDot={false}
+              // The capsules all grow together, so the averages all land together, as the capsules arrive
+              // (the last point's delay), not one by one along an x axis that is not a line being drawn.
               dot={(props: { cx?: number; cy?: number; index?: number }) => (
                 <circle
                   key={`avg-${props.index}`}
+                  className="chart-point"
+                  style={pointPopStyle(points.length - 1, points.length, CHART_DRAW_MS)}
                   cx={props.cx}
                   cy={props.cy}
                   r={4}

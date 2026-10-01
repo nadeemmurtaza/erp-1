@@ -485,7 +485,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
       </label>
 
       <div className={cn(
-        'overflow-hidden transition-all duration-300',
+        'overflow-hidden transition-all duration-slow',
         enabled ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'
       )}>
         <div className="mt-4 space-y-4 border-t border-neutral-100 pt-4">
@@ -902,7 +902,7 @@ function ServiceChoice({
   return (
     <label
       className={cn(
-        'flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors duration-200',
+        'flex cursor-pointer items-start gap-3 rounded-md border p-3 transition-colors duration-normal',
         selected ? 'border-neutral-900 bg-white' : 'border-neutral-100 bg-white/60 hover:border-neutral-400',
       )}
     >

@@ -3,7 +3,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import { cn } from '@/utils/cn';
 import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
-import { MOTION_MS, scrambleFrame, typedFrame } from '@/lib/motion';
+import { MOTION_MS, scrambleFrame, typedFrame, typedWordsFrame } from '@/lib/motion';
 
 /**
  * How often the noise in a decode changes, in ms. 40 is 25 frames a second: fast
@@ -90,8 +90,22 @@ export function ScrambleText({ text, className }: { text: string; className?: st
  * absent — so nothing reflows while it types and a wrapping line wraps where it
  * will end up. Accessibility is as `ScrambleText`: one `sr-only` copy of the
  * settled line, and reduced motion never starts it.
+ *
+ * `unit="word"` reveals whole words instead of characters: the same wipe, with
+ * no half word at its edge. It reads as a sentence being said rather than keys
+ * being struck, which is the right one for a line of prose (a summary, an
+ * answer); characters are for a short code or a name. The line still takes one
+ * `slow` in total, however many words it has.
  */
-export function TypeText({ text, className }: { text: string; className?: string }) {
+export function TypeText({
+  text,
+  unit = 'char',
+  className,
+}: {
+  text: string;
+  unit?: 'char' | 'word';
+  className?: string;
+}) {
   const reduced = usePrefersReducedMotion();
   const typed = useRef<HTMLSpanElement>(null);
   const rest = useRef<HTMLSpanElement>(null);
@@ -112,7 +126,7 @@ export function TypeText({ text, className }: { text: string; className?: string
     let frame = 0;
     const start = performance.now();
     const paint = (progress: number) => {
-      const head = typedFrame(text, progress);
+      const head = unit === 'word' ? typedWordsFrame(text, progress) : typedFrame(text, progress);
       a.nodeValue = head;
       b.textContent = chars.slice(Array.from(head).length).join('');
     };
@@ -131,7 +145,7 @@ export function TypeText({ text, className }: { text: string; className?: string
       cancelAnimationFrame(frame);
       settle();
     };
-  }, [text, reduced]);
+  }, [text, unit, reduced]);
 
   return (
     <span className={cn(className)}>

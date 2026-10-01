@@ -215,7 +215,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
         type="button"
         // btn-primary supplies shape/colour so a future colour change still
         // reaches this button; only the transform-based hover lift is bespoke.
-        className="btn-primary mb-4 w-full transition-[background-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-0.5 lg:hidden"
+        className="btn-primary mb-4 w-full transition-[background-color,transform] duration-normal ease-decelerate motion-safe:hover:-translate-y-0.5 lg:hidden"
         onClick={() => setIsOpen(true)}
       >
         <svg

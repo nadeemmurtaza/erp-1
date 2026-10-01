@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+import { Cell, Pie, PieChart, ResponsiveContainer, Sector, type PieSectorShapeProps } from 'recharts';
 import { formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { cn } from '@/utils/cn';
 import { ChartDataTable } from './chart-data-table';
 import { ChartLegendRow } from './chart-legend';
+import { chartDrawProps } from './chart-motion';
 import { MAX_NAMED_SLICES, OTHER_LABEL, foldShares, sharePct, type Share } from './chart-math';
 import { CONTEXT, paletteColor, type ValueFormat } from './chart-theme';
 import { usePrefersReducedMotion } from './use-reduced-motion';
@@ -15,6 +16,15 @@ export type ShareItem = Share;
 
 /** Degrees of empty ring between two slices; 2° is ~2.6 px at the outer edge of the 76 px ring below. */
 const SLICE_GAP_DEG = 2;
+
+/**
+ * The halo around the chosen slice: a second arc of the same angles, `HALO_GAP` px outside the ring and
+ * `HALO_WIDTH` px thick, in the slice's own colour at 35% (`opacity-35`). It is there on every slice and
+ * invisible until its slice is chosen, then fades in over the `fast` step: opacity only, no blur. The ring's
+ * outer radius is 84 in a 192 px box, so 84 + 3 + 4 = 91 stays inside the 96 px half-width.
+ */
+const HALO_GAP = 3;
+const HALO_WIDTH = 4;
 
 /**
  * A categorical share of a whole.
@@ -86,7 +96,28 @@ export function ShareChart({
               stroke="none"
               startAngle={90}
               endAngle={-270}
-              isAnimationActive={!reduced}
+              {...chartDrawProps(reduced)}
+              shape={(sector: PieSectorShapeProps) => (
+                <g>
+                  <Sector {...sector} />
+                  <Sector
+                    cx={sector.cx}
+                    cy={sector.cy}
+                    startAngle={sector.startAngle}
+                    endAngle={sector.endAngle}
+                    cornerRadius={sector.cornerRadius}
+                    innerRadius={sector.outerRadius + HALO_GAP}
+                    outerRadius={sector.outerRadius + HALO_GAP + HALO_WIDTH}
+                    fill={sector.fill}
+                    stroke="none"
+                    aria-hidden="true"
+                    className={cn(
+                      'pointer-events-none transition-opacity duration-fast ease-standard motion-reduce:transition-none',
+                      activeIndex === sector.index ? 'opacity-35' : 'opacity-0',
+                    )}
+                  />
+                </g>
+              )}
               onMouseEnter={(_, index) => setHovered(index)}
               onMouseLeave={() => setHovered(null)}
               onClick={(_, index) => setPinned((prev) => (prev === index ? null : index))}

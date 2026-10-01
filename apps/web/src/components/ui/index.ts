@@ -38,8 +38,12 @@ export { Segmented, type SegmentedOption } from './segmented';
 export { PageEnter } from './page-enter';
 export { CountUp } from './count-up';
 export { ProgressRing } from './progress-ring';
+export { ProgressBar } from './progress-bar';
 export { RevealScope } from './reveal-scope';
 export { ScrambleText, TypeText } from './text-motion';
+export { SwapText } from './swap-text';
+export { DrawIcon } from './draw-icon';
+export { TruncateReveal } from './truncate-reveal';
 
 // Layout
 export { Bento, BentoTile, type BentoSize, type BentoTone } from './bento';

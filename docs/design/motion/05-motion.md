@@ -135,6 +135,54 @@ quickly and finishes slowly, and it never overshoots: `emphasized` (y2 = 1.2)
 does, and is not used by any business control. A test pins that `settle` stays
 at or under 1.
 
+### The seven further reels
+
+Seven more reels were read the same way, motion by motion, for what each tells the
+reader. Most of what they showed was already here (arrive, stagger, the text decode
+and type, the loading ring, press, the count-up, draw-on, reveal on scroll). What was
+new, and fits the caps, is below. The values are tokens (chapter 01); the ones this
+round added are `scale.pop` (0.6) and `speed.read` (48 px/s).
+
+| Motion in the reels | What it says | Here | Tier |
+|---|---|---|---|
+| Highlight sweep across a changed value | this just changed | `.sheen` with `data-fresh`, driven by `useFreshOnChange`: a dashboard tile whose figure changes with the range, a new row in the activity feed. One pass, `sweep`, `decelerate`, accent ink at 14%; never ambient | Functional |
+| A label that hands over in place | the same thing, now different | `SwapText` in `StatusBadge`: the old one rises out 4px over `fast`, the new one rises in 4px over `normal` | Functional |
+| Progress bars: head, complete, failed, LED cells | how much of the whole, and how it ended | `ProgressBar` (`tone`, `head`, `segmented`): the Reports ranking, the Stitching tailor load (negative past capacity) | Functional |
+| A label that scrolls to show its end | there is more, and here it is | `TruncateReveal` on hover: a 220 ms beat, then linear at `speed.read`, never over five seconds; the full text stays in `title` | Functional |
+| Step comes from the way you are going | you moved forward, or back | `Wizard`: `.step-forward` rises into place, `.step-back` drops into place; the opening step does not animate | Functional |
+| Popup opens out of its trigger | this came from there | `Dialog`: `.arrive-from` from the offset between the trigger's centre and the panel's, each axis held to `distance.large` | Functional |
+| Error outline that flashes once | something is wrong, here | `.ignite`: a 2px inset ring in the negative colour fading over `slow`; on announced error notices and error toasts | Functional |
+| Badge that pops when its count changes | the number changed | `.pop`: from `scale.pop`, `fast`, `settle`; the cart count, keyed by the count | Functional |
+| Charts that draw, then answer the pointer | data being plotted; this is the point you are on | every chart: draw-on over `sweep` on `settle`, series `staggerDelayMs` apart, markers pop as the line reaches them, a crosshair or band follows the pointer, the tooltip glides over `normal`, a donut slice gets a halo | Expressive |
+| Icon strokes that draw themselves | this just happened | `DrawIcon`: the confirmation tick on verify-email and unsubscribe | Expressive |
+| Odometer digits | the one figure that matters, resolving | `CountUp mode="reel"`: net profit on the P&L page | Expressive |
+| Words appear one by one | a sentence being said | `TypeText unit="word"` (no product screen yet) | Expressive |
+| Playhead scrubbing a timeline | nothing here | not adopted: there is no timeline view | — |
+| Icon that wipes open to its label | nothing a label does not say | not adopted: a `clip-path` animation is paint, not transform or opacity (`MOT-5`) | — |
+| Bounce, overshoot, tilt, camera zoom, glow, blur, particles, brand-gradient watermarks | nothing | not adopted | — |
+
+Two exceptions to the 320 ms cap, both stated where they are used. A chart entrance
+is a page-level figure and takes `sweep` (420 ms); with the stagger the fourth series
+starts at 240 ms and ends at 660 ms. A truncated label scrolls at a reading speed, so
+its length follows the text (to a 5 s ceiling) and it runs only under the pointer.
+`ProgressBar` also follows real progress rather than a clock: between two samples it
+eases over `normal`.
+
+How the new ones are built, so they stay inside the rules:
+
+- The sheen is a gradient on a pseudo-element translated across the box; the box
+  must clip it (`overflow-hidden`, which `.sheen` sets).
+- `ProgressBar` slides a full-width fill by `translateX` (a `scaleX` would turn the
+  rounded end into an ellipse) and reads one custom property, `--p`; the head knob
+  uses the wrapper's own width (`cqw`) so there is no layout read.
+- `.reel-digit` is `inline-flex` with `overflow: clip` so its baseline is the first
+  digit's, and the digits sit on the baseline of the text around them.
+- `Dialog` reads the focused control's rectangle in a layout effect, before the
+  first paint and before the animation has moved the panel, so both rectangles are at
+  rest. With nothing focused it falls back to `arrive` (`small` below).
+- `DrawIcon` marks the strokes of a lucide icon on the client (`pathLength="1"`,
+  `.draw-path`); the server and a no-script page show the icon drawn.
+
 ## Continuity over replacement
 
 Prefer:
@@ -225,13 +273,15 @@ How it is met, in three layers:
    delay would hold a `both`-fill element at opacity 0, so the state would not
    jump, it would be missing.
 2. **JavaScript-driven motion asks for itself** (`usePrefersReducedMotion`,
-   `prefersReducedMotion`): Recharts series, `CountUp`, `ScrambleText`,
-   `TypeText`, `RevealScope`, a toast's exit wait, a dialog's exit wait, and the
-   storefront's smooth-scroll library, which is not started at all.
+   `prefersReducedMotion`): Recharts series, tooltips and markers, `CountUp` (both
+   modes), `ScrambleText`, `TypeText`, `SwapText`, `DrawIcon`, `TruncateReveal`,
+   `useFreshOnChange`, `RevealScope`, a toast's exit wait, a dialog's exit wait, and
+   the storefront's smooth-scroll library, which is not started at all.
 3. **The information is carried twice.** A count-up has an `sr-only` copy of the
-   settled value; a ring is a `progressbar` with its percentage; a loading
+   settled value; a ring and a bar are a `progressbar` with their value; a loading
    button says "Working…"; an invalid field has `aria-invalid` and a message,
-   not only a shake.
+   not only a shake; a truncated label has its full text in `title`; a bar's tone
+   is also in its `valueText`.
 
 ## Performance
 

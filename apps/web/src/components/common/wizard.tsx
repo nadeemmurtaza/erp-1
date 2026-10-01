@@ -29,7 +29,8 @@ interface WizardProps {
  *
  * Deliberately un-opinionated about field styling — callers own each step's
  * markup entirely — so the same shell serves the storefront's `sf-*` classes
- * and admin's `field-*` classes alike. Steps already visited stay clickable
+ * and admin's `field-*` classes alike. A step arrives from the direction the
+ * reader is going: forward rises into place, back drops into place. Steps already visited stay clickable
  * (you may jump back to fix something); a step ahead of the furthest one
  * reached does not, since its content may depend on an earlier answer.
  */
@@ -46,6 +47,8 @@ export function Wizard({
 }: WizardProps) {
   const [index, setIndex] = useState(0);
   const [furthest, setFurthest] = useState(0);
+  // Which way the reader last moved, so the step that arrives comes from that side. Null until the first move: the opening step does not animate.
+  const [direction, setDirection] = useState<'forward' | 'back' | null>(null);
 
   const step = steps[index];
   if (!step) return null;
@@ -53,6 +56,7 @@ export function Wizard({
 
   function goNext() {
     if (!step!.isValid) return;
+    setDirection('forward');
     setIndex((current) => {
       const next = Math.min(current + 1, steps.length - 1);
       setFurthest((f) => Math.max(f, next));
@@ -61,11 +65,14 @@ export function Wizard({
   }
 
   function goBack() {
+    setDirection('back');
     setIndex((current) => Math.max(current - 1, 0));
   }
 
   function goTo(target: number) {
-    if (target <= furthest) setIndex(target);
+    if (target > furthest) return;
+    setDirection(target > index ? 'forward' : 'back');
+    setIndex(target);
   }
 
   return (
@@ -107,7 +114,13 @@ export function Wizard({
         })}
       </ol>
 
-      <div className="mt-5">{step.content}</div>
+      {/* Keyed by the step, so each arrives as its own element and plays the entrance from the side the reader is going. */}
+      <div
+        key={step.id}
+        className={cn('mt-5', direction === 'forward' && 'step-forward', direction === 'back' && 'step-back')}
+      >
+        {step.content}
+      </div>
 
       {error ? <div className="mt-4">{error}</div> : null}
 

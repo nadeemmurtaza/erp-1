@@ -111,7 +111,8 @@ export default function FinancePnlPage() {
         {
           key: 'net',
           label: 'Net profit',
-          value: <CountUp value={current.netIncomeMinor} format={money} />,
+          // The one figure the page is about: its digits roll to their places rather than the whole figure counting.
+          value: <CountUp mode="reel" value={current.netIncomeMinor} format={money} />,
         },
         {
           key: 'margin',

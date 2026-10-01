@@ -33,6 +33,13 @@ writing markup, check this list. **Grep for the literal before adding one.**
 | `PageEnter` | wraps a layout's `children` so a page rises into place on navigation (keyed on the pathname, not the segment: a filter in the URL does not replay it) |
 | `RevealScope` | a grid or board whose `data-reveal-item` children arrive as they scroll into view; `Bento` already is one |
 | `CountUp`, `ProgressRing`, `ScrambleText`, `TypeText` | the **expressive** motion tier: opt in, one purpose each (a figure just computed, a fraction of one thing, a value the system just produced, a line being said), never on a table cell or anything the reader is comparing. Chapter 05 says where each lives |
+| `ProgressBar` | a quantity against a known maximum, where a ring is too tall: a ranking line, a workload, an upload. A real `progressbar` (`label`, `valueText`); `tone` is how it ended (`positive`, `negative`), `head` rides a knob, `segmented` cuts it into cells. The fill is a translate, never a width: do not hand-roll `style={{ width }}` bars |
+| `SwapText` | a short value that changes in place (a status label): the old one rises out, the new one rises in. `StatusBadge` already uses it |
+| `DrawIcon` | wraps the one stroked icon that carries a result (a confirmation tick) so its strokes draw on once; never a toolbar |
+| `TruncateReveal` | a label cut by an ellipsis that scrolls to its end under the pointer, at `speed.read`; the full text is always in `title`. Use instead of `.truncate` on a name or title in a narrow column |
+| `CountUp mode="reel"` | the odometer: for the one figure a screen is about. Display-only (the strips are not selectable text); keep the default count where a figure is copied |
+| `TypeText unit="word"` | a line of prose said word by word; characters stay for a code or a name |
+| `useFreshOnChange` (hook) | `true` for one `sweep` after a value changes from one value to another; drive `.sheen` with `data-fresh`. Never on first render or on arrival |
 | `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named; `DataTable` takes `stacked` and `stickyFirst`; `Dialog` takes `align="end"` for a full-height side sheet (the detail of one row); `PageHeader` takes `headingLevel` when it sits inside a page that already has an `h1` |
 
 Cross-surface: `components/common/status-badge` (**the** status pill — do not
@@ -70,6 +77,15 @@ and `Button loading`; do not add `transition-*` or `animate-*` to reproduce
 them. A new motion takes its duration, easing, distance and scale from the
 `--motion-*` tokens (`docs/design/motion/05-motion.md`), and a JavaScript-driven
 one asks `usePrefersReducedMotion` first.
+
+The rest of the vocabulary is classes too: `.pop` (a mark too small for `arrive`,
+from `scale.pop`), `.sheen` with `data-fresh` (one highlight across a changed
+surface), `.ignite` (an error's one-time inset ring; `.notice-error[role=alert]`
+has it already), `.step-forward` / `.step-back` (a step arriving from the way the
+reader is going), `.arrive-from` (a popup out of its trigger; `Dialog` sets it) and
+`.draw-path`. Write a duration as `duration-fast` / `-normal` / `-slow` / `-sweep`
+and an easing as `ease-standard` / `-decelerate` / `-settle` / `-exit`: a literal
+`duration-200` or `ease-out` is a number nobody chose.
 
 **Never**: a bare `fetch` in a page · `toLocaleString` at a call site · a hex
 in a component · a path literal in an `href` · English in customer-facing JSX

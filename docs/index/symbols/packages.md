@@ -143,8 +143,8 @@ Every top-level export in `packages`, with the line to open.
 | `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :306 |  |
 | `api-keys.ts` | `expandCustomerScopes` | function | :319 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
 | `api-keys.ts` | `unknownCustomerScopes` | function | :331 | Requested scopes the catalogue does not know — refused at create and edit. |
-| `brand.ts` | `BRAND` | const | :572 | --------------------------------------------------------------------------- |
-| `brand.ts` | `Brand` | type | :584 |  |
+| `brand.ts` | `BRAND` | const | :582 | --------------------------------------------------------------------------- |
+| `brand.ts` | `Brand` | type | :594 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
 | `cod-risk.ts` | `CodRiskCityStats` | interface | :11 |  |
 | `cod-risk.ts` | `CodRiskCustomerHistory` | interface | :18 |  |
@@ -378,7 +378,7 @@ Every top-level export in `packages`, with the line to open.
 | `theme-tailwind.ts` | `themeColorVar` | function | :142 | A theme colour as a plain CSS value, for the places a class cannot reach: an SVG `stroke`, a Rechar… |
 | `theme-tailwind.ts` | `themeVars` | function | :166 | Every custom property that changes between themes: the colours, and the shadows (which are colours… |
 | `theme-tailwind.ts` | `staticVars` | function | :198 | Custom properties that do not change between themes: motion. |
-| `theme-tailwind.ts` | `createThemeTailwind` | function | :224 |  |
+| `theme-tailwind.ts` | `createThemeTailwind` | function | :225 |  |
 | `theme-type.ts` | `TypeStep` | interface | :14 | The type scale — a view onto BRAND.theme.type. |
 | `theme-type.ts` | `THEME_TYPE` | const | :21 |  |
 | `theme-type.ts` | `THEME_FONTS` | const | :24 | Font families, for the Tailwind config and mobile's theme. |

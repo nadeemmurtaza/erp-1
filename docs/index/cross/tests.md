@@ -3,7 +3,7 @@
 
 # Tests
 
-**375** spec files, **3,708** cases. What is already pinned down — and what is not.
+**376** spec files, **3,748** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -63,7 +63,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (351)
+## Unit and integration (352)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -375,11 +375,12 @@ regression or an N+1.
 | `apps/platform/src/modules/trials/trials.service.spec.ts` | root | 8 | TrialsService · extend · convert · expireToSuspended · listExtendedMoreThanOnce |
 | `apps/web/src/components/admin/analytics/resolve-path.spec.ts` | web | 13 | resolvePath · interpolateHref |
 | `apps/web/src/components/admin/charts/chart-math.spec.ts` | web | 47 | periodChange · changeTone · foldShares · sharePct · funnelSteps · largestDropIndex · gaugeState · q… |
+| `apps/web/src/components/admin/charts/chart-motion.spec.ts` | web | 23 | chartDrawProps · cubicBezierCss · chartTooltipMotion · pointPopDelayMs · pointPopStyle · cursors an… |
 | `apps/web/src/components/design-system/access-draft.spec.ts` | web | 24 | grantEndsAt · grantRefusals · countersignCandidates · scopeDiff · saveBlocker · formatRemaining · e… |
 | `apps/web/src/components/design-system/audience.spec.ts` | web | 15 | estimateAudience · publishFriction · publishBlocker · visibilityUsesAudience |
 | `apps/web/src/components/design-system/department.spec.ts` | web | 24 | suggestCode · departmentErrors · descendantIds · unitPath · nearestOffice · closeBlockers |
 | `apps/web/src/components/design-system/dispatch-machine.spec.ts` | web | 19 | dispatchReducer: the forward path · dispatchReducer: undo · dispatchReducer: failure and its remedi… |
-| `apps/web/src/lib/motion.spec.ts` | web | 21 | bezierEase · clamp01 · countUpValue · revealedCount · staggerDelayMs · noiseGlyph · scrambleFrame ·… |
+| `apps/web/src/lib/motion.spec.ts` | web | 38 | bezierEase · clamp01 · countUpValue · revealedCount · staggerDelayMs · noiseGlyph · scrambleFrame ·… |
 | `apps/web/src/utils/cn.spec.ts` | web | 4 | cn with the design system’s names |
 | `packages/desktop-runtime/src/backup-scheduler.integration.spec.ts` | packages | 2 | TarBackupArchiver (real tar package, no Postgres) |
 | `packages/desktop-runtime/src/backup-scheduler.spec.ts` | packages | 15 | LocalBackupScheduler · runOnce — the happy path · failure paths — never silently report success · s… |

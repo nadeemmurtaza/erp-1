@@ -3,13 +3,20 @@ import {
   bezierEase,
   clamp01,
   countUpValue,
+  nextSwap,
   noiseGlyph,
+  originOffset,
+  progressFraction,
+  reelParts,
   revealedCount,
+  revealRun,
+  REVEAL_MAX_MS,
   ringStroke,
   scrambleFrame,
   settle,
   staggerDelayMs,
   typedFrame,
+  typedWordsFrame,
   MOTION_MS,
 } from './motion';
 
@@ -189,5 +196,123 @@ describe('MOTION_MS', () => {
     expect(MOTION_MS.count).toBe(motion.duration.sweep);
     expect(MOTION_MS.exit).toBe(motion.duration.fast);
     expect(MOTION_MS.exit).toBeLessThan(MOTION_MS.scramble);
+  });
+});
+
+describe('typedWordsFrame', () => {
+  it('reveals whole words only, each with the space after it, so every frame is a prefix of the line', () => {
+    const line = 'Net income is up';
+    for (let i = 0; i <= 20; i += 1) {
+      const frame = typedWordsFrame(line, i / 20);
+      expect(line.startsWith(frame)).toBe(true);
+      expect(frame === '' || /\s$|\S$/.test(frame)).toBe(true);
+    }
+    expect(typedWordsFrame(line, 0)).toBe('');
+    expect(typedWordsFrame(line, 0.5)).toBe('Net income ');
+    expect(typedWordsFrame(line, 1)).toBe(line);
+  });
+
+  it('handles an empty line and a line with leading space', () => {
+    expect(typedWordsFrame('', 0.5)).toBe('');
+    expect(typedWordsFrame('  two words', 0.5)).toBe('  two ');
+  });
+});
+
+describe('progressFraction', () => {
+  it('is value over max, held to 0–1', () => {
+    expect(progressFraction(25, 100)).toBe(0.25);
+    expect(progressFraction(150, 100)).toBe(1);
+    expect(progressFraction(-5, 100)).toBe(0);
+  });
+
+  it('is an empty bar, not NaN, when the data is not a quantity', () => {
+    expect(progressFraction(Number.NaN, 100)).toBe(0);
+    expect(progressFraction(5, 0)).toBe(0);
+    expect(progressFraction(5, -10)).toBe(0);
+    expect(progressFraction(5, Number.NaN)).toBe(0);
+    expect(progressFraction(Number.POSITIVE_INFINITY, 100)).toBe(0);
+  });
+});
+
+describe('revealRun', () => {
+  it('has nothing to run when the overflow is rounding or not a number', () => {
+    expect(revealRun(0)).toBeNull();
+    expect(revealRun(0.4)).toBeNull();
+    expect(revealRun(Number.NaN)).toBeNull();
+  });
+
+  it('runs at the reading speed: the distance over px per second', () => {
+    const { speed } = motion;
+    const run = revealRun(speed.read * 2);
+    expect(run).toEqual({ shift: speed.read * 2, durationMs: 2000 });
+  });
+
+  it('rounds the hidden width up so the last glyph clears the edge', () => {
+    expect(revealRun(100.2)?.shift).toBe(101);
+  });
+
+  it('never jerks (a floor of fast) and never drags (a ceiling)', () => {
+    expect(revealRun(1)?.durationMs).toBe(motion.duration.fast);
+    expect(revealRun(100000)?.durationMs).toBe(REVEAL_MAX_MS);
+  });
+});
+
+describe('nextSwap', () => {
+  it('keeps the old text as previous while it leaves, and counts the change', () => {
+    expect(nextSwap({ current: 'Pending', previous: null, changes: 0 }, 'Paid', false)).toEqual({
+      current: 'Paid',
+      previous: 'Pending',
+      changes: 1,
+    });
+  });
+
+  it('is the same state, not a new one, when the value did not change', () => {
+    const state = { current: 'Paid', previous: null, changes: 0 };
+    expect(nextSwap(state, 'Paid', false)).toBe(state);
+  });
+
+  it('keeps nothing leaving under reduced motion: the text just changes', () => {
+    expect(nextSwap({ current: 'Pending', previous: null, changes: 0 }, 'Paid', true)).toEqual({
+      current: 'Paid',
+      previous: null,
+      changes: 1,
+    });
+  });
+
+  it('counts every change, so going back to an earlier value is still a new arrival', () => {
+    const a = nextSwap({ current: 'A', previous: null, changes: 0 }, 'B', false);
+    expect(nextSwap(a, 'A', false).changes).toBe(2);
+  });
+});
+
+describe('originOffset', () => {
+  it('is the trigger centre relative to the panel centre', () => {
+    expect(originOffset({ x: 100, y: 200 }, { x: 80, y: 230 })).toEqual({ dx: 20, dy: -30 });
+  });
+
+  it('holds each axis to the largest distance step', () => {
+    const limit = motion.distance.large;
+    expect(originOffset({ x: 5000, y: -5000 }, { x: 0, y: 0 })).toEqual({ dx: limit, dy: -limit });
+  });
+
+  it('is no offset when a rect could not be read', () => {
+    expect(originOffset({ x: Number.NaN, y: 0 }, { x: 0, y: 0 })).toEqual({ dx: 0, dy: 0 });
+  });
+});
+
+describe('reelParts', () => {
+  it('rolls ASCII digits and leaves everything else where it is', () => {
+    expect(reelParts('$1,204')).toEqual([
+      { kind: 'fixed', char: '$' },
+      { kind: 'digit', digit: 1 },
+      { kind: 'fixed', char: ',' },
+      { kind: 'digit', digit: 2 },
+      { kind: 'digit', digit: 0 },
+      { kind: 'digit', digit: 4 },
+    ]);
+  });
+
+  it('does not roll a digit of another script (it has no strip to roll through)', () => {
+    expect(reelParts('٣')).toEqual([{ kind: 'fixed', char: '٣' }]);
   });
 });

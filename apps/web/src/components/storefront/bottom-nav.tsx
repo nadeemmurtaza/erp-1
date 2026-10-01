@@ -104,7 +104,7 @@ function TabLink({
       aria-label={label}
       aria-current={active ? 'page' : undefined}
       className={cn(
-        'relative flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-200',
+        'relative flex h-12 w-12 items-center justify-center rounded-full transition-colors duration-normal',
         active ? 'text-white' : 'text-white/55 hover:text-white/85'
       )}
     >

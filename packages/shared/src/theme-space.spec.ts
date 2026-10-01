@@ -71,7 +71,7 @@ describe('motion', () => {
   });
 
   it('keeps the language\'s other tokens inside the ranges the rules allow', () => {
-    const { distance, scale, stagger } = BRAND.theme.motion;
+    const { distance, scale, speed, stagger } = BRAND.theme.motion;
     // A press is a small idea (chapter 05): it moves a couple of px and compresses a couple of percent.
     expect(distance.micro).toBe(2);
     expect(distance.nudge).toBeLessThan(distance.small);
@@ -79,6 +79,11 @@ describe('motion', () => {
     expect(scale.press).toBeLessThan(1);
     expect(scale.arrive).toBeGreaterThanOrEqual(0.9);
     expect(scale.arrive).toBeLessThan(1);
+    expect(scale.pop).toBeGreaterThan(0);
+    expect(scale.pop).toBeLessThan(scale.arrive);
+    // Reading speed (px per second): between the two reference reels that scrolled text (23 and 80), and a 240px overflow is one pass of about five seconds.
+    expect(speed.read).toBeGreaterThanOrEqual(20);
+    expect(speed.read).toBeLessThanOrEqual(100);
     // MOT-6: the whole cascade finishes inside one `slow` step, however many children there are.
     expect(stagger.step * stagger.steps).toBeLessThanOrEqual(duration.slow);
   });

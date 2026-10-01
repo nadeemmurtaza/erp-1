@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-113 files · 12,971 lines
+113 files · 12,987 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -25,7 +25,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 10 | 613 | unit test, module |
 | `packages/shared` | 4 | 75 | script, json |
-| `packages/shared/src` | 70 | 9,222 | unit test, module |
+| `packages/shared/src` | 70 | 9,238 | unit test, module |
 
 
 ## Entry points
@@ -47,11 +47,11 @@ file may hard-code one.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `packages/shared/src/permissions.ts` | 1,487 | module | The permission catalog for PBAC (Permission-Based Access Control). |
-| `packages/shared/src/brand.ts` | 585 | module | THE BRAND FILE. |
+| `packages/shared/src/brand.ts` | 595 | module | THE BRAND FILE. |
 | `packages/desktop-runtime/src/postgres-lifecycle.ts` | 481 | module |  |
 | `packages/shared/src/measurements/defaults.ts` | 448 | module |  |
 | `packages/desktop-runtime/src/backup-scheduler.ts` | 387 | module |  |
-| `packages/shared/src/theme-tailwind.ts` | 342 | module |  |
+| `packages/shared/src/theme-tailwind.ts` | 343 | module |  |
 | `packages/shared/src/api-keys.ts` | 334 | module | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a… |
 | `packages/shared/src/discounts.ts` | 322 | module | The discount rules engine. |
 | `packages/desktop-runtime/src/setup-wizard.ts` | 314 | module |  |

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { formatMoney, formatNumber } from '@newax/shared';
 import { SparklineChart } from '@/components/admin/charts';
+import { useFreshOnChange } from '@/hooks/use-fresh-on-change';
 import type { DashboardCard, ValueFormat } from './card-registry';
 
 export interface MetricCardData {
@@ -69,11 +70,14 @@ export function MetricCard({
   const deltaText =
     delta === null ? '' : `, ${isUp ? 'up' : isDown ? 'down' : 'flat'} ${Math.abs(delta)}% versus the previous ${days} days`;
   const ariaLabel = `${card.label}: ${data ? valueText : 'not available'}${deltaText}`;
+  // A range switch refetches in place, so the tile keeps its place and its figure changes under the reader: the sheen marks it.
+  const fresh = useFreshOnChange(data ? valueText : null);
 
   return (
     <Link
       href={card.href}
-      className="card flex min-h-[104px] flex-col justify-between gap-2 p-4 transition-colors hover:border-neutral-200"
+      className="card sheen flex min-h-[104px] flex-col justify-between gap-2 p-4 transition-colors hover:border-neutral-200"
+      data-fresh={fresh ? 'true' : undefined}
       aria-label={ariaLabel}
       title={data ? undefined : missingReason}
     >

@@ -2,7 +2,9 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { CircleCheck } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
+import { DrawIcon } from '@/components/ui';
 import { unsubscribeFromMarketing } from '@/lib/customer-client';
 
 type Status = 'checking' | 'success' | 'error';
@@ -41,10 +43,18 @@ export default function UnsubscribePage() {
         {status === 'checking' ? (
           <p className="mt-6 text-sm text-neutral-900/60">Updating your preferences…</p>
         ) : status === 'success' ? (
-          <p className="mt-6 rounded-md bg-neutral-50 px-4 py-3 text-sm text-accent-hover">
-            You&rsquo;re unsubscribed from marketing email. Order and account emails still reach
-            you — those aren&rsquo;t marketing.
-          </p>
+          <>
+            {/* The tick is drawn as the page confirms: the result is the one thing here that just happened. */}
+            <div className="mt-6 flex justify-center text-feedback-positive">
+              <DrawIcon>
+                <CircleCheck className="h-10 w-10" aria-hidden="true" />
+              </DrawIcon>
+            </div>
+            <p className="mt-3 rounded-md bg-neutral-50 px-4 py-3 text-sm text-accent-hover">
+              You&rsquo;re unsubscribed from marketing email. Order and account emails still reach
+              you — those aren&rsquo;t marketing.
+            </p>
+          </>
         ) : (
           <p className="notice notice-error mt-6">
             {error ?? 'This unsubscribe link is missing its details.'}

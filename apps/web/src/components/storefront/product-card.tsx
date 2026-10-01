@@ -70,7 +70,7 @@ export function ProductCard({
               fill
               sizes={imageSizes}
               priority={priority}
-              className={`object-cover transition-[transform,opacity] duration-700 ease-out motion-safe:group-hover/media:scale-105 ${
+              className={`object-cover transition-[transform,opacity] duration-sweep ease-decelerate motion-safe:group-hover/media:scale-105 ${
                 secondary ? 'group-hover/media:opacity-0' : ''
               }`}
             />
@@ -82,7 +82,7 @@ export function ProductCard({
                 aria-hidden="true"
                 fill
                 sizes={imageSizes}
-                className="object-cover opacity-0 transition-[transform,opacity] duration-700 ease-out group-hover/media:opacity-100 motion-safe:group-hover/media:scale-105"
+                className="object-cover opacity-0 transition-[transform,opacity] duration-sweep ease-decelerate group-hover/media:opacity-100 motion-safe:group-hover/media:scale-105"
               />
             ) : null}
           </>
@@ -158,13 +158,13 @@ export function ProductCard({
           button group, making the focus ring visible. Sits below the wishlist
           button's z-raised-3 so that toggle stays reachable while the scrim is up.
         */}
-        <div className="pointer-events-none absolute inset-0 z-raised-2 flex flex-col items-center justify-center gap-4 bg-scrim/30 opacity-0 transition-opacity duration-300 ease-out group-hover/media:opacity-100 group-focus-within/media:opacity-100">
+        <div className="pointer-events-none absolute inset-0 z-raised-2 flex flex-col items-center justify-center gap-4 bg-scrim/30 opacity-0 transition-opacity duration-slow ease-decelerate group-hover/media:opacity-100 group-focus-within/media:opacity-100">
           <div className="pointer-events-none flex items-center gap-3 group-hover/media:pointer-events-auto group-focus-within/media:pointer-events-auto">
             {onQuickView ? (
               <button
                 type="button"
                 onClick={onQuickView}
-                className="group/btn relative flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110"
+                className="group/btn relative flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-neutral-900 backdrop-blur-sm transition-transform duration-normal hover:scale-110"
                 aria-label={t('quickView')}
               >
                 <svg
@@ -218,7 +218,7 @@ export function ProductCard({
       </div>
 
       <Link href={`/product/${product.slug}`} className="flex flex-1 flex-col gap-1.5 px-2 pb-4 pt-3">
-        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-neutral-900 transition-colors duration-200 group-hover:text-neutral-600">
+        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-neutral-900 transition-colors duration-normal group-hover:text-neutral-600">
           {product.name}
         </h3>
 

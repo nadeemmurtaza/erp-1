@@ -5,6 +5,7 @@ import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis
 import { formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
+import { chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
 import { usePrefersReducedMotion } from './use-reduced-motion';
 import { GRID, INK, INK_FAINT, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
 
@@ -60,10 +61,12 @@ export function CategoryBarChart({
             axisLine={false}
           />
           <Tooltip
+            {...chartTooltipMotion(reduced)}
+            cursor={chartCursor.band}
             contentStyle={{ border: `1px solid ${GRID}`, borderRadius: 4, fontSize: 12 }}
             formatter={(value: TooltipValueType | undefined) => formatValue(Number(value ?? 0)) as ReactNode}
           />
-          <Bar dataKey="value" radius={[0, 2, 2, 0]} isAnimationActive={!reduced}>
+          <Bar dataKey="value" radius={[0, 2, 2, 0]} {...chartDrawProps(reduced)}>
             {items.map((item, index) => (
               <Cell key={item.label} fill={paletteColor(index)} />
             ))}

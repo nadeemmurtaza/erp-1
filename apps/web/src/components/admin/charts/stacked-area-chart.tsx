@@ -5,6 +5,7 @@ import { formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
 import { SeriesToggles, useSeriesVisibility, type SeriesDef } from './chart-series';
+import { chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
 import { ChartTooltip } from './chart-tooltip';
 import { GRID, INK, INK_FAINT, SURFACE, compactMoney, paletteColor, type ValueFormat } from './chart-theme';
 import { usePrefersReducedMotion } from './use-reduced-motion';
@@ -85,7 +86,8 @@ export function StackedAreaChart({
               width={48}
             />
             <Tooltip
-              cursor={{ stroke: GRID }}
+              {...chartTooltipMotion(reduced)}
+              cursor={chartCursor.crosshair}
               content={(props) => {
                 const row = props.payload?.[0]?.payload as Record<string, unknown> | undefined;
                 if (!props.active || !row) return null;
@@ -108,7 +110,7 @@ export function StackedAreaChart({
             />
             {layers
               .filter((s) => isOn(s.key))
-              .map((s) => (
+              .map((s, index) => (
                 <Area
                   key={s.key}
                   dataKey={s.key}
@@ -121,7 +123,7 @@ export function StackedAreaChart({
                   fillOpacity={1}
                   dot={false}
                   activeDot={false}
-                  isAnimationActive={!reduced}
+                  {...chartDrawProps(reduced, index)}
                 />
               ))}
           </AreaChart>

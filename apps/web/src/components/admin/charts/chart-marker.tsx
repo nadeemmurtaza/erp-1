@@ -1,23 +1,43 @@
+import { CHART_DRAW_MS, pointPopStyle } from './chart-motion';
 import { SURFACE } from './chart-theme';
+
+/** Where a marker sits along its line, so it can pop in as the line reaches it. */
+export interface MarkerPop {
+  index: number;
+  count: number;
+  /** The series' place among the visible ones; a later series starts later. */
+  seriesIndex?: number;
+}
+
+type MarkerShapeName = 'circle' | 'square' | 'triangle' | 'diamond' | 'cross' | 'star';
+
+interface MarkerProps {
+  cx: number;
+  cy: number;
+  shape: MarkerShapeName;
+  color: string;
+  size?: number;
+}
 
 /**
  * A per-series marker shape — the third channel (with colour and dash
  * pattern) that keeps a multi-series chart readable in greyscale (WO-A.2).
  * Recharts' `dot` prop takes a render function returning an SVG element.
+ *
+ * Give it `pop` and it wraps itself in a `.chart-point` group whose delay is its
+ * place along the line, so the marker lands as the line reaches it (transform
+ * and opacity, `fast`, once). Without `pop` it is the bare shape, as before.
  */
-export function ChartMarker({
-  cx,
-  cy,
-  shape,
-  color,
-  size = 4,
-}: {
-  cx: number;
-  cy: number;
-  shape: 'circle' | 'square' | 'triangle' | 'diamond' | 'cross' | 'star';
-  color: string;
-  size?: number;
-}) {
+export function ChartMarker({ pop, ...marker }: MarkerProps & { pop?: MarkerPop }) {
+  if (!pop) return <MarkerShape {...marker} />;
+  return (
+    <g className="chart-point" style={pointPopStyle(pop.index, pop.count, CHART_DRAW_MS, pop.seriesIndex)}>
+      <MarkerShape {...marker} />
+    </g>
+  );
+}
+
+function MarkerShape({ cx, cy, shape, color, size = 4 }: MarkerProps) {
   const common = { fill: color, stroke: SURFACE, strokeWidth: 1.5 };
 
   switch (shape) {

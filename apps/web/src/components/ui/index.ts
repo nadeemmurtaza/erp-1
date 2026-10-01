@@ -33,6 +33,14 @@ export { Skeleton, SkeletonText, SkeletonRegion, type SkeletonShape } from './sk
 export { Switch } from './switch';
 export { Segmented, type SegmentedOption } from './segmented';
 
+// Motion — the expressive tier. Functional motion (press, arrive, focus, error)
+// needs no import: it is the shared classes. See `docs/design/motion/05-motion.md`.
+export { PageEnter } from './page-enter';
+export { CountUp } from './count-up';
+export { ProgressRing } from './progress-ring';
+export { RevealScope } from './reveal-scope';
+export { ScrambleText, TypeText } from './text-motion';
+
 // Layout
 export { Bento, BentoTile, type BentoSize, type BentoTone } from './bento';
 export {

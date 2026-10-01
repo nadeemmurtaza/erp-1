@@ -4,8 +4,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { downloadCsv } from '@/lib/download-csv';
 import { formatMoney } from '@newax/shared';
-import { DataTable, MetricStrip, type MetricItem } from '@/components/ui';
+import { CountUp, DataTable, MetricStrip, type MetricItem } from '@/components/ui';
 import { GaugeChart } from '@/components/admin/gauge-chart';
+
+/**
+ * How the P&L figures count up. Whole minor units at every frame, so no frame
+ * ever shows a fraction of a paisa; the percentage settles on one decimal, the
+ * same text it showed before it moved.
+ */
+const money = (minor: number) => formatMoney(Math.round(minor));
+const percent = (n: number) => `${Math.round(n * 10) / 10}%`;
 
 interface GlAccountLine {
   accountId: string;
@@ -87,7 +95,7 @@ export default function FinancePnlPage() {
         {
           key: 'income',
           label: 'Total revenue',
-          value: formatMoney(current.totalIncomeMinor),
+          value: <CountUp value={current.totalIncomeMinor} format={money} />,
           detail: (
             <AccountBreakdown rows={current.income} />
           ),
@@ -95,7 +103,7 @@ export default function FinancePnlPage() {
         {
           key: 'expense',
           label: 'Total expense',
-          value: formatMoney(current.totalExpenseMinor),
+          value: <CountUp value={current.totalExpenseMinor} format={money} />,
           detail: (
             <AccountBreakdown rows={current.expense} />
           ),
@@ -103,12 +111,12 @@ export default function FinancePnlPage() {
         {
           key: 'net',
           label: 'Net profit',
-          value: formatMoney(current.netIncomeMinor),
+          value: <CountUp value={current.netIncomeMinor} format={money} />,
         },
         {
           key: 'margin',
           label: 'Net margin',
-          value: `${netMarginPercent}%`,
+          value: <CountUp value={netMarginPercent} format={percent} />,
         },
       ]
     : [];

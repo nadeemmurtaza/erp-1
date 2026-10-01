@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { directionFor, type Locale } from '@newax/shared';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/utils/cn';
+import { useExitTransition } from '@/hooks/use-exit-transition';
 
 type NavItem = {
   key: string;
@@ -20,6 +21,7 @@ export function MobileNav({
   items: ReadonlyArray<NavItem>;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { mounted, leaving } = useExitTransition(isOpen);
   const [expandedSubmenu, setExpandedSubmenu] = useState<string | null>(null);
   const pathname = usePathname();
   const locale = useLocale() as Locale;
@@ -68,11 +70,14 @@ export function MobileNav({
         </svg>
       </button>
 
-      {isOpen && typeof document !== 'undefined' ? createPortal(
-        <div className="fixed inset-0 z-overlay lg:hidden">
+      {mounted && typeof document !== 'undefined' ? createPortal(
+        <div inert={leaving} className="fixed inset-0 z-overlay lg:hidden">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className={cn(
+              'fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity duration-fast ease-exit',
+              leaving ? 'opacity-0' : 'animate-fadeIn',
+            )}
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
@@ -80,7 +85,9 @@ export function MobileNav({
           {/* Panel */}
           <div className={cn(
             'fixed inset-y-0 w-4/5 max-w-sm bg-overlay shadow-xl flex flex-col',
-            isRtl ? 'end-0 animate-slideInRight' : 'start-0 animate-slideInLeft'
+            isRtl
+              ? cn('end-0', leaving ? 'animate-slideOutRight' : 'animate-slideInRight')
+              : cn('start-0', leaving ? 'animate-slideOutLeft' : 'animate-slideInLeft'),
           )}>
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
               <span className="font-display text-xl font-semibold tracking-tight text-neutral-900">

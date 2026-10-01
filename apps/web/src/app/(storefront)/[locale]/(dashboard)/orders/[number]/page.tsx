@@ -9,7 +9,7 @@ import { StitchingTimeline } from '@/components/storefront/stitching-timeline';
 import { customerFetch, getCustomerToken, getMyOrder, trackOrder } from '@/lib/customer-client';
 import { StatusBadge } from '@/components/common/status-badge';
 import { useOrderStatusLabel } from '@/hooks/use-order-status-label';
-import { Disclosure, Loading, PageHeader, Section } from '@/components/ui';
+import { Disclosure, Loading, PageHeader, ScrambleText, Section } from '@/components/ui';
 import type { CustomerOrder } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
 import { STORAGE_KEYS } from '@/constants/storage';
@@ -172,7 +172,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
       <PageHeader
         title={
           <span className="flex flex-wrap items-center gap-2.5">
-            {t('title')} {order.number}
+            {t('title')} {justPlaced ? <ScrambleText text={order.number} /> : order.number}
             <StatusBadge status={order.status} label={statusLabel(order.status)} />
           </span>
         }
@@ -381,10 +381,11 @@ function Notice({ title, body, tone }: { title: string; body: string; tone?: 'da
 
   return (
     <div
+      role={danger ? 'alert' : 'status'}
       className={
         danger
-          ? 'mb-6 border border-red-200 bg-red-50 px-4 py-3'
-          : 'mb-6 border border-neutral-100 bg-neutral-50 px-4 py-3'
+          ? 'mb-6 animate-arrive border border-red-200 bg-red-50 px-4 py-3'
+          : 'mb-6 animate-arrive border border-neutral-100 bg-neutral-50 px-4 py-3'
       }
     >
       <p

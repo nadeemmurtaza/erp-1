@@ -170,6 +170,28 @@ export default {
         slideInLeft: 'slideInLeft var(--motion-duration-slow) var(--motion-easing-standard)',
         slideInRight: 'slideInRight var(--motion-duration-slow) var(--motion-easing-standard)',
         scaleIn: 'scaleIn var(--motion-duration-normal) var(--motion-easing-standard)',
+        /* The exits of the two drawer entrances above: the same 8px, the other way, at the `fast` exit. */
+        slideOutLeft: 'slideOutLeft var(--motion-duration-fast) var(--motion-easing-exit) forwards',
+        slideOutRight: 'slideOutRight var(--motion-duration-fast) var(--motion-easing-exit) forwards',
+        /*
+         * The motion language (docs/design/motion/05-motion.md, "The reel").
+         * `arrive` is what a card, a popover or a notice does on first paint:
+         * it settles into place. `backwards` fill holds the first frame through
+         * any `animation-delay`, so a staggered list never flashes at full
+         * opacity before its turn. `leave` is the exit twin and `forwards` so
+         * the element stays gone for the frames before it unmounts. `nudge` is
+         * the one-shot "look here" a field or an error gives when it turns
+         * invalid; it ends where it began, so it never moves layout. Their
+         * @keyframes are in globals.css, not here: Tailwind only emits a
+         * config keyframe when an `animate-*` class using it is found, and the
+         * component classes (`.stagger`, `.notice`, `.field-input`) name these
+         * animations from plain CSS.
+         */
+        arrive: 'arrive var(--motion-duration-normal) var(--motion-easing-settle) backwards',
+        leave: 'leave var(--motion-duration-fast) var(--motion-easing-exit) forwards',
+        nudge: 'nudge var(--motion-duration-slow) var(--motion-easing-standard)',
+        /* Content that has been revealed: a fade and a small rise, the quieter twin of `arrive`. */
+        rise: 'slideUp var(--motion-duration-normal) var(--motion-easing-settle) backwards',
         shimmer: 'shimmer 2s infinite',
       },
       keyframes: {
@@ -178,19 +200,27 @@ export default {
           to: { opacity: '1' },
         },
         slideUp: {
-          from: { transform: 'translateY(8px)', opacity: '0' },
+          from: { transform: 'translateY(var(--motion-distance-small))', opacity: '0' },
           to: { transform: 'translateY(0)', opacity: '1' },
         },
         slideInLeft: {
-          from: { transform: 'translateX(-8px)', opacity: '0' },
+          from: { transform: 'translateX(calc(var(--motion-distance-small) * -1))', opacity: '0' },
           to: { transform: 'translateX(0)', opacity: '1' },
         },
         slideInRight: {
-          from: { transform: 'translateX(8px)', opacity: '0' },
+          from: { transform: 'translateX(var(--motion-distance-small))', opacity: '0' },
           to: { transform: 'translateX(0)', opacity: '1' },
         },
+        slideOutLeft: {
+          from: { transform: 'translateX(0)', opacity: '1' },
+          to: { transform: 'translateX(calc(var(--motion-distance-small) * -1))', opacity: '0' },
+        },
+        slideOutRight: {
+          from: { transform: 'translateX(0)', opacity: '1' },
+          to: { transform: 'translateX(var(--motion-distance-small))', opacity: '0' },
+        },
         scaleIn: {
-          from: { transform: 'scale(0.95)', opacity: '0' },
+          from: { transform: 'scale(var(--motion-scale-arrive))', opacity: '0' },
           to: { transform: 'scale(1)', opacity: '1' },
         },
         shimmer: {

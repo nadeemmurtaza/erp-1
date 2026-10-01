@@ -105,7 +105,7 @@ export function Segmented<V extends string | number>({
             disabled={disabled || option.disabled}
             onClick={() => onChange(option.value)}
             className={cn(
-              'min-h-11 rounded px-3 py-1.5 text-sm transition-colors fold:min-h-0 disabled:cursor-not-allowed disabled:opacity-40',
+              'min-h-11 rounded px-3 py-1.5 text-sm transition duration-normal ease-settle fold:min-h-0 enabled:active:scale-[var(--motion-scale-press)] disabled:cursor-not-allowed disabled:opacity-40',
               active
                 ? 'bg-accent font-medium text-white'
                 : 'text-neutral-900/60 hover:bg-neutral-50 hover:text-neutral-900',

@@ -30,6 +30,9 @@ writing markup, check this list. **Grep for the literal before adding one.**
 | `Skeleton`, `SkeletonText`, `SkeletonRegion` | the first-load placeholder, shaped like its content — never for empty or failed |
 | `Switch` | an on/off setting that applies now (`role="switch"`) |
 | `Segmented` | a short, mutually visible set of options: `kind="filter"` for a view or range (`aria-pressed`), `kind="choice"` for one value (`radiogroup`, arrow keys). `RangePicker` and the chart view switch are built on it |
+| `PageEnter` | wraps a layout's `children` so a page rises into place on navigation (keyed on the pathname, not the segment: a filter in the URL does not replay it) |
+| `RevealScope` | a grid or board whose `data-reveal-item` children arrive as they scroll into view; `Bento` already is one |
+| `CountUp`, `ProgressRing`, `ScrambleText`, `TypeText` | the **expressive** motion tier: opt in, one purpose each (a figure just computed, a fraction of one thing, a value the system just produced, a line being said), never on a table cell or anything the reader is comparing. Chapter 05 says where each lives |
 | `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named; `DataTable` takes `stacked` and `stickyFirst`; `Dialog` takes `align="end"` for a full-height side sheet (the detail of one row); `PageHeader` takes `headingLevel` when it sits inside a page that already has an `h1` |
 
 Cross-surface: `components/common/status-badge` (**the** status pill — do not
@@ -44,7 +47,8 @@ Admin: `components/admin/range-picker`.
 `.field-inline` `.field-flat` `.notice` `.notice-error` `.notice-success`
 `.notice-info` `.eyebrow` `.metric-strip` `.metric` `.table-flat` `.pill`
 `.nav-link` `.nav-tab` `.prose-legal` `.lift` `.skeleton` `.stagger`
-`.no-scrollbar` `.container-page`
+`.no-scrollbar` `.container-page` `.spinner` `.focus-frame` `.toast-timer`
+`.sheet-in` `.sheet-out` `.tab-indicator`
 
 ### Everything else
 
@@ -58,6 +62,14 @@ Admin: `components/admin/range-picker`.
 | Storage keys | `@/constants/storage` |
 | Permissions | `@/constants/permissions` |
 | Charts | `@/components/admin/charts` — `TimeSeriesChart` `PeriodComparisonChart` `ShareChart` `FunnelChart` `PointLineChart` `RangeChart` `GaugeChart` `StackedAreaChart` `CalendarHeatmap` `RadarChart` `SmallMultiplesChart`; the data shape picks the form (`/admin/design-system#charts`). Recharts is imported nowhere else |
+
+Motion is a class, not a call site. Press, fill, lift, focus, the invalid
+shake, notice arrival, exits and the loading ring are already on `.btn`, `.chip`,
+`.icon-btn`, `.field-input`, `.notice`, `.lift`, `Dialog`, `ToastStack`, `Tabs`
+and `Button loading`; do not add `transition-*` or `animate-*` to reproduce
+them. A new motion takes its duration, easing, distance and scale from the
+`--motion-*` tokens (`docs/design/motion/05-motion.md`), and a JavaScript-driven
+one asks `usePrefersReducedMotion` first.
 
 **Never**: a bare `fetch` in a page · `toLocaleString` at a call site · a hex
 in a component · a path literal in an `href` · English in customer-facing JSX

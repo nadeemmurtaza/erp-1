@@ -10471,3 +10471,173 @@ and the permission that opens it.
 Reachable: `/admin/design-system#screens`, `#depth`, `#flows` and `#layout`, each with
 a link in the page's section nav, and the new rows are in `03-components.md` and
 `.claude/rules/ui.md`.
+
+### Addendum — 2026-10-01 (fifth): the motion of a reference reel, as one language across every surface
+
+**Requirement.** The owner supplied a short reel and asked for its motion graphics,
+for buttons, cards, text fields and everything else, to be extracted and
+implemented in all cards, buttons, boxes, popups, notifications, errors and
+containers, on every page and sub-page of the design system. The reel was read frame
+by frame (fourteen motions) for what each one tells the reader, not for how it looks;
+its palette, type, hexagon and particles were not copied, and its entrances (about
+600 ms) are a film, not a component. The result is two tiers: a **functional**
+vocabulary on by default through the shared classes and primitives, and an
+**expressive** tier that is opt-in and bounded. The long form, with the reel-to-meaning
+table, is `docs/design/motion/05-motion.md`.
+
+**What was built.**
+
+| Concept | Where | Built on |
+|---|---|---|
+| Press and release | `.btn`, `.chip`, `.icon-btn`, `Segmented`, `.lift` (which returns to rest) in `globals.css` | tokens only; one rule per class because `@apply btn` rewrites `.btn` selectors one rule at a time |
+| Arrive and leave | `animate-arrive` / `animate-leave` on cards, dialogs, popovers, notices (`role="alert"` or `"status"`) and toasts | the keyframes in `globals.css`, the animations in `tailwind.config.ts` |
+| Error nudge | `.field-input`, `.field-flat`, `.field-inline` with `aria-invalid="true"`; `.notice-error[role="alert"]` after it has arrived | the attribute is the contract, so a screen reader hears it too |
+| Focus ease | the focus ring on fields now eases with the border, on one curve | `box-shadow` added to the field's transition list |
+| Loading ring | `.spinner`, `Button loading`, `Loading` | one revolution is two `sweep` steps |
+| Page enter | `ui/page-enter.tsx` in the admin and storefront layouts | keyed on the pathname, not the segment, so a filter in the URL does not replay it |
+| Stagger and reveal on scroll | `.stagger`, `ui/reveal-scope.tsx`, `lib/reveal.ts`; `Bento` is a scope | one `IntersectionObserver` per scope, never per tile |
+| Tab glide | `Tabs`: one `.tab-indicator` that glides to the selected tab (`Segmented` gets the press and the eased fill, not the glide) | transform only (`translate` and `scaleX` of a one-pixel bar) |
+| Side sheet | `Dialog align="end"`, the storefront mobile nav and filter panel | `.sheet-in` / `.sheet-out`, direction flips in a right-to-left document |
+| Toast with a draining line | `toast-stack.tsx`, `hooks/use-toast.ts` | a `.toast-timer` line of `scaleX`, and an exit before removal |
+| Count-up, progress ring | `ui/count-up.tsx`, `ui/progress-ring.tsx`; `CountUp` on the four P&L figures, `ProgressRing` on the dispatch specimen's undo window | pure maths in `lib/motion.ts` (`countUpValue`, `ringStroke`) |
+| Lock-on brackets | `.focus-frame` in `globals.css`; used on the choice cards in the flow specimens | one pseudo-element carrying eight gradient bars |
+| Scramble decode, typewriter | `ui/text-motion.tsx`: `ScrambleText` on the order number of a just-placed order; `TypeText` is built and specimen-only, with no product consumer yet | `scrambleFrame`, `typedFrame` in `lib/motion.ts` |
+| Chart draw-on | the three chart files in `components/admin/charts` | now read `usePrefersReducedMotion`, which the old chart-local hook became a shim for |
+
+A new gallery section, `/admin/design-system#motion` (`design-system/motion-specimens.tsx`),
+shows every row above live, with the reel's name for it beside ours. The maths
+lives in `lib/motion.ts` as pure functions, so it can be tested without a browser:
+`lib/motion.spec.ts` has 21 tests. No dependency was added.
+
+**Improved, not copied.**
+- **No blur.** The reel's zoom-blur was measured and left out: a blur filter forces a
+  paint of the whole element every frame, and a blurred label is below the contrast
+  floor for the frames it is blurred (`MOT-5`, `COL-3`). The `blur` token group that
+  was added to carry it was removed once it had no consumer.
+- **Nothing overshoots.** The reel's curve is a strong ease-out, which became
+  `settle`; `emphasized` (y2 = 1.2) overshoots and no business control uses it.
+- **Siblings are not dimmed.** The reel dims everything but the focused element;
+  dimming a neighbour's text drops it under the contrast floor in both themes.
+- **Reduced motion is three layers, not one.** The stylesheet rule now also reaches
+  pseudo-elements and zeroes delays (a staggered entrance keeps `both` fill, so a
+  surviving 320 ms delay would hold the element at opacity 0: it would be missing, not
+  jumping); JavaScript-driven motion (charts, `CountUp`, scramble, type, reveal,
+  toast and dialog exit waits, and the storefront's Lenis scroller) asks
+  `usePrefersReducedMotion` first; and information is carried twice (an `sr-only`
+  copy, `role="progressbar"`, `aria-invalid`, the words "Working…" and "Loading…").
+- **Every exit is the entrance's twin.** A dialog, toast and sheet used to vanish; each
+  now plays `leave` for exactly `fast` and is removed after, through
+  `useExitTransition`. Under reduced motion the hook returns `leaving: false` and the
+  node unmounts at once, which also fixed a race found while testing.
+- **Settled state first.** Server markup is always the visible one. `[data-reveal]`
+  hides an element only after the script has run, and `@media print` shows every
+  element, so a printed page has no holes.
+
+**Parameters.**
+
+| Parameter | Exact value | Why this and not another | Enforced |
+|---|---|---|---|
+| `settle` easing | `cubic-bezier(0.16, 1, 0.3, 1)` | measured off the reel: 60% of the distance by 100 ms and within 1 px of rest by 600 ms; never overshoots (a test samples 100 points) | `brand.ts` `motion.easing.settle`; `lib/motion.spec.ts` |
+| Press | `translateY(2px)` and `scale(0.98)`; down in 80 ms (`instant`), back in 140 ms (`fast`) | the click is acknowledged inside one frame (`ACT-3`); 98% of a 44 px button is under 1 px, enough to feel and too small to move the text | `globals.css` `.btn:active`, `.chip`, `.icon-btn` |
+| Card press | back to rest, no scale | 2% of a 400 px card is 8 px, so a card's press is its lift reversing | `.lift:active` |
+| Arrive | 220 ms (`normal`), 8 px (`distance.small`), `scale` 0.97 to 1, `backwards` fill | long enough to see, short enough that a toast is readable at once; `backwards` so the final frame has no transform (a transform on a wrapper breaks `position: fixed` descendants while it runs) | `@keyframes arrive`; `scale.arrive` |
+| Leave | 140 ms (`fast`), `exit` easing, to `scale` 0.97, `forwards` fill | an exit is quicker than its entrance; it is how long the node stays mounted | `@keyframes leave`; `MOTION_MS.exit` |
+| Nudge | 4 px (`distance.nudge`), 320 ms (`slow`), once, 0, -4, +4, -2, +1, 0 | big enough to read as "no", ends where it began so it cannot leave the field offset | `@keyframes nudge` |
+| Stagger | 80 ms per step, capped at 4 steps (320 ms, never more than `slow`) | a list of 200 rows must not animate; a test pins the total at or under `slow` | `brand.ts` `motion.stagger`; `staggerDelayMs` |
+| Side sheet | 64 px (`distance.large`) and a fade, 320 ms in, 140 ms out | reads as coming from the edge without crossing the viewport; replaces the 8 px `slideInRight` | `.sheet-in`, `.sheet-out` |
+| Loading ring | 840 ms per turn (2 x `sweep`) | slower than 600 ms reads as a ring, faster as a flicker | `.spinner` |
+| Toast | 4 000 ms default (unchanged), exit 140 ms, timer line 2 px, `duration: 0` has no line | the default is the old one; the line counts down data, so its duration is the one inline `style` this work adds | `use-toast.ts`; `.toast-timer`; `toast-stack.tsx` |
+| Tab glide | 220 ms (`normal`), `settle` | one element moving reads as "the selection moved" | `.tab-indicator` |
+| Count-up | 420 ms (`sweep`) | a page-level figure resolving takes the longest step; capped at `sweep` so a dashboard is never the thing the user waits for | `MOTION_MS.count`; `countUpValue` |
+| Scramble decode | 320 ms, noise every 40 ms, 80 characters at most | a label is short; 25 changes a second is a shimmer, not a strobe; longer text just appears | `text-motion.tsx` (`NOISE_TICK_MS`, `MAX_ANIMATED_CHARS`) |
+| Typewriter | 320 ms in total, 80 characters at most | the total is fixed, not per character, so a long line is not slow | `text-motion.tsx` |
+| Progress ring draw-on | 320 ms | a ring is small; `sweep` would outlast the figure inside it | `progress-ring.tsx` |
+| Reveal on scroll | `rootMargin: 0px 0px -8% 0px`, `threshold: 0.01` | a tile arrives just before the reader reaches it, and one pixel counts as seen | `lib/reveal.ts` |
+| Lock-on brackets | arms 14 px, bars 2 px, 4 px outside the box, `scale` 1.06 to 1 | an arm of 14 px is visible on a 44 px control and never longer than the box's own edge | `.focus-frame` |
+
+**Failure modes.**
+- *Scripting off or slow.* Server markup is the settled state; nothing is hidden until
+  the script has run, so the page is complete without it.
+- *Reduced motion.* Every duration collapses to a frame and every delay to zero, JS
+  motion is skipped, and each piece of information the motion carried is also stated
+  in words or an attribute.
+- *A transform on a wrapper.* It re-parents `position: fixed` children while it runs,
+  which is why arrivals use `backwards` fill and the page-enter wrapper has no
+  `forwards` fill.
+- *An exit that never finishes.* Removal is a timer for `fast`, not an
+  `animationend` listener, so a node cannot be left mounted by an event that did not
+  fire.
+- *A tab strip that has not measured.* The indicator stays hidden and the selected
+  tab keeps its own underline, so the strip is right before and without scripting.
+- *Right-to-left.* The sheet direction, the toast line and the lock-on use logical
+  properties or a sign variable; the tab indicator is physical because it is measured
+  from `offsetLeft`, and says so in its comment.
+
+**Not adopted.** Zoom-blur, floating particles and ambient arcs (`Law 6`), the hexagon
+with a leader line, dimmed siblings, the reel's 600 ms durations, a scroll-hijacking
+library for page changes, WebGL, springs on a business control, and any bounce.
+
+**Noticed, not changed.**
+- Dead CSS in `globals.css` and `tailwind.config.ts` (`chart-line` / `drawLine`,
+  `shimmer`, an unused `250` duration); deleting it needs the owner's confirmation.
+- `emphasized` still overshoots and has no consumer; `distance.medium`, the `spring`
+  group and the `framer-motion` dependency have none either.
+- `components/admin/charts/use-reduced-motion.ts` is now a one-line shim over
+  `hooks/use-prefers-reduced-motion.ts`; removing it is a deletion.
+- `components/common/toast-container.tsx` has no consumer.
+- The storefront's `SmoothScroller` hijacks the wheel with Lenis. It now stays off
+  under reduced motion, but whether it should exist is the owner's decision.
+- The admin drawer uses a physical `left-0` and the comment at the top of
+  `tailwind.config.ts` still says the POS has its own copy; neither was touched.
+- Mobile (`apps/mobile`, reanimated) and the POS do not use these tokens yet.
+- ADR-083's fourth addendum rows "Sheet motion" (an 8 px `slideInRight`) and "Undo
+  clock" (5 pips) are superseded: the sheet now travels 64 px (`.sheet-in`), and the
+  dispatch specimen's pips became a `ProgressRing` while the 250 ms tick and the 5 000 ms
+  window are unchanged.
+
+**Verification.** Rebuilt for production and driven with Playwright against
+`/admin/design-system`: 69 motion checks passed (press and release by computed
+transform, arrive and leave timing, the nudge replaying on a false-to-true change, the
+focus ease, the toast line draining over its own duration, the tab indicator gliding,
+count-up landing exactly on its target, scramble ending on the real text, the type
+total, the ring, reveal on scroll, page enter, `useExitTransition` under both
+preferences, no property other than transform and opacity animated, and reduced
+motion at zero duration with no element left hidden), and the earlier 95 screen
+checks still passed, with no console error. A sweep of 7 widths (280, 380, 640, 768,
+1024, 1280, 1536) in both themes found no horizontal overflow and no clipped text
+(14 of 14 combinations). Those scripts are not in the repository. The storefront
+drawers, the P&L page and the order page need a running API, so they were checked by
+typecheck, lint and the production build only, not in a browser. `pnpm check:overflow`
+needs a seeded stack and was not run. The four counts in `CLAUDE.md`: inline
+`style={{` 27 (26 before, plus the toast timer's data-driven duration), `toLocaleString`
+6, bare fetch 6, gray palette 0. The command results for this change are in the
+reply that delivered it.
+
+**Scope lenses.**
+The actor with three tables, the principal with no permission key, the grant that
+ends itself: n/a, no actor, principal or grant is created; motion changes no
+authority.
+Whose rows, and which columns, the threshold nobody approves alone, the toxic pair,
+authority and blast radius, audience: n/a, nothing is read, committed or sent; no
+`PERMISSION_CATALOG` key was added, so there is no `Permission` row without a grant.
+Request or record: the toast's `leaving` and every reveal are presentation state, not
+writes; nothing here is a REQUEST or a RECORD of a business fact.
+The movement with no address, four hours down, and the money lenses (posting rule,
+columns, period, second legal entity, dry run, click the number): n/a, no stock, cash
+or journal line is read or written.
+The three silhouettes and the absent collaborator: a Solo deployment gets the same
+motion; a deployment with no admin module simply never renders `PageEnter` there, and
+the tokens live in `brand.ts`, which every surface imports.
+The second copy of the write, the hundred-thousandth row: a list of any length
+animates at most four stagger steps (`staggerDelayMs`), and one observer serves a whole
+scope, so a 100 000-row table is not 100 000 animations.
+The adoption test, the reversal document, the undo fan-out, the version stamp, the
+erasure the ledger cannot obey: n/a, no number, code, document or personal datum is
+created.
+The failure path: a toast that cannot animate is removed by a timer, a reveal that
+cannot observe shows its element, and reduced motion keeps the information.
+Reachable: `/admin/design-system#motion`, linked from the page's section nav, and the
+vocabulary is on every page that uses `.btn`, `.field-input`, `.notice`, `Dialog`,
+`Tabs`, `Segmented`, `MetricStrip`, `Bento` and `ToastStack` without an opt-in. The
+new primitives are in `.claude/rules/ui.md`, and the tokens and laws in
+`05-motion.md`, `01-foundations.md` and `10-laws.md`.

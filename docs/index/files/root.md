@@ -75,7 +75,7 @@ All 213 tracked files in `repository root files`, by directory.
 | `security.md` | doc | 49 |  |
 | `services.md` | doc | 49 |  |
 | `testing.md` | doc | 20 |  |
-| `ui.md` | doc | 156 |  |
+| `ui.md` | doc | 168 |  |
 
 ### `.cursor/rules` (1)
 

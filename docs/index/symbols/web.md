@@ -38,7 +38,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `layout.tsx` | `AdminAppLayout` | default | :12 | Wraps every signed-in back-office page in the shell. |
+| `layout.tsx` | `AdminAppLayout` | default | :16 | Wraps every signed-in back-office page in the shell. |
 | `loading.tsx` | `Loading` | default | :14 | The shape of the dashboard, before the dashboard. |
 | `page.tsx` | `AdminDashboardPage` | default | :32 | The dashboard, rebuilt as a grouped card grid driven entirely by data (10-admin-dashboard.md WO-A.4… |
 
@@ -365,7 +365,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `FinancePnlPage` | default | :53 | WO-4.3's P&L (04-finance.md) — a UI over the general ledger's own `profitAndLoss()` (RETAIL-ERP.md… |
+| `page.tsx` | `FinancePnlPage` | default | :61 | WO-4.3's P&L (04-finance.md) — a UI over the general ledger's own `profitAndLoss()` (RETAIL-ERP.md… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/cash-flow`
 
@@ -1090,8 +1090,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `error.tsx` | `StorefrontError` | default | :21 | Storefront error boundary. |
-| `layout.tsx` | `generateMetadata` | function | :47 | Deliberately no generateStaticParams. |
-| `layout.tsx` | `LocaleLayout` | default | :134 |  |
+| `layout.tsx` | `generateMetadata` | function | :48 | Deliberately no generateStaticParams. |
+| `layout.tsx` | `LocaleLayout` | default | :135 |  |
 | `loading.tsx` | `Loading` | default | :1 |  |
 | `not-found.tsx` | `StorefrontNotFound` | default | :12 | Storefront 404. |
 | `page.tsx` | `revalidate` | const | :13 |  |
@@ -1421,7 +1421,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `admin-shell.tsx` | `AdminShell` | function | :35 | The back office frame: role guard, sidebar and header. |
+| `admin-shell.tsx` | `AdminShell` | function | :36 | The back office frame: role guard, sidebar and header. |
 | `bpmn-editor.tsx` | `BpmnEditor` | function | :46 | architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.2) — a thin React wrapper mounting… |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |
@@ -1465,7 +1465,7 @@ Every top-level export in `web`, with the line to open.
 | `session.tsx` | `AdminSession` | interface | :12 | The signed-in staff member, plus the one way to check what they can do. |
 | `session.tsx` | `useAdminSession` | function | :31 | The signed-in staff member. |
 | `stage-badge.tsx` | `StageBadge` | function | :12 | The stage a job is at. |
-| `toast-stack.tsx` | `ToastStack` | function | :13 | The fixed top-right toast stack every `useToast()` caller renders. |
+| `toast-stack.tsx` | `ToastStack` | function | :26 | The fixed top-end toast stack every `useToast()` caller renders. |
 
 ### `apps/web/src/components/admin/analytics`
 
@@ -1506,8 +1506,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `calendar-heatmap.tsx` | `CalendarHeatmap` | function | :46 | How busy each day was, over the last year: tickets opened, orders packed, logins. |
-| `category-bar-chart.tsx` | `CategoryBarItem` | interface | :10 |  |
-| `category-bar-chart.tsx` | `CategoryBarChart` | function | :16 | A ranked horizontal bar list — top sellers, categories, suppliers. |
+| `category-bar-chart.tsx` | `CategoryBarItem` | interface | :11 |  |
+| `category-bar-chart.tsx` | `CategoryBarChart` | function | :17 | A ranked horizontal bar list — top sellers, categories, suppliers. |
 | `chart-data-table.tsx` | `ChartDataTable` | function | :12 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-re… |
 | `chart-legend.tsx` | `ChartLegendRow` | function | :13 | One row of a legend that is also a way to pick a mark: the swatch, the name, and the figures on the… |
 | `chart-marker.tsx` | `ChartMarker` | function | :8 | A per-series marker shape — the third channel (with colour and dash pattern) that keeps a multi-ser… |
@@ -1561,8 +1561,8 @@ Every top-level export in `web`, with the line to open.
 | `chart-theme.ts` | `compactRupees` | function | :94 | Ported verbatim from `sales-chart.tsx` (retired in WO-E.2) — a Pakistan-specific asset (lakh notati… |
 | `chart-theme.ts` | `compactMoney` | function | :101 | Same lakh notation, taking paisa — what every chart in `charts/` actually receives (D9: "money char… |
 | `chart-tooltip.tsx` | `ChartTooltip` | function | :19 | The one readout, every series (dataviz `interaction.md`): the value leads in the strongest ink, the… |
-| `comparison-chart.tsx` | `ComparisonBucketPoint` | interface | :10 |  |
-| `comparison-chart.tsx` | `ComparisonChart` | function | :25 | WO-B.5's own headline chart, and the dashboard's empty comparison slot (WO-A.4). |
+| `comparison-chart.tsx` | `ComparisonBucketPoint` | interface | :11 |  |
+| `comparison-chart.tsx` | `ComparisonChart` | function | :26 | WO-B.5's own headline chart, and the dashboard's empty comparison slot (WO-A.4). |
 | `funnel-chart.tsx` | `FunnelChart` | function | :33 | A sequence where each stage is meant to be a subset of the one before: leads, qualified, proposals,… |
 | `gauge-chart.tsx` | `GaugeRing` | interface | :13 |  |
 | `gauge-chart.tsx` | `MAX_GAUGE_RINGS` | const | :25 | Four rings is the most the geometry carries: at 8 px strokes on a 13 px pitch the innermost ring le… |
@@ -1604,9 +1604,9 @@ Every top-level export in `web`, with the line to open.
 | `stacked-area-chart.tsx` | `StackedAreaSeries` | type | :12 |  |
 | `stacked-area-chart.tsx` | `MAX_STACKED_SERIES` | const | :15 | More than five layers is a texture, not a chart; the sixth palette slot is reserved for "everything… |
 | `stacked-area-chart.tsx` | `StackedAreaChart` | function | :35 | A total over time and what it is made of: revenue by channel, tickets by queue. |
-| `time-series-chart.tsx` | `TimeSeriesSeriesDef` | interface | :22 |  |
-| `time-series-chart.tsx` | `TimeSeriesChart` | function | :32 | One or several series over time — line, or line-and-area for a single series (matching `sales-chart… |
-| `use-reduced-motion.ts` | `usePrefersReducedMotion` | function | :17 | Recharts animates in JavaScript, which the stylesheet's reduced-motion rule cannot reach, so a char… |
+| `time-series-chart.tsx` | `TimeSeriesSeriesDef` | interface | :23 |  |
+| `time-series-chart.tsx` | `TimeSeriesChart` | function | :33 | One or several series over time — line, or line-and-area for a single series (matching `sales-chart… |
+| `use-reduced-motion.ts` | `usePrefersReducedMotion` | re-export |  | from `@/hooks/use-prefers-reduced-motion` |
 
 ### `apps/web/src/components/admin/dashboard`
 
@@ -1726,7 +1726,7 @@ Every top-level export in `web`, with the line to open.
 | `dispatch-machine.ts` | `dispatchBadge` | function | :101 | The badge: a word, always. |
 | `dispatch-machine.ts` | `FAILURE_COPY` | const | :116 | What happened, why, and what to do next (`FLO-7`). |
 | `flow-concepts.tsx` | `RoutingCanvasSpecimen` | function | :106 |  |
-| `flow-concepts.tsx` | `JourneyTiersSpecimen` | function | :418 | A funnel you can operate: five bars narrowing toward the job, each a tab. |
+| `flow-concepts.tsx` | `JourneyTiersSpecimen` | function | :419 | A funnel you can operate: five bars narrowing toward the job, each a tab. |
 | `foundations.tsx` | `GallerySection` | function | :21 | ── frame ─────────────────────────────────────────────────────────────── |
 | `foundations.tsx` | `Group` | function | :46 |  |
 | `foundations.tsx` | `ColourFoundations` | function | :109 |  |
@@ -1734,11 +1734,12 @@ Every top-level export in `web`, with the line to open.
 | `foundations.tsx` | `TypeFoundations` | function | :265 |  |
 | `foundations.tsx` | `SpaceFoundations` | function | :297 | ── space, size, radius ───────────────────────────────────────────────── |
 | `foundations.tsx` | `ElevationFoundations` | function | :359 |  |
-| `gallery.tsx` | `DesignSystemGallery` | function | :59 | The design system, rendered by the system it describes. |
+| `gallery.tsx` | `DesignSystemGallery` | function | :61 | The design system, rendered by the system it describes. |
 | `layering.tsx` | `LayeringSpecimen` | function | :86 |  |
 | `layout-loading.tsx` | `BentoSpecimen` | function | :71 | A tile is one job. |
 | `layout-loading.tsx` | `SkeletonSpecimen` | function | :197 | One card per shape a page waits in: a figure, a person, a table, a chart. |
 | `live-tokens.ts` | `useLiveTokens` | function | :17 | Reads the theme's colours back out of the browser, not out of brand.ts. |
+| `motion-specimens.tsx` | `MotionSpecimens` | function | :136 |  |
 | `patterns.tsx` | `FROSTED` | const | :57 | Frosted: 85% of the overlay surface over a blur. |
 | `patterns.tsx` | `AdminPatterns` | function | :68 |  |
 | `people-access.tsx` | `PeopleAccessSpecimen` | function | :420 | ── the list ──────────────────────────────────────────────────────────── |
@@ -1762,7 +1763,7 @@ Every top-level export in `web`, with the line to open.
 | `customer-nav.tsx` | `CustomerNav` | function | :10 |  |
 | `customer-session.tsx` | `CustomerSessionProvider` | function | :17 |  |
 | `customer-session.tsx` | `useCustomerSession` | function | :33 |  |
-| `filter-panel.tsx` | `FilterPanel` | function | :21 | Filters are held in the URL rather than component state, so a filtered listing is shareable, surviv… |
+| `filter-panel.tsx` | `FilterPanel` | function | :22 | Filters are held in the URL rather than component state, so a filtered listing is shareable, surviv… |
 | `footer.tsx` | `Footer` | function | :24 |  |
 | `frequently-bought-together.tsx` | `FrequentlyBoughtTogether` | function | :29 | WO-9.6 — "Frequently bought together — co-occurrence in OrderItem, no AI needed at all." A distinct… |
 | `grid-toggle-wrapper.tsx` | `GridToggleWrapper` | function | :10 |  |
@@ -1772,7 +1773,7 @@ Every top-level export in `web`, with the line to open.
 | `legal-page.tsx` | `LegalPage` | function | :22 | The shape the three policy pages share. |
 | `locale-switcher.tsx` | `LocaleSwitcher` | function | :20 | Switches language while staying on the same page — a customer reading a product in English lands on… |
 | `logo.tsx` | `Logo` | function | :24 |  |
-| `mobile-nav.tsx` | `MobileNav` | function | :17 |  |
+| `mobile-nav.tsx` | `MobileNav` | function | :18 |  |
 | `onsite-messages.tsx` | `OnsiteMessages` | function | :37 | WO-8.6 — the storefront half of on-site messaging. |
 | `personalized-recommendations.tsx` | `PersonalizedRecommendations` | function | :28 | WO-9.6 (09-ai-layer.md) — "Personalised homepage from browse... |
 | `price.tsx` | `Price` | function | :25 | Renders a price. |
@@ -1786,7 +1787,7 @@ Every top-level export in `web`, with the line to open.
 | `search-box.tsx` | `SearchBox` | function | :24 |  |
 | `shop-controls.tsx` | `ShopControls` | function | :17 |  |
 | `size-chart-modal.tsx` | `SizeChartModal` | function | :15 |  |
-| `smooth-scroller.tsx` | `SmoothScroller` | function | :6 |  |
+| `smooth-scroller.tsx` | `SmoothScroller` | function | :7 |  |
 | `sort-select.tsx` | `SortSelect` | function | :15 |  |
 | `stitching-panel.tsx` | `StitchingSelection` | interface | :22 |  |
 | `stitching-panel.tsx` | `CartStitchingRequest` | type | :42 | The cart's stitching payload: the selection minus the parts only the browser acts on. |
@@ -1803,17 +1804,18 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `badge.tsx` | `BadgeTone` | type | :13 | A status pill. |
 | `badge.tsx` | `Badge` | function | :24 |  |
-| `bento.tsx` | `Bento` | function | :18 | A bento: one job, shown as a handful of tiles of deliberately different sizes, so the eye finds the… |
-| `bento.tsx` | `BentoSize` | type | :31 |  |
-| `bento.tsx` | `BentoTone` | type | :32 |  |
-| `bento.tsx` | `BentoTile` | function | :56 |  |
-| `button.tsx` | `ButtonProps` | interface | :26 |  |
-| `button.tsx` | `Button` | function | :34 |  |
+| `bento.tsx` | `Bento` | function | :24 | A bento: one job, shown as a handful of tiles of deliberately different sizes, so the eye finds the… |
+| `bento.tsx` | `BentoSize` | type | :37 |  |
+| `bento.tsx` | `BentoTone` | type | :38 |  |
+| `bento.tsx` | `BentoTile` | function | :62 |  |
+| `button.tsx` | `ButtonProps` | interface | :29 |  |
+| `button.tsx` | `Button` | function | :37 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | function | :30 | The one way a destructive action gets confirmed. |
+| `count-up.tsx` | `CountUp` | function | :30 | A figure that counts to its value instead of appearing at it. |
 | `data-table.tsx` | `DataTableColumn` | interface | :29 | The admin's one table. |
 | `data-table.tsx` | `DataTable` | function | :95 |  |
-| `dialog.tsx` | `Dialog` | function | :27 | A modal dialog, with the behaviour every modal is supposed to have. |
-| `disclosure.tsx` | `Disclosure` | function | :24 | Advanced options, folded away until asked for. |
+| `dialog.tsx` | `Dialog` | function | :34 | A modal dialog, with the behaviour every modal is supposed to have. |
+| `disclosure.tsx` | `Disclosure` | function | :30 | Advanced options, folded away until asked for. |
 | `empty-state.tsx` | `EmptyState` | function | :17 | What a list shows when it has nothing in it. |
 | `filter-bar.tsx` | `FilterDef` | type | :26 | The filter row every list page hand-rolled with its own `useState`, so a refresh lost the filter, a… |
 | `filter-bar.tsx` | `FilterBar` | function | :36 |  |
@@ -1840,15 +1842,23 @@ Every top-level export in `web`, with the line to open.
 | `index.ts` | `Skeleton` `SkeletonText` `SkeletonRegion` `type SkeletonShape` | re-export |  | from `./skeleton` |
 | `index.ts` | `Switch` | re-export |  | from `./switch` |
 | `index.ts` | `Segmented` `type SegmentedOption` | re-export |  | from `./segmented` |
+| `index.ts` | `PageEnter` | re-export |  | from `./page-enter` |
+| `index.ts` | `CountUp` | re-export |  | from `./count-up` |
+| `index.ts` | `ProgressRing` | re-export |  | from `./progress-ring` |
+| `index.ts` | `RevealScope` | re-export |  | from `./reveal-scope` |
+| `index.ts` | `ScrambleText` `TypeText` | re-export |  | from `./text-motion` |
 | `index.ts` | `Bento` `BentoTile` `type BentoSize` `type BentoTone` | re-export |  | from `./bento` |
 | `index.ts` | `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` `type FilterDef` | re-export |  | from `./filter-bar` |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | function | :20 | The shape of a list page, before the list page. |
-| `loading.tsx` | `Loading` | function | :18 | The "still fetching" line. |
+| `loading.tsx` | `Loading` | function | :22 | The "still fetching" line. |
 | `metric-strip.tsx` | `MetricItem` | interface | :6 |  |
 | `metric-strip.tsx` | `MetricStrip` | function | :47 | A row of figures with no boxes in it, and a drawer underneath. |
+| `page-enter.tsx` | `PageEnter` | function | :27 | A page arrives. |
 | `page-header.tsx` | `PageHeader` | function | :21 | The top of every page: context, title, one line of explanation, and the one primary action. |
 | `pagination.tsx` | `PaginationMeta` | interface | :15 | The prev/next/page-count block, written out by hand at the foot of every paged list — eight times,… |
 | `pagination.tsx` | `Pagination` | function | :23 |  |
+| `progress-ring.tsx` | `ProgressRing` | function | :24 | A ring that fills to a fraction, with the figure (or an icon) at its centre. |
+| `reveal-scope.tsx` | `RevealScope` | function | :21 | A container whose direct children marked `data-reveal-item` arrive as they scroll into view, a few… |
 | `section-rail.tsx` | `RailSection` | interface | :6 |  |
 | `section-rail.tsx` | `SectionRail` | function | :36 | A long object page with a rail to jump around it. |
 | `section.tsx` | `Section` | function | :19 | A titled region of a page, with no box around it. |
@@ -1860,7 +1870,9 @@ Every top-level export in `web`, with the line to open.
 | `skeleton.tsx` | `SkeletonRegion` | function | :44 | Wraps a skeleton composition: one polite announcement, the boxes hidden from assistive tech. |
 | `switch.tsx` | `Switch` | function | :20 | An on/off setting that takes effect now. |
 | `tabs.tsx` | `TabItem` | interface | :6 |  |
-| `tabs.tsx` | `Tabs` | function | :37 | Splits one page into several, without splitting the route. |
+| `tabs.tsx` | `Tabs` | function | :46 | Splits one page into several, without splitting the route. |
+| `text-motion.tsx` | `ScrambleText` | function | :36 | Text that resolves out of noise, once, when it arrives or changes. |
+| `text-motion.tsx` | `TypeText` | function | :94 | Text that is typed out, once, when it arrives. |
 | `theme-init-script.tsx` | `ThemeInitScript` | function | :19 | Inline this in the `<head>` of every root layout that renders `<html>`. |
 | `theme-toggle.tsx` | `ThemeToggleLabels` | interface | :25 | The control that switches theme. |
 | `theme-toggle.tsx` | `ThemeToggle` | function | :51 |  |
@@ -1891,11 +1903,14 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `use-cart.ts` | `useCart` | re-export |  | from `@/components/storefront/cart-provider` |
+| `use-exit-transition.ts` | `useExitTransition` | function | :22 | Lets something that unmounts get an exit. |
 | `use-order-status-label.ts` | `useOrderStatusLabel` | function | :17 | An order status in the reader's language. |
+| `use-prefers-reduced-motion.ts` | `prefersReducedMotion` | function | :12 | Read once, outside React: for a timer or an event handler that has no render to subscribe from. |
+| `use-prefers-reduced-motion.ts` | `usePrefersReducedMotion` | function | :27 | The stylesheet's reduced-motion rule collapses every CSS animation and transition, but it cannot re… |
 | `use-theme.ts` | `UseTheme` | interface | :86 |  |
 | `use-theme.ts` | `useTheme` | function | :96 |  |
-| `use-toast.ts` | `Toast` | interface | :5 |  |
-| `use-toast.ts` | `useToast` | function | :12 |  |
+| `use-toast.ts` | `Toast` | interface | :7 |  |
+| `use-toast.ts` | `useToast` | function | :16 |  |
 
 ### `apps/web/src/i18n`
 
@@ -1968,9 +1983,21 @@ Every top-level export in `web`, with the line to open.
 | `customer-client.ts` | `customerFetch` | function | :250 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
 | `download-csv.ts` | `downloadCsv` | function | :17 | Pull a CSV from an admin endpoint and hand it to the browser. |
 | `download-file.ts` | `downloadFile` | function | :10 | Pull a binary file (a PDF, here — H2/L20's own RAG source download) from an admin endpoint and hand… |
+| `motion.ts` | `bezierEase` | function | :29 | A CSS `cubic-bezier(x1, y1, x2, y2)` as a function of time, so a JS-driven value follows exactly th… |
+| `motion.ts` | `settle` | const | :73 | The `settle` curve: fast out of the blocks, long unhurried finish, never an overshoot. |
+| `motion.ts` | `clamp01` | function | :76 | Clamp a progress value into 0–1. |
+| `motion.ts` | `countUpValue` | function | :86 | The value a count-up shows at `progress` (0–1 of its duration). |
+| `motion.ts` | `revealedCount` | function | :93 | How many of `total` units (characters, steps) are revealed at `progress`. |
+| `motion.ts` | `staggerDelayMs` | function | :103 | The delay, in ms, of the item at a zero-based `index` of a staggered group. |
+| `motion.ts` | `noiseGlyph` | function | :117 |  |
+| `motion.ts` | `scrambleFrame` | function | :127 | One frame of a decode: the leading `revealedCount` characters are the real text, the rest are noise. |
+| `motion.ts` | `typedFrame` | function | :134 | One frame of a typed reveal: the leading characters of `target`, nothing else. |
+| `motion.ts` | `ringStroke` | function | :144 | Stroke geometry for a progress ring: the dash array is the circumference and the offset is how much… |
+| `motion.ts` | `MOTION_MS` | const | :154 | How long a JS-driven motion runs, by name, from the same tokens CSS reads. |
 | `onsite-messages-client.ts` | `fetchActiveOnsiteMessages` | function | :13 | WO-8.6. |
 | `onsite-messages-client.ts` | `subscribeToNewsletter` | function | :21 |  |
 | `rag-corpus-access.ts` | `visibleCorpora` | function | :21 | Filters a list of corpus options down to the ones `can` may reach — the same convention `reports/pa… |
+| `reveal.ts` | `armReveal` | function | :22 | Hides a group of elements and reveals each as it scrolls into view, staggered within the batch that… |
 | `wishlist.ts` | `toggleWishlist` | function | :62 |  |
 | `wishlist.ts` | `WishlistState` | interface | :169 |  |
 | `wishlist.ts` | `useWishlist` | function | :176 |  |

@@ -7,6 +7,7 @@ import { directionFor, formatMoney, toMajor, toMinor, type Locale } from '@newax
 import { usePathname, useRouter } from '@/i18n/navigation';
 import type { CatalogFacets } from '@/types/api';
 import { cn } from '@/utils/cn';
+import { useExitTransition } from '@/hooks/use-exit-transition';
 
 interface FilterPanelProps {
   facets: CatalogFacets;
@@ -27,6 +28,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
+  const { mounted, leaving } = useExitTransition(isOpen);
 
   const selected = (key: string): string[] => {
     const raw = searchParams.get(key);
@@ -243,16 +245,21 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
       </button>
 
       {/* Mobile Drawer */}
-      {isOpen && (
-        <div className="fixed inset-0 z-overlay lg:hidden">
+      {mounted && (
+        <div inert={leaving} className="fixed inset-0 z-overlay lg:hidden">
           <div
-            className="fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className={cn(
+              'fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity duration-fast ease-exit',
+              leaving ? 'opacity-0' : 'animate-fadeIn',
+            )}
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
           <div className={cn(
             'fixed inset-y-0 w-80 bg-overlay shadow-xl flex flex-col',
-            isRtl ? 'start-0 animate-slideInLeft' : 'end-0 animate-slideInRight'
+            isRtl
+              ? cn('start-0', leaving ? 'animate-slideOutLeft' : 'animate-slideInLeft')
+              : cn('end-0', leaving ? 'animate-slideOutRight' : 'animate-slideInRight'),
           )}>
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
               <span className="font-display text-lg font-semibold text-neutral-900">{t('filters')}</span>

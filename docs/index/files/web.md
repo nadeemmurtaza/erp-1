@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 478 tracked files in `apps/web`, by directory.
+All 489 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -18,7 +18,7 @@ All 478 tracked files in `apps/web`, by directory.
 | `next.config.mjs` | script | 62 |  |
 | `package.json` | json | 44 |  |
 | `postcss.config.mjs` | script | 8 | @type {import('postcss-load-config').Config} |
-| `tailwind.config.ts` | module | 224 |  |
+| `tailwind.config.ts` | module | 254 |  |
 | `tsconfig.json` | json | 25 |  |
 | `vitest.config.mts` | mts | — |  |
 
@@ -71,7 +71,7 @@ All 478 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `global-error.tsx` | global-error | 82 |  |
-| `globals.css` | stylesheet | 702 |  |
+| `globals.css` | stylesheet | 1029 |  |
 | `icon.svg` | asset | — |  |
 | `not-found.tsx` | not-found | 79 |  |
 | `robots.ts` | module | 33 |  |
@@ -89,7 +89,7 @@ All 478 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `layout.tsx` | layout | 15 |  |
+| `layout.tsx` | layout | 23 |  |
 | `loading.tsx` | loading | 59 | The shape of the dashboard, before the dashboard. |
 | `page.tsx` | page | 106 |  |
 
@@ -416,7 +416,7 @@ All 478 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 208 |  |
+| `page.tsx` | page | 216 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/cash-flow` (1)
 
@@ -1140,7 +1140,7 @@ All 478 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `error.tsx` | error | 62 |  |
-| `layout.tsx` | layout | 198 |  |
+| `layout.tsx` | layout | 199 |  |
 | `loading.tsx` | loading | 66 |  |
 | `not-found.tsx` | not-found | 37 |  |
 | `page.tsx` | page | 265 |  |
@@ -1263,7 +1263,7 @@ All 478 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 410 |  |
+| `page.tsx` | page | 411 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/invoice` (1)
 
@@ -1447,7 +1447,7 @@ All 478 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `admin-shell.tsx` | component | 473 |  |
+| `admin-shell.tsx` | component | 484 |  |
 | `bpmn-editor.tsx` | component | 123 |  |
 | `command-palette.tsx` | component | 285 |  |
 | `cross-sell-manager.tsx` | component | 256 |  |
@@ -1471,7 +1471,7 @@ All 478 tracked files in `apps/web`, by directory.
 | `scope-chips.tsx` | component | 71 |  |
 | `session.tsx` | component | 47 |  |
 | `stage-badge.tsx` | component | 15 |  |
-| `toast-stack.tsx` | component | 39 |  |
+| `toast-stack.tsx` | component | 63 |  |
 
 ### `apps/web/src/components/admin/analytics` (4)
 
@@ -1507,7 +1507,7 @@ All 478 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `calendar-heatmap.tsx` | component | 223 |  |
-| `category-bar-chart.tsx` | component | 79 |  |
+| `category-bar-chart.tsx` | component | 82 |  |
 | `chart-data-table.tsx` | component | 47 | The screen-reader fallback every wrapper renders alongside its SVG (WO-A.2 acceptance: "a screen-reader-only table whos… |
 | `chart-legend.tsx` | component | 49 |  |
 | `chart-marker.tsx` | component | 59 |  |
@@ -1516,7 +1516,7 @@ All 478 tracked files in `apps/web`, by directory.
 | `chart-series.tsx` | component | 103 |  |
 | `chart-theme.ts` | component | 104 |  |
 | `chart-tooltip.tsx` | component | 52 |  |
-| `comparison-chart.tsx` | component | 119 |  |
+| `comparison-chart.tsx` | component | 124 |  |
 | `funnel-chart.tsx` | component | 151 |  |
 | `gauge-chart.tsx` | component | 264 |  |
 | `index.ts` | component | 41 | The whole charting vocabulary for the back office (10-admin-dashboard.md D9). |
@@ -1528,8 +1528,8 @@ All 478 tracked files in `apps/web`, by directory.
 | `small-multiples-chart.tsx` | component | 220 |  |
 | `sparkline-chart.tsx` | component | 39 |  |
 | `stacked-area-chart.tsx` | component | 143 |  |
-| `time-series-chart.tsx` | component | 149 |  |
-| `use-reduced-motion.ts` | component | 24 |  |
+| `time-series-chart.tsx` | component | 154 |  |
+| `use-reduced-motion.ts` | component | 9 | Moved to `@/hooks/use-prefers-reduced-motion` when the rest of the system (dialogs, toasts, figures) needed the same an… |
 
 ### `apps/web/src/components/admin/dashboard` (9)
 
@@ -1566,7 +1566,7 @@ All 478 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `dashboard-nav.tsx` | component | 104 |  |
 
-### `apps/web/src/components/design-system` (25)
+### `apps/web/src/components/design-system` (26)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1580,15 +1580,16 @@ All 478 tracked files in `apps/web`, by directory.
 | `department-page.tsx` | component | 437 |  |
 | `department.spec.ts` | unit test | 158 |  |
 | `department.ts` | component | 155 | The deciding functions behind the department-page specimen. |
-| `dispatch-flow.tsx` | component | 378 |  |
+| `dispatch-flow.tsx` | component | 379 |  |
 | `dispatch-machine.spec.ts` | unit test | 158 |  |
 | `dispatch-machine.ts` | component | 131 | The states of a one-click send, and the only moves between them. |
-| `flow-concepts.tsx` | component | 583 |  |
+| `flow-concepts.tsx` | component | 584 |  |
 | `foundations.tsx` | component | 438 |  |
-| `gallery.tsx` | component | 311 |  |
+| `gallery.tsx` | component | 321 |  |
 | `layering.tsx` | component | 208 |  |
 | `layout-loading.tsx` | component | 358 |  |
 | `live-tokens.ts` | component | 60 |  |
+| `motion-specimens.tsx` | component | 543 |  |
 | `patterns.tsx` | component | 322 |  |
 | `people-access.tsx` | component | 638 |  |
 | `publish-audience.tsx` | component | 419 |  |
@@ -1609,7 +1610,7 @@ All 478 tracked files in `apps/web`, by directory.
 | `cart-provider.tsx` | component | 104 |  |
 | `customer-nav.tsx` | component | 87 |  |
 | `customer-session.tsx` | component | 36 |  |
-| `filter-panel.tsx` | component | 358 |  |
+| `filter-panel.tsx` | component | 365 |  |
 | `footer.tsx` | component | 155 |  |
 | `frequently-bought-together.tsx` | component | 149 |  |
 | `grid-toggle-wrapper.tsx` | component | 13 |  |
@@ -1619,7 +1620,7 @@ All 478 tracked files in `apps/web`, by directory.
 | `legal-page.tsx` | component | 72 |  |
 | `locale-switcher.tsx` | component | 75 |  |
 | `logo.tsx` | component | 126 | The "yaseen" wordmark, traced from the brand's source artwork into a single vector path. |
-| `mobile-nav.tsx` | component | 190 |  |
+| `mobile-nav.tsx` | component | 197 |  |
 | `onsite-messages.tsx` | component | 209 |  |
 | `personalized-recommendations.tsx` | component | 81 |  |
 | `price.tsx` | component | 39 |  |
@@ -1632,38 +1633,43 @@ All 478 tracked files in `apps/web`, by directory.
 | `search-box.tsx` | component | 134 |  |
 | `shop-controls.tsx` | component | 56 |  |
 | `size-chart-modal.tsx` | component | 219 |  |
-| `smooth-scroller.tsx` | component | 35 |  |
+| `smooth-scroller.tsx` | component | 42 |  |
 | `sort-select.tsx` | component | 64 |  |
 | `stitching-panel.tsx` | component | 969 |  |
 | `stitching-timeline.tsx` | component | 105 |  |
 | `theme-switch.tsx` | component | 28 |  |
 | `visual-search-button.tsx` | component | 89 |  |
 
-### `apps/web/src/components/ui` (23)
+### `apps/web/src/components/ui` (28)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `badge.tsx` | component | 45 |  |
-| `bento.tsx` | component | 83 |  |
-| `button.tsx` | component | 56 |  |
+| `bento.tsx` | component | 92 |  |
+| `button.tsx` | component | 66 |  |
 | `confirm-dialog.tsx` | component | 103 |  |
+| `count-up.tsx` | component | 93 |  |
 | `data-table.tsx` | component | 260 |  |
-| `dialog.tsx` | component | 209 |  |
-| `disclosure.tsx` | component | 69 |  |
+| `dialog.tsx` | component | 221 |  |
+| `disclosure.tsx` | component | 75 |  |
 | `empty-state.tsx` | component | 40 |  |
 | `filter-bar.tsx` | component | 191 |  |
-| `index.ts` | component | 46 | Design-system primitives. |
+| `index.ts` | component | 54 | Design-system primitives. |
 | `list-page-skeleton.tsx` | component | 66 | The shape of a list page, before the list page. |
-| `loading.tsx` | loading | 31 |  |
+| `loading.tsx` | loading | 36 |  |
 | `metric-strip.tsx` | component | 158 |  |
+| `page-enter.tsx` | component | 35 |  |
 | `page-header.tsx` | component | 56 |  |
 | `pagination.tsx` | component | 66 |  |
+| `progress-ring.tsx` | component | 104 |  |
+| `reveal-scope.tsx` | component | 36 |  |
 | `section-rail.tsx` | component | 154 |  |
 | `section.tsx` | component | 59 |  |
 | `segmented.tsx` | component | 121 |  |
 | `skeleton.tsx` | component | 60 |  |
 | `switch.tsx` | component | 75 |  |
-| `tabs.tsx` | component | 116 |  |
+| `tabs.tsx` | component | 158 |  |
+| `text-motion.tsx` | component | 146 |  |
 | `theme-init-script.tsx` | component | 22 |  |
 | `theme-toggle.tsx` | component | 115 |  |
 
@@ -1685,14 +1691,16 @@ All 478 tracked files in `apps/web`, by directory.
 | `routes.ts` | constants | 314 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 69 | Browser storage keys. |
 
-### `apps/web/src/hooks` (4)
+### `apps/web/src/hooks` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `use-cart.ts` | hook | 13 | The cart, from anywhere in the storefront. |
+| `use-exit-transition.ts` | hook | 41 |  |
 | `use-order-status-label.ts` | hook | 23 |  |
+| `use-prefers-reduced-motion.ts` | hook | 30 |  |
 | `use-theme.ts` | hook | 117 |  |
-| `use-toast.ts` | hook | 36 |  |
+| `use-toast.ts` | hook | 53 |  |
 
 ### `apps/web/src/i18n` (3)
 
@@ -1702,7 +1710,7 @@ All 478 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (11)
+### `apps/web/src/lib` (14)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1714,8 +1722,11 @@ All 478 tracked files in `apps/web`, by directory.
 | `customer-client.ts` | utility | 273 |  |
 | `download-csv.ts` | utility | 36 |  |
 | `download-file.ts` | utility | 23 |  |
+| `motion.spec.ts` | unit test | 194 |  |
+| `motion.ts` | utility | 160 |  |
 | `onsite-messages-client.ts` | utility | 24 |  |
 | `rag-corpus-access.ts` | utility | 27 |  |
+| `reveal.ts` | utility | 59 |  |
 | `wishlist.ts` | utility | 204 |  |
 
 ### `apps/web/src/providers` (2)

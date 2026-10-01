@@ -28,6 +28,7 @@ import { DispatchFlowSpecimen } from './dispatch-flow';
 import { JourneyTiersSpecimen, RoutingCanvasSpecimen } from './flow-concepts';
 import { BentoSpecimen, SkeletonSpecimen } from './layout-loading';
 import { LayeringSpecimen } from './layering';
+import { MotionSpecimens } from './motion-specimens';
 import { PeopleAccessSpecimen } from './people-access';
 import { PublishAudienceSpecimen } from './publish-audience';
 import { ScopedBentoSpecimen } from './scoped-bento';
@@ -38,7 +39,8 @@ const SECTIONS = [
   ['colour', 'Colour'],
   ['type', 'Type'],
   ['space', 'Space'],
-  ['depth', 'Depth and motion'],
+  ['depth', 'Depth and timing'],
+  ['motion', 'Motion'],
   ['components', 'Components'],
   ['patterns', 'Admin patterns'],
   ['screens', 'Admin screens'],
@@ -111,7 +113,7 @@ export function DesignSystemGallery() {
 
         <GallerySection
           id="depth"
-          title="Depth and motion"
+          title="Depth and timing"
           lead="Elevation, stacking order and timing are tokens too."
           columns="lg:grid-cols-2"
         >
@@ -123,6 +125,14 @@ export function DesignSystemGallery() {
           >
             <LayeringSpecimen />
           </Group>
+        </GallerySection>
+
+        <GallerySection
+          id="motion"
+          title="Motion"
+          lead="One language, from the same tokens as everything else: a button presses, a card arrives, a field shakes once when it is wrong, a dialog leaves as fast as it came. Movement is kept only for what it tells the reader, and everything here holds still under reduced motion without losing a fact."
+        >
+          <MotionSpecimens />
         </GallerySection>
 
         <GallerySection id="components" title="Components" lead="The shared primitives, as shipped. A page composes these; it does not invent its own.">

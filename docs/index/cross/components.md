@@ -3,7 +3,7 @@
 
 # Components
 
-All **149** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **155** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 273 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 274 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 6 |  |
 
 ### `apps/pos/src/components` (2)
@@ -68,7 +68,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
 | `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 76 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
-| `toast-stack.tsx` | `ToastStack` | client | 19 |  |
+| `toast-stack.tsx` | `ToastStack` | client | 20 |  |
 
 ### `apps/web/src/components/admin/analytics` (1)
 
@@ -153,7 +153,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `dashboard-nav.tsx` | `DashboardNav` | client | 1 |  |
 
-### `apps/web/src/components/design-system` (16)
+### `apps/web/src/components/design-system` (17)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -163,16 +163,17 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `department-page.tsx` | `DepartmentPageSpecimen` | client | 1 |  |
 | `dispatch-flow.tsx` | `DispatchFlowSpecimen` | client | 1 |  |
 | `flow-concepts.tsx` | `RoutingCanvasSpecimen` `JourneyTiersSpecimen` | client | 1 |  |
-| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 5 |  |
+| `foundations.tsx` | `GallerySection` `Group` `ColourFoundations` `ContrastTable` `TypeFoundations` `SpaceFoundations` `ElevationFoundations` | client | 6 |  |
 | `gallery.tsx` | `DesignSystemGallery` | client | 2 |  |
 | `layering.tsx` | `LayeringSpecimen` | client | 1 |  |
 | `layout-loading.tsx` | `BentoSpecimen` `SkeletonSpecimen` | client | 1 |  |
+| `motion-specimens.tsx` | `MotionSpecimens` | client | 1 |  |
 | `patterns.tsx` | `FROSTED` `AdminPatterns` | client | 2 |  |
 | `people-access.tsx` | `PeopleAccessSpecimen` | client | 1 |  |
 | `publish-audience.tsx` | `PublishAudienceSpecimen` | client | 1 |  |
 | `scope-chip-editor.tsx` | `ScopeChipEditor` | client | 1 |  |
 | `scoped-bento.tsx` | `ScopedBentoSpecimen` | client | 1 |  |
-| `specimens.tsx` | `ComponentSpecimens` | client | 1 |  |
+| `specimens.tsx` | `ComponentSpecimens` | client | 2 |  |
 
 ### `apps/web/src/components/storefront` (38)
 
@@ -217,7 +218,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `theme-switch.tsx` | `ThemeSwitch` | client | 1 |  |
 | `visual-search-button.tsx` | `VisualSearchButton` | client | 1 |  |
 
-### `apps/web/src/components/ui` (22)
+### `apps/web/src/components/ui` (27)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
@@ -225,6 +226,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 2 |  |
 | `button.tsx` | `ButtonProps` `Button` | server | 3 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
+| `count-up.tsx` | `CountUp` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 16 |  |
 | `dialog.tsx` | `Dialog` | client | 3 |  |
 | `disclosure.tsx` | `Disclosure` | client | 1 |  |
@@ -233,14 +235,18 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 1 | The shape of a list page, before the list page. |
 | `loading.tsx` | `Loading` | server | 2 |  |
 | `metric-strip.tsx` | `MetricItem` `MetricStrip` | client | 1 |  |
+| `page-enter.tsx` | `PageEnter` | client | 3 |  |
 | `page-header.tsx` | `PageHeader` | server | 1 |  |
 | `pagination.tsx` | `PaginationMeta` `Pagination` | server | 1 |  |
+| `progress-ring.tsx` | `ProgressRing` | client | 1 |  |
+| `reveal-scope.tsx` | `RevealScope` | client | 2 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 1 |  |
 | `section.tsx` | `Section` | server | 6 |  |
 | `segmented.tsx` | `SegmentedOption` `Segmented` | client | 1 |  |
 | `skeleton.tsx` | `SkeletonShape` `Skeleton` `SkeletonText` `SkeletonRegion` | server | 2 |  |
 | `switch.tsx` | `Switch` | client | 2 |  |
 | `tabs.tsx` | `TabItem` `Tabs` | client | 1 |  |
+| `text-motion.tsx` | `ScrambleText` `TypeText` | client | 1 |  |
 | `theme-init-script.tsx` | `ThemeInitScript` | server | 2 |  |
 | `theme-toggle.tsx` | `ThemeToggleLabels` `ThemeToggle` | client | 3 |  |
 

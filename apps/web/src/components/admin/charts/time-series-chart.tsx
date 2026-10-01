@@ -16,6 +16,7 @@ import {
 import { formatDateShort, formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
+import { usePrefersReducedMotion } from './use-reduced-motion';
 import { GRID, INK_FAINT, compactMoney, dashFor, markerFor, paletteColor, type ValueFormat } from './chart-theme';
 import { ChartMarker } from './chart-marker';
 
@@ -44,6 +45,8 @@ export function TimeSeriesChart({
   chart?: 'line' | 'area';
   ariaLabel: string;
 }) {
+  const reduced = usePrefersReducedMotion();
+
   if (data.length === 0) {
     return <EmptyState title="No data in this window." />;
   }
@@ -98,6 +101,7 @@ export function TimeSeriesChart({
                 fillOpacity={0.1}
                 dot={false}
                 activeDot={{ r: 5 }}
+                isAnimationActive={!reduced}
               />
             ) : (
               <Line
@@ -118,6 +122,7 @@ export function TimeSeriesChart({
                   />
                 )}
                 activeDot={{ r: 5 }}
+                isAnimationActive={!reduced}
               />
             ),
           )}

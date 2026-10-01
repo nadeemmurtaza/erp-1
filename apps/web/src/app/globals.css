@@ -122,7 +122,8 @@
  * field uses these names on either surface, and there is no prefixed variant to
  * pick between.
  *
- * Two motions carry the whole system:
+ * Two motions carry the whole system, and the rest of the motion language
+ * (docs/design/motion/05-motion.md) is built around them:
  *
  *   Buttons fill. A button sits outlined and on hover the primary colour
  *   sweeps across it left to right, like a bar loading, and the label turns
@@ -154,9 +155,9 @@
    */
   .lift {
     transition:
-      transform var(--motion-duration-slow) var(--fill-ease),
-      box-shadow var(--motion-duration-slow) var(--fill-ease),
-      border-color var(--motion-duration-slow) var(--fill-ease);
+      transform var(--motion-duration-slow) var(--motion-easing-settle),
+      box-shadow var(--motion-duration-slow) var(--motion-easing-settle),
+      border-color var(--motion-duration-slow) var(--motion-easing-settle);
   }
 
   .lift:hover,
@@ -167,7 +168,17 @@
   @media (prefers-reduced-motion: no-preference) {
     .lift:hover,
     .lift:focus-within {
-      transform: translateY(-4px);
+      transform: translateY(calc(var(--motion-distance-nudge) * -1));
+    }
+
+    /*
+     * Pressed: the card comes back down to rest and the shadow with it. A
+     * card is too big to scale (2% of 400px is 8px), so the press is the lift
+     * reversing, not a shrink.
+     */
+    .lift:active {
+      transform: translateY(0);
+      transition-duration: var(--motion-duration-instant);
     }
   }
 
@@ -193,7 +204,103 @@
     transition:
       color var(--motion-duration-normal) var(--fill-ease),
       background-color var(--motion-duration-normal) var(--fill-ease),
-      border-color var(--motion-duration-normal) var(--fill-ease);
+      border-color var(--motion-duration-normal) var(--fill-ease),
+      transform var(--motion-duration-fast) var(--motion-easing-settle);
+  }
+
+  /*
+   * Press. The acknowledgement a pointer or a finger is owed within one frame
+   * (ACT-3): the button sinks `micro` and shrinks to `press`, in `instant`
+   * going down and `fast` coming back, on the `settle` curve, which never
+   * overshoots — a business control does not bounce. Separate rules per class
+   * rather than one `:is()` list because `@apply btn` re-writes `.btn…`
+   * selectors for `.btn-primary` and friends one rule at a time.
+   */
+  .btn:active:not(:disabled) {
+    transform: translateY(var(--motion-distance-micro)) scale(var(--motion-scale-press));
+    transition-duration: var(--motion-duration-instant);
+  }
+
+  /*
+   * The loading ring: anything that has accepted a request and is waiting says
+   * so with something that moves, beside its label. One revolution is two
+   * sweeps (840ms), slow enough to read as a ring rather than a flicker. Under
+   * reduced motion the global rule below stops it after a frame and the ring
+   * stays as a fixed arc — the label ("Working…", "Loading…") carries the rest.
+   */
+  .spinner {
+    @apply inline-block h-[1em] w-[1em] shrink-0 rounded-full border-2 border-current;
+    border-inline-end-color: transparent;
+    animation: ring-turn calc(var(--motion-duration-sweep) * 2) linear infinite;
+  }
+
+  /*
+   * The time a toast has left, as a line that drains over exactly that time.
+   * Its duration is set inline from the toast's own `duration`, the one value
+   * here that is data. `scaleX` from the inline-start edge, so it drains toward
+   * the start in either direction of writing.
+   */
+  .toast-timer {
+    @apply absolute inset-x-0 bottom-0 h-0.5 bg-current opacity-30;
+    transform-origin: left center;
+    animation: toast-drain 4s linear forwards;
+  }
+
+  [dir='rtl'] .toast-timer {
+    transform-origin: right center;
+  }
+
+  /*
+   * A side sheet enters from, and returns to, its own edge: `large` (64px)
+   * along the inline axis plus a fade, which reads as sliding in from the side
+   * without the sheet having to cross the viewport. `--sheet-sign` flips the
+   * direction in a right-to-left document, where the sheet sits on the left.
+   */
+  .sheet-in,
+  .sheet-out {
+    --sheet-sign: 1;
+  }
+
+  [dir='rtl'] .sheet-in,
+  [dir='rtl'] .sheet-out {
+    --sheet-sign: -1;
+  }
+
+  .sheet-in {
+    animation: sheet-in var(--motion-duration-slow) var(--motion-easing-settle) backwards;
+  }
+
+  .sheet-out {
+    animation: sheet-out var(--motion-duration-fast) var(--motion-easing-exit) forwards;
+  }
+
+  /*
+   * A moving indicator for a row of tabs. It is one element that glides to the
+   * selected tab (transform only: `translate` for the position and `scaleX` of
+   * a one-pixel-wide bar for the width, which is exact for a plain rectangle)
+   * instead of the underline vanishing from one tab and appearing on another.
+   * Until it has measured the tabs it stays hidden and the selected tab keeps
+   * its own underline, so the strip is correct before and without scripting.
+   * The numbers are physical because they come from `offsetLeft`; the tab strip
+   * measures them itself, in either direction of writing.
+   */
+  .tab-indicator {
+    @apply pointer-events-none absolute left-0 top-0 h-0.5 w-px bg-accent opacity-0;
+    transform-origin: left center;
+    transform: translate(var(--tab-x, 0px), var(--tab-y, 0px)) scaleX(var(--tab-w, 0));
+  }
+
+  [data-slide='ready'] > .tab-indicator {
+    opacity: 1;
+  }
+
+  /* Only once placed: the first position is a jump, every later one a glide. */
+  [data-animate] > .tab-indicator {
+    transition: transform var(--motion-duration-normal) var(--motion-easing-settle);
+  }
+
+  [data-slide='ready'] > [role='tab'][aria-selected='true'] {
+    border-color: transparent;
   }
 
   .btn::before {
@@ -259,7 +366,12 @@
    * options already make around one shared shape.
    */
   .chip {
-    @apply inline-flex items-center justify-center border text-sm font-medium transition-colors duration-200;
+    @apply inline-flex items-center justify-center border text-sm font-medium;
+    transition:
+      color var(--motion-duration-normal) var(--motion-easing-settle),
+      background-color var(--motion-duration-normal) var(--motion-easing-settle),
+      border-color var(--motion-duration-normal) var(--motion-easing-settle),
+      transform var(--motion-duration-fast) var(--motion-easing-settle);
     /*
      * inline-flex, not the default inline-block: the 44px touch floor below
      * `fold` would otherwise leave the label sitting at the top of a tall
@@ -267,6 +379,11 @@
      */
     @apply min-h-touch px-3 py-1.5 xs:px-4 fold:min-h-0 fold:py-1.5;
     border-radius: var(--radius);
+  }
+
+  .chip:active:not(:disabled) {
+    transform: scale(var(--motion-scale-press));
+    transition-duration: var(--motion-duration-instant);
   }
 
   .chip-selected {
@@ -286,10 +403,15 @@
    * Tailwind orders utilities after components.
    */
   .icon-btn {
-    @apply inline-flex items-center justify-center bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-200 hover:scale-110;
+    @apply inline-flex items-center justify-center bg-white/80 text-neutral-900 backdrop-blur-sm transition-transform duration-normal ease-settle hover:scale-110;
     /* 44px on touch, back to the tighter 36px once a pointer is likely. */
     @apply h-touch w-touch fold:h-9 fold:w-9;
     border-radius: var(--radius);
+  }
+
+  .icon-btn:active:not(:disabled) {
+    transform: scale(var(--motion-scale-press));
+    transition-duration: var(--motion-duration-instant);
   }
 
   .field-label {
@@ -297,7 +419,16 @@
   }
 
   .field-input {
-    @apply w-full border-neutral-200 bg-white text-neutral-900 shadow-none transition-colors duration-200 placeholder:text-neutral-400 focus:border-accent focus:ring-accent;
+    @apply w-full border-neutral-200 bg-white text-neutral-900 shadow-none placeholder:text-neutral-400 focus:border-accent focus:ring-accent;
+    /*
+     * The focus ring is a box-shadow, which Tailwind's `transition-colors` does
+     * not list, so it used to pop in while the border eased. Both ease now, on
+     * the same curve, so focus reads as one movement.
+     */
+    transition:
+      border-color var(--motion-duration-normal) var(--motion-easing-settle),
+      background-color var(--motion-duration-normal) var(--motion-easing-settle),
+      box-shadow var(--motion-duration-normal) var(--motion-easing-settle);
     /*
      * 16px up to `sm`, and this is not a taste choice: iOS Safari zooms the
      * whole page when a focused input's text is under 16px, and then leaves
@@ -307,6 +438,20 @@
      */
     @apply min-h-touch text-base sm:min-h-0 sm:text-sm;
     border-radius: var(--radius);
+  }
+
+  /*
+   * An invalid field says so twice, so neither is the only signal: the edge
+   * and ring turn to the feedback colour, and the field gives one `nudge`
+   * (4px, one shake, ending where it began) at the moment it becomes invalid.
+   * The attribute is the contract — `aria-invalid="true"` is what a screen
+   * reader hears too — and the nudge replays each time it goes false → true.
+   */
+  .field-input[aria-invalid='true'],
+  .field-flat[aria-invalid='true'],
+  .field-inline[aria-invalid='true'] {
+    @apply border-feedback-negative focus:border-feedback-negative focus:ring-feedback-negative;
+    animation: nudge var(--motion-duration-slow) var(--motion-easing-standard);
   }
 
   /*
@@ -514,6 +659,25 @@
     border-radius: var(--radius);
   }
 
+  /*
+   * A notice that is announced (`role="alert"` or `role="status"`) also
+   * arrives: it settles in over `normal`, so a message that appeared where
+   * there was none is seen to appear rather than being a layout jump. An error
+   * then gives one `nudge`, after it has arrived (the delay is the arrive
+   * duration, so the two never fight over `transform`). A static `.notice`
+   * with no role is page furniture and does not move.
+   */
+  .notice[role='alert'],
+  .notice[role='status'] {
+    animation: arrive var(--motion-duration-normal) var(--motion-easing-settle) backwards;
+  }
+
+  .notice-error[role='alert'] {
+    animation:
+      arrive var(--motion-duration-normal) var(--motion-easing-settle) backwards,
+      nudge var(--motion-duration-slow) var(--motion-easing-standard) var(--motion-duration-normal);
+  }
+
   .notice-error {
     @apply bg-feedback-negative/10 text-feedback-negative;
   }
@@ -626,23 +790,174 @@
    * A width driven by a measured value still does; this did not.
    */
   .stagger > * {
-    animation: fadeIn 400ms var(--fill-ease) both;
+    animation: arrive var(--motion-duration-slow) var(--motion-easing-settle) both;
   }
 
   .stagger > *:nth-child(2) {
-    animation-delay: 80ms;
+    animation-delay: var(--motion-stagger-step);
   }
 
   .stagger > *:nth-child(3) {
-    animation-delay: 160ms;
+    animation-delay: calc(var(--motion-stagger-step) * 2);
   }
 
   .stagger > *:nth-child(4) {
-    animation-delay: 240ms;
+    animation-delay: calc(var(--motion-stagger-step) * 3);
   }
 
+  /* The cap (MOT-6): from the fifth peer on they share one delay, so a long list never feels slow. */
   .stagger > *:nth-child(n + 5) {
-    animation-delay: 320ms;
+    animation-delay: calc(var(--motion-stagger-step) * 4);
+  }
+
+  /*
+   * The keyframes of the motion language. Transform and opacity only (MOT-5),
+   * and every distance and scale is a token, so the whole vocabulary is
+   * retuned from brand.ts. `arrive` settles in from a small offset and a
+   * slightly smaller size; `leave` is its exit twin; `nudge` is a one-shot
+   * shake that ends where it began; `ring-turn` is the loading ring.
+   */
+  @keyframes arrive {
+    from {
+      opacity: 0;
+      transform: translateY(var(--motion-distance-small)) scale(var(--motion-scale-arrive));
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes leave {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(0) scale(var(--motion-scale-arrive));
+    }
+  }
+
+  @keyframes nudge {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(calc(var(--motion-distance-nudge) * -1));
+    }
+    40% {
+      transform: translateX(var(--motion-distance-nudge));
+    }
+    60% {
+      transform: translateX(calc(var(--motion-distance-nudge) * -0.5));
+    }
+    80% {
+      transform: translateX(calc(var(--motion-distance-nudge) * 0.25));
+    }
+  }
+
+  @keyframes toast-drain {
+    from {
+      transform: scaleX(1);
+    }
+    to {
+      transform: scaleX(0);
+    }
+  }
+
+  @keyframes sheet-in {
+    from {
+      opacity: 0;
+      transform: translateX(calc(var(--motion-distance-large) * var(--sheet-sign, 1)));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes sheet-out {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(calc(var(--motion-distance-large) * var(--sheet-sign, 1)));
+    }
+  }
+
+  @keyframes ring-turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /*
+   * Reveal on scroll (`lib/reveal.ts`). The script hides an element only after
+   * the page has painted nothing yet, so these rules never apply without it, and
+   * the server's markup is always the visible one. `hidden` holds the first
+   * frame; `shown` plays the arrival, delayed by its place in the batch.
+   */
+  [data-reveal='hidden'] {
+    opacity: 0;
+  }
+
+  [data-reveal='shown'] {
+    animation: arrive var(--motion-duration-slow) var(--motion-easing-settle) var(--reveal-delay, 0ms) backwards;
+  }
+
+  /* An element nobody scrolled to is still content: a printed page must not have holes in it. */
+  @media print {
+    [data-reveal] {
+      opacity: 1;
+      animation: none;
+    }
+  }
+
+  /*
+   * Lock-on. Four corner marks close in around the thing being worked on when
+   * `data-active="true"` is set: "this is the one". One pseudo-element carries
+   * all eight bars as gradients, so it costs no markup, and it animates with
+   * transform and opacity only — from slightly larger to its own size, which is
+   * what makes the brackets read as closing on a target. The marks are drawn in
+   * the accent ink, which holds its contrast in both themes. Under reduced
+   * motion the global rule makes the change immediate: the marks are simply
+   * there when it is active, which is the whole of what they say.
+   */
+  .focus-frame {
+    @apply relative;
+    --frame-bar: 2px;
+    --frame-arm: 14px;
+  }
+
+  .focus-frame::after {
+    content: '';
+    position: absolute;
+    inset: calc(var(--motion-distance-micro) * -2);
+    pointer-events: none;
+    --frame-ink: linear-gradient(rgb(var(--color-accent-ink)), rgb(var(--color-accent-ink)));
+    background:
+      var(--frame-ink) top left / var(--frame-arm) var(--frame-bar) no-repeat,
+      var(--frame-ink) top left / var(--frame-bar) var(--frame-arm) no-repeat,
+      var(--frame-ink) top right / var(--frame-arm) var(--frame-bar) no-repeat,
+      var(--frame-ink) top right / var(--frame-bar) var(--frame-arm) no-repeat,
+      var(--frame-ink) bottom left / var(--frame-arm) var(--frame-bar) no-repeat,
+      var(--frame-ink) bottom left / var(--frame-bar) var(--frame-arm) no-repeat,
+      var(--frame-ink) bottom right / var(--frame-arm) var(--frame-bar) no-repeat,
+      var(--frame-ink) bottom right / var(--frame-bar) var(--frame-arm) no-repeat;
+    opacity: 0;
+    transform: scale(1.06);
+    transition:
+      transform var(--motion-duration-normal) var(--motion-easing-settle),
+      opacity var(--motion-duration-fast) var(--motion-easing-standard);
+  }
+
+  .focus-frame[data-active='true']::after {
+    opacity: 1;
+    transform: scale(1);
   }
 
   /*
@@ -687,11 +1002,23 @@
     }
   }
 
+  /*
+   * Reduced motion collapses every duration to a frame, and that has to reach
+   * the pseudo-elements (the button fill is a `::before`) and the delays. A
+   * staggered entrance keeps `both` fill, so a surviving 320ms delay would hold
+   * the element at opacity 0 for 320ms: the state would not jump, it would be
+   * missing. Zero delay plus a one-frame duration means every element is at its
+   * end state at once, and nothing the motion carried is lost (MOT-4).
+   */
   @media (prefers-reduced-motion: reduce) {
-    * {
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.01ms !important;
+      animation-delay: 0s !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+      transition-delay: 0s !important;
     }
 
     html {

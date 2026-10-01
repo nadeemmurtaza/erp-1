@@ -497,13 +497,30 @@ const motion = {
     emphasized: [0.2, 0, 0, 1.2],
     exit: [0.4, 0, 1, 1],
     decelerate: [0.22, 0.61, 0.36, 1],
+    /**
+     * A strong ease-out: most of the travel in the first third, then a long
+     * quiet settle. Measured off the reference reel's elements arriving (each
+     * covered 60% of its distance in 100ms and was within 1px of rest by
+     * 600ms), which is `cubic-bezier(0.16, 1, 0.3, 1)`. Entrances and
+     * re-centring use it; it never overshoots.
+     */
+    settle: [0.16, 1, 0.3, 1],
   },
   spring: {
     snappy: { stiffness: 400, damping: 32 },
     soft: { stiffness: 260, damping: 30 },
     gentle: { stiffness: 180, damping: 26 },
   },
-  distance: { micro: 2, small: 8, medium: 24, large: 64 },
+  /** `nudge` is the amplitude of the error attention shake: a quarter of `small`'s travel each way. */
+  distance: { micro: 2, small: 8, medium: 24, large: 64, nudge: 4 },
+  /** Scale endpoints. A press compresses to 98%; a thing arriving starts at 97%. */
+  scale: { press: 0.98, arrive: 0.97 },
+  /**
+   * Orchestration (MOT-6): each child starts `step` ms after the one before it,
+   * and only the first `steps` children are staggered; the rest arrive with the
+   * last. The cap is what stops a 200-row table from animating.
+   */
+  stagger: { step: 80, steps: 4 },
 } as const;
 
 // ---------------------------------------------------------------------------

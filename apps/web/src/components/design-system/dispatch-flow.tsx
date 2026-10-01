@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { CircleCheck, FileText, LoaderCircle, Send, TriangleAlert, Undo2, type LucideIcon } from 'lucide-react';
 import { formatDate, formatMoney, toMinor } from '@newax/shared';
 import { ROUTES } from '@/constants/routes';
-import { Badge, Button, Disclosure, Segmented } from '@/components/ui';
+import { Badge, Button, Disclosure, ProgressRing, Segmented } from '@/components/ui';
 import { cn } from '@/utils/cn';
 import {
   FAILURE_COPY,
@@ -51,7 +51,7 @@ const DUE = new Date('2026-10-31T09:00:00Z');
 /** The simulated mail service's latency. A real one is whatever it is. */
 const HANDOFF_MS = 1400;
 const TICK_MS = 250;
-const PIPS = UNDO_WINDOW_MS / 1000;
+const UNDO_SECONDS = UNDO_WINDOW_MS / 1000;
 
 type Outcome = 'ok' | FailureKind;
 
@@ -176,7 +176,7 @@ export function DispatchFlowSpecimen() {
     state.phase === 'draft'
       ? ''
       : state.phase === 'undoable'
-        ? `Sending to ${PARTNER}. You can undo for ${PIPS} seconds.`
+        ? `Sending to ${PARTNER}. You can undo for ${UNDO_SECONDS} seconds.`
         : state.phase === 'inflight'
           ? 'The undo window has closed. The mail service has it.'
           : state.phase === 'sent'
@@ -258,14 +258,15 @@ export function DispatchFlowSpecimen() {
                       ({left} s)
                     </span>
                   </Button>
-                  <span className="flex min-w-24 flex-1 gap-1" aria-hidden="true">
-                    {Array.from({ length: PIPS }, (_, index) => (
-                      <span
-                        key={index}
-                        className={cn('h-1.5 flex-1 rounded-full', index < left ? 'bg-accent' : 'bg-neutral-200')}
-                      />
-                    ))}
-                  </span>
+                  <ProgressRing
+                    value={1 - elapsed / UNDO_WINDOW_MS}
+                    size={36}
+                    stroke={3}
+                    drawOn={false}
+                    label="Time left to undo"
+                  >
+                    {left}
+                  </ProgressRing>
                 </div>
               </div>
             ) : null}

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
+import { useExitTransition } from '@/hooks/use-exit-transition';
 
 /**
  * A modal dialog, with the behaviour every modal is supposed to have.
@@ -23,6 +24,12 @@ import { cn } from '@/utils/cn';
  *   - Body scroll is locked, and released even if the component unmounts
  *     while open.
  *   - `role="dialog"` + `aria-modal`, labelled by the title.
+ *   - It arrives and it leaves. The panel settles in (`arrive`; a side sheet
+ *     slides in from its own edge, in either direction of writing), the scrim
+ *     fades, and on close both play the `fast` exit before unmounting
+ *     (`useExitTransition`). While leaving, the whole thing is `inert`: focus
+ *     has already been handed back and a click already reaches the page, so
+ *     the exit never makes the interface wait on it.
  */
 export function Dialog({
   open,
@@ -57,6 +64,7 @@ export function Dialog({
    */
   align?: 'center' | 'top' | 'end';
 }) {
+  const { mounted, leaving } = useExitTransition(open);
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
 
@@ -121,10 +129,11 @@ export function Dialog({
     [onClose],
   );
 
-  if (!open) return null;
+  if (!mounted) return null;
 
   return (
     <div
+      inert={leaving}
       className={cn(
         'fixed inset-0 z-modal flex justify-center',
         align === 'top' && 'items-start p-4 pt-[10vh]',
@@ -133,7 +142,10 @@ export function Dialog({
       )}
     >
       <div
-        className="absolute inset-0 bg-scrim/40 backdrop-blur-sm animate-fadeIn"
+        className={cn(
+          'absolute inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity duration-fast ease-exit',
+          leaving ? 'opacity-0' : 'animate-fadeIn',
+        )}
         onClick={onClose}
         aria-hidden="true"
       />
@@ -162,8 +174,8 @@ export function Dialog({
         className={cn(
           'card relative z-raised flex w-full flex-col bg-overlay outline-none',
           align === 'end'
-            ? 'h-full max-w-md rounded-none border-y-0 border-e-0 animate-slideInRight'
-            : 'max-h-[85vh] max-w-lg animate-scaleIn',
+            ? cn('h-full max-w-md rounded-none border-y-0 border-e-0', leaving ? 'sheet-out' : 'sheet-in')
+            : cn('max-h-[85vh] max-w-lg', leaving ? 'animate-leave' : 'animate-arrive'),
           className,
         )}
       >

@@ -200,6 +200,9 @@ export function staticVars(): Vars {
   const vars: Vars = {};
   for (const [name, value] of Object.entries(m.duration)) vars[`--motion-duration-${name}`] = ms(value);
   for (const [name, points] of Object.entries(m.easing)) vars[`--motion-easing-${name}`] = cubicBezier(points);
+  for (const [name, px] of Object.entries(m.distance)) vars[`--motion-distance-${name}`] = `${px}px`;
+  for (const [name, value] of Object.entries(m.scale)) vars[`--motion-scale-${name}`] = String(value);
+  vars['--motion-stagger-step'] = ms(m.stagger.step);
   return vars;
 }
 
@@ -300,11 +303,20 @@ export function createThemeTailwind(stock: StockHues) {
     spacing: Object.fromEntries(Object.entries(SIZE_SPACING_PX).map(([k, px]) => [k, spaceRem(px)])),
 
     /** Merged into `theme.extend.transitionDuration`. */
-    transitionDuration: Object.fromEntries(Object.entries(t.motion.duration).map(([k, v]) => [k, ms(v)])),
+    transitionDuration: {
+      /*
+       * A bare `transition-colors` resolves to `DEFAULT`. Tailwind's stock 150ms is a
+       * number nobody chose, so the default is `fast` and every un-tokened
+       * transition in the app joins the language without a call-site edit.
+       */
+      DEFAULT: ms(t.motion.duration.fast),
+      ...Object.fromEntries(Object.entries(t.motion.duration).map(([k, v]) => [k, ms(v)])),
+    },
     /** Merged into `theme.extend.transitionTimingFunction`. */
-    transitionTimingFunction: Object.fromEntries(
-      Object.entries(t.motion.easing).map(([k, v]) => [k, cubicBezier(v)]),
-    ),
+    transitionTimingFunction: {
+      DEFAULT: cubicBezier(t.motion.easing.standard),
+      ...Object.fromEntries(Object.entries(t.motion.easing).map(([k, v]) => [k, cubicBezier(v)])),
+    },
 
     /**
      * Handed to Tailwind's `addBase`. Three scopes declare the theme-varying

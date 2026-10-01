@@ -12,7 +12,10 @@ import { cn } from '@/utils/cn';
  *
  * A plain `<button className="btn-primary">` still works and is not wrong.
  * Reach for this when you want `loading`, which disables the button and swaps
- * the label so a double-submit is impossible.
+ * the label so a double-submit is impossible. The swap is visible as well as
+ * announced: a ring turns beside "Working…", so a click that was accepted is
+ * seen to have been, in the frame it happened (`ACT-3`), however long the
+ * result takes. Press, fill and the ring are all CSS (`.btn`, `.spinner`).
  */
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
@@ -49,7 +52,14 @@ export function Button({
       className={cn(CLASSES[variant], className)}
       {...rest}
     >
-      {loading ? (loadingLabel ?? 'Working…') : children}
+      {loading ? (
+        <>
+          <span aria-hidden="true" className="spinner" />
+          {loadingLabel ?? 'Working…'}
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 }

@@ -151,7 +151,7 @@ Law 4 says none may waste its space. Chapter 02 is how.
 
 ## Motion tokens
 
-Source: `theme-motion.ts`. Durations and easings are emitted as `--motion-duration-*` / `--motion-easing-*` and consumed by Tailwind (`duration-fast`, `ease-standard`), by the keyframes in `tailwind.config.ts` and by `globals.css`. **Springs and distances have no consumer yet** — they are defined for the day `framer-motion` is used more than once.
+Source: `brand.ts` (`BRAND.theme.motion`), read by `theme-motion.ts`. Durations, easings, distances, scales and the stagger step are emitted as `--motion-*` custom properties by `staticVars()` and consumed by Tailwind (`duration-fast`, `ease-settle`), by the keyframes and animations in `tailwind.config.ts` and `globals.css`, and by the JavaScript that has to follow the same curves (`apps/web/src/lib/motion.ts`). A bare `transition-colors` resolves to `duration.fast` and `easing.standard` (Tailwind's own 150 ms default was a number nobody chose). **Springs and `distance.medium` have no consumer yet** — they are defined for the day `framer-motion` is used more than once.
 
 Chapter 05 defines the language; these are its values.
 
@@ -166,6 +166,7 @@ motion.easing.standard    cubic-bezier(0.2, 0, 0, 1)
 motion.easing.emphasized  cubic-bezier(0.2, 0, 0, 1.2)
 motion.easing.exit        cubic-bezier(0.4, 0, 1, 1)
 motion.easing.decelerate  cubic-bezier(0.22, 0.61, 0.36, 1)
+motion.easing.settle      cubic-bezier(0.16, 1, 0.3, 1)   leaves fast, finishes slowly, never overshoots
 
 motion.spring.snappy      stiffness 400, damping 32
 motion.spring.soft        stiffness 260, damping 30
@@ -174,8 +175,19 @@ motion.spring.gentle      stiffness 180, damping 26
 motion.distance.micro     2px     press, nudge
 motion.distance.small     8px     hover lift, tooltip offset
 motion.distance.medium    24px    panel and drawer entrance
-motion.distance.large     64px    route or section transition
+motion.distance.large     64px    route or section transition, side sheet
+motion.distance.nudge     4px     the invalid-field shake, the card lift
+
+motion.scale.press        0.98    pressed control
+motion.scale.arrive       0.97    arriving and leaving surfaces
+motion.stagger.step       80ms    delay between peers
+motion.stagger.steps      4       the cap: peers after the fourth share one delay
 ```
+
+`settle`, the two scales, `nudge` and the stagger were measured off a
+reference reel (chapter 05, "The reel"). Tests in `theme-space.spec.ts` pin the
+ranges: `settle` never overshoots, `press` is under 1 and over 0.95, `nudge` is
+under `small`, and the whole stagger ramp fits inside one `slow` duration.
 
 **Rule.** A component consumes a token. A duration written into a component is
 the thing this layer exists to prevent — refining the motion language must be

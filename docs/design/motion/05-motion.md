@@ -3,15 +3,18 @@
 Motion exists to make the system easier to understand. Nothing else justifies
 it.
 
-> **Status: tokens built, language mostly unbuilt.** Durations and easings are
-> tokens now (`theme-motion.ts`, chapter 01), consumed by Tailwind's `duration-*`
-> and `ease-*` and by the stylesheet; springs and distances are defined with no
-> consumer. `framer-motion` 13.1.1 is a dependency and
-> is imported by **one** file. Motion today is 83 Tailwind `transition-*`
-> utilities, 4 CSS `transition` declarations and 1 `@keyframes`, with no shared
-> vocabulary — and the stylesheets contain **two**
-> `prefers-reduced-motion` blocks. This chapter is the specification to build
-> against.
+> **Status: built for the web app.** The tokens (chapter 01) are consumed by the
+> shared classes and primitives, so every page has the *functional* motion
+> without opting in: press, fill, lift, a field's focus and its invalid shake,
+> a notice arriving, a dialog and a toast entering and leaving, a page rising
+> into place, a tab underline gliding, a loading ring. The *expressive* tier is
+> opt-in and bounded (below). The specimens, each replayable, are in
+> `/admin/design-system#motion`. **Not built:** `apps/mobile` (React Native; its
+> animation library is installed and unused), press feedback on the POS (it needs
+> its own distance and scale tokens, because a till button is larger and a
+> gloved finger needs more), springs and shared-layout transitions (no consumer;
+> `framer-motion` is still imported by one file). Where this chapter and the
+> code disagree, the code is measured in `docs/index/cross/design-system.md`.
 
 ## The one test
 
@@ -78,6 +81,60 @@ is a small idea. A route change may move 64px because arriving somewhere else
 is a large one. An element travelling a long way for a small interaction feels
 untrustworthy.
 
+## The reel, and the two tiers
+
+The motion in a reference reel the owner supplied (fourteen motions, measured
+frame by frame) was read for *what each one tells the reader*, not for how it
+looks, and sorted into two tiers. The reel's palette, type and hexagon were not
+copied.
+
+**Functional** motion is what the controls themselves do. It is on by default,
+on every surface that uses the shared classes and primitives, and it never takes
+longer than `slow` (320 ms). It uses transform and opacity only (`MOT-5`).
+
+**Expressive** motion marks a moment the product has: a figure that was just
+computed, the one thing being worked on, a value the system just produced. It is
+opt-in, one purpose each, each with a stated place, and it never gates anything:
+the settled state is what the server renders and what a screen reader hears.
+
+| Motion in the reel | What it says | Here | Tier |
+|---|---|---|---|
+| Zoom-blur arrive | this is new | `arrive` (opacity, 8px, 3% scale; **no blur**) on cards, dialogs, popovers, notices, toasts | Functional |
+| Directional smear between scenes | you went somewhere | `PageEnter` on admin and storefront | Functional |
+| Pill cascade from the edge | these belong together, in order | 80 ms stagger capped at four steps (`.stagger`, `RevealScope`); a side sheet from its own edge | Functional |
+| Staggered cards in, blur out | a board assembling where you look | `RevealScope` on `Bento`; one `leave` for every exit | Functional |
+| Glow bloom | this control has your attention | the focus ring eases in on fields and controls | Functional |
+| Clock-hand sweep | working, or running out | `.spinner` on buttons and `Loading`; the draining line on a toast | Functional |
+| Press and release (not in the reel) | your click landed, this frame | `.btn`, `.chip`, `.icon-btn`, `Segmented`, `.lift` (returns to rest) | Functional |
+| Counter ring with count-up | how much, and just computed | `ProgressRing`, `CountUp` | Expressive |
+| Lock-on corner brackets | this is the one | `.focus-frame` | Expressive |
+| Text scramble decode | the system just produced this | `ScrambleText` | Expressive |
+| Typewriter | something is being said | `TypeText`, up to 80 characters | Expressive |
+| Draw-on ring with dimmed siblings | look here, not there | the ring draws on; **siblings are not dimmed** (it drops their text under the contrast floor, `COL-3`) | Partly |
+| Hexagon pop with a leader line | nothing the product has to say | not adopted | — |
+| Floating particles, ambient arcs | nothing | not adopted (`Law 6`) | — |
+
+The reel runs its entrances for about 600 ms. That is a film. A component here
+takes at most `slow` (320 ms); `sweep` (420 ms) is for a page-level figure
+resolving and the button fill.
+
+### The functional vocabulary
+
+| Motion | What moves | Token values |
+|---|---|---|
+| Press | `translateY` 2px and `scale` 0.98 | `distance.micro`, `scale.press`; down in `instant`, back in `fast`, `settle` |
+| Arrive | opacity 0 to 1, 8px up, scale 0.97 to 1 | `distance.small`, `scale.arrive`, `normal`, `settle`; `backwards` fill |
+| Leave | opacity 1 to 0, scale to 0.97 | `scale.arrive`, `fast`, `exit`; `forwards` fill |
+| Nudge | `translateX` 0, -4, +4, -2, +1, 0 px | `distance.nudge`, `slow`, `standard`; once, ends where it began |
+| Side sheet | 64px along the inline axis and a fade, direction flips in a right-to-left document | `distance.large`, `slow` in, `fast` out |
+| Stagger | `animation-delay` 0, 80, 160, 240, then 320 ms | `stagger.step`, `stagger.steps`; total ≤ `slow` (pinned by a test) |
+| Lift | `translateY` -4px, back to 0 when pressed | `distance.nudge`, `slow`, `settle` |
+
+`settle` is `cubic-bezier(0.16, 1, 0.3, 1)`, measured off the reel. It leaves
+quickly and finishes slowly, and it never overshoots: `emphasized` (y2 = 1.2)
+does, and is not used by any business control. A test pins that `settle` stays
+at or under 1.
+
 ## Continuity over replacement
 
 Prefer:
@@ -111,8 +168,8 @@ Physically coherent, and small:
 |---|---|
 | Button | subtle hover response → controlled press compression → release → result feedback where the result matters |
 | Card | rest → slight lift (`.lift` already means *this rose*) → return |
-| Nav | a persistent indicator that **moves** between items rather than appearing and disappearing |
-| Disclosure | expands from its own origin; height and contents transition together |
+| Nav and tabs | a persistent indicator that **moves** between items rather than appearing and disappearing (built for `Tabs`; the sidebar uses a rule) |
+| Disclosure | opens with one `rise` (fade and 8px) on its content and a turning chevron; **height is not animated** (a layout property, `MOT-5`) |
 | Table row | selection is immediate; only the detail it opens animates |
 
 Never random scale, bounce, rotation or elastic on an ordinary business
@@ -157,9 +214,24 @@ complex movement  →  minimal transition or an instant, legible change
 complex movement  →  a broken component
 ```
 
-The interface must remain fully understandable with no animation at all. Two
-blocks in the entire stylesheet today is not compliance. Chapter 07 makes this
-a gate.
+The interface must remain fully understandable with no animation at all.
+Chapter 07 makes this a gate.
+
+How it is met, in three layers:
+
+1. **The stylesheet** collapses every `animation` and `transition`, including on
+   `::before` and `::after` (the button fill is a pseudo-element), to
+   0.01 ms, and zeroes `animation-delay` and `transition-delay`. A surviving
+   delay would hold a `both`-fill element at opacity 0, so the state would not
+   jump, it would be missing.
+2. **JavaScript-driven motion asks for itself** (`usePrefersReducedMotion`,
+   `prefersReducedMotion`): Recharts series, `CountUp`, `ScrambleText`,
+   `TypeText`, `RevealScope`, a toast's exit wait, a dialog's exit wait, and the
+   storefront's smooth-scroll library, which is not started at all.
+3. **The information is carried twice.** A count-up has an `sr-only` copy of the
+   settled value; a ring is a `progressbar` with its percentage; a loading
+   button says "Working…"; an invalid field has `aria-invalid` and a message,
+   not only a shake.
 
 ## Performance
 

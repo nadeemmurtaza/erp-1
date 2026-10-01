@@ -1,5 +1,6 @@
 import type { ElementType, ReactNode } from 'react';
 import { cn } from '@/utils/cn';
+import { RevealScope } from './reveal-scope';
 
 /**
  * A bento: one job, shown as a handful of tiles of deliberately different
@@ -14,17 +15,22 @@ import { cn } from '@/utils/cn';
  *
  * Law 3 and Law 7 are what it is for. A page that says "four things matter"
  * and draws them the same size has said nothing; a bento ranks them.
+ *
+ * Tiles arrive as they scroll into view, a few at a time (`RevealScope`), so a
+ * board taller than the screen assembles where the reader is looking rather
+ * than all at once out of sight. Only the grid is client code; the tiles stay
+ * server-rendered, visible without scripting, and still under reduced motion.
  */
 export function Bento({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div
+    <RevealScope
       className={cn(
         'grid grid-flow-dense auto-rows-[minmax(theme(spacing.32),auto)] gap-4 md:grid-cols-2 xl:grid-cols-4',
         className,
       )}
     >
       {children}
-    </div>
+    </RevealScope>
   );
 }
 
@@ -70,7 +76,10 @@ export function BentoTile({
   children: ReactNode;
 }) {
   return (
-    <Tag className={cn('flex min-w-0 flex-col gap-3 rounded-lg p-5', TONES[tone], SIZES[size], className)}>
+    <Tag
+      data-reveal-item=""
+      className={cn('flex min-w-0 flex-col gap-3 rounded-lg p-5', TONES[tone], SIZES[size], className)}
+    >
       {title ? (
         <h3 className={cn('eyebrow', tone === 'accent' && 'text-white/80', tone === 'inverse' && 'text-on-inverse/70')}>
           {title}

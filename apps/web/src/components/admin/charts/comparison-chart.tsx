@@ -5,6 +5,7 @@ import { Bar, ComposedChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, 
 import { formatDateShort, formatMoney } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
+import { usePrefersReducedMotion } from './use-reduced-motion';
 import { GRID, INK, INK_FAINT, compactMoney, paletteColor } from './chart-theme';
 
 export interface ComparisonBucketPoint {
@@ -23,6 +24,8 @@ export interface ComparisonBucketPoint {
  * `inventory.view_cost`) a third line.
  */
 export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucketPoint[] }) {
+  const reduced = usePrefersReducedMotion();
+
   if (buckets.length === 0) {
     return <EmptyState title="No activity in this window." />;
   }
@@ -57,8 +60,8 @@ export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucke
               [formatMoney(Number(value ?? 0)), name] as [string, ReactNode]
             }
           />
-          <Bar dataKey="purchases" name="Purchases" stackId="outflow" fill={paletteColor(2)} />
-          <Bar dataKey="expenses" name="Expenses" stackId="outflow" fill={paletteColor(3)} />
+          <Bar dataKey="purchases" name="Purchases" stackId="outflow" fill={paletteColor(2)} isAnimationActive={!reduced} />
+          <Bar dataKey="expenses" name="Expenses" stackId="outflow" fill={paletteColor(3)} isAnimationActive={!reduced} />
           <Line
             dataKey="sales"
             name="Sales"
@@ -67,6 +70,7 @@ export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucke
             strokeWidth={2}
             dot={false}
             activeDot={{ r: 5 }}
+            isAnimationActive={!reduced}
           />
           {hasNet ? (
             <Line
@@ -78,6 +82,7 @@ export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucke
               strokeDasharray="4 4"
               dot={false}
               activeDot={{ r: 5 }}
+              isAnimationActive={!reduced}
             />
           ) : null}
         </ComposedChart>

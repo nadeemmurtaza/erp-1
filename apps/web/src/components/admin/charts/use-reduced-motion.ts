@@ -1,23 +1,8 @@
-import { useSyncExternalStore } from 'react';
-
-const QUERY = '(prefers-reduced-motion: reduce)';
-
-function subscribe(onChange: () => void): () => void {
-  const media = window.matchMedia(QUERY);
-  media.addEventListener('change', onChange);
-  return () => media.removeEventListener('change', onChange);
-}
-
 /**
- * Recharts animates in JavaScript, which the stylesheet's reduced-motion rule
- * cannot reach, so a chart has to ask for itself. The server snapshot is
- * `false`: the chart is client-only (it measures its container), so there is no
- * first paint to disagree with.
+ * Moved to `@/hooks/use-prefers-reduced-motion` when the rest of the system
+ * (dialogs, toasts, figures) needed the same answer. Kept as a re-export so the
+ * seven chart files that import `./use-reduced-motion` did not have to change;
+ * it can go once the owner confirms the deletion (CLAUDE.md: no file is
+ * deleted without that).
  */
-export function usePrefersReducedMotion(): boolean {
-  return useSyncExternalStore(
-    subscribe,
-    () => window.matchMedia(QUERY).matches,
-    () => false,
-  );
-}
+export { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';

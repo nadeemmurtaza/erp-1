@@ -653,9 +653,11 @@ dimension.
 ### MOT-2 · Duration scales with distance and size
 **Says** — a small, near change reads as slow if given a large duration; a
 large change reads as a jump if given a small one. (Material.)
-**Here** — the token names say the job: `instant` 80 ms (state change),
-`quick` 120 ms (small move), `base` 200 ms (panel), `slow` 320 ms (full-screen
-or cross-page). A 500 ms hover is a bug.
+**Here** — the token names say the job: `instant` 80 ms (a press going down),
+`fast` 140 ms (hover, focus, an exit), `normal` 220 ms (a panel, an arrival),
+`slow` 320 ms (full-surface or route-level), `sweep` 420 ms (the button fill and
+a page-level figure resolving). A 500 ms hover is a bug. (These are the names in
+`brand.ts`; this law used to name `quick` and `base`, which never existed.)
 
 ### MOT-3 · Easing carries meaning
 **Says** — decelerate for things entering (they arrive and settle), accelerate
@@ -669,14 +671,20 @@ for a continuous indeterminate loop, never for a transition.
 preference; vestibular disorders make large motion genuinely harmful.
 **Here** — **under reduced motion the information the motion carried must
 survive.** Cross-fade or appear in place; never simply jump, or the
-orientation the motion provided is lost rather than reduced. The stylesheets
-carry **two** such blocks today, which chapter 05 records as a real gap.
+orientation the motion provided is lost rather than reduced. The stylesheet
+rule reaches pseudo-elements and delays, and JavaScript-driven motion asks for
+itself (`usePrefersReducedMotion`); chapter 05 lists the three layers.
 
 ### MOT-5 · Never animate a property that forces layout
 **Says** — `width`, `height`, `top`, `left` and `margin` trigger layout on
 every frame; `transform` and `opacity` do not.
 **Here** — transform and opacity. On a till running on modest hardware with a
 40-item basket on screen, this is the difference between usable and not.
+Two bounded exceptions, both in the expressive tier and both touching no
+ancestor or sibling layout: `CountUp` writes the text of one figure (tabular
+figures, a block of its own, for 420 ms), and `ProgressRing` transitions
+`stroke-dashoffset` (paint only, on a 36px SVG). No component animates `width`,
+`height`, `top`, `left` or `margin`.
 
 ### MOT-6 · Orchestration, not simultaneity
 **Says** — a group of elements animating together reads as a single event; a

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
+import { useExitTransition } from '@/hooks/use-exit-transition';
 import { adminFetch, clearSession, getStoredUser, logout } from '@/lib/admin-client';
 import type { AuthUser, DeploymentMeta } from '@/types/api';
 import {
@@ -38,6 +39,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [checked, setChecked] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+  // The drawer leaves as it arrived (a fast exit) instead of vanishing; the page behind is live at once.
+  const { mounted: navMounted, leaving } = useExitTransition(isNavOpen);
   // Undefined = not fetched yet, so navFor() fails open (permissions-only)
   // rather than hiding every module-tagged nav item until this resolves.
   const [enabledModules, setEnabledModules] = useState<string[] | undefined>(undefined);
@@ -94,14 +97,22 @@ export function AdminShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen bg-neutral-50">
       {/* Mobile Drawer */}
-      {isNavOpen && (
-        <div className="fixed inset-0 z-overlay lg:hidden">
+      {navMounted && (
+        <div inert={leaving} className="fixed inset-0 z-overlay lg:hidden">
           <div
-            className="fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className={cn(
+              'fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity duration-fast ease-exit',
+              leaving ? 'opacity-0' : 'animate-fadeIn',
+            )}
             onClick={() => setIsNavOpen(false)}
             aria-hidden="true"
           />
-          <div className="fixed inset-y-0 left-0 w-64 bg-overlay shadow-xl flex flex-col animate-slideInLeft">
+          <div
+            className={cn(
+              'fixed inset-y-0 left-0 w-64 bg-overlay shadow-xl flex flex-col',
+              leaving ? 'animate-slideOutLeft' : 'animate-slideInLeft',
+            )}
+          >
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
               <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover" onClick={() => setIsNavOpen(false)}>
                 {BRAND.identity.adminName}

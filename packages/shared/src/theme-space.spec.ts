@@ -70,6 +70,25 @@ describe('motion', () => {
     for (const ms of Object.values(duration)) expect(ms).toBeLessThanOrEqual(420);
   });
 
+  it('keeps the language\'s other tokens inside the ranges the rules allow', () => {
+    const { distance, scale, stagger } = BRAND.theme.motion;
+    // A press is a small idea (chapter 05): it moves a couple of px and compresses a couple of percent.
+    expect(distance.micro).toBe(2);
+    expect(distance.nudge).toBeLessThan(distance.small);
+    expect(scale.press).toBeGreaterThanOrEqual(0.95);
+    expect(scale.press).toBeLessThan(1);
+    expect(scale.arrive).toBeGreaterThanOrEqual(0.9);
+    expect(scale.arrive).toBeLessThan(1);
+    // MOT-6: the whole cascade finishes inside one `slow` step, however many children there are.
+    expect(stagger.step * stagger.steps).toBeLessThanOrEqual(duration.slow);
+  });
+
+  it('settles with a strong ease-out that never overshoots', () => {
+    const [, y1, , y2] = easing.settle;
+    expect(y1).toBeLessThanOrEqual(1);
+    expect(y2).toBeLessThanOrEqual(1);
+  });
+
   it('gives every easing four control points with x in [0, 1]', () => {
     for (const points of Object.values(easing)) {
       expect(points).toHaveLength(4);

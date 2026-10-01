@@ -132,8 +132,9 @@ export function RoutingCanvasSpecimen() {
         type="button"
         aria-pressed={selected === key}
         onClick={() => setSelected(key)}
+        data-active={selected === key}
         className={cn(
-          'flex w-full min-w-0 flex-col gap-2 rounded-lg p-4 text-start transition-colors duration-fast ease-standard',
+          'focus-frame flex w-full min-w-0 flex-col gap-2 rounded-lg p-4 text-start transition-colors duration-fast ease-standard',
           selected === key ? 'bg-accent/10' : 'bg-neutral-50 hover:bg-neutral-100',
         )}
       >

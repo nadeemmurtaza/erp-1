@@ -677,6 +677,39 @@ opened files for still knows the rule exists.
 ### Status
 Accepted.
 
+### Addendum — 2026-10-02: a procedure for one kind of task is a skill, and the first one moved
+
+**Decision.** The owner chose "Slim it" on 2026-10-02. The "Feature scope" section of
+`CLAUDE.md` (13,589 bytes, 186 non-blank lines) moved word for word into
+`.claude/skills/feature-scope/SKILL.md`. `CLAUDE.md` keeps the section's heading, the
+standing instruction, the boundary (a one-line fix runs no lenses; a named feature runs
+all of them), the reviewer rule in one sentence, and a pointer. This ADR's path-scoped
+rules load by file; the lenses apply to a task, which no file glob can see, so a skill,
+loaded by name or by its description, is the matching mechanism.
+
+**Numbers.** `CLAUDE.md` went from 55,429 to 43,583 bytes (11,846 fewer, 21%; about 3,000
+tokens at 4 bytes a token, an estimate and not a count). The skill is 14,573 bytes: the
+section (13,607 bytes once its two links gained `../../../`) plus a 965-byte lead. Checked
+by script against `HEAD:CLAUDE.md`: the original section body, with those two link targets
+re-based, equals the skill's section body exactly, so none of its 186 non-blank lines is
+missing or altered.
+
+**What else changed.** The two `docs/erp-lenses/` links inside the section now start from
+the skill's folder (the only edit to the moved text). Two sentences in the Protocol and
+one in the design paragraph of `CLAUDE.md` now say "the `feature-scope` skill". The `feature`
+agent's brief, generated from `scripts/lib/model-routing.mjs`, now begins by reading the
+skill. `Memory.md`'s map names it. `scripts/check-rules.mjs` fails when `CLAUDE.md`
+points at a skill file that is not there (proved by breaking the pointer once: exit 1).
+
+**Failure mode this adds.** An agent that never loads the skill scopes a named feature
+from the stub alone. The stub carries the boundary and the reviewer rule and names the
+file; the skill's description is in every session's skill list; the `feature` agent reads
+it first; the other tools' pointer files lead to `CLAUDE.md`, which names the path.
+Not measured: whether agents load it in practice.
+
+**Not moved, and not decided.** The next largest sections are the NEWAX protocol (about
+15.5 KB) and "Software engineering, not vibe coding" (about 7.6 KB). Neither was touched.
+
 ---
 
 ## ADR-017 — An observability backend

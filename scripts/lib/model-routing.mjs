@@ -141,14 +141,15 @@ export const ROUTING_POLICY = [
     job: 'A whole capability, end to end',
     when: 'a named feature spanning modules, or anything needing a plan first',
     why:
-      "CLAUDE.md's five lenses make this genuinely harder than it looks: a named " +
+      "The five lenses in the `feature-scope` skill make this genuinely harder than it looks: a named " +
       'feature includes the operator-facing twin, the after-completion lifecycle, ' +
       'the integrations and the policy layer. Getting that scope wrong ships half ' +
       'a feature that looks finished.',
     tools: null,
     body: [
-      'Run the five lenses from `CLAUDE.md` ("Feature scope: build the whole',
-      'capability") BEFORE implementing, and write the resulting map down:',
+      'Read `.claude/skills/feature-scope/SKILL.md` (the "Feature scope" section',
+      'that moved out of `CLAUDE.md`), then run its five lenses BEFORE implementing,',
+      'and write the resulting map down:',
       '',
       '1. The transaction, start to finish.',
       '2. The other side of it — the operator-facing twin.',

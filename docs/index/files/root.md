@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 218 tracked files in `repository root files`, by directory.
+All 219 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -19,7 +19,7 @@ All 218 tracked files in `repository root files`, by directory.
 | `AGENTS.md` | doc | 81 |  |
 | `Architecture.md` | doc | 32 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 1045 |  |
+| `CLAUDE.md` | doc | 861 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |
@@ -48,7 +48,7 @@ All 218 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `architect.md` | doc | 48 |  |
 | `debug.md` | doc | 38 |  |
-| `feature.md` | doc | 44 |  |
+| `feature.md` | doc | 45 |  |
 | `implement.md` | doc | 37 |  |
 | `locate.md` | doc | 37 |  |
 | `schema.md` | doc | 46 |  |
@@ -77,6 +77,12 @@ All 218 tracked files in `repository root files`, by directory.
 | `services.md` | doc | 49 |  |
 | `testing.md` | doc | 20 |  |
 | `ui.md` | doc | 198 |  |
+
+### `.claude/skills/feature-scope` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 225 |  |
 
 ### `.claude/skills/restyle` (1)
 

@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-64 files · 32,887 lines
+64 files · 32,896 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -25,8 +25,8 @@ on them.
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 26 | 9,470 | script, py |
-| `scripts/lib` | 3 | 1,680 | utility |
+| `scripts` | 26 | 9,478 | script, py |
+| `scripts/lib` | 3 | 1,681 | utility |
 
 
 ## Entry points
@@ -50,8 +50,8 @@ on them.
 | `scripts/check-tells.mjs` | 608 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
 | `scripts/check-links.mjs` | 416 | script |  |
+| `scripts/lib/model-routing.mjs` | 400 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
-| `scripts/lib/model-routing.mjs` | 399 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
 | `scripts/check-menus.mjs` | 224 | script |  |

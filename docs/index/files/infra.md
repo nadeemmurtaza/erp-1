@@ -96,7 +96,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-permission-checks.mjs` | script | 127 |  |
 | `check-rebrand.mjs` | script | 292 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
-| `check-rules.mjs` | script | 216 |  |
+| `check-rules.mjs` | script | 224 |  |
 | `check-tells.mjs` | script | 608 |  |
 | `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 486 |  |
@@ -109,7 +109,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index-scan.mjs` | utility | 944 | Scanners for the repository index. |
-| `model-routing.mjs` | utility | 399 | Which model and how much effort each kind of job in this repository deserves. |
+| `model-routing.mjs` | utility | 400 | Which model and how much effort each kind of job in this repository deserves. |
 | `render-harness.mjs` | utility | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — th… |
 
 

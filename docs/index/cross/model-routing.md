@@ -61,7 +61,7 @@ The ordinary case. The house rules already constrain the shape of the change, so
 
 **A whole capability, end to end.** Use when a named feature spanning modules, or anything needing a plan first.
 
-CLAUDE.md's five lenses make this genuinely harder than it looks: a named feature includes the operator-facing twin, the after-completion lifecycle, the integrations and the policy layer. Getting that scope wrong ships half a feature that looks finished.
+The five lenses in the `feature-scope` skill make this genuinely harder than it looks: a named feature includes the operator-facing twin, the after-completion lifecycle, the integrations and the policy layer. Getting that scope wrong ships half a feature that looks finished.
 
 ### `ux` — sonnet · high
 

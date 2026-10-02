@@ -140,7 +140,8 @@ for (const m of claude.matchAll(/`\.claude\/rules\/([\w.-]+\.md)`/g)) {
  * 5. Skills are well formed, and every design law a rule or a skill cites exists.
  *
  * `.claude/skills/*` are procedures an agent follows (the UX engine: ux-design,
- * ux-audit, ux-review, restyle), and `.claude/rules/*` and the skills both cite
+ * ux-audit, ux-review, restyle; and feature-scope, which moved out of CLAUDE.md so it
+ * loads only when a named feature is scoped), and `.claude/rules/*` and the skills both cite
  * the numbered laws in `docs/design/` by ID, because an ID is how a finding is
  * made checkable. A law that is renamed or never written leaves a citation that
  * teaches an agent a rule that is not there, and nothing else would notice. So
@@ -152,6 +153,13 @@ const SKILLS_DIR = join(ROOT, '.claude', 'skills');
 const skillDirs = existsSync(SKILLS_DIR)
   ? readdirSync(SKILLS_DIR, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort()
   : [];
+
+// A pointer in CLAUDE.md to a skill that does not exist is a method nobody can load.
+for (const m of readText(join(ROOT, 'CLAUDE.md')).matchAll(/\.claude\/skills\/([\w-]+)\/SKILL\.md/g)) {
+  if (!skillDirs.includes(m[1])) {
+    problems.push(`CLAUDE.md\n    points at .claude/skills/${m[1]}/SKILL.md, which does not exist.`);
+  }
+}
 
 const lawIds = new Set();
 for (const rel of tracked.filter((t) => t.startsWith('docs/design/') && t.endsWith('.md'))) {

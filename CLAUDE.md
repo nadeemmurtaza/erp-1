@@ -173,194 +173,7 @@ The owner's own standing instruction, stated directly and repeated because it
 was under-applied: naming a feature is not a request for the narrowest
 technical thing those words could mean. Building "a cart" is not done at
 add/remove line items — a cart nobody can check out with was never a complete
-feature, only a fragment presented as one. This section is the method for
-finding the rest of it, every time, before calling anything done.
-
-### The shop-scale five, in the owner's own words
-
-> Cart depends on saved addresses, shipping methods, payment methods, voucher
-> and discount application — the customer cannot complete a purchase without
-> them. The merchant side needs an abandoned-cart tracker, stage-of-abandonment
-> visibility, transactional email to bring the customer back. After a sale
-> completes, the customer can return it — so a return-item portal and a
-> written return policy are part of the same feature, not later work. Real
-> payment and delivery-partner integrations are part of it, not a status enum
-> standing in for one. Vouchers imply voucher creation and management, not
-> only redemption at checkout.
-
-1. **The transaction, start to finish.** What does the actor need, end to end, to
-   complete the real job? One that cannot carry a real transaction through is
-   not complete, whatever fraction of it is finished.
-2. **The other side of the same transaction.** Every customer-facing capability
-   has an operator-facing twin: cart's is the abandoned-cart tracker, an order's
-   the fulfilment queue, a return's the refund approval.
-3. **What happens after "done."** Returns, cancellations, disputes and refunds
-   are checkout's own back half, not later add-ons.
-4. **The integrations a real business needs, not a demo.** A payment method is a
-   gateway; a shipping method is rate, label and tracking.
-5. **The policy layer that governs it.** Vouchers imply management, not only
-   redemption; a return flow implies a written policy the flow enforces.
-
-Those five scope a feature for one shop with one till. The six groups below are
-what the **same feature** needs when the shop is a group: one `Organization`,
-several brands, 100+ locations across timezones, 10k+ products, 100+ kinds of
-actor, 100+ roles and as many ranks — ranks are not roles, and an approval ladder
-needs both — every department a group runs. One codebase, three editions: Solo,
-Chain, Organization (`RETAIL-ERP.md` R14). A lens that fits only one is not one.
-
-### 1. The actor — everything after this is a property of somebody
-
-- **The actor with three tables.** For every new actor or counterparty, name
-  which table it becomes — `User`, `Party`, `Contact`, `TradingPartner`, a
-  key-hash principal — and, where one party is two at once, the linking column.
-- **The principal with no permission key.** For every actor that is not a
-  `User`, name the `PERMISSION_CATALOG` keys it is checked against, or the path
-  authenticating it instead of `PermissionsGuard`, and which rows it reads.
-- **The grant that ends itself.** For every grant — role, override, admin scope,
-  acting cover — what ends it without a human remembering, and every row keyed to
-  that `userId` the deactivation transaction changes, pending decisions included.
-
-### 2. The authority — what bounds the act
-
-- **Whose rows, and which columns.** Name the entity each row names — org,
-  brand, node, `Location`, terminal — the actor who gets fewer rows and columns
-  on every list, export, schedule and drill-down, and the fields they never
-  see. One class-level `@RequirePermission('orders.manage')` on
-  `OrdersAdminController` lets the staff-note key push DELIVERED to RETURNED.
-- **The threshold nobody approves alone.** For each act committing money or
-  stock at a value: the amount bands, the role per band, who outranks whom on
-  escalation, the quorum on the top band, and the method checking before the row
-  leaves draft — then the same five for the undo, never the same authority.
-- **The toxic pair, caught at grant or at act.** Name the permission-key pair
-  this makes toxic together and the single enforcement point: a refusal in
-  `RolesService.create`/`.update`, or a throw comparing actor to a stored id —
-  `closeShift()` never compares `closedByUserId` to `openedByUserId`.
-- **Authority and blast radius.** Who may change this rule, at which scope, with
-  whose second signature, the worst value one can set before anything notices,
-  and the audit row carrying old and new value — not a list of changed fields.
-- **Audience is a capability, not an address.** Every message this feature
-  sends resolves its recipients from a `PERMISSION_CATALOG` key plus a scope
-  (brand, branch/`Location`, node) — never a literal address;
-  `inventory.listener.ts` mailing `ProductLowStock` to `store.supportEmail`
-  is the standing counter-example. State what a zero-holder query does (a
-  named escalation) and what a two-hundred-holder one does (a digest, never
-  two hundred pings).
-
-### 3. The act in the world — the write as a physical event
-
-- **Request or record — classify every write.** Is each write a request the
-  system may refuse, or a record of what already happened and may therefore
-  never be refused? Every record names its unconditional path, the variance row
-  a refusal would have been, its queue, and who clears it.
-- **The movement with no address.** Name the `locationId` on every stock or cash
-  write and where it comes from — if `InventoryService.defaultLocationId()`, which
-  of the 100+ locations that silently is, and what that branch sees on its shelf.
-- **Four hours down, the counter stays open.** Four hours unavailable
-  mid-trading: who was mid-task, what they do instead, the surface that ingests
-  their paper, its permission, and the reconciliation proving no double count.
-
-### 4. The money — what the act does to the books
-
-- **The unwritten posting rule.** Write it out: the domain event, the Dr/Cr codes
-  — naming any account the thirteen-account chart lacks — and the
-  `findPostedEntry(source, sourceRef)` key. Or the report reconciling it instead.
-- **Every column or none.** For every `JournalLine`, which of `organizationId` /
-  `retailBrandId` / `branchNodeId` / `costCentreId` / `counterpartyBrandId` it sets
-  and to what — or declare it undimensioned and name the report that may blend it.
-- **The period that already moved.** What happens when a fact dated inside a
-  `CLOSED` or `LOCKED` `FiscalPeriod` posts, and which report lists entries dated
-  outside their own period? `reverseEntry()` resolves the period from `now`.
-- **The second legal entity.** What breaks the day a second `RetailBrand` in a
-  second country goes live: the field holding its tax label, number and
-  currency, the counter key keeping its series gapless, the column closing its
-  period while the other brand's stays open.
-- **Dry run before live.** Can this rule replay over last month's real records
-  with nothing written? The deciding function takes inputs, returns the outcome,
-  holds no `prisma.` write and no `publish(`, and has a second read-only caller.
-- **Click the number.** Every figure a screen shows links to the exact rows
-  that produced it, pre-filtered, so the reader can click through and the
-  drill-down sums back to the tile. This repo already knows revenue four ways
-  — `Order`, `JournalEntry`, `PosShift`/`CashMovement` — and stock three ways
-  — `ProductVariant.stock`, `StockMovement`, `VariantLocationStock` — so where
-  two surfaces report the same fact, the plan states which is authoritative
-  and the enumerated reasons a delta is legitimate, never leaves it to be
-  discovered in a meeting.
-
-### 5. The scale — what the same code costs at three editions
-
-- **Three silhouettes, and the day the tier above appears.** Draw it as one
-  shop, a forty-branch chain, a group of brands: which tier-bearing columns are
-  in the first migration while never rendering on the Solo screen, and what
-  happens to rows already written the day a tier appears above them.
-- **The absent collaborator.** Every module this reads, writes or emits toward
-  that is off by default: what is still recorded, what is not, what the user
-  sees instead, and whether it degrades on an event or fails Nest boot.
-- **The second copy of the write.** The two moments this write arrives twice —
-  retried call, redelivered outbox event, a till replaying a timed-out sale —
-  and the column, with its unique constraint, making the second a no-op.
-- **The hundred-thousandth row.** The row count the largest table reaches at
-  Organization edition, the statements one page issues at that size, how many
-  come from an index, and whether a refreshable figure's columns are indexed.
-- **The adoption test.** Every human-readable code or number this feature
-  invents — a slug, a document number, a counter — must be safe for two nodes
-  to generate independently offline and merge without collision, the way
-  `documentNumber()` folds `nodeId` into the sequence while collapsing to the
-  identical `PREFIX-YEAR-SEQ` a Solo deployment has always seen. A bare
-  `@unique` on a generated string, or a counter upserted against one shared
-  row, fails the day a second node exists.
-
-### 6. The afterlife — what a narrow build always postpones
-
-- **The reversal document, not the reversal flag.** Name the reverse document:
-  entity, number series, amount field, the foreign key to the specific original
-  line — issuable for part, repeatedly, until exhausted.
-  (`PaymentsService.refund()` takes a partial amount; `onPaymentRefunded()`
-  ignores it and reverses receipt and sale in full, erasing the whole sale.)
-- **The undo fan-out.** Enumerate every side effect the forward path fires, each
-  marked one of three: reverses automatically (name the method), needs a human
-  (name the screen and the permission), or deliberately irreversible.
-- **The version stamp.** When this rule is edited next quarter, what happens to
-  records already created under the old one, and can the number on one be
-  explained from its own stored fields plus the policy version it names?
-- **The erasure the ledger cannot obey.** Name every table still holding the
-  person once the `User` row is gone — `JournalLine.contactId`, `AuditLog.data`,
-  `InboundEmail.bodyText`, `OutboxEvent.payload`, a pushed `ReplicationRecord`
-  — each given cascade, pseudonymise, or a named basis.
-- **The failure path, and who is allowed to walk it.** On the last failure: the
-  durable store it lands in with its payload, the screen listing it, the
-  permission opening it, the action replaying it, what makes a replay safe.
-
-### The scoping pass, and the artifact it produces
-
-Before the first line of a named feature, the plan in "Plan before build" below
-gains one more heading, beside `### Out of Scope`:
-
-```markdown
-### Scope lenses
-The movement with no address — the adjust screen sends its own `locationId`;
-  `InventoryService.defaultLocationId()` is reached on no path here.
-The second legal entity — n/a: writes no tax document, no numbered series.
-```
-
-One line per lens, in catalogue order. An answer names an artifact: a column, a
-table, a permission key, a service method, a screen, a number. "This feature
-writes no money fact" is a reason; "N/A" is not, and silence is not. What is
-separably larger — a CRM, a loyalty programme, payment orchestration — is named
-and sequenced as its own work order, never silently stubbed and never silently
-skipped. What ships is reachable: the UI to perform it, a nav entry so it is
-found by clicking, and every permission seeded through to a real grant a live
-user holds — not just the `Permission` row (`seedPermissions()` vs.
-`seedRoles()`'s one-time migration is this repo's own tracked instance).
-
-A reviewer fails the PR, naming the offending line, when there is no scope map;
-when a line is blank, "TBD", "handled", or any answer naming no artifact; when an
-`n/a` carries no reason, or a reason the diff contradicts; when an artifact the
-map named is absent from the diff; when a write was never classified REQUEST or
-RECORD; when a permission key named in the plan reaches no `ROLE_PERMISSION_SEED`
-grant, only a `Permission` row; or when a scope column ships nullable with no
-written meaning for null. An otherwise correct diff still fails on these.
-
-### The boundary, stated plainly
+feature, only a fragment presented as one.
 
 **A one-line fix runs no lenses; a named feature or capability runs all of
 them.** Nothing sits in between: *Change minimization* and *No speculative
@@ -372,12 +185,14 @@ smaller version of the feature, it is a broken one, and a scope column left out
 because this client has one brand is not a simpler schema, only a migration run
 later under deadline.
 
-The catalogue — every lens with its repository evidence, worked example and done
-test, plus the surface-specific ones held back here, catalogue findability at
-10k+ products among them — is [`_index.md`](docs/erp-lenses/_meta/_index.md). Where two
-lenses pull against each other the ruling is already written and numbered in
-[`_canonical-decisions.md`](docs/erp-lenses/_meta/_canonical-decisions.md); citing it is
-an answer, deciding it privately inside a PR is not.
+**The method lives in a skill, so it loads when a feature is being scoped and not in
+every session.** Before the plan for any named feature, read
+[`.claude/skills/feature-scope/SKILL.md`](.claude/skills/feature-scope/SKILL.md)
+(`/feature-scope` in Claude Code; any other agent opens the file). It holds the five
+shop-scale lenses, the six groups of lenses (the actor, the authority, the act in the
+world, the money, the scale, the afterlife), the `### Scope lenses` map the plan must
+carry, and what fails a PR. In short: a reviewer fails a named feature that has no scope
+map, or whose map names no artifact for a lens.
 
 ---
 
@@ -553,7 +368,7 @@ from the rules it indexes.
 
 
 **Design before you build a screen.** A screen is designed before it is coded and
-reviewed before it merges. Four skills in `.claude/skills/` hold the procedure and
+reviewed before it merges. Four design skills in `.claude/skills/` hold the procedure and
 cite the design laws by ID: `/ux-design` (a one-page brief before the first line
 of JSX), `/ux-audit` (what is broken, with evidence; read-only), `/ux-review` (the
 diff, Ship or Fix first; read-only) and `/restyle` (remove the machine-made look;
@@ -722,7 +537,7 @@ Every non-trivial task gets a written plan first, proportional to the task
 ```
 
 `### Scope lenses` is required for a named feature and omitted for a fix — one
-line per lens, in the order *Feature scope* above lists them. That section is
+line per lens, in the order the `feature-scope` skill lists them. That skill is
 what a reviewer reads first.
 
 Every meaningful implementation traces back to a requirement — product
@@ -828,14 +643,15 @@ endpoints, placeholder infrastructure, unnecessary tables, unnecessary
 dependencies, unused permissions, unused env vars. Every addition needs a
 documented reason. For a named feature request, "required" is defined by
 "Feature scope: build the whole capability" near the top of this file, not
-by the narrowest reading of the request's literal words — that section's
-five lenses are the documented reason.
+by the narrowest reading of the request's literal words — the five lenses
+of the `feature-scope` skill are the documented reason.
 
 ### A feature ships whole, not backend-only
 
 See "Feature scope: build the whole capability" near the top of this file
-for the full method (the five lenses, the worked cart example, the
-build-vs-sequence boundary) — this is that section's mechanical checklist.
+and the `feature-scope` skill it points to for the full method (the five lenses,
+the worked cart example, the build-vs-sequence boundary) — this is that method's
+mechanical checklist.
 A work order is not done because the service and its tests pass. Every
 piece that ships also ships:
 

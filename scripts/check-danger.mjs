@@ -191,6 +191,13 @@ function main() {
     }
   }
 
+  if (checked === 0 && dynamic === 0) {
+    // The repository has destructive buttons; finding none means the folders or the matcher are wrong, not that
+    // every label is fine.
+    console.error('Danger labels: found no destructive control at all in apps/web/src or apps/pos/src. Run from the repository root.');
+    process.exit(1);
+  }
+
   if (violations.length === 0) {
     console.log(
       `Danger labels OK (${checked} literal labels checked, ${dynamic} written as expressions and not checked)`,

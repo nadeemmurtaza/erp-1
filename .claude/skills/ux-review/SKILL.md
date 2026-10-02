@@ -66,7 +66,7 @@ both numbers.
 
 Quote the line for each finding. A line the diff touched only to rename a token
 is judged on what it newly does: the token it carried over is "already there", and
-narrowing `transition-all` to `transition-[width]` is no worse than before. Check,
+narrowing `transition-all` to `transition-colors` is no worse than before. Check,
 in this order:
 
 1. **Law 1.** A hex, a pixel size, a colour, a locale or a company name typed in

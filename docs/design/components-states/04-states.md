@@ -125,7 +125,7 @@ Permissions are capabilities, and the UI must reflect three outcomes, not two:
    tier concept is invisible until the deployment has it).
 
 The server enforces all three regardless. The UI choice is about clarity, never
-about access.
+about access. `PRM-2` carries the same three outcomes as its one table; cite it.
 
 ## Notifications and system feedback
 
@@ -171,12 +171,21 @@ and get back to the list, with no use of the browser's back button.
 
 | What happened | The surface | Why |
 |---|---|---|
-| A safe setting changed, reversible, visible where it was changed | the control shows its new state, with undo (`ACT-6`); a toast only when the result is out of sight, gone after 4 000 ms (`useToast`'s default) | nobody needs a record of a switch |
+| A safe setting changed, reversible, visible where it was changed | the control shows its new state, with undo (`ACT-6`); a toast only when the result is out of sight, gone after 4 000 ms (`BRAND.feedback.toastMs`, `useToast`'s default) | nobody needs a record of a switch |
 | A record other people will rely on was made or sent (an order, an invoice, a stock count) | `SuccessState` on the page: it stays until the person leaves, and the object it names can be reached afterwards | a person will want to find it again |
 | Money moved, or an outside party was told (a payment, a refund, a dispatch) | `SuccessState` plus a receipt that leaves the product (an email, a printable page) | the proof has to outlive the session |
 
 Nobody screenshots a toast. This agrees with "inline beats toast" in
 Notifications below: the first row is the inline case.
+
+**Which row an act is on.** Ask whether anyone will look the result up later:
+an order, an invoice, a count, a campaign, a gift card has a name or a number
+someone will search for, so it is the second row, however small the form was.
+A switch, a preference or a reorder is the first. **Status:** `SuccessState`
+ends six flows today (the returns request, the order page, reset password,
+unsubscribe, verify email, and the CSV import card) and 38 files raise a toast,
+most of them on second-row acts that predate this law. That is adoption debt
+in ADR-083's ledger, and no reason to add a toast to a new create flow.
 
 **The test** — which row is this? A payment that ends in a toast, or a switch
 that ends in a full page, has the wrong surface.

@@ -6,7 +6,7 @@ import { formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/utils/cn';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { DataTable, MetricStrip, PageHeader } from '@/components/ui';
 import { Dropzone } from '@/components/ui/dropzone';
 import { useUploads } from '@/components/admin/upload-provider';
@@ -203,28 +203,7 @@ export default function ExpensesPage() {
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-toast flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error'
-                  ? 'border-red-200 bg-red-50 text-red-800'
-                  : t.type === 'success'
-                    ? 'border-green-200 bg-green-50 text-green-800'
-                    : 'border-blue-200 bg-blue-50 text-blue-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader
         title="Expenses"

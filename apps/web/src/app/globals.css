@@ -107,6 +107,14 @@
   :focus-visible {
     @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-neutral-50;
   }
+
+  /*
+   * A landmark that script parks focus on (Dialog does it when the control that opened it has gone) is not
+   * a control, so it draws no ring: a frame round the whole page would look like an error.
+   */
+  main[tabindex='-1']:focus-visible {
+    @apply ring-0 ring-offset-0;
+  }
 }
 
 /*
@@ -592,7 +600,7 @@
    * enough that nobody mistakes it for content, which is its whole job.
    */
   .eyebrow {
-    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/45;
+    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/60;
   }
 
   /*
@@ -803,9 +811,10 @@
   }
 
   /*
-   * A status pill. Fully round on purpose, and the one place roundness
-   * survives: it separates "this is a state" from "this is a control", now
-   * that controls are square.
+   * A count chip: the number beside a label. Round on purpose, because a
+   * circle is how a count reads, and because it is not a control (controls
+   * wear the house corner). It is not a status: a status is a Badge, in the
+   * house corner (PER-3). Its colours come from the call site.
    */
   .pill {
     @apply inline-flex items-center whitespace-nowrap px-2.5 py-0.5 text-xs font-medium;
@@ -823,7 +832,7 @@
 
   .table-flat thead th {
     @apply border-b border-neutral-200 px-3 py-2.5 text-start;
-    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/45;
+    @apply text-2xs font-medium uppercase tracking-wider text-neutral-900/60;
   }
 
   .table-flat tbody td {

@@ -7,8 +7,9 @@ paths:
   - "apps/mobile/**/*.tsx"
 ---
 
-<!-- Moved verbatim from CLAUDE.md so it loads only when it applies.
-     BINDING — identical force to CLAUDE.md itself. Nothing here was reworded.
+<!-- Moved from CLAUDE.md so it loads only when it applies, and extended since (git log
+     has each addition). This is the one primitive table: docs/design chapter 03 links here.
+     BINDING — identical force to CLAUDE.md itself.
      Scope: These govern markup and layout. They matter the moment you open a component and not before. -->
 
 ## Use what exists
@@ -49,10 +50,15 @@ writing markup, check this list. **Grep for the literal before adding one.**
 | `SuccessState` | the result of one act that made a record or told someone (`SUC-3` rows 2 and 3): a drawn tick, a title that names what happened to which thing (`SUC-1`), the proof, a loud primary to the thing made, a quiet repeat, one open loop and a way back. `primary` is required and it renders nothing without one, so a check with no button cannot be built. `celebrate` is off and no screen passes it (`SUC-5`). Not for a safe setting: that is the control showing its new state, or a toast that leaves in 4 000 ms. Link actions wear `.btn-primary` and `.btn-secondary`; pass `linkAs` for a locale-aware `Link` |
 | `CopyButton` | copying one value (a secret, an account number, an IBAN, a tracking number) with a proven result (`CPY-1` to `CPY-5`): the icon becomes a check on the frame the copy lands, holds 2 000 ms and fades back, the raw string you give it is what is copied (never a node read back from the page), a status region says "Copied", and without a secure origin it falls back to the copy command and, if that fails, shows a failure sentence and calls `onFail`. `variant="icon"` for a row of details, `"labelled"` for a secret shown once. Nothing else may call `navigator.clipboard` or `execCommand('copy')`: `check-clipboard` fails the build (the write is `copyText` in `lib/copy.ts`) |
 | `useDoneBeat` (hook) | the beat between "it worked" and "we left": `finish()` marks `Button done` and resolves after one `slow`, so the drawn check is seen before navigation |
+| `ConfirmDialog` | the dialog tiers of `ACT-6`: a plain confirmation whose button is the verb and its object, and, with `typeToConfirm`, the top tier that unlocks only on the typed name. The hold tier is `HoldToConfirm` |
+| `FilterBar` | a list page's filter row, held in the URL query string (`router.replace`, never `push`) so a refresh, a bookmark and the back button all behave |
+| `Pagination` | the prev/next/page-count block under a paged list, fed the API's `meta` directly |
+| `ListPageSkeleton` | a route's own `loading.tsx` for the shared list layout (`PageHeader`, `FilterBar`, a table): `<ListPageSkeleton filters={2} columns={6} />` |
+| `ThemeToggle` | the theme switch: `segmented` (light, system, dark) for a settings bar, `icon` (flip between two) where there is no room |
 | `DataTable`, `EmptyState`, `Badge`, `Button`, `Dialog`, `Loading` | as named; `DataTable` takes `stacked` and `stickyFirst`; `Dialog` takes `align="end"` for a full-height side sheet (the detail of one row); `PageHeader` takes `headingLevel` when it sits inside a page that already has an `h1` |
 
-Cross-surface: `components/common/status-badge` (**the** status pill — do not
-write an eighth), `components/common/wizard`.
+Cross-surface: `components/common/status-badge` (**the** status mark, a `Badge`
+in the house corner — do not write an eighth), `components/common/wizard`.
 Storefront: `components/storefront/auth-page`, `legal-page`.
 Admin: `components/admin/range-picker`.
 
@@ -70,6 +76,14 @@ Admin: `components/admin/range-picker`.
 or `rounded`, not `rounded-full` (`PER-3`; `check-tells` fails `round-button`). `rounded-full`
 stays for avatars, dots, spinners and count badges, which are not buttons. `Switch` is the one
 control with a pill track, held in the `round-button` baseline.
+
+`.pill` is a round **count chip** (the number beside a wizard step), neither a status nor a
+control; a status is a `Badge`. `.icon-btn` is the control that sits over a photo or a card (frosted,
+`hover:scale-110`); an icon button in a toolbar or a row has no primitive yet, so size it as
+`.icon-btn` does (`h-touch w-touch fold:h-9 fold:w-9`, `ACC-4`) and give it the house corner.
+Two classes break a law and are one decision from conforming: `.btn-text` is uppercase and tracked
+(`TYP-6`) and `.icon-btn` carries a blur (a baselined `glass` tell). Do not copy either onto a new
+class (ADR-083, consistency addendum).
 
 ### Everything else
 
@@ -123,7 +137,12 @@ A border must mean something. Prefer whitespace and alignment.
 - **Soft.** Container edges are `border-neutral-100` (#E8E8E8). Controls that
   have to be findable — inputs, checkboxes, the secondary button — get
   `border-neutral-200`, and nothing goes darker. A border is an edge, not a
-  drawn line.
+  drawn line. **Known conflict:** `border-neutral-200` is 1.72:1 on white (1.54:1 on the page), and a
+  control's boundary needs 3:1 (`COL-3`, WCAG 1.4.11). `check-contrast` now sees
+  the six house-class uses and holds them in its baseline; this rule and that law
+  disagree, and which gives way is the owner's call (ADR-083, consistency
+  addendum). Until it is decided, do not darken a border on a hunch and do not
+  add a seventh.
 - **Never a border and a shadow on the same edge.** That is also two
   boundaries. `.card` has no shadow; `.lift` adds one on hover, when it means
   "this rose".
@@ -151,7 +170,7 @@ python scripts/nested-borders.py
 ## No dead ends
 
 A screen a user can actually reach must always offer a next step — a
-primary action, a way back, or both. Law 7 ("overview first, detail on
+forward action and a marked way back (`ITG-1`), and never neither. Law 7 ("overview first, detail on
 click") is only half the promise if detail can dead-end once you get there.
 No screen in this product may be the end of the road.
 
@@ -173,8 +192,8 @@ No screen in this product may be the end of the road.
   each of `(admin)` and `(storefront)`), a bare root one is fine too, but
   none anywhere is not. Falling through to the framework default is not
   "fine" — the default carries no branding, no nav, and no way back into
-  the product. `apps/pos` has none of the three today and must gain them,
-  not assume the till never crashes.
+  the product. `apps/pos` ships all three (`error.tsx`, `global-error.tsx`,
+  `not-found.tsx`); a new Next app must not assume the till-style never-crashes.
 - A disabled control states why — a tooltip, `aria-describedby`, or visible
   adjacent text — never just greyed out with the reason left for the user
   to guess.

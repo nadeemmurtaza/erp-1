@@ -179,6 +179,11 @@ function main() {
   if (process.argv.includes('--self-test')) return selfTest();
 
   const { short, dates, total, files } = scan();
+  if (files === 0) {
+    // Zero files read is not "no violations": it is a moved folder or a wrong working directory.
+    console.error('Menus scanned 0 files. Run from the repository root.');
+    process.exit(1);
+  }
   const over = [];
   const under = [];
   for (const [key, label, found] of [

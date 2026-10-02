@@ -3,6 +3,9 @@
 import { themeColorVar } from '@newax/shared';
 
 /**
+ * SUPERSEDED by `charts/gauge-chart.tsx` (goals and limits, a state badge, a table twin). Three screens still
+ * import this one and are held in `check-chart-imports.mjs`'s `LEGACY_IMPORTERS`; a new screen does not.
+ *
  * Semicircular progress gauge for a single percent-of-target metric.
  *
  * Matches sales-chart.tsx's idiom: inline SVG, accent-teal fill against a

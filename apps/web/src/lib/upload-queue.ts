@@ -1,4 +1,4 @@
-import { formatNumber } from '@newax/shared';
+import { BRAND, formatNumber } from '@newax/shared';
 
 /**
  * The upload queue as a pure state machine (UPL-2, UPL-5, UPL-6).
@@ -32,10 +32,10 @@ export const ETA_MIN_SAMPLE_MS = 1000;
 
 /**
  * How long the tray stays after everything succeeded. It is the toast default
- * (`useToast`'s `duration = 4000`): a confirmation lives as long as every other
+ * (`BRAND.feedback.toastMs`, 4 000 ms): a confirmation lives as long as every other
  * one in the product. A failure never hides on a timer.
  */
-export const TRAY_HIDE_MS = 4000;
+export const TRAY_HIDE_MS = BRAND.feedback.toastMs;
 
 /**
  * The most often one lane's progress is passed to the queue: 250 ms, four times a second.

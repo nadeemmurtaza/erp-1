@@ -6,7 +6,7 @@ import type { ReportBlock } from '../report-registry';
 
 type GaugeBlockConfig = Extract<ReportBlock, { kind: 'gauge' }>;
 
-/** A single percent-of-target figure — `gauge-chart.tsx` predates Recharts (D9's own kept chart). `value` is basis points; `target` is the money amount shown in the caption. */
+/** A single percent-of-target figure, on the superseded `admin/gauge-chart.tsx` until a designer moves it to `charts/` (see `check-chart-imports.mjs`). `value` is basis points; `target` is the money amount shown in the caption. */
 export function GaugeBlock({ config, data }: { config: GaugeBlockConfig; data: unknown }) {
   const percentBps = Number(resolvePath(data, config.value) ?? 0);
   const targetAmount = Number(resolvePath(data, config.target) ?? 0);

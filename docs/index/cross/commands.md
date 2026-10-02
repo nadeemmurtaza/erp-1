@@ -171,19 +171,19 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 2561 |  |
+| `scripts/build-index.mjs` | 2629 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
-| `scripts/check-chart-imports.mjs` | 72 |  |
-| `scripts/check-clipboard.mjs` | 169 |  |
-| `scripts/check-contrast.mjs` | 626 |  |
-| `scripts/check-danger.mjs` | 213 |  |
+| `scripts/check-chart-imports.mjs` | 117 |  |
+| `scripts/check-clipboard.mjs` | 174 |  |
+| `scripts/check-contrast.mjs` | 650 |  |
+| `scripts/check-danger.mjs` | 220 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
 | `scripts/check-hardcoded-policy.mjs` | 85 |  |
 | `scripts/check-hexagonal-purity.mjs` | 149 |  |
 | `scripts/check-links.mjs` | 416 |  |
-| `scripts/check-menus.mjs` | 224 |  |
+| `scripts/check-menus.mjs` | 229 |  |
 | `scripts/check-metadata-renderer.mjs` | 134 |  |
 | `scripts/check-module-boundaries.mjs` | 624 |  |
 | `scripts/check-overflow.mjs` | 644 |  |
@@ -191,11 +191,11 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-rebrand.mjs` | 292 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
 | `scripts/check-rules.mjs` | 224 |  |
-| `scripts/check-tells.mjs` | 608 |  |
+| `scripts/check-tells.mjs` | 648 |  |
 | `scripts/check.mjs` | 164 |  |
 | `scripts/idx.mjs` | 486 |  |
 | `scripts/install-git-hooks.mjs` | 94 |  |
-| `scripts/lib/index-scan.mjs` | 944 | Scanners for the repository index. |
+| `scripts/lib/index-scan.mjs` | 965 | Scanners for the repository index. |
 | `scripts/lib/model-routing.mjs` | 400 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastruct… |
 | `scripts/nested-borders.py` | 0 |  |

@@ -130,7 +130,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `RecipeDetailPage` | default | :26 |  |
+| `page.tsx` | `RecipeDetailPage` | default | :27 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/new`
 
@@ -154,7 +154,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `NewProductionRunPage` | default | :29 | Recording a run consumes real raw stock and credits real finished stock — repeatable, but not undoa… |
+| `page.tsx` | `NewProductionRunPage` | default | :30 | Recording a run consumes real raw stock and credits real finished stock — repeatable, but not undoa… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/bom/raw-materials`
 
@@ -498,7 +498,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `CountSheetPage` | default | :31 |  |
+| `page.tsx` | `CountSheetPage` | default | :32 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/inventory/lots`
 
@@ -709,13 +709,13 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `loading.tsx` | `Loading` | default | :3 |  |
-| `page.tsx` | `AdminOrdersPage` | default | :50 |  |
+| `page.tsx` | `AdminOrdersPage` | default | :39 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/orders/[id]`
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminOrderDetailPage` | default | :108 |  |
+| `page.tsx` | `AdminOrderDetailPage` | default | :97 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/org-structure`
 
@@ -745,7 +745,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `PayrollLeavePage` | default | :24 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — every leave request across every employee, wi… |
+| `page.tsx` | `PayrollLeavePage` | default | :25 | WO-19.6 (docs/implementation/payroll/19-payroll.md) — every leave request across every employee, wi… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/payroll/me`
 
@@ -1306,7 +1306,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ForgotPasswordPage` | default | :10 |  |
+| `page.tsx` | `ForgotPasswordPage` | default | :11 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/login`
 
@@ -1395,7 +1395,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `VerifyEmailPage` | default | :13 |  |
+| `page.tsx` | `VerifyEmailPage` | default | :15 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/verify-purchase`
 
@@ -1432,9 +1432,9 @@ Every top-level export in `web`, with the line to open.
 | `embedded-widget-frame.tsx` | `EmbeddedWidgetFrame` | function | :15 | architecture-patterns/113-micro-frontend-embedding.md (WO-113.2) — a narrow, reusable iframe contai… |
 | `entity-attribute-editor.tsx` | `EntityAttributeEditor` | function | :19 | architecture-patterns/140-general-eav-extensibility-model.md (WO-140.4) — the general fallback edit… |
 | `fragment-mount-point.tsx` | `FragmentMountPoint` | function | :18 | architecture-patterns/143-micro-frontend-architecture.md (WO-143.4) — the actual mount mechanism fo… |
-| `funnel-chart.tsx` | `FunnelStage` | interface | :24 |  |
-| `funnel-chart.tsx` | `FunnelChart` | function | :29 |  |
-| `gauge-chart.tsx` | `GaugeChart` | function | :33 |  |
+| `funnel-chart.tsx` | `FunnelStage` | interface | :27 |  |
+| `funnel-chart.tsx` | `FunnelChart` | function | :32 |  |
+| `gauge-chart.tsx` | `GaugeChart` | function | :36 |  |
 | `image-manager.tsx` | `ImageManager` | function | :50 | Upload, reorder and delete product photographs. |
 | `image-manager.tsx` | `StagedImage` | interface | :317 | A photo picked before the product exists to attach it to. |
 | `image-manager.tsx` | `ImageStager` | function | :340 | Photo picker for a product that does not have an id yet — new-product creation, where `ImageManager… |
@@ -1489,8 +1489,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `dynamic-timeseries-block.tsx` | `DynamicTimeSeriesBlock` | function | :14 | WO-57.2 — `TimeSeriesBlock`'s own chart, reused as-is; the only difference is that `series` is read… |
-| `funnel-block.tsx` | `FunnelBlock` | function | :9 | A stepped conversion funnel — `funnel-chart.tsx` predates Recharts (D9's own kept chart) and needs… |
-| `gauge-block.tsx` | `GaugeBlock` | function | :10 | A single percent-of-target figure — `gauge-chart.tsx` predates Recharts (D9's own kept chart). |
+| `funnel-block.tsx` | `FunnelBlock` | function | :9 | A stepped conversion funnel, on the superseded `admin/funnel-chart.tsx` until a designer moves it t… |
+| `gauge-block.tsx` | `GaugeBlock` | function | :10 | A single percent-of-target figure, on the superseded `admin/gauge-chart.tsx` until a designer moves… |
 | `kpis-block.tsx` | `KpisBlock` | function | :8 | A row of headline figures — the first thing a detail page shows. |
 | `ranking-block.tsx` | `RankingBlock` | function | :17 | A ranked list — top products, top suppliers, top customers. |
 | `share-block.tsx` | `ShareBlock` | function | :17 | A categorical share of a whole. |
@@ -1502,7 +1502,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `cost-breakdown.tsx` | `CostBreakdown` | function | :36 | Per-component cost breakdown — a live recompute (GET .../cost), not the cached rolledUpUnitCost sho… |
-| `recipe-editor.tsx` | `RecipeEditor` | function | :56 | Create or edit a recipe. |
+| `recipe-editor.tsx` | `RecipeEditor` | function | :57 | Create or edit a recipe. |
 
 ### `apps/web/src/components/admin/charts`
 
@@ -1666,7 +1666,7 @@ Every top-level export in `web`, with the line to open.
 | `secret-once.tsx` | `SecretOnce` | function | :25 | because the storefront's comes from messages .json and the admin's is English (House Rule 6). |
 | `status-badge.tsx` | `statusLabel` | function | :113 | `READY_TO_SHIP` -> `Ready to ship`. |
 | `status-badge.tsx` | `StatusBadge` | function | :117 |  |
-| `toast-container.tsx` | `ToastContainer` | function | :11 |  |
+| `toast-container.tsx` | `ToastContainer` | function | :17 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :37 | A form split into small, single-purpose steps instead of one long page. |
 
@@ -1757,13 +1757,17 @@ Every top-level export in `web`, with the line to open.
 | `foundations.tsx` | `TypeFoundations` | function | :265 |  |
 | `foundations.tsx` | `SpaceFoundations` | function | :297 | ── space, size, radius ───────────────────────────────────────────────── |
 | `foundations.tsx` | `ElevationFoundations` | function | :359 |  |
-| `gallery.tsx` | `DesignSystemGallery` | function | :65 | The design system, rendered by the system it describes. |
+| `gallery.tsx` | `DesignSystemGallery` | function | :66 | The design system, rendered by the system it describes. |
 | `layering.tsx` | `LayeringSpecimen` | function | :86 |  |
 | `layout-loading.tsx` | `BentoSpecimen` | function | :71 | A tile is one job. |
 | `layout-loading.tsx` | `SkeletonSpecimen` | function | :197 | One card per shape a page waits in: a figure, a person, a table, a chart. |
 | `live-tokens.ts` | `useLiveTokens` | function | :17 | Reads the theme's colours back out of the browser, not out of brand.ts. |
 | `menu-specimens.tsx` | `MenuSpecimens` | function | :236 |  |
 | `motion-specimens.tsx` | `MotionSpecimens` | function | :235 |  |
+| `page-structure-specimens.tsx` | `PageAnatomySpecimen` | function | :62 |  |
+| `page-structure-specimens.tsx` | `ListPageSpecimen` | function | :113 |  |
+| `page-structure-specimens.tsx` | `ArrivalSpecimen` | function | :177 |  |
+| `page-structure-specimens.tsx` | `PageStructureSpecimens` | function | :227 | The three groups, in the order a page is built: its frame, its list, its motion. |
 | `patterns.tsx` | `FROSTED` | const | :57 | Frosted: 85% of the overlay surface over a blur. |
 | `patterns.tsx` | `AdminPatterns` | function | :68 |  |
 | `people-access.tsx` | `PeopleAccessSpecimen` | function | :420 | ── the list ──────────────────────────────────────────────────────────── |
@@ -1827,15 +1831,15 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` | type | :13 | A status pill. |
-| `badge.tsx` | `Badge` | function | :24 |  |
+| `badge.tsx` | `BadgeTone` | type | :14 | A status mark, in the house corner. |
+| `badge.tsx` | `Badge` | function | :25 |  |
 | `bento.tsx` | `Bento` | function | :24 | A bento: one job, shown as a handful of tiles of deliberately different sizes, so the eye finds the… |
 | `bento.tsx` | `BentoSize` | type | :37 |  |
 | `bento.tsx` | `BentoTone` | type | :38 |  |
 | `bento.tsx` | `BentoTile` | function | :62 |  |
 | `button.tsx` | `ButtonProps` | interface | :38 |  |
 | `button.tsx` | `Button` | function | :49 |  |
-| `confirm-dialog.tsx` | `ConfirmDialog` | function | :46 | The one way a destructive action gets confirmed. |
+| `confirm-dialog.tsx` | `ConfirmDialog` | function | :54 | The dialog way to confirm a destructive action: the plain tier of `ACT-6`, and with `typeToConfirm`… |
 | `cooldown-banner.tsx` | `CooldownBanner` | function | :26 | What a page about a scheduled removal says (DNG-6). |
 | `copy-button.tsx` | `CopyButtonProps` | interface | :46 | A button that copies one value and proves it did (CPY-1 to CPY-5). |
 | `copy-button.tsx` | `CopyButton` | function | :101 |  |
@@ -1966,6 +1970,7 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `downloads.ts` | `exportFilename` | function | :18 | `exportFilename('orders')` -> `yaseen-orders.csv` |
+| `order-transitions.ts` | `ORDER_NEXT_STATUS` | const | :9 | Which status a staff member may move an order to next. |
 | `payment-methods.ts` | `PAYMENT_PROVIDER_LABELS` | const | :15 | How a payment provider's key is written for staff. |
 | `payment-methods.ts` | `paymentProviderLabel` | function | :26 | Falls back to humanising the key, so a provider added later still reads. |
 | `permissions.ts` | `PERMISSION_CATALOG` `PERMISSION_KEYS` `PERMISSION_GROUPS` `ADMIN_LOCKED_PERMISSIONS` `ROLE_PERMISSION_SEED` `NON_DELEGATABLE_PERMISSIONS` `CUSTOMER_SCOPE_CATALOG` `CUSTOMER_SCOPE_RESOURCES` `API_KEY_LIFETIME_OPTIONS_DAYS` `API_KEY_DEFAULT_LIFETIME_DAYS` `delegatablePermissionsOf` `isDelegatablePermission` `nonDelegatableReason` `type PermissionKey` `type PermissionDefinition` `type PermissionGroup` `type PermissionSensitivity` `type CustomerScopeKey` `type CustomerScopeResource` | re-export |  | from `@newax/shared` |
@@ -1988,8 +1993,8 @@ Every top-level export in `web`, with the line to open.
 | `use-prefers-reduced-motion.ts` | `usePrefersReducedMotion` | function | :27 | The stylesheet's reduced-motion rule collapses every CSS animation and transition, but it cannot re… |
 | `use-theme.ts` | `UseTheme` | interface | :86 |  |
 | `use-theme.ts` | `useTheme` | function | :96 |  |
-| `use-toast.ts` | `Toast` | interface | :7 |  |
-| `use-toast.ts` | `useToast` | function | :16 |  |
+| `use-toast.ts` | `Toast` | interface | :8 |  |
+| `use-toast.ts` | `useToast` | function | :17 |  |
 | `use-upload-queue.ts` | `UploadContext` | interface | :20 | What `send` is given for one file: a signal that aborts it, and a way to say how far it has got. |
 | `use-upload-queue.ts` | `UploadSend` | type | :27 | Sends one file. |
 | `use-upload-queue.ts` | `EnqueueOptions` | interface | :29 | Sends one file. |
@@ -2092,22 +2097,23 @@ Every top-level export in `web`, with the line to open.
 | `customer-client.ts` | `forgotPassword` | function | :81 |  |
 | `customer-client.ts` | `resetPassword` | function | :90 |  |
 | `customer-client.ts` | `verifyEmail` | function | :99 |  |
-| `customer-client.ts` | `unsubscribeFromMarketing` | function | :108 |  |
-| `customer-client.ts` | `SerialVerifyResult` | interface | :117 |  |
-| `customer-client.ts` | `verifySerial` | function | :127 | 158-serialized-unit-tracking.md §3 — status/date/warranty only, never a branch or employee. |
-| `customer-client.ts` | `logoutCustomer` | function | :133 |  |
-| `customer-client.ts` | `getMyOrder` | function | :153 | One order, for whoever is allowed to see it. |
-| `customer-client.ts` | `trackOrder` | function | :157 |  |
-| `customer-client.ts` | `listReturnReasons` | function | :167 | WO-6.6 — the customer's own side of returns/RMA. |
-| `customer-client.ts` | `listMyReturns` | function | :171 |  |
-| `customer-client.ts` | `getMyReturn` | function | :175 |  |
-| `customer-client.ts` | `createReturnRequest` | function | :179 |  |
-| `customer-client.ts` | `listMySupportTickets` | function | :188 | 148-external-customer-support-portal.md — the customer's own side of the support ticket portal. |
-| `customer-client.ts` | `getMySupportTicket` | function | :192 |  |
-| `customer-client.ts` | `raiseSupportTicket` | function | :196 |  |
-| `customer-client.ts` | `replySupportTicket` | function | :206 |  |
-| `customer-client.ts` | `reopenSupportTicket` | function | :210 |  |
-| `customer-client.ts` | `customerFetch` | function | :250 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
+| `customer-client.ts` | `resendEmailVerification` | function | :109 | The signed-in customer's own address: sends a new verification link (the old one expired or was use… |
+| `customer-client.ts` | `unsubscribeFromMarketing` | function | :113 |  |
+| `customer-client.ts` | `SerialVerifyResult` | interface | :122 |  |
+| `customer-client.ts` | `verifySerial` | function | :132 | 158-serialized-unit-tracking.md §3 — status/date/warranty only, never a branch or employee. |
+| `customer-client.ts` | `logoutCustomer` | function | :138 |  |
+| `customer-client.ts` | `getMyOrder` | function | :158 | One order, for whoever is allowed to see it. |
+| `customer-client.ts` | `trackOrder` | function | :162 |  |
+| `customer-client.ts` | `listReturnReasons` | function | :172 | WO-6.6 — the customer's own side of returns/RMA. |
+| `customer-client.ts` | `listMyReturns` | function | :176 |  |
+| `customer-client.ts` | `getMyReturn` | function | :180 |  |
+| `customer-client.ts` | `createReturnRequest` | function | :184 |  |
+| `customer-client.ts` | `listMySupportTickets` | function | :193 | 148-external-customer-support-portal.md — the customer's own side of the support ticket portal. |
+| `customer-client.ts` | `getMySupportTicket` | function | :197 |  |
+| `customer-client.ts` | `raiseSupportTicket` | function | :201 |  |
+| `customer-client.ts` | `replySupportTicket` | function | :211 |  |
+| `customer-client.ts` | `reopenSupportTicket` | function | :215 |  |
+| `customer-client.ts` | `customerFetch` | function | :255 | Authenticated fetch for a signed-in customer's own data — addresses, measurement profiles, order hi… |
 | `date-parse.ts` | `ParseFailure` | type | :28 | Reads a date out of whatever a person typed (MNU-2, ACT-5: be liberal in what you accept). |
 | `date-parse.ts` | `ParseResult` | type | :30 |  |
 | `date-parse.ts` | `ParseOptions` | interface | :32 |  |

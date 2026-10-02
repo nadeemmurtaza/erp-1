@@ -155,8 +155,8 @@ const BASELINE = [
   // This is the one baseline entry that needs judgement to apply: the same
   // token used to mark a control's edge IS a violation and is not covered
   // here. The checker cannot tell the two apart — that needs a render.
-  { token: 'neutral-100', max: 39, reason: '1.23:1 — dividers and card outlines.' },
-  { token: 'neutral-200', max: 1, reason: '1.54:1 — a dropdown edge. A second use (a table rule, in an admin toast) was retired when six duplicated toast blocks were pulled into components/admin/toast-stack.tsx.' },
+  { token: 'neutral-100', max: 42, reason: '1.23:1 — dividers and card outlines. 39 in components, plus 3 in the web stylesheet\'s house classes (lines 430, 446, 701), which the check could not read before it learned `@apply`: the scope grew, not the debt.' },
+  { token: 'neutral-200', max: 7, reason: '1.54:1 to 1.72:1 — a dropdown edge (party-picker.tsx), and the CONTROL BOUNDARY of the house classes, newly readable through `@apply`: web `.field-input`, the base input/select/textarea/checkbox/radio rule, `.btn-secondary`, `.chip-unselected`, and the POS `.field-input` and `.tap-btn-secondary`. A control\'s boundary needs 3:1 (WCAG 1.4.11), so these six are a real accessibility debt, not a divider that conveys nothing. `.claude/rules/ui.md` says controls take `border-neutral-200`, so the two documents disagree; which one gives way is the owner\'s call (ADR-083, consistency addendum). A second use (a table rule, in an admin toast) was retired when six duplicated toast blocks were pulled into components/admin/toast-stack.tsx.' },
   { token: 'neutral-800', max: 1, reason: '1.10:1 — the dark footer\'s top border.' },
   { token: 'neutral-300', max: 1, reason: '2.10:1 — a gallery thumbnail edge.' },
   { token: 'neutral-400', max: 1, reason: '2.99:1 on neutral-50 — a gallery placeholder (paired bg-neutral-50 text-neutral-400).' },
@@ -170,7 +170,7 @@ const BASELINE = [
  * Use `bg-inverse text-on-inverse` (brand.ts) for a fill that must flip.
  */
 const DARK_BASELINE = [
-  { token: 'neutral-100', max: 39, reason: '1.26:1 — the same dividers and card outlines as light (1.23:1). Dark keeps the hairline at the same weight on purpose: it conveys nothing the spacing beside it does not.' },
+  { token: 'neutral-100', max: 42, reason: '1.26:1 — the same dividers and card outlines as light (1.23:1), 39 in components and 3 in the stylesheet\'s house classes. Dark keeps the hairline at the same weight on purpose: it conveys nothing the spacing beside it does not.' },
 ];
 
 // ── retired entries, kept as a record rather than deleted outright ───────
@@ -246,11 +246,35 @@ export function scanColours(source, palette) {
     for (const chunk of line.match(/(['"`])[^'"`]*\1/g) ?? []) {
       const classes = chunk.slice(1, -1).split(/\s+/).map((c) => parseClass(c, palette)).filter(Boolean);
       if (!classes.length) continue;
-      const bg = classes.find((c) => c.kind === 'bg');
-      for (const c of classes) uses.push({ ...c, pairedBg: c.kind === 'bg' ? null : bg ?? null, line: i + 1 });
+      pushUses(uses, classes, i + 1);
     }
   });
+
+  // `@apply bg-amber-50 text-amber-700;` in a stylesheet is a className with no quotes, which the loop above
+  // cannot see, so every colour pair the house classes (`.btn`, `.notice`, `.card`, `.chip`) are made of went
+  // unchecked while the pages built on them were. A statement can span lines, so it is read from the whole source.
+  const apply = /@apply\s+([^;{}]+);/g;
+  let match;
+  while ((match = apply.exec(source))) {
+    const line = source.slice(0, match.index).split('\n').length;
+    pushUses(uses, match[1].split(/\s+/).map((c) => parseClass(c, palette)).filter(Boolean), line);
+  }
   return uses;
+}
+
+/**
+ * One className's colours, each remembering the background it was written beside. A border, ring or divider
+ * in the very colour of the fill under it (`border-accent bg-accent`, a selected chip) draws no edge of its own:
+ * the fill is the edge, so there is no boundary to measure and it is not a use.
+ */
+function pushUses(uses, classes, line) {
+  if (!classes.length) return;
+  const bg = classes.find((c) => c.kind === 'bg');
+  for (const c of classes) {
+    const edge = c.kind === 'border' || c.kind === 'ring' || c.kind === 'divide';
+    if (edge && bg && bg.token === c.token && bg.alpha === c.alpha) continue;
+    uses.push({ ...c, pairedBg: c.kind === 'bg' ? null : bg ?? null, line });
+  }
 }
 
 /* ── pinned regions ────────────────────────────────────────────────────── */

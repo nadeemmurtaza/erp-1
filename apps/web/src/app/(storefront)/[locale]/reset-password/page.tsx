@@ -27,7 +27,7 @@ export default function ResetPasswordPage() {
       await resetPassword(token, newPassword);
       setDone(true);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Could not reset your password');
+      setError(cause instanceof Error ? cause.message : t('failed'));
     } finally {
       setBusy(false);
     }
@@ -51,27 +51,29 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <AuthPage title="Choose a new password">
+    <AuthPage title={t('title')}>
 
         {!token ? (
           <p role="alert" className="notice notice-error text-center">
-            This link is missing its reset token. Request a new one from the{' '}
-            <Link href={ROUTES.storefront.forgotPassword} className="font-medium underline">
-              password reset page
-            </Link>
-            .
+            {t.rich('missingToken', {
+              link: (chunks) => (
+                <Link href={ROUTES.storefront.forgotPassword} className="font-medium underline">
+                  {chunks}
+                </Link>
+              ),
+            })}
           </p>
         ) : (
           <FormStack
             onSubmit={onSubmit}
             className="mt-8"
             actions={
-              <Button type="submit" loading={busy} loadingLabel="Saving…" className="w-full">
-                Set new password
+              <Button type="submit" loading={busy} loadingLabel={t('saving')} className="w-full">
+                {t('submit')}
               </Button>
             }
           >
-            <Field label="New password" hint="At least 8 characters.">
+            <Field label={t('passwordLabel')} hint={t('passwordHint')}>
               {(control) => (
                 <input
                   {...control}
@@ -87,9 +89,15 @@ export default function ResetPasswordPage() {
             </Field>
 
             {error ? (
-              <p role="alert" className="notice notice-error">
-                {error}
-              </p>
+              <div role="alert" className="notice notice-error">
+                <p>{error}</p>
+                {/* The remedy (FLO-7): a link that is wrong or old is fixed by asking for another. */}
+                <p className="mt-2">
+                  <Link href={ROUTES.storefront.forgotPassword} className="font-medium underline">
+                    {t('requestNew')}
+                  </Link>
+                </p>
+              </div>
             ) : null}
           </FormStack>
         )}

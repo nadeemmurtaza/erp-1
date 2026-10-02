@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { BRAND } from '@newax/shared';
 import { MOTION_MS } from '@/lib/motion';
 import { prefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 
@@ -33,7 +34,7 @@ export function useToast() {
   }, []);
 
   const add = useCallback(
-    (message: string, type: 'success' | 'error' | 'info' = 'info', duration = 4000) => {
+    (message: string, type: 'success' | 'error' | 'info' = 'info', duration: number = BRAND.feedback.toastMs) => {
       const id = `${Date.now()}-${Math.random()}`;
       const toast: Toast = { id, message, type, duration };
 

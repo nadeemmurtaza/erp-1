@@ -9821,6 +9821,17 @@ the OS preference. *Observable*: n/a, nothing server-side.
 ### Status
 **Accepted.**
 
+Addenda are numbered by their headings, which are not a count: the two that carry no ordinal (2026-09-30
+and the first of 2026-10-01) are the first and second, so the one headed "(second)" is the third and the
+one headed "(eleventh)" is the twelfth.
+
+Superseded in part by the eleventh addendum, where an earlier figure no longer holds: the contrast baselines
+of 43 light and 39 dark quoted in the "(third)" and "(fourth)" addenda (now 52 and 42, because the check
+learned `@apply`); the toast default written as `use-toast.ts`'s own `4 000 ms` in the "(fifth)", "(seventh)"
+and "(eighth)" addenda (the number is unchanged and now lives in `BRAND.feedback.toastMs`); "no consumer" for
+`components/common/toast-container.tsx` in the "(fifth)" (still true, now marked in the file and listed in the
+generated index); and the 113 self-test cases of the "(tenth)" (now 124).
+
 ### Addendum — 2026-09-30: the admin UI spec (220) folded in
 
 **Requirement.** The owner asked for `220-admin-ui-gemini-ideas-design-spec.md`
@@ -11518,3 +11529,172 @@ where it was; `round-button` runs in `pnpm lint`. No new permission key.
 - *Unify the hand-rolled icon buttons on `.icon-btn`.* The 16 web sites keep their own
   sizes and hovers; only the corner changed.
 - *A React Native check* for `theme.radius.pill` on a pressable.
+
+### Addendum — 2026-10-02 (eleventh): a consistency pass over the whole design system
+
+**Requirement.** The owner, 2026-10-02, holding a "Merge to main" instruction: "resolve any
+conflicts in this design system, any inconsistencies, any flow break, any gap, any
+duplication". **Reason.** Ten addenda in two days had each been correct when written and
+none had re-read the others: a chapter still said "unbuilt" for a thing that was built,
+two documents ruled differently on the same control border, a toast was written out
+sixteen more times beside the shared one, and four checkers could print OK having read
+nothing. **Outcome.** The documents say what the code does, the duplicated or unreachable
+pieces are removed or ratcheted, the flow breaks found are fixed, and everything that is a
+real choice is listed below for the owner instead of being decided. **Verification.** Below.
+
+**What was built.**
+- *Documents made to agree with the code* (12 chapters and the README under
+  `docs/design/`, both rule files, two skills, `CLAUDE.md`). Counts and "unbuilt" claims now match the generated
+  index (43 primitives, all 8 token groups built, `check-contrast` built, 5 of 10
+  integrity checks built, 278 screens); `ACC-4` is the one statement of the touch-target
+  rule (44 below `fold`, 48 on the POS, pointer sizes from `fold`); `PER-3` says a status
+  is `Badge` and `.pill` is a count chip; `PRM-2` says a role-grantable action is
+  disabled with a reason on focus and touch and an irrelevant one is not rendered;
+  `SUC-3` says which row a screen belongs to and what is adopted; `MOT-5` names the new
+  `layout-motion` tell; `ITG-9` is scoped to what binds today. `ui.md` gained the
+  primitive rows it lacked and names the two known conflicts (below) instead of hiding
+  them.
+- *Flow breaks fixed.* The four customer auth pages (verify email, unsubscribe, reset
+  password, forgot password) said what happened and not what to do next (`FLO-7`); each
+  now states its remedy (resend the verification email through the new
+  `resendEmailVerification` in `customer-client.ts`, ask for a new reset link, change the
+  preference from inside the account), with every string in `messages/en.json` and
+  `ur.json`. `ConfirmDialog`'s typed-name field kept the last
+  name typed when the dialog reopened, so a second delete arrived already unlocked: it
+  now resets on open. `Dialog` handed focus back to an opener that a confirmed delete had
+  removed, which dropped it on `<body>`: it now lands on the page's `<main>`, which draws
+  no ring (a `:focus-visible` rule in `globals.css` for `main[tabindex='-1']`).
+- *Duplication removed.* 16 admin files wrote their own toast markup beside the shared
+  one and now render `ToastStack`; the order-status transitions were written twice and
+  are now `constants/order-transitions.ts`, imported by the orders list and detail pages;
+  the toast and upload-tray lifetimes were two separate `4000`s and are now one
+  `BRAND.feedback.toastMs`. The two pre-Recharts charts have newer twins of the same
+  name; they are marked SUPERSEDED and `check-chart-imports` holds their importers to the
+  3 that exist (a ratchet).
+- *Checks that could lie, fixed.* `check-tells`, `check-menus`, `check-clipboard` and
+  `check-danger` now exit 1 when they scanned 0 files (a moved folder used to turn them
+  all green). `check-contrast` now reads `@apply` statements, so the house classes
+  (`.btn`, `.field-input`, `.notice`, `.chip`) are measured, which is what moved its
+  baselines. `check-tells` gained the tell `layout-motion` and the round-button tell now
+  sees a bare `<Button className="rounded-full">`; its self-test is 124 cases (113
+  before) over 10 tells (9 before). The index generator reads barrel imports
+  (`components/ui/index`), so component usage counts are real, and it now writes the
+  primitives table and the two lists the ledger below leans on.
+- *Small code fixes.* The storefront nav underline grows with `scale-x` and not `width`;
+  `.eyebrow` and `.table-flat thead th` text went from 45% to 60% so they clear the floor;
+  the POS button and field corners match the house corner; `Badge`'s docstring says what
+  `StatusBadge` adds.
+- *Gaps filled.* `/admin/design-system` shows the page-level pieces it had not: header and
+  titled regions, the section rail, the filter bar with its skeleton and its empty result,
+  page enter, in-place text change and the revealed board
+  (`page-structure-specimens.tsx`), each the real component.
+
+**Parameters.**
+
+| Parameter | Exact value | Applies to | Why this number | Where enforced | How it degrades |
+|---|---|---|---|---|---|
+| `BRAND.feedback.toastMs` | 4 000 ms (unchanged) | a toast that gets no explicit `duration`, and the upload tray after everything succeeded | about twelve words read in 2 to 3 s plus a second to notice it; equals `copyFailedHoldMs`, which also carries a sentence | `hooks/use-toast.ts`, `lib/upload-queue.ts`; `theme-radii.spec.ts` | `duration: 0` stays until dismissed; a failure never hides on this timer |
+| `layout-motion` baseline | 1 file: `stitching-panel.tsx` | `transition-[…]` or `transition:` naming a box-changing property, web and POS | the one site is a `max-height` accordion that needs a `Disclosure` rebuild | `check-tells` in `pnpm lint` | a second site fails the build with `file:line`; a fixed site fails until removed from the baseline |
+| Superseded-chart importers | 3 files | imports of `components/admin/funnel-chart` or `gauge-chart` | moving them changes what finance and the analytics blocks look like | `check-chart-imports` in `pnpm lint` | a fourth importer fails; a moved one must leave the list |
+| Contrast baseline, light | 52 uses (was 43) | colour pairs below their floor | 43 plus 3 in the stylesheet's dividers plus 6 control outlines newly readable through `@apply`: the scope grew, not the debt | `check-contrast` in `pnpm lint` | may shrink, may not grow |
+| Contrast baseline, dark | 42 uses (was 39) | the same, dark theme | the 3 stylesheet dividers; the 6 outlines clear the floor in dark | `check-contrast` | same |
+
+**Decisions made without the owner, all reversible.**
+- Where a document and the code disagreed, the document was changed to match what was
+  measured, except where the document is a rule (`ACC-4`, `PER-3`, `PRM-2`), where the
+  rule was kept and the gap is listed.
+- The four auth pages' remedy copy and their Urdu strings were written here and are not
+  reviewed by a native speaker.
+- The 16 toast sites render `ToastStack` exactly as the six before them did, so each gains
+  the timer line and the exit the shared one has.
+- `Dialog`'s focus fallback is `<main>`, not the nearest heading or the list's first row.
+- The unused `components/common/toast-container.tsx` and the 10 primitives no product file
+  imports (`Skeleton`, `SkeletonText`, `SkeletonRegion`, `Switch`, `CooldownBanner`,
+  `MultiSelect`, `ProgressRing`, `TypeText`, `Bento`, `BentoTile`) were marked and listed,
+  not removed: removing a file needs the owner's word.
+
+**Open for the owner (named, not decided).**
+1. *The seven screens.* The law names widths 280, 380, 640, 768, 1024, 1280, 1536; Tailwind
+   prefixes are 380, 640, 672 (`fold`), 768 and up, so 640 to 767 has no single meaning.
+   The mapping is documented, not renamed, and the sweep of 672 to 767 is not done.
+2. *Control borders.* Six house-class outlines sit at 1.54:1 to 1.72:1 against the 3:1 floor
+   (WCAG 1.4.11) while `ui.md` says controls take `border-neutral-200`: one of the two
+   gives way.
+3. *Pointer sizing.* Key `.btn`, `.icon-btn`, `.chip` and `.btn-text` to
+   `@media (pointer: fine)` and not to `fold`, so a 700 px touch tablet gets touch sizes.
+4. *`.btn-text` uppercase and the `.icon-btn` blur, frosted and ping patterns*, which
+   `check-tells` does not yet read.
+5. *Red and green.* The mobile app (`#b91c1c`), the web (`#B42318`) and the email palette
+   are three reds.
+6. *Admin and POS words.* 0 of 246 admin `.tsx` files and 0 POS files call a translation
+   function; 62 of 94 storefront files do. Decide whether admin and POS are meant to be
+   translated.
+7. *`/admin/design-system` is reachable in production.*
+8. *Adopt or cut* the 10 primitives and the one file above.
+9. *Migrate the 3 legacy chart importers*, a visible change; the net-margin gauge has no
+   goal to show.
+10. *Gate `pnpm format:check`*, red repo-wide at baseline and in no gate today.
+11. *The chart palette and heatmap* against the contrast floors; *terminology word
+    choices* the table does not settle.
+12. *The stitching accordion* (`max-height` 0 to 4 000 px, which also leaves a collapsed
+    control reachable by Tab).
+13. *Older items still open:* the milestone ledger; the open redirect through `?next=` on
+    register and login; `FileInterceptor` limits on the API; `upload-rules.ts` written
+    twice; `Switch` pill and square swatches; the dead `.chart-line` and `drawLine`; a
+    React Native round-button check; motion tokens on mobile and the POS.
+
+**Adoption-debt ledger** (a count that exists so it can shrink; none is a regression from
+this pass; measured on the final tree with `git grep` over `apps/web/src`, line-based,
+so each is approximate to a few sites).
+- Forms: 56 files hold a `<form`, 2 of them use `Field` and none uses `FormStack`.
+- Menus: 75 native `<select` in 50 files against 42 `<Select` elements.
+- Page headers: 75 files write their own `<h1`; 148 files use `PageHeader`.
+- Browser dialogs: `confirm()` 7 call sites, `prompt()` 38 in 11 files, `alert()` 1.
+- Empty states: 96 `EmptyState` elements, 25 with an action (`ITG-1` wants a way out).
+- Confirmations: 38 files raise a toast, 7 use `SuccessState`.
+- Formatting: 6 `toLocaleString` or `toLocaleDateString` uses; 7 files build a `FormData`
+  by hand beside the upload queue.
+- Not re-counted here and so not quoted: hand-rolled icon buttons, `DataTable` empty and
+  loading states, a toast action for undo, `Button` `blockedBy` (about 45 sites hide an
+  action outright), `ErrorState`, drawers and scroll lock, fonts, mobile contrast and
+  literals, POS error notices.
+
+**Failure modes.** `check-contrast` still cannot see a colour assembled at run time or a
+surface it cannot know without a render. `layout-motion` misses a transition set from a
+constant or a style object. The index's usage counts follow imports it can resolve; a
+component reached by a name it cannot see appears unused. The new specimens are not
+visual-regression tested (there is none).
+
+**Verification.** Run on the final tree. `pnpm lint` exit 0 (turbo 9 of 9 tasks; contrast 52 light and 42 dark
+known-below-floor uses, both within baseline; `check-tells` within baseline with `layout-motion` 1 and
+`round-button` 1; chart imports OK with 3 baselined importers; 126 law citations resolve to 192 laws);
+`pnpm typecheck` exit 0 (10 of 10 tasks); tests web 542, shared 408, pos-core 28;
+`pnpm --filter @newax/web build` exit 0; `node scripts/check-tells.mjs --self-test` 124 cases; the four
+`CLAUDE.md` greps 27, 6, 6, 0, equal to `HEAD`. In Chromium on the production build: the auth flows and the
+three new specimen groups 14 of 14 checks, run four times, with 0 page errors in three runs and one React
+hydration error (#418) in one; it did not recur in three further runs or in 48 loads of the eight changed
+pages at 380 px, and that first run did not log which page raised it, so it is reported and not explained.
+The dialog checks pass 7 of 7 with 0 page errors, and the same script against the old `ConfirmDialog`
+failed the two reopen checks (the field still held the name and confirm was still unlocked), so the bug
+was real before the fix and gone after it. **Not verified.** The API test suites on the final tree (they
+need `DATABASE_URL` and Redis, which this environment lacks; 70 suites failed for that reason on the last
+run); the `overflow` job (it needs the seeded stack); CI (red on every head at "Apply migrations" with
+`extension "vector" is not available`, a database-image problem separate from this diff and awaiting the
+owner's word); the Urdu wording by a native speaker; the 16 migrated admin pages rendered (they need the API
+and a login, so they rest on typecheck and the shape of the diff); the POS corners rendered; and the new
+specimens across the seven widths.
+
+**Scope lenses.** The actor through the money lenses, the scale lenses and the afterlife
+lenses: n/a, no actor, row, permission key, write, number or document is created. One
+parameter moved into `BRAND`, value unchanged. Reachable: the specimens are on the
+existing `/admin/design-system` page; every changed check runs in `pnpm lint`. No new
+permission key, no migration.
+
+**Separable work orders, named and not built.**
+- *Bug found, not fixed:* the stitching panel's "save measurements" never saves (the
+  request very likely fails API validation); it needs the API contract read and its own
+  change.
+- *One shared file walker* for the checkers, which each carry their own.
+- *`check-tells` for `TYP-3` and `GLO-7`.*
+- *Button `blockedBy`, a toast action (undo), `ErrorState` adoption* and the rest of the
+  ledger above.

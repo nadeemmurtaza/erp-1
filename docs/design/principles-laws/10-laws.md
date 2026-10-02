@@ -83,13 +83,18 @@ needed something to fill a column.
 **Says** — elements sharing shape, colour, size or weight are perceived as the
 same kind of thing.
 **Here** — **one visual treatment means one kind of thing, product-wide.** If
-a pill is a status, nothing that is not a status may be a pill. This is the
+a mark is a status, nothing that is not a status may wear its tones. **A status
+is one component, `Badge` (reached through `StatusBadge`), in the house corner**;
+the round `.pill` is a count chip (the number beside a wizard step today),
+neither a status nor a control, and a status written as a `.pill` is a defect. This is the
 perceptual half of `COL-1`, and it is why a second status component is a
 defect and not a duplicate. **A button is never round**: a circular or pill
 button is a second button shape, so every button, link-as-button and icon
 button wears the house corner (`.btn`, `.icon-btn`, or `rounded`, which
 resolves to `--radius`). Circles are for avatars, dots, spinners and count
-badges; `check-tells` fails `round-button`.
+badges; the one control that keeps a pill is the `Switch` track (an input
+holding a state, the single baseline entry of `round-button`).
+`check-tells` fails `round-button`.
 **Fails when** — a filter chip and a status badge look identical, so users
 click a status trying to filter by it.
 
@@ -354,7 +359,7 @@ radius. (NN/G; Smashing.)
 | Blast radius | Guard |
 |---|---|
 | Reversible, small | do it; offer undo |
-| Irreversible, or wide | a dialogue that *names the object and the count* |
+| Irreversible, or wide | a hold (`DNG-1`, `HoldToConfirm`) when the label says all there is to say; otherwise a dialogue that *names the object and the count* |
 | Irreversible and financial or cross-branch | name the object **and** require typing it |
 A confirmation that does not state exactly what is about to happen is not a
 guard, it is a speed bump.
@@ -580,7 +585,8 @@ a label with the wrong value. One of the few layout bugs that produces a
 **Says** — the right density depends on the task, not on taste: a scanning
 task wants compact, a data-entry task wants comfortable.
 **Here** — comfortable (48–56 px rows) is the default; compact (40–44 px) is
-available where a role scans hundreds of rows. **Density changes spacing
+the setting for admin tables and the POS till, where a role scans hundreds of
+rows (the "tight" rows of `02-layout`'s density table are this). **Density changes spacing
 only** — never type size, never target size, which are floored by `ACT-1` and
 `ACC-4`.
 
@@ -687,8 +693,12 @@ every frame; `transform` and `opacity` do not.
 Two bounded exceptions, both in the expressive tier and both touching no
 ancestor or sibling layout: `CountUp` writes the text of one figure (tabular
 figures, a block of its own, for 420 ms), and `ProgressRing` transitions
-`stroke-dashoffset` (paint only, on a 36px SVG). No component animates `width`,
-`height`, `top`, `left` or `margin`.
+`stroke-dashoffset` (paint only, on a 36px SVG). No primitive animates `width`,
+`height`, `top`, `left` or `margin`. `check-tells` fails `layout-motion` on a
+`transition-[…]` or `transition:` that names one; one storefront site is held in
+its baseline (the stitching panel's `max-height` accordion, which needs a
+`Disclosure` rebuild), and the nav underline grows with `scale-x` instead of
+`width`.
 
 ### MOT-6 · Orchestration, not simultaneity
 **Says** — a group of elements animating together reads as a single event; a
@@ -729,8 +739,16 @@ catastrophe, not an annoyance.
 ### ACC-4 · Target size
 **Says** — WCAG 2.2 **2.5.8** requires 24×24 CSS px minimum at AA; 44×44 is
 the AAA figure and the mobile-platform norm.
-**Here** — **44×44 minimum, 48×48 on POS.** Above the standard deliberately:
-this is a system operated at speed by people who are standing up.
+**Here** — **44×44 minimum below `fold` (672 px), where a thumb is likely; 48×48
+on POS at every width.** Above the standard deliberately: this is a system
+operated at speed by people who are standing up. From `fold` up, where a
+pointer is likely, `.btn` is 40 tall and `.icon-btn` 36 square, and `.chip` and
+`.btn-text` drop their floor; nothing goes below WCAG's 24×24 with spacing.
+Width is a proxy for the input device, so a touch tablet at 672 px or wider
+gets pointer sizes: keying those four classes to `@media (pointer: fine)`
+instead of `fold:` closes it, a visible change that is an open decision
+(ADR-083, consistency addendum). This is the one statement of the rule; other
+chapters link here.
 
 ### ACC-5 · Accessible authentication
 **Says** — WCAG 2.2 **3.3.8**: no cognitive-function test in authentication
@@ -844,7 +862,7 @@ where it is the case.
 | `COG-10` Goal gradient | `UploadTray` counts real files ("2 of 5"); `Wizard` counts real steps. Progress is never invented to look closer than it is | `lib/upload-queue.spec.ts` |
 | `ACT-5` Postel | `lib/date-parse.ts` reads many shapes of a date and writes one; `Dropzone` takes a drop, a paste or a pick; `normalizePhone` | `lib/date-parse.spec.ts` |
 | `COG-8` Tesler | the system carries the rules so the person does not: `lib/upload-rules.ts` checks type and size at drop time and states the limits first; `lib/guard.ts` decides what a hold is | `lib/upload.spec.ts`, `lib/guard.spec.ts` |
-| `PER-3` Similarity | every form is `Field` inside `FormStack`; every destructive control is the same red, from `ConfirmDialog` to `HoldToConfirm` | `check-danger` (labels); review (shape) |
+| `PER-3` Similarity | every form is `Field` inside `FormStack`; every destructive control is the same red, from `ConfirmDialog` to `HoldToConfirm` | `check-danger` (labels); `check-tells` (`round-button`, for shape); review (the rest) |
 | `COG-11` Serial position | the primary is first in `FormStack` and its links follow; `DangerZone` is last on the page; a card reads title, price, button | review |
 | `COG-13` Peak-end | `useDoneBeat` and `Button done` draw the check before the page leaves; `UploadTray` ends on a plain "2 of 5 uploaded · 1 failed"; `CooldownBanner` names the day it ends | `lib/guard.spec.ts` |
 

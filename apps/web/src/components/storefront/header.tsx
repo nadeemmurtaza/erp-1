@@ -113,8 +113,8 @@ export function Header() {
                               >
                                 {t(item.key)}
                                 <span
-                                  className={`absolute bottom-0 start-0 h-0.5 transition-[width] duration-normal ${
-                                    isParentActive ? 'w-full bg-neutral-900' : 'w-0 bg-neutral-900 group-hover:w-full'
+                                  className={`absolute bottom-0 start-0 h-0.5 w-full origin-left bg-neutral-900 transition-transform duration-normal rtl:origin-right ${
+                                    isParentActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                                   }`}
                                 />
                               </button>
@@ -154,8 +154,8 @@ export function Header() {
                         }`}
                       >
                         {t(item.key)}
-                        <span className={`absolute bottom-0 start-0 h-0.5 transition-[width] duration-normal ${
-                          active ? 'w-full bg-neutral-900' : 'w-0 bg-neutral-900 group-hover:w-full'
+                        <span className={`absolute bottom-0 start-0 h-0.5 w-full origin-left bg-neutral-900 transition-transform duration-normal rtl:origin-right ${
+                          active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                         }`} />
                       </Link>
                     );

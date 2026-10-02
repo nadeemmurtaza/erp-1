@@ -147,7 +147,7 @@ export const TELLS = [
     // button with `disabled={quantity <= 1}` would slip through. A JSX element passed as a prop before the
     // class (`icon={<X />}`) still stops it: that is a miss, named in the header.
     pattern:
-      /(?<![\w-])(?:[\w-]+:)*rounded-(?:full|\[(?:9{3,}px|50%)\])(?![\w-])(?<=<(?:button|a|summary|Link|NextLink|[A-Z]\w*Button)\b(?:[^<>]|=>|[<>]=|(?<=\s)[<>](?=\s))*?)|(?:rounded-full|border-radius:\s*(?:9{3,}px|50%))(?<=\.[\w-]*(?:btn|button)[^{}]*\{[^{}]*?)/g,
+      /(?<![\w-])(?:[\w-]+:)*rounded-(?:full|\[(?:9{3,}px|50%)\])(?![\w-])(?<=<(?:button|a|summary|Link|NextLink|(?:[A-Z]\w*)?Button)\b(?:[^<>]|=>|[<>]=|(?<=\s)[<>](?=\s))*?)|(?:rounded-full|border-radius:\s*(?:9{3,}px|50%))(?<=\.[\w-]*(?:btn|button)[^{}]*\{[^{}]*?)/g,
     why: 'a circular or pill button is a second button shape: the house button has one corner, and a pill is a status (PER-3)',
     instead:
       'the house corner: `rounded` (it resolves to `--radius`), or `.btn`, `.btn-ghost`, `.icon-btn`; circles stay for avatars, dots, spinners and count badges',
@@ -156,6 +156,7 @@ export const TELLS = [
       "<Link\n href={href}\n className={cn('flex h-12 w-12 rounded-full', active)}\n>",
       '<button onClick={() => go()} className="h-8 w-8 lg:rounded-full">',
       '<IconButton className="rounded-full" />',
+      '<Button variant="secondary" className="h-9 w-9 rounded-full">',
       '<a href="/x" className="rounded-[999px] px-3">',
       '<button disabled={quantity <= 1} className="h-9 w-9 rounded-full">',
       '<button disabled={n >= max} onClick={() => go(n > 1)} className="rounded-full">',
@@ -181,9 +182,36 @@ export const TELLS = [
     pattern: /(?<![\w-])transition-all(?![\w-])/g,
     why: 'it animates every property, including layout ones, and shows nobody decided what moves',
     instead:
-      'name the property: `transition-colors`, `transition-transform`, `transition-opacity`, `transition-[width]`, or a token class from ui.md',
+      'name the property: `transition-colors`, `transition-transform`, `transition-opacity`, or a token class from ui.md (never a layout property: see `layout-motion`)',
     hit: ['transition-all duration-normal', 'hover:bg-x transition-all'],
     miss: ['transition-colors', 'transition-[opacity,visibility]', 'transition-transform duration-normal'],
+  },
+  {
+    id: 'layout-motion',
+    scope: 'style',
+    exts: ['.tsx', '.css'],
+    // A Tailwind arbitrary `transition-[…]` that names a property which changes the box (width, height, max-height,
+    // margin, padding, an edge, a grid track), or a CSS `transition` / `transition-property` declaration that does.
+    // `transition-[opacity,visibility]` and `transition-[background-color,color,transform]` are the house forms.
+    pattern:
+      /(?<![\w-])(?:[\w-]+:)*transition-\[[^\]]*\b(?:width|height|margin|padding|top|left|right|bottom|inset|grid-template-rows|grid-template-columns|flex-basis)\b[^\]]*\]|(?<![\w-])transition(?:-property)?\s*:[^;{}]*\b(?:width|height|margin|padding|top|left|right|bottom|inset|grid-template-rows|grid-template-columns|flex-basis)\b/g,
+    why: 'animating a property that changes the box re-lays out the page on every frame, and MOT-5 allows transform and opacity only',
+    instead:
+      'a transform: grow a line with `scale-x-0` to `scale-x-100` and a logical origin, slide with `translate`, and open a region with `Disclosure` (one `rise` on its content, height not animated)',
+    hit: [
+      'transition-[width] duration-normal',
+      'transition-[max-height,opacity] duration-slow',
+      'md:transition-[height]',
+      'transition: width 200ms ease;',
+      'transition-property: margin-left, opacity;',
+    ],
+    miss: [
+      'transition-[opacity,visibility]',
+      'transition-[background-color,color,transform]',
+      'transition-transform duration-normal',
+      'transition: opacity 200ms ease, transform 200ms ease;',
+      'transition-[line-clamp]',
+    ],
   },
   {
     id: 'emoji-glyph',
@@ -311,6 +339,12 @@ export const BASELINE = {
     // input that holds a state, not an action button. Kept as the one circle-shaped control; a designer may
     // rule it into the house corner, which would delete this entry.
     'apps/web/src/components/ui/switch.tsx': 1,
+  },
+  'layout-motion': {
+    // The stitching panel's "Get stitched" region opens by animating `max-height` from 0 to 4000px. Replacing it
+    // means rebuilding the region on `Disclosure`, and the collapsed content is still reachable by Tab today, which
+    // is a separate defect to fix in the same change. Held here, not guessed at.
+    'apps/web/src/components/storefront/stitching-panel.tsx': 1,
   },
   'transition-all': {},
   'emoji-glyph': {
@@ -564,6 +598,12 @@ function main() {
   if (paths.length > 0) return listFiles(paths);
 
   const { hits, dynamic, files } = scan();
+  if (files === 0) {
+    // A check that read nothing found nothing, and printing OK for that is the one lie a lint must not tell:
+    // a moved folder or a wrong working directory would turn every tell green.
+    console.error('Tells scanned 0 files. Run from the repository root; SOURCES lists the folders it reads.');
+    process.exit(1);
+  }
   const growth = [];
   const lower = [];
   const summary = [];

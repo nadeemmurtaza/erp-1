@@ -254,13 +254,15 @@ which is the document of record where it and `ENTERPRISE-SCALE.md` overlap:
   `@RequirePermission` is authenticated-but-unrestricted, which is almost
   never intended.
 
-Three of these are **not machine-enforced yet** — branch-scoped reads,
-pack-absence boot, and undecorated routes. ENTERPRISE-SCALE.md names them, in
-the order they bite. Do not assume a green build proves them.
+Two of these are **not machine-enforced yet** — branch-scoped reads and
+pack-absence boot. ENTERPRISE-SCALE.md names them, in the order they bite. Do
+not assume a green build proves them. (Undecorated routes were the third; it
+is closed — `scripts/check-route-permissions.mjs` runs in `apps/api`'s lint.)
 
 ## Look it up before you search
 
-This repository is ~880 files and ~141k lines across four applications. A
+This repository is large — the live file and line count is the first line of
+`docs/index/README.md` — across four applications. A
 generated index of all of it lives in **`docs/index/`**, and it is regenerated
 and staged by `.githooks/pre-commit` on every commit, so it always describes
 the commit you are looking at.
@@ -414,8 +416,11 @@ may not grow — and each has a `--self-test` that proves its own maths:
 pnpm check:contrast    # COL-3 / ITG-11 — WCAG floors, palette read from brand.ts
 pnpm check:links       # ITG-2/3/5 — links resolve, images exist, no orphan screen
 pnpm check:tells       # the machine-made look: gradients, glass, loud motion, heavy shadows,
-                       # round buttons, transition-all, emoji icons, hype copy, "Success!" with nothing else
+                       # round buttons, transition-all, layout-property transitions, emoji icons, hype copy,
+                       # "Success!" with nothing else
 pnpm check:clipboard   # CPY-3/5 — nothing touches the clipboard except lib/copy.ts (CopyButton)
+pnpm check:danger      # DNG-2 — a destructive label is a verb and its object, never "Yes" or "OK"
+pnpm check:menus       # MNU-6/MNU-2 — a short fixed list is not a native select; a date is not type="date"
 ```
 
 `eslint-plugin-jsx-a11y` runs on both apps for the same reason. What still has

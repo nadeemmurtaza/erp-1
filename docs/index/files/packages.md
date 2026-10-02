@@ -92,7 +92,7 @@ All 114 tracked files in `packages/*`, by directory.
 |---|---|---|---|
 | `api-keys.spec.ts` | unit test | 231 |  |
 | `api-keys.ts` | module | 334 | Personal API keys — what a key may carry, and the pure rules deciding what it may do on a given request. |
-| `brand.ts` | module | 654 | THE BRAND FILE. |
+| `brand.ts` | module | 664 | THE BRAND FILE. |
 | `cod-risk.spec.ts` | unit test | 199 |  |
 | `cod-risk.ts` | module | 167 |  |
 | `collection-rules.ts` | module | 16 | The rule shape `Collection.rule` (catalog.prisma, WO-8.2) holds when a collection is rule-based rather than manually cu… |
@@ -131,7 +131,7 @@ All 114 tracked files in `packages/*`, by directory.
 | `theme-elevation.ts` | module | 12 |  |
 | `theme-layers.ts` | module | 9 |  |
 | `theme-motion.ts` | module | 22 |  |
-| `theme-radii.spec.ts` | unit test | 60 |  |
+| `theme-radii.spec.ts` | unit test | 65 |  |
 | `theme-radii.ts` | module | 29 |  |
 | `theme-runtime.spec.ts` | unit test | 76 |  |
 | `theme-runtime.ts` | module | 63 | How a surface decides which theme it is in — plain functions, no framework. |

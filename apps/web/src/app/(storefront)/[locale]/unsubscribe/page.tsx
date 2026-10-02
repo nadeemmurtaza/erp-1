@@ -59,9 +59,19 @@ export default function UnsubscribePage() {
         <h1 className="text-2xl font-semibold text-neutral-900">{t('title')}</h1>
 
         {status === 'checking' ? (
-          <p className="mt-6 text-sm text-neutral-900/60">{t('checking')}</p>
+          <p role="status" className="mt-6 text-sm text-neutral-900/60">{t('checking')}</p>
         ) : (
-          <p className="notice notice-error mt-6">{error ?? (userId && token ? t('failed') : t('missingDetails'))}</p>
+          <>
+            <p role="alert" className="notice notice-error mt-6">
+              {error ?? (userId && token ? t('failed') : t('missingDetails'))} {t('failedHint')}
+            </p>
+            {/* The remedy (FLO-7): the same preference, changed by the person from inside their account. */}
+            <div className="mt-6">
+              <Link href={ROUTES.storefront.accountNotifications} className="btn btn-primary w-full">
+                {t('toPreferences')}
+              </Link>
+            </div>
+          </>
         )}
 
         <div className="mt-6 text-sm text-neutral-900/60">

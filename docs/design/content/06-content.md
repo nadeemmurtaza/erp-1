@@ -2,10 +2,12 @@
 
 How the product speaks. Copy is interface, not decoration applied afterwards.
 
-> **Status: unbuilt as a system.** Two locales exist in
-> `apps/web/messages/{en,ur}.json` and English in customer-facing JSX is
-> already forbidden. There is no voice guide, no terminology list, and no error
-> message standard — so every error string is invented at its call site.
+> **Status: partly built.** Two locales exist in
+> `apps/web/messages/{en,ur}.json`, English in customer-facing JSX is already
+> forbidden, and the terminology table below is the one word list. Admin pages
+> and the POS write their strings as literals today (a named gap, `ITG-9`).
+> There is still no error-message standard beyond the examples under
+> "Errors", so most error strings are invented at their call site.
 
 ## Voice
 
@@ -15,7 +17,7 @@ frequently anxious — money and stock are involved.
 | Do | Don't |
 |---|---|
 | "Stock updated." | "Great news! Your stock has been updated!" |
-| "You need `inventory.manage` to adjust stock." | "Oops! Access denied." |
+| "You need *Adjust stock* to change stock." | "Oops! Access denied." |
 | "Two of six items are out of stock." | "Some items may be unavailable." |
 | "Closing this period cannot be undone." | "Are you sure?" |
 
@@ -41,6 +43,12 @@ the word once, here, and use it everywhere including code identifiers.
 | A till session | **shift** | session, period (a *period* is fiscal) |
 | Moving stock between locations | **transfer** | shipment, move |
 | What a customer ordered | **order** | sale (a *sale* is the POS channel of an order) |
+| Destroying a record | **delete** | erase, destroy |
+| Taking a thing out of a list, cart or group without destroying it | **remove** | delete (that destroys), clear |
+| Abandoning a flow or a form | **cancel** | back out, discard |
+| Dismissing a notice, a finished dialog or a panel | **close** | cancel (nothing is being abandoned), dismiss |
+| Storing a form | **save** (name the object when it is not obvious: "Save price") | submit, apply, update |
+| Authenticating | **sign in**, **sign out**, **create account** | log in, login, register, sign up |
 
 **Rule.** If a new noun is about to enter the product, it goes in this table
 first. Two words for one concept is a defect, not a style difference.
@@ -75,7 +83,7 @@ What happened  ·  Why  ·  What to do next
 |---|---|
 | "Request failed" | "Couldn't save the order — the connection dropped. Your changes are kept; try again." |
 | "Insufficient stock" | "Only 3 of 5 in stock at Main. Reduce the quantity, or transfer from another location." |
-| "Forbidden" | "You need `payments.approve` to approve a bank transfer. Ask an admin to grant it." |
+| "Forbidden" | "You need *Approve payments* to approve a bank transfer. Ask an admin to grant it." |
 | "Validation error" | "Phone number needs the country code, like +92 300 1234567." |
 
 **Never expose a stack trace, a SQL error, or an internal identifier.** That is
@@ -95,7 +103,8 @@ Order: what this is → what state it is in → what you can do → the detail.
 ## Localisation
 
 - **No English in customer-facing JSX.** Binding. Text comes from
-  `apps/web/messages/*.json`.
+  `apps/web/messages/*.json`. Admin pages and the POS write literals today
+  (`ITG-9` names the gap); that is not a licence for a new customer-facing one.
 - **Never concatenate a sentence from fragments.** Word order differs between
   English and Urdu; build the whole string with placeholders.
 - **Assume strings grow.** Urdu and German commonly run longer than English; a

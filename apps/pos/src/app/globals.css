@@ -10,7 +10,10 @@
  * IS shared: the colour, radius and type tokens both surfaces resolve from
  * the same `@newax/shared` import (see tailwind.config.ts) — only the
  * component layer differs, which is what CLAUDE.md's "a variant inside
- * that system" allows for a genuinely different surface.
+ * that system" allows for a genuinely different surface. The corner is not
+ * part of that difference: a button and a field wear the house corner
+ * (`rounded`, `--radius`) here as on the web (`PER-3`, `FRM-5`); these used
+ * `rounded-lg`, the 3 px panel corner, until the consistency pass.
  */
 @layer base {
   :root {
@@ -25,20 +28,20 @@
 @layer components {
   /* A primary action big enough to hit reliably on a tablet: open shift, complete sale, sign in. */
   .tap-btn {
-    @apply flex min-h-16 w-full items-center justify-center rounded-lg bg-accent px-6 text-lg font-semibold text-white active:opacity-80 disabled:opacity-40;
+    @apply flex min-h-16 w-full items-center justify-center rounded bg-accent px-6 text-lg font-semibold text-white active:opacity-80 disabled:opacity-40;
   }
 
   .tap-btn-secondary {
-    @apply flex min-h-16 w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-6 text-lg font-semibold text-neutral-900 active:bg-neutral-50 disabled:opacity-40;
+    @apply flex min-h-16 w-full items-center justify-center rounded border border-neutral-200 bg-white px-6 text-lg font-semibold text-neutral-900 active:bg-neutral-50 disabled:opacity-40;
   }
 
   /* A numeric-keypad key — square, large, no hover affordance. */
   .keypad-key {
-    @apply flex h-16 items-center justify-center rounded-lg bg-white text-2xl font-semibold text-neutral-900 shadow-sm active:bg-neutral-100;
+    @apply flex h-16 items-center justify-center rounded bg-white text-2xl font-semibold text-neutral-900 shadow-sm active:bg-neutral-100;
   }
 
   .field-input {
-    @apply w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-lg text-neutral-900 focus:border-accent focus:outline-none;
+    @apply w-full rounded border border-neutral-200 bg-white px-4 py-3 text-lg text-neutral-900 focus:border-accent focus:outline-none;
   }
 
   /* One basket row — the sale's own working list, not a data table. */

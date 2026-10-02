@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **2,644** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,646** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -11,13 +11,13 @@ Split by area so you load one, not all of them.
 | Area | Files | Lines | Open |
 |---|---|---|---|
 | apps/api | 1,192 | 159,759 | [files/api.md](../files/api.md) |
-| apps/web | 536 | 96,825 | [files/web.md](../files/web.md) |
-| apps/pos | 33 | 2,668 | [files/pos.md](../files/pos.md) |
+| apps/web | 538 | 96,959 | [files/web.md](../files/web.md) |
+| apps/pos | 33 | 2,671 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 114 | 13,131 | [files/packages.md](../files/packages.md) |
-| docs/* | 437 | 92,083 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 64 | 32,896 | [files/infra.md](../files/infra.md) |
-| repository root files | 219 | 22,084 | [files/root.md](../files/root.md) |
+| packages/* | 114 | 13,146 | [files/packages.md](../files/packages.md) |
+| docs/* | 437 | 92,378 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 64 | 33,111 | [files/infra.md](../files/infra.md) |
+| repository root files | 219 | 22,119 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -33,7 +33,7 @@ name a new file: the convention is what makes it findable.
 | page | 229 |
 | service | 211 |
 | module | 196 |
-| component | 190 |
+| component | 191 |
 | controller | 151 |
 | dto | 135 |
 | migration | 119 |
@@ -54,7 +54,7 @@ name a new file: the convention is what makes it findable.
 | config | 11 |
 | loading | 11 |
 | guard | 9 |
-| constants | 7 |
+| constants | 8 |
 | layout | 6 |
 | channel | 5 |
 | types | 5 |

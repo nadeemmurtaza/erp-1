@@ -77,19 +77,19 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `build-index.mjs` | script | 2561 |  |
+| `build-index.mjs` | script | 2629 |  |
 | `build-logo-raster.mjs` | script | 54 |  |
-| `check-chart-imports.mjs` | script | 72 |  |
-| `check-clipboard.mjs` | script | 169 |  |
-| `check-contrast.mjs` | script | 626 |  |
-| `check-danger.mjs` | script | 213 |  |
+| `check-chart-imports.mjs` | script | 117 |  |
+| `check-clipboard.mjs` | script | 174 |  |
+| `check-contrast.mjs` | script | 650 |  |
+| `check-danger.mjs` | script | 220 |  |
 | `check-email-dns.mjs` | script | 399 |  |
 | `check-env-templates.mjs` | script | 139 |  |
 | `check-frontend-secrets.mjs` | script | 137 |  |
 | `check-hardcoded-policy.mjs` | script | 85 |  |
 | `check-hexagonal-purity.mjs` | script | 149 |  |
 | `check-links.mjs` | script | 416 |  |
-| `check-menus.mjs` | script | 224 |  |
+| `check-menus.mjs` | script | 229 |  |
 | `check-metadata-renderer.mjs` | script | 134 |  |
 | `check-module-boundaries.mjs` | script | 624 |  |
 | `check-overflow.mjs` | script | 644 |  |
@@ -97,7 +97,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-rebrand.mjs` | script | 292 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
 | `check-rules.mjs` | script | 224 |  |
-| `check-tells.mjs` | script | 608 |  |
+| `check-tells.mjs` | script | 648 |  |
 | `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |
@@ -108,7 +108,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `index-scan.mjs` | utility | 944 | Scanners for the repository index. |
+| `index-scan.mjs` | utility | 965 | Scanners for the repository index. |
 | `model-routing.mjs` | utility | 400 | Which model and how much effort each kind of job in this repository deserves. |
 | `render-harness.mjs` | utility | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — th… |
 

@@ -41,8 +41,13 @@ describe('safeguards (DNG-1, DNG-6)', () => {
   });
 });
 
-describe('feedback (CPY-2, CPY-5)', () => {
-  const { copiedHoldMs, copyFailedHoldMs } = BRAND.feedback;
+describe('feedback (CPY-2, CPY-5, SUC-3)', () => {
+  const { copiedHoldMs, copyFailedHoldMs, toastMs } = BRAND.feedback;
+
+  it('leaves a toast after four seconds, the same as a sentence-length copy failure', () => {
+    expect(toastMs).toBe(4000);
+    expect(toastMs).toBe(copyFailedHoldMs);
+  });
 
   it('holds the check for about two seconds', () => {
     expect(copiedHoldMs).toBe(2000);

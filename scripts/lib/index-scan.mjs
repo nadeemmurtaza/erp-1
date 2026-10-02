@@ -193,6 +193,27 @@ export function scanReExports(source) {
   return out;
 }
 
+/**
+ * The names a file takes from each module: `import { A, type B, C as D } from './x'` is
+ * `{ from: './x', names: ['A', 'B', 'C'] }` (the exported name, never the local alias).
+ * Default and namespace imports take no named binding and are left to `scanImports`.
+ * It exists so a usage count can see through a barrel: `import { PageHeader } from '@/components/ui'`
+ * names no file, and only the name says which file is meant.
+ */
+export function scanNamedImports(source) {
+  const out = [];
+  const re = /import\s+(?:type\s+)?(?:[\w$]+\s*,\s*)?\{([^}]*)\}\s*from\s*['"]([^'"]+)['"]/g;
+  let m;
+  while ((m = re.exec(source))) {
+    const names = m[1]
+      .split(',')
+      .map((s) => s.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0].trim())
+      .filter(Boolean);
+    out.push({ from: m[2], names });
+  }
+  return out;
+}
+
 /** Local (relative and workspace) imports — the file's real dependency edges. */
 export function scanImports(source) {
   const out = new Set();

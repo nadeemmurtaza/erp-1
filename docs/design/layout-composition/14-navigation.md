@@ -3,8 +3,8 @@
 One information space holding hundreds of departments, without anybody having
 to learn where anything is.
 
-> **Status: exists, unmeasured.** There are 125 screens and a nav registry
-> today. What does not exist is any measurement of the thing that actually
+> **Status: exists, unmeasured.** There are 278 routable screens (generated:
+> `docs/index/cross/ui-routes.md`) and a nav registry today. What does not exist is any measurement of the thing that actually
 > matters — how deep the tree is, how many entries a real role sees, whether
 > every screen is reachable by clicking, and whether any entry points at a
 > route that is gone. Chapter 15 specifies those checks. Until then the laws
@@ -50,7 +50,7 @@ they have already seen.
 
 The arithmetic that makes this fit: a dozen top-level areas × ~7 entries each
 (`COG-2`) is ~84 reachable destinations before any object-level navigation —
-which is more than a product with 125 screens needs.
+which is a small share of the 278 screens, and more than any one role needs.
 
 ### NAV-3 · Search is a first-class path, not a fallback
 **Here** — at this scale, **search is how people navigate**, and browsing is

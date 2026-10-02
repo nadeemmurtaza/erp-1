@@ -615,7 +615,8 @@ const safeguards = {
 // Feedback
 //
 // How long a control's own answer stays on screen before the control is ready
-// again (CPY-2, CPY-5). Starting values: a deployment retunes them here.
+// again (CPY-2, CPY-5), and how long a toast stays (SUC-3). Starting values: a
+// deployment retunes them here.
 // ---------------------------------------------------------------------------
 
 const feedback = {
@@ -632,6 +633,15 @@ const feedback = {
    * (select the text and copy it by hand), where success carries one glyph.
    */
   copyFailedHoldMs: 4000,
+  /**
+   * How long a toast, and the upload tray after everything succeeded, stays
+   * before it leaves on its own, in ms. A toast is one sentence (about twelve
+   * words, read in two to three seconds) plus the second it takes to notice it
+   * arrived; the same four seconds as a copy failure, which also carries a
+   * sentence. A toast with `duration: 0` stays until dismissed, and a failure
+   * never hides on this timer.
+   */
+  toastMs: 4000,
 } as const;
 
 // ---------------------------------------------------------------------------

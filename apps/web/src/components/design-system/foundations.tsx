@@ -328,12 +328,12 @@ export function SpaceFoundations() {
         </ul>
       </Group>
 
-      <Group title="Radius" note="Controls are square. The one round thing is a status pill, which separates “this is a state” from “this is a control”.">
+      <Group title="Radius" note="Controls and status marks wear the house corner. Round is for avatars, dots, spinners and count chips, none of which is pressed.">
         <ul className="flex flex-wrap gap-6">
           {[
             ['rounded', THEME_RADII.sharp, 'controls, cards'],
             ['rounded-lg', THEME_RADII.lg, 'panels, dialogs'],
-            ['rounded-full', THEME_RADII.pill, 'pills, avatars'],
+            ['rounded-full', THEME_RADII.pill, 'count chips, avatars'],
           ].map(([cls, px, use]) => (
             <li key={cls as string} className="text-center">
               <span className={cn('block h-14 w-20 bg-neutral-200', cls as string)} />

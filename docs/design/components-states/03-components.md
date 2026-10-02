@@ -32,7 +32,17 @@ already existed.
 
 ## Primitives
 
-The primitives, in `apps/web/src/components/ui`:
+The primitives, in `apps/web/src/components/ui`. This table is the page-anatomy
+and disclosure core, with the long-form notes. The complete list, one row per
+export with its usage rule, is the table in `.claude/rules/ui.md` ("Primitives"),
+which loads whenever a component file is opened; where the two differ, that one
+is current, and a primitive added to `ui/index.ts` is added there first.
+`ConfirmDialog`, `HoldToConfirm`, `DangerZone`, `CooldownBanner`, `Field`, `Select`,
+`MultiSelect`, `DateField`, `Menu`, `Dropzone`, `UploadTray`, `SuccessState`,
+`FilterBar`, `Pagination`, `ListPageSkeleton` and the expressive motion tier
+(`CountUp`, `ProgressRing`, `ProgressBar`, `PageEnter`, `RevealScope`, `SwapText`,
+`TruncateReveal`, `DrawIcon`) are described there and in chapters 03, 04 and 05
+under their own laws.
 
 | Import | For |
 |---|---|
@@ -50,7 +60,7 @@ The primitives, in `apps/web/src/components/ui`:
 
 A notice has four tones: `notice-error`, `notice-success`, `notice-warning` (waiting on someone, or about to end — the same amber as the Badge `warning` tone) and `notice-info`.
 
-Cross-surface: `components/common/status-badge` is **the** status pill.
+Cross-surface: `components/common/status-badge` is **the** status mark (a `Badge`, in the house corner).
 `components/common/wizard` is **the** wizard.
 
 **Every primitive, in both themes, as shipped:** `/admin/design-system`. If a component looks wrong in dark, it is wrong there first.
@@ -191,6 +201,15 @@ the outcome (all done, or what failed), not every percentage.
 **Fails when** — a 48 MB upload puts a spinner over the product page for two
 minutes and the operator cannot read the order they came to check.
 
+**One queue, two ways in.** Inside the admin a page calls `useUploads()`, which
+reads the one `useUploadQueue` the shell's `UploadProvider` owns, so the tray
+and every lane are shared. A page outside the admin shell that owns an upload
+mounts its own `useUploadQueue()`. A bare file input that builds a `FormData` and
+calls `fetch` skips `UPL-2` to `UPL-5`; five call sites do that today (admin
+`import`, `rag` and stitching job pages, `csv-import-card`, the storefront's
+`visual-search-button`). That is adoption debt in ADR-083's ledger, not a
+second sanctioned model.
+
 ### MNU · Menus and pickers
 
 ### MNU-1 · Type to filter
@@ -288,6 +307,13 @@ click, and only then is it purged. The cooling-off period is the confirmation.
 
 **Fails when** — an owner deletes a brand on a Friday and there is no Monday.
 
+**Status** — the interface half exists (`CooldownBanner`, the arithmetic in
+`lib/guard.ts`, `BRAND.safeguards.deletionCooldownDays`), and it is shown on
+the design-system page only. No page schedules a removal and no job purges one,
+so no act in the product is on this tier yet, and the "only then is it purged"
+half needs a backend change (a `deletedAt`, a purge job) that is its own work
+order, not part of the design system.
+
 ### FRM · The form recipe
 
 ### FRM-1 · Hierarchy
@@ -310,8 +336,9 @@ question. A label that disappears on focus is a memory test (`COG-6`).
 focus ring that is never removed (`ACC-2`, `COL-4`).
 
 ### FRM-5 · Depth
-**Here** — a 1 px border, a surface lit from the top, and a soft shadow (one
-elevation step, `raised`). The card takes the house corner (`--radius-lg`) and
+**Here** — a 1 px border and a surface lit from the top, with no shadow at rest
+(`CRD-4`: a border and a shadow on one edge draw two boundaries). The card takes
+the house corner (`--radius-lg`) and
 its fields the field corner (`--radius`); the reel this came from used 24 and
 12, which are soft-brand values and one decision away (see ADR-083's seventh
 addendum), not a literal to copy. A form that is the only thing on a page still
@@ -436,7 +463,7 @@ Every component in this system:
 2. **Implements every applicable state** (Chapter 04) — not just resting.
 3. **Is keyboard-operable and announces itself** (Chapter 07).
 4. **Consumes motion tokens if it moves at all** (Chapter 05).
-5. **Takes its text from `messages/*.json`** if a user reads it (Chapter 06).
+5. **Takes its text from `messages/*.json`** if a customer reads it (Chapter 06; admin and POS write literals today, `ITG-9`).
 6. **Has one job.** A component that renders differently for four unrelated
    callers is four components wearing a coat.
 

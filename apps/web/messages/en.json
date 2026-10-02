@@ -734,7 +734,13 @@
     "toAccount": "Go to your account",
     "backToStore": "Back to the store",
     "failed": "Could not confirm your email address.",
-    "missingToken": "This verification link is missing its token."
+    "missingToken": "This verification link is missing its token.",
+    "failedHint": "The link may have expired, or it may already have been used.",
+    "resend": "Send a new link",
+    "resending": "Sending…",
+    "resent": "A new link is on its way to your email.",
+    "resendFailed": "We could not send a new link. Try again in a minute.",
+    "signInToResend": "Sign in to get a new link"
   },
   "unsubscribe": {
     "title": "Email preferences",
@@ -743,12 +749,22 @@
     "successDetail": "Order and account emails still reach you — those aren’t marketing.",
     "backToStore": "Back to the store",
     "failed": "Could not process this request.",
-    "missingDetails": "This unsubscribe link is missing its details."
+    "missingDetails": "This unsubscribe link is missing its details.",
+    "failedHint": "If the link is old, you can change this yourself in your account.",
+    "toPreferences": "Open notification settings"
   },
   "passwordReset": {
     "successTitle": "Password changed",
     "successDetail": "Sign in with your new password.",
-    "signIn": "Sign in"
+    "signIn": "Sign in",
+    "title": "Choose a new password",
+    "missingToken": "This link is missing its reset token. Request a new one from the <link>password reset page</link>.",
+    "passwordLabel": "New password",
+    "passwordHint": "At least 8 characters.",
+    "submit": "Set new password",
+    "saving": "Saving…",
+    "failed": "Could not reset your password.",
+    "requestNew": "Request a new reset link"
   },
   "warrantyVerify": {
     "title": "Verify your purchase",
@@ -814,5 +830,17 @@
     "subscribe": "Subscribe",
     "subscribing": "Subscribing…",
     "subscribed": "You're subscribed."
+  },
+  "forgotPassword": {
+    "title": "Reset your password",
+    "intro": "Enter your email and we’ll send you a link to reset your password.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "submit": "Send reset link",
+    "sending": "Sending…",
+    "sent": "If an account exists for {email}, we’ve sent a link to reset your password. It expires in one hour.",
+    "useDifferent": "Use a different email",
+    "backToSignIn": "Back to sign in",
+    "failed": "Something went wrong. Try again in a minute."
   }
 }

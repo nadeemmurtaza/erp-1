@@ -3,7 +3,7 @@
 
 # Tests
 
-**387** spec files, **4,030** cases. What is already pinned down — and what is not.
+**387** spec files, **4,031** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -425,7 +425,7 @@ regression or an N+1.
 | `packages/shared/src/secret-crypto.spec.ts` | packages | 5 | secret-crypto |
 | `packages/shared/src/sku.spec.ts` | packages | 7 | generateSku |
 | `packages/shared/src/theme-contrast.spec.ts` | packages | 16 | contrast maths · dark palette · dark stock hues — inverted in lightness, not in hue |
-| `packages/shared/src/theme-radii.spec.ts` | packages | 10 | concentricRadius (CRD-5) · safeguards (DNG-1, DNG-6) · feedback (CPY-2, CPY-5) |
+| `packages/shared/src/theme-radii.spec.ts` | packages | 11 | concentricRadius (CRD-5) · safeguards (DNG-1, DNG-6) · feedback (CPY-2, CPY-5, SUC-3) |
 | `packages/shared/src/theme-runtime.spec.ts` | packages | 9 | resolveTheme · isThemePreference · themeInitScript |
 | `packages/shared/src/theme-space.spec.ts` | packages | 13 | spacing and size tokens · layers · elevation · motion |
 | `packages/shared/src/units.spec.ts` | packages | 7 | toBaseUnits · fromBaseUnits · formatQuantity |

@@ -52,7 +52,7 @@ agent can follow it, and each cites the laws by ID.
 | Before a PR that changes what a person sees | `/ux-review` | Ship or Fix first, on the added lines only; read-only |
 | A screen that looks machine-made | `/restyle` | the tells removed, the house system back and the `check-tells` count down; it edits files, so it runs only when asked |
 
-The `ux` subagent (`.claude/agents/ux.md`: sonnet at high effort, no edit tools)
+The `ux` subagent (`.claude/agents/ux.md`: sonnet at high effort; it reads, searches and runs commands, with no edit or write tools)
 does the first three in its own context. `scripts/check-rules.mjs` fails the
 build when a skill is malformed or when a rule or a skill cites a law that does
 not exist, so the procedures cannot drift from the laws they apply.
@@ -89,22 +89,26 @@ specification for something not yet built.
   under Law 6. Every motion honours `prefers-reduced-motion`, and under it the
   information the motion carried survives — the state does not simply jump.
 - **Never animate a property that forces layout.** Transform and opacity.
-- **Interaction responds within one frame**, even when the result is slow.
-  The acknowledgement is immediate; the result can take as long as it takes.
+- **Interaction responds within one frame** (`ACT-3`), even when the result is
+  slow. The acknowledgement is immediate; the result can take as long as it
+  takes, and the two are different promises.
 - **Keyboard reaches everything.** Every interactive element is operable
   without a mouse, focus is visible, and nothing traps it. This includes the
   POS — till hardware often has a keyboard and no mouse.
-- **Touch targets are at least 44×44**, and 48×48 on the POS.
+- **Touch targets are at least 44×44 below `fold`**, and 48×48 on the POS at every
+  width (`ACC-4` states the rule, including what `fold` and up does and why).
 - **Use logical properties, not `left`/`right`.** Urdu ships; a physical
   direction is a bug in a right-to-left locale.
-- **Every user-visible string lives in `messages/*.json`**, and every number,
+- **Every customer-facing string lives in `messages/*.json`**, and every number,
   date and currency goes through the shared formatter — never
-  `toLocaleString`. This is Law 1 as much as it is content.
+  `toLocaleString`. This is Law 1 as much as it is content. Admin pages and
+  the POS write literals today; `ITG-9` names that as a gap, and it is not a
+  licence for a new customer-facing literal.
 - **One word per concept.** The terminology table in `06-content` decides it;
   a synonym is a defect, not a style choice.
-- **No dead end** (`ITG-1`). Every screen and every state — empty, error,
-  permission-blocked, absent-module, end-of-flow — has a forward action and a
-  marked exit.
+- **No dead end** (`ITG-1`; `ui.md`'s "No dead ends" holds the per-state
+  rules). Every screen and every state — empty, error, permission-blocked,
+  absent-module, end-of-flow — has a forward action and a marked exit.
 - **One headline, three stops** (`HIE-1`, `HIE-2`). The largest text names the
   page's job, and the eye stops at most three times on the way to the one loud
   button: the headline, the content, the action.
@@ -117,15 +121,17 @@ specification for something not yet built.
   it. When that inverts, the page groups backwards and is read wrong.
 - **Hide a nav entry, disable an action, explain both** (`PRM-2`). A door to a
   locked room is a dead end; a silently missing action makes the object look
-  different than it is. The reason text names the permission, not "denied".
+  different than it is. An action a role could grant is disabled with its
+  reason visible on focus and touch, never on hover alone; one that is
+  irrelevant to the role, or that an absent module takes away, is not rendered.
+  The reason names the capability's label, not the key and not "denied".
 - **Layout closes over absence** (`PRM-5`, `MOD-1`). When a permission or a
   module is missing, the layout reflows — it never leaves a hole. So a
   permission- or module-sensitive region is content-driven (`auto-fit`,
   `flex-wrap`), never a fixed template with slots that may be empty.
-- **Acknowledge within one frame** (`ACT-3`), whatever the result costs. The
-  acknowledgement and the result are two different promises.
 - **Match friction to blast radius** (`ACT-6`). Reversible and small → do it,
-  offer undo. Irreversible or wide → name the object and the count.
+  offer undo. Irreversible or wide → hold to confirm (`DNG-1`) when the label
+  says it all, otherwise a dialog naming the object and the count.
   Irreversible and financial or cross-branch → require typing the name.
 - **A success says what happened to which thing, offers the next step and
   spends the right surface** (`SUC-1` to `SUC-3`). At most one open loop, and
@@ -158,11 +164,15 @@ Governance, deprecation and naming are `08-governance`.
 
 Stated out loud so a green build is never mistaken for a reviewed screen.
 
-`pnpm lint` **does** check: contrast against the WCAG floor
-(`check-contrast.mjs`), that every link and image resolves and every screen is
-reachable (`check-links.mjs`), and the `eslint-plugin-jsx-a11y` rules.
+`pnpm lint` **does** check: contrast against the WCAG floor for colours written
+as classes or in `@apply` statements (`check-contrast.mjs`), that every link and image resolves and every
+screen is reachable (`check-links.mjs`), the machine-made look
+(`check-tells.mjs`), destructive labels, native menus, the clipboard, and the
+`eslint-plugin-jsx-a11y` rules. `check-overflow.mjs` sweeps the seven widths in
+its own CI job, because it needs a seeded stack.
 
-It does **not** check: focus order, reduced motion, RTL, touch-target size, or
-whether a screen wastes its width — those need a render, which does not exist
-yet. There is no visual regression. `09-quality` lists them as questions a
-person answers before merge, and `15-integrity` ranks what to automate next.
+It does **not** check: focus order, reduced motion, RTL, touch-target size, a
+colour assembled at run time, or whether a screen wastes its width without
+overflowing. There is no visual regression. `09-quality`
+lists them as questions a person answers before merge, and `15-integrity`
+ranks what to automate next.

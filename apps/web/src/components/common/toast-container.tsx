@@ -3,6 +3,12 @@
 import { cn } from '@/utils/cn';
 import type { Toast } from '@/hooks/use-toast';
 
+/**
+ * UNUSED: nothing imports this. `components/admin/toast-stack.tsx` is the one toast stack (a live region, an
+ * arrival and an exit, a timer line, logical positioning). Kept rather than deleted because deleting a file
+ * needs the owner's word; it is listed for that decision in ADR-083's consistency addendum.
+ */
+
 interface ToastContainerProps {
   toasts: Toast[];
   onRemove: (id: string) => void;

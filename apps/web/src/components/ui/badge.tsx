@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 
 /**
- * A status pill.
+ * A status mark, in the house corner. (A round shape is a count chip, `.pill`,
+ * and is not a status: PER-3.)
  *
  * Before this, status colours were written inline at each call site, so
  * "paid" was `text-green-600` on one screen and `bg-green-100 text-green-800`

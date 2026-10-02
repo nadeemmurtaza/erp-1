@@ -4,10 +4,15 @@ What has to be true before a screen ships, and — stated honestly — which of 
 a command proves and which of it a person has to look at.
 
 Status: **the engineering gates are real and green; the design gates are
-not automated at all.** `pnpm check` runs index freshness, lint (which
-includes module boundaries, frontend secrets, env templates and the rule
-index), typecheck and tests. Nothing in that chain looks at contrast, focus
-order, reduced motion, RTL, or whether a screen wastes its width.
+partly automated.** `pnpm check` runs index freshness, lint, typecheck and
+tests. `pnpm lint` includes module boundaries, frontend secrets, env
+templates, the rule index and, for design, `check-rebrand`, `check-contrast`,
+`check-links`, `check-danger`, `check-menus`, `check-clipboard` and
+`check-tells`; `check-overflow` sweeps the seven widths in its own CI job.
+Nothing in any of them looks at focus order, reduced motion, RTL, or whether
+a screen wastes its width. `check-contrast` judges the colours it can read
+(classes, and `@apply` statements in the stylesheets), not a colour assembled
+at run time or a surface it cannot see without a render.
 
 ## The two columns
 
@@ -30,11 +35,18 @@ pnpm check <gate>          # one gate: index, lint, typecheck, test, build
 | No secret reachable from the frontend bundle | `scripts/check-frontend-secrets.mjs` |
 | Every env var documented in the templates | `scripts/check-env-templates.mjs` |
 | No brand literal in application code (Law 1) | `scripts/check-rebrand.mjs` |
-| No rule file orphaned from `CLAUDE.md`'s index | `scripts/check-rules.mjs` |
+| No rule file orphaned from `CLAUDE.md`'s index; skills well formed; every cited law exists | `scripts/check-rules.mjs` |
+| Colour pairs written as classes meet their floors, in both themes (a ratchet) | `scripts/check-contrast.mjs` |
+| Links resolve, images exist, no orphan screen | `scripts/check-links.mjs` |
+| Destructive labels name the act (DNG-2) | `scripts/check-danger.mjs` |
+| Native selects and date inputs stay within their baseline (MNU-6, MNU-2) | `scripts/check-menus.mjs` |
+| Nothing touches the clipboard except `lib/copy.ts` (CPY-3, CPY-5) | `scripts/check-clipboard.mjs` |
+| The machine-made look: gradients, glass, loud motion, heavy shadows, round buttons, layout-property transitions, emoji icons (a ratchet) | `scripts/check-tells.mjs` |
+| No page overflows sideways at the seven widths (needs a seeded stack, so its own CI job) | `scripts/check-overflow.mjs` |
 | Types sound across the workspace | `turbo run typecheck` |
 | Behaviour as specified | `turbo run test` |
 | It compiles for production | `turbo run build` |
-| Formatting | `pnpm format:check` |
+| Formatting | `pnpm format:check`, which is **red repo-wide at baseline** and is not in `pnpm check` or CI; it proves nothing until the repository is formatted and the check is gated (an open decision, ADR-083) |
 
 CI (`.github/workflows/ci.yml`) runs lint, index, typecheck, test and build
 against a real Postgres with migrations applied and the database seeded — so
@@ -111,7 +123,7 @@ not a matter of taste.
 **Content** — [06 · Content](../content/06-content.md):
 
 - One word per concept, matching the terminology table?
-- Is every user-visible string in `messages/*.json`?
+- Is every customer-facing string in `messages/*.json`? (Admin and POS literals are the named gap, `ITG-9`.)
 - Does a number, date or currency go through the shared formatter rather than
   `toLocaleString`?
 
@@ -146,10 +158,11 @@ What the next automation should be, in the order it would catch the most:
 1. ~~**`eslint-plugin-jsx-a11y`**~~ — **done.** Enabled in both apps' configs;
    the 24 violations it found are fixed, and its four documented exceptions
    each carry their reason at the line.
-2. **A token lint** — once spacing/size/shadow/z/motion tokens exist
-   ([01 · Foundations](../foundations/01-foundations.md)), a rule that rejects a raw value
-   where a token exists. Without it the token layer decays the week after
-   it ships.
+2. **A token lint** — the spacing/size/shadow/z/motion tokens now exist
+   ([01 · Foundations](../foundations/01-foundations.md)), and `check-rebrand` fences
+   brand literals, but nothing rejects a raw value where a token exists
+   (off-scale `text-[Npx]`, physical `ml-`/`text-left` where a logical class
+   exists, a `px`/`ms` literal). Without it the token layer decays.
 3. ~~**Contrast checking in CI**~~ — **done**, `scripts/check-contrast.mjs`.
    It confirmed the failure chapter 07 records, found a larger one — the
    brand accent and the secondary-text ramp were both under the body-text
@@ -158,7 +171,7 @@ What the next automation should be, in the order it would catch the most:
 4. **Screenshot diffing at the seven widths** — expensive, and the only thing
    that makes Law 4 verifiable rather than remembered.
 
-None of these exist. Until they do, this chapter's second column is the gate,
+Items 2 and 4 do not exist. Until they do, this chapter's second column is the gate,
 and it is a person — so it is written as questions a person can actually
 answer, not as an aspiration to "review quality".
 

@@ -28,6 +28,7 @@ import { DispatchFlowSpecimen } from './dispatch-flow';
 import { JourneyTiersSpecimen, RoutingCanvasSpecimen } from './flow-concepts';
 import { BentoSpecimen, SkeletonSpecimen } from './layout-loading';
 import { LayeringSpecimen } from './layering';
+import { PageStructureSpecimens } from './page-structure-specimens';
 import { MotionSpecimens } from './motion-specimens';
 import { PeopleAccessSpecimen } from './people-access';
 import { PublishAudienceSpecimen } from './publish-audience';
@@ -233,6 +234,7 @@ export function DesignSystemGallery() {
           >
             <SkeletonSpecimen />
           </Group>
+          <PageStructureSpecimens />
           <Group
             title="Board with scoped tiles"
             note="Every tile says who reads it and who writes it. A tile the viewer cannot read is left out and the row closes over it; one they can read but not change keeps a disabled Edit with the permission written beside it. The grid map under it writes the layout out as columns."

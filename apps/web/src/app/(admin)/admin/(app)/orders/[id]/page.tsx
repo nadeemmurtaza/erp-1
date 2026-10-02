@@ -8,6 +8,7 @@ import { useAdminSession } from '@/components/admin/session';
 import { Button, Dialog, Disclosure, Loading, PageHeader } from '@/components/ui';
 import { StatusBadge, statusLabel } from '@/components/common/status-badge';
 import { paymentProviderLabel } from '@/constants/payment-methods';
+import { ORDER_NEXT_STATUS } from '@/constants/order-transitions';
 
 interface OrderItem {
   id: string;
@@ -92,18 +93,6 @@ interface OrderDetail {
   shipments: Shipment[];
   statusEvents: StatusEvent[];
 }
-
-/** Which status a staff member may move an order to next. Mirrors the API. */
-const NEXT_STATUS: Record<string, string[]> = {
-  PENDING: ['CONFIRMED', 'CANCELLED'],
-  CONFIRMED: ['PROCESSING', 'CANCELLED'],
-  PROCESSING: ['READY_TO_SHIP', 'CANCELLED'],
-  READY_TO_SHIP: ['SHIPPED', 'CANCELLED'],
-  SHIPPED: ['DELIVERED', 'RETURNED'],
-  DELIVERED: ['RETURNED'],
-  CANCELLED: [],
-  RETURNED: [],
-};
 
 export default function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -227,7 +216,7 @@ export default function AdminOrderDetailPage({ params }: { params: Promise<{ id:
   // Cancelling and returning are not "next steps" — they undo the order, and
   // one of them puts stock back. They belong at the bottom with the rest of
   // the destructive actions, not beside the button that moves it forward.
-  const transitions = NEXT_STATUS[order.status] ?? [];
+  const transitions = ORDER_NEXT_STATUS[order.status] ?? [];
   const forward = transitions.filter((next) => next !== 'CANCELLED' && next !== 'RETURNED');
   const undoing = transitions.filter((next) => next === 'CANCELLED' || next === 'RETURNED');
 

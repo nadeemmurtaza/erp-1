@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dialog } from './dialog';
 import { Button } from './button';
 import { cn } from '@/utils/cn';
 
 /**
- * The one way a destructive action gets confirmed.
+ * The dialog way to confirm a destructive action: the plain tier of `ACT-6`, and
+ * with `typeToConfirm` the top one. (The middle tier, a hold on the button
+ * itself, is `HoldToConfirm`.)
  *
  * Five admin pages asked the browser's own `confirm()` for this instead —
  * no focus trap, no `role="dialog"`, unstyled, and the WCAG failure that
@@ -42,6 +44,12 @@ import { cn } from '@/utils/cn';
  * For the middle tier of `ACT-6` a hold on the button itself (`HoldToConfirm`)
  * replaces this dialog; the typed-name tier and anything that needs a consequence
  * paragraph still use it.
+ *
+ * The typed text is cleared whenever the dialog closes and whenever the name it
+ * must match changes. Without that, confirming "Delete branch Lahore", closing,
+ * and opening the dialog again for the same name showed the button already
+ * unlocked, and the one thing the top tier exists for (typing the name, this
+ * time) was skipped.
  */
 export function ConfirmDialog({
   open,
@@ -72,6 +80,9 @@ export function ConfirmDialog({
   typeToConfirm?: string;
 }) {
   const [typed, setTyped] = useState('');
+  useEffect(() => {
+    setTyped('');
+  }, [open, typeToConfirm]);
   const locked = typeToConfirm !== undefined && typed !== typeToConfirm;
   const destructive = variant === 'danger';
   const confirm = (

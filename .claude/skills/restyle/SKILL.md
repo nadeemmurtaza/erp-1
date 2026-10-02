@@ -24,7 +24,8 @@ node scripts/check-tells.mjs <file> [<file>...]   # the tells in these files, wi
 
 The tells it can see are gradient surfaces, glass (`backdrop-blur`), bouncing and
 pinging motion, heavy shadows, round buttons (`rounded-full` on a button, link or icon button:
-use the house corner, `rounded`), `transition-all`, emoji used as icons, marketing
+use the house corner, `rounded`), `transition-all`, a transition on a layout property
+(`layout-motion`: width, height, margin, an edge), emoji used as icons, marketing
 filler and a success message with no content. The whole-repo run prints only
 totals, so note the per-file lines for the files you are about to touch.
 

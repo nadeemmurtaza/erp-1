@@ -147,6 +147,11 @@ function main() {
   if (process.argv.includes('--self-test')) return selfTest();
 
   const { found, files } = scan();
+  if (files === 0) {
+    // Zero files read is not "nothing touches the clipboard": it is a moved folder or a wrong working directory.
+    console.error('Clipboard scanned 0 files. Run from the repository root.');
+    process.exit(1);
+  }
   console.log(`Scanned ${files} files outside ${ALLOWED.join(', ')}. Clipboard calls found: ${found.length}.`);
 
   if (found.length === 0) {

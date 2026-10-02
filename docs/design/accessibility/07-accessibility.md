@@ -5,9 +5,10 @@ How broadly the product can actually be used.
 > **Status: still the largest gap, but no longer unverified.**
 > `eslint-plugin-jsx-a11y` now runs on both apps (chapter 15's check 4), so
 > the hand-written `aria-*` across the three surfaces has something checking
-> it. What lint cannot see — focus order, contrast in place, reduced motion,
-> RTL — is still individual diligence. The stylesheet has **two**
-> `prefers-reduced-motion` blocks. Urdu ships in production and RTL is 30
+> it, and `check-contrast` measures the colour pairs written as classes, and
+> in `@apply` lines of the stylesheets, in both themes. What neither can see —
+> focus order, reduced motion, RTL — is still individual diligence. The stylesheet has **two**
+> `prefers-reduced-motion` blocks. Urdu ships in production and RTL is 62
 > scattered references with no system behind them.
 >
 > This chapter is a specification and a to-do list, not a description.
@@ -74,11 +75,17 @@ including the POS — till hardware often has a keyboard and no mouse.
 | UI component boundaries and states | 3:1 |
 | Focus indicator | 3:1 against adjacent colours |
 
-**Unbuilt and worth building first.** No file in the repository mentions
-contrast or WCAG. Every foreground/background pair the tokens permit should be
-checked by a script in `scripts/`, run by `pnpm lint`. Contrast is arithmetic
-over tokens — it is the cheapest accessibility guarantee available and it never
-needs a human.
+**Built.** `scripts/check-contrast.mjs`, run by `pnpm lint`, reads the palette
+from `brand.ts` and measures the pairs written as classes, and the pairs in
+`@apply` statements (the house classes `.field-input`, `.btn-secondary`,
+`.chip-unselected`, `.card`, and the POS equivalents), against these floors in
+both themes, as a ratchet (most uses warn only). It used to read quoted class
+strings only, which hid the house classes from it; reading them added six
+control outlines at 1.54:1 to 1.72:1 to the baseline, a real failure of the
+3:1 boundary floor above that is now written down and not yet fixed (it is an
+owner decision: ADR-083, consistency addendum). Contrast is arithmetic over
+tokens — the cheapest accessibility guarantee available, and it never needs a
+human.
 
 Note the tension with `.claude/rules/ui.md`: container edges are
 `border-neutral-100` (#E8E8E8), which is deliberately soft and will **not**
@@ -91,7 +98,8 @@ know the difference rather than flagging every soft edge.
 
 | Surface | Minimum |
 |---|---|
-| Web | 24×24 CSS px, with spacing |
+| Web, below `fold` | 44×44 (ACC-4) |
+| Web, `fold` and up | 40 tall for `.btn`, 36 square for `.icon-btn`, never below 24×24 CSS px with spacing (WCAG 2.5.8) |
 | Mobile | 44×44 |
 | **POS** | **48×48** — used standing, at speed, sometimes gloved |
 
@@ -144,11 +152,12 @@ In rough order of value per effort:
 1. ~~**`eslint-plugin-jsx-a11y`** in both web eslint configs.~~ **Done.** Turns hopeful
    `aria-*` attributes into something verified, and catches the whole class of
    missing-label and bad-role errors at build time.
-2. **A contrast checker** over `theme-colors.ts`, run by `pnpm lint`.
+2. ~~**A contrast checker** over `theme-colors.ts`, run by `pnpm lint`.~~ **Done**
+   (`check-contrast.mjs`), which now reads `@apply` lines too.
 3. **Logical properties** adopted in `globals.css` and the primitives, which
    fixes most RTL layout at the source.
 4. **Reduced-motion coverage** as a rule rather than two blocks.
-5. **A keyboard pass on the primitives** — 13 components, done once, inherited
+5. **A keyboard pass on the primitives** — 43 components, done once, inherited
    by every page.
 6. Automated axe checks in the e2e suite for the main templates.
 

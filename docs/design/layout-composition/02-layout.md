@@ -2,8 +2,10 @@
 
 How a page is arranged, and how that arrangement survives seven screen widths.
 
-Status: **breakpoints are built** (`apps/web/tailwind.config.ts`). The density
-and reflow rules below are enforced by review.
+Status: **breakpoints are built** (`apps/web/tailwind.config.ts`), on a scale
+whose names differ from Law 4's (the table under "The seven screens" maps one
+onto the other). The seven widths are swept in CI by `check-overflow`; the
+density and reflow rules below are enforced by review.
 
 ## The page skeleton
 
@@ -98,6 +100,24 @@ too.
 Android device, and `fold` is the inner screen of a folding phone, which is
 why it sits between `sm` and `md` rather than being folded into either.
 
+**These are the widths a page must work at, not the Tailwind prefixes.**
+`apps/web/tailwind.config.ts` names a different scale, and a builder who writes
+`sm:` expecting the law's 380 gets 640:
+
+| Prefix in code | Starts at | First law width it applies to |
+|---|---|---|
+| none (the base styles) | 0 | `xs` 280: below the first prefix, the base layout alone must work |
+| `xs:` | 380 | `sm` 380 |
+| `sm:` | 640 | `fold` 640 |
+| `fold:` | 672 | none: the sweep's 640 sits below it, so 672 to 767 is never swept |
+| `md:` `lg:` `xl:` `2xl:` | 768, 1024, 1280, 1536 | the same name and width |
+
+The config's `fold` was retuned to 672 against measured devices (a Z Fold
+opened into tablet mode is about 673 to 717 px wide); the law's round 640
+predates that. Renaming the config (every `xs:`, `sm:` and `fold:` utility in
+the codebase) or restating the law is an open decision, recorded in ADR-083's
+consistency addendum with the harness comment that first named it.
+
 ## Reflow rules
 
 In order of preference, because the first preserves the most meaning:
@@ -118,20 +138,19 @@ existing table changes. Below `md` each row becomes a card (the first column is
 its title, every other column a label and a value); from `md` it is the same
 table. Use it for a list whose rows are read one at a time — a person, an audit
 entry, an import row — and leave it off where rows are compared against each
-other, which is what the rule above already says. The planned admin screens in
-`docs/implementation/admin-platform/220-admin-ui-gemini-ideas-design-spec.md`
-name five such lists; `/admin/design-system#patterns` shows it at every width.
+other, which is what the rule above already says. The planned admin screens in the admin-platform design spec (it lives on
+another branch, see ADR-083's fourth addendum) name five such lists; `/admin/design-system#patterns` shows it at every width.
 
 ## Multi-surface parity
 
-Four front ends — `apps/web` (admin + storefront), `apps/pos`, `apps/mobile` —
-share `packages/shared` and nothing else.
+Four front ends — the admin and the storefront (both in `apps/web`),
+`apps/pos` and `apps/mobile` — share `packages/shared` and nothing else.
 
 **Rules**
 - A token belongs in `packages/shared`, never in one app's config, because the
   POS and mobile do not read `tailwind.config.ts`.
 - The same concept keeps the same name and the same shape across surfaces. A
-  status pill is `components/common/status-badge` everywhere, and there is
+  status is `components/common/status-badge` (a `Badge`) everywhere, and there is
   never an eighth one.
 - A surface may omit a capability. It may not rename or restyle one it has.
 
@@ -151,16 +170,12 @@ possibly offline. It is the one surface where the usual instincts are wrong:
 ## Verifying
 
 ```bash
-# No horizontal overflow and no nested boxes
-python scripts/nested-borders.py
-
-# Every Next app ships its error/not-found/global-error routes
-for app in apps/web apps/pos; do
-  for f in global-error.tsx not-found.tsx; do
-    [ -f "$app/src/app/$f" ] || echo "MISSING: $app/src/app/$f"
-  done
-done
+pnpm check:overflow            # ITG-4: no horizontal overflow at the seven widths (own CI job; needs a seeded stack)
+python scripts/nested-borders.py   # nested boxes: 0 beyond the two known controls (ui.md, "Borders and boxes")
 ```
 
-Reflow itself has no automated check today. Chapter 09 says what that costs
-and what would fix it.
+The check that every Next app ships its error, not-found and global-error
+routes is the snippet in `.claude/rules/ui.md` ("No dead ends"); it is kept in
+one place. Reflow is checked at the seven widths, but a page that wastes its
+width without overflowing is not: chapter 09 says what that costs and what
+would fix it.

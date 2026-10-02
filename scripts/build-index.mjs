@@ -29,11 +29,11 @@
 import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync, readdirSync, statSync, chmodSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { join, dirname, basename, extname, relative } from 'node:path';
+import { join, dirname, basename, extname, relative, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   readText, trackedFiles, fileDoc, docAbove, clip, cell,
-  scanSymbols, scanReExports, scanImports,
+  scanSymbols, scanReExports, scanImports, scanNamedImports,
   scanController, accessOf, scanNestModule,
   scanEventCatalog, scanEventUsage, scanCron, scanStateMachines,
   scanPrisma, scanMigration, scanMigrationSql, schemaMigrationDrift,
@@ -136,6 +136,7 @@ for (const r of records) {
   r.symbols = scanSymbols(r.source);
   r.reExports = scanReExports(r.source);
   r.imports = scanImports(r.source);
+  r.namedImports = scanNamedImports(r.source);
   if (r.ext === '.tsx') r.client = isClientComponent(r.source);
 }
 
@@ -1959,22 +1960,80 @@ ${BACK(self)}`);
   const self = 'docs/index/cross/components.md';
   const componentRecords = records.filter((r) => r.ext === '.tsx' && r.rel.includes('/components/'));
 
-  // Usage count: how many files import each component module.
-  const usage = new Map();
-  for (const r of componentRecords) usage.set(r.rel, 0);
+  // Usage count: how many FILES import each component module, directly or through a barrel.
+  //
+  // A specifier is resolved to a path (`@/x` against the importing app's `src`, `./x` against the importer)
+  // and compared with the component's path, so `section` no longer matches `rail-section`. And
+  // `import { PageHeader } from '@/components/ui'` names no file at all, so the barrel's own re-exports say
+  // which file a name lives in; before this, PageHeader (taken by well over a hundred pages through the
+  // barrel) read as imported by one file.
+  const importers = new Map(componentRecords.map((c) => [c.rel, new Set()]));
+  /** The same, per exported name: `file#Name` -> importing files. */
+  const byName = new Map();
+  const stemPath = (c) => c.rel.replace(/\.tsx$/, '');
+  const byStem = new Map(componentRecords.map((c) => [stemPath(c), c]));
+  const resolveSpec = (importerRel, spec) => {
+    if (spec.startsWith('@/')) return posix.normalize(`${importerRel.split('/').slice(0, 3).join('/')}/${spec.slice(2)}`);
+    if (spec.startsWith('.')) return posix.normalize(posix.join(dirname(importerRel), spec));
+    return null;
+  };
+
+  // dir -> (exported name -> the component file that defines it), from each barrel's `export { … } from './x'`.
+  const barrels = new Map();
+  const typeExports = new Set();
+  for (const b of records) {
+    if (!/^index\.tsx?$/.test(b.base) || !b.rel.includes('/components/')) continue;
+    const names = new Map();
+    for (const re of b.reExports ?? []) {
+      const target = byStem.get(posix.normalize(posix.join(dirname(b.rel), re.from)));
+      if (!target) continue;
+      const taken = re.names[0] === '*' ? (target.symbols ?? []).map((sym) => sym.name) : re.names;
+      for (const name of taken) {
+        if (/^type\s/.test(name)) typeExports.add(name.replace(/^type\s+/, ''));
+        names.set(name.replace(/^type\s+/, ''), target.rel);
+      }
+    }
+    barrels.set(dirname(b.rel), names);
+  }
+
   for (const r of records) {
     if (!isTs(r)) continue;
-    for (const imp of r.imports ?? []) {
-      for (const c of componentRecords) {
-        const stem = c.rel.replace(/\.tsx$/, '');
-        if (imp.endsWith(`/${basename(stem)}`) || imp.endsWith(basename(stem))) {
-          if (imp.startsWith('@/components') || imp.startsWith('.')) {
-            usage.set(c.rel, (usage.get(c.rel) ?? 0) + 1);
-          }
-        }
+    for (const spec of r.imports ?? []) {
+      const resolved = resolveSpec(r.rel, spec);
+      const direct = resolved && byStem.get(resolved);
+      if (direct && direct.rel !== r.rel) importers.get(direct.rel).add(r.rel);
+    }
+    for (const { from, names } of r.namedImports ?? []) {
+      const resolved = resolveSpec(r.rel, from);
+      const barrel = resolved && barrels.get(resolved);
+      const direct = resolved && byStem.get(resolved);
+      for (const name of names) {
+        const target = barrel ? barrel.get(name) : direct ? direct.rel : null;
+        if (!target || target === r.rel) continue;
+        importers.get(target).add(r.rel);
+        const key = `${target}#${name}`;
+        if (!byName.has(key)) byName.set(key, new Set());
+        byName.get(key).add(r.rel);
       }
     }
   }
+  const usage = new Map([...importers].map(([rel, set]) => [rel, set.size]));
+  const unimported = componentRecords
+    .filter((c) => !usage.get(c.rel) && !/\/(?:index)\.tsx?$/.test(c.rel))
+    .map((c) => c.rel)
+    .sort();
+
+  // The primitives, read from the barrel that exports them, so the table cannot drift from the code.
+  // Counted per exported name, because one file can export a primitive a hundred pages use beside one nobody does.
+  const uiBarrel = barrels.get('apps/web/src/components/ui');
+  const inProduct = (set) => [...(set ?? [])].filter((rel) => !rel.includes('design-system'));
+  const primitives = uiBarrel
+    ? [...uiBarrel.entries()]
+        .filter(([name]) => /^[A-Z]/.test(name) && !typeExports.has(name))
+        .map(([name, rel]) => ({ name, rel, all: byName.get(`${rel}#${name}`)?.size ?? 0, product: inProduct(byName.get(`${rel}#${name}`)).length }))
+    : [];
+  const primitiveRows = primitives.map((p) => [`\`${p.name}\``, `\`${basename(p.rel)}\``, p.product, p.all - p.product]);
+  const specimenOnly = primitives.filter((p) => p.product === 0).map((p) => p.name);
 
   const groups = new Map();
   for (const r of componentRecords) {
@@ -1996,22 +2055,31 @@ ${BACK(self)}`);
 
 ## The primitives you must reuse
 
-\`apps/web/src/components/ui\` — grep for the literal before adding one.
+\`apps/web/src/components/ui\` — grep for the literal before adding one. What each one is for, and when
+not to use it, is the table in \`.claude/rules/ui.md\` ("Primitives"). This table is the barrel itself
+(\`components/ui/index.ts\`), read by the generator, so it lists every export and cannot go stale.
 
-| Import | For |
-|---|---|
-| \`PageHeader\` | context, title, one line, ONE primary action |
-| \`Section\` | a titled region with no box around it |
-| \`SectionRail\` | parts of one object — all present, jump to any |
-| \`Tabs\` | separate tasks on one object — one at a time |
-| \`Disclosure\` | rare, advanced or destructive — closed by default |
-| \`MetricStrip\` | a row of figures; \`detail\` opens a panel |
-| \`DataTable\` \`EmptyState\` \`Badge\` \`Button\` \`Dialog\` \`Loading\` | as named |
+${table(['Export', 'File', 'Product files', 'Design-system files'], primitiveRows)}
 
-Cross-surface: \`components/common/status-badge\` is **the** status pill — do not
-write an eighth. \`components/common/wizard\` is the only wizard.
+Cross-surface: \`components/common/status-badge\` is **the** status mark (a \`Badge\` in the house corner) —
+do not write an eighth. \`components/common/wizard\` is the only wizard.
 
-**Never** hand-roll: an alert, a status pill, a table, or a modal.
+**Never** hand-roll: an alert, a status mark, a table, or a modal.
+
+## Component files nothing imports (${unimported.length})
+
+${unimported.length ? unimported.map((rel) => `- \`${rel}\``).join('\n') : '—'}
+
+A file listed here has no importer the scanner can see. It is a map, not proof: a component reached only through
+a dynamic import or a name the scanner cannot resolve would appear too. Deleting one needs the owner's word.
+
+## Primitives no product file imports (${specimenOnly.length})
+
+${specimenOnly.length ? specimenOnly.map((name) => `\`${name}\``).join(' · ') : '—'}
+
+Exported by \`components/ui\` and specimened on the design-system page, but imported by no file outside it: each is
+either waiting for its first adopter or a candidate for the owner to cut. Neither is decided here, and a
+name taken through a path the scanner cannot resolve would appear too.
 
 ${sections.join('\n')}
 ${BACK(self)}`);

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { fromBaseUnits, toBaseUnits, toMajor, toMinor, UNIT_LABELS, type RawMaterialUnit } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { Select } from '@/components/ui/select';
 
 interface RawMaterialOption {
@@ -179,25 +180,7 @@ export function RecipeEditor({ recipeId, initialVariantId }: { recipeId?: string
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-toast flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={
-                t.type === 'error'
-                  ? 'w-full cursor-pointer rounded-md border border-red-200 bg-red-50 p-4 text-start text-sm text-red-800 shadow-md'
-                  : 'w-full cursor-pointer rounded-md border border-green-200 bg-green-50 p-4 text-start text-sm text-green-800 shadow-md'
-              }
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       {error ? (
         <p role="alert" className="notice notice-error mb-4">

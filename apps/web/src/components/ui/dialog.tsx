@@ -84,7 +84,18 @@ export function Dialog({
     }
 
     return () => {
-      previouslyFocused.current?.focus?.();
+      const opener = previouslyFocused.current;
+      if (opener?.isConnected) {
+        opener.focus?.();
+        return;
+      }
+      // The control that opened the dialog is gone (a confirmed delete removed its row), so handing focus
+      // back would drop it on `<body>` and a keyboard user would start again from the top of the page.
+      // Land on the page's own `<main>` instead, which is where the work they were doing now is.
+      const main = document.querySelector<HTMLElement>('main');
+      if (!main) return;
+      if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+      main.focus({ preventScroll: true });
     };
   }, [open]);
 

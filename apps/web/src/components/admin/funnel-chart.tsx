@@ -3,6 +3,9 @@
 import { formatNumber, themeColorVar } from '@newax/shared';
 
 /**
+ * SUPERSEDED by `charts/funnel-chart.tsx` (a conversion table and a "largest drop" tag). One block still imports
+ * this one and is held in `check-chart-imports.mjs`'s `LEGACY_IMPORTERS`; a new screen does not.
+ *
  * Stepped conversion funnel: each stage's bar narrower than the last, width
  * encoding its count against the largest stage. Matches sales-chart.tsx's
  * idiom — inline SVG, a single accent-teal fill (a theme custom property, since

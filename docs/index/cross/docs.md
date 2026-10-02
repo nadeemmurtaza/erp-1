@@ -73,14 +73,14 @@ _no second-level headings_
 
 - Dependency standard  <sub>:11</sub>
 
-### `.claude/rules/design.md`  <sub>169 lines</sub>
+### `.claude/rules/design.md`  <sub>179 lines</sub>
 
 - The design system  <sub>:17</sub>
 - Think like the designer, then write the code  <sub>:42</sub>
 - Read the chapter before you build the thing  <sub>:60</sub>
 - The obligations, stated so they can be checked  <sub>:76</sub>
-- Promoting something into the system  <sub>:150</sub>
-- What is not enforced by any command  <sub>:157</sub>
+- Promoting something into the system  <sub>:156</sub>
+- What is not enforced by any command  <sub>:163</sub>
 
 ### `.claude/rules/performance.md`  <sub>42 lines</sub>
 
@@ -101,22 +101,22 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>198 lines</sub>
+### `.claude/rules/ui.md`  <sub>217 lines</sub>
 
-- Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:111</sub>
-- No dead ends  <sub>:151</sub>
+- Use what exists  <sub>:15</sub>
+- Borders and boxes  <sub>:125</sub>
+- No dead ends  <sub>:170</sub>
 
 ### `.claude/skills/feature-scope/SKILL.md`  <sub>225 lines</sub>
 
 - Feature scope: build the whole capability, not one slice of it  <sub>:14</sub>
 
-### `.claude/skills/restyle/SKILL.md`  <sub>89 lines</sub>
+### `.claude/skills/restyle/SKILL.md`  <sub>90 lines</sub>
 
 - 1. Count the tells  <sub>:18</sub>
-- 2. Find the tells a script cannot see  <sub>:31</sub>
-- 3. Restyle, smallest edit first  <sub>:55</sub>
-- 4. Prove it  <sub>:74</sub>
+- 2. Find the tells a script cannot see  <sub>:32</sub>
+- 3. Restyle, smallest edit first  <sub>:56</sub>
+- 4. Prove it  <sub>:75</sub>
 
 ### `.claude/skills/ux-audit/SKILL.md`  <sub>108 lines</sub>
 
@@ -165,18 +165,18 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `CLAUDE.md`  <sub>861 lines</sub>
+### `CLAUDE.md`  <sub>866 lines</sub>
 
 - Vision and scale  <sub>:13</sub>
 - The seven laws  <sub>:39</sub>
 - Software engineering, not vibe coding  <sub>:61</sub>
 - Feature scope: build the whole capability, not one slice of it  <sub>:170</sub>
 - Scale: the three axes  <sub>:199</sub>
-- Look it up before you search  <sub>:261</sub>
-- The rule index  <sub>:332</sub>
-- Before you open a PR  <sub>:379</sub>
-- Deployment  <sub>:461</sub>
-- NEWAX Engineering Operating Protocol  <sub>:474</sub>
+- Look it up before you search  <sub>:262</sub>
+- The rule index  <sub>:334</sub>
+- Before you open a PR  <sub>:381</sub>
+- Deployment  <sub>:466</sub>
+- NEWAX Engineering Operating Protocol  <sub>:479</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -215,33 +215,33 @@ _no second-level headings_
 - Don't  <sub>:74</sub>
 - Still open  <sub>:83</sub>
 
-### `docs/design/accessibility/07-accessibility.md`  <sub>157 lines</sub>
+### `docs/design/accessibility/07-accessibility.md`  <sub>166 lines</sub>
 
-- Why this is grouped with i18n  <sub>:15</sub>
-- The target  <sub>:22</sub>
-- Keyboard  <sub>:26</sub>
-- Focus  <sub>:42</sub>
-- Screen readers  <sub>:53</sub>
-- Contrast  <sub>:68</sub>
-- Touch targets  <sub>:90</sub>
-- Reduced motion  <sub>:100</sub>
-- Semantic structure  <sub>:109</sub>
-- Right-to-left  <sub>:116</sub>
-- Internationalisation beyond direction  <sub>:133</sub>
-- What would make this real  <sub>:140</sub>
+- Why this is grouped with i18n  <sub>:16</sub>
+- The target  <sub>:23</sub>
+- Keyboard  <sub>:27</sub>
+- Focus  <sub>:43</sub>
+- Screen readers  <sub>:54</sub>
+- Contrast  <sub>:69</sub>
+- Touch targets  <sub>:97</sub>
+- Reduced motion  <sub>:108</sub>
+- Semantic structure  <sub>:117</sub>
+- Right-to-left  <sub>:124</sub>
+- Internationalisation beyond direction  <sub>:141</sub>
+- What would make this real  <sub>:148</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>454 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>481 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
-- Choosing between them  <sub>:61</sub>
-- Patterns — *undocumented*  <sub>:72</sub>
-- Templates — *undocumented*  <sub>:113</sub>
-- Controls with a contract  <sub>:124</sub>
-- Component contract  <sub>:431</sub>
-- What never gets hand-rolled  <sub>:446</sub>
+- Choosing between them  <sub>:71</sub>
+- Patterns — *undocumented*  <sub>:82</sub>
+- Templates — *undocumented*  <sub>:123</sub>
+- Controls with a contract  <sub>:134</sub>
+- Component contract  <sub>:458</sub>
+- What never gets hand-rolled  <sub>:473</sub>
 
-### `docs/design/components-states/04-states.md`  <sub>226 lines</sub>
+### `docs/design/components-states/04-states.md`  <sub>235 lines</sub>
 
 - The rule  <sub>:8</sub>
 - The state matrix  <sub>:14</sub>
@@ -254,20 +254,20 @@ _no second-level headings_
 - Permission states  <sub>:116</sub>
 - Notifications and system feedback  <sub>:130</sub>
 - The success state  <sub>:138</sub>
-- Offline and degraded — the POS case  <sub>:212</sub>
+- Offline and degraded — the POS case  <sub>:221</sub>
 
-### `docs/design/content/06-content.md`  <sub>121 lines</sub>
+### `docs/design/content/06-content.md`  <sub>130 lines</sub>
 
-- Voice  <sub>:10</sub>
-- Terminology — one word per concept  <sub>:29</sub>
-- Labels  <sub>:48</sub>
-- Microcopy  <sub>:58</sub>
-- Error messages  <sub>:66</sub>
-- Content hierarchy  <sub>:87</sub>
-- Localisation  <sub>:95</sub>
-- Verifying  <sub>:108</sub>
+- Voice  <sub>:12</sub>
+- Terminology — one word per concept  <sub>:31</sub>
+- Labels  <sub>:56</sub>
+- Microcopy  <sub>:66</sub>
+- Error messages  <sub>:74</sub>
+- Content hierarchy  <sub>:95</sub>
+- Localisation  <sub>:103</sub>
+- Verifying  <sub>:117</sub>
 
-### `docs/design/foundations/01-foundations.md`  <sub>322 lines</sub>
+### `docs/design/foundations/01-foundations.md`  <sub>324 lines</sub>
 
 - Why tokens and not values  <sub>:16</sub>
 - Colour  <sub>:26</sub>
@@ -278,22 +278,22 @@ _no second-level headings_
 - Shadow and elevation  <sub>:102</sub>
 - Z-index / layering  <sub>:122</sub>
 - Breakpoints  <sub>:143</sub>
-- Motion tokens  <sub>:154</sub>
-- Safeguards  <sub>:206</sub>
-- Theming  <sub>:225</sub>
-- Where tokens live  <sub>:308</sub>
+- Motion tokens  <sub>:156</sub>
+- Safeguards  <sub>:208</sub>
+- Theming  <sub>:227</sub>
+- Where tokens live  <sub>:310</sub>
 
-### `docs/design/layout-composition/02-layout.md`  <sub>167 lines</sub>
+### `docs/design/layout-composition/02-layout.md`  <sub>182 lines</sub>
 
-- The page skeleton  <sub>:8</sub>
-- Hierarchy: where the eye goes  <sub>:21</sub>
-- Grid  <sub>:58</sub>
-- Density  <sub>:72</sub>
-- The seven screens  <sub>:87</sub>
-- Reflow rules  <sub>:101</sub>
-- Multi-surface parity  <sub>:125</sub>
-- The POS is a different animal  <sub>:138</sub>
-- Verifying  <sub>:151</sub>
+- The page skeleton  <sub>:10</sub>
+- Hierarchy: where the eye goes  <sub>:23</sub>
+- Grid  <sub>:60</sub>
+- Density  <sub>:74</sub>
+- The seven screens  <sub>:89</sub>
+- Reflow rules  <sub>:121</sub>
+- Multi-surface parity  <sub>:144</sub>
+- The POS is a different animal  <sub>:157</sub>
+- Verifying  <sub>:170</sub>
 
 ### `docs/design/layout-composition/13-composition.md`  <sub>197 lines</sub>
 
@@ -337,42 +337,42 @@ _no second-level headings_
 - Visual principles  <sub>:56</sub>
 - Decision principles  <sub>:67</sub>
 
-### `docs/design/principles-laws/10-laws.md`  <sub>924 lines</sub>
+### `docs/design/principles-laws/10-laws.md`  <sub>942 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
-- COG · Cognition  <sub>:154</sub>
-- ACT · Action and time  <sub>:295</sub>
-- HEU · Nielsen's ten, ruled  <sub>:385</sub>
-- TYP · Typography  <sub>:443</sub>
-- COL · Colour  <sub>:505</sub>
-- SPA · Space, ratio and the shape of a page  <sub>:561</sub>
-- MOT · Motion  <sub>:646</sub>
-- ACC · Accessibility  <sub>:702</sub>
-- GLO · Globalization  <sub>:764</sub>
-- Where the card-deck laws are built  <sub>:827</sub>
-- Where the two reels' laws are built  <sub>:853</sub>
-- Where the copy laws are built  <sub>:872</sub>
-- What this chapter does not settle  <sub>:889</sub>
-- Sources  <sub>:904</sub>
+- COG · Cognition  <sub>:159</sub>
+- ACT · Action and time  <sub>:300</sub>
+- HEU · Nielsen's ten, ruled  <sub>:390</sub>
+- TYP · Typography  <sub>:448</sub>
+- COL · Colour  <sub>:510</sub>
+- SPA · Space, ratio and the shape of a page  <sub>:566</sub>
+- MOT · Motion  <sub>:652</sub>
+- ACC · Accessibility  <sub>:712</sub>
+- GLO · Globalization  <sub>:782</sub>
+- Where the card-deck laws are built  <sub>:845</sub>
+- Where the two reels' laws are built  <sub>:871</sub>
+- Where the copy laws are built  <sub>:890</sub>
+- What this chapter does not settle  <sub>:907</sub>
+- Sources  <sub>:922</sub>
 
-### `docs/design/process-governance/08-governance.md`  <sub>145 lines</sub>
+### `docs/design/process-governance/08-governance.md`  <sub>147 lines</sub>
 
 - Why a design system needs governance at all  <sub>:11</sub>
 - Naming  <sub>:19</sub>
-- What belongs in the system, and what does not  <sub>:40</sub>
-- Contribution  <sub>:60</sub>
-- Versioning  <sub>:81</sub>
-- Deprecation  <sub>:96</sub>
-- Change approval  <sub>:117</sub>
-- Keeping this system honest  <sub>:129</sub>
+- What belongs in the system, and what does not  <sub>:42</sub>
+- Contribution  <sub>:62</sub>
+- Versioning  <sub>:83</sub>
+- Deprecation  <sub>:98</sub>
+- Change approval  <sub>:119</sub>
+- Keeping this system honest  <sub>:131</sub>
 
-### `docs/design/process-governance/09-quality.md`  <sub>176 lines</sub>
+### `docs/design/process-governance/09-quality.md`  <sub>189 lines</sub>
 
-- The two columns  <sub>:12</sub>
-- Regression  <sub>:124</sub>
-- The honest gap, ranked  <sub>:142</sub>
-- Definition of done, for a screen  <sub>:165</sub>
+- The two columns  <sub>:17</sub>
+- Regression  <sub>:136</sub>
+- The honest gap, ranked  <sub>:154</sub>
+- Definition of done, for a screen  <sub>:178</sub>
 
 ### `docs/design/process-governance/11-workflow.md`  <sub>260 lines</sub>
 
@@ -382,31 +382,31 @@ _no second-level headings_
 - What must be built  <sub>:232</sub>
 - Sources  <sub>:251</sub>
 
-### `docs/design/process-governance/12-permissions.md`  <sub>214 lines</sub>
+### `docs/design/process-governance/12-permissions.md`  <sub>220 lines</sub>
 
 - The problem, stated precisely  <sub>:13</sub>
 - PRM · The laws  <sub>:35</sub>
-- Patterns  <sub>:163</sub>
-- What must be built  <sub>:189</sub>
-- Sources  <sub>:207</sub>
+- Patterns  <sub>:169</sub>
+- What must be built  <sub>:195</sub>
+- Sources  <sub>:213</sub>
 
-### `docs/design/process-governance/15-integrity.md`  <sub>257 lines</sub>
+### `docs/design/process-governance/15-integrity.md`  <sub>260 lines</sub>
 
-- Why this chapter is different  <sub>:17</sub>
-- ITG · The laws  <sub>:35</sub>
-- The build order  <sub>:157</sub>
-- What a person still has to do  <sub>:230</sub>
-- Sources  <sub>:250</sub>
+- Why this chapter is different  <sub>:18</sub>
+- ITG · The laws  <sub>:36</sub>
+- The build order  <sub>:160</sub>
+- What a person still has to do  <sub>:233</sub>
+- Sources  <sub>:253</sub>
 
-### `docs/design/README.md`  <sub>118 lines</sub>
+### `docs/design/README.md`  <sub>120 lines</sub>
 
 - Precedence, before anything else  <sub>:12</sub>
 - Using it while you build  <sub>:24</sub>
 - The chapters  <sub>:33</sub>
 - How to use it  <sub>:54</sub>
 - The law families  <sub>:72</sub>
-- An honest statement of maturity  <sub>:85</sub>
-- The one thing this system refuses to do  <sub>:111</sub>
+- An honest statement of maturity  <sub>:88</sub>
+- The one thing this system refuses to do  <sub>:113</sub>
 
 ### `docs/email.md`  <sub>438 lines</sub>
 
@@ -3011,7 +3011,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>11,521 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,701 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

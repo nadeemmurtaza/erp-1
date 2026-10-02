@@ -3,7 +3,7 @@
 
 # packages/* — code shared across every surface
 
-114 files · 13,131 lines
+114 files · 13,146 lines
 
 
 Code shared across surfaces. `@newax/shared` is where House Rule 1 is enforced:
@@ -25,7 +25,7 @@ file may hard-code one.
 | `packages/pos-core` | 4 | 69 | script, json |
 | `packages/pos-core/src` | 10 | 613 | unit test, module |
 | `packages/shared` | 4 | 75 | script, json |
-| `packages/shared/src` | 71 | 9,382 | unit test, module |
+| `packages/shared/src` | 71 | 9,397 | unit test, module |
 
 
 ## Entry points
@@ -47,7 +47,7 @@ file may hard-code one.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `packages/shared/src/permissions.ts` | 1,487 | module | The permission catalog for PBAC (Permission-Based Access Control). |
-| `packages/shared/src/brand.ts` | 654 | module | THE BRAND FILE. |
+| `packages/shared/src/brand.ts` | 664 | module | THE BRAND FILE. |
 | `packages/desktop-runtime/src/postgres-lifecycle.ts` | 481 | module |  |
 | `packages/shared/src/measurements/defaults.ts` | 448 | module |  |
 | `packages/desktop-runtime/src/backup-scheduler.ts` | 387 | module |  |

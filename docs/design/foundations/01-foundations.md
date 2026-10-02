@@ -142,8 +142,10 @@ number.
 
 ## Breakpoints
 
-Source: `apps/web/tailwind.config.ts` → `screens`. These are Law 4's seven
-screens and are **not** negotiable per component:
+The prefixes come from `apps/web/tailwind.config.ts` → `screens` (`xs` 380 ·
+`sm` 640 · `fold` 672 · `md` 768 · `lg` 1024 · `xl` 1280 · `2xl` 1536). Law 4's
+seven screens are the widths a page must work at, a different scale that
+chapter 02 maps onto the prefixes. They are **not** negotiable per component:
 
 ```
 xs 280 · sm 380 · fold 640 · md 768 · lg 1024 · xl 1280 · 2xl 1536

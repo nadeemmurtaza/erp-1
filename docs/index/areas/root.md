@@ -3,7 +3,7 @@
 
 # repository root files
 
-219 files · 22,084 lines
+219 files · 22,119 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,13 +17,13 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 22 | 8,301 | file, doc, txt, script |
+| `.` | 22 | 8,306 | file, doc, txt, script |
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 9 | 389 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
-| `.claude/rules` | 10 | 615 | doc |
+| `.claude/rules` | 10 | 644 | doc |
 | `.claude/skills/feature-scope` | 1 | 225 | doc |
-| `.claude/skills/restyle` | 1 | 89 | doc |
+| `.claude/skills/restyle` | 1 | 90 | doc |
 | `.claude/skills/ux-audit` | 1 | 108 | doc |
 | `.claude/skills/ux-design` | 1 | 122 | doc |
 | `.claude/skills/ux-review` | 1 | 123 | doc |
@@ -50,7 +50,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `yaseen-backup-before-reset.sql` | 5,870 | sql |  |
-| `CLAUDE.md` | 861 | doc |  |
+| `CLAUDE.md` | 866 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `DEPLOYMENT.md` | 529 | doc |  |
 | `README.md` | 349 | doc |  |
@@ -61,9 +61,9 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/prisma/schema/marketplace.prisma` | 271 | prisma schema | The cross-tenant marketplace/product-reference network — doc 165 |
 | `.claude/skills/feature-scope/SKILL.md` | 225 | doc |  |
 | `apps/platform/src/modules/billing/plans.service.spec.ts` | 225 | unit test |  |
+| `.claude/rules/ui.md` | 217 | doc |  |
 | `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
-| `.claude/rules/ui.md` | 198 | doc |  |
 
 
 ---

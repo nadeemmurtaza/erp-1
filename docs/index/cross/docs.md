@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**490** markdown documents. These explain **why**; this index only says **where**.
+**495** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -1956,7 +1956,7 @@ _no second-level headings_
 - 5. Out of scope (this pass)  <sub>:109</sub>
 - Acceptance criteria (for the work order that builds this)  <sub>:121</sub>
 
-### `docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md`  <sub>518 lines</sub>
+### `docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md`  <sub>524 lines</sub>
 
 - 1. The two problems, in the owner's words  <sub>:18</sub>
 - 2. Problem 1 — false credit  <sub>:40</sub>
@@ -3024,7 +3024,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>11,802 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,857 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3115,6 +3115,7 @@ _no second-level headings_
 - ADR-083 — A two-theme design system: one source in `brand.ts`, themes as scoped CSS custom properties, fill and ink split, a closed Tailwind palette, and contrast enforced in both themes  <sub>:9640</sub>
 - ADR-084 — Hospitality QR/NFC platform: the guest is a token-scoped principal, not a `User`; one order system through an extension point  <sub>:11702</sub>
 - ADR-085 — Housing society pack: a plot is a unique-asset registry with one writer, outside `InventoryService`; the booking lifecycle is an append-only `BookingTransaction` record set  <sub>:11751</sub>
+- ADR-086 — Launchpad apps: a static, presentation-only first-party manifest with tier/sector/audience tags; Mail as a control plane over a mail engine; Auction bids as predicate-on-write records  <sub>:11803</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3982,6 +3983,75 @@ _no second-level headings_
 - Acceptance  <sub>:62</sub>
 - Out of scope  <sub>:73</sub>
 
+### `docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md`  <sub>188 lines</sub>
+
+- 1. Objective  <sub>:7</sub>
+- 2. Existing state (inspected)  <sub>:14</sub>
+- 3. The manifest  <sub>:29</sub>
+- 4. Tags: tier, sector, audience — three facets, not a tree  <sub>:71</sub>
+- 5. What the user sees  <sub>:89</sub>
+- 6. Per-tenant control  <sub>:100</sub>
+- 7. Third-party (directory) apps on the same screen  <sub>:112</sub>
+- 8. Licensing hook (doc 211)  <sub>:120</sub>
+- 9. Resilience and failure modes  <sub>:129</sub>
+- 10. Verification additions  <sub>:139</sub>
+- 11. Scope lenses  <sub>:147</sub>
+- 12. Acceptance criteria  <sub>:168</sub>
+- 13. Permissions  <sub>:177</sub>
+- 14. Work orders  <sub>:182</sub>
+
+### `docs/implementation/launchpad-apps/233-mail-app.md`  <sub>208 lines</sub>
+
+- 1. Objective and the one rule  <sub>:12</sub>
+- 2. Existing state  <sub>:24</sub>
+- 3. What the engine does and what we do  <sub>:34</sub>
+- 4. Model (additive, forward-only migration)  <sub>:49</sub>
+- 5. Behaviour  <sub>:63</sub>
+- 6. Parameters (proposals to confirm)  <sub>:111</sub>
+- 7. Permissions  <sub>:125</sub>
+- 8. Failure modes and recovery  <sub>:138</sub>
+- 9. Proof-of-concept gates — answer these BEFORE building  <sub>:148</sub>
+- 10. Out of scope  <sub>:163</sub>
+- 11. Scope lenses  <sub>:170</sub>
+- 12. Acceptance criteria  <sub>:195</sub>
+- 13. Work orders  <sub>:205</sub>
+
+### `docs/implementation/launchpad-apps/234-auction-app.md`  <sub>265 lines</sub>
+
+- 1. Objective  <sub>:8</sub>
+- 2. Audiences and what each really needs  <sub>:15</sub>
+- 3. Auction types  <sub>:31</sub>
+- 4. Data model (additive, forward-only)  <sub>:41</sub>
+- 5. Bidding rules  <sub>:57</sub>
+- 6. Concurrency, idempotency, scale  <sub>:80</sub>
+- 7. Sealed bids and confidentiality  <sub>:101</sub>
+- 8. Bidder trust and money  <sub>:111</sub>
+- 9. After the bidding  <sub>:130</sub>
+- 10. Extension points (so industries can sell by auction without editing it)  <sub>:157</sub>
+- 11. Screens (one main job per page)  <sub>:166</sub>
+- 12. Parameters (proposals to confirm)  <sub>:181</sub>
+- 13. Permissions  <sub>:199</sub>
+- 14. Legal and regulatory caution (not decided here)  <sub>:216</sub>
+- 15. Scope lenses  <sub>:225</sub>
+- 16. Acceptance criteria  <sub>:248</sub>
+- 17. Work orders  <sub>:262</sub>
+
+### `docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md`  <sub>47 lines</sub>
+
+- 1. What the app is  <sub>:8</sub>
+- 2. Manifest sketch (doc 232 §3)  <sub>:17</sub>
+- 3. Interaction with other apps  <sub>:27</sub>
+- 4. Build order  <sub>:34</sub>
+- 5. Open decision carried from doc 231  <sub>:42</sub>
+
+### `docs/implementation/launchpad-apps/README.md`  <sub>73 lines</sub>
+
+- Read in this order  <sub>:11</sub>
+- Three words that must not blur  <sub>:20</sub>
+- Starting catalogue  <sub>:33</sub>
+- Recommended build order (agreed)  <sub>:58</sub>
+- Open questions for the owner (collected)  <sub>:67</sub>
+
 ### `docs/implementation/lots-serials-traceability/158-serialized-unit-tracking.md`  <sub>324 lines</sub>
 
 - Why this is a real gap, not a smaller version of `lots`  <sub>:34</sub>
@@ -4133,16 +4203,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>698 lines</sub>
+### `docs/implementation/README.md`  <sub>700 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:551</sub>
-- The two module groups  <sub>:580</sub>
-- How a work order runs  <sub>:617</sub>
-- Known gaps not yet owned by a phase  <sub>:635</sub>
-- When a brief is wrong  <sub>:662</sub>
-- Scope, honestly  <sub>:675</sub>
-- Gap-analysis roadmap references  <sub>:682</sub>
+- Dependency order  <sub>:553</sub>
+- The two module groups  <sub>:582</sub>
+- How a work order runs  <sub>:619</sub>
+- Known gaps not yet owned by a phase  <sub>:637</sub>
+- When a brief is wrong  <sub>:664</sub>
+- Scope, honestly  <sub>:677</sub>
+- Gap-analysis roadmap references  <sub>:684</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

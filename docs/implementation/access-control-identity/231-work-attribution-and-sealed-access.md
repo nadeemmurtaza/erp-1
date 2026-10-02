@@ -506,7 +506,13 @@ take Vyzno's good idea and close the two gaps above:
    the sealed vault reserved for client-confidential material? (This document
    assumes yes.)
 
-### 10.6 Work orders (only if an email capability is wanted)
+### 10.6 Work orders
+
+> **Superseded:** the owner approved a Mail app inside a launchpad. The concrete
+> design, with proof-of-concept gates, is
+> [`../launchpad-apps/233-mail-app.md`](../launchpad-apps/233-mail-app.md); the
+> list below is kept for history.
+
 
 231.11 `SharedMailbox`/`MailboxMember` over doc 13's mail path · 231.12
 `sentByUserId` + contribution event on send · 231.13 departure transaction

@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 458 tracked files in `docs/*`, by directory.
+All 463 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,13 +563,13 @@ All 458 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 11802 |  |
+| `DECISIONS.md` | doc | 11857 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 698 |  |
+| `README.md` | doc | 700 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
@@ -586,7 +586,7 @@ All 458 tracked files in `docs/*`, by directory.
 | `18-identity-verification.md` | doc | 149 |  |
 | `21-access-over-the-org-tree.md` | doc | 294 |  |
 | `212-role-scope-enforcement-gap.md` | doc | 129 |  |
-| `231-work-attribution-and-sealed-access.md` | doc | 518 |  |
+| `231-work-attribution-and-sealed-access.md` | doc | 524 |  |
 
 ### `docs/implementation/admin-platform` (5)
 
@@ -854,6 +854,16 @@ All 458 tracked files in `docs/*`, by directory.
 | `156-single-employee-branch-loss-prevention.md` | doc | 308 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
 | `70-realtime-stock-depletion.md` | doc | 77 |  |
+
+### `docs/implementation/launchpad-apps` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `232-launchpad-and-app-manifest.md` | doc | 188 |  |
+| `233-mail-app.md` | doc | 208 |  |
+| `234-auction-app.md` | doc | 265 |  |
+| `235-vault-and-work-credit-app.md` | doc | 47 |  |
+| `README.md` | doc | 73 |  |
 
 ### `docs/implementation/lots-serials-traceability` (3)
 

@@ -84,6 +84,8 @@ KDS, subscriptions and multi-branch). Start at
 
 **Number 231** — [`231-work-attribution-and-sealed-access.md`](./access-control-identity/231-work-attribution-and-sealed-access.md): credit that comes from evidence (a manager cannot claim a report's work) and sealed vaults the org chart and admins cannot read, with passwordless scoped review access. Core, cross-sector; design only.
 
+**Numbers 232–235** — the **launchpad**: an Odoo-style front door that groups modules into first-party apps tagged core/industry and B2B/B2C/C2C, plus the first new apps (Mail, Auction, Vault & Work Credit). Distinct from the third-party directory apps of docs 184–195. Start at [`launchpad-apps/README.md`](./launchpad-apps/README.md).
+
 **Numbers 40–49** fill in the granular micro-features a high-level feature
 list generalizes over — each checked against what already exists first:
 

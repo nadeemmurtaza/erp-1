@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2667,
-    "lines": 429804,
+    "files": 2672,
+    "lines": 430648,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 458,
-      "lines": 95133,
-      "bytes": 5815971,
+      "files": 463,
+      "lines": 95977,
+      "bytes": 5870142,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -96999,8 +96999,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 11802,
-      "bytes": 741097,
+      "lines": 11857,
+      "bytes": 743640,
       "doc": "",
       "symbols": []
     },
@@ -97053,8 +97053,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 698,
-      "bytes": 106034,
+      "lines": 700,
+      "bytes": 106378,
       "doc": "",
       "symbols": []
     },
@@ -97161,8 +97161,8 @@
       "path": "docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 518,
-      "bytes": 38443,
+      "lines": 524,
+      "bytes": 38642,
       "doc": "",
       "symbols": []
     },
@@ -98801,6 +98801,51 @@
       "kind": "doc",
       "lines": 77,
       "bytes": 4058,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 188,
+      "bytes": 10400,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/launchpad-apps/233-mail-app.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 208,
+      "bytes": 13909,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/launchpad-apps/234-auction-app.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 265,
+      "bytes": 19952,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 47,
+      "bytes": 2177,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/launchpad-apps/README.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 73,
+      "bytes": 4647,
       "doc": "",
       "symbols": []
     },

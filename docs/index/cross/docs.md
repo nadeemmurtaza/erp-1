@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**477** markdown documents. These explain **why**; this index only says **where**.
+**489** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3011,7 +3011,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>11,750 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,802 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3101,6 +3101,7 @@ _no second-level headings_
 - ADR-082 — Doc 48 (native desktop deployment): WO-48.1/48.3/48.4/48.5 built as real code in a new `packages/desktop-runtime`; the Electron/Tauri shell and auto-update stay unbuilt, exactly as the document's own text already scoped  <sub>:9521</sub>
 - ADR-083 — A two-theme design system: one source in `brand.ts`, themes as scoped CSS custom properties, fill and ink split, a closed Tailwind palette, and contrast enforced in both themes  <sub>:9640</sub>
 - ADR-084 — Hospitality QR/NFC platform: the guest is a token-scoped principal, not a `User`; one order system through an extension point  <sub>:11702</sub>
+- ADR-085 — Housing society pack: a plot is a unique-asset registry with one writer, outside `InventoryService`; the booking lifecycle is an append-only `BookingTransaction` record set  <sub>:11751</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3321,6 +3322,130 @@ _no second-level headings_
 - Read in this order  <sub>:24</sub>
 - Vocabulary (one word per concept)  <sub>:36</sub>
 - Status  <sub>:48</sub>
+
+### `docs/implementation/housing-society/220-housing-society-overview.md`  <sub>148 lines</sub>
+
+- 1. Objective and the test of success  <sub>:13</sub>
+- 2. Actors  <sub>:24</sub>
+- 3. Mapping to this repository  <sub>:39</sub>
+- 4. The pack: modules and ownership  <sub>:54</sub>
+- 5. The five pillars for this feature  <sub>:78</sub>
+- 6. Scope lenses (feature-scope map)  <sub>:88</sub>
+- 7. Build order (work orders)  <sub>:118</sub>
+- 8. Out of scope here  <sub>:137</sub>
+- 9. Decision to record  <sub>:143</sub>
+
+### `docs/implementation/housing-society/221-property-and-project-records.md`  <sub>86 lines</sub>
+
+- 1. Hierarchy  <sub>:8</sub>
+- 2. Plot status (the invariant this module guards)  <sub>:23</sub>
+- 3. Pricing  <sub>:41</sub>
+- 4. Screens (staff: *Plots*)  <sub>:49</sub>
+- 5. Permissions  <sub>:62</sub>
+- 6. Acceptance criteria  <sub>:74</sub>
+- 7. Work orders  <sub>:82</sub>
+
+### `docs/implementation/housing-society/222-members-and-customers.md`  <sub>84 lines</sub>
+
+- 1. One person, several roles  <sub>:8</sub>
+- 2. What is stored (and what is protected)  <sub>:23</sub>
+- 3. Duplicate prevention  <sub>:38</sub>
+- 4. Staff  <sub>:47</sub>
+- 5. Member portal  <sub>:53</sub>
+- 6. States the screens ship  <sub>:61</sub>
+- 7. Permissions  <sub>:67</sub>
+- 8. Acceptance criteria  <sub>:72</sub>
+- 9. Work orders  <sub>:80</sub>
+
+### `docs/implementation/housing-society/223-bookings-and-sam-lifecycle.md`  <sub>162 lines</sub>
+
+- 1. File vs plot  <sub>:15</sub>
+- 2. The booking lifecycle  <sub>:30</sub>
+- 3. `BookingTransaction` — the append-only record  <sub>:43</sub>
+- 4. Transfer  <sub>:65</sub>
+- 5. Ballot and allotment  <sub>:82</sub>
+- 6. Merge, split, rebook, deallocate, cancel, refund  <sub>:90</sub>
+- 7. Authority — approvals  <sub>:112</sub>
+- 8. Undo fan-out (forward path → reverse path)  <sub>:124</sub>
+- 9. Open questions for the owner  <sub>:135</sub>
+- 10. Acceptance criteria  <sub>:141</sub>
+- 11. Permissions  <sub>:150</sub>
+- 12. Work orders  <sub>:157</sub>
+
+### `docs/implementation/housing-society/224-installments-and-billing.md`  <sub>102 lines</sub>
+
+- 1. Payment plan  <sub>:10</sub>
+- 2. Installment  <sub>:25</sub>
+- 3. Late fees and surcharges  <sub>:35</sub>
+- 4. Society charges  <sub>:57</sub>
+- 5. Statements and follow-up  <sub>:65</sub>
+- 6. Authority  <sub>:77</sub>
+- 7. Acceptance criteria  <sub>:84</sub>
+- 8. Permissions  <sub>:92</sub>
+- 9. Work orders  <sub>:97</sub>
+
+### `docs/implementation/housing-society/225-receipts-and-payments.md`  <sub>103 lines</sub>
+
+- 1. Receipt (money in — a *record*)  <sub>:8</sub>
+- 2. Allocation  <sub>:21</sub>
+- 3. Instruments  <sub>:29</sub>
+- 4. Payments out (vouchers)  <sub>:43</sub>
+- 5. Reversal is a document  <sub>:52</sub>
+- 6. Numbering and offline  <sub>:61</sub>
+- 7. Day-end  <sub>:70</sub>
+- 8. Failure paths  <sub>:77</sub>
+- 9. Acceptance criteria  <sub>:84</sub>
+- 10. Permissions  <sub>:93</sub>
+- 11. Work orders  <sub>:98</sub>
+
+### `docs/implementation/housing-society/226-accounting-and-reports.md`  <sub>105 lines</sub>
+
+- 1. Chart of accounts (COA)  <sub>:9</sub>
+- 2. Posting rules (domain event → entry)  <sub>:24</sub>
+- 3. Reports  <sub>:49</sub>
+- 4. Reconciliation (what is authoritative)  <sub>:71</sub>
+- 5. Parameters  <sub>:78</sub>
+- 6. Permissions  <sub>:86</sub>
+- 7. Acceptance criteria  <sub>:92</sub>
+- 8. Work orders  <sub>:100</sub>
+
+### `docs/implementation/housing-society/227-complaints-and-visitors.md`  <sub>121 lines</sub>
+
+- Part A — Complaints management  <sub>:8</sub>
+- Part B — Visitor management  <sub>:59</sub>
+
+### `docs/implementation/housing-society/228-roles-permissions-and-configuration.md`  <sub>105 lines</sub>
+
+- 1. Access model  <sub>:9</sub>
+- 2. Separation of duties (toxic pairs)  <sub>:37</sub>
+- 3. Scope: whose rows, which columns  <sub>:49</sub>
+- 4. Configuration: one codebase, two starting points  <sub>:56</sub>
+- 5. Member portal switches  <sub>:74</sub>
+- 6. The grant that ends itself  <sub>:80</sub>
+- 7. Acceptance criteria  <sub>:87</sub>
+- 8. Permissions  <sub>:95</sub>
+- 9. Work orders  <sub>:100</sub>
+
+### `docs/implementation/housing-society/229-excel-import-and-migration.md`  <sub>81 lines</sub>
+
+- 1. What is imported  <sub>:9</sub>
+- 2. The pipeline (nothing writes until the last step)  <sub>:21</sub>
+- 3. Data safety — "no data loss"  <sub>:34</sub>
+- 4. Opening balances  <sub>:41</sub>
+- 5. Security  <sub>:53</sub>
+- 6. Failure paths  <sub>:60</sub>
+- 7. Acceptance criteria  <sub>:66</sub>
+- 8. Work orders  <sub>:75</sub>
+
+### `docs/implementation/housing-society/230-and-much-more-roadmap.md`  <sub>41 lines</sub>
+
+- Sequencing  <sub>:30</sub>
+
+### `docs/implementation/housing-society/README.md`  <sub>52 lines</sub>
+
+- Read in this order  <sub>:18</sub>
+- Vocabulary (one word per concept)  <sub>:34</sub>
+- Status  <sub>:49</sub>
 
 ### `docs/implementation/hr-people-org/164-department-permission-role-duty-control.md`  <sub>327 lines</sub>
 
@@ -3995,16 +4120,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>693 lines</sub>
+### `docs/implementation/README.md`  <sub>696 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:546</sub>
-- The two module groups  <sub>:575</sub>
-- How a work order runs  <sub>:612</sub>
-- Known gaps not yet owned by a phase  <sub>:630</sub>
-- When a brief is wrong  <sub>:657</sub>
-- Scope, honestly  <sub>:670</sub>
-- Gap-analysis roadmap references  <sub>:677</sub>
+- Dependency order  <sub>:549</sub>
+- The two module groups  <sub>:578</sub>
+- How a work order runs  <sub>:615</sub>
+- Known gaps not yet owned by a phase  <sub>:633</sub>
+- When a brief is wrong  <sub>:660</sub>
+- Scope, honestly  <sub>:673</sub>
+- Gap-analysis roadmap references  <sub>:680</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

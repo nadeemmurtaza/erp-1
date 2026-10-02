@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 445 tracked files in `docs/*`, by directory.
+All 457 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,13 +563,13 @@ All 445 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 11750 |  |
+| `DECISIONS.md` | doc | 11802 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 693 |  |
+| `README.md` | doc | 696 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
@@ -771,6 +771,23 @@ All 445 tracked files in `docs/*`, by directory.
 | `217-tables-rooms-and-floor.md` | doc | 92 |  |
 | `218-staff-management-and-analytics.md` | doc | 98 |  |
 | `219-future-modules-roadmap.md` | doc | 117 |  |
+| `README.md` | doc | 52 |  |
+
+### `docs/implementation/housing-society` (12)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `220-housing-society-overview.md` | doc | 148 |  |
+| `221-property-and-project-records.md` | doc | 86 |  |
+| `222-members-and-customers.md` | doc | 84 |  |
+| `223-bookings-and-sam-lifecycle.md` | doc | 162 |  |
+| `224-installments-and-billing.md` | doc | 102 |  |
+| `225-receipts-and-payments.md` | doc | 103 |  |
+| `226-accounting-and-reports.md` | doc | 105 |  |
+| `227-complaints-and-visitors.md` | doc | 121 |  |
+| `228-roles-permissions-and-configuration.md` | doc | 105 |  |
+| `229-excel-import-and-migration.md` | doc | 81 |  |
+| `230-and-much-more-roadmap.md` | doc | 41 |  |
 | `README.md` | doc | 52 |  |
 
 ### `docs/implementation/hr-people-org` (19)

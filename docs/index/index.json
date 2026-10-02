@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2654,
-    "lines": 428039,
+    "files": 2666,
+    "lines": 429284,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 445,
-      "lines": 93368,
-      "bytes": 5703469,
+      "files": 457,
+      "lines": 94613,
+      "bytes": 5777190,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -96999,8 +96999,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 11750,
-      "bytes": 738854,
+      "lines": 11802,
+      "bytes": 741097,
       "doc": "",
       "symbols": []
     },
@@ -97053,8 +97053,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 693,
-      "bytes": 105288,
+      "lines": 696,
+      "bytes": 105696,
       "doc": "",
       "symbols": []
     },
@@ -98243,6 +98243,114 @@
       "kind": "doc",
       "lines": 52,
       "bytes": 3412,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/220-housing-society-overview.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 148,
+      "bytes": 13392,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/221-property-and-project-records.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 86,
+      "bytes": 4734,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/222-members-and-customers.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 84,
+      "bytes": 4076,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/223-bookings-and-sam-lifecycle.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 162,
+      "bytes": 8062,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/224-installments-and-billing.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 102,
+      "bytes": 5438,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/225-receipts-and-payments.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 103,
+      "bytes": 5110,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/226-accounting-and-reports.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 105,
+      "bytes": 5592,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/227-complaints-and-visitors.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 121,
+      "bytes": 5732,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/228-roles-permissions-and-configuration.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 105,
+      "bytes": 5317,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/229-excel-import-and-migration.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 81,
+      "bytes": 5498,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/230-and-much-more-roadmap.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 41,
+      "bytes": 4253,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/housing-society/README.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 52,
+      "bytes": 3866,
       "doc": "",
       "symbols": []
     },

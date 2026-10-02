@@ -79,6 +79,9 @@ board, floor, analytics, and the roadmap to payments, WhatsApp, loyalty, POS,
 KDS, subscriptions and multi-branch). Start at
 [`hospitality-qr-nfc/README.md`](./hospitality-qr-nfc/README.md).
 
+**Numbers 220–230** — the **industry-specific** housing-society sector pack (real estate / society management only; not core): plot and file bookings, members, installments and billing, receipts, transfers and the booking lifecycle, accounting and reports, complaints, visitors, roles, and Excel import of an existing society's data. Start at
+[`housing-society/README.md`](./housing-society/README.md).
+
 **Numbers 40–49** fill in the granular micro-features a high-level feature
 list generalizes over — each checked against what already exists first:
 

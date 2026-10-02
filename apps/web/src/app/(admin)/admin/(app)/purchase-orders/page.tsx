@@ -43,14 +43,14 @@ export default function PurchaseOrdersPage() {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="mb-1 text-xl font-semibold text-neutral-900">Purchase Orders</h1>
           <p className="text-sm text-neutral-900/60">
             Manage incoming stock from suppliers.
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Link href={ROUTES.admin.purchasingSpend} className="btn-secondary">
             Spend
           </Link>

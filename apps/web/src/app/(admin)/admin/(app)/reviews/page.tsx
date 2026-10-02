@@ -62,7 +62,7 @@ export default function ReviewsAdminPage() {
       <PageHeader title="Reviews" description="Moderate customer product reviews before they show." />
       <ToastStack toasts={toasts} onDismiss={removeToast} />
 
-      <div className="mb-4 flex gap-2">
+      <div className="mb-4 flex flex-wrap gap-2">
         {(['PENDING', 'PUBLISHED', 'REJECTED', ''] as const).map((value) => (
           <button
             key={value || 'all'}

@@ -113,7 +113,7 @@ const ORDER_COLUMNS: DataTableColumn<OrderRow>[] = [
 export function ListPageSpecimen() {
   return (
     <div className="grid gap-8">
-      <div>
+      <div className="min-w-0">
         <p className="mb-3 text-xs text-neutral-900/60">
           The filters live in the address bar, so a refresh, a bookmark and the back button all behave. Type or choose and watch
           the query string change; nothing below is filtered, because this page is not a list.

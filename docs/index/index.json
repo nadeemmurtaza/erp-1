@@ -1397,7 +1397,7 @@
     "web": {
       "files": 541,
       "lines": 97703,
-      "bytes": 3599292,
+      "bytes": 3599393,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -85474,7 +85474,7 @@
       "area": "web",
       "kind": "page",
       "lines": 217,
-      "bytes": 8007,
+      "bytes": 8017,
       "doc": "",
       "symbols": [
         {
@@ -88417,7 +88417,7 @@
       "area": "web",
       "kind": "component",
       "lines": 488,
-      "bytes": 17483,
+      "bytes": 17572,
       "doc": "",
       "symbols": [
         {
@@ -92072,7 +92072,7 @@
       "area": "web",
       "kind": "component",
       "lines": 56,
-      "bytes": 1989,
+      "bytes": 1991,
       "doc": "",
       "symbols": [
         {

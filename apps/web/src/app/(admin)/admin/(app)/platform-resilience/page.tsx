@@ -145,7 +145,7 @@ export default function PlatformResiliencePage() {
         {!canTune ? null : (
           <p className="mt-2 text-xs text-neutral-900/60">
             Tuning a threshold or cooldown, and the dry-run simulator, are reached from the API today
-            (<code>POST /admin/resilience/circuits/:key/configure</code> and <code>/simulate</code>) — no
+            (<code className="break-all">POST /admin/resilience/circuits/:key/configure</code> and <code>/simulate</code>) — no
             historical AiProvider/PaymentProvider/VectorStore call log exists yet to run a simulation against.
           </p>
         )}

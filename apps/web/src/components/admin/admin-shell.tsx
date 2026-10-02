@@ -161,7 +161,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 items-center gap-4 border-b border-neutral-100 bg-white px-4">
+        <header className="flex min-h-14 flex-wrap items-center gap-x-4 gap-y-1 border-b border-neutral-100 bg-white px-4 py-1">
           <button
             type="button"
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-neutral-900/80 hover:bg-neutral-50 lg:hidden"
@@ -182,15 +182,15 @@ export function AdminShell({ children }: { children: ReactNode }) {
           */}
           <CommandPalette permissions={user.permissions} enabledModules={enabledModules} />
 
-          <div className="ms-auto flex items-center gap-3 text-sm">
+          <div className="ms-auto flex min-w-0 flex-wrap items-center justify-end gap-x-3 gap-y-1 text-sm">
             {/* All three choices where there is room; one flip button where there is not. */}
             <ThemeToggle className="hidden sm:inline-flex" />
             <ThemeToggle variant="icon" className="sm:hidden" />
-            <Link href="/en" className="text-neutral-900/60 hover:text-accent-hover">
+            <Link href="/en" className="shrink-0 text-neutral-900/60 hover:text-accent-hover">
               View store
             </Link>
-            <span className="text-neutral-900/60">|</span>
-            <Link href={ROUTES.admin.account} className="text-neutral-900/70 hover:text-accent-hover">
+            <span className="hidden shrink-0 text-neutral-900/60 xs:inline">|</span>
+            <Link href={ROUTES.admin.account} className="min-w-0 max-w-full truncate text-neutral-900/70 hover:text-accent-hover">
               {user.firstName ?? user.email} · {user.roles.join(', ') || 'No role assigned'}
             </Link>
             <button
@@ -200,7 +200,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
                 clearSession();
                 router.replace('/admin/login');
               }}
-              className="rounded-md px-2 py-1 text-neutral-900/60 hover:bg-neutral-50 hover:text-neutral-900"
+              className="shrink-0 rounded-md px-2 py-1 text-neutral-900/60 hover:bg-neutral-50 hover:text-neutral-900"
             >
               Sign out
             </button>

@@ -3,7 +3,7 @@
 
 # Components
 
-All **176** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **177** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -15,17 +15,17 @@ not to use it, is the table in `.claude/rules/ui.md` ("Primitives"). This table 
 | Export | File | Product files | Design-system files |
 |---|---|---|---|
 | `PageHeader` | `page-header.tsx` | 148 | 3 |
-| `Section` | `section.tsx` | 40 | 1 |
+| `Section` | `section.tsx` | 41 | 1 |
 | `Disclosure` | `disclosure.tsx` | 14 | 5 |
 | `Tabs` | `tabs.tsx` | 9 | 3 |
 | `SectionRail` | `section-rail.tsx` | 5 | 1 |
-| `DataTable` | `data-table.tsx` | 121 | 9 |
+| `DataTable` | `data-table.tsx` | 122 | 9 |
 | `EmptyState` | `empty-state.tsx` | 77 | 4 |
 | `MetricStrip` | `metric-strip.tsx` | 22 | 2 |
 | `Badge` | `badge.tsx` | 13 | 11 |
-| `Pagination` | `pagination.tsx` | 11 | 2 |
-| `Button` | `button.tsx` | 18 | 15 |
-| `Dialog` | `dialog.tsx` | 32 | 3 |
+| `Pagination` | `pagination.tsx` | 12 | 2 |
+| `Button` | `button.tsx` | 19 | 15 |
+| `Dialog` | `dialog.tsx` | 33 | 3 |
 | `ConfirmDialog` | `confirm-dialog.tsx` | 13 | 4 |
 | `CopyButton` | `copy-button.tsx` | 2 | 1 |
 | `Loading` | `loading.tsx` | 91 | 1 |
@@ -99,11 +99,12 @@ name taken through a path the scanner cannot resolve would appear too.
 | `receipt-view.tsx` | `ReceiptView` | server | 1 |  |
 | `service-worker-registration.tsx` | `ServiceWorkerRegistration` | client | 1 |  |
 
-### `apps/web/src/components/admin` (25)
+### `apps/web/src/components/admin` (26)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | client | 1 |  |
+| `auction-bid-ledger.tsx` | `LedgerLot` `AuctionBidLedger` | client | 1 |  |
 | `bpmn-editor.tsx` | `BpmnEditor` | client | 1 |  |
 | `command-palette.tsx` | `CommandPalette` | client | 1 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | client | 1 |  |
@@ -287,15 +288,15 @@ name taken through a path the scanner cannot resolve would appear too.
 |---|---|---|---|---|
 | `badge.tsx` | `BadgeTone` `Badge` | server | 26 |  |
 | `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 4 |  |
-| `button.tsx` | `ButtonProps` `Button` | server | 34 |  |
+| `button.tsx` | `ButtonProps` `Button` | server | 35 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 18 |  |
 | `cooldown-banner.tsx` | `CooldownBanner` | client | 2 |  |
 | `copy-button.tsx` | `CopyButtonProps` `CopyButton` | client | 4 |  |
 | `count-up.tsx` | `CountUp` | client | 3 |  |
 | `danger-zone.tsx` | `DangerAction` `DangerZone` | client | 4 |  |
-| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 131 |  |
+| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 132 |  |
 | `date-field.tsx` | `DateFieldProps` `DateField` | client | 19 |  |
-| `dialog.tsx` | `Dialog` | client | 36 |  |
+| `dialog.tsx` | `Dialog` | client | 37 |  |
 | `disclosure.tsx` | `Disclosure` | client | 20 |  |
 | `draw-icon.tsx` | `DrawIcon` | client | 5 |  |
 | `dropzone.tsx` | `Dropzone` | client | 8 |  |
@@ -310,12 +311,12 @@ name taken through a path the scanner cannot resolve would appear too.
 | `multi-select.tsx` | `MultiSelectOption` `MultiSelectProps` `MultiSelect` | client | 2 |  |
 | `page-enter.tsx` | `PageEnter` | client | 4 |  |
 | `page-header.tsx` | `PageHeader` | server | 152 |  |
-| `pagination.tsx` | `PaginationMeta` `Pagination` | server | 14 |  |
+| `pagination.tsx` | `PaginationMeta` `Pagination` | server | 15 |  |
 | `progress-bar.tsx` | `ProgressBar` | server | 5 |  |
 | `progress-ring.tsx` | `ProgressRing` | client | 3 |  |
 | `reveal-scope.tsx` | `RevealScope` | client | 3 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 10 |  |
-| `section.tsx` | `Section` | server | 42 |  |
+| `section.tsx` | `Section` | server | 43 |  |
 | `segmented.tsx` | `SegmentedOption` `Segmented` | client | 10 |  |
 | `select.tsx` | `SelectOption` `SelectProps` `Select` | client | 32 |  |
 | `skeleton.tsx` | `SkeletonShape` `Skeleton` `SkeletonText` `SkeletonRegion` | server | 2 |  |

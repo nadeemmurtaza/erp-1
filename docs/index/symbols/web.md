@@ -101,7 +101,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AuctionDetailPage` | default | :66 | launchpad-apps/234-auction-app.md (WO-234.1) — prepare one auction for sale: set its times, add its… |
+| `page.tsx` | `AuctionDetailPage` | default | :75 | launchpad-apps/234-auction-app.md (WO-234.1) — prepare one auction for sale: set its times, add its… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
@@ -1435,6 +1435,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `admin-shell.tsx` | `AdminShell` | function | :37 | The back office frame: role guard, sidebar and header. |
+| `auction-bid-ledger.tsx` | `LedgerLot` | interface | :28 |  |
+| `auction-bid-ledger.tsx` | `AuctionBidLedger` | function | :45 | launchpad-apps/234-auction-app.md (WO-234.2) — every accepted bid on one lot, newest first, as a si… |
 | `bpmn-editor.tsx` | `BpmnEditor` | function | :46 | architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.2) — a thin React wrapper mounting… |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |

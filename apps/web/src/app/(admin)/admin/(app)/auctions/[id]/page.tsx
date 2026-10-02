@@ -20,6 +20,7 @@ import {
 } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import { useAdminSession } from '@/components/admin/session';
+import { AuctionBidLedger } from '@/components/admin/auction-bid-ledger';
 
 interface Lot {
   id: string;
@@ -30,6 +31,10 @@ interface Lot {
   startPriceMinor: number;
   /** Present only for a holder of auction.manage — the server leaves it out for everyone else. */
   reservePriceMinor?: number | null;
+  /** The highest accepted bid; null until the first. */
+  currentBidMinor: number | null;
+  /** How many bids the lot has accepted. */
+  bidSeq: number;
   status: string;
 }
 
@@ -62,6 +67,10 @@ function parseAmount(text: string): number | null {
  * scheduled the page locks and says how to unlock it, and a cancelled or later
  * auction is read-only. The lot's reserve is shown only to a holder of
  * `auction.manage` — the server does not send it to anyone else.
+ *
+ * Once an auction has opened (WO-234.2) each lot also shows its current bid and
+ * how many bids it has taken; the count opens that lot's bid ledger in a side
+ * sheet. Both columns stay out of a draft's table, where they would be empty.
  */
 export default function AuctionDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -77,6 +86,7 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
   const [cancelOpen, setCancelOpen] = useState(false);
   const [reason, setReason] = useState('');
   const [withdrawing, setWithdrawing] = useState<Lot | null>(null);
+  const [ledgerLot, setLedgerLot] = useState<Lot | null>(null);
 
   const [editOpen, setEditOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -208,6 +218,7 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
   const onSale = auction.lots.filter((lot) => lot.status !== 'WITHDRAWN');
   const editable = isDraft && canManage;
   const showReserve = canManage;
+  const showBids = ['OPEN', 'CLOSING', 'CLOSED', 'SETTLED'].includes(auction.status);
 
   const primary = isDraft && canPublish ? (
     <Button onClick={() => setScheduleOpen(true)} disabled={onSale.length === 0}>
@@ -317,6 +328,29 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
                     },
                   ]
                 : []),
+              ...(showBids
+                ? [
+                    {
+                      header: 'Current bid',
+                      align: 'end' as const,
+                      numeric: true,
+                      cell: (lot: Lot) => (lot.currentBidMinor === null ? '—' : formatMoney(lot.currentBidMinor)),
+                    },
+                    {
+                      header: 'Bids',
+                      align: 'end' as const,
+                      numeric: true,
+                      cell: (lot: Lot) =>
+                        lot.bidSeq > 0 ? (
+                          <Button variant="ghost" onClick={() => setLedgerLot(lot)} aria-label={`View the ${lot.bidSeq} ${lot.bidSeq === 1 ? 'bid' : 'bids'} on lot ${lot.lotNo}`}>
+                            {lot.bidSeq}
+                          </Button>
+                        ) : (
+                          '0'
+                        ),
+                    },
+                  ]
+                : []),
               ...(editable
                 ? [
                     {
@@ -383,6 +417,8 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
           ]}
         />
       ) : null}
+
+      <AuctionBidLedger auctionId={id} lot={ledgerLot} onClose={() => setLedgerLot(null)} />
 
       <ConfirmDialog
         open={scheduleOpen}

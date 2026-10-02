@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,202 tracked files in `apps/api`, by directory.
+All 1,210 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -39,7 +39,7 @@ All 1,202 tracked files in `apps/api`, by directory.
 | `accounts.prisma` | prisma schema | 120 | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md |
 | `approvals.prisma` | prisma schema | 79 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
-| `auction.prisma` | prisma schema | 97 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1). |
+| `auction.prisma` | prisma schema | 179 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1 and WO-234.2). |
 | `bank-facilities.prisma` | prisma schema | 122 | Bank facility management |
 | `bom.prisma` | prisma schema | 258 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
@@ -777,6 +777,12 @@ All 1,202 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 33 |  |
 
+### `apps/api/prisma/schema/migrations/20261002190000_wo234_2_bidding` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 76 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -919,7 +925,7 @@ All 1,202 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `checkout-validator.registry.ts` | registry | 59 |  |
 
-### `apps/api/src/core/common` (5)
+### `apps/api/src/core/common` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -927,6 +933,8 @@ All 1,202 tracked files in `apps/api`, by directory.
 | `aging.ts` | module | 76 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a control accoun… |
 | `cost-fields.spec.ts` | unit test | 44 |  |
 | `cost-fields.ts` | module | 98 |  |
+| `hash-chain.spec.ts` | unit test | 59 |  |
+| `hash-chain.ts` | module | 83 |  |
 | `sales-revenue.ts` | module | 17 |  |
 
 ### `apps/api/src/core/common/dto` (1)
@@ -939,8 +947,8 @@ All 1,202 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `all-exceptions.filter.spec.ts` | unit test | 59 |  |
-| `all-exceptions.filter.ts` | module | 152 |  |
+| `all-exceptions.filter.spec.ts` | unit test | 119 |  |
+| `all-exceptions.filter.ts` | module | 181 |  |
 
 ### `apps/api/src/core/config` (6)
 
@@ -1154,7 +1162,7 @@ All 1,202 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 51 |  |
-| `settings.defaults.ts` | module | 542 |  |
+| `settings.defaults.ts` | module | 555 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.spec.ts` | unit test | 125 |  |
 | `settings.service.ts` | service | 146 |  |
@@ -1335,20 +1343,24 @@ All 1,202 tracked files in `apps/api`, by directory.
 | `attendance-device.dto.ts` | dto | 34 |  |
 | `attendance.dto.ts` | dto | 83 |  |
 
-### `apps/api/src/modules/auction` (4)
+### `apps/api/src/modules/auction` (8)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auction.controller.ts` | controller | 103 |  |
-| `auction.module.ts` | nest module | 19 |  |
-| `auction.service.spec.ts` | unit test | 445 |  |
-| `auction.service.ts` | service | 371 |  |
+| `auction-bid.controller.ts` | controller | 40 |  |
+| `auction-bidding.service.spec.ts` | unit test | 471 |  |
+| `auction.controller.ts` | controller | 119 |  |
+| `auction.module.ts` | nest module | 20 |  |
+| `auction.service.spec.ts` | unit test | 479 |  |
+| `auction.service.ts` | service | 808 |  |
+| `bidding.spec.ts` | unit test | 131 |  |
+| `bidding.ts` | module | 95 |  |
 
 ### `apps/api/src/modules/auction/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auction.dto.ts` | dto | 178 |  |
+| `auction.dto.ts` | dto | 203 |  |
 
 ### `apps/api/src/modules/bankfacilities` (5)
 
@@ -2641,13 +2653,14 @@ All 1,202 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `wishlist.dto.ts` | dto | 30 |  |
 
-### `apps/api/test` (32)
+### `apps/api/test` (33)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
 | `api-keys.e2e-spec.ts` | e2e test | 371 |  |
-| `auction-http.e2e-spec.ts` | e2e test | 101 |  |
+| `auction-bidding.e2e-spec.ts` | e2e test | 252 |  |
+| `auction-http.e2e-spec.ts` | e2e test | 200 |  |
 | `auction.e2e-spec.ts` | e2e test | 114 |  |
 | `auth-throttle.e2e-spec.ts` | e2e test | 431 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |

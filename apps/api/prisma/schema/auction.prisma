@@ -1,10 +1,9 @@
-// Auction app (launchpad-apps/234-auction-app.md, WO-234.1).
-// Sell — or, later, buy — by competitive bidding. This file holds only what
-// the admin foundation reads and writes: the auction, its lots, and the
-// lifecycle states both move through. Bids, bidders, proxy maxima, deposits,
-// results and adjustments (doc 234 §4) arrive in the work orders that first
-// use them, each as its own additive migration, so no table or column here
-// sits unused. Additive only.
+// Auction app (launchpad-apps/234-auction-app.md, WO-234.1 and WO-234.2).
+// Sell — or, later, buy — by competitive bidding. This file holds what the
+// work orders so far read and write: the auction, its lots, the bidders and
+// the hash-chained bids. Proxy maxima, deposits, results and adjustments
+// (doc 234 §4) arrive in the work orders that first use them, each as its own
+// additive migration, so no table or column here sits unused.
 
 enum AuctionType {
   ENGLISH
@@ -27,6 +26,23 @@ enum AuctionLotStatus {
   OPEN
   CLOSED
   WITHDRAWN
+}
+
+/// Who a bid came from. Only MANUAL is written today; PROXY_AUTO (WO-234.3)
+/// and SEALED (WO-234.7) exist so the column never needs altering.
+enum BidKind {
+  MANUAL
+  PROXY_AUTO
+  SEALED
+}
+
+/// APPROVED is the only value written today: the first bid provisions the
+/// bidder. PENDING and SUSPENDED exist for registration and strikes
+/// (WO-234.5), so that work order adds a gate, not a column.
+enum BidderStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
 }
 
 /// One auction event. The three scope columns exist from the first migration
@@ -52,11 +68,18 @@ model Auction {
   endsAt           DateTime
   currency         String
   terms            String?
+  /// The bidding rules this auction runs under, copied from Settings when it
+  /// is scheduled (`{ incrementBps, minStepMinor }` today) so a later change
+  /// to a Setting can never alter an auction bidders have already seen
+  /// (doc 234 §15, "rules are versioned per auction"). Null while a draft;
+  /// WO-234.3 adds the anti-snipe window here without a new column.
+  bidRules         Json?
   createdById      String
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
-  lots AuctionLot[]
+  lots    AuctionLot[]
+  bidders Bidder[]
 
   @@index([status, startsAt])
   @@index([organizationId])
@@ -64,10 +87,10 @@ model Auction {
 }
 
 /// One thing being sold within an auction. Prices are integer minor units
-/// like every other money column here, so one lot cannot exceed 2,147,483,647
-/// minor units (21,474,836.47 in a two-decimal currency) — DTO-enforced, and
-/// recorded in doc 234 §12 as an open decision before real-estate or vehicle
-/// lots are listed.
+/// like every other money column here, held as BIGINT (WO-234.2) so a plot or
+/// a vehicle fits and no later bid column needs a type change. The service
+/// hands them out as plain numbers and caps them at MAX_PRICE_MINOR, the
+/// largest value whose arithmetic stays exact in a JavaScript number.
 model AuctionLot {
   id                String           @id @default(cuid())
   auctionId         String
@@ -81,16 +104,75 @@ model AuctionLot {
   sourceType        String?
   sourceId          String?
   quantity          Int              @default(1)
-  startPriceMinor   Int
+  startPriceMinor   BigInt
   /// Hidden from bidders always (doc 234 §5.5, §15). Never part of any
   /// public response.
-  reservePriceMinor Int?
+  reservePriceMinor BigInt?
+  /// The highest accepted bid, null until the first one. Changed only by
+  /// AuctionService.placeBid(), in the same statement that bumps `bidSeq`
+  /// (doc 234 §6, predicate-on-write).
+  currentBidMinor   BigInt?
+  leaderBidderId    String?
+  /// How many bids this lot has accepted; also the version the predicate
+  /// compares, so two writers who read the same value cannot both win.
+  bidSeq            Int              @default(0)
   status            AuctionLotStatus @default(PENDING)
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
 
   auction Auction @relation(fields: [auctionId], references: [id])
+  bids    Bid[]
 
   @@unique([auctionId, lotNo])
   @@index([auctionId, status])
+}
+
+/// A person bidding in one auction. Provisioned on the first bid and shown to
+/// everyone else only by `alias` ("Bidder 7"), never by name (doc 234 §15,
+/// "whose rows"). `userId` is the portal account that acts as this bidder, a
+/// plain string like the other cross-module ids in this file; a B2B party link
+/// and eligibility rules arrive with WO-234.5.
+model Bidder {
+  id        String       @id @default(cuid())
+  auctionId String
+  userId    String
+  alias     String
+  status    BidderStatus @default(APPROVED)
+  createdAt DateTime     @default(now())
+
+  auction Auction @relation(fields: [auctionId], references: [id])
+  bids    Bid[]
+
+  @@unique([auctionId, userId])
+  @@unique([auctionId, alias])
+}
+
+/// One accepted bid: a record, never edited and never deleted (doc 234 §5.2).
+/// A mistaken bid is answered by an adjustment document (WO-234.9), not an
+/// UPDATE. `seq` is assigned under the lot's lock, so it is strictly
+/// increasing per lot; `hash = SHA-256(prevHash ‖ canonical row)` makes an
+/// insert, an edit or a removal visible to anyone who re-walks the chain
+/// (doc 234 §6). Bid ids are random UUIDs, safe for two nodes to mint offline.
+model Bid {
+  id             String   @id @default(uuid())
+  lotId          String
+  bidderId       String
+  amountMinor    BigInt
+  kind           BidKind  @default(MANUAL)
+  seq            Int
+  /// The server's clock when the bid was accepted. The client's is never
+  /// consulted (doc 234 §5.1).
+  acceptedAt     DateTime
+  /// Chosen by the caller, one per intended bid, resent unchanged on a retry.
+  idempotencyKey String
+  /// The previous bid's `hash`; null only for `seq` 1.
+  prevHash       String?
+  hash           String
+
+  lot    AuctionLot @relation(fields: [lotId], references: [id])
+  bidder Bidder     @relation(fields: [bidderId], references: [id])
+
+  @@unique([lotId, seq])
+  @@unique([lotId, bidderId, idempotencyKey])
+  @@index([bidderId, acceptedAt])
 }

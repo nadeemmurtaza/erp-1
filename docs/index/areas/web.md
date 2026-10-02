@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-541 files · 97,703 lines
+542 files · 97,893 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -31,8 +31,8 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 250 | 49,590 | page, loading, layout, error |
-| `apps/web/src/components` | 193 | 35,123 | component, unit test, loading |
+| `apps/web/src/app` | 250 | 49,626 | page, loading, layout, error |
+| `apps/web/src/components` | 194 | 35,277 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
 | `apps/web/src/constants` | 6 | 497 | constants |
 | `apps/web/src/hooks` | 10 | 779 | hook |

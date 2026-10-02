@@ -21,6 +21,34 @@ interface ErrorBody {
    * mirrored into a `Retry-After` header so a client need not parse the body.
    */
   retryAfterSeconds?: number;
+  /**
+   * A stable, machine-readable reason a client can branch on while `message`
+   * stays the sentence a person reads — "BID_TOO_LOW" and "AUCTION_ENDED" are
+   * both a 409, and a bid box must say different things for each. Present only
+   * when the exception names one in the SCREAMING_SNAKE_CASE form below.
+   */
+  code?: string;
+  /** What the client needs to act on the refusal (the minimum next bid), as plain JSON values. */
+  details?: Record<string, string | number | boolean | null>;
+}
+
+const REFUSAL_CODE = /^[A-Z][A-Z0-9_]{1,63}$/;
+const MAX_DETAIL_KEYS = 10;
+
+/** Only a well-formed code and flat, primitive details are passed on; anything else an exception carries stays server-side. */
+function clientSafeReason(payload: unknown): Pick<ErrorBody, 'code' | 'details'> {
+  if (payload === null || typeof payload !== 'object') return {};
+  const { code, details } = payload as { code?: unknown; details?: unknown };
+  const reason: Pick<ErrorBody, 'code' | 'details'> = {};
+  if (typeof code === 'string' && REFUSAL_CODE.test(code)) reason.code = code;
+  if (reason.code && details !== null && typeof details === 'object' && !Array.isArray(details)) {
+    const entries = Object.entries(details as Record<string, unknown>).filter(
+      (entry): entry is [string, string | number | boolean | null] =>
+        entry[1] === null || ['string', 'number', 'boolean'].includes(typeof entry[1]),
+    );
+    if (entries.length > 0 && entries.length <= MAX_DETAIL_KEYS) reason.details = Object.fromEntries(entries);
+  }
+  return reason;
 }
 
 /**
@@ -82,6 +110,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ...(typeof retryAfterSeconds === 'number' && Number.isInteger(retryAfterSeconds) && retryAfterSeconds >= 0
           ? { retryAfterSeconds }
           : {}),
+        ...clientSafeReason(payload),
       };
     }
 

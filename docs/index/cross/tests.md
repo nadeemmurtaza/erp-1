@@ -3,7 +3,7 @@
 
 # Tests
 
-**390** spec files, **4,074** cases. What is already pinned down — and what is not.
+**394** spec files, **4,159** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -30,7 +30,7 @@ such exemption.
 - [`tracking`](../modules/tracking.md)
 - [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (26)
+## End-to-end (27)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -39,7 +39,8 @@ regression or an N+1.
 |---|---|---|
 | `apps/api/test/accounting.e2e-spec.ts` | 15 | Accounting ledger invariants (integration) · WO-19.5 — closing a period redirects a fact dated inside it to the next OP… |
 | `apps/api/test/api-keys.e2e-spec.ts` | 21 | Personal API keys (e2e) · an admin key · what can never go into a key · a storefront key · oversight (users.manage) and… |
-| `apps/api/test/auction-http.e2e-spec.ts` | 4 | Auction admin routes (e2e) |
+| `apps/api/test/auction-bidding.e2e-spec.ts` | 11 | Auction bidding (e2e) |
+| `apps/api/test/auction-http.e2e-spec.ts` | 9 | Auction admin routes (e2e) · bidding |
 | `apps/api/test/auction.e2e-spec.ts` | 5 | Auction foundation (e2e) |
 | `apps/api/test/auth-throttle.e2e-spec.ts` | 20 | Sign-in rate limiting and refresh-token reuse detection (e2e) · the per-account bucket, on a real Redis (WO-206.2) · a… |
 | `apps/api/test/auth.e2e-spec.ts` | 11 | Account security (e2e) · registration and email verification · change password · forgot / reset password |
@@ -65,7 +66,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (364)
+## Unit and integration (367)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -93,7 +94,8 @@ regression or an N+1.
 | `apps/api/src/core/cache/tiered-cache.spec.ts` | core/cache | 12 | TieredCache without a working Redis · Redis not connected · a read in flight when this process inva… |
 | `apps/api/src/core/common/aging.spec.ts` | core/common | 7 | ageMovements |
 | `apps/api/src/core/common/cost-fields.spec.ts` | core/common | 3 | stripCodRiskFields · stripCodRiskFieldsList |
-| `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 3 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) |
+| `apps/api/src/core/common/filters/all-exceptions.filter.spec.ts` | core/common | 7 | AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2) · AllEx… |
+| `apps/api/src/core/common/hash-chain.spec.ts` | core/common | 8 | hash chain |
 | `apps/api/src/core/config/env.validation.spec.ts` | core/config | 24 | validateEnv · REDIS_URL (206-rate-limiting-caching-compression-hardening.md §1.2) |
 | `apps/api/src/core/events/event-contracts.spec.ts` | core/events | 13 | Domain event contracts — WO-38.5 · contract-analyzer — unit fixtures |
 | `apps/api/src/core/extension-points/branch-policy.registry.spec.ts` | core/extension-points | 4 | BranchPolicyRegistry — WO-23.3b/c, ADR-022/ADR-023 · allowsBranchLocalPurchasing (user-keyed) · all… |
@@ -157,7 +159,9 @@ regression or an N+1.
 | `apps/api/src/modules/attendance/attendance-device.service.spec.ts` | attendance | 13 | AttendanceDeviceService · register · findOne / update / suspend — the not-found guard · update · ro… |
 | `apps/api/src/modules/attendance/attendance-time.spec.ts` | attendance | 9 | workingDayOf · workedMinutesBetween |
 | `apps/api/src/modules/attendance/attendance.service.spec.ts` | attendance | 22 | AttendanceService · record — the unconditional path · reconcile · adjust / previewAdjust — never mu… |
-| `apps/api/src/modules/auction/auction.service.spec.ts` | auction | 34 | AuctionService · create · list · get · update · addLot · updateLot · withdrawLot · schedule · unsch… |
+| `apps/api/src/modules/auction/auction-bidding.service.spec.ts` | auction | 37 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · when the lot moves un… |
+| `apps/api/src/modules/auction/auction.service.spec.ts` | auction | 36 | AuctionService · create · list · get · update · addLot · updateLot · withdrawLot · schedule · unsch… |
+| `apps/api/src/modules/auction/bidding.spec.ts` | auction | 16 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlias |
 | `apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts` | bankfacilities | 21 | BankFacilitiesService · createFacility · utilizationOf · recordDrawdown · approveDrawdown · postDra… |
 | `apps/api/src/modules/bom/bom-cards.metrics.spec.ts` | bom | 4 | BomCardsMetricsProvider · BomValueMetricsProvider |
 | `apps/api/src/modules/bom/bom-production-replication.listener.spec.ts` | bom | 3 | BomProductionReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onBomProductionCompleted |
@@ -409,7 +413,7 @@ regression or an N+1.
 | `packages/pos-core/src/tender.spec.ts` | packages | 3 | computeTender |
 | `packages/shared/src/api-keys.spec.ts` | packages | 34 | NON_DELEGATABLE_PERMISSIONS · effectiveApiKeyPermissions — a key never exceeds its owner · refuseAp… |
 | `packages/shared/src/cod-risk.spec.ts` | packages | 19 | computeCodRiskScore |
-| `packages/shared/src/constants.spec.ts` | packages | 11 | formatMoneyIn · formatBytes · formatMonthShort and formatWeekdayShort |
+| `packages/shared/src/constants.spec.ts` | packages | 13 | formatMoneyIn · formatBytes · formatMonthShort and formatWeekdayShort · formatDateTimeSeconds |
 | `packages/shared/src/demand-forecast.spec.ts` | packages | 17 | computeDemandForecast · suggestReorderQuantity · resolveLeadTimeDays |
 | `packages/shared/src/discounts.spec.ts` | packages | 18 | isDiscountEligible · evaluateDiscounts — PERCENTAGE, ORDER scope · evaluateDiscounts — PRODUCT scop… |
 | `packages/shared/src/entities/address.spec.ts` | packages | 3 | getFormattedAddress · getAddressCityProvince |

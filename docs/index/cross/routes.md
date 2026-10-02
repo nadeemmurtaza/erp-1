@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **887** endpoints across **162** controllers, with the access rule that actually guards each one.
+All **890** endpoints across **163** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -219,7 +219,7 @@ never authorization.
 | POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
 | POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
 
-### [`auction`](../modules/auction.md) (10)
+### [`auction`](../modules/auction.md) (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -230,9 +230,12 @@ never authorization.
 | POST | `/admin/auctions/:id/cancel` | `auction.manage` | `AuctionController.cancel` | Cancel a draft or scheduled auction, with a reason |
 | POST | `/admin/auctions/:id/lots` | `auction.manage` | `AuctionController.addLot` | Add a lot to a draft auction |
 | PATCH | `/admin/auctions/:id/lots/:lotId` | `auction.manage` | `AuctionController.updateLot` | Edit a lot on a draft auction |
+| GET | `/admin/auctions/:id/lots/:lotId/bids` | `auction.view` `auction.manage` | `AuctionController.listBids` | A lot’s accepted bids, newest first, bidders by alias only |
+| GET | `/admin/auctions/:id/lots/:lotId/bids/verify` | `auction.view` `auction.manage` | `AuctionController.verifyBids` | Re-walk a lot’s bid chain and say whether anything was inserted, edited or remo… |
 | POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` | Withdraw a lot from a draft auction — kept on record, never deleted |
 | POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` | Schedule a draft auction to open at its start time |
 | POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` | Return a scheduled auction to draft, before it opens |
+| POST | `/auctions/lots/:lotId/bids` | signed-in | `AuctionBidController.placeBid` | Place a bid on an open lot; a retry with the same idempotency key returns the a… |
 
 ### [`bankfacilities`](../modules/bankfacilities.md) (10)
 

@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,202 files · 161,314 lines
+1,210 files · 163,317 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -29,11 +29,11 @@ Structure: `src/core/` is the shared platform every deployment runs;
 |---|---|---|---|
 | `apps/api` | 10 | 847 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,294 | module |
-| `apps/api/prisma/schema` | 176 | 17,808 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 177 | 17,966 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 168 | nest module, module |
-| `apps/api/src/core` | 223 | 28,536 | unit test, service, module, controller |
-| `apps/api/src/modules` | 754 | 101,173 | nest module, unit test, service, controller |
-| `apps/api/test` | 32 | 9,407 | e2e test, unit test, module |
+| `apps/api/src/core` | 225 | 28,780 | unit test, service, module, controller |
+| `apps/api/src/modules` | 758 | 102,423 | nest module, unit test, service, controller |
+| `apps/api/test` | 33 | 9,758 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
 
@@ -58,13 +58,13 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
 | `apps/api/src/core/auth/sso.service.ts` | 869 | service |  |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | 823 | unit test |  |
+| `apps/api/src/modules/auction/auction.service.ts` | 808 | service |  |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
 | `apps/api/prisma/schema/catalog.prisma` | 788 | prisma schema | Catalog: categories, products, variants, images. |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.ts` | 771 | event subscriber |  |
 | `apps/api/src/core/events/domain-events.ts` | 769 | module | The catalogue of domain events. |
 | `apps/api/src/modules/catalog/product-admin.service.ts` | 751 | service |  |
-| `apps/api/src/modules/purchasing/purchasing.service.ts` | 749 | service |  |
 
 
 ---

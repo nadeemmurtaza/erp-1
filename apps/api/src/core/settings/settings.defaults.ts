@@ -350,6 +350,14 @@ export const SettingKey = {
    * (named explicitly out of scope until real usage data justifies it).
    */
   SupportTicketSlaMinutes: 'support.ticket_sla_minutes',
+  /**
+   * launchpad-apps/234-auction-app.md §12 — what a raise on a lot must add to
+   * the current bid, in basis points (500 = 5%). Copied onto an auction when it
+   * is scheduled, so changing it here never alters an auction bidders can see.
+   */
+  AuctionBidIncrementBps: 'auction.bid_increment_bps',
+  /** The least a raise may add, in minor units (100 = one whole unit of a two-decimal currency). Copied onto an auction when it is scheduled. */
+  AuctionBidMinStepMinor: 'auction.bid_min_step_minor',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -538,4 +546,9 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   // ticket picked up before lunch never falsely breaches, short enough
   // that an unnoticed OPEN ticket surfaces the same day.
   [SettingKey.SupportTicketSlaMinutes]: 240,
+
+  /* 5% takes about fifteen raises to double a price; one whole currency unit
+   * is the smallest step a person would call a raise. Auction rules, §12. */
+  [SettingKey.AuctionBidIncrementBps]: 500,
+  [SettingKey.AuctionBidMinStepMinor]: toMinor(1),
 };

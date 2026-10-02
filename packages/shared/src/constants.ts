@@ -101,6 +101,22 @@ export function formatDateTime(
 }
 
 /**
+ * e.g. 2026-09-06T19:23:45Z -> "7 Sept 2026, 12:23:45 am". For a record where
+ * the order of events within a minute is the point — a bid ledger.
+ */
+export function formatDateTimeSeconds(
+  value: Date | string | number,
+  locale: Locale = 'en',
+  timeZone: string = SHOP_TIME_ZONE,
+): string {
+  return new Intl.DateTimeFormat(intlTag(locale), {
+    dateStyle: 'medium',
+    timeStyle: 'medium',
+    timeZone,
+  }).format(new Date(value));
+}
+
+/**
  * A chart axis tick — "7 Sept". No year, because an axis has one.
  *
  * `withWeekday` adds it for a tooltip, where the reader is looking at one

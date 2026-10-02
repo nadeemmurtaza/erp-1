@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2685,
-    "lines": 433104,
-    "routes": 887,
-    "controllers": 162,
-    "models": 316,
-    "enums": 148,
-    "migrations": 121,
+    "files": 2694,
+    "lines": 435417,
+    "routes": 890,
+    "controllers": 163,
+    "models": 318,
+    "enums": 150,
+    "migrations": 122,
     "events": 69,
     "permissions": 133,
     "screens": 281,
     "crons": 30,
-    "specs": 390,
+    "specs": 394,
     "designLaws": 192
   },
   "designLaws": [
@@ -1377,9 +1377,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1202,
-      "lines": 161314,
-      "bytes": 6323502,
+      "files": 1210,
+      "lines": 163317,
+      "bytes": 6416639,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1395,21 +1395,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 541,
-      "lines": 97703,
-      "bytes": 3599393,
+      "files": 542,
+      "lines": 97893,
+      "bytes": 3606864,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 463,
-      "lines": 96075,
-      "bytes": 5879734,
+      "lines": 96164,
+      "bytes": 5889197,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 114,
-      "lines": 13176,
-      "bytes": 494032,
+      "lines": 13207,
+      "bytes": 495203,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1536,13 +1536,17 @@
       "alwaysOn": false,
       "inRegistry": true,
       "files": [
+        "apps/api/src/modules/auction/auction-bid.controller.ts",
+        "apps/api/src/modules/auction/auction-bidding.service.spec.ts",
         "apps/api/src/modules/auction/auction.controller.ts",
         "apps/api/src/modules/auction/auction.module.ts",
         "apps/api/src/modules/auction/auction.service.spec.ts",
         "apps/api/src/modules/auction/auction.service.ts",
+        "apps/api/src/modules/auction/bidding.spec.ts",
+        "apps/api/src/modules/auction/bidding.ts",
         "apps/api/src/modules/auction/dto/auction.dto.ts"
       ],
-      "routes": 10,
+      "routes": 13,
       "page": "docs/index/modules/auction.md"
     },
     {
@@ -2949,6 +2953,8 @@
         "apps/api/src/core/common/dto/pagination.dto.ts",
         "apps/api/src/core/common/filters/all-exceptions.filter.spec.ts",
         "apps/api/src/core/common/filters/all-exceptions.filter.ts",
+        "apps/api/src/core/common/hash-chain.spec.ts",
+        "apps/api/src/core/common/hash-chain.ts",
         "apps/api/src/core/common/sales-revenue.ts"
       ],
       "page": "docs/index/core/common.md"
@@ -4472,7 +4478,7 @@
       "controller": "AuctionController",
       "handler": "list",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 31,
+      "line": 33,
       "access": "auction.view | auction.manage",
       "permissions": [
         "auction.view",
@@ -4489,7 +4495,7 @@
       "controller": "AuctionController",
       "handler": "create",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 45,
+      "line": 47,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4505,7 +4511,7 @@
       "controller": "AuctionController",
       "handler": "get",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 38,
+      "line": 40,
       "access": "auction.view | auction.manage",
       "permissions": [
         "auction.view",
@@ -4522,7 +4528,7 @@
       "controller": "AuctionController",
       "handler": "update",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 52,
+      "line": 54,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4538,7 +4544,7 @@
       "controller": "AuctionController",
       "handler": "cancel",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 99,
+      "line": 115,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4554,7 +4560,7 @@
       "controller": "AuctionController",
       "handler": "addLot",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 59,
+      "line": 61,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4570,7 +4576,7 @@
       "controller": "AuctionController",
       "handler": "updateLot",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 66,
+      "line": 68,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4580,13 +4586,47 @@
       "summary": "Edit a lot on a draft auction"
     },
     {
+      "method": "GET",
+      "path": "/admin/auctions/:id/lots/:lotId/bids",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "listBids",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 87,
+      "access": "auction.view | auction.manage",
+      "permissions": [
+        "auction.view",
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "A lot’s accepted bids, newest first, bidders by alias only"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/auctions/:id/lots/:lotId/bids/verify",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "verifyBids",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 94,
+      "access": "auction.view | auction.manage",
+      "permissions": [
+        "auction.view",
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Re-walk a lot’s bid chain and say whether anything was inserted, edited or removed"
+    },
+    {
       "method": "POST",
       "path": "/admin/auctions/:id/lots/:lotId/withdraw",
       "module": "auction",
       "controller": "AuctionController",
       "handler": "withdrawLot",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 78,
+      "line": 80,
       "access": "auction.manage",
       "permissions": [
         "auction.manage"
@@ -4602,7 +4642,7 @@
       "controller": "AuctionController",
       "handler": "schedule",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 85,
+      "line": 101,
       "access": "auction.publish",
       "permissions": [
         "auction.publish"
@@ -4618,7 +4658,7 @@
       "controller": "AuctionController",
       "handler": "unschedule",
       "file": "apps/api/src/modules/auction/auction.controller.ts",
-      "line": 92,
+      "line": 108,
       "access": "auction.publish",
       "permissions": [
         "auction.publish"
@@ -15110,6 +15150,20 @@
     },
     {
       "method": "POST",
+      "path": "/auctions/lots/:lotId/bids",
+      "module": "auction",
+      "controller": "AuctionBidController",
+      "handler": "placeBid",
+      "file": "apps/api/src/modules/auction/auction-bid.controller.ts",
+      "line": 31,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Place a bid on an open lot; a retry with the same idempotency key returns the accepted bid"
+    },
+    {
+      "method": "POST",
       "path": "/auth/change-password",
       "module": "core/auth",
       "controller": "AuthController",
@@ -17527,7 +17581,9 @@
       "sensitivity": "low",
       "routes": [
         "GET /admin/auctions",
-        "GET /admin/auctions/:id"
+        "GET /admin/auctions/:id",
+        "GET /admin/auctions/:id/lots/:lotId/bids",
+        "GET /admin/auctions/:id/lots/:lotId/bids/verify"
       ],
       "uiSites": 1,
       "roles": [
@@ -17548,6 +17604,8 @@
         "POST /admin/auctions/:id/cancel",
         "POST /admin/auctions/:id/lots",
         "PATCH /admin/auctions/:id/lots/:lotId",
+        "GET /admin/auctions/:id/lots/:lotId/bids",
+        "GET /admin/auctions/:id/lots/:lotId/bids/verify",
         "POST /admin/auctions/:id/lots/:lotId/withdraw"
       ],
       "uiSites": 3,
@@ -21970,7 +22028,7 @@
     {
       "name": "Auction",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 38,
+      "line": 54,
       "doc": "One auction event.",
       "fields": [
         {
@@ -22051,6 +22109,13 @@
           "relation": false
         },
         {
+          "name": "bidRules",
+          "type": "Json?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
           "name": "createdById",
           "type": "String",
           "id": false,
@@ -22077,6 +22142,13 @@
           "id": false,
           "unique": false,
           "relation": false
+        },
+        {
+          "name": "bidders",
+          "type": "Bidder[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -22088,7 +22160,7 @@
     {
       "name": "AuctionLot",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 71,
+      "line": 94,
       "doc": "One thing being sold within an auction.",
       "fields": [
         {
@@ -22149,14 +22221,35 @@
         },
         {
           "name": "startPriceMinor",
-          "type": "Int",
+          "type": "BigInt",
           "id": false,
           "unique": false,
           "relation": false
         },
         {
           "name": "reservePriceMinor",
-          "type": "Int?",
+          "type": "BigInt?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "currentBidMinor",
+          "type": "BigInt?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "leaderBidderId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bidSeq",
+          "type": "Int",
           "id": false,
           "unique": false,
           "relation": false
@@ -22188,6 +22281,13 @@
           "id": false,
           "unique": false,
           "relation": true
+        },
+        {
+          "name": "bids",
+          "type": "Bid[]",
+          "id": false,
+          "unique": false,
+          "relation": false
         }
       ],
       "indexes": [
@@ -23165,6 +23265,171 @@
       ],
       "indexes": [
         "@@unique([bannerId, locale])"
+      ]
+    },
+    {
+      "name": "Bid",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 156,
+      "doc": "One accepted bid: a record, never edited and never deleted (doc 234 §5.2).",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lotId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "bidderId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "amountMinor",
+          "type": "BigInt",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "kind",
+          "type": "BidKind",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "seq",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "acceptedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "idempotencyKey",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "prevHash",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "hash",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lot",
+          "type": "AuctionLot",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "bidder",
+          "type": "Bidder",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([lotId, seq])",
+        "@@unique([lotId, bidderId, idempotencyKey])",
+        "@@index([bidderId, acceptedAt])"
+      ]
+    },
+    {
+      "name": "Bidder",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 135,
+      "doc": "A person bidding in one auction.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "auctionId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "userId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "alias",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "BidderStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "auction",
+          "type": "Auction",
+          "id": false,
+          "unique": false,
+          "relation": true
+        },
+        {
+          "name": "bids",
+          "type": "Bid[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@unique([auctionId, userId])",
+        "@@unique([auctionId, alias])"
       ]
     },
     {
@@ -48350,7 +48615,7 @@
     {
       "name": "AuctionLotStatus",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 25,
+      "line": 24,
       "values": [
         "PENDING",
         "OPEN",
@@ -48361,7 +48626,7 @@
     {
       "name": "AuctionStatus",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 15,
+      "line": 14,
       "values": [
         "DRAFT",
         "SCHEDULED",
@@ -48375,7 +48640,7 @@
     {
       "name": "AuctionType",
       "file": "apps/api/prisma/schema/auction.prisma",
-      "line": 9,
+      "line": 8,
       "values": [
         "ENGLISH",
         "SEALED_BID",
@@ -48412,6 +48677,26 @@
         "OVERDRAFT",
         "LETTER_OF_CREDIT",
         "BANK_GUARANTEE"
+      ]
+    },
+    {
+      "name": "BidderStatus",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 42,
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "SUSPENDED"
+      ]
+    },
+    {
+      "name": "BidKind",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 33,
+      "values": [
+        "MANUAL",
+        "PROXY_AUTO",
+        "SEALED"
       ]
     },
     {
@@ -51973,6 +52258,26 @@
         "INSERT"
       ],
       "tables": []
+    },
+    {
+      "folder": "20261002190000_wo234_2_bidding",
+      "file": "apps/api/prisma/schema/migrations/20261002190000_wo234_2_bidding/migration.sql",
+      "date": "2026-10-02",
+      "slug": "wo234_2_bidding",
+      "statements": 16,
+      "kinds": [
+        "CREATE TYPE",
+        "ALTER TABLE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX"
+      ],
+      "tables": [
+        "Auction",
+        "AuctionLot",
+        "Bid",
+        "Bidder"
+      ]
     }
   ],
   "schemaMigrationDrift": {
@@ -55624,9 +55929,19 @@
       "file": "apps/api/src/core/common/filters/all-exceptions.filter.spec.ts",
       "module": "core/common",
       "kind": "unit test",
-      "cases": 3,
+      "cases": 7,
       "describes": [
-        "AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2)"
+        "AllExceptionsFilter — Retry-After (206-rate-limiting-caching-compression-hardening.md §1.2)",
+        "AllExceptionsFilter — a machine-readable reason"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/common/hash-chain.spec.ts",
+      "module": "core/common",
+      "kind": "unit test",
+      "cases": 8,
+      "describes": [
+        "hash chain"
       ]
     },
     {
@@ -56324,10 +56639,25 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/auction/auction-bidding.service.spec.ts",
+      "module": "auction",
+      "kind": "unit test",
+      "cases": 37,
+      "describes": [
+        "AuctionService bidding",
+        "accepting a bid",
+        "a retry",
+        "refusals write nothing",
+        "when the lot moves under the bid",
+        "listBids",
+        "verifyBids"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/auction/auction.service.spec.ts",
       "module": "auction",
       "kind": "unit test",
-      "cases": 34,
+      "cases": 36,
       "describes": [
         "AuctionService",
         "create",
@@ -56340,6 +56670,20 @@
         "schedule",
         "unschedule",
         "cancel"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/auction/bidding.spec.ts",
+      "module": "auction",
+      "kind": "unit test",
+      "cases": 16,
+      "describes": [
+        "default rules",
+        "computeIncrement",
+        "minimumNextBid",
+        "parseBidRules",
+        "bid canonical form",
+        "bidderAlias"
       ]
     },
     {
@@ -58323,12 +58667,22 @@
       ]
     },
     {
+      "file": "apps/api/test/auction-bidding.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 11,
+      "describes": [
+        "Auction bidding (e2e)"
+      ]
+    },
+    {
       "file": "apps/api/test/auction-http.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
-      "cases": 4,
+      "cases": 9,
       "describes": [
-        "Auction admin routes (e2e)"
+        "Auction admin routes (e2e)",
+        "bidding"
       ]
     },
     {
@@ -59416,11 +59770,12 @@
       "file": "packages/shared/src/constants.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 11,
+      "cases": 13,
       "describes": [
         "formatMoneyIn",
         "formatBytes",
-        "formatMonthShort and formatWeekdayShort"
+        "formatMonthShort and formatWeekdayShort",
+        "formatDateTimeSeconds"
       ]
     },
     {
@@ -60321,9 +60676,9 @@
       "path": "apps/api/prisma/schema/auction.prisma",
       "area": "api",
       "kind": "prisma schema",
-      "lines": 97,
-      "bytes": 3449,
-      "doc": "Auction app (launchpad-apps/234-auction-app.md, WO-234.1).",
+      "lines": 179,
+      "bytes": 6754,
+      "doc": "Auction app (launchpad-apps/234-auction-app.md, WO-234.1 and WO-234.2).",
       "symbols": []
     },
     {
@@ -61565,6 +61920,15 @@
       "kind": "migration",
       "lines": 33,
       "bytes": 1937,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20261002190000_wo234_2_bidding/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 76,
+      "bytes": 2737,
       "doc": "",
       "symbols": []
     },
@@ -63598,8 +63962,8 @@
       "path": "apps/api/src/core/common/filters/all-exceptions.filter.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 59,
-      "bytes": 2631,
+      "lines": 119,
+      "bytes": 5435,
       "doc": "",
       "symbols": []
     },
@@ -63607,14 +63971,68 @@
       "path": "apps/api/src/core/common/filters/all-exceptions.filter.ts",
       "area": "api",
       "kind": "module",
-      "lines": 152,
-      "bytes": 4604,
+      "lines": 181,
+      "bytes": 6191,
       "doc": "",
       "symbols": [
         {
           "name": "AllExceptionsFilter",
           "kind": "class",
-          "line": 32
+          "line": 60
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/common/hash-chain.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 59,
+      "bytes": 2383,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/common/hash-chain.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 83,
+      "bytes": 3077,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CHAIN_START",
+          "kind": "const",
+          "line": 16
+        },
+        {
+          "name": "canonicalize",
+          "kind": "function",
+          "line": 23
+        },
+        {
+          "name": "chainHash",
+          "kind": "function",
+          "line": 28
+        },
+        {
+          "name": "ChainLink",
+          "kind": "interface",
+          "line": 36
+        },
+        {
+          "name": "ChainVerdict",
+          "kind": "interface",
+          "line": 43
+        },
+        {
+          "name": "ChainWalker",
+          "kind": "class",
+          "line": 57
+        },
+        {
+          "name": "verifyChain",
+          "kind": "function",
+          "line": 75
         }
       ]
     },
@@ -66068,8 +66486,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 542,
-      "bytes": 30842,
+      "lines": 555,
+      "bytes": 31607,
       "doc": "",
       "symbols": [
         {
@@ -66105,12 +66523,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 355
+          "line": 363
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 357
+          "line": 365
         }
       ]
     },
@@ -67919,17 +68337,41 @@
       ]
     },
     {
+      "path": "apps/api/src/modules/auction/auction-bid.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 40,
+      "bytes": 1850,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AuctionBidController",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction-bidding.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 471,
+      "bytes": 22970,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/src/modules/auction/auction.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 103,
-      "bytes": 3976,
+      "lines": 119,
+      "bytes": 4754,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionController",
           "kind": "class",
-          "line": 25
+          "line": 27
         }
       ]
     },
@@ -67937,14 +68379,14 @@
       "path": "apps/api/src/modules/auction/auction.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 19,
-      "bytes": 732,
+      "lines": 20,
+      "bytes": 819,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionModule",
           "kind": "class",
-          "line": 18
+          "line": 19
         }
       ]
     },
@@ -67952,8 +68394,8 @@
       "path": "apps/api/src/modules/auction/auction.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 445,
-      "bytes": 19431,
+      "lines": 479,
+      "bytes": 21026,
       "doc": "",
       "symbols": []
     },
@@ -67961,24 +68403,113 @@
       "path": "apps/api/src/modules/auction/auction.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 371,
-      "bytes": 16304,
+      "lines": 808,
+      "bytes": 34740,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionLotView",
           "kind": "type",
-          "line": 23
+          "line": 74
         },
         {
           "name": "AuctionDetail",
           "kind": "type",
-          "line": 24
+          "line": 82
+        },
+        {
+          "name": "PlaceBidInput",
+          "kind": "interface",
+          "line": 84
+        },
+        {
+          "name": "BidView",
+          "kind": "interface",
+          "line": 93
+        },
+        {
+          "name": "LotPriceState",
+          "kind": "interface",
+          "line": 103
+        },
+        {
+          "name": "PlaceBidResult",
+          "kind": "interface",
+          "line": 114
+        },
+        {
+          "name": "BidIntegrity",
+          "kind": "interface",
+          "line": 121
         },
         {
           "name": "AuctionService",
           "kind": "class",
-          "line": 57
+          "line": 176
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/bidding.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 131,
+      "bytes": 4727,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/auction/bidding.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 95,
+      "bytes": 3840,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MAX_PRICE_MINOR",
+          "kind": "const",
+          "line": 18
+        },
+        {
+          "name": "BidRules",
+          "kind": "type",
+          "line": 21
+        },
+        {
+          "name": "DEFAULT_BID_RULES",
+          "kind": "const",
+          "line": 35
+        },
+        {
+          "name": "parseBidRules",
+          "kind": "function",
+          "line": 41
+        },
+        {
+          "name": "computeIncrement",
+          "kind": "function",
+          "line": 54
+        },
+        {
+          "name": "minimumNextBid",
+          "kind": "function",
+          "line": 60
+        },
+        {
+          "name": "bidderAlias",
+          "kind": "const",
+          "line": 65
+        },
+        {
+          "name": "ChainedBidFields",
+          "kind": "interface",
+          "line": 67
+        },
+        {
+          "name": "bidCanonical",
+          "kind": "function",
+          "line": 83
         }
       ]
     },
@@ -67986,54 +68517,64 @@
       "path": "apps/api/src/modules/auction/dto/auction.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 178,
-      "bytes": 4254,
+      "lines": 203,
+      "bytes": 5089,
       "doc": "",
       "symbols": [
         {
           "name": "MAX_MINOR",
           "kind": "const",
-          "line": 22
+          "line": 24
         },
         {
           "name": "CREATABLE_AUCTION_TYPES",
           "kind": "const",
-          "line": 25
+          "line": 27
         },
         {
           "name": "AUCTION_STATUSES",
           "kind": "const",
-          "line": 27
+          "line": 29
         },
         {
           "name": "CreateAuctionDto",
           "kind": "class",
-          "line": 29
+          "line": 31
         },
         {
           "name": "UpdateAuctionDto",
           "kind": "class",
-          "line": 62
+          "line": 64
         },
         {
           "name": "CancelAuctionDto",
           "kind": "class",
-          "line": 93
+          "line": 95
         },
         {
           "name": "CreateAuctionLotDto",
           "kind": "class",
-          "line": 101
+          "line": 103
         },
         {
           "name": "UpdateAuctionLotDto",
           "kind": "class",
-          "line": 135
+          "line": 137
         },
         {
           "name": "AuctionListQueryDto",
           "kind": "class",
-          "line": 172
+          "line": 174
+        },
+        {
+          "name": "PlaceBidDto",
+          "kind": "class",
+          "line": 181
+        },
+        {
+          "name": "BidListQueryDto",
+          "kind": "class",
+          "line": 202
         }
       ]
     },
@@ -79678,11 +80219,20 @@
       "symbols": []
     },
     {
+      "path": "apps/api/test/auction-bidding.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 252,
+      "bytes": 14463,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "apps/api/test/auction-http.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 101,
-      "bytes": 5477,
+      "lines": 200,
+      "bytes": 12375,
       "doc": "",
       "symbols": []
     },
@@ -84663,14 +85213,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 512,
-      "bytes": 19482,
+      "lines": 548,
+      "bytes": 21169,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionDetailPage",
           "kind": "default",
-          "line": 66
+          "line": 75
         }
       ]
     },
@@ -88628,6 +89178,26 @@
           "name": "interpolateHref",
           "kind": "function",
           "line": 42
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/auction-bid-ledger.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 154,
+      "bytes": 5784,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LedgerLot",
+          "kind": "interface",
+          "line": 28
+        },
+        {
+          "name": "AuctionBidLedger",
+          "kind": "function",
+          "line": 45
         }
       ]
     },
@@ -97792,8 +98362,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 11897,
-      "bytes": 747723,
+      "lines": 11948,
+      "bytes": 752723,
       "doc": "",
       "symbols": []
     },
@@ -99619,8 +100189,8 @@
       "path": "docs/implementation/launchpad-apps/234-auction-app.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 280,
-      "bytes": 21897,
+      "lines": 318,
+      "bytes": 26360,
       "doc": "",
       "symbols": []
     },
@@ -101025,8 +101595,8 @@
       "path": "packages/shared/src/constants.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 61,
-      "bytes": 2141,
+      "lines": 76,
+      "bytes": 2860,
       "doc": "",
       "symbols": []
     },
@@ -101034,8 +101604,8 @@
       "path": "packages/shared/src/constants.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 221,
-      "bytes": 8561,
+      "lines": 237,
+      "bytes": 9013,
       "doc": "",
       "symbols": [
         {
@@ -101114,44 +101684,49 @@
           "line": 91
         },
         {
+          "name": "formatDateTimeSeconds",
+          "kind": "function",
+          "line": 107
+        },
+        {
           "name": "formatDateShort",
           "kind": "function",
-          "line": 109
+          "line": 125
         },
         {
           "name": "formatMonthShort",
           "kind": "function",
-          "line": 128
+          "line": 144
         },
         {
           "name": "formatWeekdayShort",
           "kind": "function",
-          "line": 137
+          "line": 153
         },
         {
           "name": "formatNumber",
           "kind": "function",
-          "line": 154
+          "line": 170
         },
         {
           "name": "formatMoney",
           "kind": "function",
-          "line": 159
+          "line": 175
         },
         {
           "name": "formatMoneyIn",
           "kind": "function",
-          "line": 182
+          "line": 198
         },
         {
           "name": "formatBytes",
           "kind": "function",
-          "line": 199
+          "line": 215
         },
         {
           "name": "IMPORT_ROW_CAP",
           "kind": "const",
-          "line": 220
+          "line": 236
         }
       ]
     },

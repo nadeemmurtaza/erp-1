@@ -59,8 +59,8 @@ the *catalogue*, not any particular deployment's grants.
 | `pos.terminal.configure` | Configure a terminal's order types and hardware driver wiring | medium | **0 — enforces nothing** | — | ADMIN |
 | `pos.dashboard.view` | View the till's own daily-sales/customers/low-stock snapshot | low | 1 | — | STAFF, ADMIN |
 | `payments.approve` | Approve bank-transfer payments | high | 3 | 2 | STAFF, ADMIN |
-| `auction.view` | View auctions and their lots | low | 2 | 1 | ADMIN |
-| `auction.manage` | Create and edit auctions and lots, and cancel an auction before it opens | medium | 8 | 3 | ADMIN |
+| `auction.view` | View auctions and their lots | low | 4 | 1 | ADMIN |
+| `auction.manage` | Create and edit auctions and lots, and cancel an auction before it opens | medium | 10 | 3 | ADMIN |
 | `auction.publish` | Schedule an auction so it opens to bidding at its start time | high | 2 | 2 | ADMIN |
 
 ### Production

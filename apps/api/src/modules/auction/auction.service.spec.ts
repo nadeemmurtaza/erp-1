@@ -2,9 +2,11 @@ import { BadRequestException, ConflictException, NotFoundException } from '@nest
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { AuditService } from '../../core/audit/audit.service';
+import { Prisma } from '../../core/prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
 import { AuctionService } from './auction.service';
+import { DEFAULT_BID_RULES } from './bidding';
 import { AuctionListQueryDto } from './dto/auction.dto';
 
 /**
@@ -17,6 +19,7 @@ describe('AuctionService', () => {
   let service: AuctionService;
   let prisma: any;
   let audit: any;
+  let settings: any;
   let events: string[];
 
   const future = (hours = 24) => new Date(Date.now() + hours * 3_600_000);
@@ -75,12 +78,13 @@ describe('AuctionService', () => {
       $transaction: jest.fn((arg: any) => (Array.isArray(arg) ? Promise.all(arg) : arg(prisma))),
     };
     audit = { record: jest.fn().mockImplementation(({ action }) => events.push(action)) };
+    settings = { get: jest.fn().mockResolvedValue(undefined) };
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuctionService,
         { provide: PrismaService, useValue: prisma },
-        { provide: SettingsService, useValue: { get: jest.fn().mockResolvedValue(undefined) } },
+        { provide: SettingsService, useValue: settings },
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'N1' } },
         { provide: AuditService, useValue: audit },
       ],
@@ -351,6 +355,35 @@ describe('AuctionService', () => {
       expect(events).toEqual(['auction.scheduled']);
     });
 
+    it('freezes the bidding rules from Settings onto the auction as it is scheduled', async () => {
+      settings.get.mockImplementation(async (key: string) =>
+        key === 'auction.bid_increment_bps' ? 1_000 : key === 'auction.bid_min_step_minor' ? 500 : undefined,
+      );
+      lockedAs('DRAFT');
+      prisma.auction.findUniqueOrThrow.mockResolvedValue(draft());
+      prisma.auctionLot.count.mockResolvedValue(1);
+      prisma.auction.update.mockResolvedValue(draft({ status: 'SCHEDULED' }));
+
+      await service.schedule('a1', 'u1');
+
+      expect(prisma.auction.update).toHaveBeenCalledWith({
+        where: { id: 'a1' },
+        data: { status: 'SCHEDULED', bidRules: { incrementBps: 1_000, minStepMinor: 500 } },
+      });
+    });
+
+    it('freezes the default rules when a setting is missing or unusable, never a broken one', async () => {
+      settings.get.mockImplementation(async (key: string) => (key === 'auction.bid_increment_bps' ? -3 : 'x'));
+      lockedAs('DRAFT');
+      prisma.auction.findUniqueOrThrow.mockResolvedValue(draft());
+      prisma.auctionLot.count.mockResolvedValue(1);
+      prisma.auction.update.mockResolvedValue(draft({ status: 'SCHEDULED' }));
+
+      await service.schedule('a1', 'u1');
+
+      expect(prisma.auction.update.mock.calls[0][0].data.bidRules).toEqual(DEFAULT_BID_RULES);
+    });
+
     it('refuses a start time that has passed', async () => {
       lockedAs('DRAFT');
       prisma.auction.findUniqueOrThrow.mockResolvedValue(draft({ startsAt: new Date(Date.now() - 1000) }));
@@ -388,6 +421,7 @@ describe('AuctionService', () => {
       prisma.auction.findUniqueOrThrow.mockResolvedValue(draft({ status: 'SCHEDULED' }));
       prisma.auction.update.mockResolvedValue(draft());
       expect((await service.unschedule('a1', 'u1')).status).toBe('DRAFT');
+      expect(prisma.auction.update.mock.calls[0][0].data).toEqual({ status: 'DRAFT', bidRules: Prisma.DbNull });
       expect(events).toEqual(['auction.unscheduled']);
     });
 

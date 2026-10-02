@@ -11894,3 +11894,54 @@ browser's time zone and stored as UTC, so the admin screen shows what was
 typed only on the same zone; there is no BigInt price path yet (above); the
 `OPEN` status badge keeps its neutral tone from the shared task state until
 WO-234.3 opens lots for real.
+
+### ADR-086 addendum (2026-10-02) — WO-234.2 bidding: the BIGINT decision made, and the exact parameters
+
+The open decision in the WO-234.1 addendum is closed: `AuctionLot.startPriceMinor`
+and `reservePriceMinor` are `BIGINT` (migration `20261002190000`, which widens in
+place and keeps every value), and `Bid.amountMinor` is `BIGINT` from its first
+day. Money elsewhere in the repository stays `Int`; the auction is the one
+exception, contained at the service boundary (every lot and bid leaves
+`AuctionService` as a plain number, so JSON never meets a `bigint`). The ceiling
+is 10^15 minor units; the reasoning is in doc 234 §12.
+
+Built: `placeBid()` (one writer of a lot's price), `Bidder` and `Bid`,
+`verifyBids()`, the bidder route and the admin ledger. Two supporting changes
+outside the auction module, both additive: `core/common/hash-chain.ts`, the
+tamper-evident chain doc 231 §2.3 also names, as pure functions with no
+dependency, so doc 231's `WorkContribution` calls the same code; and
+`AllExceptionsFilter` now passes a vetted `code` (SCREAMING_SNAKE_CASE) and flat
+`details` (at most ten primitive values) from an exception to the response, so a
+client can tell "BID_TOO_LOW" from "AUCTION_ENDED", both a 409. Before this the
+filter replaced every exception's `error` with the HTTP status name, which made
+the `error: 'INVALID_MEASUREMENTS'` the measurements module sets unreachable by
+clients; that module is untouched and can adopt `code` when it needs to.
+
+| Parameter | Exact value | Applies to | Why this number | Enforced | Fails how |
+|---|---|---|---|---|---|
+| Price ceiling | 10^15 minor units | every `*Minor` on a lot or bid | Largest round number whose 5% step and the sum with it stay below 2^53 − 1 (9.007 × 10^15); `computeIncrement` multiplies in `BigInt` regardless | `@Max(MAX_MINOR)`; `BIGINT` is the backstop | 400 naming the limit |
+| Minimum raise | max(ceil(current × 500 / 10 000), `toMinor(1)`) | `minimumNextBid()` | 5% takes about 15 raises to double a price; one whole currency unit is the smallest step a person calls a raise | `placeBid()`; copied onto the auction at `schedule()` from Settings `auction.bid_increment_bps`, `auction.bid_min_step_minor` | A missing or malformed field falls back to its default, field by field |
+| Lot lock | `pg_advisory_xact_lock(8_241_171, hashtext(lotId))`; bidder provisioning `8_241_172` keyed by auction id | `placeBid()` | Serialises writers of one lot so the loser re-checks against the new price; the second lock keeps "Bidder N" gapless. Lock order is always lot, then bidders | the transaction | A waiter queues up to `maxWait`, then a 503 |
+| Bid transaction | `maxWait` 10 000 ms, `timeout` 10 000 ms | `BID_TRANSACTION` | Prisma's 2 000 and 5 000 refuse a healthy hot lot in a final-minute rush; 10 s drains the 50 bids/s target through a pool of ten and still fails visibly | Prisma | 503, "your bid was not placed", nothing written |
+| Attempts | 3 whole attempts | `MAX_BID_ATTEMPTS` | A bound on a bug, not a tuned number: the lock makes a lost predicate rare | `placeBid()` | 409 `LOT_CHANGED` |
+| Per bidder per lot | 10 accepted bids per rolling 60 000 ms | `assertWithinBidRate()` | Unreachable by hand, reachable by a script; doc 234 §12 | counted from the ledger via the `(bidderId, acceptedAt)` index, so every node agrees without a shared counter | 429 `BID_RATE_LIMITED`, `Retry-After` set |
+| Per client address | 60 requests per 60 000 ms | `POST /auctions/lots/:lotId/bids` | One a second sustained; ten bidders behind one office address still get six a minute each | `@Throttle`, Redis-backed `SharedThrottlerStorage` | 429; a Redis outage follows the throttler's existing per-route policy |
+| Chain verification page | 1 000 bids per read | `verifyBids()` | A lot with 100 000 bids is never in memory at once; keyset on `seq` | the loop | none; read-only |
+
+Pillars touched: architecture (the module still imports no other module; the
+hash chain is core and pure), secure by design (the bid route is
+`@AuthenticatedOnly` on purpose, closed to API keys by having no `CustomerScope`;
+staff who run an auction are barred from bidding on it by data; no response
+carries a user id, the reserve or the idempotency key; the admin ledger shows
+aliases), stable and reliable (one transaction per bid, a retry of an accepted
+key answered from the record even after close, the unique indexes behind the
+lock, a refused first bid burning no alias), observable (`Logger` at `debug` for
+an accepted bid, `warn` for a lost predicate or a timeout; no `AuditLog` row per
+bid, because the hash-chained `Bid` ledger is the record and a row per bid
+would double the write volume of the hottest path).
+
+Known gaps, stated rather than hidden: nothing opens an auction until WO-234.3,
+so bids exist only in tests; the bidder-facing bid box is WO-234.4; the §6 load
+test needs the realtime path; staff identity-barring by `Party` link is WO-234.5;
+`Bid` is not partitioned by month yet (doc 234 §4).
+

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AuctionBidController } from './auction-bid.controller';
 import { AuctionController } from './auction.controller';
 import { AuctionService } from './auction.service';
 
@@ -11,7 +12,7 @@ import { AuctionService } from './auction.service';
  * extension points and domain events, never an import.
  */
 @Module({
-  controllers: [AuctionController],
+  controllers: [AuctionController, AuctionBidController],
   providers: [AuctionService],
   exports: [AuctionService],
 })

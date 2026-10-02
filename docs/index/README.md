@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,685 files / 433,104 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,694 files / 435,417 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -46,9 +46,9 @@ single fact — the page is the right tool when you need the shape of something.
 
 | Your question | Open this | Cost | What it gives you |
 |---|---|---|---|
-| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~38.7k | all 887 HTTP routes, with the permission that guards each |
+| “Where is the endpoint for X?” | [cross/routes.md](cross/routes.md) | ~38.9k | all 890 HTTP routes, with the permission that guards each |
 | “What permission do I need / who has it?” | [cross/permissions.md](cross/permissions.md) | ~6.7k | all 133 permissions → routes, UI call sites, seed |
-| “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | ~19.7k | all 316 Prisma models and 148 enums, field by field |
+| “Which table/column holds X?” | [cross/data-model.md](cross/data-model.md) | ~19.8k | all 318 Prisma models and 150 enums, field by field |
 | “How do modules talk to each other?” | [cross/events.md](cross/events.md) | ~11.0k | all 69 domain events → publishers and subscribers |
 | “What are the valid status transitions for this entity?” | [cross/state-machines.md](cross/state-machines.md) | ~883 | every named `Record<XStatus, XStatus[]>` transition table (3) |
 | “What screen serves this URL?” | [cross/ui-routes.md](cross/ui-routes.md) | ~8.3k | all 281 screens across web, POS and mobile |
@@ -56,12 +56,12 @@ single fact — the page is the right tool when you need the shape of something.
 | “How should this look / behave / read?” | [cross/design-system.md](cross/design-system.md) | ~12.5k | the 16 design chapters, and the measured state of the code they govern |
 | “What runs on a schedule?” | [cross/jobs.md](cross/jobs.md) | ~1.3k | 30 cron jobs and the background dispatchers |
 | “What command do I run?” | [cross/commands.md](cross/commands.md) | ~2.1k | every script in every package.json (95) |
-| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~5.3k | 121 migrations, newest last |
-| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~15.3k | 390 spec files → what each one pins down |
+| “What does the schema history look like?” | [cross/migrations.md](cross/migrations.md) | ~5.4k | 122 migrations, newest last |
+| “What is already tested?” | [cross/tests.md](cross/tests.md) | ~15.5k | 394 spec files → what each one pins down |
 | “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~54.9k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (66) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~698.4k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~702.2k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -119,12 +119,12 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 
 | Area | Files | Lines | L1 page |
 |---|---|---|---|
-| apps/api | 1,202 | 161,314 | [api](areas/api.md) |
-| apps/web | 541 | 97,703 | [web](areas/web.md) |
+| apps/api | 1,210 | 163,317 | [api](areas/api.md) |
+| apps/web | 542 | 97,893 | [web](areas/web.md) |
 | apps/pos | 33 | 2,671 | [pos](areas/pos.md) |
 | apps/mobile | 49 | 6,906 | [mobile](areas/mobile.md) |
-| packages/* | 114 | 13,176 | [packages](areas/packages.md) |
-| docs/* | 463 | 96,075 | [docs](areas/docs.md) |
+| packages/* | 114 | 13,207 | [packages](areas/packages.md) |
+| docs/* | 463 | 96,164 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 64 | 33,140 | [infra](areas/infra.md) |
 | repository root files | 219 | 22,119 | [root](areas/root.md) |
 

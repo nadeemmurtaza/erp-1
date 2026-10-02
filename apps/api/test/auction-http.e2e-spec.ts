@@ -3,11 +3,13 @@ import { Test } from '@nestjs/testing';
 import cookieParser from 'cookie-parser';
 import request from 'supertest';
 import { AllExceptionsFilter } from '../src/core/common/filters/all-exceptions.filter';
+import { PrismaService } from '../src/core/prisma/prisma.service';
 
 /**
- * Auction admin routes (launchpad-apps/234-auction-app.md, WO-234.1) through
- * the real guards, pipes and filters: who is turned away, what a malformed
- * body does, and the draft → scheduled → cancelled path end to end. The module
+ * Auction routes (launchpad-apps/234-auction-app.md, WO-234.1 and WO-234.2)
+ * through the real guards, pipes and filters: who is turned away, what a
+ * malformed body does, the draft → scheduled → cancelled path end to end, and
+ * a customer's bid with its refusals and its retry. The module
  * is off by default, so this file adds it to the allowlist for its own run
  * (before AppModule is imported, which is when the allowlist is read) instead
  * of depending on what the CI environment enables.
@@ -16,6 +18,8 @@ describe('Auction admin routes (e2e)', () => {
   let app: INestApplication;
   let adminToken: string;
   let customerToken: string;
+  let prisma: PrismaService;
+  const opened: string[] = [];
   const made: string[] = [];
 
   const when = (hours: number) => new Date(Date.now() + hours * 3_600_000).toISOString();
@@ -34,6 +38,7 @@ describe('Auction admin routes (e2e)', () => {
     app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }));
     app.useGlobalFilters(new AllExceptionsFilter());
     await app.init();
+    prisma = moduleRef.get(PrismaService);
 
     adminToken = (await api().post('/api/v1/auth/login').send({ identifier: 'admin@yaseen.pk', password: 'admin12345' })).body.accessToken;
     customerToken = (await api().post('/api/v1/auth/login').send({ identifier: 'ayesha@example.com', password: 'customer12345' })).body.accessToken;
@@ -43,6 +48,9 @@ describe('Auction admin routes (e2e)', () => {
     for (const id of made) {
       await asAdmin(api().post(`/api/v1/admin/auctions/${id}/cancel`)).send({ reason: 'e2e cleanup' });
     }
+    // An auction a test opened cannot be cancelled; it is closed, never deleted, because its bids are records.
+    await prisma?.auctionLot.updateMany({ where: { auctionId: { in: opened } }, data: { status: 'CLOSED' } });
+    await prisma?.auction.updateMany({ where: { id: { in: opened } }, data: { status: 'CLOSED' } });
     await app?.close();
   });
 
@@ -96,5 +104,96 @@ describe('Auction admin routes (e2e)', () => {
   it('returns 404 for an auction that does not exist', async () => {
     await asAdmin(api().get('/api/v1/admin/auctions/does-not-exist')).expect(404);
     await asAdmin(api().post('/api/v1/admin/auctions/does-not-exist/schedule')).expect(404);
+  });
+
+  describe('bidding', () => {
+    const asCustomer = (req: request.Test) => req.set('Authorization', `Bearer ${customerToken}`);
+    let keyCounter = 0;
+    const key = () => `http-${Date.now()}-${(keyCounter += 1)}`;
+
+    /** Nothing opens an auction yet (WO-234.3), so the test schedules one through the API and flips it to OPEN. */
+    const openLot = async () => {
+      const auction = await asAdmin(api().post('/api/v1/admin/auctions')).send({ title: '[e2e] http bidding', startsAt: when(24), endsAt: when(48) }).expect(201);
+      const lot = await asAdmin(api().post(`/api/v1/admin/auctions/${auction.body.id}/lots`))
+        .send({ title: 'Pallet', startPriceMinor: 100_000, reservePriceMinor: 900_000 })
+        .expect(201);
+      await asAdmin(api().post(`/api/v1/admin/auctions/${auction.body.id}/schedule`)).expect(201);
+      return { auctionId: auction.body.id as string, lotId: lot.body.id as string };
+    };
+    const open = async (auctionId: string, lotId: string) => {
+      await prisma.auction.update({ where: { id: auctionId }, data: { status: 'OPEN', startsAt: new Date(Date.now() - 60_000) } });
+      await prisma.auctionLot.update({ where: { id: lotId }, data: { status: 'OPEN' } });
+      opened.push(auctionId);
+    };
+
+    it('turns away a caller with no token, and a malformed bid with a 400 that names the field', async () => {
+      await api().post('/api/v1/auctions/lots/anything/bids').send({ amountMinor: 1, idempotencyKey: 'abcdefgh' }).expect(401);
+
+      await asCustomer(api().post('/api/v1/auctions/lots/anything/bids')).send({ idempotencyKey: 'abcdefgh' }).expect(400);
+      await asCustomer(api().post('/api/v1/auctions/lots/anything/bids')).send({ amountMinor: 0, idempotencyKey: 'abcdefgh' }).expect(400);
+      await asCustomer(api().post('/api/v1/auctions/lots/anything/bids')).send({ amountMinor: 1.5, idempotencyKey: 'abcdefgh' }).expect(400);
+      await asCustomer(api().post('/api/v1/auctions/lots/anything/bids')).send({ amountMinor: 100 }).expect(400);
+      await asCustomer(api().post('/api/v1/auctions/lots/anything/bids')).send({ amountMinor: 100, idempotencyKey: 'short' }).expect(400);
+      await asCustomer(api().post('/api/v1/auctions/lots/anything/bids')).send({ amountMinor: 100, idempotencyKey: 'has spaces in it' }).expect(400);
+      await asCustomer(api().post('/api/v1/auctions/lots/anything/bids')).send({ amountMinor: 100, idempotencyKey: 'abcdefgh', bidderId: 'x' }).expect(400);
+      await asCustomer(api().post('/api/v1/auctions/lots/anything/bids')).send({ amountMinor: 1_000_000_000_000_001, idempotencyKey: 'abcdefgh' }).expect(400);
+    });
+
+    it('says a lot that does not exist is not found, and a lot not yet open is not open', async () => {
+      await asCustomer(api().post('/api/v1/auctions/lots/does-not-exist/bids')).send({ amountMinor: 100, idempotencyKey: key() }).expect(404);
+
+      const { lotId } = await openLot();
+      const refused = await asCustomer(api().post(`/api/v1/auctions/lots/${lotId}/bids`)).send({ amountMinor: 100_000, idempotencyKey: key() }).expect(409);
+      expect(refused.body).toMatchObject({ code: 'LOT_NOT_OPEN', message: 'Bidding has not opened yet.' });
+    });
+
+    it('lets a customer bid, answers a retry with the same bid, names the minimum when a bid is too low, and never leaks the reserve or the account', async () => {
+      const { auctionId, lotId } = await openLot();
+      await open(auctionId, lotId);
+      const idempotencyKey = key();
+
+      const placed = await asCustomer(api().post(`/api/v1/auctions/lots/${lotId}/bids`)).send({ amountMinor: 100_000, idempotencyKey }).expect(201);
+      expect(placed.body).toMatchObject({
+        replayed: false,
+        bid: { seq: 1, alias: 'Bidder 1', amountMinor: 100_000, kind: 'MANUAL' },
+        lot: { currentBidMinor: 100_000, bidSeq: 1, minimumNextBidMinor: 105_000, leading: true },
+      });
+      expect(JSON.stringify(placed.body)).not.toMatch(/reserve|900000|ayesha|userId/i);
+
+      const retried = await asCustomer(api().post(`/api/v1/auctions/lots/${lotId}/bids`)).send({ amountMinor: 100_000, idempotencyKey }).expect(201);
+      expect(retried.body).toMatchObject({ replayed: true, bid: { id: placed.body.bid.id } });
+
+      const own = await asCustomer(api().post(`/api/v1/auctions/lots/${lotId}/bids`)).send({ amountMinor: 500_000, idempotencyKey: key() }).expect(409);
+      expect(own.body).toMatchObject({ code: 'ALREADY_LEADING', details: { minimumNextBidMinor: 105_000 } });
+
+      expect(await prisma.bid.count({ where: { lotId } })).toBe(1);
+    });
+
+    it('bars a staff account that holds auction.manage from bidding on its own auction', async () => {
+      const { auctionId, lotId } = await openLot();
+      await open(auctionId, lotId);
+      const refused = await asAdmin(api().post(`/api/v1/auctions/lots/${lotId}/bids`)).send({ amountMinor: 100_000, idempotencyKey: key() }).expect(403);
+      expect(refused.body).toMatchObject({ code: 'BIDDER_NOT_ELIGIBLE' });
+      expect(await prisma.bid.count({ where: { lotId } })).toBe(0);
+    });
+
+    it('shows staff the ledger by alias and its integrity, and turns a customer away from both', async () => {
+      const { auctionId, lotId } = await openLot();
+      await open(auctionId, lotId);
+      await asCustomer(api().post(`/api/v1/auctions/lots/${lotId}/bids`)).send({ amountMinor: 100_000, idempotencyKey: key() }).expect(201);
+
+      const ledger = await asAdmin(api().get(`/api/v1/admin/auctions/${auctionId}/lots/${lotId}/bids`)).expect(200);
+      expect(ledger.body.data).toHaveLength(1);
+      expect(ledger.body.data[0]).toMatchObject({ seq: 1, alias: 'Bidder 1', amountMinor: 100_000, prevHash: null });
+      expect(ledger.body.data[0].hash).toMatch(/^[0-9a-f]{64}$/);
+      expect(JSON.stringify(ledger.body)).not.toMatch(/ayesha|userId/i);
+
+      const verdict = await asAdmin(api().get(`/api/v1/admin/auctions/${auctionId}/lots/${lotId}/bids/verify`)).expect(200);
+      expect(verdict.body).toEqual({ valid: true, bidCount: 1 });
+
+      await asCustomer(api().get(`/api/v1/admin/auctions/${auctionId}/lots/${lotId}/bids`)).expect(403);
+      await asCustomer(api().get(`/api/v1/admin/auctions/${auctionId}/lots/${lotId}/bids/verify`)).expect(403);
+      await asAdmin(api().get(`/api/v1/admin/auctions/${auctionId}/lots/nope/bids`)).expect(404);
+    });
   });
 });

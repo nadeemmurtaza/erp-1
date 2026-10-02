@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 541 tracked files in `apps/web`, by directory.
+All 542 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -152,7 +152,7 @@ All 541 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 512 |  |
+| `page.tsx` | page | 548 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]` (1)
 
@@ -1456,11 +1456,12 @@ All 541 tracked files in `apps/web`, by directory.
 |---|---|---|---|
 | `route.ts` | route handler | 17 |  |
 
-### `apps/web/src/components/admin` (26)
+### `apps/web/src/components/admin` (27)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `admin-shell.tsx` | component | 488 |  |
+| `auction-bid-ledger.tsx` | component | 154 |  |
 | `bpmn-editor.tsx` | component | 123 |  |
 | `command-palette.tsx` | component | 285 |  |
 | `cross-sell-manager.tsx` | component | 256 |  |

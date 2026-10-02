@@ -3,7 +3,7 @@
 
 # Schema: `auction.prisma`
 
-2 models · 3 enums. Owned by module [`auction`](../modules/auction.md).
+4 models · 5 enums. Owned by module [`auction`](../modules/auction.md).
 
 
 Three rules govern every table here — from the schema's own comments and
@@ -20,7 +20,7 @@ against a real database.
 
 ## Models
 
-### `Auction`  <sub>`apps/api/prisma/schema/auction.prisma:38`</sub>
+### `Auction`  <sub>`apps/api/prisma/schema/auction.prisma:54`</sub>
 
 > One auction event.
 
@@ -37,14 +37,16 @@ against a real database.
 | `endsAt` | `DateTime` |  |  |
 | `currency` | `String` |  |  |
 | `terms` | `String?` | optional |  |
+| `bidRules` | `Json?` | optional |  |
 | `createdById` | `String` |  |  |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `lots` | `AuctionLot[]` |  |  |
+| `bidders` | `Bidder[]` |  |  |
 
 Indexes: `@@index([status, startsAt])` · `@@index([organizationId])` · `@@index([outletLocationId])`
 
-### `AuctionLot`  <sub>`apps/api/prisma/schema/auction.prisma:71`</sub>
+### `AuctionLot`  <sub>`apps/api/prisma/schema/auction.prisma:94`</sub>
 
 > One thing being sold within an auction.
 
@@ -58,19 +60,61 @@ Indexes: `@@index([status, startsAt])` · `@@index([organizationId])` · `@@inde
 | `sourceType` | `String?` | optional |  |
 | `sourceId` | `String?` | optional |  |
 | `quantity` | `Int` |  | @default(1) |
-| `startPriceMinor` | `Int` |  |  |
-| `reservePriceMinor` | `Int?` | optional |  |
+| `startPriceMinor` | `BigInt` |  |  |
+| `reservePriceMinor` | `BigInt?` | optional |  |
+| `currentBidMinor` | `BigInt?` | optional |  |
+| `leaderBidderId` | `String?` | optional |  |
+| `bidSeq` | `Int` |  | @default(0) |
 | `status` | `AuctionLotStatus` |  | @default(PENDING) |
 | `createdAt` | `DateTime` |  | @default(now()) |
 | `updatedAt` | `DateTime` |  | @updatedAt |
 | `auction` | `Auction` | relation | @relation(fields: [auctionId], references: [id]) |
+| `bids` | `Bid[]` |  |  |
 
 Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
+
+### `Bid`  <sub>`apps/api/prisma/schema/auction.prisma:156`</sub>
+
+> One accepted bid: a record, never edited and never deleted (doc 234 §5.2).
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(uuid()) |
+| `lotId` | `String` |  |  |
+| `bidderId` | `String` |  |  |
+| `amountMinor` | `BigInt` |  |  |
+| `kind` | `BidKind` |  | @default(MANUAL) |
+| `seq` | `Int` |  |  |
+| `acceptedAt` | `DateTime` |  |  |
+| `idempotencyKey` | `String` |  |  |
+| `prevHash` | `String?` | optional |  |
+| `hash` | `String` |  |  |
+| `lot` | `AuctionLot` | relation | @relation(fields: [lotId], references: [id]) |
+| `bidder` | `Bidder` | relation | @relation(fields: [bidderId], references: [id]) |
+
+Indexes: `@@unique([lotId, seq])` · `@@unique([lotId, bidderId, idempotencyKey])` · `@@index([bidderId, acceptedAt])`
+
+### `Bidder`  <sub>`apps/api/prisma/schema/auction.prisma:135`</sub>
+
+> A person bidding in one auction.
+
+| Field | Type | Flags | Notes |
+|---|---|---|---|
+| `id` | `String` | id | @id @default(cuid()) |
+| `auctionId` | `String` |  |  |
+| `userId` | `String` |  |  |
+| `alias` | `String` |  |  |
+| `status` | `BidderStatus` |  | @default(APPROVED) |
+| `createdAt` | `DateTime` |  | @default(now()) |
+| `auction` | `Auction` | relation | @relation(fields: [auctionId], references: [id]) |
+| `bids` | `Bid[]` |  |  |
+
+Indexes: `@@unique([auctionId, userId])` · `@@unique([auctionId, alias])`
 
 
 ## Enums
 
-### `AuctionLotStatus`  <sub>`apps/api/prisma/schema/auction.prisma:25`</sub>
+### `AuctionLotStatus`  <sub>`apps/api/prisma/schema/auction.prisma:24`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -79,7 +123,7 @@ Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 | `CLOSED` |  |
 | `WITHDRAWN` |  |
 
-### `AuctionStatus`  <sub>`apps/api/prisma/schema/auction.prisma:15`</sub>
+### `AuctionStatus`  <sub>`apps/api/prisma/schema/auction.prisma:14`</sub>
 
 | Value | Meaning |
 |---|---|
@@ -91,15 +135,35 @@ Indexes: `@@unique([auctionId, lotNo])` · `@@index([auctionId, status])`
 | `SETTLED` |  |
 | `CANCELLED` |  |
 
-### `AuctionType`  <sub>`apps/api/prisma/schema/auction.prisma:9`</sub>
+### `AuctionType`  <sub>`apps/api/prisma/schema/auction.prisma:8`</sub>
 
-> Auction app (launchpad-apps/234-auction-app.md, WO-234.1).
+> Auction app (launchpad-apps/234-auction-app.md, WO-234.1 and WO-234.2).
 
 | Value | Meaning |
 |---|---|
 | `ENGLISH` |  |
 | `SEALED_BID` |  |
 | `REVERSE` |  |
+
+### `BidderStatus`  <sub>`apps/api/prisma/schema/auction.prisma:42`</sub>
+
+> APPROVED is the only value written today: the first bid provisions the bidder.
+
+| Value | Meaning |
+|---|---|
+| `PENDING` |  |
+| `APPROVED` |  |
+| `SUSPENDED` |  |
+
+### `BidKind`  <sub>`apps/api/prisma/schema/auction.prisma:33`</sub>
+
+> Who a bid came from.
+
+| Value | Meaning |
+|---|---|
+| `MANUAL` |  |
+| `PROXY_AUTO` |  |
+| `SEALED` |  |
 
 
 ---

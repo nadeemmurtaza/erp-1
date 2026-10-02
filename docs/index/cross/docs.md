@@ -3024,7 +3024,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>11,897 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,948 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -4016,25 +4016,25 @@ _no second-level headings_
 - 12. Acceptance criteria  <sub>:195</sub>
 - 13. Work orders  <sub>:205</sub>
 
-### `docs/implementation/launchpad-apps/234-auction-app.md`  <sub>280 lines</sub>
+### `docs/implementation/launchpad-apps/234-auction-app.md`  <sub>318 lines</sub>
 
 - 1. Objective  <sub>:9</sub>
 - 2. Audiences and what each really needs  <sub>:16</sub>
 - 3. Auction types  <sub>:32</sub>
 - 4. Data model (additive, forward-only)  <sub>:42</sub>
-- 5. Bidding rules  <sub>:70</sub>
-- 6. Concurrency, idempotency, scale  <sub>:93</sub>
-- 7. Sealed bids and confidentiality  <sub>:114</sub>
-- 8. Bidder trust and money  <sub>:124</sub>
-- 9. After the bidding  <sub>:143</sub>
-- 10. Extension points (so industries can sell by auction without editing it)  <sub>:170</sub>
-- 11. Screens (one main job per page)  <sub>:179</sub>
-- 12. Parameters (proposals to confirm)  <sub>:194</sub>
-- 13. Permissions  <sub>:214</sub>
-- 14. Legal and regulatory caution (not decided here)  <sub>:231</sub>
-- 15. Scope lenses  <sub>:240</sub>
-- 16. Acceptance criteria  <sub>:263</sub>
-- 17. Work orders  <sub>:277</sub>
+- 5. Bidding rules  <sub>:91</sub>
+- 6. Concurrency, idempotency, scale  <sub>:114</sub>
+- 7. Sealed bids and confidentiality  <sub>:139</sub>
+- 8. Bidder trust and money  <sub>:149</sub>
+- 9. After the bidding  <sub>:168</sub>
+- 10. Extension points (so industries can sell by auction without editing it)  <sub>:195</sub>
+- 11. Screens (one main job per page)  <sub>:204</sub>
+- 12. Parameters (proposals to confirm)  <sub>:219</sub>
+- 13. Permissions  <sub>:242</sub>
+- 14. Legal and regulatory caution (not decided here)  <sub>:259</sub>
+- 15. Scope lenses  <sub>:268</sub>
+- 16. Acceptance criteria  <sub>:291</sub>
+- 17. Work orders  <sub>:315</sub>
 
 ### `docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md`  <sub>55 lines</sub>
 

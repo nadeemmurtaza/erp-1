@@ -1,4 +1,4 @@
-import { formatBytes, formatMoneyIn, formatMonthShort, formatWeekdayShort } from './constants';
+import { formatBytes, formatDateTime, formatDateTimeSeconds, formatMoneyIn, formatMonthShort, formatWeekdayShort } from './constants';
 
 describe('formatMoneyIn', () => {
   it('formats a minor-unit amount in an explicitly given currency, independent of BRAND.currency', () => {
@@ -56,5 +56,20 @@ describe('formatMonthShort and formatWeekdayShort', () => {
   it('reads the shop-zone calendar day, not the UTC one', () => {
     // 22:00 UTC on the 31st is already 03:00 on 1 April in Karachi.
     expect(formatMonthShort('2026-03-31T22:00:00Z')).toBe('Apr');
+  });
+});
+
+describe('formatDateTimeSeconds', () => {
+  it('shows the second, which formatDateTime leaves out', () => {
+    const instant = '2026-09-06T19:23:45Z';
+    expect(formatDateTimeSeconds(instant, 'en', 'UTC')).toMatch(/12:23:45|7:23:45/);
+    expect(formatDateTime(instant, 'en', 'UTC')).not.toMatch(/:45/);
+  });
+
+  it('reads the instant in the zone it is given, so two bids a second apart stay in order', () => {
+    const first = formatDateTimeSeconds('2026-10-02T12:00:00Z', 'en', 'Asia/Karachi');
+    const second = formatDateTimeSeconds('2026-10-02T12:00:01Z', 'en', 'Asia/Karachi');
+    expect(first).toContain('5:00:00');
+    expect(second).toContain('5:00:01');
   });
 });

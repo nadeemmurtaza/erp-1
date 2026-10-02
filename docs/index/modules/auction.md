@@ -3,7 +3,7 @@
 
 # Module: `auction`
 
-Pack **core** · enabled by the `MODULES` allowlist · 5 files
+Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 
 
@@ -11,33 +11,40 @@ Pack **core** · enabled by the `MODULES` allowlist · 5 files
 
 Source: `apps/api/src/modules/auction/`
 
-## Files (5 · 1,116 lines)
+## Files (9 · 2,366 lines)
 
 All paths relative to `apps/api/src/modules/auction`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `auction.controller.ts` | controller | 103 | 1 | launchpad-apps/234-auction-app.md (WO-234.1). |
-| `auction.module.ts` | nest module | 19 | 1 |  |
-| `auction.service.spec.ts` | unit test | 445 | — |  |
-| `auction.service.ts` | service | 371 | 3 | A lot as the caller may see it: the hidden reserve is present only for a holder of `auction.manage`. |
-| `auction.dto.ts` | dto | 178 | 9 | The largest amount a minor-unit column holds. |
+| `auction-bid.controller.ts` | controller | 40 | 1 | Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2). |
+| `auction-bidding.service.spec.ts` | unit test | 471 | — |  |
+| `auction.controller.ts` | controller | 119 | 1 | launchpad-apps/234-auction-app.md (WO-234.1). |
+| `auction.module.ts` | nest module | 20 | 1 |  |
+| `auction.service.spec.ts` | unit test | 479 | — |  |
+| `auction.service.ts` | service | 808 | 8 | A lot as the caller may see it: prices as plain numbers (the columns are BIGINT, which JSON cannot carry) and the hidde… |
+| `bidding.spec.ts` | unit test | 131 | — |  |
+| `bidding.ts` | module | 95 | 9 | The largest price or bid, in minor units: 10^15, which is ten trillion in a two-decimal currency. |
+| `auction.dto.ts` | dto | 203 | 11 | The largest price or bid, in minor units (doc 234 §12). |
 
 
-## HTTP routes (10)
+## HTTP routes (13)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
-| GET | `/admin/auctions` | `auction.view` `auction.manage` | `AuctionController.list` :31 | Auctions, newest first, optionally filtered by status |
-| POST | `/admin/auctions` | `auction.manage` | `AuctionController.create` :45 | Draft an auction |
-| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` | `AuctionController.get` :38 | One auction with its lots |
-| PATCH | `/admin/auctions/:id` | `auction.manage` | `AuctionController.update` :52 | Edit a draft auction |
-| POST | `/admin/auctions/:id/cancel` | `auction.manage` | `AuctionController.cancel` :99 | Cancel a draft or scheduled auction, with a reason |
-| POST | `/admin/auctions/:id/lots` | `auction.manage` | `AuctionController.addLot` :59 | Add a lot to a draft auction |
-| PATCH | `/admin/auctions/:id/lots/:lotId` | `auction.manage` | `AuctionController.updateLot` :66 | Edit a lot on a draft auction |
-| POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` :78 | Withdraw a lot from a draft auction — kept on record, never deleted |
-| POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` :85 | Schedule a draft auction to open at its start time |
-| POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` :92 | Return a scheduled auction to draft, before it opens |
+| GET | `/admin/auctions` | `auction.view` `auction.manage` | `AuctionController.list` :33 | Auctions, newest first, optionally filtered by status |
+| POST | `/admin/auctions` | `auction.manage` | `AuctionController.create` :47 | Draft an auction |
+| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` | `AuctionController.get` :40 | One auction with its lots |
+| PATCH | `/admin/auctions/:id` | `auction.manage` | `AuctionController.update` :54 | Edit a draft auction |
+| POST | `/admin/auctions/:id/cancel` | `auction.manage` | `AuctionController.cancel` :115 | Cancel a draft or scheduled auction, with a reason |
+| POST | `/admin/auctions/:id/lots` | `auction.manage` | `AuctionController.addLot` :61 | Add a lot to a draft auction |
+| PATCH | `/admin/auctions/:id/lots/:lotId` | `auction.manage` | `AuctionController.updateLot` :68 | Edit a lot on a draft auction |
+| GET | `/admin/auctions/:id/lots/:lotId/bids` | `auction.view` `auction.manage` | `AuctionController.listBids` :87 | A lot’s accepted bids, newest first, bidders by alias only |
+| GET | `/admin/auctions/:id/lots/:lotId/bids/verify` | `auction.view` `auction.manage` | `AuctionController.verifyBids` :94 | Re-walk a lot’s bid chain and say whether anything was inserted, edited or removed |
+| POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` :80 | Withdraw a lot from a draft auction — kept on record, never deleted |
+| POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` :101 | Schedule a draft auction to open at its start time |
+| POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` :108 | Return a scheduled auction to draft, before it opens |
+| POST | `/auctions/lots/:lotId/bids` | signed-in | `AuctionBidController.placeBid` :31 | Place a bid on an open lot; a retry with the same idempotency key returns the accepted bid |
 
 
 ## Domain events
@@ -56,11 +63,13 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Auction` | 15 | :38 | One auction event. |
-| `AuctionLot` | 14 | :71 | One thing being sold within an auction. |
+| `Auction` | 17 | :54 | One auction event. |
+| `AuctionLot` | 18 | :94 | One thing being sold within an auction. |
+| `Bid` | 12 | :156 | One accepted bid: a record, never edited and never deleted (doc 234 §5.2). |
+| `Bidder` | 8 | :135 | A person bidding in one auction. |
 
 
-Enums: `AuctionLotStatus` (4) · `AuctionStatus` (7) · `AuctionType` (3)
+Enums: `AuctionLotStatus` (4) · `AuctionStatus` (7) · `AuctionType` (3) · `BidderStatus` (3) · `BidKind` (3)
 
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
@@ -71,7 +80,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 **`AuctionModule`** (`auction.module.ts`)
 - imports: —
-- controllers: `AuctionController`
+- controllers: `AuctionController`, `AuctionBidController`
 - providers: `AuctionService`
 - exports: `AuctionService`
 
@@ -91,31 +100,50 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (1)
+## Tests (3)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `auction.service.spec.ts` | 34 | AuctionService · create · list · get · update · addLot · updateLot · withdrawLot · schedule · unschedule · cancel |
+| `auction-bidding.service.spec.ts` | 37 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · when the lot moves under the bid · listBi… |
+| `auction.service.spec.ts` | 36 | AuctionService · create · list · get · update · addLot · updateLot · withdrawLot · schedule · unschedule · cancel |
+| `bidding.spec.ts` | 16 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlias |
 
 
 ## Every export in this unit
 
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
-| `AuctionController` | class | `auction.controller.ts:25` | launchpad-apps/234-auction-app.md (WO-234.1). |
-| `AuctionModule` | class | `auction.module.ts:18` |  |
-| `AuctionLotView` | type | `auction.service.ts:23` | A lot as the caller may see it: the hidden reserve is present only for a holder of `auction.manage`. |
-| `AuctionDetail` | type | `auction.service.ts:24` | A lot as the caller may see it: the hidden reserve is present only for a holder of `auction.manage`. |
-| `AuctionService` | class | `auction.service.ts:57` | The Auction app's admin foundation (launchpad-apps/234-auction-app.md, WO-234.1): drafting an auction and its… |
-| `MAX_MINOR` | const | `auction.dto.ts:22` | The largest amount a minor-unit column holds. |
-| `CREATABLE_AUCTION_TYPES` | const | `auction.dto.ts:25` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
-| `AUCTION_STATUSES` | const | `auction.dto.ts:27` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
-| `CreateAuctionDto` | class | `auction.dto.ts:29` |  |
-| `UpdateAuctionDto` | class | `auction.dto.ts:62` |  |
-| `CancelAuctionDto` | class | `auction.dto.ts:93` |  |
-| `CreateAuctionLotDto` | class | `auction.dto.ts:101` |  |
-| `UpdateAuctionLotDto` | class | `auction.dto.ts:135` |  |
-| `AuctionListQueryDto` | class | `auction.dto.ts:172` | Page, page size, free-text search (`q`: title or number) and `order` (by start time) come from the shared lis… |
+| `AuctionBidController` | class | `auction-bid.controller.ts:25` | Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2). |
+| `AuctionController` | class | `auction.controller.ts:27` | launchpad-apps/234-auction-app.md (WO-234.1). |
+| `AuctionModule` | class | `auction.module.ts:19` |  |
+| `AuctionLotView` | type | `auction.service.ts:74` | A lot as the caller may see it: prices as plain numbers (the columns are BIGINT, which JSON cannot carry) and… |
+| `AuctionDetail` | type | `auction.service.ts:82` |  |
+| `PlaceBidInput` | interface | `auction.service.ts:84` |  |
+| `BidView` | interface | `auction.service.ts:93` | An accepted bid as its bidder and the admin ledger may see it: an alias, never a name. |
+| `LotPriceState` | interface | `auction.service.ts:103` |  |
+| `PlaceBidResult` | interface | `auction.service.ts:114` |  |
+| `BidIntegrity` | interface | `auction.service.ts:121` |  |
+| `AuctionService` | class | `auction.service.ts:176` | The Auction app (launchpad-apps/234-auction-app.md): WO-234.1's drafting of an auction and its lots, scheduli… |
+| `MAX_PRICE_MINOR` | const | `bidding.ts:18` | The largest price or bid, in minor units: 10^15, which is ten trillion in a two-decimal currency. |
+| `BidRules` | type | `bidding.ts:21` | A type alias, not an interface, so it can be stored as the auction's JSON column as it is. |
+| `DEFAULT_BID_RULES` | const | `bidding.ts:35` | What an auction falls back to when its frozen rules are missing or malformed (doc 234 §12, "rule missing → 5%… |
+| `parseBidRules` | function | `bidding.ts:41` | Reads the `Auction.bidRules` JSON, taking each field it can trust and the default for the rest. |
+| `computeIncrement` | function | `bidding.ts:54` | The greater of `incrementBps` of the current bid, rounded up, and the smallest step. |
+| `minimumNextBid` | function | `bidding.ts:60` | The first bid may equal the opening price; every later one must clear the current bid by the increment. |
+| `bidderAlias` | const | `bidding.ts:65` | The label a bidder carries for the life of one auction: "Bidder 7". |
+| `ChainedBidFields` | interface | `bidding.ts:67` | The label a bidder carries for the life of one auction: "Bidder 7". |
+| `bidCanonical` | function | `bidding.ts:83` | The text a bid is hashed by, in a fixed field order. |
+| `MAX_MINOR` | const | `auction.dto.ts:24` | The largest price or bid, in minor units (doc 234 §12). |
+| `CREATABLE_AUCTION_TYPES` | const | `auction.dto.ts:27` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
+| `AUCTION_STATUSES` | const | `auction.dto.ts:29` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
+| `CreateAuctionDto` | class | `auction.dto.ts:31` |  |
+| `UpdateAuctionDto` | class | `auction.dto.ts:64` |  |
+| `CancelAuctionDto` | class | `auction.dto.ts:95` |  |
+| `CreateAuctionLotDto` | class | `auction.dto.ts:103` |  |
+| `UpdateAuctionLotDto` | class | `auction.dto.ts:137` |  |
+| `AuctionListQueryDto` | class | `auction.dto.ts:174` | Page, page size, free-text search (`q`: title or number) and `order` (by start time) come from the shared lis… |
+| `PlaceBidDto` | class | `auction.dto.ts:181` |  |
+| `BidListQueryDto` | class | `auction.dto.ts:202` | Newest bid first; page, page size and `order` come from the shared list query. |
 
 
 ---

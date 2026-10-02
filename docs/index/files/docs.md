@@ -563,7 +563,7 @@ All 463 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 11897 |  |
+| `DECISIONS.md` | doc | 11948 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -861,7 +861,7 @@ All 463 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `232-launchpad-and-app-manifest.md` | doc | 188 |  |
 | `233-mail-app.md` | doc | 208 |  |
-| `234-auction-app.md` | doc | 280 |  |
+| `234-auction-app.md` | doc | 318 |  |
 | `235-vault-and-work-credit-app.md` | doc | 55 |  |
 | `README.md` | doc | 79 |  |
 

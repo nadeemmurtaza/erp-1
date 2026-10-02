@@ -1,7 +1,7 @@
 # 234 — Auction app
 
-> **Status: In progress — WO-234.1 built (2026-10-02, §17); WO-234.2 onward
-> planned.** Launchpad app (doc 232): tier **CORE**, cross-sector
+> **Status: In progress — WO-234.1 and WO-234.2 built (2026-10-02, §17);
+> WO-234.3 onward planned.** Launchpad app (doc 232): tier **CORE**, cross-sector
 > (not an industry pack). Audiences: **B2B**, **B2C**; **C2C is reserved** until
 > the prerequisites in §2 exist. Industry packs may *feed* it through an
 > extension point (§10) without it knowing about them.
@@ -67,6 +67,27 @@ it, each as its own additive migration).** `Auction`: `id`, `number` (unique,
 `endsAt`, and every table below `AuctionLot`. `type` accepts `ENGLISH` only on
 create; `SEALED_BID` and `REVERSE` exist in the enum so it never needs altering.
 
+**What WO-234.2 added.** `Bidder`: `id`, `auctionId`, `userId` (the portal
+account that acts as the bidder; a plain string, not a foreign key, like the
+other cross-module ids), `alias` ("Bidder N", unique per auction), `status`.
+`Bid`: `id` (random UUID), `lotId`, `bidderId`, `amountMinor` (BIGINT), `kind`,
+`seq`, `acceptedAt`, `idempotencyKey`, `prevHash`, `hash`, unique on `(lotId,
+seq)` and on `(lotId, bidderId, idempotencyKey)`. `AuctionLot` gained
+`currentBidMinor`, `leaderBidderId` and `bidSeq`; `startPriceMinor` and
+`reservePriceMinor` are now BIGINT. `Auction` gained `bidRules` (JSON), the
+rules copied from Settings at `schedule()` and never read from Settings again,
+which is how "rules are versioned per auction" (§15) is met until fee rules
+need a real `rulesVersionId` in WO-234.6. Two deliberate differences from the
+table above: a **bidder is a portal `User` per auction**, not a `Party`
+(`Party` today holds suppliers and manufacturers only; the optional `partyId`
+for a B2B account arrives with WO-234.5), and the **first bid provisions the
+bidder** as `APPROVED` (`PENDING` and `SUSPENDED` exist so WO-234.5 adds a gate,
+not a column). Still absent: `ProxyBid`, `DepositHold`, `AuctionResult`,
+`AuctionAdjustment`, per-lot `endsAt`, `incrementRule`, `buyNowMinor`. `Bid`
+partitioning by month (§15) is not done: Prisma does not model partitions, so it
+is a hand-written migration for when a deployment's `Bid` table needs it, and
+the `(lotId, seq)` and `(bidderId, acceptedAt)` indexes are in place for it.
+
 ## 5. Bidding rules
 
 1. **Server time is the only time.** The client countdown is a display aid,
@@ -94,10 +115,14 @@ create; `SEALED_BID` and `REVERSE` exist in the enum so it never needs altering.
 
 * **One writer per invariant.** The lot's leader and current bid change only in
   `AuctionService.placeBid()`, via a **predicate-on-write**:
-  `UPDATE lot SET currentBid=:new, leader=:b, bidSeq=bidSeq+1 WHERE id=:id
-  AND status='OPEN' AND currentBid=:expected AND now()<endsAt`. Zero rows
-  updated → re-read and re-evaluate (House Rule 10). A per-lot serialisation
-  (advisory lock) keeps hot lots correct.
+  `UPDATE lot SET currentBid=:new, leader=:b, bidSeq=:seq WHERE id=:id
+  AND status='OPEN' AND bidSeq=:read AND <auction OPEN and endsAt > :acceptedAt>`.
+  The version compared is `bidSeq`, not `currentBid`, because the first bid has
+  no current bid to compare. Zero rows updated → roll back, re-read and
+  re-evaluate (House Rule 10), at most three whole attempts. A per-lot
+  serialisation (a transaction-scoped advisory lock keyed by lot id, namespace
+  `8_241_171`) keeps hot lots correct and makes the retry rare. The time compared
+  and stored is the database's `clock_timestamp()` read under that lock.
 * **Idempotency key** on every bid: a double-tap or retried request is a no-op
   (unique `(lotId, bidderId, idempotencyKey)`).
 * **Fan-out.** Accepted bids publish to a Redis channel; clients receive them
@@ -195,17 +220,20 @@ the boss cannot see supplier prices before the deadline either.
 
 | Parameter | Exact value | Why this number | Enforced | Degrades |
 |---|---|---|---|---|
-| Minimum increment | greater of 5% of current bid and the smallest sensible currency step (`Setting`) | ~14 bids to double a price keeps contests moving without penny-bids | `placeBid()` | Rule missing → 5% |
+| Minimum increment | greater of 500 basis points (5%) of the current bid, rounded up, and `toMinor(1)` (one whole currency unit; 100 in a two-decimal currency); Settings `auction.bid_increment_bps`, `auction.bid_min_step_minor`, **copied onto the auction at `schedule()`** | ~15 raises double a price, which keeps contests moving without penny-bids; one whole unit is the smallest step a person calls a raise | `placeBid()` via `minimumNextBid()` | Missing or malformed rule → the defaults, field by field |
 | Anti-snipe window / extension | bid in last 2 minutes extends end by 2 minutes | Long enough for a human to respond, short enough that a lot does not run forever | `placeBid()` | Cap hit → no further extension |
 | Max total extension | 30 minutes | Bounds a bidding war so staff and sellers can plan | same | Lot closes at the cap |
-| Bids per bidder | 10 per minute per lot | A person cannot exceed this; scripts can | rate limiter | 429, bid not placed |
+| Bids per bidder | 10 accepted bids per rolling 60 s, per bidder per lot, counted from the ledger | A person cannot exceed this; scripts can | `assertWithinBidRate()` in `placeBid()` | 429 `BID_RATE_LIMITED` with `Retry-After`, bid not placed |
+| Bid requests per client address | 60 per 60 s on `POST /auctions/lots/:lotId/bids` | One a second sustained; a final-minute war is a bid every few seconds, and ten bidders on one office address still get six each | `@Throttle` on `AuctionBidController`, Redis-backed | 429, bid not placed |
+| Bid transaction wait and run | `maxWait` 10 000 ms, `timeout` 10 000 ms | Prisma's 2 000/5 000 refuse a healthy hot lot in a rush; 10 s drains the 50/s target through a pool of ten and still fails visibly | `BID_TRANSACTION` | 503 "bid was not placed"; nothing written |
+| Whole attempts at one bid | 3 | A bound on a bug: the lot lock makes a lost predicate rare | `MAX_BID_ATTEMPTS` | 409 `LOT_CHANGED`, "check the price and bid again" |
 | Payment window after win | 72 hours | Covers a weekend bank transfer; shorter penalises honest buyers, longer ties up the lot | settlement job | Expiry → strike + second-chance/relist |
 | Strikes to suspend | 3 in rolling 12 months | One slip is human, three is pattern | bidder service | Suspension needs staff reason |
 | Deposit (when available) | 10% of reserve (or start price if no reserve), capped by a `Setting` ceiling | Large enough to deter non-payment, small enough not to price out bidders | `payments` hold | No hold support → no-deposit mode (§8) |
 | Sealed-bid opening quorum | 2 of 3 officers | No single person can open early; one absence does not block | key-split opening | <2 available → opening waits, deadline unaffected |
 | Bid retention | 7 years | Disputes and audits outlive the auction | retention job | Pseudonymise bidder after retention |
 | Hot-lot target | 50 bids/s/lot, p95 < 300 ms | Realistic peak for a popular timed lot | load test | Backpressure on fan-out, not on writes |
-| Maximum price on one lot (open decision) | 2,147,483,647 minor units (21,474,836.47 in a two-decimal currency), for `startPriceMinor`, `reservePriceMinor` and every later `*Minor` column | Money is `Int` minor units everywhere in this repository; `Int` is 32-bit in Postgres | DTO (`@Max`) in `AuctionService` input; the database `INTEGER` is the backstop | Larger lots (real estate, vehicles) are refused with a validation message until the columns widen to `BIGINT`, which must happen before WO-234.2 writes `Bid.amountMinor`, so bids never need a type change later |
+| Maximum price on one lot (**decided in WO-234.2**) | 10^15 minor units (ten trillion in a two-decimal currency), `MAX_PRICE_MINOR` in `bidding.ts`, for `startPriceMinor`, `reservePriceMinor` and every `*Minor` column on a lot or bid | The columns are `BIGINT` now. 10^15 is the biggest round number whose 5% step and the sum with it stay under `Number.MAX_SAFE_INTEGER` (9.007 × 10^15), so every comparison in the service is exact | DTO `@Max(MAX_MINOR)`; `computeIncrement()` does its multiplication in `BigInt`; the database `BIGINT` is the backstop | A larger amount is a 400 naming the limit. Money elsewhere in the repository is still `Int`; the auction is the one place a `BIGINT` money column exists, and the service returns it as a plain number |
 | Lots per auction / auctions per list page | no cap on lots; list pages are 20 by default, 100 at most (`PaginationQueryDto`) | An auction's lots are read through the detail page, not the list | `PaginationQueryDto` | A very large auction needs lot pagination on its detail page — add when a real auction crosses ~200 lots |
 
 All live in `Setting` (versioned, second-signature, old/new audited) under
@@ -274,6 +302,16 @@ property/vehicle formats need their own review before use.
 10. API outage: lots do not close during it and are extended on recovery, shown to bidders.
 11. Hot-lot target met in a load test before release.
 
+**Met so far (2026-10-02, WO-234.2):** 1 (`test/auction-bidding.e2e-spec.ts`:
+1,000 concurrent bids, the accepted ones numbered 1 to n with strictly
+increasing amounts, the lot's price and `bidSeq` agreeing with the last bid, the
+chain verifying; 1,000 requests finished in about 3 s on a development machine
+through a pool of ten, of which roughly 100 to 120 were accepted writes and the
+rest cheap refusals, so it is a correctness test and not the §6 load test, which
+needs the realtime path of WO-234.4); 2 (a retried key is one bid, ten at once
+included); the chain half of 9 (tamper is detected and named; the void itself is
+WO-234.9); the staff-and-author half of 6 (the `Party`-link half is WO-234.5).
+
 ## 17. Work orders
 
-234.1 schema + `Auction`/`Lot` admin + launchpad manifest, permissions seeded to real roles, nav entry (**built 2026-10-02:** schema, admin API and screens, permissions, nav; the launchpad manifest entry is carried by WO-232.2, which owns `manifest.ts`) · 234.2 `placeBid()` with predicate-on-write, idempotency, hash chain · 234.3 proxy bidding + anti-snipe + close job · 234.4 realtime fan-out + public lot page + load test · 234.5 bidder registration, eligibility, strikes · 234.6 settlement through `AuctionOrderSink`, fee rules, posting · 234.7 sealed-bid + officer key-split opening · 234.8 reverse (price-only) auctions · 234.9 integrity queue + adjustments · 234.10 deposit hold (after `payments` verified) · 234.11 `AuctionLotSource` and first industry feed · later: scored reverse auctions, Dutch, C2C (after escrow, reputation, disputes exist).
+234.1 schema + `Auction`/`Lot` admin + launchpad manifest, permissions seeded to real roles, nav entry (**built 2026-10-02:** schema, admin API and screens, permissions, nav; the launchpad manifest entry is carried by WO-232.2, which owns `manifest.ts`) · 234.2 `placeBid()` with predicate-on-write, idempotency, hash chain (**built 2026-10-02:** BIGINT prices, `Bidder` and `Bid`, `placeBid()` behind `POST /auctions/lots/:lotId/bids`, the admin ledger and chain check at `GET /admin/auctions/:id/lots/:lotId/bids` and `…/verify`, a side sheet on the auction page, `core/common/hash-chain.ts` as the reusable primitive; **not yet reachable by a bidder or openable by the system:** nothing sets an auction `OPEN` until the open job of WO-234.3, and the bidder's bid box is WO-234.4's public lot page, so until then bids exist only in tests) · 234.3 proxy bidding + anti-snipe + close job · 234.4 realtime fan-out + public lot page + load test · 234.5 bidder registration, eligibility, strikes · 234.6 settlement through `AuctionOrderSink`, fee rules, posting · 234.7 sealed-bid + officer key-split opening · 234.8 reverse (price-only) auctions · 234.9 integrity queue + adjustments · 234.10 deposit hold (after `payments` verified) · 234.11 `AuctionLotSource` and first industry feed · later: scored reverse auctions, Dutch, C2C (after escrow, reputation, disputes exist).

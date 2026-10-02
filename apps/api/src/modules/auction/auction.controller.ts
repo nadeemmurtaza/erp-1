@@ -5,6 +5,7 @@ import { CurrentUser, RequirePermission } from '../../core/auth/decorators';
 import { AuctionService } from './auction.service';
 import {
   AuctionListQueryDto,
+  BidListQueryDto,
   CancelAuctionDto,
   CreateAuctionDto,
   CreateAuctionLotDto,
@@ -18,7 +19,8 @@ import {
  * off again — is `auction.publish`, so the person who drafts a sale is not
  * automatically the one who commits the business to it. The lot's hidden
  * reserve is returned only to a holder of `auction.manage`; a read-only
- * holder never sees it.
+ * holder never sees it. The bid ledger and its integrity check are read-only
+ * and need only `auction.view`.
  */
 @ApiTags('admin/auctions')
 @Controller('admin/auctions')
@@ -77,6 +79,20 @@ export class AuctionController {
   @ApiOperation({ summary: 'Withdraw a lot from a draft auction — kept on record, never deleted' })
   withdrawLot(@Param('id') id: string, @Param('lotId') lotId: string, @CurrentUser() user: AuthenticatedUser) {
     return this.auctions.withdrawLot(id, lotId, user.id);
+  }
+
+  @Get(':id/lots/:lotId/bids')
+  @RequirePermission('auction.view', 'auction.manage')
+  @ApiOperation({ summary: 'A lot’s accepted bids, newest first, bidders by alias only' })
+  listBids(@Param('id') id: string, @Param('lotId') lotId: string, @Query() query: BidListQueryDto) {
+    return this.auctions.listBids(id, lotId, query);
+  }
+
+  @Get(':id/lots/:lotId/bids/verify')
+  @RequirePermission('auction.view', 'auction.manage')
+  @ApiOperation({ summary: 'Re-walk a lot’s bid chain and say whether anything was inserted, edited or removed' })
+  verifyBids(@Param('id') id: string, @Param('lotId') lotId: string) {
+    return this.auctions.verifyBids(id, lotId);
   }
 
   @Post(':id/schedule')

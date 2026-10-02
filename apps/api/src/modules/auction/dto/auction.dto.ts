@@ -6,20 +6,22 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  Length,
+  Matches,
   Max,
   MaxLength,
   Min,
 } from 'class-validator';
 import { PaginationQueryDto } from '../../../core/common/dto/pagination.dto';
+import { MAX_PRICE_MINOR } from '../bidding';
 
 /**
- * The largest amount a minor-unit column holds. Every money column in this
- * codebase is a 32-bit INTEGER, so a lot price tops out at 21,474,836.47 in a
- * two-decimal currency. Enforced here so an over-large price is a 400 with a
- * reason, never a database overflow (doc 234 §12 records the open decision on
- * widening it before real-estate or vehicle lots).
+ * The largest price or bid, in minor units (doc 234 §12). The columns are
+ * BIGINT since WO-234.2; the ceiling is `MAX_PRICE_MINOR`, the largest round
+ * number whose arithmetic stays exact in a JavaScript number. Enforced here so
+ * an over-large price is a 400 with a reason, never a rounding error later.
  */
-export const MAX_MINOR = 2_147_483_647;
+export const MAX_MINOR = MAX_PRICE_MINOR;
 
 /** The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. */
 export const CREATABLE_AUCTION_TYPES = ['ENGLISH'] as const;
@@ -175,3 +177,26 @@ export class AuctionListQueryDto extends PaginationQueryDto {
   @IsIn(AUCTION_STATUSES)
   status?: (typeof AUCTION_STATUSES)[number];
 }
+
+export class PlaceBidDto {
+  @ApiProperty({ description: 'What the bidder offers, in minor units. Must reach the lot’s minimum next bid.' })
+  @IsInt()
+  @Min(1)
+  @Max(MAX_MINOR)
+  amountMinor!: number;
+
+  @ApiProperty({
+    description:
+      'One per intended bid, chosen by the client (a UUID is right) and sent unchanged on every retry of that bid. ' +
+      'A retry with the same key returns the bid already accepted instead of placing a second one.',
+    minLength: 8,
+    maxLength: 64,
+  })
+  @IsString()
+  @Length(8, 64)
+  @Matches(/^[A-Za-z0-9._:-]+$/, { message: 'idempotencyKey may contain letters, digits and . _ : - only.' })
+  idempotencyKey!: string;
+}
+
+/** Newest bid first; page, page size and `order` come from the shared list query. */
+export class BidListQueryDto extends PaginationQueryDto {}

@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 437 tracked files in `docs/*`, by directory.
+All 445 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,13 +563,13 @@ All 437 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 11701 |  |
+| `DECISIONS.md` | doc | 11750 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 687 |  |
+| `README.md` | doc | 693 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
@@ -759,6 +759,19 @@ All 437 tracked files in `docs/*`, by directory.
 | `56-overdue-invoices-counter.md` | doc | 125 |  |
 | `68-realtime-gross-profit.md` | doc | 213 |  |
 | `GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md` | doc | 86 |  |
+
+### `docs/implementation/hospitality-qr-nfc` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `213-hospitality-platform-overview.md` | doc | 136 |  |
+| `214-qr-nfc-tags-and-spaces.md` | doc | 148 |  |
+| `215-guest-menu-and-ordering.md` | doc | 143 |  |
+| `216-staff-operations-and-requests.md` | doc | 141 |  |
+| `217-tables-rooms-and-floor.md` | doc | 90 |  |
+| `218-staff-management-and-analytics.md` | doc | 96 |  |
+| `219-future-modules-roadmap.md` | doc | 115 |  |
+| `README.md` | doc | 47 |  |
 
 ### `docs/implementation/hr-people-org` (19)
 

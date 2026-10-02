@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**469** markdown documents. These explain **why**; this index only says **where**.
+**477** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3011,7 +3011,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>11,701 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,750 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -3100,6 +3100,7 @@ _no second-level headings_
 - ADR-081 — Doc 212: role/permission scope enforcement confirmed as a live adoption gap, not a hypothetical — `AdminScope` has exactly one production caller, `orgUnitScopeFilterFor()` has zero, and `check-route-permissions.mjs` has no awareness of either  <sub>:9447</sub>
 - ADR-082 — Doc 48 (native desktop deployment): WO-48.1/48.3/48.4/48.5 built as real code in a new `packages/desktop-runtime`; the Electron/Tauri shell and auto-update stay unbuilt, exactly as the document's own text already scoped  <sub>:9521</sub>
 - ADR-083 — A two-theme design system: one source in `brand.ts`, themes as scoped CSS custom properties, fill and ink split, a closed Tailwind palette, and contrast enforced in both themes  <sub>:9640</sub>
+- ADR-084 — Hospitality QR/NFC platform: the guest is a token-scoped principal, not a `User`; one order system through an extension point  <sub>:11702</sub>
 
 ### `docs/implementation/ENTERPRISE-SCALE.md`  <sub>278 lines</sub>
 
@@ -3226,6 +3227,100 @@ _no second-level headings_
 - Productivity  <sub>:119</sub>
 - Customization  <sub>:142</sub>
 - Bottom line  <sub>:151</sub>
+
+### `docs/implementation/hospitality-qr-nfc/213-hospitality-platform-overview.md`  <sub>136 lines</sub>
+
+- 1. Objective  <sub>:8</sub>
+- 2. Actors  <sub>:20</sub>
+- 3. Mapping to this repository's architecture  <sub>:36</sub>
+- 4. The pack: modules and what each owns  <sub>:50</sub>
+- 5. The five pillars for this feature  <sub>:69</sub>
+- 6. Scope lenses (feature-scope map)  <sub>:79</sub>
+- 7. Build order (work orders)  <sub>:109</sub>
+- 8. Out of scope here  <sub>:126</sub>
+- 9. Decision to record  <sub>:132</sub>
+
+### `docs/implementation/hospitality-qr-nfc/214-qr-nfc-tags-and-spaces.md`  <sub>148 lines</sub>
+
+- 1. The one rule  <sub>:6</sub>
+- 2. Data model (additive, forward-only migration)  <sub>:11</sub>
+- 3. The URL (the entire "protocol")  <sub>:25</sub>
+- 4. Scan flow (no install, no login)  <sub>:46</sub>
+- 5. Session and token parameters  <sub>:66</sub>
+- 6. Abuse and trust  <sub>:82</sub>
+- 7. Tag lifecycle (staff screen: *Spaces → Tags*)  <sub>:99</sub>
+- 8. Permissions  <sub>:115</sub>
+- 9. Acceptance criteria  <sub>:129</sub>
+- 10. Work orders  <sub>:141</sub>
+
+### `docs/implementation/hospitality-qr-nfc/215-guest-menu-and-ordering.md`  <sub>143 lines</sub>
+
+- 1. What the guest sees  <sub>:6</sub>
+- 2. Menu management (staff: *Menu*)  <sub>:21</sub>
+- 3. Ordering flow  <sub>:45</sub>
+- 4. Requests  <sub>:79</sub>
+- 5. Offers  <sub>:94</sub>
+- 6. Paying (until doc 219 §1 ships)  <sub>:104</sub>
+- 7. States the page ships (design rule: every state)  <sub>:111</sub>
+- 8. Acceptance criteria  <sub>:120</sub>
+- 9. Permissions  <sub>:132</sub>
+- 10. Work orders  <sub>:138</sub>
+
+### `docs/implementation/hospitality-qr-nfc/216-staff-operations-and-requests.md`  <sub>141 lines</sub>
+
+- 1. The board  <sub>:6</sub>
+- 2. Automatic origin (the headline requirement)  <sub>:21</sub>
+- 3. Routing  <sub>:27</sub>
+- 3b. Notification channels  <sub>:49</sub>
+- 4. Acknowledge → resolve, with SLAs  <sub>:56</sub>
+- 5. Actions per item  <sub>:72</sub>
+- 6. Kitchen / bar tickets  <sub>:86</sub>
+- 7. Bill and settlement  <sub>:95</sub>
+- 8. Four hours down  <sub>:102</sub>
+- 9. Failure path  <sub>:111</sub>
+- 10. Permissions  <sub>:118</sub>
+- 11. Acceptance criteria  <sub>:127</sub>
+- 12. Work orders  <sub>:135</sub>
+
+### `docs/implementation/hospitality-qr-nfc/217-tables-rooms-and-floor.md`  <sub>90 lines</sub>
+
+- 1. Space status  <sub>:6</sub>
+- 2. Floor view (staff: *Floor*)  <sub>:19</sub>
+- 3. Tables  <sub>:26</sub>
+- 4. Rooms (hotels)  <sub>:35</sub>
+- 5. Room folio (charge to room)  <sub>:55</sub>
+- 6. Permissions  <sub>:71</sub>
+- 7. Acceptance criteria  <sub>:77</sub>
+- 8. Work orders  <sub>:85</sub>
+
+### `docs/implementation/hospitality-qr-nfc/218-staff-management-and-analytics.md`  <sub>96 lines</sub>
+
+- 1. Staff: use HR, don't copy it  <sub>:6</sub>
+- 2. Performance, honestly  <sub>:26</sub>
+- 3. Management dashboards  <sub>:34</sub>
+- 4. Overview first, depth on click  <sub>:63</sub>
+- 5. Performance parameters  <sub>:69</sub>
+- 6. Permissions  <sub>:77</sub>
+- 7. Acceptance criteria  <sub>:83</sub>
+- 8. Work orders  <sub>:91</sub>
+
+### `docs/implementation/hospitality-qr-nfc/219-future-modules-roadmap.md`  <sub>115 lines</sub>
+
+- 1. Payments (online, at table or room)  <sub>:12</sub>
+- 2. WhatsApp  <sub>:27</sub>
+- 3. Loyalty  <sub>:39</sub>
+- 4. POS  <sub>:47</sub>
+- 5. KDS (kitchen display)  <sub>:56</sub>
+- 6. Subscriptions  <sub>:64</sub>
+- 7. Multi-branch / multi-property  <sub>:76</sub>
+- 8. Other doors worth keeping open (not committed)  <sub>:92</sub>
+- 9. Sequencing  <sub>:100</sub>
+
+### `docs/implementation/hospitality-qr-nfc/README.md`  <sub>47 lines</sub>
+
+- Read in this order  <sub>:19</sub>
+- Vocabulary (one word per concept)  <sub>:31</sub>
+- Status  <sub>:43</sub>
 
 ### `docs/implementation/hr-people-org/164-department-permission-role-duty-control.md`  <sub>327 lines</sub>
 
@@ -3900,16 +3995,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>687 lines</sub>
+### `docs/implementation/README.md`  <sub>693 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:540</sub>
-- The two module groups  <sub>:569</sub>
-- How a work order runs  <sub>:606</sub>
-- Known gaps not yet owned by a phase  <sub>:624</sub>
-- When a brief is wrong  <sub>:651</sub>
-- Scope, honestly  <sub>:664</sub>
-- Gap-analysis roadmap references  <sub>:671</sub>
+- Dependency order  <sub>:546</sub>
+- The two module groups  <sub>:575</sub>
+- How a work order runs  <sub>:612</sub>
+- Known gaps not yet owned by a phase  <sub>:630</sub>
+- When a brief is wrong  <sub>:657</sub>
+- Scope, honestly  <sub>:670</sub>
+- Gap-analysis roadmap references  <sub>:677</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

@@ -73,6 +73,12 @@ filename for these four, never "doc 18" or "doc 19" alone.
 | [`38-resilience-engineering.md`](./resilience-scalability/38-resilience-engineering.md) | **Built, WO-38.1–38.6.** The degradation matrix's rows are now tested claims (`CircuitBreakerService`, `core/resilience/`), an SLO/error-budget dashboard on checkout/POS/replication-sync (`SloRecorderService`, `core/slo/`, `/admin/platform-resilience`), a domain-event contract test suite (`core/events/event-contracts.spec.ts`), and DR numbers in `DEPLOYMENT.md` §9 — RPO real (24h), RTO honestly unmeasured pending the first quarterly game-day. `OutboundConnector` (doc 36) has nothing to wrap yet; `StorageDriver`'s "queue for retry" claim is a found gap, named rather than built here |
 | [`39-shared-cross-tenant-hosting-tier.md`](./commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) | Exercises the trigger `ENTERPRISE-SCALE.md`'s Br1 already named and deferred: a hosting control plane sharing infrastructure across tenants while every tenant keeps its own isolated database — see `DECISIONS.md`'s entry on why shared-schema multi-tenancy was rejected |
 
+**Numbers 213–219** — the hospitality sector pack: a QR/NFC platform for hotels,
+cafés and restaurants (no-install guest menu, table/room-bound tags, staff
+board, floor, analytics, and the roadmap to payments, WhatsApp, loyalty, POS,
+KDS, subscriptions and multi-branch). Start at
+[`hospitality-qr-nfc/README.md`](./hospitality-qr-nfc/README.md).
+
 **Numbers 40–49** fill in the granular micro-features a high-level feature
 list generalizes over — each checked against what already exists first:
 

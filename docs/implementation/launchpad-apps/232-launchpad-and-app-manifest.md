@@ -1,6 +1,54 @@
 # 232 — The launchpad and the first-party app manifest
 
-> **Status: Planned.** Cross-cutting **core** capability. Presentation layer
+> **Status (2026-10-02): built, WO-232.1–232.5, with the deviations listed
+> below; 232.6 (entitlement) is a hook only and 232.7 (directory-app tiles)
+> waits on docs 184–195.** Manifest and pure resolver:
+> `packages/shared/src/launchpad.ts` (15 specs). Server half:
+> `apps/api/src/core/launchpad/` — `GET /launchpad` (any signed-in user),
+> `GET /launchpad/apps` and `PUT /launchpad/apps/:key` (`launchpad.manage`),
+> tenant switch stored in the `launchpad.disabled_apps` setting and audited with
+> old and new value (11 specs). Permission `launchpad.manage` is in the catalogue,
+> in `PERMISSION_GROUPS`, seeded to ADMIN, and reaches existing deployments'
+> `Admin` role through the idempotent migration
+> `20261002100000_launchpad_manage_permission` (the catalogue-vs-roles trap).
+> Screen: `/admin/launchpad` ("Apps", nav entry in Overview) built from
+> `PageHeader`, `Segmented`, `FilterBar`, `EmptyState`, `Skeleton`, `Switch`,
+> `Disclosure`, `RevealScope`, `.card`/`.lift` — no new primitive, class or token
+> (14 specs in `components/admin/launchpad/launchpad.spec.ts`). Checked in a real
+> browser with a mocked API at all seven widths, light and dark, plus the
+> limited-permission, no-permission, API-error, module-off and switch-off states.
+>
+> **Deviations from the text below, each deliberate.**
+> 1. **Permissions are resolved in the web app, not on the server.** §3 rule 2
+>    and `anyOfPermissions` put the permission test in the manifest. Each entry's
+>    permissions already live in the admin nav registry, so a second copy in the
+>    manifest would drift. The server decides what only it can (`MODULES`, the
+>    tenant switch, the licence hook); the web app decides reachability with
+>    `navFor()`, the sidebar's own function, so a tile can never offer a door the
+>    sidebar hides. Permissions remain enforced on every API route. `anyOfPermissions`
+>    is therefore not a manifest field.
+> 2. **Labels are literals, not i18n keys** (`label`, `description`), because the
+>    admin app writes literals today (`ITG-9` names the gap) and the nav registry
+>    does the same. A customer-facing launchpad would need keys.
+> 3. **No `scripts/check-launchpad.mjs`.** §10's checks are unit specs instead,
+>    which can import the real registries: manifest entries exist in `ADMIN_NAV`
+>    (web spec), manifest modules exist in `FEATURE_MODULES` (api spec), icon keys
+>    have glyphs, C2C only on a reserved app, tier/sector consistent.
+> 4. **Only apps that exist are listed.** Mail, Auction, Vault, Hospitality and
+>    Housing Society get a manifest entry in the same change that ships their
+>    module.
+> 5. **Not yet built:** per-user pinned/recent ordering, the `GET /launchpad`
+>    response cache (§9; the list is eleven rows and one setting read), and the
+>    second-admin confirmation for licensed apps (§11; no app is licensed yet).
+>
+> **Found, not fixed (pre-existing, outside this change).** `check-tells`
+> reports 12 `emoji-glyph` lines against a baseline of 4 on `main` itself (reviews
+> pages, `metric-card`, product reviews, mobile), so `pnpm lint` fails at that step
+> with or without this change; the admin shell header overflows horizontally at
+> 280 px on every page; `Switch`'s button is 24 px tall inside a 44 px row, below
+> `ACC-4`'s target size.
+>
+> Original status line: **Planned.** Cross-cutting **core** capability. Presentation layer
 > only: it does not change module independence, `MODULES`, PBAC, or the
 > third-party app program (docs 184–195).
 

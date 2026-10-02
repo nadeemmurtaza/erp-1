@@ -3,7 +3,7 @@
 
 # Screens
 
-All **278** routable files across the web app, the till and the mobile app.
+All **279** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -24,12 +24,14 @@ Order is `NAV_GROUPS`' order in `apps/web/src/components/admin/nav-registry.ts`
 and nothing else. A capability with no entry here is reachable only by typing a
 URL, which CLAUDE.md counts as not shipped.
 
-_none_
+| Group | Label | Href | Permission | Module |
+|---|---|---|---|---|
+| overview | Apps | `'/admin/launchpad'` | — | — |
 
 
 ## Every screen
 
-### admin (183)
+### admin (184)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -129,6 +131,7 @@ _none_
 | `/admin/inventory/variances/by-shift` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/variances/by-shift/page.tsx` |
 | `/admin/inventory/wishlisted` | page | client | `apps/web/src/app/(admin)/admin/(app)/inventory/wishlisted/page.tsx` |
 | `/admin/invoices` | page | client | `apps/web/src/app/(admin)/admin/(app)/invoices/page.tsx` |
+| `/admin/launchpad` | page | server | `apps/web/src/app/(admin)/admin/(app)/launchpad/page.tsx` |
 | `/admin/leads` | page | client | `apps/web/src/app/(admin)/admin/(app)/leads/page.tsx` |
 | `/admin/login` | page | client | `apps/web/src/app/(admin)/admin/login/page.tsx` |
 | `/admin/login/sso-complete` | page | client | `apps/web/src/app/(admin)/admin/login/sso-complete/page.tsx` |

@@ -32,13 +32,13 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,192 | 159,759 | NestJS API — modules, core platform, Prisma schema and migrations |
-| `apps/web` | 538 | 96,959 | Next.js — admin console and customer storefront in one app |
-| `docs` | 463 | 96,032 | documents of record — implementation plans, house rules, brand |
+| `apps/api` | 1,199 | 160,124 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/web` | 545 | 97,582 | Next.js — admin console and customer storefront in one app |
+| `docs` | 463 | 96,080 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 42 | 29,286 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
 | `scripts` | 29 | 11,374 | repository checks and generators (lint gates, this index) |
-| `packages/shared` | 75 | 9,472 | brand, money, permissions, measurements, entities |
+| `packages/shared` | 77 | 9,979 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,906 | Expo — customer mobile app |
 | `packages/desktop-runtime` | 21 | 2,891 |  |
 | `apps/pos` | 33 | 2,671 | Next.js PWA — offline-first point of sale |
@@ -142,7 +142,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`cache`](core/cache.md) | 4 |  |
 | [`checkout`](core/checkout.md) | 1 |  |
 | [`common`](core/common.md) | 8 | FIFO invoice aging (RETAIL-ERP.md R15, WO-19.4) — a pure function over one counterparty's movements on a cont… |
-| [`config`](core/config.md) | 6 |  |
+| [`config`](core/config.md) | 7 |  |
 | [`crm`](core/crm.md) | 1 |  |
 | [`events`](core/events.md) | 7 | The static analysis behind `event-contracts.spec.ts` (WO-38.5). |
 | [`extension-points`](core/extension-points.md) | 11 |  |
@@ -151,6 +151,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | [`health`](core/health.md) | 3 |  |
 | [`idempotency`](core/idempotency.md) | 7 |  |
 | [`intent`](core/intent.md) | 4 |  |
+| [`launchpad`](core/launchpad.md) | 5 |  |
 | [`metrics`](core/metrics.md) | 4 |  |
 | [`notifications`](core/notifications.md) | 23 | Everything the admin "manage templates" screen needs that isn't already in EMAIL_TEMPLATES: a human label, wh… |
 | [`prisma`](core/prisma.md) | 4 | Single import point for the generated Prisma client. |
@@ -175,7 +176,7 @@ Packs: `apps/api/src/modules/module-packs.ts`
 | Module allowlist | `apps/api/src/modules/modules.registry.ts` | `MODULES` env decides what boots |
 | Web middleware | `apps/web/src/middleware.ts` | locale routing + admin auth redirect |
 | Admin shell | `apps/web/src/components/admin/admin-shell.tsx` | sidebar, command palette |
-| Admin nav | `apps/web/src/components/admin/nav-registry.ts` | sidebar order — 0 entries |
+| Admin nav | `apps/web/src/components/admin/nav-registry.ts` | sidebar order — 1 entries |
 | Prisma datasource | `apps/api/prisma/schema/schema.prisma` | generator + datasource only |
 | Seed | `apps/api/prisma/seed.ts` | permissions, roles, demo data |
 | Brand tokens | `packages/shared/src/brand.ts` | House Rule 1 — no literal anywhere else |

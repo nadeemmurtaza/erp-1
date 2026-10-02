@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-463 files · 96,032 lines
+463 files · 96,080 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -103,7 +103,7 @@ has a bug.
 | `docs/implementation/hr-people-org` | 19 | 3,813 | doc |
 | `docs/implementation/integrations-connectivity` | 25 | 7,898 | doc |
 | `docs/implementation/inventory-purchasing` | 5 | 1,798 | doc |
-| `docs/implementation/launchpad-apps` | 5 | 795 | doc |
+| `docs/implementation/launchpad-apps` | 5 | 843 | doc |
 | `docs/implementation/lots-serials-traceability` | 3 | 859 | doc |
 | `docs/implementation/payroll` | 4 | 1,178 | doc |
 | `docs/implementation/pos-hardware` | 4 | 645 | doc |

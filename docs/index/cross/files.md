@@ -3,19 +3,19 @@
 
 # Every tracked file
 
-All **2,672** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,688** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,192 | 159,759 | [files/api.md](../files/api.md) |
-| apps/web | 538 | 96,959 | [files/web.md](../files/web.md) |
+| apps/api | 1,199 | 160,124 | [files/api.md](../files/api.md) |
+| apps/web | 545 | 97,582 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,671 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 114 | 13,146 | [files/packages.md](../files/packages.md) |
-| docs/* | 463 | 96,032 | [files/docs.md](../files/docs.md) |
+| packages/* | 116 | 13,653 | [files/packages.md](../files/packages.md) |
+| docs/* | 463 | 96,080 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 64 | 33,111 | [files/infra.md](../files/infra.md) |
 | repository root files | 219 | 22,119 | [files/root.md](../files/root.md) |
 
@@ -29,15 +29,15 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 494 |
-| unit test | 363 |
-| page | 229 |
-| service | 211 |
-| module | 196 |
-| component | 191 |
-| controller | 151 |
-| dto | 135 |
-| migration | 119 |
-| nest module | 105 |
+| unit test | 366 |
+| page | 230 |
+| service | 212 |
+| module | 197 |
+| component | 196 |
+| controller | 152 |
+| dto | 136 |
+| migration | 120 |
+| nest module | 106 |
 | prisma schema | 65 |
 | script | 48 |
 | utility | 38 |
@@ -51,7 +51,7 @@ name a new file: the convention is what makes it findable.
 | hook | 12 |
 | yaml | 12 |
 | registry | 12 |
-| config | 11 |
+| config | 12 |
 | loading | 11 |
 | guard | 9 |
 | constants | 8 |

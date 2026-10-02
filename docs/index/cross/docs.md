@@ -3983,22 +3983,22 @@ _no second-level headings_
 - Acceptance  <sub>:62</sub>
 - Out of scope  <sub>:73</sub>
 
-### `docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md`  <sub>188 lines</sub>
+### `docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md`  <sub>236 lines</sub>
 
-- 1. Objective  <sub>:7</sub>
-- 2. Existing state (inspected)  <sub>:14</sub>
-- 3. The manifest  <sub>:29</sub>
-- 4. Tags: tier, sector, audience — three facets, not a tree  <sub>:71</sub>
-- 5. What the user sees  <sub>:89</sub>
-- 6. Per-tenant control  <sub>:100</sub>
-- 7. Third-party (directory) apps on the same screen  <sub>:112</sub>
-- 8. Licensing hook (doc 211)  <sub>:120</sub>
-- 9. Resilience and failure modes  <sub>:129</sub>
-- 10. Verification additions  <sub>:139</sub>
-- 11. Scope lenses  <sub>:147</sub>
-- 12. Acceptance criteria  <sub>:168</sub>
-- 13. Permissions  <sub>:177</sub>
-- 14. Work orders  <sub>:182</sub>
+- 1. Objective  <sub>:55</sub>
+- 2. Existing state (inspected)  <sub>:62</sub>
+- 3. The manifest  <sub>:77</sub>
+- 4. Tags: tier, sector, audience — three facets, not a tree  <sub>:119</sub>
+- 5. What the user sees  <sub>:137</sub>
+- 6. Per-tenant control  <sub>:148</sub>
+- 7. Third-party (directory) apps on the same screen  <sub>:160</sub>
+- 8. Licensing hook (doc 211)  <sub>:168</sub>
+- 9. Resilience and failure modes  <sub>:177</sub>
+- 10. Verification additions  <sub>:187</sub>
+- 11. Scope lenses  <sub>:195</sub>
+- 12. Acceptance criteria  <sub>:216</sub>
+- 13. Permissions  <sub>:225</sub>
+- 14. Work orders  <sub>:230</sub>
 
 ### `docs/implementation/launchpad-apps/233-mail-app.md`  <sub>208 lines</sub>
 

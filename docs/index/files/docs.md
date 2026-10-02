@@ -859,7 +859,7 @@ All 463 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `232-launchpad-and-app-manifest.md` | doc | 188 |  |
+| `232-launchpad-and-app-manifest.md` | doc | 236 |  |
 | `233-mail-app.md` | doc | 208 |  |
 | `234-auction-app.md` | doc | 265 |  |
 | `235-vault-and-work-credit-app.md` | doc | 55 |  |

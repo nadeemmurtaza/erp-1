@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,192 tracked files in `apps/api`, by directory.
+All 1,199 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -764,6 +764,12 @@ All 1,192 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 40 |  |
 
+### `apps/api/prisma/schema/migrations/20261002100000_launchpad_manage_permission` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 32 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -775,7 +781,7 @@ All 1,192 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `core.module.ts` | nest module | 63 |  |
+| `core.module.ts` | nest module | 65 |  |
 
 ### `apps/api/src/core/action-hub` (5)
 
@@ -929,16 +935,17 @@ All 1,192 tracked files in `apps/api`, by directory.
 | `all-exceptions.filter.spec.ts` | unit test | 59 |  |
 | `all-exceptions.filter.ts` | module | 152 |  |
 
-### `apps/api/src/core/config` (6)
+### `apps/api/src/core/config` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `app-config.service.ts` | service | 72 |  |
 | `config.module.ts` | nest module | 23 |  |
+| `enabled-modules.ts` | config | 15 |  |
 | `env.validation.spec.ts` | unit test | 190 |  |
 | `env.validation.ts` | config | 400 |  |
 | `load-env.ts` | config | 14 |  |
-| `meta.controller.ts` | controller | 41 |  |
+| `meta.controller.ts` | controller | 39 |  |
 
 ### `apps/api/src/core/crm` (1)
 
@@ -1020,6 +1027,21 @@ All 1,192 tracked files in `apps/api`, by directory.
 | `intent-router.service.spec.ts` | unit test | 142 |  |
 | `intent-router.service.ts` | service | 82 |  |
 | `intent.types.ts` | module | 42 |  |
+
+### `apps/api/src/core/launchpad` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `launchpad.controller.ts` | controller | 46 |  |
+| `launchpad.module.ts` | nest module | 18 |  |
+| `launchpad.service.spec.ts` | unit test | 126 |  |
+| `launchpad.service.ts` | service | 113 |  |
+
+### `apps/api/src/core/launchpad/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `set-app-enablement.dto.ts` | dto | 8 |  |
 
 ### `apps/api/src/core/metrics` (4)
 
@@ -1141,7 +1163,7 @@ All 1,192 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 539 |  |
+| `settings.defaults.ts` | module | 546 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.spec.ts` | unit test | 125 |  |
 | `settings.service.ts` | service | 146 |  |

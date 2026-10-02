@@ -2,7 +2,17 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { BRAND, concentricRadius, formatDate, formatMoney } from '@newax/shared';
-import { Button, CooldownBanner, DangerZone, Field, FormStack, HoldToConfirm, SuccessState } from '@/components/ui';
+import {
+  Button,
+  CooldownBanner,
+  CopyButton,
+  DangerZone,
+  Field,
+  FormStack,
+  HoldToConfirm,
+  Segmented,
+  SuccessState,
+} from '@/components/ui';
 import { Price } from '@/components/storefront/price';
 import { HOLD_MS } from '@/lib/guard';
 import { Group } from './foundations';
@@ -339,6 +349,127 @@ export function SuccessSpecimens() {
           It refuses what would make it a dead end: with no primary action it renders nothing. Celebrating is the
           caller&rsquo;s claim of a milestone, never the default, and no screen makes it yet because the record of
           milestones does not exist.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/** What the clipboard is made to look like, so each way the copy can go is one click away. */
+type ClipboardMode = 'normal' | 'insecure' | 'blocked';
+
+const CLIPBOARD_MODES = [
+  { value: 'normal', label: 'Normal' },
+  { value: 'insecure', label: 'Insecure origin' },
+  { value: 'blocked', label: 'Blocked' },
+] as const;
+
+/** The IBAN the reference documents use as their example, shown grouped the way a formatter would wrap it. */
+const EXAMPLE_IBAN = 'GB82WEST12345698765432';
+const EXAMPLE_IBAN_SHOWN = 'GB82\u200B WEST\u200B 1234\u200B 5698\u200B 7654\u200B 32';
+
+/**
+ * The copy button (CPY-1 to CPY-5), live, in the two places it is used: a value
+ * in a row of details, and a secret shown once. Paste into the field below to see
+ * what actually landed: the IBAN is displayed with hidden characters in it and
+ * pastes without them. The selector makes the page's clipboard behave like the two
+ * places it fails: with no secure origin the API is missing and the copy command
+ * does the work; blocked, neither works and the button says so.
+ */
+export function CopySpecimens() {
+  const [mode, setMode] = useState<ClipboardMode>('normal');
+  const secret = useRef<HTMLInputElement>(null);
+
+  // Replaces what the page offers while a failing mode is chosen, and gives it back on any change or on leaving.
+  useEffect(() => {
+    if (mode === 'normal') return;
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: undefined });
+    if (mode === 'blocked') Object.defineProperty(document, 'execCommand', { configurable: true, value: () => false });
+    return () => {
+      Reflect.deleteProperty(navigator, 'clipboard');
+      Reflect.deleteProperty(document, 'execCommand');
+    };
+  }, [mode]);
+
+  return (
+    <div className="grid gap-10 lg:grid-cols-2">
+      <div className="grid min-w-0 content-start gap-4">
+        <h4 className="eyebrow">A value someone has to type elsewhere</h4>
+        <dl className="card m-0 grid gap-2 p-4 text-sm">
+          <div className="first:pt-0 pt-2">
+            <dt className="text-neutral-900/60">Account number</dt>
+            <dd className="m-0 flex min-w-0 flex-wrap items-center gap-x-1">
+              <span dir="ltr" className="min-w-0 break-all">
+                0123 4567 8901
+              </span>
+              <CopyButton
+                value="012345678901"
+                label="Copy account number"
+                copiedLabel="Copied"
+                failedLabel="Copy did not work. Select the text and copy it by hand."
+              />
+            </dd>
+          </div>
+          <div className="first:pt-0 pt-2">
+            <dt className="text-neutral-900/60">IBAN</dt>
+            <dd className="m-0 flex min-w-0 flex-wrap items-center gap-x-1">
+              <span dir="ltr" className="min-w-0 break-all">
+                {EXAMPLE_IBAN_SHOWN}
+              </span>
+              <CopyButton
+                value={EXAMPLE_IBAN}
+                label="Copy IBAN"
+                copiedLabel="Copied"
+                failedLabel="Copy did not work. Select the text and copy it by hand."
+              />
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div className="grid min-w-0 content-start gap-4">
+        <h4 className="eyebrow">A secret shown once</h4>
+        <div className="grid gap-2">
+          <input
+            ref={secret}
+            readOnly
+            dir="ltr"
+            aria-label="API key"
+            value="key_example_7Hx9Qa2Lm04Zt"
+            onFocus={(event) => event.currentTarget.select()}
+            className="field-input"
+          />
+          <CopyButton
+            variant="labelled"
+            value="key_example_7Hx9Qa2Lm04Zt"
+            label="Copy"
+            copiedLabel="Copied"
+            failedLabel="Copy did not work. Select the text and copy it by hand."
+            onFail={() => secret.current?.select()}
+          />
+        </div>
+      </div>
+
+      <div className="grid min-w-0 content-start gap-4 lg:col-span-2">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-neutral-100 pt-4">
+          <p className="eyebrow">Specimen controls</p>
+          <Segmented
+            kind="choice"
+            label="How the clipboard behaves"
+            value={mode}
+            onChange={setMode}
+            options={CLIPBOARD_MODES}
+            className="flex-wrap"
+          />
+        </div>
+        <label className="grid max-w-md gap-1">
+          <span className="field-label">Paste here to check what landed</span>
+          <input className="field-input" placeholder="Paste" />
+        </label>
+        <p className="m-0 max-w-prose text-sm text-neutral-900/70">
+          The check holds for two seconds and fades back. Press again inside the hold and it pulses. A screen reader says
+          &ldquo;Copied&rdquo;. On an insecure origin the copy command does the work and the result looks the same; blocked,
+          the icon changes to an alert and the sentence beside it says what to do.
         </p>
       </div>
     </div>

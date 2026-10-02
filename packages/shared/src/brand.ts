@@ -612,6 +612,29 @@ const safeguards = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// Feedback
+//
+// How long a control's own answer stays on screen before the control is ready
+// again (CPY-2, CPY-5). Starting values: a deployment retunes them here.
+// ---------------------------------------------------------------------------
+
+const feedback = {
+  /**
+   * How long a copy button shows its check, in ms. Long enough for the eye to
+   * come back from the place the value will be pasted and find the answer
+   * still there (a glance away and back is about a second), short enough that
+   * the icon is a copy button again before a second copy is wanted.
+   */
+  copiedHoldMs: 2000,
+  /**
+   * How long a copy button shows that the copy failed, in ms. Twice the success
+   * hold: the failure carries a sentence the person has to read and act on
+   * (select the text and copy it by hand), where success carries one glyph.
+   */
+  copyFailedHoldMs: 4000,
+} as const;
+
+// ---------------------------------------------------------------------------
 
 export const BRAND = {
   identity,
@@ -624,6 +647,7 @@ export const BRAND = {
   assets,
   commerce,
   safeguards,
+  feedback,
 } as const;
 
 export type Brand = typeof BRAND;

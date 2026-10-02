@@ -123,10 +123,11 @@ requires a reason stated in the PR.
 
 ## Controls with a contract
 
-Five families of laws, each from a rule card the owner supplied on 2026-10-01
-and each stated so a review can cite it: **UPL** (uploads), **MNU** (menus and
-pickers), **DNG** (danger), **FRM** (the form recipe) and **CRD** (the card
-recipe). They are rulings about specific controls, so they sit with the
+Six families of laws, five from the rule cards the owner supplied on
+2026-10-01 and one from a reel on 2026-10-02, each stated so a review can cite
+it: **UPL** (uploads), **MNU** (menus and pickers), **DNG** (danger), **FRM**
+(the form recipe), **CRD** (the card recipe) and **CPY** (copy). They are
+rulings about specific controls, so they sit with the
 components, and they are built: the primitive each one names is in
 `apps/web/src/components/ui`, and `/admin/design-system#controls` renders it.
 
@@ -363,6 +364,70 @@ Siblings entering a grid arrive 40 ms apart for at most four steps (160 ms in
 all) on the `settle` curve (`MOT-6`), each row cascading from its start edge.
 Nothing bounces (`MOT-3`).
 
+### CPY · Copy
+
+A copy button is a promise that what is on the clipboard is what the person
+sees named, and the only evidence is what the button does next. A silent button
+lies: it leaves the person pasting into a terminal to find out. These five laws
+are the `CopyButton` primitive (`components/ui/copy-button.tsx`), and the copy
+itself lives in one place, `lib/copy.ts`, so a lint can say there is no other.
+
+### CPY-1 · The flip is the receipt
+**Here** — the copy icon becomes a check on the frame the write succeeds. No
+spinner, no pending state, no delay: putting a short string on the clipboard
+takes milliseconds, so anything shown while waiting is longer than the wait
+(`ACT-3`). The flip never comes before the result is known, because a check
+that arrives early is the lie this family exists to prevent. Opacity and
+transform only, in `instant` (80 ms), the icons stacked in one box so nothing
+shifts (`MOT-5`).
+
+### CPY-2 · Two seconds, then back
+**Here** — the check holds for 2 000 ms (`BRAND.feedback.copiedHoldMs`), then
+fades back to the copy icon over `normal` (220 ms), so the control is ready to
+be used again and is never left stuck as a check. A second copy inside the hold
+restarts the clock and replays the pulse: the person who clicks twice, to be
+sure, gets news twice. A state that holds for ever answers the first click and
+goes mute for every one after it.
+
+### CPY-3 · Copy the raw value
+**Here** — the control is given the string and copies the string. It never
+reads the rendered node back out of the page: a formatted span carries the line
+breaks the layout wrapped in and the zero-width characters a formatter slipped
+in, and pasted into a terminal they are a different command. `normalizeCopyValue`
+removes only what is invisible on screen (zero-width characters, bidirectional
+controls such as the Arabic letter mark that right-to-left number formatting adds,
+the soft hyphen) and trims the ends, and nothing else: no regrouping, no case change.
+It is for identifiers and codes, not prose: in prose a zero-width joiner is
+spelling. The value is a string known when the click lands, never fetched inside
+the handler, because Safari only honours the write inside the gesture.
+
+### CPY-4 · Say it aloud
+**Here** — an icon that changes is information only for someone who can see it
+(`ACC-6`). A status region (`role="status"`, polite, visually hidden) says
+"Copied" when the write is known to have worked, and the failure sentence when
+it has not. The region is mounted before the click, because a live region
+inserted together with its text is often not announced, and its message is
+re-keyed so a second, identical "Copied" is announced again. The button's own
+name stays constant ("Copy API key"): a name that changes under the press is
+announced twice or not at all.
+
+### CPY-5 · Fall back, then fail out loud
+**Here** — `navigator.clipboard` exists only on a secure origin (HTTPS or
+localhost); on any other the property is missing and the call fails without a
+word. `copyText` tries it first, and when it is missing or rejects, falls back
+to `document.execCommand('copy')` from a temporary read-only textarea, one pixel
+square and invisible but inside the viewport (iOS will not select what is outside
+it), placed inside the open `dialog` when there is one (a modal makes everything
+outside it inert, so a textarea on the body would never be selected), and puts
+focus and selection back where they were. When both paths fail the control does
+not pretend: it shows a failure icon and says what happened and what to do next,
+"Copy did not work. Select the text and copy it by hand." (`FLO-7`; no key
+named, because the key differs by platform), held for
+4 000 ms (`BRAND.feedback.copyFailedHoldMs`), and calls `onFail` so the caller
+can select the visible text. Reduced motion keeps every state and drops the
+fade: the icon swaps with no transition, because the change is the information
+(`ACC-8`).
+
 ## Component contract
 
 Every component in this system:
@@ -383,4 +448,6 @@ works and adds clutter.
 An alert, a status pill, a table, a modal. These exist. A hand-rolled modal in
 particular is a dead end, because the shared `Dialog` wires Escape, backdrop
 click and a labelled close button by construction — and a hand-rolled one
-always forgets at least one.
+always forgets at least one. A copy button is the same: a hand-rolled one calls
+the clipboard API, which is missing on an insecure origin and says nothing when
+it fails, so `CopyButton` is the only way to copy (`check-clipboard` holds it).

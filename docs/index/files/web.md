@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 533 tracked files in `apps/web`, by directory.
+All 536 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -26,8 +26,8 @@ All 533 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 814 |  |
-| `ur.json` | json | 814 |  |
+| `en.json` | json | 819 |  |
+| `ur.json` | json | 819 |  |
 
 ### `apps/web/public` (1)
 
@@ -1263,7 +1263,7 @@ All 533 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 469 |  |
+| `page.tsx` | page | 523 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/invoice` (1)
 
@@ -1558,7 +1558,7 @@ All 533 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `secret-once.tsx` | component | 100 |  |
+| `secret-once.tsx` | component | 95 |  |
 | `status-badge.tsx` | component | 125 |  |
 | `toast-container.tsx` | component | 60 |  |
 | `wizard.tsx` | component | 159 |  |
@@ -1579,7 +1579,7 @@ All 533 tracked files in `apps/web`, by directory.
 | `audience.ts` | component | 109 | The deciding functions behind the publish-and-audience specimen. |
 | `chart-concepts.tsx` | component | 387 |  |
 | `choice-cards.tsx` | component | 76 |  |
-| `controls-specimens.tsx` | component | 347 |  |
+| `controls-specimens.tsx` | component | 478 |  |
 | `data-concepts.tsx` | component | 501 |  |
 | `department-page.tsx` | component | 437 |  |
 | `department.spec.ts` | unit test | 158 |  |
@@ -1589,7 +1589,7 @@ All 533 tracked files in `apps/web`, by directory.
 | `dispatch-machine.ts` | component | 131 | The states of a one-click send, and the only moves between them. |
 | `flow-concepts.tsx` | component | 584 |  |
 | `foundations.tsx` | component | 438 |  |
-| `gallery.tsx` | component | 358 |  |
+| `gallery.tsx` | component | 364 |  |
 | `layering.tsx` | component | 208 |  |
 | `layout-loading.tsx` | component | 358 |  |
 | `live-tokens.ts` | component | 60 |  |
@@ -1646,7 +1646,7 @@ All 533 tracked files in `apps/web`, by directory.
 | `theme-switch.tsx` | component | 28 |  |
 | `visual-search-button.tsx` | component | 89 |  |
 
-### `apps/web/src/components/ui` (43)
+### `apps/web/src/components/ui` (44)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1655,6 +1655,7 @@ All 533 tracked files in `apps/web`, by directory.
 | `button.tsx` | component | 94 |  |
 | `confirm-dialog.tsx` | component | 125 |  |
 | `cooldown-banner.tsx` | component | 81 |  |
+| `copy-button.tsx` | component | 186 |  |
 | `count-up.tsx` | component | 196 |  |
 | `danger-zone.tsx` | component | 103 |  |
 | `data-table.tsx` | component | 260 |  |
@@ -1667,7 +1668,7 @@ All 533 tracked files in `apps/web`, by directory.
 | `field.tsx` | component | 104 |  |
 | `filter-bar.tsx` | component | 191 |  |
 | `hold-to-confirm.tsx` | component | 224 |  |
-| `index.ts` | component | 75 | Design-system primitives. |
+| `index.ts` | component | 76 | Design-system primitives. |
 | `list-page-skeleton.tsx` | component | 66 | The shape of a list page, before the list page. |
 | `loading.tsx` | loading | 36 |  |
 | `menu.tsx` | component | 448 |  |
@@ -1735,7 +1736,7 @@ All 533 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (33)
+### `apps/web/src/lib` (35)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1746,6 +1747,8 @@ All 533 tracked files in `apps/web`, by directory.
 | `calendar.spec.ts` | unit test | 291 |  |
 | `calendar.ts` | utility | 292 | Calendar arithmetic for the date field (MNU-2): a month's grid, a week's start, keyboard movement by day, week, month a… |
 | `cart-client.ts` | utility | 99 |  |
+| `copy.spec.ts` | unit test | 303 |  |
+| `copy.ts` | utility | 190 |  |
 | `customer-client.ts` | utility | 273 |  |
 | `date-parse.spec.ts` | unit test | 262 |  |
 | `date-parse.ts` | utility | 261 |  |

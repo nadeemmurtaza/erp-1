@@ -26,6 +26,7 @@ export { Pagination, type PaginationMeta } from './pagination';
 export { Button, type ButtonProps } from './button';
 export { Dialog } from './dialog';
 export { ConfirmDialog } from './confirm-dialog';
+export { CopyButton, type CopyButtonProps } from './copy-button';
 export { Loading } from './loading';
 export { SuccessState, type SuccessAction, type SuccessStep, type SuccessStateProps } from './success-state';
 export { ThemeToggle, type ThemeToggleLabels } from './theme-toggle';

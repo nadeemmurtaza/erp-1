@@ -17,7 +17,7 @@ paths:
 ## The design system
 
 The long form is **[`docs/design/`](../../docs/design/README.md)** — sixteen
-chapters and **187 numbered laws**, covering principles, tokens, layout,
+chapters and **192 numbered laws**, covering principles, tokens, layout,
 components, states, motion, content, accessibility, governance, quality
 gates, the borrowed law catalogue, workflow, permissions, composition,
 navigation and integrity. Its measured state, generated from the code, is
@@ -130,6 +130,11 @@ specification for something not yet built.
 - **A success says what happened to which thing, offers the next step and
   spends the right surface** (`SUC-1` to `SUC-3`). At most one open loop, and
   joy only for a milestone (`SUC-4`, `SUC-5`).
+- **A copy button proves itself** (`CPY-1` to `CPY-5`). The check shows when the
+  copy lands, holds 2 000 ms and goes back, "Copied" is announced, the raw value is
+  what is copied, and where the clipboard API is missing the copy command takes
+  over or the failure is said in words. Use `CopyButton`; `check-clipboard` fails
+  any other clipboard call.
 - **A refusal states its remedy** (`FLO-7`). "Awaiting approval" is a status,
   not a message.
 - **Work is durable from the first real value** (`FLO-3`). Closing a tab may

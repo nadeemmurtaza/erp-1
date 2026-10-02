@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **2,639** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,643** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -11,13 +11,13 @@ Split by area so you load one, not all of them.
 | Area | Files | Lines | Open |
 |---|---|---|---|
 | apps/api | 1,192 | 159,759 | [files/api.md](../files/api.md) |
-| apps/web | 533 | 95,949 | [files/web.md](../files/web.md) |
+| apps/web | 536 | 96,825 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,668 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 114 | 13,090 | [files/packages.md](../files/packages.md) |
-| docs/* | 437 | 91,689 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 63 | 32,668 | [files/infra.md](../files/infra.md) |
-| repository root files | 218 | 22,024 | [files/root.md](../files/root.md) |
+| packages/* | 114 | 13,131 | [files/packages.md](../files/packages.md) |
+| docs/* | 437 | 91,976 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 64 | 32,838 | [files/infra.md](../files/infra.md) |
+| repository root files | 218 | 22,032 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -29,18 +29,18 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 467 |
-| unit test | 362 |
+| unit test | 363 |
 | page | 229 |
 | service | 211 |
 | module | 196 |
-| component | 189 |
+| component | 190 |
 | controller | 151 |
 | dto | 135 |
 | migration | 119 |
 | nest module | 105 |
 | prisma schema | 65 |
-| script | 47 |
-| utility | 37 |
+| script | 48 |
+| utility | 38 |
 | event subscriber | 36 |
 | scheduled job | 34 |
 | json | 31 |

@@ -2,7 +2,7 @@
 
 How this product decides what it looks like, how it behaves, and how it speaks.
 
-Sixteen chapters and **187 numbered laws**. Read the one you need — each
+Sixteen chapters and **192 numbered laws**. Read the one you need — each
 says what it governs, what is already enforced by a command, and what is
 still only written down.
 

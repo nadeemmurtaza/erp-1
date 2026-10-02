@@ -143,8 +143,8 @@ Every top-level export in `packages`, with the line to open.
 | `api-keys.ts` | `CUSTOMER_SCOPE_KEYS` | const | :306 |  |
 | `api-keys.ts` | `expandCustomerScopes` | function | :319 | A storefront key's stored scopes as the guard reads them: unknown strings dropped (a scope retired… |
 | `api-keys.ts` | `unknownCustomerScopes` | function | :331 | Requested scopes the catalogue does not know — refused at create and edit. |
-| `brand.ts` | `BRAND` | const | :616 | --------------------------------------------------------------------------- |
-| `brand.ts` | `Brand` | type | :629 |  |
+| `brand.ts` | `BRAND` | const | :639 | --------------------------------------------------------------------------- |
+| `brand.ts` | `Brand` | type | :653 |  |
 | `cod-risk.ts` | `CodRiskAddress` | interface | :4 |  |
 | `cod-risk.ts` | `CodRiskCityStats` | interface | :11 |  |
 | `cod-risk.ts` | `CodRiskCustomerHistory` | interface | :18 |  |

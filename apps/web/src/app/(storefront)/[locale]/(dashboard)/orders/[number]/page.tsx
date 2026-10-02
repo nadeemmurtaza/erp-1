@@ -2,17 +2,18 @@
 
 import { useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
-import { use, useCallback, useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { formatDate, formatDateTime, formatMoney, type Locale } from '@newax/shared';
 import { Link, useRouter } from '@/i18n/navigation';
 import { StitchingTimeline } from '@/components/storefront/stitching-timeline';
 import { customerFetch, getCustomerToken, getMyOrder, trackOrder } from '@/lib/customer-client';
 import { StatusBadge } from '@/components/common/status-badge';
 import { useOrderStatusLabel } from '@/hooks/use-order-status-label';
-import { Disclosure, Loading, PageHeader, ScrambleText, Section, SuccessState } from '@/components/ui';
+import { CopyButton, Disclosure, Loading, PageHeader, ScrambleText, Section, SuccessState } from '@/components/ui';
 import type { CustomerOrder } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
 import { STORAGE_KEYS } from '@/constants/storage';
+import { selectContents } from '@/lib/copy';
 import { journeyStates } from '@/lib/success-state';
 
 /**
@@ -52,6 +53,8 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
   const t = useTranslations('order');
   const tReturns = useTranslations('returns');
   const tCommon = useTranslations('common');
+  /** The three strings a copy button needs: its name, what it says on success and what it says when nothing worked. */
+  const copyLabels = (label: string) => ({ label, copiedLabel: t('copied'), failedLabel: t('copyFailed') });
   const locale = useLocale() as Locale;
   const statusLabel = useOrderStatusLabel();
   const router = useRouter();
@@ -277,8 +280,8 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
             {bankAccounts.map((account) => (
               <dl key={account.iban} className="card space-y-1 p-4 text-sm">
                 <Row label={account.bank} value={account.title} />
-                <Row label={t('accountNumber')} value={account.accountNumber} />
-                <Row label="IBAN" value={account.iban} />
+                <Row label={t('accountNumber')} value={account.accountNumber} copy={copyLabels(t('copyAccountNumber'))} />
+                <Row label="IBAN" value={account.iban} copy={copyLabels(t('copyIban'))} />
               </dl>
             ))}
           </div>
@@ -393,15 +396,16 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
             </address>
 
             {order.shipments.length > 0 ? (
-              <p className="mt-3 text-sm text-neutral-900/70">
-                {order.shipments
-                  .map((shipment) =>
-                    [shipment.courier.toUpperCase(), shipment.trackingNumber]
-                      .filter(Boolean)
-                      .join(' · '),
-                  )
-                  .join(', ')}
-              </p>
+              <ul className="mt-3 space-y-1 text-sm text-neutral-900/70">
+                {order.shipments.map((shipment, index) => (
+                  <TrackingLine
+                    key={`${shipment.courier}-${shipment.trackingNumber ?? index}`}
+                    courier={shipment.courier.toUpperCase()}
+                    trackingNumber={shipment.trackingNumber}
+                    copy={copyLabels(t('copyTrackingNumber'))}
+                  />
+                ))}
+              </ul>
             ) : null}
           </Section>
         </div>
@@ -458,11 +462,61 @@ function Notice({ title, body, tone }: { title: string; body: string; tone?: 'da
   );
 }
 
-function Row({ label, value }: { label: string; value: string }) {
+type CopyLabels = { label: string; copiedLabel: string; failedLabel: string };
+
+function Row({ label, value, copy }: { label: string; value: string; copy?: CopyLabels }) {
+  const shown = useRef<HTMLSpanElement>(null);
+  // A value that is copied is long and has to be read exactly (an IBAN is 24 characters), so its label sits above it
+  // and it gets the card's whole width, instead of sharing a line with the label and wrapping to a stray "02".
+  // The button wraps below the value when the card is too narrow, and so does the failure sentence.
+  if (copy) {
+    return (
+      <div className="pt-2">
+        <dt className="text-neutral-900/60">{label}</dt>
+        <dd className="flex min-w-0 flex-wrap items-center gap-x-1 text-neutral-900">
+          <span ref={shown} dir="ltr" className="min-w-0 break-all">
+            {value}
+          </span>
+          <CopyButton value={value} {...copy} onFail={() => selectContents(shown.current)} />
+        </dd>
+      </div>
+    );
+  }
   return (
     <div className="flex justify-between gap-3">
       <dt className="text-neutral-900/60">{label}</dt>
       <dd className="text-end text-neutral-900">{value}</dd>
     </div>
+  );
+}
+
+/** One shipment: the courier, and its tracking number with a button to copy it, selected for a hand copy if that fails. */
+function TrackingLine({
+  courier,
+  trackingNumber,
+  copy,
+}: {
+  courier: string;
+  trackingNumber: string | null;
+  copy: CopyLabels;
+}) {
+  const shown = useRef<HTMLSpanElement>(null);
+  return (
+    <li className="flex flex-wrap items-center gap-x-1">
+      <span>
+        {courier}
+        {trackingNumber ? (
+          <>
+            {courier ? ' · ' : null}
+            <span ref={shown} dir="ltr">
+              {trackingNumber}
+            </span>
+          </>
+        ) : null}
+      </span>
+      {trackingNumber ? (
+        <CopyButton value={trackingNumber} {...copy} onFail={() => selectContents(shown.current)} />
+      ) : null}
+    </li>
   );
 }

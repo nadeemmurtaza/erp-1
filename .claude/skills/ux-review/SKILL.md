@@ -42,7 +42,7 @@ ran.
 
 ```bash
 node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-danger.mjs
-node scripts/check-menus.mjs && node scripts/check-rebrand.mjs && node scripts/check-rules.mjs
+node scripts/check-menus.mjs && node scripts/check-clipboard.mjs && node scripts/check-rebrand.mjs && node scripts/check-rules.mjs
 node scripts/check-tells.mjs <the changed and new files>    # file:line for each tell
 pnpm --filter @newax/web exec tsc --noEmit
 pnpm --filter @newax/web test

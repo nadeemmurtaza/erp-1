@@ -865,6 +865,23 @@ what holds it, so a review opens the file rather than taking the claim.
 
 ---
 
+## Where the copy laws are built
+
+One reel of 2026-10-02 ("Copy needs proof") arrived as five laws, `CPY-1` to `CPY-5`
+in chapter 03, each standing on a law above (`ACT-3`, `ACC-6`, `ACC-8`, `FLO-7`).
+This table says which artifact makes each one true and what holds it, so a review
+opens the file rather than taking the claim.
+
+| Law | Where it is built | Held by |
+|---|---|---|
+| `CPY-1` The flip is the receipt (on `ACT-3`) | `CopyButton`'s stacked faces cross-fade on opacity and scale in `instant` (80 ms); the state moves only when `copyText` has resolved, never before | `lib/copy.spec.ts` (the state machine); a one-off browser run measured the flip 11.4 ms after the click and no `.spinner` at any point; not in CI |
+| `CPY-2` Two seconds, then back | `BRAND.feedback.copiedHoldMs` (2 000 ms) read as `COPIED_HOLD_MS`; `nextCopy` counts repeats and ignores an expiry that a newer copy overtook; the effect restarts the timer on every result | `lib/copy.spec.ts` (hold lengths, repeat counting, stale expiry), `theme-radii.spec.ts` (the values); a browser run measured 2 001 ms, the pulse on a repeat and a restarted hold |
+| `CPY-3` Copy the raw value | `CopyButton` takes `value: string` and never reads a node; `normalizeCopyValue` removes only what is invisible; `copyText` is the only write | `lib/copy.spec.ts` (every character class); `check-clipboard` fails a clipboard call anywhere else; a browser run pasted an IBAN that was displayed with hidden characters and got it without them |
+| `CPY-4` Say it aloud (on `ACC-6`) | an always-mounted `role="status"` region with a keyed child; the button's `aria-label` never changes | a browser run read the region's text and the name before, during and after; no command checks it, and a real screen reader was not run |
+| `CPY-5` Fall back, then fail out loud (on `FLO-7`, `ACC-8`) | `copyText` tries the async API, then `copyByCommand` from a scratch field inside the open `dialog`; both failing is the failed state with its sentence, 4 000 ms (`copyFailedHoldMs`), and `onFail` | `lib/copy.spec.ts` (order, synchronous fallback, dialog host, cleanup, every failure); a browser run on a real HTTP origin (`isSecureContext` false) copied through the command and a blocked clipboard showed the sentence |
+
+---
+
 ## What this chapter does not settle
 
 Five families are large enough to be their own chapters, because in this

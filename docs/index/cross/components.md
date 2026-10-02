@@ -3,7 +3,7 @@
 
 # Components
 
-All **174** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **175** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -31,7 +31,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `measurement-form.tsx` | `MeasurementFormState` `ParseResult` `parseMeasurements` `useMeasurementForm` `MeasurementFields` | server | 3 |  |
 | `stage-rail.tsx` | `StageRail` | server | 2 |  |
-| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 282 |  |
+| `ui.tsx` | `Screen` `Card` `Title` `Heading` `Body` `Small` `Button` `Field` `ErrorNote` `Loading` `Empty` `Price` `Row` `Chip` | server | 283 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | server | 7 |  |
 
 ### `apps/pos/src/components` (2)
@@ -160,7 +160,7 @@ write an eighth. `components/common/wizard` is the only wizard.
 |---|---|---|---|---|
 | `chart-concepts.tsx` | `ChartRuleSpecimen` `FunnelSpecimen` `PointLineSpecimen` `RangeSpecimen` `ForecastSpecimen` `GaugeSpecimen` `StackedAreaSpecimen` `HeatmapSpecimen` `RadarSpecimen` `SalesComparisonSpecimen` | client | 1 |  |
 | `choice-cards.tsx` | `ChoiceOption` `ChoiceCards` | client | 2 |  |
-| `controls-specimens.tsx` | `FormRecipeSpecimen` `DangerSpecimens` `CardRecipeSpecimen` `SuccessSpecimens` | client | 1 |  |
+| `controls-specimens.tsx` | `FormRecipeSpecimen` `DangerSpecimens` `CardRecipeSpecimen` `SuccessSpecimens` `CopySpecimens` | client | 1 |  |
 | `data-concepts.tsx` | `ColumnManagerSpecimen` `RegionalPerformanceSpecimen` `ShareSpecimen` | client | 1 |  |
 | `department-page.tsx` | `DepartmentPageSpecimen` | client | 1 |  |
 | `dispatch-flow.tsx` | `DispatchFlowSpecimen` | client | 1 |  |
@@ -222,15 +222,16 @@ write an eighth. `components/common/wizard` is the only wizard.
 | `theme-switch.tsx` | `ThemeSwitch` | client | 1 |  |
 | `visual-search-button.tsx` | `VisualSearchButton` | client | 1 |  |
 
-### `apps/web/src/components/ui` (42)
+### `apps/web/src/components/ui` (43)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `badge.tsx` | `BadgeTone` `Badge` | server | 75 |  |
 | `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 2 |  |
-| `button.tsx` | `ButtonProps` `Button` | server | 7 |  |
+| `button.tsx` | `ButtonProps` `Button` | server | 8 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 1 |  |
 | `cooldown-banner.tsx` | `CooldownBanner` | client | 1 |  |
+| `copy-button.tsx` | `CopyButtonProps` `CopyButton` | client | 1 |  |
 | `count-up.tsx` | `CountUp` | client | 1 |  |
 | `danger-zone.tsx` | `DangerAction` `DangerZone` | client | 1 |  |
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 16 |  |

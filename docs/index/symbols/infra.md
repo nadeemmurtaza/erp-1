@@ -12,6 +12,8 @@ Every top-level export in `infra`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
+| `check-clipboard.mjs` | `ALLOWED` | const | :51 | The one place that may touch the clipboard, relative to the repository root. |
+| `check-clipboard.mjs` | `findClipboardUse` | function | :77 | Every clipboard touch in one file: its line and which of the two it is. |
 | `check-contrast.mjs` | `contrast` | const | :78 | WCAG 2.x contrast ratio. |
 | `check-contrast.mjs` | `scanColours` | function | :241 | Every colour utility in a file, with the className it shared, if any. |
 | `check-contrast.mjs` | `pinnedRegions` | function | :274 | A region that holds one theme whatever the page is in: an element carrying `data-theme="light"` (or… |

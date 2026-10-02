@@ -19,7 +19,7 @@ All 218 tracked files in `repository root files`, by directory.
 | `AGENTS.md` | doc | 81 |  |
 | `Architecture.md` | doc | 32 |  |
 | `check_output.txt` | txt | — |  |
-| `CLAUDE.md` | doc | 1044 |  |
+| `CLAUDE.md` | doc | 1045 |  |
 | `CONTRIBUTING.md` | doc | 127 |  |
 | `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |
@@ -71,12 +71,12 @@ All 218 tracked files in `repository root files`, by directory.
 | `database.md` | doc | 19 |  |
 | `decisions.md` | doc | 26 |  |
 | `dependencies.md` | doc | 23 |  |
-| `design.md` | doc | 160 |  |
+| `design.md` | doc | 165 |  |
 | `performance.md` | doc | 42 |  |
 | `security.md` | doc | 49 |  |
 | `services.md` | doc | 49 |  |
 | `testing.md` | doc | 20 |  |
-| `ui.md` | doc | 192 |  |
+| `ui.md` | doc | 193 |  |
 
 ### `.claude/skills/restyle` (1)
 
@@ -88,7 +88,7 @@ All 218 tracked files in `repository root files`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `SKILL.md` | doc | 107 |  |
+| `SKILL.md` | doc | 108 |  |
 
 ### `.claude/skills/ux-design` (1)
 

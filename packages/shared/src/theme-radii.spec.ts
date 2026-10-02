@@ -40,3 +40,20 @@ describe('safeguards (DNG-1, DNG-6)', () => {
     expect(Number.isInteger(deletionCooldownDays)).toBe(true);
   });
 });
+
+describe('feedback (CPY-2, CPY-5)', () => {
+  const { copiedHoldMs, copyFailedHoldMs } = BRAND.feedback;
+
+  it('holds the check for about two seconds', () => {
+    expect(copiedHoldMs).toBe(2000);
+  });
+
+  it('holds a failure longer than a success, because it carries a sentence to act on', () => {
+    expect(copyFailedHoldMs).toBe(4000);
+    expect(copyFailedHoldMs).toBeGreaterThan(copiedHoldMs);
+  });
+
+  it('holds the check longer than the fade back, or the check would never be seen', () => {
+    expect(copiedHoldMs).toBeGreaterThan(BRAND.theme.motion.duration.normal * 4);
+  });
+});

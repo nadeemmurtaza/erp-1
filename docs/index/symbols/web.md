@@ -1216,7 +1216,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `OrderPage` | default | :50 | One order, for the customer. |
+| `page.tsx` | `OrderPage` | default | :51 | One order, for the customer. |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/invoice`
 
@@ -1663,7 +1663,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `secret-once.tsx` | `SecretOnce` | function | :18 | because the storefront's comes from messages .json and the admin's is English (House Rule 6). |
+| `secret-once.tsx` | `SecretOnce` | function | :25 | because the storefront's comes from messages .json and the admin's is English (House Rule 6). |
 | `status-badge.tsx` | `statusLabel` | function | :113 | `READY_TO_SHIP` -> `Ready to ship`. |
 | `status-badge.tsx` | `StatusBadge` | function | :117 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :11 |  |
@@ -1718,10 +1718,11 @@ Every top-level export in `web`, with the line to open.
 | `chart-concepts.tsx` | `SalesComparisonSpecimen` | function | :374 |  |
 | `choice-cards.tsx` | `ChoiceOption` | interface | :15 | One choice among a few that each need a sentence. |
 | `choice-cards.tsx` | `ChoiceCards` | function | :21 |  |
-| `controls-specimens.tsx` | `FormRecipeSpecimen` | function | :23 | The form recipe (FRM-1 to FRM-6), live: labels above, example placeholders, 16 px between fields, 3… |
-| `controls-specimens.tsx` | `DangerSpecimens` | function | :110 | The danger controls (DNG-1 to DNG-6) in the states a person meets them in. |
-| `controls-specimens.tsx` | `CardRecipeSpecimen` | function | :199 | The product card recipe (CRD-1 to CRD-6), drawn from the same classes and the same `Price` the stor… |
-| `controls-specimens.tsx` | `SuccessSpecimens` | function | :270 | The success state (SUC-1 to SUC-5), live: the invoice case with its one open loop and its receipt,… |
+| `controls-specimens.tsx` | `FormRecipeSpecimen` | function | :33 | The form recipe (FRM-1 to FRM-6), live: labels above, example placeholders, 16 px between fields, 3… |
+| `controls-specimens.tsx` | `DangerSpecimens` | function | :120 | The danger controls (DNG-1 to DNG-6) in the states a person meets them in. |
+| `controls-specimens.tsx` | `CardRecipeSpecimen` | function | :209 | The product card recipe (CRD-1 to CRD-6), drawn from the same classes and the same `Price` the stor… |
+| `controls-specimens.tsx` | `SuccessSpecimens` | function | :280 | The success state (SUC-1 to SUC-5), live: the invoice case with its one open loop and its receipt,… |
+| `controls-specimens.tsx` | `CopySpecimens` | function | :379 | The copy button (CPY-1 to CPY-5), live, in the two places it is used: a value in a row of details,… |
 | `data-concepts.tsx` | `ColumnManagerSpecimen` | function | :255 | The grid and the panel that decides which columns it has. |
 | `data-concepts.tsx` | `RegionalPerformanceSpecimen` | function | :426 | Regional performance: three headline figures, then this period against the last with the table that… |
 | `data-concepts.tsx` | `ShareSpecimen` | function | :482 | Share of a whole, twice: money (a budget) and counts (orders by channel). |
@@ -1836,6 +1837,8 @@ Every top-level export in `web`, with the line to open.
 | `button.tsx` | `Button` | function | :49 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | function | :46 | The one way a destructive action gets confirmed. |
 | `cooldown-banner.tsx` | `CooldownBanner` | function | :26 | What a page about a scheduled removal says (DNG-6). |
+| `copy-button.tsx` | `CopyButtonProps` | interface | :46 | A button that copies one value and proves it did (CPY-1 to CPY-5). |
+| `copy-button.tsx` | `CopyButton` | function | :101 |  |
 | `count-up.tsx` | `CountUp` | function | :41 | A figure that counts to its value instead of appearing at it. |
 | `danger-zone.tsx` | `DangerAction` | interface | :6 |  |
 | `danger-zone.tsx` | `DangerZone` | function | :37 | Where an object's destructive acts live (DNG-5). |
@@ -1871,6 +1874,7 @@ Every top-level export in `web`, with the line to open.
 | `index.ts` | `Button` `type ButtonProps` | re-export |  | from `./button` |
 | `index.ts` | `Dialog` | re-export |  | from `./dialog` |
 | `index.ts` | `ConfirmDialog` | re-export |  | from `./confirm-dialog` |
+| `index.ts` | `CopyButton` `type CopyButtonProps` | re-export |  | from `./copy-button` |
 | `index.ts` | `Loading` | re-export |  | from `./loading` |
 | `index.ts` | `SuccessState` `type SuccessAction` `type SuccessStep` `type SuccessStateProps` | re-export |  | from `./success-state` |
 | `index.ts` | `ThemeToggle` `type ThemeToggleLabels` | re-export |  | from `./theme-toggle` |
@@ -2069,6 +2073,17 @@ Every top-level export in `web`, with the line to open.
 | `cart-client.ts` | `updateCartItem` | function | :74 |  |
 | `cart-client.ts` | `removeCartItem` | function | :82 |  |
 | `cart-client.ts` | `updateGuestContact` | function | :92 | WO-8.5 — captures a guest's phone and marketing consent onto the cart as soon as they're typed at c… |
+| `copy.ts` | `COPIED_HOLD_MS` | const | :11 | How long the check stays (CPY-2), and how long a failure stays (CPY-5). |
+| `copy.ts` | `COPY_FAILED_HOLD_MS` | const | :12 | How long the check stays (CPY-2), and how long a failure stays (CPY-5). |
+| `copy.ts` | `normalizeCopyValue` | function | :43 | What goes on the clipboard: the string with what cannot be seen removed and its ends trimmed, and n… |
+| `copy.ts` | `CopyVia` | type | :50 | How the value got there. |
+| `copy.ts` | `copyText` | function | :123 | Copy `raw` (CPY-3) by the async clipboard API where it exists, and by the copy command where it doe… |
+| `copy.ts` | `selectContents` | function | :144 | Select what is on screen so a person can copy it by hand when neither route worked (CPY-5): the tex… |
+| `copy.ts` | `CopyState` | type | :157 | `n` counts the copies in a row, starting at 1. |
+| `copy.ts` | `CopyEvent` | type | :159 | `n` counts the copies in a row, starting at 1. |
+| `copy.ts` | `COPY_IDLE` | const | :161 |  |
+| `copy.ts` | `nextCopy` | function | :170 | The next state. |
+| `copy.ts` | `copyHoldMs` | function | :185 | How long a state is held before it expires; idle holds for ever. |
 | `customer-client.ts` | `getCustomerToken` | function | :21 |  |
 | `customer-client.ts` | `getStoredCustomerUser` | function | :25 |  |
 | `customer-client.ts` | `clearCustomerSession` | function | :43 |  |

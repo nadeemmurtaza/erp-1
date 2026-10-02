@@ -73,14 +73,14 @@ _no second-level headings_
 
 - Dependency standard  <sub>:11</sub>
 
-### `.claude/rules/design.md`  <sub>160 lines</sub>
+### `.claude/rules/design.md`  <sub>165 lines</sub>
 
 - The design system  <sub>:17</sub>
 - Think like the designer, then write the code  <sub>:42</sub>
 - Read the chapter before you build the thing  <sub>:60</sub>
 - The obligations, stated so they can be checked  <sub>:76</sub>
-- Promoting something into the system  <sub>:141</sub>
-- What is not enforced by any command  <sub>:148</sub>
+- Promoting something into the system  <sub>:146</sub>
+- What is not enforced by any command  <sub>:153</sub>
 
 ### `.claude/rules/performance.md`  <sub>42 lines</sub>
 
@@ -101,11 +101,11 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>192 lines</sub>
+### `.claude/rules/ui.md`  <sub>193 lines</sub>
 
 - Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:105</sub>
-- No dead ends  <sub>:145</sub>
+- Borders and boxes  <sub>:106</sub>
+- No dead ends  <sub>:146</sub>
 
 ### `.claude/skills/restyle/SKILL.md`  <sub>88 lines</sub>
 
@@ -114,12 +114,12 @@ _no second-level headings_
 - 3. Restyle, smallest edit first  <sub>:54</sub>
 - 4. Prove it  <sub>:73</sub>
 
-### `.claude/skills/ux-audit/SKILL.md`  <sub>107 lines</sub>
+### `.claude/skills/ux-audit/SKILL.md`  <sub>108 lines</sub>
 
 - 1. Locate it  <sub>:14</sub>
 - 2. Measure first  <sub>:20</sub>
-- 3. Read it against the laws  <sub>:55</sub>
-- 4. Report  <sub>:78</sub>
+- 3. Read it against the laws  <sub>:56</sub>
+- 4. Report  <sub>:79</sub>
 
 ### `.claude/skills/ux-design/SKILL.md`  <sub>122 lines</sub>
 
@@ -161,7 +161,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `CLAUDE.md`  <sub>1,044 lines</sub>
+### `CLAUDE.md`  <sub>1,045 lines</sub>
 
 - Vision and scale  <sub>:13</sub>
 - The seven laws  <sub>:39</sub>
@@ -171,8 +171,8 @@ _no second-level headings_
 - Look it up before you search  <sub>:446</sub>
 - The rule index  <sub>:517</sub>
 - Before you open a PR  <sub>:564</sub>
-- Deployment  <sub>:645</sub>
-- NEWAX Engineering Operating Protocol  <sub>:658</sub>
+- Deployment  <sub>:646</sub>
+- NEWAX Engineering Operating Protocol  <sub>:659</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -226,7 +226,7 @@ _no second-level headings_
 - Internationalisation beyond direction  <sub>:133</sub>
 - What would make this real  <sub>:140</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>387 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>454 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
@@ -234,8 +234,8 @@ _no second-level headings_
 - Patterns — *undocumented*  <sub>:72</sub>
 - Templates — *undocumented*  <sub>:113</sub>
 - Controls with a contract  <sub>:124</sub>
-- Component contract  <sub>:366</sub>
-- What never gets hand-rolled  <sub>:381</sub>
+- Component contract  <sub>:431</sub>
+- What never gets hand-rolled  <sub>:446</sub>
 
 ### `docs/design/components-states/04-states.md`  <sub>226 lines</sub>
 
@@ -307,22 +307,22 @@ _no second-level headings_
 - What must be built  <sub>:187</sub>
 - Sources  <sub>:200</sub>
 
-### `docs/design/motion/05-motion.md`  <sub>339 lines</sub>
+### `docs/design/motion/05-motion.md`  <sub>340 lines</sub>
 
 - The one test  <sub>:19</sub>
 - What motion may communicate  <sub>:34</sub>
 - The language  <sub>:49</sub>
 - Hierarchy of motion  <sub>:67</sub>
 - The reel, and the two tiers  <sub>:84</sub>
-- Continuity over replacement  <sub>:207</sub>
-- Orchestration  <sub>:223</sub>
-- Micro-interactions  <sub>:232</sub>
-- Scroll  <sub>:248</sub>
-- Responsive motion  <sub>:260</sub>
-- Reduced motion — required  <sub>:271</sub>
-- Performance  <sub>:307</sub>
-- Rejection list  <sub>:318</sub>
-- Benchmark, not template  <sub>:329</sub>
+- Continuity over replacement  <sub>:208</sub>
+- Orchestration  <sub>:224</sub>
+- Micro-interactions  <sub>:233</sub>
+- Scroll  <sub>:249</sub>
+- Responsive motion  <sub>:261</sub>
+- Reduced motion — required  <sub>:272</sub>
+- Performance  <sub>:308</sub>
+- Rejection list  <sub>:319</sub>
+- Benchmark, not template  <sub>:330</sub>
 
 ### `docs/design/principles-laws/00-principles.md`  <sub>83 lines</sub>
 
@@ -333,7 +333,7 @@ _no second-level headings_
 - Visual principles  <sub>:56</sub>
 - Decision principles  <sub>:67</sub>
 
-### `docs/design/principles-laws/10-laws.md`  <sub>903 lines</sub>
+### `docs/design/principles-laws/10-laws.md`  <sub>920 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
@@ -348,8 +348,9 @@ _no second-level headings_
 - GLO · Globalization  <sub>:760</sub>
 - Where the card-deck laws are built  <sub>:823</sub>
 - Where the two reels' laws are built  <sub>:849</sub>
-- What this chapter does not settle  <sub>:868</sub>
-- Sources  <sub>:883</sub>
+- Where the copy laws are built  <sub>:868</sub>
+- What this chapter does not settle  <sub>:885</sub>
+- Sources  <sub>:900</sub>
 
 ### `docs/design/process-governance/08-governance.md`  <sub>145 lines</sub>
 
@@ -3006,7 +3007,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>11,216 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,418 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

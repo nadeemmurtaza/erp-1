@@ -28,6 +28,7 @@ node scripts/check-contrast.mjs        # contrast in both themes
 node scripts/check-links.mjs           # links resolve, images exist, no orphan screen
 node scripts/check-danger.mjs          # destructive labels name the act and its object
 node scripts/check-menus.mjs           # short native selects, native date inputs
+node scripts/check-clipboard.mjs       # a clipboard call outside CopyButton and lib/copy.ts
 node scripts/check-rebrand.mjs         # Law 1, brand axis
 node scripts/check-rules.mjs           # every cited law ID exists
 node scripts/check-tells.mjs <the files you are auditing>   # the machine-made look, with file:line
@@ -68,7 +69,7 @@ ranking it yourself.
 | States: empty (three kinds), loading, error, permission, module absent | `04-states.md`, `FLO-7`, `PRM-2`, `PRM-5`, `MOD-1` |
 | Dead ends: every state has a forward action and a way out | `ITG-1`, `FLO-1`, `FLO-15` |
 | A success: specific, next step, surface, open loop, joy | `SUC-1` to `SUC-5` |
-| Forms, danger, menus, uploads, cards | `FRM`, `DNG`, `MNU`, `UPL`, `CRD` |
+| Forms, danger, menus, uploads, cards, copying | `FRM`, `DNG`, `MNU`, `UPL`, `CRD`, `CPY` |
 | Space and width: nothing wasted, no ring around a void, seven widths | `SPA-4`, `ITG-4`, `ITG-8` |
 | Words: the terminology table, no raw errors, no hype | `06-content`, `FLO-7` |
 | Access: keyboard, focus, targets, contrast, reduced motion, RTL | `ACC`, `ITG-11`, `ITG-12`, `GLO-2` |

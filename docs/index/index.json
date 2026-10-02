@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2639,
-    "lines": 424753,
+    "files": 2643,
+    "lines": 426135,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -14,8 +14,8 @@
     "permissions": 130,
     "screens": 278,
     "crons": 30,
-    "specs": 386,
-    "designLaws": 187
+    "specs": 387,
+    "designLaws": 192
   },
   "designLaws": [
     {
@@ -37,210 +37,245 @@
       "family": "UPL",
       "name": "One target, three ways in",
       "file": "docs/design/components-states/03-components.md",
-      "line": 142
+      "line": 143
     },
     {
       "id": "UPL-2",
       "family": "UPL",
       "name": "Honest progress",
       "file": "docs/design/components-states/03-components.md",
-      "line": 151
+      "line": 152
     },
     {
       "id": "UPL-3",
       "family": "UPL",
       "name": "Check before sending",
       "file": "docs/design/components-states/03-components.md",
-      "line": 161
+      "line": 162
     },
     {
       "id": "UPL-4",
       "family": "UPL",
       "name": "Limits upfront",
       "file": "docs/design/components-states/03-components.md",
-      "line": 171
+      "line": 172
     },
     {
       "id": "UPL-5",
       "family": "UPL",
       "name": "Failure is per file",
       "file": "docs/design/components-states/03-components.md",
-      "line": 176
+      "line": 177
     },
     {
       "id": "UPL-6",
       "family": "UPL",
       "name": "Never block the app",
       "file": "docs/design/components-states/03-components.md",
-      "line": 184
+      "line": 185
     },
     {
       "id": "MNU-1",
       "family": "MNU",
       "name": "Type to filter",
       "file": "docs/design/components-states/03-components.md",
-      "line": 195
+      "line": 196
     },
     {
       "id": "MNU-2",
       "family": "MNU",
       "name": "Typed dates",
       "file": "docs/design/components-states/03-components.md",
-      "line": 204
+      "line": 205
     },
     {
       "id": "MNU-3",
       "family": "MNU",
       "name": "Stay open on pick",
       "file": "docs/design/components-states/03-components.md",
-      "line": 213
+      "line": 214
     },
     {
       "id": "MNU-4",
       "family": "MNU",
       "name": "Collision-aware",
       "file": "docs/design/components-states/03-components.md",
-      "line": 218
+      "line": 219
     },
     {
       "id": "MNU-5",
       "family": "MNU",
       "name": "Reasons, not grey",
       "file": "docs/design/components-states/03-components.md",
-      "line": 227
+      "line": 228
     },
     {
       "id": "MNU-6",
       "family": "MNU",
       "name": "No menu under 5",
       "file": "docs/design/components-states/03-components.md",
-      "line": 233
+      "line": 234
     },
     {
       "id": "DNG-1",
       "family": "DNG",
       "name": "Hold to confirm",
       "file": "docs/design/components-states/03-components.md",
-      "line": 247
+      "line": 248
     },
     {
       "id": "DNG-2",
       "family": "DNG",
       "name": "Verb labels",
       "file": "docs/design/components-states/03-components.md",
-      "line": 258
+      "line": 259
     },
     {
       "id": "DNG-3",
       "family": "DNG",
       "name": "Off the happy path",
       "file": "docs/design/components-states/03-components.md",
-      "line": 263
+      "line": 264
     },
     {
       "id": "DNG-4",
       "family": "DNG",
       "name": "Red budget",
       "file": "docs/design/components-states/03-components.md",
-      "line": 269
+      "line": 270
     },
     {
       "id": "DNG-5",
       "family": "DNG",
       "name": "Danger zone",
       "file": "docs/design/components-states/03-components.md",
-      "line": 276
+      "line": 277
     },
     {
       "id": "DNG-6",
       "family": "DNG",
       "name": "Cooldown",
       "file": "docs/design/components-states/03-components.md",
-      "line": 282
+      "line": 283
     },
     {
       "id": "FRM-1",
       "family": "FRM",
       "name": "Hierarchy",
       "file": "docs/design/components-states/03-components.md",
-      "line": 292
+      "line": 293
     },
     {
       "id": "FRM-2",
       "family": "FRM",
       "name": "Spacing",
       "file": "docs/design/components-states/03-components.md",
-      "line": 297
+      "line": 298
     },
     {
       "id": "FRM-3",
       "family": "FRM",
       "name": "Labels",
       "file": "docs/design/components-states/03-components.md",
-      "line": 302
+      "line": 303
     },
     {
       "id": "FRM-4",
       "family": "FRM",
       "name": "Colour",
       "file": "docs/design/components-states/03-components.md",
-      "line": 307
+      "line": 308
     },
     {
       "id": "FRM-5",
       "family": "FRM",
       "name": "Depth",
       "file": "docs/design/components-states/03-components.md",
-      "line": 311
+      "line": 312
     },
     {
       "id": "FRM-6",
       "family": "FRM",
       "name": "Motion",
       "file": "docs/design/components-states/03-components.md",
-      "line": 322
+      "line": 323
     },
     {
       "id": "CRD-1",
       "family": "CRD",
       "name": "Hierarchy",
       "file": "docs/design/components-states/03-components.md",
-      "line": 330
+      "line": 331
     },
     {
       "id": "CRD-2",
       "family": "CRD",
       "name": "Spacing",
       "file": "docs/design/components-states/03-components.md",
-      "line": 334
+      "line": 335
     },
     {
       "id": "CRD-3",
       "family": "CRD",
       "name": "Colour",
       "file": "docs/design/components-states/03-components.md",
-      "line": 338
+      "line": 339
     },
     {
       "id": "CRD-4",
       "family": "CRD",
       "name": "Depth",
       "file": "docs/design/components-states/03-components.md",
-      "line": 342
+      "line": 343
     },
     {
       "id": "CRD-5",
       "family": "CRD",
       "name": "Corners curve together",
       "file": "docs/design/components-states/03-components.md",
-      "line": 349
+      "line": 350
     },
     {
       "id": "CRD-6",
       "family": "CRD",
       "name": "Motion",
       "file": "docs/design/components-states/03-components.md",
-      "line": 358
+      "line": 359
+    },
+    {
+      "id": "CPY-1",
+      "family": "CPY",
+      "name": "The flip is the receipt",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 375
+    },
+    {
+      "id": "CPY-2",
+      "family": "CPY",
+      "name": "Two seconds, then back",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 384
+    },
+    {
+      "id": "CPY-3",
+      "family": "CPY",
+      "name": "Copy the raw value",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 392
+    },
+    {
+      "id": "CPY-4",
+      "family": "CPY",
+      "name": "Say it aloud",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 404
+    },
+    {
+      "id": "CPY-5",
+      "family": "CPY",
+      "name": "Fall back, then fail out loud",
+      "file": "docs/design/components-states/03-components.md",
+      "line": 414
     },
     {
       "id": "SUC-1",
@@ -1331,14 +1366,14 @@
   "areas": {
     "root": {
       "files": 218,
-      "lines": 22024,
-      "bytes": 1262739,
+      "lines": 22032,
+      "bytes": 1264028,
       "label": "repository root files"
     },
     "infra": {
-      "files": 63,
-      "lines": 32668,
-      "bytes": 1294413,
+      "files": 64,
+      "lines": 32838,
+      "bytes": 1302963,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -1360,21 +1395,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 533,
-      "lines": 95949,
-      "bytes": 3526760,
+      "files": 536,
+      "lines": 96825,
+      "bytes": 3563527,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 91689,
-      "bytes": 5588819,
+      "lines": 91976,
+      "bytes": 5613272,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 114,
-      "lines": 13090,
-      "bytes": 490707,
+      "lines": 13131,
+      "bytes": 492278,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -54455,7 +54490,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-danger.mjs && node scripts/check-menus.mjs && node scripts/check-tells.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-danger.mjs && node scripts/check-menus.mjs && node scripts/check-clipboard.mjs && node scripts/check-tells.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -54546,6 +54581,12 @@
       "file": "package.json",
       "name": "check:menus",
       "cmd": "node scripts/check-menus.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:clipboard",
+      "cmd": "node scripts/check-clipboard.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -58490,6 +58531,19 @@
       ]
     },
     {
+      "file": "apps/web/src/lib/copy.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 32,
+      "describes": [
+        "normalizeCopyValue (CPY-3)",
+        "copyText (CPY-3, CPY-5)",
+        "nextCopy (CPY-1, CPY-2, CPY-5)",
+        "selectContents (CPY-5)",
+        "copyHoldMs (CPY-2, CPY-5)"
+      ]
+    },
+    {
       "file": "apps/web/src/lib/date-parse.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -58998,10 +59052,11 @@
       "file": "packages/shared/src/theme-radii.spec.ts",
       "module": "",
       "kind": "unit test",
-      "cases": 7,
+      "cases": 10,
       "describes": [
         "concentricRadius (CRD-5)",
-        "safeguards (DNG-1, DNG-6)"
+        "safeguards (DNG-1, DNG-6)",
+        "feedback (CPY-2, CPY-5)"
       ]
     },
     {
@@ -59199,8 +59254,8 @@
       "path": ".claude/rules/design.md",
       "area": "root",
       "kind": "doc",
-      "lines": 160,
-      "bytes": 8897,
+      "lines": 165,
+      "bytes": 9252,
       "doc": "",
       "symbols": []
     },
@@ -59244,8 +59299,8 @@
       "path": ".claude/rules/ui.md",
       "area": "root",
       "kind": "doc",
-      "lines": 192,
-      "bytes": 14056,
+      "lines": 193,
+      "bytes": 14746,
       "doc": "",
       "symbols": []
     },
@@ -59271,8 +59326,8 @@
       "path": ".claude/skills/ux-audit/SKILL.md",
       "area": "root",
       "kind": "doc",
-      "lines": 107,
-      "bytes": 5706,
+      "lines": 108,
+      "bytes": 5815,
       "doc": "",
       "symbols": []
     },
@@ -59290,7 +59345,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 123,
-      "bytes": 6036,
+      "bytes": 6072,
       "doc": "",
       "symbols": []
     },
@@ -59460,8 +59515,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 1044,
-      "bytes": 55315,
+      "lines": 1045,
+      "bytes": 55414,
       "doc": "",
       "symbols": []
     },
@@ -83542,8 +83597,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 814,
-      "bytes": 32408,
+      "lines": 819,
+      "bytes": 32636,
       "doc": "",
       "symbols": []
     },
@@ -83551,8 +83606,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 814,
-      "bytes": 44857,
+      "lines": 819,
+      "bytes": 45182,
       "doc": "",
       "symbols": []
     },
@@ -86771,14 +86826,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 469,
-      "bytes": 17812,
+      "lines": 523,
+      "bytes": 20032,
       "doc": "",
       "symbols": [
         {
           "name": "OrderPage",
           "kind": "default",
-          "line": 50
+          "line": 51
         }
       ]
     },
@@ -89264,14 +89319,14 @@
       "path": "apps/web/src/components/common/secret-once.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 100,
-      "bytes": 3015,
+      "lines": 95,
+      "bytes": 2955,
       "doc": "",
       "symbols": [
         {
           "name": "SecretOnce",
           "kind": "function",
-          "line": 18
+          "line": 25
         }
       ]
     },
@@ -89597,29 +89652,34 @@
       "path": "apps/web/src/components/design-system/controls-specimens.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 347,
-      "bytes": 13766,
+      "lines": 478,
+      "bytes": 18860,
       "doc": "",
       "symbols": [
         {
           "name": "FormRecipeSpecimen",
           "kind": "function",
-          "line": 23
+          "line": 33
         },
         {
           "name": "DangerSpecimens",
           "kind": "function",
-          "line": 110
+          "line": 120
         },
         {
           "name": "CardRecipeSpecimen",
           "kind": "function",
-          "line": 199
+          "line": 209
         },
         {
           "name": "SuccessSpecimens",
           "kind": "function",
-          "line": 270
+          "line": 280
+        },
+        {
+          "name": "CopySpecimens",
+          "kind": "function",
+          "line": 379
         }
       ]
     },
@@ -89885,8 +89945,8 @@
       "path": "apps/web/src/components/design-system/gallery.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 358,
-      "bytes": 15405,
+      "lines": 364,
+      "bytes": 15817,
       "doc": "",
       "symbols": [
         {
@@ -90792,6 +90852,26 @@
       ]
     },
     {
+      "path": "apps/web/src/components/ui/copy-button.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 186,
+      "bytes": 7301,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "CopyButtonProps",
+          "kind": "interface",
+          "line": 46
+        },
+        {
+          "name": "CopyButton",
+          "kind": "function",
+          "line": 101
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/ui/count-up.tsx",
       "area": "web",
       "kind": "component",
@@ -91025,8 +91105,8 @@
       "path": "apps/web/src/components/ui/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 75,
-      "bytes": 3261,
+      "lines": 76,
+      "bytes": 3327,
       "doc": "Design-system primitives.",
       "symbols": []
     },
@@ -92267,6 +92347,80 @@
           "name": "updateGuestContact",
           "kind": "function",
           "line": 92
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/copy.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 303,
+      "bytes": 12685,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/copy.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 190,
+      "bytes": 8496,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "COPIED_HOLD_MS",
+          "kind": "const",
+          "line": 11
+        },
+        {
+          "name": "COPY_FAILED_HOLD_MS",
+          "kind": "const",
+          "line": 12
+        },
+        {
+          "name": "normalizeCopyValue",
+          "kind": "function",
+          "line": 43
+        },
+        {
+          "name": "CopyVia",
+          "kind": "type",
+          "line": 50
+        },
+        {
+          "name": "copyText",
+          "kind": "function",
+          "line": 123
+        },
+        {
+          "name": "selectContents",
+          "kind": "function",
+          "line": 144
+        },
+        {
+          "name": "CopyState",
+          "kind": "type",
+          "line": 157
+        },
+        {
+          "name": "CopyEvent",
+          "kind": "type",
+          "line": 159
+        },
+        {
+          "name": "COPY_IDLE",
+          "kind": "const",
+          "line": 161
+        },
+        {
+          "name": "nextCopy",
+          "kind": "function",
+          "line": 170
+        },
+        {
+          "name": "copyHoldMs",
+          "kind": "function",
+          "line": 185
         }
       ]
     },
@@ -94878,8 +95032,8 @@
       "path": "docs/design/components-states/03-components.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 387,
-      "bytes": 24440,
+      "lines": 454,
+      "bytes": 28652,
       "doc": "",
       "symbols": []
     },
@@ -94941,8 +95095,8 @@
       "path": "docs/design/motion/05-motion.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 339,
-      "bytes": 19843,
+      "lines": 340,
+      "bytes": 20378,
       "doc": "",
       "symbols": []
     },
@@ -94959,8 +95113,8 @@
       "path": "docs/design/principles-laws/10-laws.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 903,
-      "bytes": 50523,
+      "lines": 920,
+      "bytes": 52795,
       "doc": "",
       "symbols": []
     },
@@ -96786,8 +96940,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 11216,
-      "bytes": 698322,
+      "lines": 11418,
+      "bytes": 715756,
       "doc": "",
       "symbols": []
     },
@@ -98757,8 +98911,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 65,
-      "bytes": 2933,
+      "lines": 66,
+      "bytes": 3028,
       "doc": "",
       "symbols": []
     },
@@ -99691,19 +99845,19 @@
       "path": "packages/shared/src/brand.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 630,
-      "bytes": 24403,
+      "lines": 654,
+      "bytes": 25382,
       "doc": "THE BRAND FILE.",
       "symbols": [
         {
           "name": "BRAND",
           "kind": "const",
-          "line": 616
+          "line": 639
         },
         {
           "name": "Brand",
           "kind": "type",
-          "line": 629
+          "line": 653
         }
       ]
     },
@@ -101339,8 +101493,8 @@
       "path": "packages/shared/src/theme-radii.spec.ts",
       "area": "packages",
       "kind": "unit test",
-      "lines": 43,
-      "bytes": 1515,
+      "lines": 60,
+      "bytes": 2107,
       "doc": "",
       "symbols": []
     },
@@ -101747,6 +101901,26 @@
       "bytes": 2491,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "scripts/check-clipboard.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 169,
+      "bytes": 8455,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ALLOWED",
+          "kind": "const",
+          "line": 51
+        },
+        {
+          "name": "findClipboardUse",
+          "kind": "function",
+          "line": 77
+        }
+      ]
     },
     {
       "path": "scripts/check-contrast.mjs",

@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-63 files · 32,668 lines
+64 files · 32,838 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,13 +19,13 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 20,979 | file, example, json, yaml |
+| `.` | 20 | 20,980 | file, example, json, yaml |
 | `.github` | 1 | 81 | doc |
 | `.github/workflows` | 2 | 275 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 25 | 9,252 | script, py |
+| `scripts` | 26 | 9,421 | script, py |
 | `scripts/lib` | 3 | 1,680 | utility |
 
 

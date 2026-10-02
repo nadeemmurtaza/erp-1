@@ -11213,3 +11213,205 @@ uploads suite registers its listener early, and passes 48 of 48 on three consecu
   slide direction reversed for right to left); `Notice`'s non-danger branch on the order
   page has no caller now; `celebrate`, `receipt` and the burst have no production caller
   by design (`SUC-5`), which is the line a reviewer may ask the owner to accept.
+
+### Addendum — 2026-10-02 (ninth): a reel on copying, built as five laws, one primitive and a lint
+
+**Requirement.** A reel of 2026-10-02 ("Copy needs proof") and the owner's words: the
+copy icon flips to a check the instant the copy fires, no spinner, no delay; the check
+holds about two seconds and fades back, never stuck, so the next copy gives a signal;
+the raw value is copied, not the formatted span with its line breaks and zero-width
+characters; a screen reader hears "copied" through a live region; on an insecure origin
+the clipboard call fails without a word, so fall back to a copy command. "A silent button
+lies." **Reason.** The only copy action in the product (`SecretOnce`, on both API-key
+pages) did not meet them: its "Copied" stayed for ever, it had no icon, it announced a
+failure but not a success, and it had no fallback, so on a plain-HTTP origin
+`navigator.clipboard` was `undefined`, the click threw a `TypeError`, and the button said
+the browser blocked copying although the copy command would have worked. The bank
+account number and IBAN on the order page, which a customer has to type into a banking
+app, and the tracking number had no copy action at all. **Outcome.** One primitive that
+proves its result, one function that is the only code to touch the clipboard, and a lint
+that keeps it so. **Verification.** Commands and browser runs below.
+
+**What was built.**
+
+| Piece | Where | What it does |
+|---|---|---|
+| `CPY-1` to `CPY-5` | `docs/design/components-states/03-components.md`, "CPY · Copy" | the flip is the receipt, two seconds then back, copy the raw value, say it aloud, fall back then fail out loud |
+| `BRAND.feedback` | `packages/shared/src/brand.ts` | `copiedHoldMs` 2 000 and `copyFailedHoldMs` 4 000, so a deployment retunes them in one place |
+| `copyText`, `normalizeCopyValue`, `nextCopy` | `apps/web/src/lib/copy.ts`, 32 specs in `copy.spec.ts` | the async API, then the copy command from a scratch field inside the open `dialog`; the invisible characters removed; the button's state machine |
+| `CopyButton` | `apps/web/src/components/ui/copy-button.tsx` | `icon` and `labelled` variants; stacked faces; an always-mounted `role="status"` region; renders nothing for an empty value |
+| `check-clipboard` | `scripts/check-clipboard.mjs`, in `pnpm lint`, 20 self-test cases | fails `navigator.clipboard` or `execCommand('copy'|'cut')` anywhere in `apps/web/src` and `apps/pos/src` except `lib/copy.ts`; no baseline, because nothing was left to grandfather |
+| Specimen | `/admin/design-system#controls`, "Copy" | both variants, a paste field, and a selector that makes the page's clipboard behave like an insecure origin or a blocked one |
+
+Adopted on: `SecretOnce` (so both API-key pages), the bank account number and IBAN, and
+the tracking number on the storefront order page. Laws total 192 (187 and five).
+
+**Parameters.**
+
+| Parameter | Exact value | Applies to | Why this number | Where enforced | How it degrades |
+|---|---|---|---|---|---|
+| Success hold | 2 000 ms | the check | the owner's "about two seconds": long enough for the eye to come back from the place the value is pasted and still find the answer, short enough to be a copy button again before a second copy is wanted | `BRAND.feedback.copiedHoldMs`, read as `COPIED_HOLD_MS`, timer in `CopyButton` | returns to idle; a repeat copy restarts it; measured 2 001 ms |
+| Failure hold | 4 000 ms | the failure icon and sentence | twice the success hold, because it carries a sentence to read and act on; it equals the toast default | `BRAND.feedback.copyFailedHoldMs` | returns to idle; the person can press again; measured 4 001 ms |
+| Flip to a result | `duration.instant`, 80 ms | the faces, transform and opacity | the press already takes 80 ms down; the flip must not feel later than the press | `Face` in `copy-button.tsx` | reduced motion collapses it to 0.01 ms and the state still shows |
+| Fade back | `duration.normal`, 220 ms | the faces | slow enough to read as a fade, fast enough to be ready | as above | as above |
+| Repeat pulse | `.pop`, `duration.fast` 140 ms, once, only from the second copy in a hold | the check or failure face | a first copy already has the flip; only a repeat needs something new | `Face` (`pulse > 1`) | reduced motion shows no new frame; the repeat is still announced and still restarts the hold |
+| Target size | 44 px below `fold` (672 px), 40 px from it | the icon variant | the house touch floor and `control-md`, as `.btn` | `min-w-touch`, `fold:min-w-control-md` | measured 44.0 and 40.0 at the seven widths sampled |
+| Scratch field | fixed, 1 px by 1 px, opacity 0, `1rem` type | the fallback | it must be in the viewport (iOS will not select what is not) and 16 px type stops iOS zooming to it | `copyByCommand` | removed in a `finally`, focus and selection restored |
+| Invisible characters removed | U+00AD, U+061C, U+200B to U+200F, U+202A to U+202E, U+2060 to U+206F, U+FEFF (written as escapes in `copy.ts`) | the value | what a formatter or an hyphenator adds and a terminal does not ignore; U+061C is the Arabic letter mark that ICU puts around numbers in right-to-left text, which Urdu ships | `normalizeCopyValue` | an all-invisible value is empty and copies nothing |
+| Clipboard calls outside `lib/copy.ts` | 0 | `apps/web/src`, `apps/pos/src` | a second call site is a second implementation of five laws | `check-clipboard` | the build fails with `file:line` |
+
+**Decisions made without the owner, all reversible.**
+- The flip follows the write's result, not the click. A check shown on the click would be
+  wrong whenever the copy then failed, which is the lie the reel is about. The write
+  resolves in milliseconds (the flip was measured 11.4 ms after the click), so there is no
+  pending state to show.
+- The labelled variant shows "Copied" as its visible word for the hold, while its accessible
+  name stays "Copy" (`aria-label`). For that two seconds the visible word is not in the
+  name (WCAG 2.5.3 Label in Name); the idle word is.
+- `CopyButton` renders nothing for a value that is empty once the invisible characters are
+  gone. A copy button that cannot copy is worse than none.
+- The failure icon is the same colour as the label: the sentence beside it is red, and the
+  shape differs, so the failure never rests on colour alone, and a red icon on the
+  outlined button's accent hover fill would have been unreadable.
+- On the order page the label sits above a copied value instead of beside it. Side by side,
+  a 24-character IBAN plus a 44 px button wrapped to a stray "02" at 1280 and pushed the
+  card 74 px past the viewport at 280. The first run of the browser check found it.
+- `normalizeCopyValue` strips the zero-width joiner and non-joiner. They are spelling in
+  prose, so the function says in its comment and in `CPY-3` that it is for identifiers and
+  codes. A caller with prose would need a different function.
+- The specimen's selector replaces `navigator.clipboard` and `document.execCommand` with
+  own properties while "Insecure origin" or "Blocked" is chosen, and deletes them on any
+  change and on unmount. It is on the design-system page only, which needs an admin session.
+
+**Not adopted, and why.** Other identifiers a person may need to copy (an admin order
+number, a payment reference, an invoice number) were not changed: each is a one-line
+adoption of `CopyButton` and none was asked for, and the lint already stops anything
+else from copying a different way. `apps/mobile` has no DOM clipboard and would use
+`expo-clipboard`, which is its own decision.
+
+**Failure modes.** *Insecure origin:* `navigator.clipboard` is `undefined`; the copy
+command runs inside the same click with nothing awaited before it, so the browser still
+counts it as the gesture. *Refused:* the async call rejects and the command is tried after
+it. *Open modal:* everything outside a modal dialog is inert, so the scratch field goes
+inside the dialog that holds the clicked button. *Nothing works:* the failed state, a
+sentence naming the remedy, `onFail` (the secret's field is selected), 4 000 ms. *Double
+click:* the hold restarts and the region announces again, with no server write to repeat.
+*A secret on the clipboard:* a clipboard manager may keep it; that is inherent in copying a
+secret the person asked to copy, and the notice above it already says it is shown once.
+
+**Verification.** Run on the final tree, after the last edit.
+
+- `pnpm lint` exits 0 and now includes `check-clipboard` (511 files scanned, 0 clipboard
+  calls outside `lib/copy.ts`; `--self-test` 20 cases) and `check-rules` (10 rule files, 4
+  skills, 116 law citations, all resolve against 192 laws). The matcher was also run
+  against the old `SecretOnce` from `HEAD` and flagged its `navigator.clipboard` call at
+  line 48. The first `pnpm lint` on this change failed, correctly: `check-frontend-secrets`
+  read the specimen's example secret `sk_live_51Hx9Example0000` as a Stripe-style key, so the
+  example is now `key_example_7Hx9Qa2Lm04Zt`.
+- `pnpm typecheck` exits 0 (10 tasks); `apps/mobile` `tsc --noEmit` is clean.
+- Tests: web 542 passed (19 files; the new `lib/copy.spec.ts` adds 32: the invisible
+  characters, the API, the refusal fallback, the missing API, the synchronous fallback, the
+  dialog host, cleanup after a throw, every failure, the state machine, the reset on a
+  value change, `selectContents` and the hold lengths); shared 407 (3 new, for `BRAND.feedback`); pos-core 28. Adding an `await` before
+  the copy command in `copyText` makes the "nothing awaited before it" spec fail, so the
+  spec has teeth; the change was reverted. The root `pnpm test` was not re-run: it exits 1
+  at baseline for the API suites that need Postgres and Redis, and no API file changed.
+- `pnpm index` and `pnpm index:check` exit 0 (218 pages). `next build` of `apps/web`
+  passes on the final tree (rebuilt after the last code edit).
+- The four greps in `CLAUDE.md` against `HEAD`: inline `style={{` 27 and 27,
+  `toLocaleString` 6 and 6, bare `fetch` 6 and 6, `text-gray` and `bg-gray` 0 and 0.
+- Browser, Chromium against the production build on the final tree, 96 checks, none failing:
+  - The specimen, 59 of 59: the flip lands 11.4 ms after the click and no `.spinner` ever
+    appears; the clipboard holds the raw account number and IBAN while the page displays
+    them with spaces and zero-width characters, and pasting into a field gives the raw
+    value; the check holds 2 001 ms and the copy icon is back after the fade; a second
+    copy inside the hold replays `.pop`, restarts the clock (idle came 2 s after the second
+    click) and is announced twice; the accessible name never changes; the region is
+    `role="status"`, mounted and empty before the click; Enter and Space copy, focus stays
+    on the button and shows a 2 px ring; the labelled variant shows "Copied" while its name
+    stays "Copy"; with the API removed the copy command takes over and the secret pastes
+    back; blocked, the state is `failed`, the sentence is visible and announced, the
+    secret's field is selected, the label does not say "Copied", and it returns after
+    4 001 ms; under reduced motion the fade is 0.01 ms and the state still shows and
+    returns; the icon button is 44.0 px at 280 and 380 and 40.0 px from 768; no overflow and
+    the card inside the viewport at 280, 380 (dark, and right to left), 768, 1280 (dark)
+    and 1536; a field on the body cannot be focused while a modal is open and one inside
+    the modal can (the premise of the dialog rule, measured); no console or page errors.
+  - A real insecure origin, 7 of 7: the container's own address over plain HTTP
+    (`isSecureContext` false, `navigator.clipboard` undefined). The old bare call threw a
+    `TypeError` there; the button copied through the command and the secret and the raw
+    IBAN pasted back; no scratch field was left behind.
+  - The storefront order page with the API answered by network mocks, 30 of 30, in English
+    and Urdu: each of the three buttons exists once, copies the stored value and says
+    "Copied" (in Urdu, its own words); a shipment with no tracking number has no button;
+    the tracking line still reads "TCS · TRK-0042"; nothing inside `main` spills past the
+    viewport at 280, 380, 768 and 1280; with the clipboard blocked the failure sentence
+    shows inside the card at 280, 380 and 1280 and the value's text is selected for a hand
+    copy (at 280 the IBAN stays on one line, the button wraps below it and the sentence
+    below that). These scripts are one-off and are not in CI.
+- The `ux` agent followed `/ux-review` cold on the uncommitted diff, as in the previous
+  addendum. Verdict: Ship, with two S2 findings and several S3, and the browser runs above
+  were repeated after the fixes. S2, both fixed: the invisible-character class in
+  `copy.ts` had been written as literal invisible characters, which is the hazard `CPY-3`
+  names (an editor that strips them breaks it silently; the same was true of the
+  spec's fixtures), and it missed the Arabic letter mark U+061C that ICU puts around
+  numbers in right-to-left text, the soft hyphen and U+206A to U+206F, so it is now escapes
+  with those added and a spec for each; and in a narrow card a failure sentence would
+  have squeezed the IBAN, so the row now wraps the button and the sentence below the value.
+  S3, fixed: the order page's rows select their text when the copy fails (the sentence
+  tells the person to select it), a change of `value` resets a check that stood for the old
+  one, the scratch field's `16px` is `1rem`, `CPY-5` said "off screen" where the field is
+  in the viewport, and the tracking number is `dir="ltr"`. S3, kept: the failure is a
+  polite `status` (a failed copy the person just asked for is not urgent and the sentence
+  is visible); no test renders the component (there is no harness, already named); and
+  while the specimen's failing mode is chosen every copy button on that page fails, which
+  is the point of it and only that page has any.
+
+*Not verified:* Firefox, WebKit and Safari (Safari only honours the write inside the
+gesture, which the code allows for and which was not measured); real screen-reader speech
+(the region's text and the accessibility name were read, not heard); the copy command
+inside a real open modal (the premise was measured and the path is unit-tested with fakes,
+but no screen has a copy button inside a dialog to click); the admin API-key page in a
+browser (it needs an admin session, so `SecretOnce` was seen through the specimen's
+labelled variant and by type and build); a high-contrast or forced-colours render; the
+Urdu strings (they need a native reviewer).
+
+**Scope lenses.**
+The actor, the principal with no permission key, the grant that ends itself, whose rows
+and columns, the threshold, the toxic pair, authority and blast radius, audience: n/a, no
+actor, grant, row, permission key or message is created; the button copies a value the
+page already shows to the person looking at it, and every adopter renders it under the
+permission it already required.
+Request or record: the copy is a REQUEST the browser may refuse, and the button says so
+when it does; no server write is made.
+The movement with no address, four hours down, the money lenses (posting rule, columns,
+period, second legal entity, dry run, click the number): n/a, no stock, cash or journal
+line is read or written.
+The three silhouettes and the absent collaborator: the lint and the laws read no
+deployment setting; the clipboard API is the one collaborator that may be absent, and the
+copy command and then the failed state are what is recorded and shown instead.
+The second copy of the write: a second click inside the hold is the case, and it restarts
+the clock and is announced again (`nextCopy` counts it; `lib/copy.spec.ts`).
+The hundred-thousandth row: n/a, no list; a page has a handful of buttons.
+The adoption test, the reversal document, the undo fan-out, the version stamp, the
+erasure the ledger cannot obey: n/a, no number, document or personal datum is created.
+The failure path: inline, in the control, and nothing is stored, because a copy that
+failed has nothing to replay but another click.
+Reachable: `/admin/design-system#controls`, in the page's section nav; the order page's
+bank and tracking rows; both API-key pages; `CopyButton` in `components/ui/index.ts` and
+the "Use what exists" table in `.claude/rules/ui.md`; `check-clipboard` in `pnpm lint`.
+No new permission key.
+
+**Separable work orders, named and not built.**
+- *Other identifiers.* Adopt `CopyButton` on the admin order and invoice numbers and
+  payment references where an operator pastes them elsewhere.
+- *A mobile copy primitive* on `expo-clipboard`, with the same five laws.
+- *The browser checks in CI.* The runs above are one-off scripts, like the earlier
+  addenda's; the web app has no component test harness (already named above).
+- *A native review of the Urdu strings* written for the order page.
+
+**Noticed, not changed.** The storefront header's Search and Language buttons end 25 px
+past a 280 px viewport (`scrollWidth` 305) on the order page with and without any copy
+row, so a storefront page scrolls sideways at the narrowest width. It predates this
+change and was left alone. `pnpm check:overflow` is the check that would report it, and
+it has not been able to run since CI stops at Apply migrations.

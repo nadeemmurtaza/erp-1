@@ -29,14 +29,14 @@ binding and load automatically when you open a component:
 | [Principles](../../design/principles-laws/00-principles.md) | How a design decision gets made when no rule covers the case. | binding by review. | — | 83 lines |
 | [Foundations](../../design/foundations/01-foundations.md) | The token layer. Every visual value in the product resolves to something here, | built, in two themes. | — | 322 lines |
 | [Layout and responsive](../../design/layout-composition/02-layout.md) | How a page is arranged, and how that arrangement survives seven screen widths. | breakpoints are built (`apps/web/tailwind.config.ts`). | 2 | 167 lines |
-| [Components](../../design/components-states/03-components.md) | The ladder from a token to a page, and the rule that keeps it from growing | primitives are built and enforced — `.claude/rules/ui.md` is | 30 | 387 lines |
+| [Components](../../design/components-states/03-components.md) | The ladder from a token to a page, and the rule that keeps it from growing | primitives are built and enforced — `.claude/rules/ui.md` is | 35 | 454 lines |
 | [States and behaviour](../../design/components-states/04-states.md) | What every element can be, and what each state promises the user. | partly built. | 5 | 226 lines |
-| [Motion](../../design/motion/05-motion.md) | Motion exists to make the system easier to understand. Nothing else justifies | built for the web app. | — | 339 lines |
+| [Motion](../../design/motion/05-motion.md) | Motion exists to make the system easier to understand. Nothing else justifies | built for the web app. | — | 340 lines |
 | [Content](../../design/content/06-content.md) | How the product speaks. Copy is interface, not decoration applied afterwards. | unbuilt as a system. | — | 121 lines |
 | [Accessibility and internationalisation](../../design/accessibility/07-accessibility.md) | How broadly the product can actually be used. | still the largest gap, but no longer unverified. | — | 157 lines |
 | [Governance](../../design/process-governance/08-governance.md) | Who may add to this system, how a thing gets named, and how something leaves | partly enforced. | — | 145 lines |
 | [Quality gates](../../design/process-governance/09-quality.md) | What has to be true before a screen ships, and — stated honestly — which of it | the engineering gates are real and green; | — | 176 lines |
-| [The law catalogue](../../design/principles-laws/10-laws.md) | Every borrowed law this system rests on, with a stable ID, the source it comes | binding as rulings, unenforced as code. | 87 | 903 lines |
+| [The law catalogue](../../design/principles-laws/10-laws.md) | Every borrowed law this system rests on, with a stable ID, the source it comes | binding as rulings, unenforced as code. | 87 | 920 lines |
 | [Workflow](../../design/process-governance/11-workflow.md) | Processes with a hundred steps, several actors, days of elapsed time, and a | unbuilt as a system. | 15 | 260 lines |
 | [Permissions](../../design/process-governance/12-permissions.md) | Designing a screen when no two people who open it see the same thing. | partly built, and the gap is structural. | 12 | 214 lines |
 | [Composition](../../design/layout-composition/13-composition.md) | One codebase that ships as an online shop, or as a manufacturing group's | architecturally enforced, visually unenforced. | 10 | 197 lines |
@@ -46,7 +46,7 @@ binding and load automatically when you open a component:
 
 ## The laws
 
-**187** numbered laws across **22** families. Each has a stable ID so it can be
+**192** numbered laws across **23** families. Each has a stable ID so it can be
 cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 
 | Family | Laws | IDs |
@@ -55,6 +55,7 @@ cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 | `ACT` | 8 | `ACT-1` `ACT-2` `ACT-3` `ACT-4` `ACT-5` `ACT-6` `ACT-7` `ACT-8` |
 | `COG` | 14 | `COG-1` `COG-2` `COG-3` `COG-4` `COG-5` `COG-6` `COG-7` `COG-8` `COG-9` `COG-10` `COG-11` `COG-12` `COG-13` `COG-14` |
 | `COL` | 6 | `COL-1` `COL-2` `COL-3` `COL-4` `COL-5` `COL-6` |
+| `CPY` | 5 | `CPY-1` `CPY-2` `CPY-3` `CPY-4` `CPY-5` |
 | `CRD` | 6 | `CRD-1` `CRD-2` `CRD-3` `CRD-4` `CRD-5` `CRD-6` |
 | `DNG` | 6 | `DNG-1` `DNG-2` `DNG-3` `DNG-4` `DNG-5` `DNG-6` |
 | `FLO` | 15 | `FLO-1` `FLO-2` `FLO-3` `FLO-4` `FLO-5` `FLO-6` `FLO-7` `FLO-8` `FLO-9` `FLO-10` `FLO-11` `FLO-12` `FLO-13` `FLO-14` `FLO-15` |
@@ -82,36 +83,41 @@ cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 |---|---|---|
 | `HIE-1` | One headline | [layout-composition/02-layout.md:29](../../design/layout-composition/02-layout.md#hie-1-one-headline) |
 | `HIE-2` | Three stops | [layout-composition/02-layout.md:43](../../design/layout-composition/02-layout.md#hie-2-three-stops) |
-| `UPL-1` | One target, three ways in | [components-states/03-components.md:142](../../design/components-states/03-components.md#upl-1-one-target-three-ways-in) |
-| `UPL-2` | Honest progress | [components-states/03-components.md:151](../../design/components-states/03-components.md#upl-2-honest-progress) |
-| `UPL-3` | Check before sending | [components-states/03-components.md:161](../../design/components-states/03-components.md#upl-3-check-before-sending) |
-| `UPL-4` | Limits upfront | [components-states/03-components.md:171](../../design/components-states/03-components.md#upl-4-limits-upfront) |
-| `UPL-5` | Failure is per file | [components-states/03-components.md:176](../../design/components-states/03-components.md#upl-5-failure-is-per-file) |
-| `UPL-6` | Never block the app | [components-states/03-components.md:184](../../design/components-states/03-components.md#upl-6-never-block-the-app) |
-| `MNU-1` | Type to filter | [components-states/03-components.md:195](../../design/components-states/03-components.md#mnu-1-type-to-filter) |
-| `MNU-2` | Typed dates | [components-states/03-components.md:204](../../design/components-states/03-components.md#mnu-2-typed-dates) |
-| `MNU-3` | Stay open on pick | [components-states/03-components.md:213](../../design/components-states/03-components.md#mnu-3-stay-open-on-pick) |
-| `MNU-4` | Collision-aware | [components-states/03-components.md:218](../../design/components-states/03-components.md#mnu-4-collision-aware) |
-| `MNU-5` | Reasons, not grey | [components-states/03-components.md:227](../../design/components-states/03-components.md#mnu-5-reasons-not-grey) |
-| `MNU-6` | No menu under 5 | [components-states/03-components.md:233](../../design/components-states/03-components.md#mnu-6-no-menu-under-5) |
-| `DNG-1` | Hold to confirm | [components-states/03-components.md:247](../../design/components-states/03-components.md#dng-1-hold-to-confirm) |
-| `DNG-2` | Verb labels | [components-states/03-components.md:258](../../design/components-states/03-components.md#dng-2-verb-labels) |
-| `DNG-3` | Off the happy path | [components-states/03-components.md:263](../../design/components-states/03-components.md#dng-3-off-the-happy-path) |
-| `DNG-4` | Red budget | [components-states/03-components.md:269](../../design/components-states/03-components.md#dng-4-red-budget) |
-| `DNG-5` | Danger zone | [components-states/03-components.md:276](../../design/components-states/03-components.md#dng-5-danger-zone) |
-| `DNG-6` | Cooldown | [components-states/03-components.md:282](../../design/components-states/03-components.md#dng-6-cooldown) |
-| `FRM-1` | Hierarchy | [components-states/03-components.md:292](../../design/components-states/03-components.md#frm-1-hierarchy) |
-| `FRM-2` | Spacing | [components-states/03-components.md:297](../../design/components-states/03-components.md#frm-2-spacing) |
-| `FRM-3` | Labels | [components-states/03-components.md:302](../../design/components-states/03-components.md#frm-3-labels) |
-| `FRM-4` | Colour | [components-states/03-components.md:307](../../design/components-states/03-components.md#frm-4-colour) |
-| `FRM-5` | Depth | [components-states/03-components.md:311](../../design/components-states/03-components.md#frm-5-depth) |
-| `FRM-6` | Motion | [components-states/03-components.md:322](../../design/components-states/03-components.md#frm-6-motion) |
-| `CRD-1` | Hierarchy | [components-states/03-components.md:330](../../design/components-states/03-components.md#crd-1-hierarchy) |
-| `CRD-2` | Spacing | [components-states/03-components.md:334](../../design/components-states/03-components.md#crd-2-spacing) |
-| `CRD-3` | Colour | [components-states/03-components.md:338](../../design/components-states/03-components.md#crd-3-colour) |
-| `CRD-4` | Depth | [components-states/03-components.md:342](../../design/components-states/03-components.md#crd-4-depth) |
-| `CRD-5` | Corners curve together | [components-states/03-components.md:349](../../design/components-states/03-components.md#crd-5-corners-curve-together) |
-| `CRD-6` | Motion | [components-states/03-components.md:358](../../design/components-states/03-components.md#crd-6-motion) |
+| `UPL-1` | One target, three ways in | [components-states/03-components.md:143](../../design/components-states/03-components.md#upl-1-one-target-three-ways-in) |
+| `UPL-2` | Honest progress | [components-states/03-components.md:152](../../design/components-states/03-components.md#upl-2-honest-progress) |
+| `UPL-3` | Check before sending | [components-states/03-components.md:162](../../design/components-states/03-components.md#upl-3-check-before-sending) |
+| `UPL-4` | Limits upfront | [components-states/03-components.md:172](../../design/components-states/03-components.md#upl-4-limits-upfront) |
+| `UPL-5` | Failure is per file | [components-states/03-components.md:177](../../design/components-states/03-components.md#upl-5-failure-is-per-file) |
+| `UPL-6` | Never block the app | [components-states/03-components.md:185](../../design/components-states/03-components.md#upl-6-never-block-the-app) |
+| `MNU-1` | Type to filter | [components-states/03-components.md:196](../../design/components-states/03-components.md#mnu-1-type-to-filter) |
+| `MNU-2` | Typed dates | [components-states/03-components.md:205](../../design/components-states/03-components.md#mnu-2-typed-dates) |
+| `MNU-3` | Stay open on pick | [components-states/03-components.md:214](../../design/components-states/03-components.md#mnu-3-stay-open-on-pick) |
+| `MNU-4` | Collision-aware | [components-states/03-components.md:219](../../design/components-states/03-components.md#mnu-4-collision-aware) |
+| `MNU-5` | Reasons, not grey | [components-states/03-components.md:228](../../design/components-states/03-components.md#mnu-5-reasons-not-grey) |
+| `MNU-6` | No menu under 5 | [components-states/03-components.md:234](../../design/components-states/03-components.md#mnu-6-no-menu-under-5) |
+| `DNG-1` | Hold to confirm | [components-states/03-components.md:248](../../design/components-states/03-components.md#dng-1-hold-to-confirm) |
+| `DNG-2` | Verb labels | [components-states/03-components.md:259](../../design/components-states/03-components.md#dng-2-verb-labels) |
+| `DNG-3` | Off the happy path | [components-states/03-components.md:264](../../design/components-states/03-components.md#dng-3-off-the-happy-path) |
+| `DNG-4` | Red budget | [components-states/03-components.md:270](../../design/components-states/03-components.md#dng-4-red-budget) |
+| `DNG-5` | Danger zone | [components-states/03-components.md:277](../../design/components-states/03-components.md#dng-5-danger-zone) |
+| `DNG-6` | Cooldown | [components-states/03-components.md:283](../../design/components-states/03-components.md#dng-6-cooldown) |
+| `FRM-1` | Hierarchy | [components-states/03-components.md:293](../../design/components-states/03-components.md#frm-1-hierarchy) |
+| `FRM-2` | Spacing | [components-states/03-components.md:298](../../design/components-states/03-components.md#frm-2-spacing) |
+| `FRM-3` | Labels | [components-states/03-components.md:303](../../design/components-states/03-components.md#frm-3-labels) |
+| `FRM-4` | Colour | [components-states/03-components.md:308](../../design/components-states/03-components.md#frm-4-colour) |
+| `FRM-5` | Depth | [components-states/03-components.md:312](../../design/components-states/03-components.md#frm-5-depth) |
+| `FRM-6` | Motion | [components-states/03-components.md:323](../../design/components-states/03-components.md#frm-6-motion) |
+| `CRD-1` | Hierarchy | [components-states/03-components.md:331](../../design/components-states/03-components.md#crd-1-hierarchy) |
+| `CRD-2` | Spacing | [components-states/03-components.md:335](../../design/components-states/03-components.md#crd-2-spacing) |
+| `CRD-3` | Colour | [components-states/03-components.md:339](../../design/components-states/03-components.md#crd-3-colour) |
+| `CRD-4` | Depth | [components-states/03-components.md:343](../../design/components-states/03-components.md#crd-4-depth) |
+| `CRD-5` | Corners curve together | [components-states/03-components.md:350](../../design/components-states/03-components.md#crd-5-corners-curve-together) |
+| `CRD-6` | Motion | [components-states/03-components.md:359](../../design/components-states/03-components.md#crd-6-motion) |
+| `CPY-1` | The flip is the receipt | [components-states/03-components.md:375](../../design/components-states/03-components.md#cpy-1-the-flip-is-the-receipt) |
+| `CPY-2` | Two seconds, then back | [components-states/03-components.md:384](../../design/components-states/03-components.md#cpy-2-two-seconds-then-back) |
+| `CPY-3` | Copy the raw value | [components-states/03-components.md:392](../../design/components-states/03-components.md#cpy-3-copy-the-raw-value) |
+| `CPY-4` | Say it aloud | [components-states/03-components.md:404](../../design/components-states/03-components.md#cpy-4-say-it-aloud) |
+| `CPY-5` | Fall back, then fail out loud | [components-states/03-components.md:414](../../design/components-states/03-components.md#cpy-5-fall-back-then-fail-out-loud) |
 | `SUC-1` | Specific | [components-states/04-states.md:146](../../design/components-states/04-states.md#suc-1-specific) |
 | `SUC-2` | Next step | [components-states/04-states.md:158](../../design/components-states/04-states.md#suc-2-next-step) |
 | `SUC-3` | Stakes | [components-states/04-states.md:169](../../design/components-states/04-states.md#suc-3-stakes) |
@@ -278,14 +284,14 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 | Signal | Today | Note |
 |---|---|---|
 | Token files | 11 (648 lines) | Token groups that exist at all — see the table below |
-| Primitives | 42 | `apps/web/src/components/ui` — the ladder's second rung |
+| Primitives | 43 | `apps/web/src/components/ui` — the ladder's second rung |
 | `framer-motion` importers | 1 | `apps/web/src/components/storefront/animated-section.tsx` |
 | CSS `transition` | 19 | declared transitions across every stylesheet |
-| Tailwind `transition-*` classes | 125 | the actual motion surface today — utility classes, not a token |
+| Tailwind `transition-*` classes | 126 | the actual motion surface today — utility classes, not a token |
 | CSS `@keyframes` | 18 | named animations |
 | `prefers-reduced-motion` blocks | 2 | chapter 05 and 07 both require this on every motion |
-| `aria-*` attributes | 486 | written by hand; **no accessibility lint runs** |
-| `role=` attributes | 368 |  |
+| `aria-*` attributes | 488 | written by hand; **no accessibility lint runs** |
+| `role=` attributes | 369 |  |
 | RTL / `dir` references | 62 | Urdu ships; chapter 07 says this is scattered, not systematic |
 | Inline `style={{` | 27 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |
 
@@ -345,7 +351,7 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - The POS is a different animal  <sub>:138</sub>
 - Verifying  <sub>:151</sub>
 
-### [`docs/design/components-states/03-components.md`](../../design/components-states/03-components.md)  <sub>387 lines</sub>
+### [`docs/design/components-states/03-components.md`](../../design/components-states/03-components.md)  <sub>454 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
@@ -353,8 +359,8 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - Patterns — *undocumented*  <sub>:72</sub>
 - Templates — *undocumented*  <sub>:113</sub>
 - Controls with a contract  <sub>:124</sub>
-- Component contract  <sub>:366</sub>
-- What never gets hand-rolled  <sub>:381</sub>
+- Component contract  <sub>:431</sub>
+- What never gets hand-rolled  <sub>:446</sub>
 
 ### [`docs/design/components-states/04-states.md`](../../design/components-states/04-states.md)  <sub>226 lines</sub>
 
@@ -371,22 +377,22 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - The success state  <sub>:138</sub>
 - Offline and degraded — the POS case  <sub>:212</sub>
 
-### [`docs/design/motion/05-motion.md`](../../design/motion/05-motion.md)  <sub>339 lines</sub>
+### [`docs/design/motion/05-motion.md`](../../design/motion/05-motion.md)  <sub>340 lines</sub>
 
 - The one test  <sub>:19</sub>
 - What motion may communicate  <sub>:34</sub>
 - The language  <sub>:49</sub>
 - Hierarchy of motion  <sub>:67</sub>
 - The reel, and the two tiers  <sub>:84</sub>
-- Continuity over replacement  <sub>:207</sub>
-- Orchestration  <sub>:223</sub>
-- Micro-interactions  <sub>:232</sub>
-- Scroll  <sub>:248</sub>
-- Responsive motion  <sub>:260</sub>
-- Reduced motion — required  <sub>:271</sub>
-- Performance  <sub>:307</sub>
-- Rejection list  <sub>:318</sub>
-- Benchmark, not template  <sub>:329</sub>
+- Continuity over replacement  <sub>:208</sub>
+- Orchestration  <sub>:224</sub>
+- Micro-interactions  <sub>:233</sub>
+- Scroll  <sub>:249</sub>
+- Responsive motion  <sub>:261</sub>
+- Reduced motion — required  <sub>:272</sub>
+- Performance  <sub>:308</sub>
+- Rejection list  <sub>:319</sub>
+- Benchmark, not template  <sub>:330</sub>
 
 ### [`docs/design/content/06-content.md`](../../design/content/06-content.md)  <sub>121 lines</sub>
 
@@ -432,7 +438,7 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - The honest gap, ranked  <sub>:142</sub>
 - Definition of done, for a screen  <sub>:165</sub>
 
-### [`docs/design/principles-laws/10-laws.md`](../../design/principles-laws/10-laws.md)  <sub>903 lines</sub>
+### [`docs/design/principles-laws/10-laws.md`](../../design/principles-laws/10-laws.md)  <sub>920 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
@@ -447,8 +453,9 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - GLO · Globalization  <sub>:760</sub>
 - Where the card-deck laws are built  <sub>:823</sub>
 - Where the two reels' laws are built  <sub>:849</sub>
-- What this chapter does not settle  <sub>:868</sub>
-- Sources  <sub>:883</sub>
+- Where the copy laws are built  <sub>:868</sub>
+- What this chapter does not settle  <sub>:885</sub>
+- Sources  <sub>:900</sub>
 
 ### [`docs/design/process-governance/11-workflow.md`](../../design/process-governance/11-workflow.md)  <sub>260 lines</sub>
 

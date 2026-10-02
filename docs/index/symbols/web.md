@@ -101,7 +101,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AuctionDetailPage` | default | :75 | launchpad-apps/234-auction-app.md (WO-234.1) — prepare one auction for sale: set its times, add its… |
+| `page.tsx` | `AuctionDetailPage` | default | :86 | launchpad-apps/234-auction-app.md (WO-234.1) — prepare one auction for sale: set its times, add its… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
@@ -2056,6 +2056,12 @@ Every top-level export in `web`, with the line to open.
 | `api.ts` | `getPosts` | function | :184 |  |
 | `api.ts` | `getPost` | function | :192 |  |
 | `api.ts` | `getMenu` | function | :197 | A named footer menu slot — see MENU_KEYS in @newax/shared. |
+| `auction-lots.ts` | `LotTiming` | interface | :7 | What an auction's lots say about when they end and how they ended (launchpad-apps/234-auction-app.m… |
+| `auction-lots.ts` | `LotOutcomeView` | interface | :15 |  |
+| `auction-lots.ts` | `lotEndsAt` | function | :24 | When bidding on a lot ends: its own end if it has one, else the auction's. |
+| `auction-lots.ts` | `auctionClosesAt` | function | :33 | When the auction as a whole will close: the latest end among the lots still open, since a lot exten… |
+| `auction-lots.ts` | `describeExtension` | function | :46 | "extended 2 min", or null when anti-snipe has not moved this lot. |
+| `auction-lots.ts` | `describeOutcome` | function | :57 | One line for how a lot ended: the winner and price, "No bids", or the highest bid with the reserve… |
 | `calendar.ts` | `DateOrder` | type | :14 | Calendar arithmetic for the date field (MNU-2): a month's grid, a week's start, keyboard movement b… |
 | `calendar.ts` | `Ymd` | interface | :16 |  |
 | `calendar.ts` | `MIN_YEAR` | const | :23 | The years a field will hold: four digits, so an ISO string always has a fixed shape. |

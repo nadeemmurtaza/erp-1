@@ -200,3 +200,15 @@ export class PlaceBidDto {
 
 /** Newest bid first; page, page size and `order` come from the shared list query. */
 export class BidListQueryDto extends PaginationQueryDto {}
+
+export class SetProxyBidDto {
+  @ApiProperty({
+    description:
+      'The most you will pay, in minor units. The system bids the least that keeps you ahead, up to this. ' +
+      'It can be raised later but never lowered, and only you can read it.',
+  })
+  @IsInt()
+  @Min(1)
+  @Max(MAX_MINOR)
+  maxMinor!: number;
+}

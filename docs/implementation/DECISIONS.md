@@ -11945,3 +11945,70 @@ so bids exist only in tests; the bidder-facing bid box is WO-234.4; the §6 load
 test needs the realtime path; staff identity-barring by `Party` link is WO-234.5;
 `Bid` is not partitioned by month yet (doc 234 §4).
 
+
+### ADR-086 addendum (2026-10-02) — WO-234.3 proxy bidding, anti-snipe and the close job: exact parameters
+
+Built: `ProxyBid` and `AuctionResult`, per-lot `endsAt` and `extendedMs`
+(migration `20261002200000`, additive), `setProxyBid()`, `placeBid()` rebuilt as
+a commit pipeline, `AuctionLifecycleService` and `AuctionLifecycleCron`. The
+module still imports no other module; the only core additions are three Settings
+keys and the reuse of `encryptSecret()`.
+
+Decisions, each with the alternative it displaced:
+
+- **One commit writes a manual bid and at most one system answer, as consecutive
+  links of the same chain, with one guarded `UPDATE`.** The alternative, a second
+  transaction for the answer, would let a reader see a lot led by the manual
+  bidder for a moment and would let a crash between the two lose the answer.
+  Both bids carry the one `acceptedAt` the database clock gave under the lot's
+  lock; their `seq` orders them.
+- **One answer, never a ladder.** `resolveProxy()` jumps straight to the price
+  the leader would have reached, so a 10 000-to-1 gap between two maxima costs
+  one ledger row. The ladder (an auto-bid per increment) would have made the
+  hottest path write amplification proportional to the gap.
+- **A maximum is encrypted, raise-only and owner-readable.** AES-256-GCM with the
+  existing `APP_ENCRYPTION_KEY`; lowering is refused because a maximum that could
+  be pulled lets a bidder frighten others off with a number never meant; a raise
+  counts as a new offer placed now and loses its place in a tie. Rotating the
+  key means re-encrypting `ProxyBid` rows; there is no automatic migration of
+  ciphertexts, which is an open item for key-rotation work, not for this one.
+- **The lot closes `OPEN → CLOSED` directly.** No status between the end and the
+  result needs protecting, and the auction's row is locked before the count of
+  what is left, so two lots of one auction closing together cannot each see the
+  other open and leave the auction open for ever (tested).
+- **An outage extends, it never closes.** A lot found more than 60 s past its end
+  is given 120 s from now once, audited, and outside the anti-snipe cap.
+- **No domain event yet.** Nothing consumes one; WO-234.6's `AuctionOrderSink`
+  will, and will define `auction.lot_closed` from the `AuctionResult` row then.
+
+| Parameter | Exact value | Applies to | Why this number | Enforced | Fails how |
+|---|---|---|---|---|---|
+| Anti-snipe window | 120 000 ms (Settings `auction.anti_snipe_window_seconds` 120), a bid exactly at the edge is inside | a bid's effect on a lot's end | Long enough to read "you were outbid" and answer | `antiSnipeExtensionMs()` in `commitBids()`, snapshot on the auction at `schedule()` | missing or malformed → default, field by field |
+| Anti-snipe extension | 120 000 ms (`auction.anti_snipe_extend_seconds` 120; 0 switches it off) | one commit | As long as the window, so a lone late bid always leaves one full window | same | same |
+| Anti-snipe cap | 1 800 000 ms per lot (`auction.max_extension_seconds` 1 800) | a lot's total extension | A war ends within half an hour; staff and sellers can plan | same; the last extension is cut to what is left | no further extension |
+| Standing maximum | ≤ 10^15, ≥ the next bid (a leader's: ≥ their bid), never lowered | `setProxyBid()` | A maximum below the next bid could never be used | the service | 409 `PROXY_TOO_LOW`, `PROXY_CANNOT_LOWER` |
+| Proxy route | 30 requests per 60 000 ms per client address | `PUT /auctions/lots/:lotId/proxy` | Half of a bid's allowance: a decision, not a race; slows a probe for another bidder's maximum to one per two seconds on top of the lot lock | `@Throttle`, Redis-backed | 429, nothing changed |
+| Bid rate count | manual bids only | `assertWithinBidRate()` | The system's answers are not the bidder's doing; counting them would let a bidding war lock a proxy holder out | the query's `kind: 'MANUAL'` | — |
+| Job cadence | every 15 000 ms, 100 auctions and 100 lots a run, a run skipped while the last still goes | `AuctionLifecycleCron` | 15 s is how soon a result appears; 100 a run is 400 a minute against a handful of auctions; a backlog drains over runs | the cron, idempotent by predicate | a failing lot is logged and left for the next run |
+| Outage grace and extension | found > 60 000 ms late → extend to 120 000 ms from now, once | `closeLot()` | 60 s is four missed runs; two minutes is the same window as anti-snipe | `OUTAGE_GRACE_MS`, `OUTAGE_EXTENSION_MS` | a longer outage extends again on the next recovery |
+
+Pillars touched: architecture (no new import between modules; the proxy maths is
+pure and the pipeline shares one `commitBids()` for a bid and a maximum), secure
+by design (a maximum is encrypted at rest and readable by its owner alone, not
+by staff and not in the ledger; the proxy route is `@AuthenticatedOnly` with no
+`CustomerScope`; staff who run the auction cannot set one), stable and reliable
+(close and open are idempotent by predicate and under locks, safe on every node
+at once with no leader; a failing lot never blocks the batch), observable (`Logger`
+at `log` for each open and close, `warn` for an outage extension, `error` for a
+failure; `AuditLog` rows for `auction.opened`, `auction.lot_closed`,
+`auction.closed` and `auction.lot_extended_after_outage`, none per bid).
+
+Known costs and gaps, stated rather than hidden: every bid decrypts every
+standing maximum on its lot, a few microseconds each and bounded by the bidders
+who hold one, so it is cheap for the 50 bids a second target and would want a
+per-lot cache under the lot lock only if one lot ever carries thousands of
+maxima; a bidder still has no screen to bid from, and learns they were outbid by
+a maximum only from the response to their own request or the next read of the
+lot, until WO-234.4's realtime path; the §6 load test is WO-234.4's;
+reserve-not-met leaves staff to make an offer by hand until WO-234.6 gives them
+somewhere to do it.

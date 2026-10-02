@@ -3,7 +3,7 @@
 
 # Background work
 
-**30** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
+**31** scheduled jobs plus the outbox dispatcher and replication agent — everything that runs without a request.
 
 
 Background work is invisible in the UI and easy to forget exists. Anything here
@@ -21,6 +21,7 @@ runs on every node that has its module enabled.
 | `0 7 * * 1` | `sendSupplierScorecards()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:124` | --- 2. |
 | `0 8 * * 1` | `sendDemandAlerts()` | `analytics` | `apps/api/src/modules/analytics/supply-chain-digest.cron.ts:190` | --- 3. |
 | `0 5 1 * *` | `ensureFuturePartitions()` | `attendance` | `apps/api/src/modules/attendance/attendance-partition.cron.ts:31` |  |
+| `*/15 * * * * *` | `run()` | `auction` | `apps/api/src/modules/auction/auction-lifecycle.cron.ts:24` |  |
 | `0 2 1 * *` | `run()` | `bankfacilities` | `apps/api/src/modules/bankfacilities/bankfacilities.cron.ts:18` |  |
 | `EVERY_DAY_AT_` | `run()` | `crm` | `apps/api/src/modules/crm/rfm-scoring.cron.ts:22` |  |
 | `0 3 * * *` | `auditStaleFlags()` | `feature-flags` | `apps/api/src/modules/feature-flags/feature-flag-audit.cron.ts:28` |  |

@@ -3,7 +3,7 @@
 
 # Tests
 
-**394** spec files, **4,159** cases. What is already pinned down — and what is not.
+**397** spec files, **4,232** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -30,7 +30,7 @@ such exemption.
 - [`tracking`](../modules/tracking.md)
 - [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (27)
+## End-to-end (28)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -40,7 +40,8 @@ regression or an N+1.
 | `apps/api/test/accounting.e2e-spec.ts` | 15 | Accounting ledger invariants (integration) · WO-19.5 — closing a period redirects a fact dated inside it to the next OP… |
 | `apps/api/test/api-keys.e2e-spec.ts` | 21 | Personal API keys (e2e) · an admin key · what can never go into a key · a storefront key · oversight (users.manage) and… |
 | `apps/api/test/auction-bidding.e2e-spec.ts` | 11 | Auction bidding (e2e) |
-| `apps/api/test/auction-http.e2e-spec.ts` | 9 | Auction admin routes (e2e) · bidding |
+| `apps/api/test/auction-http.e2e-spec.ts` | 10 | Auction admin routes (e2e) · bidding |
+| `apps/api/test/auction-lifecycle.e2e-spec.ts` | 23 | Auction proxy, anti-snipe and close job (e2e) · the open job · anti-snipe · proxy bidding · the close job · an outage |
 | `apps/api/test/auction.e2e-spec.ts` | 5 | Auction foundation (e2e) |
 | `apps/api/test/auth-throttle.e2e-spec.ts` | 20 | Sign-in rate limiting and refresh-token reuse detection (e2e) · the per-account bucket, on a real Redis (WO-206.2) · a… |
 | `apps/api/test/auth.e2e-spec.ts` | 11 | Account security (e2e) · registration and email verification · change password · forgot / reset password |
@@ -66,7 +67,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (367)
+## Unit and integration (369)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -159,9 +160,10 @@ regression or an N+1.
 | `apps/api/src/modules/attendance/attendance-device.service.spec.ts` | attendance | 13 | AttendanceDeviceService · register · findOne / update / suspend — the not-found guard · update · ro… |
 | `apps/api/src/modules/attendance/attendance-time.spec.ts` | attendance | 9 | workingDayOf · workedMinutesBetween |
 | `apps/api/src/modules/attendance/attendance.service.spec.ts` | attendance | 22 | AttendanceService · record — the unconditional path · reconcile · adjust / previewAdjust — never mu… |
-| `apps/api/src/modules/auction/auction-bidding.service.spec.ts` | auction | 37 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · when the lot moves un… |
+| `apps/api/src/modules/auction/auction-bidding.service.spec.ts` | auction | 45 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · when the lot moves un… |
+| `apps/api/src/modules/auction/auction-lifecycle.service.spec.ts` | auction | 6 | AuctionLifecycleService · AuctionLifecycleCron |
 | `apps/api/src/modules/auction/auction.service.spec.ts` | auction | 36 | AuctionService · create · list · get · update · addLot · updateLot · withdrawLot · schedule · unsch… |
-| `apps/api/src/modules/auction/bidding.spec.ts` | auction | 16 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlias |
+| `apps/api/src/modules/auction/bidding.spec.ts` | auction | 40 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlia… |
 | `apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts` | bankfacilities | 21 | BankFacilitiesService · createFacility · utilizationOf · recordDrawdown · approveDrawdown · postDra… |
 | `apps/api/src/modules/bom/bom-cards.metrics.spec.ts` | bom | 4 | BomCardsMetricsProvider · BomValueMetricsProvider |
 | `apps/api/src/modules/bom/bom-production-replication.listener.spec.ts` | bom | 3 | BomProductionReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onBomProductionCompleted |
@@ -387,6 +389,7 @@ regression or an N+1.
 | `apps/web/src/components/design-system/audience.spec.ts` | web | 15 | estimateAudience · publishFriction · publishBlocker · visibilityUsesAudience |
 | `apps/web/src/components/design-system/department.spec.ts` | web | 24 | suggestCode · departmentErrors · descendantIds · unitPath · nearestOffice · closeBlockers |
 | `apps/web/src/components/design-system/dispatch-machine.spec.ts` | web | 19 | dispatchReducer: the forward path · dispatchReducer: undo · dispatchReducer: failure and its remedi… |
+| `apps/web/src/lib/auction-lots.spec.ts` | web | 11 | lotEndsAt · auctionClosesAt · describeExtension · describeOutcome |
 | `apps/web/src/lib/calendar.spec.ts` | web | 38 | leap years and month lengths · parseIso / toIso · addDays / addMonths / addYears · weekday and orde… |
 | `apps/web/src/lib/copy.spec.ts` | web | 32 | normalizeCopyValue (CPY-3) · copyText (CPY-3, CPY-5) · nextCopy (CPY-1, CPY-2, CPY-5) · selectConte… |
 | `apps/web/src/lib/date-parse.spec.ts` | web | 35 | the formats the field must understand (MNU-2) · day order follows the deployment locale · impossibl… |

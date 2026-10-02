@@ -111,7 +111,7 @@ describe('Auction admin routes (e2e)', () => {
     let keyCounter = 0;
     const key = () => `http-${Date.now()}-${(keyCounter += 1)}`;
 
-    /** Nothing opens an auction yet (WO-234.3), so the test schedules one through the API and flips it to OPEN. */
+    /** The test schedules an auction through the API and flips it to OPEN itself; the open job has its own spec (`auction-lifecycle.e2e-spec.ts`). */
     const openLot = async () => {
       const auction = await asAdmin(api().post('/api/v1/admin/auctions')).send({ title: '[e2e] http bidding', startsAt: when(24), endsAt: when(48) }).expect(201);
       const lot = await asAdmin(api().post(`/api/v1/admin/auctions/${auction.body.id}/lots`))
@@ -194,6 +194,40 @@ describe('Auction admin routes (e2e)', () => {
       await asCustomer(api().get(`/api/v1/admin/auctions/${auctionId}/lots/${lotId}/bids`)).expect(403);
       await asCustomer(api().get(`/api/v1/admin/auctions/${auctionId}/lots/${lotId}/bids/verify`)).expect(403);
       await asAdmin(api().get(`/api/v1/admin/auctions/${auctionId}/lots/nope/bids`)).expect(404);
+    });
+
+    it('sets a standing maximum for the signed-in customer only, answers with their own number, and never lowers it', async () => {
+      await api().put('/api/v1/auctions/lots/anything/proxy').send({ maxMinor: 500_000 }).expect(401);
+      await asCustomer(api().put('/api/v1/auctions/lots/anything/proxy')).send({}).expect(400);
+      await asCustomer(api().put('/api/v1/auctions/lots/anything/proxy')).send({ maxMinor: 0 }).expect(400);
+      await asCustomer(api().put('/api/v1/auctions/lots/anything/proxy')).send({ maxMinor: 500_000, bidderId: 'x' }).expect(400);
+      await asCustomer(api().put('/api/v1/auctions/lots/does-not-exist/proxy')).send({ maxMinor: 500_000 }).expect(404);
+
+      const { auctionId, lotId } = await openLot();
+      await open(auctionId, lotId);
+
+      const set = await asCustomer(api().put(`/api/v1/auctions/lots/${lotId}/proxy`)).send({ maxMinor: 500_000 }).expect(200);
+      // A lone maximum opens the lot at its opening price, as the caller's own bid.
+      expect(set.body).toMatchObject({
+        maxMinor: 500_000,
+        autoBid: { seq: 1, amountMinor: 100_000, kind: 'PROXY_AUTO' },
+        lot: { currentBidMinor: 100_000, leading: true },
+      });
+      expect(JSON.stringify(set.body)).not.toMatch(/reserve|900000|ayesha|userId/i);
+
+      const own = await asCustomer(api().get(`/api/v1/auctions/lots/${lotId}/proxy`)).expect(200);
+      expect(own.body).toEqual({ maxMinor: 500_000 });
+      await api().get(`/api/v1/auctions/lots/${lotId}/proxy`).expect(401);
+
+      const lower = await asCustomer(api().put(`/api/v1/auctions/lots/${lotId}/proxy`)).send({ maxMinor: 400_000 }).expect(409);
+      expect(lower.body).toMatchObject({ code: 'PROXY_CANNOT_LOWER' });
+      await asCustomer(api().put(`/api/v1/auctions/lots/${lotId}/proxy`)).send({ maxMinor: 600_000 }).expect(200);
+
+      // Staff who run the auction cannot set one, and the ledger shows the maximum nowhere.
+      const barred = await asAdmin(api().put(`/api/v1/auctions/lots/${lotId}/proxy`)).send({ maxMinor: 500_000 }).expect(403);
+      expect(barred.body).toMatchObject({ code: 'BIDDER_NOT_ELIGIBLE' });
+      const ledger = await asAdmin(api().get(`/api/v1/admin/auctions/${auctionId}/lots/${lotId}/bids`)).expect(200);
+      expect(JSON.stringify(ledger.body)).not.toMatch(/500000|600000/);
     });
   });
 });

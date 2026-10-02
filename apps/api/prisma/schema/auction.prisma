@@ -1,9 +1,10 @@
-// Auction app (launchpad-apps/234-auction-app.md, WO-234.1 and WO-234.2).
+// Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.3).
 // Sell — or, later, buy — by competitive bidding. This file holds what the
-// work orders so far read and write: the auction, its lots, the bidders and
-// the hash-chained bids. Proxy maxima, deposits, results and adjustments
-// (doc 234 §4) arrive in the work orders that first use them, each as its own
-// additive migration, so no table or column here sits unused.
+// work orders so far read and write: the auction, its lots, the bidders, the
+// hash-chained bids, the encrypted proxy maxima and the result of a closed lot.
+// Deposits and adjustments (doc 234 §4) arrive in the work orders that first
+// use them, each as its own additive migration, so no table or column here
+// sits unused.
 
 enum AuctionType {
   ENGLISH
@@ -116,12 +117,22 @@ model AuctionLot {
   /// How many bids this lot has accepted; also the version the predicate
   /// compares, so two writers who read the same value cannot both win.
   bidSeq            Int              @default(0)
+  /// When bidding on this lot ends, once it has been moved: by anti-snipe
+  /// (WO-234.3) or by recovery after an outage. Null means "when the auction
+  /// ends", so a lot nobody has bid late on has one end, the auction's.
+  endsAt            DateTime?
+  /// Milliseconds of anti-snipe extension used so far, counted on its own so
+  /// that moving a lot's end after an outage never spends the cap that bounds
+  /// a bidding war.
+  extendedMs        Int              @default(0)
   status            AuctionLotStatus @default(PENDING)
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
 
-  auction Auction @relation(fields: [auctionId], references: [id])
+  auction Auction        @relation(fields: [auctionId], references: [id])
   bids    Bid[]
+  proxies ProxyBid[]
+  result  AuctionResult?
 
   @@unique([auctionId, lotNo])
   @@index([auctionId, status])
@@ -140,8 +151,10 @@ model Bidder {
   status    BidderStatus @default(APPROVED)
   createdAt DateTime     @default(now())
 
-  auction Auction @relation(fields: [auctionId], references: [id])
+  auction Auction         @relation(fields: [auctionId], references: [id])
   bids    Bid[]
+  proxies ProxyBid[]
+  results AuctionResult[]
 
   @@unique([auctionId, userId])
   @@unique([auctionId, alias])
@@ -175,4 +188,48 @@ model Bid {
   @@unique([lotId, seq])
   @@unique([lotId, bidderId, idempotencyKey])
   @@index([bidderId, acceptedAt])
+}
+
+/// A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the
+/// least that keeps them ahead, up to this. Stored encrypted (AES-256-GCM,
+/// `APP_ENCRYPTION_KEY`) and never returned to anyone but its owner, because the
+/// number is the whole of the bidder's strategy; the database holds no readable
+/// copy. It can be raised and never lowered or withdrawn (doc 234 §5.6).
+model ProxyBid {
+  id             String   @id @default(cuid())
+  lotId          String
+  bidderId       String
+  /// `iv:authTag:ciphertext`, from `encryptSecret`.
+  maxCipher      String
+  /// The lot's `bidSeq` when this maximum was first placed. Of two equal
+  /// maxima the one placed after fewer bids is the earlier and wins (doc 234
+  /// §5.3); it is compared as `placedAfterSeq + 0.5`, so it sorts after the bid
+  /// with that `seq` and before the next.
+  placedAfterSeq Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  lot    AuctionLot @relation(fields: [lotId], references: [id])
+  bidder Bidder     @relation(fields: [bidderId], references: [id])
+
+  @@unique([lotId, bidderId])
+}
+
+/// How a lot ended (doc 234 §5.5). One row per lot, written once by the close
+/// job in the same transaction that closes the lot, so a second run cannot make
+/// a second result. The winner is `topBidderId` when `reserveMet`, nobody
+/// otherwise; a lot whose reserve was not met keeps its highest bidder here so
+/// staff can decide whether to make that bidder an offer, which is never
+/// automatic. The order and settlement columns arrive with WO-234.6.
+model AuctionResult {
+  id          String   @id @default(cuid())
+  lotId       String   @unique
+  topBidderId String?
+  topBidMinor BigInt?
+  reserveMet  Boolean
+  bidCount    Int
+  closedAt    DateTime
+
+  lot    AuctionLot @relation(fields: [lotId], references: [id])
+  bidder Bidder?    @relation(fields: [topBidderId], references: [id])
 }

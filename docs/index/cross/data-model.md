@@ -3,7 +3,7 @@
 
 # Data model
 
-All **318** Prisma models and **150** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **320** Prisma models and **150** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -29,7 +29,7 @@ against a real database.
 | [`accounts.prisma`](../data/accounts.md) | 3 | 1 | [`accounts`](../modules/accounts.md) | B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
-| [`auction.prisma`](../data/auction.md) | 4 | 5 | [`auction`](../modules/auction.md) | Auction, AuctionLot, Bid, Bidder |
+| [`auction.prisma`](../data/auction.md) | 6 | 5 | [`auction`](../modules/auction.md) | Auction, AuctionLot, AuctionResult, Bid, Bidder, ProxyBid |
 | [`bank-facilities.prisma`](../data/bank-facilities.md) | 5 | 2 | core platform | Bank, BankFacility, BankFacilityDrawdown, BankFacilityMarkupAccrual, BankFacilityRepayment |
 | [`bom.prisma`](../data/bom.md) | 6 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionLineLot, BomProductionRun, BomRecipe, RawMaterial |
 | [`bpmn-workflows.prisma`](../data/bpmn-workflows.md) | 1 | 0 | [`bpmn-workflows`](../modules/bpmn-workflows.md) | BpmnWorkflowDefinition |
@@ -112,7 +112,8 @@ against a real database.
 | [`AttendanceEvent`](../data/attendance.md#attendanceevent) | `attendance` | 15 | 3 | — | Raw, immutable. |
 | [`AttendanceException`](../data/attendance.md#attendanceexception) | `attendance` | 13 | 3 | id | A punch that did not fit. |
 | [`Auction`](../data/auction.md#auction) | `auction` | 17 | 0 | id | One auction event. |
-| [`AuctionLot`](../data/auction.md#auctionlot) | `auction` | 18 | 1 | id | One thing being sold within an auction. |
+| [`AuctionLot`](../data/auction.md#auctionlot) | `auction` | 22 | 1 | id | One thing being sold within an auction. |
+| [`AuctionResult`](../data/auction.md#auctionresult) | `auction` | 9 | 2 | id | How a lot ended (doc 234 §5.5). |
 | [`Audience`](../data/notify.md#audience) | `notify` | 9 | 0 | id | Who a message goes to, stored as a specification, not a list of user ids — "the finance d… |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
 | [`B2BAccount`](../data/accounts.md#b2baccount) | `accounts` | 8 | 0 | id | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md (b2b-wholes… |
@@ -127,7 +128,7 @@ against a real database.
 | [`Banner`](../data/content.md#banner) | `content` | 11 | 0 | id |  |
 | [`BannerTranslation`](../data/content.md#bannertranslation) | `content` | 7 | 1 | id |  |
 | [`Bid`](../data/auction.md#bid) | `auction` | 12 | 2 | id | One accepted bid: a record, never edited and never deleted (doc 234 §5.2). |
-| [`Bidder`](../data/auction.md#bidder) | `auction` | 8 | 1 | id | A person bidding in one auction. |
+| [`Bidder`](../data/auction.md#bidder) | `auction` | 10 | 1 | id | A person bidding in one auction. |
 | [`BillOfMaterial`](../data/production.md#billofmaterial) | `production` | 8 | 1 | id | One recipe per produced variant: how many of each component variant it takes to make one… |
 | [`BillOfMaterialLine`](../data/production.md#billofmaterialline) | `production` | 6 | 2 | id |  |
 | [`BlogPost`](../data/content.md#blogpost) | `content` | 13 | 1 | id |  |
@@ -311,6 +312,7 @@ against a real database.
 | [`ProductVariant`](../data/catalog.md#productvariant) | `catalog` | 56 | 5 | id |  |
 | [`ProductVariantOptionValue`](../data/catalog.md#productvariantoptionvalue) | `catalog` | 5 | 2 | — | The join that DEFINES a variant: one row per option axis per variant. |
 | [`PromoCode`](../data/promotions.md#promocode) | `promotions` | 12 | 1 | id |  |
+| [`ProxyBid`](../data/auction.md#proxybid) | `auction` | 9 | 2 | id | A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the least that kee… |
 | [`PurchaseOrder`](../data/purchasing.md#purchaseorder) | `purchasing` | 26 | 2 | id |  |
 | [`PurchaseOrderItem`](../data/purchasing.md#purchaseorderitem) | `purchasing` | 11 | 2 | id |  |
 | [`PurchaseRequisition`](../data/purchasing.md#purchaserequisition) | `purchasing` | 12 | 2 | id |  |

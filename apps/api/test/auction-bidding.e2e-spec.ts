@@ -34,7 +34,7 @@ describe('Auction bidding (e2e)', () => {
   const bidderUser = (name: string) => ({ id: `e2e-bidder-${name}`, permissions: [] as string[] });
 
   /** An OPEN auction with one lot, ending in `minutes`. Returns the lot id. */
-  const openLot = async (opts: { startPriceMinor?: number; minutes?: number; endsAt?: Date } = {}) => {
+  const openLot = async (opts: { startPriceMinor?: number; minutes?: number; endsAt?: Date; antiSnipe?: boolean } = {}) => {
     const auction = await auctions.create(
       {
         title: TITLE,
@@ -51,6 +51,11 @@ describe('Auction bidding (e2e)', () => {
       data: { status: 'OPEN', startsAt: new Date(Date.now() - 60_000), endsAt: opts.endsAt ?? new Date(Date.now() + (opts.minutes ?? 30) * 60_000) },
     });
     await prisma.auctionLot.update({ where: { id: lot.id }, data: { status: 'OPEN' } });
+    if (opts.antiSnipe === false) {
+      // A lot this close to its end would be extended by its first bid (WO-234.3); a test of the clock itself must not be.
+      const { bidRules } = await prisma.auction.findUniqueOrThrow({ where: { id: auction.id }, select: { bidRules: true } });
+      await prisma.auction.update({ where: { id: auction.id }, data: { bidRules: { ...(bidRules as object), antiSnipeExtendMs: 0 } } });
+    }
     return { auctionId: auction.id, lotId: lot.id };
   };
 
@@ -168,7 +173,7 @@ describe('Auction bidding (e2e)', () => {
   });
 
   it('ends bidding by the database clock: a bid is accepted before the end and refused after it', async () => {
-    const { lotId } = await openLot({ endsAt: new Date(Date.now() + 1_500) });
+    const { lotId } = await openLot({ endsAt: new Date(Date.now() + 1_500), antiSnipe: false });
     await expect(auctions.placeBid({ lotId, amountMinor: 100_000, idempotencyKey: key(), user: bidderUser('early') })).resolves.toMatchObject({ replayed: false });
 
     await new Promise((resolve) => setTimeout(resolve, 1_800));
@@ -206,7 +211,13 @@ describe('Auction bidding (e2e)', () => {
   it('uses the rules frozen at scheduling, not whatever Settings say now', async () => {
     const { auctionId, lotId } = await openLot();
     const stored = await prisma.auction.findUniqueOrThrow({ where: { id: auctionId } });
-    expect(stored.bidRules).toEqual({ incrementBps: 500, minStepMinor: 100 });
+    expect(stored.bidRules).toEqual({
+      incrementBps: 500,
+      minStepMinor: 100,
+      antiSnipeWindowMs: 120_000,
+      antiSnipeExtendMs: 120_000,
+      maxExtensionMs: 1_800_000,
+    });
 
     await prisma.auction.update({ where: { id: auctionId }, data: { bidRules: { incrementBps: 2_000, minStepMinor: 100 } } });
     await auctions.placeBid({ lotId, amountMinor: 100_000, idempotencyKey: key(), user: bidderUser('rules-a') });

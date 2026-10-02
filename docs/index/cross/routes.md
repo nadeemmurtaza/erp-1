@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **890** endpoints across **163** controllers, with the access rule that actually guards each one.
+All **892** endpoints across **163** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -219,7 +219,7 @@ never authorization.
 | POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
 | POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
 
-### [`auction`](../modules/auction.md) (13)
+### [`auction`](../modules/auction.md) (15)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -236,6 +236,8 @@ never authorization.
 | POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` | Schedule a draft auction to open at its start time |
 | POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` | Return a scheduled auction to draft, before it opens |
 | POST | `/auctions/lots/:lotId/bids` | signed-in | `AuctionBidController.placeBid` | Place a bid on an open lot; a retry with the same idempotency key returns the a… |
+| GET | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.getProxy` | Your own maximum on a lot. Nobody else’s is readable through any route |
+| PUT | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.setProxy` | Set or raise your own maximum on a lot; the system bids for you up to it. It ca… |
 
 ### [`bankfacilities`](../modules/bankfacilities.md) (10)
 

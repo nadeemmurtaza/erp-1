@@ -3,7 +3,7 @@
 
 # Module: `auction`
 
-Pack **core** · enabled by the `MODULES` allowlist · 9 files
+Pack **core** · enabled by the `MODULES` allowlist · 12 files
 
 
 
@@ -11,24 +11,27 @@ Pack **core** · enabled by the `MODULES` allowlist · 9 files
 
 Source: `apps/api/src/modules/auction/`
 
-## Files (9 · 2,366 lines)
+## Files (12 · 3,514 lines)
 
 All paths relative to `apps/api/src/modules/auction`.
 
 | File | Kind | Lines | Exports | Purpose |
 |---|---|---|---|---|
-| `auction-bid.controller.ts` | controller | 40 | 1 | Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2). |
-| `auction-bidding.service.spec.ts` | unit test | 471 | — |  |
+| `auction-bid.controller.ts` | controller | 63 | 1 | Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2). |
+| `auction-bidding.service.spec.ts` | unit test | 583 | — |  |
+| `auction-lifecycle.cron.ts` | scheduled job | 41 | 1 | Opens and closes auctions every 15 seconds (doc 234 §6, §12). |
+| `auction-lifecycle.service.spec.ts` | unit test | 104 | — |  |
+| `auction-lifecycle.service.ts` | service | 232 | 4 | How late a lot may be found before the delay is treated as an outage, in milliseconds. |
 | `auction.controller.ts` | controller | 119 | 1 | launchpad-apps/234-auction-app.md (WO-234.1). |
-| `auction.module.ts` | nest module | 20 | 1 |  |
-| `auction.service.spec.ts` | unit test | 479 | — |  |
-| `auction.service.ts` | service | 808 | 8 | A lot as the caller may see it: prices as plain numbers (the columns are BIGINT, which JSON cannot carry) and the hidde… |
-| `bidding.spec.ts` | unit test | 131 | — |  |
-| `bidding.ts` | module | 95 | 9 | The largest price or bid, in minor units: 10^15, which is ten trillion in a two-decimal currency. |
-| `auction.dto.ts` | dto | 203 | 11 | The largest price or bid, in minor units (doc 234 §12). |
+| `auction.module.ts` | nest module | 22 | 1 |  |
+| `auction.service.spec.ts` | unit test | 487 | — |  |
+| `auction.service.ts` | service | 1115 | 11 | A lot as the caller may see it: prices as plain numbers (the columns are BIGINT, which JSON cannot carry) and the hidde… |
+| `bidding.spec.ts` | unit test | 297 | — |  |
+| `bidding.ts` | module | 236 | 16 | The largest price or bid, in minor units: 10^15, which is ten trillion in a two-decimal currency. |
+| `auction.dto.ts` | dto | 215 | 12 | The largest price or bid, in minor units (doc 234 §12). |
 
 
-## HTTP routes (13)
+## HTTP routes (15)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -45,6 +48,8 @@ All paths relative to `apps/api/src/modules/auction`.
 | POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` :101 | Schedule a draft auction to open at its start time |
 | POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` :108 | Return a scheduled auction to draft, before it opens |
 | POST | `/auctions/lots/:lotId/bids` | signed-in | `AuctionBidController.placeBid` :31 | Place a bid on an open lot; a retry with the same idempotency key returns the accepted bid |
+| GET | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.getProxy` :59 | Your own maximum on a lot. Nobody else’s is readable through any route |
+| PUT | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.setProxy` :49 | Set or raise your own maximum on a lot; the system bids for you up to it. It can never be… |
 
 
 ## Domain events
@@ -63,10 +68,12 @@ _none_
 
 | Model | Fields | Line | Purpose |
 |---|---|---|---|
-| `Auction` | 17 | :54 | One auction event. |
-| `AuctionLot` | 18 | :94 | One thing being sold within an auction. |
-| `Bid` | 12 | :156 | One accepted bid: a record, never edited and never deleted (doc 234 §5.2). |
-| `Bidder` | 8 | :135 | A person bidding in one auction. |
+| `Auction` | 17 | :55 | One auction event. |
+| `AuctionLot` | 22 | :95 | One thing being sold within an auction. |
+| `AuctionResult` | 9 | :224 | How a lot ended (doc 234 §5.5). |
+| `Bid` | 12 | :169 | One accepted bid: a record, never edited and never deleted (doc 234 §5.2). |
+| `Bidder` | 10 | :146 | A person bidding in one auction. |
+| `ProxyBid` | 9 | :198 | A bidder's standing maximum on one lot (doc 234 §5.3): the system bids the least that keeps them ahead, up to… |
 
 
 Enums: `AuctionLotStatus` (4) · `AuctionStatus` (7) · `AuctionType` (3) · `BidderStatus` (3) · `BidKind` (3)
@@ -74,6 +81,11 @@ Enums: `AuctionLotStatus` (4) · `AuctionStatus` (7) · `AuctionType` (3) · `Bi
 Full field lists: [cross/data-model.md](../cross/data-model.md).
 
 
+## Scheduled work
+
+| Schedule | Handler | Where | What it does |
+|---|---|---|---|
+| `*/15 * * * * *` | `run()` | `auction-lifecycle.cron.ts:24` |  |
 
 
 ## Nest wiring
@@ -81,7 +93,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 **`AuctionModule`** (`auction.module.ts`)
 - imports: —
 - controllers: `AuctionController`, `AuctionBidController`
-- providers: `AuctionService`
+- providers: `AuctionService`, `AuctionLifecycleService`, `AuctionLifecycleCron`
 - exports: `AuctionService`
 
 
@@ -93,6 +105,7 @@ Full field lists: [cross/data-model.md](../cross/data-model.md).
 - core `config`
 - core `prisma`
 - core `settings`
+- package `@newax/shared/secret-crypto`
 - package `@newax/shared`
 
 A `⚠ direct import` above is a coupling that `scripts/check-module-boundaries.mjs`
@@ -100,13 +113,14 @@ either sanctions through `KNOWN_MODULE_COUPLINGS` or fails the build over —
 check there before adding another.
 
 
-## Tests (3)
+## Tests (4)
 
 | Spec | Cases | Covers |
 |---|---|---|
-| `auction-bidding.service.spec.ts` | 37 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · when the lot moves under the bid · listBi… |
+| `auction-bidding.service.spec.ts` | 45 | AuctionService bidding · accepting a bid · a retry · refusals write nothing · when the lot moves under the bid · anti-s… |
+| `auction-lifecycle.service.spec.ts` | 6 | AuctionLifecycleService · AuctionLifecycleCron |
 | `auction.service.spec.ts` | 36 | AuctionService · create · list · get · update · addLot · updateLot · withdrawLot · schedule · unschedule · cancel |
-| `bidding.spec.ts` | 16 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlias |
+| `bidding.spec.ts` | 40 | default rules · computeIncrement · minimumNextBid · parseBidRules · bid canonical form · bidderAlias · antiSnipeExtensi… |
 
 
 ## Every export in this unit
@@ -114,25 +128,40 @@ check there before adding another.
 | Symbol | Kind | Where | Doc |
 |---|---|---|---|
 | `AuctionBidController` | class | `auction-bid.controller.ts:25` | Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2). |
+| `AuctionLifecycleCron` | class | `auction-lifecycle.cron.ts:18` | Opens and closes auctions every 15 seconds (doc 234 §6, §12). |
+| `OUTAGE_GRACE_MS` | const | `auction-lifecycle.service.ts:18` | How late a lot may be found before the delay is treated as an outage, in milliseconds. |
+| `OUTAGE_EXTENSION_MS` | const | `auction-lifecycle.service.ts:27` | How long a lot found past `OUTAGE_GRACE_MS` is given, counted from the moment of recovery. |
+| `CloseOutcome` | type | `auction-lifecycle.service.ts:36` |  |
+| `AuctionLifecycleService` | class | `auction-lifecycle.service.ts:66` | Opens and closes auctions on the clock (launchpad-apps/234-auction-app.md §5.5, §6, §16.7 and §16.10). |
 | `AuctionController` | class | `auction.controller.ts:27` | launchpad-apps/234-auction-app.md (WO-234.1). |
-| `AuctionModule` | class | `auction.module.ts:19` |  |
-| `AuctionLotView` | type | `auction.service.ts:74` | A lot as the caller may see it: prices as plain numbers (the columns are BIGINT, which JSON cannot carry) and… |
-| `AuctionDetail` | type | `auction.service.ts:82` |  |
-| `PlaceBidInput` | interface | `auction.service.ts:84` |  |
-| `BidView` | interface | `auction.service.ts:93` | An accepted bid as its bidder and the admin ledger may see it: an alias, never a name. |
-| `LotPriceState` | interface | `auction.service.ts:103` |  |
-| `PlaceBidResult` | interface | `auction.service.ts:114` |  |
-| `BidIntegrity` | interface | `auction.service.ts:121` |  |
-| `AuctionService` | class | `auction.service.ts:176` | The Auction app (launchpad-apps/234-auction-app.md): WO-234.1's drafting of an auction and its lots, scheduli… |
+| `AuctionModule` | class | `auction.module.ts:21` |  |
+| `AuctionLotView` | type | `auction.service.ts:84` | A lot as the caller may see it: prices as plain numbers (the columns are BIGINT, which JSON cannot carry) and… |
+| `AuctionDetail` | type | `auction.service.ts:94` |  |
+| `AuctionResultView` | interface | `auction.service.ts:101` | A lot's outcome as staff see it (doc 234 §5.5): the highest bidder by alias, the price, and how many bids it… |
+| `PlaceBidInput` | interface | `auction.service.ts:109` |  |
+| `BidView` | interface | `auction.service.ts:118` | An accepted bid as its bidder and the admin ledger may see it: an alias, never a name. |
+| `LotPriceState` | interface | `auction.service.ts:128` |  |
+| `PlaceBidResult` | interface | `auction.service.ts:139` |  |
+| `SetProxyBidInput` | interface | `auction.service.ts:152` |  |
+| `ProxyBidResult` | interface | `auction.service.ts:159` |  |
+| `BidIntegrity` | interface | `auction.service.ts:167` |  |
+| `AuctionService` | class | `auction.service.ts:235` | The Auction app (launchpad-apps/234-auction-app.md): WO-234.1's drafting of an auction and its lots, scheduli… |
 | `MAX_PRICE_MINOR` | const | `bidding.ts:18` | The largest price or bid, in minor units: 10^15, which is ten trillion in a two-decimal currency. |
 | `BidRules` | type | `bidding.ts:21` | A type alias, not an interface, so it can be stored as the auction's JSON column as it is. |
-| `DEFAULT_BID_RULES` | const | `bidding.ts:35` | What an auction falls back to when its frozen rules are missing or malformed (doc 234 §12, "rule missing → 5%… |
-| `parseBidRules` | function | `bidding.ts:41` | Reads the `Auction.bidRules` JSON, taking each field it can trust and the default for the rest. |
-| `computeIncrement` | function | `bidding.ts:54` | The greater of `incrementBps` of the current bid, rounded up, and the smallest step. |
-| `minimumNextBid` | function | `bidding.ts:60` | The first bid may equal the opening price; every later one must clear the current bid by the increment. |
-| `bidderAlias` | const | `bidding.ts:65` | The label a bidder carries for the life of one auction: "Bidder 7". |
-| `ChainedBidFields` | interface | `bidding.ts:67` | The label a bidder carries for the life of one auction: "Bidder 7". |
-| `bidCanonical` | function | `bidding.ts:83` | The text a bid is hashed by, in a fixed field order. |
+| `DEFAULT_BID_RULES` | const | `bidding.ts:41` | What an auction falls back to when its frozen rules are missing or malformed (doc 234 §12, "rule missing → 5%… |
+| `parseBidRules` | function | `bidding.ts:58` | Reads the `Auction.bidRules` JSON, taking each field it can trust and the default for the rest. |
+| `computeIncrement` | function | `bidding.ts:76` | The greater of `incrementBps` of the current bid, rounded up, and the smallest step. |
+| `minimumNextBid` | function | `bidding.ts:82` | The first bid may equal the opening price; every later one must clear the current bid by the increment. |
+| `bidderAlias` | const | `bidding.ts:87` | The label a bidder carries for the life of one auction: "Bidder 7". |
+| `ChainedBidFields` | interface | `bidding.ts:89` | The label a bidder carries for the life of one auction: "Bidder 7". |
+| `bidCanonical` | function | `bidding.ts:105` | The text a bid is hashed by, in a fixed field order. |
+| `antiSnipeExtensionMs` | function | `bidding.ts:124` | How far a bid accepted at `acceptedAt` moves a lot's end (doc 234 §5.4): the extension if it landed in the cl… |
+| `ProxyOffer` | interface | `bidding.ts:131` | One bidder's standing maximum, already decrypted. |
+| `StandingBid` | interface | `bidding.ts:138` | The latest accepted bid on the lot: its holder has offered that much and leads at it. |
+| `ProxyBidToPlace` | interface | `bidding.ts:144` |  |
+| `resolveProxy` | function | `bidding.ts:167` | What the system should bid on someone's behalf now, if anything (doc 234 §5.3). |
+| `LotOutcome` | interface | `bidding.ts:211` |  |
+| `lotOutcome` | function | `bidding.ts:223` | How a lot ended (doc 234 §5.5). |
 | `MAX_MINOR` | const | `auction.dto.ts:24` | The largest price or bid, in minor units (doc 234 §12). |
 | `CREATABLE_AUCTION_TYPES` | const | `auction.dto.ts:27` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
 | `AUCTION_STATUSES` | const | `auction.dto.ts:29` | The only type that can be created until sealed-bid (WO-234.7) and reverse (WO-234.8) exist. |
@@ -144,6 +173,7 @@ check there before adding another.
 | `AuctionListQueryDto` | class | `auction.dto.ts:174` | Page, page size, free-text search (`q`: title or number) and `order` (by start time) come from the shared lis… |
 | `PlaceBidDto` | class | `auction.dto.ts:181` |  |
 | `BidListQueryDto` | class | `auction.dto.ts:202` | Newest bid first; page, page size and `order` come from the shared list query. |
+| `SetProxyBidDto` | class | `auction.dto.ts:204` | Newest bid first; page, page size and `order` come from the shared list query. |
 
 
 ---

@@ -358,6 +358,12 @@ export const SettingKey = {
   AuctionBidIncrementBps: 'auction.bid_increment_bps',
   /** The least a raise may add, in minor units (100 = one whole unit of a two-decimal currency). Copied onto an auction when it is scheduled. */
   AuctionBidMinStepMinor: 'auction.bid_min_step_minor',
+  /** A bid this many seconds before a lot's end, or closer, moves the end (doc 234 §12). Copied onto an auction when it is scheduled. */
+  AuctionAntiSnipeWindowSeconds: 'auction.anti_snipe_window_seconds',
+  /** How many seconds a bid inside the window adds to the lot's end; 0 switches anti-snipe off. Copied onto an auction when it is scheduled. */
+  AuctionAntiSnipeExtendSeconds: 'auction.anti_snipe_extend_seconds',
+  /** The most seconds anti-snipe may add to one lot in total, so a bidding war ends. Copied onto an auction when it is scheduled. */
+  AuctionMaxExtensionSeconds: 'auction.max_extension_seconds',
 } as const;
 
 export type SettingKeyName = (typeof SettingKey)[keyof typeof SettingKey];
@@ -551,4 +557,10 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
    * is the smallest step a person would call a raise. Auction rules, §12. */
   [SettingKey.AuctionBidIncrementBps]: 500,
   [SettingKey.AuctionBidMinStepMinor]: toMinor(1),
+  /* Two minutes is long enough for a person to read "you were outbid" and
+   * answer, short enough that a lot does not run on; thirty minutes bounds a
+   * bidding war so staff and sellers can plan around it. Auction rules, §12. */
+  [SettingKey.AuctionAntiSnipeWindowSeconds]: 120,
+  [SettingKey.AuctionAntiSnipeExtendSeconds]: 120,
+  [SettingKey.AuctionMaxExtensionSeconds]: 1_800,
 };

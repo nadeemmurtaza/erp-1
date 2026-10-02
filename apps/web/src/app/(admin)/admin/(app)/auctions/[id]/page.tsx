@@ -21,6 +21,7 @@ import {
 import { StatusBadge } from '@/components/common/status-badge';
 import { useAdminSession } from '@/components/admin/session';
 import { AuctionBidLedger } from '@/components/admin/auction-bid-ledger';
+import { auctionClosesAt, describeExtension, describeOutcome, lotEndsAt, type LotOutcomeView } from '@/lib/auction-lots';
 
 interface Lot {
   id: string;
@@ -35,6 +36,12 @@ interface Lot {
   currentBidMinor: number | null;
   /** How many bids the lot has accepted. */
   bidSeq: number;
+  /** The lot's own end once moved by anti-snipe or by recovery after an outage; null while it ends with the auction. */
+  endsAt: string | null;
+  /** Milliseconds of anti-snipe extension used. */
+  extendedMs: number;
+  /** How the lot ended; null while it is open. `reserveMet` is sent only to a holder of auction.manage. */
+  result?: (LotOutcomeView & { closedAt: string }) | null;
   status: string;
 }
 
@@ -71,6 +78,10 @@ function parseAmount(text: string): number | null {
  * Once an auction has opened (WO-234.2) each lot also shows its current bid and
  * how many bids it has taken; the count opens that lot's bid ledger in a side
  * sheet. Both columns stay out of a draft's table, where they would be empty.
+ * From WO-234.3 a lot that anti-snipe or an outage has given more time says so
+ * under its title, the auction's "Closes" is when its last open lot ends, and a
+ * closed lot shows how it ended: the winner by alias and price, "No bids", or a
+ * reserve not met.
  */
 export default function AuctionDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -279,7 +290,7 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
         className="mb-6"
         items={[
           { key: 'opens', label: 'Opens', value: formatDateTime(auction.startsAt) },
-          { key: 'closes', label: 'Closes', value: formatDateTime(auction.endsAt) },
+          { key: 'closes', label: auction.status === 'OPEN' ? 'Closes' : 'Closed', value: formatDateTime(auctionClosesAt(auction.lots, auction.endsAt)) },
           { key: 'lots', label: 'Lots on sale', value: String(onSale.length) },
         ]}
       />
@@ -312,6 +323,12 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
                       </span>
                     ) : null}
                     {lot.description ? <span className="block text-xs text-neutral-900/60">{lot.description}</span> : null}
+                    {showBids && lot.status === 'OPEN' && lot.endsAt ? (
+                      <span className="block text-xs text-neutral-900/60">
+                        Ends {formatDateTime(lotEndsAt(lot, auction.endsAt))}
+                        {describeExtension(lot.extendedMs) ? ` (${describeExtension(lot.extendedMs)})` : ''}
+                      </span>
+                    ) : null}
                   </span>
                 ),
               },
@@ -348,6 +365,23 @@ export default function AuctionDetailPage({ params }: { params: Promise<{ id: st
                         ) : (
                           '0'
                         ),
+                    },
+                  ]
+                : []),
+              ...(showBids && auction.lots.some((lot) => lot.result)
+                ? [
+                    {
+                      header: 'Result',
+                      cell: (lot: Lot) => {
+                        if (!lot.result) return lot.status === 'WITHDRAWN' ? null : <span className="text-neutral-900/60">Open</span>;
+                        const outcome = describeOutcome(lot.result, formatMoney);
+                        return (
+                          <span>
+                            {outcome.text}
+                            {outcome.reserveNotMet ? <span className="block text-xs text-neutral-900/60">Reserve not met</span> : null}
+                          </span>
+                        );
+                      },
                     },
                   ]
                 : []),

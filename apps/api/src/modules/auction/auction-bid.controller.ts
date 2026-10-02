@@ -1,10 +1,10 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { AuthenticatedOnly, CurrentUser } from '../../core/auth/decorators';
 import { AuctionService } from './auction.service';
-import { PlaceBidDto } from './dto/auction.dto';
+import { PlaceBidDto, SetProxyBidDto } from './dto/auction.dto';
 
 /**
  * Where a bidder places a bid (launchpad-apps/234-auction-app.md, WO-234.2).
@@ -35,5 +35,28 @@ export class AuctionBidController {
       idempotencyKey: dto.idempotencyKey,
       user: { id: user.id, permissions: user.permissions },
     });
+  }
+
+  /**
+   * 30 a minute per client address: setting a maximum is a decision, not a
+   * race, so it needs half the allowance of a bid, and a script probing for
+   * another bidder's maximum by setting proxies is slowed to one every two
+   * seconds on top of the per-lot lock. Over the limit is a 429.
+   */
+  @Put('lots/:lotId/proxy')
+  @Throttle({ default: { limit: 30, ttl: 60_000 } })
+  @ApiOperation({ summary: 'Set or raise your own maximum on a lot; the system bids for you up to it. It can never be lowered' })
+  setProxy(@Param('lotId') lotId: string, @Body() dto: SetProxyBidDto, @CurrentUser() user: AuthenticatedUser) {
+    return this.auctions.setProxyBid({
+      lotId,
+      maxMinor: dto.maxMinor,
+      user: { id: user.id, permissions: user.permissions },
+    });
+  }
+
+  @Get('lots/:lotId/proxy')
+  @ApiOperation({ summary: 'Your own maximum on a lot. Nobody else’s is readable through any route' })
+  getProxy(@Param('lotId') lotId: string, @CurrentUser() user: AuthenticatedUser) {
+    return this.auctions.getProxyBid(lotId, user.id);
   }
 }

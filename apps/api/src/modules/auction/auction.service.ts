@@ -11,6 +11,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common';
 import { BRAND } from '@newax/shared';
+import { decryptSecret, encryptSecret } from '@newax/shared/secret-crypto';
 import { AppConfigService } from '../../core/config/app-config.service';
 import { AuditService } from '../../core/audit/audit.service';
 import { ChainWalker, chainHash, type ChainVerdict } from '../../core/common/hash-chain';
@@ -22,7 +23,16 @@ import { documentNumber, documentNumberPrefix } from '../../core/settings/docume
 import { documentPrefix } from '../../core/settings/document-prefix';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { SettingsService } from '../../core/settings/settings.service';
-import { bidCanonical, bidderAlias, minimumNextBid, parseBidRules, type BidRules } from './bidding';
+import {
+  antiSnipeExtensionMs,
+  bidCanonical,
+  bidderAlias,
+  minimumNextBid,
+  parseBidRules,
+  resolveProxy,
+  type BidRules,
+  type ProxyOffer,
+} from './bidding';
 import type {
   AuctionListQueryDto,
   BidListQueryDto,
@@ -78,8 +88,23 @@ export type AuctionLotView = Omit<
   startPriceMinor: number;
   reservePriceMinor?: number | null;
   currentBidMinor: number | null;
+  /** How the lot ended, once it has; absent on the lot you just wrote and while it is still open. */
+  result?: AuctionResultView | null;
 };
 export type AuctionDetail = Auction & { lots: AuctionLotView[] };
+
+/**
+ * A lot's outcome as staff see it (doc 234 §5.5): the highest bidder by alias,
+ * the price, and how many bids it took. `reserveMet` is shown with the reserve
+ * itself, to a holder of `auction.manage` only.
+ */
+export interface AuctionResultView {
+  topBidderAlias: string | null;
+  topBidMinor: number | null;
+  reserveMet?: boolean;
+  bidCount: number;
+  closedAt: Date;
+}
 
 export interface PlaceBidInput {
   lotId: string;
@@ -115,6 +140,27 @@ export interface PlaceBidResult {
   bid: BidView;
   /** True when the idempotency key had already been accepted and nothing new was written. */
   replayed: boolean;
+  /**
+   * The bid the system placed straight after this one for someone whose
+   * standing maximum outranks it (doc 234 §5.3), if any. When present the
+   * caller no longer leads: `lot.leading` says so.
+   */
+  autoBid: BidView | null;
+  lot: LotPriceState;
+}
+
+export interface SetProxyBidInput {
+  lotId: string;
+  /** The most the bidder will pay, in minor units. Never shown to anyone else. */
+  maxMinor: number;
+  user: { id: string; permissions: readonly string[] };
+}
+
+export interface ProxyBidResult {
+  /** The caller's own standing maximum, or null when they have none. */
+  maxMinor: number | null;
+  /** The bid the system placed because of this change, if it changed who leads or the price. */
+  autoBid: BidView | null;
   lot: LotPriceState;
 }
 
@@ -136,11 +182,24 @@ interface LotRow {
   leaderBidderId: string | null;
   bidSeq: number;
   auctionStatus: string;
+  /** When bidding on this lot ends: its own end once moved, else the auction's. */
   endsAt: Date;
+  /** The lot's own end, null while it still ends with the auction. */
+  lotEndsAt: Date | null;
+  /** Milliseconds of anti-snipe extension this lot has used. */
+  extendedMs: number;
   bidRules: unknown;
   createdById: string;
   /** The database clock when the row was read, under the lot's lock. */
   now: Date;
+}
+
+/** A bid decided on, not yet written: who, how much, and of what kind. */
+interface PendingBid {
+  bidder: { id: string; alias: string };
+  amountMinor: number;
+  kind: BidKind;
+  idempotencyKey: string;
 }
 
 async function nextAuctionNumber(
@@ -214,10 +273,30 @@ export class AuctionService {
   async get(id: string, canSeeReserve: boolean): Promise<AuctionDetail> {
     const auction = await this.prisma.auction.findUnique({
       where: { id },
-      include: { lots: { orderBy: { lotNo: 'asc' } } },
+      include: { lots: { orderBy: { lotNo: 'asc' }, include: { result: true } } },
     });
     if (!auction) throw new NotFoundException('Auction not found.');
-    return { ...auction, lots: auction.lots.map((lot) => this.viewLot(lot, canSeeReserve)) };
+
+    // One query for every winner's alias, not one per lot.
+    const topIds = auction.lots.flatMap((lot) => (lot.result?.topBidderId ? [lot.result.topBidderId] : []));
+    const bidders = topIds.length === 0 ? [] : await this.prisma.bidder.findMany({ where: { id: { in: topIds } }, select: { id: true, alias: true } });
+    const aliasById = new Map(bidders.map((bidder) => [bidder.id, bidder.alias]));
+
+    return {
+      ...auction,
+      lots: auction.lots.map(({ result, ...lot }) => ({
+        ...this.viewLot(lot, canSeeReserve),
+        result: result
+          ? {
+              topBidderAlias: result.topBidderId ? (aliasById.get(result.topBidderId) ?? null) : null,
+              topBidMinor: this.optionalNumber(result.topBidMinor),
+              ...(canSeeReserve ? { reserveMet: result.reserveMet } : {}),
+              bidCount: result.bidCount,
+              closedAt: result.closedAt,
+            }
+          : null,
+      })),
+    };
   }
 
   async create(dto: CreateAuctionDto, actorId: string): Promise<Auction> {
@@ -472,16 +551,26 @@ export class AuctionService {
    * leaves nothing, so a retry with the same key is safe.
    */
   async placeBid(input: PlaceBidInput): Promise<PlaceBidResult> {
+    return this.inBidTransaction(input.lotId, (tx) => this.placeBidOnce(tx, input));
+  }
+
+  /**
+   * Runs one writer of a lot's price as up to `MAX_BID_ATTEMPTS` whole
+   * transactions: a lost predicate or a lost race on a unique key starts over
+   * from a fresh read; a pool or lock wait past `BID_TRANSACTION` is a 503 that
+   * wrote nothing.
+   */
+  private async inBidTransaction<T>(lotId: string, work: (tx: Prisma.TransactionClient) => Promise<T>): Promise<T> {
     for (let attempt = 1; attempt <= MAX_BID_ATTEMPTS; attempt += 1) {
       try {
-        return await this.prisma.$transaction((tx) => this.placeBidOnce(tx, input), BID_TRANSACTION);
+        return await this.prisma.$transaction(work, BID_TRANSACTION);
       } catch (error) {
         if (error instanceof LotChangedUnderBid || this.isUniqueViolation(error)) {
-          this.logger.warn(`Bid on lot ${input.lotId} found the lot changed under it (attempt ${attempt} of ${MAX_BID_ATTEMPTS})`);
+          this.logger.warn(`Writer on lot ${lotId} found the lot changed under it (attempt ${attempt} of ${MAX_BID_ATTEMPTS})`);
           continue;
         }
         if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2028') {
-          this.logger.warn(`Bid on lot ${input.lotId} timed out waiting for the lot: ${error.message}`);
+          this.logger.warn(`Writer on lot ${lotId} timed out waiting for the lot: ${error.message}`);
           throw new ServiceUnavailableException('The auction is very busy right now. Your bid was not placed — try again.');
         }
         throw error;
@@ -494,14 +583,13 @@ export class AuctionService {
     });
   }
 
-  private async placeBidOnce(tx: Prisma.TransactionClient, input: PlaceBidInput): Promise<PlaceBidResult> {
-    const { lotId, amountMinor, idempotencyKey, user } = input;
+  /** Takes the lot's lock, then reads the lot and its auction under it. The first thing every writer of a lot's price does. */
+  private async lockLotRow(tx: Prisma.TransactionClient, lotId: string): Promise<LotRow> {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(${BID_LOT_LOCK_NAMESPACE}::int, hashtext(${lotId}))`;
-
     const rows = await tx.$queryRaw<LotRow[]>`
       SELECT l."id", l."auctionId", l."status" AS "lotStatus", l."startPriceMinor", l."currentBidMinor",
-             l."leaderBidderId", l."bidSeq",
-             a."status" AS "auctionStatus", a."endsAt", a."bidRules", a."createdById",
+             l."leaderBidderId", l."bidSeq", l."endsAt" AS "lotEndsAt", l."extendedMs",
+             a."status" AS "auctionStatus", COALESCE(l."endsAt", a."endsAt") AS "endsAt", a."bidRules", a."createdById",
              clock_timestamp() AS "now"
       FROM "AuctionLot" l
       JOIN "Auction" a ON a."id" = l."auctionId"
@@ -509,6 +597,12 @@ export class AuctionService {
     `;
     const row = rows[0];
     if (!row) throw new NotFoundException('Lot not found.');
+    return row;
+  }
+
+  private async placeBidOnce(tx: Prisma.TransactionClient, input: PlaceBidInput): Promise<PlaceBidResult> {
+    const { lotId, amountMinor, idempotencyKey, user } = input;
+    const row = await this.lockLotRow(tx, lotId);
 
     const rules = parseBidRules(row.bidRules);
     const existingBidder = await tx.bidder.findUnique({ where: { auctionId_userId: { auctionId: row.auctionId, userId: user.id } } });
@@ -529,31 +623,15 @@ export class AuctionService {
         return {
           bid: this.bidView(earlier, existingBidder.alias),
           replayed: true,
+          autoBid: null,
           lot: this.priceState(row, rules, existingBidder.id),
         };
       }
     }
 
-    // 2. The lot and the clock.
+    // 2. The lot and the clock; 3. who may bid.
     this.assertBiddable(row);
-
-    // 3. Who may bid. Staff who run auctions never bid on them; the author of an
-    // auction is named by data, not by role (doc 234 §5.7).
-    if (user.permissions.includes('auction.manage') || row.createdById === user.id) {
-      throw new ForbiddenException({
-        statusCode: 403,
-        code: 'BIDDER_NOT_ELIGIBLE',
-        message: 'Staff who run this auction cannot bid on it. Use a separate customer account to bid.',
-      });
-    }
-    if (existingBidder && existingBidder.status !== 'APPROVED') {
-      throw new ForbiddenException({
-        statusCode: 403,
-        code: 'BIDDER_NOT_ELIGIBLE',
-        message: 'This account is not approved to bid in this auction. Contact the auction organiser.',
-      });
-    }
-
+    this.assertMayBid(user, row, existingBidder);
     if (existingBidder) await this.assertWithinBidRate(tx, lotId, existingBidder.id, row.now);
 
     // 4. Nobody outbids themselves: it would only raise the price.
@@ -577,34 +655,248 @@ export class AuctionService {
       });
     }
 
-    // Everything holds: provision the bidder on a first bid, then write.
+    // Everything holds: provision the bidder on a first bid, then write the
+    // bid and, when a standing maximum outranks it, the one answer to it.
     const bidder = existingBidder ?? (await this.provisionBidder(tx, row.auctionId, user.id));
-    const seq = row.bidSeq + 1;
-    const last = await tx.bid.findFirst({ where: { lotId }, orderBy: { seq: 'desc' }, select: { hash: true } });
-    const prevHash = last?.hash ?? null;
-    const acceptedAt = row.now;
-    const fields = { id: randomUUID(), lotId, seq, bidderId: bidder.id, amountMinor, kind: 'MANUAL' as const, acceptedAt, idempotencyKey };
-    const hash = chainHash(prevHash, bidCanonical(fields));
+    const pending: PendingBid[] = [{ bidder, amountMinor, kind: 'MANUAL', idempotencyKey }];
+    const answer = await this.proxyAnswer(tx, row, rules, { bidderId: bidder.id, amountMinor, seq: row.bidSeq + 1 });
+    if (answer) pending.push(answer);
 
-    // The predicate-on-write: still this version, still open, not yet ended.
+    const placed = await this.commitBids(tx, row, rules, pending);
+    this.logger.debug(`Bid ${placed.bids[0]!.id} accepted on lot ${lotId}: seq ${placed.bids[0]!.seq}, ${amountMinor} minor units${answer ? ', answered by a standing maximum' : ''}`);
+    return {
+      bid: placed.views[0]!,
+      replayed: false,
+      autoBid: placed.views[1] ?? null,
+      lot: this.priceState(placed.row, rules, bidder.id),
+    };
+  }
+
+  /**
+   * Sets or raises the caller's standing maximum on a lot (doc 234 §5.3): the
+   * system then bids the least that keeps them ahead, up to it. The maximum is
+   * encrypted at rest and returned to nobody but its owner. It can only go up
+   * — a maximum that could be pulled would let a bidder frighten others off
+   * with a number they never meant to pay — and it must at least reach the
+   * next bid the caller could place by hand, or it could never be used.
+   *
+   * Setting one can place one bid: for the caller, when it beats the standing
+   * bid; for someone whose own maximum is higher, when the caller's new one
+   * puts them under it. Never more than one, however far apart the maxima.
+   */
+  async setProxyBid(input: SetProxyBidInput): Promise<ProxyBidResult> {
+    return this.inBidTransaction(input.lotId, (tx) => this.setProxyBidOnce(tx, input));
+  }
+
+  private async setProxyBidOnce(tx: Prisma.TransactionClient, input: SetProxyBidInput): Promise<ProxyBidResult> {
+    const { lotId, maxMinor, user } = input;
+    const row = await this.lockLotRow(tx, lotId);
+    const rules = parseBidRules(row.bidRules);
+
+    this.assertBiddable(row);
+    const existingBidder = await tx.bidder.findUnique({ where: { auctionId_userId: { auctionId: row.auctionId, userId: user.id } } });
+    this.assertMayBid(user, row, existingBidder);
+
+    // A leader's maximum need only reach what they already stand at; anyone
+    // else's must reach the next bid they could place.
+    const leading = existingBidder !== null && row.leaderBidderId === existingBidder.id;
+    const floor = leading && row.currentBidMinor !== null ? Number(row.currentBidMinor) : this.minimumNext(row, rules);
+    if (maxMinor < floor) {
+      throw new ConflictException({
+        statusCode: 409,
+        code: 'PROXY_TOO_LOW',
+        message: leading
+          ? 'Your maximum is below the bid you already hold.'
+          : 'Your maximum is below the minimum next bid, so it could never be used. Raise it to at least the minimum.',
+        details: { minimumMaxMinor: floor },
+      });
+    }
+
+    const bidder = existingBidder ?? (await this.provisionBidder(tx, row.auctionId, user.id));
+    const existing = await tx.proxyBid.findUnique({ where: { lotId_bidderId: { lotId, bidderId: bidder.id } } });
+    if (existing) {
+      const standing = this.decryptMax(existing.maxCipher);
+      if (maxMinor < standing) {
+        throw new ConflictException({
+          statusCode: 409,
+          code: 'PROXY_CANNOT_LOWER',
+          message: 'A maximum can be raised but not lowered or withdrawn.',
+        });
+      }
+      // The same maximum again is a repeat of the same request: nothing changes.
+      if (maxMinor === standing) {
+        return { maxMinor: standing, autoBid: null, lot: this.priceState(row, rules, bidder.id) };
+      }
+      // A raised maximum is a new offer, placed now: it does not keep the
+      // earlier one's place in a tie.
+      await tx.proxyBid.update({
+        where: { id: existing.id },
+        data: { maxCipher: this.encryptMax(maxMinor), placedAfterSeq: row.bidSeq },
+      });
+    } else {
+      await tx.proxyBid.create({
+        data: { lotId, bidderId: bidder.id, maxCipher: this.encryptMax(maxMinor), placedAfterSeq: row.bidSeq },
+      });
+    }
+
+    const standing = row.leaderBidderId !== null && row.currentBidMinor !== null
+      ? { bidderId: row.leaderBidderId, amountMinor: Number(row.currentBidMinor), seq: row.bidSeq }
+      : null;
+    const answer = await this.proxyAnswer(tx, row, rules, standing);
+    if (!answer) return { maxMinor, autoBid: null, lot: this.priceState(row, rules, bidder.id) };
+
+    const placed = await this.commitBids(tx, row, rules, [answer]);
+    return { maxMinor, autoBid: placed.views[0]!, lot: this.priceState(placed.row, rules, bidder.id) };
+  }
+
+  /** The caller's own standing maximum on a lot, or null. Nobody else's is readable through any route. */
+  async getProxyBid(lotId: string, userId: string): Promise<{ maxMinor: number | null }> {
+    const lot = await this.prisma.auctionLot.findUnique({ where: { id: lotId }, select: { auctionId: true } });
+    if (!lot) throw new NotFoundException('Lot not found.');
+    const bidder = await this.prisma.bidder.findUnique({ where: { auctionId_userId: { auctionId: lot.auctionId, userId } } });
+    if (!bidder) return { maxMinor: null };
+    const proxy = await this.prisma.proxyBid.findUnique({ where: { lotId_bidderId: { lotId, bidderId: bidder.id } } });
+    return { maxMinor: proxy ? this.decryptMax(proxy.maxCipher) : null };
+  }
+
+  /**
+   * What the system bids for someone now, given the bid that has just stood
+   * (or the standing one) and every approved bidder's maximum on the lot, as a
+   * pending bid; null when nothing needs placing. Reads every proxy once, here,
+   * under the lot's lock, so the answer is to the lot as it is.
+   */
+  private async proxyAnswer(
+    tx: Prisma.TransactionClient,
+    row: LotRow,
+    rules: BidRules,
+    standing: { bidderId: string; amountMinor: number; seq: number } | null,
+  ): Promise<PendingBid | null> {
+    const stored = await tx.proxyBid.findMany({
+      where: { lotId: row.id, bidder: { status: 'APPROVED' } },
+      include: { bidder: { select: { id: true, alias: true } } },
+    });
+    if (stored.length === 0) return null;
+    const offers: ProxyOffer[] = stored.map((proxy) => ({
+      bidderId: proxy.bidderId,
+      maxMinor: this.decryptMax(proxy.maxCipher),
+      placedAfterSeq: proxy.placedAfterSeq,
+    }));
+    const answer = resolveProxy({ standing, startPriceMinor: Number(row.startPriceMinor), proxies: offers, rules });
+    if (!answer) return null;
+    const owner = stored.find((proxy) => proxy.bidderId === answer.bidderId)?.bidder;
+    // A bidder with no proxy can hold the standing bid but never be answered for.
+    if (!owner) return null;
+    return { bidder: owner, amountMinor: answer.amountMinor, kind: 'PROXY_AUTO', idempotencyKey: `auto:${randomUUID()}` };
+  }
+
+  /**
+   * Writes one or more bids for a lot as one step of its chain and moves its
+   * price, leader, version and, when a bid lands in the closing window, its
+   * end, in a single guarded `UPDATE` (doc 234 §5.4, §6). All the bids share
+   * the one `acceptedAt` the database clock gave under the lot's lock; their
+   * `seq` orders them. The predicate: still the version that was read, lot and
+   * auction still open, the end not passed. Zero rows is a lost race, and the
+   * caller's transaction rolls back and starts again.
+   */
+  private async commitBids(
+    tx: Prisma.TransactionClient,
+    row: LotRow,
+    rules: BidRules,
+    pending: readonly PendingBid[],
+  ): Promise<{ bids: Array<{ id: string; seq: number }>; views: BidView[]; row: LotRow }> {
+    const acceptedAt = row.now;
+    const last = await tx.bid.findFirst({ where: { lotId: row.id }, orderBy: { seq: 'desc' }, select: { hash: true } });
+    let prevHash = last?.hash ?? null;
+    let seq = row.bidSeq;
+
+    const records = pending.map((bid) => {
+      seq += 1;
+      const fields = {
+        id: randomUUID(),
+        lotId: row.id,
+        seq,
+        bidderId: bid.bidder.id,
+        amountMinor: bid.amountMinor,
+        kind: bid.kind,
+        acceptedAt,
+        idempotencyKey: bid.idempotencyKey,
+      };
+      const hash = chainHash(prevHash, bidCanonical(fields));
+      const record = { ...fields, prevHash, hash };
+      prevHash = hash;
+      return record;
+    });
+    const final = records[records.length - 1]!;
+
+    // The extension is worked out once for the commit: the same instant, the
+    // same lot, so a manual bid and its answer cannot extend it twice.
+    const extension = antiSnipeExtensionMs(row.endsAt, acceptedAt, row.extendedMs, rules);
+    const newEnd = extension > 0 ? new Date(row.endsAt.getTime() + extension) : row.lotEndsAt;
+
     const updated = await tx.$executeRaw`
-      UPDATE "AuctionLot" SET "currentBidMinor" = ${amountMinor}, "leaderBidderId" = ${bidder.id},
-                              "bidSeq" = ${seq}, "updatedAt" = ${acceptedAt}
-      WHERE "id" = ${lotId} AND "status" = 'OPEN' AND "bidSeq" = ${row.bidSeq}
+      UPDATE "AuctionLot" SET "currentBidMinor" = ${final.amountMinor}, "leaderBidderId" = ${final.bidderId},
+                              "bidSeq" = ${final.seq}, "endsAt" = ${newEnd}, "extendedMs" = "extendedMs" + ${extension}::int,
+                              "updatedAt" = ${acceptedAt}
+      WHERE "id" = ${row.id} AND "status" = 'OPEN' AND "bidSeq" = ${row.bidSeq}
         AND EXISTS (
           SELECT 1 FROM "Auction" a
-          WHERE a."id" = "AuctionLot"."auctionId" AND a."status" = 'OPEN' AND a."endsAt" > ${acceptedAt}
+          WHERE a."id" = "AuctionLot"."auctionId" AND a."status" = 'OPEN'
+            AND COALESCE("AuctionLot"."endsAt", a."endsAt") > ${acceptedAt}
         )
     `;
     if (updated === 0) throw new LotChangedUnderBid();
 
-    const bid = await tx.bid.create({ data: { ...fields, prevHash, hash } });
-    this.logger.debug(`Bid ${bid.id} accepted on lot ${lotId}: seq ${seq}, ${amountMinor} minor units`);
+    await tx.bid.createMany({ data: records });
+    if (extension > 0) {
+      this.logger.log(`Lot ${row.id} extended by ${extension} ms to ${newEnd!.toISOString()} by a bid inside the closing window`);
+    }
     return {
-      bid: this.bidView(bid, bidder.alias),
-      replayed: false,
-      lot: this.priceState({ ...row, currentBidMinor: BigInt(amountMinor), bidSeq: seq, leaderBidderId: bidder.id }, rules, bidder.id),
+      bids: records.map((record) => ({ id: record.id, seq: record.seq })),
+      views: records.map((record, index) => this.bidView(record, pending[index]!.bidder.alias)),
+      row: {
+        ...row,
+        currentBidMinor: BigInt(final.amountMinor),
+        bidSeq: final.seq,
+        leaderBidderId: final.bidderId,
+        endsAt: extension > 0 ? newEnd! : row.endsAt,
+        lotEndsAt: newEnd,
+        extendedMs: row.extendedMs + extension,
+      },
     };
+  }
+
+  /**
+   * Staff who run auctions never bid on them, and the author of an auction is
+   * named by data, not by role (doc 234 §5.7). A bidder who is not approved
+   * (WO-234.5) cannot bid either.
+   */
+  private assertMayBid(
+    user: { id: string; permissions: readonly string[] },
+    row: LotRow,
+    bidder: { status: string } | null,
+  ): void {
+    if (user.permissions.includes('auction.manage') || row.createdById === user.id) {
+      throw new ForbiddenException({
+        statusCode: 403,
+        code: 'BIDDER_NOT_ELIGIBLE',
+        message: 'Staff who run this auction cannot bid on it. Use a separate customer account to bid.',
+      });
+    }
+    if (bidder && bidder.status !== 'APPROVED') {
+      throw new ForbiddenException({
+        statusCode: 403,
+        code: 'BIDDER_NOT_ELIGIBLE',
+        message: 'This account is not approved to bid in this auction. Contact the auction organiser.',
+      });
+    }
+  }
+
+  private encryptMax(maxMinor: number): string {
+    return encryptSecret(String(maxMinor), this.config.get('APP_ENCRYPTION_KEY'));
+  }
+
+  private decryptMax(cipher: string): number {
+    return Number(decryptSecret(cipher, this.config.get('APP_ENCRYPTION_KEY')));
   }
 
   /** Newest first. Bidders appear by alias only: identities are for the bidder-management permission (WO-234.5). */
@@ -667,7 +959,9 @@ export class AuctionService {
   /** Counts from the ledger: the tenth-most-recent bid still inside the window says when the next one is allowed. */
   private async assertWithinBidRate(tx: Prisma.TransactionClient, lotId: string, bidderId: string, now: Date): Promise<void> {
     const recent = await tx.bid.findMany({
-      where: { lotId, bidderId, acceptedAt: { gt: new Date(now.getTime() - BID_RATE_WINDOW_MS) } },
+      // Manual bids only: the system's answers on a bidder's behalf are not the
+      // bidder's doing, and a bidding war must not lock a proxy holder out.
+      where: { lotId, bidderId, kind: 'MANUAL', acceptedAt: { gt: new Date(now.getTime() - BID_RATE_WINDOW_MS) } },
       orderBy: { acceptedAt: 'desc' },
       take: MAX_BIDS_PER_BIDDER_PER_LOT,
       select: { acceptedAt: true },
@@ -692,11 +986,24 @@ export class AuctionService {
   }
 
   private async currentBidRules(): Promise<BidRules> {
-    const [incrementBps, minStepMinor] = await Promise.all([
+    const [incrementBps, minStepMinor, windowSeconds, extendSeconds, maxExtensionSeconds] = await Promise.all([
       this.settings.get<number>(SettingKey.AuctionBidIncrementBps),
       this.settings.get<number>(SettingKey.AuctionBidMinStepMinor),
+      this.settings.get<number>(SettingKey.AuctionAntiSnipeWindowSeconds),
+      this.settings.get<number>(SettingKey.AuctionAntiSnipeExtendSeconds),
+      this.settings.get<number>(SettingKey.AuctionMaxExtensionSeconds),
     ]);
-    return parseBidRules({ incrementBps, minStepMinor });
+    // Settings are in seconds, the rules in milliseconds; a value that is not a
+    // whole number of seconds is dropped by `parseBidRules` and gets the default.
+    const toMs = (seconds: unknown): number | undefined =>
+      typeof seconds === 'number' && Number.isFinite(seconds) ? Math.round(seconds * 1_000) : undefined;
+    return parseBidRules({
+      incrementBps,
+      minStepMinor,
+      antiSnipeWindowMs: toMs(windowSeconds),
+      antiSnipeExtendMs: toMs(extendSeconds),
+      maxExtensionMs: toMs(maxExtensionSeconds),
+    });
   }
 
   private assertBiddable(row: LotRow): void {

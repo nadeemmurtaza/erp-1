@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,210 tracked files in `apps/api`, by directory.
+All 1,215 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -39,7 +39,7 @@ All 1,210 tracked files in `apps/api`, by directory.
 | `accounts.prisma` | prisma schema | 120 | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md |
 | `approvals.prisma` | prisma schema | 79 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
-| `auction.prisma` | prisma schema | 179 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1 and WO-234.2). |
+| `auction.prisma` | prisma schema | 236 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1 to WO-234.3). |
 | `bank-facilities.prisma` | prisma schema | 122 | Bank facility management |
 | `bom.prisma` | prisma schema | 258 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
@@ -783,6 +783,12 @@ All 1,210 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 76 |  |
 
+### `apps/api/prisma/schema/migrations/20261002200000_wo234_3_proxy_and_close` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 53 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -1162,7 +1168,7 @@ All 1,210 tracked files in `apps/api`, by directory.
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
 | `document-prefix.ts` | module | 51 |  |
-| `settings.defaults.ts` | module | 555 |  |
+| `settings.defaults.ts` | module | 567 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.spec.ts` | unit test | 125 |  |
 | `settings.service.ts` | service | 146 |  |
@@ -1343,24 +1349,27 @@ All 1,210 tracked files in `apps/api`, by directory.
 | `attendance-device.dto.ts` | dto | 34 |  |
 | `attendance.dto.ts` | dto | 83 |  |
 
-### `apps/api/src/modules/auction` (8)
+### `apps/api/src/modules/auction` (11)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auction-bid.controller.ts` | controller | 40 |  |
-| `auction-bidding.service.spec.ts` | unit test | 471 |  |
+| `auction-bid.controller.ts` | controller | 63 |  |
+| `auction-bidding.service.spec.ts` | unit test | 583 |  |
+| `auction-lifecycle.cron.ts` | scheduled job | 41 |  |
+| `auction-lifecycle.service.spec.ts` | unit test | 104 |  |
+| `auction-lifecycle.service.ts` | service | 232 |  |
 | `auction.controller.ts` | controller | 119 |  |
-| `auction.module.ts` | nest module | 20 |  |
-| `auction.service.spec.ts` | unit test | 479 |  |
-| `auction.service.ts` | service | 808 |  |
-| `bidding.spec.ts` | unit test | 131 |  |
-| `bidding.ts` | module | 95 |  |
+| `auction.module.ts` | nest module | 22 |  |
+| `auction.service.spec.ts` | unit test | 487 |  |
+| `auction.service.ts` | service | 1115 |  |
+| `bidding.spec.ts` | unit test | 297 |  |
+| `bidding.ts` | module | 236 |  |
 
 ### `apps/api/src/modules/auction/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auction.dto.ts` | dto | 203 |  |
+| `auction.dto.ts` | dto | 215 |  |
 
 ### `apps/api/src/modules/bankfacilities` (5)
 
@@ -2653,14 +2662,15 @@ All 1,210 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `wishlist.dto.ts` | dto | 30 |  |
 
-### `apps/api/test` (33)
+### `apps/api/test` (34)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
 | `api-keys.e2e-spec.ts` | e2e test | 371 |  |
-| `auction-bidding.e2e-spec.ts` | e2e test | 252 |  |
-| `auction-http.e2e-spec.ts` | e2e test | 200 |  |
+| `auction-bidding.e2e-spec.ts` | e2e test | 263 |  |
+| `auction-http.e2e-spec.ts` | e2e test | 234 |  |
+| `auction-lifecycle.e2e-spec.ts` | e2e test | 424 |  |
 | `auction.e2e-spec.ts` | e2e test | 114 |  |
 | `auth-throttle.e2e-spec.ts` | e2e test | 431 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |

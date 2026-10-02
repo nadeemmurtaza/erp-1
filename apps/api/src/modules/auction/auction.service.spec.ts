@@ -355,10 +355,15 @@ describe('AuctionService', () => {
       expect(events).toEqual(['auction.scheduled']);
     });
 
-    it('freezes the bidding rules from Settings onto the auction as it is scheduled', async () => {
-      settings.get.mockImplementation(async (key: string) =>
-        key === 'auction.bid_increment_bps' ? 1_000 : key === 'auction.bid_min_step_minor' ? 500 : undefined,
-      );
+    it('freezes the bidding rules from Settings onto the auction as it is scheduled, anti-snipe seconds turned into milliseconds', async () => {
+      const settingsByKey: Record<string, number> = {
+        'auction.bid_increment_bps': 1_000,
+        'auction.bid_min_step_minor': 500,
+        'auction.anti_snipe_window_seconds': 60,
+        'auction.anti_snipe_extend_seconds': 30,
+        'auction.max_extension_seconds': 600,
+      };
+      settings.get.mockImplementation(async (key: string) => settingsByKey[key]);
       lockedAs('DRAFT');
       prisma.auction.findUniqueOrThrow.mockResolvedValue(draft());
       prisma.auctionLot.count.mockResolvedValue(1);
@@ -368,7 +373,10 @@ describe('AuctionService', () => {
 
       expect(prisma.auction.update).toHaveBeenCalledWith({
         where: { id: 'a1' },
-        data: { status: 'SCHEDULED', bidRules: { incrementBps: 1_000, minStepMinor: 500 } },
+        data: {
+          status: 'SCHEDULED',
+          bidRules: { incrementBps: 1_000, minStepMinor: 500, antiSnipeWindowMs: 60_000, antiSnipeExtendMs: 30_000, maxExtensionMs: 600_000 },
+        },
       });
     });
 

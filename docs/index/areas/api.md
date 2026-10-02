@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,210 files · 163,317 lines
+1,215 files · 165,056 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -29,11 +29,11 @@ Structure: `src/core/` is the shared platform every deployment runs;
 |---|---|---|---|
 | `apps/api` | 10 | 847 | file, script, json, module |
 | `apps/api/prisma` | 3 | 3,294 | module |
-| `apps/api/prisma/schema` | 177 | 17,966 | prisma schema, migration, toml |
+| `apps/api/prisma/schema` | 178 | 18,076 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 168 | nest module, module |
-| `apps/api/src/core` | 225 | 28,780 | unit test, service, module, controller |
-| `apps/api/src/modules` | 758 | 102,423 | nest module, unit test, service, controller |
-| `apps/api/test` | 33 | 9,758 | e2e test, unit test, module |
+| `apps/api/src/core` | 225 | 28,792 | unit test, service, module, controller |
+| `apps/api/src/modules` | 761 | 103,571 | nest module, unit test, service, controller |
+| `apps/api/test` | 34 | 10,227 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
 
@@ -54,11 +54,11 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/src/modules/analytics/analytics.service.ts` | 2,593 | service |  |
 | `apps/api/src/modules/orders/orders.service.ts` | 1,400 | service |  |
 | `apps/api/src/core/notifications/email/templates.ts` | 1,124 | module |  |
+| `apps/api/src/modules/auction/auction.service.ts` | 1,115 | service |  |
 | `apps/api/test/orders.e2e-spec.ts` | 1,088 | e2e test |  |
 | `apps/api/prisma/schema/migrations/20260816133646_init/migration.sql` | 1,076 | migration |  |
 | `apps/api/src/core/auth/sso.service.ts` | 869 | service |  |
 | `apps/api/src/modules/transfers/transfers.service.spec.ts` | 823 | unit test |  |
-| `apps/api/src/modules/auction/auction.service.ts` | 808 | service |  |
 | `apps/api/test/cart.e2e-spec.ts` | 800 | e2e test |  |
 | `apps/api/src/modules/accounting/posting-rules.subscriber.spec.ts` | 790 | unit test |  |
 | `apps/api/prisma/schema/catalog.prisma` | 788 | prisma schema | Catalog: categories, products, variants, images. |

@@ -88,6 +88,22 @@ partitioning by month (§15) is not done: Prisma does not model partitions, so i
 is a hand-written migration for when a deployment's `Bid` table needs it, and
 the `(lotId, seq)` and `(bidderId, acceptedAt)` indexes are in place for it.
 
+**What WO-234.3 added.** `ProxyBid`: `id`, `lotId`, `bidderId`, `maxCipher` (the
+maximum, AES-256-GCM through `encryptSecret()` with `APP_ENCRYPTION_KEY`, as
+`iv:tag:ciphertext`; never a number in the database), `placedAfterSeq` (the
+lot's `bidSeq` when the offer was made, which is what orders equal maxima),
+unique `(lotId, bidderId)`. `AuctionResult`: `id`, `lotId` (unique),
+`topBidderId?`, `topBidMinor?`, `reserveMet`, `bidCount`, `closedAt`. `AuctionLot`
+gained `endsAt?` (null means "when the auction ends", so a lot nobody bid late on
+has one end) and `extendedMs` (anti-snipe spent so far, counted apart from any
+outage extension). The result differs from the table above on purpose: it holds
+a **top bidder** and **top bid**, not a `winnerBidderId`/`finalMinor`, because a
+lot whose reserve was not met has a highest bidder and no winner (§5.5) and
+staff need to see both; `orderId?` arrives with WO-234.6, the first writer of it.
+The lot `OPEN → CLOSED` directly, under the lot's lock; `CLOSING` (§6) is not
+used, because no work sits between the end and the result that a second status
+would protect.
+
 ## 5. Bidding rules
 
 1. **Server time is the only time.** The client countdown is a display aid,
@@ -129,7 +145,10 @@ the `(lotId, seq)` and `(bidderId, acceptedAt)` indexes are in place for it.
   over SSE with polling fallback every 5 s. A slow consumer never slows the
   writer.
 * **Close** is a single job per lot with a predicate (`status` from `OPEN` to
-  `CLOSING`), idempotent; a missed run closes on the next tick.
+  `CLOSED`, built in WO-234.3 without a `CLOSING` step), idempotent; a missed
+  run closes on the next tick. It runs under the same per-lot lock as a bid, so
+  no bid is mid-flight when a lot closes and a late bid that moved the end
+  after the job found the lot due is not closed over.
 * **Hot-lot budget (stated target):** 50 accepted bids/second on one lot with
   p95 < 300 ms; load-tested before WO-234.4 is called done.
 * **Tamper-evident bids.** `Bid.hash = SHA-256(prevHash ‖ canonical(row))` per
@@ -221,8 +240,14 @@ the boss cannot see supplier prices before the deadline either.
 | Parameter | Exact value | Why this number | Enforced | Degrades |
 |---|---|---|---|---|
 | Minimum increment | greater of 500 basis points (5%) of the current bid, rounded up, and `toMinor(1)` (one whole currency unit; 100 in a two-decimal currency); Settings `auction.bid_increment_bps`, `auction.bid_min_step_minor`, **copied onto the auction at `schedule()`** | ~15 raises double a price, which keeps contests moving without penny-bids; one whole unit is the smallest step a person calls a raise | `placeBid()` via `minimumNextBid()` | Missing or malformed rule → the defaults, field by field |
-| Anti-snipe window / extension | bid in last 2 minutes extends end by 2 minutes | Long enough for a human to respond, short enough that a lot does not run forever | `placeBid()` | Cap hit → no further extension |
-| Max total extension | 30 minutes | Bounds a bidding war so staff and sellers can plan | same | Lot closes at the cap |
+| Anti-snipe window / extension | bid in last 120 000 ms extends the lot's end by 120 000 ms (a bid exactly 120 000 ms before the end is inside); Settings `auction.anti_snipe_window_seconds` 120, `auction.anti_snipe_extend_seconds` 120 (0 switches it off), **copied onto the auction at `schedule()`** with the increment | Long enough for a human to read "you were outbid" and answer, short enough that a lot does not run forever | `commitBids()` in `placeBid()`, in the same `UPDATE` as the price; one extension per commit, so a bid and its proxy answer cannot extend twice | Cap hit → no further extension; a missing field → its default |
+| Max total extension | 1 800 000 ms (30 minutes) per lot, Settings `auction.max_extension_seconds` 1 800, copied at `schedule()`; the last extension is cut to what is left | Bounds a bidding war so staff and sellers can plan | same | Lot closes at the cap |
+| Standing maximum (proxy) | one per bidder per lot, ≤ 10^15, never lowered; must reach the next bid the bidder could place by hand (a leader's need only reach their bid); a raise counts as a new offer placed now | A maximum that could be pulled would frighten others off with a number never meant; one below the next bid could never be used | `setProxyBid()` | 409 `PROXY_TOO_LOW` with `details.minimumMaxMinor`, 409 `PROXY_CANNOT_LOWER` |
+| Proxy answer | at most **one** `PROXY_AUTO` bid per manual bid or per maximum set: the leader stands at the runner-up's ceiling plus one increment, capped at their own ceiling; equal ceilings go to the earlier offer | A 10 000-to-1 gap between two maxima costs one ledger row, not a ladder of them | `resolveProxy()` (pure), `proxyAnswer()` | none; pure |
+| Proxy requests per client address | 30 per 60 000 ms on `PUT /auctions/lots/:lotId/proxy` | Setting a maximum is a decision, not a race: half a bid's allowance; a script probing for another bidder's maximum is slowed to one every two seconds on top of the lot lock | `@Throttle` on `AuctionBidController`, Redis-backed | 429, nothing changed |
+| Bid rate counts | **manual bids only** | The system's answers on a bidder's behalf are not the bidder's doing; counting them would let a bidding war lock a proxy holder out | `assertWithinBidRate()` | — |
+| Open and close job | every 15 000 ms (`*/15 * * * * *`), at most 100 auctions and 100 lots per run, a run skipped while the last still goes; no leader lock | 15 s is how soon a result appears; 100 a run is 400 a minute, far above any schedule, and a backlog drains over runs; idempotent by predicate, so two nodes cost a wasted query and never a double close | `AuctionLifecycleCron` | A failing lot is logged and left for the next run |
+| Outage grace | a lot found more than 60 000 ms past its end is extended once to 120 000 ms from now, with an `auction.lot_extended_after_outage` audit row, and not closed; not counted against the anti-snipe cap | 60 s is four missed runs; under it a slow tick is not an outage and the lot closes. Two minutes is long enough to see the lot is open again and answer | `closeLot()` | An outage that lasts longer simply extends again on the next recovery |
 | Bids per bidder | 10 accepted bids per rolling 60 s, per bidder per lot, counted from the ledger | A person cannot exceed this; scripts can | `assertWithinBidRate()` in `placeBid()` | 429 `BID_RATE_LIMITED` with `Retry-After`, bid not placed |
 | Bid requests per client address | 60 per 60 s on `POST /auctions/lots/:lotId/bids` | One a second sustained; a final-minute war is a bid every few seconds, and ten bidders on one office address still get six each | `@Throttle` on `AuctionBidController`, Redis-backed | 429, bid not placed |
 | Bid transaction wait and run | `maxWait` 10 000 ms, `timeout` 10 000 ms | Prisma's 2 000/5 000 refuse a healthy hot lot in a rush; 10 s drains the 50/s target through a pool of ten and still fails visibly | `BID_TRANSACTION` | 503 "bid was not placed"; nothing written |
@@ -312,6 +337,21 @@ needs the realtime path of WO-234.4); 2 (a retried key is one bid, ten at once
 included); the chain half of 9 (tamper is detected and named; the void itself is
 WO-234.9); the staff-and-author half of 6 (the `Party`-link half is WO-234.5).
 
+**Met so far (2026-10-02, WO-234.3):** 3 (`test/auction-lifecycle.e2e-spec.ts`:
+a bid before the window leaves the end alone; one inside it adds 120 000 ms in
+the same `UPDATE` as the price; four bids in the window against a 300 000 ms cap
+add 120 000, 120 000, 60 000 and 0; the boundary itself, a bid exactly 120 000 ms
+before the end, is in `bidding.spec.ts`, where the clock is a parameter); 4 (maxima of
+100 000 and 80 000 leave the 100 000 bidder at 84 000, 80 000 plus 5%; equal
+maxima go to the earlier offer, who stands at that maximum); 7 (a lot whose
+reserve is not met closes `CLOSED` with its highest bidder recorded and
+`reserveMet = false`, and nothing in the audit trail or elsewhere offers it to
+anyone); 10 (a lot found 10 minutes past its end is extended once and still
+open, takes bids, and has no result; one 30 s late is closed). Also: ten close
+runners at once close a lot once with one result row; two lots of one auction
+ending together leave the auction `CLOSED`; the open job is idempotent. Not met
+yet: 5, 6's `Party` half, 8, 9's void, 11.
+
 ## 17. Work orders
 
-234.1 schema + `Auction`/`Lot` admin + launchpad manifest, permissions seeded to real roles, nav entry (**built 2026-10-02:** schema, admin API and screens, permissions, nav; the launchpad manifest entry is carried by WO-232.2, which owns `manifest.ts`) · 234.2 `placeBid()` with predicate-on-write, idempotency, hash chain (**built 2026-10-02:** BIGINT prices, `Bidder` and `Bid`, `placeBid()` behind `POST /auctions/lots/:lotId/bids`, the admin ledger and chain check at `GET /admin/auctions/:id/lots/:lotId/bids` and `…/verify`, a side sheet on the auction page, `core/common/hash-chain.ts` as the reusable primitive; **not yet reachable by a bidder or openable by the system:** nothing sets an auction `OPEN` until the open job of WO-234.3, and the bidder's bid box is WO-234.4's public lot page, so until then bids exist only in tests) · 234.3 proxy bidding + anti-snipe + close job · 234.4 realtime fan-out + public lot page + load test · 234.5 bidder registration, eligibility, strikes · 234.6 settlement through `AuctionOrderSink`, fee rules, posting · 234.7 sealed-bid + officer key-split opening · 234.8 reverse (price-only) auctions · 234.9 integrity queue + adjustments · 234.10 deposit hold (after `payments` verified) · 234.11 `AuctionLotSource` and first industry feed · later: scored reverse auctions, Dutch, C2C (after escrow, reputation, disputes exist).
+234.1 schema + `Auction`/`Lot` admin + launchpad manifest, permissions seeded to real roles, nav entry (**built 2026-10-02:** schema, admin API and screens, permissions, nav; the launchpad manifest entry is carried by WO-232.2, which owns `manifest.ts`) · 234.2 `placeBid()` with predicate-on-write, idempotency, hash chain (**built 2026-10-02:** BIGINT prices, `Bidder` and `Bid`, `placeBid()` behind `POST /auctions/lots/:lotId/bids`, the admin ledger and chain check at `GET /admin/auctions/:id/lots/:lotId/bids` and `…/verify`, a side sheet on the auction page, `core/common/hash-chain.ts` as the reusable primitive; **not yet reachable by a bidder or openable by the system:** nothing sets an auction `OPEN` until the open job of WO-234.3, and the bidder's bid box is WO-234.4's public lot page, so until then bids exist only in tests) · 234.3 proxy bidding + anti-snipe + close job (**built 2026-10-02:** `ProxyBid` and `AuctionResult`, per-lot `endsAt`, `setProxyBid()` behind `PUT /auctions/lots/:lotId/proxy` and the owner-only `GET`, `placeBid()` rebuilt as a commit pipeline that writes a manual bid and at most one proxy answer as consecutive links of one chain with one guarded `UPDATE`, anti-snipe inside it, `AuctionLifecycleService` and its 15-second cron (open, close, outage extension), results and lot ends on the admin auction page; **now reachable by the system:** a scheduled auction opens by itself, but a bidder still has no screen to bid from until WO-234.4; no domain event is published yet, because the first consumer is WO-234.6's `AuctionOrderSink`, which will define `auction.lot_closed` from the `AuctionResult` row) · 234.4 realtime fan-out + public lot page + load test · 234.5 bidder registration, eligibility, strikes · 234.6 settlement through `AuctionOrderSink`, fee rules, posting · 234.7 sealed-bid + officer key-split opening · 234.8 reverse (price-only) auctions · 234.9 integrity queue + adjustments · 234.10 deposit hold (after `payments` verified) · 234.11 `AuctionLotSource` and first industry feed · later: scored reverse auctions, Dutch, C2C (after escrow, reputation, disputes exist).

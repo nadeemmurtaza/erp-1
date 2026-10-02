@@ -48,6 +48,8 @@ describe('AuctionService bidding', () => {
       bidSeq: 0,
       auctionStatus: 'OPEN',
       endsAt: new Date(NOW.getTime() + 600_000),
+      lotEndsAt: null,
+      extendedMs: 0,
       bidRules: { incrementBps: 500, minStepMinor: 100 },
       createdById: 'u-owner',
       now: NOW,
@@ -76,9 +78,19 @@ describe('AuctionService bidding', () => {
         findFirst: jest.fn().mockResolvedValue(null),
         findMany: jest.fn().mockResolvedValue([]),
         count: jest.fn().mockResolvedValue(0),
-        create: jest.fn(async ({ data }: any) => {
+        createMany: jest.fn(async () => {
           writes.push('create-bid');
-          return data;
+          return { count: 1 };
+        }),
+      },
+      proxyBid: {
+        findMany: jest.fn().mockResolvedValue([]),
+        findUnique: jest.fn().mockResolvedValue(null),
+        create: jest.fn(async () => {
+          writes.push('create-proxy');
+        }),
+        update: jest.fn(async () => {
+          writes.push('update-proxy');
         }),
       },
       auctionLot: { findFirst: jest.fn().mockResolvedValue({ id: 'l1', auctionId: 'a1', bidSeq: 0, currentBidMinor: null }) },
@@ -90,7 +102,7 @@ describe('AuctionService bidding', () => {
         AuctionService,
         { provide: PrismaService, useValue: prisma },
         { provide: SettingsService, useValue: { get: jest.fn() } },
-        { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'N1' } },
+        { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'N1', get: () => 'k'.repeat(32) } },
         { provide: AuditService, useValue: { record: jest.fn() } },
       ],
     }).compile();
@@ -122,9 +134,9 @@ describe('AuctionService bidding', () => {
       const sql = update[0].join('?');
       expect(sql).toContain(`"status" = 'OPEN'`);
       expect(sql).toContain('"bidSeq" =');
-      expect(sql).toContain('a."endsAt" >');
-      // values: new price, leader, new seq, accepted-at, lot id, the seq that was read, accepted-at again
-      expect(update.slice(1)).toEqual([100_000, 'p-new', 1, NOW, 'l1', 0, NOW]);
+      expect(sql).toContain('COALESCE("AuctionLot"."endsAt", a."endsAt") >');
+      // values: new price, leader, new seq, the lot's own end (unmoved), extension used now, accepted-at, lot id, the seq that was read, accepted-at again
+      expect(update.slice(1)).toEqual([100_000, 'p-new', 1, null, 0, NOW, 'l1', 0, NOW]);
     });
 
     it('accepts a first bid at exactly the opening price, and refuses one a unit below it', async () => {
@@ -140,7 +152,7 @@ describe('AuctionService bidding', () => {
 
       const result = await service.placeBid(input({ amountMinor: 105_000 }));
 
-      const created = prisma.bid.create.mock.calls[0][0].data;
+      const created = prisma.bid.createMany.mock.calls[0][0].data[0];
       expect(created).toMatchObject({ seq: 5, prevHash: 'previous-hash', amountMinor: 105_000, bidderId: 'p1' });
       expect(created.hash).toBe(chainHash('previous-hash', bidCanonical(created)));
       expect(result.lot.minimumNextBidMinor).toBe(110_250);
@@ -148,7 +160,7 @@ describe('AuctionService bidding', () => {
 
     it('starts the chain with no predecessor', async () => {
       await service.placeBid(input());
-      const created = prisma.bid.create.mock.calls[0][0].data;
+      const created = prisma.bid.createMany.mock.calls[0][0].data[0];
       expect(created.prevHash).toBeNull();
       expect(created.hash).toBe(chainHash(null, bidCanonical(created)));
     });
@@ -351,13 +363,13 @@ describe('AuctionService bidding', () => {
       expect(error).toBeInstanceOf(ConflictException);
       expect(error.getResponse()).toMatchObject({ code: 'LOT_CHANGED' });
       expect(prisma.$transaction).toHaveBeenCalledTimes(3);
-      expect(prisma.bid.create).not.toHaveBeenCalled();
+      expect(prisma.bid.createMany).not.toHaveBeenCalled();
     });
 
     it('retries when a unique index catches a duplicate seq or key, so the second pass sees the winner', async () => {
-      prisma.bid.create
+      prisma.bid.createMany
         .mockRejectedValueOnce(new Prisma.PrismaClientKnownRequestError('dup', { code: 'P2002', clientVersion: 'test' }))
-        .mockImplementation(async ({ data }: any) => data);
+        .mockImplementation(async () => ({ count: 1 }));
       await expect(service.placeBid(input())).resolves.toMatchObject({ replayed: false });
       expect(prisma.$transaction).toHaveBeenCalledTimes(2);
     });
@@ -372,6 +384,106 @@ describe('AuctionService bidding', () => {
     it('lets the transaction wait up to ten seconds for a connection and run, not Prisma’s 2 and 5', async () => {
       await service.placeBid(input());
       expect(prisma.$transaction.mock.calls[0][1]).toEqual({ maxWait: 10_000, timeout: 10_000 });
+    });
+  });
+
+  describe('anti-snipe and standing maximums', () => {
+    const updateCall = () => prisma.$executeRaw.mock.calls.find(([s]: [TemplateStringsArray]) => s.join('?').includes('UPDATE "AuctionLot"'));
+
+    it('moves the lot’s end by two minutes for a bid inside the closing window, in the same UPDATE', async () => {
+      const end = new Date(NOW.getTime() + 60_000);
+      lotRow = { ...lotRow, endsAt: end };
+
+      const result = await service.placeBid(input());
+
+      // new price, leader, seq, the new end, the extension used, accepted-at …
+      expect(updateCall().slice(1, 7)).toEqual([100_000, 'p-new', 1, new Date(end.getTime() + 120_000), 120_000, NOW]);
+      expect(result.lot.endsAt).toEqual(new Date(end.getTime() + 120_000));
+    });
+
+    it('adds nothing for a bid outside the window, and nothing past what is left of the cap', async () => {
+      await service.placeBid(input());
+      expect(updateCall().slice(4, 6)).toEqual([null, 0]);
+
+      prisma.$executeRaw.mockClear();
+      const end = new Date(NOW.getTime() + 10_000);
+      lotRow = { ...lotRow, endsAt: end, lotEndsAt: end, extendedMs: 1_740_000 };
+      await service.placeBid(input({ idempotencyKey: 'key-0000-0009' }));
+      expect(updateCall().slice(4, 6)).toEqual([new Date(end.getTime() + 60_000), 60_000]);
+    });
+
+    it('writes the manual bid and the system’s answer as two links of one chain, in one UPDATE', async () => {
+      lotRow = { ...lotRow, currentBidMinor: 100_000n, bidSeq: 1, leaderBidderId: 'p-other' };
+      prisma.bidder.findUnique.mockResolvedValue(bidder());
+      prisma.proxyBid.findMany.mockResolvedValue([
+        { bidderId: 'p-rich', maxCipher: (service as any).encryptMax(900_000), placedAfterSeq: 0, bidder: { id: 'p-rich', alias: 'Bidder 7' } },
+      ]);
+
+      const result = await service.placeBid(input({ amountMinor: 105_000 }));
+
+      const written = prisma.bid.createMany.mock.calls[0][0].data;
+      expect(written).toHaveLength(2);
+      expect(written[0]).toMatchObject({ seq: 2, bidderId: 'p1', amountMinor: 105_000, kind: 'MANUAL' });
+      expect(written[1]).toMatchObject({ seq: 3, bidderId: 'p-rich', amountMinor: 110_250, kind: 'PROXY_AUTO', prevHash: written[0].hash });
+      expect(written[1].idempotencyKey).toMatch(/^auto:/);
+      expect(prisma.$executeRaw.mock.calls.filter(([s]: [TemplateStringsArray]) => s.join('?').includes('UPDATE "AuctionLot"'))).toHaveLength(1);
+      expect(updateCall().slice(1, 4)).toEqual([110_250, 'p-rich', 3]);
+      expect(result.autoBid).toMatchObject({ alias: 'Bidder 7', amountMinor: 110_250, kind: 'PROXY_AUTO' });
+      expect(result.lot).toMatchObject({ bidSeq: 3, currentBidMinor: 110_250, leading: false });
+    });
+
+    it('counts only manual bids against the ten a minute', async () => {
+      lotRow = { ...lotRow, currentBidMinor: 100_000n, bidSeq: 1, leaderBidderId: 'p-other' };
+      prisma.bidder.findUnique.mockResolvedValue(bidder());
+      await service.placeBid(input({ amountMinor: 105_000 }));
+      expect(prisma.bid.findMany.mock.calls[0][0].where).toMatchObject({ lotId: 'l1', bidderId: 'p1', kind: 'MANUAL' });
+    });
+
+    describe('setProxyBid', () => {
+      const set = (over: Record<string, unknown> = {}) => ({ lotId: 'l1', maxMinor: 500_000, user, ...over });
+
+      it('takes the lot lock first, stores the maximum encrypted, and answers nothing when nobody is outranked', async () => {
+        const result = await service.setProxyBid(set());
+
+        expect(writes.slice(0, 4)).toEqual(['lock', 'lock:bidders', 'create-bidder', 'create-proxy']);
+        const stored = prisma.proxyBid.create.mock.calls[0][0].data;
+        expect(stored.maxCipher).not.toContain('500000');
+        expect((service as any).decryptMax(stored.maxCipher)).toBe(500_000);
+        expect(stored).toMatchObject({ lotId: 'l1', bidderId: 'p-new', placedAfterSeq: 0 });
+        expect(result.maxMinor).toBe(500_000);
+      });
+
+      it('refuses a maximum below the next bid, and one by staff who run the auction, writing nothing', async () => {
+        lotRow = { ...lotRow, currentBidMinor: 200_000n, bidSeq: 2, leaderBidderId: 'p-other' };
+        const low = await refusal(service.setProxyBid(set({ maxMinor: 209_999 })));
+        expect(low.getResponse()).toMatchObject({ code: 'PROXY_TOO_LOW', details: { minimumMaxMinor: 210_000 } });
+
+        const staff = await refusal(service.setProxyBid(set({ user: { id: 'u-staff', permissions: ['auction.manage'] } })));
+        expect(staff).toBeInstanceOf(ForbiddenException);
+        expect(prisma.proxyBid.create).not.toHaveBeenCalled();
+      });
+
+      it('lets a leader hold a maximum at their own bid, and refuses lowering one', async () => {
+        lotRow = { ...lotRow, currentBidMinor: 200_000n, bidSeq: 2, leaderBidderId: 'p1' };
+        prisma.bidder.findUnique.mockResolvedValue(bidder());
+        await expect(service.setProxyBid(set({ maxMinor: 200_000 }))).resolves.toMatchObject({ maxMinor: 200_000, autoBid: null });
+
+        prisma.proxyBid.findUnique.mockResolvedValue({ id: 'x1', maxCipher: (service as any).encryptMax(300_000), placedAfterSeq: 0 });
+        const lower = await refusal(service.setProxyBid(set({ maxMinor: 250_000 })));
+        expect(lower.getResponse()).toMatchObject({ code: 'PROXY_CANNOT_LOWER' });
+      });
+
+      it('changes nothing for the same maximum again, and treats a raise as a new offer placed now', async () => {
+        lotRow = { ...lotRow, currentBidMinor: 200_000n, bidSeq: 6, leaderBidderId: 'p-other' };
+        prisma.bidder.findUnique.mockResolvedValue(bidder());
+        prisma.proxyBid.findUnique.mockResolvedValue({ id: 'x1', maxCipher: (service as any).encryptMax(300_000), placedAfterSeq: 2 });
+
+        await expect(service.setProxyBid(set({ maxMinor: 300_000 }))).resolves.toMatchObject({ maxMinor: 300_000 });
+        expect(prisma.proxyBid.update).not.toHaveBeenCalled();
+
+        await service.setProxyBid(set({ maxMinor: 400_000 }));
+        expect(prisma.proxyBid.update.mock.calls[0][0].data).toMatchObject({ placedAfterSeq: 6 });
+      });
     });
   });
 

@@ -3,19 +3,30 @@ import { chainHash, verifyChain } from '../../core/common/hash-chain';
 import {
   DEFAULT_BID_RULES,
   MAX_PRICE_MINOR,
+  type BidRules,
+  type ProxyOffer,
+  antiSnipeExtensionMs,
   bidCanonical,
   bidderAlias,
   computeIncrement,
+  lotOutcome,
   minimumNextBid,
   parseBidRules,
+  resolveProxy,
 } from './bidding';
 
 /** Spelled out, not read from the brand, so the arithmetic below holds for any currency. */
-const rules = { incrementBps: 500, minStepMinor: 100 };
+const rules: BidRules = {
+  incrementBps: 500,
+  minStepMinor: 100,
+  antiSnipeWindowMs: 120_000,
+  antiSnipeExtendMs: 120_000,
+  maxExtensionMs: 1_800_000,
+};
 
 describe('default rules', () => {
   it('are 5% with one whole currency unit as the smallest step, whatever the brand currency', () => {
-    expect(DEFAULT_BID_RULES).toEqual({ incrementBps: 500, minStepMinor: toMinor(1) });
+    expect(DEFAULT_BID_RULES).toEqual({ ...rules, minStepMinor: toMinor(1) });
   });
 });
 
@@ -30,7 +41,7 @@ describe('computeIncrement', () => {
   });
 
   it('rounds the percentage up, never down', () => {
-    expect(computeIncrement(2_001, { incrementBps: 500, minStepMinor: 1 })).toBe(101); // 100.05
+    expect(computeIncrement(2_001, { ...rules, minStepMinor: 1 })).toBe(101); // 100.05
   });
 
   it('stays exact at the price ceiling, where a double would not', () => {
@@ -61,7 +72,8 @@ describe('minimumNextBid', () => {
 
 describe('parseBidRules', () => {
   it('reads a stored snapshot', () => {
-    expect(parseBidRules({ incrementBps: 1_000, minStepMinor: 500 })).toEqual({ incrementBps: 1_000, minStepMinor: 500 });
+    const stored = { incrementBps: 1_000, minStepMinor: 500, antiSnipeWindowMs: 60_000, antiSnipeExtendMs: 30_000, maxExtensionMs: 600_000 };
+    expect(parseBidRules(stored)).toEqual(stored);
   });
 
   it('falls back to the defaults for a missing snapshot', () => {
@@ -71,9 +83,19 @@ describe('parseBidRules', () => {
   });
 
   it('keeps the field it can trust and defaults the one it cannot', () => {
-    expect(parseBidRules({ incrementBps: 250, minStepMinor: -5 })).toEqual({ incrementBps: 250, minStepMinor: DEFAULT_BID_RULES.minStepMinor });
-    expect(parseBidRules({ incrementBps: 0.5, minStepMinor: 700 })).toEqual({ incrementBps: 500, minStepMinor: 700 });
-    expect(parseBidRules({ incrementBps: 20_000, minStepMinor: 700 })).toEqual({ incrementBps: 500, minStepMinor: 700 });
+    expect(parseBidRules({ incrementBps: 250, minStepMinor: -5 })).toEqual({ ...DEFAULT_BID_RULES, incrementBps: 250 });
+    expect(parseBidRules({ incrementBps: 0.5, minStepMinor: 700 })).toEqual({ ...DEFAULT_BID_RULES, minStepMinor: 700 });
+    expect(parseBidRules({ incrementBps: 20_000, minStepMinor: 700 })).toEqual({ ...DEFAULT_BID_RULES, minStepMinor: 700 });
+  });
+
+  it('reads a snapshot written before anti-snipe existed, with the anti-snipe defaults', () => {
+    expect(parseBidRules({ incrementBps: 1_000, minStepMinor: 500 })).toEqual({ ...DEFAULT_BID_RULES, incrementBps: 1_000, minStepMinor: 500 });
+  });
+
+  it('accepts zero for the anti-snipe fields, which switches it off, but never a negative', () => {
+    expect(parseBidRules({ antiSnipeExtendMs: 0 }).antiSnipeExtendMs).toBe(0);
+    expect(parseBidRules({ antiSnipeExtendMs: -1 }).antiSnipeExtendMs).toBe(DEFAULT_BID_RULES.antiSnipeExtendMs);
+    expect(parseBidRules({ maxExtensionMs: 365 * 24 * 3_600_000 }).maxExtensionMs).toBe(DEFAULT_BID_RULES.maxExtensionMs);
   });
 });
 
@@ -126,5 +148,149 @@ describe('bid canonical form', () => {
 describe('bidderAlias', () => {
   it('numbers bidders for the life of one auction', () => {
     expect(bidderAlias(7)).toBe('Bidder 7');
+  });
+});
+
+describe('antiSnipeExtensionMs', () => {
+  const end = new Date('2026-10-10T12:00:00.000Z');
+  const at = (msBeforeEnd: number) => new Date(end.getTime() - msBeforeEnd);
+
+  it('extends nothing for a bid before the closing window', () => {
+    expect(antiSnipeExtensionMs(end, at(120_001), 0, rules)).toBe(0);
+    expect(antiSnipeExtensionMs(end, at(3_600_000), 0, rules)).toBe(0);
+  });
+
+  it('extends for a bid exactly at the edge of the window, and for one in it', () => {
+    expect(antiSnipeExtensionMs(end, at(120_000), 0, rules)).toBe(120_000);
+    expect(antiSnipeExtensionMs(end, at(1), 0, rules)).toBe(120_000);
+  });
+
+  it('cuts the last extension to what is left of the cap', () => {
+    expect(antiSnipeExtensionMs(end, at(10), 1_700_000, rules)).toBe(100_000);
+  });
+
+  it('extends nothing once the cap is used up', () => {
+    expect(antiSnipeExtensionMs(end, at(10), 1_800_000, rules)).toBe(0);
+    expect(antiSnipeExtensionMs(end, at(10), 2_000_000, rules)).toBe(0);
+  });
+
+  it('extends nothing when the extension is zero, whatever the window', () => {
+    expect(antiSnipeExtensionMs(end, at(10), 0, { ...rules, antiSnipeExtendMs: 0 })).toBe(0);
+  });
+
+  it('is the cap itself, no more, over a run of bids each in the window', () => {
+    let used = 0;
+    let bids = 0;
+    for (;;) {
+      const add = antiSnipeExtensionMs(end, at(1), used, rules);
+      if (add === 0) break;
+      used += add;
+      bids += 1;
+    }
+    expect(used).toBe(1_800_000);
+    expect(bids).toBe(15);
+  });
+});
+
+describe('resolveProxy', () => {
+  const offer = (bidderId: string, maxMinor: number, placedAfterSeq = 0): ProxyOffer => ({ bidderId, maxMinor, placedAfterSeq });
+  const START = 10_000;
+  const resolve = (standing: { bidderId: string; amountMinor: number; seq: number } | null, proxies: ProxyOffer[]) =>
+    resolveProxy({ standing, startPriceMinor: START, proxies, rules });
+
+  it('places nothing when nobody has a proxy', () => {
+    expect(resolve(null, [])).toBeNull();
+    expect(resolve({ bidderId: 'a', amountMinor: 20_000, seq: 1 }, [])).toBeNull();
+  });
+
+  it('opens a lone proxy at the opening price', () => {
+    expect(resolve(null, [offer('a', 50_000)])).toEqual({ bidderId: 'a', amountMinor: START });
+  });
+
+  it('does not open a lot with a proxy below the opening price', () => {
+    expect(resolve(null, [offer('a', START - 1)])).toBeNull();
+  });
+
+  it('answers a manual bid beaten by a higher proxy with the bid plus one increment', () => {
+    // b bids 20 000 by hand; a's proxy of 100 000 answers at 20 000 + 5%.
+    expect(resolve({ bidderId: 'b', amountMinor: 20_000, seq: 1 }, [offer('a', 100_000)])).toEqual({ bidderId: 'a', amountMinor: 21_000 });
+  });
+
+  it('leaves a manual bid that is above the proxy standing', () => {
+    expect(resolve({ bidderId: 'b', amountMinor: 120_000, seq: 1 }, [offer('a', 100_000)])).toBeNull();
+  });
+
+  it('puts the proxy leader at the runner-up proxy plus one increment: 100 against 80 stands at 84', () => {
+    const a = offer('a', 100_000, 0);
+    const b = offer('b', 80_000, 0);
+    // Both in, 100_000 vs 80_000: the higher one stands at 80_000 + 5% = 84_000.
+    expect(resolve({ bidderId: 'b', amountMinor: START, seq: 1 }, [a, b])).toEqual({ bidderId: 'a', amountMinor: 84_000 });
+  });
+
+  it('caps the price at the leader\'s own maximum', () => {
+    // 100_000 against 98_000: 98_000 + 5% = 102_900 is past 100_000, so the leader stands at 100_000.
+    const a = offer('a', 100_000);
+    const b = offer('b', 98_000);
+    expect(resolve({ bidderId: 'b', amountMinor: START, seq: 1 }, [a, b])).toEqual({ bidderId: 'a', amountMinor: 100_000 });
+  });
+
+  it('gives equal maxima to the earlier one, at that maximum', () => {
+    const early = offer('early', 50_000, 0);
+    const late = offer('late', 50_000, 3);
+    expect(resolve({ bidderId: 'late', amountMinor: 30_000, seq: 4 }, [late, early])).toEqual({ bidderId: 'early', amountMinor: 50_000 });
+  });
+
+  it('keeps an already-leading bidder in front when their price only needs to rise', () => {
+    const a = offer('a', 100_000, 0);
+    const b = offer('b', 80_000, 0);
+    // a leads at 50_000 and b has just raised their proxy to 80_000: a rises to 84_000.
+    expect(resolve({ bidderId: 'a', amountMinor: 50_000, seq: 5 }, [a, b])).toEqual({ bidderId: 'a', amountMinor: 84_000 });
+  });
+
+  it('places nothing when the leader already stands at the price the competition calls for', () => {
+    expect(resolve({ bidderId: 'a', amountMinor: 84_000, seq: 6 }, [offer('a', 100_000), offer('b', 80_000)])).toBeNull();
+  });
+
+  it('treats a manual bid above a bidder\'s own proxy as that bidder\'s ceiling', () => {
+    // a has a proxy of 30_000 but bid 60_000 by hand: their ceiling is 60_000, so b's 50_000 proxy loses.
+    const result = resolve({ bidderId: 'a', amountMinor: 60_000, seq: 4 }, [offer('a', 30_000), offer('b', 50_000)]);
+    expect(result).toBeNull();
+  });
+
+  it('is one bid, however far apart the maxima are', () => {
+    const result = resolve({ bidderId: 'b', amountMinor: START, seq: 1 }, [offer('a', 1_000_000_000), offer('b', 10_000_000)]);
+    expect(result).toEqual({ bidderId: 'a', amountMinor: 10_500_000 });
+  });
+});
+
+describe('lotOutcome', () => {
+  it('has no winner and no met reserve for a lot nobody bid on', () => {
+    expect(lotOutcome({ currentBidMinor: null, leaderBidderId: null, reservePriceMinor: 5_000 })).toEqual({
+      topBidderId: null,
+      topBidMinor: null,
+      reserveMet: false,
+    });
+    expect(lotOutcome({ currentBidMinor: null, leaderBidderId: null, reservePriceMinor: null }).reserveMet).toBe(false);
+  });
+
+  it('meets a reserve the top bid reaches, exactly or beyond', () => {
+    expect(lotOutcome({ currentBidMinor: 5_000, leaderBidderId: 'a', reservePriceMinor: 5_000 })).toEqual({
+      topBidderId: 'a',
+      topBidMinor: 5_000,
+      reserveMet: true,
+    });
+    expect(lotOutcome({ currentBidMinor: 5_001, leaderBidderId: 'a', reservePriceMinor: 5_000 }).reserveMet).toBe(true);
+  });
+
+  it('keeps the top bidder but does not meet a reserve the top bid falls short of', () => {
+    expect(lotOutcome({ currentBidMinor: 4_999, leaderBidderId: 'a', reservePriceMinor: 5_000 })).toEqual({
+      topBidderId: 'a',
+      topBidMinor: 4_999,
+      reserveMet: false,
+    });
+  });
+
+  it('counts any bid as meeting a lot with no reserve', () => {
+    expect(lotOutcome({ currentBidMinor: 1, leaderBidderId: 'a', reservePriceMinor: null }).reserveMet).toBe(true);
   });
 });

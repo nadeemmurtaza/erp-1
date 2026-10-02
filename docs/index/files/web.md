@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 542 tracked files in `apps/web`, by directory.
+All 544 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -152,7 +152,7 @@ All 542 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 548 |  |
+| `page.tsx` | page | 582 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]` (1)
 
@@ -1752,7 +1752,7 @@ All 542 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (35)
+### `apps/web/src/lib` (37)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1760,6 +1760,8 @@ All 542 tracked files in `apps/web`, by directory.
 | `analytics-client.ts` | utility | 91 |  |
 | `api-client.ts` | utility | 41 | The one HTTP layer. |
 | `api.ts` | utility | 200 |  |
+| `auction-lots.spec.ts` | unit test | 70 |  |
+| `auction-lots.ts` | utility | 64 | What an auction's lots say about when they end and how they ended (launchpad-apps/234-auction-app.md §5.4, §5.5). |
 | `calendar.spec.ts` | unit test | 291 |  |
 | `calendar.ts` | utility | 292 | Calendar arithmetic for the date field (MNU-2): a month's grid, a week's start, keyboard movement by day, week, month a… |
 | `cart-client.ts` | utility | 99 |  |

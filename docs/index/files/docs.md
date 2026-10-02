@@ -586,7 +586,7 @@ All 458 tracked files in `docs/*`, by directory.
 | `18-identity-verification.md` | doc | 149 |  |
 | `21-access-over-the-org-tree.md` | doc | 294 |  |
 | `212-role-scope-enforcement-gap.md` | doc | 129 |  |
-| `231-work-attribution-and-sealed-access.md` | doc | 419 |  |
+| `231-work-attribution-and-sealed-access.md` | doc | 518 |  |
 
 ### `docs/implementation/admin-platform` (5)
 

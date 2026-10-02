@@ -6,13 +6,12 @@
 > person can see, must come from evidence and explicit grants, never from
 > someone's position in the hierarchy.**
 >
-> **Research note, stated plainly.** `vyzno.io` was named as a source. It was
-> **not readable** from this environment (the network proxy blocked the
-> domain, and a web search returned nothing about it), so **nothing here
-> describes or is derived from that product.** The design below rests on the
-> general sources in §9 and on this repository's existing mechanisms. If
-> vyzno.io has a feature you want compared, paste its text or a screenshot and
-> a short addendum can be written against it.
+> **Research note, stated plainly.** `vyzno.io` was named as a source but was
+> **not readable** from this environment (blocked by the network proxy; web
+> search found nothing). The owner later **pasted its marketing page text**;
+> §10 compares against that text only. It is a vendor's own claims, not a
+> tested product, and nothing in §§1–9 was derived from it. The design rests
+> on the general sources in §9 and this repository's existing mechanisms.
 
 ---
 
@@ -403,7 +402,7 @@ hash-chained contribution record that no one can write for another person;
 sealed vaults with per-member wrapped keys that the org tree and admins cannot
 read; delegated, scoped, expiring review grants instead of shared passwords.*
 
-## 9. Sources (general, not vyzno.io)
+## 9. Sources (general)
 
 * Secure sharing without exposing passwords — shared vaults with role-based access, just-in-time and time-limited access with approval, direct launch of sessions where the password is never revealed, expiring encrypted links for external parties: [Securden — shared password management](https://www.securden.com/password-manager/features/shared-password-management.html), [Bitwarden — secure password sharing for teams](https://bitwarden.com/resources/secure-password-sharing-for-teams/), [Psono — secure password sharing for teams](https://psono.com/blog/secure-password-sharing-for-teams).
 * Zero-knowledge, client-side encryption where the server stores only opaque blobs: [secretli](https://github.com/pscheid92/secretli), [Akeyless — zero-knowledge encryption](https://www.akeyless.io/secrets-management-glossary/zero-knowledge-encryption/), [Client-side encryption (Wikipedia)](https://en.wikipedia.org/wiki/Client-side_encryption).
@@ -412,7 +411,107 @@ read; delegated, scoped, expiring review grants instead of shared passwords.*
 * Scoped, short-lived delegated access in place of password sharing (OAuth, token exchange): [Frontegg — OAuth explained](https://frontegg.com/blog/oauth), [Oasis — OAuth 2.0](https://www.oasis.security/glossary/oauth-2-0).
 * Tamper-evident trails and signed commits for attribution (hash chains, signatures, WORM): [Finqub — tamper-evident audit logs](https://finqub.io/learn/tamper-evident-audit-trail/), [Insight42 — signed commits](https://insight42.com/code-signing-signed-commits-prevent-git-impersonation-and-meet-us-eu-compliance-nis2-gdpr-cra/), [Kusari — non-repudiation](https://www.kusari.dev/learning-center/non-repudiation).
 
-*Limits of this research:* two of these pages (Bitwarden's, and vyzno.io itself)
-were blocked from direct reading, so Bitwarden's claims here come from search
-summaries only. The sources are general industry practice; they are not a
+*Limits of this research:* Bitwarden's page was blocked from direct reading,
+so its claims here come from search summaries only. The sources are general industry practice; they are not a
 review of any specific competing product.
+
+---
+
+## 10. Comparison with Vyzno (from the owner's pasted page text)
+
+**Source and limits.** Only the text the owner pasted: a marketing page for
+"Vyzno Mail" (company-owned email, shared mailboxes, plus chat and files). No
+architecture, security model, pricing or independent review was available, so
+every "Vyzno does X" below means "its page says X". Nothing was tested.
+
+### 10.1 What the page claims
+
+| Claim on the page | Plain meaning |
+|---|---|
+| "No shared passwords — give access without sharing logins" | A shared mailbox (e.g. `sales@`) is assigned to people; each signs in as themselves |
+| "Change access anytime — add or remove people" | Access is an assignment that can be changed without rotating a password |
+| "One person, multiple mailboxes" | One login shows the personal mailbox plus every shared one assigned |
+| "Mail history stays with the company" / "People leave, company email stays" | The **organization owns** the mailbox; removing a person does not take the mail with them |
+| Mail + Chat + Drive in one workspace | Bundled workspace; no detail given |
+| Setup: add domain → create mailboxes → assign people → work together | Admin-driven onboarding |
+
+### 10.2 What it confirms in this design
+
+* **The resource belongs to the organization; people get assignments.** That is
+  the same shape as §3's vault (`VaultMember` rows, no shared secret) and as
+  §3.4 pattern A/B (access without a handed-over password). Their page shows
+  the pattern is a recognised market expectation for *shared mailboxes*, not
+  only for secrets.
+* **"People leave, the thing stays"** matches the "grant that ends itself"
+  lens: removal is a membership change, not a credential rotation for
+  everyone.
+
+### 10.3 Where Vyzno's model and this document deliberately differ
+
+| | Vyzno page's model | This document |
+|---|---|---|
+| Who controls access | **The company** — admins assign and remove; "company control" is the selling point | For sealed material, **the owners (client + developer), not the company's admins or management** |
+| Can a manager/admin read everything? | Implied yes: "communication under company control", history owned by the company | **No** inside a sealed vault (§3.1–3.3): admins can destroy, not read |
+| Who did the work | Not addressed on the page | **Per-person attribution** (§2) |
+
+**This is the key finding.** A company-owned, admin-assigned mailbox solves
+the *shared-password* problem and the *departing-employee* problem. It does
+**not** solve either of your two problems:
+
+1. **Confidential from the boss.** A company-controlled mailbox is, by design,
+   readable by whoever controls the company. Client-and-developer-only
+   material cannot live in one. It belongs in a sealed vault (§3), and the
+   *review* of it uses scoped grants (§3.4), not mailbox assignment.
+2. **False credit.** A shared mailbox makes attribution *worse* unless each
+   reply is tied to a person: if three people answer from `sales@`, "who
+   handled it" is exactly the field a manager can claim. The fix is the same
+   as §2: record the **actual sender** (the signed-in person) on every
+   outgoing message and contribution (`AUTHORED`/`REVIEWED`), even when the
+   visible From address is the shared one.
+
+### 10.4 What is worth adopting for this ERP (core, cross-sector)
+
+If a shared-mailbox capability is built, it should follow these rules, which
+take Vyzno's good idea and close the two gaps above:
+
+1. **Sign in as yourself, never to a shared login.** A `SharedMailbox` has
+   `MailboxMember` rows (person, role: `READ` `REPLY` `MANAGE`, `expiresAt?`);
+   there is no mailbox password to hand over.
+2. **Send-as, with the real sender recorded.** Outgoing mail from a shared
+   address stores `sentByUserId` on the message and emits a
+   `work.contribution_recorded` event — attribution survives the shared address.
+3. **The organization owns the mailbox and its history** (departure does not
+   delete it), **but** a mailbox flagged `SEALED` follows §3: membership by
+   named owners, per-member keys, admins cannot read; `SEALED` is opt-in
+   because it costs server-side search and recovery (the §3.3 trade-off).
+4. **Membership changes are audited and notified** to the members, as in §3.3.
+5. **Reassignment on departure** happens in the same transaction that
+   deactivates the user (doc 21's grant-ends-itself rule): the person's
+   mailbox memberships are removed, open threads return to the shared pool
+   unclaimed, nothing is silently handed to a manager.
+6. **Reuse before building.** Doc 13 (self-hosted, white-labelled email) and
+   the inbound-email handling already in the repository are the starting point;
+   this would be an extension of that, not a second mail system. Whether
+   mail, chat and drive should be bundled the way the page does is a product
+   decision with no support in this repository's current scope.
+
+### 10.5 Open questions for the owner
+
+1. Is the goal an email product (like Vyzno) inside this ERP, or only the
+   *access pattern* (no shared passwords, assign-and-revoke) applied to the
+   things the ERP already holds? Docs 231 §§1–9 assume the second.
+2. Should `SEALED` mailboxes exist at all, given they disable admin recovery
+   and server-side search for that mailbox?
+3. Is "company owns the history" acceptable for **non-sealed** mailboxes, with
+   the sealed vault reserved for client-confidential material? (This document
+   assumes yes.)
+
+### 10.6 Work orders (only if an email capability is wanted)
+
+231.11 `SharedMailbox`/`MailboxMember` over doc 13's mail path · 231.12
+`sentByUserId` + contribution event on send · 231.13 departure transaction
+(memberships removed, threads returned to pool) · 231.14 optional `SEALED`
+mailbox mode reusing §3's key-wrap.
+
+Source for §10: text pasted by the owner from the vendor's own website; not
+independently verified.

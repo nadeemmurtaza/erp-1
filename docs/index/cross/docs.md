@@ -1956,17 +1956,18 @@ _no second-level headings_
 - 5. Out of scope (this pass)  <sub>:109</sub>
 - Acceptance criteria (for the work order that builds this)  <sub>:121</sub>
 
-### `docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md`  <sub>419 lines</sub>
+### `docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md`  <sub>518 lines</sub>
 
-- 1. The two problems, in the owner's words  <sub>:19</sub>
-- 2. Problem 1 — false credit  <sub>:41</sub>
-- 3. Problem 2 — confidential information that the hierarchy must not reach  <sub>:160</sub>
-- 4. How the two problems meet  <sub>:322</sub>
-- 5. Scope lenses (feature-scope map)  <sub>:342</sub>
-- 6. Work orders  <sub>:374</sub>
-- 7. Out of scope here  <sub>:392</sub>
-- 8. Decision to record  <sub>:399</sub>
-- 9. Sources (general, not vyzno.io)  <sub>:406</sub>
+- 1. The two problems, in the owner's words  <sub>:18</sub>
+- 2. Problem 1 — false credit  <sub>:40</sub>
+- 3. Problem 2 — confidential information that the hierarchy must not reach  <sub>:159</sub>
+- 4. How the two problems meet  <sub>:321</sub>
+- 5. Scope lenses (feature-scope map)  <sub>:341</sub>
+- 6. Work orders  <sub>:373</sub>
+- 7. Out of scope here  <sub>:391</sub>
+- 8. Decision to record  <sub>:398</sub>
+- 9. Sources (general)  <sub>:405</sub>
+- 10. Comparison with Vyzno (from the owner's pasted page text)  <sub>:420</sub>
 
 ### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>253 lines</sub>
 

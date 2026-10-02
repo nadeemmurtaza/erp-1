@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2666,
-    "lines": 429284,
+    "files": 2667,
+    "lines": 429705,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 457,
-      "lines": 94613,
-      "bytes": 5777190,
+      "files": 458,
+      "lines": 95034,
+      "bytes": 5810187,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -97053,8 +97053,8 @@
       "path": "docs/implementation/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 696,
-      "bytes": 105696,
+      "lines": 698,
+      "bytes": 106034,
       "doc": "",
       "symbols": []
     },
@@ -97154,6 +97154,15 @@
       "kind": "doc",
       "lines": 129,
       "bytes": 6921,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 419,
+      "bytes": 32659,
       "doc": "",
       "symbols": []
     },

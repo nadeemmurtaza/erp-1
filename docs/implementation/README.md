@@ -82,6 +82,8 @@ KDS, subscriptions and multi-branch). Start at
 **Numbers 220–230** — the **industry-specific** housing-society sector pack (real estate / society management only; not core): plot and file bookings, members, installments and billing, receipts, transfers and the booking lifecycle, accounting and reports, complaints, visitors, roles, and Excel import of an existing society's data. Start at
 [`housing-society/README.md`](./housing-society/README.md).
 
+**Number 231** — [`231-work-attribution-and-sealed-access.md`](./access-control-identity/231-work-attribution-and-sealed-access.md): credit that comes from evidence (a manager cannot claim a report's work) and sealed vaults the org chart and admins cannot read, with passwordless scoped review access. Core, cross-sector; design only.
+
 **Numbers 40–49** fill in the granular micro-features a high-level feature
 list generalizes over — each checked against what already exists first:
 

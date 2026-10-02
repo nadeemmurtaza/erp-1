@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-457 files · 94,613 lines
+458 files · 95,034 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,8 +84,8 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 11 | 16,331 | doc, file |
-| `docs/implementation/access-control-identity` | 8 | 2,035 | doc |
+| `docs/implementation` | 11 | 16,333 | doc, file |
+| `docs/implementation/access-control-identity` | 9 | 2,454 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
 | `docs/implementation/analytics-reporting` | 5 | 555 | doc |
@@ -130,7 +130,7 @@ has a bug.
 | `docs/implementation/MULTI-SECTOR.md` | 854 | doc |  |
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md` | 818 | doc |  |
-| `docs/implementation/README.md` | 696 | doc |  |
+| `docs/implementation/README.md` | 698 | doc |  |
 | `docs/erp-lenses/_meta/_cluster-analysis.md` | 675 | doc |  |
 | `docs/implementation/composable-resilience-platform/169-01-layer0-canonical-data-spine.md` | 661 | doc |  |
 | `docs/erp-lenses/_meta/_conflicts.md` | 645 | doc |  |

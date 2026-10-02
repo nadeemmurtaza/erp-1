@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**489** markdown documents. These explain **why**; this index only says **where**.
+**490** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -1955,6 +1955,18 @@ _no second-level headings_
 - 4. Decision  <sub>:83</sub>
 - 5. Out of scope (this pass)  <sub>:109</sub>
 - Acceptance criteria (for the work order that builds this)  <sub>:121</sub>
+
+### `docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md`  <sub>419 lines</sub>
+
+- 1. The two problems, in the owner's words  <sub>:19</sub>
+- 2. Problem 1 — false credit  <sub>:41</sub>
+- 3. Problem 2 — confidential information that the hierarchy must not reach  <sub>:160</sub>
+- 4. How the two problems meet  <sub>:322</sub>
+- 5. Scope lenses (feature-scope map)  <sub>:342</sub>
+- 6. Work orders  <sub>:374</sub>
+- 7. Out of scope here  <sub>:392</sub>
+- 8. Decision to record  <sub>:399</sub>
+- 9. Sources (general, not vyzno.io)  <sub>:406</sub>
 
 ### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>253 lines</sub>
 
@@ -4120,16 +4132,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>696 lines</sub>
+### `docs/implementation/README.md`  <sub>698 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:549</sub>
-- The two module groups  <sub>:578</sub>
-- How a work order runs  <sub>:615</sub>
-- Known gaps not yet owned by a phase  <sub>:633</sub>
-- When a brief is wrong  <sub>:660</sub>
-- Scope, honestly  <sub>:673</sub>
-- Gap-analysis roadmap references  <sub>:680</sub>
+- Dependency order  <sub>:551</sub>
+- The two module groups  <sub>:580</sub>
+- How a work order runs  <sub>:617</sub>
+- Known gaps not yet owned by a phase  <sub>:635</sub>
+- When a brief is wrong  <sub>:662</sub>
+- Scope, honestly  <sub>:675</sub>
+- Gap-analysis roadmap references  <sub>:682</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

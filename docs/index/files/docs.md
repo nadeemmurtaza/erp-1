@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 457 tracked files in `docs/*`, by directory.
+All 458 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -569,12 +569,12 @@ All 457 tracked files in `docs/*`, by directory.
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 696 |  |
+| `README.md` | doc | 698 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
-### `docs/implementation/access-control-identity` (8)
+### `docs/implementation/access-control-identity` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -586,6 +586,7 @@ All 457 tracked files in `docs/*`, by directory.
 | `18-identity-verification.md` | doc | 149 |  |
 | `21-access-over-the-org-tree.md` | doc | 294 |  |
 | `212-role-scope-enforcement-gap.md` | doc | 129 |  |
+| `231-work-attribution-and-sealed-access.md` | doc | 419 |  |
 
 ### `docs/implementation/admin-platform` (5)
 

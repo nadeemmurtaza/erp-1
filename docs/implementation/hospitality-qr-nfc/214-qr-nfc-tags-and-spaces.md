@@ -1,5 +1,7 @@
 # 214 — QR/NFC tags and Spaces
 
+> **Industry-specific module.** This belongs to the **hospitality sector pack** (hotels, cafés, restaurants), not to `core`. It is enabled only in hospitality deployments through the `MODULES` allowlist; other sectors never load it, and core never imports it.
+>
 > **Status: Planned.** Part of [213](./213-hospitality-platform-overview.md).
 > Module: `hospitality-spaces` (+ the entry half of `hospitality-guest`).
 

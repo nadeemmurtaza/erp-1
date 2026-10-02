@@ -1,5 +1,7 @@
 # 216 — Staff operations: the live board
 
+> **Industry-specific module.** This belongs to the **hospitality sector pack** (hotels, cafés, restaurants), not to `core`. It is enabled only in hospitality deployments through the `MODULES` allowlist; other sectors never load it, and core never imports it.
+>
 > **Status: Planned.** Module: `hospitality-service` (staff half). One job:
 > **what is waiting, and where.**
 

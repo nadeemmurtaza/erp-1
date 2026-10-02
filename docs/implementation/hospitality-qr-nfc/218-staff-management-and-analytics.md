@@ -1,5 +1,7 @@
 # 218 — Staff management and analytics
 
+> **Industry-specific module.** This belongs to the **hospitality sector pack** (hotels, cafés, restaurants), not to `core`. It is enabled only in hospitality deployments through the `MODULES` allowlist; other sectors never load it, and core never imports it.
+>
 > **Status: Planned.** Modules: `hospitality-staff`, `hospitality-insights`.
 > Two jobs, two pages: *who is working where*, and *how is the day going*.
 

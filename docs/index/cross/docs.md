@@ -3228,81 +3228,81 @@ _no second-level headings_
 - Customization  <sub>:142</sub>
 - Bottom line  <sub>:151</sub>
 
-### `docs/implementation/hospitality-qr-nfc/213-hospitality-platform-overview.md`  <sub>136 lines</sub>
+### `docs/implementation/hospitality-qr-nfc/213-hospitality-platform-overview.md`  <sub>138 lines</sub>
 
-- 1. Objective  <sub>:8</sub>
-- 2. Actors  <sub>:20</sub>
-- 3. Mapping to this repository's architecture  <sub>:36</sub>
-- 4. The pack: modules and what each owns  <sub>:50</sub>
-- 5. The five pillars for this feature  <sub>:69</sub>
-- 6. Scope lenses (feature-scope map)  <sub>:79</sub>
-- 7. Build order (work orders)  <sub>:109</sub>
-- 8. Out of scope here  <sub>:126</sub>
-- 9. Decision to record  <sub>:132</sub>
+- 1. Objective  <sub>:10</sub>
+- 2. Actors  <sub>:22</sub>
+- 3. Mapping to this repository's architecture  <sub>:38</sub>
+- 4. The pack: modules and what each owns  <sub>:52</sub>
+- 5. The five pillars for this feature  <sub>:71</sub>
+- 6. Scope lenses (feature-scope map)  <sub>:81</sub>
+- 7. Build order (work orders)  <sub>:111</sub>
+- 8. Out of scope here  <sub>:128</sub>
+- 9. Decision to record  <sub>:134</sub>
 
-### `docs/implementation/hospitality-qr-nfc/214-qr-nfc-tags-and-spaces.md`  <sub>148 lines</sub>
+### `docs/implementation/hospitality-qr-nfc/214-qr-nfc-tags-and-spaces.md`  <sub>150 lines</sub>
 
-- 1. The one rule  <sub>:6</sub>
-- 2. Data model (additive, forward-only migration)  <sub>:11</sub>
-- 3. The URL (the entire "protocol")  <sub>:25</sub>
-- 4. Scan flow (no install, no login)  <sub>:46</sub>
-- 5. Session and token parameters  <sub>:66</sub>
-- 6. Abuse and trust  <sub>:82</sub>
-- 7. Tag lifecycle (staff screen: *Spaces → Tags*)  <sub>:99</sub>
-- 8. Permissions  <sub>:115</sub>
-- 9. Acceptance criteria  <sub>:129</sub>
-- 10. Work orders  <sub>:141</sub>
+- 1. The one rule  <sub>:8</sub>
+- 2. Data model (additive, forward-only migration)  <sub>:13</sub>
+- 3. The URL (the entire "protocol")  <sub>:27</sub>
+- 4. Scan flow (no install, no login)  <sub>:48</sub>
+- 5. Session and token parameters  <sub>:68</sub>
+- 6. Abuse and trust  <sub>:84</sub>
+- 7. Tag lifecycle (staff screen: *Spaces → Tags*)  <sub>:101</sub>
+- 8. Permissions  <sub>:117</sub>
+- 9. Acceptance criteria  <sub>:131</sub>
+- 10. Work orders  <sub>:143</sub>
 
-### `docs/implementation/hospitality-qr-nfc/215-guest-menu-and-ordering.md`  <sub>143 lines</sub>
+### `docs/implementation/hospitality-qr-nfc/215-guest-menu-and-ordering.md`  <sub>145 lines</sub>
 
-- 1. What the guest sees  <sub>:6</sub>
-- 2. Menu management (staff: *Menu*)  <sub>:21</sub>
-- 3. Ordering flow  <sub>:45</sub>
-- 4. Requests  <sub>:79</sub>
-- 5. Offers  <sub>:94</sub>
-- 6. Paying (until doc 219 §1 ships)  <sub>:104</sub>
-- 7. States the page ships (design rule: every state)  <sub>:111</sub>
-- 8. Acceptance criteria  <sub>:120</sub>
-- 9. Permissions  <sub>:132</sub>
-- 10. Work orders  <sub>:138</sub>
+- 1. What the guest sees  <sub>:8</sub>
+- 2. Menu management (staff: *Menu*)  <sub>:23</sub>
+- 3. Ordering flow  <sub>:47</sub>
+- 4. Requests  <sub>:81</sub>
+- 5. Offers  <sub>:96</sub>
+- 6. Paying (until doc 219 §1 ships)  <sub>:106</sub>
+- 7. States the page ships (design rule: every state)  <sub>:113</sub>
+- 8. Acceptance criteria  <sub>:122</sub>
+- 9. Permissions  <sub>:134</sub>
+- 10. Work orders  <sub>:140</sub>
 
-### `docs/implementation/hospitality-qr-nfc/216-staff-operations-and-requests.md`  <sub>141 lines</sub>
+### `docs/implementation/hospitality-qr-nfc/216-staff-operations-and-requests.md`  <sub>143 lines</sub>
 
-- 1. The board  <sub>:6</sub>
-- 2. Automatic origin (the headline requirement)  <sub>:21</sub>
-- 3. Routing  <sub>:27</sub>
-- 3b. Notification channels  <sub>:49</sub>
-- 4. Acknowledge → resolve, with SLAs  <sub>:56</sub>
-- 5. Actions per item  <sub>:72</sub>
-- 6. Kitchen / bar tickets  <sub>:86</sub>
-- 7. Bill and settlement  <sub>:95</sub>
-- 8. Four hours down  <sub>:102</sub>
-- 9. Failure path  <sub>:111</sub>
-- 10. Permissions  <sub>:118</sub>
-- 11. Acceptance criteria  <sub>:127</sub>
-- 12. Work orders  <sub>:135</sub>
+- 1. The board  <sub>:8</sub>
+- 2. Automatic origin (the headline requirement)  <sub>:23</sub>
+- 3. Routing  <sub>:29</sub>
+- 3b. Notification channels  <sub>:51</sub>
+- 4. Acknowledge → resolve, with SLAs  <sub>:58</sub>
+- 5. Actions per item  <sub>:74</sub>
+- 6. Kitchen / bar tickets  <sub>:88</sub>
+- 7. Bill and settlement  <sub>:97</sub>
+- 8. Four hours down  <sub>:104</sub>
+- 9. Failure path  <sub>:113</sub>
+- 10. Permissions  <sub>:120</sub>
+- 11. Acceptance criteria  <sub>:129</sub>
+- 12. Work orders  <sub>:137</sub>
 
-### `docs/implementation/hospitality-qr-nfc/217-tables-rooms-and-floor.md`  <sub>90 lines</sub>
+### `docs/implementation/hospitality-qr-nfc/217-tables-rooms-and-floor.md`  <sub>92 lines</sub>
 
-- 1. Space status  <sub>:6</sub>
-- 2. Floor view (staff: *Floor*)  <sub>:19</sub>
-- 3. Tables  <sub>:26</sub>
-- 4. Rooms (hotels)  <sub>:35</sub>
-- 5. Room folio (charge to room)  <sub>:55</sub>
-- 6. Permissions  <sub>:71</sub>
-- 7. Acceptance criteria  <sub>:77</sub>
-- 8. Work orders  <sub>:85</sub>
+- 1. Space status  <sub>:8</sub>
+- 2. Floor view (staff: *Floor*)  <sub>:21</sub>
+- 3. Tables  <sub>:28</sub>
+- 4. Rooms (hotels)  <sub>:37</sub>
+- 5. Room folio (charge to room)  <sub>:57</sub>
+- 6. Permissions  <sub>:73</sub>
+- 7. Acceptance criteria  <sub>:79</sub>
+- 8. Work orders  <sub>:87</sub>
 
-### `docs/implementation/hospitality-qr-nfc/218-staff-management-and-analytics.md`  <sub>96 lines</sub>
+### `docs/implementation/hospitality-qr-nfc/218-staff-management-and-analytics.md`  <sub>98 lines</sub>
 
-- 1. Staff: use HR, don't copy it  <sub>:6</sub>
-- 2. Performance, honestly  <sub>:26</sub>
-- 3. Management dashboards  <sub>:34</sub>
-- 4. Overview first, depth on click  <sub>:63</sub>
-- 5. Performance parameters  <sub>:69</sub>
-- 6. Permissions  <sub>:77</sub>
-- 7. Acceptance criteria  <sub>:83</sub>
-- 8. Work orders  <sub>:91</sub>
+- 1. Staff: use HR, don't copy it  <sub>:8</sub>
+- 2. Performance, honestly  <sub>:28</sub>
+- 3. Management dashboards  <sub>:36</sub>
+- 4. Overview first, depth on click  <sub>:65</sub>
+- 5. Performance parameters  <sub>:71</sub>
+- 6. Permissions  <sub>:79</sub>
+- 7. Acceptance criteria  <sub>:85</sub>
+- 8. Work orders  <sub>:93</sub>
 
 ### `docs/implementation/hospitality-qr-nfc/219-future-modules-roadmap.md`  <sub>115 lines</sub>
 
@@ -3316,11 +3316,11 @@ _no second-level headings_
 - 8. Other doors worth keeping open (not committed)  <sub>:92</sub>
 - 9. Sequencing  <sub>:100</sub>
 
-### `docs/implementation/hospitality-qr-nfc/README.md`  <sub>47 lines</sub>
+### `docs/implementation/hospitality-qr-nfc/README.md`  <sub>52 lines</sub>
 
-- Read in this order  <sub>:19</sub>
-- Vocabulary (one word per concept)  <sub>:31</sub>
-- Status  <sub>:43</sub>
+- Read in this order  <sub>:24</sub>
+- Vocabulary (one word per concept)  <sub>:36</sub>
+- Status  <sub>:48</sub>
 
 ### `docs/implementation/hr-people-org/164-department-permission-role-duty-control.md`  <sub>327 lines</sub>
 

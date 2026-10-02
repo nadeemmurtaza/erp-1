@@ -12,6 +12,11 @@ order came from.
 > multi-branch are added later **behind extension points**, never by editing
 > what already exists.
 
+**These are industry-specific modules.** They serve the hospitality industry
+(hotels, cafés, restaurants) only. Universal capabilities stay in `core` and are
+reused; hospitality concepts (Space, Tag, Outlet, room folio, kitchen station)
+live only in this pack. Other industries get their own packs the same way.
+
 This is a **sector pack** (`MULTI-SECTOR.md`): a new folder of modules plus a
 `MODULES` allowlist entry. It never edits a core module, and the repository
 boots without it.

@@ -764,14 +764,14 @@ All 445 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `213-hospitality-platform-overview.md` | doc | 136 |  |
-| `214-qr-nfc-tags-and-spaces.md` | doc | 148 |  |
-| `215-guest-menu-and-ordering.md` | doc | 143 |  |
-| `216-staff-operations-and-requests.md` | doc | 141 |  |
-| `217-tables-rooms-and-floor.md` | doc | 90 |  |
-| `218-staff-management-and-analytics.md` | doc | 96 |  |
+| `213-hospitality-platform-overview.md` | doc | 138 |  |
+| `214-qr-nfc-tags-and-spaces.md` | doc | 150 |  |
+| `215-guest-menu-and-ordering.md` | doc | 145 |  |
+| `216-staff-operations-and-requests.md` | doc | 143 |  |
+| `217-tables-rooms-and-floor.md` | doc | 92 |  |
+| `218-staff-management-and-analytics.md` | doc | 98 |  |
 | `219-future-modules-roadmap.md` | doc | 115 |  |
-| `README.md` | doc | 47 |  |
+| `README.md` | doc | 52 |  |
 
 ### `docs/implementation/hr-people-org` (19)
 

@@ -1,5 +1,7 @@
 # 213 — Hospitality QR + NFC platform: overview
 
+> **Industry-specific module set.** Everything in docs 213–219 is the **hospitality sector pack** — built for hotels, cafés and restaurants only. It is not a universal/core capability: a clothing, grocery or pharmacy deployment never enables it (`MODULES` allowlist), and no core module imports it. Anything genuinely universal that it needs (orders, payments, inventory, loyalty, notify) is reused from `core`, not rebuilt here.
+>
 > **Status: Planned.** Requirement: a QR/NFC ordering and service platform for
 > hotels, cafés and restaurants, no app install, every tag bound to a table or
 > room, with management, analytics and a roadmap to payments, WhatsApp,

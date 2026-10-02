@@ -1,5 +1,7 @@
 # 215 — Guest menu, ordering and requests
 
+> **Industry-specific module.** This belongs to the **hospitality sector pack** (hotels, cafés, restaurants), not to `core`. It is enabled only in hospitality deployments through the `MODULES` allowlist; other sectors never load it, and core never imports it.
+>
 > **Status: Planned.** Modules: `hospitality-menu`, `hospitality-guest`,
 > `hospitality-service` (guest half). One main job per page (Law 5).
 

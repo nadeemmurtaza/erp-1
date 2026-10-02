@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2654,
-    "lines": 428020,
+    "lines": 428037,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -1402,8 +1402,8 @@
     },
     "docs": {
       "files": 445,
-      "lines": 93349,
-      "bytes": 5700930,
+      "lines": 93366,
+      "bytes": 5703063,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -97054,7 +97054,7 @@
       "area": "docs",
       "kind": "doc",
       "lines": 693,
-      "bytes": 105221,
+      "bytes": 105288,
       "doc": "",
       "symbols": []
     },
@@ -98178,8 +98178,8 @@
       "path": "docs/implementation/hospitality-qr-nfc/213-hospitality-platform-overview.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 136,
-      "bytes": 12030,
+      "lines": 138,
+      "bytes": 12467,
       "doc": "",
       "symbols": []
     },
@@ -98187,8 +98187,8 @@
       "path": "docs/implementation/hospitality-qr-nfc/214-qr-nfc-tags-and-spaces.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 148,
-      "bytes": 8891,
+      "lines": 150,
+      "bytes": 9154,
       "doc": "",
       "symbols": []
     },
@@ -98196,8 +98196,8 @@
       "path": "docs/implementation/hospitality-qr-nfc/215-guest-menu-and-ordering.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 143,
-      "bytes": 7051,
+      "lines": 145,
+      "bytes": 7314,
       "doc": "",
       "symbols": []
     },
@@ -98205,8 +98205,8 @@
       "path": "docs/implementation/hospitality-qr-nfc/216-staff-operations-and-requests.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 141,
-      "bytes": 6756,
+      "lines": 143,
+      "bytes": 7019,
       "doc": "",
       "symbols": []
     },
@@ -98214,8 +98214,8 @@
       "path": "docs/implementation/hospitality-qr-nfc/217-tables-rooms-and-floor.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 90,
-      "bytes": 4169,
+      "lines": 92,
+      "bytes": 4432,
       "doc": "",
       "symbols": []
     },
@@ -98223,8 +98223,8 @@
       "path": "docs/implementation/hospitality-qr-nfc/218-staff-management-and-analytics.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 96,
-      "bytes": 4908,
+      "lines": 98,
+      "bytes": 5171,
       "doc": "",
       "symbols": []
     },
@@ -98241,8 +98241,8 @@
       "path": "docs/implementation/hospitality-qr-nfc/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 47,
-      "bytes": 3098,
+      "lines": 52,
+      "bytes": 3412,
       "doc": "",
       "symbols": []
     },

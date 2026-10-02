@@ -6,6 +6,7 @@ import { formatMoney } from '@newax/shared';
 import { PageHeader, DataTable, EmptyState } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { AdminProduct, PaginatedResponse } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 const AUDIENCES = ['RETAILER', 'DISTRIBUTOR', 'SUPPLIER', 'DIRECT_CUSTOMER'] as const;
 
@@ -185,14 +186,19 @@ export default function MarketplacePage() {
 
         <div>
           <span className="mb-1 block text-sm font-medium text-neutral-900">What a viewer can do</span>
-          <select
-            className="field-input w-full"
+          <Select
+            label="What a viewer can do"
             value={engagementMode}
-            onChange={(e) => setEngagementMode(e.target.value as typeof engagementMode)}
-          >
-            <option value="DISCOVERY_ONLY">Discovery only — they can view and inquire</option>
-            <option value="DISCOVERY_AND_TRANSACT">Discovery and transact — they can also order</option>
-          </select>
+            onChange={(next) => setEngagementMode(next as typeof engagementMode)}
+            options={[
+              { value: 'DISCOVERY_ONLY', label: 'Discovery only' },
+              { value: 'DISCOVERY_AND_TRANSACT', label: 'Discovery and transact' },
+            ]}
+          />
+          {/* The two labels are short enough to sit in one row; what each one allows is said under it. */}
+          <p className="mt-1 text-sm text-neutral-900/70">
+            {engagementMode === 'DISCOVERY_ONLY' ? 'They can view and inquire.' : 'They can view, inquire and also order.'}
+          </p>
         </div>
 
         <button onClick={publish} disabled={publishing || !product || visibleTo.size === 0} className="btn-primary">

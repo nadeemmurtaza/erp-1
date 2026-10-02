@@ -318,7 +318,7 @@ export default function OrgStructurePage() {
         onConfirm={close}
         title={`Close ${closing?.name ?? ''}?`}
         description="Refused if this unit still has open child units or holds any positions — move or close those first. A closed unit is never deleted; attendance, journal lines and completed tasks still reference it."
-        confirmLabel="Close"
+        confirmLabel="Close unit"
         variant="danger"
         busy={busy}
       />

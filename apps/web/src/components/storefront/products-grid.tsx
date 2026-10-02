@@ -6,6 +6,7 @@ import type { StorefrontProduct } from '@/types/api';
 import { ProductCard } from './product-card';
 import { QuickViewModal } from './quick-view-modal';
 import { AnimatedSection } from './animated-section';
+import { fineStaggerDelayMs } from '@/lib/motion';
 
 interface ProductsGridProps {
   products: StorefrontProduct[];
@@ -48,7 +49,13 @@ export function ProductsGrid({ products, locale, gridCols, onGridColsChange: _on
     <>
       <div className={`grid gap-3 sm:gap-4 lg:gap-6 ${GRID_CLASSES[gridCols]}`}>
         {products.map((product, index) => (
-          <AnimatedSection key={product.id} direction="up" delay={index * 0.05}>
+          // Each row cascades left to right, 40ms a step, never more than four steps (CRD-6,
+          // MOT-6). `index * 0.05` grew without limit: the fortieth card waited two seconds.
+          <AnimatedSection
+            key={product.id}
+            direction="up"
+            delay={fineStaggerDelayMs(index % MAX_VISIBLE_COLS[gridCols]) / 1000}
+          >
             <ProductCard
               product={product}
               locale={locale}

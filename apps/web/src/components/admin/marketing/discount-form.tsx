@@ -5,6 +5,7 @@ import { formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
 import { ToastStack } from '@/components/admin/toast-stack';
+import { DateField } from '@/components/ui/date-field';
 
 export type DiscountType = 'PERCENTAGE' | 'FIXED_AMOUNT' | 'FREE_SHIPPING' | 'BUY_X_GET_Y' | 'TIERED';
 export type DiscountScope = 'ORDER' | 'PRODUCT' | 'CATEGORY' | 'COLLECTION' | 'SHIPPING';
@@ -307,24 +308,26 @@ export function DiscountForm({
         </div>
 
         <div className="flex flex-wrap gap-4">
-          <label className="block">
-            <span className="field-label">Starts (optional)</span>
-            <input
-              type="date"
-              className="field-input"
+          <div>
+            <label htmlFor="discount-starts" className="field-label">
+              Starts (optional)
+            </label>
+            <DateField
+              id="discount-starts"
               value={values.startsAt ? values.startsAt.slice(0, 10) : ''}
-              onChange={(e) => update('startsAt', e.target.value ? new Date(e.target.value).toISOString() : null)}
+              onChange={(next) => update('startsAt', next ? new Date(next).toISOString() : null)}
             />
-          </label>
-          <label className="block">
-            <span className="field-label">Ends (optional)</span>
-            <input
-              type="date"
-              className="field-input"
+          </div>
+          <div>
+            <label htmlFor="discount-ends" className="field-label">
+              Ends (optional)
+            </label>
+            <DateField
+              id="discount-ends"
               value={values.endsAt ? values.endsAt.slice(0, 10) : ''}
-              onChange={(e) => update('endsAt', e.target.value ? new Date(e.target.value).toISOString() : null)}
+              onChange={(next) => update('endsAt', next ? new Date(next).toISOString() : null)}
             />
-          </label>
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-4">

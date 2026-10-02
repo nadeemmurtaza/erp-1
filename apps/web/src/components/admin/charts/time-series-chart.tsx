@@ -16,8 +16,10 @@ import {
 import { formatDateShort, formatMoney, formatNumber } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
+import { usePrefersReducedMotion } from './use-reduced-motion';
 import { GRID, INK_FAINT, compactMoney, dashFor, markerFor, paletteColor, type ValueFormat } from './chart-theme';
 import { ChartMarker } from './chart-marker';
+import { chartActiveDot, chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
 
 export interface TimeSeriesSeriesDef {
   key: string;
@@ -44,6 +46,8 @@ export function TimeSeriesChart({
   chart?: 'line' | 'area';
   ariaLabel: string;
 }) {
+  const reduced = usePrefersReducedMotion();
+
   if (data.length === 0) {
     return <EmptyState title="No data in this window." />;
   }
@@ -76,6 +80,8 @@ export function TimeSeriesChart({
             width={56}
           />
           <Tooltip
+            {...chartTooltipMotion(reduced)}
+            cursor={chartCursor.crosshair}
             contentStyle={{ border: `1px solid ${GRID}`, borderRadius: 4, fontSize: 12 }}
             labelFormatter={(label: ReactNode) => formatDateShort(String(label), 'en', { withWeekday: true })}
             formatter={(value: TooltipValueType | undefined, name: ReactNode) => {
@@ -97,7 +103,8 @@ export function TimeSeriesChart({
                 fill={paletteColor(index)}
                 fillOpacity={0.1}
                 dot={false}
-                activeDot={{ r: 5 }}
+                activeDot={chartActiveDot}
+                {...chartDrawProps(reduced, index)}
               />
             ) : (
               <Line
@@ -115,9 +122,11 @@ export function TimeSeriesChart({
                     cy={props.cy ?? 0}
                     shape={markerFor(index)}
                     color={paletteColor(index)}
+                    pop={{ index: props.index ?? 0, count: data.length, seriesIndex: index }}
                   />
                 )}
-                activeDot={{ r: 5 }}
+                activeDot={chartActiveDot}
+                {...chartDrawProps(reduced, index)}
               />
             ),
           )}

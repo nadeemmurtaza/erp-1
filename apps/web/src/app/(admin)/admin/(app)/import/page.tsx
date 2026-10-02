@@ -5,6 +5,8 @@ import { adminFetch } from '@/lib/admin-client';
 import type { ImportAssistanceResult, ImportSummary } from '@/types/api';
 import { exportFilename } from '@/constants/downloads';
 import { DataTable, Disclosure } from '@/components/ui';
+import { Dropzone } from '@/components/ui/dropzone';
+import { CSV_IMPORT_HINT, CSV_IMPORT_RULES } from '@/lib/upload-rules';
 
 /**
  * Bulk catalogue upload.
@@ -130,16 +132,18 @@ export default function AdminImportPage() {
             Preview validates every row and changes nothing. Import commits it.
           </p>
 
-          <input
-            type="file"
-            accept=".csv,text/csv"
-            onChange={(event) => {
-              setFile(event.target.files?.[0] ?? null);
+          {/* Choosing is not sending: the file goes with Preview or Import below, so there is no tray here (UPL-6 is for a send that starts at once). */}
+          <Dropzone
+            className="mt-3"
+            rules={CSV_IMPORT_RULES}
+            hint={CSV_IMPORT_HINT}
+            selected={file}
+            onFiles={([chosen]) => {
+              setFile(chosen ?? null);
               setSummary(null);
               setAssistance(null);
               setAssistError(null);
             }}
-            className="mt-3 block w-full text-sm file:me-3 file:rounded-md file:border-0 file:bg-accent-hover file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-accent-hover"
           />
 
           <div className="mt-4 flex flex-wrap gap-2">

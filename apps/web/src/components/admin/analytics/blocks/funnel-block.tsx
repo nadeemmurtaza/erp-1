@@ -5,7 +5,7 @@ import type { ReportBlock } from '../report-registry';
 
 type FunnelBlockConfig = Extract<ReportBlock, { kind: 'funnel' }>;
 
-/** A stepped conversion funnel — `funnel-chart.tsx` predates Recharts (D9's own kept chart) and needs no wrapper beyond this config shim. */
+/** A stepped conversion funnel, on the superseded `admin/funnel-chart.tsx` until a designer moves it to `charts/` (see `check-chart-imports.mjs`). */
 export function FunnelBlock({ config, data }: { config: FunnelBlockConfig; data: unknown }) {
   const rows = resolvePath(data, config.path);
   const stages = Array.isArray(rows)

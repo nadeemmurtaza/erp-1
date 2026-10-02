@@ -457,7 +457,20 @@
     "loading": "Loading…",
     "error": "Something went wrong.",
     "retry": "Try again",
-    "currencyNote": "Prices in Pakistani Rupees"
+    "currencyNote": "Prices in Pakistani Rupees",
+    "journey": {
+      "done": "done",
+      "current": "current step",
+      "next": "still to come"
+    }
+  },
+  "theme": {
+    "group": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "Match device",
+    "switchToDark": "Switch to dark theme",
+    "switchToLight": "Switch to light theme"
   },
   "stitching": {
     "getStitched": "Get it stitched to your measurements",
@@ -615,6 +628,11 @@
     "paymentFailed": "Payment did not go through.",
     "paymentFailedBody": "Your order is saved but unpaid. Try again, or choose cash on delivery instead.",
     "placedOn": "Placed on {date}",
+    "successPlacedTitle": "Order <number></number> placed",
+    "successPaidTitle": "Payment received for order <number></number>",
+    "successView": "View order",
+    "successViewBank": "See bank details",
+    "successBankDetail": "It is not paid yet: transfer the total to our account and upload your receipt. We dispatch once it is confirmed.",
     "items": "Items",
     "measurements": "Measurements",
     "progress": "Progress",
@@ -629,6 +647,11 @@
     "bankTransfer": "Bank transfer details",
     "bankTransferBody": "Transfer the total to the account below and upload your receipt. We dispatch once it is confirmed.",
     "accountNumber": "Account number",
+    "copyAccountNumber": "Copy account number",
+    "copyIban": "Copy IBAN",
+    "copyTrackingNumber": "Copy tracking number",
+    "copied": "Copied",
+    "copyFailed": "Copy did not work. Select the text and copy it by hand.",
     "deliveringTo": "Delivering to",
     "continueShopping": "Continue shopping",
     "trackTitle": "Track your order",
@@ -672,7 +695,7 @@
   },
   "story": {
     "welcome": "Welcome to {brand}.",
-    "intro": "We are a premium clothing brand dedicated to blending high-quality fabrics with seamless, personalized custom tailoring.",
+    "intro": "We are a premium clothing brand dedicated to blending high-quality fabrics with personalized custom tailoring.",
     "problem": "Finding a reliable tailor can often be a frustrating experience filled with delays, sizing errors, and multiple trips to the shop. We started {brand} to take the hassle entirely out of the equation. We source the finest unstitched fabrics and offer a bespoke, in-house tailoring service right on our website.",
     "how": "Simply choose your favorite fabric, input your exact measurements online, and let our master tailors craft a beautiful, ready-to-wear outfit perfectly fitted to you, delivered straight to your doorstep."
   },
@@ -688,6 +711,10 @@
     "submit": "Submit return request",
     "submitted": "Your return request has been submitted.",
     "backToOrder": "Back to order",
+    "successTitle": "Return request {number} submitted",
+    "successDetail": "{count, plural, one {# item} other {# items}} from order {order} · requested {date}",
+    "successView": "View request",
+    "backToReturns": "Back to my returns",
     "status": {
       "REQUESTED": "Requested",
       "APPROVED": "Approved",
@@ -698,6 +725,46 @@
       "REFUNDED": "Refunded",
       "CLOSED": "Closed"
     }
+  },
+  "verifyEmail": {
+    "title": "Email verification",
+    "checking": "Confirming your email address…",
+    "successTitle": "Email address confirmed",
+    "successDetail": "We have marked the address on your account as confirmed.",
+    "toAccount": "Go to your account",
+    "backToStore": "Back to the store",
+    "failed": "Could not confirm your email address.",
+    "missingToken": "This verification link is missing its token.",
+    "failedHint": "The link may have expired, or it may already have been used.",
+    "resend": "Send a new link",
+    "resending": "Sending…",
+    "resent": "A new link is on its way to your email.",
+    "resendFailed": "We could not send a new link. Try again in a minute.",
+    "signInToResend": "Sign in to get a new link"
+  },
+  "unsubscribe": {
+    "title": "Email preferences",
+    "checking": "Updating your preferences…",
+    "successTitle": "Unsubscribed from marketing email",
+    "successDetail": "Order and account emails still reach you — those aren’t marketing.",
+    "backToStore": "Back to the store",
+    "failed": "Could not process this request.",
+    "missingDetails": "This unsubscribe link is missing its details.",
+    "failedHint": "If the link is old, you can change this yourself in your account.",
+    "toPreferences": "Open notification settings"
+  },
+  "passwordReset": {
+    "successTitle": "Password changed",
+    "successDetail": "Sign in with your new password.",
+    "signIn": "Sign in",
+    "title": "Choose a new password",
+    "missingToken": "This link is missing its reset token. Request a new one from the <link>password reset page</link>.",
+    "passwordLabel": "New password",
+    "passwordHint": "At least 8 characters.",
+    "submit": "Set new password",
+    "saving": "Saving…",
+    "failed": "Could not reset your password.",
+    "requestNew": "Request a new reset link"
   },
   "warrantyVerify": {
     "title": "Verify your purchase",
@@ -763,5 +830,17 @@
     "subscribe": "Subscribe",
     "subscribing": "Subscribing…",
     "subscribed": "You're subscribed."
+  },
+  "forgotPassword": {
+    "title": "Reset your password",
+    "intro": "Enter your email and we’ll send you a link to reset your password.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "submit": "Send reset link",
+    "sending": "Sending…",
+    "sent": "If an account exists for {email}, we’ve sent a link to reset your password. It expires in one hour.",
+    "useDifferent": "Use a different email",
+    "backToSignIn": "Back to sign in",
+    "failed": "Something went wrong. Try again in a minute."
   }
 }

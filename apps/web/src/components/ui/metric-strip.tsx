@@ -78,7 +78,7 @@ export function MetricStrip({
                 {item.detail ? (
                   <Chevron
                     className={cn(
-                      'transition-transform duration-200',
+                      'transition-transform duration-normal ease-settle',
                       expanded && '-rotate-180',
                     )}
                   />
@@ -133,7 +133,7 @@ export function MetricStrip({
        * move the page under the reader's cursor.
        */}
       <div id={`${id}-panel`} hidden={!active}>
-        {active ? <div className="metric-panel">{active.detail}</div> : null}
+        {active ? <div className="metric-panel animate-rise">{active.detail}</div> : null}
       </div>
     </div>
   );

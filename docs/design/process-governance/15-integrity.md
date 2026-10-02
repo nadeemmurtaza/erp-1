@@ -8,10 +8,11 @@ therefore the ones a machine should be finding.
 > enforced by `pnpm lint` and by CI; `ACC-6` is enforced by eslint. `ITG-4`
 > is enforced by its own CI job (`scripts/check-overflow.mjs`), separate
 > from `pnpm lint` because it needs a running app. The five remaining checks
-> that need a running app are still specified only.
+> are still specified only: `ITG-9` is static analysis, and `ITG-8`, `ITG-6`,
+> `ITG-7` and `ITG-12` need a running app.
 >
 > The reason this chapter exists is unchanged: every other chapter ends in
-> "binding on review", which at 125 screens across four surfaces and seven
+> "binding on review", which at 278 screens across four surfaces and seven
 > shipping combinations is a promise nobody can keep by reading.
 
 ## Why this chapter is different
@@ -112,7 +113,9 @@ i18n technique and the most consistently skipped one.
 ### ITG-9 · Every user-visible string is translatable
 **Here** — a literal in a component cannot be translated and violates Law 1.
 Sentences are whole keys with named placeholders, never concatenated
-(`GLO-6`).
+(`GLO-6`). The scope that binds today is customer-facing strings (`06-content`);
+no admin file and no POS file calls a translation function, which is the gap
+this law names and no check closes yet.
 
 **Checkable as**: flag string literals in JSX text positions and in
 user-facing attributes; flag template concatenation around translation calls.
@@ -156,8 +159,8 @@ to mean "this did not run".**
 
 ## The build order
 
-Ranked by defects-caught per unit of effort, with what each needs. Nothing
-here exists yet.
+Ranked by defects-caught per unit of effort, with what each needs. Five of the
+ten exist (the ✅ rows).
 
 | # | Check | Built | Catches |
 |---|---|---|---|
@@ -184,7 +187,7 @@ Checks 1–5 are static and fast, and belong in `pnpm lint` beside
 `check-rebrand.mjs` — four of them now are. Checks 6–10 need a running app and
 belong in CI as their own job: slower, and worth it.
 
-### What the built four are honest about
+### What the built checks are honest about
 
 Each one states its own blind spot rather than implying coverage it does not
 have, because a checker trusted beyond its reach is worse than none:

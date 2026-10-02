@@ -1,4 +1,4 @@
-import { Badge, type BadgeTone } from '@/components/ui';
+import { Badge, SwapText, type BadgeTone } from '@/components/ui';
 
 /**
  * The pill that carries a record's state — an order's status, a product's,
@@ -19,6 +19,9 @@ import { Badge, type BadgeTone } from '@/components/ui';
  * `success` a good one, `warning` something waiting on a human, `info` a
  * normal step along the way. The label is always present — colour alone is
  * never the signal.
+ *
+ * The label hands over in place when the status changes (`SwapText`), so a
+ * record that moves from Pending to Paid is seen to move.
  *
  * `label` exists because the customer surface shows these in Urdu as well as
  * English: the tone is decided here, the wording comes from the translation
@@ -112,5 +115,10 @@ export function statusLabel(status: string): string {
 }
 
 export function StatusBadge({ status, label }: { status: string; label?: string }) {
-  return <Badge tone={TONES[status] ?? 'info'}>{label ?? statusLabel(status)}</Badge>;
+  // A status that changes in place hands over (the old label rises out, the new one rises in); a first render is just the label.
+  return (
+    <Badge tone={TONES[status] ?? 'info'}>
+      <SwapText value={label ?? statusLabel(status)} />
+    </Badge>
+  );
 }

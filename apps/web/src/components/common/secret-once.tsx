@@ -1,6 +1,7 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
+import { useId, useRef } from 'react';
+import { CopyButton } from '@/components/ui';
 
 /**
  * A credential shown exactly once — a personal API key's secret, in the one
@@ -14,6 +15,12 @@ import { useId, useRef, useState } from 'react';
  * Inline rather than a modal, on purpose: a stray Escape or backdrop click
  * must not throw away the only copy of the secret. It stays on the page
  * until the reader says they have it.
+ *
+ * The copy is `CopyButton`'s (CPY-1 to CPY-5): the check shows on the frame it
+ * lands and goes back after two seconds, the secret is announced as copied, the
+ * copy command takes over where the clipboard API does not exist, and when
+ * nothing works the text is selected here for a copy by hand and the failure
+ * sentence is shown beside the button.
  */
 export function SecretOnce({
   title,
@@ -34,26 +41,13 @@ export function SecretOnce({
   usage?: string;
   copyLabel: string;
   copiedLabel: string;
-  /** Shown when the browser refuses clipboard access; the text is selected for a manual copy instead. */
+  /** Shown when neither clipboard route worked; the text is selected for a manual copy instead. */
   copyFailedLabel: string;
   dismissLabel: string;
   onDismiss: () => void;
 }) {
   const id = useId();
   const input = useRef<HTMLInputElement>(null);
-  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(secret);
-      setCopyState('copied');
-    } catch {
-      // No clipboard permission, or not a secure origin: select it so it can
-      // be copied by hand, and say so.
-      input.current?.select();
-      setCopyState('failed');
-    }
-  }
 
   return (
     <section aria-labelledby={`${id}-title`} className="notice notice-info mb-6 space-y-3">
@@ -76,14 +70,15 @@ export function SecretOnce({
           onFocus={(event) => event.currentTarget.select()}
           className="field-input min-w-0 flex-1 font-mono text-xs"
         />
-        <button type="button" className="btn-secondary" onClick={() => void copy()}>
-          {copyState === 'copied' ? copiedLabel : copyLabel}
-        </button>
+        <CopyButton
+          variant="labelled"
+          value={secret}
+          label={copyLabel}
+          copiedLabel={copiedLabel}
+          failedLabel={copyFailedLabel}
+          onFail={() => input.current?.select()}
+        />
       </div>
-
-      <p aria-live="polite" className="text-xs">
-        {copyState === 'failed' ? copyFailedLabel : ''}
-      </p>
 
       {usage ? (
         <p dir="ltr" className="font-mono text-xs text-neutral-900/70">

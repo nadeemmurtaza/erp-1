@@ -482,7 +482,7 @@ export default function CheckoutPage() {
               <label
                 key={option.key}
                 className={cn(
-                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-200 focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2',
+                  'flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-4 transition-colors duration-normal focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2',
                   option.key === method
                     ? 'border-neutral-900 bg-neutral-900/[0.03]'
                     : 'border-neutral-100 hover:border-neutral-300',
@@ -686,7 +686,7 @@ export default function CheckoutPage() {
           submitLabel={busy ? t('placing') : t('placeOrder')}
           submitBusy={busy}
           submitDisabled={busy || !method}
-          accentClassName="bg-neutral-900 text-white"
+          accentClassName="bg-inverse text-on-inverse"
           backLabel={t('back')}
           nextLabel={t('next')}
           error={

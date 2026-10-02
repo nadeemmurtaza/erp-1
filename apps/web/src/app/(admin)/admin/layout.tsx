@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { BRAND } from '@newax/shared';
 import '@/app/globals.css';
+import { ThemeInitScript } from '@/components/ui/theme-init-script';
 
 export const metadata: Metadata = {
   title: { default: BRAND.identity.adminName, template: `%s · ${BRAND.identity.adminName}` },
@@ -16,7 +17,10 @@ export const metadata: Metadata = {
  */
 export default function AdminRootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr" suppressHydrationWarning>
+      <head>
+        <ThemeInitScript />
+      </head>
       <body suppressHydrationWarning>{children}</body>
     </html>
   );

@@ -8,6 +8,7 @@ import { DataTable, MetricStrip, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { PaginatedResponse } from '@/types/api';
 import { useAdminSession } from '@/components/admin/session';
+import { Select } from '@/components/ui/select';
 
 type BomStatus = 'DRAFT' | 'ACTIVE' | 'ARCHIVED';
 type RecipeFilter = 'all' | 'active' | 'missing' | 'incomplete-cost';
@@ -135,20 +136,21 @@ export default function RecipesPage() {
           aria-label="Search"
           disabled={isMissingFilter}
         />
-        <select
+        <Select
+          label="Filter"
           value={filter}
-          onChange={(event) => {
+          onChange={(next) => {
             setPage(1);
-            setFilter(event.target.value as RecipeFilter);
+            setFilter(next as RecipeFilter);
           }}
-          className="field-input w-auto"
-          aria-label="Filter"
-        >
-          <option value="all">All recipes</option>
-          <option value="active">Active</option>
-          <option value="missing">Missing</option>
-          <option value="incomplete-cost">Incomplete cost</option>
-        </select>
+          className="w-auto"
+          options={[
+            { value: 'all', label: 'All recipes' },
+            { value: 'active', label: 'Active' },
+            { value: 'missing', label: 'Missing' },
+            { value: 'incomplete-cost', label: 'Incomplete cost' },
+          ]}
+        />
       </div>
 
       <div className="overflow-hidden">

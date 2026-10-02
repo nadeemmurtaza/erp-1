@@ -50,7 +50,8 @@ once:
 | Element | If the user lacks the permission | Why |
 |---|---|---|
 | A nav entry to a page they cannot open | **hidden** | offering a door to a locked room is a dead end (`FLO-1`) |
-| An action on a page they *can* open | **disabled, with a reason on hover and focus** | its absence would make the page look broken or incomplete |
+| An action on a page they *can* open, which a role could grant them | **disabled, with the reason visible on focus and on touch, never on hover alone** (`ACC-7`, `ITG-13`) | its absence would make the page look broken or incomplete |
+| An action on a page they *can* open, that is irrelevant to their role or that an absent module takes away | **not rendered**, and the layout closes over it (`PRM-5`, `MOD-1`) | a till operator does not see accounting chrome (`04-states`, "Permission states") |
 | A field they may see but not change | **read-only, visibly** | the value is information; the control is not |
 | A field they may not see | **absent**, and the layout closes over it | a masked box invites a support ticket |
 
@@ -62,7 +63,12 @@ makes the object look different than it is.
 The reason text is not optional. "You do not have permission" is useless;
 **"Requires *Approve transfers* — ask a Branch Manager"** is actionable, and
 in a 250-role system it is the difference between a resolved request and a
-ticket.
+ticket. It names the capability's label, never its key (`inventory.manage`).
+
+**Not yet built.** `Button` has no blocked state and only `Menu` carries a
+blocker (`OptionBlocker`); about 45 `{canX ? … : null}` sites hide an action
+outright, which is right only when no role could grant it. Giving `Button` a
+`blockedBy` reason is a ledger item (ADR-083, consistency addendum).
 
 ### PRM-3 · A page with nothing to do is not that page
 **Here** — if a user's permissions reduce a page to no readable content and

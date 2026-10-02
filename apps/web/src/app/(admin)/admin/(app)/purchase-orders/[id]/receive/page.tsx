@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { adminFetch } from '@/lib/admin-client';
 import type { Location } from '@/types/api';
 import { DataTable } from '@/components/ui';
+import { DateField } from '@/components/ui/date-field';
+import { Select } from '@/components/ui/select';
 
 interface PurchaseOrder {
   id: string;
@@ -217,15 +219,16 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
                         required
                       />
                     </label>
-                    <label className="block">
-                      <span className="field-label">Expires on (optional)</span>
-                      <input
-                        type="date"
-                        className="field-input"
+                    <div>
+                      <label htmlFor={`expires-${item.id}`} className="field-label">
+                        Expires on (optional)
+                      </label>
+                      <DateField
+                        id={`expires-${item.id}`}
                         value={expiresOn[item.id] ?? ''}
-                        onChange={(e) => setExpiresOn({ ...expiresOn, [item.id]: e.target.value })}
+                        onChange={(next) => setExpiresOn({ ...expiresOn, [item.id]: next })}
                       />
-                    </label>
+                    </div>
                   </div>
                 ) : null}
                 {item.variant.tracksSerials ? (
@@ -256,19 +259,16 @@ export default function ReceiveGoodsPage({ params }: { params: Promise<{ id: str
             <label htmlFor="receipt-location" className="block mb-2 text-sm font-medium text-neutral-900">
               Received at
             </label>
-            <select
+            <Select
               id="receipt-location"
-              className="field-input w-full"
+              label="Received at"
               value={locationId}
-              onChange={(e) => setLocationId(e.target.value)}
-            >
-              {locations.map((location) => (
-                <option key={location.id} value={location.id}>
-                  {location.name}
-                  {location.type === 'WAREHOUSE' && !location.retailBrandId ? ' (org warehouse)' : ''}
-                </option>
-              ))}
-            </select>
+              onChange={setLocationId}
+              options={locations.map((location) => ({
+                value: location.id,
+                label: `${location.name}${location.type === 'WAREHOUSE' && !location.retailBrandId ? ' (org warehouse)' : ''}`,
+              }))}
+            />
           </div>
         ) : null}
 

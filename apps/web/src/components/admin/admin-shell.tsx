@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
+import { useExitTransition } from '@/hooks/use-exit-transition';
 import { adminFetch, clearSession, getStoredUser, logout } from '@/lib/admin-client';
 import type { AuthUser, DeploymentMeta } from '@/types/api';
 import {
@@ -14,6 +15,8 @@ import {
   type AdminNavItem,
 } from './nav-registry';
 import { CommandPalette } from './command-palette';
+import { UploadProvider } from './upload-provider';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { AdminProviders } from '@/providers/admin-providers';
 import { ROUTES } from '@/constants/routes';
 import { BRAND } from '@newax/shared';
@@ -37,6 +40,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [checked, setChecked] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
+  // The drawer leaves as it arrived (a fast exit) instead of vanishing; the page behind is live at once.
+  const { mounted: navMounted, leaving } = useExitTransition(isNavOpen);
   // Undefined = not fetched yet, so navFor() fails open (permissions-only)
   // rather than hiding every module-tagged nav item until this resolves.
   const [enabledModules, setEnabledModules] = useState<string[] | undefined>(undefined);
@@ -90,17 +95,27 @@ export function AdminShell({ children }: { children: ReactNode }) {
   }, null as AdminNavItem | null);
   const breadcrumbs = breadcrumbTrail(activeItem, items);
 
+  // The upload provider wraps the whole frame, so a transfer started on one page keeps going, and keeps its tray, as the operator moves to another (UPL-6).
   return (
+    <UploadProvider>
     <div className="flex min-h-screen bg-neutral-50">
       {/* Mobile Drawer */}
-      {isNavOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+      {navMounted && (
+        <div inert={leaving} className="fixed inset-0 z-overlay lg:hidden">
           <div
-            className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className={cn(
+              'fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity duration-fast ease-exit',
+              leaving ? 'opacity-0' : 'animate-fadeIn',
+            )}
             onClick={() => setIsNavOpen(false)}
             aria-hidden="true"
           />
-          <div className="fixed inset-y-0 left-0 w-64 bg-white shadow-xl flex flex-col animate-slideInLeft">
+          <div
+            className={cn(
+              'fixed inset-y-0 left-0 w-64 bg-overlay shadow-modal flex flex-col',
+              leaving ? 'animate-slideOutLeft' : 'animate-slideInLeft',
+            )}
+          >
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
               <Link href={ROUTES.admin.dashboard} className="font-semibold text-accent-hover" onClick={() => setIsNavOpen(false)}>
                 {BRAND.identity.adminName}
@@ -168,6 +183,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <CommandPalette permissions={user.permissions} enabledModules={enabledModules} />
 
           <div className="ms-auto flex items-center gap-3 text-sm">
+            {/* All three choices where there is room; one flip button where there is not. */}
+            <ThemeToggle className="hidden sm:inline-flex" />
+            <ThemeToggle variant="icon" className="sm:hidden" />
             <Link href="/en" className="text-neutral-900/60 hover:text-accent-hover">
               View store
             </Link>
@@ -197,6 +215,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </main>
       </div>
     </div>
+    </UploadProvider>
   );
 }
 
@@ -285,7 +304,7 @@ function Chevron({ open }: { open: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden
-      className={cn('shrink-0 transition-transform duration-200', open && 'rotate-180')}
+      className={cn('shrink-0 transition-transform duration-normal', open && 'rotate-180')}
     >
       <polyline points="6 9 12 15 18 9" />
     </svg>
@@ -361,7 +380,7 @@ function NavGroup({
         aria-expanded={open}
         aria-controls={listId}
         className={cn(
-          'flex w-full items-center gap-2 rounded px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/60 transition-colors duration-200',
+          'flex w-full items-center gap-2 rounded px-3 py-1 text-xs font-semibold uppercase tracking-wide text-neutral-900/60 transition-colors duration-normal',
           holdsActivePage ? 'cursor-default' : 'hover:text-neutral-900/70',
         )}
       >
@@ -397,7 +416,7 @@ function NavLink({
       aria-current={isActive ? 'page' : undefined}
       onClick={onClick}
       className={cn(
-        'block rounded-md px-3 py-2 text-sm transition-colors duration-200',
+        'block rounded-md px-3 py-2 text-sm transition-colors duration-normal',
         compact && 'whitespace-nowrap',
         isActive
           ? 'bg-neutral-50 font-medium text-accent-hover'

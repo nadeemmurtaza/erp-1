@@ -35,63 +35,63 @@ All 437 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `README.md` | doc | 109 |  |
+| `README.md` | doc | 120 |  |
 
 ### `docs/design/accessibility` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `07-accessibility.md` | doc | 157 |  |
+| `07-accessibility.md` | doc | 166 |  |
 
 ### `docs/design/components-states` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `03-components.md` | doc | 113 |  |
-| `04-states.md` | doc | 141 |  |
+| `03-components.md` | doc | 481 |  |
+| `04-states.md` | doc | 235 |  |
 
 ### `docs/design/content` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `06-content.md` | doc | 121 |  |
+| `06-content.md` | doc | 130 |  |
 
 ### `docs/design/foundations` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `01-foundations.md` | doc | 175 |  |
+| `01-foundations.md` | doc | 324 |  |
 
 ### `docs/design/layout-composition` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `02-layout.md` | doc | 121 |  |
+| `02-layout.md` | doc | 182 |  |
 | `13-composition.md` | doc | 197 |  |
-| `14-navigation.md` | doc | 198 |  |
+| `14-navigation.md` | doc | 207 |  |
 
 ### `docs/design/motion` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `05-motion.md` | doc | 193 |  |
+| `05-motion.md` | doc | 340 |  |
 
 ### `docs/design/principles-laws` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-principles.md` | doc | 83 |  |
-| `10-laws.md` | doc | 850 |  |
+| `10-laws.md` | doc | 942 |  |
 
 ### `docs/design/process-governance` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `08-governance.md` | doc | 145 |  |
-| `09-quality.md` | doc | 176 |  |
+| `08-governance.md` | doc | 147 |  |
+| `09-quality.md` | doc | 189 |  |
 | `11-workflow.md` | doc | 260 |  |
-| `12-permissions.md` | doc | 214 |  |
-| `15-integrity.md` | doc | 257 |  |
+| `12-permissions.md` | doc | 220 |  |
+| `15-integrity.md` | doc | 260 |  |
 
 ### `docs/erp-lenses/_meta` (32)
 
@@ -563,7 +563,7 @@ All 437 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 9605 |  |
+| `DECISIONS.md` | doc | 11701 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |

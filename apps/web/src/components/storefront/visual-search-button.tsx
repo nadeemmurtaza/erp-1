@@ -56,7 +56,7 @@ export function VisualSearchButton() {
         title={t('visualSearch')}
         disabled={busy}
         onClick={() => inputRef.current?.click()}
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-neutral-500 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-900 disabled:opacity-50"
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-neutral-500 transition-colors duration-normal hover:bg-neutral-50 hover:text-neutral-900 disabled:opacity-50"
       >
         {busy ? (
           <span className="h-4 w-4 animate-spin rounded-full border-2 border-neutral-300 border-t-neutral-900" />
@@ -79,7 +79,7 @@ export function VisualSearchButton() {
         }}
       />
       {error ? (
-        <p role="alert" className="absolute end-0 top-full z-10 mt-1 w-56 rounded-md bg-red-50 p-2 text-xs text-red-700 shadow-sm">
+        <p role="alert" className="absolute end-0 top-full z-dropdown mt-1 w-56 rounded-md bg-red-50 p-2 text-xs text-red-700 shadow-sm">
           {error}
         </p>
       ) : null}

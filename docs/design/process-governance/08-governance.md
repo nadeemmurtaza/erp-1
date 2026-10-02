@@ -28,7 +28,9 @@ governs the words a developer types. When they can be the same word, they are.
 | Component with a job | `PascalCase`, noun qualified by its job | `StatusBadge`, `RangePicker` |
 | File | `kebab-case.tsx`, matching the export | `status-badge.tsx` |
 | Prop that toggles | positive `boolean`, no `no`/`disable` prefix | `dismissible`, not `noDismiss` |
-| Prop that varies appearance | `variant` | `variant="destructive"` |
+| Prop that varies appearance | `variant` | `variant="danger"` |
+| Prop that carries a meaning as a colour (a status, a measure's outcome) | `tone` | `Badge tone="success"` |
+| Prop that picks between two behaviours of one control | `kind` | `Segmented kind="filter"` |
 | Prop that varies scale | `size` | `size="sm"` |
 | Token | `group.role.step`, never a literal value | `space.4`, not `space.16px` |
 | CSS class we own | Tailwind utilities first; a named class only for a repeated composition | |
@@ -72,7 +74,7 @@ Report*), with three additions specific to shared UI:
    a prop's meaning, a default, a state's behaviour, a token's value. The
    chapter is the document of record; update it in the same commit.
 3. **A token change is an architectural change.** Adding a token group
-   (spacing, size, shadow, z-index, motion — all still unbuilt, see
+   (spacing, size, shadow, z-index, motion — all built now, see
    [01 · Foundations](../foundations/01-foundations.md)) gets an entry in
    `docs/implementation/DECISIONS.md` under the protocol in
    `.claude/rules/decisions.md`. Changing an existing token's *value* does

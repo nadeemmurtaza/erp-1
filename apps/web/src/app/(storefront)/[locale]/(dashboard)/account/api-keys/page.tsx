@@ -17,6 +17,7 @@ import { SecretOnce } from '@/components/common/secret-once';
 import { StatusBadge } from '@/components/common/status-badge';
 import { Button, Dialog, EmptyState, Loading, PageHeader } from '@/components/ui';
 import type { ApiKeyView, DeploymentMeta, IssuedApiKey, PaginatedResponse } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 type Access = 'none' | 'read' | 'write';
 
@@ -393,16 +394,17 @@ function KeyForm({
                 <label htmlFor={`api-key-access-${resource}`} className="text-sm text-neutral-900">
                   {t(RESOURCE_MESSAGE[resource])}
                 </label>
-                <select
+                <Select
                   id={`api-key-access-${resource}`}
+                  label={t(RESOURCE_MESSAGE[resource])}
                   value={access.get(resource) ?? 'none'}
-                  onChange={(event) => choose(resource, event.target.value as Access)}
-                  className="field-input w-auto"
-                >
-                  <option value="none">{t('accessNone')}</option>
-                  <option value="read">{t('accessRead')}</option>
-                  {WRITABLE.has(resource) ? <option value="write">{t('accessWrite')}</option> : null}
-                </select>
+                  onChange={(next) => choose(resource, next as Access)}
+                  options={[
+                    { value: 'none', label: t('accessNone') },
+                    { value: 'read', label: t('accessRead') },
+                    ...(WRITABLE.has(resource) ? [{ value: 'write', label: t('accessWrite') }] : []),
+                  ]}
+                />
               </li>
             ))}
           </ul>

@@ -105,7 +105,7 @@ export default function TradingPartnersPage() {
                       ? 'rounded px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800'
                       : partner.status === 'SUSPENDED'
                         ? 'rounded px-2 py-0.5 text-xs font-medium bg-red-100 text-red-800'
-                        : 'rounded px-2 py-0.5 text-xs font-medium bg-neutral-200 text-neutral-900/80'
+                        : 'rounded px-2 py-0.5 text-xs font-medium bg-neutral-100 text-neutral-700'
                   }
                 >
                   {partner.status}

@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/utils/cn';
+import { Segmented } from '@/components/ui';
 
 /** The windows every analytics screen offers. One list, so they agree. */
 export const RANGES = [7, 30, 90] as const;
@@ -19,7 +19,8 @@ export type RangeDays = (typeof RANGES)[number] | (typeof DASHBOARD_RANGES)[numb
  *
  * A segmented control rather than a `<select>`: three options, always the
  * same three, and the current one should be readable without opening
- * anything.
+ * anything. The control itself is `ui/Segmented`; this file only knows which
+ * windows exist.
  */
 export function RangePicker({
   value,
@@ -37,26 +38,12 @@ export function RangePicker({
   ranges?: readonly number[];
 }) {
   return (
-    <div className={cn('flex gap-1', className)} role="group" aria-label={label}>
-      {ranges.map((option) => {
-        const active = value === option;
-        return (
-          <button
-            key={option}
-            type="button"
-            onClick={() => onChange(option as RangeDays)}
-            aria-pressed={active}
-            className={cn(
-              'min-h-11 rounded px-3 py-1.5 text-sm transition-colors fold:min-h-0',
-              active
-                ? 'bg-accent font-medium text-white'
-                : 'text-neutral-900/60 hover:bg-neutral-50 hover:text-neutral-900',
-            )}
-          >
-            {option} days
-          </button>
-        );
-      })}
-    </div>
+    <Segmented
+      label={label}
+      className={className}
+      value={value}
+      onChange={(next) => onChange(next as RangeDays)}
+      options={ranges.map((option) => ({ value: option, label: `${option} days` }))}
+    />
   );
 }

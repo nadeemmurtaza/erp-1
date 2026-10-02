@@ -32,7 +32,7 @@ All 33 tracked files in `apps/pos`, by directory.
 |---|---|---|---|
 | `error.tsx` | error | 34 |  |
 | `global-error.tsx` | global-error | 76 |  |
-| `globals.css` | stylesheet | 73 |  |
+| `globals.css` | stylesheet | 76 |  |
 | `layout.tsx` | layout | 29 |  |
 | `manifest.ts` | module | 26 |  |
 | `not-found.tsx` | not-found | 21 |  |

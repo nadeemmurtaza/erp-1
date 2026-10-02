@@ -57,4 +57,12 @@ export const STORAGE_KEYS = {
   guestBooking: (number: string) => `${NS}.stitching.${number}`,
   /** WO-8.6 — dismissed on-site message ids, so a closed banner or popup stays closed. */
   onsiteMessagesDismissed: `${NS}.onsite_messages.dismissed`,
+  /**
+   * The person's theme choice: `light`, `dark` or `system` (follow the
+   * device, which is also what an absent value means). Read by the inline
+   * script in every root layout before first paint, so it is a bare string,
+   * not JSON — that script cannot afford a parser, and must survive a value
+   * it does not recognise.
+   */
+  theme: `${NS}.theme`,
 } as const;

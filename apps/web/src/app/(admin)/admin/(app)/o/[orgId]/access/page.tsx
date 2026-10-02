@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminScopeWithHolder, AdminUser, MyScope } from '@/types/api';
 import { PageHeader, DataTable, Loading } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 type Level = 'ORG' | 'BRAND' | 'BRANCH';
 
@@ -156,38 +157,35 @@ export default function AdminScopesPage() {
             <label className="field-label" htmlFor="grant-user">
               User
             </label>
-            <select
+            <Select
               id="grant-user"
+              label="User"
               required
-              className="field-input"
+              placeholder="Choose a user…"
               value={draft.userId}
-              onChange={(event) => setDraft({ ...draft, userId: event.target.value })}
-            >
-              <option value="" disabled>
-                Choose a user…
-              </option>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {[user.firstName, user.lastName].filter(Boolean).join(' ') || user.email || user.phone}
-                </option>
-              ))}
-            </select>
+              onChange={(next) => setDraft({ ...draft, userId: next })}
+              options={users.map((user) => ({
+                value: user.id,
+                label: [user.firstName, user.lastName].filter(Boolean).join(' ') || user.email || user.phone || '',
+              }))}
+            />
           </div>
 
           <div>
             <label className="field-label" htmlFor="grant-level">
               Level
             </label>
-            <select
+            <Select
               id="grant-level"
-              className="field-input"
+              label="Level"
               value={draft.level}
-              onChange={(event) => setDraft({ ...draft, level: event.target.value as Level })}
-            >
-              <option value="BRANCH">Branch admin</option>
-              <option value="BRAND">Brand admin</option>
-              <option value="ORG">Super admin (ORG)</option>
-            </select>
+              onChange={(next) => setDraft({ ...draft, level: next as Level })}
+              options={[
+                { value: 'BRANCH', label: 'Branch admin' },
+                { value: 'BRAND', label: 'Brand admin' },
+                { value: 'ORG', label: 'Super admin (ORG)' },
+              ]}
+            />
           </div>
 
           {draft.level !== 'ORG' ? (
@@ -195,22 +193,15 @@ export default function AdminScopesPage() {
               <label className="field-label" htmlFor="grant-brand">
                 Brand
               </label>
-              <select
+              <Select
                 id="grant-brand"
+                label="Brand"
                 required
-                className="field-input"
+                placeholder="Choose a brand…"
                 value={draft.retailBrandId}
-                onChange={(event) => setDraft({ ...draft, retailBrandId: event.target.value })}
-              >
-                <option value="" disabled>
-                  Choose a brand…
-                </option>
-                {scope.brands.map((brand) => (
-                  <option key={brand.id} value={brand.id}>
-                    {brand.name}
-                  </option>
-                ))}
-              </select>
+                onChange={(next) => setDraft({ ...draft, retailBrandId: next })}
+                options={scope.brands.map((brand) => ({ value: brand.id, label: brand.name }))}
+              />
             </div>
           ) : null}
 
@@ -219,22 +210,15 @@ export default function AdminScopesPage() {
               <label className="field-label" htmlFor="grant-branch">
                 Branch
               </label>
-              <select
+              <Select
                 id="grant-branch"
+                label="Branch"
                 required
-                className="field-input"
+                placeholder="Choose a branch…"
                 value={draft.branchNodeId}
-                onChange={(event) => setDraft({ ...draft, branchNodeId: event.target.value })}
-              >
-                <option value="" disabled>
-                  Choose a branch…
-                </option>
-                {scope.nodes.map((node) => (
-                  <option key={node.id} value={node.id}>
-                    {node.label}
-                  </option>
-                ))}
-              </select>
+                onChange={(next) => setDraft({ ...draft, branchNodeId: next })}
+                options={scope.nodes.map((node) => ({ value: node.id, label: node.label }))}
+              />
             </div>
           ) : null}
 

@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-437 files · 89,309 lines
+437 files · 92,378 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -21,15 +21,15 @@ has a bug.
 | `docs` | 1 | 438 | doc |
 | `docs/brand` | 1 | 97 | doc |
 | `docs/brand/logo` | 6 | 0 | asset |
-| `docs/design` | 1 | 109 | doc |
-| `docs/design/accessibility` | 1 | 157 | doc |
-| `docs/design/components-states` | 2 | 254 | doc |
-| `docs/design/content` | 1 | 121 | doc |
-| `docs/design/foundations` | 1 | 175 | doc |
-| `docs/design/layout-composition` | 3 | 516 | doc |
-| `docs/design/motion` | 1 | 193 | doc |
-| `docs/design/principles-laws` | 2 | 933 | doc |
-| `docs/design/process-governance` | 5 | 1,052 | doc |
+| `docs/design` | 1 | 120 | doc |
+| `docs/design/accessibility` | 1 | 166 | doc |
+| `docs/design/components-states` | 2 | 716 | doc |
+| `docs/design/content` | 1 | 130 | doc |
+| `docs/design/foundations` | 1 | 324 | doc |
+| `docs/design/layout-composition` | 3 | 586 | doc |
+| `docs/design/motion` | 1 | 340 | doc |
+| `docs/design/principles-laws` | 2 | 1,025 | doc |
+| `docs/design/process-governance` | 5 | 1,076 | doc |
 | `docs/erp-lenses/_meta` | 32 | 7,258 | doc |
 | `docs/erp-lenses/approval-delegation` | 3 | 210 | doc |
 | `docs/erp-lenses/assets-facilities-maintenance` | 3 | 237 | doc |
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 11 | 14,125 | doc, file |
+| `docs/implementation` | 11 | 16,221 | doc, file |
 | `docs/implementation/access-control-identity` | 8 | 2,035 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -117,15 +117,15 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 9,605 | doc |  |
+| `docs/implementation/DECISIONS.md` | 11,701 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md` | 1,813 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |
 | `docs/erp-lenses/_meta/_agent-cluster.md` | 944 | doc |  |
+| `docs/design/principles-laws/10-laws.md` | 942 | doc |  |
 | `docs/implementation/composable-resilience-platform/172-04-layer3-ingestion-boundary-confidence-provenance.md` | 940 | doc |  |
 | `docs/implementation/inventory-purchasing/01-inventory-purchasing-cost.md` | 937 | doc |  |
 | `docs/implementation/MULTI-SECTOR.md` | 854 | doc |  |
-| `docs/design/principles-laws/10-laws.md` | 850 | doc |  |
 | `docs/erp-lenses/_meta/_canonical-decisions.md` | 828 | doc |  |
 | `docs/implementation/integrations-connectivity/187-app-installation-consent-lifecycle.md` | 818 | doc |  |
 | `docs/implementation/README.md` | 687 | doc |  |

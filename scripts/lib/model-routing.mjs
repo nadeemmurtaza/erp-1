@@ -141,14 +141,15 @@ export const ROUTING_POLICY = [
     job: 'A whole capability, end to end',
     when: 'a named feature spanning modules, or anything needing a plan first',
     why:
-      "CLAUDE.md's five lenses make this genuinely harder than it looks: a named " +
+      "The five lenses in the `feature-scope` skill make this genuinely harder than it looks: a named " +
       'feature includes the operator-facing twin, the after-completion lifecycle, ' +
       'the integrations and the policy layer. Getting that scope wrong ships half ' +
       'a feature that looks finished.',
     tools: null,
     body: [
-      'Run the five lenses from `CLAUDE.md` ("Feature scope: build the whole',
-      'capability") BEFORE implementing, and write the resulting map down:',
+      'Read `.claude/skills/feature-scope/SKILL.md` (the "Feature scope" section',
+      'that moved out of `CLAUDE.md`), then run its five lenses BEFORE implementing,',
+      'and write the resulting map down:',
       '',
       '1. The transaction, start to finish.',
       '2. The other side of it — the operator-facing twin.',
@@ -163,6 +164,42 @@ export const ROUTING_POLICY = [
       'Anything the map surfaces that is a separable, larger capability is never',
       'silently stubbed and never silently skipped — name it and sequence it as',
       'its own work order.',
+    ],
+  },
+  {
+    agent: 'ux',
+    model: 'sonnet',
+    effort: 'high',
+    proactive: true,
+    job: 'Design, audit or review a screen against the design laws',
+    when:
+      'designing a new screen before it is built, auditing a page, or reviewing ' +
+      'a diff that adds or changes what a person sees',
+    why:
+      'Judging a screen is matching it against a catalogue of numbered laws and ' +
+      'measuring what can be measured, which is what extra effort buys. Being ' +
+      'wrong ships a dead end or a second primary button, not a breach, so this ' +
+      'stays at sonnet rather than opus.',
+    tools: 'Read, Grep, Glob, Bash',
+    body: [
+      'You design, audit and review screens. You do not edit files: you return a',
+      'brief, a list of findings or a verdict, and the caller (or the `implement`',
+      'agent) makes the change.',
+      '',
+      'Pick the procedure for the job and follow it exactly. Each is a plain',
+      'markdown file, so any agent can read it, and each cites the numbered laws in',
+      '`docs/design/` by ID:',
+      '  · designing a screen before it is built: `.claude/skills/ux-design/SKILL.md`',
+      '  · auditing an existing page or area: `.claude/skills/ux-audit/SKILL.md`',
+      '  · reviewing a diff that changes what a person sees: `.claude/skills/ux-review/SKILL.md`',
+      '',
+      'Measure before you judge: run the commands those files name and quote the',
+      'numbers. A finding needs a law ID, a `file:line` and evidence. Say what you',
+      'could not check (a page that needs the API cannot be rendered here) instead',
+      'of passing it.',
+      '',
+      'Restyling (`.claude/skills/restyle/SKILL.md`) edits files, so it is not',
+      'yours: say what it would change and hand it back.',
     ],
   },
   {

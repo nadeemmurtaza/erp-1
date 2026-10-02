@@ -7,6 +7,7 @@ import { directionFor, formatMoney, toMajor, toMinor, type Locale } from '@newax
 import { usePathname, useRouter } from '@/i18n/navigation';
 import type { CatalogFacets } from '@/types/api';
 import { cn } from '@/utils/cn';
+import { useExitTransition } from '@/hooks/use-exit-transition';
 
 interface FilterPanelProps {
   facets: CatalogFacets;
@@ -27,6 +28,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = useState(false);
+  const { mounted, leaving } = useExitTransition(isOpen);
 
   const selected = (key: string): string[] => {
     const raw = searchParams.get(key);
@@ -213,7 +215,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
         type="button"
         // btn-primary supplies shape/colour so a future colour change still
         // reaches this button; only the transform-based hover lift is bespoke.
-        className="btn-primary mb-4 w-full transition-[background-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-0.5 lg:hidden"
+        className="btn-primary mb-4 w-full transition-[background-color,transform] duration-normal ease-decelerate motion-safe:hover:-translate-y-0.5 lg:hidden"
         onClick={() => setIsOpen(true)}
       >
         <svg
@@ -236,23 +238,28 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
         </svg>
         {t('filters')}
         {activeCount > 0 ? (
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-semibold text-neutral-900">
+          <span data-theme="light" className="flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-xs font-semibold text-neutral-900">
             {activeCount}
           </span>
         ) : null}
       </button>
 
       {/* Mobile Drawer */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+      {mounted && (
+        <div inert={leaving} className="fixed inset-0 z-overlay lg:hidden">
           <div
-            className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm transition-opacity animate-fadeIn"
+            className={cn(
+              'fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity duration-fast ease-exit',
+              leaving ? 'opacity-0' : 'animate-fadeIn',
+            )}
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
           <div className={cn(
-            'fixed inset-y-0 w-80 bg-white shadow-xl flex flex-col',
-            isRtl ? 'start-0 animate-slideInLeft' : 'end-0 animate-slideInRight'
+            'fixed inset-y-0 w-80 bg-overlay shadow-modal flex flex-col',
+            isRtl
+              ? cn('start-0', leaving ? 'animate-slideOutLeft' : 'animate-slideInLeft')
+              : cn('end-0', leaving ? 'animate-slideOutRight' : 'animate-slideInRight'),
           )}>
             <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-100">
               <span className="font-display text-lg font-semibold text-neutral-900">{t('filters')}</span>

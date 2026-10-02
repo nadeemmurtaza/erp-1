@@ -23,6 +23,7 @@ import { RoleWizard } from '@/components/admin/role-wizard';
 import { useAdminSession } from '@/components/admin/session';
 import { useEnabledModules } from '@/components/admin/deployment-modules';
 import { isModuleEnabled } from '@/utils/module-gate';
+import { DateField } from '@/components/ui/date-field';
 
 /** Undefined = wizard closed. `null` = creating a new role. A `RoleSummary` = editing that one. */
 type WizardTarget = RoleSummary | null | undefined;
@@ -256,24 +257,28 @@ export default function AdminSettingsPage() {
               className="field-input w-auto"
             />
           </label>
-          <label className="block">
-            <span className="field-label">From</span>
-            <input
-              type="date"
+          <div>
+            <label htmlFor="audit-from" className="field-label">
+              From
+            </label>
+            <DateField
+              id="audit-from"
+              className="w-auto"
               value={auditFilters.from}
-              onChange={(event) => setAuditFilters({ ...auditFilters, from: event.target.value })}
-              className="field-input w-auto"
+              onChange={(next) => setAuditFilters({ ...auditFilters, from: next })}
             />
-          </label>
-          <label className="block">
-            <span className="field-label">To</span>
-            <input
-              type="date"
+          </div>
+          <div>
+            <label htmlFor="audit-to" className="field-label">
+              To
+            </label>
+            <DateField
+              id="audit-to"
+              className="w-auto"
               value={auditFilters.to}
-              onChange={(event) => setAuditFilters({ ...auditFilters, to: event.target.value })}
-              className="field-input w-auto"
+              onChange={(next) => setAuditFilters({ ...auditFilters, to: next })}
             />
-          </label>
+          </div>
           <button
             type="button"
             onClick={() => {

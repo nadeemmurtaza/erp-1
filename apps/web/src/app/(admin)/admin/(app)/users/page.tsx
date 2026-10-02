@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-client';
 import type { AdminUser, BackOfficeRole, RoleSummary } from '@/types/api';
 import { DataTable } from '@/components/ui';
+import { Select } from '@/components/ui/select';
 
 interface Draft {
   email: string;
@@ -185,18 +186,19 @@ export default function AdminUsersPage() {
             />
           </label>
 
-          <label className="block">
+          <div>
             <span className="field-label">Role</span>
-            <select
+            <Select
+              label="Role"
               value={draft.role}
-              onChange={(event) => setDraft({ ...draft, role: event.target.value as BackOfficeRole })}
-              className="field-input"
-            >
-              <option value="STAFF">Staff</option>
-              <option value="TAILOR">Tailor</option>
-              <option value="ADMIN">Admin</option>
-            </select>
-          </label>
+              onChange={(next) => setDraft({ ...draft, role: next as BackOfficeRole })}
+              options={[
+                { value: 'STAFF', label: 'Staff' },
+                { value: 'TAILOR', label: 'Tailor' },
+                { value: 'ADMIN', label: 'Admin' },
+              ]}
+            />
+          </div>
 
           <label className="block">
             <span className="field-label">Password</span>

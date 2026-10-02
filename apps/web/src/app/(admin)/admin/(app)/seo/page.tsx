@@ -220,7 +220,7 @@ function RedirectsTab() {
             ? `"${deleting.fromPath}" will 404 again instead of forwarding to "${deleting.toPath}".`
             : ''
         }
-        confirmLabel="Delete"
+        confirmLabel="Delete redirect"
       />
     </div>
   );

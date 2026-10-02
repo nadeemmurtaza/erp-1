@@ -13,13 +13,13 @@ export function CustomerNav() {
   const t = useTranslations('nav'); // We can add translations if we want, or just use English
 
   if (isLoading) {
-    return <div className="h-8 w-8 animate-pulse rounded-full bg-neutral-100" />;
+    return <div className="skeleton h-8 w-8 rounded-full" />;
   }
 
   if (user) {
     return (
       <div className="group relative">
-        <button className="flex items-center gap-2 text-sm text-neutral-900/70 transition-colors duration-200 hover:text-neutral-900">
+        <button className="flex items-center gap-2 text-sm text-neutral-900/70 transition-colors duration-normal hover:text-neutral-900">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
             <circle cx="12" cy="7" r="4" />
@@ -27,7 +27,7 @@ export function CustomerNav() {
         </button>
 
         {/* Dropdown menu */}
-        <div className="absolute end-0 top-full mt-3 hidden w-48 rounded-lg border border-neutral-100 bg-white p-4 shadow-md group-hover:block animate-fadeIn z-50">
+        <div className="absolute end-0 top-full mt-3 hidden w-48 rounded-lg border border-neutral-100 bg-overlay p-4 shadow-md group-hover:block animate-fadeIn z-dropdown">
           <div className="mb-3 pb-3 border-b border-neutral-100">
             <p className="text-xs font-medium uppercase tracking-widest text-neutral-900/60">{t('account')}</p>
             <p className="mt-2 text-sm text-neutral-900">{user.email}</p>
@@ -75,7 +75,7 @@ export function CustomerNav() {
   return (
     <Link
       href={ROUTES.storefront.login}
-      className="flex items-center gap-2 text-sm text-neutral-900/70 transition-colors duration-200 hover:text-neutral-900"
+      className="flex items-center gap-2 text-sm text-neutral-900/70 transition-colors duration-normal hover:text-neutral-900"
     >
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />

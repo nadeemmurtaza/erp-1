@@ -1,5 +1,29 @@
 import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { extendTailwindMerge } from 'tailwind-merge';
+import { SIZE_SPACING_PX, THEME_ELEVATION, THEME_LAYERS, THEME_MOTION } from '@newax/shared';
+
+/**
+ * `twMerge`, taught the names the design system adds. Without this it does not
+ * know `z-toast`, `shadow-raised`, `min-h-touch`, `duration-fast` or
+ * `text-metric`, so it neither de-duplicates two of them nor — worse — mistakes
+ * `text-metric` for a text *colour* and silently drops the one real colour next
+ * to it. The names come from the same token lists Tailwind is built from, so
+ * they cannot drift.
+ */
+const twMerge = extendTailwindMerge({
+  extend: {
+    theme: {
+      text: ['metric'],
+      shadow: Object.keys(THEME_ELEVATION.light),
+      ease: Object.keys(THEME_MOTION.easing),
+      spacing: Object.keys(SIZE_SPACING_PX),
+    },
+    classGroups: {
+      z: [{ z: Object.keys(THEME_LAYERS) }],
+      duration: [{ duration: Object.keys(THEME_MOTION.duration) }],
+    },
+  },
+});
 
 /**
  * Joins class names and resolves Tailwind conflicts, last one winning.

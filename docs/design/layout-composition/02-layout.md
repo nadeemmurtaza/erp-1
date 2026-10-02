@@ -2,8 +2,10 @@
 
 How a page is arranged, and how that arrangement survives seven screen widths.
 
-Status: **breakpoints are built** (`apps/web/tailwind.config.ts`). The density
-and reflow rules below are enforced by review.
+Status: **breakpoints are built** (`apps/web/tailwind.config.ts`), on a scale
+whose names differ from Law 4's (the table under "The seven screens" maps one
+onto the other). The seven widths are swept in CI by `check-overflow`; the
+density and reflow rules below are enforced by review.
 
 ## The page skeleton
 
@@ -17,6 +19,43 @@ invents a fourth should explain why:
 3. **Secondary depth** — `Tabs` for separate tasks on one object,
    `SectionRail` for parts of one object, `Disclosure` for the rare and the
    destructive.
+
+## Hierarchy: where the eye goes
+
+Two laws from the owner's hierarchy reel (2026-10-02), **HIE**. The reel's third
+point, one loud button (the brightest thing on the screen is the destination),
+is already `PER-9` (one first stop; a second primary button is a bug) and
+`COL-4` (the accent is for the primary action and the current selection), so it
+is not restated here. `COG-12` and `TYP-4` are what these two stand on.
+
+### HIE-1 · One headline
+**Here** — each screen has one largest piece of text, and it names the page's
+job: the `PageHeader` title, the page's `h1`. Nothing else on the first screen
+is set at its type step or above, so the title is read first, always: size
+opens the door. A page that exists to show one figure (a till total, a
+balance) may give that figure the largest step instead, but never both at
+once: two things at the top of the scale is a coin toss for the eye. Everything
+below the headline is ranked by weight and colour, not by more size (`TYP-4`),
+which also keeps it cheap in vertical space.
+
+**The test** — at 1280 px, count the elements set at the title's type step or
+larger. One. And the element the eye lands on first is the one that names the
+job.
+
+### HIE-2 · Three stops
+**Here** — from the headline to the action the eye stops at most three times:
+the headline, the content the action is about, and the action. A fourth stop is
+a competing region. Remove it, move it one level down (Law 2) or quiet it;
+never answer it by making the action louder, because then the page has two
+things shouting. The action is the page's one loud button (`PER-9`, `COL-4`)
+and its label is the verb the headline promised ("Get started", "Send
+invoice"). A table page passes the same test: its title, its table, its one
+create action. A filter row and a tab strip are controls, not stops.
+
+**The test** — name the three stops aloud for this page. If you cannot, or you
+need a fourth, the page has two jobs (Law 5). Then ask someone who has never
+seen it to point at the action: if that takes more than a glance, a stop is
+missing or a fourth one is competing.
 
 ## Grid
 
@@ -61,6 +100,24 @@ too.
 Android device, and `fold` is the inner screen of a folding phone, which is
 why it sits between `sm` and `md` rather than being folded into either.
 
+**These are the widths a page must work at, not the Tailwind prefixes.**
+`apps/web/tailwind.config.ts` names a different scale, and a builder who writes
+`sm:` expecting the law's 380 gets 640:
+
+| Prefix in code | Starts at | First law width it applies to |
+|---|---|---|
+| none (the base styles) | 0 | `xs` 280: below the first prefix, the base layout alone must work |
+| `xs:` | 380 | `sm` 380 |
+| `sm:` | 640 | `fold` 640 |
+| `fold:` | 672 | none: the sweep's 640 sits below it, so 672 to 767 is never swept |
+| `md:` `lg:` `xl:` `2xl:` | 768, 1024, 1280, 1536 | the same name and width |
+
+The config's `fold` was retuned to 672 against measured devices (a Z Fold
+opened into tablet mode is about 673 to 717 px wide); the law's round 640
+predates that. Renaming the config (every `xs:`, `sm:` and `fold:` utility in
+the codebase) or restating the law is an open decision, recorded in ADR-083's
+consistency addendum with the harness comment that first named it.
+
 ## Reflow rules
 
 In order of preference, because the first preserves the most meaning:
@@ -76,16 +133,24 @@ In order of preference, because the first preserves the most meaning:
 **Never** a horizontal page scroll. A table may scroll inside its own bounds;
 the page may not.
 
+**Where rule 3 applies, it is `DataTable`'s `stacked` prop** — opt-in, so no
+existing table changes. Below `md` each row becomes a card (the first column is
+its title, every other column a label and a value); from `md` it is the same
+table. Use it for a list whose rows are read one at a time — a person, an audit
+entry, an import row — and leave it off where rows are compared against each
+other, which is what the rule above already says. The planned admin screens in the admin-platform design spec (it lives on
+another branch, see ADR-083's fourth addendum) name five such lists; `/admin/design-system#patterns` shows it at every width.
+
 ## Multi-surface parity
 
-Four front ends — `apps/web` (admin + storefront), `apps/pos`, `apps/mobile` —
-share `packages/shared` and nothing else.
+Four front ends — the admin and the storefront (both in `apps/web`),
+`apps/pos` and `apps/mobile` — share `packages/shared` and nothing else.
 
 **Rules**
 - A token belongs in `packages/shared`, never in one app's config, because the
   POS and mobile do not read `tailwind.config.ts`.
 - The same concept keeps the same name and the same shape across surfaces. A
-  status pill is `components/common/status-badge` everywhere, and there is
+  status is `components/common/status-badge` (a `Badge`) everywhere, and there is
   never an eighth one.
 - A surface may omit a capability. It may not rename or restyle one it has.
 
@@ -105,16 +170,12 @@ possibly offline. It is the one surface where the usual instincts are wrong:
 ## Verifying
 
 ```bash
-# No horizontal overflow and no nested boxes
-python scripts/nested-borders.py
-
-# Every Next app ships its error/not-found/global-error routes
-for app in apps/web apps/pos; do
-  for f in global-error.tsx not-found.tsx; do
-    [ -f "$app/src/app/$f" ] || echo "MISSING: $app/src/app/$f"
-  done
-done
+pnpm check:overflow            # ITG-4: no horizontal overflow at the seven widths (own CI job; needs a seeded stack)
+python scripts/nested-borders.py   # nested boxes: 0 beyond the two known controls (ui.md, "Borders and boxes")
 ```
 
-Reflow itself has no automated check today. Chapter 09 says what that costs
-and what would fix it.
+The check that every Next app ships its error, not-found and global-error
+routes is the snippet in `.claude/rules/ui.md` ("No dead ends"); it is kept in
+one place. Reflow is checked at the seven widths, but a page that wastes its
+width without overflowing is not: chapter 09 says what that costs and what
+would fix it.

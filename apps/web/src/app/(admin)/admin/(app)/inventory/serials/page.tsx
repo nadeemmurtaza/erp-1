@@ -115,7 +115,7 @@ export default function SerialsPage() {
           placeholder="Search by name or SKU…"
         />
         {results.length > 0 ? (
-          <ul className="absolute inset-x-4 top-full z-10 mt-1 rounded-md bg-white shadow-md">
+          <ul className="absolute inset-x-4 top-full z-dropdown mt-1 rounded-md bg-overlay shadow-md">
             {results.map((result) => (
               <li key={result.id}>
                 <button

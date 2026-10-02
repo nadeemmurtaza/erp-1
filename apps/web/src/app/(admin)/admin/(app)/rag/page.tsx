@@ -7,6 +7,8 @@ import { adminFetch } from '@/lib/admin-client';
 import { downloadFile } from '@/lib/download-file';
 import { visibleCorpora } from '@/lib/rag-corpus-access';
 import { DataTable, type DataTableColumn, EmptyState, Loading, Pagination, PageHeader } from '@/components/ui';
+import { Dropzone } from '@/components/ui/dropzone';
+import { PDF_UPLOAD_RULES } from '@/lib/upload-rules';
 import { StatusBadge } from '@/components/common/status-badge';
 import { ToastStack } from '@/components/admin/toast-stack';
 import { useToast } from '@/hooks/use-toast';
@@ -232,15 +234,15 @@ export default function RagSourcesPage() {
               ))}
             </select>
           </label>
-          <label className="field-label">
-            PDF file
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-              className="mt-1 block text-sm file:me-3 file:rounded-md file:border-0 file:bg-accent-hover file:px-4 file:py-2 file:text-sm file:font-medium file:text-white"
-            />
-          </label>
+          {/* Choosing is not sending: the PDF goes with the Upload button beside it, together with the corpus, so there is no tray here. */}
+          <Dropzone
+            compact
+            className="min-w-0 flex-1 basis-72"
+            rules={PDF_UPLOAD_RULES}
+            label="Drop a PDF here, click to choose, or paste"
+            selected={file}
+            onFiles={([chosen]) => setFile(chosen ?? null)}
+          />
           <button type="submit" className="btn-primary" disabled={!file || uploading}>
             {uploading ? 'Uploading…' : 'Upload'}
           </button>

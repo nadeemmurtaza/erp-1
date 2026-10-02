@@ -101,7 +101,7 @@ export function OnsiteMessages({ locale }: { locale: string }) {
   return (
     <>
       {announcement && (
-        <div className="flex items-center justify-center gap-3 bg-neutral-900 px-4 py-2 text-center text-sm text-white">
+        <div data-theme="light" className="flex items-center justify-center gap-3 bg-neutral-900 px-4 py-2 text-center text-sm text-white">
           <span>
             {announcement.headline}
             {announcement.body ? <span className="ms-2 text-white/80">{announcement.body}</span> : null}
@@ -140,7 +140,7 @@ export function OnsiteMessages({ locale }: { locale: string }) {
       )}
 
       {cookieConsent && (
-        <div className="fixed inset-x-0 bottom-0 z-40 bg-white p-4 shadow-md">
+        <div className="fixed inset-x-0 bottom-0 z-overlay bg-overlay p-4 shadow-md">
           <div className="container-page flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-neutral-700">
               {cookieConsent.headline}

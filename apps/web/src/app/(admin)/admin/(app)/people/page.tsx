@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { DataTable, EmptyState, PageHeader, Dialog, Section, Disclosure } from '@/components/ui';
 import { useAdminSession } from '@/components/admin/session';
+import { Select } from '@/components/ui/select';
 
 interface PostingView {
   id: string;
@@ -281,17 +282,19 @@ export default function PeoplePage() {
 
       <Dialog open={assigning !== null} onClose={busy ? () => {} : () => setAssigning(null)} title={`Assign a posting to ${assigning?.name ?? ''}`}>
         <div className="space-y-3">
-          <label className="block">
-            <span className="field-label">Position</span>
-            <select className="field-input w-full" value={positionId} onChange={(e) => setPositionId(e.target.value)}>
-              <option value="">Choose a position…</option>
-              {positions.map((pos) => (
-                <option key={pos.id} value={pos.id}>
-                  {pos.title}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div>
+            <label htmlFor="assign-position" className="field-label">
+              Position
+            </label>
+            <Select
+              id="assign-position"
+              label="Position"
+              placeholder="Choose a position…"
+              value={positionId}
+              onChange={setPositionId}
+              options={positions.map((pos) => ({ value: pos.id, label: pos.title }))}
+            />
+          </div>
           <label className="field-check">
             <input type="checkbox" checked={isPrimary} onChange={(e) => setIsPrimary(e.target.checked)} />
             <span>Primary posting</span>
@@ -324,28 +327,32 @@ export default function PeoplePage() {
               placeholder="Finance Manager"
             />
           </label>
-          <label className="block">
-            <span className="field-label">Org unit</span>
-            <select className="field-input w-full" value={positionOrgUnitId} onChange={(e) => setPositionOrgUnitId(e.target.value)}>
-              <option value="">Choose a unit…</option>
-              {orgUnits.map((u) => (
-                <option key={u.id} value={u.id}>
-                  {'—'.repeat(u.depth)} {u.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
-            <span className="field-label">Rank</span>
-            <select className="field-input w-full" value={positionRankId} onChange={(e) => setPositionRankId(e.target.value)}>
-              <option value="">Choose a rank…</option>
-              {ranks.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div>
+            <label htmlFor="position-org-unit" className="field-label">
+              Org unit
+            </label>
+            <Select
+              id="position-org-unit"
+              label="Org unit"
+              placeholder="Choose a unit…"
+              value={positionOrgUnitId}
+              onChange={setPositionOrgUnitId}
+              options={orgUnits.map((u) => ({ value: u.id, label: `${'—'.repeat(u.depth)} ${u.name}` }))}
+            />
+          </div>
+          <div>
+            <label htmlFor="position-rank" className="field-label">
+              Rank
+            </label>
+            <Select
+              id="position-rank"
+              label="Rank"
+              placeholder="Choose a rank…"
+              value={positionRankId}
+              onChange={setPositionRankId}
+              options={ranks.map((r) => ({ value: r.id, label: r.label }))}
+            />
+          </div>
         </div>
         <div className="mt-4 flex justify-end gap-2">
           <button className="btn-secondary" disabled={busy} onClick={() => setNewPositionOpen(false)}>

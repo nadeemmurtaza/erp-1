@@ -105,6 +105,11 @@ export async function verifyEmail(token: string): Promise<void> {
   });
 }
 
+/** The signed-in customer's own address: sends a new verification link (the old one expired or was used). */
+export async function resendEmailVerification(): Promise<void> {
+  await customerFetch('/auth/resend-verification', { method: 'POST' });
+}
+
 export async function unsubscribeFromMarketing(userId: string, token: string): Promise<void> {
   await request('/email/unsubscribe', {
     method: 'POST',

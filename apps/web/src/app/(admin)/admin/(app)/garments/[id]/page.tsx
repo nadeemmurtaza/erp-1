@@ -16,6 +16,7 @@ import {
   type SizeChartDraft,
   type SizeToken,
 } from '@/utils/garment-drafts';
+import { Select } from '@/components/ui/select';
 
 /**
  * One garment: what it is called, what it costs, and what the tailor measures.
@@ -348,18 +349,19 @@ export default function AdminGarmentPage({ params }: { params: Promise<{ id: str
                           className="field-input py-1 font-urdu text-sm"
                         />
                       </Small>
-                      <Small label="Unit">
-                        <select
+                      {/* Not `Small`: that is a label, and a label around segmented options sends a click on its text to the first one. */}
+                      <div className="block">
+                        <span className="mb-1 block text-xs text-neutral-900/60">Unit</span>
+                        <Select
+                          label="Unit"
                           value={field.unit}
-                          onChange={(event) =>
-                            patch(setFields, index, { unit: event.target.value as 'INCH' | 'CM' })
-                          }
-                          className="field-input py-1 text-sm"
-                        >
-                          <option value="INCH">inch</option>
-                          <option value="CM">cm</option>
-                        </select>
-                      </Small>
+                          onChange={(next) => patch(setFields, index, { unit: next as 'INCH' | 'CM' })}
+                          options={[
+                            { value: 'INCH', label: 'inch' },
+                            { value: 'CM', label: 'cm' },
+                          ]}
+                        />
+                      </div>
                       <Small label="Min">
                         <input
                           type="number"

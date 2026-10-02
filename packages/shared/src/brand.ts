@@ -193,11 +193,46 @@ const colors = {
     hover: '#095865',
   },
   /**
-   * The surface cards sit on, and the label colour on a filled button.
-   * Named because the two error routes that render before any stylesheet,
-   * and the chart that draws gaps between slices, each need it as a value.
+   * The label colour on a filled button, and on anything else that is always
+   * dark behind it. Named because the two error routes that render before any
+   * stylesheet need it as a value.
+   *
+   * `bg-white` is NOT this colour any more — it resolves to `surface` below,
+   * because "the thing a card is made of" and "the label on a solid fill" are
+   * the same white in light and two different colours in dark. `text-white`
+   * stays fixed; `bg-white` follows the theme.
    */
   white: '#ffffff',
+  /**
+   * The surface cards, panels and inputs sit on — one step above the page
+   * (`neutral.50`). Light: white. Dark: one step lighter than the page,
+   * because in a dark interface "higher" means lighter (the eye reads a
+   * shadow's absence as elevation). Also the chart background.
+   */
+  surface: '#ffffff',
+  /**
+   * The surface of anything that floats over other surfaces — dialogs,
+   * menus, popovers, toasts, drawers. Identical to `surface` in light, where
+   * a shadow carries the lift; one step lighter than it in dark, where a
+   * shadow cannot (a black shadow on a near-black page is invisible).
+   */
+  overlay: '#ffffff',
+  /**
+   * The strongest fill, and the label on it: a selected chip, a count badge,
+   * the step number in a wizard. Light: near-black with a white label. Dark:
+   * near-white with a near-black label. This pair exists because a
+   * `bg-neutral-900` fill carrying `text-white` cannot survive a theme — the
+   * ramp flips, the fixed white label does not, and white-on-near-white is
+   * unreadable.
+   */
+  inverse: '#121111',
+  onInverse: '#ffffff',
+  /**
+   * The veil behind a modal or drawer. Dark-tinted in both themes: a dim
+   * layer over a dark page is still dark, and a light one would bleach it.
+   * Used only with an alpha (`bg-scrim/40`).
+   */
+  scrim: '#121111',
   /** Rating stars only. Never repurpose it. */
   star: '#F5B841',
   /**
@@ -223,6 +258,73 @@ const colors = {
    * reason (see chart-theme.ts).
    */
   chart: ['#0e8294', '#b8860b', '#4a6fa5', '#8a5a44', '#5f7a4f', '#7d5ba6'],
+} as const;
+
+/**
+ * The dark palette — the same roles as `colors`, re-derived, never inverted.
+ *
+ * COL-5: to keep contrast you darken on light and lighten on dark, so the same
+ * hex cannot serve both. Every semantic colour above resolves through a token
+ * per theme; this is the dark half. Each value is held to a measured floor by
+ * `check-contrast.mjs` and `theme-contrast.spec.ts`, not chosen by eye:
+ *
+ *   text on page/surface/overlay  4.5:1   (neutral 400 and up)
+ *   a control's outline           3:1     (neutral 200, on surface)
+ *   white label on a brand fill   4.5:1   (accent / accent.hover)
+ *
+ * The ramp keeps its direction of meaning — `50` is still the page, `100` the
+ * soft edge, `200` the control edge, `500` the quiet text, `900` the strong
+ * text — and only the lightness is reversed. It keeps the light ramp's warm
+ * hue (red a hair above green) so the two themes read as one product.
+ *
+ * Surfaces climb: page (`neutral.50`) < `surface` < `overlay`. That ordering is
+ * how a dark interface says "this is higher", since a shadow cannot.
+ */
+const colorsDark = {
+  neutral: {
+    50: '#0c0b0b',
+    100: '#2b292a',
+    200: '#6d6b6c',
+    300: '#7b797a',
+    400: '#8c8a8b',
+    500: '#a3a1a2',
+    600: '#bbb9ba',
+    700: '#d1cfd0',
+    800: '#e6e4e5',
+    900: '#f9f7f8',
+  },
+  /**
+   * The brand FILL is the same in both themes: a white label has to keep
+   * reading on it, and a lighter teal would drop white-on-fill under 4.5:1.
+   * What changes in dark is the brand INK — see `accentInk`.
+   */
+  accent: {
+    DEFAULT: '#0e8294',
+    hover: '#095865',
+  },
+  /**
+   * The brand as TEXT, a line or a focus ring on a dark surface. Lighter than
+   * the fill because the fill (L≈0.18) only reaches 4.0:1 on a dark surface,
+   * and a link needs 4.5:1. Fill and ink are one colour in light — that is
+   * why light has no `accentInk` — and two colours in dark, which is the whole
+   * reason `bg-accent` and `text-accent` resolve through different tokens.
+   */
+  accentInk: {
+    DEFAULT: '#3db8cb',
+    hover: '#8fdae6',
+  },
+  white: '#ffffff',
+  surface: '#171516',
+  overlay: '#242122',
+  inverse: '#f9f7f8',
+  onInverse: '#121111',
+  scrim: '#000000',
+  star: '#F5B841',
+  feedback: {
+    positive: '#3dcb8b',
+    negative: '#ff8a80',
+  },
+  chart: ['#2ba6b9', '#d4a72c', '#7c9bd0', '#c08f77', '#8fb07a', '#ae8ad6'],
 } as const;
 
 /**
@@ -283,6 +385,163 @@ const fonts = {
   rtlLineHeight: 2.1,
 } as const;
 
+/**
+ * Spacing, in px — one scale for padding, gaps and section rhythm (SPA-1).
+ *
+ * Every step is an existing Tailwind step (`space[3]` = 8px = `p-2`), so web
+ * needs no new utilities and nothing moved on screen: `theme-space.spec.ts`
+ * proves the match rather than trusting this comment. The scale exists as a
+ * value so React Native, which has no `p-2`, reads the same numbers.
+ *
+ * It stops at 64. A gap larger than that is a layout decision (a section, a
+ * hero) made with `container-page` and `clamp()`, not a spacing step.
+ */
+const space = {
+  0: 0,
+  1: 2,
+  2: 4,
+  3: 8,
+  4: 12,
+  5: 16,
+  6: 24,
+  7: 32,
+  8: 48,
+  9: 64,
+} as const;
+
+/**
+ * Sizes that belong to a control, not to a layout, in px.
+ *
+ * `control` is a control's visual height (`xl` is the field of a sign-in or
+ * sign-up form, FRM-2: one decision per screen, so each control may be large);
+ * `touch` is the smallest target a
+ * finger hits reliably and it floors the control height wherever a touch
+ * screen is plausible (ACT-1, ACC-4) — which is why `.btn` is 44 tall on a
+ * phone and 40 once a pointer is likely. `pos` is the till's own floor: a
+ * cashier taps without looking, on glass, in a hurry.
+ */
+const size = {
+  control: { sm: 32, md: 40, lg: 48, xl: 56 },
+  icon: { sm: 16, md: 20, lg: 24 },
+  touch: { min: 44, pos: 48 },
+} as const;
+
+/**
+ * Elevation — four ordered steps, each exactly one shadow (chapter 01).
+ *
+ * Shadows are neutral-tinted, not pure black: a shadow is a darker version of
+ * the surface it falls on, and #121111 at low alpha reads as that, where rgb(0
+ * 0 0) reads as a hole. Each step is two layers — a tight contact shadow that
+ * anchors the object and a wide ambient one that lifts it.
+ *
+ * Dark shadows are deeper and more opaque, and they are only half of dark
+ * elevation: the other half is `colors.overlay` being lighter than
+ * `colors.surface`. Never a border and a shadow on the same edge (ui.md).
+ */
+const elevation = {
+  light: {
+    flat: 'none',
+    raised: '0 1px 2px 0 rgb(18 17 17 / 0.06), 0 1px 3px 0 rgb(18 17 17 / 0.06)',
+    overlay: '0 4px 8px -2px rgb(18 17 17 / 0.08), 0 12px 24px -6px rgb(18 17 17 / 0.12)',
+    modal: '0 8px 16px -4px rgb(18 17 17 / 0.12), 0 24px 56px -12px rgb(18 17 17 / 0.3)',
+  },
+  dark: {
+    flat: 'none',
+    raised: '0 1px 2px 0 rgb(0 0 0 / 0.5), 0 1px 3px 0 rgb(0 0 0 / 0.4)',
+    overlay: '0 4px 8px -2px rgb(0 0 0 / 0.5), 0 12px 24px -6px rgb(0 0 0 / 0.55)',
+    modal: '0 8px 16px -4px rgb(0 0 0 / 0.55), 0 24px 56px -12px rgb(0 0 0 / 0.7)',
+  },
+} as const;
+
+/**
+ * Stacking layers. A `z-index` literal in a component is a bug: two things
+ * that overlap wrongly are fixed by ordering or structure, not a bigger
+ * number. Elevation implies z-order — anything that looks higher must also be
+ * higher, which is why these names mirror `elevation`.
+ *
+ * `raised`, `raised-2` and `raised-3` are the steps the chapter-01 list did
+ * not name: local stacking inside a single component (a link over a photo, a
+ * badge over the link, a button over both) that must not compete with the
+ * page-level layers. They top out at 3 so they can never outrank `sticky`,
+ * and a component that needs a fourth has a structure problem, not a number
+ * problem.
+ */
+const layers = {
+  base: 0,
+  raised: 1,
+  'raised-2': 2,
+  'raised-3': 3,
+  sticky: 10,
+  dropdown: 20,
+  overlay: 30,
+  modal: 40,
+  toast: 50,
+  debug: 90,
+} as const;
+
+/**
+ * Motion — durations in ms, easings as cubic-bezier control points, springs
+ * as framer-motion's own parameters, distances in px (chapter 05).
+ *
+ * `sweep` and `decelerate` are the signature button fill: long enough to read
+ * as a fill rather than a flick, decelerating so it settles instead of
+ * slamming. They are here, not in globals.css, so that "refine the motion
+ * language" is one edit. Nothing here is animated with `left`/`top`/`width`;
+ * motion moves transform and opacity only.
+ *
+ * Under `prefers-reduced-motion` every duration collapses (globals.css), and
+ * the information the motion carried survives as a state change.
+ */
+const motion = {
+  duration: { instant: 80, fast: 140, normal: 220, slow: 320, sweep: 420 },
+  easing: {
+    standard: [0.2, 0, 0, 1],
+    emphasized: [0.2, 0, 0, 1.2],
+    exit: [0.4, 0, 1, 1],
+    decelerate: [0.22, 0.61, 0.36, 1],
+    /**
+     * A strong ease-out: most of the travel in the first third, then a long
+     * quiet settle. Measured off the reference reel's elements arriving (each
+     * covered 60% of its distance in 100ms and was within 1px of rest by
+     * 600ms), which is `cubic-bezier(0.16, 1, 0.3, 1)`. Entrances and
+     * re-centring use it; it never overshoots.
+     */
+    settle: [0.16, 1, 0.3, 1],
+  },
+  spring: {
+    snappy: { stiffness: 400, damping: 32 },
+    soft: { stiffness: 260, damping: 30 },
+    gentle: { stiffness: 180, damping: 26 },
+  },
+  /**
+   * `nudge` is the amplitude of the error attention shake: a quarter of `small`'s travel each way.
+   * `lift` is how far a card rises under a pointer (CRD-6): twice `micro`, enough to read as
+   * "this will take my hand" with the shadow step, and half of `small`, so a grid of cards never
+   * jumps.
+   */
+  distance: { micro: 2, small: 8, medium: 24, large: 64, nudge: 4, lift: 4 },
+  /**
+   * Scale endpoints. A press compresses to 98%; a card or notice arriving starts at 97%;
+   * a mark too small for 97% to read (a chart point, a badge dot) starts at 60%.
+   */
+  scale: { press: 0.98, arrive: 0.97, pop: 0.6 },
+  /**
+   * How fast moving text may travel while someone reads it, in px per second. Used where
+   * a truncated line is scrolled to show its end on hover or focus: slow enough to follow
+   * with the eye, fast enough that a 240px overflow is one pass of 5 seconds. The two
+   * reference reels that did this ran at 23 and 80; this sits between them.
+   */
+  speed: { read: 48 },
+  /**
+   * Orchestration (MOT-6): each child starts `step` ms after the one before it,
+   * and only the first `steps` children are staggered; the rest arrive with the
+   * last. The cap is what stops a 200-row table from animating. `fine` is the
+   * step for a grid of peers that are small and many (product cards, CRD-6): half of
+   * `step`, so four of them still finish inside 160 ms.
+   */
+  stagger: { step: 80, steps: 4, fine: 40 },
+} as const;
+
 // ---------------------------------------------------------------------------
 // Artwork
 //
@@ -328,6 +587,64 @@ const commerce = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// Safeguards
+//
+// How much a person is made to do, or made to wait, before something that cannot
+// be taken back happens (DNG-1, DNG-6). Starting values, in the same sense as the
+// commerce defaults: a deployment retunes them here, and a later settings row can
+// override them per tenant without a new rule.
+// ---------------------------------------------------------------------------
+
+const safeguards = {
+  /**
+   * How long a destructive control is held before it fires, in ms. Long enough
+   * that a stray press or a tap with a thumb cannot do it (a long-press on a
+   * phone is about 500), short enough that a person who means it is not made to
+   * wait: a second is the least a ring can fill in and still be seen filling.
+   */
+  holdToConfirmMs: 1000,
+  /**
+   * How many days a removed workspace, brand or account stays recoverable
+   * before it is purged. Two weeks spans two weekends and a month-end close,
+   * which is when somebody notices what is missing.
+   */
+  deletionCooldownDays: 14,
+} as const;
+
+// ---------------------------------------------------------------------------
+// Feedback
+//
+// How long a control's own answer stays on screen before the control is ready
+// again (CPY-2, CPY-5), and how long a toast stays (SUC-3). Starting values: a
+// deployment retunes them here.
+// ---------------------------------------------------------------------------
+
+const feedback = {
+  /**
+   * How long a copy button shows its check, in ms. Long enough for the eye to
+   * come back from the place the value will be pasted and find the answer
+   * still there (a glance away and back is about a second), short enough that
+   * the icon is a copy button again before a second copy is wanted.
+   */
+  copiedHoldMs: 2000,
+  /**
+   * How long a copy button shows that the copy failed, in ms. Twice the success
+   * hold: the failure carries a sentence the person has to read and act on
+   * (select the text and copy it by hand), where success carries one glyph.
+   */
+  copyFailedHoldMs: 4000,
+  /**
+   * How long a toast, and the upload tray after everything succeeded, stays
+   * before it leaves on its own, in ms. A toast is one sentence (about twelve
+   * words, read in two to three seconds) plus the second it takes to notice it
+   * arrived; the same four seconds as a copy failure, which also carries a
+   * sentence. A toast with `duration: 0` stays until dismissed, and a failure
+   * never hides on this timer.
+   */
+  toastMs: 4000,
+} as const;
+
+// ---------------------------------------------------------------------------
 
 export const BRAND = {
   identity,
@@ -336,9 +653,11 @@ export const BRAND = {
   legal,
   banking,
   locale,
-  theme: { colors, radii, type, fonts },
+  theme: { colors, colorsDark, radii, type, fonts, space, size, elevation, layers, motion },
   assets,
   commerce,
+  safeguards,
+  feedback,
 } as const;
 
 export type Brand = typeof BRAND;

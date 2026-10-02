@@ -5,6 +5,8 @@ import { Bar, ComposedChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, 
 import { formatDateShort, formatMoney } from '@newax/shared';
 import { EmptyState } from '@/components/ui';
 import { ChartDataTable } from './chart-data-table';
+import { chartActiveDot, chartCursor, chartDrawProps, chartTooltipMotion } from './chart-motion';
+import { usePrefersReducedMotion } from './use-reduced-motion';
 import { GRID, INK, INK_FAINT, compactMoney, paletteColor } from './chart-theme';
 
 export interface ComparisonBucketPoint {
@@ -23,6 +25,8 @@ export interface ComparisonBucketPoint {
  * `inventory.view_cost`) a third line.
  */
 export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucketPoint[] }) {
+  const reduced = usePrefersReducedMotion();
+
   if (buckets.length === 0) {
     return <EmptyState title="No activity in this window." />;
   }
@@ -51,14 +55,16 @@ export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucke
             width={56}
           />
           <Tooltip
+            {...chartTooltipMotion(reduced)}
+            cursor={chartCursor.crosshair}
             contentStyle={{ border: `1px solid ${GRID}`, borderRadius: 4, fontSize: 12 }}
             labelFormatter={(label: ReactNode) => formatDateShort(String(label), 'en', { withWeekday: true })}
             formatter={(value: TooltipValueType | undefined, name: ReactNode) =>
               [formatMoney(Number(value ?? 0)), name] as [string, ReactNode]
             }
           />
-          <Bar dataKey="purchases" name="Purchases" stackId="outflow" fill={paletteColor(2)} />
-          <Bar dataKey="expenses" name="Expenses" stackId="outflow" fill={paletteColor(3)} />
+          <Bar dataKey="purchases" name="Purchases" stackId="outflow" fill={paletteColor(2)} {...chartDrawProps(reduced, 0)} />
+          <Bar dataKey="expenses" name="Expenses" stackId="outflow" fill={paletteColor(3)} {...chartDrawProps(reduced, 1)} />
           <Line
             dataKey="sales"
             name="Sales"
@@ -66,7 +72,8 @@ export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucke
             stroke={paletteColor(0)}
             strokeWidth={2}
             dot={false}
-            activeDot={{ r: 5 }}
+            activeDot={chartActiveDot}
+            {...chartDrawProps(reduced, 2)}
           />
           {hasNet ? (
             <Line
@@ -77,7 +84,8 @@ export function ComparisonChart({ buckets }: { buckets: readonly ComparisonBucke
               strokeWidth={2}
               strokeDasharray="4 4"
               dot={false}
-              activeDot={{ r: 5 }}
+              activeDot={chartActiveDot}
+              {...chartDrawProps(reduced, 3)}
             />
           ) : null}
         </ComposedChart>

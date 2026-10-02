@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { PageHeader } from '@/components/ui';
 import type { Location } from '@/types/api';
+import { DateField } from '@/components/ui/date-field';
+import { Select } from '@/components/ui/select';
 
 interface Report {
   locationId: string;
@@ -52,19 +54,19 @@ export default function SuspiciousTrafficPage() {
           <label htmlFor="traffic-location" className="mb-1 block text-xs text-neutral-900/70">
             Location
           </label>
-          <select id="traffic-location" className="field-input" value={locationId} onChange={(e) => setLocationId(e.target.value)}>
-            {locations.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.name}
-              </option>
-            ))}
-          </select>
+          <Select
+            id="traffic-location"
+            label="Location"
+            value={locationId}
+            onChange={setLocationId}
+            options={locations.map((l) => ({ value: l.id, label: l.name }))}
+          />
         </div>
         <div>
           <label htmlFor="traffic-date" className="mb-1 block text-xs text-neutral-900/70">
             Date
           </label>
-          <input id="traffic-date" type="date" className="field-input" value={date} onChange={(e) => setDate(e.target.value)} />
+          <DateField id="traffic-date" value={date} onChange={setDate} />
         </div>
       </div>
 

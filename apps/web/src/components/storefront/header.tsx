@@ -10,6 +10,7 @@ import { CustomerNav } from './customer-nav';
 import { LocaleSwitcher } from './locale-switcher';
 import { Logo } from './logo';
 import { SearchBox } from './search-box';
+import { ThemeSwitch } from './theme-switch';
 
 import { MobileNav } from './mobile-nav';
 import { ROUTES } from '@/constants/routes';
@@ -72,7 +73,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-neutral-100 bg-white shadow-sm">
+      <header className="sticky top-0 z-sticky border-b border-neutral-100 bg-white shadow-sm">
         <div className="container-page">
           <div className="flex items-center justify-between py-3 md:py-5">
             <div className="flex items-center gap-3 md:gap-8" suppressHydrationWarning>
@@ -80,7 +81,7 @@ export function Header() {
               <Link
                 href="/"
                 aria-label={tSite('name')}
-                className="shrink-0 text-neutral-900 transition-colors duration-200 hover:text-neutral-600"
+                className="shrink-0 text-neutral-900 transition-colors duration-normal hover:text-neutral-600"
               >
                 {/* The descender is the bottom third of the logo's box, so
                     centring the box leaves the word riding high — it measured
@@ -104,7 +105,7 @@ export function Header() {
                             const isParentActive = item.submenu.some(sub => isActive(sub.href));
                             return (
                               <button
-                                className={`relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-out ${
+                                className={`relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-[background-color,color,transform] duration-normal ease-decelerate ${
                                   isParentActive
                                     ? 'bg-neutral-50 text-neutral-900'
                                     : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 motion-safe:hover:-translate-y-0.5'
@@ -112,21 +113,21 @@ export function Header() {
                               >
                                 {t(item.key)}
                                 <span
-                                  className={`absolute bottom-0 start-0 h-0.5 transition-all duration-200 ${
-                                    isParentActive ? 'w-full bg-neutral-900' : 'w-0 bg-neutral-900 group-hover:w-full'
+                                  className={`absolute bottom-0 start-0 h-0.5 w-full origin-left bg-neutral-900 transition-transform duration-normal rtl:origin-right ${
+                                    isParentActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                                   }`}
                                 />
                               </button>
                             );
                           })()}
-                          <div className="invisible absolute start-0 top-full overflow-hidden rounded-md border border-neutral-100 bg-white opacity-0 shadow-md transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                          <div className="invisible absolute start-0 top-full overflow-hidden rounded-md border border-neutral-100 bg-overlay opacity-0 shadow-md transition-[opacity,visibility] duration-normal group-hover:visible group-hover:opacity-100">
                             {item.submenu.map((subitem) => {
                               const subActive = isActive(subitem.href);
                               return (
                                 <Link
                                   key={subitem.key}
                                   href={subitem.href}
-                                  className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                                  className={`block px-4 py-2 text-sm transition-colors duration-normal ${
                                     subActive
                                       ? 'bg-neutral-50 text-neutral-900'
                                       : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'
@@ -146,15 +147,15 @@ export function Header() {
                       <Link
                         key={item.key}
                         href={item.href || '/'}
-                        className={`group relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-out ${
+                        className={`group relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-[background-color,color,transform] duration-normal ease-decelerate ${
                           active
                             ? 'bg-neutral-50 text-neutral-900'
                             : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 motion-safe:hover:-translate-y-0.5'
                         }`}
                       >
                         {t(item.key)}
-                        <span className={`absolute bottom-0 start-0 h-0.5 transition-all duration-200 ${
-                          active ? 'w-full bg-neutral-900' : 'w-0 bg-neutral-900 group-hover:w-full'
+                        <span className={`absolute bottom-0 start-0 h-0.5 w-full origin-left bg-neutral-900 transition-transform duration-normal rtl:origin-right ${
+                          active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                         }`} />
                       </Link>
                     );
@@ -173,7 +174,7 @@ export function Header() {
               <Link
                 href={ROUTES.storefront.shop}
                 aria-label={t('search')}
-                className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 transition-colors duration-200 hover:bg-neutral-50 hover:text-neutral-900 sm:hidden"
+                className="flex h-9 w-9 items-center justify-center rounded text-neutral-500 transition-colors duration-normal hover:bg-neutral-50 hover:text-neutral-900 sm:hidden"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />
@@ -182,7 +183,7 @@ export function Header() {
               </Link>
               <div className="hidden h-6 w-px bg-neutral-200 lg:block" />
               {/* Cart and account move to the mobile bottom pill; the header keeps them for md: and up. */}
-              <div className="hidden rounded transition-colors duration-200 hover:bg-neutral-50 lg:block">
+              <div className="hidden rounded transition-colors duration-normal hover:bg-neutral-50 lg:block">
                 <CustomerNav />
               </div>
               {/* CartBadge sizes and colours its own hit target, so this wrapper only toggles visibility. */}
@@ -190,6 +191,7 @@ export function Header() {
                 <CartBadge />
               </div>
               <div className="hidden h-6 w-px bg-neutral-200 lg:block" />
+              <ThemeSwitch />
               {/*
                 The switcher reads the query string so filters survive a language
                 change, which opts it out of prerendering without this boundary.

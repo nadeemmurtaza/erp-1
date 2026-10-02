@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   filter: {
     paddingHorizontal: theme.space(3),
     paddingVertical: theme.space(2),
-    borderRadius: theme.radius.pill,
+    borderRadius: theme.radius.sm,
     backgroundColor: theme.color.sandDeep,
   },
   filterOn: { backgroundColor: theme.color.brand },

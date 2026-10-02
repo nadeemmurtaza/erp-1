@@ -83,9 +83,18 @@ needed something to fill a column.
 **Says** — elements sharing shape, colour, size or weight are perceived as the
 same kind of thing.
 **Here** — **one visual treatment means one kind of thing, product-wide.** If
-a pill is a status, nothing that is not a status may be a pill. This is the
+a mark is a status, nothing that is not a status may wear its tones. **A status
+is one component, `Badge` (reached through `StatusBadge`), in the house corner**;
+the round `.pill` is a count chip (the number beside a wizard step today),
+neither a status nor a control, and a status written as a `.pill` is a defect. This is the
 perceptual half of `COL-1`, and it is why a second status component is a
-defect and not a duplicate.
+defect and not a duplicate. **A button is never round**: a circular or pill
+button is a second button shape, so every button, link-as-button and icon
+button wears the house corner (`.btn`, `.icon-btn`, or `rounded`, which
+resolves to `--radius`). Circles are for avatars, dots, spinners and count
+badges; the one control that keeps a pill is the `Switch` track (an input
+holding a state, the single baseline entry of `round-button`).
+`check-tells` fails `round-button`.
 **Fails when** — a filter chip and a status badge look identical, so users
 click a status trying to filter by it.
 
@@ -350,7 +359,7 @@ radius. (NN/G; Smashing.)
 | Blast radius | Guard |
 |---|---|
 | Reversible, small | do it; offer undo |
-| Irreversible, or wide | a dialogue that *names the object and the count* |
+| Irreversible, or wide | a hold (`DNG-1`, `HoldToConfirm`) when the label says all there is to say; otherwise a dialogue that *names the object and the count* |
 | Irreversible and financial or cross-branch | name the object **and** require typing it |
 A confirmation that does not state exactly what is about to happen is not a
 guard, it is a speed bump.
@@ -576,7 +585,8 @@ a label with the wrong value. One of the few layout bugs that produces a
 **Says** — the right density depends on the task, not on taste: a scanning
 task wants compact, a data-entry task wants comfortable.
 **Here** — comfortable (48–56 px rows) is the default; compact (40–44 px) is
-available where a role scans hundreds of rows. **Density changes spacing
+the setting for admin tables and the POS till, where a role scans hundreds of
+rows (the "tight" rows of `02-layout`'s density table are this). **Density changes spacing
 only** — never type size, never target size, which are floored by `ACT-1` and
 `ACC-4`.
 
@@ -653,9 +663,11 @@ dimension.
 ### MOT-2 · Duration scales with distance and size
 **Says** — a small, near change reads as slow if given a large duration; a
 large change reads as a jump if given a small one. (Material.)
-**Here** — the token names say the job: `instant` 80 ms (state change),
-`quick` 120 ms (small move), `base` 200 ms (panel), `slow` 320 ms (full-screen
-or cross-page). A 500 ms hover is a bug.
+**Here** — the token names say the job: `instant` 80 ms (a press going down),
+`fast` 140 ms (hover, focus, an exit), `normal` 220 ms (a panel, an arrival),
+`slow` 320 ms (full-surface or route-level), `sweep` 420 ms (the button fill and
+a page-level figure resolving). A 500 ms hover is a bug. (These are the names in
+`brand.ts`; this law used to name `quick` and `base`, which never existed.)
 
 ### MOT-3 · Easing carries meaning
 **Says** — decelerate for things entering (they arrive and settle), accelerate
@@ -669,14 +681,24 @@ for a continuous indeterminate loop, never for a transition.
 preference; vestibular disorders make large motion genuinely harmful.
 **Here** — **under reduced motion the information the motion carried must
 survive.** Cross-fade or appear in place; never simply jump, or the
-orientation the motion provided is lost rather than reduced. The stylesheets
-carry **two** such blocks today, which chapter 05 records as a real gap.
+orientation the motion provided is lost rather than reduced. The stylesheet
+rule reaches pseudo-elements and delays, and JavaScript-driven motion asks for
+itself (`usePrefersReducedMotion`); chapter 05 lists the three layers.
 
 ### MOT-5 · Never animate a property that forces layout
 **Says** — `width`, `height`, `top`, `left` and `margin` trigger layout on
 every frame; `transform` and `opacity` do not.
 **Here** — transform and opacity. On a till running on modest hardware with a
 40-item basket on screen, this is the difference between usable and not.
+Two bounded exceptions, both in the expressive tier and both touching no
+ancestor or sibling layout: `CountUp` writes the text of one figure (tabular
+figures, a block of its own, for 420 ms), and `ProgressRing` transitions
+`stroke-dashoffset` (paint only, on a 36px SVG). No primitive animates `width`,
+`height`, `top`, `left` or `margin`. `check-tells` fails `layout-motion` on a
+`transition-[…]` or `transition:` that names one; one storefront site is held in
+its baseline (the stitching panel's `max-height` accordion, which needs a
+`Disclosure` rebuild), and the nav underline grows with `scale-x` instead of
+`width`.
 
 ### MOT-6 · Orchestration, not simultaneity
 **Says** — a group of elements animating together reads as a single event; a
@@ -717,8 +739,16 @@ catastrophe, not an annoyance.
 ### ACC-4 · Target size
 **Says** — WCAG 2.2 **2.5.8** requires 24×24 CSS px minimum at AA; 44×44 is
 the AAA figure and the mobile-platform norm.
-**Here** — **44×44 minimum, 48×48 on POS.** Above the standard deliberately:
-this is a system operated at speed by people who are standing up.
+**Here** — **44×44 minimum below `fold` (672 px), where a thumb is likely; 48×48
+on POS at every width.** Above the standard deliberately: this is a system
+operated at speed by people who are standing up. From `fold` up, where a
+pointer is likely, `.btn` is 40 tall and `.icon-btn` 36 square, and `.chip` and
+`.btn-text` drop their floor; nothing goes below WCAG's 24×24 with spacing.
+Width is a proxy for the input device, so a touch tablet at 672 px or wider
+gets pointer sizes: keying those four classes to `@media (pointer: fine)`
+instead of `fold:` closes it, a visible change that is an open decision
+(ADR-083, consistency addendum). This is the one statement of the rule; other
+chapters link here.
 
 ### ACC-5 · Accessible authentication
 **Says** — WCAG 2.2 **3.3.8**: no cognitive-function test in authentication
@@ -809,6 +839,68 @@ province is an emirate, a county, a state.
 **Here** — `brand.ts` carries `regionLabel` and `regions` for exactly this,
 because they had been typed into the checkout page. **Never validate a name,
 never require a postcode, never hardcode a region list.**
+
+---
+
+## Where the card-deck laws are built
+
+Twelve of the laws above arrived again on the owner's rule cards of 2026-10-01
+(Fitts, Hick, chunking, Doherty, proximity, Von Restorff, the goal gradient,
+Postel, Tesler, similarity, serial position, peak-end). They are not restated in
+chapter 03; this table says which artifact makes each one true, so a review can
+open the file rather than take the claim. "Not enforced by a command" is stated
+where it is the case.
+
+| Law | Where it is built | Held by |
+|---|---|---|
+| `ACT-1` Fitts | `field-xl` (56 px) on every form field; `Dropzone`, whose whole area is the target; the full-width submit in `FormStack` | review; touch size is not linted (`.claude/rules/design.md`) |
+| `COG-1` Hick | `Select` and `Menu` filter past ten rows (`lib/menu-filter.ts`); `Segmented` replaces a menu under five (`MNU-6`) | `lib/menu-filter.spec.ts`; `check-menus` holds short native selects at 0 (a ratchet) |
+| `COG-3` Chunking | `FormStack` groups fields in sixteens; `DangerZone` closes over its acts; `DateField` splits a date into month and year jumps | review |
+| `ACT-3` Doherty | `Button loading`, the `HoldToConfirm` ring and `UploadTray` rows all answer in the frame the input arrives; the result may take as long as it takes | `lib/guard.spec.ts`, `lib/upload-queue.spec.ts` |
+| `PER-1` Proximity | `Field`: label 4 px from its control, 16 px from the field before; the product card: 8 px between lines, 24 between cards | review |
+| `COG-12` Von Restorff | one filled button per form (`FormStack`'s `actions`); the one accent on a card is the price and its button (`Price tone="accent"`); red only on destruction (`DNG-4`) | review; `check-danger` holds the labels, not the red |
+| `COG-10` Goal gradient | `UploadTray` counts real files ("2 of 5"); `Wizard` counts real steps. Progress is never invented to look closer than it is | `lib/upload-queue.spec.ts` |
+| `ACT-5` Postel | `lib/date-parse.ts` reads many shapes of a date and writes one; `Dropzone` takes a drop, a paste or a pick; `normalizePhone` | `lib/date-parse.spec.ts` |
+| `COG-8` Tesler | the system carries the rules so the person does not: `lib/upload-rules.ts` checks type and size at drop time and states the limits first; `lib/guard.ts` decides what a hold is | `lib/upload.spec.ts`, `lib/guard.spec.ts` |
+| `PER-3` Similarity | every form is `Field` inside `FormStack`; every destructive control is the same red, from `ConfirmDialog` to `HoldToConfirm` | `check-danger` (labels); `check-tells` (`round-button`, for shape); review (the rest) |
+| `COG-11` Serial position | the primary is first in `FormStack` and its links follow; `DangerZone` is last on the page; a card reads title, price, button | review |
+| `COG-13` Peak-end | `useDoneBeat` and `Button done` draw the check before the page leaves; `UploadTray` ends on a plain "2 of 5 uploaded · 1 failed"; `CooldownBanner` names the day it ends | `lib/guard.spec.ts` |
+
+---
+
+## Where the two reels' laws are built
+
+Two reels of 2026-10-02 ("Hierarchy", "Success is a system") arrived as seven new
+laws, `HIE-1` and `HIE-2` in chapter 02 and `SUC-1` to `SUC-5` in chapter 04, each
+standing on a law above. This table says which artifact makes each one true and
+what holds it, so a review opens the file rather than taking the claim.
+
+| Law | Where it is built | Held by |
+|---|---|---|
+| `HIE-1` One headline (on `TYP-4`) | `PageHeader` is the one title step on a page; `SuccessState` is `text-2xl` as an `h1` and `text-lg` as an `h2`, so a nested one never ties with the page's title | review (`/ux-review` item 3); a type step is not linted |
+| `HIE-2` Three stops (on `PER-9`, `COL-4`) | `FormStack`'s one filled button; `SuccessState` has exactly one `btn-primary` and its DOM order is its focus order (title, proof, primary, secondary, loop, back) | a one-off browser run, not in CI: Tab order and overflow at the seven widths, both themes; otherwise review |
+| `SUC-1` Specific | `SuccessState`'s `title` takes a node so a figure can settle in, and `detail` carries the proof; the adopters name the order number, the total and the date | `check-tells` `vague-success` holds a literal "Success", "Done" or "Saved" as a toast or a `SuccessState` title at 0; a title that is an expression is counted, not failed |
+| `SUC-2` Next step (on `ITG-1`) | `SuccessState`'s `primary` is required by type and by a runtime guard that renders nothing without a label and a destination | nothing automated: the web app has no component test harness, so the guard is stated in the specimen and checked by a one-off browser run, not by a test |
+| `SUC-3` Stakes | the three rows of `04-states.md`: inline or a toast of 4 000 ms (`useToast` default), `SuccessState`, `SuccessState` with a receipt. Five storefront screens and the admin CSV import moved to row 2 or 3 | review; which row a screen belongs in is a judgment no command makes |
+| `SUC-4` Open loop (on `COG-9`) | `SuccessState`'s `loop`: an ordered list of real states, one at most, with the state read by assistive technology beside the icon | review: whether the system can follow the thread is a fact about the data, not the component |
+| `SUC-5` Rare joy (on `COG-13`) | `celebrate` is off by default and no screen passes it; the burst is eight sparks on transform and opacity, and none under reduced motion | `lib/success-state.spec.ts` holds the burst's numbers; a one-off browser run counted 8 sparks once and none under reduced motion. The milestone record that would let a screen pass it does not exist: a separate work order |
+
+---
+
+## Where the copy laws are built
+
+One reel of 2026-10-02 ("Copy needs proof") arrived as five laws, `CPY-1` to `CPY-5`
+in chapter 03, each standing on a law above (`ACT-3`, `ACC-6`, `ACC-8`, `FLO-7`).
+This table says which artifact makes each one true and what holds it, so a review
+opens the file rather than taking the claim.
+
+| Law | Where it is built | Held by |
+|---|---|---|
+| `CPY-1` The flip is the receipt (on `ACT-3`) | `CopyButton`'s stacked faces cross-fade on opacity and scale in `instant` (80 ms); the state moves only when `copyText` has resolved, never before | `lib/copy.spec.ts` (the state machine); a one-off browser run measured the flip 11.4 ms after the click and no `.spinner` at any point; not in CI |
+| `CPY-2` Two seconds, then back | `BRAND.feedback.copiedHoldMs` (2 000 ms) read as `COPIED_HOLD_MS`; `nextCopy` counts repeats and ignores an expiry that a newer copy overtook; the effect restarts the timer on every result | `lib/copy.spec.ts` (hold lengths, repeat counting, stale expiry), `theme-radii.spec.ts` (the values); a browser run measured 2 001 ms, the pulse on a repeat and a restarted hold |
+| `CPY-3` Copy the raw value | `CopyButton` takes `value: string` and never reads a node; `normalizeCopyValue` removes only what is invisible; `copyText` is the only write | `lib/copy.spec.ts` (every character class); `check-clipboard` fails a clipboard call anywhere else; a browser run pasted an IBAN that was displayed with hidden characters and got it without them |
+| `CPY-4` Say it aloud (on `ACC-6`) | an always-mounted `role="status"` region with a keyed child; the button's `aria-label` never changes | a browser run read the region's text and the name before, during and after; no command checks it, and a real screen reader was not run |
+| `CPY-5` Fall back, then fail out loud (on `FLO-7`, `ACC-8`) | `copyText` tries the async API, then `copyByCommand` from a scratch field inside the open `dialog`; both failing is the failed state with its sentence, 4 000 ms (`copyFailedHoldMs`), and `onFail` | `lib/copy.spec.ts` (order, synchronous fallback, dialog host, cleanup, every failure); a browser run on a real HTTP origin (`isSecureContext` false) copied through the command and a blocked clipboard showed the sentence |
 
 ---
 

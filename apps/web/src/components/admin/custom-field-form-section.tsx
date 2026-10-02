@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { Loading } from '@/components/ui';
 import type { CustomFieldDefinition, CustomFieldEntityType, CustomFieldValue } from '@/types/api';
+import { DateField } from '@/components/ui/date-field';
 
 /**
  * architecture-patterns/105-metadata-driven-ui-rendering.md (WO-105.1) — the
@@ -150,16 +151,17 @@ function CustomFieldInput({
 
   if (definition.valueType === 'DATE') {
     return (
-      <label className="block">
+      // A div, not a label: the date field has its own button and a live line, which a wrapping label
+      // would read out as part of its name. `aria-label` names it instead.
+      <div className="block">
         {label}
-        <input
-          type="date"
+        <DateField
+          aria-label={definition.label}
           value={typeof value === 'string' ? value : ''}
-          onChange={(event) => onChange(event.target.value || null)}
+          onChange={(next) => onChange(next || null)}
           required={definition.isRequired}
-          className="field-input"
         />
-      </label>
+      </div>
     );
   }
 

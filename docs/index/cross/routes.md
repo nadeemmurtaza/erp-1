@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **877** endpoints across **161** controllers, with the access rule that actually guards each one.
+All **887** endpoints across **162** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -218,6 +218,21 @@ never authorization.
 | GET | `/admin/attendance/shifts` | `hr.attendance.view` `hr.attendance.record` `hr.attendance.reconcile` | `AttendanceController.listShifts` | Shifts for one person |
 | POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
 | POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
+
+### [`auction`](../modules/auction.md) (10)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/admin/auctions` | `auction.view` `auction.manage` | `AuctionController.list` | Auctions, newest first, optionally filtered by status |
+| POST | `/admin/auctions` | `auction.manage` | `AuctionController.create` | Draft an auction |
+| GET | `/admin/auctions/:id` | `auction.view` `auction.manage` | `AuctionController.get` | One auction with its lots |
+| PATCH | `/admin/auctions/:id` | `auction.manage` | `AuctionController.update` | Edit a draft auction |
+| POST | `/admin/auctions/:id/cancel` | `auction.manage` | `AuctionController.cancel` | Cancel a draft or scheduled auction, with a reason |
+| POST | `/admin/auctions/:id/lots` | `auction.manage` | `AuctionController.addLot` | Add a lot to a draft auction |
+| PATCH | `/admin/auctions/:id/lots/:lotId` | `auction.manage` | `AuctionController.updateLot` | Edit a lot on a draft auction |
+| POST | `/admin/auctions/:id/lots/:lotId/withdraw` | `auction.manage` | `AuctionController.withdrawLot` | Withdraw a lot from a draft auction — kept on record, never deleted |
+| POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` | Schedule a draft auction to open at its start time |
+| POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` | Return a scheduled auction to draft, before it opens |
 
 ### [`bankfacilities`](../modules/bankfacilities.md) (10)
 

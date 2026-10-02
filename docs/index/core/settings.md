@@ -12,7 +12,7 @@ Source: `apps/api/src/core/settings/`
 Core is what every deployment runs. A core file may never import a feature
 module — `scripts/check-module-boundaries.mjs` fails the build over it.
 
-## Files (7 · 957 lines)
+## Files (7 · 961 lines)
 
 All paths relative to `apps/api/src/core/settings`.
 
@@ -20,8 +20,8 @@ All paths relative to `apps/api/src/core/settings`.
 |---|---|---|---|---|
 | `document-number.spec.ts` | unit test | 37 | — |  |
 | `document-number.ts` | module | 50 | 2 |  |
-| `document-prefix.ts` | module | 50 | 1 | What this shop's documents are numbered with. |
-| `settings.defaults.ts` | module | 539 | 8 | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lead times. |
+| `document-prefix.ts` | module | 51 | 1 | What this shop's documents are numbered with. |
+| `settings.defaults.ts` | module | 542 | 8 | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lead times. |
 | `settings.module.ts` | nest module | 10 | 1 |  |
 | `settings.service.spec.ts` | unit test | 125 | — |  |
 | `settings.service.ts` | service | 146 | 4 | L1: how long this process serves a setting it has read. |
@@ -84,11 +84,11 @@ check there before adding another.
 | `StoreSettings` | interface | `settings.defaults.ts:12` | Business rules that staff must be able to change without a deploy: shipping zones, the COD fee, stitching lea… |
 | `DocumentLogoSource` | type | `settings.defaults.ts:21` | Which artwork a receipt, invoice or email shows at the top. |
 | `DocumentPrefixes` | interface | `settings.defaults.ts:24` | What each kind of document's numbers start with. |
-| `DocumentSettings` | interface | `settings.defaults.ts:54` |  |
-| `FinanceGatewayFeeBpsSettings` | interface | `settings.defaults.ts:68` | Basis points per payment provider (Rule 5 — 250 = 2.5%), read by OrderEconomicsService (WO-B.3) to derive `ga… |
-| `SettingKey` | const | `settings.defaults.ts:75` |  |
-| `SettingKeyName` | type | `settings.defaults.ts:353` |  |
-| `DEFAULT_SETTINGS` | const | `settings.defaults.ts:355` |  |
+| `DocumentSettings` | interface | `settings.defaults.ts:56` |  |
+| `FinanceGatewayFeeBpsSettings` | interface | `settings.defaults.ts:70` | Basis points per payment provider (Rule 5 — 250 = 2.5%), read by OrderEconomicsService (WO-B.3) to derive `ga… |
+| `SettingKey` | const | `settings.defaults.ts:77` |  |
+| `SettingKeyName` | type | `settings.defaults.ts:355` |  |
+| `DEFAULT_SETTINGS` | const | `settings.defaults.ts:357` |  |
 | `SettingsModule` | class | `settings.module.ts:9` |  |
 | `SETTINGS_L1_TTL_MS` | const | `settings.service.ts:14` | L1: how long this process serves a setting it has read. |
 | `SETTINGS_L1_MAX_ENTRIES` | const | `settings.service.ts:21` | L1 entries per process. |

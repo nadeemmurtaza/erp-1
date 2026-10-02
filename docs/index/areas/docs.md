@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-463 files · 96,032 lines
+463 files · 96,075 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 11 | 16,402 | doc, file |
+| `docs/implementation` | 11 | 16,430 | doc, file |
 | `docs/implementation/access-control-identity` | 9 | 2,588 | doc |
 | `docs/implementation/admin-platform` | 5 | 2,553 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -103,7 +103,7 @@ has a bug.
 | `docs/implementation/hr-people-org` | 19 | 3,813 | doc |
 | `docs/implementation/integrations-connectivity` | 25 | 7,898 | doc |
 | `docs/implementation/inventory-purchasing` | 5 | 1,798 | doc |
-| `docs/implementation/launchpad-apps` | 5 | 795 | doc |
+| `docs/implementation/launchpad-apps` | 5 | 810 | doc |
 | `docs/implementation/lots-serials-traceability` | 3 | 859 | doc |
 | `docs/implementation/payroll` | 4 | 1,178 | doc |
 | `docs/implementation/pos-hardware` | 4 | 645 | doc |
@@ -120,7 +120,7 @@ has a bug.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `docs/implementation/DECISIONS.md` | 11,869 | doc |  |
+| `docs/implementation/DECISIONS.md` | 11,897 | doc |  |
 | `docs/implementation/admin-platform/10-admin-dashboard.md` | 1,854 | doc |  |
 | `docs/implementation/tasks-notifications-support/205-self-hosted-video-meetings-livekit.md` | 1,813 | doc |  |
 | `docs/implementation/RETAIL-ERP.md` | 1,099 | doc |  |

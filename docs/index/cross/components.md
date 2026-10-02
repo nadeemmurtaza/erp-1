@@ -14,33 +14,33 @@ not to use it, is the table in `.claude/rules/ui.md` ("Primitives"). This table 
 
 | Export | File | Product files | Design-system files |
 |---|---|---|---|
-| `PageHeader` | `page-header.tsx` | 146 | 3 |
-| `Section` | `section.tsx` | 39 | 1 |
+| `PageHeader` | `page-header.tsx` | 148 | 3 |
+| `Section` | `section.tsx` | 40 | 1 |
 | `Disclosure` | `disclosure.tsx` | 14 | 5 |
 | `Tabs` | `tabs.tsx` | 9 | 3 |
 | `SectionRail` | `section-rail.tsx` | 5 | 1 |
-| `DataTable` | `data-table.tsx` | 119 | 9 |
-| `EmptyState` | `empty-state.tsx` | 76 | 4 |
-| `MetricStrip` | `metric-strip.tsx` | 21 | 2 |
+| `DataTable` | `data-table.tsx` | 121 | 9 |
+| `EmptyState` | `empty-state.tsx` | 77 | 4 |
+| `MetricStrip` | `metric-strip.tsx` | 22 | 2 |
 | `Badge` | `badge.tsx` | 13 | 11 |
-| `Pagination` | `pagination.tsx` | 10 | 2 |
-| `Button` | `button.tsx` | 16 | 15 |
-| `Dialog` | `dialog.tsx` | 30 | 3 |
-| `ConfirmDialog` | `confirm-dialog.tsx` | 12 | 4 |
+| `Pagination` | `pagination.tsx` | 11 | 2 |
+| `Button` | `button.tsx` | 18 | 15 |
+| `Dialog` | `dialog.tsx` | 32 | 3 |
+| `ConfirmDialog` | `confirm-dialog.tsx` | 13 | 4 |
 | `CopyButton` | `copy-button.tsx` | 2 | 1 |
-| `Loading` | `loading.tsx` | 90 | 1 |
+| `Loading` | `loading.tsx` | 91 | 1 |
 | `SuccessState` | `success-state.tsx` | 6 | 1 |
 | `ThemeToggle` | `theme-toggle.tsx` | 2 | 1 |
-| `ListPageSkeleton` | `list-page-skeleton.tsx` | 5 | 1 |
+| `ListPageSkeleton` | `list-page-skeleton.tsx` | 6 | 1 |
 | `Skeleton` | `skeleton.tsx` | 0 | 1 |
 | `SkeletonText` | `skeleton.tsx` | 0 | 1 |
 | `SkeletonRegion` | `skeleton.tsx` | 0 | 1 |
 | `Switch` | `switch.tsx` | 0 | 4 |
 | `Segmented` | `segmented.tsx` | 3 | 6 |
-| `Field` | `field.tsx` | 5 | 1 |
-| `FormStack` | `field.tsx` | 5 | 1 |
+| `Field` | `field.tsx` | 7 | 1 |
+| `FormStack` | `field.tsx` | 7 | 1 |
 | `HoldToConfirm` | `hold-to-confirm.tsx` | 1 | 1 |
-| `DangerZone` | `danger-zone.tsx` | 1 | 1 |
+| `DangerZone` | `danger-zone.tsx` | 2 | 1 |
 | `CooldownBanner` | `cooldown-banner.tsx` | 0 | 1 |
 | `Dropzone` | `dropzone.tsx` | 6 | 1 |
 | `UploadTray` | `upload-tray.tsx` | 1 | 1 |
@@ -60,7 +60,7 @@ not to use it, is the table in `.claude/rules/ui.md` ("Primitives"). This table 
 | `TruncateReveal` | `truncate-reveal.tsx` | 4 | 1 |
 | `Bento` | `bento.tsx` | 0 | 3 |
 | `BentoTile` | `bento.tsx` | 0 | 3 |
-| `FilterBar` | `filter-bar.tsx` | 17 | 1 |
+| `FilterBar` | `filter-bar.tsx` | 18 | 1 |
 
 
 Cross-surface: `components/common/status-badge` is **the** status mark (a `Badge` in the house corner) —
@@ -124,7 +124,7 @@ name taken through a path the scanner cannot resolve would appear too.
 | `range-picker.tsx` | `RANGES` `DASHBOARD_RANGES` `RangeDays` `RangePicker` | client | 3 |  |
 | `role-wizard.tsx` | `RoleWizard` | client | 1 |  |
 | `scope-chips.tsx` | `ScopeChip` `ScopeChips` | client | 2 |  |
-| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 63 |  |
+| `session.tsx` | `AdminSessionProvider` `AdminSession` `useAdminSession` | client | 65 |  |
 | `stage-badge.tsx` | `StageBadge` | server | 3 |  |
 | `toast-stack.tsx` | `ToastStack` | client | 36 |  |
 | `upload-provider.tsx` | `Uploads` `useUploads` `UploadProvider` | client | 3 |  |
@@ -202,7 +202,7 @@ name taken through a path the scanner cannot resolve would appear too.
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | client | 2 |  |
-| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 71 |  |
+| `status-badge.tsx` | `statusLabel` `StatusBadge` | server | 73 |  |
 | `toast-container.tsx` | `ToastContainer` | client | 0 |  |
 | `wizard.tsx` | `WizardStep` `Wizard` | client | 3 |  |
 
@@ -287,35 +287,35 @@ name taken through a path the scanner cannot resolve would appear too.
 |---|---|---|---|---|
 | `badge.tsx` | `BadgeTone` `Badge` | server | 26 |  |
 | `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 4 |  |
-| `button.tsx` | `ButtonProps` `Button` | server | 32 |  |
-| `confirm-dialog.tsx` | `ConfirmDialog` | client | 17 |  |
+| `button.tsx` | `ButtonProps` `Button` | server | 34 |  |
+| `confirm-dialog.tsx` | `ConfirmDialog` | client | 18 |  |
 | `cooldown-banner.tsx` | `CooldownBanner` | client | 2 |  |
 | `copy-button.tsx` | `CopyButtonProps` `CopyButton` | client | 4 |  |
 | `count-up.tsx` | `CountUp` | client | 3 |  |
-| `danger-zone.tsx` | `DangerAction` `DangerZone` | client | 3 |  |
-| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 129 |  |
+| `danger-zone.tsx` | `DangerAction` `DangerZone` | client | 4 |  |
+| `data-table.tsx` | `DataTableColumn` `DataTable` | server | 131 |  |
 | `date-field.tsx` | `DateFieldProps` `DateField` | client | 19 |  |
-| `dialog.tsx` | `Dialog` | client | 34 |  |
+| `dialog.tsx` | `Dialog` | client | 36 |  |
 | `disclosure.tsx` | `Disclosure` | client | 20 |  |
 | `draw-icon.tsx` | `DrawIcon` | client | 5 |  |
 | `dropzone.tsx` | `Dropzone` | client | 8 |  |
-| `empty-state.tsx` | `EmptyState` | server | 81 |  |
-| `field.tsx` | `FieldControlProps` `Field` `FormStack` | server | 7 |  |
-| `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 22 |  |
+| `empty-state.tsx` | `EmptyState` | server | 82 |  |
+| `field.tsx` | `FieldControlProps` `Field` `FormStack` | server | 9 |  |
+| `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 23 |  |
 | `hold-to-confirm.tsx` | `HoldToConfirm` | client | 3 |  |
-| `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 7 | The shape of a list page, before the list page. |
-| `loading.tsx` | `Loading` | server | 92 |  |
+| `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 8 | The shape of a list page, before the list page. |
+| `loading.tsx` | `Loading` | server | 93 |  |
 | `menu.tsx` | `OptionBlocker` `MenuOption` `Menu` `MENU_TRIGGER_CLASS` `ValueProxy` | client | 4 |  |
-| `metric-strip.tsx` | `MetricItem` `MetricStrip` | client | 24 |  |
+| `metric-strip.tsx` | `MetricItem` `MetricStrip` | client | 25 |  |
 | `multi-select.tsx` | `MultiSelectOption` `MultiSelectProps` `MultiSelect` | client | 2 |  |
 | `page-enter.tsx` | `PageEnter` | client | 4 |  |
-| `page-header.tsx` | `PageHeader` | server | 150 |  |
-| `pagination.tsx` | `PaginationMeta` `Pagination` | server | 13 |  |
+| `page-header.tsx` | `PageHeader` | server | 152 |  |
+| `pagination.tsx` | `PaginationMeta` `Pagination` | server | 14 |  |
 | `progress-bar.tsx` | `ProgressBar` | server | 5 |  |
 | `progress-ring.tsx` | `ProgressRing` | client | 3 |  |
 | `reveal-scope.tsx` | `RevealScope` | client | 3 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 10 |  |
-| `section.tsx` | `Section` | server | 41 |  |
+| `section.tsx` | `Section` | server | 42 |  |
 | `segmented.tsx` | `SegmentedOption` `Segmented` | client | 10 |  |
 | `select.tsx` | `SelectOption` `SelectProps` `Select` | client | 32 |  |
 | `skeleton.tsx` | `SkeletonShape` `Skeleton` `SkeletonText` `SkeletonRegion` | server | 2 |  |

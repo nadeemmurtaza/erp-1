@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2672,
-    "lines": 430703,
-    "routes": 877,
-    "controllers": 161,
-    "models": 314,
-    "enums": 145,
-    "migrations": 119,
+    "files": 2685,
+    "lines": 433072,
+    "routes": 887,
+    "controllers": 162,
+    "models": 316,
+    "enums": 148,
+    "migrations": 121,
     "events": 69,
-    "permissions": 130,
-    "screens": 278,
+    "permissions": 133,
+    "screens": 281,
     "crons": 30,
-    "specs": 387,
+    "specs": 390,
     "designLaws": 192
   },
   "designLaws": [
@@ -1373,13 +1373,13 @@
     "infra": {
       "files": 64,
       "lines": 33111,
-      "bytes": 1319586,
+      "bytes": 1319610,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1192,
-      "lines": 159759,
-      "bytes": 6258600,
+      "files": 1202,
+      "lines": 161311,
+      "bytes": 6323222,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1395,21 +1395,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 538,
-      "lines": 96959,
-      "bytes": 3571591,
+      "files": 541,
+      "lines": 97703,
+      "bytes": 3599072,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 463,
-      "lines": 96032,
-      "bytes": 5874480,
+      "lines": 96075,
+      "bytes": 5879734,
       "label": "docs/* — the documents of record"
     },
     "packages": {
       "files": 114,
-      "lines": 13146,
-      "bytes": 492962,
+      "lines": 13176,
+      "bytes": 493993,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -1529,6 +1529,21 @@
       ],
       "routes": 17,
       "page": "docs/index/modules/attendance.md"
+    },
+    {
+      "name": "auction",
+      "pack": "core",
+      "alwaysOn": false,
+      "inRegistry": true,
+      "files": [
+        "apps/api/src/modules/auction/auction.controller.ts",
+        "apps/api/src/modules/auction/auction.module.ts",
+        "apps/api/src/modules/auction/auction.service.spec.ts",
+        "apps/api/src/modules/auction/auction.service.ts",
+        "apps/api/src/modules/auction/dto/auction.dto.ts"
+      ],
+      "routes": 10,
+      "page": "docs/index/modules/auction.md"
     },
     {
       "name": "bankfacilities",
@@ -4449,6 +4464,168 @@
       "public": false,
       "authOnly": false,
       "summary": "Create a planned shift"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/auctions",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "list",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 31,
+      "access": "auction.view | auction.manage",
+      "permissions": [
+        "auction.view",
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Auctions, newest first, optionally filtered by status"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/auctions",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "create",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 45,
+      "access": "auction.manage",
+      "permissions": [
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Draft an auction"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/auctions/:id",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "get",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 38,
+      "access": "auction.view | auction.manage",
+      "permissions": [
+        "auction.view",
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "One auction with its lots"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/auctions/:id",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "update",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 52,
+      "access": "auction.manage",
+      "permissions": [
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit a draft auction"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/auctions/:id/cancel",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "cancel",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 99,
+      "access": "auction.manage",
+      "permissions": [
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Cancel a draft or scheduled auction, with a reason"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/auctions/:id/lots",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "addLot",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 59,
+      "access": "auction.manage",
+      "permissions": [
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Add a lot to a draft auction"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/auctions/:id/lots/:lotId",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "updateLot",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 66,
+      "access": "auction.manage",
+      "permissions": [
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Edit a lot on a draft auction"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/auctions/:id/lots/:lotId/withdraw",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "withdrawLot",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 78,
+      "access": "auction.manage",
+      "permissions": [
+        "auction.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Withdraw a lot from a draft auction — kept on record, never deleted"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/auctions/:id/schedule",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "schedule",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 85,
+      "access": "auction.publish",
+      "permissions": [
+        "auction.publish"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Schedule a draft auction to open at its start time"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/auctions/:id/unschedule",
+      "module": "auction",
+      "controller": "AuctionController",
+      "handler": "unschedule",
+      "file": "apps/api/src/modules/auction/auction.controller.ts",
+      "line": 92,
+      "access": "auction.publish",
+      "permissions": [
+        "auction.publish"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Return a scheduled auction to draft, before it opens"
     },
     {
       "method": "GET",
@@ -17344,6 +17521,57 @@
       "inSeed": true
     },
     {
+      "key": "auction.view",
+      "label": "View auctions and their lots",
+      "category": "Sales",
+      "sensitivity": "low",
+      "routes": [
+        "GET /admin/auctions",
+        "GET /admin/auctions/:id"
+      ],
+      "uiSites": 1,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "auction.manage",
+      "label": "Create and edit auctions and lots, and cancel an auction before it opens",
+      "category": "Sales",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /admin/auctions",
+        "POST /admin/auctions",
+        "GET /admin/auctions/:id",
+        "PATCH /admin/auctions/:id",
+        "POST /admin/auctions/:id/cancel",
+        "POST /admin/auctions/:id/lots",
+        "PATCH /admin/auctions/:id/lots/:lotId",
+        "POST /admin/auctions/:id/lots/:lotId/withdraw"
+      ],
+      "uiSites": 3,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "auction.publish",
+      "label": "Schedule an auction so it opens to bidding at its start time",
+      "category": "Sales",
+      "sensitivity": "high",
+      "routes": [
+        "POST /admin/auctions/:id/schedule",
+        "POST /admin/auctions/:id/unschedule"
+      ],
+      "uiSites": 2,
+      "roles": [
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
       "key": "stitching.jobs.view_queue",
       "label": "View the tailor job queue",
       "category": "Production",
@@ -21737,6 +21965,234 @@
         "@@index([resolvedAt])",
         "@@index([userId])",
         "@@index([orgUnitId])"
+      ]
+    },
+    {
+      "name": "Auction",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 38,
+      "doc": "One auction event.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "number",
+          "type": "String",
+          "id": false,
+          "unique": true,
+          "relation": false
+        },
+        {
+          "name": "organizationId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "outletLocationId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "type",
+          "type": "AuctionType",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "AuctionStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startsAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "endsAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "currency",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "terms",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdById",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lots",
+          "type": "AuctionLot[]",
+          "id": false,
+          "unique": false,
+          "relation": false
+        }
+      ],
+      "indexes": [
+        "@@index([status, startsAt])",
+        "@@index([organizationId])",
+        "@@index([outletLocationId])"
+      ]
+    },
+    {
+      "name": "AuctionLot",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 71,
+      "doc": "One thing being sold within an auction.",
+      "fields": [
+        {
+          "name": "id",
+          "type": "String",
+          "id": true,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "auctionId",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "lotNo",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "description",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceType",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "sourceId",
+          "type": "String?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "quantity",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "startPriceMinor",
+          "type": "Int",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "reservePriceMinor",
+          "type": "Int?",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "status",
+          "type": "AuctionLotStatus",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTime",
+          "id": false,
+          "unique": false,
+          "relation": false
+        },
+        {
+          "name": "auction",
+          "type": "Auction",
+          "id": false,
+          "unique": false,
+          "relation": true
+        }
+      ],
+      "indexes": [
+        "@@unique([auctionId, lotNo])",
+        "@@index([auctionId, status])"
       ]
     },
     {
@@ -47892,6 +48348,41 @@
       ]
     },
     {
+      "name": "AuctionLotStatus",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 25,
+      "values": [
+        "PENDING",
+        "OPEN",
+        "CLOSED",
+        "WITHDRAWN"
+      ]
+    },
+    {
+      "name": "AuctionStatus",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 15,
+      "values": [
+        "DRAFT",
+        "SCHEDULED",
+        "OPEN",
+        "CLOSING",
+        "CLOSED",
+        "SETTLED",
+        "CANCELLED"
+      ]
+    },
+    {
+      "name": "AuctionType",
+      "file": "apps/api/prisma/schema/auction.prisma",
+      "line": 9,
+      "values": [
+        "ENGLISH",
+        "SEALED_BID",
+        "REVERSE"
+      ]
+    },
+    {
       "name": "B2BOrderRequestStatus",
       "file": "apps/api/prisma/schema/accounts.prisma",
       "line": 67,
@@ -51453,6 +51944,35 @@
       "tables": [
         "RefreshToken"
       ]
+    },
+    {
+      "folder": "20261002180000_wo234_1_auction_foundation",
+      "file": "apps/api/prisma/schema/migrations/20261002180000_wo234_1_auction_foundation/migration.sql",
+      "date": "2026-10-02",
+      "slug": "wo234_1_auction_foundation",
+      "statements": 12,
+      "kinds": [
+        "CREATE TYPE",
+        "CREATE TABLE",
+        "CREATE UNIQUE INDEX",
+        "CREATE INDEX",
+        "ALTER TABLE"
+      ],
+      "tables": [
+        "Auction",
+        "AuctionLot"
+      ]
+    },
+    {
+      "folder": "20261002180100_wo234_1_auction_permissions",
+      "file": "apps/api/prisma/schema/migrations/20261002180100_wo234_1_auction_permissions/migration.sql",
+      "date": "2026-10-02",
+      "slug": "wo234_1_auction_permissions",
+      "statements": 3,
+      "kinds": [
+        "INSERT"
+      ],
+      "tables": []
     }
   ],
   "schemaMigrationDrift": {
@@ -52452,6 +52972,33 @@
       "kind": "page",
       "url": "/admin/attendance",
       "file": "apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/admin/auctions",
+      "file": "apps/web/src/app/(admin)/admin/(app)/auctions/loading.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/auctions",
+      "file": "apps/web/src/app/(admin)/admin/(app)/auctions/page.tsx",
+      "client": true,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/admin/auctions/[id]",
+      "file": "apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx",
       "client": true,
       "surface": "admin",
       "doc": ""
@@ -55777,6 +56324,25 @@
       ]
     },
     {
+      "file": "apps/api/src/modules/auction/auction.service.spec.ts",
+      "module": "auction",
+      "kind": "unit test",
+      "cases": 34,
+      "describes": [
+        "AuctionService",
+        "create",
+        "list",
+        "get",
+        "update",
+        "addLot",
+        "updateLot",
+        "withdrawLot",
+        "schedule",
+        "unschedule",
+        "cancel"
+      ]
+    },
+    {
       "file": "apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts",
       "module": "bankfacilities",
       "kind": "unit test",
@@ -57757,6 +58323,24 @@
       ]
     },
     {
+      "file": "apps/api/test/auction-http.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 4,
+      "describes": [
+        "Auction admin routes (e2e)"
+      ]
+    },
+    {
+      "file": "apps/api/test/auction.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 5,
+      "describes": [
+        "Auction foundation (e2e)"
+      ]
+    },
+    {
       "file": "apps/api/test/auth-throttle.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
@@ -59390,7 +59974,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 109,
-      "bytes": 5918,
+      "bytes": 5926,
       "doc": "",
       "symbols": []
     },
@@ -59399,7 +59983,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 193,
-      "bytes": 10223,
+      "bytes": 10231,
       "doc": "",
       "symbols": []
     },
@@ -59408,7 +59992,7 @@
       "area": "infra",
       "kind": "example",
       "lines": 140,
-      "bytes": 6618,
+      "bytes": 6626,
       "doc": "",
       "symbols": []
     },
@@ -59731,6 +60315,15 @@
       "lines": 198,
       "bytes": 8407,
       "doc": "Attendance, shifts and leave —",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/auction.prisma",
+      "area": "api",
+      "kind": "prisma schema",
+      "lines": 97,
+      "bytes": 3449,
+      "doc": "Auction app (launchpad-apps/234-auction-app.md, WO-234.1).",
       "symbols": []
     },
     {
@@ -60954,6 +61547,24 @@
       "kind": "migration",
       "lines": 40,
       "bytes": 2046,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20261002180000_wo234_1_auction_foundation/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 74,
+      "bytes": 2508,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20261002180100_wo234_1_auction_permissions/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 33,
+      "bytes": 1937,
       "doc": "",
       "symbols": []
     },
@@ -65442,8 +66053,8 @@
       "path": "apps/api/src/core/settings/document-prefix.ts",
       "area": "api",
       "kind": "module",
-      "lines": 50,
-      "bytes": 1771,
+      "lines": 51,
+      "bytes": 1789,
       "doc": "",
       "symbols": [
         {
@@ -65457,8 +66068,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 539,
-      "bytes": 30715,
+      "lines": 542,
+      "bytes": 30842,
       "doc": "",
       "symbols": [
         {
@@ -65479,27 +66090,27 @@
         {
           "name": "DocumentSettings",
           "kind": "interface",
-          "line": 54
+          "line": 56
         },
         {
           "name": "FinanceGatewayFeeBpsSettings",
           "kind": "interface",
-          "line": 68
+          "line": 70
         },
         {
           "name": "SettingKey",
           "kind": "const",
-          "line": 75
+          "line": 77
         },
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 353
+          "line": 355
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 355
+          "line": 357
         }
       ]
     },
@@ -67304,6 +67915,125 @@
           "name": "CreateShiftDto",
           "kind": "class",
           "line": 64
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 103,
+      "bytes": 3976,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AuctionController",
+          "kind": "class",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 19,
+      "bytes": 732,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AuctionModule",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 445,
+      "bytes": 19431,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 371,
+      "bytes": 16304,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AuctionLotView",
+          "kind": "type",
+          "line": 23
+        },
+        {
+          "name": "AuctionDetail",
+          "kind": "type",
+          "line": 24
+        },
+        {
+          "name": "AuctionService",
+          "kind": "class",
+          "line": 57
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/dto/auction.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 178,
+      "bytes": 4254,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "MAX_MINOR",
+          "kind": "const",
+          "line": 22
+        },
+        {
+          "name": "CREATABLE_AUCTION_TYPES",
+          "kind": "const",
+          "line": 25
+        },
+        {
+          "name": "AUCTION_STATUSES",
+          "kind": "const",
+          "line": 27
+        },
+        {
+          "name": "CreateAuctionDto",
+          "kind": "class",
+          "line": 29
+        },
+        {
+          "name": "UpdateAuctionDto",
+          "kind": "class",
+          "line": 62
+        },
+        {
+          "name": "CancelAuctionDto",
+          "kind": "class",
+          "line": 93
+        },
+        {
+          "name": "CreateAuctionLotDto",
+          "kind": "class",
+          "line": 101
+        },
+        {
+          "name": "UpdateAuctionLotDto",
+          "kind": "class",
+          "line": 135
+        },
+        {
+          "name": "AuctionListQueryDto",
+          "kind": "class",
+          "line": 172
         }
       ]
     },
@@ -72447,8 +73177,8 @@
       "path": "apps/api/src/modules/module-packs.ts",
       "area": "api",
       "kind": "module",
-      "lines": 162,
-      "bytes": 6262,
+      "lines": 168,
+      "bytes": 6615,
       "doc": "Which pack owns each feature module.",
       "symbols": [
         {
@@ -72467,24 +73197,24 @@
       "path": "apps/api/src/modules/modules.registry.ts",
       "area": "api",
       "kind": "registry",
-      "lines": 339,
-      "bytes": 20045,
+      "lines": 345,
+      "bytes": 20459,
       "doc": "",
       "symbols": [
         {
           "name": "FeatureModuleEntry",
           "kind": "interface",
-          "line": 68
+          "line": 69
         },
         {
           "name": "FEATURE_MODULES",
           "kind": "const",
-          "line": 99
+          "line": 100
         },
         {
           "name": "FeatureModulesModule",
           "kind": "class",
-          "line": 315
+          "line": 321
         }
       ]
     },
@@ -77022,8 +77752,8 @@
       "path": "apps/api/src/modules/settings/dto/settings.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 113,
-      "bytes": 3328,
+      "lines": 114,
+      "bytes": 3429,
       "doc": "",
       "symbols": [
         {
@@ -77039,12 +77769,12 @@
         {
           "name": "UpdateAiSettingsDto",
           "kind": "class",
-          "line": 75
+          "line": 76
         },
         {
           "name": "UpdateDocumentSettingsDto",
           "kind": "class",
-          "line": 92
+          "line": 93
         }
       ]
     },
@@ -78944,6 +79674,24 @@
       "kind": "e2e test",
       "lines": 371,
       "bytes": 16095,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/test/auction-http.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 101,
+      "bytes": 5477,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/test/auction.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 114,
+      "bytes": 5541,
       "doc": "",
       "symbols": []
     },
@@ -83912,6 +84660,51 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 512,
+      "bytes": 19482,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AuctionDetailPage",
+          "kind": "default",
+          "line": 66
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/auctions/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 146,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(admin)/admin/(app)/auctions/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 205,
+      "bytes": 6993,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AuctionsPage",
+          "kind": "default",
+          "line": 44
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -86000,8 +86793,8 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/settings/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 1429,
-      "bytes": 51178,
+      "lines": 1430,
+      "bytes": 51238,
       "doc": "",
       "symbols": [
         {
@@ -89088,8 +89881,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1202,
-      "bytes": 34364,
+      "lines": 1212,
+      "bytes": 34724,
       "doc": "",
       "symbols": [
         {
@@ -89120,12 +89913,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1172
+          "line": 1182
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1187
+          "line": 1197
         }
       ]
     },
@@ -89343,19 +90136,19 @@
       "path": "apps/web/src/components/common/status-badge.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 125,
-      "bytes": 5074,
+      "lines": 131,
+      "bytes": 5380,
       "doc": "",
       "symbols": [
         {
           "name": "statusLabel",
           "kind": "function",
-          "line": 113
+          "line": 119
         },
         {
           "name": "StatusBadge",
           "kind": "function",
-          "line": 117
+          "line": 123
         }
       ]
     },
@@ -91752,8 +92545,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 314,
-      "bytes": 14610,
+      "lines": 318,
+      "bytes": 14744,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -96999,8 +97792,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 11869,
-      "bytes": 744414,
+      "lines": 11897,
+      "bytes": 747723,
       "doc": "",
       "symbols": []
     },
@@ -98826,8 +99619,8 @@
       "path": "docs/implementation/launchpad-apps/234-auction-app.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 265,
-      "bytes": 19952,
+      "lines": 280,
+      "bytes": 21897,
       "doc": "",
       "symbols": []
     },
@@ -101301,8 +102094,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1487,
-      "bytes": 51506,
+      "lines": 1517,
+      "bytes": 52537,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -101323,52 +102116,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 917
+          "line": 941
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 919
+          "line": 943
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 929
+          "line": 953
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 936
+          "line": 960
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 1192
+          "line": 1219
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1446
+          "line": 1476
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1465
+          "line": 1495
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1479
+          "line": 1509
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1480
+          "line": 1510
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1483
+          "line": 1513
         }
       ]
     },

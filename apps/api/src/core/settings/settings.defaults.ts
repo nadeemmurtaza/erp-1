@@ -28,6 +28,8 @@ export interface DocumentPrefixes {
   stitchingOrder: string;
   stitchingJob: string;
   stockCount: string;
+  /** Auction (launchpad-apps/234-auction-app.md) — node-prefixed like the rest. */
+  auction: string;
   /** A legal sequence, not node-prefixed the way the rest are (R18/R6) — see accounting.service.ts. */
   journalEntry: string;
   /** Trading-partner document (WO-18.3+) — R6-style numbering, not R18's fiscal-year legal sequence. */
@@ -415,6 +417,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
       stitchingOrder: 'STO',
       stitchingJob: 'JOB',
       stockCount: 'SC',
+      auction: 'AUC',
       journalEntry: 'JE',
       invoice: 'INV',
       quote: 'QTE',

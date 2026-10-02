@@ -371,6 +371,7 @@ const PREFIX_FIELDS: Array<{ key: string; label: string; module?: string }> = [
   { key: 'stitchingOrder', label: 'Stitching orders', module: 'stitching' },
   { key: 'stitchingJob', label: 'Workshop jobs', module: 'stitching' },
   { key: 'stockCount', label: 'Stock counts', module: 'inventory' },
+  { key: 'auction', label: 'Auctions', module: 'auction' },
   { key: 'journalEntry', label: 'Journal entries', module: 'accounting' },
   { key: 'invoice', label: 'Invoices (to trading partners)', module: 'tradingpartners' },
   { key: 'quote', label: 'Quotes (to trading partners)', module: 'tradingpartners' },

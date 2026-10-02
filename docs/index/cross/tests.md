@@ -3,7 +3,7 @@
 
 # Tests
 
-**387** spec files, **4,031** cases. What is already pinned down — and what is not.
+**390** spec files, **4,074** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -30,7 +30,7 @@ such exemption.
 - [`tracking`](../modules/tracking.md)
 - [`wishlist`](../modules/wishlist.md)
 
-## End-to-end (24)
+## End-to-end (26)
 
 Real HTTP against a real Postgres. These are the ones that catch a permission
 regression or an N+1.
@@ -39,6 +39,8 @@ regression or an N+1.
 |---|---|---|
 | `apps/api/test/accounting.e2e-spec.ts` | 15 | Accounting ledger invariants (integration) · WO-19.5 — closing a period redirects a fact dated inside it to the next OP… |
 | `apps/api/test/api-keys.e2e-spec.ts` | 21 | Personal API keys (e2e) · an admin key · what can never go into a key · a storefront key · oversight (users.manage) and… |
+| `apps/api/test/auction-http.e2e-spec.ts` | 4 | Auction admin routes (e2e) |
+| `apps/api/test/auction.e2e-spec.ts` | 5 | Auction foundation (e2e) |
 | `apps/api/test/auth-throttle.e2e-spec.ts` | 20 | Sign-in rate limiting and refresh-token reuse detection (e2e) · the per-account bucket, on a real Redis (WO-206.2) · a… |
 | `apps/api/test/auth.e2e-spec.ts` | 11 | Account security (e2e) · registration and email verification · change password · forgot / reset password |
 | `apps/api/test/cart.e2e-spec.ts` | 28 | Cart (e2e) · guest cart · stitching add-on · inline measurements · pricing without a service product · custom design te… |
@@ -63,7 +65,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (363)
+## Unit and integration (364)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -155,6 +157,7 @@ regression or an N+1.
 | `apps/api/src/modules/attendance/attendance-device.service.spec.ts` | attendance | 13 | AttendanceDeviceService · register · findOne / update / suspend — the not-found guard · update · ro… |
 | `apps/api/src/modules/attendance/attendance-time.spec.ts` | attendance | 9 | workingDayOf · workedMinutesBetween |
 | `apps/api/src/modules/attendance/attendance.service.spec.ts` | attendance | 22 | AttendanceService · record — the unconditional path · reconcile · adjust / previewAdjust — never mu… |
+| `apps/api/src/modules/auction/auction.service.spec.ts` | auction | 34 | AuctionService · create · list · get · update · addLot · updateLot · withdrawLot · schedule · unsch… |
 | `apps/api/src/modules/bankfacilities/bankfacilities.service.spec.ts` | bankfacilities | 21 | BankFacilitiesService · createFacility · utilizationOf · recordDrawdown · approveDrawdown · postDra… |
 | `apps/api/src/modules/bom/bom-cards.metrics.spec.ts` | bom | 4 | BomCardsMetricsProvider · BomValueMetricsProvider |
 | `apps/api/src/modules/bom/bom-production-replication.listener.spec.ts` | bom | 3 | BomProductionReplicationListener — WO-23.3c/e, ADR-021 · onModuleInit · onBomProductionCompleted |

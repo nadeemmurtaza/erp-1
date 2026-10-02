@@ -1,6 +1,7 @@
 # 234 — Auction app
 
-> **Status: Planned.** Launchpad app (doc 232): tier **CORE**, cross-sector
+> **Status: In progress — WO-234.1 built (2026-10-02, §17); WO-234.2 onward
+> planned.** Launchpad app (doc 232): tier **CORE**, cross-sector
 > (not an industry pack). Audiences: **B2B**, **B2C**; **C2C is reserved** until
 > the prerequisites in §2 exist. Industry packs may *feed* it through an
 > extension point (§10) without it knowing about them.
@@ -53,6 +54,18 @@ exposure. The `C2C` tag stays `RESERVED` (doc 232 §4).
 
 `organizationId`, `outletLocationId` exist from migration one (three
 silhouettes); money names its location.
+
+**What WO-234.1 created (the rest arrives with the work order that first uses
+it, each as its own additive migration).** `Auction`: `id`, `number` (unique,
+`AUC-<year>-<seq>` through `documentNumber()`), `organizationId?`,
+`outletLocationId?`, `type`, `title`, `status`, `startsAt`, `endsAt`,
+`currency`, `terms?`, `createdById`. `AuctionLot`: `auctionId`, `lotNo`
+(unique per auction), `title`, `description?`, `sourceType?`/`sourceId?`,
+`quantity`, `startPriceMinor`, `reservePriceMinor?`, `status` (`PENDING`
+`OPEN` `CLOSED` `WITHDRAWN`). Not yet present: `rulesVersionId`, `buyNowMinor`,
+`incrementRule`, `currentBidMinor`, `leaderBidderId`, `bidSeq`, per-lot
+`endsAt`, and every table below `AuctionLot`. `type` accepts `ENGLISH` only on
+create; `SEALED_BID` and `REVERSE` exist in the enum so it never needs altering.
 
 ## 5. Bidding rules
 
@@ -192,6 +205,8 @@ the boss cannot see supplier prices before the deadline either.
 | Sealed-bid opening quorum | 2 of 3 officers | No single person can open early; one absence does not block | key-split opening | <2 available → opening waits, deadline unaffected |
 | Bid retention | 7 years | Disputes and audits outlive the auction | retention job | Pseudonymise bidder after retention |
 | Hot-lot target | 50 bids/s/lot, p95 < 300 ms | Realistic peak for a popular timed lot | load test | Backpressure on fan-out, not on writes |
+| Maximum price on one lot (open decision) | 2,147,483,647 minor units (21,474,836.47 in a two-decimal currency), for `startPriceMinor`, `reservePriceMinor` and every later `*Minor` column | Money is `Int` minor units everywhere in this repository; `Int` is 32-bit in Postgres | DTO (`@Max`) in `AuctionService` input; the database `INTEGER` is the backstop | Larger lots (real estate, vehicles) are refused with a validation message until the columns widen to `BIGINT`, which must happen before WO-234.2 writes `Bid.amountMinor`, so bids never need a type change later |
+| Lots per auction / auctions per list page | no cap on lots; list pages are 20 by default, 100 at most (`PaginationQueryDto`) | An auction's lots are read through the detail page, not the list | `PaginationQueryDto` | A very large auction needs lot pagination on its detail page — add when a real auction crosses ~200 lots |
 
 All live in `Setting` (versioned, second-signature, old/new audited) under
 `auction.settings.manage`.
@@ -261,4 +276,4 @@ property/vehicle formats need their own review before use.
 
 ## 17. Work orders
 
-234.1 schema + `Auction`/`Lot` admin + launchpad manifest, permissions seeded to real roles, nav entry · 234.2 `placeBid()` with predicate-on-write, idempotency, hash chain · 234.3 proxy bidding + anti-snipe + close job · 234.4 realtime fan-out + public lot page + load test · 234.5 bidder registration, eligibility, strikes · 234.6 settlement through `AuctionOrderSink`, fee rules, posting · 234.7 sealed-bid + officer key-split opening · 234.8 reverse (price-only) auctions · 234.9 integrity queue + adjustments · 234.10 deposit hold (after `payments` verified) · 234.11 `AuctionLotSource` and first industry feed · later: scored reverse auctions, Dutch, C2C (after escrow, reputation, disputes exist).
+234.1 schema + `Auction`/`Lot` admin + launchpad manifest, permissions seeded to real roles, nav entry (**built 2026-10-02:** schema, admin API and screens, permissions, nav; the launchpad manifest entry is carried by WO-232.2, which owns `manifest.ts`) · 234.2 `placeBid()` with predicate-on-write, idempotency, hash chain · 234.3 proxy bidding + anti-snipe + close job · 234.4 realtime fan-out + public lot page + load test · 234.5 bidder registration, eligibility, strikes · 234.6 settlement through `AuctionOrderSink`, fee rules, posting · 234.7 sealed-bid + officer key-split opening · 234.8 reverse (price-only) auctions · 234.9 integrity queue + adjustments · 234.10 deposit hold (after `payments` verified) · 234.11 `AuctionLotSource` and first industry feed · later: scored reverse auctions, Dutch, C2C (after escrow, reputation, disputes exist).

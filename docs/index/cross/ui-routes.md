@@ -3,7 +3,7 @@
 
 # Screens
 
-All **278** routable files across the web app, the till and the mobile app.
+All **281** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -29,7 +29,7 @@ _none_
 
 ## Every screen
 
-### admin (183)
+### admin (186)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -47,6 +47,9 @@ _none_
 | `/admin/analytics/[...slug]` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/[...slug]/page.tsx` |
 | `/admin/analytics/suspicious-traffic` | page | client | `apps/web/src/app/(admin)/admin/(app)/analytics/suspicious-traffic/page.tsx` |
 | `/admin/attendance` | page | client | `apps/web/src/app/(admin)/admin/(app)/attendance/page.tsx` |
+| `/admin/auctions` | loading | server | `apps/web/src/app/(admin)/admin/(app)/auctions/loading.tsx` |
+| `/admin/auctions` | page | client | `apps/web/src/app/(admin)/admin/(app)/auctions/page.tsx` |
+| `/admin/auctions/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/auctions/[id]/page.tsx` |
 | `/admin/b/[brandId]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b/[brandId]/page.tsx` |
 | `/admin/b2b-accounts` | page | client | `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/page.tsx` |
 | `/admin/b2b-accounts/[id]` | page | client | `apps/web/src/app/(admin)/admin/(app)/b2b-accounts/[id]/page.tsx` |

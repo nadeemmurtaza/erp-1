@@ -68,6 +68,7 @@ class DocumentPrefixesDto {
   @ApiPropertyOptional({ example: 'STO' }) @IsOptional() @IsString() @MaxLength(8) stitchingOrder?: string;
   @ApiPropertyOptional({ example: 'JOB' }) @IsOptional() @IsString() @MaxLength(8) stitchingJob?: string;
   @ApiPropertyOptional({ example: 'SC' }) @IsOptional() @IsString() @MaxLength(8) stockCount?: string;
+  @ApiPropertyOptional({ example: 'AUC' }) @IsOptional() @IsString() @MaxLength(8) auction?: string;
   @ApiPropertyOptional({ example: 'INV' }) @IsOptional() @IsString() @MaxLength(8) invoice?: string;
   @ApiPropertyOptional({ example: 'QTE' }) @IsOptional() @IsString() @MaxLength(8) quote?: string;
 }

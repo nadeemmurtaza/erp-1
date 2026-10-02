@@ -90,6 +90,19 @@ Every top-level export in `web`, with the line to open.
 |---|---|---|---|---|
 | `page.tsx` | `AttendancePage` | default | :42 | attendance-workforce/22-attendance-shifts-leave.md WO-22.5 — the queue that makes "a punch is never… |
 
+### `apps/web/src/app/(admin)/admin/(app)/auctions`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `loading.tsx` | `Loading` | default | :3 |  |
+| `page.tsx` | `AuctionsPage` | default | :44 | launchpad-apps/234-auction-app.md (WO-234.1) — find an auction, or start one. |
+
+### `apps/web/src/app/(admin)/admin/(app)/auctions/[id]`
+
+| File | Symbol | Kind | Line | Doc |
+|---|---|---|---|---|
+| `page.tsx` | `AuctionDetailPage` | default | :66 | launchpad-apps/234-auction-app.md (WO-234.1) — prepare one auction for sale: set its times, add its… |
+
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]`
 
 | File | Symbol | Kind | Line | Doc |
@@ -1448,8 +1461,8 @@ Every top-level export in `web`, with the line to open.
 | `nav-registry.ts` | `NAV_GROUPS` | const | :57 | Sidebar order is THIS ARRAY's order. |
 | `nav-registry.ts` | `AdminNavItem` | interface | :85 |  |
 | `nav-registry.ts` | `ADMIN_NAV` | const | :126 | The admin navigation, as data. |
-| `nav-registry.ts` | `landingFor` | function | :1172 | Where a signed-in user lands after login. |
-| `nav-registry.ts` | `navFor` | function | :1187 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
+| `nav-registry.ts` | `landingFor` | function | :1182 | Where a signed-in user lands after login. |
+| `nav-registry.ts` | `navFor` | function | :1197 | Filters the registry down to what a signed-in user actually sees: permission-gated (any listed perm… |
 | `party-picker.tsx` | `PartySearchResult` | interface | :7 |  |
 | `party-picker.tsx` | `PartyPicker` | function | :40 | Search-and-select for the permanent counterparty profile (Party), instead of re-typing a name into… |
 | `product-editor-loader.tsx` | `ProductEditorLoader` | function | :16 | Loads the reference data the editor needs (categories, garment types) and, when editing, the produc… |
@@ -1664,8 +1677,8 @@ Every top-level export in `web`, with the line to open.
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
 | `secret-once.tsx` | `SecretOnce` | function | :25 | because the storefront's comes from messages .json and the admin's is English (House Rule 6). |
-| `status-badge.tsx` | `statusLabel` | function | :113 | `READY_TO_SHIP` -> `Ready to ship`. |
-| `status-badge.tsx` | `StatusBadge` | function | :117 |  |
+| `status-badge.tsx` | `statusLabel` | function | :119 | `READY_TO_SHIP` -> `Ready to ship`. |
+| `status-badge.tsx` | `StatusBadge` | function | :123 |  |
 | `toast-container.tsx` | `ToastContainer` | function | :17 |  |
 | `wizard.tsx` | `WizardStep` | interface | :6 |  |
 | `wizard.tsx` | `Wizard` | function | :37 | A form split into small, single-purpose steps instead of one long page. |

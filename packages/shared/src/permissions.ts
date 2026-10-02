@@ -141,6 +141,30 @@ export const PERMISSION_CATALOG: readonly PermissionDefinition[] = [
     category: 'Sales',
     sensitivity: 'high',
   },
+  {
+    // launchpad-apps/234-auction-app.md WO-234.1 — the three keys the admin
+    // foundation uses. The rest of doc 234 §13 (adjust, bidders.manage,
+    // integrity.review, seal.open, settings.manage) arrive with the work
+    // orders that first guard something with them.
+    key: 'auction.view',
+    label: 'View auctions and their lots',
+    category: 'Sales',
+    sensitivity: 'low',
+  },
+  {
+    key: 'auction.manage',
+    label: 'Create and edit auctions and lots, and cancel an auction before it opens',
+    category: 'Sales',
+    sensitivity: 'medium',
+  },
+  {
+    // Separate from `auction.manage` so the person who drafts a sale is not
+    // automatically the person who commits the business to it.
+    key: 'auction.publish',
+    label: 'Schedule an auction so it opens to bidding at its start time',
+    category: 'Sales',
+    sensitivity: 'high',
+  },
 
   {
     key: 'stitching.jobs.view_queue',
@@ -961,10 +985,13 @@ export const PERMISSION_GROUPS: readonly PermissionGroup[] = [
   {
     key: 'sales',
     label: 'Sales & payments',
-    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, registering terminals, and wholesale pricing.',
+    description: 'Order fulfilment, approving a bank-transfer payment, running a till shift, registering terminals, wholesale pricing, and running auctions.',
     permissions: [
       'orders.manage',
       'payments.approve',
+      'auction.view',
+      'auction.manage',
+      'auction.publish',
       'pos.manage',
       'pos.operate',
       'pos.instalments.cancel',
@@ -1373,6 +1400,9 @@ export const ROLE_PERMISSION_SEED: Readonly<Record<UserRole, readonly Permission
     'finance.facilities.view',
     'finance.facilities.manage',
     'finance.facilities.approve_drawdown',
+    'auction.view',
+    'auction.manage',
+    'auction.publish',
     'fulfilment.view',
     'fulfilment.manage',
     'bom.view',

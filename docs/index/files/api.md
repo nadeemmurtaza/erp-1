@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,192 tracked files in `apps/api`, by directory.
+All 1,202 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -31,7 +31,7 @@ All 1,192 tracked files in `apps/api`, by directory.
 | `backfill-product-options.ts` | module | 26 |  |
 | `seed.ts` | module | 3199 |  |
 
-### `apps/api/prisma/schema` (62)
+### `apps/api/prisma/schema` (63)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -39,6 +39,7 @@ All 1,192 tracked files in `apps/api`, by directory.
 | `accounts.prisma` | prisma schema | 120 | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md |
 | `approvals.prisma` | prisma schema | 79 | Approvals: one generic, subject-agnostic approval chain, referenced by a |
 | `attendance.prisma` | prisma schema | 198 | Attendance, shifts and leave — |
+| `auction.prisma` | prisma schema | 97 | Auction app (launchpad-apps/234-auction-app.md, WO-234.1). |
 | `bank-facilities.prisma` | prisma schema | 122 | Bank facility management |
 | `bom.prisma` | prisma schema | 258 | BOM: which raw materials go into a finished product, how much of each, and |
 | `bpmn-workflows.prisma` | prisma schema | 21 | A BPMN visual workflow engine, built by explicit owner override (ADR-026) |
@@ -764,6 +765,18 @@ All 1,192 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `migration.sql` | migration | 40 |  |
 
+### `apps/api/prisma/schema/migrations/20261002180000_wo234_1_auction_foundation` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 74 |  |
+
+### `apps/api/prisma/schema/migrations/20261002180100_wo234_1_auction_permissions` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `migration.sql` | migration | 33 |  |
+
 ### `apps/api/src` (2)
 
 | File | Kind | Lines | Purpose |
@@ -1140,8 +1153,8 @@ All 1,192 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `document-number.spec.ts` | unit test | 37 |  |
 | `document-number.ts` | module | 50 |  |
-| `document-prefix.ts` | module | 50 |  |
-| `settings.defaults.ts` | module | 539 |  |
+| `document-prefix.ts` | module | 51 |  |
+| `settings.defaults.ts` | module | 542 |  |
 | `settings.module.ts` | nest module | 10 |  |
 | `settings.service.spec.ts` | unit test | 125 |  |
 | `settings.service.ts` | service | 146 |  |
@@ -1203,8 +1216,8 @@ All 1,192 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `module-packs.ts` | module | 162 | Which pack owns each feature module. |
-| `modules.registry.ts` | registry | 339 |  |
+| `module-packs.ts` | module | 168 | Which pack owns each feature module. |
+| `modules.registry.ts` | registry | 345 |  |
 
 ### `apps/api/src/modules/accounting` (21)
 
@@ -1321,6 +1334,21 @@ All 1,192 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `attendance-device.dto.ts` | dto | 34 |  |
 | `attendance.dto.ts` | dto | 83 |  |
+
+### `apps/api/src/modules/auction` (4)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `auction.controller.ts` | controller | 103 |  |
+| `auction.module.ts` | nest module | 19 |  |
+| `auction.service.spec.ts` | unit test | 445 |  |
+| `auction.service.ts` | service | 371 |  |
+
+### `apps/api/src/modules/auction/dto` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `auction.dto.ts` | dto | 178 |  |
 
 ### `apps/api/src/modules/bankfacilities` (5)
 
@@ -2400,7 +2428,7 @@ All 1,192 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `settings.dto.ts` | dto | 113 |  |
+| `settings.dto.ts` | dto | 114 |  |
 
 ### `apps/api/src/modules/settlements` (6)
 
@@ -2613,12 +2641,14 @@ All 1,192 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `wishlist.dto.ts` | dto | 30 |  |
 
-### `apps/api/test` (30)
+### `apps/api/test` (32)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
 | `api-keys.e2e-spec.ts` | e2e test | 371 |  |
+| `auction-http.e2e-spec.ts` | e2e test | 101 |  |
+| `auction.e2e-spec.ts` | e2e test | 114 |  |
 | `auth-throttle.e2e-spec.ts` | e2e test | 431 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |
 | `backfill-product-options.spec.ts` | unit test | 114 |  |

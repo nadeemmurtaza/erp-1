@@ -3,19 +3,19 @@
 
 # Every tracked file
 
-All **2,672** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,685** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,192 | 159,759 | [files/api.md](../files/api.md) |
-| apps/web | 538 | 96,959 | [files/web.md](../files/web.md) |
+| apps/api | 1,202 | 161,311 | [files/api.md](../files/api.md) |
+| apps/web | 541 | 97,703 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,671 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 114 | 13,146 | [files/packages.md](../files/packages.md) |
-| docs/* | 463 | 96,032 | [files/docs.md](../files/docs.md) |
+| packages/* | 114 | 13,176 | [files/packages.md](../files/packages.md) |
+| docs/* | 463 | 96,075 | [files/docs.md](../files/docs.md) |
 | scripts, CI, deployment and container configuration | 64 | 33,111 | [files/infra.md](../files/infra.md) |
 | repository root files | 219 | 22,119 | [files/root.md](../files/root.md) |
 
@@ -29,30 +29,30 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 494 |
-| unit test | 363 |
-| page | 229 |
-| service | 211 |
+| unit test | 364 |
+| page | 231 |
+| service | 212 |
 | module | 196 |
 | component | 191 |
-| controller | 151 |
-| dto | 135 |
-| migration | 119 |
-| nest module | 105 |
-| prisma schema | 65 |
+| controller | 152 |
+| dto | 136 |
+| migration | 121 |
+| nest module | 106 |
+| prisma schema | 66 |
 | script | 48 |
 | utility | 38 |
 | event subscriber | 36 |
 | scheduled job | 34 |
 | json | 31 |
 | react | 29 |
+| e2e test | 26 |
 | asset | 26 |
-| e2e test | 24 |
 | file | 13 |
 | hook | 12 |
 | yaml | 12 |
 | registry | 12 |
+| loading | 12 |
 | config | 11 |
-| loading | 11 |
 | guard | 9 |
 | constants | 8 |
 | layout | 6 |

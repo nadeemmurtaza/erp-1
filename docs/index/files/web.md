@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 538 tracked files in `apps/web`, by directory.
+All 541 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -140,6 +140,19 @@ All 538 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `page.tsx` | page | 170 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/auctions` (2)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `loading.tsx` | loading | 6 |  |
+| `page.tsx` | page | 205 |  |
+
+### `apps/web/src/app/(admin)/admin/(app)/auctions/[id]` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `page.tsx` | page | 512 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/b/[brandId]` (1)
 
@@ -941,7 +954,7 @@ All 538 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 1429 |  |
+| `page.tsx` | page | 1430 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/settings/shipping` (1)
 
@@ -1462,7 +1475,7 @@ All 538 tracked files in `apps/web`, by directory.
 | `image-manager.tsx` | component | 529 |  |
 | `metadata-driven-entity-form.tsx` | component | 120 |  |
 | `metadata-driven-form.tsx` | component | 147 |  |
-| `nav-registry.ts` | component | 1202 |  |
+| `nav-registry.ts` | component | 1212 |  |
 | `party-picker.tsx` | component | 117 |  |
 | `product-editor-loader.tsx` | component | 73 |  |
 | `product-form.tsx` | component | 1614 |  |
@@ -1559,7 +1572,7 @@ All 538 tracked files in `apps/web`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `secret-once.tsx` | component | 95 |  |
-| `status-badge.tsx` | component | 125 |  |
+| `status-badge.tsx` | component | 131 |  |
 | `toast-container.tsx` | component | 66 |  |
 | `wizard.tsx` | component | 159 |  |
 
@@ -1712,7 +1725,7 @@ All 538 tracked files in `apps/web`, by directory.
 | `order-transitions.ts` | constants | 19 | Which status a staff member may move an order to next. |
 | `payment-methods.ts` | constants | 32 | How a payment provider's key is written for staff. |
 | `permissions.ts` | constants | 38 | Permission keys, re-exported from the shared catalogue. |
-| `routes.ts` | constants | 314 | Every internal path the app links to, in one place. |
+| `routes.ts` | constants | 318 | Every internal path the app links to, in one place. |
 | `storage.ts` | constants | 69 | Browser storage keys. |
 
 ### `apps/web/src/hooks` (10)

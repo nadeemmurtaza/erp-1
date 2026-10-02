@@ -3,7 +3,7 @@
 
 # Data model
 
-All **314** Prisma models and **145** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
+All **316** Prisma models and **148** enums. This page is the directory; full field lists live one click down, per schema file, so you load only the part you need.
 
 
 Schema: `apps/api/prisma/schema/` (Prisma multi-file schema) ·
@@ -29,6 +29,7 @@ against a real database.
 | [`accounts.prisma`](../data/accounts.md) | 3 | 1 | [`accounts`](../modules/accounts.md) | B2BAccount, B2BOrderRequest, B2BPurchaseApprovalPolicy |
 | [`approvals.prisma`](../data/approvals.md) | 2 | 3 | core platform | ApprovalChain, ApprovalStep |
 | [`attendance.prisma`](../data/attendance.md) | 4 | 4 | [`attendance`](../modules/attendance.md) | AttendanceDevice, AttendanceEvent, AttendanceException, Shift |
+| [`auction.prisma`](../data/auction.md) | 2 | 3 | [`auction`](../modules/auction.md) | Auction, AuctionLot |
 | [`bank-facilities.prisma`](../data/bank-facilities.md) | 5 | 2 | core platform | Bank, BankFacility, BankFacilityDrawdown, BankFacilityMarkupAccrual, BankFacilityRepayment |
 | [`bom.prisma`](../data/bom.md) | 6 | 2 | [`bom`](../modules/bom.md) | BomComponent, BomProductionLine, BomProductionLineLot, BomProductionRun, BomRecipe, RawMaterial |
 | [`bpmn-workflows.prisma`](../data/bpmn-workflows.md) | 1 | 0 | [`bpmn-workflows`](../modules/bpmn-workflows.md) | BpmnWorkflowDefinition |
@@ -110,6 +111,8 @@ against a real database.
 | [`AttendanceDevice`](../data/attendance.md#attendancedevice) | `attendance` | 11 | 1 | id | A biometric terminal or kiosk that punches on behalf of employees at one unit. |
 | [`AttendanceEvent`](../data/attendance.md#attendanceevent) | `attendance` | 15 | 3 | — | Raw, immutable. |
 | [`AttendanceException`](../data/attendance.md#attendanceexception) | `attendance` | 13 | 3 | id | A punch that did not fit. |
+| [`Auction`](../data/auction.md#auction) | `auction` | 15 | 0 | id | One auction event. |
+| [`AuctionLot`](../data/auction.md#auctionlot) | `auction` | 14 | 1 | id | One thing being sold within an auction. |
 | [`Audience`](../data/notify.md#audience) | `notify` | 9 | 0 | id | Who a message goes to, stored as a specification, not a list of user ids — "the finance d… |
 | [`AuditLog`](../data/core.md#auditlog) | `core` | 9 | 1 | id |  |
 | [`B2BAccount`](../data/accounts.md#b2baccount) | `accounts` | 8 | 0 | id | The `accounts` capability module — 149-b2b-accounts-approvals-sector-packs.md (b2b-wholes… |
@@ -430,6 +433,9 @@ against a real database.
 | [`AttendanceExceptionReason`](../data/attendance.md#attendanceexceptionreason) | `attendance` | `NO_MATCHING_SHIFT` `OUTSIDE_ROSTER` `WRONG_UNIT` `WHILE_ON_LEAVE` `DUPLICATE_SUSPECTED` `MISSING_COUNTERPART` |
 | [`AttendanceKind`](../data/attendance.md#attendancekind) | `attendance` | `IN` `OUT` `BREAK_START` `BREAK_END` `ADJUSTMENT` |
 | [`AttendanceSource`](../data/attendance.md#attendancesource) | `attendance` | `DEVICE` `SELF` `MANAGER` `IMPORT` |
+| [`AuctionLotStatus`](../data/auction.md#auctionlotstatus) | `auction` | `PENDING` `OPEN` `CLOSED` `WITHDRAWN` |
+| [`AuctionStatus`](../data/auction.md#auctionstatus) | `auction` | `DRAFT` `SCHEDULED` `OPEN` `CLOSING` `CLOSED` `SETTLED` `CANCELLED` |
+| [`AuctionType`](../data/auction.md#auctiontype) | `auction` | `ENGLISH` `SEALED_BID` `REVERSE` |
 | [`B2BOrderRequestStatus`](../data/accounts.md#b2borderrequeststatus) | `accounts` | `PENDING` `APPROVED` `REJECTED` `CONVERTED` |
 | [`BankFacilityStatus`](../data/bank-facilities.md#bankfacilitystatus) | `bank-facilities` | `ACTIVE` `CLOSED` |
 | [`BankFacilityType`](../data/bank-facilities.md#bankfacilitytype) | `bank-facilities` | `TERM_LOAN` `RUNNING_FINANCE` `OVERDRAFT` `LETTER_OF_CREDIT` `BANK_GUARANTEE` |

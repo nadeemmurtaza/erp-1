@@ -11866,3 +11866,31 @@ advance. Cost accepted: two key providers behind one `VaultKeyProvider`
 interface, and two sets of key-handling tests. Downgrade to `SERVER_HELD`
 needs every owner; upgrade destroys the server-held key. Revisit with usage
 evidence after the first client vaults. Doc 231 §3.3 holds the detail.
+
+### ADR-086 addendum (2026-10-02) — WO-234.1 foundation: what was fixed, and the Int32 price ceiling
+
+Built: `Auction` and `AuctionLot` (additive migration `20261002180000`), the
+admin API and screens, three permissions, and the `auction` module, off by
+default. The parameters below are exact, per the "exact parameters" rule.
+
+| Parameter | Exact value | Applies to | Why this number | Enforced | Fails how |
+|---|---|---|---|---|---|
+| Price ceiling | 2,147,483,647 minor units | `startPriceMinor`, `reservePriceMinor` | Money is `Int` minor units repo-wide; Postgres `INTEGER` is 32-bit. Widening only the auction columns would make them the one `BIGINT` money column | `@Max(MAX_MINOR)` in `auction.dto.ts`; `INTEGER` is the backstop | 400 with the limit named. **Open:** widen to `BIGINT` before WO-234.2 adds `Bid.amountMinor`, and before any real-estate or vehicle lot is listed |
+| Number allocation | advisory lock namespace `8_241_170`, key = year; MAX scan of `AUC-<year>-%` | `Auction.number` | Same pattern as every other document number; the next free namespace in this repository | `nextAuctionNumber()` in a transaction | Concurrent creates queue on the lock; the `number` unique index is the backstop |
+| Per-auction serialisation | `SELECT … FOR UPDATE` on the `Auction` row, first statement of every mutation | schedule, unschedule, cancel, lot add/edit/withdraw | "Schedule" and "withdraw the last lot" must not both win, and `lotNo` must stay gapless under concurrent adds | `lockAuction()` | A losing request waits, then re-reads and is refused or no-ops; repeated transitions write no second audit row |
+| Text limits | title 160, terms 5,000, cancel reason 300 characters; quantity 1 to 1,000,000 | DTOs | Long enough for a real lot description and legal terms, short enough to keep a list page cheap | class-validator | 400 |
+| Role grants | `auction.view`, `auction.manage`, `auction.publish` to the Admin role only; sensitivities low, medium, high | permission catalogue and migration `20261002180100` | The three keys are not toxic with one another today. `auction.publish` is high because it makes an auction visible to bidders | `ROLE_PERMISSION_SEED` for new deployments; the migration for existing ones, because `seedRoles()` runs once | An unreachable permission is a defect, so the migration is idempotent (`ON CONFLICT DO NOTHING`) and grants only to a permission with no grant yet |
+
+Pillars touched: architecture (the module imports no other module; the launchpad
+manifest entry is carried by WO-232.2), secure by design (every route states a
+permission; the reserve price is stripped from any read by a caller without
+`auction.manage`), stable and reliable (row lock, idempotent transitions,
+forward-only hand-written migrations tested on a scratch database from an empty
+state and from a simulated existing deployment). Observability is audit rows on
+every state change and Nest `Logger`; no metrics backend exists to wire in.
+
+Known gaps, stated rather than hidden: auction start and end are entered in the
+browser's time zone and stored as UTC, so the admin screen shows what was
+typed only on the same zone; there is no BigInt price path yet (above); the
+`OPEN` status badge keeps its neutral tone from the shared task state until
+WO-234.3 opens lots for real.

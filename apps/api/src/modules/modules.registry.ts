@@ -10,6 +10,7 @@ import { CatalogModule } from './catalog/catalog.module';
 import { CollectionsModule } from './collections/collections.module';
 import { ContentModule } from './content/content.module';
 import { AttendanceModule } from './attendance/attendance.module';
+import { AuctionModule } from './auction/auction.module';
 import { CrmModule } from './crm/crm.module';
 import { CustomFieldsModule } from './custom-fields/custom-fields.module';
 import { EmbedsModule } from './embeds/embeds.module';
@@ -143,6 +144,11 @@ export const FEATURE_MODULES: FeatureModuleEntry[] = [
   // AccountingModule directly — the identical shape `settlements` above
   // already establishes.
   { name: 'bankfacilities', module: BankFacilitiesModule, offByDefault: true },
+  // launchpad-apps/234-auction-app.md — off by default: a shop that never sells
+  // by competitive bidding must not see the concept at all. Imports no other
+  // module; settlement into a core order (WO-234.6) will go through the
+  // AuctionOrderSink extension point, never an import.
+  { name: 'auction', module: AuctionModule, offByDefault: true },
   // Hard-imported by orders.module.ts directly (same reasoning as tax
   // above — checkout always needs ShippingService.quote()), but still
   // listed here so its own admin routes/nav follow the allowlist like

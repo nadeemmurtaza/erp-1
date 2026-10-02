@@ -291,7 +291,7 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 | CSS `@keyframes` | 18 | named animations |
 | `prefers-reduced-motion` blocks | 2 | chapter 05 and 07 both require this on every motion |
 | `aria-*` attributes | 473 | written by hand; **no accessibility lint runs** |
-| `role=` attributes | 376 |  |
+| `role=` attributes | 379 |  |
 | RTL / `dir` references | 64 | Urdu ships; chapter 07 says this is scattered, not systematic |
 | Inline `style={{` | 27 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |
 

@@ -1,0 +1,96 @@
+// Auction app (launchpad-apps/234-auction-app.md, WO-234.1).
+// Sell — or, later, buy — by competitive bidding. This file holds only what
+// the admin foundation reads and writes: the auction, its lots, and the
+// lifecycle states both move through. Bids, bidders, proxy maxima, deposits,
+// results and adjustments (doc 234 §4) arrive in the work orders that first
+// use them, each as its own additive migration, so no table or column here
+// sits unused. Additive only.
+
+enum AuctionType {
+  ENGLISH
+  SEALED_BID
+  REVERSE
+}
+
+enum AuctionStatus {
+  DRAFT
+  SCHEDULED
+  OPEN
+  CLOSING
+  CLOSED
+  SETTLED
+  CANCELLED
+}
+
+enum AuctionLotStatus {
+  PENDING
+  OPEN
+  CLOSED
+  WITHDRAWN
+}
+
+/// One auction event. The three scope columns exist from the first migration
+/// (doc 234 §4, "three silhouettes") and are written as soon as a deployment
+/// has them: `organizationId` is unset outside the Organization tier,
+/// `outletLocationId` names the selling location when the auction is run
+/// from one branch. Plain strings, not relations, matching how `Order` and
+/// `WalletAccount` already hold the same two ids.
+model Auction {
+  id               String        @id @default(cuid())
+  /// "AUC-2026-0001" — documentNumber(), node-prefixed on a replica so two
+  /// nodes never mint the same number (doc 234 §15, adoption test).
+  number           String        @unique
+  organizationId   String?
+  outletLocationId String?
+  /// Only ENGLISH can be created today; the other two values exist so the
+  /// column never needs altering when sealed-bid (WO-234.7) and reverse
+  /// (WO-234.8) arrive. AuctionService.create() refuses them until then.
+  type             AuctionType   @default(ENGLISH)
+  title            String
+  status           AuctionStatus @default(DRAFT)
+  startsAt         DateTime
+  endsAt           DateTime
+  currency         String
+  terms            String?
+  createdById      String
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  lots AuctionLot[]
+
+  @@index([status, startsAt])
+  @@index([organizationId])
+  @@index([outletLocationId])
+}
+
+/// One thing being sold within an auction. Prices are integer minor units
+/// like every other money column here, so one lot cannot exceed 2,147,483,647
+/// minor units (21,474,836.47 in a two-decimal currency) — DTO-enforced, and
+/// recorded in doc 234 §12 as an open decision before real-estate or vehicle
+/// lots are listed.
+model AuctionLot {
+  id                String           @id @default(cuid())
+  auctionId         String
+  /// Position within the auction, shown to bidders as "Lot 7".
+  lotNo             Int
+  title             String
+  description       String?
+  /// What backs the lot — a catalogue item, a stock lot, a housing-society
+  /// plot — as the provider names it. Filled through `AuctionLotSource`
+  /// (WO-234.11); null for a lot typed in by hand.
+  sourceType        String?
+  sourceId          String?
+  quantity          Int              @default(1)
+  startPriceMinor   Int
+  /// Hidden from bidders always (doc 234 §5.5, §15). Never part of any
+  /// public response.
+  reservePriceMinor Int?
+  status            AuctionLotStatus @default(PENDING)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  auction Auction @relation(fields: [auctionId], references: [id])
+
+  @@unique([auctionId, lotNo])
+  @@index([auctionId, status])
+}

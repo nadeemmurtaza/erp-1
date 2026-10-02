@@ -107,6 +107,12 @@ const TONES: Record<string, BadgeTone> = {
   SOLD: 'info',
   RMA_TO_SUPPLIER: 'warning',
   WRITTEN_OFF: 'danger',
+  // AuctionStatus / AuctionLotStatus (launchpad-apps/234-auction-app.md) — the
+  // keys no earlier status already names. SCHEDULED and a lot's PENDING fall
+  // through to the default; OPEN and CLOSED keep the tone they already have.
+  WITHDRAWN: 'neutral',
+  CLOSING: 'warning',
+  SETTLED: 'success',
 };
 
 /** `READY_TO_SHIP` -> `Ready to ship`. */

@@ -10896,8 +10896,9 @@ thirty laws, 180 in all); the specimens are in `/admin/design-system#controls`.
 **Deviations from the cards, and why.**
 - *Corners.* The cards use 24 px cards, 12 px fields and a 16 px photograph. The house
   shape is 2 to 3 px, so the law is the formula (`concentricRadius`), which gives 24, 16
-  and 8 for a soft brand and a square photograph here. A decision card on corner shape
-  was posted; the shape itself is not changed.
+  and 8 for a soft brand and a square photograph here. The owner chose to keep the house
+  corners (decision card, 2026-10-02), so the shape is not changed; a brand that wants
+  soft corners changes its radii in `brand.ts` and the formula follows.
 - *Shadow at rest.* The cards draw a border and a soft shadow together. `ui.md` forbids
   both on one edge, so `.card-lit` has the border and the lit surface, and the shadow
   arrives with the lift.

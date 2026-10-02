@@ -9,10 +9,26 @@ import { StitchingTimeline } from '@/components/storefront/stitching-timeline';
 import { customerFetch, getCustomerToken, getMyOrder, trackOrder } from '@/lib/customer-client';
 import { StatusBadge } from '@/components/common/status-badge';
 import { useOrderStatusLabel } from '@/hooks/use-order-status-label';
-import { Disclosure, Loading, PageHeader, ScrambleText, Section } from '@/components/ui';
+import { Disclosure, Loading, PageHeader, ScrambleText, Section, SuccessState } from '@/components/ui';
 import type { CustomerOrder } from '@/types/api';
 import { ROUTES } from '@/constants/routes';
 import { STORAGE_KEYS } from '@/constants/storage';
+import { journeyStates } from '@/lib/success-state';
+
+/**
+ * The one open loop on a placed order (SUC-4): the steps its status moves through, which the API records in
+ * `statusEvents` and the page already shows. A status maps to the last step it has reached; the cancelled and
+ * returned ones are not on this road, so they get no loop.
+ */
+const ORDER_JOURNEY = ['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED'] as const;
+const ORDER_REACHED: Record<string, number> = {
+  PENDING: 0,
+  CONFIRMED: 1,
+  PROCESSING: 1,
+  READY_TO_SHIP: 1,
+  SHIPPED: 2,
+  DELIVERED: 3,
+};
 
 /**
  * One order, for the customer.
@@ -35,6 +51,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
   const { number } = use(params);
   const t = useTranslations('order');
   const tReturns = useTranslations('returns');
+  const tCommon = useTranslations('common');
   const locale = useLocale() as Locale;
   const statusLabel = useOrderStatusLabel();
   const router = useRouter();
@@ -156,15 +173,57 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
     );
   }
 
-  const bankAccounts =
-    order.payments.find((payment) => payment.provider === 'bank_transfer')?.meta?.accounts ?? [];
+  const bankPayment = order.payments.find((payment) => payment.provider === 'bank_transfer');
+  const bankAccounts = bankPayment?.meta?.accounts ?? [];
+
+  // An order was just placed, or money just reached it (SUC-3): the result is the page until the reader goes on to
+  // the order. A cancelled or returned order is not good news, so it shows the order itself.
+  const reached = ORDER_REACHED[order.status];
+  if ((justPlaced || paymentResult === 'success') && reached !== undefined) {
+    const paid = paymentResult === 'success';
+    // "Not paid yet" only while the transfer is actually outstanding: a reload after it was confirmed must not say so.
+    const owesTransfer = !paid && bankAccounts.length > 0 && bankPayment?.status !== 'PAID';
+    const states = journeyStates(ORDER_JOURNEY.length, reached);
+
+    return (
+      <div className="flex justify-center py-12">
+        <SuccessState
+          as="h1"
+          focus
+          linkAs={Link}
+          title={t.rich(paid ? 'successPaidTitle' : 'successPlacedTitle', {
+            number: () => <ScrambleText text={order.number} />,
+          })}
+          detail={
+            <>
+              <span className="block">
+                {formatMoney(order.grandTotal, locale)} · {t('placedOn', { date: formatDate(order.placedAt, locale) })}
+              </span>
+              <span className="mt-1 block">
+                {paid ? t('paymentSuccessBody') : owesTransfer ? t('successBankDetail') : t('thanksBody')}
+              </span>
+            </>
+          }
+          primary={{
+            label: owesTransfer ? t('successViewBank') : t('successView'),
+            href: ROUTES.storefront.order(order.number),
+          }}
+          secondary={{ label: t('continueShopping'), href: ROUTES.storefront.shop }}
+          loop={{
+            steps: ORDER_JOURNEY.map((status, index) => ({ label: statusLabel(status), state: states[index]! })),
+            labels: {
+              done: tCommon('journey.done'),
+              current: tCommon('journey.current'),
+              next: tCommon('journey.next'),
+            },
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <>
-      {justPlaced ? <Notice title={t('thanks')} body={t('thanksBody')} /> : null}
-      {paymentResult === 'success' ? (
-        <Notice title={t('paymentSuccess')} body={t('paymentSuccessBody')} />
-      ) : null}
       {paymentResult === 'failed' ? (
         <Notice title={t('paymentFailed')} body={t('paymentFailedBody')} tone="danger" />
       ) : null}
@@ -172,7 +231,7 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
       <PageHeader
         title={
           <span className="flex flex-wrap items-center gap-2.5">
-            {t('title')} {justPlaced ? <ScrambleText text={order.number} /> : order.number}
+            {t('title')} {order.number}
             <StatusBadge status={order.status} label={statusLabel(order.status)} />
           </span>
         }
@@ -371,10 +430,9 @@ export default function OrderPage({ params }: { params: Promise<{ number: string
 }
 
 /**
- * A one-off message about what just happened — placed, paid, or not paid.
- *
- * Three near-identical blocks, one of which differed only in being red. The
- * tone is the difference, so the tone is the prop.
+ * A one-off message about a payment that did not go through. Placed and paid are
+ * the page's own success state now (`SuccessState`, above); this stays as the
+ * red one, which has to ask the reader to act and so is not good news.
  */
 function Notice({ title, body, tone }: { title: string; body: string; tone?: 'danger' }) {
   const danger = tone === 'danger';

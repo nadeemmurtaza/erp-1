@@ -1,5 +1,6 @@
 import { exportFilename } from '@/constants/downloads';
 import { CsvImportCard } from '@/components/admin/csv-import-card';
+import { ROUTES } from '@/constants/routes';
 
 /**
  * Bulk customer onboarding (admin-platform/72-fragmented-tool-consolidation-import.md
@@ -23,6 +24,7 @@ export default function AdminContactsImportPage() {
         templateFilename={exportFilename('contacts-template')}
         importUrl="/admin/crm/contacts/import"
         keyLabel="Phone / email"
+        listHref={ROUTES.admin.contacts}
         notes={[
           { term: 'Phone or email required', detail: 'At least one of the two identifies the customer.' },
           { term: 'Phone or email is the key', detail: 'A match updates that customer instead of duplicating them.' },

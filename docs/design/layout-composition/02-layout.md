@@ -18,6 +18,43 @@ invents a fourth should explain why:
    `SectionRail` for parts of one object, `Disclosure` for the rare and the
    destructive.
 
+## Hierarchy: where the eye goes
+
+Two laws from the owner's hierarchy reel (2026-10-02), **HIE**. The reel's third
+point, one loud button (the brightest thing on the screen is the destination),
+is already `PER-9` (one first stop; a second primary button is a bug) and
+`COL-4` (the accent is for the primary action and the current selection), so it
+is not restated here. `COG-12` and `TYP-4` are what these two stand on.
+
+### HIE-1 · One headline
+**Here** — each screen has one largest piece of text, and it names the page's
+job: the `PageHeader` title, the page's `h1`. Nothing else on the first screen
+is set at its type step or above, so the title is read first, always: size
+opens the door. A page that exists to show one figure (a till total, a
+balance) may give that figure the largest step instead, but never both at
+once: two things at the top of the scale is a coin toss for the eye. Everything
+below the headline is ranked by weight and colour, not by more size (`TYP-4`),
+which also keeps it cheap in vertical space.
+
+**The test** — at 1280 px, count the elements set at the title's type step or
+larger. One. And the element the eye lands on first is the one that names the
+job.
+
+### HIE-2 · Three stops
+**Here** — from the headline to the action the eye stops at most three times:
+the headline, the content the action is about, and the action. A fourth stop is
+a competing region. Remove it, move it one level down (Law 2) or quiet it;
+never answer it by making the action louder, because then the page has two
+things shouting. The action is the page's one loud button (`PER-9`, `COL-4`)
+and its label is the verb the headline promised ("Get started", "Send
+invoice"). A table page passes the same test: its title, its table, its one
+create action. A filter row and a tab strip are controls, not stops.
+
+**The test** — name the three stops aloud for this page. If you cannot, or you
+need a fourth, the page has two jobs (Law 5). Then ask someone who has never
+seen it to point at the action: if that takes more than a glance, a stop is
+missing or a fourth one is competing.
+
 ## Grid
 
 There is no twelve-column grid and there should not be one. Layout here is

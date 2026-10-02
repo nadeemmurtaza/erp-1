@@ -79,7 +79,7 @@ export default function RawMaterialDetailPage({ params }: { params: Promise<{ id
         body: { name: name.trim(), kind, notes: notes.trim() || undefined },
       });
       setMaterial((current) => (current ? { ...current, ...updated } : updated));
-      addToast('Saved.', 'success');
+      addToast('Raw material saved.', 'success');
     } catch (cause) {
       addToast(cause instanceof Error ? cause.message : 'Could not save changes', 'error');
     } finally {

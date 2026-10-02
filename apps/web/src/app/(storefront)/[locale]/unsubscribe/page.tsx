@@ -2,14 +2,16 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { CircleCheck } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { DrawIcon } from '@/components/ui';
+import { SuccessState } from '@/components/ui';
 import { unsubscribeFromMarketing } from '@/lib/customer-client';
+import { ROUTES } from '@/constants/routes';
 
 type Status = 'checking' | 'success' | 'error';
 
 export default function UnsubscribePage() {
+  const t = useTranslations('unsubscribe');
   const params = useSearchParams();
   const userId = params.get('u') ?? '';
   const token = params.get('t') ?? '';
@@ -26,7 +28,7 @@ export default function UnsubscribePage() {
       })
       .catch((cause) => {
         if (cancelled) return;
-        setError(cause instanceof Error ? cause.message : 'Could not process this request');
+        setError(cause instanceof Error ? cause.message : null);
         setStatus('error');
       });
 
@@ -35,35 +37,36 @@ export default function UnsubscribePage() {
     };
   }, [userId, token]);
 
+  // A preference on the person's record changed from a link in an email: the result is the page, and it stays.
+  if (status === 'success') {
+    return (
+      <div className="flex min-h-auth items-center justify-center px-4 py-12">
+        <SuccessState
+          as="h1"
+          focus
+          linkAs={Link}
+          title={t('successTitle')}
+          detail={t('successDetail')}
+          primary={{ label: t('backToStore'), href: ROUTES.storefront.home }}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-12">
+    <div className="flex min-h-auth items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm text-center">
-        <h1 className="text-2xl font-semibold text-neutral-900">Email preferences</h1>
+        <h1 className="text-2xl font-semibold text-neutral-900">{t('title')}</h1>
 
         {status === 'checking' ? (
-          <p className="mt-6 text-sm text-neutral-900/60">Updating your preferences…</p>
-        ) : status === 'success' ? (
-          <>
-            {/* The tick is drawn as the page confirms: the result is the one thing here that just happened. */}
-            <div className="mt-6 flex justify-center text-feedback-positive">
-              <DrawIcon>
-                <CircleCheck className="h-10 w-10" aria-hidden="true" />
-              </DrawIcon>
-            </div>
-            <p className="mt-3 rounded-md bg-neutral-50 px-4 py-3 text-sm text-accent-hover">
-              You&rsquo;re unsubscribed from marketing email. Order and account emails still reach
-              you — those aren&rsquo;t marketing.
-            </p>
-          </>
+          <p className="mt-6 text-sm text-neutral-900/60">{t('checking')}</p>
         ) : (
-          <p className="notice notice-error mt-6">
-            {error ?? 'This unsubscribe link is missing its details.'}
-          </p>
+          <p className="notice notice-error mt-6">{error ?? (userId && token ? t('failed') : t('missingDetails'))}</p>
         )}
 
         <div className="mt-6 text-sm text-neutral-900/60">
-          <Link href="/" className="font-medium text-accent-hover hover:underline">
-            Back to the store
+          <Link href={ROUTES.storefront.home} className="font-medium text-accent-hover hover:underline">
+            {t('backToStore')}
           </Link>
         </div>
       </div>

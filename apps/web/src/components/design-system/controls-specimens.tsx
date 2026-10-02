@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { BRAND, concentricRadius } from '@newax/shared';
-import { Button, CooldownBanner, DangerZone, Field, FormStack, HoldToConfirm } from '@/components/ui';
+import { BRAND, concentricRadius, formatDate, formatMoney } from '@newax/shared';
+import { Button, CooldownBanner, DangerZone, Field, FormStack, HoldToConfirm, SuccessState } from '@/components/ui';
 import { Price } from '@/components/storefront/price';
 import { HOLD_MS } from '@/lib/guard';
 import { Group } from './foundations';
@@ -252,6 +252,95 @@ export function CardRecipeSpecimen() {
           </dd>
         </div>
       </dl>
+    </div>
+  );
+}
+
+/** The words a loop's three states are read as. The specimen is English; the storefront's come from messages/*.json. */
+const LOOP_LABELS = { done: 'done', current: 'current step', next: 'still to come' } as const;
+
+/**
+ * The success state (SUC-1 to SUC-5), live: the invoice case with its one open
+ * loop and its receipt, the ordinary success, and the one celebration, which a
+ * milestone alone earns and which here replays on demand. Every figure goes
+ * through the shared formatters and every date is pinned, so the page reads the
+ * same on every visit. Nothing here sends anything: each action reports what it
+ * would have done.
+ */
+export function SuccessSpecimens() {
+  const locale = BRAND.locale.locales[0];
+  const [last, setLast] = useState<string | null>(null);
+  const [watching, setWatching] = useState(false);
+  const [plays, setPlays] = useState(0);
+
+  const did = (what: string) => () => setLast(what);
+
+  return (
+    <div className="grid gap-12">
+      <div className="grid gap-x-10 gap-y-14 lg:grid-cols-2 2xl:grid-cols-3">
+        <div className="min-w-0">
+          <h4 className="eyebrow mb-4">A record that left the product</h4>
+          <SuccessState
+            title="Invoice sent to Northwind Labs"
+            detail={`${formatMoney(240000, locale)} · ap@northwind.example · due ${formatDate('2026-10-12T00:00:00Z', locale)}`}
+            primary={{ label: 'View invoice', onClick: did('View invoice: opens the invoice') }}
+            secondary={{ label: 'Send another', onClick: did('Send another: starts a new invoice') }}
+            back={{ label: 'Back to invoices', href: '#controls' }}
+            loop={{
+              steps: [
+                { label: 'Sent', state: 'done' },
+                { label: 'Opened', state: 'current' },
+                { label: 'Paid', state: 'next' },
+              ],
+              labels: LOOP_LABELS,
+              aside: (
+                <Button variant="ghost" onClick={() => setWatching((current) => !current)} aria-pressed={watching}>
+                  {watching ? 'We will notify you' : 'Notify me'}
+                </Button>
+              ),
+            }}
+            receipt={['Receipt emailed', 'Copy kept in Documents']}
+          />
+        </div>
+
+        <div className="min-w-0">
+          <h4 className="eyebrow mb-4">An ordinary success</h4>
+          <SuccessState
+            title="Supplier Al-Noor Textiles added"
+            detail={`Net 30 · added ${formatDate('2026-10-04T00:00:00Z', locale)}`}
+            primary={{ label: 'View supplier', onClick: did('View supplier: opens the supplier') }}
+            back={{ label: 'Back to suppliers', href: '#controls' }}
+          />
+        </div>
+
+        <div className="min-w-0">
+          <h4 className="eyebrow mb-4">A milestone, once</h4>
+          <SuccessState
+            key={plays}
+            celebrate
+            title="First invoice paid"
+            detail={`Northwind Labs paid ${formatMoney(240000, locale)} on ${formatDate('2026-10-09T00:00:00Z', locale)}`}
+            primary={{ label: 'View payment', onClick: did('View payment: opens the payment') }}
+            back={{ label: 'Back to invoices', href: '#controls' }}
+          />
+          <div className="mt-6 flex justify-center">
+            <Button variant="secondary" onClick={() => setPlays((count) => count + 1)}>
+              Replay
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-2">
+        <p role="status" className="m-0 text-sm text-neutral-900/70">
+          {last ?? 'Nothing pressed yet.'}
+        </p>
+        <p className="m-0 max-w-prose text-sm text-neutral-900/70">
+          It refuses what would make it a dead end: with no primary action it renders nothing. Celebrating is the
+          caller&rsquo;s claim of a milestone, never the default, and no screen makes it yet because the record of
+          milestones does not exist.
+        </p>
+      </div>
     </div>
   );
 }

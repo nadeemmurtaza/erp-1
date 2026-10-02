@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**463** markdown documents. These explain **why**; this index only says **where**.
+**468** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -49,6 +49,10 @@ _no second-level headings_
 
 _no second-level headings_
 
+### `.claude/agents/ux.md`  <sub>47 lines</sub>
+
+_no second-level headings_
+
 ### `.claude/agents/verify.md`  <sub>45 lines</sub>
 
 _no second-level headings_
@@ -69,13 +73,14 @@ _no second-level headings_
 
 - Dependency standard  <sub>:11</sub>
 
-### `.claude/rules/design.md`  <sub>136 lines</sub>
+### `.claude/rules/design.md`  <sub>160 lines</sub>
 
 - The design system  <sub>:17</sub>
-- Read the chapter before you build the thing  <sub>:42</sub>
-- The obligations, stated so they can be checked  <sub>:58</sub>
-- Promoting something into the system  <sub>:117</sub>
-- What is not enforced by any command  <sub>:124</sub>
+- Think like the designer, then write the code  <sub>:42</sub>
+- Read the chapter before you build the thing  <sub>:60</sub>
+- The obligations, stated so they can be checked  <sub>:76</sub>
+- Promoting something into the system  <sub>:141</sub>
+- What is not enforced by any command  <sub>:148</sub>
 
 ### `.claude/rules/performance.md`  <sub>42 lines</sub>
 
@@ -96,11 +101,40 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>191 lines</sub>
+### `.claude/rules/ui.md`  <sub>192 lines</sub>
 
 - Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:104</sub>
-- No dead ends  <sub>:144</sub>
+- Borders and boxes  <sub>:105</sub>
+- No dead ends  <sub>:145</sub>
+
+### `.claude/skills/restyle/SKILL.md`  <sub>88 lines</sub>
+
+- 1. Count the tells  <sub>:18</sub>
+- 2. Find the tells a script cannot see  <sub>:30</sub>
+- 3. Restyle, smallest edit first  <sub>:54</sub>
+- 4. Prove it  <sub>:73</sub>
+
+### `.claude/skills/ux-audit/SKILL.md`  <sub>107 lines</sub>
+
+- 1. Locate it  <sub>:14</sub>
+- 2. Measure first  <sub>:20</sub>
+- 3. Read it against the laws  <sub>:55</sub>
+- 4. Report  <sub>:78</sub>
+
+### `.claude/skills/ux-design/SKILL.md`  <sub>122 lines</sub>
+
+- 1. Look it up before you search  <sub>:18</sub>
+- 2. Write the brief  <sub>:34</sub>
+- 3. Challenge it before you build it  <sub>:76</sub>
+- 4. Decide the forks yourself  <sub>:89</sub>
+- 5. Build from the brief, then prove it  <sub>:100</sub>
+
+### `.claude/skills/ux-review/SKILL.md`  <sub>123 lines</sub>
+
+- 1. Get the diff  <sub>:13</sub>
+- 2. Run what bites on this diff  <sub>:36</sub>
+- 3. Read the added lines  <sub>:65</sub>
+- 4. Report  <sub>:102</sub>
 
 ### `.github/copilot-instructions.md`  <sub>81 lines</sub>
 
@@ -127,7 +161,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `CLAUDE.md`  <sub>1,033 lines</sub>
+### `CLAUDE.md`  <sub>1,044 lines</sub>
 
 - Vision and scale  <sub>:13</sub>
 - The seven laws  <sub>:39</sub>
@@ -136,9 +170,9 @@ _no second-level headings_
 - Scale: the three axes  <sub>:384</sub>
 - Look it up before you search  <sub>:446</sub>
 - The rule index  <sub>:517</sub>
-- Before you open a PR  <sub>:555</sub>
-- Deployment  <sub>:634</sub>
-- NEWAX Engineering Operating Protocol  <sub>:647</sub>
+- Before you open a PR  <sub>:564</sub>
+- Deployment  <sub>:645</sub>
+- NEWAX Engineering Operating Protocol  <sub>:658</sub>
 
 ### `CONTRIBUTING.md`  <sub>127 lines</sub>
 
@@ -203,7 +237,7 @@ _no second-level headings_
 - Component contract  <sub>:366</sub>
 - What never gets hand-rolled  <sub>:381</sub>
 
-### `docs/design/components-states/04-states.md`  <sub>152 lines</sub>
+### `docs/design/components-states/04-states.md`  <sub>226 lines</sub>
 
 - The rule  <sub>:8</sub>
 - The state matrix  <sub>:14</sub>
@@ -215,7 +249,8 @@ _no second-level headings_
 - Confirmation and destructive actions  <sub>:90</sub>
 - Permission states  <sub>:116</sub>
 - Notifications and system feedback  <sub>:130</sub>
-- Offline and degraded — the POS case  <sub>:138</sub>
+- The success state  <sub>:138</sub>
+- Offline and degraded — the POS case  <sub>:212</sub>
 
 ### `docs/design/content/06-content.md`  <sub>121 lines</sub>
 
@@ -244,16 +279,17 @@ _no second-level headings_
 - Theming  <sub>:225</sub>
 - Where tokens live  <sub>:308</sub>
 
-### `docs/design/layout-composition/02-layout.md`  <sub>130 lines</sub>
+### `docs/design/layout-composition/02-layout.md`  <sub>167 lines</sub>
 
 - The page skeleton  <sub>:8</sub>
-- Grid  <sub>:21</sub>
-- Density  <sub>:35</sub>
-- The seven screens  <sub>:50</sub>
-- Reflow rules  <sub>:64</sub>
-- Multi-surface parity  <sub>:88</sub>
-- The POS is a different animal  <sub>:101</sub>
-- Verifying  <sub>:114</sub>
+- Hierarchy: where the eye goes  <sub>:21</sub>
+- Grid  <sub>:58</sub>
+- Density  <sub>:72</sub>
+- The seven screens  <sub>:87</sub>
+- Reflow rules  <sub>:101</sub>
+- Multi-surface parity  <sub>:125</sub>
+- The POS is a different animal  <sub>:138</sub>
+- Verifying  <sub>:151</sub>
 
 ### `docs/design/layout-composition/13-composition.md`  <sub>197 lines</sub>
 
@@ -297,7 +333,7 @@ _no second-level headings_
 - Visual principles  <sub>:56</sub>
 - Decision principles  <sub>:67</sub>
 
-### `docs/design/principles-laws/10-laws.md`  <sub>884 lines</sub>
+### `docs/design/principles-laws/10-laws.md`  <sub>903 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
@@ -311,8 +347,9 @@ _no second-level headings_
 - ACC · Accessibility  <sub>:698</sub>
 - GLO · Globalization  <sub>:760</sub>
 - Where the card-deck laws are built  <sub>:823</sub>
-- What this chapter does not settle  <sub>:849</sub>
-- Sources  <sub>:864</sub>
+- Where the two reels' laws are built  <sub>:849</sub>
+- What this chapter does not settle  <sub>:868</sub>
+- Sources  <sub>:883</sub>
 
 ### `docs/design/process-governance/08-governance.md`  <sub>145 lines</sub>
 
@@ -356,14 +393,15 @@ _no second-level headings_
 - What a person still has to do  <sub>:230</sub>
 - Sources  <sub>:250</sub>
 
-### `docs/design/README.md`  <sub>109 lines</sub>
+### `docs/design/README.md`  <sub>118 lines</sub>
 
 - Precedence, before anything else  <sub>:12</sub>
-- The chapters  <sub>:24</sub>
-- How to use it  <sub>:45</sub>
-- The law families  <sub>:63</sub>
-- An honest statement of maturity  <sub>:76</sub>
-- The one thing this system refuses to do  <sub>:102</sub>
+- Using it while you build  <sub>:24</sub>
+- The chapters  <sub>:33</sub>
+- How to use it  <sub>:54</sub>
+- The law families  <sub>:72</sub>
+- An honest statement of maturity  <sub>:85</sub>
+- The one thing this system refuses to do  <sub>:111</sub>
 
 ### `docs/email.md`  <sub>438 lines</sub>
 
@@ -2968,7 +3006,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>11,021 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,216 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

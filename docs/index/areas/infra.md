@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-62 files · 32,004 lines
+63 files · 32,668 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,14 +19,14 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 20,978 | file, example, json, yaml |
+| `.` | 20 | 20,979 | file, example, json, yaml |
 | `.github` | 1 | 81 | doc |
 | `.github/workflows` | 2 | 275 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 24 | 8,625 | script, py |
-| `scripts/lib` | 3 | 1,644 | utility |
+| `scripts` | 25 | 9,252 | script, py |
+| `scripts/lib` | 3 | 1,680 | utility |
 
 
 ## Entry points
@@ -47,14 +47,14 @@ on them.
 | `scripts/check-overflow.mjs` | 644 | script |  |
 | `scripts/check-contrast.mjs` | 626 | script |  |
 | `scripts/check-module-boundaries.mjs` | 624 | script |  |
+| `scripts/check-tells.mjs` | 559 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
 | `scripts/check-links.mjs` | 416 | script |  |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
-| `scripts/lib/model-routing.mjs` | 363 | utility | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/lib/model-routing.mjs` | 399 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
 | `scripts/check-menus.mjs` | 224 | script |  |
-| `scripts/check-danger.mjs` | 213 | script |  |
 
 
 ---

@@ -162,7 +162,7 @@
 
   .lift:hover,
   .lift:focus-within {
-    @apply border-neutral-200 shadow-lg;
+    @apply border-neutral-200 shadow-overlay;
   }
 
   @media (prefers-reduced-motion: no-preference) {

@@ -457,7 +457,12 @@
     "loading": "Loading…",
     "error": "Something went wrong.",
     "retry": "Try again",
-    "currencyNote": "Prices in Pakistani Rupees"
+    "currencyNote": "Prices in Pakistani Rupees",
+    "journey": {
+      "done": "done",
+      "current": "current step",
+      "next": "still to come"
+    }
   },
   "theme": {
     "group": "Theme",
@@ -623,6 +628,11 @@
     "paymentFailed": "Payment did not go through.",
     "paymentFailedBody": "Your order is saved but unpaid. Try again, or choose cash on delivery instead.",
     "placedOn": "Placed on {date}",
+    "successPlacedTitle": "Order <number></number> placed",
+    "successPaidTitle": "Payment received for order <number></number>",
+    "successView": "View order",
+    "successViewBank": "See bank details",
+    "successBankDetail": "It is not paid yet: transfer the total to our account and upload your receipt. We dispatch once it is confirmed.",
     "items": "Items",
     "measurements": "Measurements",
     "progress": "Progress",
@@ -680,7 +690,7 @@
   },
   "story": {
     "welcome": "Welcome to {brand}.",
-    "intro": "We are a premium clothing brand dedicated to blending high-quality fabrics with seamless, personalized custom tailoring.",
+    "intro": "We are a premium clothing brand dedicated to blending high-quality fabrics with personalized custom tailoring.",
     "problem": "Finding a reliable tailor can often be a frustrating experience filled with delays, sizing errors, and multiple trips to the shop. We started {brand} to take the hassle entirely out of the equation. We source the finest unstitched fabrics and offer a bespoke, in-house tailoring service right on our website.",
     "how": "Simply choose your favorite fabric, input your exact measurements online, and let our master tailors craft a beautiful, ready-to-wear outfit perfectly fitted to you, delivered straight to your doorstep."
   },
@@ -696,6 +706,10 @@
     "submit": "Submit return request",
     "submitted": "Your return request has been submitted.",
     "backToOrder": "Back to order",
+    "successTitle": "Return request {number} submitted",
+    "successDetail": "{count, plural, one {# item} other {# items}} from order {order} · requested {date}",
+    "successView": "View request",
+    "backToReturns": "Back to my returns",
     "status": {
       "REQUESTED": "Requested",
       "APPROVED": "Approved",
@@ -706,6 +720,30 @@
       "REFUNDED": "Refunded",
       "CLOSED": "Closed"
     }
+  },
+  "verifyEmail": {
+    "title": "Email verification",
+    "checking": "Confirming your email address…",
+    "successTitle": "Email address confirmed",
+    "successDetail": "We have marked the address on your account as confirmed.",
+    "toAccount": "Go to your account",
+    "backToStore": "Back to the store",
+    "failed": "Could not confirm your email address.",
+    "missingToken": "This verification link is missing its token."
+  },
+  "unsubscribe": {
+    "title": "Email preferences",
+    "checking": "Updating your preferences…",
+    "successTitle": "Unsubscribed from marketing email",
+    "successDetail": "Order and account emails still reach you — those aren’t marketing.",
+    "backToStore": "Back to the store",
+    "failed": "Could not process this request.",
+    "missingDetails": "This unsubscribe link is missing its details."
+  },
+  "passwordReset": {
+    "successTitle": "Password changed",
+    "successDetail": "Sign in with your new password.",
+    "signIn": "Sign in"
   },
   "warrantyVerify": {
     "title": "Verify your purchase",

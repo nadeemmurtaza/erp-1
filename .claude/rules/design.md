@@ -17,7 +17,7 @@ paths:
 ## The design system
 
 The long form is **[`docs/design/`](../../docs/design/README.md)** — sixteen
-chapters and **180 numbered laws**, covering principles, tokens, layout,
+chapters and **187 numbered laws**, covering principles, tokens, layout,
 components, states, motion, content, accessibility, governance, quality
 gates, the borrowed law catalogue, workflow, permissions, composition,
 navigation and integrity. Its measured state, generated from the code, is
@@ -38,6 +38,24 @@ binding before it existed — **Use what exists**, **Borders and boxes**,
 
 **Precedence.** `CLAUDE.md`'s seven laws win over every chapter. A chapter
 that appears to contradict a law is wrong, and this rule does not change that.
+
+## Think like the designer, then write the code
+
+A screen is designed before it is coded, and reviewed before it merges. Four
+skills in `.claude/skills/` hold the procedure. Each is plain markdown, so any
+agent can follow it, and each cites the laws by ID.
+
+| When | Run | It gives you |
+|---|---|---|
+| Before the first line of JSX for a new screen or a changed hierarchy | `/ux-design` | a one-page brief: the one job, the headline and three stops, every state, the success surface, seven widths, the copy and the proof |
+| A page you did not write, or one that feels wrong | `/ux-audit` | findings ranked S1 to S3, each with a law ID, a `file:line` and the evidence; read-only |
+| Before a PR that changes what a person sees | `/ux-review` | Ship or Fix first, on the added lines only; read-only |
+| A screen that looks machine-made | `/restyle` | the tells removed, the house system back and the `check-tells` count down; it edits files, so it runs only when asked |
+
+The `ux` subagent (`.claude/agents/ux.md`: sonnet at high effort, no edit tools)
+does the first three in its own context. `scripts/check-rules.mjs` fails the
+build when a skill is malformed or when a rule or a skill cites a law that does
+not exist, so the procedures cannot drift from the laws they apply.
 
 ## Read the chapter before you build the thing
 
@@ -87,6 +105,9 @@ specification for something not yet built.
 - **No dead end** (`ITG-1`). Every screen and every state — empty, error,
   permission-blocked, absent-module, end-of-flow — has a forward action and a
   marked exit.
+- **One headline, three stops** (`HIE-1`, `HIE-2`). The largest text names the
+  page's job, and the eye stops at most three times on the way to the one loud
+  button: the headline, the content, the action.
 - **No ring of content around an empty middle** (`SPA-4`). At every one of the
   seven widths, the optical centre carries the page's job. Where content does
   not fill the width, constrain and centre the container; never push content
@@ -106,6 +127,9 @@ specification for something not yet built.
 - **Match friction to blast radius** (`ACT-6`). Reversible and small → do it,
   offer undo. Irreversible or wide → name the object and the count.
   Irreversible and financial or cross-branch → require typing the name.
+- **A success says what happened to which thing, offers the next step and
+  spends the right surface** (`SUC-1` to `SUC-3`). At most one open loop, and
+  joy only for a milestone (`SUC-4`, `SUC-5`).
 - **A refusal states its remedy** (`FLO-7`). "Awaiting approval" is a status,
   not a message.
 - **Work is durable from the first real value** (`FLO-3`). Closing a tab may

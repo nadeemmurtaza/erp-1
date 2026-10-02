@@ -256,7 +256,7 @@ export function FilterPanel({ facets, locale }: FilterPanelProps) {
             aria-hidden="true"
           />
           <div className={cn(
-            'fixed inset-y-0 w-80 bg-overlay shadow-xl flex flex-col',
+            'fixed inset-y-0 w-80 bg-overlay shadow-modal flex flex-col',
             isRtl
               ? cn('start-0', leaving ? 'animate-slideOutLeft' : 'animate-slideInLeft')
               : cn('end-0', leaving ? 'animate-slideOutRight' : 'animate-slideInRight'),

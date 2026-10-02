@@ -53,7 +53,7 @@ export function BottomNav() {
       <div
         dir="ltr"
         data-theme="light"
-        className="inline-flex items-center gap-1 rounded bg-neutral-700 px-2 py-2 shadow-lg"
+        className="inline-flex items-center gap-1 rounded bg-neutral-700 px-2 py-2 shadow-overlay"
       >
         <TabLink href="/" label={t('home')} active={cleanPath === '/'}>
           <HomeIcon />

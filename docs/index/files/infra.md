@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 62 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 63 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -27,7 +27,7 @@ All 62 tracked files in `scripts, CI, deployment and container configuration`, b
 | `docker-stack.edge.yml` | yaml | 42 |  |
 | `docker-stack.prod.yml` | yaml | 124 |  |
 | `docker-stack.staging.yml` | yaml | 124 |  |
-| `package.json` | json | 64 |  |
+| `package.json` | json | 65 |  |
 | `pnpm-lock.yaml` | yaml | 19483 |  |
 | `pnpm-workspace.yaml` | yaml | 24 |  |
 | `turbo.json` | json | 56 |  |
@@ -73,7 +73,7 @@ All 62 tracked files in `scripts, CI, deployment and container configuration`, b
 | `yaseen-disk-alert.timer` | timer | — |  |
 | `yaseen.service` | service | — |  |
 
-### `scripts` (24)
+### `scripts` (25)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -95,7 +95,8 @@ All 62 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-permission-checks.mjs` | script | 127 |  |
 | `check-rebrand.mjs` | script | 292 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
-| `check-rules.mjs` | script | 148 |  |
+| `check-rules.mjs` | script | 216 |  |
+| `check-tells.mjs` | script | 559 |  |
 | `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |
@@ -107,7 +108,7 @@ All 62 tracked files in `scripts, CI, deployment and container configuration`, b
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index-scan.mjs` | utility | 944 | Scanners for the repository index. |
-| `model-routing.mjs` | utility | 363 | Which model and how much effort each kind of job in this repository deserves. |
+| `model-routing.mjs` | utility | 399 | Which model and how much effort each kind of job in this repository deserves. |
 | `render-harness.mjs` | utility | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — th… |
 
 

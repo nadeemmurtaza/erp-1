@@ -2,12 +2,30 @@
 
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRouter, useSearchParams } from 'next/navigation';
-import type { Locale } from '@newax/shared';
+import { useSearchParams } from 'next/navigation';
+import { formatDate, type Locale } from '@newax/shared';
+import { Link } from '@/i18n/navigation';
 import { getMyOrder, listReturnReasons, createReturnRequest } from '@/lib/customer-client';
-import type { CustomerOrder, CustomerReturnReason } from '@/types/api';
-import { Loading, PageHeader } from '@/components/ui';
+import type { CustomerOrder, CustomerReturnReason, CustomerReturnRequest } from '@/types/api';
+import { Loading, PageHeader, SuccessState } from '@/components/ui';
 import { ROUTES } from '@/constants/routes';
+import { journeyStates } from '@/lib/success-state';
+
+/**
+ * The one open loop on a return request (SUC-4): the statuses the shop moves it through, each a change the
+ * returns page already shows. A status maps to the last step it has reached; a rejected request is not on this
+ * road, and a refund or an exchange is the shop's choice, so the road stops at the parcel arriving.
+ */
+const RETURN_JOURNEY = ['REQUESTED', 'APPROVED', 'RECEIVED'] as const;
+const RETURN_REACHED: Record<string, number> = {
+  REQUESTED: 0,
+  APPROVED: 1,
+  IN_TRANSIT: 1,
+  RECEIVED: 2,
+  INSPECTED: 2,
+  REFUNDED: 2,
+  CLOSED: 2,
+};
 
 interface LineState {
   selected: boolean;
@@ -18,8 +36,8 @@ interface LineState {
 /** WO-6.6 — the customer's own side of the return-item portal CLAUDE.md's own feature-scope example names. */
 export default function NewReturnRequestPage() {
   const t = useTranslations('returns');
+  const tCommon = useTranslations('common');
   const locale = useLocale() as Locale;
-  const router = useRouter();
   const searchParams = useSearchParams();
   const orderNumber = searchParams.get('number') ?? '';
 
@@ -29,6 +47,7 @@ export default function NewReturnRequestPage() {
   const [note, setNote] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [created, setCreated] = useState<CustomerReturnRequest | null>(null);
 
   useEffect(() => {
     if (!orderNumber) return;
@@ -61,8 +80,7 @@ export default function NewReturnRequestPage() {
 
     setSubmitting(true);
     try {
-      await createReturnRequest({ orderNumber: order.number, customerNote: note || undefined, items });
-      router.push(ROUTES.storefront.accountReturns);
+      setCreated(await createReturnRequest({ orderNumber: order.number, customerNote: note || undefined, items }));
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not submit the return request');
       setSubmitting(false);
@@ -76,6 +94,39 @@ export default function NewReturnRequestPage() {
       </p>
     ) : (
       <Loading />
+    );
+  }
+
+  // A request the shop will act on was made (SUC-3): say which one, and where it can be followed. It used to
+  // jump to the list with no word that it had worked.
+  if (created) {
+    const states = journeyStates(RETURN_JOURNEY.length, RETURN_REACHED[created.status] ?? 0);
+    const count = created.items.reduce((sum, line) => sum + line.quantity, 0);
+
+    return (
+      <div className="flex justify-center py-12">
+        <SuccessState
+          as="h1"
+          focus
+          linkAs={Link}
+          title={t('successTitle', { number: created.number })}
+          detail={t('successDetail', {
+            count,
+            order: created.order.number,
+            date: formatDate(created.requestedAt, locale),
+          })}
+          primary={{ label: t('successView'), href: ROUTES.storefront.accountReturn(created.id) }}
+          back={{ label: t('backToReturns'), href: ROUTES.storefront.accountReturns }}
+          loop={{
+            steps: RETURN_JOURNEY.map((status, index) => ({ label: t(`status.${status}`), state: states[index]! })),
+            labels: {
+              done: tCommon('journey.done'),
+              current: tCommon('journey.current'),
+              next: tCommon('journey.next'),
+            },
+          }}
+        />
+      </div>
     );
   }
 

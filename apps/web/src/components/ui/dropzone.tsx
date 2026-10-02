@@ -184,9 +184,10 @@ export function Dropzone({
           disabled={Boolean(disabled)}
           aria-labelledby={labelId}
           aria-describedby={describedBy}
-          // Space opens a file input reliably; Enter did not (headless Chromium opened the picker on 1 of 3 fresh
-          // pages). UPL-1 promises both, so Enter is asked for by name. The keydown is the user activation
-          // `click()` needs, and `preventDefault` stops an engine that does open it natively from opening twice.
+          // UPL-1 promises Enter as well as Space, so Enter is asked for by name. Chromium opens a file input on
+          // Enter by itself (12 of 12 fresh pages with the file-chooser listener registered first); this is for the
+          // engines that were not measured (Firefox, WebKit). The keydown is the user activation `click()` needs, and
+          // `preventDefault` stops an engine that does open it natively from opening twice (0 of 12 doubled here).
           onKeyDown={(event) => {
             if (event.key !== 'Enter' || disabled) return;
             event.preventDefault();

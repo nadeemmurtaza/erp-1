@@ -114,7 +114,7 @@ export default function WorkshopScreen() {
                       <Small muted={!late}>
                         {t('workshop.due', { date: date(job.dueAt) })}
                         {/* The word, not just the colour. */}
-                        {late ? `  ⚠ ${t('workshop.overdue')}` : ''}
+                        {late ? `  ${t('workshop.overdue')}` : ''}
                       </Small>
                     ) : null}
                   </Card>

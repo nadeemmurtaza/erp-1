@@ -82,7 +82,7 @@ export function PartyPicker({ partyRole, id, value, onSelect, placeholder, class
         onChange={(event) => setQuery(event.target.value)}
       />
       {open ? (
-        <div className="absolute z-dropdown mt-1 max-h-64 w-full overflow-y-auto rounded border border-neutral-200 bg-overlay shadow-lg">
+        <div className="absolute z-dropdown mt-1 max-h-64 w-full overflow-y-auto rounded border border-neutral-200 bg-overlay shadow-overlay">
           {busy ? (
             <div className="p-3 text-sm text-neutral-900/60">Searching...</div>
           ) : results.length === 0 ? (

@@ -105,7 +105,7 @@ export function Header() {
                             const isParentActive = item.submenu.some(sub => isActive(sub.href));
                             return (
                               <button
-                                className={`relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-all duration-normal ease-decelerate ${
+                                className={`relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-[background-color,color,transform] duration-normal ease-decelerate ${
                                   isParentActive
                                     ? 'bg-neutral-50 text-neutral-900'
                                     : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 motion-safe:hover:-translate-y-0.5'
@@ -113,14 +113,14 @@ export function Header() {
                               >
                                 {t(item.key)}
                                 <span
-                                  className={`absolute bottom-0 start-0 h-0.5 transition-all duration-normal ${
+                                  className={`absolute bottom-0 start-0 h-0.5 transition-[width] duration-normal ${
                                     isParentActive ? 'w-full bg-neutral-900' : 'w-0 bg-neutral-900 group-hover:w-full'
                                   }`}
                                 />
                               </button>
                             );
                           })()}
-                          <div className="invisible absolute start-0 top-full overflow-hidden rounded-md border border-neutral-100 bg-overlay opacity-0 shadow-md transition-all duration-normal group-hover:visible group-hover:opacity-100">
+                          <div className="invisible absolute start-0 top-full overflow-hidden rounded-md border border-neutral-100 bg-overlay opacity-0 shadow-md transition-[opacity,visibility] duration-normal group-hover:visible group-hover:opacity-100">
                             {item.submenu.map((subitem) => {
                               const subActive = isActive(subitem.href);
                               return (
@@ -147,14 +147,14 @@ export function Header() {
                       <Link
                         key={item.key}
                         href={item.href || '/'}
-                        className={`group relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-all duration-normal ease-decelerate ${
+                        className={`group relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-[background-color,color,transform] duration-normal ease-decelerate ${
                           active
                             ? 'bg-neutral-50 text-neutral-900'
                             : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 motion-safe:hover:-translate-y-0.5'
                         }`}
                       >
                         {t(item.key)}
-                        <span className={`absolute bottom-0 start-0 h-0.5 transition-all duration-normal ${
+                        <span className={`absolute bottom-0 start-0 h-0.5 transition-[width] duration-normal ${
                           active ? 'w-full bg-neutral-900' : 'w-0 bg-neutral-900 group-hover:w-full'
                         }`} />
                       </Link>

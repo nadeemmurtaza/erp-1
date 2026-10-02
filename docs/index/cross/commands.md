@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**93**), plus the repository's own check scripts.
+Every script in every `package.json` (**94**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -146,6 +146,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `check:links` | `node scripts/check-links.mjs` |
 | `check:danger` | `node scripts/check-danger.mjs` |
 | `check:menus` | `node scripts/check-menus.mjs` |
+| `check:tells` | `node scripts/check-tells.mjs` |
 | `check:overflow` | `node scripts/check-overflow.mjs` |
 | `check:rules` | `node scripts/check-rules.mjs` |
 | `check:email` | `node scripts/check-email-dns.mjs` |
@@ -187,12 +188,13 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-permission-checks.mjs` | 127 |  |
 | `scripts/check-rebrand.mjs` | 292 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
-| `scripts/check-rules.mjs` | 148 |  |
+| `scripts/check-rules.mjs` | 216 |  |
+| `scripts/check-tells.mjs` | 559 |  |
 | `scripts/check.mjs` | 164 |  |
 | `scripts/idx.mjs` | 486 |  |
 | `scripts/install-git-hooks.mjs` | 94 |  |
 | `scripts/lib/index-scan.mjs` | 944 | Scanners for the repository index. |
-| `scripts/lib/model-routing.mjs` | 363 | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/lib/model-routing.mjs` | 399 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastruct… |
 | `scripts/nested-borders.py` | 0 |  |
 | `scripts/sync-client.mjs` | 701 | scripts/sync-client.mjs — the Extractor. |

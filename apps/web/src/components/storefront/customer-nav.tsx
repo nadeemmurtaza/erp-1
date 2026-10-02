@@ -13,7 +13,7 @@ export function CustomerNav() {
   const t = useTranslations('nav'); // We can add translations if we want, or just use English
 
   if (isLoading) {
-    return <div className="h-8 w-8 animate-pulse rounded-full bg-neutral-100" />;
+    return <div className="skeleton h-8 w-8 rounded-full" />;
   }
 
   if (user) {

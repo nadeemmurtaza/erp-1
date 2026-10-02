@@ -294,7 +294,7 @@ function GroupStep({
                       permission.sensitivity === 'critical' ? 'text-feedback-negative' : 'text-amber-700',
                     )}
                   >
-                    {permission.sensitivity === 'critical' ? '⚠ Critical — ' : permission.sensitivity === 'high' ? '⚠ High — ' : 'Note — '}
+                    {permission.sensitivity === 'critical' ? 'Critical — ' : permission.sensitivity === 'high' ? 'High — ' : 'Note — '}
                     {SENSITIVITY_LABEL[permission.sensitivity]}
                   </p>
                 ) : null}

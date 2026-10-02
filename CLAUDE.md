@@ -527,7 +527,7 @@ makes it arrive when it applies, which is when it is most likely to be followed.
 | Rule file | Loads when you touch | What it governs |
 |---|---|---|
 | `.claude/rules/ui.md` | web / POS / mobile components and CSS | Use what exists (primitives, classes, `@newax/shared`) · Borders and boxes · No dead ends |
-| `.claude/rules/design.md` | web / POS / mobile components and CSS, theme and brand files | the design system in `docs/design/` — 16 chapters, **180 numbered laws** with stable IDs, and the obligations binding now: every state shipped, no dead end, no ring of content around an empty middle, layout closes over absent permissions and modules, motion that communicates, keyboard, targets, logical properties, one word per concept |
+| `.claude/rules/design.md` | web / POS / mobile components and CSS, theme and brand files | the design system in `docs/design/` — 16 chapters, **187 numbered laws** with stable IDs, and the obligations binding now: every state shipped, no dead end, no ring of content around an empty middle, layout closes over absent permissions and modules, motion that communicates, keyboard, targets, logical properties, one word per concept |
 | `.claude/rules/performance.md` | services, controllers, React components, Prisma | the performance engineering table — caching, indexing, N+1, pagination, bundles |
 | `.claude/rules/database.md` | `apps/api/prisma/**` | the database change protocol; migrations are hand-written and forward-only |
 | `.claude/rules/security.md` | auth, controllers, the permission catalogue | what a security review covers; server-side enforcement only |
@@ -550,6 +550,15 @@ a new one with a `paths:` frontmatter block — and add a row above.
 `scripts/check-rules.mjs` fails the build if a rule file exists that this table
 does not list, or a listed file that does not exist, so the index cannot drift
 from the rules it indexes.
+
+
+**Design before you build a screen.** A screen is designed before it is coded and
+reviewed before it merges. Four skills in `.claude/skills/` hold the procedure and
+cite the design laws by ID: `/ux-design` (a one-page brief before the first line
+of JSX), `/ux-audit` (what is broken, with evidence; read-only), `/ux-review` (the
+diff, Ship or Fix first; read-only) and `/restyle` (remove the machine-made look;
+it edits files, so it runs only when asked). They are plain markdown, so any agent
+can follow them; `.claude/rules/design.md` says when each applies.
 
 
 ## Before you open a PR
@@ -581,7 +590,7 @@ pnpm check:rebrand                        # Law 1, brand axis — part of pnpm l
 node scripts/check-rebrand.mjs --self-test  # proves the matcher still catches a leak
 ```
 
-Three more design checks run inside `pnpm lint`, from
+More design checks run inside `pnpm lint`, from
 `docs/design/process-governance/15-integrity.md`'s build order. Each carries a declared baseline
 of the debt it found on the day it was written — a count that may shrink and
 may not grow — and each has a `--self-test` that proves its own maths:
@@ -589,6 +598,8 @@ may not grow — and each has a `--self-test` that proves its own maths:
 ```bash
 pnpm check:contrast    # COL-3 / ITG-11 — WCAG floors, palette read from brand.ts
 pnpm check:links       # ITG-2/3/5 — links resolve, images exist, no orphan screen
+pnpm check:tells       # the machine-made look: gradients, glass, loud motion, heavy shadows,
+                       # transition-all, emoji icons, hype copy, "Success!" with nothing else
 ```
 
 `eslint-plugin-jsx-a11y` runs on both apps for the same reason. What still has

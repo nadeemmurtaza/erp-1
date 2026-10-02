@@ -3,7 +3,7 @@
 
 # Files — web
 
-All 530 tracked files in `apps/web`, by directory.
+All 533 tracked files in `apps/web`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -26,8 +26,8 @@ All 530 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `en.json` | json | 776 |  |
-| `ur.json` | json | 776 |  |
+| `en.json` | json | 814 |  |
+| `ur.json` | json | 814 |  |
 
 ### `apps/web/public` (1)
 
@@ -290,7 +290,7 @@ All 530 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 35 |  |
+| `page.tsx` | page | 37 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/content` (1)
 
@@ -440,7 +440,7 @@ All 530 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 37 |  |
+| `page.tsx` | page | 39 |  |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/margins` (1)
 
@@ -1221,7 +1221,7 @@ All 530 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 166 |  |
+| `page.tsx` | page | 217 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews` (1)
 
@@ -1263,7 +1263,7 @@ All 530 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 411 |  |
+| `page.tsx` | page | 469 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/invoice` (1)
 
@@ -1380,7 +1380,7 @@ All 530 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 86 |  |
+| `page.tsx` | page | 99 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/returns` (1)
 
@@ -1417,13 +1417,13 @@ All 530 tracked files in `apps/web`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 73 |  |
+| `page.tsx` | page | 76 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/verify-email` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `page.tsx` | page | 71 |  |
+| `page.tsx` | page | 76 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/verify-purchase` (1)
 
@@ -1451,7 +1451,7 @@ All 530 tracked files in `apps/web`, by directory.
 | `bpmn-editor.tsx` | component | 123 |  |
 | `command-palette.tsx` | component | 285 |  |
 | `cross-sell-manager.tsx` | component | 256 |  |
-| `csv-import-card.tsx` | component | 213 |  |
+| `csv-import-card.tsx` | component | 247 |  |
 | `custom-field-form-section.tsx` | component | 181 |  |
 | `deployment-modules.tsx` | component | 21 |  |
 | `embedded-widget-frame.tsx` | component | 64 |  |
@@ -1579,7 +1579,7 @@ All 530 tracked files in `apps/web`, by directory.
 | `audience.ts` | component | 109 | The deciding functions behind the publish-and-audience specimen. |
 | `chart-concepts.tsx` | component | 387 |  |
 | `choice-cards.tsx` | component | 76 |  |
-| `controls-specimens.tsx` | component | 258 |  |
+| `controls-specimens.tsx` | component | 347 |  |
 | `data-concepts.tsx` | component | 501 |  |
 | `department-page.tsx` | component | 437 |  |
 | `department.spec.ts` | unit test | 158 |  |
@@ -1589,7 +1589,7 @@ All 530 tracked files in `apps/web`, by directory.
 | `dispatch-machine.ts` | component | 131 | The states of a one-click send, and the only moves between them. |
 | `flow-concepts.tsx` | component | 584 |  |
 | `foundations.tsx` | component | 438 |  |
-| `gallery.tsx` | component | 352 |  |
+| `gallery.tsx` | component | 358 |  |
 | `layering.tsx` | component | 208 |  |
 | `layout-loading.tsx` | component | 358 |  |
 | `live-tokens.ts` | component | 60 |  |
@@ -1646,7 +1646,7 @@ All 530 tracked files in `apps/web`, by directory.
 | `theme-switch.tsx` | component | 28 |  |
 | `visual-search-button.tsx` | component | 89 |  |
 
-### `apps/web/src/components/ui` (42)
+### `apps/web/src/components/ui` (43)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1662,12 +1662,12 @@ All 530 tracked files in `apps/web`, by directory.
 | `dialog.tsx` | component | 244 |  |
 | `disclosure.tsx` | component | 75 |  |
 | `draw-icon.tsx` | component | 53 |  |
-| `dropzone.tsx` | component | 249 |  |
+| `dropzone.tsx` | component | 250 |  |
 | `empty-state.tsx` | component | 40 |  |
 | `field.tsx` | component | 104 |  |
 | `filter-bar.tsx` | component | 191 |  |
 | `hold-to-confirm.tsx` | component | 224 |  |
-| `index.ts` | component | 74 | Design-system primitives. |
+| `index.ts` | component | 75 | Design-system primitives. |
 | `list-page-skeleton.tsx` | component | 66 | The shape of a list page, before the list page. |
 | `loading.tsx` | loading | 36 |  |
 | `menu.tsx` | component | 448 |  |
@@ -1684,6 +1684,7 @@ All 530 tracked files in `apps/web`, by directory.
 | `segmented.tsx` | component | 188 |  |
 | `select.tsx` | component | 168 |  |
 | `skeleton.tsx` | component | 60 |  |
+| `success-state.tsx` | component | 275 |  |
 | `swap-text.tsx` | component | 52 |  |
 | `switch.tsx` | component | 75 |  |
 | `tabs.tsx` | component | 158 |  |
@@ -1734,7 +1735,7 @@ All 530 tracked files in `apps/web`, by directory.
 | `request.ts` | module | 24 |  |
 | `routing.ts` | module | 18 |  |
 
-### `apps/web/src/lib` (31)
+### `apps/web/src/lib` (33)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -1761,6 +1762,8 @@ All 530 tracked files in `apps/web`, by directory.
 | `popover-position.ts` | utility | 109 | Where a floating panel goes, as arithmetic (MNU-4). |
 | `rag-corpus-access.ts` | utility | 27 |  |
 | `reveal.ts` | utility | 59 |  |
+| `success-state.spec.ts` | unit test | 71 |  |
+| `success-state.ts` | utility | 92 |  |
 | `upload-client.spec.ts` | unit test | 338 |  |
 | `upload-client.ts` | utility | 198 |  |
 | `upload-queue.spec.ts` | unit test | 584 |  |

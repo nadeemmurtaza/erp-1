@@ -34,7 +34,7 @@ import { PublishAudienceSpecimen } from './publish-audience';
 import { ScopedBentoSpecimen } from './scoped-bento';
 import { AdminPatterns } from './patterns';
 import { ComponentSpecimens } from './specimens';
-import { CardRecipeSpecimen, DangerSpecimens, FormRecipeSpecimen } from './controls-specimens';
+import { CardRecipeSpecimen, DangerSpecimens, FormRecipeSpecimen, SuccessSpecimens } from './controls-specimens';
 import { MenuSpecimens } from './menu-specimens';
 import { UploadSpecimens } from './upload-specimens';
 
@@ -146,7 +146,7 @@ export function DesignSystemGallery() {
         <GallerySection
           id="controls"
           title="Controls with a contract"
-          lead="Uploads, menus, danger, forms and cards: five families of laws (UPL, MNU, DNG, FRM, CRD), each as the real control. Try them: drop a file, type to filter, hold a button, submit the form empty."
+          lead="Uploads, menus, danger, forms, cards and the success state: six families of laws (UPL, MNU, DNG, FRM, CRD, SUC), each as the real control. Try them: drop a file, type to filter, hold a button, submit the form empty."
         >
           <Group
             title="Uploads"
@@ -167,6 +167,12 @@ export function DesignSystemGallery() {
             note="Hover to lift. The card is drawn from the storefront card's own classes; the corners follow one formula, so the photograph's corner is the card's minus the gap."
           >
             <CardRecipeSpecimen />
+          </Group>
+          <Group
+            title="The success state"
+            note="Specific title, the proof under it, one loud button to the thing made, an optional quiet repeat and a way back to the list. One open loop at most, and only one the system can follow. Reduced motion keeps every word and drops the burst."
+          >
+            <SuccessSpecimens />
           </Group>
         </GallerySection>
 

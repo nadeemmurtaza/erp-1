@@ -84,7 +84,7 @@ export function MobileNav({
 
           {/* Panel */}
           <div className={cn(
-            'fixed inset-y-0 w-4/5 max-w-sm bg-overlay shadow-xl flex flex-col',
+            'fixed inset-y-0 w-4/5 max-w-sm bg-overlay shadow-modal flex flex-col',
             isRtl
               ? cn('end-0', leaving ? 'animate-slideOutRight' : 'animate-slideInRight')
               : cn('start-0', leaving ? 'animate-slideOutLeft' : 'animate-slideInLeft'),

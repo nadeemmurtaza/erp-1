@@ -307,7 +307,7 @@ export default function SsoConnectionPage({ params }: { params: Promise<{ id: st
       ) : null}
       {saved ? (
         <p role="status" className="notice notice-success mb-6">
-          Saved.
+          Single sign-on connection saved.
         </p>
       ) : null}
 

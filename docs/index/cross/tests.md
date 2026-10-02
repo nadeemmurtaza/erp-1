@@ -3,7 +3,7 @@
 
 # Tests
 
-**385** spec files, **3,986** cases. What is already pinned down — and what is not.
+**386** spec files, **3,995** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -63,7 +63,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (361)
+## Unit and integration (362)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -386,6 +386,7 @@ regression or an N+1.
 | `apps/web/src/lib/menu-filter.spec.ts` | web | 22 | thresholds · filterOptions · typeAheadIndex |
 | `apps/web/src/lib/motion.spec.ts` | web | 40 | bezierEase · clamp01 · countUpValue · revealedCount · staggerDelayMs · noiseGlyph · scrambleFrame ·… |
 | `apps/web/src/lib/popover-position.spec.ts` | web | 13 | placePopover |
+| `apps/web/src/lib/success-state.spec.ts` | web | 9 | journeyStates · burstTravel · sparkKeyframes · BURST_TIMING |
 | `apps/web/src/lib/upload-client.spec.ts` | web | 22 | uploadFile: the request · uploadFile: a 401 (the same two chances as adminFetch) · uploadFile: fail… |
 | `apps/web/src/lib/upload-queue.spec.ts` | web | 49 | add · concurrency · speed and time left · percentOf and isProcessing · failure is per file (UPL-5)… |
 | `apps/web/src/lib/upload.spec.ts` | web | 32 | describeLimits · checkFile · checkFiles · partitionFiles · formatSpeed · formatEta |

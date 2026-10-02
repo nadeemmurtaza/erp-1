@@ -112,7 +112,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
           />
           <div
             className={cn(
-              'fixed inset-y-0 left-0 w-64 bg-overlay shadow-xl flex flex-col',
+              'fixed inset-y-0 left-0 w-64 bg-overlay shadow-modal flex flex-col',
               leaving ? 'animate-slideOutLeft' : 'animate-slideInLeft',
             )}
           >

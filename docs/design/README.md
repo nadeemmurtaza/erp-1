@@ -2,7 +2,7 @@
 
 How this product decides what it looks like, how it behaves, and how it speaks.
 
-Sixteen chapters and **180 numbered laws**. Read the one you need — each
+Sixteen chapters and **187 numbered laws**. Read the one you need — each
 says what it governs, what is already enforced by a command, and what is
 still only written down.
 
@@ -21,15 +21,24 @@ Three parts of the design system are already binding rules and live in
 repeated here. This system is the long form around them, not a second copy —
 `CLAUDE.md`'s own "never fork a duplicate doc" applies to itself.
 
+## Using it while you build
+
+`.claude/rules/design.md` says when each of these applies. Four skills in
+`.claude/skills/` (`/ux-design`, `/ux-audit`, `/ux-review`, `/restyle`) turn the
+laws into a procedure: a brief before a screen is coded, an audit with evidence,
+a review of the diff, and a restyle that removes the generic look. They cite laws
+by ID, and `scripts/check-rules.mjs` fails if one cites a law that does not
+exist.
+
 ## The chapters
 
 | # | Chapter | Governs | Enforced today |
 |---|---|---|---|
 | 00 | [Principles](./principles-laws/00-principles.md) | how a design decision is made at all | by review |
 | 01 | [Foundations](./foundations/01-foundations.md) | the token layer: colour (light and dark), type, space, size, radius, shadow, z, motion, and **theming** | built; contrast in both themes by `check-contrast.mjs`; POS and mobile dark mode unbuilt |
-| 02 | [Layout & responsive](./layout-composition/02-layout.md) | grid, density, the seven screens, reflow | breakpoints in `tailwind.config.ts` |
+| 02 | [Layout & responsive](./layout-composition/02-layout.md) | grid, density, the seven screens, reflow, hierarchy (`HIE`) | breakpoints in `tailwind.config.ts` |
 | 03 | [Components](./components-states/03-components.md) | primitives → components → patterns → templates | `.claude/rules/ui.md` + review |
-| 04 | [States & behaviour](./components-states/04-states.md) | every state an element can be in, and what each one promises | partly, by `EmptyState`/`Loading` |
+| 04 | [States & behaviour](./components-states/04-states.md) | every state an element can be in, and what each one promises, and the success state (`SUC`) | partly, by `EmptyState`/`Loading` |
 | 05 | [Motion](./motion/05-motion.md) | the motion language, its tokens, and the quality bar | **unbuilt** — see the chapter |
 | 06 | [Content](./content/06-content.md) | voice, terminology, labels, microcopy, error text | `messages/*.json` only |
 | 07 | [Accessibility & i18n](./accessibility/07-accessibility.md) | keyboard, screen readers, focus, contrast, targets, reduced motion, **RTL** | **not enforced at all** |

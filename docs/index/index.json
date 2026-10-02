@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2630,
-    "lines": 422453,
+    "files": 2639,
+    "lines": 424753,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -14,10 +14,24 @@
     "permissions": 130,
     "screens": 278,
     "crons": 30,
-    "specs": 385,
-    "designLaws": 180
+    "specs": 386,
+    "designLaws": 187
   },
   "designLaws": [
+    {
+      "id": "HIE-1",
+      "family": "HIE",
+      "name": "One headline",
+      "file": "docs/design/layout-composition/02-layout.md",
+      "line": 29
+    },
+    {
+      "id": "HIE-2",
+      "family": "HIE",
+      "name": "Three stops",
+      "file": "docs/design/layout-composition/02-layout.md",
+      "line": 43
+    },
     {
       "id": "UPL-1",
       "family": "UPL",
@@ -227,6 +241,41 @@
       "name": "Motion",
       "file": "docs/design/components-states/03-components.md",
       "line": 358
+    },
+    {
+      "id": "SUC-1",
+      "family": "SUC",
+      "name": "Specific",
+      "file": "docs/design/components-states/04-states.md",
+      "line": 146
+    },
+    {
+      "id": "SUC-2",
+      "family": "SUC",
+      "name": "Next step",
+      "file": "docs/design/components-states/04-states.md",
+      "line": 158
+    },
+    {
+      "id": "SUC-3",
+      "family": "SUC",
+      "name": "Stakes",
+      "file": "docs/design/components-states/04-states.md",
+      "line": 169
+    },
+    {
+      "id": "SUC-4",
+      "family": "SUC",
+      "name": "Open loop",
+      "file": "docs/design/components-states/04-states.md",
+      "line": 184
+    },
+    {
+      "id": "SUC-5",
+      "family": "SUC",
+      "name": "Rare joy",
+      "file": "docs/design/components-states/04-states.md",
+      "line": 196
     },
     {
       "id": "PER-1",
@@ -1281,15 +1330,15 @@
   ],
   "areas": {
     "root": {
-      "files": 213,
-      "lines": 21501,
-      "bytes": 1233257,
+      "files": 218,
+      "lines": 22024,
+      "bytes": 1262739,
       "label": "repository root files"
     },
     "infra": {
-      "files": 62,
-      "lines": 32004,
-      "bytes": 1263188,
+      "files": 63,
+      "lines": 32668,
+      "bytes": 1294413,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -1301,7 +1350,7 @@
     "mobile": {
       "files": 49,
       "lines": 6906,
-      "bytes": 320001,
+      "bytes": 319993,
       "label": "apps/mobile — Expo/React Native customer app"
     },
     "pos": {
@@ -1311,15 +1360,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 530,
-      "lines": 95170,
-      "bytes": 3493709,
+      "files": 533,
+      "lines": 95949,
+      "bytes": 3526760,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 91355,
-      "bytes": 5562928,
+      "lines": 91689,
+      "bytes": 5588819,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -54406,7 +54455,7 @@
       "pkg": "yaseenecom",
       "file": "package.json",
       "name": "lint",
-      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-danger.mjs && node scripts/check-menus.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
+      "cmd": "node scripts/install-git-hooks.mjs && turbo run lint && node scripts/check-module-boundaries.mjs && node scripts/check-hexagonal-purity.mjs && node scripts/check-chart-imports.mjs && node scripts/check-metadata-renderer.mjs && node scripts/check-frontend-secrets.mjs && node scripts/check-env-templates.mjs && node scripts/check-rebrand.mjs && node scripts/check-contrast.mjs && node scripts/check-links.mjs && node scripts/check-danger.mjs && node scripts/check-menus.mjs && node scripts/check-tells.mjs && node scripts/check-permission-checks.mjs && node scripts/check-rules.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -54497,6 +54546,12 @@
       "file": "package.json",
       "name": "check:menus",
       "cmd": "node scripts/check-menus.mjs"
+    },
+    {
+      "pkg": "yaseenecom",
+      "file": "package.json",
+      "name": "check:tells",
+      "cmd": "node scripts/check-tells.mjs"
     },
     {
       "pkg": "yaseenecom",
@@ -58508,6 +58563,18 @@
       ]
     },
     {
+      "file": "apps/web/src/lib/success-state.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "journeyStates",
+        "burstTravel",
+        "sparkKeyframes",
+        "BURST_TIMING"
+      ]
+    },
+    {
       "file": "apps/web/src/lib/upload-client.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -59048,6 +59115,15 @@
       "symbols": []
     },
     {
+      "path": ".claude/agents/ux.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 47,
+      "bytes": 2229,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": ".claude/agents/verify.md",
       "area": "root",
       "kind": "doc",
@@ -59123,8 +59199,8 @@
       "path": ".claude/rules/design.md",
       "area": "root",
       "kind": "doc",
-      "lines": 136,
-      "bytes": 7212,
+      "lines": 160,
+      "bytes": 8897,
       "doc": "",
       "symbols": []
     },
@@ -59168,8 +59244,8 @@
       "path": ".claude/rules/ui.md",
       "area": "root",
       "kind": "doc",
-      "lines": 191,
-      "bytes": 13437,
+      "lines": 192,
+      "bytes": 14056,
       "doc": "",
       "symbols": []
     },
@@ -59179,6 +59255,42 @@
       "kind": "json",
       "lines": 25,
       "bytes": 434,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": ".claude/skills/restyle/SKILL.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 88,
+      "bytes": 5607,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": ".claude/skills/ux-audit/SKILL.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 107,
+      "bytes": 5706,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": ".claude/skills/ux-design/SKILL.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 122,
+      "bytes": 6855,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": ".claude/skills/ux-review/SKILL.md",
+      "area": "root",
+      "kind": "doc",
+      "lines": 123,
+      "bytes": 6036,
       "doc": "",
       "symbols": []
     },
@@ -59348,8 +59460,8 @@
       "path": "CLAUDE.md",
       "area": "root",
       "kind": "doc",
-      "lines": 1033,
-      "bytes": 54570,
+      "lines": 1044,
+      "bytes": 55315,
       "doc": "",
       "symbols": []
     },
@@ -79129,7 +79241,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 183,
-      "bytes": 6065,
+      "bytes": 6061,
       "doc": "",
       "symbols": [
         {
@@ -79444,7 +79556,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 146,
-      "bytes": 4682,
+      "bytes": 4678,
       "doc": "",
       "symbols": [
         {
@@ -83430,8 +83542,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 776,
-      "bytes": 30713,
+      "lines": 814,
+      "bytes": 32408,
       "doc": "",
       "symbols": []
     },
@@ -83439,8 +83551,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 776,
-      "bytes": 42325,
+      "lines": 814,
+      "bytes": 44857,
       "doc": "",
       "symbols": []
     },
@@ -83905,7 +84017,7 @@
       "area": "web",
       "kind": "page",
       "lines": 281,
-      "bytes": 9192,
+      "bytes": 9205,
       "doc": "",
       "symbols": [
         {
@@ -84084,14 +84196,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/contacts/import/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 35,
-      "bytes": 1540,
+      "lines": 37,
+      "bytes": 1626,
       "doc": "",
       "symbols": [
         {
           "name": "AdminContactsImportPage",
           "kind": "default",
-          "line": 11
+          "line": 12
         }
       ]
     },
@@ -84459,14 +84571,14 @@
       "path": "apps/web/src/app/(admin)/admin/(app)/finance/expenses/import/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 37,
-      "bytes": 1622,
+      "lines": 39,
+      "bytes": 1715,
       "doc": "",
       "symbols": [
         {
           "name": "AdminExpensesImportPage",
           "kind": "default",
-          "line": 12
+          "line": 13
         }
       ]
     },
@@ -85855,7 +85967,7 @@
       "area": "web",
       "kind": "page",
       "lines": 585,
-      "bytes": 21967,
+      "bytes": 21993,
       "doc": "",
       "symbols": [
         {
@@ -85975,7 +86087,7 @@
       "area": "web",
       "kind": "page",
       "lines": 243,
-      "bytes": 8415,
+      "bytes": 8411,
       "doc": "",
       "symbols": [
         {
@@ -86524,14 +86636,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/account/returns/new/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 166,
-      "bytes": 5726,
+      "lines": 217,
+      "bytes": 7754,
       "doc": "",
       "symbols": [
         {
           "name": "NewReturnRequestPage",
           "kind": "default",
-          "line": 19
+          "line": 37
         }
       ]
     },
@@ -86659,14 +86771,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 411,
-      "bytes": 15410,
+      "lines": 469,
+      "bytes": 17812,
       "doc": "",
       "symbols": [
         {
           "name": "OrderPage",
           "kind": "default",
-          "line": 34
+          "line": 50
         }
       ]
     },
@@ -87154,14 +87266,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/reset-password/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 86,
-      "bytes": 2758,
+      "lines": 99,
+      "bytes": 3163,
       "doc": "",
       "symbols": [
         {
           "name": "ResetPasswordPage",
           "kind": "default",
-          "line": 11
+          "line": 12
         }
       ]
     },
@@ -87279,14 +87391,14 @@
       "path": "apps/web/src/app/(storefront)/[locale]/unsubscribe/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 73,
-      "bytes": 2557,
+      "lines": 76,
+      "bytes": 2437,
       "doc": "",
       "symbols": [
         {
           "name": "UnsubscribePage",
           "kind": "default",
-          "line": 12
+          "line": 13
         }
       ]
     },
@@ -87294,8 +87406,8 @@
       "path": "apps/web/src/app/(storefront)/[locale]/verify-email/page.tsx",
       "area": "web",
       "kind": "page",
-      "lines": 71,
-      "bytes": 2409,
+      "lines": 76,
+      "bytes": 2456,
       "doc": "",
       "symbols": [
         {
@@ -87380,7 +87492,7 @@
       "area": "web",
       "kind": "stylesheet",
       "lines": 1510,
-      "bytes": 53055,
+      "bytes": 53060,
       "doc": "",
       "symbols": []
     },
@@ -87448,7 +87560,7 @@
       "area": "web",
       "kind": "component",
       "lines": 488,
-      "bytes": 17428,
+      "bytes": 17431,
       "doc": "",
       "symbols": [
         {
@@ -88497,14 +88609,14 @@
       "path": "apps/web/src/components/admin/csv-import-card.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 213,
-      "bytes": 7521,
+      "lines": 247,
+      "bytes": 9430,
       "doc": "",
       "symbols": [
         {
           "name": "CsvImportCard",
           "kind": "function",
-          "line": 31
+          "line": 34
         }
       ]
     },
@@ -88958,7 +89070,7 @@
       "area": "web",
       "kind": "component",
       "lines": 117,
-      "bytes": 4261,
+      "bytes": 4266,
       "doc": "",
       "symbols": [
         {
@@ -89038,7 +89150,7 @@
       "area": "web",
       "kind": "component",
       "lines": 359,
-      "bytes": 12478,
+      "bytes": 12470,
       "doc": "",
       "symbols": [
         {
@@ -89485,8 +89597,8 @@
       "path": "apps/web/src/components/design-system/controls-specimens.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 258,
-      "bytes": 9752,
+      "lines": 347,
+      "bytes": 13766,
       "doc": "",
       "symbols": [
         {
@@ -89503,6 +89615,11 @@
           "name": "CardRecipeSpecimen",
           "kind": "function",
           "line": 199
+        },
+        {
+          "name": "SuccessSpecimens",
+          "kind": "function",
+          "line": 270
         }
       ]
     },
@@ -89768,8 +89885,8 @@
       "path": "apps/web/src/components/design-system/gallery.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 352,
-      "bytes": 14990,
+      "lines": 358,
+      "bytes": 15405,
       "doc": "",
       "symbols": [
         {
@@ -90034,7 +90151,7 @@
       "area": "web",
       "kind": "component",
       "lines": 157,
-      "bytes": 5626,
+      "bytes": 5631,
       "doc": "",
       "symbols": [
         {
@@ -90084,7 +90201,7 @@
       "area": "web",
       "kind": "component",
       "lines": 87,
-      "bytes": 3449,
+      "bytes": 3429,
       "doc": "",
       "symbols": [
         {
@@ -90119,7 +90236,7 @@
       "area": "web",
       "kind": "component",
       "lines": 365,
-      "bytes": 11961,
+      "bytes": 11964,
       "doc": "",
       "symbols": [
         {
@@ -90194,7 +90311,7 @@
       "area": "web",
       "kind": "component",
       "lines": 210,
-      "bytes": 9666,
+      "bytes": 9753,
       "doc": "",
       "symbols": [
         {
@@ -90269,7 +90386,7 @@
       "area": "web",
       "kind": "component",
       "lines": 197,
-      "bytes": 7172,
+      "bytes": 7175,
       "doc": "",
       "symbols": [
         {
@@ -90454,7 +90571,7 @@
       "area": "web",
       "kind": "component",
       "lines": 219,
-      "bytes": 8665,
+      "bytes": 8668,
       "doc": "",
       "symbols": [
         {
@@ -90499,7 +90616,7 @@
       "area": "web",
       "kind": "component",
       "lines": 969,
-      "bytes": 33952,
+      "bytes": 33969,
       "doc": "",
       "symbols": [
         {
@@ -90798,8 +90915,8 @@
       "path": "apps/web/src/components/ui/dropzone.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 249,
-      "bytes": 10770,
+      "lines": 250,
+      "bytes": 10899,
       "doc": "",
       "symbols": [
         {
@@ -90908,8 +91025,8 @@
       "path": "apps/web/src/components/ui/index.ts",
       "area": "web",
       "kind": "component",
-      "lines": 74,
-      "bytes": 3151,
+      "lines": 75,
+      "bytes": 3261,
       "doc": "Design-system primitives.",
       "symbols": []
     },
@@ -91225,6 +91342,41 @@
           "name": "SkeletonRegion",
           "kind": "function",
           "line": 44
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/ui/success-state.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 275,
+      "bytes": 10680,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SuccessAction",
+          "kind": "type",
+          "line": 17
+        },
+        {
+          "name": "SuccessLink",
+          "kind": "type",
+          "line": 22
+        },
+        {
+          "name": "SuccessStep",
+          "kind": "interface",
+          "line": 30
+        },
+        {
+          "name": "SuccessStateProps",
+          "kind": "interface",
+          "line": 35
+        },
+        {
+          "name": "SuccessState",
+          "kind": "function",
+          "line": 111
         }
       ]
     },
@@ -92685,6 +92837,60 @@
           "name": "armReveal",
           "kind": "function",
           "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/success-state.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 71,
+      "bytes": 2834,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/success-state.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 92,
+      "bytes": 3654,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "JourneyState",
+          "kind": "type",
+          "line": 13
+        },
+        {
+          "name": "journeyStates",
+          "kind": "function",
+          "line": 24
+        },
+        {
+          "name": "BURST_SPARKS",
+          "kind": "const",
+          "line": 36
+        },
+        {
+          "name": "SparkTravel",
+          "kind": "interface",
+          "line": 39
+        },
+        {
+          "name": "burstTravel",
+          "kind": "function",
+          "line": 55
+        },
+        {
+          "name": "sparkKeyframes",
+          "kind": "function",
+          "line": 75
+        },
+        {
+          "name": "BURST_TIMING",
+          "kind": "const",
+          "line": 87
         }
       ]
     },
@@ -94654,8 +94860,8 @@
       "path": "docs/design/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 109,
-      "bytes": 7384,
+      "lines": 118,
+      "bytes": 7865,
       "doc": "",
       "symbols": []
     },
@@ -94681,8 +94887,8 @@
       "path": "docs/design/components-states/04-states.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 152,
-      "bytes": 7066,
+      "lines": 226,
+      "bytes": 11390,
       "doc": "",
       "symbols": []
     },
@@ -94708,8 +94914,8 @@
       "path": "docs/design/layout-composition/02-layout.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 130,
-      "bytes": 5396,
+      "lines": 167,
+      "bytes": 7492,
       "doc": "",
       "symbols": []
     },
@@ -94753,8 +94959,8 @@
       "path": "docs/design/principles-laws/10-laws.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 884,
-      "bytes": 47906,
+      "lines": 903,
+      "bytes": 50523,
       "doc": "",
       "symbols": []
     },
@@ -96580,8 +96786,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 11021,
-      "bytes": 681949,
+      "lines": 11216,
+      "bytes": 698322,
       "doc": "",
       "symbols": []
     },
@@ -98551,8 +98757,8 @@
       "path": "package.json",
       "area": "infra",
       "kind": "json",
-      "lines": 64,
-      "bytes": 2850,
+      "lines": 65,
+      "bytes": 2933,
       "doc": "",
       "symbols": []
     },
@@ -101802,10 +102008,60 @@
       "path": "scripts/check-rules.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 148,
-      "bytes": 6602,
+      "lines": 216,
+      "bytes": 9725,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "scripts/check-tells.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 559,
+      "bytes": 26237,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FLAG_FILE",
+          "kind": "const",
+          "line": 59
+        },
+        {
+          "name": "TELLS",
+          "kind": "const",
+          "line": 69
+        },
+        {
+          "name": "BASELINE",
+          "kind": "const",
+          "line": 221
+        },
+        {
+          "name": "blankComments",
+          "kind": "function",
+          "line": 279
+        },
+        {
+          "name": "findTell",
+          "kind": "function",
+          "line": 287
+        },
+        {
+          "name": "countDynamic",
+          "kind": "function",
+          "line": 298
+        },
+        {
+          "name": "compare",
+          "kind": "function",
+          "line": 304
+        },
+        {
+          "name": "tellsInFile",
+          "kind": "function",
+          "line": 323
+        }
+      ]
     },
     {
       "path": "scripts/check.mjs",
@@ -102018,8 +102274,8 @@
       "path": "scripts/lib/model-routing.mjs",
       "area": "infra",
       "kind": "utility",
-      "lines": 363,
-      "bytes": 17345,
+      "lines": 399,
+      "bytes": 19127,
       "doc": "Which model and how much effort each kind of job in this repository deserves.",
       "symbols": [
         {
@@ -102030,27 +102286,27 @@
         {
           "name": "ADVISORY_SIGNALS",
           "kind": "const",
-          "line": 312
+          "line": 348
         },
         {
           "name": "CACHE_TTL_BY_EFFORT",
           "kind": "const",
-          "line": 351
+          "line": 387
         },
         {
           "name": "cacheTtlFor",
           "kind": "const",
-          "line": 359
+          "line": 395
         },
         {
           "name": "MODEL_ORDER",
           "kind": "const",
-          "line": 361
+          "line": 397
         },
         {
           "name": "EFFORT_ORDER",
           "kind": "const",
-          "line": 362
+          "line": 398
         }
       ]
     },

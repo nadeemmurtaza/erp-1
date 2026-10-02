@@ -191,7 +191,7 @@ export default function TailorQueuePage() {
                     // Marked with a word as well as a colour: colour alone
                     // is not a label.
                     <span className="ms-2 rounded bg-red-50 px-1.5 py-0.5 text-xs font-medium text-red-700">
-                      ⚠ Overdue
+                      Overdue
                     </span>
                   ) : null}
                 </>

@@ -485,7 +485,7 @@ export function StitchingPanel({ product, services, onChange }: StitchingPanelPr
       </label>
 
       <div className={cn(
-        'overflow-hidden transition-all duration-slow',
+        'overflow-hidden transition-[max-height,opacity] duration-slow',
         enabled ? 'max-h-[4000px] opacity-100' : 'max-h-0 opacity-0'
       )}>
         <div className="mt-4 space-y-4 border-t border-neutral-100 pt-4">

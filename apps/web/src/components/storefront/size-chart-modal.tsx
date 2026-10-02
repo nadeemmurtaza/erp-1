@@ -115,7 +115,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
           <div
             ref={modalRef}
             tabIndex={-1}
-            className="card relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden bg-overlay shadow-xl outline-none"
+            className="card relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden bg-overlay shadow-modal outline-none"
           >
             {/* Header */}
             <div className="flex items-start justify-between border-b border-neutral-100 p-4 sm:p-6">

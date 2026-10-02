@@ -35,6 +35,14 @@ Every top-level export in `infra`, with the line to open.
 | `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :71 |  |
 | `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :78 |  |
 | `check-rebrand.mjs` | `scan` | function | :160 | Every violation on one file's contents. |
+| `check-tells.mjs` | `FLAG_FILE` | const | :59 | Country flags are the one pictograph that is data, not decoration: a country or locale picker shows… |
+| `check-tells.mjs` | `TELLS` | const | :69 | The tells. |
+| `check-tells.mjs` | `BASELINE` | const | :221 | The debt on the day this was written, per tell and per file: a count of LINES carrying the tell. |
+| `check-tells.mjs` | `blankComments` | function | :279 | Blank comments to spaces, keeping every newline, so line numbers still point at the source. |
+| `check-tells.mjs` | `findTell` | function | :287 | The line numbers (one per line, however many times it matches) where `tell` fires in `source`. |
+| `check-tells.mjs` | `countDynamic` | function | :298 | How many times `tell.dynamic` (the unreadable twin of a literal) fires; counted, never failed. |
+| `check-tells.mjs` | `compare` | function | :304 | A tell is over when a file has more hit lines than its baseline allows (an absent entry allows none… |
+| `check-tells.mjs` | `tellsInFile` | function | :323 | Every tell in ONE file, with its lines: what `/restyle` reads before it edits, because the whole-re… |
 
 ### `scripts/lib`
 
@@ -77,11 +85,11 @@ Every top-level export in `infra`, with the line to open.
 | `index-scan.mjs` | `a` `b` | re-export |  | from `./x` |
 | `index-scan.mjs` | `*` | re-export |  | from `./x` |
 | `model-routing.mjs` | `ROUTING_POLICY` | const | :54 | @typedef {'low'\|'medium'\|'high'\|'xhigh'\|'max'} EffortLevel |
-| `model-routing.mjs` | `ADVISORY_SIGNALS` | const | :312 | The advisory hook only speaks up for jobs where the wrong choice is costly. |
-| `model-routing.mjs` | `CACHE_TTL_BY_EFFORT` | const | :351 | The TTL each effort level earns. |
-| `model-routing.mjs` | `cacheTtlFor` | const | :359 |  |
-| `model-routing.mjs` | `MODEL_ORDER` | const | :361 |  |
-| `model-routing.mjs` | `EFFORT_ORDER` | const | :362 |  |
+| `model-routing.mjs` | `ADVISORY_SIGNALS` | const | :348 | The advisory hook only speaks up for jobs where the wrong choice is costly. |
+| `model-routing.mjs` | `CACHE_TTL_BY_EFFORT` | const | :387 | The TTL each effort level earns. |
+| `model-routing.mjs` | `cacheTtlFor` | const | :395 |  |
+| `model-routing.mjs` | `MODEL_ORDER` | const | :397 |  |
+| `model-routing.mjs` | `EFFORT_ORDER` | const | :398 |  |
 | `render-harness.mjs` | `WIDTHS` | const | :59 | Law 4's own numbers, read from `CLAUDE.md` / `docs/design/layout-composition/02-layout.md`, NOT fro… |
 | `render-harness.mjs` | `spawnServer` | function | :100 | Spawn a long-running server process. |
 | `render-harness.mjs` | `login` | function | :148 | `POST /auth/login` against a running API. |

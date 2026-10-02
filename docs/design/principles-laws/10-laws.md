@@ -846,6 +846,25 @@ where it is the case.
 
 ---
 
+## Where the two reels' laws are built
+
+Two reels of 2026-10-02 ("Hierarchy", "Success is a system") arrived as seven new
+laws, `HIE-1` and `HIE-2` in chapter 02 and `SUC-1` to `SUC-5` in chapter 04, each
+standing on a law above. This table says which artifact makes each one true and
+what holds it, so a review opens the file rather than taking the claim.
+
+| Law | Where it is built | Held by |
+|---|---|---|
+| `HIE-1` One headline (on `TYP-4`) | `PageHeader` is the one title step on a page; `SuccessState` is `text-2xl` as an `h1` and `text-lg` as an `h2`, so a nested one never ties with the page's title | review (`/ux-review` item 3); a type step is not linted |
+| `HIE-2` Three stops (on `PER-9`, `COL-4`) | `FormStack`'s one filled button; `SuccessState` has exactly one `btn-primary` and its DOM order is its focus order (title, proof, primary, secondary, loop, back) | a one-off browser run, not in CI: Tab order and overflow at the seven widths, both themes; otherwise review |
+| `SUC-1` Specific | `SuccessState`'s `title` takes a node so a figure can settle in, and `detail` carries the proof; the adopters name the order number, the total and the date | `check-tells` `vague-success` holds a literal "Success", "Done" or "Saved" as a toast or a `SuccessState` title at 0; a title that is an expression is counted, not failed |
+| `SUC-2` Next step (on `ITG-1`) | `SuccessState`'s `primary` is required by type and by a runtime guard that renders nothing without a label and a destination | nothing automated: the web app has no component test harness, so the guard is stated in the specimen and checked by a one-off browser run, not by a test |
+| `SUC-3` Stakes | the three rows of `04-states.md`: inline or a toast of 4 000 ms (`useToast` default), `SuccessState`, `SuccessState` with a receipt. Five storefront screens and the admin CSV import moved to row 2 or 3 | review; which row a screen belongs in is a judgment no command makes |
+| `SUC-4` Open loop (on `COG-9`) | `SuccessState`'s `loop`: an ordered list of real states, one at most, with the state read by assistive technology beside the icon | review: whether the system can follow the thread is a fact about the data, not the component |
+| `SUC-5` Rare joy (on `COG-13`) | `celebrate` is off by default and no screen passes it; the burst is eight sparks on transform and opacity, and none under reduced motion | `lib/success-state.spec.ts` holds the burst's numbers; a one-off browser run counted 8 sparks once and none under reduced motion. The milestone record that would let a screen pass it does not exist: a separate work order |
+
+---
+
 ## What this chapter does not settle
 
 Five families are large enough to be their own chapters, because in this

@@ -239,7 +239,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminContactsImportPage` | default | :11 | Bulk customer onboarding (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.4) — a sp… |
+| `page.tsx` | `AdminContactsImportPage` | default | :12 | Bulk customer onboarding (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.4) — a sp… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/content`
 
@@ -389,7 +389,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `AdminExpensesImportPage` | default | :12 | Bulk expense onboarding (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.4) — a pap… |
+| `page.tsx` | `AdminExpensesImportPage` | default | :13 | Bulk expense onboarding (admin-platform/72-fragmented-tool-consolidation-import.md WO-72.4) — a pap… |
 
 ### `apps/web/src/app/(admin)/admin/(app)/finance/margins`
 
@@ -1174,7 +1174,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `NewReturnRequestPage` | default | :19 | WO-6.6 — the customer's own side of the return-item portal CLAUDE.md's own feature-scope example na… |
+| `page.tsx` | `NewReturnRequestPage` | default | :37 | WO-6.6 — the customer's own side of the return-item portal CLAUDE.md's own feature-scope example na… |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/reviews`
 
@@ -1216,7 +1216,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `OrderPage` | default | :34 | One order, for the customer. |
+| `page.tsx` | `OrderPage` | default | :50 | One order, for the customer. |
 
 ### `apps/web/src/app/(storefront)/[locale]/(dashboard)/orders/[number]/invoice`
 
@@ -1348,7 +1348,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `ResetPasswordPage` | default | :11 |  |
+| `page.tsx` | `ResetPasswordPage` | default | :12 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/returns`
 
@@ -1389,7 +1389,7 @@ Every top-level export in `web`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `page.tsx` | `UnsubscribePage` | default | :12 |  |
+| `page.tsx` | `UnsubscribePage` | default | :13 |  |
 
 ### `apps/web/src/app/(storefront)/[locale]/verify-email`
 
@@ -1425,7 +1425,7 @@ Every top-level export in `web`, with the line to open.
 | `bpmn-editor.tsx` | `BpmnEditor` | function | :46 | architecture-patterns/142-bpmn-visual-workflow-engine.md (WO-142.2) — a thin React wrapper mounting… |
 | `command-palette.tsx` | `CommandPalette` | function | :97 |  |
 | `cross-sell-manager.tsx` | `CrossSellManager` | function | :22 | WO-9.6 (09-ai-layer.md) — "always leave the manual override in place": a merchandiser's own picks (… |
-| `csv-import-card.tsx` | `CsvImportCard` | function | :31 | Shared upload/preview/commit card for the CSV importers (admin-platform/72-fragmented-tool-consolid… |
+| `csv-import-card.tsx` | `CsvImportCard` | function | :34 | Shared upload/preview/commit card for the CSV importers (admin-platform/72-fragmented-tool-consolid… |
 | `custom-field-form-section.tsx` | `CustomFieldFormSection` | function | :19 | architecture-patterns/105-metadata-driven-ui-rendering.md (WO-105.1) — the one piece of metadata-dr… |
 | `deployment-modules.tsx` | `EnabledModulesProvider` | const | :7 |  |
 | `deployment-modules.tsx` | `useEnabledModules` | function | :18 | Which API modules `GET /meta` reported for this deployment — the same value `AdminShell` already fe… |
@@ -1721,6 +1721,7 @@ Every top-level export in `web`, with the line to open.
 | `controls-specimens.tsx` | `FormRecipeSpecimen` | function | :23 | The form recipe (FRM-1 to FRM-6), live: labels above, example placeholders, 16 px between fields, 3… |
 | `controls-specimens.tsx` | `DangerSpecimens` | function | :110 | The danger controls (DNG-1 to DNG-6) in the states a person meets them in. |
 | `controls-specimens.tsx` | `CardRecipeSpecimen` | function | :199 | The product card recipe (CRD-1 to CRD-6), drawn from the same classes and the same `Price` the stor… |
+| `controls-specimens.tsx` | `SuccessSpecimens` | function | :270 | The success state (SUC-1 to SUC-5), live: the invoice case with its one open loop and its receipt,… |
 | `data-concepts.tsx` | `ColumnManagerSpecimen` | function | :255 | The grid and the panel that decides which columns it has. |
 | `data-concepts.tsx` | `RegionalPerformanceSpecimen` | function | :426 | Regional performance: three headline figures, then this period against the last with the table that… |
 | `data-concepts.tsx` | `ShareSpecimen` | function | :482 | Share of a whole, twice: money (a budget) and counts (orders by channel). |
@@ -1871,6 +1872,7 @@ Every top-level export in `web`, with the line to open.
 | `index.ts` | `Dialog` | re-export |  | from `./dialog` |
 | `index.ts` | `ConfirmDialog` | re-export |  | from `./confirm-dialog` |
 | `index.ts` | `Loading` | re-export |  | from `./loading` |
+| `index.ts` | `SuccessState` `type SuccessAction` `type SuccessStep` `type SuccessStateProps` | re-export |  | from `./success-state` |
 | `index.ts` | `ThemeToggle` `type ThemeToggleLabels` | re-export |  | from `./theme-toggle` |
 | `index.ts` | `ListPageSkeleton` | re-export |  | from `./list-page-skeleton` |
 | `index.ts` | `Skeleton` `SkeletonText` `SkeletonRegion` `type SkeletonShape` | re-export |  | from `./skeleton` |
@@ -1928,6 +1930,11 @@ Every top-level export in `web`, with the line to open.
 | `skeleton.tsx` | `Skeleton` | function | :28 |  |
 | `skeleton.tsx` | `SkeletonText` | function | :33 | `lines` rows of text; the last is shorter, the way a paragraph ends. |
 | `skeleton.tsx` | `SkeletonRegion` | function | :44 | Wraps a skeleton composition: one polite announcement, the boxes hidden from assistive tech. |
+| `success-state.tsx` | `SuccessAction` | type | :17 | One action on a success state. |
+| `success-state.tsx` | `SuccessLink` | type | :22 | The link the actions render as. |
+| `success-state.tsx` | `SuccessStep` | interface | :30 | One step of the standing thread (SUC-4) and where it stands. |
+| `success-state.tsx` | `SuccessStateProps` | interface | :35 |  |
+| `success-state.tsx` | `SuccessState` | function | :111 | The result of one action that mattered (SUC-1..SUC-5, `docs/design/components-states/04-states.md`). |
 | `swap-text.tsx` | `SwapText` | function | :22 | A short value that changes in place: the old text leaves, the new text arrives. |
 | `switch.tsx` | `Switch` | function | :20 | An on/off setting that takes effect now. |
 | `tabs.tsx` | `TabItem` | interface | :6 |  |
@@ -2145,6 +2152,13 @@ Every top-level export in `web`, with the line to open.
 | `popover-position.ts` | `placePopover` | function | :75 | Parameter: least distance to the viewport edge. |
 | `rag-corpus-access.ts` | `visibleCorpora` | function | :21 | Filters a list of corpus options down to the ones `can` may reach — the same convention `reports/pa… |
 | `reveal.ts` | `armReveal` | function | :22 | Hides a group of elements and reveals each as it scrolls into view, staggered within the batch that… |
+| `success-state.ts` | `JourneyState` | type | :13 | One step of a standing thread (SUC-4): finished, the one the thread is on, or still ahead. |
+| `success-state.ts` | `journeyStates` | function | :24 | The state of each of `total` steps when the thread has `reached` the step at that zero-based index… |
+| `success-state.ts` | `BURST_SPARKS` | const | :36 | How many sparks one celebration throws. |
+| `success-state.ts` | `SparkTravel` | interface | :39 | A spark's resting offset from the badge's centre, in px, at its start and at its furthest. |
+| `success-state.ts` | `burstTravel` | function | :55 | Where each of `count` sparks starts and ends, evenly round the badge with the first straight up. |
+| `success-state.ts` | `sparkKeyframes` | function | :75 | The Web Animations keyframes for one spark: out along its ray while it shrinks to `scale.pop` and f… |
+| `success-state.ts` | `BURST_TIMING` | const | :87 | How the burst is timed. |
 | `upload-client.ts` | `UploadRequest` | interface | :33 | The upload transport: one multipart POST that can say how far it has got. |
 | `upload-client.ts` | `NETWORK_MESSAGE` | const | :64 | What a person is told when the connection fails before any answer: what happened and what to do (FL… |
 | `upload-client.ts` | `isUploadAbort` | function | :72 | Whether `error` is a cancel, which is an outcome and never a failure. |

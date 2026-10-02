@@ -28,15 +28,15 @@ binding and load automatically when you open a component:
 |---|---|---|---|---|
 | [Principles](../../design/principles-laws/00-principles.md) | How a design decision gets made when no rule covers the case. | binding by review. | — | 83 lines |
 | [Foundations](../../design/foundations/01-foundations.md) | The token layer. Every visual value in the product resolves to something here, | built, in two themes. | — | 322 lines |
-| [Layout and responsive](../../design/layout-composition/02-layout.md) | How a page is arranged, and how that arrangement survives seven screen widths. | breakpoints are built (`apps/web/tailwind.config.ts`). | — | 130 lines |
+| [Layout and responsive](../../design/layout-composition/02-layout.md) | How a page is arranged, and how that arrangement survives seven screen widths. | breakpoints are built (`apps/web/tailwind.config.ts`). | 2 | 167 lines |
 | [Components](../../design/components-states/03-components.md) | The ladder from a token to a page, and the rule that keeps it from growing | primitives are built and enforced — `.claude/rules/ui.md` is | 30 | 387 lines |
-| [States and behaviour](../../design/components-states/04-states.md) | What every element can be, and what each state promises the user. | partly built. | — | 152 lines |
+| [States and behaviour](../../design/components-states/04-states.md) | What every element can be, and what each state promises the user. | partly built. | 5 | 226 lines |
 | [Motion](../../design/motion/05-motion.md) | Motion exists to make the system easier to understand. Nothing else justifies | built for the web app. | — | 339 lines |
 | [Content](../../design/content/06-content.md) | How the product speaks. Copy is interface, not decoration applied afterwards. | unbuilt as a system. | — | 121 lines |
 | [Accessibility and internationalisation](../../design/accessibility/07-accessibility.md) | How broadly the product can actually be used. | still the largest gap, but no longer unverified. | — | 157 lines |
 | [Governance](../../design/process-governance/08-governance.md) | Who may add to this system, how a thing gets named, and how something leaves | partly enforced. | — | 145 lines |
 | [Quality gates](../../design/process-governance/09-quality.md) | What has to be true before a screen ships, and — stated honestly — which of it | the engineering gates are real and green; | — | 176 lines |
-| [The law catalogue](../../design/principles-laws/10-laws.md) | Every borrowed law this system rests on, with a stable ID, the source it comes | binding as rulings, unenforced as code. | 87 | 884 lines |
+| [The law catalogue](../../design/principles-laws/10-laws.md) | Every borrowed law this system rests on, with a stable ID, the source it comes | binding as rulings, unenforced as code. | 87 | 903 lines |
 | [Workflow](../../design/process-governance/11-workflow.md) | Processes with a hundred steps, several actors, days of elapsed time, and a | unbuilt as a system. | 15 | 260 lines |
 | [Permissions](../../design/process-governance/12-permissions.md) | Designing a screen when no two people who open it see the same thing. | partly built, and the gap is structural. | 12 | 214 lines |
 | [Composition](../../design/layout-composition/13-composition.md) | One codebase that ships as an online shop, or as a manufacturing group's | architecturally enforced, visually unenforced. | 10 | 197 lines |
@@ -46,7 +46,7 @@ binding and load automatically when you open a component:
 
 ## The laws
 
-**180** numbered laws across **20** families. Each has a stable ID so it can be
+**187** numbered laws across **22** families. Each has a stable ID so it can be
 cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 
 | Family | Laws | IDs |
@@ -61,6 +61,7 @@ cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 | `FRM` | 6 | `FRM-1` `FRM-2` `FRM-3` `FRM-4` `FRM-5` `FRM-6` |
 | `GLO` | 8 | `GLO-1` `GLO-2` `GLO-3` `GLO-4` `GLO-5` `GLO-6` `GLO-7` `GLO-8` |
 | `HEU` | 10 | `HEU-1` `HEU-2` `HEU-3` `HEU-4` `HEU-5` `HEU-6` `HEU-7` `HEU-8` `HEU-9` `HEU-10` |
+| `HIE` | 2 | `HIE-1` `HIE-2` |
 | `ITG` | 14 | `ITG-1` `ITG-2` `ITG-3` `ITG-4` `ITG-5` `ITG-6` `ITG-7` `ITG-8` `ITG-9` `ITG-10` `ITG-11` `ITG-12` `ITG-13` `ITG-14` |
 | `MNU` | 6 | `MNU-1` `MNU-2` `MNU-3` `MNU-4` `MNU-5` `MNU-6` |
 | `MOD` | 10 | `MOD-1` `MOD-2` `MOD-3` `MOD-4` `MOD-5` `MOD-6` `MOD-7` `MOD-8` `MOD-9` `MOD-10` |
@@ -69,6 +70,7 @@ cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 | `PER` | 9 | `PER-1` `PER-2` `PER-3` `PER-4` `PER-5` `PER-6` `PER-7` `PER-8` `PER-9` |
 | `PRM` | 12 | `PRM-1` `PRM-2` `PRM-3` `PRM-4` `PRM-5` `PRM-6` `PRM-7` `PRM-8` `PRM-9` `PRM-10` `PRM-11` `PRM-12` |
 | `SPA` | 10 | `SPA-1` `SPA-2` `SPA-3` `SPA-4` `SPA-5` `SPA-5a` `SPA-6` `SPA-7` `SPA-8` `SPA-9` |
+| `SUC` | 5 | `SUC-1` `SUC-2` `SUC-3` `SUC-4` `SUC-5` |
 | `TYP` | 8 | `TYP-1` `TYP-2` `TYP-3` `TYP-4` `TYP-5` `TYP-6` `TYP-7` `TYP-8` |
 | `UPL` | 6 | `UPL-1` `UPL-2` `UPL-3` `UPL-4` `UPL-5` `UPL-6` |
 
@@ -78,6 +80,8 @@ cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 
 | ID | Law | Where |
 |---|---|---|
+| `HIE-1` | One headline | [layout-composition/02-layout.md:29](../../design/layout-composition/02-layout.md#hie-1-one-headline) |
+| `HIE-2` | Three stops | [layout-composition/02-layout.md:43](../../design/layout-composition/02-layout.md#hie-2-three-stops) |
 | `UPL-1` | One target, three ways in | [components-states/03-components.md:142](../../design/components-states/03-components.md#upl-1-one-target-three-ways-in) |
 | `UPL-2` | Honest progress | [components-states/03-components.md:151](../../design/components-states/03-components.md#upl-2-honest-progress) |
 | `UPL-3` | Check before sending | [components-states/03-components.md:161](../../design/components-states/03-components.md#upl-3-check-before-sending) |
@@ -108,6 +112,11 @@ cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 | `CRD-4` | Depth | [components-states/03-components.md:342](../../design/components-states/03-components.md#crd-4-depth) |
 | `CRD-5` | Corners curve together | [components-states/03-components.md:349](../../design/components-states/03-components.md#crd-5-corners-curve-together) |
 | `CRD-6` | Motion | [components-states/03-components.md:358](../../design/components-states/03-components.md#crd-6-motion) |
+| `SUC-1` | Specific | [components-states/04-states.md:146](../../design/components-states/04-states.md#suc-1-specific) |
+| `SUC-2` | Next step | [components-states/04-states.md:158](../../design/components-states/04-states.md#suc-2-next-step) |
+| `SUC-3` | Stakes | [components-states/04-states.md:169](../../design/components-states/04-states.md#suc-3-stakes) |
+| `SUC-4` | Open loop | [components-states/04-states.md:184](../../design/components-states/04-states.md#suc-4-open-loop) |
+| `SUC-5` | Rare joy | [components-states/04-states.md:196](../../design/components-states/04-states.md#suc-5-rare-joy) |
 | `PER-1` | Proximity | [principles-laws/10-laws.md:64](../../design/principles-laws/10-laws.md#per-1-proximity) |
 | `PER-2` | Common region | [principles-laws/10-laws.md:73](../../design/principles-laws/10-laws.md#per-2-common-region) |
 | `PER-3` | Similarity | [principles-laws/10-laws.md:82](../../design/principles-laws/10-laws.md#per-3-similarity) |
@@ -269,14 +278,14 @@ Counted at index time by `scripts/build-index.mjs`, not typed by hand.
 | Signal | Today | Note |
 |---|---|---|
 | Token files | 11 (648 lines) | Token groups that exist at all — see the table below |
-| Primitives | 41 | `apps/web/src/components/ui` — the ladder's second rung |
+| Primitives | 42 | `apps/web/src/components/ui` — the ladder's second rung |
 | `framer-motion` importers | 1 | `apps/web/src/components/storefront/animated-section.tsx` |
 | CSS `transition` | 19 | declared transitions across every stylesheet |
-| Tailwind `transition-*` classes | 131 | the actual motion surface today — utility classes, not a token |
+| Tailwind `transition-*` classes | 125 | the actual motion surface today — utility classes, not a token |
 | CSS `@keyframes` | 18 | named animations |
 | `prefers-reduced-motion` blocks | 2 | chapter 05 and 07 both require this on every motion |
-| `aria-*` attributes | 482 | written by hand; **no accessibility lint runs** |
-| `role=` attributes | 367 |  |
+| `aria-*` attributes | 486 | written by hand; **no accessibility lint runs** |
+| `role=` attributes | 368 |  |
 | RTL / `dir` references | 62 | Urdu ships; chapter 07 says this is scattered, not systematic |
 | Inline `style={{` | 27 | CLAUDE.md lists the legitimate exceptions — data-driven widths and colours, and the two pre-stylesheet pages |
 
@@ -324,16 +333,17 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - Theming  <sub>:225</sub>
 - Where tokens live  <sub>:308</sub>
 
-### [`docs/design/layout-composition/02-layout.md`](../../design/layout-composition/02-layout.md)  <sub>130 lines</sub>
+### [`docs/design/layout-composition/02-layout.md`](../../design/layout-composition/02-layout.md)  <sub>167 lines</sub>
 
 - The page skeleton  <sub>:8</sub>
-- Grid  <sub>:21</sub>
-- Density  <sub>:35</sub>
-- The seven screens  <sub>:50</sub>
-- Reflow rules  <sub>:64</sub>
-- Multi-surface parity  <sub>:88</sub>
-- The POS is a different animal  <sub>:101</sub>
-- Verifying  <sub>:114</sub>
+- Hierarchy: where the eye goes  <sub>:21</sub>
+- Grid  <sub>:58</sub>
+- Density  <sub>:72</sub>
+- The seven screens  <sub>:87</sub>
+- Reflow rules  <sub>:101</sub>
+- Multi-surface parity  <sub>:125</sub>
+- The POS is a different animal  <sub>:138</sub>
+- Verifying  <sub>:151</sub>
 
 ### [`docs/design/components-states/03-components.md`](../../design/components-states/03-components.md)  <sub>387 lines</sub>
 
@@ -346,7 +356,7 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - Component contract  <sub>:366</sub>
 - What never gets hand-rolled  <sub>:381</sub>
 
-### [`docs/design/components-states/04-states.md`](../../design/components-states/04-states.md)  <sub>152 lines</sub>
+### [`docs/design/components-states/04-states.md`](../../design/components-states/04-states.md)  <sub>226 lines</sub>
 
 - The rule  <sub>:8</sub>
 - The state matrix  <sub>:14</sub>
@@ -358,7 +368,8 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - Confirmation and destructive actions  <sub>:90</sub>
 - Permission states  <sub>:116</sub>
 - Notifications and system feedback  <sub>:130</sub>
-- Offline and degraded — the POS case  <sub>:138</sub>
+- The success state  <sub>:138</sub>
+- Offline and degraded — the POS case  <sub>:212</sub>
 
 ### [`docs/design/motion/05-motion.md`](../../design/motion/05-motion.md)  <sub>339 lines</sub>
 
@@ -421,7 +432,7 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - The honest gap, ranked  <sub>:142</sub>
 - Definition of done, for a screen  <sub>:165</sub>
 
-### [`docs/design/principles-laws/10-laws.md`](../../design/principles-laws/10-laws.md)  <sub>884 lines</sub>
+### [`docs/design/principles-laws/10-laws.md`](../../design/principles-laws/10-laws.md)  <sub>903 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
@@ -435,8 +446,9 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - ACC · Accessibility  <sub>:698</sub>
 - GLO · Globalization  <sub>:760</sub>
 - Where the card-deck laws are built  <sub>:823</sub>
-- What this chapter does not settle  <sub>:849</sub>
-- Sources  <sub>:864</sub>
+- Where the two reels' laws are built  <sub>:849</sub>
+- What this chapter does not settle  <sub>:868</sub>
+- Sources  <sub>:883</sub>
 
 ### [`docs/design/process-governance/11-workflow.md`](../../design/process-governance/11-workflow.md)  <sub>260 lines</sub>
 

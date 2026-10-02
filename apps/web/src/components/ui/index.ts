@@ -27,6 +27,7 @@ export { Button, type ButtonProps } from './button';
 export { Dialog } from './dialog';
 export { ConfirmDialog } from './confirm-dialog';
 export { Loading } from './loading';
+export { SuccessState, type SuccessAction, type SuccessStep, type SuccessStateProps } from './success-state';
 export { ThemeToggle, type ThemeToggleLabels } from './theme-toggle';
 export { ListPageSkeleton } from './list-page-skeleton';
 export { Skeleton, SkeletonText, SkeletonRegion, type SkeletonShape } from './skeleton';

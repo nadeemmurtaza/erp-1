@@ -1,7 +1,7 @@
 {
   "note": "Freshness fingerprint for docs/index/. Generated; do not edit.",
   "generator": "scripts/build-index.mjs",
-  "contentHash": "4f627f4c25551106",
+  "contentHash": "2287de8c29b3b46f",
   "pages": [
     ".claude/agents/architect.md",
     ".claude/agents/debug.md",

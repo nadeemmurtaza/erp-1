@@ -1397,7 +1397,7 @@
     "web": {
       "files": 541,
       "lines": 97703,
-      "bytes": 3599072,
+      "bytes": 3599292,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -1409,7 +1409,7 @@
     "packages": {
       "files": 114,
       "lines": 13176,
-      "bytes": 493993,
+      "bytes": 494032,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -55259,7 +55259,7 @@
       "pkg": "@newax/desktop-runtime",
       "file": "packages/desktop-runtime/package.json",
       "name": "test",
-      "cmd": "jest --passWithNoTests"
+      "cmd": "NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests"
     },
     {
       "pkg": "@newax/desktop-runtime",
@@ -85024,7 +85024,7 @@
       "area": "web",
       "kind": "page",
       "lines": 445,
-      "bytes": 15795,
+      "bytes": 15815,
       "doc": "",
       "symbols": [
         {
@@ -85444,7 +85444,7 @@
       "area": "web",
       "kind": "page",
       "lines": 447,
-      "bytes": 15680,
+      "bytes": 15690,
       "doc": "",
       "symbols": [
         {
@@ -85474,7 +85474,7 @@
       "area": "web",
       "kind": "page",
       "lines": 217,
-      "bytes": 7987,
+      "bytes": 8007,
       "doc": "",
       "symbols": [
         {
@@ -85549,7 +85549,7 @@
       "area": "web",
       "kind": "page",
       "lines": 121,
-      "bytes": 3972,
+      "bytes": 3992,
       "doc": "",
       "symbols": [
         {
@@ -85774,7 +85774,7 @@
       "area": "web",
       "kind": "page",
       "lines": 324,
-      "bytes": 10684,
+      "bytes": 10694,
       "doc": "",
       "symbols": [
         {
@@ -86494,7 +86494,7 @@
       "area": "web",
       "kind": "page",
       "lines": 214,
-      "bytes": 10110,
+      "bytes": 10132,
       "doc": "",
       "symbols": [
         {
@@ -86614,7 +86614,7 @@
       "area": "web",
       "kind": "page",
       "lines": 136,
-      "bytes": 4315,
+      "bytes": 4341,
       "doc": "",
       "symbols": [
         {
@@ -86644,7 +86644,7 @@
       "area": "web",
       "kind": "page",
       "lines": 168,
-      "bytes": 6947,
+      "bytes": 6957,
       "doc": "",
       "symbols": [
         {
@@ -86734,7 +86734,7 @@
       "area": "web",
       "kind": "page",
       "lines": 120,
-      "bytes": 4113,
+      "bytes": 4123,
       "doc": "",
       "symbols": [
         {
@@ -88417,7 +88417,7 @@
       "area": "web",
       "kind": "component",
       "lines": 488,
-      "bytes": 17431,
+      "bytes": 17483,
       "doc": "",
       "symbols": [
         {
@@ -90843,7 +90843,7 @@
       "area": "web",
       "kind": "component",
       "lines": 251,
-      "bytes": 8813,
+      "bytes": 8833,
       "doc": "",
       "symbols": [
         {
@@ -100061,7 +100061,7 @@
       "area": "packages",
       "kind": "json",
       "lines": 44,
-      "bytes": 1067,
+      "bytes": 1106,
       "doc": "",
       "symbols": []
     },

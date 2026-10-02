@@ -52,7 +52,7 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `dev` | `tsc -p tsconfig.json --watch` |
 | `typecheck` | `tsc -p tsconfig.json --noEmit` |
 | `lint` | `eslint src` |
-| `test` | `jest --passWithNoTests` |
+| `test` | `NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests` |
 | `test:integration` | `NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests` |
 
 ### `@newax/mobile`  <sub>`apps/mobile/package.json`</sub>

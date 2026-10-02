@@ -599,7 +599,7 @@ may not grow — and each has a `--self-test` that proves its own maths:
 pnpm check:contrast    # COL-3 / ITG-11 — WCAG floors, palette read from brand.ts
 pnpm check:links       # ITG-2/3/5 — links resolve, images exist, no orphan screen
 pnpm check:tells       # the machine-made look: gradients, glass, loud motion, heavy shadows,
-                       # transition-all, emoji icons, hype copy, "Success!" with nothing else
+                       # round buttons, transition-all, emoji icons, hype copy, "Success!" with nothing else
 pnpm check:clipboard   # CPY-3/5 — nothing touches the clipboard except lib/copy.ts (CopyButton)
 ```
 

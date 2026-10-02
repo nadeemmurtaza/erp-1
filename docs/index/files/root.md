@@ -71,18 +71,18 @@ All 218 tracked files in `repository root files`, by directory.
 | `database.md` | doc | 19 |  |
 | `decisions.md` | doc | 26 |  |
 | `dependencies.md` | doc | 23 |  |
-| `design.md` | doc | 165 |  |
+| `design.md` | doc | 169 |  |
 | `performance.md` | doc | 42 |  |
 | `security.md` | doc | 49 |  |
 | `services.md` | doc | 49 |  |
 | `testing.md` | doc | 20 |  |
-| `ui.md` | doc | 193 |  |
+| `ui.md` | doc | 198 |  |
 
 ### `.claude/skills/restyle` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `SKILL.md` | doc | 88 |  |
+| `SKILL.md` | doc | 89 |  |
 
 ### `.claude/skills/ux-audit` (1)
 

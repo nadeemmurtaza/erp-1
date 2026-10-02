@@ -41,7 +41,7 @@ export function LocaleSwitcher() {
       <label className="sr-only">{t('language')}</label>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-normal"
+        className="flex h-9 w-9 items-center justify-center rounded text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-normal"
         aria-label={t('language')}
         disabled={isPending}
       >

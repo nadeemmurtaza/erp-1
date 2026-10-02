@@ -199,7 +199,7 @@ function AccessSheet({
             type="button"
             aria-label="Close"
             onClick={requestClose}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900 fold:h-9 fold:w-9"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900 fold:h-9 fold:w-9"
           >
             <X aria-hidden="true" className="h-[18px] w-[18px]" />
           </button>

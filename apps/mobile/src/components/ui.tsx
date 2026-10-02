@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   chip: {
     paddingHorizontal: theme.space(3),
     paddingVertical: theme.space(2),
-    borderRadius: theme.radius.pill,
+    borderRadius: theme.radius.sm,
     backgroundColor: theme.color.sandDeep,
   },
   chipSelected: { backgroundColor: theme.color.brand },

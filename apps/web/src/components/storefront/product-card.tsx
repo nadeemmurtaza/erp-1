@@ -166,7 +166,7 @@ export function ProductCard({
               <button
                 type="button"
                 onClick={onQuickView}
-                className="group/btn relative flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-neutral-900 backdrop-blur-sm transition-transform duration-normal hover:scale-110"
+                className="group/btn relative flex h-12 w-12 items-center justify-center rounded bg-white/90 text-neutral-900 backdrop-blur-sm transition-transform duration-normal hover:scale-110"
                 aria-label={t('quickView')}
               >
                 <svg

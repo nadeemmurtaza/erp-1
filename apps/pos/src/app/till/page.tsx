@@ -416,7 +416,7 @@ export default function TillPage() {
         <div className="flex items-center gap-2">
           {pendingCount > 0 && (
             <button
-              className="rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800"
+              className="rounded bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800"
               onClick={retrySync}
               disabled={busy}
             >
@@ -425,7 +425,7 @@ export default function TillPage() {
           )}
           {parkedSales.length > 0 && (
             <button
-              className="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent-hover"
+              className="rounded bg-accent/10 px-3 py-1 text-sm font-medium text-accent-hover"
               onClick={() => setShowParked((s) => !s)}
             >
               {parkedSales.length} parked

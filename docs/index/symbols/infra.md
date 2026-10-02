@@ -37,14 +37,14 @@ Every top-level export in `infra`, with the line to open.
 | `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :71 |  |
 | `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :78 |  |
 | `check-rebrand.mjs` | `scan` | function | :160 | Every violation on one file's contents. |
-| `check-tells.mjs` | `FLAG_FILE` | const | :59 | Country flags are the one pictograph that is data, not decoration: a country or locale picker shows… |
-| `check-tells.mjs` | `TELLS` | const | :69 | The tells. |
-| `check-tells.mjs` | `BASELINE` | const | :221 | The debt on the day this was written, per tell and per file: a count of LINES carrying the tell. |
-| `check-tells.mjs` | `blankComments` | function | :279 | Blank comments to spaces, keeping every newline, so line numbers still point at the source. |
-| `check-tells.mjs` | `findTell` | function | :287 | The line numbers (one per line, however many times it matches) where `tell` fires in `source`. |
-| `check-tells.mjs` | `countDynamic` | function | :298 | How many times `tell.dynamic` (the unreadable twin of a literal) fires; counted, never failed. |
-| `check-tells.mjs` | `compare` | function | :304 | A tell is over when a file has more hit lines than its baseline allows (an absent entry allows none… |
-| `check-tells.mjs` | `tellsInFile` | function | :323 | Every tell in ONE file, with its lines: what `/restyle` reads before it edits, because the whole-re… |
+| `check-tells.mjs` | `FLAG_FILE` | const | :63 | Country flags are the one pictograph that is data, not decoration: a country or locale picker shows… |
+| `check-tells.mjs` | `TELLS` | const | :73 | The tells. |
+| `check-tells.mjs` | `BASELINE` | const | :264 | The debt on the day this was written, per tell and per file: a count of LINES carrying the tell. |
+| `check-tells.mjs` | `blankComments` | function | :328 | Blank comments to spaces, keeping every newline, so line numbers still point at the source. |
+| `check-tells.mjs` | `findTell` | function | :336 | The line numbers (one per line, however many times it matches) where `tell` fires in `source`. |
+| `check-tells.mjs` | `countDynamic` | function | :347 | How many times `tell.dynamic` (the unreadable twin of a literal) fires; counted, never failed. |
+| `check-tells.mjs` | `compare` | function | :353 | A tell is over when a file has more hit lines than its baseline allows (an absent entry allows none… |
+| `check-tells.mjs` | `tellsInFile` | function | :372 | Every tell in ONE file, with its lines: what `/restyle` reads before it edits, because the whole-re… |
 
 ### `scripts/lib`
 

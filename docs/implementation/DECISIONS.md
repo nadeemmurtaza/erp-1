@@ -11415,3 +11415,73 @@ past a 280 px viewport (`scrollWidth` 305) on the order page with and without an
 row, so a storefront page scrolls sideways at the narrowest width. It predates this
 change and was left alone. `pnpm check:overflow` is the check that would report it, and
 it has not been able to run since CI stops at Apply migrations.
+
+
+### Addendum — 2026-10-02 (tenth): a button is never round
+
+**Requirement.** The owner, 2026-10-02: "Never use rounded buttons." **Reason.** `PER-3`
+already said a pill is a status and nothing else may be one, but nothing checked buttons
+and `rounded-full` was deliberately left alive in `tailwind.config.ts` for circles, so
+the storefront kept hand-rolled circular icon buttons beside `.btn` and `.icon-btn`,
+which already take the house corner. **Outcome.** One button shape, written into the law
+that was already there and held by a lint. **Verification.** Below.
+
+**What was built.**
+- `PER-3` gained the sentence: a button, link-as-button or icon button wears the house
+  corner (`.btn`, `.icon-btn`, `rounded`, which resolves to `--radius`); circles are for
+  avatars, dots, spinners and count badges. No new law ID, so the 192 stays 192.
+- `check-tells` gained the tell `round-button` (web and POS, `.tsx` and `.css`): a
+  `rounded-full` or an arbitrary 999px or 50% radius in the attributes of a `<button>`,
+  `<a>`, `<Link>`, `<summary>` or `…Button` component, or in a `.btn…` / `.…-button` rule.
+  It walks back from the class to its tag, so a round dot inside a button is not a hit.
+  113 self-test cases (109 before).
+- 18 lines changed from `rounded-full` to `rounded`: 16 in the web app (dialog close,
+  locale switcher, both mobile-menu buttons, header search, bottom-nav item, grid toggle,
+  cart badge link, product quick view, three quantity and remove buttons in the cart, the
+  product page's two steppers and colour swatches, the design-system dialog specimen) and
+  2 in the POS till (the "pending, retry" and "parked" buttons, which were pills). On
+  mobile, `theme.radius.pill` became `theme.radius.sm` on the two pressable chips
+  (`ui.tsx`, the catalogue filter). Sizes, hover and transitions are untouched.
+
+**Parameters.** No new number. The corner is the existing `--radius`, 2 px (`sharp` in
+`THEME_RADII`). The one baseline entry is `switch.tsx`: 1, a ratchet that may shrink and
+may not grow, enforced by `check-tells` in `pnpm lint`; a fifth hand-rolled circle fails
+the build with `file:line`.
+
+**Decisions made without the owner, all reversible.**
+- "Rounded" is read as a circle or a pill, not the 2 px house corner the owner kept on
+  2026-10-02.
+- `Switch` keeps its pill track and round thumb: it is `role="switch"`, an input holding a
+  state, and the pill is what makes a switch read as one. It is the single baseline entry.
+- Product colour swatches are `<button>`s, so they became squares with the house corner.
+- Count badges, avatars, dots, spinners, progress bars and wizard step dots stay circles:
+  none is a button.
+
+**Failure modes.** The lint misses a class assembled from parts, one held in a constant
+and passed in, a JSX element passed as a prop ahead of the class (`icon={<X />}`), and
+React Native styles, where the two chips were fixed by hand and `theme.radius.pill` is
+still used by the wizard dot and the stage-rail bar, which are not buttons.
+
+**Verification.** Run on the final tree. `pnpm lint` exit 0 (`round-button` 1 found, 1 in
+the baseline; 118 law citations resolve to 192 laws); `pnpm typecheck` exit 0 (10 of 10
+tasks); mobile `tsc --noEmit` exit 0; web 542 tests; `node scripts/check-tells.mjs
+--self-test` 113 cases; the four `CLAUDE.md` greps 27, 6, 6, 0, equal to `HEAD`. Before the
+change the tell found 19 lines (18 plus the switch). In Chromium on the production build
+at 380 and 1280 px: 416 buttons and links on the storefront home, cart and shop pages and
+the design-system page paint corners of 0, 2 and 3 px only, none round; the 11 switches
+on the design-system page are still pills; an injected `rounded-full` button is detected
+and an injected `rounded` one is not. **Not verified.** The cart steppers and remove
+button, the product quick view, the product-page steppers and swatches, the dialog close
+button and the POS till buttons were not rendered (they need cart or product data, an
+opened dialog, or the POS app), so those rest on the lint, typecheck and the one-line
+diff; the two mobile chips were not rendered either.
+
+**Scope lenses.** The actor through the money lenses, the scale lenses and the afterlife
+lenses: n/a, no actor, row, permission key, write, number or document is created; the
+diff changes a corner class on 20 existing controls. Reachable: every changed control is
+where it was; `round-button` runs in `pnpm lint`. No new permission key.
+
+**Separable work orders, named and not built.**
+- *Unify the hand-rolled icon buttons on `.icon-btn`.* The 16 web sites keep their own
+  sizes and hovers; only the corner changed.
+- *A React Native check* for `theme.radius.pill` on a pressable.

@@ -36,7 +36,7 @@ binding and load automatically when you open a component:
 | [Accessibility and internationalisation](../../design/accessibility/07-accessibility.md) | How broadly the product can actually be used. | still the largest gap, but no longer unverified. | — | 157 lines |
 | [Governance](../../design/process-governance/08-governance.md) | Who may add to this system, how a thing gets named, and how something leaves | partly enforced. | — | 145 lines |
 | [Quality gates](../../design/process-governance/09-quality.md) | What has to be true before a screen ships, and — stated honestly — which of it | the engineering gates are real and green; | — | 176 lines |
-| [The law catalogue](../../design/principles-laws/10-laws.md) | Every borrowed law this system rests on, with a stable ID, the source it comes | binding as rulings, unenforced as code. | 87 | 920 lines |
+| [The law catalogue](../../design/principles-laws/10-laws.md) | Every borrowed law this system rests on, with a stable ID, the source it comes | binding as rulings, unenforced as code. | 87 | 924 lines |
 | [Workflow](../../design/process-governance/11-workflow.md) | Processes with a hundred steps, several actors, days of elapsed time, and a | unbuilt as a system. | 15 | 260 lines |
 | [Permissions](../../design/process-governance/12-permissions.md) | Designing a screen when no two people who open it see the same thing. | partly built, and the gap is structural. | 12 | 214 lines |
 | [Composition](../../design/layout-composition/13-composition.md) | One codebase that ships as an online shop, or as a manufacturing group's | architecturally enforced, visually unenforced. | 10 | 197 lines |
@@ -126,90 +126,90 @@ cited in a review, a commit or a PR. `pnpm idx law <id>` prints one.
 | `PER-1` | Proximity | [principles-laws/10-laws.md:64](../../design/principles-laws/10-laws.md#per-1-proximity) |
 | `PER-2` | Common region | [principles-laws/10-laws.md:73](../../design/principles-laws/10-laws.md#per-2-common-region) |
 | `PER-3` | Similarity | [principles-laws/10-laws.md:82](../../design/principles-laws/10-laws.md#per-3-similarity) |
-| `PER-4` | Continuity | [principles-laws/10-laws.md:92](../../design/principles-laws/10-laws.md#per-4-continuity) |
-| `PER-5` | Closure | [principles-laws/10-laws.md:101](../../design/principles-laws/10-laws.md#per-5-closure) |
-| `PER-6` | Figure / ground | [principles-laws/10-laws.md:109](../../design/principles-laws/10-laws.md#per-6-figure-ground) |
-| `PER-7` | Uniform connectedness | [principles-laws/10-laws.md:119](../../design/principles-laws/10-laws.md#per-7-uniform-connectedness) |
-| `PER-8` | Prägnanz (simplicity) | [principles-laws/10-laws.md:129](../../design/principles-laws/10-laws.md#per-8-prgnanz-simplicity) |
-| `PER-9` | Focal point | [principles-laws/10-laws.md:139](../../design/principles-laws/10-laws.md#per-9-focal-point) |
-| `COG-1` | Hick's law | [principles-laws/10-laws.md:152](../../design/principles-laws/10-laws.md#cog-1-hicks-law) |
-| `COG-2` | Miller's law | [principles-laws/10-laws.md:162](../../design/principles-laws/10-laws.md#cog-2-millers-law) |
-| `COG-3` | Chunking | [principles-laws/10-laws.md:176](../../design/principles-laws/10-laws.md#cog-3-chunking) |
-| `COG-4` | Cognitive load — intrinsic, extraneous, germane | [principles-laws/10-laws.md:186](../../design/principles-laws/10-laws.md#cog-4-cognitive-load-intrinsic-extraneous-germane) |
-| `COG-5` | Progressive disclosure | [principles-laws/10-laws.md:197](../../design/principles-laws/10-laws.md#cog-5-progressive-disclosure) |
-| `COG-6` | Recognition over recall | [principles-laws/10-laws.md:205](../../design/principles-laws/10-laws.md#cog-6-recognition-over-recall) |
-| `COG-7` | Jakob's law | [principles-laws/10-laws.md:214](../../design/principles-laws/10-laws.md#cog-7-jakobs-law) |
-| `COG-8` | Tesler's law (conservation of complexity) | [principles-laws/10-laws.md:224](../../design/principles-laws/10-laws.md#cog-8-teslers-law-conservation-of-complexity) |
-| `COG-9` | Zeigarnik effect | [principles-laws/10-laws.md:234](../../design/principles-laws/10-laws.md#cog-9-zeigarnik-effect) |
-| `COG-10` | Goal-gradient effect | [principles-laws/10-laws.md:244](../../design/principles-laws/10-laws.md#cog-10-goal-gradient-effect) |
-| `COG-11` | Serial position effect | [principles-laws/10-laws.md:254](../../design/principles-laws/10-laws.md#cog-11-serial-position-effect) |
-| `COG-12` | Von Restorff (isolation) effect | [principles-laws/10-laws.md:263](../../design/principles-laws/10-laws.md#cog-12-von-restorff-isolation-effect) |
-| `COG-13` | Peak-end rule | [principles-laws/10-laws.md:271](../../design/principles-laws/10-laws.md#cog-13-peak-end-rule) |
-| `COG-14` | Selective attention / banner blindness | [principles-laws/10-laws.md:280](../../design/principles-laws/10-laws.md#cog-14-selective-attention-banner-blindness) |
-| `ACT-1` | Fitts's law | [principles-laws/10-laws.md:293](../../design/principles-laws/10-laws.md#act-1-fittss-law) |
-| `ACT-2` | The consequence–proximity rule | [principles-laws/10-laws.md:302](../../design/principles-laws/10-laws.md#act-2-the-consequenceproximity-rule) |
-| `ACT-3` | The Doherty threshold | [principles-laws/10-laws.md:311](../../design/principles-laws/10-laws.md#act-3-the-doherty-threshold) |
-| `ACT-4` | Response-time limits — 0.1 s / 1 s / 10 s | [principles-laws/10-laws.md:322](../../design/principles-laws/10-laws.md#act-4-response-time-limits-01-s-1-s-10-s) |
-| `ACT-5` | Postel's law (robustness) | [principles-laws/10-laws.md:336](../../design/principles-laws/10-laws.md#act-5-postels-law-robustness) |
-| `ACT-6` | The undo-over-confirm rule | [principles-laws/10-laws.md:345](../../design/principles-laws/10-laws.md#act-6-the-undo-over-confirm-rule) |
-| `ACT-7` | Pareto (the 80/20 rule) | [principles-laws/10-laws.md:360](../../design/principles-laws/10-laws.md#act-7-pareto-the-8020-rule) |
-| `ACT-8` | Occam's razor | [principles-laws/10-laws.md:370](../../design/principles-laws/10-laws.md#act-8-occams-razor) |
-| `HEU-1` | Visibility of system status | [principles-laws/10-laws.md:386](../../design/principles-laws/10-laws.md#heu-1-visibility-of-system-status) |
-| `HEU-2` | Match the real world | [principles-laws/10-laws.md:391](../../design/principles-laws/10-laws.md#heu-2-match-the-real-world) |
-| `HEU-3` | User control and freedom | [principles-laws/10-laws.md:396](../../design/principles-laws/10-laws.md#heu-3-user-control-and-freedom) |
-| `HEU-4` | Consistency and standards | [principles-laws/10-laws.md:401](../../design/principles-laws/10-laws.md#heu-4-consistency-and-standards) |
-| `HEU-5` | Error prevention | [principles-laws/10-laws.md:406](../../design/principles-laws/10-laws.md#heu-5-error-prevention) |
-| `HEU-6` | Recognition over recall | [principles-laws/10-laws.md:413](../../design/principles-laws/10-laws.md#heu-6-recognition-over-recall) |
-| `HEU-7` | Flexibility and efficiency | [principles-laws/10-laws.md:416](../../design/principles-laws/10-laws.md#heu-7-flexibility-and-efficiency) |
-| `HEU-8` | Aesthetic and minimalist design | [principles-laws/10-laws.md:422](../../design/principles-laws/10-laws.md#heu-8-aesthetic-and-minimalist-design) |
-| `HEU-9` | Recognise, diagnose, recover | [principles-laws/10-laws.md:427](../../design/principles-laws/10-laws.md#heu-9-recognise-diagnose-recover) |
-| `HEU-10` | Help and documentation | [principles-laws/10-laws.md:432](../../design/principles-laws/10-laws.md#heu-10-help-and-documentation) |
-| `TYP-1` | Measure (line length) | [principles-laws/10-laws.md:441](../../design/principles-laws/10-laws.md#typ-1-measure-line-length) |
-| `TYP-2` | Leading follows measure | [principles-laws/10-laws.md:451](../../design/principles-laws/10-laws.md#typ-2-leading-follows-measure) |
-| `TYP-3` | A scale, not sizes | [principles-laws/10-laws.md:457](../../design/principles-laws/10-laws.md#typ-3-a-scale-not-sizes) |
-| `TYP-4` | Hierarchy is contrast, not size alone | [principles-laws/10-laws.md:464](../../design/principles-laws/10-laws.md#typ-4-hierarchy-is-contrast-not-size-alone) |
-| `TYP-5` | Tabular numerals for tabular data | [principles-laws/10-laws.md:471](../../design/principles-laws/10-laws.md#typ-5-tabular-numerals-for-tabular-data) |
-| `TYP-6` | Case carries meaning | [principles-laws/10-laws.md:480](../../design/principles-laws/10-laws.md#typ-6-case-carries-meaning) |
-| `TYP-7` | Alignment: one edge | [principles-laws/10-laws.md:486](../../design/principles-laws/10-laws.md#typ-7-alignment-one-edge) |
-| `TYP-8` | Type must survive the font not loading | [principles-laws/10-laws.md:492](../../design/principles-laws/10-laws.md#typ-8-type-must-survive-the-font-not-loading) |
-| `COL-1` | Colour is semantic, never decorative | [principles-laws/10-laws.md:503](../../design/principles-laws/10-laws.md#col-1-colour-is-semantic-never-decorative) |
-| `COL-2` | Never colour alone | [principles-laws/10-laws.md:513](../../design/principles-laws/10-laws.md#col-2-never-colour-alone) |
-| `COL-3` | Contrast floors | [principles-laws/10-laws.md:522](../../design/principles-laws/10-laws.md#col-3-contrast-floors) |
-| `COL-4` | Accent scarcity (the 60–30–10 heuristic) | [principles-laws/10-laws.md:532](../../design/principles-laws/10-laws.md#col-4-accent-scarcity-the-603010-heuristic) |
-| `COL-5` | Dark mode inverts lightness, not the palette | [principles-laws/10-laws.md:541](../../design/principles-laws/10-laws.md#col-5-dark-mode-inverts-lightness-not-the-palette) |
-| `COL-6` | Neutral does the work | [principles-laws/10-laws.md:548](../../design/principles-laws/10-laws.md#col-6-neutral-does-the-work) |
-| `SPA-1` | The 8-point grid, with a 4-point half step | [principles-laws/10-laws.md:559](../../design/principles-laws/10-laws.md#spa-1-the-8-point-grid-with-a-4-point-half-step) |
-| `SPA-2` | Space encodes relation | [principles-laws/10-laws.md:567](../../design/principles-laws/10-laws.md#spa-2-space-encodes-relation) |
-| `SPA-3` | Density is a mode, not a value | [principles-laws/10-laws.md:575](../../design/principles-laws/10-laws.md#spa-3-density-is-a-mode-not-a-value) |
-| `SPA-4` | Centre of gravity — *no ring of content around a void* | [principles-laws/10-laws.md:583](../../design/principles-laws/10-laws.md#spa-4-centre-of-gravity-no-ring-of-content-around-a-void) |
-| `SPA-5` | Whitespace is structure, not leftovers | [principles-laws/10-laws.md:595](../../design/principles-laws/10-laws.md#spa-5-whitespace-is-structure-not-leftovers) |
-| `SPA-5a` | Density and emptiness are different failures | [principles-laws/10-laws.md:602](../../design/principles-laws/10-laws.md#spa-5a-density-and-emptiness-are-different-failures) |
-| `SPA-6` | Optical alignment beats mathematical alignment | [principles-laws/10-laws.md:612](../../design/principles-laws/10-laws.md#spa-6-optical-alignment-beats-mathematical-alignment) |
-| `SPA-7` | Ratio: one scale for space, one for type, one for size | [principles-laws/10-laws.md:618](../../design/principles-laws/10-laws.md#spa-7-ratio-one-scale-for-space-one-for-type-one-for-size) |
-| `SPA-8` | Intrinsic layout before breakpoints | [principles-laws/10-laws.md:625](../../design/principles-laws/10-laws.md#spa-8-intrinsic-layout-before-breakpoints) |
-| `SPA-9` | Fluid type has a ceiling | [principles-laws/10-laws.md:634](../../design/principles-laws/10-laws.md#spa-9-fluid-type-has-a-ceiling) |
-| `MOT-1` | Motion communicates or it does not ship | [principles-laws/10-laws.md:646](../../design/principles-laws/10-laws.md#mot-1-motion-communicates-or-it-does-not-ship) |
-| `MOT-2` | Duration scales with distance and size | [principles-laws/10-laws.md:653](../../design/principles-laws/10-laws.md#mot-2-duration-scales-with-distance-and-size) |
-| `MOT-3` | Easing carries meaning | [principles-laws/10-laws.md:662](../../design/principles-laws/10-laws.md#mot-3-easing-carries-meaning) |
-| `MOT-4` | Reduced motion is a requirement, and it preserves information | [principles-laws/10-laws.md:669](../../design/principles-laws/10-laws.md#mot-4-reduced-motion-is-a-requirement-and-it-preserves-information) |
-| `MOT-5` | Never animate a property that forces layout | [principles-laws/10-laws.md:678](../../design/principles-laws/10-laws.md#mot-5-never-animate-a-property-that-forces-layout) |
-| `MOT-6` | Orchestration, not simultaneity | [principles-laws/10-laws.md:689](../../design/principles-laws/10-laws.md#mot-6-orchestration-not-simultaneity) |
-| `ACC-1` | Keyboard reaches everything | [principles-laws/10-laws.md:703](../../design/principles-laws/10-laws.md#acc-1-keyboard-reaches-everything) |
-| `ACC-2` | Focus is visible, and not obscured | [principles-laws/10-laws.md:710](../../design/principles-laws/10-laws.md#acc-2-focus-is-visible-and-not-obscured) |
-| `ACC-3` | Focus goes somewhere sensible | [principles-laws/10-laws.md:718](../../design/principles-laws/10-laws.md#acc-3-focus-goes-somewhere-sensible) |
-| `ACC-4` | Target size | [principles-laws/10-laws.md:725](../../design/principles-laws/10-laws.md#acc-4-target-size) |
-| `ACC-5` | Accessible authentication | [principles-laws/10-laws.md:731](../../design/principles-laws/10-laws.md#acc-5-accessible-authentication) |
-| `ACC-6` | Semantics before ARIA | [principles-laws/10-laws.md:738](../../design/principles-laws/10-laws.md#acc-6-semantics-before-aria) |
-| `ACC-7` | Never rely on hover or pointer alone | [principles-laws/10-laws.md:745](../../design/principles-laws/10-laws.md#acc-7-never-rely-on-hover-or-pointer-alone) |
-| `ACC-8` | Motion, contrast and text size are user settings | [principles-laws/10-laws.md:752](../../design/principles-laws/10-laws.md#acc-8-motion-contrast-and-text-size-are-user-settings) |
-| `GLO-1` | Text expands | [principles-laws/10-laws.md:764](../../design/principles-laws/10-laws.md#glo-1-text-expands) |
-| `GLO-2` | Logical properties, never physical | [principles-laws/10-laws.md:772](../../design/principles-laws/10-laws.md#glo-2-logical-properties-never-physical) |
-| `GLO-3` | Mirroring is not flipping | [principles-laws/10-laws.md:779](../../design/principles-laws/10-laws.md#glo-3-mirroring-is-not-flipping) |
-| `GLO-4` | Locale is not language | [principles-laws/10-laws.md:786](../../design/principles-laws/10-laws.md#glo-4-locale-is-not-language) |
-| `GLO-5` | Scripts have different metrics | [principles-laws/10-laws.md:793](../../design/principles-laws/10-laws.md#glo-5-scripts-have-different-metrics) |
-| `GLO-6` | Never concatenate a sentence | [principles-laws/10-laws.md:799](../../design/principles-laws/10-laws.md#glo-6-never-concatenate-a-sentence) |
-| `GLO-7` | Formatting goes through the formatter | [principles-laws/10-laws.md:806](../../design/principles-laws/10-laws.md#glo-7-formatting-goes-through-the-formatter) |
-| `GLO-8` | Personal and postal data have no universal shape | [principles-laws/10-laws.md:814](../../design/principles-laws/10-laws.md#glo-8-personal-and-postal-data-have-no-universal-shape) |
+| `PER-4` | Continuity | [principles-laws/10-laws.md:96](../../design/principles-laws/10-laws.md#per-4-continuity) |
+| `PER-5` | Closure | [principles-laws/10-laws.md:105](../../design/principles-laws/10-laws.md#per-5-closure) |
+| `PER-6` | Figure / ground | [principles-laws/10-laws.md:113](../../design/principles-laws/10-laws.md#per-6-figure-ground) |
+| `PER-7` | Uniform connectedness | [principles-laws/10-laws.md:123](../../design/principles-laws/10-laws.md#per-7-uniform-connectedness) |
+| `PER-8` | Prägnanz (simplicity) | [principles-laws/10-laws.md:133](../../design/principles-laws/10-laws.md#per-8-prgnanz-simplicity) |
+| `PER-9` | Focal point | [principles-laws/10-laws.md:143](../../design/principles-laws/10-laws.md#per-9-focal-point) |
+| `COG-1` | Hick's law | [principles-laws/10-laws.md:156](../../design/principles-laws/10-laws.md#cog-1-hicks-law) |
+| `COG-2` | Miller's law | [principles-laws/10-laws.md:166](../../design/principles-laws/10-laws.md#cog-2-millers-law) |
+| `COG-3` | Chunking | [principles-laws/10-laws.md:180](../../design/principles-laws/10-laws.md#cog-3-chunking) |
+| `COG-4` | Cognitive load — intrinsic, extraneous, germane | [principles-laws/10-laws.md:190](../../design/principles-laws/10-laws.md#cog-4-cognitive-load-intrinsic-extraneous-germane) |
+| `COG-5` | Progressive disclosure | [principles-laws/10-laws.md:201](../../design/principles-laws/10-laws.md#cog-5-progressive-disclosure) |
+| `COG-6` | Recognition over recall | [principles-laws/10-laws.md:209](../../design/principles-laws/10-laws.md#cog-6-recognition-over-recall) |
+| `COG-7` | Jakob's law | [principles-laws/10-laws.md:218](../../design/principles-laws/10-laws.md#cog-7-jakobs-law) |
+| `COG-8` | Tesler's law (conservation of complexity) | [principles-laws/10-laws.md:228](../../design/principles-laws/10-laws.md#cog-8-teslers-law-conservation-of-complexity) |
+| `COG-9` | Zeigarnik effect | [principles-laws/10-laws.md:238](../../design/principles-laws/10-laws.md#cog-9-zeigarnik-effect) |
+| `COG-10` | Goal-gradient effect | [principles-laws/10-laws.md:248](../../design/principles-laws/10-laws.md#cog-10-goal-gradient-effect) |
+| `COG-11` | Serial position effect | [principles-laws/10-laws.md:258](../../design/principles-laws/10-laws.md#cog-11-serial-position-effect) |
+| `COG-12` | Von Restorff (isolation) effect | [principles-laws/10-laws.md:267](../../design/principles-laws/10-laws.md#cog-12-von-restorff-isolation-effect) |
+| `COG-13` | Peak-end rule | [principles-laws/10-laws.md:275](../../design/principles-laws/10-laws.md#cog-13-peak-end-rule) |
+| `COG-14` | Selective attention / banner blindness | [principles-laws/10-laws.md:284](../../design/principles-laws/10-laws.md#cog-14-selective-attention-banner-blindness) |
+| `ACT-1` | Fitts's law | [principles-laws/10-laws.md:297](../../design/principles-laws/10-laws.md#act-1-fittss-law) |
+| `ACT-2` | The consequence–proximity rule | [principles-laws/10-laws.md:306](../../design/principles-laws/10-laws.md#act-2-the-consequenceproximity-rule) |
+| `ACT-3` | The Doherty threshold | [principles-laws/10-laws.md:315](../../design/principles-laws/10-laws.md#act-3-the-doherty-threshold) |
+| `ACT-4` | Response-time limits — 0.1 s / 1 s / 10 s | [principles-laws/10-laws.md:326](../../design/principles-laws/10-laws.md#act-4-response-time-limits-01-s-1-s-10-s) |
+| `ACT-5` | Postel's law (robustness) | [principles-laws/10-laws.md:340](../../design/principles-laws/10-laws.md#act-5-postels-law-robustness) |
+| `ACT-6` | The undo-over-confirm rule | [principles-laws/10-laws.md:349](../../design/principles-laws/10-laws.md#act-6-the-undo-over-confirm-rule) |
+| `ACT-7` | Pareto (the 80/20 rule) | [principles-laws/10-laws.md:364](../../design/principles-laws/10-laws.md#act-7-pareto-the-8020-rule) |
+| `ACT-8` | Occam's razor | [principles-laws/10-laws.md:374](../../design/principles-laws/10-laws.md#act-8-occams-razor) |
+| `HEU-1` | Visibility of system status | [principles-laws/10-laws.md:390](../../design/principles-laws/10-laws.md#heu-1-visibility-of-system-status) |
+| `HEU-2` | Match the real world | [principles-laws/10-laws.md:395](../../design/principles-laws/10-laws.md#heu-2-match-the-real-world) |
+| `HEU-3` | User control and freedom | [principles-laws/10-laws.md:400](../../design/principles-laws/10-laws.md#heu-3-user-control-and-freedom) |
+| `HEU-4` | Consistency and standards | [principles-laws/10-laws.md:405](../../design/principles-laws/10-laws.md#heu-4-consistency-and-standards) |
+| `HEU-5` | Error prevention | [principles-laws/10-laws.md:410](../../design/principles-laws/10-laws.md#heu-5-error-prevention) |
+| `HEU-6` | Recognition over recall | [principles-laws/10-laws.md:417](../../design/principles-laws/10-laws.md#heu-6-recognition-over-recall) |
+| `HEU-7` | Flexibility and efficiency | [principles-laws/10-laws.md:420](../../design/principles-laws/10-laws.md#heu-7-flexibility-and-efficiency) |
+| `HEU-8` | Aesthetic and minimalist design | [principles-laws/10-laws.md:426](../../design/principles-laws/10-laws.md#heu-8-aesthetic-and-minimalist-design) |
+| `HEU-9` | Recognise, diagnose, recover | [principles-laws/10-laws.md:431](../../design/principles-laws/10-laws.md#heu-9-recognise-diagnose-recover) |
+| `HEU-10` | Help and documentation | [principles-laws/10-laws.md:436](../../design/principles-laws/10-laws.md#heu-10-help-and-documentation) |
+| `TYP-1` | Measure (line length) | [principles-laws/10-laws.md:445](../../design/principles-laws/10-laws.md#typ-1-measure-line-length) |
+| `TYP-2` | Leading follows measure | [principles-laws/10-laws.md:455](../../design/principles-laws/10-laws.md#typ-2-leading-follows-measure) |
+| `TYP-3` | A scale, not sizes | [principles-laws/10-laws.md:461](../../design/principles-laws/10-laws.md#typ-3-a-scale-not-sizes) |
+| `TYP-4` | Hierarchy is contrast, not size alone | [principles-laws/10-laws.md:468](../../design/principles-laws/10-laws.md#typ-4-hierarchy-is-contrast-not-size-alone) |
+| `TYP-5` | Tabular numerals for tabular data | [principles-laws/10-laws.md:475](../../design/principles-laws/10-laws.md#typ-5-tabular-numerals-for-tabular-data) |
+| `TYP-6` | Case carries meaning | [principles-laws/10-laws.md:484](../../design/principles-laws/10-laws.md#typ-6-case-carries-meaning) |
+| `TYP-7` | Alignment: one edge | [principles-laws/10-laws.md:490](../../design/principles-laws/10-laws.md#typ-7-alignment-one-edge) |
+| `TYP-8` | Type must survive the font not loading | [principles-laws/10-laws.md:496](../../design/principles-laws/10-laws.md#typ-8-type-must-survive-the-font-not-loading) |
+| `COL-1` | Colour is semantic, never decorative | [principles-laws/10-laws.md:507](../../design/principles-laws/10-laws.md#col-1-colour-is-semantic-never-decorative) |
+| `COL-2` | Never colour alone | [principles-laws/10-laws.md:517](../../design/principles-laws/10-laws.md#col-2-never-colour-alone) |
+| `COL-3` | Contrast floors | [principles-laws/10-laws.md:526](../../design/principles-laws/10-laws.md#col-3-contrast-floors) |
+| `COL-4` | Accent scarcity (the 60–30–10 heuristic) | [principles-laws/10-laws.md:536](../../design/principles-laws/10-laws.md#col-4-accent-scarcity-the-603010-heuristic) |
+| `COL-5` | Dark mode inverts lightness, not the palette | [principles-laws/10-laws.md:545](../../design/principles-laws/10-laws.md#col-5-dark-mode-inverts-lightness-not-the-palette) |
+| `COL-6` | Neutral does the work | [principles-laws/10-laws.md:552](../../design/principles-laws/10-laws.md#col-6-neutral-does-the-work) |
+| `SPA-1` | The 8-point grid, with a 4-point half step | [principles-laws/10-laws.md:563](../../design/principles-laws/10-laws.md#spa-1-the-8-point-grid-with-a-4-point-half-step) |
+| `SPA-2` | Space encodes relation | [principles-laws/10-laws.md:571](../../design/principles-laws/10-laws.md#spa-2-space-encodes-relation) |
+| `SPA-3` | Density is a mode, not a value | [principles-laws/10-laws.md:579](../../design/principles-laws/10-laws.md#spa-3-density-is-a-mode-not-a-value) |
+| `SPA-4` | Centre of gravity — *no ring of content around a void* | [principles-laws/10-laws.md:587](../../design/principles-laws/10-laws.md#spa-4-centre-of-gravity-no-ring-of-content-around-a-void) |
+| `SPA-5` | Whitespace is structure, not leftovers | [principles-laws/10-laws.md:599](../../design/principles-laws/10-laws.md#spa-5-whitespace-is-structure-not-leftovers) |
+| `SPA-5a` | Density and emptiness are different failures | [principles-laws/10-laws.md:606](../../design/principles-laws/10-laws.md#spa-5a-density-and-emptiness-are-different-failures) |
+| `SPA-6` | Optical alignment beats mathematical alignment | [principles-laws/10-laws.md:616](../../design/principles-laws/10-laws.md#spa-6-optical-alignment-beats-mathematical-alignment) |
+| `SPA-7` | Ratio: one scale for space, one for type, one for size | [principles-laws/10-laws.md:622](../../design/principles-laws/10-laws.md#spa-7-ratio-one-scale-for-space-one-for-type-one-for-size) |
+| `SPA-8` | Intrinsic layout before breakpoints | [principles-laws/10-laws.md:629](../../design/principles-laws/10-laws.md#spa-8-intrinsic-layout-before-breakpoints) |
+| `SPA-9` | Fluid type has a ceiling | [principles-laws/10-laws.md:638](../../design/principles-laws/10-laws.md#spa-9-fluid-type-has-a-ceiling) |
+| `MOT-1` | Motion communicates or it does not ship | [principles-laws/10-laws.md:650](../../design/principles-laws/10-laws.md#mot-1-motion-communicates-or-it-does-not-ship) |
+| `MOT-2` | Duration scales with distance and size | [principles-laws/10-laws.md:657](../../design/principles-laws/10-laws.md#mot-2-duration-scales-with-distance-and-size) |
+| `MOT-3` | Easing carries meaning | [principles-laws/10-laws.md:666](../../design/principles-laws/10-laws.md#mot-3-easing-carries-meaning) |
+| `MOT-4` | Reduced motion is a requirement, and it preserves information | [principles-laws/10-laws.md:673](../../design/principles-laws/10-laws.md#mot-4-reduced-motion-is-a-requirement-and-it-preserves-information) |
+| `MOT-5` | Never animate a property that forces layout | [principles-laws/10-laws.md:682](../../design/principles-laws/10-laws.md#mot-5-never-animate-a-property-that-forces-layout) |
+| `MOT-6` | Orchestration, not simultaneity | [principles-laws/10-laws.md:693](../../design/principles-laws/10-laws.md#mot-6-orchestration-not-simultaneity) |
+| `ACC-1` | Keyboard reaches everything | [principles-laws/10-laws.md:707](../../design/principles-laws/10-laws.md#acc-1-keyboard-reaches-everything) |
+| `ACC-2` | Focus is visible, and not obscured | [principles-laws/10-laws.md:714](../../design/principles-laws/10-laws.md#acc-2-focus-is-visible-and-not-obscured) |
+| `ACC-3` | Focus goes somewhere sensible | [principles-laws/10-laws.md:722](../../design/principles-laws/10-laws.md#acc-3-focus-goes-somewhere-sensible) |
+| `ACC-4` | Target size | [principles-laws/10-laws.md:729](../../design/principles-laws/10-laws.md#acc-4-target-size) |
+| `ACC-5` | Accessible authentication | [principles-laws/10-laws.md:735](../../design/principles-laws/10-laws.md#acc-5-accessible-authentication) |
+| `ACC-6` | Semantics before ARIA | [principles-laws/10-laws.md:742](../../design/principles-laws/10-laws.md#acc-6-semantics-before-aria) |
+| `ACC-7` | Never rely on hover or pointer alone | [principles-laws/10-laws.md:749](../../design/principles-laws/10-laws.md#acc-7-never-rely-on-hover-or-pointer-alone) |
+| `ACC-8` | Motion, contrast and text size are user settings | [principles-laws/10-laws.md:756](../../design/principles-laws/10-laws.md#acc-8-motion-contrast-and-text-size-are-user-settings) |
+| `GLO-1` | Text expands | [principles-laws/10-laws.md:768](../../design/principles-laws/10-laws.md#glo-1-text-expands) |
+| `GLO-2` | Logical properties, never physical | [principles-laws/10-laws.md:776](../../design/principles-laws/10-laws.md#glo-2-logical-properties-never-physical) |
+| `GLO-3` | Mirroring is not flipping | [principles-laws/10-laws.md:783](../../design/principles-laws/10-laws.md#glo-3-mirroring-is-not-flipping) |
+| `GLO-4` | Locale is not language | [principles-laws/10-laws.md:790](../../design/principles-laws/10-laws.md#glo-4-locale-is-not-language) |
+| `GLO-5` | Scripts have different metrics | [principles-laws/10-laws.md:797](../../design/principles-laws/10-laws.md#glo-5-scripts-have-different-metrics) |
+| `GLO-6` | Never concatenate a sentence | [principles-laws/10-laws.md:803](../../design/principles-laws/10-laws.md#glo-6-never-concatenate-a-sentence) |
+| `GLO-7` | Formatting goes through the formatter | [principles-laws/10-laws.md:810](../../design/principles-laws/10-laws.md#glo-7-formatting-goes-through-the-formatter) |
+| `GLO-8` | Personal and postal data have no universal shape | [principles-laws/10-laws.md:818](../../design/principles-laws/10-laws.md#glo-8-personal-and-postal-data-have-no-universal-shape) |
 | `FLO-1` | Every state has a forward action and a marked exit | [process-governance/11-workflow.md:35](../../design/process-governance/11-workflow.md#flo-1-every-state-has-a-forward-action-and-a-marked-exit) |
 | `FLO-2` | Back is never destructive, and never a lie | [process-governance/11-workflow.md:45](../../design/process-governance/11-workflow.md#flo-2-back-is-never-destructive-and-never-a-lie) |
 | `FLO-3` | Work is durable from the first meaningful action | [process-governance/11-workflow.md:54](../../design/process-governance/11-workflow.md#flo-3-work-is-durable-from-the-first-meaningful-action) |
@@ -438,24 +438,24 @@ The ladder in chapter 03 starts at tokens. All 8 groups it needs exist. Each is 
 - The honest gap, ranked  <sub>:142</sub>
 - Definition of done, for a screen  <sub>:165</sub>
 
-### [`docs/design/principles-laws/10-laws.md`](../../design/principles-laws/10-laws.md)  <sub>920 lines</sub>
+### [`docs/design/principles-laws/10-laws.md`](../../design/principles-laws/10-laws.md)  <sub>924 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
-- COG · Cognition  <sub>:150</sub>
-- ACT · Action and time  <sub>:291</sub>
-- HEU · Nielsen's ten, ruled  <sub>:381</sub>
-- TYP · Typography  <sub>:439</sub>
-- COL · Colour  <sub>:501</sub>
-- SPA · Space, ratio and the shape of a page  <sub>:557</sub>
-- MOT · Motion  <sub>:642</sub>
-- ACC · Accessibility  <sub>:698</sub>
-- GLO · Globalization  <sub>:760</sub>
-- Where the card-deck laws are built  <sub>:823</sub>
-- Where the two reels' laws are built  <sub>:849</sub>
-- Where the copy laws are built  <sub>:868</sub>
-- What this chapter does not settle  <sub>:885</sub>
-- Sources  <sub>:900</sub>
+- COG · Cognition  <sub>:154</sub>
+- ACT · Action and time  <sub>:295</sub>
+- HEU · Nielsen's ten, ruled  <sub>:385</sub>
+- TYP · Typography  <sub>:443</sub>
+- COL · Colour  <sub>:505</sub>
+- SPA · Space, ratio and the shape of a page  <sub>:561</sub>
+- MOT · Motion  <sub>:646</sub>
+- ACC · Accessibility  <sub>:702</sub>
+- GLO · Globalization  <sub>:764</sub>
+- Where the card-deck laws are built  <sub>:827</sub>
+- Where the two reels' laws are built  <sub>:853</sub>
+- Where the copy laws are built  <sub>:872</sub>
+- What this chapter does not settle  <sub>:889</sub>
+- Sources  <sub>:904</sub>
 
 ### [`docs/design/process-governance/11-workflow.md`](../../design/process-governance/11-workflow.md)  <sub>260 lines</sub>
 

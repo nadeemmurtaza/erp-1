@@ -22,6 +22,10 @@
  * Comments are blanked before matching, so prose that names a tell is not a hit.
  *
  * What it does NOT check, stated so a green run is not read as more than it is:
+ *   - `round-button` reads the attributes of a button, link or `…Button` tag and `.btn…` rules in CSS. It
+ *     misses a class assembled from parts, a class held in a constant and passed in, a JSX element passed as a
+ *     prop ahead of the class (`icon={<X />}`), and every React Native style (`theme.radius.pill` on a chip is
+ *     kept out of this check and was fixed by hand).
  *   - `soft-radius` (`rounded-xl|2xl|3xl`) is deliberately not a tell: tailwind.config.ts
  *     maps `lg`, `xl`, `2xl` and `3xl` onto the one `--radius-lg` token and `sm`, `md`
  *     and the default onto `--radius`, so those classes are token spellings, not a
@@ -130,6 +134,45 @@ export const TELLS = [
       '@apply border-neutral-200 shadow-lg;',
     ],
     miss: ['shadow-overlay', 'shadow-modal', 'shadow-md', 'drop-shadow-lg', 'shadow-[1px_0_0_0_rgba(0,0,0,0.1)]'],
+  },
+  {
+    id: 'round-button',
+    scope: 'style',
+    exts: ['.tsx', '.css'],
+    // `rounded-full` (or an arbitrary 999px / 50%) in the attributes of a `<button>`, `<a>`, `<Link>`,
+    // `<summary>` or a `…Button` component, and the same radius in a `.btn…` / `.…-button` rule. The
+    // lookbehind comes last so the cheap literal is tried first; it walks back to the tag's `<`, and
+    // `[^<>]` stops it at the previous tag, so a `rounded-full` dot INSIDE a button is not a hit. An arrow
+    // (`=>`) and a comparison (`<=`, `>=`, ` < `, ` > `) inside an attribute do not stop it either, or a
+    // button with `disabled={quantity <= 1}` would slip through. A JSX element passed as a prop before the
+    // class (`icon={<X />}`) still stops it: that is a miss, named in the header.
+    pattern:
+      /(?<![\w-])(?:[\w-]+:)*rounded-(?:full|\[(?:9{3,}px|50%)\])(?![\w-])(?<=<(?:button|a|summary|Link|NextLink|[A-Z]\w*Button)\b(?:[^<>]|=>|[<>]=|(?<=\s)[<>](?=\s))*?)|(?:rounded-full|border-radius:\s*(?:9{3,}px|50%))(?<=\.[\w-]*(?:btn|button)[^{}]*\{[^{}]*?)/g,
+    why: 'a circular or pill button is a second button shape: the house button has one corner, and a pill is a status (PER-3)',
+    instead:
+      'the house corner: `rounded` (it resolves to `--radius`), or `.btn`, `.btn-ghost`, `.icon-btn`; circles stay for avatars, dots, spinners and count badges',
+    hit: [
+      '<button type="button" className="h-9 w-9 rounded-full">',
+      "<Link\n href={href}\n className={cn('flex h-12 w-12 rounded-full', active)}\n>",
+      '<button onClick={() => go()} className="h-8 w-8 lg:rounded-full">',
+      '<IconButton className="rounded-full" />',
+      '<a href="/x" className="rounded-[999px] px-3">',
+      '<button disabled={quantity <= 1} className="h-9 w-9 rounded-full">',
+      '<button disabled={n >= max} onClick={() => go(n > 1)} className="rounded-full">',
+      '.btn-round {\n  @apply h-9 rounded-full;\n}',
+      '.btn { border-radius: 9999px; }',
+    ],
+    miss: [
+      '<span className="h-5 w-5 rounded-full bg-accent" />',
+      '<img className="h-8 w-8 rounded-full" alt="" />',
+      '<button className="h-9 w-9 rounded"><span className="h-1 w-1 rounded-full" /></button>',
+      '<abbr className="rounded-full">',
+      '<button className="rounded">a</button>\n<div className="rounded-full">',
+      '<a href="/x" className="px-3">\n  {n > 1 ? <i className="rounded-full" /> : null}\n</a>',
+      '<button className="rounded">',
+      '.badge { @apply rounded-full; }',
+      '.spinner { @apply h-4 w-4 rounded-full; }',
+    ],
   },
   {
     id: 'transition-all',
@@ -262,6 +305,12 @@ export const BASELINE = {
     // The storefront's sticky add-to-cart button carries `shadow-lg` at rest so it separates from the content
     // scrolling under it. Removing it changes how the bar looks: designer.
     'apps/web/src/components/storefront/product-purchase.tsx': 1,
+  },
+  'round-button': {
+    // `role="switch"`: the pill track and round thumb are what makes a switch read as a switch, and it is an
+    // input that holds a state, not an action button. Kept as the one circle-shaped control; a designer may
+    // rule it into the house corner, which would delete this entry.
+    'apps/web/src/components/ui/switch.tsx': 1,
   },
   'transition-all': {},
   'emoji-glyph': {

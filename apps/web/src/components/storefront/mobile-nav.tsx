@@ -50,7 +50,7 @@ export function MobileNav({
     <>
       <button
         type="button"
-        className="flex h-10 w-10 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100 lg:hidden"
+        className="flex h-10 w-10 items-center justify-center rounded text-neutral-700 hover:bg-neutral-100 lg:hidden"
         onClick={() => setIsOpen(true)}
         aria-label="Open menu"
       >
@@ -95,7 +95,7 @@ export function MobileNav({
               </span>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-full text-neutral-700 hover:bg-neutral-100"
+                className="flex h-10 w-10 items-center justify-center rounded text-neutral-700 hover:bg-neutral-100"
                 onClick={() => setIsOpen(false)}
                 aria-label="Close menu"
               >

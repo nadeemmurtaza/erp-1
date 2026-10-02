@@ -66,6 +66,11 @@ Admin: `components/admin/range-picker`.
 `.no-scrollbar` `.container-page` `.spinner` `.focus-frame` `.toast-timer`
 `.sheet-in` `.sheet-out` `.tab-indicator` `.card-lit` `.media-concentric` `.field-xl` `.stagger-fine` `.btn-hold`
 
+**A button has the house corner, never a circle or a pill.** An icon button is `.icon-btn`
+or `rounded`, not `rounded-full` (`PER-3`; `check-tells` fails `round-button`). `rounded-full`
+stays for avatars, dots, spinners and count badges, which are not buttons. `Switch` is the one
+control with a pill track, held in the `round-button` baseline.
+
 ### Everything else
 
 | Concern | Import from |

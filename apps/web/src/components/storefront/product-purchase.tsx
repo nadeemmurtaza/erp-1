@@ -188,7 +188,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
             onClick={() => setQuantity((current) => Math.max(1, current - 1))}
             disabled={quantity <= 1}
             aria-label={t('decreaseQuantity')}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-900 transition-colors duration-normal hover:border-neutral-900 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-9 w-9 items-center justify-center rounded border border-neutral-300 text-neutral-900 transition-colors duration-normal hover:border-neutral-900 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <MinusIcon />
           </button>
@@ -200,7 +200,7 @@ export function ProductPurchase({ product, locale, services, fabricNeed, stitchi
             onClick={() => setQuantity((current) => Math.min(maxQuantity, current + 1))}
             disabled={quantity >= maxQuantity}
             aria-label={t('increaseQuantity')}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-900 transition-colors duration-normal hover:border-neutral-900 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex h-9 w-9 items-center justify-center rounded border border-neutral-300 text-neutral-900 transition-colors duration-normal hover:border-neutral-900 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <PlusIcon />
           </button>
@@ -415,7 +415,7 @@ function ColourRow({
               title={option}
               style={hex ? { backgroundColor: hex } : undefined}
               className={cn(
-                'h-9 w-9 rounded-full border transition-[box-shadow,border-color] duration-normal',
+                'h-9 w-9 rounded border transition-[box-shadow,border-color] duration-normal',
                 hex ? 'border-neutral-100' : 'border-neutral-300 bg-neutral-100',
                 active ? 'ring-2 ring-neutral-900 ring-offset-2' : 'hover:border-neutral-500',
               )}

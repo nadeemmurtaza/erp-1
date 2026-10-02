@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2643,
-    "lines": 426135,
+    "lines": 426268,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -338,588 +338,588 @@
       "family": "PER",
       "name": "Continuity",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 92
+      "line": 96
     },
     {
       "id": "PER-5",
       "family": "PER",
       "name": "Closure",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 101
+      "line": 105
     },
     {
       "id": "PER-6",
       "family": "PER",
       "name": "Figure / ground",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 109
+      "line": 113
     },
     {
       "id": "PER-7",
       "family": "PER",
       "name": "Uniform connectedness",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 119
+      "line": 123
     },
     {
       "id": "PER-8",
       "family": "PER",
       "name": "Prägnanz (simplicity)",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 129
+      "line": 133
     },
     {
       "id": "PER-9",
       "family": "PER",
       "name": "Focal point",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 139
+      "line": 143
     },
     {
       "id": "COG-1",
       "family": "COG",
       "name": "Hick's law",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 152
+      "line": 156
     },
     {
       "id": "COG-2",
       "family": "COG",
       "name": "Miller's law",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 162
+      "line": 166
     },
     {
       "id": "COG-3",
       "family": "COG",
       "name": "Chunking",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 176
+      "line": 180
     },
     {
       "id": "COG-4",
       "family": "COG",
       "name": "Cognitive load — intrinsic, extraneous, germane",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 186
+      "line": 190
     },
     {
       "id": "COG-5",
       "family": "COG",
       "name": "Progressive disclosure",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 197
+      "line": 201
     },
     {
       "id": "COG-6",
       "family": "COG",
       "name": "Recognition over recall",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 205
+      "line": 209
     },
     {
       "id": "COG-7",
       "family": "COG",
       "name": "Jakob's law",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 214
+      "line": 218
     },
     {
       "id": "COG-8",
       "family": "COG",
       "name": "Tesler's law (conservation of complexity)",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 224
+      "line": 228
     },
     {
       "id": "COG-9",
       "family": "COG",
       "name": "Zeigarnik effect",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 234
+      "line": 238
     },
     {
       "id": "COG-10",
       "family": "COG",
       "name": "Goal-gradient effect",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 244
+      "line": 248
     },
     {
       "id": "COG-11",
       "family": "COG",
       "name": "Serial position effect",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 254
+      "line": 258
     },
     {
       "id": "COG-12",
       "family": "COG",
       "name": "Von Restorff (isolation) effect",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 263
+      "line": 267
     },
     {
       "id": "COG-13",
       "family": "COG",
       "name": "Peak-end rule",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 271
+      "line": 275
     },
     {
       "id": "COG-14",
       "family": "COG",
       "name": "Selective attention / banner blindness",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 280
+      "line": 284
     },
     {
       "id": "ACT-1",
       "family": "ACT",
       "name": "Fitts's law",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 293
+      "line": 297
     },
     {
       "id": "ACT-2",
       "family": "ACT",
       "name": "The consequence–proximity rule",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 302
+      "line": 306
     },
     {
       "id": "ACT-3",
       "family": "ACT",
       "name": "The Doherty threshold",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 311
+      "line": 315
     },
     {
       "id": "ACT-4",
       "family": "ACT",
       "name": "Response-time limits — 0.1 s / 1 s / 10 s",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 322
+      "line": 326
     },
     {
       "id": "ACT-5",
       "family": "ACT",
       "name": "Postel's law (robustness)",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 336
+      "line": 340
     },
     {
       "id": "ACT-6",
       "family": "ACT",
       "name": "The undo-over-confirm rule",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 345
+      "line": 349
     },
     {
       "id": "ACT-7",
       "family": "ACT",
       "name": "Pareto (the 80/20 rule)",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 360
+      "line": 364
     },
     {
       "id": "ACT-8",
       "family": "ACT",
       "name": "Occam's razor",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 370
+      "line": 374
     },
     {
       "id": "HEU-1",
       "family": "HEU",
       "name": "Visibility of system status",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 386
+      "line": 390
     },
     {
       "id": "HEU-2",
       "family": "HEU",
       "name": "Match the real world",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 391
+      "line": 395
     },
     {
       "id": "HEU-3",
       "family": "HEU",
       "name": "User control and freedom",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 396
+      "line": 400
     },
     {
       "id": "HEU-4",
       "family": "HEU",
       "name": "Consistency and standards",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 401
+      "line": 405
     },
     {
       "id": "HEU-5",
       "family": "HEU",
       "name": "Error prevention",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 406
+      "line": 410
     },
     {
       "id": "HEU-6",
       "family": "HEU",
       "name": "Recognition over recall",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 413
+      "line": 417
     },
     {
       "id": "HEU-7",
       "family": "HEU",
       "name": "Flexibility and efficiency",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 416
+      "line": 420
     },
     {
       "id": "HEU-8",
       "family": "HEU",
       "name": "Aesthetic and minimalist design",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 422
+      "line": 426
     },
     {
       "id": "HEU-9",
       "family": "HEU",
       "name": "Recognise, diagnose, recover",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 427
+      "line": 431
     },
     {
       "id": "HEU-10",
       "family": "HEU",
       "name": "Help and documentation",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 432
+      "line": 436
     },
     {
       "id": "TYP-1",
       "family": "TYP",
       "name": "Measure (line length)",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 441
+      "line": 445
     },
     {
       "id": "TYP-2",
       "family": "TYP",
       "name": "Leading follows measure",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 451
+      "line": 455
     },
     {
       "id": "TYP-3",
       "family": "TYP",
       "name": "A scale, not sizes",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 457
+      "line": 461
     },
     {
       "id": "TYP-4",
       "family": "TYP",
       "name": "Hierarchy is contrast, not size alone",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 464
+      "line": 468
     },
     {
       "id": "TYP-5",
       "family": "TYP",
       "name": "Tabular numerals for tabular data",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 471
+      "line": 475
     },
     {
       "id": "TYP-6",
       "family": "TYP",
       "name": "Case carries meaning",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 480
+      "line": 484
     },
     {
       "id": "TYP-7",
       "family": "TYP",
       "name": "Alignment: one edge",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 486
+      "line": 490
     },
     {
       "id": "TYP-8",
       "family": "TYP",
       "name": "Type must survive the font not loading",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 492
+      "line": 496
     },
     {
       "id": "COL-1",
       "family": "COL",
       "name": "Colour is semantic, never decorative",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 503
+      "line": 507
     },
     {
       "id": "COL-2",
       "family": "COL",
       "name": "Never colour alone",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 513
+      "line": 517
     },
     {
       "id": "COL-3",
       "family": "COL",
       "name": "Contrast floors",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 522
+      "line": 526
     },
     {
       "id": "COL-4",
       "family": "COL",
       "name": "Accent scarcity (the 60–30–10 heuristic)",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 532
+      "line": 536
     },
     {
       "id": "COL-5",
       "family": "COL",
       "name": "Dark mode inverts lightness, not the palette",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 541
+      "line": 545
     },
     {
       "id": "COL-6",
       "family": "COL",
       "name": "Neutral does the work",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 548
+      "line": 552
     },
     {
       "id": "SPA-1",
       "family": "SPA",
       "name": "The 8-point grid, with a 4-point half step",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 559
+      "line": 563
     },
     {
       "id": "SPA-2",
       "family": "SPA",
       "name": "Space encodes relation",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 567
+      "line": 571
     },
     {
       "id": "SPA-3",
       "family": "SPA",
       "name": "Density is a mode, not a value",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 575
+      "line": 579
     },
     {
       "id": "SPA-4",
       "family": "SPA",
       "name": "Centre of gravity — *no ring of content around a void*",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 583
+      "line": 587
     },
     {
       "id": "SPA-5",
       "family": "SPA",
       "name": "Whitespace is structure, not leftovers",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 595
+      "line": 599
     },
     {
       "id": "SPA-5a",
       "family": "SPA",
       "name": "Density and emptiness are different failures",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 602
+      "line": 606
     },
     {
       "id": "SPA-6",
       "family": "SPA",
       "name": "Optical alignment beats mathematical alignment",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 612
+      "line": 616
     },
     {
       "id": "SPA-7",
       "family": "SPA",
       "name": "Ratio: one scale for space, one for type, one for size",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 618
+      "line": 622
     },
     {
       "id": "SPA-8",
       "family": "SPA",
       "name": "Intrinsic layout before breakpoints",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 625
+      "line": 629
     },
     {
       "id": "SPA-9",
       "family": "SPA",
       "name": "Fluid type has a ceiling",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 634
+      "line": 638
     },
     {
       "id": "MOT-1",
       "family": "MOT",
       "name": "Motion communicates or it does not ship",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 646
+      "line": 650
     },
     {
       "id": "MOT-2",
       "family": "MOT",
       "name": "Duration scales with distance and size",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 653
+      "line": 657
     },
     {
       "id": "MOT-3",
       "family": "MOT",
       "name": "Easing carries meaning",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 662
+      "line": 666
     },
     {
       "id": "MOT-4",
       "family": "MOT",
       "name": "Reduced motion is a requirement, and it preserves information",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 669
+      "line": 673
     },
     {
       "id": "MOT-5",
       "family": "MOT",
       "name": "Never animate a property that forces layout",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 678
+      "line": 682
     },
     {
       "id": "MOT-6",
       "family": "MOT",
       "name": "Orchestration, not simultaneity",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 689
+      "line": 693
     },
     {
       "id": "ACC-1",
       "family": "ACC",
       "name": "Keyboard reaches everything",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 703
+      "line": 707
     },
     {
       "id": "ACC-2",
       "family": "ACC",
       "name": "Focus is visible, and not obscured",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 710
+      "line": 714
     },
     {
       "id": "ACC-3",
       "family": "ACC",
       "name": "Focus goes somewhere sensible",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 718
+      "line": 722
     },
     {
       "id": "ACC-4",
       "family": "ACC",
       "name": "Target size",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 725
+      "line": 729
     },
     {
       "id": "ACC-5",
       "family": "ACC",
       "name": "Accessible authentication",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 731
+      "line": 735
     },
     {
       "id": "ACC-6",
       "family": "ACC",
       "name": "Semantics before ARIA",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 738
+      "line": 742
     },
     {
       "id": "ACC-7",
       "family": "ACC",
       "name": "Never rely on hover or pointer alone",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 745
+      "line": 749
     },
     {
       "id": "ACC-8",
       "family": "ACC",
       "name": "Motion, contrast and text size are user settings",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 752
+      "line": 756
     },
     {
       "id": "GLO-1",
       "family": "GLO",
       "name": "Text expands",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 764
+      "line": 768
     },
     {
       "id": "GLO-2",
       "family": "GLO",
       "name": "Logical properties, never physical",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 772
+      "line": 776
     },
     {
       "id": "GLO-3",
       "family": "GLO",
       "name": "Mirroring is not flipping",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 779
+      "line": 783
     },
     {
       "id": "GLO-4",
       "family": "GLO",
       "name": "Locale is not language",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 786
+      "line": 790
     },
     {
       "id": "GLO-5",
       "family": "GLO",
       "name": "Scripts have different metrics",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 793
+      "line": 797
     },
     {
       "id": "GLO-6",
       "family": "GLO",
       "name": "Never concatenate a sentence",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 799
+      "line": 803
     },
     {
       "id": "GLO-7",
       "family": "GLO",
       "name": "Formatting goes through the formatter",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 806
+      "line": 810
     },
     {
       "id": "GLO-8",
       "family": "GLO",
       "name": "Personal and postal data have no universal shape",
       "file": "docs/design/principles-laws/10-laws.md",
-      "line": 814
+      "line": 818
     },
     {
       "id": "FLO-1",
@@ -1366,14 +1366,14 @@
   "areas": {
     "root": {
       "files": 218,
-      "lines": 22032,
-      "bytes": 1264028,
+      "lines": 22042,
+      "bytes": 1264768,
       "label": "repository root files"
     },
     "infra": {
       "files": 64,
-      "lines": 32838,
-      "bytes": 1302963,
+      "lines": 32887,
+      "bytes": 1306285,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
@@ -1385,25 +1385,25 @@
     "mobile": {
       "files": 49,
       "lines": 6906,
-      "bytes": 319993,
+      "bytes": 319989,
       "label": "apps/mobile — Expo/React Native customer app"
     },
     "pos": {
       "files": 33,
       "lines": 2668,
-      "bytes": 95030,
+      "bytes": 95020,
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
       "files": 536,
       "lines": 96825,
-      "bytes": 3563527,
+      "bytes": 3563447,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 437,
-      "lines": 91976,
-      "bytes": 5613272,
+      "lines": 92050,
+      "bytes": 5618293,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -59254,8 +59254,8 @@
       "path": ".claude/rules/design.md",
       "area": "root",
       "kind": "doc",
-      "lines": 165,
-      "bytes": 9252,
+      "lines": 169,
+      "bytes": 9533,
       "doc": "",
       "symbols": []
     },
@@ -59299,8 +59299,8 @@
       "path": ".claude/rules/ui.md",
       "area": "root",
       "kind": "doc",
-      "lines": 193,
-      "bytes": 14746,
+      "lines": 198,
+      "bytes": 15092,
       "doc": "",
       "symbols": []
     },
@@ -59317,8 +59317,8 @@
       "path": ".claude/skills/restyle/SKILL.md",
       "area": "root",
       "kind": "doc",
-      "lines": 88,
-      "bytes": 5607,
+      "lines": 89,
+      "bytes": 5705,
       "doc": "",
       "symbols": []
     },
@@ -59516,7 +59516,7 @@
       "area": "root",
       "kind": "doc",
       "lines": 1045,
-      "bytes": 55414,
+      "bytes": 55429,
       "doc": "",
       "symbols": []
     },
@@ -79311,7 +79311,7 @@
       "area": "mobile",
       "kind": "react",
       "lines": 170,
-      "bytes": 5637,
+      "bytes": 5635,
       "doc": "",
       "symbols": [
         {
@@ -80302,7 +80302,7 @@
       "area": "mobile",
       "kind": "component",
       "lines": 301,
-      "bytes": 7929,
+      "bytes": 7927,
       "doc": "",
       "symbols": [
         {
@@ -83103,7 +83103,7 @@
       "area": "pos",
       "kind": "page",
       "lines": 789,
-      "bytes": 32635,
+      "bytes": 32625,
       "doc": "",
       "symbols": [
         {
@@ -87032,7 +87032,7 @@
       "area": "web",
       "kind": "page",
       "lines": 325,
-      "bytes": 11314,
+      "bytes": 11299,
       "doc": "",
       "symbols": [
         {
@@ -90061,7 +90061,7 @@
       "area": "web",
       "kind": "component",
       "lines": 638,
-      "bytes": 23263,
+      "bytes": 23258,
       "doc": "",
       "symbols": [
         {
@@ -90211,7 +90211,7 @@
       "area": "web",
       "kind": "component",
       "lines": 157,
-      "bytes": 5631,
+      "bytes": 5626,
       "doc": "",
       "symbols": [
         {
@@ -90226,7 +90226,7 @@
       "area": "web",
       "kind": "component",
       "lines": 34,
-      "bytes": 1430,
+      "bytes": 1425,
       "doc": "",
       "symbols": [
         {
@@ -90356,7 +90356,7 @@
       "area": "web",
       "kind": "component",
       "lines": 41,
-      "bytes": 1245,
+      "bytes": 1240,
       "doc": "",
       "symbols": [
         {
@@ -90371,7 +90371,7 @@
       "area": "web",
       "kind": "component",
       "lines": 210,
-      "bytes": 9753,
+      "bytes": 9748,
       "doc": "",
       "symbols": [
         {
@@ -90416,7 +90416,7 @@
       "area": "web",
       "kind": "component",
       "lines": 75,
-      "bytes": 2676,
+      "bytes": 2671,
       "doc": "",
       "symbols": [
         {
@@ -90446,7 +90446,7 @@
       "area": "web",
       "kind": "component",
       "lines": 197,
-      "bytes": 7175,
+      "bytes": 7165,
       "doc": "",
       "symbols": [
         {
@@ -90506,7 +90506,7 @@
       "area": "web",
       "kind": "component",
       "lines": 253,
-      "bytes": 10305,
+      "bytes": 10300,
       "doc": "",
       "symbols": [
         {
@@ -90536,7 +90536,7 @@
       "area": "web",
       "kind": "component",
       "lines": 509,
-      "bytes": 17908,
+      "bytes": 17893,
       "doc": "",
       "symbols": [
         {
@@ -90951,7 +90951,7 @@
       "area": "web",
       "kind": "component",
       "lines": 244,
-      "bytes": 9363,
+      "bytes": 9358,
       "doc": "",
       "symbols": [
         {
@@ -95113,8 +95113,8 @@
       "path": "docs/design/principles-laws/10-laws.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 920,
-      "bytes": 52795,
+      "lines": 924,
+      "bytes": 53108,
       "doc": "",
       "symbols": []
     },
@@ -96940,8 +96940,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 11418,
-      "bytes": 715756,
+      "lines": 11488,
+      "bytes": 720464,
       "doc": "",
       "symbols": []
     },
@@ -102191,49 +102191,49 @@
       "path": "scripts/check-tells.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 559,
-      "bytes": 26237,
+      "lines": 608,
+      "bytes": 29559,
       "doc": "",
       "symbols": [
         {
           "name": "FLAG_FILE",
           "kind": "const",
-          "line": 59
+          "line": 63
         },
         {
           "name": "TELLS",
           "kind": "const",
-          "line": 69
+          "line": 73
         },
         {
           "name": "BASELINE",
           "kind": "const",
-          "line": 221
+          "line": 264
         },
         {
           "name": "blankComments",
           "kind": "function",
-          "line": 279
+          "line": 328
         },
         {
           "name": "findTell",
           "kind": "function",
-          "line": 287
+          "line": 336
         },
         {
           "name": "countDynamic",
           "kind": "function",
-          "line": 298
+          "line": 347
         },
         {
           "name": "compare",
           "kind": "function",
-          "line": 304
+          "line": 353
         },
         {
           "name": "tellsInFile",
           "kind": "function",
-          "line": 323
+          "line": 372
         }
       ]
     },

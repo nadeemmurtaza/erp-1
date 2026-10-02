@@ -211,7 +211,7 @@ export function Dialog({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-900"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

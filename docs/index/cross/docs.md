@@ -73,14 +73,14 @@ _no second-level headings_
 
 - Dependency standard  <sub>:11</sub>
 
-### `.claude/rules/design.md`  <sub>165 lines</sub>
+### `.claude/rules/design.md`  <sub>169 lines</sub>
 
 - The design system  <sub>:17</sub>
 - Think like the designer, then write the code  <sub>:42</sub>
 - Read the chapter before you build the thing  <sub>:60</sub>
 - The obligations, stated so they can be checked  <sub>:76</sub>
-- Promoting something into the system  <sub>:146</sub>
-- What is not enforced by any command  <sub>:153</sub>
+- Promoting something into the system  <sub>:150</sub>
+- What is not enforced by any command  <sub>:157</sub>
 
 ### `.claude/rules/performance.md`  <sub>42 lines</sub>
 
@@ -101,18 +101,18 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>193 lines</sub>
+### `.claude/rules/ui.md`  <sub>198 lines</sub>
 
 - Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:106</sub>
-- No dead ends  <sub>:146</sub>
+- Borders and boxes  <sub>:111</sub>
+- No dead ends  <sub>:151</sub>
 
-### `.claude/skills/restyle/SKILL.md`  <sub>88 lines</sub>
+### `.claude/skills/restyle/SKILL.md`  <sub>89 lines</sub>
 
 - 1. Count the tells  <sub>:18</sub>
-- 2. Find the tells a script cannot see  <sub>:30</sub>
-- 3. Restyle, smallest edit first  <sub>:54</sub>
-- 4. Prove it  <sub>:73</sub>
+- 2. Find the tells a script cannot see  <sub>:31</sub>
+- 3. Restyle, smallest edit first  <sub>:55</sub>
+- 4. Prove it  <sub>:74</sub>
 
 ### `.claude/skills/ux-audit/SKILL.md`  <sub>108 lines</sub>
 
@@ -333,24 +333,24 @@ _no second-level headings_
 - Visual principles  <sub>:56</sub>
 - Decision principles  <sub>:67</sub>
 
-### `docs/design/principles-laws/10-laws.md`  <sub>920 lines</sub>
+### `docs/design/principles-laws/10-laws.md`  <sub>924 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
-- COG · Cognition  <sub>:150</sub>
-- ACT · Action and time  <sub>:291</sub>
-- HEU · Nielsen's ten, ruled  <sub>:381</sub>
-- TYP · Typography  <sub>:439</sub>
-- COL · Colour  <sub>:501</sub>
-- SPA · Space, ratio and the shape of a page  <sub>:557</sub>
-- MOT · Motion  <sub>:642</sub>
-- ACC · Accessibility  <sub>:698</sub>
-- GLO · Globalization  <sub>:760</sub>
-- Where the card-deck laws are built  <sub>:823</sub>
-- Where the two reels' laws are built  <sub>:849</sub>
-- Where the copy laws are built  <sub>:868</sub>
-- What this chapter does not settle  <sub>:885</sub>
-- Sources  <sub>:900</sub>
+- COG · Cognition  <sub>:154</sub>
+- ACT · Action and time  <sub>:295</sub>
+- HEU · Nielsen's ten, ruled  <sub>:385</sub>
+- TYP · Typography  <sub>:443</sub>
+- COL · Colour  <sub>:505</sub>
+- SPA · Space, ratio and the shape of a page  <sub>:561</sub>
+- MOT · Motion  <sub>:646</sub>
+- ACC · Accessibility  <sub>:702</sub>
+- GLO · Globalization  <sub>:764</sub>
+- Where the card-deck laws are built  <sub>:827</sub>
+- Where the two reels' laws are built  <sub>:853</sub>
+- Where the copy laws are built  <sub>:872</sub>
+- What this chapter does not settle  <sub>:889</sub>
+- Sources  <sub>:904</sub>
 
 ### `docs/design/process-governance/08-governance.md`  <sub>145 lines</sub>
 
@@ -3007,7 +3007,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>11,418 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,488 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>

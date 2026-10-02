@@ -85,7 +85,11 @@ same kind of thing.
 **Here** — **one visual treatment means one kind of thing, product-wide.** If
 a pill is a status, nothing that is not a status may be a pill. This is the
 perceptual half of `COL-1`, and it is why a second status component is a
-defect and not a duplicate.
+defect and not a duplicate. **A button is never round**: a circular or pill
+button is a second button shape, so every button, link-as-button and icon
+button wears the house corner (`.btn`, `.icon-btn`, or `rounded`, which
+resolves to `--radius`). Circles are for avatars, dots, spinners and count
+badges; `check-tells` fails `round-button`.
 **Fails when** — a filter chip and a status badge look identical, so users
 click a status trying to filter by it.
 

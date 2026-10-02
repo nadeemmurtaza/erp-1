@@ -97,7 +97,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-rebrand.mjs` | script | 292 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
 | `check-rules.mjs` | script | 216 |  |
-| `check-tells.mjs` | script | 559 |  |
+| `check-tells.mjs` | script | 608 |  |
 | `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |

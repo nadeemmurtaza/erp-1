@@ -15,9 +15,9 @@ Split by area so you load one, not all of them.
 | apps/pos | 33 | 2,668 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 114 | 13,131 | [files/packages.md](../files/packages.md) |
-| docs/* | 437 | 91,976 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 64 | 32,838 | [files/infra.md](../files/infra.md) |
-| repository root files | 218 | 22,032 | [files/root.md](../files/root.md) |
+| docs/* | 437 | 92,050 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 64 | 32,887 | [files/infra.md](../files/infra.md) |
+| repository root files | 218 | 22,042 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains

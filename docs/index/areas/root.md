@@ -3,7 +3,7 @@
 
 # repository root files
 
-218 files · 22,032 lines
+218 files · 22,042 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -21,8 +21,8 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `.claude` | 2 | 49 | json |
 | `.claude/agents` | 9 | 388 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
-| `.claude/rules` | 10 | 606 | doc |
-| `.claude/skills/restyle` | 1 | 88 | doc |
+| `.claude/rules` | 10 | 615 | doc |
+| `.claude/skills/restyle` | 1 | 89 | doc |
 | `.claude/skills/ux-audit` | 1 | 108 | doc |
 | `.claude/skills/ux-design` | 1 | 122 | doc |
 | `.claude/skills/ux-review` | 1 | 123 | doc |
@@ -61,8 +61,8 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/src/modules/billing/plans.service.spec.ts` | 225 | unit test |  |
 | `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
+| `.claude/rules/ui.md` | 198 | doc |  |
 | `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | 195 | unit test |  |
-| `.claude/rules/ui.md` | 193 | doc |  |
 
 
 ---

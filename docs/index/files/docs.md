@@ -81,7 +81,7 @@ All 437 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-principles.md` | doc | 83 |  |
-| `10-laws.md` | doc | 920 |  |
+| `10-laws.md` | doc | 924 |  |
 
 ### `docs/design/process-governance` (5)
 
@@ -563,7 +563,7 @@ All 437 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 11418 |  |
+| `DECISIONS.md` | doc | 11488 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |

@@ -39,8 +39,16 @@ error states and seven-width pass. The app is not "shipped" until a user
 holding only `work.contribution.view_own` can open it and see their own
 credit.
 
-## 5. Open decision carried from doc 231
+## 5. Decision recorded (owner: "keep both for now")
 
-Client-side encryption as the default (strongest, but a lost key is
-unrecoverable by the platform) versus a server-held key (easier, weaker against
-a malicious operator). Needs the owner's call before WO-231.5.
+Both protection modes ship, chosen **per vault by its owners at creation**
+(doc 231 §3.3): `CLIENT_SIDE` (strongest; a lost key is unrecoverable by the
+platform) and `SERVER_HELD` (recoverable and searchable; weaker against a
+malicious operator). **There is no default yet.** The create-vault screen shows
+the comparison and requires a choice; `vault.defaultMode` in `Setting` can set
+one later once real usage shows which owners prefer. Revisit after the first
+client vaults exist, with evidence of which mode owners pick and how often keys
+are lost.
+
+The app shell adds one screen element for this: the vault page always shows the
+active mode and what it does and does not protect against.

@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2672,
-    "lines": 430648,
+    "lines": 430703,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -1402,8 +1402,8 @@
     },
     "docs": {
       "files": 463,
-      "lines": 95977,
-      "bytes": 5870142,
+      "lines": 96032,
+      "bytes": 5874480,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -96999,8 +96999,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 11857,
-      "bytes": 743640,
+      "lines": 11869,
+      "bytes": 744414,
       "doc": "",
       "symbols": []
     },
@@ -97161,8 +97161,8 @@
       "path": "docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 524,
-      "bytes": 38642,
+      "lines": 553,
+      "bytes": 41516,
       "doc": "",
       "symbols": []
     },
@@ -98835,8 +98835,8 @@
       "path": "docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 47,
-      "bytes": 2177,
+      "lines": 55,
+      "bytes": 2671,
       "doc": "",
       "symbols": []
     },
@@ -98844,8 +98844,8 @@
       "path": "docs/implementation/launchpad-apps/README.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 73,
-      "bytes": 4647,
+      "lines": 79,
+      "bytes": 4843,
       "doc": "",
       "symbols": []
     },

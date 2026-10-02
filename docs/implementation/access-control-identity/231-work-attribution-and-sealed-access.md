@@ -186,15 +186,17 @@ real role (the catalogue-vs-roles trap named in `CLAUDE.md`).
    when anything about membership changes.
 6. **Emergency access is possible but loud**, and needs the people the secret
    belongs to — not the boss alone.
-7. **Be honest about the trade-off.** Real confidentiality from administrators
-   means the platform cannot recover a lost key by itself. That cost is named
-   below with its mitigation, not hidden.
+7. **Be honest about the trade-off, and let the owners choose it.** Real
+   confidentiality from administrators (`CLIENT_SIDE`) means the platform
+   cannot recover a lost key by itself; the easier `SERVER_HELD` mode protects
+   less against a malicious operator. Both exist (§3.3), per vault, with the
+   cost of each shown at creation — never decided for the owners silently.
 
 ### 3.3 The sealed vault
 
 | Table | Key columns |
 |---|---|
-| `SealedVault` | `id`, `projectId`/`subjectRef`, `name`, `status`, `createdByUserId`, `policyVersionId` |
+| `SealedVault` | `id`, `projectId`/`subjectRef`, `name`, `status`, `protectionMode` (`CLIENT_SIDE` `SERVER_HELD`), `createdByUserId`, `policyVersionId` |
 | `VaultMember` | `vaultId`, `userId` **or** `externalPartyId`, `role` (`OWNER` `CONTRIBUTOR` `REVIEWER`), `wrappedKey` (the vault's data key encrypted to that member), `addedBy`, `addedAt`, `expiresAt?` |
 | `VaultItem` | `vaultId`, `kind` (`SECRET`, `FILE`, `NOTE`, `CONNECTION`), `ciphertext`, `nonce`, `version`, `createdBy`, `masked` (display policy) |
 | `VaultEvent` | append-only, hash-chained like §2.3: `view`, `use`, `grant`, `revoke`, `rotate`, `breakglass` |
@@ -207,18 +209,43 @@ real role (the catalogue-vs-roles trap named in `CLAUDE.md`).
   operator.** This is the per-recipient-key approach in §9; the cryptographic
   primitive sits behind the existing pluggable-crypto direction of doc 126 so
   an algorithm can be rotated by a reviewed code change.
-* **Where decryption happens.** Strongest mode: **in the member's browser or
-  client** (zero-knowledge — the server stores only ciphertext). A deployment
-  that cannot do client-side crypto uses a **KMS-held key bound to the member
-  set**, which protects against a database leak but **not** against a
-  malicious platform operator; the UI states which mode is in force (never
-  claim zero-knowledge when it is not).
+* **Where decryption happens — both modes ship (owner decision: "keep both
+  for now").** Each vault has a `protectionMode`, chosen **by its owners when
+  the vault is created**:
+
+  | | `CLIENT_SIDE` | `SERVER_HELD` |
+  |---|---|---|
+  | Who can decrypt | only members' own clients; the server stores ciphertext only | the server's key service, **bound to the member set** (decrypts only for a signed-in member) |
+  | Protects against a database leak | yes | yes |
+  | Protects against a malicious or compromised platform operator | **yes** | **no** — an operator with key-service access could decrypt |
+  | Lost member key / device | **unrecoverable by the platform**; needs another owner (or split-key recovery) | recoverable: the platform re-issues access after owner approval |
+  | Server-side search, previews, virus scanning | not possible on content | possible |
+  | Review links / brokered sessions (§3.4) | work, but the member's client must be online to unwrap | work with no member client online |
+  | Best for | the highest-value secrets (client credentials, legal, keys) | working documents the team needs to search and recover |
+
+  **No global default is set.** The create-vault screen shows this table and
+  makes the owner choose; nothing is preselected, so the weaker option is never
+  chosen by accident. A deployment may set `vault.defaultMode` in `Setting`
+  later; until it does, a choice is required. The UI always shows the active
+  mode on the vault page, and **never says "zero-knowledge" about a
+  `SERVER_HELD` vault.**
+* **Changing mode.** `SERVER_HELD → CLIENT_SIDE` (an upgrade): needs one owner;
+  the data key is re-wrapped to members' client keys and the server copy is
+  destroyed (audited, irreversible by design). `CLIENT_SIDE → SERVER_HELD` (a
+  downgrade): needs **all owners'** approval, because it hands the platform a
+  capability it did not have, and is clearly flagged to every member.
+* **One interface, two implementations.** A single `VaultKeyProvider`
+  interface (wrap, unwrap, rotate, destroy) with a `ClientSideKeyProvider` and a
+  `ServerHeldKeyProvider`. Everything above it — membership, review grants,
+  audit chain — is mode-agnostic, so keeping both does not double the code, only
+  the key-handling and its tests.
 * **Membership changes need the owners.** Adding a member requires an existing
   `OWNER` (the client or the developer) to approve; the new wrapped key is
   created by an owner's client, so **an admin cannot add themselves**. Every
   member is notified of every change.
-* **Recovery (the honest cost).** Because the platform cannot decrypt, a lost
-  member key is not recoverable by support. Mitigation: a vault always has
+* **Recovery (the honest cost, `CLIENT_SIDE` vaults).** Because the platform
+  cannot decrypt, a lost member key is not recoverable by support. (A
+  `SERVER_HELD` vault recovers by owner-approved re-issue.) Mitigation: a vault always has
   **at least two `OWNER`s** (client + developer) so either can re-wrap for a
   replacement; an optional **split-key recovery** (Shamir secret sharing, e.g.
   2-of-3 among client, developer and a named custodian) for deployments that
@@ -313,7 +340,9 @@ confirm, not requirements already agreed.
 4. Expired and revoked links return 401/403 within 5 s of expiry/revocation.
 5. Removing a member rotates the data key; the removed member's old wrapped key cannot decrypt a post-removal item.
 6. A break-glass elevation without both owner roles' approval cannot be created; with approval it auto-expires and records every read.
-7. The UI states the active protection mode (client-side zero-knowledge vs KMS-bound) on the vault page.
+7. The UI states the active `protectionMode` on the vault page; a `SERVER_HELD` vault never displays "zero-knowledge" wording; the create screen has no preselected mode unless `vault.defaultMode` is set.
+7a. In a `CLIENT_SIDE` vault the server holds no key able to decrypt an item (test: with full DB and key-service access, decrypting fails); in a `SERVER_HELD` vault only a signed-in member can trigger decryption.
+7b. Downgrade `CLIENT_SIDE → SERVER_HELD` is refused without every owner's approval; upgrade destroys the server-held key and is audited.
 8. No vault view, use, grant, revoke or break-glass event is missing from `VaultEvent`; tampering with a row fails chain verification.
 
 ---
@@ -358,7 +387,7 @@ work without being able to open it.
 **Dry run before live** — dispute routing is a pure function `route(dispute, orgTree)` that provably excludes the conflicted chain, replayable over past disputes with no write; review-grant scope preview shows exactly what a link will expose before issuing.
 **Click the number** — every "credited to" figure drills to the contribution rows and evidence; the authoritative record is `WorkContribution`, any summary reconciles to it and flags deltas.
 **Three silhouettes** — one freelancer-and-client pair (one vault, two owners), a 40-person agency (vault per client project), a group (vaults per entity); the columns exist from migration one but the Solo screen shows one list.
-**The absent collaborator** — no `notify` → in-app alerts only; no `approvals` → owner approval is built into the vault flow; no client-side crypto available → KMS-bound mode with the weaker guarantee **stated in the UI**; no tasks module → contributions still from documents/files/reviews.
+**The absent collaborator** — no `notify` → in-app alerts only; no `approvals` → owner approval is built into the vault flow; a browser/client that cannot run the crypto → only `SERVER_HELD` can be chosen there, with the weaker guarantee **stated in the UI**; no tasks module → contributions still from documents/files/reviews.
 **The second copy of the write** — unique `(subjectType, subjectId, actorUserId, kind, evidenceRef)` for contributions; unique `(vaultId, eventKey)` for vault events; a retried grant returns the same grant.
 **The hundred-thousandth row** — contributions and vault events reach tens of millions: partitioned by month, indexed `(actorUserId, occurredAt)` and `(subjectId)`; verification runs per subject chain, not over the whole table; list pages cursor-paged.
 **The adoption test** — contribution and grant ids are random 128-bit values, safe for two nodes to mint offline; chain hashes are per subject so merges do not collide.
@@ -378,7 +407,7 @@ work without being able to open it.
 | 231.2 | Contribution views (own / team), "credited to" with drill-down, discrepancy flag | 231.1 |
 | 231.3 | `CreditEndorsement`/`CreditClaim`/`CreditDispute` + recusal router + retaliation watch | 231.1 |
 | 231.4 | Wire doc 26 reviews to read contributions | 231.2 |
-| 231.5 | `SealedVault` schema, key-wrap/AEAD interfaces (doc 126), owner-approved membership | — |
+| 231.5 | `SealedVault` schema with `protectionMode`, `VaultKeyProvider` interface (doc 126) + **both** `ClientSideKeyProvider` and `ServerHeldKeyProvider`, owner-approved membership, mode upgrade/downgrade | — |
 | 231.6 | Vault UI (list, items, masked display, audit) + `VaultEvent` chain | 231.5 |
 | 231.7 | `ReviewGrant` + guard + masked review mode | 231.5 |
 | 231.8 | Vault-brokered sessions and ephemeral credentials (one provider each, behind interfaces) | 231.5 |
@@ -400,7 +429,7 @@ disputes beyond the HR queue. Proof of work done entirely outside the system.
 ADR (Proposed, to append): *credit as an append-only, system-written,
 hash-chained contribution record that no one can write for another person;
 sealed vaults with per-member wrapped keys that the org tree and admins cannot
-read; delegated, scoped, expiring review grants instead of shared passwords.*
+read, in two per-vault protection modes (`CLIENT_SIDE`, `SERVER_HELD`) with no global default yet; delegated, scoped, expiring review grants instead of shared passwords.*
 
 ## 9. Sources (general)
 

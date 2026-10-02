@@ -11854,3 +11854,15 @@ without deposits. Auction legality needs per-market review. C2C stays unbuilt.
 ### Status
 
 Proposed. Nothing built.
+
+### ADR-086 addendum (2026-10-02) — vault protection mode: both ship, chosen per vault, no default
+
+Owner decision, "keep both for now": sealed vaults support `CLIENT_SIDE` and
+`SERVER_HELD` protection modes, selected by a vault's owners at creation, with
+no global default (`vault.defaultMode` unset until the owner sets one).
+Reasoning: neither mode dominates (confidentiality from the operator vs.
+recovery and search), and the owner chose not to decide for every client in
+advance. Cost accepted: two key providers behind one `VaultKeyProvider`
+interface, and two sets of key-handling tests. Downgrade to `SERVER_HELD`
+needs every owner; upgrade destroys the server-held key. Revisit with usage
+evidence after the first client vaults. Doc 231 §3.3 holds the detail.

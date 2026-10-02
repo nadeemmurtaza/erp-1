@@ -563,7 +563,7 @@ All 463 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 11857 |  |
+| `DECISIONS.md` | doc | 11869 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -586,7 +586,7 @@ All 463 tracked files in `docs/*`, by directory.
 | `18-identity-verification.md` | doc | 149 |  |
 | `21-access-over-the-org-tree.md` | doc | 294 |  |
 | `212-role-scope-enforcement-gap.md` | doc | 129 |  |
-| `231-work-attribution-and-sealed-access.md` | doc | 524 |  |
+| `231-work-attribution-and-sealed-access.md` | doc | 553 |  |
 
 ### `docs/implementation/admin-platform` (5)
 
@@ -862,8 +862,8 @@ All 463 tracked files in `docs/*`, by directory.
 | `232-launchpad-and-app-manifest.md` | doc | 188 |  |
 | `233-mail-app.md` | doc | 208 |  |
 | `234-auction-app.md` | doc | 265 |  |
-| `235-vault-and-work-credit-app.md` | doc | 47 |  |
-| `README.md` | doc | 73 |  |
+| `235-vault-and-work-credit-app.md` | doc | 55 |  |
+| `README.md` | doc | 79 |  |
 
 ### `docs/implementation/lots-serials-traceability` (3)
 

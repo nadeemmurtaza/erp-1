@@ -70,3 +70,9 @@ doc 232 §4 for why.
 2. Auction: which jurisdictions first? Auction rules vary by country and by item type; legal review is outside this design (234 §14).
 3. Auction: is a **deposit hold** on a bidder's payment method available through `payments`, or must v1 run on account standing alone? (234 §6.)
 4. Launchpad: should licensing (doc 211) gate an app per tenant from day one? (232 §8.)
+
+## Decisions taken
+
+* **Vault protection mode (owner, "keep both for now"):** both `CLIENT_SIDE`
+  and `SERVER_HELD` ship, chosen per vault, no global default yet (doc 231 §3.3,
+  doc 235 §5).

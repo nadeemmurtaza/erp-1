@@ -1956,18 +1956,18 @@ _no second-level headings_
 - 5. Out of scope (this pass)  <sub>:109</sub>
 - Acceptance criteria (for the work order that builds this)  <sub>:121</sub>
 
-### `docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md`  <sub>524 lines</sub>
+### `docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md`  <sub>553 lines</sub>
 
 - 1. The two problems, in the owner's words  <sub>:18</sub>
 - 2. Problem 1 — false credit  <sub>:40</sub>
 - 3. Problem 2 — confidential information that the hierarchy must not reach  <sub>:159</sub>
-- 4. How the two problems meet  <sub>:321</sub>
-- 5. Scope lenses (feature-scope map)  <sub>:341</sub>
-- 6. Work orders  <sub>:373</sub>
-- 7. Out of scope here  <sub>:391</sub>
-- 8. Decision to record  <sub>:398</sub>
-- 9. Sources (general)  <sub>:405</sub>
-- 10. Comparison with Vyzno (from the owner's pasted page text)  <sub>:420</sub>
+- 4. How the two problems meet  <sub>:350</sub>
+- 5. Scope lenses (feature-scope map)  <sub>:370</sub>
+- 6. Work orders  <sub>:402</sub>
+- 7. Out of scope here  <sub>:420</sub>
+- 8. Decision to record  <sub>:427</sub>
+- 9. Sources (general)  <sub>:434</sub>
+- 10. Comparison with Vyzno (from the owner's pasted page text)  <sub>:449</sub>
 
 ### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>253 lines</sub>
 
@@ -3024,7 +3024,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>11,857 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>11,869 lines</sub>
 
 - How to read this  <sub>:13</sub>
 - ADR-001 — A modular monolith, one process per node  <sub>:62</sub>
@@ -4036,21 +4036,22 @@ _no second-level headings_
 - 16. Acceptance criteria  <sub>:248</sub>
 - 17. Work orders  <sub>:262</sub>
 
-### `docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md`  <sub>47 lines</sub>
+### `docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md`  <sub>55 lines</sub>
 
 - 1. What the app is  <sub>:8</sub>
 - 2. Manifest sketch (doc 232 §3)  <sub>:17</sub>
 - 3. Interaction with other apps  <sub>:27</sub>
 - 4. Build order  <sub>:34</sub>
-- 5. Open decision carried from doc 231  <sub>:42</sub>
+- 5. Decision recorded (owner: "keep both for now")  <sub>:42</sub>
 
-### `docs/implementation/launchpad-apps/README.md`  <sub>73 lines</sub>
+### `docs/implementation/launchpad-apps/README.md`  <sub>79 lines</sub>
 
 - Read in this order  <sub>:11</sub>
 - Three words that must not blur  <sub>:20</sub>
 - Starting catalogue  <sub>:33</sub>
 - Recommended build order (agreed)  <sub>:58</sub>
 - Open questions for the owner (collected)  <sub>:67</sub>
+- Decisions taken  <sub>:74</sub>
 
 ### `docs/implementation/lots-serials-traceability/158-serialized-unit-tracking.md`  <sub>324 lines</sub>
 

@@ -1299,7 +1299,7 @@ All 1,202 tracked files in `apps/api`, by directory.
 | `analytics.products.spec.ts` | unit test | 265 |  |
 | `analytics.purchasing.spec.ts` | unit test | 388 |  |
 | `analytics.sales.spec.ts` | unit test | 154 |  |
-| `analytics.service.ts` | service | 2590 |  |
+| `analytics.service.ts` | service | 2593 |  |
 | `analytics.summary.spec.ts` | unit test | 97 |  |
 | `analytics.workshop.spec.ts` | unit test | 185 |  |
 | `supply-chain-digest.cron.spec.ts` | unit test | 254 |  |

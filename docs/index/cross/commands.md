@@ -191,7 +191,7 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 | `scripts/check-rebrand.mjs` | 292 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
 | `scripts/check-rules.mjs` | 224 |  |
-| `scripts/check-tells.mjs` | 648 |  |
+| `scripts/check-tells.mjs` | 658 |  |
 | `scripts/check.mjs` | 164 |  |
 | `scripts/idx.mjs` | 486 |  |
 | `scripts/install-git-hooks.mjs` | 94 |  |

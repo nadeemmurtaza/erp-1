@@ -2137,8 +2137,11 @@ export class AnalyticsService {
    * codebase currently consumes.
    */
   async inventoryMovements(days: number): Promise<InventoryMovements> {
-    const start = this.windowStart(days);
     const timeZone = await this.settings.get<string>(SettingKey.StoreTimezone);
+    // Shop-local midnight, not the server's: the day keys below are shop days, so a
+    // server-local start drops the shop's current day for the hours the shop is
+    // already a calendar day ahead of the server (00:00-05:00 in Karachi on a UTC host).
+    const start = startOfShopDaysAgo(new Date(), days, timeZone);
 
     const [seriesRows, reasonRows, recent] = await Promise.all([
       this.prisma.$queryRawUnsafe<Array<{ day: string; in: bigint; out: bigint }>>(

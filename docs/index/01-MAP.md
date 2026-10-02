@@ -32,12 +32,12 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 
 | Path | Files | Lines | What it is |
 |---|---|---|---|
-| `apps/api` | 1,202 | 161,311 | NestJS API — modules, core platform, Prisma schema and migrations |
+| `apps/api` | 1,202 | 161,314 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `apps/web` | 541 | 97,703 | Next.js — admin console and customer storefront in one app |
 | `docs` | 463 | 96,075 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 42 | 29,286 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
-| `scripts` | 29 | 11,374 | repository checks and generators (lint gates, this index) |
+| `scripts` | 29 | 11,384 | repository checks and generators (lint gates, this index) |
 | `packages/shared` | 75 | 9,502 | brand, money, permissions, measurements, entities |
 | `apps/mobile` | 49 | 6,906 | Expo — customer mobile app |
 | `packages/desktop-runtime` | 21 | 2,891 |  |
@@ -45,7 +45,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 | `.claude` | 28 | 1,889 |  |
 | `packages/pos-core` | 14 | 682 | basket, tender, receipt and outbox maths, UI-free |
 | `deploy` | 12 | 401 | systemd units, backup and alert scripts, mail configuration |
-| `.github` | 3 | 356 | CI and deployment workflows |
+| `.github` | 3 | 375 | CI and deployment workflows |
 | `packages/config` | 4 | 101 | shared tsconfig and eslint bases |
 | `.junie` | 1 | 81 |  |
 | `.cursor` | 1 | 0 |  |

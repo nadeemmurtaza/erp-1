@@ -3,7 +3,7 @@
 
 # apps/api — NestJS API, the only writer of business state
 
-1,202 files · 161,311 lines
+1,202 files · 161,314 lines
 
 
 NestJS 11 + Prisma + Postgres. **The only writer of business state** — every
@@ -32,7 +32,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | `apps/api/prisma/schema` | 176 | 17,808 | prisma schema, migration, toml |
 | `apps/api/src` | 2 | 168 | nest module, module |
 | `apps/api/src/core` | 223 | 28,536 | unit test, service, module, controller |
-| `apps/api/src/modules` | 754 | 101,170 | nest module, unit test, service, controller |
+| `apps/api/src/modules` | 754 | 101,173 | nest module, unit test, service, controller |
 | `apps/api/test` | 32 | 9,407 | e2e test, unit test, module |
 | `apps/api/test/support` | 2 | 81 | module |
 
@@ -51,7 +51,7 @@ Structure: `src/core/` is the shared platform every deployment runs;
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `apps/api/prisma/seed.ts` | 3,199 | module |  |
-| `apps/api/src/modules/analytics/analytics.service.ts` | 2,590 | service |  |
+| `apps/api/src/modules/analytics/analytics.service.ts` | 2,593 | service |  |
 | `apps/api/src/modules/orders/orders.service.ts` | 1,400 | service |  |
 | `apps/api/src/core/notifications/email/templates.ts` | 1,124 | module |  |
 | `apps/api/test/orders.e2e-spec.ts` | 1,088 | e2e test |  |

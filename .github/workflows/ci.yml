@@ -27,7 +27,10 @@ env:
   JWT_ACCESS_SECRET: ci-access-secret-at-least-32-characters-long-000
   JWT_REFRESH_SECRET: ci-refresh-secret-at-least-32-characters-long-00
   APP_ENCRYPTION_KEY: ci-app-encryption-key-32-bytes00
-  MODULES: catalog,measurements,cart,orders,payments,stitching,crm,analytics,reports
+  # reviews, wishlist and loyalty are on because test/customer-portal.e2e-spec.ts
+  # and test/api-keys.e2e-spec.ts exercise their routes; with them off those
+  # routes answer 404 and the suites fail.
+  MODULES: catalog,measurements,cart,orders,payments,stitching,crm,analytics,reports,reviews,wishlist,loyalty
   PAYMENT_PROVIDERS: cod,bank_transfer
   NOTIFICATION_CHANNELS: log
   # The API's dedicated rate-limit Redis (the `redis` service below). Sign-in
@@ -41,7 +44,11 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16-alpine
+        # pgvector, not plain postgres: migration 20260925050000_add_ai_layer
+        # runs CREATE EXTENSION vector and builds an HNSW index, which the
+        # alpine image cannot do. Same major version (16), same env and health
+        # check, so nothing else in this job changes.
+        image: pgvector/pgvector:pg16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -76,8 +83,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate Prisma client
-        run: pnpm db:generate
+      # `pnpm db:generate` is the API's client only. @newax/platform has its own
+      # schema and its own generated client (git-ignored), and its typecheck,
+      # tests and build fail with "Cannot find module '../../generated/prisma'"
+      # without it. Generating needs no database.
+      - name: Generate Prisma clients
+        run: pnpm db:generate && pnpm --filter @newax/platform db:generate
 
       - name: Apply migrations
         run: pnpm --filter @newax/api db:deploy
@@ -116,7 +127,11 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16-alpine
+        # pgvector, not plain postgres: migration 20260925050000_add_ai_layer
+        # runs CREATE EXTENSION vector and builds an HNSW index, which the
+        # alpine image cannot do. Same major version (16), same env and health
+        # check, so nothing else in this job changes.
+        image: pgvector/pgvector:pg16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -159,8 +174,12 @@ jobs:
       - name: Install Playwright's Chromium
         run: npx playwright install --with-deps chromium
 
-      - name: Generate Prisma client
-        run: pnpm db:generate
+      # `pnpm db:generate` is the API's client only. @newax/platform has its own
+      # schema and its own generated client (git-ignored), and its typecheck,
+      # tests and build fail with "Cannot find module '../../generated/prisma'"
+      # without it. Generating needs no database.
+      - name: Generate Prisma clients
+        run: pnpm db:generate && pnpm --filter @newax/platform db:generate
 
       - name: Apply migrations
         run: pnpm --filter @newax/api db:deploy

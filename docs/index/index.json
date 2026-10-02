@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2685,
-    "lines": 433072,
+    "lines": 433104,
     "routes": 887,
     "controllers": 162,
     "models": 316,
@@ -1372,14 +1372,14 @@
     },
     "infra": {
       "files": 64,
-      "lines": 33111,
-      "bytes": 1319610,
+      "lines": 33140,
+      "bytes": 1321877,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
       "files": 1202,
-      "lines": 161311,
-      "bytes": 6323222,
+      "lines": 161314,
+      "bytes": 6323502,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -60036,8 +60036,8 @@
       "path": ".github/workflows/ci.yml",
       "area": "infra",
       "kind": "yaml",
-      "lines": 184,
-      "bytes": 6414,
+      "lines": 203,
+      "bytes": 7891,
       "doc": "",
       "symbols": []
     },
@@ -67388,8 +67388,8 @@
       "path": "apps/api/src/modules/analytics/analytics.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 2590,
-      "bytes": 109766,
+      "lines": 2593,
+      "bytes": 110046,
       "doc": "",
       "symbols": [
         {
@@ -103277,8 +103277,8 @@
       "path": "scripts/check-tells.mjs",
       "area": "infra",
       "kind": "script",
-      "lines": 648,
-      "bytes": 32036,
+      "lines": 658,
+      "bytes": 32826,
       "doc": "",
       "symbols": [
         {
@@ -103299,27 +103299,27 @@
         {
           "name": "blankComments",
           "kind": "function",
-          "line": 362
+          "line": 372
         },
         {
           "name": "findTell",
           "kind": "function",
-          "line": 370
+          "line": 380
         },
         {
           "name": "countDynamic",
           "kind": "function",
-          "line": 381
+          "line": 391
         },
         {
           "name": "compare",
           "kind": "function",
-          "line": 387
+          "line": 397
         },
         {
           "name": "tellsInFile",
           "kind": "function",
-          "line": 406
+          "line": 416
         }
       ]
     },

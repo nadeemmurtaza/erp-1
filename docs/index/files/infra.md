@@ -43,7 +43,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `ci.yml` | yaml | 184 |  |
+| `ci.yml` | yaml | 203 |  |
 | `deploy-cloudflare.yml` | yaml | 91 |  |
 
 ### `deploy` (3)
@@ -97,7 +97,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check-rebrand.mjs` | script | 292 |  |
 | `check-route-permissions.mjs` | script | 136 |  |
 | `check-rules.mjs` | script | 224 |  |
-| `check-tells.mjs` | script | 648 |  |
+| `check-tells.mjs` | script | 658 |  |
 | `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |

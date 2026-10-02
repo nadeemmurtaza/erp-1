@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-64 files · 33,111 lines
+64 files · 33,140 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -21,11 +21,11 @@ on them.
 |---|---|---|---|
 | `.` | 20 | 20,980 | file, example, json, yaml |
 | `.github` | 1 | 81 | doc |
-| `.github/workflows` | 2 | 275 | yaml |
+| `.github/workflows` | 2 | 294 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 26 | 9,672 | script, py |
+| `scripts` | 26 | 9,682 | script, py |
 | `scripts/lib` | 3 | 1,702 | utility |
 
 
@@ -44,8 +44,8 @@ on them.
 | `scripts/build-index.mjs` | 2,629 | script |  |
 | `scripts/lib/index-scan.mjs` | 965 | utility | Scanners for the repository index. |
 | `scripts/sync-client.mjs` | 701 | script | scripts/sync-client.mjs — the Extractor. |
+| `scripts/check-tells.mjs` | 658 | script |  |
 | `scripts/check-contrast.mjs` | 650 | script |  |
-| `scripts/check-tells.mjs` | 648 | script |  |
 | `scripts/check-overflow.mjs` | 644 | script |  |
 | `scripts/check-module-boundaries.mjs` | 624 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |

@@ -41,11 +41,11 @@ Every top-level export in `infra`, with the line to open.
 | `check-tells.mjs` | `FLAG_FILE` | const | :63 | Country flags are the one pictograph that is data, not decoration: a country or locale picker shows… |
 | `check-tells.mjs` | `TELLS` | const | :73 | The tells. |
 | `check-tells.mjs` | `BASELINE` | const | :292 | The debt on the day this was written, per tell and per file: a count of LINES carrying the tell. |
-| `check-tells.mjs` | `blankComments` | function | :362 | Blank comments to spaces, keeping every newline, so line numbers still point at the source. |
-| `check-tells.mjs` | `findTell` | function | :370 | The line numbers (one per line, however many times it matches) where `tell` fires in `source`. |
-| `check-tells.mjs` | `countDynamic` | function | :381 | How many times `tell.dynamic` (the unreadable twin of a literal) fires; counted, never failed. |
-| `check-tells.mjs` | `compare` | function | :387 | A tell is over when a file has more hit lines than its baseline allows (an absent entry allows none… |
-| `check-tells.mjs` | `tellsInFile` | function | :406 | Every tell in ONE file, with its lines: what `/restyle` reads before it edits, because the whole-re… |
+| `check-tells.mjs` | `blankComments` | function | :372 | Blank comments to spaces, keeping every newline, so line numbers still point at the source. |
+| `check-tells.mjs` | `findTell` | function | :380 | The line numbers (one per line, however many times it matches) where `tell` fires in `source`. |
+| `check-tells.mjs` | `countDynamic` | function | :391 | How many times `tell.dynamic` (the unreadable twin of a literal) fires; counted, never failed. |
+| `check-tells.mjs` | `compare` | function | :397 | A tell is over when a file has more hit lines than its baseline allows (an absent entry allows none… |
+| `check-tells.mjs` | `tellsInFile` | function | :416 | Every tell in ONE file, with its lines: what `/restyle` reads before it edits, because the whole-re… |
 
 ### `scripts/lib`
 

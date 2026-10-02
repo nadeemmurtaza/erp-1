@@ -770,7 +770,7 @@ All 445 tracked files in `docs/*`, by directory.
 | `216-staff-operations-and-requests.md` | doc | 143 |  |
 | `217-tables-rooms-and-floor.md` | doc | 92 |  |
 | `218-staff-management-and-analytics.md` | doc | 98 |  |
-| `219-future-modules-roadmap.md` | doc | 115 |  |
+| `219-future-modules-roadmap.md` | doc | 117 |  |
 | `README.md` | doc | 52 |  |
 
 ### `docs/implementation/hr-people-org` (19)

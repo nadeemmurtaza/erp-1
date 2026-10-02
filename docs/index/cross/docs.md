@@ -3304,17 +3304,17 @@ _no second-level headings_
 - 7. Acceptance criteria  <sub>:85</sub>
 - 8. Work orders  <sub>:93</sub>
 
-### `docs/implementation/hospitality-qr-nfc/219-future-modules-roadmap.md`  <sub>115 lines</sub>
+### `docs/implementation/hospitality-qr-nfc/219-future-modules-roadmap.md`  <sub>117 lines</sub>
 
-- 1. Payments (online, at table or room)  <sub>:12</sub>
-- 2. WhatsApp  <sub>:27</sub>
-- 3. Loyalty  <sub>:39</sub>
-- 4. POS  <sub>:47</sub>
-- 5. KDS (kitchen display)  <sub>:56</sub>
-- 6. Subscriptions  <sub>:64</sub>
-- 7. Multi-branch / multi-property  <sub>:76</sub>
-- 8. Other doors worth keeping open (not committed)  <sub>:92</sub>
-- 9. Sequencing  <sub>:100</sub>
+- 1. Payments (online, at table or room)  <sub>:14</sub>
+- 2. WhatsApp  <sub>:29</sub>
+- 3. Loyalty  <sub>:41</sub>
+- 4. POS  <sub>:49</sub>
+- 5. KDS (kitchen display)  <sub>:58</sub>
+- 6. Subscriptions  <sub>:66</sub>
+- 7. Multi-branch / multi-property  <sub>:78</sub>
+- 8. Other doors worth keeping open (not committed)  <sub>:94</sub>
+- 9. Sequencing  <sub>:102</sub>
 
 ### `docs/implementation/hospitality-qr-nfc/README.md`  <sub>52 lines</sub>
 

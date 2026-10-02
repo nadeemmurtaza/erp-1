@@ -1,5 +1,7 @@
 # 219 — Future modules: roadmap and extension points
 
+> **Industry-specific module.** This belongs to the **hospitality sector pack** (hotels, cafés, restaurants), not to `core`. It is enabled only in hospitality deployments through the `MODULES` allowlist; other sectors never load it, and core never imports it. (Payments, WhatsApp, loyalty, POS and subscriptions below are reused `core` modules; only their hospitality-specific hooks live in this pack.)
+>
 > **Status: Planned, sequenced.** None is built in the first release. Each is a
 > **new module that attaches to an extension point or event the first release
 > already ships** — never a rewrite. The first release is designed so these

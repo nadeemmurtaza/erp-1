@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2654,
-    "lines": 428037,
+    "lines": 428039,
     "routes": 877,
     "controllers": 161,
     "models": 314,
@@ -1402,8 +1402,8 @@
     },
     "docs": {
       "files": 445,
-      "lines": 93366,
-      "bytes": 5703063,
+      "lines": 93368,
+      "bytes": 5703469,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -98232,8 +98232,8 @@
       "path": "docs/implementation/hospitality-qr-nfc/219-future-modules-roadmap.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 115,
-      "bytes": 5733,
+      "lines": 117,
+      "bytes": 6139,
       "doc": "",
       "symbols": []
     },

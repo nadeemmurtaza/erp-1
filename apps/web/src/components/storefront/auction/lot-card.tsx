@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { formatDateTime, formatMoney, type Locale } from '@newax/shared';
 import { Badge } from '@/components/ui';
@@ -11,7 +12,10 @@ import { CLOSING_SOON_MS, msUntil, type PublicLotSummary } from '@/lib/auction-l
 /**
  * One lot in the list: what it is, what it is at, and when it ends. The whole
  * card is the link (a lot has one thing to do, open it), so there is no button
- * inside it. Time on an open lot is counted against the server's clock
+ * inside it. It looks like one: the card recipe's lit surface and border at rest
+ * (`card-lit`, CRD-4), the lift and the shadow when the pointer or focus arrives
+ * (`lift`, CRD-6), and an arrow at the end that is there at rest too, because
+ * hover does not exist on a phone (`ACC-7`). Time on an open lot is counted against the server's clock
  * (`offsetMs`), so a device with a wrong clock is not shown a wrong ending.
  */
 export function LotCard({ lot, now, offsetMs }: { lot: PublicLotSummary; now: number; offsetMs: number }) {
@@ -36,11 +40,17 @@ export function LotCard({ lot, now, offsetMs }: { lot: PublicLotSummary; now: nu
   return (
     <Link
       href={ROUTES.storefront.auctionLot(lot.lotId)}
-      className="card lift flex min-h-[10rem] w-full flex-col gap-3 p-5"
+      className="group lift card-lit flex min-h-[10rem] w-full flex-col gap-3 p-5"
     >
-      <p className="eyebrow">
-        {t('lot', { number: lot.lotNo })} · {lot.auction.title}
-      </p>
+      <div className="flex items-start justify-between gap-3">
+        <p className="eyebrow min-w-0">
+          {t('lot', { number: lot.lotNo })} · {lot.auction.title}
+        </p>
+        <ArrowRight
+          aria-hidden="true"
+          className="h-icon-md w-icon-md shrink-0 text-neutral-900/60 transition-colors duration-normal ease-standard group-hover:text-neutral-900 group-focus-visible:text-neutral-900 rtl:rotate-180"
+        />
+      </div>
       <h2 className="line-clamp-2 text-base font-medium text-neutral-900">{lot.title}</h2>
 
       <div>

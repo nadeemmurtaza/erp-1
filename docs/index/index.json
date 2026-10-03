@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2729,
-    "lines": 442869,
+    "lines": 442879,
     "routes": 896,
     "controllers": 164,
     "models": 320,
@@ -1396,8 +1396,8 @@
     },
     "web": {
       "files": 562,
-      "lines": 100675,
-      "bytes": 3720425,
+      "lines": 100685,
+      "bytes": 3721103,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
@@ -92496,14 +92496,14 @@
       "path": "apps/web/src/components/storefront/auction/lot-card.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 75,
-      "bytes": 3047,
+      "lines": 85,
+      "bytes": 3725,
       "doc": "",
       "symbols": [
         {
           "name": "LotCard",
           "kind": "function",
-          "line": 17
+          "line": 21
         }
       ]
     },

@@ -11,7 +11,7 @@ Split by area so you load one, not all of them.
 | Area | Files | Lines | Open |
 |---|---|---|---|
 | apps/api | 1,224 | 167,355 | [files/api.md](../files/api.md) |
-| apps/web | 562 | 100,675 | [files/web.md](../files/web.md) |
+| apps/web | 562 | 100,685 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,671 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 114 | 13,207 | [files/packages.md](../files/packages.md) |

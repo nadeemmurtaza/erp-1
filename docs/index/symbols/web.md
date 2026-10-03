@@ -1863,7 +1863,7 @@ Every top-level export in `web`, with the line to open.
 | `auctions-link.tsx` | `AuctionsFooterLink` | function | :15 | The footer's way to the auction list, a list item that exists only when this deployment runs the `a… |
 | `bid-history.tsx` | `BidHistory` | function | :14 | The lot's newest bids, by alias. |
 | `lot-bidding.tsx` | `LotBidding` | function | :59 | Everything a bidder does on an open lot, and nothing else (the bid box of launchpad-apps/234-auctio… |
-| `lot-card.tsx` | `LotCard` | function | :17 | One lot in the list: what it is, what it is at, and when it ends. |
+| `lot-card.tsx` | `LotCard` | function | :21 | One lot in the list: what it is, what it is at, and when it ends. |
 | `lot-skeleton.tsx` | `LotPageSkeleton` | function | :4 | The lot page's first-load placeholder: the title, then the panel and the history, in the boxes they… |
 | `lot-status.tsx` | `LotFigure` | function | :18 | The lot's price: the one figure the page is about. |
 | `lot-status.tsx` | `LotClock` | function | :53 | Time on the lot, counted against the server's clock. |

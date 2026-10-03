@@ -1682,7 +1682,7 @@ All 562 tracked files in `apps/web`, by directory.
 | `auctions-link.tsx` | component | 28 |  |
 | `bid-history.tsx` | component | 49 |  |
 | `lot-bidding.tsx` | component | 392 |  |
-| `lot-card.tsx` | component | 75 |  |
+| `lot-card.tsx` | component | 85 |  |
 | `lot-skeleton.tsx` | component | 26 |  |
 | `lot-status.tsx` | component | 151 |  |
 

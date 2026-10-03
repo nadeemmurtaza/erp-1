@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**589** markdown documents. These explain **why**; this index only says **where**.
+**590** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -2011,6 +2011,30 @@ _no second-level headings_
 - Sequencing  <sub>:1736</sub>
 - Migration safety register  <sub>:1765</sub>
 - Phase 10 definition of done  <sub>:1809</sub>
+
+### `docs/implementation/admin-platform/220-admin-ui-gemini-ideas-design-spec.md`  <sub>244 lines</sub>
+
+- Objective  <sub>:7</sub>
+- How the snippets conflict with house rules (applies to every screen)  <sub>:16</sub>
+- Existing state (verified by reading routes/permissions, not by running the app)  <sub>:29</sub>
+- Shared layout contract (Law 4, 5, 7)  <sub>:46</sub>
+- 1. Bulk user import (`/admin/users/import`)  <sub>:60</sub>
+- 2. Access panel + effective-access preview (`/admin/users/[id]` → tab)  <sub>:79</sub>
+- 3. Temporary access  <sub>:92</sub>
+- 4. Company profile (`/admin/settings/company`)  <sub>:106</sub>
+- 5. Publish profile + audience builder  <sub>:121</sub>
+- 6. Products & services feed  <sub>:142</sub>
+- 7. Users page  <sub>:151</sub>
+- 8. Audit log viewer (`/admin/audit`)  <sub>:158</sub>
+- 9. Own profile (`/admin/account`)  <sub>:166</sub>
+- 10. Departments + roster  <sub>:173</sub>
+- 11. One-click partner invoice send  <sub>:184</sub>
+- 12. Pixel motion (decorative)  <sub>:193</sub>
+- Implementation plan (sequenced work orders)  <sub>:201</sub>
+- Acceptance criteria (per screen)  <sub>:212</sub>
+- Scope lenses (summary; each WO repeats its own)  <sub>:222</sub>
+- Out of scope  <sub>:232</sub>
+- Open questions for the owner  <sub>:237</sub>
 
 ### `docs/implementation/admin-platform/44-manager-action-hub.md`  <sub>176 lines</sub>
 
@@ -4273,22 +4297,22 @@ _no second-level headings_
 - Acceptance  <sub>:62</sub>
 - Out of scope  <sub>:73</sub>
 
-### `docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md`  <sub>188 lines</sub>
+### `docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md`  <sub>236 lines</sub>
 
-- 1. Objective  <sub>:7</sub>
-- 2. Existing state (inspected)  <sub>:14</sub>
-- 3. The manifest  <sub>:29</sub>
-- 4. Tags: tier, sector, audience — three facets, not a tree  <sub>:71</sub>
-- 5. What the user sees  <sub>:89</sub>
-- 6. Per-tenant control  <sub>:100</sub>
-- 7. Third-party (directory) apps on the same screen  <sub>:112</sub>
-- 8. Licensing hook (doc 211)  <sub>:120</sub>
-- 9. Resilience and failure modes  <sub>:129</sub>
-- 10. Verification additions  <sub>:139</sub>
-- 11. Scope lenses  <sub>:147</sub>
-- 12. Acceptance criteria  <sub>:168</sub>
-- 13. Permissions  <sub>:177</sub>
-- 14. Work orders  <sub>:182</sub>
+- 1. Objective  <sub>:55</sub>
+- 2. Existing state (inspected)  <sub>:62</sub>
+- 3. The manifest  <sub>:77</sub>
+- 4. Tags: tier, sector, audience — three facets, not a tree  <sub>:119</sub>
+- 5. What the user sees  <sub>:137</sub>
+- 6. Per-tenant control  <sub>:148</sub>
+- 7. Third-party (directory) apps on the same screen  <sub>:160</sub>
+- 8. Licensing hook (doc 211)  <sub>:168</sub>
+- 9. Resilience and failure modes  <sub>:177</sub>
+- 10. Verification additions  <sub>:187</sub>
+- 11. Scope lenses  <sub>:195</sub>
+- 12. Acceptance criteria  <sub>:216</sub>
+- 13. Permissions  <sub>:225</sub>
+- 14. Work orders  <sub>:230</sub>
 
 ### `docs/implementation/launchpad-apps/233-mail-app.md`  <sub>208 lines</sub>
 

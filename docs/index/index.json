@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2776,
-    "lines": 428563,
-    "routes": 878,
-    "controllers": 161,
+    "files": 2793,
+    "lines": 430350,
+    "routes": 881,
+    "controllers": 162,
     "models": 315,
     "enums": 146,
-    "migrations": 121,
+    "migrations": 122,
     "events": 72,
-    "permissions": 130,
-    "screens": 278,
+    "permissions": 131,
+    "screens": 279,
     "crons": 30,
-    "specs": 395,
+    "specs": 398,
     "designLaws": 192
   },
   "designLaws": [
@@ -1377,9 +1377,9 @@
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1209,
-      "lines": 162747,
-      "bytes": 6386506,
+      "files": 1216,
+      "lines": 163112,
+      "bytes": 6401442,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1395,21 +1395,21 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 538,
-      "lines": 96959,
-      "bytes": 3571604,
+      "files": 545,
+      "lines": 97582,
+      "bytes": 3594007,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 554,
-      "lines": 96736,
-      "bytes": 5947818,
+      "files": 555,
+      "lines": 97028,
+      "bytes": 5964888,
       "label": "docs/* — the documents of record"
     },
     "packages": {
-      "files": 114,
-      "lines": 13146,
-      "bytes": 492972,
+      "files": 116,
+      "lines": 13653,
+      "bytes": 509978,
       "label": "packages/* — code shared across every surface"
     }
   },
@@ -2957,6 +2957,7 @@
       "files": [
         "apps/api/src/core/config/app-config.service.ts",
         "apps/api/src/core/config/config.module.ts",
+        "apps/api/src/core/config/enabled-modules.ts",
         "apps/api/src/core/config/env.validation.spec.ts",
         "apps/api/src/core/config/env.validation.ts",
         "apps/api/src/core/config/load-env.ts",
@@ -3052,6 +3053,17 @@
         "apps/api/src/core/intent/intent.types.ts"
       ],
       "page": "docs/index/core/intent.md"
+    },
+    {
+      "name": "launchpad",
+      "files": [
+        "apps/api/src/core/launchpad/dto/set-app-enablement.dto.ts",
+        "apps/api/src/core/launchpad/launchpad.controller.ts",
+        "apps/api/src/core/launchpad/launchpad.module.ts",
+        "apps/api/src/core/launchpad/launchpad.service.spec.ts",
+        "apps/api/src/core/launchpad/launchpad.service.ts"
+      ],
+      "page": "docs/index/core/launchpad.md"
     },
     {
       "name": "metrics",
@@ -15733,6 +15745,52 @@
     },
     {
       "method": "GET",
+      "path": "/launchpad",
+      "module": "core/launchpad",
+      "controller": "LaunchpadController",
+      "handler": "list",
+      "file": "apps/api/src/core/launchpad/launchpad.controller.ts",
+      "line": 24,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "The first-party apps this deployment and organization show on the launchpad"
+    },
+    {
+      "method": "GET",
+      "path": "/launchpad/apps",
+      "module": "core/launchpad",
+      "controller": "LaunchpadController",
+      "handler": "statuses",
+      "file": "apps/api/src/core/launchpad/launchpad.controller.ts",
+      "line": 31,
+      "access": "launchpad.manage",
+      "permissions": [
+        "launchpad.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Every shipped app with its on/off switch and why it is hidden, if it is"
+    },
+    {
+      "method": "PUT",
+      "path": "/launchpad/apps/:key",
+      "module": "core/launchpad",
+      "controller": "LaunchpadController",
+      "handler": "setEnabled",
+      "file": "apps/api/src/core/launchpad/launchpad.controller.ts",
+      "line": 38,
+      "access": "launchpad.manage",
+      "permissions": [
+        "launchpad.manage"
+      ],
+      "public": false,
+      "authOnly": false,
+      "summary": "Switch one app on or off for the whole organization (hides the tile; deletes nothing)"
+    },
+    {
+      "method": "GET",
       "path": "/loyalty",
       "module": "loyalty",
       "controller": "LoyaltyController",
@@ -17066,6 +17124,21 @@
       "uiSites": 2,
       "roles": [
         "STAFF",
+        "ADMIN"
+      ],
+      "inSeed": true
+    },
+    {
+      "key": "launchpad.manage",
+      "label": "Switch launchpad apps on or off for the whole organization",
+      "category": "Administration",
+      "sensitivity": "medium",
+      "routes": [
+        "GET /launchpad/apps",
+        "PUT /launchpad/apps/:key"
+      ],
+      "uiSites": 1,
+      "roles": [
         "ADMIN"
       ],
       "inSeed": true
@@ -51702,6 +51775,17 @@
       "tables": [
         "PurchaseOrder"
       ]
+    },
+    {
+      "folder": "20261002100000_launchpad_manage_permission",
+      "file": "apps/api/prisma/schema/migrations/20261002100000_launchpad_manage_permission/migration.sql",
+      "date": "2026-10-02",
+      "slug": "launchpad_manage_permission",
+      "statements": 2,
+      "kinds": [
+        "INSERT"
+      ],
+      "tables": []
     }
   ],
   "schemaMigrationDrift": {
@@ -53446,6 +53530,15 @@
     {
       "app": "web",
       "kind": "page",
+      "url": "/admin/launchpad",
+      "file": "apps/web/src/app/(admin)/admin/(app)/launchpad/page.tsx",
+      "client": false,
+      "surface": "admin",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
       "url": "/admin/leads",
       "file": "apps/web/src/app/(admin)/admin/(app)/leads/page.tsx",
       "client": true,
@@ -54245,7 +54338,16 @@
       "doc": ""
     }
   ],
-  "nav": [],
+  "nav": [
+    {
+      "key": "launchpad",
+      "label": "Apps",
+      "href": "'/admin/launchpad'",
+      "group": "overview",
+      "permission": "",
+      "module": ""
+    }
+  ],
   "crons": [
     {
       "schedule": "0 3 * * *",
@@ -55428,6 +55530,18 @@
         "routing",
         "permission enforcement — mirrors PermissionsGuard exactly, for a session actor",
         "permission enforcement — an API-key actor, reusing decideApiKeyAccess so it can never drift from the HTTP path"
+      ]
+    },
+    {
+      "file": "apps/api/src/core/launchpad/launchpad.service.spec.ts",
+      "module": "core/launchpad",
+      "kind": "unit test",
+      "cases": 11,
+      "describes": [
+        "LAUNCHPAD_APPS against the module registry",
+        "LaunchpadService",
+        "statuses()",
+        "setEnabled()"
       ]
     },
     {
@@ -58801,6 +58915,19 @@
       ]
     },
     {
+      "file": "apps/web/src/components/admin/launchpad/launchpad.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 14,
+      "describes": [
+        "the shipped manifest against the admin nav registry",
+        "reachableEntries",
+        "tilesFor",
+        "filters",
+        "entryPreview"
+      ]
+    },
+    {
       "file": "apps/web/src/components/design-system/access-draft.spec.ts",
       "module": "",
       "kind": "unit test",
@@ -59288,6 +59415,16 @@
       "describes": [
         "singleFlight — at most one refresh in flight per tab (206-rate-limiting-caching-compression-hardening.md §2.2, WO-206.4)",
         "requestWithRefresh + singleFlight — five simultaneous 401s send one /auth/refresh"
+      ]
+    },
+    {
+      "file": "packages/shared/src/launchpad.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 15,
+      "describes": [
+        "LAUNCHPAD_APPS (the shipped manifest)",
+        "launchpadHiddenReason / resolveLaunchpad"
       ]
     },
     {
@@ -61322,6 +61459,15 @@
       "kind": "migration",
       "lines": 18,
       "bytes": 932,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/prisma/schema/migrations/20261002100000_launchpad_manage_permission/migration.sql",
+      "area": "api",
+      "kind": "migration",
+      "lines": 32,
+      "bytes": 1409,
       "doc": "",
       "symbols": []
     },
@@ -63421,6 +63567,21 @@
       ]
     },
     {
+      "path": "apps/api/src/core/config/enabled-modules.ts",
+      "area": "api",
+      "kind": "config",
+      "lines": 15,
+      "bytes": 620,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "enabledFeatureModules",
+          "kind": "function",
+          "line": 10
+        }
+      ]
+    },
+    {
       "path": "apps/api/src/core/config/env.validation.spec.ts",
       "area": "api",
       "kind": "unit test",
@@ -63467,8 +63628,8 @@
       "path": "apps/api/src/core/config/meta.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 41,
-      "bytes": 1783,
+      "lines": 39,
+      "bytes": 1678,
       "doc": "",
       "symbols": [
         {
@@ -63482,14 +63643,14 @@
       "path": "apps/api/src/core/core.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 63,
-      "bytes": 2295,
+      "lines": 65,
+      "bytes": 2380,
       "doc": "",
       "symbols": [
         {
           "name": "CoreModule",
           "kind": "class",
-          "line": 62
+          "line": 64
         }
       ]
     },
@@ -64537,6 +64698,80 @@
           "name": "IntentHandlerDefinition",
           "kind": "interface",
           "line": 32
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/launchpad/dto/set-app-enablement.dto.ts",
+      "area": "api",
+      "kind": "dto",
+      "lines": 8,
+      "bytes": 212,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "SetAppEnablementDto",
+          "kind": "class",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/launchpad/launchpad.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 46,
+      "bytes": 1971,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LaunchpadController",
+          "kind": "class",
+          "line": 18
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/launchpad/launchpad.module.ts",
+      "area": "api",
+      "kind": "nest module",
+      "lines": 18,
+      "bytes": 594,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LaunchpadModule",
+          "kind": "class",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/core/launchpad/launchpad.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 126,
+      "bytes": 5493,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/core/launchpad/launchpad.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 113,
+      "bytes": 4321,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LaunchpadAppStatus",
+          "kind": "interface",
+          "line": 18
+        },
+        {
+          "name": "LaunchpadService",
+          "kind": "class",
+          "line": 39
         }
       ]
     },
@@ -65840,8 +66075,8 @@
       "path": "apps/api/src/core/settings/settings.defaults.ts",
       "area": "api",
       "kind": "module",
-      "lines": 548,
-      "bytes": 31528,
+      "lines": 555,
+      "bytes": 31864,
       "doc": "",
       "symbols": [
         {
@@ -65877,12 +66112,12 @@
         {
           "name": "SettingKeyName",
           "kind": "type",
-          "line": 357
+          "line": 363
         },
         {
           "name": "DEFAULT_SETTINGS",
           "kind": "const",
-          "line": 359
+          "line": 365
         }
       ]
     },
@@ -85785,6 +86020,21 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(admin)/admin/(app)/launchpad/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 10,
+      "bytes": 334,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LaunchpadPage",
+          "kind": "default",
+          "line": 7
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(admin)/admin/(app)/layout.tsx",
       "area": "web",
       "kind": "layout",
@@ -89673,6 +89923,150 @@
       ]
     },
     {
+      "path": "apps/web/src/components/admin/launchpad/app-icons.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 35,
+      "bytes": 816,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LAUNCHPAD_ICONS",
+          "kind": "const",
+          "line": 22
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/launchpad/app-tile.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 39,
+      "bytes": 1561,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AppTile",
+          "kind": "function",
+          "line": 12
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/launchpad/launchpad-screen.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 176,
+      "bytes": 6273,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LaunchpadScreen",
+          "kind": "function",
+          "line": 39
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/launchpad/launchpad.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 147,
+      "bytes": 5782,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/components/admin/launchpad/launchpad.ts",
+      "area": "web",
+      "kind": "component",
+      "lines": 121,
+      "bytes": 4221,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LaunchpadEntry",
+          "kind": "interface",
+          "line": 11
+        },
+        {
+          "name": "LaunchpadTileData",
+          "kind": "interface",
+          "line": 17
+        },
+        {
+          "name": "LaunchpadAppStatus",
+          "kind": "interface",
+          "line": 24
+        },
+        {
+          "name": "reachableEntries",
+          "kind": "function",
+          "line": 37
+        },
+        {
+          "name": "tilesFor",
+          "kind": "function",
+          "line": 59
+        },
+        {
+          "name": "LaunchpadFilter",
+          "kind": "interface",
+          "line": 71
+        },
+        {
+          "name": "filterTiles",
+          "kind": "function",
+          "line": 76
+        },
+        {
+          "name": "audiencesPresent",
+          "kind": "function",
+          "line": 86
+        },
+        {
+          "name": "tiersPresent",
+          "kind": "function",
+          "line": 90
+        },
+        {
+          "name": "AUDIENCE_LABEL",
+          "kind": "const",
+          "line": 94
+        },
+        {
+          "name": "TIER_LABEL",
+          "kind": "const",
+          "line": 101
+        },
+        {
+          "name": "HIDDEN_REASON_LABEL",
+          "kind": "const",
+          "line": 107
+        },
+        {
+          "name": "entryPreview",
+          "kind": "function",
+          "line": 116
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/admin/launchpad/manage-apps.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 84,
+      "bytes": 2943,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "ManageApps",
+          "kind": "function",
+          "line": 17
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/admin/marketing/discount-form.tsx",
       "area": "web",
       "kind": "component",
@@ -89746,8 +90140,8 @@
       "path": "apps/web/src/components/admin/nav-registry.ts",
       "area": "web",
       "kind": "component",
-      "lines": 1202,
-      "bytes": 34364,
+      "lines": 1211,
+      "bytes": 34700,
       "doc": "",
       "symbols": [
         {
@@ -89778,12 +90172,12 @@
         {
           "name": "landingFor",
           "kind": "function",
-          "line": 1172
+          "line": 1181
         },
         {
           "name": "navFor",
           "kind": "function",
-          "line": 1187
+          "line": 1196
         }
       ]
     },
@@ -91663,7 +92057,7 @@
       "area": "web",
       "kind": "component",
       "lines": 75,
-      "bytes": 2555,
+      "bytes": 2580,
       "doc": "",
       "symbols": [
         {
@@ -92410,8 +92804,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 314,
-      "bytes": 14610,
+      "lines": 316,
+      "bytes": 14722,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -97834,6 +98228,15 @@
       "symbols": []
     },
     {
+      "path": "docs/implementation/admin-platform/220-admin-ui-gemini-ideas-design-spec.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 244,
+      "bytes": 13740,
+      "doc": "",
+      "symbols": []
+    },
+    {
       "path": "docs/implementation/admin-platform/44-manager-action-hub.md",
       "area": "docs",
       "kind": "doc",
@@ -100267,8 +100670,8 @@
       "path": "docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 188,
-      "bytes": 10400,
+      "lines": 236,
+      "bytes": 13730,
       "doc": "",
       "symbols": []
     },
@@ -102512,10 +102915,89 @@
       "path": "packages/shared/src/index.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 50,
-      "bytes": 2009,
+      "lines": 51,
+      "bytes": 2038,
       "doc": "",
       "symbols": []
+    },
+    {
+      "path": "packages/shared/src/launchpad.spec.ts",
+      "area": "packages",
+      "kind": "unit test",
+      "lines": 133,
+      "bytes": 4785,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "packages/shared/src/launchpad.ts",
+      "area": "packages",
+      "kind": "module",
+      "lines": 362,
+      "bytes": 11735,
+      "doc": "The launchpad's first-party app manifest and the pure rules that decide which apps are shown (launchpad-apps/232-launchpad-and-app-manifest.md).",
+      "symbols": [
+        {
+          "name": "LaunchpadTier",
+          "kind": "type",
+          "line": 24
+        },
+        {
+          "name": "LaunchpadAudience",
+          "kind": "type",
+          "line": 32
+        },
+        {
+          "name": "LaunchpadStage",
+          "kind": "type",
+          "line": 35
+        },
+        {
+          "name": "LaunchpadIconKey",
+          "kind": "type",
+          "line": 38
+        },
+        {
+          "name": "LaunchpadAppModule",
+          "kind": "interface",
+          "line": 51
+        },
+        {
+          "name": "LaunchpadApp",
+          "kind": "interface",
+          "line": 58
+        },
+        {
+          "name": "LaunchpadContext",
+          "kind": "interface",
+          "line": 80
+        },
+        {
+          "name": "LaunchpadHiddenReason",
+          "kind": "type",
+          "line": 90
+        },
+        {
+          "name": "launchpadHiddenReason",
+          "kind": "function",
+          "line": 97
+        },
+        {
+          "name": "ResolvedLaunchpadApp",
+          "kind": "interface",
+          "line": 114
+        },
+        {
+          "name": "resolveLaunchpad",
+          "kind": "function",
+          "line": 124
+        },
+        {
+          "name": "LAUNCHPAD_APPS",
+          "kind": "const",
+          "line": 144
+        }
+      ]
     },
     {
       "path": "packages/shared/src/markdown-suggestion.spec.ts",
@@ -102742,8 +103224,8 @@
       "path": "packages/shared/src/permissions.ts",
       "area": "packages",
       "kind": "module",
-      "lines": 1487,
-      "bytes": 51506,
+      "lines": 1498,
+      "bytes": 51963,
       "doc": "The permission catalog for PBAC (Permission-Based Access Control).",
       "symbols": [
         {
@@ -102764,52 +103246,52 @@
         {
           "name": "PermissionKey",
           "kind": "type",
-          "line": 917
+          "line": 925
         },
         {
           "name": "PERMISSION_KEYS",
           "kind": "const",
-          "line": 919
+          "line": 927
         },
         {
           "name": "PermissionGroup",
           "kind": "interface",
-          "line": 929
+          "line": 937
         },
         {
           "name": "PERMISSION_GROUPS",
           "kind": "const",
-          "line": 936
+          "line": 944
         },
         {
           "name": "ROLE_PERMISSION_SEED",
           "kind": "const",
-          "line": 1192
+          "line": 1201
         },
         {
           "name": "ADMIN_LOCKED_PERMISSIONS",
           "kind": "const",
-          "line": 1446
+          "line": 1457
         },
         {
           "name": "TOXIC_PERMISSION_PAIRS",
           "kind": "const",
-          "line": 1465
+          "line": 1476
         },
         {
           "name": "PERMISSION_EFFECTS",
           "kind": "const",
-          "line": 1479
+          "line": 1490
         },
         {
           "name": "PermissionEffect",
           "kind": "type",
-          "line": 1480
+          "line": 1491
         },
         {
           "name": "PermissionOverride",
           "kind": "interface",
-          "line": 1483
+          "line": 1494
         }
       ]
     },

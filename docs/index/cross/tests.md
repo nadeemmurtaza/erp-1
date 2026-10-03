@@ -3,7 +3,7 @@
 
 # Tests
 
-**395** spec files, **4,130** cases. What is already pinned down — and what is not.
+**398** spec files, **4,170** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -63,7 +63,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (371)
+## Unit and integration (374)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -102,6 +102,7 @@ regression or an N+1.
 | `apps/api/src/core/idempotency/idempotency.cron.spec.ts` | core/idempotency | 2 | IdempotencyCron — WO-157.4 |
 | `apps/api/src/core/idempotency/idempotency.interceptor.spec.ts` | core/idempotency | 8 | IdempotencyInterceptor — WO-157.2 |
 | `apps/api/src/core/intent/intent-router.service.spec.ts` | core/intent | 12 | IntentRouterService · routing · permission enforcement — mirrors PermissionsGuard exactly, for a se… |
+| `apps/api/src/core/launchpad/launchpad.service.spec.ts` | core/launchpad | 11 | LAUNCHPAD_APPS against the module registry · LaunchpadService · statuses() · setEnabled() |
 | `apps/api/src/core/metrics/metric-registry.service.spec.ts` | core/metrics | 15 | MetricRegistryService · register · collect — permission gating · collect — failure isolation · coll… |
 | `apps/api/src/core/notifications/email.channel.spec.ts` | core/notifications | 2 | isDeliverable |
 | `apps/api/src/core/notifications/email/templates.spec.ts` | core/notifications | 30 | order confirmation email · Urdu · payment failed email · dedicated order-status emails · payment re… |
@@ -384,6 +385,7 @@ regression or an N+1.
 | `apps/web/src/components/admin/analytics/resolve-path.spec.ts` | web | 13 | resolvePath · interpolateHref |
 | `apps/web/src/components/admin/charts/chart-math.spec.ts` | web | 47 | periodChange · changeTone · foldShares · sharePct · funnelSteps · largestDropIndex · gaugeState · q… |
 | `apps/web/src/components/admin/charts/chart-motion.spec.ts` | web | 23 | chartDrawProps · cubicBezierCss · chartTooltipMotion · pointPopDelayMs · pointPopStyle · cursors an… |
+| `apps/web/src/components/admin/launchpad/launchpad.spec.ts` | web | 14 | the shipped manifest against the admin nav registry · reachableEntries · tilesFor · filters · entry… |
 | `apps/web/src/components/design-system/access-draft.spec.ts` | web | 24 | grantEndsAt · grantRefusals · countersignCandidates · scopeDiff · saveBlocker · formatRemaining · e… |
 | `apps/web/src/components/design-system/audience.spec.ts` | web | 15 | estimateAudience · publishFriction · publishBlocker · visibilityUsesAudience |
 | `apps/web/src/components/design-system/department.spec.ts` | web | 24 | suggestCode · departmentErrors · descendantIds · unitPath · nearestOffice · closeBlockers |
@@ -424,6 +426,7 @@ regression or an N+1.
 | `packages/shared/src/entities/supplier.spec.ts` | packages | 7 | getSupplierContactLabel · getSupplierFormattedLocation · getSupplierLeadTimeDays · getSupplierName |
 | `packages/shared/src/fabric-estimate.spec.ts` | packages | 10 | computeFabricEstimate |
 | `packages/shared/src/http-client.spec.ts` | packages | 5 | singleFlight — at most one refresh in flight per tab (206-rate-limiting-caching-compression-hardeni… |
+| `packages/shared/src/launchpad.spec.ts` | packages | 15 | LAUNCHPAD_APPS (the shipped manifest) · launchpadHiddenReason / resolveLaunchpad |
 | `packages/shared/src/markdown-suggestion.spec.ts` | packages | 10 | computeMarkdownSuggestion |
 | `packages/shared/src/measurements/schema.spec.ts` | packages | 21 | default garment definitions · validateMeasurements · convertMeasurement · kameez definition |
 | `packages/shared/src/measurements/size-recommendation.spec.ts` | packages | 11 | recommendSize |

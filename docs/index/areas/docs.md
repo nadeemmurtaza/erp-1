@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-554 files · 96,736 lines
+555 files · 97,028 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -86,7 +86,7 @@ has a bug.
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
 | `docs/implementation` | 11 | 4,665 | doc, file |
 | `docs/implementation/access-control-identity` | 9 | 2,588 | doc |
-| `docs/implementation/admin-platform` | 5 | 2,553 | doc |
+| `docs/implementation/admin-platform` | 6 | 2,797 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
 | `docs/implementation/analytics-reporting` | 5 | 555 | doc |
 | `docs/implementation/architecture-patterns` | 38 | 4,882 | doc |
@@ -104,7 +104,7 @@ has a bug.
 | `docs/implementation/hr-people-org` | 19 | 3,813 | doc |
 | `docs/implementation/integrations-connectivity` | 26 | 8,217 | doc |
 | `docs/implementation/inventory-purchasing` | 5 | 1,798 | doc |
-| `docs/implementation/launchpad-apps` | 5 | 795 | doc |
+| `docs/implementation/launchpad-apps` | 5 | 843 | doc |
 | `docs/implementation/lots-serials-traceability` | 3 | 859 | doc |
 | `docs/implementation/payroll` | 4 | 1,178 | doc |
 | `docs/implementation/pos-hardware` | 4 | 645 | doc |

@@ -1,9 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { FEATURE_MODULES } from '../../modules/modules.registry';
 import { MODULE_PACKS } from '../../modules/module-packs';
 import { Public } from '../auth/decorators';
 import { AppConfigService } from './app-config.service';
+import { enabledFeatureModules } from './enabled-modules';
 
 /**
  * What the frontend needs before it can decide what to show: which optional
@@ -25,9 +25,7 @@ export class MetaController {
   @Get()
   @ApiOperation({ summary: 'Which optional modules and sector packs this deployment has enabled' })
   get(): { modules: string[]; packs: string[]; nodeRole: string } {
-    const modules = FEATURE_MODULES.filter(
-      (entry) => entry.alwaysOn || this.config.isModuleEnabled(entry.name),
-    ).map((entry) => entry.name);
+    const modules = enabledFeatureModules(this.config);
 
     const packs = [...new Set(modules.map((name) => MODULE_PACKS[name]).filter(Boolean))];
 

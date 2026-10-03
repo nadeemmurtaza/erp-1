@@ -13,6 +13,7 @@ import { FeedModule } from './feed/feed.module';
 import { HealthModule } from './health/health.module';
 import { IdempotencyModule } from './idempotency/idempotency.module';
 import { IntentRouterModule } from './intent/intent-router.module';
+import { LaunchpadModule } from './launchpad/launchpad.module';
 import { MetricsModule } from './metrics/metrics.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -53,6 +54,7 @@ import { VersioningModule } from './versioning/versioning.module';
     IdempotencyModule,
     MetricsModule,
     ActionHubModule,
+    LaunchpadModule,
     FeedModule,
     VersioningModule,
     ResilienceModule,

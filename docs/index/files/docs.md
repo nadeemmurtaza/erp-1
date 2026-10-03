@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 554 tracked files in `docs/*`, by directory.
+All 555 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -588,12 +588,13 @@ All 554 tracked files in `docs/*`, by directory.
 | `212-role-scope-enforcement-gap.md` | doc | 129 |  |
 | `231-work-attribution-and-sealed-access.md` | doc | 553 |  |
 
-### `docs/implementation/admin-platform` (5)
+### `docs/implementation/admin-platform` (6)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `02-admin-shell.md` | doc | 253 |  |
 | `10-admin-dashboard.md` | doc | 1854 |  |
+| `220-admin-ui-gemini-ideas-design-spec.md` | doc | 244 |  |
 | `44-manager-action-hub.md` | doc | 176 |  |
 | `72-fragmented-tool-consolidation-import.md` | doc | 184 |  |
 | `75-managerial-todo-widget-coverage-note.md` | doc | 86 |  |
@@ -954,7 +955,7 @@ All 554 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `232-launchpad-and-app-manifest.md` | doc | 188 |  |
+| `232-launchpad-and-app-manifest.md` | doc | 236 |  |
 | `233-mail-app.md` | doc | 208 |  |
 | `234-auction-app.md` | doc | 265 |  |
 | `235-vault-and-work-credit-app.md` | doc | 55 |  |

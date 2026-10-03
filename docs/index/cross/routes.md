@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **878** endpoints across **161** controllers, with the access rule that actually guards each one.
+All **881** endpoints across **162** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -452,6 +452,14 @@ never authorization.
 |---|---|---|---|---|
 | GET | `/health` | **PUBLIC** | `HealthController.live` | Liveness probe |
 | GET | `/health/ready` | **PUBLIC** | `HealthController.ready` | Readiness probe — checks the database and the rate-limit Redis |
+
+### [`core/launchpad`](../core/launchpad.md) (3)
+
+| Method | Path | Access | Handler | Summary |
+|---|---|---|---|---|
+| GET | `/launchpad` | signed-in | `LaunchpadController.list` | The first-party apps this deployment and organization show on the launchpad |
+| GET | `/launchpad/apps` | `launchpad.manage` | `LaunchpadController.statuses` | Every shipped app with its on/off switch and why it is hidden, if it is |
+| PUT | `/launchpad/apps/:key` | `launchpad.manage` | `LaunchpadController.setEnabled` | Switch one app on or off for the whole organization (hides the tile; deletes no… |
 
 ### [`core/notifications`](../core/notifications.md) (14)
 

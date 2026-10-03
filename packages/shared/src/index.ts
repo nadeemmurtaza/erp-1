@@ -13,6 +13,7 @@ export * from './markdown-suggestion';
 export * from './onsite-messaging';
 export * from './permissions';
 export * from './phone';
+export * from './launchpad';
 export * from './pricing';
 // secret-crypto is NOT re-exported here on purpose — it is the one file in
 // this package that touches `node:crypto`, and every other export in this

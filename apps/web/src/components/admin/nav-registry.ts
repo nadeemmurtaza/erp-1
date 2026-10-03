@@ -133,6 +133,15 @@ export const ADMIN_NAV: AdminNavItem[] = [
     group: 'overview',
     module: 'analytics',
   },
+  // launchpad-apps/232 — the front door that groups every other entry into apps.
+  // No `permissions`: any signed-in person may open it, and it shows only the apps
+  // they can reach, so it exposes nothing the sidebar does not.
+  {
+    key: 'launchpad',
+    label: 'Apps',
+    href: '/admin/launchpad',
+    group: 'overview',
+  },
   {
     key: 'my-actions',
     label: 'My actions',

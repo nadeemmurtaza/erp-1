@@ -303,6 +303,12 @@ export const SettingKey = {
    * before it is classified OUTSIDE_ROSTER rather than linked cleanly — a
    * few minutes early or late is normal, not an exception.
    */
+  /**
+   * Launchpad app keys the tenant has switched off (launchpad-apps/232 §6,
+   * `AppEnablement`). A JSON array of `LaunchpadApp.key`. Switching an app off
+   * hides its tile; it deletes nothing and stops no module.
+   */
+  LaunchpadDisabledApps: 'launchpad.disabled_apps',
   AttendanceShiftGraceMinutes: 'attendance.shift_grace_minutes',
   /**
    * Two punches of the same kind for the same person inside this many
@@ -485,6 +491,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   /** 6am — after most night shifts have ended, before most day shifts have started. */
   [SettingKey.AttendanceWorkingDayCutoverHour]: 6,
   /** 15 minutes either side of a shift's own start/end. */
+  [SettingKey.LaunchpadDisabledApps]: [] as string[],
   [SettingKey.AttendanceShiftGraceMinutes]: 15,
   /** 2 minutes — long enough to catch a double-scan, short enough never to merge two real punches. */
   [SettingKey.AttendanceDuplicateWindowMinutes]: 2,

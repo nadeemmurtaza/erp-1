@@ -28,6 +28,9 @@ export const ROUTES = {
     wishlist: '/wishlist',
     stitching: '/stitching',
     stitchingOrder: (number: string) => `/stitching/${number}`,
+    /** launchpad-apps/234-auction-app.md — off by default (module: 'auction'); see header.tsx's own module gate. */
+    auctions: '/auctions',
+    auctionLot: (lotId: string) => `/auctions/lots/${lotId}`,
 
     login: '/login',
     register: '/register',

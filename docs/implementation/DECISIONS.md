@@ -12012,3 +12012,108 @@ a maximum only from the response to their own request or the next read of the
 lot, until WO-234.4's realtime path; the §6 load test is WO-234.4's;
 reserve-not-met leaves staff to make an offer by hand until WO-234.6 gives them
 somewhere to do it.
+
+### ADR-086 addendum (2026-10-03) — WO-234.4 realtime fan-out and the public lot page: exact parameters
+
+Built: the `realtime` Redis keyspace with `RedisService.subscriber()`,
+`AuctionRealtimeService`, `AuctionPublicService` and `AuctionPublicController`,
+the bidder's own `GET /auctions/lots/:lotId/me`, the storefront list and lot
+pages, and `scripts/load-auction.mjs`. No schema change, no migration, no new
+dependency, no import between modules: the `auction` module still imports
+nothing, and the nav entry reads the enabled-modules list the storefront already
+had.
+
+Decisions, each with the alternative it displaced:
+
+- **An event is a snapshot, not a delta.** The price, `bidSeq`, minimum next
+  bid, end, state and the newest ≤ 20 bids. That makes merging two events a
+  rule (the later, by `bidSeq` then by state rank) instead of a protocol, makes a
+  lost event free, and lets a late joiner be sent the same thing as everyone
+  else. A delta stream would need ordering, gap detection and replay on every
+  node, and one dropped message would corrupt a page until it reloaded.
+- **Publish after the commit, never inside it, never awaited.** Redis being
+  slow or down must not fail or delay a bid (R5's spirit: a fact that happened
+  is not undone by a dependency). The failure mode is a watcher that learns of
+  the bid up to 5 s late by polling; the recovery path is the poll and the
+  reconnect snapshot. The alternative, writing the event to the transactional
+  outbox, was rejected for this path: the outbox is for facts a consumer must
+  not miss, and a snapshot that is superseded in 250 ms is not one.
+- **Merge per lot per node (250 ms), not one write per bid.** The cost of a hot
+  lot to each watcher is bounded at four writes a second whatever the bid rate;
+  the cost to the writer is nothing, because it never waits on a watcher.
+- **Server-sent events with a polling fallback, not WebSockets.** The traffic is
+  one-way; SSE reconnects by itself, sends the current snapshot on every
+  reconnect, and passes through ordinary proxies. A client that cannot hold a
+  stream polls the same read the page already uses, so there is no second
+  protocol to keep correct.
+- **The public lot read is cached for 1 s per node.** Owner: `AuctionPublicService`.
+  Key: lot id. Expiry: 1 000 ms. Invalidation: a realtime event for the lot, on
+  this node, drops the entry. Freshness: a person bidding reads a price at most a
+  second old and the server still decides every bid. Auth isolation: the cached
+  value is the public view only, which carries no viewer data, so one entry
+  serves everyone; the viewer's own standing is a separate read (`/me`).
+- **A public view never reveals more than a person at the auction would know.**
+  No reserve (only SOLD, or NOT_SOLD with `RESERVE_NOT_MET` or `NO_BIDS`), no
+  names or accounts (only the per-auction alias), and a lot that is withdrawn, or
+  in a draft or cancelled auction, is a 404 indistinguishable from an unknown id.
+- **The viewer's standing needs `participating`, not just the alias.** An alias
+  belongs to the auction, not to a lot, so a bidder with an alias from another
+  lot of the same auction would otherwise be told "you have been outbid" on a lot
+  they never bid on. `ViewerLotState.participating` is true only when the bidder
+  has a bid or a standing maximum on this lot.
+- **No offline queue.** A bid sent from a page that was offline would be placed
+  at a price and a time the bidder did not see; the page says so and sends
+  nothing. A retry of the same amount reuses its idempotency key, so a bid whose
+  answer was lost is safe to repeat.
+
+| Parameter | Exact value | Applies to | Why this number (not smaller or larger) | Enforced | Fails how |
+|---|---|---|---|---|---|
+| Merge window | 250 ms per lot per node, first event immediate | writes to a lot's watchers | Four a second is as fast as a screen is read; smaller makes the 50 a second target a flood, larger makes the page feel late | `FLUSH_INTERVAL_MS` | no events; the page polls |
+| Open streams per node | 5 000 | `GET …/stream` | Inside a default descriptor limit and memory; a node protects the watchers it has | `MAX_STREAMS_PER_NODE` | 503, `Retry-After: 5`; the page polls |
+| Slow-consumer drop | 65 536 bytes unsent | one watcher | About thirty full events; past it the link is stalled and Node would hold every write in memory | `MAX_BUFFERED_BYTES` | its updates are dropped; the page re-reads on a `bidSeq` gap |
+| Heartbeat | 15 000 ms | an idle stream | A quarter of a typical 60 s proxy idle timeout | `HEARTBEAT_MS` | a proxy closes the stream; the browser reconnects |
+| Stream age | 600 000 ms | one stream | Bounds a half-dead connection and a node being replaced; not churn | `MAX_STREAM_AGE_MS` | a reconnect costs one snapshot |
+| Client reconnect | 5 000 ms (SSE `retry`), 5 000 ms ±20 % after a refusal | the browser | A crowd that lost a stream together must not return together | `CLIENT_RETRY_MS`, `useLotLive` | polling meanwhile |
+| Polling fallback | 5 000 ms ±20 %; ≥ 1 000 ms between event-triggered reads | the page with no stream | A bid is seen within five seconds; the spread de-synchronises a crowd | `POLL_FALLBACK_MS`, `REFRESH_MIN_GAP_MS` | the page keeps what it shows |
+| Lot page cache | 1 000 ms, 2 000 lots, single-flight | `GET …/lots/:lotId` | One database read a second per node however many pages poll; a second is the freshness a polling page already accepts | `LOT_PAGE_CACHE_MS`, `MAX_CACHED_LOTS` | a miss is a database read |
+| Public lot page throttle | 120 per 60 000 ms per client address | `GET …/lots/:lotId` | A page polling every 5 s makes 12 a minute, so ten pages can share an address | `@Throttle`, Redis-backed, off under `NODE_ENV=test` | 429 |
+| Stream throttle | 60 per 60 000 ms per client address | `GET …/lots/:lotId/stream` | One open per page; several reconnects a minute still fit | same | 429 |
+| Bids in an event | 20 | one event, one page | A page lists twenty; a longer history is a read | `MAX_EVENT_BIDS` | a watcher behind by more reads the lot |
+| Closing soon | 300 000 ms | display only | Long enough to decide, short enough to remain a signal | `CLOSING_SOON_MS` | none |
+| List page | 12 lots | the storefront list | Fills a row at every width | `PAGE_SIZE` | none |
+
+Measured (§16.11 of doc 234, one development machine, one node): at 50 bids a
+second every bid was accepted, bid p95 18 ms, a watcher told within 247 ms at
+p95, chain valid; at 100 a second with 1 000 watchers all were correct but bid
+p95 was 479 ms, over the 300 ms target. The target is met; the headroom beyond
+it is thin and unmeasured on production hardware.
+
+Pillars touched: architecture (no new coupling; the realtime path is a core
+Redis keyspace and the module's own services), scalable (per-node fan-out, a
+per-lot cache and merge so cost grows with lots, not bids), secure by design
+(the public routes are `@Public` and read-only; the viewer's own state is
+`@AuthenticatedOnly` with no `CustomerScope`, like the bid routes, and reads only
+the caller's own rows; nothing a bidder could use against another leaves the
+server),
+stable and reliable (a failed publish, a down Redis and a stalled watcher each
+degrade to polling and none touches a bid), observable (`Logger` warnings, at most one a minute for a failed publish, and
+on a failed subscription or a failing listener; a write to a dead socket at
+`debug`; no per-event log).
+
+Known costs and gaps, stated rather than hidden:
+
+- **Behind a reverse proxy the stream must not be buffered.** The response sets
+  `Cache-Control: no-cache, no-transform` and `X-Accel-Buffering: no`; the
+  deployment's proxy (Caddy, nginx) must flush as it receives and must not apply
+  a response timeout shorter than the 15 s heartbeat. Not verified here: there is
+  no proxy in this environment.
+- **No "open" event.** Nothing is published when an auction opens, so an
+  upcoming lot is polled, and a lot is streamed only while open.
+- **Fan-out is per node.** 5 000 streams is a node's limit, and a very large
+  audience for one lot needs more nodes, each subscribing to Redis once.
+- **The list page does not refresh itself,** and the lot pages carry no
+  server-rendered metadata, so a shared link has no preview.
+- **My bids and Watchlist are not built;** neither is lot media.
+- **Redis pub/sub is at-most-once.** A message sent while a node is
+  disconnected is lost; the reconnect snapshot and the poll are what close the
+  gap, which is why no delta is ever relied on.

@@ -280,7 +280,8 @@
     "bottomNav": "Bottom navigation",
     "language": "Language",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "auctions": "Auctions"
   },
   "home": {
     "heroTitle": "Cloth that fits you",
@@ -842,5 +843,167 @@
     "useDifferent": "Use a different email",
     "backToSignIn": "Back to sign in",
     "failed": "Something went wrong. Try again in a minute."
+  },
+  "auction": {
+    "title": "Auctions",
+    "intro": "Bid on lots while they are open. When the time runs out, the highest bid wins.",
+    "stateLabel": "Show",
+    "states": {
+      "live": "Live now",
+      "upcoming": "Coming up",
+      "ended": "Ended"
+    },
+    "searchLabel": "Search lots",
+    "searchPlaceholder": "Search by lot name",
+    "list": {
+      "resultsCount": "{count, plural, =0 {No lots} one {# lot} other {# lots}}",
+      "loadMore": "Show more lots",
+      "empty": {
+        "live": {
+          "title": "No lots are open for bidding",
+          "body": "Lots appear here as soon as their auction opens.",
+          "action": "See what is coming up"
+        },
+        "upcoming": {
+          "title": "Nothing is scheduled yet",
+          "body": "Upcoming lots appear here before their auction opens.",
+          "action": "See live lots"
+        },
+        "ended": {
+          "title": "No lots have ended yet",
+          "body": "Results appear here once bidding closes.",
+          "action": "See live lots"
+        },
+        "search": {
+          "title": "No lots match “{query}”",
+          "body": "Try fewer words, or clear the search.",
+          "action": "Clear search"
+        }
+      },
+      "error": {
+        "title": "We could not load the lots",
+        "body": "Check your connection and try again.",
+        "action": "Try again"
+      },
+      "unavailable": {
+        "title": "Auctions are not available here",
+        "body": "This shop does not run auctions.",
+        "action": "Go to the shop"
+      }
+    },
+    "card": {
+      "lot": "Lot {number}",
+      "startingBid": "Starting bid",
+      "currentBid": "Current bid",
+      "finalBid": "Sold for",
+      "bids": "{count, plural, =0 {No bids} one {# bid} other {# bids}}",
+      "endsIn": "Ends in {time}",
+      "closing": "Closing now",
+      "notSold": "Not sold",
+      "ended": "Ended"
+    },
+    "time": {
+      "d": "{value}d",
+      "h": "{value}h",
+      "m": "{value}m",
+      "s": "{value}s"
+    },
+    "lot": {
+      "back": "All lots",
+      "lotOf": "Lot {number} · {auction}",
+      "quantity": "{count, plural, one {# item} other {# items}} in this lot",
+      "currentBid": "Current bid",
+      "startingBid": "Starting bid",
+      "noBidsYet": "No bids yet",
+      "live": "Updating live",
+      "polling": "Refreshing every few seconds",
+      "connecting": "Connecting…",
+      "timeLeft": "Time left",
+      "closingSoon": "Closing soon",
+      "extended": "The end moved because of a late bid.",
+      "endsAt": "Ends {date}",
+      "opensAt": "Opens {date}",
+      "opensIn": "Opens in",
+      "closing": "Bidding time is up. Waiting for the final result.",
+      "ended": "Bidding has ended",
+      "terms": "Auction terms"
+    },
+    "standing": {
+      "leading": "You have the highest bid",
+      "outbid": "You have been outbid",
+      "outbidNext": "Bid at least {minimum} to take the lead.",
+      "leadingNext": "You can bid again once someone bids higher."
+    },
+    "bid": {
+      "label": "Your bid",
+      "hint": "The lowest bid you can make is {minimum}.",
+      "submit": "Bid {amount}",
+      "placing": "Placing bid…",
+      "invalid": "Enter an amount, for example {example}.",
+      "belowMinimum": "The lowest bid is {minimum}.",
+      "autoOutbid": "Your bid was placed, then another bidder’s automatic bid went above it.",
+      "offline": "You are offline. A bid is not sent until you reconnect, and nothing is saved to send later."
+    },
+    "proxy": {
+      "label": "Bid automatically up to a maximum",
+      "explain": "We raise your bid for you, one step at a time, and never above your maximum. Nobody else can see it. You can raise it later, but not lower it.",
+      "field": "Your maximum",
+      "hint": "At least {minimum}, or it could never be used.",
+      "current": "Your maximum is {amount}.",
+      "submit": "Set maximum",
+      "setting": "Setting maximum…",
+      "saved": "Your maximum is set to {amount}.",
+      "invalid": "Enter an amount, for example {example}."
+    },
+    "signIn": {
+      "title": "Sign in to bid",
+      "body": "You need an account to bid. It takes a minute to make one.",
+      "action": "Sign in",
+      "register": "Create an account"
+    },
+    "notEligible": {
+      "title": "This account cannot bid here",
+      "body": "It is not approved to bid in this auction. Contact us if you think that is a mistake.",
+      "action": "Contact us"
+    },
+    "outcome": {
+      "soldTo": "Sold to {alias} for {price}.",
+      "youWon": "You won this lot for {price}.",
+      "noBids": "This lot did not sell. It received no bids.",
+      "reserveNotMet": "This lot did not sell. The highest bid did not reach the seller’s minimum.",
+      "action": "See live lots"
+    },
+    "history": {
+      "title": "Bid history",
+      "empty": "No bids yet. Yours can be the first.",
+      "auto": "Automatic",
+      "you": "You",
+      "latest": "Showing the latest {count} bids."
+    },
+    "missing": {
+      "title": "This lot is not available",
+      "body": "It may have been withdrawn, or the link may be wrong.",
+      "action": "See live lots"
+    },
+    "loadError": {
+      "title": "We could not load this lot",
+      "body": "Check your connection and try again.",
+      "action": "Try again"
+    },
+    "errors": {
+      "bidTooLow": "That bid is too low. The lowest bid is now {minimum}.",
+      "alreadyLeading": "You already have the highest bid. You can bid again once someone bids higher.",
+      "lotChanged": "Other bids arrived while yours was being placed. Check the price and bid again.",
+      "closed": "Bidding on this lot has ended.",
+      "notEligible": "This account cannot bid in this auction. Contact us if you think that is a mistake.",
+      "rateLimited": "You are bidding too fast. Wait {seconds, plural, one {# second} other {# seconds}} and try again.",
+      "rateLimitedNow": "You are bidding too fast. Wait a moment and try again.",
+      "keyReused": "That request was already used for a different amount. Press the button again to bid.",
+      "proxyTooLow": "Your maximum must be at least {minimum}, or it could never be used.",
+      "proxyCannotLower": "A maximum can be raised, but never lowered.",
+      "signedOut": "Your session has ended. Sign in again to bid.",
+      "busy": "The auction is busy and your bid was not placed. Try again.",
+      "network": "We could not confirm your bid. Look at the history, then press the button again. Repeating it is safe: the same bid is never placed twice."
+    }
   }
 }

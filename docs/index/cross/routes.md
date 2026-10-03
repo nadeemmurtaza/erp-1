@@ -3,7 +3,7 @@
 
 # HTTP routes
 
-All **892** endpoints across **163** controllers, with the access rule that actually guards each one.
+All **896** endpoints across **164** controllers, with the access rule that actually guards each one.
 
 
 ## How to read the Access column
@@ -32,11 +32,14 @@ never authorization.
 | POST | `/admin/accounts/b2b/:id/approval-policy` | `B2BAccountsAdminController.setPolicy` | `apps/api/src/modules/accounts/accounts.controller.ts:59` |
 | POST | `/admin/accounts/b2b/:id/update` | `B2BAccountsAdminController.update` | `apps/api/src/modules/accounts/accounts.controller.ts:52` |
 
-- **Public routes: 77** — every one is an intentional decision; changing one changes the product's attack surface.
+- **Public routes: 80** — every one is an intentional decision; changing one changes the product's attack surface.
 
 | Method | Path | Handler |
 |---|---|---|
 | POST | `/attendance/punch` | `AttendanceDevicePunchController.punch` |
+| GET | `/auctions/public/lots` | `AuctionPublicController.list` |
+| GET | `/auctions/public/lots/:lotId` | `AuctionPublicController.lot` |
+| GET | `/auctions/public/lots/:lotId/stream` | `AuctionPublicController.stream` |
 | POST | `/auth/forgot-password` | `AuthController.forgotPassword` |
 | POST | `/auth/login` | `AuthController.login` |
 | POST | `/auth/logout` | `AuthController.logout` |
@@ -219,7 +222,7 @@ never authorization.
 | POST | `/admin/attendance/shifts` | `hr.attendance.record` | `AttendanceController.createShift` | Create a planned shift |
 | POST | `/attendance/punch` | **PUBLIC** | `AttendanceDevicePunchController.punch` | Record a punch from an enrolled device — never refused |
 
-### [`auction`](../modules/auction.md) (15)
+### [`auction`](../modules/auction.md) (19)
 
 | Method | Path | Access | Handler | Summary |
 |---|---|---|---|---|
@@ -236,8 +239,12 @@ never authorization.
 | POST | `/admin/auctions/:id/schedule` | `auction.publish` | `AuctionController.schedule` | Schedule a draft auction to open at its start time |
 | POST | `/admin/auctions/:id/unschedule` | `auction.publish` | `AuctionController.unschedule` | Return a scheduled auction to draft, before it opens |
 | POST | `/auctions/lots/:lotId/bids` | signed-in | `AuctionBidController.placeBid` | Place a bid on an open lot; a retry with the same idempotency key returns the a… |
+| GET | `/auctions/lots/:lotId/me` | signed-in | `AuctionBidController.me` | Whether you lead this lot and may bid on it |
 | GET | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.getProxy` | Your own maximum on a lot. Nobody else’s is readable through any route |
 | PUT | `/auctions/lots/:lotId/proxy` | signed-in | `AuctionBidController.setProxy` | Set or raise your own maximum on a lot; the system bids for you up to it. It ca… |
+| GET | `/auctions/public/lots` | **PUBLIC** | `AuctionPublicController.list` | Lots to browse: live, upcoming or ended |
+| GET | `/auctions/public/lots/:lotId` | **PUBLIC** | `AuctionPublicController.lot` | One lot as a visitor sees it: price, time left, newest bids, and how it ended |
+| GET | `/auctions/public/lots/:lotId/stream` | **PUBLIC** | `AuctionPublicController.stream` | Live price and bids for one lot as server-sent events |
 
 ### [`bankfacilities`](../modules/bankfacilities.md) (10)
 

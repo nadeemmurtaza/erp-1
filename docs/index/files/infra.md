@@ -3,7 +3,7 @@
 
 # Files — infra
 
-All 64 tracked files in `scripts, CI, deployment and container configuration`, by directory.
+All 65 tracked files in `scripts, CI, deployment and container configuration`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -73,7 +73,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 | `yaseen-disk-alert.timer` | timer | — |  |
 | `yaseen.service` | service | — |  |
 
-### `scripts` (26)
+### `scripts` (27)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -101,6 +101,7 @@ All 64 tracked files in `scripts, CI, deployment and container configuration`, b
 | `check.mjs` | script | 164 |  |
 | `idx.mjs` | script | 486 |  |
 | `install-git-hooks.mjs` | script | 94 |  |
+| `load-auction.mjs` | script | 312 |  |
 | `nested-borders.py` | py | — |  |
 | `sync-client.mjs` | script | 701 | scripts/sync-client.mjs — the Extractor. |
 

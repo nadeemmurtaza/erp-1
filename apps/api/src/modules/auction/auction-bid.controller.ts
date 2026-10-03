@@ -3,6 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import type { AuthenticatedUser } from '../../core/auth/auth.constants';
 import { AuthenticatedOnly, CurrentUser } from '../../core/auth/decorators';
+import { AuctionPublicService } from './auction-public.service';
 import { AuctionService } from './auction.service';
 import { PlaceBidDto, SetProxyBidDto } from './dto/auction.dto';
 
@@ -23,7 +24,10 @@ import { PlaceBidDto, SetProxyBidDto } from './dto/auction.dto';
 @Controller('auctions')
 @AuthenticatedOnly()
 export class AuctionBidController {
-  constructor(private readonly auctions: AuctionService) {}
+  constructor(
+    private readonly auctions: AuctionService,
+    private readonly publicLots: AuctionPublicService,
+  ) {}
 
   @Post('lots/:lotId/bids')
   @Throttle({ default: { limit: 60, ttl: 60_000 } })
@@ -58,5 +62,12 @@ export class AuctionBidController {
   @ApiOperation({ summary: 'Your own maximum on a lot. Nobody else’s is readable through any route' })
   getProxy(@Param('lotId') lotId: string, @CurrentUser() user: AuthenticatedUser) {
     return this.auctions.getProxyBid(lotId, user.id);
+  }
+
+  /** Whether the caller leads this lot and may bid on it, for the page to say "you are winning" and to explain a refusal before the bid. */
+  @Get('lots/:lotId/me')
+  @ApiOperation({ summary: 'Whether you lead this lot and may bid on it' })
+  me(@Param('lotId') lotId: string, @CurrentUser() user: AuthenticatedUser) {
+    return this.publicLots.viewerState(lotId, { id: user.id, permissions: user.permissions });
   }
 }

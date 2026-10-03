@@ -56,6 +56,26 @@ export const REDIS_KEYSPACES = {
     db: 1,
     whenDown: 'Cached reads (permissions, settings) are served from Postgres and this process until it connects.',
   },
+  /**
+   * Live fan-out — pub/sub channels only, such as an auction lot's price
+   * changes (launchpad-apps/234-auction-app.md §6, WO-234.4). It holds no key
+   * and no fact: a message not delivered is a message a page picks up on its
+   * next poll, so losing it, or all of it, costs freshness and never
+   * correctness. Pub/sub channels are instance-wide, not per database, so the
+   * database number here is only what keeps this keyspace's connections
+   * separate from the others', as the table requires. Subscribers use their
+   * own connection (`RedisService.subscriber()`): a subscribed connection
+   * can issue no other command. Eviction and `maxmemory` do not apply — nothing
+   * is stored; Redis's own cap on a slow subscriber's output buffer
+   * (`client-output-buffer-limit pubsub`) drops a consumer that cannot keep up
+   * rather than slowing the publisher.
+   */
+  realtime: {
+    db: 2,
+    whenDown:
+      'Live updates stop reaching pages on other nodes; each page falls back to polling every 5 s, ' +
+      'pages on the same node still update, and bids are not affected.',
+  },
 } as const satisfies Record<string, { readonly db: number; readonly whenDown: string }>;
 
 export type RedisKeyspace = keyof typeof REDIS_KEYSPACES;

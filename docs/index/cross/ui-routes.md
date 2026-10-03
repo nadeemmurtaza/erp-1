@@ -3,7 +3,7 @@
 
 # Screens
 
-All **281** routable files across the web app, the till and the mobile app.
+All **285** routable files across the web app, the till and the mobile app.
 
 
 Route groups `(admin)` and `(storefront)` do not appear in the URL; `[param]`
@@ -265,7 +265,7 @@ _none_
 | `/terminal` | page | client | `apps/pos/src/app/terminal/page.tsx` |
 | `/till` | page | client | `apps/pos/src/app/till/page.tsx` |
 
-### storefront (56)
+### storefront (60)
 
 | URL | Kind | Client? | File |
 |---|---|---|---|
@@ -293,6 +293,10 @@ _none_
 | `/[locale]/account/support/[id]` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/[id]/page.tsx` |
 | `/[locale]/account/support/new` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/support/new/page.tsx` |
 | `/[locale]/account/wallet` | page | client | `apps/web/src/app/(storefront)/[locale]/(dashboard)/account/wallet/page.tsx` |
+| `/[locale]/auctions` | loading | server | `apps/web/src/app/(storefront)/[locale]/auctions/loading.tsx` |
+| `/[locale]/auctions` | page | client | `apps/web/src/app/(storefront)/[locale]/auctions/page.tsx` |
+| `/[locale]/auctions/lots/[lotId]` | loading | server | `apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/loading.tsx` |
+| `/[locale]/auctions/lots/[lotId]` | page | client | `apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/page.tsx` |
 | `/[locale]/blog` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/page.tsx` |
 | `/[locale]/blog/[slug]` | page | server | `apps/web/src/app/(storefront)/[locale]/blog/[slug]/page.tsx` |
 | `/[locale]/cart` | loading | server | `apps/web/src/app/(storefront)/[locale]/cart/loading.tsx` |

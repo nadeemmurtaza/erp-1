@@ -6,6 +6,7 @@ import { AuditService } from '../../core/audit/audit.service';
 import { Prisma } from '../../core/prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
+import { AuctionRealtimeService } from './auction-realtime.service';
 import { AuctionService } from './auction.service';
 import { bidCanonical } from './bidding';
 import { BidListQueryDto } from './dto/auction.dto';
@@ -23,6 +24,7 @@ describe('AuctionService bidding', () => {
   /** What the guarded UPDATE reports: rows changed. 0 means the lot moved under the bid. */
   let updateResult: number;
   let writes: string[];
+  let realtime: { publish: jest.Mock };
 
   const NOW = new Date('2026-10-02T12:00:00.000Z');
   const user = { id: 'u-bidder', permissions: [] as string[] };
@@ -37,6 +39,7 @@ describe('AuctionService bidding', () => {
 
   beforeEach(async () => {
     writes = [];
+    realtime = { publish: jest.fn() };
     updateResult = 1;
     lotRow = {
       id: 'l1',
@@ -104,6 +107,7 @@ describe('AuctionService bidding', () => {
         { provide: SettingsService, useValue: { get: jest.fn() } },
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'N1', get: () => 'k'.repeat(32) } },
         { provide: AuditService, useValue: { record: jest.fn() } },
+        { provide: AuctionRealtimeService, useValue: realtime },
       ],
     }).compile();
     service = module.get(AuctionService);
@@ -437,6 +441,42 @@ describe('AuctionService bidding', () => {
       prisma.bidder.findUnique.mockResolvedValue(bidder());
       await service.placeBid(input({ amountMinor: 105_000 }));
       expect(prisma.bid.findMany.mock.calls[0][0].where).toMatchObject({ lotId: 'l1', bidderId: 'p1', kind: 'MANUAL' });
+    });
+
+    it('announces an accepted bid and its answer once, after the commit, and a replay not at all', async () => {
+      lotRow = { ...lotRow, currentBidMinor: 100_000n, bidSeq: 1, leaderBidderId: 'p-other' };
+      prisma.bidder.findUnique.mockResolvedValue(bidder());
+      prisma.proxyBid.findMany.mockResolvedValue([
+        { bidderId: 'p-rich', maxCipher: (service as any).encryptMax(900_000), placedAfterSeq: 0, bidder: { id: 'p-rich', alias: 'Bidder 7' } },
+      ]);
+      await service.placeBid(input({ amountMinor: 105_000 }));
+
+      expect(realtime.publish).toHaveBeenCalledTimes(1);
+      expect(realtime.publish.mock.calls[0][0]).toMatchObject({
+        lotId: 'l1',
+        state: 'OPEN',
+        bidSeq: 3,
+        currentBidMinor: 110_250,
+        minimumNextBidMinor: 115_763,
+        serverTime: NOW.toISOString(),
+      });
+      expect(realtime.publish.mock.calls[0][0].newBids.map((bid: any) => [bid.seq, bid.alias, bid.kind])).toEqual([
+        [2, 'Bidder 1', 'MANUAL'],
+        [3, 'Bidder 7', 'PROXY_AUTO'],
+      ]);
+
+      realtime.publish.mockClear();
+      prisma.proxyBid.findMany.mockResolvedValue([]);
+      prisma.bid.findUnique.mockResolvedValue({ id: 'b0', lotId: 'l1', seq: 2, amountMinor: 105_000n, kind: 'MANUAL', acceptedAt: NOW });
+      await expect(service.placeBid(input({ amountMinor: 105_000 }))).resolves.toMatchObject({ replayed: true });
+      expect(realtime.publish).not.toHaveBeenCalled();
+    });
+
+    it('announces nothing for a bid that was refused, and nothing when a maximum placed no bid', async () => {
+      lotRow = { ...lotRow, currentBidMinor: 100_000n, bidSeq: 1, leaderBidderId: 'p-other' };
+      await refusal(service.placeBid(input({ amountMinor: 1_000 })));
+      await service.setProxyBid({ lotId: 'l1', maxMinor: 500_000, user });
+      expect(realtime.publish).not.toHaveBeenCalled();
     });
 
     describe('setProxyBid', () => {

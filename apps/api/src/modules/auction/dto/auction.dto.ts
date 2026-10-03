@@ -212,3 +212,23 @@ export class SetProxyBidDto {
   @Max(MAX_MINOR)
   maxMinor!: number;
 }
+
+export const PUBLIC_LOT_STATES = ['live', 'upcoming', 'ended'] as const;
+export type PublicLotState = (typeof PUBLIC_LOT_STATES)[number];
+
+export class PublicLotListQueryDto extends PaginationQueryDto {
+  @ApiPropertyOptional({
+    enum: PUBLIC_LOT_STATES,
+    default: 'live',
+    description: 'live: open now, ending soonest first. upcoming: in a scheduled auction, starting soonest first. ended: closed, most recently first.',
+  })
+  @IsOptional()
+  @IsIn(PUBLIC_LOT_STATES)
+  state: PublicLotState = 'live';
+
+  @ApiPropertyOptional({ description: 'Part of a lot title' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(80)
+  override q?: string;
+}

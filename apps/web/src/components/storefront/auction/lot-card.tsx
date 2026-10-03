@@ -1,0 +1,74 @@
+'use client';
+
+import { useLocale, useTranslations } from 'next-intl';
+import { formatDateTime, formatMoney, type Locale } from '@newax/shared';
+import { Badge } from '@/components/ui';
+import { Link } from '@/i18n/navigation';
+import { ROUTES } from '@/constants/routes';
+import { useCountdownLabel } from '@/hooks/use-countdown-label';
+import { CLOSING_SOON_MS, msUntil, type PublicLotSummary } from '@/lib/auction-live';
+
+/**
+ * One lot in the list: what it is, what it is at, and when it ends. The whole
+ * card is the link (a lot has one thing to do, open it), so there is no button
+ * inside it. Time on an open lot is counted against the server's clock
+ * (`offsetMs`), so a device with a wrong clock is not shown a wrong ending.
+ */
+export function LotCard({ lot, now, offsetMs }: { lot: PublicLotSummary; now: number; offsetMs: number }) {
+  const t = useTranslations('auction.card');
+  const tLot = useTranslations('auction.lot');
+  const locale = useLocale() as Locale;
+  const countdown = useCountdownLabel();
+
+  const left = lot.phase === 'OPEN' && now > 0 ? msUntil(lot.endsAt, offsetMs, now) : null;
+  const sold = lot.outcome?.kind === 'SOLD' ? lot.outcome : null;
+
+  // The figure: a closed lot that did not sell shows none, the highest bid stays private to the ledger.
+  const figure =
+    lot.phase === 'CLOSED'
+      ? sold
+        ? { label: t('finalBid'), minor: sold.finalMinor }
+        : null
+      : lot.currentBidMinor !== null
+        ? { label: t('currentBid'), minor: lot.currentBidMinor }
+        : { label: t('startingBid'), minor: lot.startPriceMinor };
+
+  return (
+    <Link
+      href={ROUTES.storefront.auctionLot(lot.lotId)}
+      className="card lift flex min-h-[10rem] w-full flex-col gap-3 p-5"
+    >
+      <p className="eyebrow">
+        {t('lot', { number: lot.lotNo })} · {lot.auction.title}
+      </p>
+      <h2 className="line-clamp-2 text-base font-medium text-neutral-900">{lot.title}</h2>
+
+      <div>
+        {figure ? (
+          <>
+            <p className="text-xs text-neutral-900/60">{figure.label}</p>
+            <p className="text-xl font-semibold tabular-nums text-neutral-900">{formatMoney(figure.minor, locale)}</p>
+          </>
+        ) : (
+          <p className="text-base font-medium text-neutral-900/70">{t('notSold')}</p>
+        )}
+      </div>
+
+      <div className="mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm text-neutral-900/60">
+        <span>
+          {lot.phase === 'OPEN'
+            ? left === null
+              ? null
+              : left > 0
+                ? t('endsIn', { time: countdown(left) })
+                : t('closing')
+            : lot.phase === 'UPCOMING'
+              ? tLot('opensAt', { date: formatDateTime(lot.startsAt, locale) })
+              : t('ended')}
+        </span>
+        {left !== null && left > 0 && left <= CLOSING_SOON_MS ? <Badge tone="warning">{tLot('closingSoon')}</Badge> : null}
+        <span className="tabular-nums">{t('bids', { count: lot.bidCount })}</span>
+      </div>
+    </Link>
+  );
+}

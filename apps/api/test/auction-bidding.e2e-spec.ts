@@ -99,11 +99,9 @@ describe('Auction bidding (e2e)', () => {
       attempts.splice(start, window.length, ...window);
     }
 
-    const startedAt = Date.now();
     const results = await Promise.all(
       attempts.map((attempt) => outcome(auctions.placeBid({ lotId, amountMinor: attempt.amountMinor, idempotencyKey: key(), user: attempt.user }))),
     );
-    const elapsedMs = Date.now() - startedAt;
 
     const accepted = results.filter((result) => result.ok);
     const refused = results.filter((result) => !result.ok);
@@ -132,7 +130,6 @@ describe('Auction bidding (e2e)', () => {
     expect(bidders.map((bidder) => Number(bidder.alias.split(' ')[1])).sort((a, b) => a - b)).toEqual(
       Array.from({ length: bidders.length }, (_, index) => index + 1),
     );
-    console.log(`1,000 concurrent bids: ${accepted.length} accepted, ${refused.length} refused, ${elapsedMs} ms`);
   }, 120_000);
 
   it('lets exactly one of twenty bidders who all offer the opening price in the same instant win it', async () => {

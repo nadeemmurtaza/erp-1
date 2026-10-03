@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AuditService } from '../../core/audit/audit.service';
 import { PrismaService } from '../../core/prisma/prisma.service';
+import { AuctionPublicService } from './auction-public.service';
+import { AuctionRealtimeService } from './auction-realtime.service';
 import { lotOutcome } from './bidding';
 
 /** The same lock `AuctionService` takes to serialise every writer of one lot (key: the lot id). */
@@ -69,6 +71,8 @@ export class AuctionLifecycleService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly audit: AuditService,
+    private readonly publicLots: AuctionPublicService,
+    private readonly realtime: AuctionRealtimeService,
   ) {}
 
   /** Opens every scheduled auction whose start has passed. Returns how many it opened. */
@@ -214,6 +218,7 @@ export class AuctionLifecycleService {
         data: { auctionId: result.row.auctionId, was: result.row.endsAt.toISOString(), now: result.newEnd.toISOString(), lateMs: result.lateMs },
       });
       this.logger.warn(`Lot ${lotId} was found ${Math.round(result.lateMs / 1_000)} s past its end; extended to ${result.newEnd.toISOString()}`);
+      await this.announce(lotId);
     } else if (result.outcome === 'closed') {
       await this.audit.record({
         action: 'auction.lot_closed',
@@ -225,7 +230,21 @@ export class AuctionLifecycleService {
         await this.audit.record({ action: 'auction.closed', entity: 'Auction', entityId: result.row.auctionId });
       }
       this.logger.log(`Closed lot ${lotId}: ${result.row.bidSeq} bid(s), reserve ${result.result.reserveMet ? 'met' : 'not met'}`);
+      await this.announce(lotId);
     }
     return result.outcome;
+  }
+
+  /**
+   * Tells the lot's watchers it changed (a new end, or a result), after the
+   * commit. A page that is not told finds out on its next poll, so a failure
+   * here is logged and costs freshness only.
+   */
+  private async announce(lotId: string): Promise<void> {
+    try {
+      this.realtime.publish(await this.publicLots.liveSnapshot(lotId, { fresh: true }));
+    } catch (error) {
+      this.logger.warn(`Could not announce lot ${lotId}: ${error instanceof Error ? error.message : String(error)}`);
+    }
   }
 }

@@ -23,6 +23,7 @@ import { documentNumber, documentNumberPrefix } from '../../core/settings/docume
 import { documentPrefix } from '../../core/settings/document-prefix';
 import { SettingKey } from '../../core/settings/settings.defaults';
 import { SettingsService } from '../../core/settings/settings.service';
+import { AuctionRealtimeService } from './auction-realtime.service';
 import {
   antiSnipeExtensionMs,
   bidCanonical,
@@ -41,6 +42,7 @@ import type {
   UpdateAuctionDto,
   UpdateAuctionLotDto,
 } from './dto/auction.dto';
+import { eventForAcceptedBids } from './lot-live';
 
 const AUCTION_NUMBER_LOCK_NAMESPACE = 8_241_170;
 /** Serialises every writer of one lot's price: the lock key is the lot id. */
@@ -240,6 +242,7 @@ export class AuctionService {
     private readonly settings: SettingsService,
     private readonly config: AppConfigService,
     private readonly audit: AuditService,
+    private readonly realtime: AuctionRealtimeService,
   ) {}
 
   async list(query: AuctionListQueryDto) {
@@ -551,7 +554,15 @@ export class AuctionService {
    * leaves nothing, so a retry with the same key is safe.
    */
   async placeBid(input: PlaceBidInput): Promise<PlaceBidResult> {
-    return this.inBidTransaction(input.lotId, (tx) => this.placeBidOnce(tx, input));
+    const result = await this.inBidTransaction(input.lotId, (tx) => this.placeBidOnce(tx, input));
+    // Only after the commit, and never waited on: the price is a fact in
+    // Postgres whether or not anyone is told (AuctionRealtimeService).
+    if (!result.replayed) this.announce(result.lot, [result.bid, ...(result.autoBid ? [result.autoBid] : [])]);
+    return result;
+  }
+
+  private announce(lot: LotPriceState, bids: BidView[]): void {
+    this.realtime.publish(eventForAcceptedBids(lot, bids));
   }
 
   /**
@@ -685,7 +696,9 @@ export class AuctionService {
    * puts them under it. Never more than one, however far apart the maxima.
    */
   async setProxyBid(input: SetProxyBidInput): Promise<ProxyBidResult> {
-    return this.inBidTransaction(input.lotId, (tx) => this.setProxyBidOnce(tx, input));
+    const result = await this.inBidTransaction(input.lotId, (tx) => this.setProxyBidOnce(tx, input));
+    if (result.autoBid) this.announce(result.lot, [result.autoBid]);
+    return result;
   }
 
   private async setProxyBidOnce(tx: Prisma.TransactionClient, input: SetProxyBidInput): Promise<ProxyBidResult> {

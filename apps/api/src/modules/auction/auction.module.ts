@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { AuctionBidController } from './auction-bid.controller';
 import { AuctionLifecycleCron } from './auction-lifecycle.cron';
 import { AuctionLifecycleService } from './auction-lifecycle.service';
+import { AuctionPublicController } from './auction-public.controller';
+import { AuctionPublicService } from './auction-public.service';
+import { AuctionRealtimeService } from './auction-realtime.service';
 import { AuctionController } from './auction.controller';
 import { AuctionService } from './auction.service';
 
@@ -14,8 +17,8 @@ import { AuctionService } from './auction.service';
  * extension points and domain events, never an import.
  */
 @Module({
-  controllers: [AuctionController, AuctionBidController],
-  providers: [AuctionService, AuctionLifecycleService, AuctionLifecycleCron],
+  controllers: [AuctionController, AuctionBidController, AuctionPublicController],
+  providers: [AuctionService, AuctionLifecycleService, AuctionLifecycleCron, AuctionPublicService, AuctionRealtimeService],
   exports: [AuctionService],
 })
 export class AuctionModule {}

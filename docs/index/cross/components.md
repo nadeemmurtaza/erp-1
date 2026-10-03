@@ -3,7 +3,7 @@
 
 # Components
 
-All **177** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
+All **183** component files, with how many modules import each. Check here before writing markup — CLAUDE.md: "most drift here came from someone building a thing that already existed".
 
 
 ## The primitives you must reuse
@@ -16,15 +16,15 @@ not to use it, is the table in `.claude/rules/ui.md` ("Primitives"). This table 
 |---|---|---|---|
 | `PageHeader` | `page-header.tsx` | 148 | 3 |
 | `Section` | `section.tsx` | 41 | 1 |
-| `Disclosure` | `disclosure.tsx` | 14 | 5 |
+| `Disclosure` | `disclosure.tsx` | 16 | 5 |
 | `Tabs` | `tabs.tsx` | 9 | 3 |
 | `SectionRail` | `section-rail.tsx` | 5 | 1 |
 | `DataTable` | `data-table.tsx` | 122 | 9 |
-| `EmptyState` | `empty-state.tsx` | 77 | 4 |
+| `EmptyState` | `empty-state.tsx` | 79 | 4 |
 | `MetricStrip` | `metric-strip.tsx` | 22 | 2 |
-| `Badge` | `badge.tsx` | 13 | 11 |
+| `Badge` | `badge.tsx` | 16 | 11 |
 | `Pagination` | `pagination.tsx` | 12 | 2 |
-| `Button` | `button.tsx` | 19 | 15 |
+| `Button` | `button.tsx` | 22 | 15 |
 | `Dialog` | `dialog.tsx` | 33 | 3 |
 | `ConfirmDialog` | `confirm-dialog.tsx` | 13 | 4 |
 | `CopyButton` | `copy-button.tsx` | 2 | 1 |
@@ -34,10 +34,10 @@ not to use it, is the table in `.claude/rules/ui.md` ("Primitives"). This table 
 | `ListPageSkeleton` | `list-page-skeleton.tsx` | 6 | 1 |
 | `Skeleton` | `skeleton.tsx` | 0 | 1 |
 | `SkeletonText` | `skeleton.tsx` | 0 | 1 |
-| `SkeletonRegion` | `skeleton.tsx` | 0 | 1 |
+| `SkeletonRegion` | `skeleton.tsx` | 2 | 1 |
 | `Switch` | `switch.tsx` | 0 | 4 |
-| `Segmented` | `segmented.tsx` | 3 | 6 |
-| `Field` | `field.tsx` | 7 | 1 |
+| `Segmented` | `segmented.tsx` | 4 | 6 |
+| `Field` | `field.tsx` | 8 | 1 |
 | `FormStack` | `field.tsx` | 7 | 1 |
 | `HoldToConfirm` | `hold-to-confirm.tsx` | 1 | 1 |
 | `DangerZone` | `danger-zone.tsx` | 2 | 1 |
@@ -75,9 +75,9 @@ do not write an eighth. `components/common/wizard` is the only wizard.
 A file listed here has no importer the scanner can see. It is a map, not proof: a component reached only through
 a dynamic import or a name the scanner cannot resolve would appear too. Deleting one needs the owner's word.
 
-## Primitives no product file imports (10)
+## Primitives no product file imports (9)
 
-`Skeleton` · `SkeletonText` · `SkeletonRegion` · `Switch` · `CooldownBanner` · `MultiSelect` · `ProgressRing` · `TypeText` · `Bento` · `BentoTile`
+`Skeleton` · `SkeletonText` · `Switch` · `CooldownBanner` · `MultiSelect` · `ProgressRing` · `TypeText` · `Bento` · `BentoTile`
 
 Exported by `components/ui` and specimened on the design-system page, but imported by no file outside it: each is
 either waiting for its first adopter or a candidate for the owner to cut. Neither is decided here, and a
@@ -251,7 +251,7 @@ name taken through a path the scanner cannot resolve would appear too.
 | `cart-badge.tsx` | `CartBadge` | client | 1 |  |
 | `cart-provider.tsx` | `CartProvider` `useCart` | client | 8 |  |
 | `customer-nav.tsx` | `CustomerNav` | client | 1 |  |
-| `customer-session.tsx` | `CustomerSessionProvider` `useCustomerSession` | client | 14 |  |
+| `customer-session.tsx` | `CustomerSessionProvider` `useCustomerSession` | client | 16 |  |
 | `filter-panel.tsx` | `FilterPanel` | client | 1 |  |
 | `footer.tsx` | `Footer` | server | 1 |  |
 | `frequently-bought-together.tsx` | `FrequentlyBoughtTogether` | client | 1 |  |
@@ -282,13 +282,24 @@ name taken through a path the scanner cannot resolve would appear too.
 | `theme-switch.tsx` | `ThemeSwitch` | client | 1 |  |
 | `visual-search-button.tsx` | `VisualSearchButton` | client | 1 |  |
 
+### `apps/web/src/components/storefront/auction` (6)
+
+| Component file | Exports | Client? | Imported by | Purpose |
+|---|---|---|---|---|
+| `auctions-link.tsx` | `AuctionsFooterLink` | client | 1 |  |
+| `bid-history.tsx` | `BidHistory` | client | 1 |  |
+| `lot-bidding.tsx` | `LotBidding` | client | 1 |  |
+| `lot-card.tsx` | `LotCard` | client | 1 |  |
+| `lot-skeleton.tsx` | `LotPageSkeleton` | server | 2 |  |
+| `lot-status.tsx` | `LotFigure` `LotClock` `LotStanding` `LotOutcome` | client | 2 |  |
+
 ### `apps/web/src/components/ui` (43)
 
 | Component file | Exports | Client? | Imported by | Purpose |
 |---|---|---|---|---|
-| `badge.tsx` | `BadgeTone` `Badge` | server | 26 |  |
+| `badge.tsx` | `BadgeTone` `Badge` | server | 29 |  |
 | `bento.tsx` | `Bento` `BentoSize` `BentoTone` `BentoTile` | server | 4 |  |
-| `button.tsx` | `ButtonProps` `Button` | server | 35 |  |
+| `button.tsx` | `ButtonProps` `Button` | server | 38 |  |
 | `confirm-dialog.tsx` | `ConfirmDialog` | client | 18 |  |
 | `cooldown-banner.tsx` | `CooldownBanner` | client | 2 |  |
 | `copy-button.tsx` | `CopyButtonProps` `CopyButton` | client | 4 |  |
@@ -297,11 +308,11 @@ name taken through a path the scanner cannot resolve would appear too.
 | `data-table.tsx` | `DataTableColumn` `DataTable` | server | 132 |  |
 | `date-field.tsx` | `DateFieldProps` `DateField` | client | 19 |  |
 | `dialog.tsx` | `Dialog` | client | 37 |  |
-| `disclosure.tsx` | `Disclosure` | client | 20 |  |
+| `disclosure.tsx` | `Disclosure` | client | 22 |  |
 | `draw-icon.tsx` | `DrawIcon` | client | 5 |  |
 | `dropzone.tsx` | `Dropzone` | client | 8 |  |
-| `empty-state.tsx` | `EmptyState` | server | 82 |  |
-| `field.tsx` | `FieldControlProps` `Field` `FormStack` | server | 9 |  |
+| `empty-state.tsx` | `EmptyState` | server | 84 |  |
+| `field.tsx` | `FieldControlProps` `Field` `FormStack` | server | 10 |  |
 | `filter-bar.tsx` | `FilterDef` `FilterBar` `useFilterParam` `useSetFilterParam` `useFilterPage` `useSetFilterPage` | client | 23 |  |
 | `hold-to-confirm.tsx` | `HoldToConfirm` | client | 3 |  |
 | `list-page-skeleton.tsx` | `ListPageSkeleton` | server | 8 | The shape of a list page, before the list page. |
@@ -317,9 +328,9 @@ name taken through a path the scanner cannot resolve would appear too.
 | `reveal-scope.tsx` | `RevealScope` | client | 3 |  |
 | `section-rail.tsx` | `RailSection` `SectionRail` | client | 10 |  |
 | `section.tsx` | `Section` | server | 43 |  |
-| `segmented.tsx` | `SegmentedOption` `Segmented` | client | 10 |  |
+| `segmented.tsx` | `SegmentedOption` `Segmented` | client | 11 |  |
 | `select.tsx` | `SelectOption` `SelectProps` `Select` | client | 32 |  |
-| `skeleton.tsx` | `SkeletonShape` `Skeleton` `SkeletonText` `SkeletonRegion` | server | 2 |  |
+| `skeleton.tsx` | `SkeletonShape` `Skeleton` `SkeletonText` `SkeletonRegion` | server | 4 |  |
 | `success-state.tsx` | `SuccessAction` `SuccessLink` `SuccessStep` `SuccessStateProps` `SuccessState` | client | 8 |  |
 | `swap-text.tsx` | `SwapText` | client | 4 |  |
 | `switch.tsx` | `Switch` | client | 5 |  |

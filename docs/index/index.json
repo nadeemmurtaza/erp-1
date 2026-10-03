@@ -3,18 +3,18 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2701,
-    "lines": 437431,
-    "routes": 892,
-    "controllers": 163,
+    "files": 2729,
+    "lines": 442869,
+    "routes": 896,
+    "controllers": 164,
     "models": 320,
     "enums": 150,
     "migrations": 123,
     "events": 69,
     "permissions": 133,
-    "screens": 281,
+    "screens": 285,
     "crons": 31,
-    "specs": 397,
+    "specs": 403,
     "designLaws": 192
   },
   "designLaws": [
@@ -1371,15 +1371,15 @@
       "label": "repository root files"
     },
     "infra": {
-      "files": 64,
-      "lines": 33140,
-      "bytes": 1321877,
+      "files": 65,
+      "lines": 33452,
+      "bytes": 1335745,
       "label": "scripts, CI, deployment and container configuration"
     },
     "api": {
-      "files": 1215,
-      "lines": 165056,
-      "bytes": 6501447,
+      "files": 1224,
+      "lines": 167355,
+      "bytes": 6606565,
       "label": "apps/api — NestJS API, the only writer of business state"
     },
     "mobile": {
@@ -1395,15 +1395,15 @@
       "label": "apps/pos — Next.js offline-first point of sale"
     },
     "web": {
-      "files": 544,
-      "lines": 98061,
-      "bytes": 3614588,
+      "files": 562,
+      "lines": 100675,
+      "bytes": 3720425,
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
       "files": 463,
-      "lines": 96271,
-      "bytes": 5901189,
+      "lines": 96484,
+      "bytes": 5921191,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -1541,15 +1541,23 @@
         "apps/api/src/modules/auction/auction-lifecycle.cron.ts",
         "apps/api/src/modules/auction/auction-lifecycle.service.spec.ts",
         "apps/api/src/modules/auction/auction-lifecycle.service.ts",
+        "apps/api/src/modules/auction/auction-public.controller.spec.ts",
+        "apps/api/src/modules/auction/auction-public.controller.ts",
+        "apps/api/src/modules/auction/auction-public.service.spec.ts",
+        "apps/api/src/modules/auction/auction-public.service.ts",
+        "apps/api/src/modules/auction/auction-realtime.service.spec.ts",
+        "apps/api/src/modules/auction/auction-realtime.service.ts",
         "apps/api/src/modules/auction/auction.controller.ts",
         "apps/api/src/modules/auction/auction.module.ts",
         "apps/api/src/modules/auction/auction.service.spec.ts",
         "apps/api/src/modules/auction/auction.service.ts",
         "apps/api/src/modules/auction/bidding.spec.ts",
         "apps/api/src/modules/auction/bidding.ts",
-        "apps/api/src/modules/auction/dto/auction.dto.ts"
+        "apps/api/src/modules/auction/dto/auction.dto.ts",
+        "apps/api/src/modules/auction/lot-live.spec.ts",
+        "apps/api/src/modules/auction/lot-live.ts"
       ],
-      "routes": 15,
+      "routes": 19,
       "page": "docs/index/modules/auction.md"
     },
     {
@@ -15158,7 +15166,7 @@
       "controller": "AuctionBidController",
       "handler": "placeBid",
       "file": "apps/api/src/modules/auction/auction-bid.controller.ts",
-      "line": 31,
+      "line": 35,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -15167,12 +15175,26 @@
     },
     {
       "method": "GET",
+      "path": "/auctions/lots/:lotId/me",
+      "module": "auction",
+      "controller": "AuctionBidController",
+      "handler": "me",
+      "file": "apps/api/src/modules/auction/auction-bid.controller.ts",
+      "line": 70,
+      "access": "any signed-in user",
+      "permissions": [],
+      "public": false,
+      "authOnly": true,
+      "summary": "Whether you lead this lot and may bid on it"
+    },
+    {
+      "method": "GET",
       "path": "/auctions/lots/:lotId/proxy",
       "module": "auction",
       "controller": "AuctionBidController",
       "handler": "getProxy",
       "file": "apps/api/src/modules/auction/auction-bid.controller.ts",
-      "line": 59,
+      "line": 63,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
@@ -15186,12 +15208,54 @@
       "controller": "AuctionBidController",
       "handler": "setProxy",
       "file": "apps/api/src/modules/auction/auction-bid.controller.ts",
-      "line": 49,
+      "line": 53,
       "access": "any signed-in user",
       "permissions": [],
       "public": false,
       "authOnly": true,
       "summary": "Set or raise your own maximum on a lot; the system bids for you up to it. It can never be lowered"
+    },
+    {
+      "method": "GET",
+      "path": "/auctions/public/lots",
+      "module": "auction",
+      "controller": "AuctionPublicController",
+      "handler": "list",
+      "file": "apps/api/src/modules/auction/auction-public.controller.ts",
+      "line": 53,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Lots to browse: live, upcoming or ended"
+    },
+    {
+      "method": "GET",
+      "path": "/auctions/public/lots/:lotId",
+      "module": "auction",
+      "controller": "AuctionPublicController",
+      "handler": "lot",
+      "file": "apps/api/src/modules/auction/auction-public.controller.ts",
+      "line": 61,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "One lot as a visitor sees it: price, time left, newest bids, and how it ended"
+    },
+    {
+      "method": "GET",
+      "path": "/auctions/public/lots/:lotId/stream",
+      "module": "auction",
+      "controller": "AuctionPublicController",
+      "handler": "stream",
+      "file": "apps/api/src/modules/auction/auction-public.controller.ts",
+      "line": 76,
+      "access": "PUBLIC",
+      "permissions": [],
+      "public": true,
+      "authOnly": false,
+      "summary": "Live price and bids for one lot as server-sent events"
     },
     {
       "method": "POST",
@@ -53105,6 +53169,42 @@
     },
     {
       "app": "web",
+      "kind": "loading",
+      "url": "/[locale]/auctions",
+      "file": "apps/web/src/app/(storefront)/[locale]/auctions/loading.tsx",
+      "client": false,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/auctions",
+      "file": "apps/web/src/app/(storefront)/[locale]/auctions/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "loading",
+      "url": "/[locale]/auctions/lots/[lotId]",
+      "file": "apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/loading.tsx",
+      "client": false,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
+      "kind": "page",
+      "url": "/[locale]/auctions/lots/[lotId]",
+      "file": "apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/page.tsx",
+      "client": true,
+      "surface": "storefront",
+      "doc": ""
+    },
+    {
+      "app": "web",
       "kind": "page",
       "url": "/[locale]/blog",
       "file": "apps/web/src/app/(storefront)/[locale]/blog/page.tsx",
@@ -56347,7 +56447,7 @@
       "file": "apps/api/src/core/redis/redis.service.spec.ts",
       "module": "core/redis",
       "kind": "unit test",
-      "cases": 8,
+      "cases": 9,
       "describes": [
         "RedisService with Redis unreachable (doc 206 §1.2, ADR-075 addendum)"
       ]
@@ -56885,7 +56985,7 @@
       "file": "apps/api/src/modules/auction/auction-bidding.service.spec.ts",
       "module": "auction",
       "kind": "unit test",
-      "cases": 45,
+      "cases": 47,
       "describes": [
         "AuctionService bidding",
         "accepting a bid",
@@ -56906,6 +57006,42 @@
       "describes": [
         "AuctionLifecycleService",
         "AuctionLifecycleCron"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/auction/auction-public.controller.spec.ts",
+      "module": "auction",
+      "kind": "unit test",
+      "cases": 3,
+      "describes": [
+        "AuctionPublicController stream"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/auction/auction-public.service.spec.ts",
+      "module": "auction",
+      "kind": "unit test",
+      "cases": 31,
+      "describes": [
+        "AuctionPublicService",
+        "the lot page",
+        "how a lot ended",
+        "the cache",
+        "a live snapshot",
+        "viewerState",
+        "the list"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/auction/auction-realtime.service.spec.ts",
+      "module": "auction",
+      "kind": "unit test",
+      "cases": 21,
+      "describes": [
+        "AuctionRealtimeService",
+        "a stream",
+        "publishing",
+        "another node’s events, off Redis"
       ]
     },
     {
@@ -56942,6 +57078,16 @@
         "antiSnipeExtensionMs",
         "resolveProxy",
         "lotOutcome"
+      ]
+    },
+    {
+      "file": "apps/api/src/modules/auction/lot-live.spec.ts",
+      "module": "auction",
+      "kind": "unit test",
+      "cases": 9,
+      "describes": [
+        "mergeLiveEvents",
+        "eventForAcceptedBids"
       ]
     },
     {
@@ -58958,6 +59104,18 @@
       ]
     },
     {
+      "file": "apps/api/test/auction-realtime.e2e-spec.ts",
+      "module": "",
+      "kind": "e2e test",
+      "cases": 14,
+      "describes": [
+        "Auction public pages and live stream (e2e)",
+        "with no sign-in",
+        "the live stream",
+        "between nodes, through Redis"
+      ]
+    },
+    {
       "file": "apps/api/test/auction.e2e-spec.ts",
       "module": "",
       "kind": "e2e test",
@@ -59722,6 +59880,26 @@
         "dispatchReducer: the second copy of every event",
         "idempotencyKey",
         "what the screen may say"
+      ]
+    },
+    {
+      "file": "apps/web/src/lib/auction-live.spec.ts",
+      "module": "",
+      "kind": "unit test",
+      "cases": 46,
+      "describes": [
+        "the server clock",
+        "countdownParts and countdownUnits",
+        "timeState",
+        "applyLiveEvent",
+        "eventFromAccepted",
+        "needsRefresh",
+        "newerView",
+        "standingOf",
+        "shownPriceMinor",
+        "parseAmountToMinor",
+        "amountForInput",
+        "describeBidFailure"
       ]
     },
     {
@@ -66227,8 +66405,8 @@
       "path": "apps/api/src/core/redis/redis.keyspaces.ts",
       "area": "api",
       "kind": "module",
-      "lines": 62,
-      "bytes": 3172,
+      "lines": 82,
+      "bytes": 4284,
       "doc": "The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardening.md §1.2, §5; 208-l1-l2-l3-caching-architecture.md).",
       "symbols": [
         {
@@ -66239,7 +66417,7 @@
         {
           "name": "RedisKeyspace",
           "kind": "type",
-          "line": 61
+          "line": 81
         }
       ]
     },
@@ -66262,8 +66440,8 @@
       "path": "apps/api/src/core/redis/redis.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 95,
-      "bytes": 4304,
+      "lines": 105,
+      "bytes": 4891,
       "doc": "",
       "symbols": []
     },
@@ -66271,8 +66449,8 @@
       "path": "apps/api/src/core/redis/redis.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 201,
-      "bytes": 7704,
+      "lines": 222,
+      "bytes": 8609,
       "doc": "",
       "symbols": [
         {
@@ -68633,14 +68811,14 @@
       "path": "apps/api/src/modules/auction/auction-bid.controller.ts",
       "area": "api",
       "kind": "controller",
-      "lines": 63,
-      "bytes": 2938,
+      "lines": 74,
+      "bytes": 3487,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionBidController",
           "kind": "class",
-          "line": 25
+          "line": 26
         }
       ]
     },
@@ -68648,8 +68826,8 @@
       "path": "apps/api/src/modules/auction/auction-bidding.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 583,
-      "bytes": 29532,
+      "lines": 623,
+      "bytes": 31610,
       "doc": "",
       "symbols": []
     },
@@ -68672,8 +68850,8 @@
       "path": "apps/api/src/modules/auction/auction-lifecycle.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 104,
-      "bytes": 4169,
+      "lines": 108,
+      "bytes": 4464,
       "doc": "",
       "symbols": []
     },
@@ -68681,29 +68859,171 @@
       "path": "apps/api/src/modules/auction/auction-lifecycle.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 232,
-      "bytes": 10436,
+      "lines": 251,
+      "bytes": 11268,
       "doc": "",
       "symbols": [
         {
           "name": "OUTAGE_GRACE_MS",
           "kind": "const",
-          "line": 18
+          "line": 20
         },
         {
           "name": "OUTAGE_EXTENSION_MS",
           "kind": "const",
-          "line": 27
+          "line": 29
         },
         {
           "name": "CloseOutcome",
           "kind": "type",
-          "line": 36
+          "line": 38
         },
         {
           "name": "AuctionLifecycleService",
           "kind": "class",
+          "line": 68
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction-public.controller.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 74,
+      "bytes": 2780,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction-public.controller.ts",
+      "area": "api",
+      "kind": "controller",
+      "lines": 88,
+      "bytes": 3871,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "openEventStream",
+          "kind": "function",
+          "line": 17
+        },
+        {
+          "name": "AuctionPublicController",
+          "kind": "class",
+          "line": 44
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction-public.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 357,
+      "bytes": 17111,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction-public.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 405,
+      "bytes": 17321,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LOT_PAGE_CACHE_MS",
+          "kind": "const",
+          "line": 20
+        },
+        {
+          "name": "PAGE_BIDS",
+          "kind": "const",
+          "line": 30
+        },
+        {
+          "name": "PublicLotPhase",
+          "kind": "type",
+          "line": 32
+        },
+        {
+          "name": "PublicLotView",
+          "kind": "interface",
+          "line": 35
+        },
+        {
+          "name": "PublicLotSummary",
+          "kind": "interface",
+          "line": 60
+        },
+        {
+          "name": "ViewerLotState",
+          "kind": "interface",
+          "line": 77
+        },
+        {
+          "name": "AuctionPublicService",
+          "kind": "class",
+          "line": 113
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction-realtime.service.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 301,
+      "bytes": 11840,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/auction/auction-realtime.service.ts",
+      "area": "api",
+      "kind": "service",
+      "lines": 315,
+      "bytes": 13114,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "FLUSH_INTERVAL_MS",
+          "kind": "const",
+          "line": 18
+        },
+        {
+          "name": "MAX_STREAMS_PER_NODE",
+          "kind": "const",
+          "line": 27
+        },
+        {
+          "name": "HEARTBEAT_MS",
+          "kind": "const",
+          "line": 34
+        },
+        {
+          "name": "MAX_STREAM_AGE_MS",
+          "kind": "const",
+          "line": 43
+        },
+        {
+          "name": "CLIENT_RETRY_MS",
+          "kind": "const",
+          "line": 46
+        },
+        {
+          "name": "MAX_BUFFERED_BYTES",
+          "kind": "const",
+          "line": 58
+        },
+        {
+          "name": "LiveStreamTarget",
+          "kind": "interface",
           "line": 66
+        },
+        {
+          "name": "AuctionRealtimeService",
+          "kind": "class",
+          "line": 119
         }
       ]
     },
@@ -68726,14 +69046,14 @@
       "path": "apps/api/src/modules/auction/auction.module.ts",
       "area": "api",
       "kind": "nest module",
-      "lines": 22,
-      "bytes": 1002,
+      "lines": 25,
+      "bytes": 1278,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionModule",
           "kind": "class",
-          "line": 21
+          "line": 24
         }
       ]
     },
@@ -68741,8 +69061,8 @@
       "path": "apps/api/src/modules/auction/auction.service.spec.ts",
       "area": "api",
       "kind": "unit test",
-      "lines": 487,
-      "bytes": 21375,
+      "lines": 489,
+      "bytes": 21523,
       "doc": "",
       "symbols": []
     },
@@ -68750,64 +69070,64 @@
       "path": "apps/api/src/modules/auction/auction.service.ts",
       "area": "api",
       "kind": "service",
-      "lines": 1115,
-      "bytes": 48337,
+      "lines": 1128,
+      "bytes": 49034,
       "doc": "",
       "symbols": [
         {
           "name": "AuctionLotView",
           "kind": "type",
-          "line": 84
+          "line": 86
         },
         {
           "name": "AuctionDetail",
           "kind": "type",
-          "line": 94
+          "line": 96
         },
         {
           "name": "AuctionResultView",
           "kind": "interface",
-          "line": 101
+          "line": 103
         },
         {
           "name": "PlaceBidInput",
           "kind": "interface",
-          "line": 109
+          "line": 111
         },
         {
           "name": "BidView",
           "kind": "interface",
-          "line": 118
+          "line": 120
         },
         {
           "name": "LotPriceState",
           "kind": "interface",
-          "line": 128
+          "line": 130
         },
         {
           "name": "PlaceBidResult",
           "kind": "interface",
-          "line": 139
+          "line": 141
         },
         {
           "name": "SetProxyBidInput",
           "kind": "interface",
-          "line": 152
+          "line": 154
         },
         {
           "name": "ProxyBidResult",
           "kind": "interface",
-          "line": 159
+          "line": 161
         },
         {
           "name": "BidIntegrity",
           "kind": "interface",
-          "line": 167
+          "line": 169
         },
         {
           "name": "AuctionService",
           "kind": "class",
-          "line": 235
+          "line": 237
         }
       ]
     },
@@ -68914,8 +69234,8 @@
       "path": "apps/api/src/modules/auction/dto/auction.dto.ts",
       "area": "api",
       "kind": "dto",
-      "lines": 215,
-      "bytes": 5408,
+      "lines": 235,
+      "bytes": 6057,
       "doc": "",
       "symbols": [
         {
@@ -68977,6 +69297,75 @@
           "name": "SetProxyBidDto",
           "kind": "class",
           "line": 204
+        },
+        {
+          "name": "PUBLIC_LOT_STATES",
+          "kind": "const",
+          "line": 216
+        },
+        {
+          "name": "PublicLotState",
+          "kind": "type",
+          "line": 217
+        },
+        {
+          "name": "PublicLotListQueryDto",
+          "kind": "class",
+          "line": 219
+        }
+      ]
+    },
+    {
+      "path": "apps/api/src/modules/auction/lot-live.spec.ts",
+      "area": "api",
+      "kind": "unit test",
+      "lines": 99,
+      "bytes": 4559,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/src/modules/auction/lot-live.ts",
+      "area": "api",
+      "kind": "module",
+      "lines": 104,
+      "bytes": 4438,
+      "doc": "What a lot says about itself to anyone watching it live (launchpad-apps/ 234-auction-app.md §6, §11, WO-234.4).",
+      "symbols": [
+        {
+          "name": "MAX_EVENT_BIDS",
+          "kind": "const",
+          "line": 16
+        },
+        {
+          "name": "LiveBid",
+          "kind": "interface",
+          "line": 18
+        },
+        {
+          "name": "LotPublicOutcome",
+          "kind": "type",
+          "line": 28
+        },
+        {
+          "name": "LotLiveState",
+          "kind": "type",
+          "line": 32
+        },
+        {
+          "name": "LotLiveEvent",
+          "kind": "interface",
+          "line": 37
+        },
+        {
+          "name": "mergeLiveEvents",
+          "kind": "function",
+          "line": 62
+        },
+        {
+          "name": "eventForAcceptedBids",
+          "kind": "function",
+          "line": 82
         }
       ]
     },
@@ -80624,8 +81013,8 @@
       "path": "apps/api/test/auction-bidding.e2e-spec.ts",
       "area": "api",
       "kind": "e2e test",
-      "lines": 263,
-      "bytes": 15049,
+      "lines": 260,
+      "bytes": 14854,
       "doc": "",
       "symbols": []
     },
@@ -80644,6 +81033,15 @@
       "kind": "e2e test",
       "lines": 424,
       "bytes": 24526,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/api/test/auction-realtime.e2e-spec.ts",
+      "area": "api",
+      "kind": "e2e test",
+      "lines": 396,
+      "bytes": 22151,
       "doc": "",
       "symbols": []
     },
@@ -85315,8 +85713,8 @@
       "path": "apps/web/messages/en.json",
       "area": "web",
       "kind": "json",
-      "lines": 847,
-      "bytes": 34044,
+      "lines": 1010,
+      "bytes": 40643,
       "doc": "",
       "symbols": []
     },
@@ -85324,8 +85722,8 @@
       "path": "apps/web/messages/ur.json",
       "area": "web",
       "kind": "json",
-      "lines": 847,
-      "bytes": 47384,
+      "lines": 1010,
+      "bytes": 56916,
       "doc": "",
       "symbols": []
     },
@@ -88726,6 +89124,66 @@
       ]
     },
     {
+      "path": "apps/web/src/app/(storefront)/[locale]/auctions/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 19,
+      "bytes": 765,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/loading.tsx",
+      "area": "web",
+      "kind": "loading",
+      "lines": 6,
+      "bytes": 149,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "Loading",
+          "kind": "default",
+          "line": 3
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/auctions/lots/[lotId]/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 110,
+      "bytes": 4723,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotPage",
+          "kind": "default",
+          "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/app/(storefront)/[locale]/auctions/page.tsx",
+      "area": "web",
+      "kind": "page",
+      "lines": 276,
+      "bytes": 9723,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AuctionsPage",
+          "kind": "default",
+          "line": 32
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/app/(storefront)/[locale]/blog/[slug]/page.tsx",
       "area": "web",
       "kind": "page",
@@ -91990,6 +92448,111 @@
       ]
     },
     {
+      "path": "apps/web/src/components/storefront/auction/auctions-link.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 28,
+      "bytes": 895,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "AuctionsFooterLink",
+          "kind": "function",
+          "line": 15
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/auction/bid-history.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 49,
+      "bytes": 2186,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "BidHistory",
+          "kind": "function",
+          "line": 14
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/auction/lot-bidding.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 392,
+      "bytes": 13769,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotBidding",
+          "kind": "function",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/auction/lot-card.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 75,
+      "bytes": 3047,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotCard",
+          "kind": "function",
+          "line": 17
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/auction/lot-skeleton.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 26,
+      "bytes": 1230,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotPageSkeleton",
+          "kind": "function",
+          "line": 4
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/components/storefront/auction/lot-status.tsx",
+      "area": "web",
+      "kind": "component",
+      "lines": 151,
+      "bytes": 6111,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotFigure",
+          "kind": "function",
+          "line": 18
+        },
+        {
+          "name": "LotClock",
+          "kind": "function",
+          "line": 53
+        },
+        {
+          "name": "LotStanding",
+          "kind": "function",
+          "line": 100
+        },
+        {
+          "name": "LotOutcome",
+          "kind": "function",
+          "line": 124
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/components/storefront/auth-page.tsx",
       "area": "web",
       "kind": "component",
@@ -92123,14 +92686,14 @@
       "path": "apps/web/src/components/storefront/footer.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 155,
-      "bytes": 6639,
+      "lines": 157,
+      "bytes": 6816,
       "doc": "",
       "symbols": [
         {
           "name": "Footer",
           "kind": "function",
-          "line": 24
+          "line": 25
         }
       ]
     },
@@ -92183,14 +92746,14 @@
       "path": "apps/web/src/components/storefront/header.tsx",
       "area": "web",
       "kind": "component",
-      "lines": 210,
-      "bytes": 9826,
+      "lines": 228,
+      "bytes": 11084,
       "doc": "",
       "symbols": [
         {
           "name": "Header",
           "kind": "function",
-          "line": 39
+          "line": 47
         }
       ]
     },
@@ -93526,8 +94089,8 @@
       "path": "apps/web/src/constants/routes.ts",
       "area": "web",
       "kind": "constants",
-      "lines": 318,
-      "bytes": 14744,
+      "lines": 321,
+      "bytes": 14952,
       "doc": "Every internal path the app links to, in one place.",
       "symbols": [
         {
@@ -93562,6 +94125,21 @@
       "symbols": []
     },
     {
+      "path": "apps/web/src/hooks/use-countdown-label.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 15,
+      "bytes": 558,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "useCountdownLabel",
+          "kind": "function",
+          "line": 11
+        }
+      ]
+    },
+    {
       "path": "apps/web/src/hooks/use-done-beat.ts",
       "area": "web",
       "kind": "hook",
@@ -93573,6 +94151,21 @@
           "name": "useDoneBeat",
           "kind": "function",
           "line": 26
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/hooks/use-enabled-modules.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 45,
+      "bytes": 1395,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "useEnabledModules",
+          "kind": "function",
+          "line": 30
         }
       ]
     },
@@ -93603,6 +94196,66 @@
           "name": "useFreshOnChange",
           "kind": "function",
           "line": 16
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/hooks/use-lot-live.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 179,
+      "bytes": 6634,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotLoad",
+          "kind": "type",
+          "line": 17
+        },
+        {
+          "name": "LiveConnection",
+          "kind": "type",
+          "line": 24
+        },
+        {
+          "name": "useLotLive",
+          "kind": "function",
+          "line": 48
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/hooks/use-lot-viewer.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 48,
+      "bytes": 1521,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "useLotViewer",
+          "kind": "function",
+          "line": 16
+        },
+        {
+          "name": "LotViewer",
+          "kind": "type",
+          "line": 47
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/hooks/use-now.ts",
+      "area": "web",
+      "kind": "hook",
+      "lines": 26,
+      "bytes": 849,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "useNow",
+          "kind": "function",
+          "line": 14
         }
       ]
     },
@@ -93961,6 +94614,250 @@
           "name": "getMenu",
           "kind": "function",
           "line": 197
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/auction-client.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 84,
+      "bytes": 3565,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "PublicLotState",
+          "kind": "type",
+          "line": 15
+        },
+        {
+          "name": "PublicLotPage",
+          "kind": "interface",
+          "line": 17
+        },
+        {
+          "name": "fetchPublicLots",
+          "kind": "function",
+          "line": 24
+        },
+        {
+          "name": "fetchPublicLot",
+          "kind": "function",
+          "line": 28
+        },
+        {
+          "name": "lotStreamUrl",
+          "kind": "function",
+          "line": 33
+        },
+        {
+          "name": "hasCustomerSession",
+          "kind": "function",
+          "line": 38
+        },
+        {
+          "name": "fetchViewerState",
+          "kind": "function",
+          "line": 42
+        },
+        {
+          "name": "AcceptedBid",
+          "kind": "interface",
+          "line": 46
+        },
+        {
+          "name": "placeBid",
+          "kind": "function",
+          "line": 62
+        },
+        {
+          "name": "ProxyResult",
+          "kind": "interface",
+          "line": 69
+        },
+        {
+          "name": "setProxyBid",
+          "kind": "function",
+          "line": 77
+        },
+        {
+          "name": "fetchProxyBid",
+          "kind": "function",
+          "line": 81
+        }
+      ]
+    },
+    {
+      "path": "apps/web/src/lib/auction-live.spec.ts",
+      "area": "web",
+      "kind": "unit test",
+      "lines": 366,
+      "bytes": 16501,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "apps/web/src/lib/auction-live.ts",
+      "area": "web",
+      "kind": "utility",
+      "lines": 370,
+      "bytes": 14442,
+      "doc": "",
+      "symbols": [
+        {
+          "name": "LotPhase",
+          "kind": "type",
+          "line": 15
+        },
+        {
+          "name": "LiveBid",
+          "kind": "interface",
+          "line": 17
+        },
+        {
+          "name": "LotOutcome",
+          "kind": "type",
+          "line": 26
+        },
+        {
+          "name": "PublicLot",
+          "kind": "interface",
+          "line": 30
+        },
+        {
+          "name": "LotLiveEvent",
+          "kind": "interface",
+          "line": 50
+        },
+        {
+          "name": "PublicLotSummary",
+          "kind": "interface",
+          "line": 63
+        },
+        {
+          "name": "ViewerLotState",
+          "kind": "interface",
+          "line": 77
+        },
+        {
+          "name": "PAGE_BIDS",
+          "kind": "const",
+          "line": 90
+        },
+        {
+          "name": "CLOSING_SOON_MS",
+          "kind": "const",
+          "line": 98
+        },
+        {
+          "name": "POLL_FALLBACK_MS",
+          "kind": "const",
+          "line": 101
+        },
+        {
+          "name": "REFRESH_MIN_GAP_MS",
+          "kind": "const",
+          "line": 108
+        },
+        {
+          "name": "clockOffset",
+          "kind": "function",
+          "line": 111
+        },
+        {
+          "name": "msUntil",
+          "kind": "function",
+          "line": 116
+        },
+        {
+          "name": "CountdownParts",
+          "kind": "interface",
+          "line": 120
+        },
+        {
+          "name": "countdownParts",
+          "kind": "function",
+          "line": 128
+        },
+        {
+          "name": "countdownUnits",
+          "kind": "function",
+          "line": 143
+        },
+        {
+          "name": "TimeState",
+          "kind": "type",
+          "line": 157
+        },
+        {
+          "name": "timeState",
+          "kind": "function",
+          "line": 159
+        },
+        {
+          "name": "applyLiveEvent",
+          "kind": "function",
+          "line": 173
+        },
+        {
+          "name": "AcceptedLike",
+          "kind": "interface",
+          "line": 197
+        },
+        {
+          "name": "eventFromAccepted",
+          "kind": "function",
+          "line": 209
+        },
+        {
+          "name": "needsRefresh",
+          "kind": "function",
+          "line": 232
+        },
+        {
+          "name": "newerView",
+          "kind": "function",
+          "line": 241
+        },
+        {
+          "name": "Standing",
+          "kind": "type",
+          "line": 247
+        },
+        {
+          "name": "standingOf",
+          "kind": "function",
+          "line": 257
+        },
+        {
+          "name": "shownPriceMinor",
+          "kind": "function",
+          "line": 263
+        },
+        {
+          "name": "MAX_AMOUNT_MINOR",
+          "kind": "const",
+          "line": 271
+        },
+        {
+          "name": "parseAmountToMinor",
+          "kind": "function",
+          "line": 279
+        },
+        {
+          "name": "amountForInput",
+          "kind": "function",
+          "line": 290
+        },
+        {
+          "name": "BidFailure",
+          "kind": "interface",
+          "line": 296
+        },
+        {
+          "name": "describeBidFailure",
+          "kind": "function",
+          "line": 335
         }
       ]
     },
@@ -98822,8 +99719,8 @@
       "path": "docs/implementation/DECISIONS.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 12015,
-      "bytes": 758726,
+      "lines": 12120,
+      "bytes": 767271,
       "doc": "",
       "symbols": []
     },
@@ -100649,8 +101546,8 @@
       "path": "docs/implementation/launchpad-apps/234-auction-app.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 358,
-      "bytes": 32349,
+      "lines": 466,
+      "bytes": 43806,
       "doc": "",
       "symbols": []
     },
@@ -104654,6 +105551,15 @@
           "line": 318
         }
       ]
+    },
+    {
+      "path": "scripts/load-auction.mjs",
+      "area": "infra",
+      "kind": "script",
+      "lines": 312,
+      "bytes": 13868,
+      "doc": "",
+      "symbols": []
     },
     {
       "path": "scripts/nested-borders.py",

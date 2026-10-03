@@ -82,8 +82,9 @@ export interface RedisPing {
 export class RedisService implements OnModuleInit, OnApplicationShutdown {
   private readonly logger = new Logger(RedisService.name);
   private readonly clients = new Map<RedisKeyspace, Redis>();
-  /** Keyspace → when its current outage started (epoch ms). Absent while connected. */
-  private readonly outageStartedAt = new Map<RedisKeyspace, number>();
+  private readonly subscribers = new Map<RedisKeyspace, Redis>();
+  /** Connection name → when its current outage started (epoch ms). Absent while connected. */
+  private readonly outageStartedAt = new Map<string, number>();
 
   constructor(private readonly config: AppConfigService) {}
 
@@ -96,15 +97,35 @@ export class RedisService implements OnModuleInit, OnApplicationShutdown {
     const existing = this.clients.get(keyspace);
     if (existing) return existing;
 
+    const created = this.create(keyspace, keyspace);
+    this.clients.set(keyspace, created);
+    return created;
+  }
+
+  /**
+   * A second connection to a keyspace, for `SUBSCRIBE` and `PSUBSCRIBE`: once a
+   * connection subscribes it can issue no other command, so it can never be the
+   * one `client()` returns. The caller opens it (`connect()`) and decides what a
+   * message not received means; it follows the same fail-fast options and
+   * reconnects, and ioredis re-subscribes to its channels after a drop.
+   */
+  subscriber(keyspace: RedisKeyspace): Redis {
+    const existing = this.subscribers.get(keyspace);
+    if (existing) return existing;
+    const created = this.create(keyspace, `${keyspace}:subscriber`);
+    this.subscribers.set(keyspace, created);
+    return created;
+  }
+
+  private create(keyspace: RedisKeyspace, name: string): Redis {
     const created = new Redis(this.config.get('REDIS_URL'), {
       ...REDIS_CLIENT_OPTIONS,
       db: REDIS_KEYSPACES[keyspace].db,
       lazyConnect: true,
       retryStrategy: redisReconnectDelayMs,
-      connectionName: `api:${keyspace}`,
+      connectionName: `api:${name}`,
     });
-    this.watch(keyspace, created);
-    this.clients.set(keyspace, created);
+    this.watch(name, keyspace, created);
     return created;
   }
 
@@ -130,7 +151,7 @@ export class RedisService implements OnModuleInit, OnApplicationShutdown {
 
   async onApplicationShutdown(): Promise<void> {
     await Promise.all(
-      [...this.clients.values()].map(async (client) => {
+      [...this.clients.values(), ...this.subscribers.values()].map(async (client) => {
         if (client.status !== 'ready') {
           client.disconnect();
           return;
@@ -159,22 +180,22 @@ export class RedisService implements OnModuleInit, OnApplicationShutdown {
     }
   }
 
-  private watch(keyspace: RedisKeyspace, client: Redis): void {
+  private watch(name: string, keyspace: RedisKeyspace, client: Redis): void {
     client.on('ready', () => {
-      const since = this.outageStartedAt.get(keyspace);
-      this.outageStartedAt.delete(keyspace);
+      const since = this.outageStartedAt.get(name);
+      this.outageStartedAt.delete(name);
       if (since === undefined) {
-        this.logger.log(`Redis keyspace "${keyspace}" connected (${this.address(client)}, db ${REDIS_KEYSPACES[keyspace].db})`);
+        this.logger.log(`Redis keyspace "${name}" connected (${this.address(client)}, db ${REDIS_KEYSPACES[keyspace].db})`);
       } else {
-        this.logger.log(`Redis keyspace "${keyspace}" reconnected after ${Math.round((Date.now() - since) / 1000)} s`);
+        this.logger.log(`Redis keyspace "${name}" reconnected after ${Math.round((Date.now() - since) / 1000)} s`);
       }
     });
 
     client.on('error', (error: Error) => {
-      if (this.outageStartedAt.has(keyspace)) return;
-      this.outageStartedAt.set(keyspace, Date.now());
+      if (this.outageStartedAt.has(name)) return;
+      this.outageStartedAt.set(name, Date.now());
       // The address only — REDIS_URL may carry a password.
-      this.logger.error(`Redis keyspace "${keyspace}" unreachable at ${this.address(client)}: ${error.message}`);
+      this.logger.error(`Redis keyspace "${name}" unreachable at ${this.address(client)}: ${error.message}`);
     });
   }
 

@@ -3,7 +3,7 @@
 
 # Files — api
 
-All 1,215 tracked files in `apps/api`, by directory.
+All 1,224 tracked files in `apps/api`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -1108,10 +1108,10 @@ All 1,215 tracked files in `apps/api`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `redis.keyspaces.ts` | module | 62 | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardenin… |
+| `redis.keyspaces.ts` | module | 82 | The logical databases this API uses on its one dedicated Redis instance (206-rate-limiting-caching-compression-hardenin… |
 | `redis.module.ts` | nest module | 23 |  |
-| `redis.service.spec.ts` | unit test | 95 |  |
-| `redis.service.ts` | service | 201 |  |
+| `redis.service.spec.ts` | unit test | 105 |  |
+| `redis.service.ts` | service | 222 |  |
 
 ### `apps/api/src/core/replication` (20)
 
@@ -1349,27 +1349,35 @@ All 1,215 tracked files in `apps/api`, by directory.
 | `attendance-device.dto.ts` | dto | 34 |  |
 | `attendance.dto.ts` | dto | 83 |  |
 
-### `apps/api/src/modules/auction` (11)
+### `apps/api/src/modules/auction` (19)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auction-bid.controller.ts` | controller | 63 |  |
-| `auction-bidding.service.spec.ts` | unit test | 583 |  |
+| `auction-bid.controller.ts` | controller | 74 |  |
+| `auction-bidding.service.spec.ts` | unit test | 623 |  |
 | `auction-lifecycle.cron.ts` | scheduled job | 41 |  |
-| `auction-lifecycle.service.spec.ts` | unit test | 104 |  |
-| `auction-lifecycle.service.ts` | service | 232 |  |
+| `auction-lifecycle.service.spec.ts` | unit test | 108 |  |
+| `auction-lifecycle.service.ts` | service | 251 |  |
+| `auction-public.controller.spec.ts` | unit test | 74 |  |
+| `auction-public.controller.ts` | controller | 88 |  |
+| `auction-public.service.spec.ts` | unit test | 357 |  |
+| `auction-public.service.ts` | service | 405 |  |
+| `auction-realtime.service.spec.ts` | unit test | 301 |  |
+| `auction-realtime.service.ts` | service | 315 |  |
 | `auction.controller.ts` | controller | 119 |  |
-| `auction.module.ts` | nest module | 22 |  |
-| `auction.service.spec.ts` | unit test | 487 |  |
-| `auction.service.ts` | service | 1115 |  |
+| `auction.module.ts` | nest module | 25 |  |
+| `auction.service.spec.ts` | unit test | 489 |  |
+| `auction.service.ts` | service | 1128 |  |
 | `bidding.spec.ts` | unit test | 297 |  |
 | `bidding.ts` | module | 236 |  |
+| `lot-live.spec.ts` | unit test | 99 |  |
+| `lot-live.ts` | module | 104 | What a lot says about itself to anyone watching it live (launchpad-apps/ 234-auction-app.md §6, §11, WO-234.4). |
 
 ### `apps/api/src/modules/auction/dto` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `auction.dto.ts` | dto | 215 |  |
+| `auction.dto.ts` | dto | 235 |  |
 
 ### `apps/api/src/modules/bankfacilities` (5)
 
@@ -2662,15 +2670,16 @@ All 1,215 tracked files in `apps/api`, by directory.
 |---|---|---|---|
 | `wishlist.dto.ts` | dto | 30 |  |
 
-### `apps/api/test` (34)
+### `apps/api/test` (35)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `accounting.e2e-spec.ts` | e2e test | 462 | The general ledger's invariants (RETAIL-ERP.md R15, WO-19.1), proven against a real database rather than a mocked Prism… |
 | `api-keys.e2e-spec.ts` | e2e test | 371 |  |
-| `auction-bidding.e2e-spec.ts` | e2e test | 263 |  |
+| `auction-bidding.e2e-spec.ts` | e2e test | 260 |  |
 | `auction-http.e2e-spec.ts` | e2e test | 234 |  |
 | `auction-lifecycle.e2e-spec.ts` | e2e test | 424 |  |
+| `auction-realtime.e2e-spec.ts` | e2e test | 396 |  |
 | `auction.e2e-spec.ts` | e2e test | 114 |  |
 | `auth-throttle.e2e-spec.ts` | e2e test | 431 |  |
 | `auth.e2e-spec.ts` | e2e test | 198 |  |

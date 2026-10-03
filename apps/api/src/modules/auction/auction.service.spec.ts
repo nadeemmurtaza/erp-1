@@ -5,6 +5,7 @@ import { AuditService } from '../../core/audit/audit.service';
 import { Prisma } from '../../core/prisma/client';
 import { PrismaService } from '../../core/prisma/prisma.service';
 import { SettingsService } from '../../core/settings/settings.service';
+import { AuctionRealtimeService } from './auction-realtime.service';
 import { AuctionService } from './auction.service';
 import { DEFAULT_BID_RULES } from './bidding';
 import { AuctionListQueryDto } from './dto/auction.dto';
@@ -87,6 +88,7 @@ describe('AuctionService', () => {
         { provide: SettingsService, useValue: settings },
         { provide: AppConfigService, useValue: { nodeRole: 'STANDALONE', nodeId: 'N1' } },
         { provide: AuditService, useValue: audit },
+        { provide: AuctionRealtimeService, useValue: { publish: jest.fn() } },
       ],
     }).compile();
 

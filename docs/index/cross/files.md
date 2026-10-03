@@ -3,20 +3,20 @@
 
 # Every tracked file
 
-All **2,701** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,729** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
 
 | Area | Files | Lines | Open |
 |---|---|---|---|
-| apps/api | 1,215 | 165,056 | [files/api.md](../files/api.md) |
-| apps/web | 544 | 98,061 | [files/web.md](../files/web.md) |
+| apps/api | 1,224 | 167,355 | [files/api.md](../files/api.md) |
+| apps/web | 562 | 100,675 | [files/web.md](../files/web.md) |
 | apps/pos | 33 | 2,671 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 49 | 6,906 | [files/mobile.md](../files/mobile.md) |
 | packages/* | 114 | 13,207 | [files/packages.md](../files/packages.md) |
-| docs/* | 463 | 96,271 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 64 | 33,140 | [files/infra.md](../files/infra.md) |
+| docs/* | 463 | 96,484 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 65 | 33,452 | [files/infra.md](../files/infra.md) |
 | repository root files | 219 | 22,119 | [files/root.md](../files/root.md) |
 
 
@@ -29,29 +29,29 @@ name a new file: the convention is what makes it findable.
 | Kind | Count |
 |---|---|
 | doc | 494 |
-| unit test | 369 |
-| page | 231 |
-| service | 213 |
-| module | 198 |
-| component | 192 |
-| controller | 153 |
+| unit test | 374 |
+| page | 233 |
+| service | 215 |
+| module | 199 |
+| component | 198 |
+| controller | 154 |
 | dto | 136 |
 | migration | 123 |
 | nest module | 106 |
 | prisma schema | 66 |
-| script | 48 |
-| utility | 39 |
+| script | 49 |
+| utility | 41 |
 | event subscriber | 36 |
 | scheduled job | 35 |
 | json | 31 |
+| e2e test | 29 |
 | react | 29 |
-| e2e test | 28 |
 | asset | 26 |
+| hook | 17 |
+| loading | 14 |
 | file | 13 |
-| hook | 12 |
 | yaml | 12 |
 | registry | 12 |
-| loading | 12 |
 | config | 11 |
 | guard | 9 |
 | constants | 8 |

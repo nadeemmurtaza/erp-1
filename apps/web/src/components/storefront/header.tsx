@@ -14,11 +14,17 @@ import { ThemeSwitch } from './theme-switch';
 
 import { MobileNav } from './mobile-nav';
 import { ROUTES } from '@/constants/routes';
+import { useEnabledModules } from '@/hooks/use-enabled-modules';
+import { isModuleEnabled } from '@/utils/module-gate';
 
 type NavItem = {
   key: string;
   href?: string;
   submenu?: Array<{ key: string; href: string }>;
+  /** API module that owns this entry. Shown only once `GET /meta` confirms the module is on: see `useEnabledModules`. */
+  module?: string;
+  /** Hidden in the desktop row below this width, where it does not fit. Below `lg` the mobile menu carries it, and the footer carries it at every width. */
+  desktopFrom?: 'xl';
 };
 
 const NAV: NavItem[] = [
@@ -34,6 +40,8 @@ const NAV: NavItem[] = [
   { key: 'kids', href: '/shop?category=kids-wear' },
   { key: 'collection', href: '/shop' },
   { key: 'bringYourFabric', href: '/stitching' },
+  // launchpad-apps/234-auction-app.md — off by default (`auction` module).
+  { key: 'auctions', href: ROUTES.storefront.auctions, module: 'auction', desktopFrom: 'xl' },
 ] as const;
 
 export function Header() {
@@ -41,6 +49,9 @@ export function Header() {
   const tSite = useTranslations('site');
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const enabledModules = useEnabledModules();
+  // An entry for a module that may be off waits for the answer: a link to a page this deployment does not have is worse than one a moment late.
+  const items: NavItem[] = NAV.filter((item) => !item.module || (enabledModules !== undefined && isModuleEnabled(item.module, enabledModules)));
 
   const isActive = (href: string) => {
     const cleanPath = pathname.replace(/^\/(en|ur)/, '') || '/';
@@ -67,6 +78,11 @@ export function Header() {
       }
     }
 
+    // The auction list owns every lot page under it.
+    if (cleanHref === ROUTES.storefront.auctions) {
+      return cleanPath === cleanHref || cleanPath.startsWith(`${cleanHref}/`);
+    }
+
     // For all other links (e.g., /stitching), just do an exact match on the path
     return cleanPath === cleanHref;
   };
@@ -77,7 +93,7 @@ export function Header() {
         <div className="container-page">
           <div className="flex items-center justify-between py-3 md:py-5">
             <div className="flex items-center gap-3 md:gap-8" suppressHydrationWarning>
-              <MobileNav items={NAV} />
+              <MobileNav items={items} />
               <Link
                 href="/"
                 aria-label={tSite('name')}
@@ -97,7 +113,7 @@ export function Header() {
                   hamburger stays in charge until there is room. */}
               <nav aria-label="Main" className="hidden flex-1 lg:flex">
                 <div className="flex items-center gap-1">
-                  {NAV.map((item) => {
+                  {items.map((item) => {
                     if (item.submenu) {
                       return (
                         <div key={item.key} className="group relative">
@@ -148,6 +164,8 @@ export function Header() {
                         key={item.key}
                         href={item.href || '/'}
                         className={`group relative whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-[background-color,color,transform] duration-normal ease-decelerate ${
+                          item.desktopFrom === 'xl' ? 'hidden xl:inline-block ' : ''
+                        }${
                           active
                             ? 'bg-neutral-50 text-neutral-900'
                             : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 motion-safe:hover:-translate-y-0.5'

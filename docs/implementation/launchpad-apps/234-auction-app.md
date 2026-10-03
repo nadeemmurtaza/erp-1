@@ -141,16 +141,37 @@ would protect.
   and stored is the database's `clock_timestamp()` read under that lock.
 * **Idempotency key** on every bid: a double-tap or retried request is a no-op
   (unique `(lotId, bidderId, idempotencyKey)`).
-* **Fan-out.** Accepted bids publish to a Redis channel; clients receive them
-  over SSE with polling fallback every 5 s. A slow consumer never slows the
-  writer.
+* **Fan-out (built in WO-234.4).** After the bid's transaction commits, the
+  service publishes one **snapshot** event (price, `bidSeq`, minimum next bid,
+  `endsAt`, state, the newest bids) to the Redis channel `auction:lot:<lotId>`,
+  keyspace `realtime`. Every node subscribes once and writes to its own
+  watchers; a node with no watchers for a lot drops the message. Publishing
+  never awaits and never fails a bid: Redis down means the event is lost, the
+  bid stands, and watchers fall back to polling. Because an event is a
+  snapshot, a dropped or merged one costs nothing: the next one carries the same
+  facts. Per node, per lot, the first event after quiet goes out at once and
+  events inside the next 250 ms are merged into one (`mergeLiveEvents`), so a
+  hot lot costs each watcher at most four writes a second. A watcher whose
+  socket holds more than 64 KiB unsent is skipped until it drains, so a slow
+  consumer never slows the writer or grows the node's memory. Clients receive
+  the stream over SSE and fall back to reading the lot every 5 s (±20 %) when
+  there is no stream; both paths end in the same view, and a view never goes
+  backwards (`newerView`).
+* **The public lot page is cached per node.** One read per lot per second:
+  in-process, single-flight, at most 2 000 lots, invalidated when a realtime
+  event for the lot arrives, `serverTime` aged by the time the entry has sat. A
+  thousand pages polling one lot cost one database read a second per node.
 * **Close** is a single job per lot with a predicate (`status` from `OPEN` to
   `CLOSED`, built in WO-234.3 without a `CLOSING` step), idempotent; a missed
   run closes on the next tick. It runs under the same per-lot lock as a bid, so
   no bid is mid-flight when a lot closes and a late bid that moved the end
   after the job found the lot due is not closed over.
 * **Hot-lot budget (stated target):** 50 accepted bids/second on one lot with
-  p95 < 300 ms; load-tested before WO-234.4 is called done.
+  p95 < 300 ms; load-tested before WO-234.4 is called done. **Measured in
+  WO-234.4** (`scripts/load-auction.mjs`, see §16): met with room at 50 a second
+  (every bid accepted, bid p95 18 ms, a watcher told within 247 ms at p95); past
+  the target, at 100 a second, nothing is lost or wrong but a bid waits its turn
+  at the lot's lock (p95 479 ms).
 * **Tamper-evident bids.** `Bid.hash = SHA-256(prevHash ‖ canonical(row))` per
   lot, reusing the hash-chain primitive of doc 231. Anyone auditing a result
   can verify nothing was inserted or altered.
@@ -228,12 +249,60 @@ the boss cannot see supplier prices before the deadline either.
   open, closing soon, closed, reserve not met, you are winning / outbid, ended,
   not eligible (with the reason and what to do), offline (bid is *not* queued
   silently; the bidder confirms on reconnect), rate-limited.
-* **Auction list** (browse and filter), **My bids**, **Watchlist**.
+* **Auction list** (browse and filter), **My bids**, **Watchlist**. The list is
+  built in WO-234.4; My bids and Watchlist are not (no work order owns them yet;
+  see §17).
 * **Admin:** create auction → add lots (bulk import from Excel, reusing the
   import pattern of doc 229) → schedule → **live monitor** → results →
   settlements → disputes → integrity queue.
 * Seven widths 280→1536, targets ≥ 44 px, logical properties for RTL, no dead
   space; a countdown never relies on colour alone.
+
+### Storefront screen brief (WO-234.4: `/auctions` and `/auctions/lots/:lotId`)
+
+* **One job.** The lot page: *let a person see where a lot stands and bid on
+  it.* The list: *find a lot to look at.* Two pages, two jobs (Law 5). Both live
+  at the storefront, public, and are reachable by clicking (a module-gated
+  "Auctions" entry in the header from `xl`, in the mobile menu, and in the
+  footer); the nav entry is absent, not disabled, when the `auction` module is
+  not enabled (`MOD-1`).
+* **Headline and three stops (lot page).** Headline: the lot's name. Stops: the
+  current price with the time left beside it, the bid box (the one loud
+  button), the bid history. Everything else (terms, proxy maximum) is one level
+  down in a `Disclosure` (Law 2).
+* **States, every one designed.** Loading (skeleton shaped like the page),
+  upcoming (countdown to opening, no bid box), open, closing soon (the last five
+  minutes, said in words as well as colour), end moved by a late bid (said once
+  in words), closed with a winner / sold to an alias, closed reserve not met /
+  no bids (the reason, never the reserve), signed out (sign-in with a way back
+  to this lot), not eligible (what and why, with *Contact us*), leading,
+  outbid (says what the next bid must be), outbid by an automatic bid, you won,
+  offline (a bid is **not** queued; the page says so), rate-limited (names the
+  wait), server busy, unknown or withdrawn lot (404 page with a way on), load
+  error with *Try again*. The list has empty-for-each-filter, empty-for-search,
+  error, and module-absent states, each with an action.
+* **Success surface.** A bid is accepted in place: the price, the leader mark
+  and the history change on the frame the answer arrives, and the button's
+  label returns. No toast, no modal: the page itself is the receipt (`SUC-3`).
+* **Seven widths.** One column from `xs` to `fold`, the bid box before the
+  history; two columns from `lg` with the bid box sticky beside the price. The
+  history rows are a grid whose amount column never collides with the alias at
+  280. Targets ≥ 44 px below `fold`; logical properties throughout; amounts and
+  dates only through `formatMoney` / `formatDateTime`.
+* **Honest by construction.** Public views never carry the reserve (only SOLD or
+  NOT_SOLD with a reason), never a name or an account, only the per-auction
+  alias. A countdown is read against the server's clock (an offset taken from
+  every message that carries `serverTime`), never the visitor's.
+* **Copy.** Every string is in `messages/en.json` and `ur.json` under
+  `auction.*` (parity checked), one word per concept: *bid*, *lot*, *maximum*.
+* **Proof.** `lib/auction-live.spec.ts` (merge, standing, countdown, amount
+  parsing); `test/auction-realtime.e2e-spec.ts` (public pages, `/me`, a real
+  stream, cross-node delivery); a real-browser walk of bid, outbid, maximum,
+  polling fallback, closed, upcoming, staff and error states at the seven
+  widths; `scripts/load-auction.mjs` for §16.11.
+* **Out of scope here.** Lot media (no media exists on a lot yet), search-engine
+  metadata and server rendering of the lot page, My bids, Watchlist and "notify
+  me", a list that refreshes by itself.
 
 ## 12. Parameters (proposals to confirm)
 
@@ -257,7 +326,19 @@ the boss cannot see supplier prices before the deadline either.
 | Deposit (when available) | 10% of reserve (or start price if no reserve), capped by a `Setting` ceiling | Large enough to deter non-payment, small enough not to price out bidders | `payments` hold | No hold support → no-deposit mode (§8) |
 | Sealed-bid opening quorum | 2 of 3 officers | No single person can open early; one absence does not block | key-split opening | <2 available → opening waits, deadline unaffected |
 | Bid retention | 7 years | Disputes and audits outlive the auction | retention job | Pseudonymise bidder after retention |
-| Hot-lot target | 50 bids/s/lot, p95 < 300 ms | Realistic peak for a popular timed lot | load test | Backpressure on fan-out, not on writes |
+| Hot-lot target | 50 bids/s/lot, p95 < 300 ms | Realistic peak for a popular timed lot | `scripts/load-auction.mjs` (§16.11) | Backpressure on fan-out, not on writes: events are merged and a slow watcher skipped, a bid never waits on a watcher |
+| Fan-out merge window | 250 ms per lot per node: the first event after quiet at once, the rest merged and sent when 250 ms have passed | A hot lot is at most four writes a second to each watcher instead of fifty; a quarter of the one second a screen takes to read; an event is a snapshot, so a merge loses nothing | `FLUSH_INTERVAL_MS` in `auction-realtime.service.ts` | Redis or the subscription down → no events; the page polls |
+| Open streams per node | 5 000 | Each is a socket and a few hundred bytes of state, well inside a default Node descriptor limit; past it a node protects the watchers it has | `MAX_STREAMS_PER_NODE` | 503 with `Retry-After: 5`; the page polls every 5 s ±20 %. More watchers means more nodes: fan-out is per node by design |
+| Slow-consumer drop | a watcher with more than 65 536 bytes (64 KiB) unsent is skipped until it drains | About thirty full events, far more than a healthy link ever queues; past it Node would hold every further write in the process's memory | `MAX_BUFFERED_BYTES` | Its updates are dropped; the page sees the gap in `bidSeq` and reads the lot |
+| Stream heartbeat | a comment line every 15 000 ms | A quarter of a typical 60 s idle-connection timeout on a proxy | `HEARTBEAT_MS` | A proxy that ignores comment lines closes the stream; the browser reconnects after 5 000 ms |
+| Stream age | closed by the server after 600 000 ms (10 min); the browser reconnects and is sent a fresh snapshot | Bounds a half-dead connection or one to a node being replaced; not so short that it is churn | `MAX_STREAM_AGE_MS` | A reconnect costs one snapshot |
+| Client reconnect | SSE `retry: 5000` ms; after a refusal the page asks again after 5 000 ms ±20 % | A thousand pages that lost a stream together must not return in one second | `CLIENT_RETRY_MS`, `useLotLive` | Meanwhile the page polls |
+| Polling fallback | every 5 000 ms ±20 %, and at least 1 000 ms between two reads that an event triggered | A bid is seen within five seconds without a stream; the spread keeps a crowd from lining up | `POLL_FALLBACK_MS`, `REFRESH_MIN_GAP_MS` | The page keeps showing what it has |
+| Public lot page cache | per node, 1 000 ms, at most 2 000 lots, single-flight, dropped by a realtime event for the lot, `serverTime` aged by the entry's age | A thousand pages polling one lot cost one read a second per node; a second is the freshness a polling page already accepts | `LOT_PAGE_CACHE_MS`, `MAX_CACHED_LOTS` in `auction-public.service.ts` | Cache cold or evicted → a database read; an entry is never older than 1 000 ms |
+| Events carry | at most 20 newest bids | A page lists twenty; a longer history is a read, not a push | `MAX_EVENT_BIDS` | A watcher behind by more than twenty bids reads the lot |
+| Public read requests per client address | lot page 120 per 60 000 ms; stream 60 per 60 000 ms; the list keeps the global 300 per 60 000 ms | A page polling every 5 s makes 12 a minute, so 120 allows ten pages behind one address; a stream is one open per page, and 60 allows several reconnects a minute | `@Throttle` on `AuctionPublicController`, Redis-backed; off when `NODE_ENV=test` | 429 |
+| "Closing soon" mark | the last 300 000 ms (5 min) of a lot | Long enough to decide to bid, short enough to stay a signal | `CLOSING_SOON_MS` (display only) | none; never decides anything |
+| Public list page | 12 lots a page, "Show more" | Fills a row at every width and loads fast on a phone | `PAGE_SIZE` in the list page | none |
 | Maximum price on one lot (**decided in WO-234.2**) | 10^15 minor units (ten trillion in a two-decimal currency), `MAX_PRICE_MINOR` in `bidding.ts`, for `startPriceMinor`, `reservePriceMinor` and every `*Minor` column on a lot or bid | The columns are `BIGINT` now. 10^15 is the biggest round number whose 5% step and the sum with it stay under `Number.MAX_SAFE_INTEGER` (9.007 × 10^15), so every comparison in the service is exact | DTO `@Max(MAX_MINOR)`; `computeIncrement()` does its multiplication in `BigInt`; the database `BIGINT` is the backstop | A larger amount is a 400 naming the limit. Money elsewhere in the repository is still `Int`; the auction is the one place a `BIGINT` money column exists, and the service returns it as a plain number |
 | Lots per auction / auctions per list page | no cap on lots; list pages are 20 by default, 100 at most (`PaginationQueryDto`) | An auction's lots are read through the detail page, not the list | `PaginationQueryDto` | A very large auction needs lot pagination on its detail page — add when a real auction crosses ~200 lots |
 
@@ -352,6 +433,33 @@ runners at once close a lot once with one result row; two lots of one auction
 ending together leave the auction `CLOSED`; the open job is idempotent. Not met
 yet: 5, 6's `Party` half, 8, 9's void, 11.
 
+**Met so far (2026-10-03, WO-234.4):** 11, measured with
+`scripts/load-auction.mjs` (20 s, one lot, a 0.1 % bid rule, open-loop bids from
+200 or 400 registered bidders, 200 or 1 000 anonymous watchers on the live
+stream, API with `NODE_ENV=test` so the per-address throttle is off, Postgres,
+Redis, the API and the generator on **one development machine, one node**, so
+these are floors for a deployment with separate hosts, not a capacity claim):
+
+| Offered | Accepted | Bid latency p50 / p95 / p99 / max | Fan-out delay p50 / p95 / p99 / max | Watchers that reached the last bid | Ledger |
+|---|---|---|---|---|---|
+| 50 a second, 200 watchers | 1 000 of 1 000 (50.0 a second) | 13 / 18 / 24 / 55 ms | 137 / 247 / 260 / 267 ms (200 000 samples) | 200 of 200 | `bidSeq` 1 000 = 1 000 rows, chain valid |
+| 100 a second, 1 000 watchers | 1 939 of 2 000 (96.8 a second; 61 refused as `BID_TOO_LOW`: raced for the same price) | 308 / 479 / 564 / 584 ms | 144 / 256 / 283 / 306 ms (1 939 000 samples) | 1 000 of 1 000 | `bidSeq` 1 939 = 1 939 rows, chain valid |
+
+Read plainly: the stated target (50 accepted a second on one lot, p95 under
+300 ms) is met with room: every bid accepted, bid p95 18 ms. Twice the target
+is still correct (no server error, no lost or doubled bid, a valid chain, every
+watcher level) but a bid now waits its turn at the lot's lock, p95 479 ms, which
+is **over** the 300 ms target; this sandbox does not say where between 50 and
+100 the knee is, and a production host will differ. The fan-out delay barely
+moves between the two runs because it is bounded by the 250 ms merge window by
+design (a watcher is told within one window of the bid), not by the number of
+watchers. Not measured: more than one node (the cross-node path is covered by
+`test/auction-realtime.e2e-spec.ts`, not by load), a real network between
+watcher and node, TLS, or a proxy in front. The first version of the generator
+offered each bid from the last *answered* price, which capped acceptance at
+about one bid per round trip and measured the generator; it now offers each bid
+0.3 % above the highest price it has seen or offered.
+
 ## 17. Work orders
 
-234.1 schema + `Auction`/`Lot` admin + launchpad manifest, permissions seeded to real roles, nav entry (**built 2026-10-02:** schema, admin API and screens, permissions, nav; the launchpad manifest entry is carried by WO-232.2, which owns `manifest.ts`) · 234.2 `placeBid()` with predicate-on-write, idempotency, hash chain (**built 2026-10-02:** BIGINT prices, `Bidder` and `Bid`, `placeBid()` behind `POST /auctions/lots/:lotId/bids`, the admin ledger and chain check at `GET /admin/auctions/:id/lots/:lotId/bids` and `…/verify`, a side sheet on the auction page, `core/common/hash-chain.ts` as the reusable primitive; **not yet reachable by a bidder or openable by the system:** nothing sets an auction `OPEN` until the open job of WO-234.3, and the bidder's bid box is WO-234.4's public lot page, so until then bids exist only in tests) · 234.3 proxy bidding + anti-snipe + close job (**built 2026-10-02:** `ProxyBid` and `AuctionResult`, per-lot `endsAt`, `setProxyBid()` behind `PUT /auctions/lots/:lotId/proxy` and the owner-only `GET`, `placeBid()` rebuilt as a commit pipeline that writes a manual bid and at most one proxy answer as consecutive links of one chain with one guarded `UPDATE`, anti-snipe inside it, `AuctionLifecycleService` and its 15-second cron (open, close, outage extension), results and lot ends on the admin auction page; **now reachable by the system:** a scheduled auction opens by itself, but a bidder still has no screen to bid from until WO-234.4; no domain event is published yet, because the first consumer is WO-234.6's `AuctionOrderSink`, which will define `auction.lot_closed` from the `AuctionResult` row) · 234.4 realtime fan-out + public lot page + load test · 234.5 bidder registration, eligibility, strikes · 234.6 settlement through `AuctionOrderSink`, fee rules, posting · 234.7 sealed-bid + officer key-split opening · 234.8 reverse (price-only) auctions · 234.9 integrity queue + adjustments · 234.10 deposit hold (after `payments` verified) · 234.11 `AuctionLotSource` and first industry feed · later: scored reverse auctions, Dutch, C2C (after escrow, reputation, disputes exist).
+234.1 schema + `Auction`/`Lot` admin + launchpad manifest, permissions seeded to real roles, nav entry (**built 2026-10-02:** schema, admin API and screens, permissions, nav; the launchpad manifest entry is carried by WO-232.2, which owns `manifest.ts`) · 234.2 `placeBid()` with predicate-on-write, idempotency, hash chain (**built 2026-10-02:** BIGINT prices, `Bidder` and `Bid`, `placeBid()` behind `POST /auctions/lots/:lotId/bids`, the admin ledger and chain check at `GET /admin/auctions/:id/lots/:lotId/bids` and `…/verify`, a side sheet on the auction page, `core/common/hash-chain.ts` as the reusable primitive; **not yet reachable by a bidder or openable by the system:** nothing sets an auction `OPEN` until the open job of WO-234.3, and the bidder's bid box is WO-234.4's public lot page, so until then bids exist only in tests) · 234.3 proxy bidding + anti-snipe + close job (**built 2026-10-02:** `ProxyBid` and `AuctionResult`, per-lot `endsAt`, `setProxyBid()` behind `PUT /auctions/lots/:lotId/proxy` and the owner-only `GET`, `placeBid()` rebuilt as a commit pipeline that writes a manual bid and at most one proxy answer as consecutive links of one chain with one guarded `UPDATE`, anti-snipe inside it, `AuctionLifecycleService` and its 15-second cron (open, close, outage extension), results and lot ends on the admin auction page; **now reachable by the system:** a scheduled auction opens by itself, but a bidder still has no screen to bid from until WO-234.4; no domain event is published yet, because the first consumer is WO-234.6's `AuctionOrderSink`, which will define `auction.lot_closed` from the `AuctionResult` row) · 234.4 realtime fan-out + public lot page + load test (**built 2026-10-03:** the `realtime` Redis keyspace and `subscriber()`, `AuctionRealtimeService` (snapshot events, per-lot merge, slow-consumer drop, stream cap), `AuctionPublicService` and `AuctionPublicController` (`GET /auctions/public/lots`, `…/lots/:lotId`, `…/lots/:lotId/stream`), the bidder's own `GET /auctions/lots/:lotId/me`, the storefront list and lot pages with bid and maximum forms, a module-gated header, mobile-menu and footer entry, `scripts/load-auction.mjs`; **now reachable by a person:** a visitor can watch a lot and a signed-in customer can bid on it; **not built:** My bids, Watchlist, lot media, search-engine metadata, an "open" realtime event, so an upcoming lot is polled, and bidder eligibility, which is WO-234.5, so until then any signed-in customer who is not staff may bid) · 234.5 bidder registration, eligibility, strikes · 234.6 settlement through `AuctionOrderSink`, fee rules, posting · 234.7 sealed-bid + officer key-split opening · 234.8 reverse (price-only) auctions · 234.9 integrity queue + adjustments · 234.10 deposit hold (after `payments` verified) · 234.11 `AuctionLotSource` and first industry feed · later: scored reverse auctions, Dutch, C2C (after escrow, reputation, disputes exist).

@@ -3,7 +3,7 @@
 
 # apps/web — Next.js admin console and customer storefront
 
-544 files · 98,061 lines
+562 files · 100,675 lines
 
 
 Next.js App Router. **Two products in one deployment**: the admin console under
@@ -26,18 +26,18 @@ through `@newax/shared`'s `BRAND`.
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
 | `apps/web` | 9 | 477 | file, script, json, module |
-| `apps/web/messages` | 2 | 1,694 | json |
+| `apps/web/messages` | 2 | 2,020 | json |
 | `apps/web/public` | 1 | 0 | asset |
 | `apps/web/public/placeholders` | 14 | 0 | asset |
 | `apps/web/scripts` | 1 | 115 | script |
 | `apps/web/src` | 1 | 76 | module |
-| `apps/web/src/app` | 250 | 49,660 | page, loading, layout, error |
-| `apps/web/src/components` | 194 | 35,277 | component, unit test, loading |
+| `apps/web/src/app` | 254 | 50,071 | page, loading, layout, error |
+| `apps/web/src/components` | 200 | 36,018 | component, unit test, loading |
 | `apps/web/src/config` | 3 | 106 | config |
-| `apps/web/src/constants` | 6 | 497 | constants |
-| `apps/web/src/hooks` | 10 | 779 | hook |
+| `apps/web/src/constants` | 6 | 500 | constants |
+| `apps/web/src/hooks` | 15 | 1,092 | hook |
 | `apps/web/src/i18n` | 3 | 53 | module |
-| `apps/web/src/lib` | 37 | 6,700 | utility, unit test |
+| `apps/web/src/lib` | 40 | 7,520 | utility, unit test |
 | `apps/web/src/providers` | 2 | 82 | react |
 | `apps/web/src/types` | 5 | 2,176 | types |
 | `apps/web/src/utils` | 6 | 369 | unit test, utility |
@@ -69,9 +69,9 @@ through `@newax/shared`'s `BRAND`.
 | `apps/web/src/app/globals.css` | 1,519 | stylesheet |  |
 | `apps/web/src/app/(admin)/admin/(app)/settings/page.tsx` | 1,430 | page |  |
 | `apps/web/src/components/admin/nav-registry.ts` | 1,212 | component |  |
+| `apps/web/messages/en.json` | 1,010 | json |  |
+| `apps/web/messages/ur.json` | 1,010 | json |  |
 | `apps/web/src/components/storefront/stitching-panel.tsx` | 969 | component |  |
-| `apps/web/messages/en.json` | 847 | json |  |
-| `apps/web/messages/ur.json` | 847 | json |  |
 | `apps/web/src/app/(admin)/admin/(app)/hr/assets/[id]/page.tsx` | 845 | page |  |
 | `apps/web/src/components/design-system/motion-specimens.tsx` | 809 | component |  |
 | `apps/web/src/app/(admin)/admin/(app)/orders/[id]/page.tsx` | 780 | page |  |

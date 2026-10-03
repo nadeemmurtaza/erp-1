@@ -20,9 +20,9 @@ export function GridToggle({ value, onChange }: GridToggleProps) {
         <button
           key={option.cols}
           onClick={() => onChange(option.cols)}
-          className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-200 ${
+          className={`flex h-8 w-8 items-center justify-center rounded transition-colors duration-normal ${
             value === option.cols
-              ? 'bg-neutral-900 text-white'
+              ? 'bg-inverse text-on-inverse'
               : 'text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900'
           }`}
           aria-label={`Show ${option.cols} columns`}

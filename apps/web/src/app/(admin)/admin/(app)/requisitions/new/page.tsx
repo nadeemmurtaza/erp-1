@@ -6,6 +6,7 @@ import { adminFetch } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
 import { PageHeader, DataTable } from '@/components/ui';
 import type { Location } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 interface VariantSearchResult {
   id: string;
@@ -117,13 +118,13 @@ export default function NewRequisitionPage() {
           <label htmlFor="req-location" className="mb-1 block text-sm font-medium text-neutral-900">
             Location
           </label>
-          <select id="req-location" className="field-input w-full" value={locationId} onChange={(e) => setLocationId(e.target.value)}>
-            {locations.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.name}
-              </option>
-            ))}
-          </select>
+          <Select
+            id="req-location"
+            label="Location"
+            value={locationId}
+            onChange={setLocationId}
+            options={locations.map((l) => ({ value: l.id, label: l.name }))}
+          />
         </div>
 
         <div>

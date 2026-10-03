@@ -2,6 +2,8 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthPage } from '@/components/storefront/auth-page';
+import { Button, Field, FormStack } from '@/components/ui';
+import { useDoneBeat } from '@/hooks/use-done-beat';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
@@ -19,6 +21,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const { done, finish } = useDoneBeat();
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -28,6 +31,7 @@ export default function LoginPage() {
     try {
       const user = await loginCustomer(identifier, password);
       setUser(user);
+      await finish();
       const next = searchParams.get('next') ?? '/';
       router.push(next);
       router.refresh();
@@ -62,51 +66,54 @@ export default function LoginPage() {
       }
     >
 
-          <form onSubmit={onSubmit} className="mt-8 space-y-4">
-            <div>
-              <label className="field-label" htmlFor="identifier">
-                Email or phone
-              </label>
-              <input
-                id="identifier"
-                className="field-input"
-                autoComplete="username"
-                value={identifier}
-                onChange={(event) => setIdentifier(event.target.value)}
-                required
-              />
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label className="field-label" htmlFor="password">
-                  Password
-                </label>
-                <Link href={ROUTES.storefront.forgotPassword} className="text-xs text-accent-hover hover:underline">
+          <FormStack
+            onSubmit={onSubmit}
+            className="mt-8"
+            actions={
+              <>
+                <Button type="submit" loading={busy} loadingLabel="Signing in…" done={done} doneLabel="Signed in" className="w-full">
+                  Sign In
+                </Button>
+                <Link href={ROUTES.storefront.forgotPassword} className="text-center text-sm text-accent-hover hover:underline">
                   Forgot password?
                 </Link>
-              </div>
-              <input
-                id="password"
-                type="password"
-                className="field-input"
-                autoComplete="current-password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-              />
-            </div>
+              </>
+            }
+          >
+            <Field label="Email or phone">
+              {(control) => (
+                <input
+                  {...control}
+                  className="field-input field-xl"
+                  autoComplete="username"
+                  placeholder="you@example.com"
+                  value={identifier}
+                  onChange={(event) => setIdentifier(event.target.value)}
+                  required
+                />
+              )}
+            </Field>
+
+            <Field label="Password">
+              {(control) => (
+                <input
+                  {...control}
+                  type="password"
+                  className="field-input field-xl"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+              )}
+            </Field>
 
             {error ? (
               <p role="alert" className="notice notice-error">
                 {error}
               </p>
             ) : null}
-
-            <button type="submit" disabled={busy} className="btn-primary w-full">
-              {busy ? 'Signing in…' : 'Sign In'}
-            </button>
-          </form>
+          </FormStack>
 
     </AuthPage>
   );

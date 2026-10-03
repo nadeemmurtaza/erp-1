@@ -1,7 +1,7 @@
 import { formatMoneyIn } from '@newax/shared';
 
 /**
- * WO-213.2 (213-partner-fact-exchange.md, ADR-083). The decision of what to do
+ * WO-213.2 (213-partner-fact-exchange.md, ADR-087). The decision of what to do
  * with a connected partner's `sale.dispatched` fact, as ONE pure function.
  *
  * Nothing here reads a database, writes one, or publishes an event. The same

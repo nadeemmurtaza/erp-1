@@ -3,7 +3,7 @@
 
 # repository root files
 
-208 files · 15,529 lines
+214 files · 16,187 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -17,11 +17,16 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 17 | 2,538 | file, doc |
+| `.` | 17 | 2,371 | file, doc |
 | `.claude` | 2 | 49 | json |
-| `.claude/agents` | 8 | 342 | doc |
+| `.claude/agents` | 9 | 390 | doc |
 | `.claude/hooks` | 2 | 139 | hook |
-| `.claude/rules` | 10 | 537 | doc |
+| `.claude/rules` | 10 | 646 | doc |
+| `.claude/skills/feature-scope` | 1 | 225 | doc |
+| `.claude/skills/restyle` | 1 | 90 | doc |
+| `.claude/skills/ux-audit` | 1 | 108 | doc |
+| `.claude/skills/ux-design` | 1 | 122 | doc |
+| `.claude/skills/ux-review` | 1 | 123 | doc |
 | `.cursor/rules` | 1 | 0 | mdc |
 | `.githooks` | 2 | 0 | file |
 | `.junie` | 1 | 81 | doc |
@@ -44,7 +49,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
-| `CLAUDE.md` | 1,033 | doc |  |
+| `CLAUDE.md` | 866 | doc |  |
 | `apps/platform/prisma/schema/platform.prisma` | 803 | prisma schema | WO-39.1 (docs/implementation/commercial-licensing-agency/39-shared-cross-tenant-hosting-t… |
 | `DEPLOYMENT.md` | 529 | doc |  |
 | `apps/platform/src/modules/billing/usage-metering.service.ts` | 318 | service |  |
@@ -52,13 +57,13 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/src/modules/billing/usage-metering.service.spec.ts` | 285 | unit test |  |
 | `apps/platform/src/modules/billing/billing.service.ts` | 275 | service |  |
 | `apps/platform/prisma/schema/marketplace.prisma` | 271 | prisma schema | The cross-tenant marketplace/product-reference network — doc 165 |
+| `.claude/skills/feature-scope/SKILL.md` | 225 | doc |  |
 | `apps/platform/src/modules/billing/plans.service.spec.ts` | 225 | unit test |  |
+| `.claude/rules/ui.md` | 217 | doc |  |
 | `apps/platform/src/core/config/env.validation.ts` | 215 | config |  |
 | `README.md` | 213 | doc |  |
 | `apps/platform/src/modules/support-access/support-access.service.spec.ts` | 202 | unit test |  |
 | `apps/platform/src/modules/product-reference/product-reference.service.spec.ts` | 195 | unit test |  |
-| `PRD.md` | 185 | doc |  |
-| `apps/platform/src/modules/agency/agency-stripe.service.ts` | 180 | service |  |
 
 
 ---

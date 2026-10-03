@@ -3,7 +3,7 @@
 
 # scripts, CI, deployment and container configuration
 
-60 files · 31,418 lines
+64 files · 33,175 lines
 
 
 Repository checks, CI workflows, container and deployment configuration. The
@@ -19,14 +19,14 @@ on them.
 
 | Directory | Files | Lines | Mostly |
 |---|---|---|---|
-| `.` | 20 | 20,980 | file, example, json, yaml |
+| `.` | 20 | 20,984 | file, example, json, yaml |
 | `.github` | 1 | 81 | doc |
 | `.github/workflows` | 2 | 275 | yaml |
 | `deploy` | 3 | 263 | sh |
 | `deploy/mail` | 2 | 138 | sql, toml |
 | `deploy/systemd` | 7 | 0 | service, timer |
-| `scripts` | 22 | 8,036 | script, py |
-| `scripts/lib` | 3 | 1,645 | utility |
+| `scripts` | 26 | 9,731 | script, py |
+| `scripts/lib` | 3 | 1,703 | utility |
 
 
 ## Entry points
@@ -41,20 +41,20 @@ on them.
 | File | Lines | Kind | Purpose |
 |---|---|---|---|
 | `pnpm-lock.yaml` | 19,483 | yaml |  |
-| `scripts/build-index.mjs` | 2,567 | script |  |
-| `scripts/lib/index-scan.mjs` | 944 | utility | Scanners for the repository index. |
+| `scripts/build-index.mjs` | 2,638 | script |  |
+| `scripts/lib/index-scan.mjs` | 965 | utility | Scanners for the repository index. |
 | `scripts/sync-client.mjs` | 723 | script | scripts/sync-client.mjs — the Extractor. |
 | `scripts/check-module-boundaries.mjs` | 652 | script |  |
+| `scripts/check-contrast.mjs` | 650 | script |  |
+| `scripts/check-tells.mjs` | 648 | script |  |
 | `scripts/check-overflow.mjs` | 644 | script |  |
 | `scripts/idx.mjs` | 486 | script |  |
-| `scripts/check-contrast.mjs` | 425 | script |  |
-| `scripts/check-links.mjs` | 409 | script |  |
+| `scripts/check-links.mjs` | 416 | script |  |
+| `scripts/lib/model-routing.mjs` | 401 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/check-email-dns.mjs` | 399 | script |  |
-| `scripts/lib/model-routing.mjs` | 364 | utility | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | utility | Boots the real stack (Postgres already running, api + web + pos as real servers) and driv… |
 | `scripts/check-rebrand.mjs` | 292 | script |  |
-| `.env.example` | 193 | example |  |
-| `.github/workflows/ci.yml` | 184 | yaml |  |
+| `scripts/check-menus.mjs` | 229 | script |  |
 
 
 ---

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { formatDateTime } from '@newax/shared';
 import { Section } from '@/components/ui';
+import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import type { FeedEntry, FeedResponse } from '@/types/api';
 
@@ -21,17 +22,26 @@ export function LiveFeedWidget() {
   const [entries, setEntries] = useState<FeedEntry[]>([]);
   const [unavailableKinds, setUnavailableKinds] = useState<string[]>([]);
   const [failing, setFailing] = useState(false);
+  // Entries that arrived on a later poll than the first: only those are news. The first poll is the page's opening state.
+  const [arrived, setArrived] = useState<ReadonlySet<string>>(() => new Set());
   const sinceIdRef = useRef<string | null>(null);
+  const polledRef = useRef(false);
 
   const poll = useCallback(async () => {
     try {
+      const isFirstPoll = !polledRef.current;
       const response = await adminFetch<FeedResponse>('/admin/feed', {
         query: sinceIdRef.current ? { sinceId: sinceIdRef.current } : {},
       });
+      polledRef.current = true;
       setFailing(false);
       setUnavailableKinds(response.unavailableKinds);
       if (response.items.length > 0) {
         sinceIdRef.current = response.items[0]!.id; // items arrive newest first
+        // Only the ids still on screen matter, so the set never outgrows the list it describes.
+        if (!isFirstPoll) {
+          setArrived((prev) => new Set([...response.items.map((item) => item.id), ...prev].slice(0, DISPLAY_COUNT)));
+        }
         setEntries((prev) => [...response.items, ...prev].slice(0, DISPLAY_COUNT));
       }
     } catch {
@@ -60,7 +70,12 @@ export function LiveFeedWidget() {
       {entries.length > 0 ? (
         <ul className="flex flex-col divide-y divide-neutral-100">
           {entries.map((entry) => (
-            <li key={entry.id} className="py-2">
+            <li
+              key={entry.id}
+              // A new entry settles into place and one highlight crosses it, once; entries already on the page stay still.
+              className={cn('py-2', arrived.has(entry.id) && 'sheen animate-arrive')}
+              data-fresh={arrived.has(entry.id) ? 'true' : undefined}
+            >
               <Link href={entry.href} className="flex items-baseline justify-between gap-3 hover:underline">
                 <span className="min-w-0 truncate text-sm text-neutral-900">{entry.summary}</span>
                 <span className="shrink-0 text-xs tabular-nums text-neutral-900/60">{formatDateTime(entry.occurredAt)}</span>

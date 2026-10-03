@@ -102,7 +102,7 @@ enum PartnerFactStatus {
 }
 
 /// One fact a connected partner sent us (WO-213.1, 213-partner-fact-exchange.md
-/// and ADR-083). "Store first, apply second": the inbound endpoint writes this
+/// and ADR-087). "Store first, apply second": the inbound endpoint writes this
 /// row and answers 202, so acknowledging means "stored", never "applied", and
 /// a slow or absent `purchasing` module cannot make a partner's delivery fail.
 ///

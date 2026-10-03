@@ -121,6 +121,28 @@ export function formatDateShort(
 }
 
 /**
+ * A month's short name on its own — "Sept". For the label over a run of weeks
+ * in a calendar heatmap, where `formatDateShort`'s "1 Sept" would print a day
+ * nobody is pointing at.
+ */
+export function formatMonthShort(
+  value: Date | string | number,
+  locale: Locale = 'en',
+  timeZone: string = SHOP_TIME_ZONE,
+): string {
+  return new Intl.DateTimeFormat(intlTag(locale), { month: 'short', timeZone }).format(new Date(value));
+}
+
+/** A weekday's short name on its own — "Mon", for the row labels of a calendar heatmap. */
+export function formatWeekdayShort(
+  value: Date | string | number,
+  locale: Locale = 'en',
+  timeZone: string = SHOP_TIME_ZONE,
+): string {
+  return new Intl.DateTimeFormat(intlTag(locale), { weekday: 'short', timeZone }).format(new Date(value));
+}
+
+/**
  * A plain count, grouped for the locale — 6017 -> "6,017".
  *
  * Not money and not a date, which is exactly why it kept being written by

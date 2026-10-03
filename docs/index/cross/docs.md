@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**553** markdown documents. These explain **why**; this index only says **where**.
+**589** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -29,7 +29,7 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `.claude/agents/feature.md`  <sub>44 lines</sub>
+### `.claude/agents/feature.md`  <sub>45 lines</sub>
 
 _no second-level headings_
 
@@ -46,6 +46,10 @@ _no second-level headings_
 _no second-level headings_
 
 ### `.claude/agents/security.md`  <sub>46 lines</sub>
+
+_no second-level headings_
+
+### `.claude/agents/ux.md`  <sub>47 lines</sub>
 
 _no second-level headings_
 
@@ -69,13 +73,14 @@ _no second-level headings_
 
 - Dependency standard  <sub>:11</sub>
 
-### `.claude/rules/design.md`  <sub>136 lines</sub>
+### `.claude/rules/design.md`  <sub>179 lines</sub>
 
 - The design system  <sub>:17</sub>
-- Read the chapter before you build the thing  <sub>:42</sub>
-- The obligations, stated so they can be checked  <sub>:58</sub>
-- Promoting something into the system  <sub>:117</sub>
-- What is not enforced by any command  <sub>:124</sub>
+- Think like the designer, then write the code  <sub>:42</sub>
+- Read the chapter before you build the thing  <sub>:60</sub>
+- The obligations, stated so they can be checked  <sub>:76</sub>
+- Promoting something into the system  <sub>:156</sub>
+- What is not enforced by any command  <sub>:163</sub>
 
 ### `.claude/rules/performance.md`  <sub>42 lines</sub>
 
@@ -96,11 +101,44 @@ _no second-level headings_
 
 - Testing standard  <sub>:12</sub>
 
-### `.claude/rules/ui.md`  <sub>151 lines</sub>
+### `.claude/rules/ui.md`  <sub>217 lines</sub>
 
-- Use what exists  <sub>:14</sub>
-- Borders and boxes  <sub>:64</sub>
-- No dead ends  <sub>:104</sub>
+- Use what exists  <sub>:15</sub>
+- Borders and boxes  <sub>:125</sub>
+- No dead ends  <sub>:170</sub>
+
+### `.claude/skills/feature-scope/SKILL.md`  <sub>225 lines</sub>
+
+- Feature scope: build the whole capability, not one slice of it  <sub>:14</sub>
+
+### `.claude/skills/restyle/SKILL.md`  <sub>90 lines</sub>
+
+- 1. Count the tells  <sub>:18</sub>
+- 2. Find the tells a script cannot see  <sub>:32</sub>
+- 3. Restyle, smallest edit first  <sub>:56</sub>
+- 4. Prove it  <sub>:75</sub>
+
+### `.claude/skills/ux-audit/SKILL.md`  <sub>108 lines</sub>
+
+- 1. Locate it  <sub>:14</sub>
+- 2. Measure first  <sub>:20</sub>
+- 3. Read it against the laws  <sub>:56</sub>
+- 4. Report  <sub>:79</sub>
+
+### `.claude/skills/ux-design/SKILL.md`  <sub>122 lines</sub>
+
+- 1. Look it up before you search  <sub>:18</sub>
+- 2. Write the brief  <sub>:34</sub>
+- 3. Challenge it before you build it  <sub>:76</sub>
+- 4. Decide the forks yourself  <sub>:89</sub>
+- 5. Build from the brief, then prove it  <sub>:100</sub>
+
+### `.claude/skills/ux-review/SKILL.md`  <sub>123 lines</sub>
+
+- 1. Get the diff  <sub>:13</sub>
+- 2. Run what bites on this diff  <sub>:36</sub>
+- 3. Read the added lines  <sub>:65</sub>
+- 4. Report  <sub>:102</sub>
 
 ### `.github/copilot-instructions.md`  <sub>81 lines</sub>
 
@@ -135,18 +173,18 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `CLAUDE.md`  <sub>1,033 lines</sub>
+### `CLAUDE.md`  <sub>866 lines</sub>
 
 - Vision and scale  <sub>:13</sub>
 - The seven laws  <sub>:39</sub>
 - Software engineering, not vibe coding  <sub>:61</sub>
 - Feature scope: build the whole capability, not one slice of it  <sub>:170</sub>
-- Scale: the three axes  <sub>:384</sub>
-- Look it up before you search  <sub>:446</sub>
-- The rule index  <sub>:517</sub>
-- Before you open a PR  <sub>:555</sub>
-- Deployment  <sub>:634</sub>
-- NEWAX Engineering Operating Protocol  <sub>:647</sub>
+- Scale: the three axes  <sub>:199</sub>
+- Look it up before you search  <sub>:262</sub>
+- The rule index  <sub>:334</sub>
+- Before you open a PR  <sub>:381</sub>
+- Deployment  <sub>:466</sub>
+- NEWAX Engineering Operating Protocol  <sub>:479</sub>
 
 ### `CONTRIBUTING.md`  <sub>130 lines</sub>
 
@@ -185,32 +223,33 @@ _no second-level headings_
 - Don't  <sub>:74</sub>
 - Still open  <sub>:83</sub>
 
-### `docs/design/accessibility/07-accessibility.md`  <sub>157 lines</sub>
+### `docs/design/accessibility/07-accessibility.md`  <sub>166 lines</sub>
 
-- Why this is grouped with i18n  <sub>:15</sub>
-- The target  <sub>:22</sub>
-- Keyboard  <sub>:26</sub>
-- Focus  <sub>:42</sub>
-- Screen readers  <sub>:53</sub>
-- Contrast  <sub>:68</sub>
-- Touch targets  <sub>:90</sub>
-- Reduced motion  <sub>:100</sub>
-- Semantic structure  <sub>:109</sub>
-- Right-to-left  <sub>:116</sub>
-- Internationalisation beyond direction  <sub>:133</sub>
-- What would make this real  <sub>:140</sub>
+- Why this is grouped with i18n  <sub>:16</sub>
+- The target  <sub>:23</sub>
+- Keyboard  <sub>:27</sub>
+- Focus  <sub>:43</sub>
+- Screen readers  <sub>:54</sub>
+- Contrast  <sub>:69</sub>
+- Touch targets  <sub>:97</sub>
+- Reduced motion  <sub>:108</sub>
+- Semantic structure  <sub>:117</sub>
+- Right-to-left  <sub>:124</sub>
+- Internationalisation beyond direction  <sub>:141</sub>
+- What would make this real  <sub>:148</sub>
 
-### `docs/design/components-states/03-components.md`  <sub>113 lines</sub>
+### `docs/design/components-states/03-components.md`  <sub>481 lines</sub>
 
 - The ladder  <sub>:10</sub>
 - Primitives  <sub>:33</sub>
-- Choosing between them  <sub>:53</sub>
-- Patterns — *undocumented*  <sub>:64</sub>
-- Templates — *undocumented*  <sub>:81</sub>
-- Component contract  <sub>:92</sub>
-- What never gets hand-rolled  <sub>:107</sub>
+- Choosing between them  <sub>:71</sub>
+- Patterns — *undocumented*  <sub>:82</sub>
+- Templates — *undocumented*  <sub>:123</sub>
+- Controls with a contract  <sub>:134</sub>
+- Component contract  <sub>:458</sub>
+- What never gets hand-rolled  <sub>:473</sub>
 
-### `docs/design/components-states/04-states.md`  <sub>141 lines</sub>
+### `docs/design/components-states/04-states.md`  <sub>235 lines</sub>
 
 - The rule  <sub>:8</sub>
 - The state matrix  <sub>:14</sub>
@@ -220,45 +259,49 @@ _no second-level headings_
 - Loading  <sub>:66</sub>
 - Validation  <sub>:81</sub>
 - Confirmation and destructive actions  <sub>:90</sub>
-- Permission states  <sub>:105</sub>
-- Notifications and system feedback  <sub>:119</sub>
-- Offline and degraded — the POS case  <sub>:127</sub>
+- Permission states  <sub>:116</sub>
+- Notifications and system feedback  <sub>:130</sub>
+- The success state  <sub>:138</sub>
+- Offline and degraded — the POS case  <sub>:221</sub>
 
-### `docs/design/content/06-content.md`  <sub>121 lines</sub>
+### `docs/design/content/06-content.md`  <sub>130 lines</sub>
 
-- Voice  <sub>:10</sub>
-- Terminology — one word per concept  <sub>:29</sub>
-- Labels  <sub>:48</sub>
-- Microcopy  <sub>:58</sub>
-- Error messages  <sub>:66</sub>
-- Content hierarchy  <sub>:87</sub>
-- Localisation  <sub>:95</sub>
-- Verifying  <sub>:108</sub>
+- Voice  <sub>:12</sub>
+- Terminology — one word per concept  <sub>:31</sub>
+- Labels  <sub>:56</sub>
+- Microcopy  <sub>:66</sub>
+- Error messages  <sub>:74</sub>
+- Content hierarchy  <sub>:95</sub>
+- Localisation  <sub>:103</sub>
+- Verifying  <sub>:117</sub>
 
-### `docs/design/foundations/01-foundations.md`  <sub>175 lines</sub>
+### `docs/design/foundations/01-foundations.md`  <sub>324 lines</sub>
 
-- Why tokens and not values  <sub>:12</sub>
-- Colour  <sub>:22</sub>
-- Typography  <sub>:36</sub>
-- Spacing — *unbuilt*  <sub>:49</sub>
-- Size — *unbuilt*  <sub>:71</sub>
-- Radius  <sub>:82</sub>
-- Shadow and elevation — *unbuilt*  <sub>:89</sub>
-- Z-index / layering — *unbuilt*  <sub>:101</sub>
-- Breakpoints  <sub>:121</sub>
-- Motion tokens — *unbuilt*  <sub>:132</sub>
-- Where tokens live  <sub>:165</sub>
+- Why tokens and not values  <sub>:16</sub>
+- Colour  <sub>:26</sub>
+- Typography  <sub>:47</sub>
+- Spacing  <sub>:60</sub>
+- Size  <sub>:82</sub>
+- Radius  <sub>:95</sub>
+- Shadow and elevation  <sub>:102</sub>
+- Z-index / layering  <sub>:122</sub>
+- Breakpoints  <sub>:143</sub>
+- Motion tokens  <sub>:156</sub>
+- Safeguards  <sub>:208</sub>
+- Theming  <sub>:227</sub>
+- Where tokens live  <sub>:310</sub>
 
-### `docs/design/layout-composition/02-layout.md`  <sub>121 lines</sub>
+### `docs/design/layout-composition/02-layout.md`  <sub>182 lines</sub>
 
-- The page skeleton  <sub>:8</sub>
-- Grid  <sub>:21</sub>
-- Density  <sub>:35</sub>
-- The seven screens  <sub>:50</sub>
-- Reflow rules  <sub>:64</sub>
-- Multi-surface parity  <sub>:79</sub>
-- The POS is a different animal  <sub>:92</sub>
-- Verifying  <sub>:105</sub>
+- The page skeleton  <sub>:10</sub>
+- Hierarchy: where the eye goes  <sub>:23</sub>
+- Grid  <sub>:60</sub>
+- Density  <sub>:74</sub>
+- The seven screens  <sub>:89</sub>
+- Reflow rules  <sub>:121</sub>
+- Multi-surface parity  <sub>:144</sub>
+- The POS is a different animal  <sub>:157</sub>
+- Verifying  <sub>:170</sub>
 
 ### `docs/design/layout-composition/13-composition.md`  <sub>197 lines</sub>
 
@@ -268,29 +311,30 @@ _no second-level headings_
 - What must be built  <sub>:179</sub>
 - Sources  <sub>:190</sub>
 
-### `docs/design/layout-composition/14-navigation.md`  <sub>198 lines</sub>
+### `docs/design/layout-composition/14-navigation.md`  <sub>207 lines</sub>
 
 - The scale problem  <sub>:13</sub>
 - NAV · The laws  <sub>:30</sub>
 - Patterns  <sub>:127</sub>
-- What must be built  <sub>:178</sub>
-- Sources  <sub>:191</sub>
+- What must be built  <sub>:187</sub>
+- Sources  <sub>:200</sub>
 
-### `docs/design/motion/05-motion.md`  <sub>193 lines</sub>
+### `docs/design/motion/05-motion.md`  <sub>340 lines</sub>
 
-- The one test  <sub>:13</sub>
-- What motion may communicate  <sub>:28</sub>
-- The language  <sub>:43</sub>
-- Hierarchy of motion  <sub>:61</sub>
-- Continuity over replacement  <sub>:78</sub>
-- Orchestration  <sub>:94</sub>
-- Micro-interactions  <sub>:103</sub>
-- Scroll  <sub>:119</sub>
-- Responsive motion  <sub>:131</sub>
-- Reduced motion — required  <sub>:142</sub>
-- Performance  <sub>:161</sub>
-- Rejection list  <sub>:172</sub>
-- Benchmark, not template  <sub>:183</sub>
+- The one test  <sub>:19</sub>
+- What motion may communicate  <sub>:34</sub>
+- The language  <sub>:49</sub>
+- Hierarchy of motion  <sub>:67</sub>
+- The reel, and the two tiers  <sub>:84</sub>
+- Continuity over replacement  <sub>:208</sub>
+- Orchestration  <sub>:224</sub>
+- Micro-interactions  <sub>:233</sub>
+- Scroll  <sub>:249</sub>
+- Responsive motion  <sub>:261</sub>
+- Reduced motion — required  <sub>:272</sub>
+- Performance  <sub>:308</sub>
+- Rejection list  <sub>:319</sub>
+- Benchmark, not template  <sub>:330</sub>
 
 ### `docs/design/principles-laws/00-principles.md`  <sub>83 lines</sub>
 
@@ -301,39 +345,42 @@ _no second-level headings_
 - Visual principles  <sub>:56</sub>
 - Decision principles  <sub>:67</sub>
 
-### `docs/design/principles-laws/10-laws.md`  <sub>850 lines</sub>
+### `docs/design/principles-laws/10-laws.md`  <sub>942 lines</sub>
 
 - Why a catalogue, and why rulings  <sub>:19</sub>
 - PER · Perception  <sub>:59</sub>
-- COG · Cognition  <sub>:150</sub>
-- ACT · Action and time  <sub>:291</sub>
-- HEU · Nielsen's ten, ruled  <sub>:381</sub>
-- TYP · Typography  <sub>:439</sub>
-- COL · Colour  <sub>:501</sub>
-- SPA · Space, ratio and the shape of a page  <sub>:557</sub>
-- MOT · Motion  <sub>:642</sub>
-- ACC · Accessibility  <sub>:690</sub>
-- GLO · Globalization  <sub>:752</sub>
-- What this chapter does not settle  <sub>:815</sub>
-- Sources  <sub>:830</sub>
+- COG · Cognition  <sub>:159</sub>
+- ACT · Action and time  <sub>:300</sub>
+- HEU · Nielsen's ten, ruled  <sub>:390</sub>
+- TYP · Typography  <sub>:448</sub>
+- COL · Colour  <sub>:510</sub>
+- SPA · Space, ratio and the shape of a page  <sub>:566</sub>
+- MOT · Motion  <sub>:652</sub>
+- ACC · Accessibility  <sub>:712</sub>
+- GLO · Globalization  <sub>:782</sub>
+- Where the card-deck laws are built  <sub>:845</sub>
+- Where the two reels' laws are built  <sub>:871</sub>
+- Where the copy laws are built  <sub>:890</sub>
+- What this chapter does not settle  <sub>:907</sub>
+- Sources  <sub>:922</sub>
 
-### `docs/design/process-governance/08-governance.md`  <sub>145 lines</sub>
+### `docs/design/process-governance/08-governance.md`  <sub>147 lines</sub>
 
 - Why a design system needs governance at all  <sub>:11</sub>
 - Naming  <sub>:19</sub>
-- What belongs in the system, and what does not  <sub>:40</sub>
-- Contribution  <sub>:60</sub>
-- Versioning  <sub>:81</sub>
-- Deprecation  <sub>:96</sub>
-- Change approval  <sub>:117</sub>
-- Keeping this system honest  <sub>:129</sub>
+- What belongs in the system, and what does not  <sub>:42</sub>
+- Contribution  <sub>:62</sub>
+- Versioning  <sub>:83</sub>
+- Deprecation  <sub>:98</sub>
+- Change approval  <sub>:119</sub>
+- Keeping this system honest  <sub>:131</sub>
 
-### `docs/design/process-governance/09-quality.md`  <sub>176 lines</sub>
+### `docs/design/process-governance/09-quality.md`  <sub>189 lines</sub>
 
-- The two columns  <sub>:12</sub>
-- Regression  <sub>:124</sub>
-- The honest gap, ranked  <sub>:142</sub>
-- Definition of done, for a screen  <sub>:165</sub>
+- The two columns  <sub>:17</sub>
+- Regression  <sub>:136</sub>
+- The honest gap, ranked  <sub>:154</sub>
+- Definition of done, for a screen  <sub>:178</sub>
 
 ### `docs/design/process-governance/11-workflow.md`  <sub>260 lines</sub>
 
@@ -343,30 +390,31 @@ _no second-level headings_
 - What must be built  <sub>:232</sub>
 - Sources  <sub>:251</sub>
 
-### `docs/design/process-governance/12-permissions.md`  <sub>214 lines</sub>
+### `docs/design/process-governance/12-permissions.md`  <sub>220 lines</sub>
 
 - The problem, stated precisely  <sub>:13</sub>
 - PRM · The laws  <sub>:35</sub>
-- Patterns  <sub>:163</sub>
-- What must be built  <sub>:189</sub>
-- Sources  <sub>:207</sub>
+- Patterns  <sub>:169</sub>
+- What must be built  <sub>:195</sub>
+- Sources  <sub>:213</sub>
 
-### `docs/design/process-governance/15-integrity.md`  <sub>257 lines</sub>
+### `docs/design/process-governance/15-integrity.md`  <sub>260 lines</sub>
 
-- Why this chapter is different  <sub>:17</sub>
-- ITG · The laws  <sub>:35</sub>
-- The build order  <sub>:157</sub>
-- What a person still has to do  <sub>:230</sub>
-- Sources  <sub>:250</sub>
+- Why this chapter is different  <sub>:18</sub>
+- ITG · The laws  <sub>:36</sub>
+- The build order  <sub>:160</sub>
+- What a person still has to do  <sub>:233</sub>
+- Sources  <sub>:253</sub>
 
-### `docs/design/README.md`  <sub>109 lines</sub>
+### `docs/design/README.md`  <sub>120 lines</sub>
 
 - Precedence, before anything else  <sub>:12</sub>
-- The chapters  <sub>:24</sub>
-- How to use it  <sub>:45</sub>
-- The law families  <sub>:63</sub>
-- An honest statement of maturity  <sub>:76</sub>
-- The one thing this system refuses to do  <sub>:102</sub>
+- Using it while you build  <sub>:24</sub>
+- The chapters  <sub>:33</sub>
+- How to use it  <sub>:54</sub>
+- The law families  <sub>:72</sub>
+- An honest statement of maturity  <sub>:88</sub>
+- The one thing this system refuses to do  <sub>:113</sub>
 
 ### `docs/email.md`  <sub>438 lines</sub>
 
@@ -1916,6 +1964,19 @@ _no second-level headings_
 - 5. Out of scope (this pass)  <sub>:109</sub>
 - Acceptance criteria (for the work order that builds this)  <sub>:121</sub>
 
+### `docs/implementation/access-control-identity/231-work-attribution-and-sealed-access.md`  <sub>553 lines</sub>
+
+- 1. The two problems, in the owner's words  <sub>:18</sub>
+- 2. Problem 1 — false credit  <sub>:40</sub>
+- 3. Problem 2 — confidential information that the hierarchy must not reach  <sub>:159</sub>
+- 4. How the two problems meet  <sub>:350</sub>
+- 5. Scope lenses (feature-scope map)  <sub>:370</sub>
+- 6. Work orders  <sub>:402</sub>
+- 7. Out of scope here  <sub>:420</sub>
+- 8. Decision to record  <sub>:427</sub>
+- 9. Sources (general)  <sub>:434</sub>
+- 10. Comparison with Vyzno (from the owner's pasted page text)  <sub>:449</sub>
+
 ### `docs/implementation/admin-platform/02-admin-shell.md`  <sub>253 lines</sub>
 
 - Why  <sub>:16</sub>
@@ -2971,7 +3032,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>127 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>131 lines</sub>
 
 - How to read this  <sub>:13</sub>
 
@@ -3303,7 +3364,23 @@ _no second-level headings_
 
 _no second-level headings_
 
-### `docs/implementation/decisions/ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>88 lines</sub>
+### `docs/implementation/decisions/ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md`  <sub>2,065 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-084-hospitality-qr-nfc-platform-the-guest-is-a-token-scoped-principal-not.md`  <sub>52 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md`  <sub>55 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md`  <sub>70 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>88 lines</sub>
 
 _no second-level headings_
 
@@ -3440,6 +3517,224 @@ _no second-level headings_
 - Productivity  <sub>:119</sub>
 - Customization  <sub>:142</sub>
 - Bottom line  <sub>:151</sub>
+
+### `docs/implementation/hospitality-qr-nfc/213-hospitality-platform-overview.md`  <sub>138 lines</sub>
+
+- 1. Objective  <sub>:10</sub>
+- 2. Actors  <sub>:22</sub>
+- 3. Mapping to this repository's architecture  <sub>:38</sub>
+- 4. The pack: modules and what each owns  <sub>:52</sub>
+- 5. The five pillars for this feature  <sub>:71</sub>
+- 6. Scope lenses (feature-scope map)  <sub>:81</sub>
+- 7. Build order (work orders)  <sub>:111</sub>
+- 8. Out of scope here  <sub>:128</sub>
+- 9. Decision to record  <sub>:134</sub>
+
+### `docs/implementation/hospitality-qr-nfc/214-qr-nfc-tags-and-spaces.md`  <sub>150 lines</sub>
+
+- 1. The one rule  <sub>:8</sub>
+- 2. Data model (additive, forward-only migration)  <sub>:13</sub>
+- 3. The URL (the entire "protocol")  <sub>:27</sub>
+- 4. Scan flow (no install, no login)  <sub>:48</sub>
+- 5. Session and token parameters  <sub>:68</sub>
+- 6. Abuse and trust  <sub>:84</sub>
+- 7. Tag lifecycle (staff screen: *Spaces → Tags*)  <sub>:101</sub>
+- 8. Permissions  <sub>:117</sub>
+- 9. Acceptance criteria  <sub>:131</sub>
+- 10. Work orders  <sub>:143</sub>
+
+### `docs/implementation/hospitality-qr-nfc/215-guest-menu-and-ordering.md`  <sub>145 lines</sub>
+
+- 1. What the guest sees  <sub>:8</sub>
+- 2. Menu management (staff: *Menu*)  <sub>:23</sub>
+- 3. Ordering flow  <sub>:47</sub>
+- 4. Requests  <sub>:81</sub>
+- 5. Offers  <sub>:96</sub>
+- 6. Paying (until doc 219 §1 ships)  <sub>:106</sub>
+- 7. States the page ships (design rule: every state)  <sub>:113</sub>
+- 8. Acceptance criteria  <sub>:122</sub>
+- 9. Permissions  <sub>:134</sub>
+- 10. Work orders  <sub>:140</sub>
+
+### `docs/implementation/hospitality-qr-nfc/216-staff-operations-and-requests.md`  <sub>143 lines</sub>
+
+- 1. The board  <sub>:8</sub>
+- 2. Automatic origin (the headline requirement)  <sub>:23</sub>
+- 3. Routing  <sub>:29</sub>
+- 3b. Notification channels  <sub>:51</sub>
+- 4. Acknowledge → resolve, with SLAs  <sub>:58</sub>
+- 5. Actions per item  <sub>:74</sub>
+- 6. Kitchen / bar tickets  <sub>:88</sub>
+- 7. Bill and settlement  <sub>:97</sub>
+- 8. Four hours down  <sub>:104</sub>
+- 9. Failure path  <sub>:113</sub>
+- 10. Permissions  <sub>:120</sub>
+- 11. Acceptance criteria  <sub>:129</sub>
+- 12. Work orders  <sub>:137</sub>
+
+### `docs/implementation/hospitality-qr-nfc/217-tables-rooms-and-floor.md`  <sub>92 lines</sub>
+
+- 1. Space status  <sub>:8</sub>
+- 2. Floor view (staff: *Floor*)  <sub>:21</sub>
+- 3. Tables  <sub>:28</sub>
+- 4. Rooms (hotels)  <sub>:37</sub>
+- 5. Room folio (charge to room)  <sub>:57</sub>
+- 6. Permissions  <sub>:73</sub>
+- 7. Acceptance criteria  <sub>:79</sub>
+- 8. Work orders  <sub>:87</sub>
+
+### `docs/implementation/hospitality-qr-nfc/218-staff-management-and-analytics.md`  <sub>98 lines</sub>
+
+- 1. Staff: use HR, don't copy it  <sub>:8</sub>
+- 2. Performance, honestly  <sub>:28</sub>
+- 3. Management dashboards  <sub>:36</sub>
+- 4. Overview first, depth on click  <sub>:65</sub>
+- 5. Performance parameters  <sub>:71</sub>
+- 6. Permissions  <sub>:79</sub>
+- 7. Acceptance criteria  <sub>:85</sub>
+- 8. Work orders  <sub>:93</sub>
+
+### `docs/implementation/hospitality-qr-nfc/219-future-modules-roadmap.md`  <sub>117 lines</sub>
+
+- 1. Payments (online, at table or room)  <sub>:14</sub>
+- 2. WhatsApp  <sub>:29</sub>
+- 3. Loyalty  <sub>:41</sub>
+- 4. POS  <sub>:49</sub>
+- 5. KDS (kitchen display)  <sub>:58</sub>
+- 6. Subscriptions  <sub>:66</sub>
+- 7. Multi-branch / multi-property  <sub>:78</sub>
+- 8. Other doors worth keeping open (not committed)  <sub>:94</sub>
+- 9. Sequencing  <sub>:102</sub>
+
+### `docs/implementation/hospitality-qr-nfc/README.md`  <sub>52 lines</sub>
+
+- Read in this order  <sub>:24</sub>
+- Vocabulary (one word per concept)  <sub>:36</sub>
+- Status  <sub>:48</sub>
+
+### `docs/implementation/housing-society/220-housing-society-overview.md`  <sub>148 lines</sub>
+
+- 1. Objective and the test of success  <sub>:13</sub>
+- 2. Actors  <sub>:24</sub>
+- 3. Mapping to this repository  <sub>:39</sub>
+- 4. The pack: modules and ownership  <sub>:54</sub>
+- 5. The five pillars for this feature  <sub>:78</sub>
+- 6. Scope lenses (feature-scope map)  <sub>:88</sub>
+- 7. Build order (work orders)  <sub>:118</sub>
+- 8. Out of scope here  <sub>:137</sub>
+- 9. Decision to record  <sub>:143</sub>
+
+### `docs/implementation/housing-society/221-property-and-project-records.md`  <sub>86 lines</sub>
+
+- 1. Hierarchy  <sub>:8</sub>
+- 2. Plot status (the invariant this module guards)  <sub>:23</sub>
+- 3. Pricing  <sub>:41</sub>
+- 4. Screens (staff: *Plots*)  <sub>:49</sub>
+- 5. Permissions  <sub>:62</sub>
+- 6. Acceptance criteria  <sub>:74</sub>
+- 7. Work orders  <sub>:82</sub>
+
+### `docs/implementation/housing-society/222-members-and-customers.md`  <sub>84 lines</sub>
+
+- 1. One person, several roles  <sub>:8</sub>
+- 2. What is stored (and what is protected)  <sub>:23</sub>
+- 3. Duplicate prevention  <sub>:38</sub>
+- 4. Staff  <sub>:47</sub>
+- 5. Member portal  <sub>:53</sub>
+- 6. States the screens ship  <sub>:61</sub>
+- 7. Permissions  <sub>:67</sub>
+- 8. Acceptance criteria  <sub>:72</sub>
+- 9. Work orders  <sub>:80</sub>
+
+### `docs/implementation/housing-society/223-bookings-and-sam-lifecycle.md`  <sub>162 lines</sub>
+
+- 1. File vs plot  <sub>:15</sub>
+- 2. The booking lifecycle  <sub>:30</sub>
+- 3. `BookingTransaction` — the append-only record  <sub>:43</sub>
+- 4. Transfer  <sub>:65</sub>
+- 5. Ballot and allotment  <sub>:82</sub>
+- 6. Merge, split, rebook, deallocate, cancel, refund  <sub>:90</sub>
+- 7. Authority — approvals  <sub>:112</sub>
+- 8. Undo fan-out (forward path → reverse path)  <sub>:124</sub>
+- 9. Open questions for the owner  <sub>:135</sub>
+- 10. Acceptance criteria  <sub>:141</sub>
+- 11. Permissions  <sub>:150</sub>
+- 12. Work orders  <sub>:157</sub>
+
+### `docs/implementation/housing-society/224-installments-and-billing.md`  <sub>102 lines</sub>
+
+- 1. Payment plan  <sub>:10</sub>
+- 2. Installment  <sub>:25</sub>
+- 3. Late fees and surcharges  <sub>:35</sub>
+- 4. Society charges  <sub>:57</sub>
+- 5. Statements and follow-up  <sub>:65</sub>
+- 6. Authority  <sub>:77</sub>
+- 7. Acceptance criteria  <sub>:84</sub>
+- 8. Permissions  <sub>:92</sub>
+- 9. Work orders  <sub>:97</sub>
+
+### `docs/implementation/housing-society/225-receipts-and-payments.md`  <sub>103 lines</sub>
+
+- 1. Receipt (money in — a *record*)  <sub>:8</sub>
+- 2. Allocation  <sub>:21</sub>
+- 3. Instruments  <sub>:29</sub>
+- 4. Payments out (vouchers)  <sub>:43</sub>
+- 5. Reversal is a document  <sub>:52</sub>
+- 6. Numbering and offline  <sub>:61</sub>
+- 7. Day-end  <sub>:70</sub>
+- 8. Failure paths  <sub>:77</sub>
+- 9. Acceptance criteria  <sub>:84</sub>
+- 10. Permissions  <sub>:93</sub>
+- 11. Work orders  <sub>:98</sub>
+
+### `docs/implementation/housing-society/226-accounting-and-reports.md`  <sub>105 lines</sub>
+
+- 1. Chart of accounts (COA)  <sub>:9</sub>
+- 2. Posting rules (domain event → entry)  <sub>:24</sub>
+- 3. Reports  <sub>:49</sub>
+- 4. Reconciliation (what is authoritative)  <sub>:71</sub>
+- 5. Parameters  <sub>:78</sub>
+- 6. Permissions  <sub>:86</sub>
+- 7. Acceptance criteria  <sub>:92</sub>
+- 8. Work orders  <sub>:100</sub>
+
+### `docs/implementation/housing-society/227-complaints-and-visitors.md`  <sub>121 lines</sub>
+
+- Part A — Complaints management  <sub>:8</sub>
+- Part B — Visitor management  <sub>:59</sub>
+
+### `docs/implementation/housing-society/228-roles-permissions-and-configuration.md`  <sub>105 lines</sub>
+
+- 1. Access model  <sub>:9</sub>
+- 2. Separation of duties (toxic pairs)  <sub>:37</sub>
+- 3. Scope: whose rows, which columns  <sub>:49</sub>
+- 4. Configuration: one codebase, two starting points  <sub>:56</sub>
+- 5. Member portal switches  <sub>:74</sub>
+- 6. The grant that ends itself  <sub>:80</sub>
+- 7. Acceptance criteria  <sub>:87</sub>
+- 8. Permissions  <sub>:95</sub>
+- 9. Work orders  <sub>:100</sub>
+
+### `docs/implementation/housing-society/229-excel-import-and-migration.md`  <sub>81 lines</sub>
+
+- 1. What is imported  <sub>:9</sub>
+- 2. The pipeline (nothing writes until the last step)  <sub>:21</sub>
+- 3. Data safety — "no data loss"  <sub>:34</sub>
+- 4. Opening balances  <sub>:41</sub>
+- 5. Security  <sub>:53</sub>
+- 6. Failure paths  <sub>:60</sub>
+- 7. Acceptance criteria  <sub>:66</sub>
+- 8. Work orders  <sub>:75</sub>
+
+### `docs/implementation/housing-society/230-and-much-more-roadmap.md`  <sub>41 lines</sub>
+
+- Sequencing  <sub>:30</sub>
+
+### `docs/implementation/housing-society/README.md`  <sub>52 lines</sub>
+
+- Read in this order  <sub>:18</sub>
+- Vocabulary (one word per concept)  <sub>:34</sub>
+- Status  <sub>:49</sub>
 
 ### `docs/implementation/hr-people-org/164-department-permission-role-duty-control.md`  <sub>327 lines</sub>
 
@@ -3978,6 +4273,76 @@ _no second-level headings_
 - Acceptance  <sub>:62</sub>
 - Out of scope  <sub>:73</sub>
 
+### `docs/implementation/launchpad-apps/232-launchpad-and-app-manifest.md`  <sub>188 lines</sub>
+
+- 1. Objective  <sub>:7</sub>
+- 2. Existing state (inspected)  <sub>:14</sub>
+- 3. The manifest  <sub>:29</sub>
+- 4. Tags: tier, sector, audience — three facets, not a tree  <sub>:71</sub>
+- 5. What the user sees  <sub>:89</sub>
+- 6. Per-tenant control  <sub>:100</sub>
+- 7. Third-party (directory) apps on the same screen  <sub>:112</sub>
+- 8. Licensing hook (doc 211)  <sub>:120</sub>
+- 9. Resilience and failure modes  <sub>:129</sub>
+- 10. Verification additions  <sub>:139</sub>
+- 11. Scope lenses  <sub>:147</sub>
+- 12. Acceptance criteria  <sub>:168</sub>
+- 13. Permissions  <sub>:177</sub>
+- 14. Work orders  <sub>:182</sub>
+
+### `docs/implementation/launchpad-apps/233-mail-app.md`  <sub>208 lines</sub>
+
+- 1. Objective and the one rule  <sub>:12</sub>
+- 2. Existing state  <sub>:24</sub>
+- 3. What the engine does and what we do  <sub>:34</sub>
+- 4. Model (additive, forward-only migration)  <sub>:49</sub>
+- 5. Behaviour  <sub>:63</sub>
+- 6. Parameters (proposals to confirm)  <sub>:111</sub>
+- 7. Permissions  <sub>:125</sub>
+- 8. Failure modes and recovery  <sub>:138</sub>
+- 9. Proof-of-concept gates — answer these BEFORE building  <sub>:148</sub>
+- 10. Out of scope  <sub>:163</sub>
+- 11. Scope lenses  <sub>:170</sub>
+- 12. Acceptance criteria  <sub>:195</sub>
+- 13. Work orders  <sub>:205</sub>
+
+### `docs/implementation/launchpad-apps/234-auction-app.md`  <sub>265 lines</sub>
+
+- 1. Objective  <sub>:8</sub>
+- 2. Audiences and what each really needs  <sub>:15</sub>
+- 3. Auction types  <sub>:31</sub>
+- 4. Data model (additive, forward-only)  <sub>:41</sub>
+- 5. Bidding rules  <sub>:57</sub>
+- 6. Concurrency, idempotency, scale  <sub>:80</sub>
+- 7. Sealed bids and confidentiality  <sub>:101</sub>
+- 8. Bidder trust and money  <sub>:111</sub>
+- 9. After the bidding  <sub>:130</sub>
+- 10. Extension points (so industries can sell by auction without editing it)  <sub>:157</sub>
+- 11. Screens (one main job per page)  <sub>:166</sub>
+- 12. Parameters (proposals to confirm)  <sub>:181</sub>
+- 13. Permissions  <sub>:199</sub>
+- 14. Legal and regulatory caution (not decided here)  <sub>:216</sub>
+- 15. Scope lenses  <sub>:225</sub>
+- 16. Acceptance criteria  <sub>:248</sub>
+- 17. Work orders  <sub>:262</sub>
+
+### `docs/implementation/launchpad-apps/235-vault-and-work-credit-app.md`  <sub>55 lines</sub>
+
+- 1. What the app is  <sub>:8</sub>
+- 2. Manifest sketch (doc 232 §3)  <sub>:17</sub>
+- 3. Interaction with other apps  <sub>:27</sub>
+- 4. Build order  <sub>:34</sub>
+- 5. Decision recorded (owner: "keep both for now")  <sub>:42</sub>
+
+### `docs/implementation/launchpad-apps/README.md`  <sub>79 lines</sub>
+
+- Read in this order  <sub>:11</sub>
+- Three words that must not blur  <sub>:20</sub>
+- Starting catalogue  <sub>:33</sub>
+- Recommended build order (agreed)  <sub>:58</sub>
+- Open questions for the owner (collected)  <sub>:67</sub>
+- Decisions taken  <sub>:74</sub>
+
 ### `docs/implementation/lots-serials-traceability/158-serialized-unit-tracking.md`  <sub>324 lines</sub>
 
 - Why this is a real gap, not a smaller version of `lots`  <sub>:34</sub>
@@ -4129,16 +4494,16 @@ _no second-level headings_
 - WO-5.6 — Screens  <sub>:321</sub>
 - Phase 5 exit criteria  <sub>:337</sub>
 
-### `docs/implementation/README.md`  <sub>688 lines</sub>
+### `docs/implementation/README.md`  <sub>701 lines</sub>
 
 - Read in this order  <sub>:16</sub>
-- Dependency order  <sub>:541</sub>
-- The two module groups  <sub>:570</sub>
-- How a work order runs  <sub>:607</sub>
-- Known gaps not yet owned by a phase  <sub>:625</sub>
-- When a brief is wrong  <sub>:652</sub>
-- Scope, honestly  <sub>:665</sub>
-- Gap-analysis roadmap references  <sub>:672</sub>
+- Dependency order  <sub>:554</sub>
+- The two module groups  <sub>:583</sub>
+- How a work order runs  <sub>:620</sub>
+- Known gaps not yet owned by a phase  <sub>:638</sub>
+- When a brief is wrong  <sub>:665</sub>
+- Scope, honestly  <sub>:678</sub>
+- Gap-analysis roadmap references  <sub>:685</sub>
 
 ### `docs/implementation/resilience-scalability/119-containerized-workload-portability.md`  <sub>80 lines</sub>
 

@@ -258,7 +258,7 @@ against a real database.
 | [`OutboxEvent`](../data/core.md#outboxevent) | `core` | 9 | 0 | id | Transactional outbox. |
 | [`Page`](../data/content.md#page) | `content` | 9 | 0 | id |  |
 | [`PageTranslation`](../data/content.md#pagetranslation) | `content` | 9 | 1 | id |  |
-| [`PartnerFactInbox`](../data/trading-partners.md#partnerfactinbox) | `trading-partners` | 15 | 1 | id | One fact a connected partner sent us (WO-213.1, 213-partner-fact-exchange.md and ADR-083). |
+| [`PartnerFactInbox`](../data/trading-partners.md#partnerfactinbox) | `trading-partners` | 15 | 1 | id | One fact a connected partner sent us (WO-213.1, 213-partner-fact-exchange.md and ADR-087). |
 | [`Party`](../data/parties.md#party) | `parties` | 16 | 0 | id |  |
 | [`PartyRoleAssignment`](../data/parties.md#partyroleassignment) | `parties` | 4 | 1 | id |  |
 | [`PasswordResetToken`](../data/core.md#passwordresettoken) | `core` | 7 | 1 | id | A one-time token mailed to reset a forgotten password. |

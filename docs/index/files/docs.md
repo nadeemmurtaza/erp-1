@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 524 tracked files in `docs/*`, by directory.
+All 554 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -35,63 +35,63 @@ All 524 tracked files in `docs/*`, by directory.
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `README.md` | doc | 109 |  |
+| `README.md` | doc | 120 |  |
 
 ### `docs/design/accessibility` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `07-accessibility.md` | doc | 157 |  |
+| `07-accessibility.md` | doc | 166 |  |
 
 ### `docs/design/components-states` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `03-components.md` | doc | 113 |  |
-| `04-states.md` | doc | 141 |  |
+| `03-components.md` | doc | 481 |  |
+| `04-states.md` | doc | 235 |  |
 
 ### `docs/design/content` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `06-content.md` | doc | 121 |  |
+| `06-content.md` | doc | 130 |  |
 
 ### `docs/design/foundations` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `01-foundations.md` | doc | 175 |  |
+| `01-foundations.md` | doc | 324 |  |
 
 ### `docs/design/layout-composition` (3)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `02-layout.md` | doc | 121 |  |
+| `02-layout.md` | doc | 182 |  |
 | `13-composition.md` | doc | 197 |  |
-| `14-navigation.md` | doc | 198 |  |
+| `14-navigation.md` | doc | 207 |  |
 
 ### `docs/design/motion` (1)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `05-motion.md` | doc | 193 |  |
+| `05-motion.md` | doc | 340 |  |
 
 ### `docs/design/principles-laws` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-principles.md` | doc | 83 |  |
-| `10-laws.md` | doc | 850 |  |
+| `10-laws.md` | doc | 942 |  |
 
 ### `docs/design/process-governance` (5)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
-| `08-governance.md` | doc | 145 |  |
-| `09-quality.md` | doc | 176 |  |
+| `08-governance.md` | doc | 147 |  |
+| `09-quality.md` | doc | 189 |  |
 | `11-workflow.md` | doc | 260 |  |
-| `12-permissions.md` | doc | 214 |  |
-| `15-integrity.md` | doc | 257 |  |
+| `12-permissions.md` | doc | 220 |  |
+| `15-integrity.md` | doc | 260 |  |
 
 ### `docs/erp-lenses/_meta` (32)
 
@@ -563,18 +563,18 @@ All 524 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 127 |  |
+| `DECISIONS.md` | doc | 131 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
-| `README.md` | doc | 688 |  |
+| `README.md` | doc | 701 |  |
 | `RETAIL-ERP.md` | doc | 1099 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 
-### `docs/implementation/access-control-identity` (8)
+### `docs/implementation/access-control-identity` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -586,6 +586,7 @@ All 524 tracked files in `docs/*`, by directory.
 | `18-identity-verification.md` | doc | 149 |  |
 | `21-access-over-the-org-tree.md` | doc | 294 |  |
 | `212-role-scope-enforcement-gap.md` | doc | 129 |  |
+| `231-work-attribution-and-sealed-access.md` | doc | 553 |  |
 
 ### `docs/implementation/admin-platform` (5)
 
@@ -745,7 +746,7 @@ All 524 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
 
-### `docs/implementation/decisions` (85)
+### `docs/implementation/decisions` (89)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -831,7 +832,11 @@ All 524 tracked files in `docs/*`, by directory.
 | `ADR-080-doc-211-cloud-subscription-and-offline-license-locked-to-strictly.md` | doc | 67 |  |
 | `ADR-081-doc-212-role-permission-scope-enforcement-confirmed-as-a-live.md` | doc | 77 |  |
 | `ADR-082-doc-48-native-desktop-deployment-wo-48-1-48-3-48-4-48-5-built-as-real.md` | doc | 121 |  |
-| `ADR-083-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
+| `ADR-083-a-two-theme-design-system-one-source-in-brand-ts-themes-as-scoped-css.md` | doc | 2065 |  |
+| `ADR-084-hospitality-qr-nfc-platform-the-guest-is-a-token-scoped-principal-not.md` | doc | 52 |  |
+| `ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md` | doc | 55 |  |
+| `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 70 |  |
+| `ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
 
@@ -849,6 +854,36 @@ All 524 tracked files in `docs/*`, by directory.
 | `56-overdue-invoices-counter.md` | doc | 125 |  |
 | `68-realtime-gross-profit.md` | doc | 213 |  |
 | `GAP-ANALYSIS-BANK-FACILITY-MANAGEMENT.md` | doc | 86 |  |
+
+### `docs/implementation/hospitality-qr-nfc` (8)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `213-hospitality-platform-overview.md` | doc | 138 |  |
+| `214-qr-nfc-tags-and-spaces.md` | doc | 150 |  |
+| `215-guest-menu-and-ordering.md` | doc | 145 |  |
+| `216-staff-operations-and-requests.md` | doc | 143 |  |
+| `217-tables-rooms-and-floor.md` | doc | 92 |  |
+| `218-staff-management-and-analytics.md` | doc | 98 |  |
+| `219-future-modules-roadmap.md` | doc | 117 |  |
+| `README.md` | doc | 52 |  |
+
+### `docs/implementation/housing-society` (12)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `220-housing-society-overview.md` | doc | 148 |  |
+| `221-property-and-project-records.md` | doc | 86 |  |
+| `222-members-and-customers.md` | doc | 84 |  |
+| `223-bookings-and-sam-lifecycle.md` | doc | 162 |  |
+| `224-installments-and-billing.md` | doc | 102 |  |
+| `225-receipts-and-payments.md` | doc | 103 |  |
+| `226-accounting-and-reports.md` | doc | 105 |  |
+| `227-complaints-and-visitors.md` | doc | 121 |  |
+| `228-roles-permissions-and-configuration.md` | doc | 105 |  |
+| `229-excel-import-and-migration.md` | doc | 81 |  |
+| `230-and-much-more-roadmap.md` | doc | 41 |  |
+| `README.md` | doc | 52 |  |
 
 ### `docs/implementation/hr-people-org` (19)
 
@@ -914,6 +949,16 @@ All 524 tracked files in `docs/*`, by directory.
 | `156-single-employee-branch-loss-prevention.md` | doc | 308 |  |
 | `17-inventory-locations.md` | doc | 254 |  |
 | `70-realtime-stock-depletion.md` | doc | 77 |  |
+
+### `docs/implementation/launchpad-apps` (5)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `232-launchpad-and-app-manifest.md` | doc | 188 |  |
+| `233-mail-app.md` | doc | 208 |  |
+| `234-auction-app.md` | doc | 265 |  |
+| `235-vault-and-work-credit-app.md` | doc | 55 |  |
+| `README.md` | doc | 79 |  |
 
 ### `docs/implementation/lots-serials-traceability` (3)
 

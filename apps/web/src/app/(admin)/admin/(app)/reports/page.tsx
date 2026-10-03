@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { downloadCsv } from '@/lib/download-csv';
-import { DataTable, Loading, MetricStrip, PageHeader, SectionRail } from '@/components/ui';
+import { DataTable, Loading, MetricStrip, PageHeader, ProgressBar, SectionRail, TruncateReveal } from '@/components/ui';
 import { RangePicker, type RangeDays } from '@/components/admin/range-picker';
 import { paymentProviderLabel } from '@/constants/payment-methods';
 import { exportFilename } from '@/constants/downloads';
@@ -390,18 +390,21 @@ function BarList({
       {items.map((item) => (
         <li key={item.key}>
           <div className="flex justify-between gap-3 text-sm">
-            <span className="min-w-0 truncate text-neutral-900">{item.label}</span>
+            <span className="min-w-0 text-neutral-900">
+              <TruncateReveal text={item.label} />
+            </span>
             <span className="shrink-0 tabular-nums text-neutral-900/70">
               {valueFormatter(item.value)}
             </span>
           </div>
-          {/* Sequential single hue: more of the metric is a longer bar. */}
-          <div className="mt-1 h-1.5 overflow-hidden rounded bg-neutral-50">
-            <div
-              className="h-full rounded bg-accent"
-              style={{ width: `${Math.max((item.value / max) * 100, 2)}%` }}
-            />
-          </div>
+          {/* Sequential single hue: more of the metric is a longer bar. A floor of 2% keeps the smallest value visible; the label carries the true figure. */}
+          <ProgressBar
+            className="mt-1"
+            label={item.label}
+            value={Math.max(item.value, max * 0.02)}
+            max={max}
+            valueText={valueFormatter(item.value)}
+          />
           {item.sub ? <p className="mt-0.5 text-xs text-neutral-900/60">{item.sub}</p> : null}
         </li>
       ))}

@@ -6,6 +6,7 @@ import { cn } from '@/utils/cn';
 import { COD_RISK_ACTIONS, ORDER_STATUSES, formatDate, formatMoney } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { ROUTES } from '@/constants/routes';
+import { ORDER_NEXT_STATUS } from '@/constants/order-transitions';
 import type { PaginatedResponse } from '@/types/api';
 import {
   DataTable,
@@ -34,18 +35,6 @@ interface AdminOrder {
   codRiskAction: string | null;
   codRiskReasonEn: string | null;
 }
-
-/** Which status a staff member may move an order to next. Mirrors the API. */
-const NEXT_STATUS: Record<string, string[]> = {
-  PENDING: ['CONFIRMED', 'CANCELLED'],
-  CONFIRMED: ['PROCESSING', 'CANCELLED'],
-  PROCESSING: ['READY_TO_SHIP', 'CANCELLED'],
-  READY_TO_SHIP: ['SHIPPED', 'CANCELLED'],
-  SHIPPED: ['DELIVERED', 'RETURNED'],
-  DELIVERED: ['RETURNED'],
-  CANCELLED: [],
-  RETURNED: [],
-};
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<PaginatedResponse<AdminOrder> | null>(null);
@@ -239,7 +228,7 @@ export default function AdminOrdersPage() {
               align: 'end',
               cell: (order) => (
                 <div className="flex flex-wrap justify-end gap-1">
-                  {(NEXT_STATUS[order.status] ?? []).map((next) => (
+                  {(ORDER_NEXT_STATUS[order.status] ?? []).map((next) => (
                     <button
                       key={next}
                       type="button"

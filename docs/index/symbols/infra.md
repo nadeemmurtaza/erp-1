@@ -12,20 +12,40 @@ Every top-level export in `infra`, with the line to open.
 
 | File | Symbol | Kind | Line | Doc |
 |---|---|---|---|---|
-| `check-contrast.mjs` | `contrast` | const | :69 | WCAG 2.x contrast ratio. |
-| `check-contrast.mjs` | `scanColours` | function | :213 | Every colour utility in a file, with the className it shared, if any. |
+| `build-index.mjs` | `…` | re-export |  | from `./x` |
+| `check-clipboard.mjs` | `ALLOWED` | const | :51 | The one place that may touch the clipboard, relative to the repository root. |
+| `check-clipboard.mjs` | `findClipboardUse` | function | :77 | Every clipboard touch in one file: its line and which of the two it is. |
+| `check-contrast.mjs` | `contrast` | const | :78 | WCAG 2.x contrast ratio. |
+| `check-contrast.mjs` | `scanColours` | function | :241 | Every colour utility in a file, with the className it shared, if any. |
+| `check-contrast.mjs` | `pinnedRegions` | function | :298 | A region that holds one theme whatever the page is in: an element carrying `data-theme="light"` (or… |
+| `check-danger.mjs` | `readVagueLabels` | function | :39 | The vague words, read from the one place they are defined. |
+| `check-danger.mjs` | `isVague` | function | :46 | Same normalisation as `isVagueLabel`: trim, lower-case, drop trailing punctuation. |
+| `check-danger.mjs` | `findLabels` | function | :78 | Every destructive label written as a literal in `text`, and the count of those that are expressions. |
 | `check-links.mjs` | `APPS` | const | :37 | The apps with a Next.js app router, and where each one's assets live. |
-| `check-links.mjs` | `routeUrl` | function | :84 | The URL a `page.tsx` / `route.ts` serves: route groups vanish, `[id]` stays. |
-| `check-links.mjs` | `routeInventory` | function | :100 | Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`. |
-| `check-links.mjs` | `matches` | function | :133 | Does `link` land on `route`? |
-| `check-links.mjs` | `resolve1` | function | :174 | The route Next.js would pick for this link, or null. |
-| `check-links.mjs` | `scanLinks` | function | :219 | Every internal path a file refers to, with the line it is on. |
+| `check-links.mjs` | `routeUrl` | function | :91 | The URL a `page.tsx` / `route.ts` serves: route groups vanish, `[id]` stays. |
+| `check-links.mjs` | `routeInventory` | function | :107 | Every `page.tsx` / `route.ts` under one app's router, as `{url, file}`. |
+| `check-links.mjs` | `matches` | function | :140 | Does `link` land on `route`? |
+| `check-links.mjs` | `resolve1` | function | :181 | The route Next.js would pick for this link, or null. |
+| `check-links.mjs` | `scanLinks` | function | :226 | Every internal path a file refers to, with the line it is on. |
+| `check-menus.mjs` | `BASELINE` | const | :51 | The debt on the day this check was written, after the first migration. |
+| `check-menus.mjs` | `blankComments` | function | :80 | Blank comments to spaces, keeping every newline, so line numbers still point at the source. |
+| `check-menus.mjs` | `findSelects` | function | :90 | Every native `<select>` block: its line, how many literal `<option>` it has, and whether it maps mo… |
+| `check-menus.mjs` | `findDateInputs` | function | :106 | The line of every native date input: `type="date"`, `type='date'` or `type={'date'}`. |
+| `check-menus.mjs` | `isShortSelect` | const | :112 | MNU-6: a list written out in full, short enough that it should be visible. |
 | `check-metadata-renderer.mjs` | `TARGET_FILE` | const | :31 |  |
 | `check-metadata-renderer.mjs` | `findViolations` | function | :38 |  |
 | `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :63 |  |
 | `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :71 |  |
 | `check-metadata-renderer.mjs` | `MetadataDrivenForm` | function | :78 |  |
 | `check-rebrand.mjs` | `scan` | function | :160 | Every violation on one file's contents. |
+| `check-tells.mjs` | `FLAG_FILE` | const | :63 | Country flags are the one pictograph that is data, not decoration: a country or locale picker shows… |
+| `check-tells.mjs` | `TELLS` | const | :73 | The tells. |
+| `check-tells.mjs` | `BASELINE` | const | :292 | The debt on the day this was written, per tell and per file: a count of LINES carrying the tell. |
+| `check-tells.mjs` | `blankComments` | function | :362 | Blank comments to spaces, keeping every newline, so line numbers still point at the source. |
+| `check-tells.mjs` | `findTell` | function | :370 | The line numbers (one per line, however many times it matches) where `tell` fires in `source`. |
+| `check-tells.mjs` | `countDynamic` | function | :381 | How many times `tell.dynamic` (the unreadable twin of a literal) fires; counted, never failed. |
+| `check-tells.mjs` | `compare` | function | :387 | A tell is over when a file has more hit lines than its baseline allows (an absent entry allows none… |
+| `check-tells.mjs` | `tellsInFile` | function | :406 | Every tell in ONE file, with its lines: what `/restyle` reads before it edits, because the whole-re… |
 
 ### `scripts/lib`
 
@@ -40,39 +60,40 @@ Every top-level export in `infra`, with the line to open.
 | `index-scan.mjs` | `cell` | function | :139 | Markdown table cells cannot contain a raw pipe or newline. |
 | `index-scan.mjs` | `scanSymbols` | function | :164 | Exported symbols of a .ts/.tsx file, with the line to jump to. |
 | `index-scan.mjs` | `scanReExports` | function | :183 | `export { a, b } from './x'` and `export from './x'` — a barrel's contents. |
-| `index-scan.mjs` | `scanImports` | function | :197 | Local (relative and workspace) imports — the file's real dependency edges. |
-| `index-scan.mjs` | `scanController` | function | :219 | Every HTTP endpoint a controller file declares, with the access rule that actually guards it. |
-| `index-scan.mjs` | `joinRoute` | function | :308 |  |
-| `index-scan.mjs` | `accessOf` | function | :315 | How a route is guarded, in the words a reader needs. |
-| `index-scan.mjs` | `scanNestModule` | function | :323 | A NestJS `@Module({...})` wiring block. |
-| `index-scan.mjs` | `scanEventCatalog` | function | :349 | The event catalogue itself: `Name: 'event.name'` inside `DomainEvent`. |
-| `index-scan.mjs` | `scanEventUsage` | function | :362 | Subscribers (`@OnDomainEvent`) and publishers (every other `DomainEvent.X`). |
-| `index-scan.mjs` | `scanStateMachines` | function | :391 | A named `Record<XStatus, XStatus[]>` constant — this repository's own explicit, checked-before-ever… |
-| `index-scan.mjs` | `scanCron` | function | :421 | `@Cron('expr')` — the background work nothing in the UI reveals. |
-| `index-scan.mjs` | `scanPrisma` | function | :451 | Models and enums of one `.prisma` file, with every field. |
-| `index-scan.mjs` | `scanMigration` | function | :511 | One migration folder: when it ran, what it was for, what it touched. |
-| `index-scan.mjs` | `balancedLiteral` | function | :547 | The source of the bracketed literal that follows `declaration`, matched by counting brackets rather… |
-| `index-scan.mjs` | `splitObjectLiterals` | function | :581 | Splits `{...}, {...}` object literals at depth 1, quote-aware. |
-| `index-scan.mjs` | `scanPermissionCatalog` | function | :609 | `PERMISSION_CATALOG` — the compile-time list every guard is checked against. |
-| `index-scan.mjs` | `scanRoleSeed` | function | :630 | `ROLE_PERMISSION_SEED` — which role is granted what at seed time. |
-| `index-scan.mjs` | `appRouterPath` | function | :651 | The URL a `page.tsx` / `route.ts` actually serves. |
-| `index-scan.mjs` | `routeKind` | function | :662 |  |
-| `index-scan.mjs` | `isClientComponent` | function | :677 | `'use client'` decides where a component can run — worth one column. |
-| `index-scan.mjs` | `scanDescribes` | function | :684 | Top-level `describe(...)` titles — what a spec file claims to cover. |
-| `index-scan.mjs` | `scanTestNames` | function | :692 | Every `it(...)` title — the behaviours actually pinned down. |
-| `index-scan.mjs` | `scanHeadings` | function | :701 | A doc's heading outline — enough to route a question to the right section. |
-| `index-scan.mjs` | `classify` | function | :716 | What kind of thing a file is, from the conventions this repo actually uses. |
-| `index-scan.mjs` | `splitSqlStatements` | function | :782 | Splits SQL into statements, ignoring semicolons inside strings, identifiers, dollar-quoted bodies a… |
-| `index-scan.mjs` | `scanMigrationSql` | function | :823 |  |
-| `index-scan.mjs` | `schemaMigrationDrift` | function | :902 | Which models, fields and enums the schema declares that no migration builds. |
+| `index-scan.mjs` | `scanNamedImports` | function | :203 | The names a file takes from each module: `import { A, type B, C as D } from './x'` is `{ from: './x… |
+| `index-scan.mjs` | `scanImports` | function | :218 | Local (relative and workspace) imports — the file's real dependency edges. |
+| `index-scan.mjs` | `scanController` | function | :240 | Every HTTP endpoint a controller file declares, with the access rule that actually guards it. |
+| `index-scan.mjs` | `joinRoute` | function | :329 |  |
+| `index-scan.mjs` | `accessOf` | function | :336 | How a route is guarded, in the words a reader needs. |
+| `index-scan.mjs` | `scanNestModule` | function | :344 | A NestJS `@Module({...})` wiring block. |
+| `index-scan.mjs` | `scanEventCatalog` | function | :370 | The event catalogue itself: `Name: 'event.name'` inside `DomainEvent`. |
+| `index-scan.mjs` | `scanEventUsage` | function | :383 | Subscribers (`@OnDomainEvent`) and publishers (every other `DomainEvent.X`). |
+| `index-scan.mjs` | `scanStateMachines` | function | :412 | A named `Record<XStatus, XStatus[]>` constant — this repository's own explicit, checked-before-ever… |
+| `index-scan.mjs` | `scanCron` | function | :442 | `@Cron('expr')` — the background work nothing in the UI reveals. |
+| `index-scan.mjs` | `scanPrisma` | function | :472 | Models and enums of one `.prisma` file, with every field. |
+| `index-scan.mjs` | `scanMigration` | function | :532 | One migration folder: when it ran, what it was for, what it touched. |
+| `index-scan.mjs` | `balancedLiteral` | function | :568 | The source of the bracketed literal that follows `declaration`, matched by counting brackets rather… |
+| `index-scan.mjs` | `splitObjectLiterals` | function | :602 | Splits `{...}, {...}` object literals at depth 1, quote-aware. |
+| `index-scan.mjs` | `scanPermissionCatalog` | function | :630 | `PERMISSION_CATALOG` — the compile-time list every guard is checked against. |
+| `index-scan.mjs` | `scanRoleSeed` | function | :651 | `ROLE_PERMISSION_SEED` — which role is granted what at seed time. |
+| `index-scan.mjs` | `appRouterPath` | function | :672 | The URL a `page.tsx` / `route.ts` actually serves. |
+| `index-scan.mjs` | `routeKind` | function | :683 |  |
+| `index-scan.mjs` | `isClientComponent` | function | :698 | `'use client'` decides where a component can run — worth one column. |
+| `index-scan.mjs` | `scanDescribes` | function | :705 | Top-level `describe(...)` titles — what a spec file claims to cover. |
+| `index-scan.mjs` | `scanTestNames` | function | :713 | Every `it(...)` title — the behaviours actually pinned down. |
+| `index-scan.mjs` | `scanHeadings` | function | :722 | A doc's heading outline — enough to route a question to the right section. |
+| `index-scan.mjs` | `classify` | function | :737 | What kind of thing a file is, from the conventions this repo actually uses. |
+| `index-scan.mjs` | `splitSqlStatements` | function | :803 | Splits SQL into statements, ignoring semicolons inside strings, identifiers, dollar-quoted bodies a… |
+| `index-scan.mjs` | `scanMigrationSql` | function | :844 |  |
+| `index-scan.mjs` | `schemaMigrationDrift` | function | :923 | Which models, fields and enums the schema declares that no migration builds. |
 | `index-scan.mjs` | `a` `b` | re-export |  | from `./x` |
 | `index-scan.mjs` | `*` | re-export |  | from `./x` |
 | `model-routing.mjs` | `ROUTING_POLICY` | const | :54 | @typedef {'low'\|'medium'\|'high'\|'xhigh'\|'max'} EffortLevel |
-| `model-routing.mjs` | `ADVISORY_SIGNALS` | const | :313 | The advisory hook only speaks up for jobs where the wrong choice is costly. |
-| `model-routing.mjs` | `CACHE_TTL_BY_EFFORT` | const | :352 | The TTL each effort level earns. |
-| `model-routing.mjs` | `cacheTtlFor` | const | :360 |  |
-| `model-routing.mjs` | `MODEL_ORDER` | const | :362 |  |
-| `model-routing.mjs` | `EFFORT_ORDER` | const | :363 |  |
+| `model-routing.mjs` | `ADVISORY_SIGNALS` | const | :350 | The advisory hook only speaks up for jobs where the wrong choice is costly. |
+| `model-routing.mjs` | `CACHE_TTL_BY_EFFORT` | const | :389 | The TTL each effort level earns. |
+| `model-routing.mjs` | `cacheTtlFor` | const | :397 |  |
+| `model-routing.mjs` | `MODEL_ORDER` | const | :399 |  |
+| `model-routing.mjs` | `EFFORT_ORDER` | const | :400 |  |
 | `render-harness.mjs` | `WIDTHS` | const | :59 | Law 4's own numbers, read from `CLAUDE.md` / `docs/design/layout-composition/02-layout.md`, NOT fro… |
 | `render-harness.mjs` | `spawnServer` | function | :100 | Spawn a long-running server process. |
 | `render-harness.mjs` | `login` | function | :148 | `POST /auth/login` against a running API. |

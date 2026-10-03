@@ -3,6 +3,12 @@
 import { cn } from '@/utils/cn';
 import type { Toast } from '@/hooks/use-toast';
 
+/**
+ * UNUSED: nothing imports this. `components/admin/toast-stack.tsx` is the one toast stack (a live region, an
+ * arrival and an exit, a timer line, logical positioning). Kept rather than deleted because deleting a file
+ * needs the owner's word; it is listed for that decision in ADR-083's consistency addendum.
+ */
+
 interface ToastContainerProps {
   toasts: Toast[];
   onRemove: (id: string) => void;
@@ -22,7 +28,7 @@ export function ToastContainer({ toasts, onRemove }: ToastContainerProps) {
       role="region"
       aria-live="polite"
       aria-label="Notifications"
-      className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"
+      className="fixed bottom-4 right-4 z-toast flex flex-col gap-2 max-w-sm pointer-events-none"
     >
       {toasts.map((toast) => (
         <div

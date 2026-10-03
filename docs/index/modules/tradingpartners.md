@@ -170,7 +170,7 @@ check there before adding another.
 | `PartnerFactReceipt` | interface | `partner-fact-inbox.service.ts:11` | What the partner is told. |
 | `canonicalJson` | function | `partner-fact-inbox.service.ts:22` | A key-sorted JSON string, so two senders that list the same fields in a different order produce the same hash. |
 | `hashFact` | function | `partner-fact-inbox.service.ts:33` |  |
-| `PartnerFactInboxService` | class | `partner-fact-inbox.service.ts:61` | "Store first, apply second" (WO-213.1, 213-partner-fact-exchange.md, ADR-083). |
+| `PartnerFactInboxService` | class | `partner-fact-inbox.service.ts:61` | "Store first, apply second" (WO-213.1, 213-partner-fact-exchange.md, ADR-087). |
 | `PartnerFactStatusListener` | class | `partner-fact-status.listener.ts:24` | Keeps `PartnerFactInbox.status` in step with what the subscriber that owns a fact's effect decided (WO-213.1). |
 | `ProductAlertsListener` | class | `product-alerts.listener.ts:20` | The "forth" direction: a new product going live, or a price changing, pushed to every connected CUSTOMER (or… |
 | `QuoteService` | class | `quote.service.ts:40` | The "forth" direction's price-quotation document (WO-18.3) — issuing one auto-pushes it to the linked Trading… |

@@ -20,6 +20,12 @@ import { cn } from '@/utils/cn';
  * keeps its value, still posts with the form, and is still found by the
  * browser's find-in-page. Unmounting would silently drop input somebody had
  * already typed.
+ *
+ * Opening plays one `rise` (a fade and 8px of travel up from the trigger, over
+ * `normal`) on the content, and the chevron turns on the same curve. The
+ * content does not animate its height: that is a layout property, and a long
+ * form growing frame by frame is the layout thrash `05-motion.md` rules out.
+ * `hidden` toggling `display` restarts the animation on every open for free.
  */
 export function Disclosure({
   label = 'Advanced options',
@@ -53,14 +59,14 @@ export function Disclosure({
           strokeLinecap="round"
           strokeLinejoin="round"
           aria-hidden
-          className={cn('shrink-0 transition-transform duration-200', open && 'rotate-180')}
+          className={cn('shrink-0 transition-transform duration-normal ease-settle', open && 'rotate-180')}
         >
           <polyline points="6 9 12 15 18 9" />
         </svg>
         {label}
       </button>
 
-      <div id={id} hidden={!open} className="mt-3 border-s border-neutral-100 ps-4">
+      <div id={id} hidden={!open} className="mt-3 animate-rise border-s border-neutral-100 ps-4">
         {children}
       </div>
     </div>

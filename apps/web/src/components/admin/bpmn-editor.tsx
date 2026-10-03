@@ -98,7 +98,12 @@ export function BpmnEditor({
           {error}
         </p>
       ) : null}
-      <div className="relative h-[520px] w-full rounded-md border border-neutral-100">
+      {/*
+        The diagram canvas is pinned to the light palette: bpmn-js draws its
+        shapes in near-black strokes, which vanish on a dark surface. A
+        diagram editor is a sheet of paper in both themes.
+      */}
+      <div data-theme="light" className="relative h-[520px] w-full rounded-md bg-white shadow-raised">
         {!ready ? (
           <div className="absolute inset-0 flex items-center justify-center bg-white">
             <Loading label="Loading the workflow editor" />

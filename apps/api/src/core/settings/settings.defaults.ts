@@ -437,7 +437,7 @@ export const DEFAULT_SETTINGS: Record<SettingKeyName, unknown> = {
   [SettingKey.MonthlyRevenueTarget]: toMinor(1_000_000),
 
   [SettingKey.PurchasingOverReceiptTolerance]: 0,
-  // One rotation per audit year (213-partner-fact-exchange.md, ADR-083).
+  // One rotation per audit year (213-partner-fact-exchange.md, ADR-087).
   [SettingKey.PartnersKeyTtlDays]: 365,
   // Wide enough that an ordinary supplier price change passes, narrow enough
   // that a decimal slip or a wrong currency does not (213-partner-fact-exchange.md).

@@ -1,5 +1,6 @@
 import { exportFilename } from '@/constants/downloads';
 import { CsvImportCard } from '@/components/admin/csv-import-card';
+import { ROUTES } from '@/constants/routes';
 
 /**
  * Bulk expense onboarding (admin-platform/72-fragmented-tool-consolidation-import.md
@@ -25,6 +26,7 @@ export default function AdminExpensesImportPage() {
         templateFilename={exportFilename('expenses-template')}
         importUrl="/admin/finance/expenses/import"
         keyLabel="Description"
+        listHref={ROUTES.admin.financeExpenses}
         notes={[
           { term: 'Amounts in rupees', detail: 'Write 500, not 50000. Commas are fine.' },
           { term: 'Category must already exist', detail: 'Create it first under Expenses → Categories.' },

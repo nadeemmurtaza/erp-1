@@ -7,6 +7,8 @@ import { PageHeader, DataTable, Dialog, Button, Section } from '@/components/ui'
 import { StatusBadge } from '@/components/common/status-badge';
 import { useAdminSession } from '@/components/admin/session';
 import { adminFetch } from '@/lib/admin-client';
+import { Select } from '@/components/ui/select';
+import { DateField } from '@/components/ui/date-field';
 
 interface UserRef {
   id: string;
@@ -482,15 +484,17 @@ function NewScheduleDialog({
           <label htmlFor="depr-method" className="field-label">
             Method
           </label>
-          <select
+          <Select
             id="depr-method"
-            className="field-input mt-1 w-full"
+            label="Method"
+            className="mt-1"
             value={method}
-            onChange={(e) => setMethod(e.target.value as 'STRAIGHT_LINE' | 'DECLINING_BALANCE')}
-          >
-            <option value="STRAIGHT_LINE">Straight line</option>
-            <option value="DECLINING_BALANCE">Declining balance</option>
-          </select>
+            onChange={(next) => setMethod(next as 'STRAIGHT_LINE' | 'DECLINING_BALANCE')}
+            options={[
+              { value: 'STRAIGHT_LINE', label: 'Straight line' },
+              { value: 'DECLINING_BALANCE', label: 'Declining balance' },
+            ]}
+          />
         </div>
         <div className="flex gap-3">
           <div className="flex-1">
@@ -557,13 +561,7 @@ function NewScheduleDialog({
           <label htmlFor="depr-start" className="field-label">
             Start date
           </label>
-          <input
-            id="depr-start"
-            type="date"
-            className="field-input mt-1 w-full"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
+          <DateField id="depr-start" className="mt-1" value={startDate} onChange={setStartDate} />
         </div>
       </div>
     </Dialog>
@@ -659,13 +657,7 @@ function DisposeDialog({
           <label htmlFor="dispose-date" className="field-label">
             Disposal date
           </label>
-          <input
-            id="dispose-date"
-            type="date"
-            className="field-input mt-1 w-full"
-            value={disposalDate}
-            onChange={(e) => setDisposalDate(e.target.value)}
-          />
+          <DateField id="dispose-date" className="mt-1" value={disposalDate} onChange={setDisposalDate} />
         </div>
       </div>
     </Dialog>

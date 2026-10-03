@@ -5,7 +5,7 @@
 > price, and stock change should be automatic on purchase complete. Seller's
 > price is buyer's cost, and stock moves automatically. Do not send the document
 > in the document form, just send data; the document should be generated at the
-> receiver's end. Fast transmission."_ Decision record: ADR-083.
+> receiver's end. Fast transmission."_ Decision record: ADR-087.
 
 ## Objective
 
@@ -139,7 +139,7 @@ they have never stocked without typing its name, description or images.
 | Fact payload retention               | **400 days**, then the payload is nulled and the row kept                                                               | One fiscal year plus a month for disputes. Metadata stays for audit.                                                                                                                  | Daily cron                                   | n/a                                                              |
 | Auto-accept receipt                  | **off (0)** by default; ceiling `partners.auto_accept_max_minor`                                                        | A human counts goods unless the operator opts in per supplier. Over-receipt still uses the existing `purchasing.over_receipt_tolerance`.                                              | `purchasing` subscriber                      | Falls back to a normal pending receipt                           |
 
-Each value is recorded in `DECISIONS.md` ADR-083, as the repo's rules require.
+Each value is recorded in `DECISIONS.md` ADR-087, as the repo's rules require.
 
 ## Required change (work orders)
 

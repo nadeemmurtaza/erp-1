@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 208 tracked files in `repository root files`, by directory.
+All 214 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -18,7 +18,7 @@ All 208 tracked files in `repository root files`, by directory.
 | `.windsurfrules` | file | — |  |
 | `AGENTS.md` | doc | 81 |  |
 | `Architecture.md` | doc | 32 |  |
-| `CLAUDE.md` | doc | 1033 |  |
+| `CLAUDE.md` | doc | 866 |  |
 | `CONTRIBUTING.md` | doc | 130 |  |
 | `DEPLOYMENT.md` | doc | 529 |  |
 | `Design.md` | doc | 41 |  |
@@ -37,17 +37,18 @@ All 208 tracked files in `repository root files`, by directory.
 | `launch.json` | json | 24 |  |
 | `settings.json` | json | 25 |  |
 
-### `.claude/agents` (8)
+### `.claude/agents` (9)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `architect.md` | doc | 49 |  |
 | `debug.md` | doc | 38 |  |
-| `feature.md` | doc | 44 |  |
+| `feature.md` | doc | 45 |  |
 | `implement.md` | doc | 37 |  |
 | `locate.md` | doc | 37 |  |
 | `schema.md` | doc | 46 |  |
 | `security.md` | doc | 46 |  |
+| `ux.md` | doc | 47 |  |
 | `verify.md` | doc | 45 |  |
 
 ### `.claude/hooks` (2)
@@ -65,12 +66,42 @@ All 208 tracked files in `repository root files`, by directory.
 | `database.md` | doc | 19 |  |
 | `decisions.md` | doc | 28 |  |
 | `dependencies.md` | doc | 23 |  |
-| `design.md` | doc | 136 |  |
+| `design.md` | doc | 179 |  |
 | `performance.md` | doc | 42 |  |
 | `security.md` | doc | 49 |  |
 | `services.md` | doc | 49 |  |
 | `testing.md` | doc | 20 |  |
-| `ui.md` | doc | 151 |  |
+| `ui.md` | doc | 217 |  |
+
+### `.claude/skills/feature-scope` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 225 |  |
+
+### `.claude/skills/restyle` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 90 |  |
+
+### `.claude/skills/ux-audit` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 108 |  |
+
+### `.claude/skills/ux-design` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 122 |  |
+
+### `.claude/skills/ux-review` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `SKILL.md` | doc | 123 |  |
 
 ### `.cursor/rules` (1)
 

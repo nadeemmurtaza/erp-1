@@ -7,10 +7,11 @@ import { formatDate } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useAdminSession } from '@/components/admin/session';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/utils/cn';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { DataTable, EmptyState, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { PayRun } from '@/types/api';
+import { DateField } from '@/components/ui/date-field';
 
 /**
  * WO-19.6 (docs/implementation/payroll/19-payroll.md) — every pay run, and the form
@@ -65,24 +66,7 @@ export default function PayrollRunsPage() {
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error' ? 'border-red-200 bg-red-50 text-red-800' : 'border-green-200 bg-green-50 text-green-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader title="Pay runs" description="Build, approve and post payroll for a period." />
 
@@ -94,14 +78,18 @@ export default function PayrollRunsPage() {
 
       {canManage ? (
         <form onSubmit={build} className="mb-6 flex flex-wrap items-end gap-3">
-          <label className="block">
-            <span className="field-label">Period start</span>
-            <input type="date" value={periodStart} onChange={(e) => setPeriodStart(e.target.value)} className="field-input" required />
-          </label>
-          <label className="block">
-            <span className="field-label">Period end</span>
-            <input type="date" value={periodEnd} onChange={(e) => setPeriodEnd(e.target.value)} className="field-input" required />
-          </label>
+          <div>
+            <label htmlFor="run-start" className="field-label">
+              Period start
+            </label>
+            <DateField id="run-start" value={periodStart} onChange={setPeriodStart} required />
+          </div>
+          <div>
+            <label htmlFor="run-end" className="field-label">
+              Period end
+            </label>
+            <DateField id="run-end" value={periodEnd} onChange={setPeriodEnd} required />
+          </div>
           <button type="submit" disabled={building} className="btn-primary">
             {building ? 'Building…' : 'Build pay run'}
           </button>

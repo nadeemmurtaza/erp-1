@@ -3,8 +3,9 @@
 import { use, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { cn } from '@/utils/cn';
-import { ConfirmDialog, PageHeader } from '@/components/ui';
+import { DangerZone, HoldToConfirm, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import { RecipeEditor } from '@/components/admin/bom/recipe-editor';
 import { CostBreakdown } from '@/components/admin/bom/cost-breakdown';
@@ -35,7 +36,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [statusChanging, setStatusChanging] = useState(false);
-  const [confirmingArchive, setConfirmingArchive] = useState(false);
 
   function load() {
     Promise.all([
@@ -75,7 +75,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
       addToast(cause instanceof Error ? cause.message : 'Could not archive the recipe', 'error');
     } finally {
       setStatusChanging(false);
-      setConfirmingArchive(false);
     }
   }
 
@@ -95,26 +94,7 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error'
-                  ? 'border-red-200 bg-red-50 text-red-800'
-                  : 'border-green-200 bg-green-50 text-green-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader
         title={recipe.sku}
@@ -126,11 +106,6 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
               {recipe.status !== 'ACTIVE' ? (
                 <button type="button" onClick={() => void activate()} disabled={statusChanging} className="btn-secondary">
                   Activate
-                </button>
-              ) : null}
-              {recipe.status !== 'ARCHIVED' ? (
-                <button type="button" onClick={() => setConfirmingArchive(true)} disabled={statusChanging} className="btn-ghost text-red-700">
-                  Archive
                 </button>
               ) : null}
             </div>
@@ -175,15 +150,24 @@ export default function RecipeDetailPage({ params }: { params: Promise<{ id: str
       <h2 className="mb-3 text-lg font-medium text-neutral-900">Edit recipe</h2>
       <RecipeEditor recipeId={id} />
 
-      <ConfirmDialog
-        open={confirmingArchive}
-        onClose={() => setConfirmingArchive(false)}
-        onConfirm={archive}
-        title="Archive this recipe?"
-        description="It stops appearing as an option for new production runs. Past runs are unaffected."
-        confirmLabel="Archive"
-        busy={statusChanging}
-      />
+      {/* Archiving lives at the foot of the page, closed, and is confirmed by a hold (DNG-1, DNG-3, DNG-5). */}
+      {canManage && recipe.status !== 'ARCHIVED' ? (
+        <DangerZone
+          className="mt-8"
+          actions={[
+            {
+              id: 'archive',
+              title: 'Archive this recipe',
+              description: 'It stops appearing as an option for new production runs. Past runs are unaffected.',
+              control: (
+                <HoldToConfirm onConfirm={archive} loading={statusChanging} loadingLabel="Archiving…">
+                  Archive recipe
+                </HoldToConfirm>
+              ),
+            },
+          ]}
+        />
+      ) : null}
     </>
   );
 }

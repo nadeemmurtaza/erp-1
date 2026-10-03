@@ -3,7 +3,7 @@
 
 # Every tracked file
 
-All **2,614** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
+All **2,776** files git tracks. This is the index's completeness guarantee: every file in the repository is on one of the pages below, with its kind, size and purpose.
 
 
 Split by area so you load one, not all of them.
@@ -11,13 +11,13 @@ Split by area so you load one, not all of them.
 | Area | Files | Lines | Open |
 |---|---|---|---|
 | apps/api | 1,209 | 162,747 | [files/api.md](../files/api.md) |
-| apps/web | 428 | 72,520 | [files/web.md](../files/web.md) |
-| apps/pos | 33 | 2,668 | [files/pos.md](../files/pos.md) |
+| apps/web | 538 | 96,959 | [files/web.md](../files/web.md) |
+| apps/pos | 33 | 2,671 | [files/pos.md](../files/pos.md) |
 | apps/mobile | 50 | 6,942 | [files/mobile.md](../files/mobile.md) |
-| packages/* | 102 | 11,772 | [files/packages.md](../files/packages.md) |
-| docs/* | 524 | 90,031 | [files/docs.md](../files/docs.md) |
-| scripts, CI, deployment and container configuration | 60 | 31,418 | [files/infra.md](../files/infra.md) |
-| repository root files | 208 | 15,529 | [files/root.md](../files/root.md) |
+| packages/* | 114 | 13,146 | [files/packages.md](../files/packages.md) |
+| docs/* | 554 | 96,736 | [files/docs.md](../files/docs.md) |
+| scripts, CI, deployment and container configuration | 64 | 33,175 | [files/infra.md](../files/infra.md) |
+| repository root files | 214 | 16,187 | [files/root.md](../files/root.md) |
 
 
 ## What kinds of file this repository contains
@@ -28,34 +28,34 @@ name a new file: the convention is what makes it findable.
 
 | Kind | Count |
 |---|---|
-| doc | 552 |
-| unit test | 349 |
-| page | 228 |
+| doc | 588 |
+| unit test | 371 |
+| page | 229 |
 | service | 213 |
-| module | 189 |
+| module | 197 |
+| component | 191 |
 | controller | 151 |
 | dto | 136 |
 | migration | 121 |
-| component | 121 |
 | nest module | 105 |
 | prisma schema | 65 |
-| script | 41 |
+| script | 45 |
 | event subscriber | 38 |
+| utility | 38 |
 | scheduled job | 34 |
 | json | 31 |
 | react | 29 |
 | asset | 26 |
-| utility | 25 |
 | e2e test | 24 |
 | file | 13 |
+| hook | 12 |
 | yaml | 12 |
 | registry | 12 |
 | config | 11 |
 | loading | 11 |
 | guard | 9 |
-| constants | 7 |
+| constants | 8 |
 | layout | 6 |
-| hook | 5 |
 | channel | 5 |
 | types | 5 |
 | toml | 4 |

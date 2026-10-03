@@ -3,7 +3,7 @@
 
 # Commands
 
-Every script in every `package.json` (**91**), plus the repository's own check scripts.
+Every script in every `package.json` (**95**), plus the repository's own check scripts.
 
 
 ## The one you run before a PR
@@ -144,6 +144,10 @@ pnpm index:check    # exit 1 if stale — CI and the pre-commit hook run this
 | `check:rebrand` | `node scripts/check-rebrand.mjs` |
 | `check:contrast` | `node scripts/check-contrast.mjs` |
 | `check:links` | `node scripts/check-links.mjs` |
+| `check:danger` | `node scripts/check-danger.mjs` |
+| `check:menus` | `node scripts/check-menus.mjs` |
+| `check:clipboard` | `node scripts/check-clipboard.mjs` |
+| `check:tells` | `node scripts/check-tells.mjs` |
 | `check:overflow` | `node scripts/check-overflow.mjs` |
 | `check:rules` | `node scripts/check-rules.mjs` |
 | `check:email` | `node scripts/check-email-dns.mjs` |
@@ -167,28 +171,32 @@ These are lint gates, not conveniences — `pnpm lint` runs them and CI fails on
 
 | Script | Lines | What it enforces |
 |---|---|---|
-| `scripts/build-index.mjs` | 2567 |  |
+| `scripts/build-index.mjs` | 2638 |  |
 | `scripts/build-logo-raster.mjs` | 54 |  |
-| `scripts/check-chart-imports.mjs` | 72 |  |
-| `scripts/check-contrast.mjs` | 425 |  |
+| `scripts/check-chart-imports.mjs` | 117 |  |
+| `scripts/check-clipboard.mjs` | 174 |  |
+| `scripts/check-contrast.mjs` | 650 |  |
+| `scripts/check-danger.mjs` | 220 |  |
 | `scripts/check-email-dns.mjs` | 399 |  |
 | `scripts/check-env-templates.mjs` | 139 |  |
 | `scripts/check-frontend-secrets.mjs` | 137 |  |
 | `scripts/check-hardcoded-policy.mjs` | 85 |  |
 | `scripts/check-hexagonal-purity.mjs` | 149 |  |
-| `scripts/check-links.mjs` | 409 |  |
+| `scripts/check-links.mjs` | 416 |  |
+| `scripts/check-menus.mjs` | 229 |  |
 | `scripts/check-metadata-renderer.mjs` | 134 |  |
 | `scripts/check-module-boundaries.mjs` | 652 |  |
 | `scripts/check-overflow.mjs` | 644 |  |
 | `scripts/check-permission-checks.mjs` | 127 |  |
 | `scripts/check-rebrand.mjs` | 292 |  |
 | `scripts/check-route-permissions.mjs` | 136 |  |
-| `scripts/check-rules.mjs` | 148 |  |
+| `scripts/check-rules.mjs` | 224 |  |
+| `scripts/check-tells.mjs` | 648 |  |
 | `scripts/check.mjs` | 164 |  |
 | `scripts/idx.mjs` | 486 |  |
 | `scripts/install-git-hooks.mjs` | 94 |  |
-| `scripts/lib/index-scan.mjs` | 944 | Scanners for the repository index. |
-| `scripts/lib/model-routing.mjs` | 364 | Which model and how much effort each kind of job in this repository deserves. |
+| `scripts/lib/index-scan.mjs` | 965 | Scanners for the repository index. |
+| `scripts/lib/model-routing.mjs` | 401 | Which model and how much effort each kind of job in this repository deserves. |
 | `scripts/lib/render-harness.mjs` | 337 | Boots the real stack (Postgres already running, api + web + pos as real servers) and drives it with a real browser — the shared infrastruct… |
 | `scripts/nested-borders.py` | 0 |  |
 | `scripts/sync-client.mjs` | 723 | scripts/sync-client.mjs — the Extractor. |

@@ -59,6 +59,13 @@ const REACHABLE_WITHOUT_A_LINK = [
   },
   { match: /^\/favicon\.ico$/, reason: 'requested by the browser, never linked' },
   {
+    match: /^\/admin\/design-system$/,
+    reason:
+      'the design-system reference (docs/design/foundations/01-foundations.md, "Theming"). A tool for the ' +
+      'people building the product, not a screen a user navigates to: it reads no data, is noindex, and is ' +
+      'opened by URL from the docs.',
+  },
+  {
     match: /^\/admin\/login\/sso-complete$/,
     reason:
       "the API's single sign-on callback (apps/api/src/core/auth/sso.controller.ts) redirects a completed " +

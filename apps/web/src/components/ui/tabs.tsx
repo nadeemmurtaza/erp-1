@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState, type ReactNode } from 'react';
+import { useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { cn } from '@/utils/cn';
 
 export interface TabItem {
@@ -33,6 +33,15 @@ export interface TabItem {
  * buttons rather than on the tablist, because the tablist is not focusable —
  * a roving tabindex keeps focus on the tabs themselves (WAI-ARIA APG), so a
  * handler on the container is one that only ever fires by bubbling.
+ *
+ * The underline is one element that glides to the selected tab rather than
+ * disappearing from one and appearing on another, because that is what tells
+ * the reader it is the same strip and the same object (`05-motion.md`, Nav:
+ * "a persistent indicator that moves"). It is positioned from measured
+ * offsets, written straight to custom properties on the tablist so a tab change
+ * costs no React render, and animated with transform only. Until it has
+ * measured, and for anyone without scripting, the selected tab draws its own
+ * underline, so the strip is right before the enhancement arrives.
  */
 export function Tabs({
   items,
@@ -49,6 +58,37 @@ export function Tabs({
 }) {
   const [active, setActive] = useState(initial ?? items[0]?.key);
   const id = useId();
+  const listRef = useRef<HTMLDivElement>(null);
+  const placed = useRef(false);
+
+  // Move the indicator under the selected tab. Imperative on purpose: these are
+  // layout measurements being copied onto the element that shows them, not state.
+  useLayoutEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const place = () => {
+      const tab = list.querySelector<HTMLElement>('[role="tab"][aria-selected="true"]');
+      if (!tab) return;
+      list.style.setProperty('--tab-x', `${tab.offsetLeft}px`);
+      list.style.setProperty('--tab-y', `${tab.offsetTop + tab.offsetHeight - 2}px`);
+      list.style.setProperty('--tab-w', String(tab.offsetWidth));
+      list.dataset.slide = 'ready';
+      // The first placement is a jump, not a glide from the corner.
+      if (!placed.current) {
+        placed.current = true;
+        requestAnimationFrame(() => {
+          list.dataset.animate = 'true';
+        });
+      }
+    };
+    place();
+    // A tab's width changes when a badge count changes or a font loads, and the
+    // strip's own width changes with the window; the indicator follows both.
+    const observer = new ResizeObserver(place);
+    observer.observe(list);
+    list.querySelectorAll('[role="tab"]').forEach((tab) => observer.observe(tab));
+    return () => observer.disconnect();
+  }, [active, items.length]);
 
   if (items.length === 0) return null;
 
@@ -69,9 +109,10 @@ export function Tabs({
   return (
     <div className={className}>
       <div
+        ref={listRef}
         role="tablist"
         aria-label={label}
-        className="mb-6 flex flex-wrap gap-1 border-b border-neutral-100"
+        className="relative mb-6 flex flex-wrap gap-1 border-b border-neutral-100"
       >
         {items.map((item) => {
           const selected = item.key === items[index].key;
@@ -100,6 +141,7 @@ export function Tabs({
             </button>
           );
         })}
+        <span aria-hidden="true" className="tab-indicator" />
       </div>
 
       <div

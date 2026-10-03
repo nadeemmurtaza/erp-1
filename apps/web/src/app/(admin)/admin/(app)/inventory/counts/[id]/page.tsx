@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import { adminFetch } from '@/lib/admin-client';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { ConfirmDialog, DataTable } from '@/components/ui';
 import { useAdminSession } from '@/components/admin/session';
 
@@ -113,26 +114,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button 
-              key={t.id} 
-              className={cn(
-                "w-full p-4 rounded-md shadow-md text-sm text-start cursor-pointer",
-                t.type === 'error' ? "bg-red-50 text-red-800 border border-red-200" :
-                t.type === 'success' ? "bg-green-50 text-green-800 border border-green-200" :
-                "bg-blue-50 text-blue-800 border border-blue-200"
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <div className="mb-6 flex items-start justify-between">
         <div>
@@ -241,7 +223,7 @@ export default function CountSheetPage({ params }: { params: Promise<{ id: strin
         onConfirm={handleComplete}
         title="Complete this count?"
         description="Any line left uncounted is ignored, and the count can no longer be edited or re-posted."
-        confirmLabel="Complete"
+        confirmLabel="Complete count"
         busy={completing}
       />
     </>

@@ -3,7 +3,7 @@
 
 # Tests
 
-**373** spec files, **3,612** cases. What is already pinned down — and what is not.
+**395** spec files, **4,130** cases. What is already pinned down — and what is not.
 
 
 Run: `pnpm test` (turbo, all packages) · one package: `pnpm --filter @newax/api test`
@@ -63,7 +63,7 @@ regression or an N+1.
 | `apps/api/test/tiered-cache.e2e-spec.ts` | 8 | TieredCache on a real Redis (doc 208, e2e) · a full instance — the provisioned noeviction, at its maxmemory |
 
 
-## Unit and integration (349)
+## Unit and integration (371)
 
 | Spec | Module | Cases | Covers |
 |---|---|---|---|
@@ -382,6 +382,24 @@ regression or an N+1.
 | `apps/platform/src/modules/trials/signup.service.spec.ts` | root | 7 | SignupService · requestSignup · verifyAndProvision |
 | `apps/platform/src/modules/trials/trials.service.spec.ts` | root | 8 | TrialsService · extend · convert · expireToSuspended · listExtendedMoreThanOnce |
 | `apps/web/src/components/admin/analytics/resolve-path.spec.ts` | web | 13 | resolvePath · interpolateHref |
+| `apps/web/src/components/admin/charts/chart-math.spec.ts` | web | 47 | periodChange · changeTone · foldShares · sharePct · funnelSteps · largestDropIndex · gaugeState · q… |
+| `apps/web/src/components/admin/charts/chart-motion.spec.ts` | web | 23 | chartDrawProps · cubicBezierCss · chartTooltipMotion · pointPopDelayMs · pointPopStyle · cursors an… |
+| `apps/web/src/components/design-system/access-draft.spec.ts` | web | 24 | grantEndsAt · grantRefusals · countersignCandidates · scopeDiff · saveBlocker · formatRemaining · e… |
+| `apps/web/src/components/design-system/audience.spec.ts` | web | 15 | estimateAudience · publishFriction · publishBlocker · visibilityUsesAudience |
+| `apps/web/src/components/design-system/department.spec.ts` | web | 24 | suggestCode · departmentErrors · descendantIds · unitPath · nearestOffice · closeBlockers |
+| `apps/web/src/components/design-system/dispatch-machine.spec.ts` | web | 19 | dispatchReducer: the forward path · dispatchReducer: undo · dispatchReducer: failure and its remedi… |
+| `apps/web/src/lib/calendar.spec.ts` | web | 38 | leap years and month lengths · parseIso / toIso · addDays / addMonths / addYears · weekday and orde… |
+| `apps/web/src/lib/copy.spec.ts` | web | 32 | normalizeCopyValue (CPY-3) · copyText (CPY-3, CPY-5) · nextCopy (CPY-1, CPY-2, CPY-5) · selectConte… |
+| `apps/web/src/lib/date-parse.spec.ts` | web | 35 | the formats the field must understand (MNU-2) · day order follows the deployment locale · impossibl… |
+| `apps/web/src/lib/guard.spec.ts` | web | 18 | nextHold (DNG-1) · holdProgress · isVagueLabel (DNG-2) · cooldownState (DNG-6) |
+| `apps/web/src/lib/menu-filter.spec.ts` | web | 22 | thresholds · filterOptions · typeAheadIndex |
+| `apps/web/src/lib/motion.spec.ts` | web | 40 | bezierEase · clamp01 · countUpValue · revealedCount · staggerDelayMs · noiseGlyph · scrambleFrame ·… |
+| `apps/web/src/lib/popover-position.spec.ts` | web | 13 | placePopover |
+| `apps/web/src/lib/success-state.spec.ts` | web | 9 | journeyStates · burstTravel · sparkKeyframes · BURST_TIMING |
+| `apps/web/src/lib/upload-client.spec.ts` | web | 22 | uploadFile: the request · uploadFile: a 401 (the same two chances as adminFetch) · uploadFile: fail… |
+| `apps/web/src/lib/upload-queue.spec.ts` | web | 49 | add · concurrency · speed and time left · percentOf and isProcessing · failure is per file (UPL-5)… |
+| `apps/web/src/lib/upload.spec.ts` | web | 32 | describeLimits · checkFile · checkFiles · partitionFiles · formatSpeed · formatEta |
+| `apps/web/src/utils/cn.spec.ts` | web | 4 | cn with the design system’s names |
 | `packages/desktop-runtime/src/backup-scheduler.integration.spec.ts` | packages | 2 | TarBackupArchiver (real tar package, no Postgres) |
 | `packages/desktop-runtime/src/backup-scheduler.spec.ts` | packages | 15 | LocalBackupScheduler · runOnce — the happy path · failure paths — never silently report success · s… |
 | `packages/desktop-runtime/src/hardware/escpos.spec.ts` | packages | 8 | escpos byte-command builders |
@@ -396,7 +414,7 @@ regression or an N+1.
 | `packages/pos-core/src/tender.spec.ts` | packages | 3 | computeTender |
 | `packages/shared/src/api-keys.spec.ts` | packages | 34 | NON_DELEGATABLE_PERMISSIONS · effectiveApiKeyPermissions — a key never exceeds its owner · refuseAp… |
 | `packages/shared/src/cod-risk.spec.ts` | packages | 19 | computeCodRiskScore |
-| `packages/shared/src/constants.spec.ts` | packages | 8 | formatMoneyIn · formatBytes |
+| `packages/shared/src/constants.spec.ts` | packages | 11 | formatMoneyIn · formatBytes · formatMonthShort and formatWeekdayShort |
 | `packages/shared/src/demand-forecast.spec.ts` | packages | 17 | computeDemandForecast · suggestReorderQuantity · resolveLeadTimeDays |
 | `packages/shared/src/discounts.spec.ts` | packages | 18 | isDiscountEligible · evaluateDiscounts — PERCENTAGE, ORDER scope · evaluateDiscounts — PRODUCT scop… |
 | `packages/shared/src/entities/address.spec.ts` | packages | 3 | getFormattedAddress · getAddressCityProvince |
@@ -414,6 +432,10 @@ regression or an N+1.
 | `packages/shared/src/pricing.spec.ts` | packages | 35 | computeStitchingFee · computeLineItem · lineMargin · computeOrderTotals · taxExclusive · taxInclusi… |
 | `packages/shared/src/secret-crypto.spec.ts` | packages | 5 | secret-crypto |
 | `packages/shared/src/sku.spec.ts` | packages | 7 | generateSku |
+| `packages/shared/src/theme-contrast.spec.ts` | packages | 16 | contrast maths · dark palette · dark stock hues — inverted in lightness, not in hue |
+| `packages/shared/src/theme-radii.spec.ts` | packages | 11 | concentricRadius (CRD-5) · safeguards (DNG-1, DNG-6) · feedback (CPY-2, CPY-5, SUC-3) |
+| `packages/shared/src/theme-runtime.spec.ts` | packages | 9 | resolveTheme · isThemePreference · themeInitScript |
+| `packages/shared/src/theme-space.spec.ts` | packages | 13 | spacing and size tokens · layers · elevation · motion |
 | `packages/shared/src/units.spec.ts` | packages | 7 | toBaseUnits · fromBaseUnits · formatQuantity |
 | `packages/shared/src/variant-matrix.spec.ts` | packages | 7 | generateVariantCombinations · newCombinationsOnly · removedCombinations |
 

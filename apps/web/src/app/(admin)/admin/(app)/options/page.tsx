@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import { DataTable, ConfirmDialog } from '@/components/ui';
 import type { AdminOptionTemplate } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 interface Draft {
   key: string;
@@ -179,19 +180,30 @@ export default function OptionTemplatesPage() {
             />
           </label>
 
-          <label className="block">
+          <div>
             <span className="field-label">Display</span>
-            <select
+            <Select
+              label="Display"
               value={draft.display}
-              onChange={(event) => setDraft({ ...draft, display: event.target.value as Draft['display'] })}
-              className="field-input"
-            >
-              <option value="BUTTON">Buttons (S M L XL)</option>
-              <option value="DROPDOWN">Dropdown (long lists)</option>
-              <option value="SWATCH">Swatch (colour/fabric)</option>
-              <option value="TEXT">Free text (e.g. a monogram)</option>
-            </select>
-          </label>
+              onChange={(next) => setDraft({ ...draft, display: next as Draft['display'] })}
+              options={[
+                { value: 'BUTTON', label: 'Buttons' },
+                { value: 'DROPDOWN', label: 'Dropdown' },
+                { value: 'SWATCH', label: 'Swatch' },
+                { value: 'TEXT', label: 'Free text' },
+              ]}
+            />
+            <p className="mt-1 text-sm text-neutral-900/70">
+              {
+                {
+                  BUTTON: 'One button per value, like S M L XL.',
+                  DROPDOWN: 'A dropdown, for long lists.',
+                  SWATCH: 'A swatch per value, for colour or fabric.',
+                  TEXT: 'The customer types it, for example a monogram.',
+                }[draft.display]
+              }
+            </p>
+          </div>
 
           <label className="block">
             <span className="field-label">Values</span>
@@ -218,7 +230,7 @@ export default function OptionTemplatesPage() {
         }}
         title="Delete this option template?"
         description="Products that already instantiated it keep their own copy — this only removes the reusable template."
-        confirmLabel="Delete"
+        confirmLabel="Delete option template"
       />
     </>
   );

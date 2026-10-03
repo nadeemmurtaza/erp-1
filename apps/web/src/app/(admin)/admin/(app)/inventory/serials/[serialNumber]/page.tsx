@@ -5,10 +5,11 @@ import Link from 'next/link';
 import { formatDateShort } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/utils/cn';
+import { ToastStack } from '@/components/admin/toast-stack';
 import type { Location } from '@/types/api';
 import { PageHeader, ConfirmDialog } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
+import { Select } from '@/components/ui/select';
 
 interface UnitHistory {
   serialNumber: string;
@@ -127,24 +128,7 @@ export default function SerialDetailPage({ params }: { params: Promise<{ serialN
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error' ? 'border-red-200 bg-red-50 text-red-800' : 'border-green-200 bg-green-50 text-green-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader
         title={unit.serialNumber}
@@ -231,16 +215,15 @@ export default function SerialDetailPage({ params }: { params: Promise<{ serialN
               />
             </label>
             {locations.length > 1 ? (
-              <label className="block">
+              <div>
                 <span className="field-label">Returned to</span>
-                <select className="field-input" value={returnLocationId} onChange={(e) => setReturnLocationId(e.target.value)}>
-                  {locations.map((location) => (
-                    <option key={location.id} value={location.id}>
-                      {location.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                <Select
+                  label="Returned to"
+                  value={returnLocationId}
+                  onChange={setReturnLocationId}
+                  options={locations.map((location) => ({ value: location.id, label: location.name }))}
+                />
+              </div>
             ) : null}
           </div>
           <div className="mt-3">
@@ -262,7 +245,7 @@ export default function SerialDetailPage({ params }: { params: Promise<{ serialN
         onConfirm={writeOff}
         title={`Write off ${unit.serialNumber}?`}
         description="This removes it from sellable stock. It cannot be sold or returned again from here."
-        confirmLabel="Write off"
+        confirmLabel="Write off unit"
         busy={submitting}
       />
     </>

@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import { adminFetch } from '@/lib/admin-client';
 import type { CsvImportSummary } from '@/types/api';
-import { DataTable } from '@/components/ui';
+import { formatNumber } from '@newax/shared';
+import { DataTable, SuccessState } from '@/components/ui';
+import { Dropzone } from '@/components/ui/dropzone';
+import { CSV_IMPORT_HINT, CSV_IMPORT_RULES } from '@/lib/upload-rules';
 
 interface CsvImportCardProps {
   /** e.g. "customers" — used in the heading and the template filename. */
@@ -15,6 +18,8 @@ interface CsvImportCardProps {
   keyLabel: string;
   /** Bullet notes shown next to the template download — the format's own quirks. */
   notes: Array<{ term: string; detail: string }>;
+  /** Where the imported records can be reached afterwards: the success state's one loud button (SUC-2). */
+  listHref: string;
 }
 
 /**
@@ -33,10 +38,13 @@ export function CsvImportCard({
   importUrl,
   keyLabel,
   notes,
+  listHref,
 }: CsvImportCardProps) {
   const [file, setFile] = useState<File | null>(null);
   const [summary, setSummary] = useState<CsvImportSummary | null>(null);
   const [wasPreview, setWasPreview] = useState(false);
+  // Counts finished runs, so a second import is a new result (and moves focus to it) rather than an edit of the first.
+  const [runs, setRuns] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState<'preview' | 'commit' | null>(null);
 
@@ -69,12 +77,19 @@ export function CsvImportCard({
       });
       setSummary(result);
       setWasPreview(dryRun);
+      setRuns((count) => count + 1);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'The import failed');
     } finally {
       setBusy(null);
     }
   }
+
+  const imported = summary ? summary.created + summary.updated : 0;
+  // A committed run with a result on screen: its primary is "View ...", so the form's own Import steps back (PER-9,
+  // COL-4: one loud button) and stays off, so a double click cannot write the same rows twice. Choosing another file
+  // clears the summary and brings it back.
+  const committed = imported > 0 && !wasPreview;
 
   return (
     <>
@@ -106,14 +121,16 @@ export function CsvImportCard({
             Preview validates every row and changes nothing. Import commits it.
           </p>
 
-          <input
-            type="file"
-            accept=".csv,text/csv"
-            onChange={(event) => {
-              setFile(event.target.files?.[0] ?? null);
+          {/* Choosing is not sending: the file goes with Preview or Import below, so there is no tray here (UPL-6 is for a send that starts at once). */}
+          <Dropzone
+            className="mt-3"
+            rules={CSV_IMPORT_RULES}
+            hint={CSV_IMPORT_HINT}
+            selected={file}
+            onFiles={([chosen]) => {
+              setFile(chosen ?? null);
               setSummary(null);
             }}
-            className="mt-3 block w-full text-sm file:me-3 file:rounded-md file:border-0 file:bg-accent-hover file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-accent-hover"
           />
 
           <div className="mt-4 flex gap-2">
@@ -128,8 +145,8 @@ export function CsvImportCard({
             <button
               type="button"
               onClick={() => void run(false)}
-              disabled={!file || busy !== null}
-              className="btn-primary"
+              disabled={!file || busy !== null || committed}
+              className={committed ? 'btn-secondary' : 'btn-primary'}
             >
               {busy === 'commit' ? 'Importing…' : `Import ${entityLabel}`}
             </button>
@@ -151,12 +168,33 @@ export function CsvImportCard({
             </p>
           ) : null}
 
-          <div className="flex flex-wrap gap-6 border-b border-neutral-100 px-4 py-3 text-sm">
-            <Count label="Rows" value={summary.total} />
-            <Count label="Created" value={summary.created} tone="good" />
-            <Count label="Updated" value={summary.updated} tone="good" />
-            <Count label="Skipped" value={summary.skipped} tone={summary.skipped ? 'bad' : undefined} />
-          </div>
+          {committed ? (
+            // Rows other people rely on were written (SUC-3): say how many, of what, and where to find them. The
+            // per-row results stay below, so a skipped row is still one click from its reason.
+            <div className="border-b border-neutral-100 px-4 py-8">
+              <SuccessState
+                key={runs}
+                focus
+                title={`${formatNumber(imported)} ${imported === 1 ? 'row' : 'rows'} imported as ${entityLabel}`}
+                detail={`${formatNumber(summary.created)} created · ${formatNumber(summary.updated)} updated · ${formatNumber(summary.skipped)} skipped, out of ${formatNumber(summary.total)} rows`}
+                primary={{ label: `View ${entityLabel}`, href: listHref }}
+                secondary={{
+                  label: 'Import another file',
+                  onClick: () => {
+                    setFile(null);
+                    setSummary(null);
+                  },
+                }}
+              />
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-6 border-b border-neutral-100 px-4 py-3 text-sm">
+              <Count label="Rows" value={summary.total} />
+              <Count label="Created" value={summary.created} tone="good" />
+              <Count label="Updated" value={summary.updated} tone="good" />
+              <Count label="Skipped" value={summary.skipped} tone={summary.skipped ? 'bad' : undefined} />
+            </div>
+          )}
 
           <DataTable
             rows={summary.results}

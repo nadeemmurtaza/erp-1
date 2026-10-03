@@ -150,9 +150,9 @@ export default async function HomePage({
               <li className="shrink-0 snap-start">
                 <Link
                   href={ROUTES.storefront.shop}
-                  className="inline-flex h-11 items-center gap-2 rounded bg-neutral-900 ps-3 pe-5 text-sm font-medium text-white transition-colors duration-200 hover:bg-neutral-700"
+                  className="inline-flex h-11 items-center gap-2 rounded bg-inverse ps-3 pe-5 text-sm font-medium text-on-inverse transition-colors duration-normal hover:bg-neutral-700"
                 >
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/15" aria-hidden="true">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-on-inverse/15" aria-hidden="true">
                     <AllCategoriesIcon />
                   </span>
                   {t('viewAll')}
@@ -163,7 +163,7 @@ export default async function HomePage({
                 <li key={category.id} className="shrink-0 snap-start">
                   <Link
                     href={`/shop?category=${category.slug}`}
-                    className="inline-flex h-11 items-center gap-2 rounded border border-neutral-100 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:border-neutral-900 hover:text-neutral-900"
+                    className="inline-flex h-11 items-center gap-2 rounded border border-neutral-100 bg-white ps-2 pe-5 text-sm font-medium text-neutral-700 transition-colors duration-normal hover:border-neutral-900 hover:text-neutral-900"
                   >
                     <span className="relative flex h-7 w-7 shrink-0 overflow-hidden rounded-full bg-neutral-100">
                       {category.imageUrl ? (
@@ -225,7 +225,7 @@ export default async function HomePage({
             {steps.map((step, index) => (
               <AnimatedSection direction="up" delay={index * 0.15} key={step.title}>
                 <li className="flex gap-4">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-sm font-semibold text-white">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-inverse text-sm font-semibold text-on-inverse">
                     {index + 1}
                   </span>
                   <div>

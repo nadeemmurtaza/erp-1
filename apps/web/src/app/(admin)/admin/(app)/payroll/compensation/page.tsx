@@ -4,9 +4,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { formatMoney, formatDate, toMajor, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/utils/cn';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { DataTable, Dialog, EmptyState, PageHeader } from '@/components/ui';
 import type { CompensationBasis, CompensationRate, EmployeeCompensation } from '@/types/api';
+import { DateField } from '@/components/ui/date-field';
 
 interface CurrentRateRow extends CompensationRate {
   user: { id: string; firstName: string | null; lastName: string | null; email: string | null };
@@ -89,28 +90,7 @@ export default function PayrollCompensationPage() {
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error'
-                  ? 'border-red-200 bg-red-50 text-red-800'
-                  : t.type === 'success'
-                    ? 'border-green-200 bg-green-50 text-green-800'
-                    : 'border-blue-200 bg-blue-50 text-blue-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader title="Compensation" description="Every employee's current wage rate." />
 
@@ -196,16 +176,12 @@ export default function PayrollCompensationPage() {
                     required
                   />
                 </label>
-                <label className="block col-span-2">
-                  <span className="field-label">Effective from</span>
-                  <input
-                    type="date"
-                    value={effectiveFrom}
-                    onChange={(e) => setEffectiveFrom(e.target.value)}
-                    className="field-input"
-                    required
-                  />
-                </label>
+                <div className="col-span-2">
+                  <label htmlFor="comp-effective" className="field-label">
+                    Effective from
+                  </label>
+                  <DateField id="comp-effective" value={effectiveFrom} onChange={setEffectiveFrom} required />
+                </div>
               </div>
               <button type="submit" disabled={saving} className="btn-primary">
                 {saving ? 'Saving…' : 'Set rate'}

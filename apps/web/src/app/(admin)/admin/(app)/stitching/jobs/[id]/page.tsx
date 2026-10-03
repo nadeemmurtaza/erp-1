@@ -16,6 +16,8 @@ import {
 import { StageBadge } from '@/components/admin/stage-badge';
 import { ROUTES } from '@/constants/routes';
 import { DataTable, Loading } from '@/components/ui';
+import { Dropzone } from '@/components/ui/dropzone';
+import { IMAGE_UPLOAD_RULES } from '@/lib/upload-rules';
 
 /**
  * One job: the tailor's worksheet.
@@ -228,15 +230,15 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
             />
           </label>
 
-          <label className="mt-3 block text-sm">
-            <span className="mb-1 block text-neutral-900/60">Photograph (optional)</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(event) => setPhoto(event.target.files?.[0] ?? null)}
-              className="block w-full max-w-full text-sm text-neutral-900/70"
-            />
-          </label>
+          {/* Choosing is not sending: the photograph travels with the stage move below, as one request, so there is no tray here. */}
+          <Dropzone
+            compact
+            className="mt-3"
+            rules={IMAGE_UPLOAD_RULES}
+            label="Photograph (optional): drop it here, click to choose, or paste"
+            selected={photo}
+            onFiles={([chosen]) => setPhoto(chosen ?? null)}
+          />
 
           <div className="mt-4 flex flex-wrap gap-2">
             {forward ? (

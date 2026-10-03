@@ -6,6 +6,7 @@ import { PageHeader, Section, DataTable, EmptyState, Dialog, ConfirmDialog, Butt
 import { StatusBadge } from '@/components/common/status-badge';
 import { useAdminSession } from '@/components/admin/session';
 import { adminFetch } from '@/lib/admin-client';
+import { DateField } from '@/components/ui/date-field';
 
 interface FiscalYear {
   id: string;
@@ -388,25 +389,13 @@ function NewFiscalYearDialog({
             <label htmlFor="fy-starts" className="field-label">
               Starts on
             </label>
-            <input
-              id="fy-starts"
-              type="date"
-              className="field-input mt-1 w-full"
-              value={startsOn}
-              onChange={(e) => setStartsOn(e.target.value)}
-            />
+            <DateField id="fy-starts" className="mt-1" value={startsOn} onChange={setStartsOn} />
           </div>
           <div className="flex-1">
             <label htmlFor="fy-ends" className="field-label">
               Ends on
             </label>
-            <input
-              id="fy-ends"
-              type="date"
-              className="field-input mt-1 w-full"
-              value={endsOn}
-              onChange={(e) => setEndsOn(e.target.value)}
-            />
+            <DateField id="fy-ends" className="mt-1" value={endsOn} onChange={setEndsOn} />
           </div>
         </div>
       </div>
@@ -517,25 +506,13 @@ function NewFiscalPeriodDialog({
             <label htmlFor="fp-starts" className="field-label">
               Starts on
             </label>
-            <input
-              id="fp-starts"
-              type="date"
-              className="field-input mt-1 w-full"
-              value={startsOn}
-              onChange={(e) => setStartsOn(e.target.value)}
-            />
+            <DateField id="fp-starts" className="mt-1" value={startsOn} onChange={setStartsOn} />
           </div>
           <div className="flex-1">
             <label htmlFor="fp-ends" className="field-label">
               Ends on
             </label>
-            <input
-              id="fp-ends"
-              type="date"
-              className="field-input mt-1 w-full"
-              value={endsOn}
-              onChange={(e) => setEndsOn(e.target.value)}
-            />
+            <DateField id="fp-ends" className="mt-1" value={endsOn} onChange={setEndsOn} />
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-# ADR-083 — Partner fact exchange: send data, and let the receiver build its own documents
+# ADR-087 — Partner fact exchange: send data, and let the receiver build its own documents
 
 [← Decision log](../DECISIONS.md)
 

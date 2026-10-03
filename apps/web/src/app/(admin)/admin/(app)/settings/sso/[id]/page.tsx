@@ -307,7 +307,7 @@ export default function SsoConnectionPage({ params }: { params: Promise<{ id: st
       ) : null}
       {saved ? (
         <p role="status" className="notice notice-success mb-6">
-          Saved.
+          Single sign-on connection saved.
         </p>
       ) : null}
 
@@ -562,7 +562,7 @@ export default function SsoConnectionPage({ params }: { params: Promise<{ id: st
             onConfirm={suspend}
             title={`Suspend ${connection.label}?`}
             description="New sign-ins through it stop at once. Accounts it created or linked are not changed, and anyone already signed in stays signed in until their session ends. You can resume it later."
-            confirmLabel="Suspend"
+            confirmLabel="Suspend connection"
             variant="danger"
             busy={statusBusy}
           />
@@ -573,7 +573,7 @@ export default function SsoConnectionPage({ params }: { params: Promise<{ id: st
             onConfirm={unlink}
             title={unlinking ? `Unlink ${accountName(unlinking)}?` : 'Unlink this account?'}
             description="They are signed out everywhere, and the link to their sign-in identity is removed. If they sign in through single sign-on again they are linked again — to keep someone out, deactivate their account in Team & Access or suspend this connection."
-            confirmLabel="Unlink"
+            confirmLabel="Unlink account"
             variant="danger"
             busy={unlinkBusy}
           />

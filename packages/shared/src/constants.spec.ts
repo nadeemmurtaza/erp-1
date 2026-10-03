@@ -1,4 +1,4 @@
-import { formatBytes, formatMoneyIn } from './constants';
+import { formatBytes, formatMoneyIn, formatMonthShort, formatWeekdayShort } from './constants';
 
 describe('formatMoneyIn', () => {
   it('formats a minor-unit amount in an explicitly given currency, independent of BRAND.currency', () => {
@@ -37,5 +37,24 @@ describe('formatBytes', () => {
   it('never throws on a malformed value — returns the em dash placeholder instead', () => {
     expect(formatBytes('not-a-number')).toBe('—');
     expect(formatBytes(-5)).toBe('—');
+  });
+});
+
+describe('formatMonthShort and formatWeekdayShort', () => {
+  // 2026-03-02 is a Monday. Noon UTC is the same calendar day in the shop's zone
+  // (UTC+5), so the date cannot slide across midnight.
+  const monday = '2026-03-02T12:00:00Z';
+
+  it('names the month alone', () => {
+    expect(formatMonthShort(monday)).toBe('Mar');
+  });
+
+  it('names the weekday alone', () => {
+    expect(formatWeekdayShort(monday)).toBe('Mon');
+  });
+
+  it('reads the shop-zone calendar day, not the UTC one', () => {
+    // 22:00 UTC on the 31st is already 03:00 on 1 April in Karachi.
+    expect(formatMonthShort('2026-03-31T22:00:00Z')).toBe('Apr');
   });
 });

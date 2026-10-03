@@ -7,6 +7,7 @@ import { PERMISSION_CATALOG, formatDate } from '@newax/shared';
 import { ROUTES } from '@/constants/routes';
 import { PageHeader, EmptyState, Loading, Dialog, ConfirmDialog } from '@/components/ui';
 import { useAdminSession } from '@/components/admin/session';
+import { DateField } from '@/components/ui/date-field';
 
 interface PostingAccess {
   userId: string;
@@ -274,10 +275,12 @@ export default function OrgUnitAccessPage({ params }: { params: Promise<{ unitId
             </label>
           ) : null}
 
-          <label className="block">
-            <span className="field-label">Expires on</span>
-            <input className="field-input w-full" type="date" value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} />
-          </label>
+          <div>
+            <label htmlFor="grant-expires" className="field-label">
+              Expires on
+            </label>
+            <DateField id="grant-expires" value={expiresAt} onChange={setExpiresAt} />
+          </div>
 
           <label className="block">
             <span className="field-label">Reason</span>
@@ -308,7 +311,7 @@ export default function OrgUnitAccessPage({ params }: { params: Promise<{ unitId
         onConfirm={submitRevoke}
         title="Revoke this grant?"
         description="Ends the recipient's explicit access immediately. Anything they already exported stays as it is — this only stops further access."
-        confirmLabel="Revoke"
+        confirmLabel="Revoke grant"
         variant="danger"
         busy={busy}
       />

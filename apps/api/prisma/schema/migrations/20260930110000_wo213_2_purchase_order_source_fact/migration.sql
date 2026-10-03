@@ -1,4 +1,4 @@
--- integrations-connectivity/213-partner-fact-exchange.md, WO-213.2 (ADR-083).
+-- integrations-connectivity/213-partner-fact-exchange.md, WO-213.2 (ADR-087).
 -- Additive only: one nullable column and its unique index on PurchaseOrder.
 -- No column is dropped, no row is deleted or rewritten; every existing order
 -- keeps NULL, which means "raised by a person, or from a requisition".

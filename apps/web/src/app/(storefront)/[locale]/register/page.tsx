@@ -2,6 +2,8 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthPage } from '@/components/storefront/auth-page';
+import { Button, Field, FormStack } from '@/components/ui';
+import { useDoneBeat } from '@/hooks/use-done-beat';
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
@@ -22,6 +24,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const { done, finish } = useDoneBeat();
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -37,6 +40,7 @@ export default function RegisterPage() {
         password,
       });
       setUser(user);
+      await finish();
       const next = searchParams.get('next') ?? '/';
       router.push(next);
       router.refresh();
@@ -69,89 +73,89 @@ export default function RegisterPage() {
       }
     >
 
-          <form onSubmit={onSubmit} className="mt-8 space-y-4">
+          <FormStack
+            onSubmit={onSubmit}
+            className="mt-8"
+            actions={
+              <Button type="submit" loading={busy} loadingLabel="Creating account…" done={done} doneLabel="Account created" className="w-full">
+                Register
+              </Button>
+            }
+          >
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="field-label" htmlFor="firstName">
-                  First Name
-                </label>
+              <Field label="First Name">
+                {(control) => (
+                  <input
+                    {...control}
+                    className="field-input field-xl"
+                    autoComplete="given-name"
+                    value={firstName}
+                    onChange={(event) => setFirstName(event.target.value)}
+                  />
+                )}
+              </Field>
+              <Field label="Last Name">
+                {(control) => (
+                  <input
+                    {...control}
+                    className="field-input field-xl"
+                    autoComplete="family-name"
+                    value={lastName}
+                    onChange={(event) => setLastName(event.target.value)}
+                  />
+                )}
+              </Field>
+            </div>
+
+            <Field label="Email">
+              {(control) => (
                 <input
-                  id="firstName"
-                  className="field-input"
-                  autoComplete="given-name"
-                  value={firstName}
-                  onChange={(event) => setFirstName(event.target.value)}
+                  {...control}
+                  type="email"
+                  className="field-input field-xl"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
                 />
-              </div>
-              <div>
-                <label className="field-label" htmlFor="lastName">
-                  Last Name
-                </label>
+              )}
+            </Field>
+
+            <Field label="Phone (Optional)">
+              {(control) => (
                 <input
-                  id="lastName"
-                  className="field-input"
-                  autoComplete="family-name"
-                  value={lastName}
-                  onChange={(event) => setLastName(event.target.value)}
+                  {...control}
+                  type="tel"
+                  className="field-input field-xl"
+                  autoComplete="tel"
+                  value={phone}
+                  onChange={(event) => setPhone(event.target.value)}
                 />
-              </div>
-            </div>
+              )}
+            </Field>
 
-            <div>
-              <label className="field-label" htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="field-input"
-                autoComplete="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="field-label" htmlFor="phone">
-                Phone (Optional)
-              </label>
-              <input
-                id="phone"
-                type="tel"
-                className="field-input"
-                autoComplete="tel"
-                value={phone}
-                onChange={(event) => setPhone(event.target.value)}
-              />
-            </div>
-
-            <div>
-              <label className="field-label" htmlFor="password">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                className="field-input"
-                autoComplete="new-password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                required
-                minLength={8}
-              />
-            </div>
+            <Field label="Password" hint="At least 8 characters.">
+              {(control) => (
+                <input
+                  {...control}
+                  type="password"
+                  className="field-input field-xl"
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                  minLength={8}
+                />
+              )}
+            </Field>
 
             {error ? (
               <p role="alert" className="notice notice-error">
                 {error}
               </p>
             ) : null}
-
-            <button type="submit" disabled={busy} className="btn-primary w-full">
-              {busy ? 'Creating account…' : 'Register'}
-            </button>
-          </form>
+          </FormStack>
 
     </AuthPage>
   );

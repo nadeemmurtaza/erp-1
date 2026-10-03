@@ -38,7 +38,7 @@ Indexes: `@@index([createdAt])`
 
 ### `PartnerFactInbox`  <sub>`apps/api/prisma/schema/trading-partners.prisma:116`</sub>
 
-> One fact a connected partner sent us (WO-213.1, 213-partner-fact-exchange.md and ADR-083).
+> One fact a connected partner sent us (WO-213.1, 213-partner-fact-exchange.md and ADR-087).
 
 | Field | Type | Flags | Notes |
 |---|---|---|---|

@@ -5,10 +5,11 @@ import { formatDate, formatMoney, toMinor } from '@newax/shared';
 import { adminFetch } from '@/lib/admin-client';
 import { useAdminSession } from '@/components/admin/session';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/utils/cn';
+import { ToastStack } from '@/components/admin/toast-stack';
 import { DataTable, Dialog, Loading, MetricStrip, PageHeader } from '@/components/ui';
 import { StatusBadge } from '@/components/common/status-badge';
 import type { PayRunAdjustmentReason, PayRunWithLines } from '@/types/api';
+import { Select } from '@/components/ui/select';
 
 const ADJUSTMENT_REASONS: PayRunAdjustmentReason[] = ['OVERPAYMENT', 'UNDERPAYMENT', 'CORRECTION'];
 
@@ -128,24 +129,7 @@ export default function PayrollRunDetailPage({ params }: { params: Promise<{ id:
 
   return (
     <>
-      {toasts.length > 0 && (
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          {toasts.map((t) => (
-            <button
-              key={t.id}
-              className={cn(
-                'w-full cursor-pointer rounded-md border p-4 text-start text-sm shadow-md',
-                t.type === 'error' ? 'border-red-200 bg-red-50 text-red-800' : 'border-green-200 bg-green-50 text-green-800',
-              )}
-              type="button"
-              onClick={() => removeToast(t.id)}
-              aria-label={`Dismiss: ${t.message}`}
-            >
-              {t.message}
-            </button>
-          ))}
-        </div>
-      )}
+      <ToastStack toasts={toasts} onDismiss={removeToast} />
 
       <PageHeader
         title={run.number}
@@ -224,17 +208,19 @@ export default function PayrollRunDetailPage({ params }: { params: Promise<{ id:
 
       <Dialog open={adjustOpen} onClose={() => setAdjustOpen(false)} title="Post an adjustment">
         <form onSubmit={postAdjustment} className="space-y-3">
-          <label className="block">
-            <span className="field-label">Employee</span>
-            <select value={adjustUserId} onChange={(e) => setAdjustUserId(e.target.value)} className="field-input" required>
-              <option value="">Select…</option>
-              {run.lines.map((line) => (
-                <option key={line.userId} value={line.userId}>
-                  {displayName(line.user)}
-                </option>
-              ))}
-            </select>
-          </label>
+          <div>
+            <label htmlFor="adjust-employee" className="field-label">
+              Employee
+            </label>
+            <Select
+              id="adjust-employee"
+              label="Employee"
+              required
+              value={adjustUserId}
+              onChange={setAdjustUserId}
+              options={run.lines.map((line) => ({ value: line.userId, label: displayName(line.user) }))}
+            />
+          </div>
           <label className="block">
             <span className="field-label">Reason</span>
             <select value={adjustReason} onChange={(e) => setAdjustReason(e.target.value as PayRunAdjustmentReason)} className="field-input">

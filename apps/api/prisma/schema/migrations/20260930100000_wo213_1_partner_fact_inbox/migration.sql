@@ -1,4 +1,4 @@
--- integrations-connectivity/213-partner-fact-exchange.md, WO-213.1 (ADR-083).
+-- integrations-connectivity/213-partner-fact-exchange.md, WO-213.1 (ADR-087).
 -- Additive only: one enum, one table, two nullable columns on TradingPartner.
 -- No column is dropped, no row is deleted, no existing row is rewritten.
 --

@@ -103,10 +103,10 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="size-chart-title">
+        <div className="fixed inset-0 z-modal flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="size-chart-title">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+            className="fixed inset-0 bg-scrim/40 backdrop-blur-sm transition-opacity"
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
@@ -115,7 +115,7 @@ export function SizeChartModal({ productName, garments, locale }: SizeChartModal
           <div
             ref={modalRef}
             tabIndex={-1}
-            className="card relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden shadow-xl outline-none"
+            className="card relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden bg-overlay shadow-modal outline-none"
           >
             {/* Header */}
             <div className="flex items-start justify-between border-b border-neutral-100 p-4 sm:p-6">

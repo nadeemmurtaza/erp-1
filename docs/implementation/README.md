@@ -73,6 +73,19 @@ filename for these four, never "doc 18" or "doc 19" alone.
 | [`38-resilience-engineering.md`](./resilience-scalability/38-resilience-engineering.md) | **Built, WO-38.1–38.6.** The degradation matrix's rows are now tested claims (`CircuitBreakerService`, `core/resilience/`), an SLO/error-budget dashboard on checkout/POS/replication-sync (`SloRecorderService`, `core/slo/`, `/admin/platform-resilience`), a domain-event contract test suite (`core/events/event-contracts.spec.ts`), and DR numbers in `DEPLOYMENT.md` §9 — RPO real (24h), RTO honestly unmeasured pending the first quarterly game-day. `OutboundConnector` (doc 36) has nothing to wrap yet; `StorageDriver`'s "queue for retry" claim is a found gap, named rather than built here |
 | [`39-shared-cross-tenant-hosting-tier.md`](./commercial-licensing-agency/39-shared-cross-tenant-hosting-tier.md) | Exercises the trigger `ENTERPRISE-SCALE.md`'s Br1 already named and deferred: a hosting control plane sharing infrastructure across tenants while every tenant keeps its own isolated database — see `DECISIONS.md`'s entry on why shared-schema multi-tenancy was rejected |
 
+**Numbers 213–219** — the **industry-specific** hospitality sector pack (hotels, cafés, restaurants only; not core): a QR/NFC platform for hotels,
+cafés and restaurants (no-install guest menu, table/room-bound tags, staff
+board, floor, analytics, and the roadmap to payments, WhatsApp, loyalty, POS,
+KDS, subscriptions and multi-branch). Start at
+[`hospitality-qr-nfc/README.md`](./hospitality-qr-nfc/README.md).
+
+**Numbers 220–230** — the **industry-specific** housing-society sector pack (real estate / society management only; not core): plot and file bookings, members, installments and billing, receipts, transfers and the booking lifecycle, accounting and reports, complaints, visitors, roles, and Excel import of an existing society's data. Start at
+[`housing-society/README.md`](./housing-society/README.md).
+
+**Number 231** — [`231-work-attribution-and-sealed-access.md`](./access-control-identity/231-work-attribution-and-sealed-access.md): credit that comes from evidence (a manager cannot claim a report's work) and sealed vaults the org chart and admins cannot read, with passwordless scoped review access. Core, cross-sector; design only.
+
+**Numbers 232–235** — the **launchpad**: an Odoo-style front door that groups modules into first-party apps tagged core/industry and B2B/B2C/C2C, plus the first new apps (Mail, Auction, Vault & Work Credit). Distinct from the third-party directory apps of docs 184–195. Start at [`launchpad-apps/README.md`](./launchpad-apps/README.md).
+
 **Numbers 40–49** fill in the granular micro-features a high-level feature
 list generalizes over — each checked against what already exists first:
 
@@ -536,7 +549,7 @@ with no automated check covering the gap:
 | File | What it is |
 |---|---|
 | [`212-role-scope-enforcement-gap.md`](./access-control-identity/212-role-scope-enforcement-gap.md) | **Investigated, nothing built.** `Role`/`UserRoleAssignment` carry no company or department scope by design — that's `scope.guard.ts`'s job. Confirmed by grep: `assertCanManageAtScope`/`scopeFilterFor` have exactly one production caller (`organization.service.ts`); `orgUnitScopeFilterFor` has zero, only its own spec. `check-route-permissions.mjs` verifies a permission decorator exists, not that a handler also scopes its query — a route can pass lint while being exposed to exactly the cross-company/cross-department access the owner asked about. Proposes a new `check-route-scoping.mjs` static check, same enforcement class as `check-module-boundaries.mjs`; no code built in this pass. ADR-081 |
-| [`213-partner-fact-exchange.md`](./integrations-connectivity/213-partner-fact-exchange.md) | **WO-213.1 (inbox and inbound endpoint) and WO-213.2 (buyer applier) built; the rest planned.** Partners exchange compact data facts (`sale.dispatched`, `receipt.confirmed`), not documents: the seller's price becomes the buyer's cost, stock moves on both sides from one entry, and each side generates its own PO, receipt and bill with its own numbering. Verified gaps it closes: the WO-18.2 inbound endpoint was never built, outbound push has no retry, and a partner sale posts nothing to the ledger. Exact parameters and all 27 scope lenses inside. ADR-083 |
+| [`213-partner-fact-exchange.md`](./integrations-connectivity/213-partner-fact-exchange.md) | **WO-213.1 (inbox and inbound endpoint) and WO-213.2 (buyer applier) built; the rest planned.** Partners exchange compact data facts (`sale.dispatched`, `receipt.confirmed`), not documents: the seller's price becomes the buyer's cost, stock moves on both sides from one entry, and each side generates its own PO, receipt and bill with its own numbering. Verified gaps it closes: the WO-18.2 inbound endpoint was never built, outbound push has no retry, and a partner sale posts nothing to the ledger. Exact parameters and all 27 scope lenses inside. ADR-087 |
 
 ## Dependency order
 

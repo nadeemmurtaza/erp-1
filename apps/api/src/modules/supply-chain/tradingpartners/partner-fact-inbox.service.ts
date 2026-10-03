@@ -40,7 +40,7 @@ function isUniqueViolation(error: unknown): boolean {
 
 /**
  * "Store first, apply second" (WO-213.1, 213-partner-fact-exchange.md,
- * ADR-083). Receiving a partner's fact writes one `PartnerFactInbox` row and
+ * ADR-087). Receiving a partner's fact writes one `PartnerFactInbox` row and
  * queues `PartnerFactReceived` in the SAME transaction, then answers. That
  * makes acknowledging a fact mean "stored", never "applied": a slow, broken or
  * absent `purchasing` module cannot make a partner's delivery fail, and the

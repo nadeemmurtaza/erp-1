@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2688,
-    "lines": 432246,
+    "files": 2689,
+    "lines": 432490,
     "routes": 880,
     "controllers": 162,
     "models": 314,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 463,
-      "lines": 96080,
-      "bytes": 5877810,
+      "files": 464,
+      "lines": 96324,
+      "bytes": 5891550,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -97575,6 +97575,15 @@
       "kind": "doc",
       "lines": 1854,
       "bytes": 92888,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/admin-platform/220-admin-ui-gemini-ideas-design-spec.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 244,
+      "bytes": 13740,
       "doc": "",
       "symbols": []
     },

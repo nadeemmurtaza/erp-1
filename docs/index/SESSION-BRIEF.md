@@ -3,7 +3,7 @@
 
 # Repository index — orientation
 
-This repository is **2,688 files / 432,246 lines** across four apps and
+This repository is **2,689 files / 432,490 lines** across four apps and
 three packages. A generated index of it lives in `docs/index/` and is kept in
 step with every commit by `.githooks/pre-commit`.
 

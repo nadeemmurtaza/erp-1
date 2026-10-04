@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2793,
-    "lines": 430350,
+    "files": 2794,
+    "lines": 430531,
     "routes": 881,
     "controllers": 162,
     "models": 315,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 555,
-      "lines": 97028,
-      "bytes": 5964888,
+      "files": 556,
+      "lines": 97209,
+      "bytes": 5978579,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -98105,8 +98105,17 @@
       "path": "docs/implementation/RETAIL-ERP.md",
       "area": "docs",
       "kind": "doc",
-      "lines": 1099,
-      "bytes": 64906,
+      "lines": 1108,
+      "bytes": 65463,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/RETAIL-VERTICAL-COVERAGE-MATRIX.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 172,
+      "bytes": 13134,
       "doc": "",
       "symbols": []
     },

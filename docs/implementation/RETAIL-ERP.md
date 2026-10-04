@@ -10,6 +10,15 @@ refer back to.
 
 Where this document and `00-HOUSE-RULES.md` disagree, the house rules win.
 
+**Status note (added later):** Part 7's roadmap below reads as mostly
+unbuilt. As of this note, most of Tranches 1–7 are already shipped — see
+[`RETAIL-VERTICAL-COVERAGE-MATRIX.md`](./RETAIL-VERTICAL-COVERAGE-MATRIX.md)
+for the current built/partial/absent status of every lettered ruling (R1–R26)
+against the live schema and routes. Treat Part 7's tranche ordering as
+historical intent, not current status; the coverage matrix is point-in-time
+too and should itself be re-checked against `docs/index/` before being relied
+on for a release decision.
+
 ---
 
 ## Context

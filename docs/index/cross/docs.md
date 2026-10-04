@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**590** markdown documents. These explain **why**; this index only says **where**.
+**591** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -4667,18 +4667,26 @@ _no second-level headings_
 - Acceptance  <sub>:59</sub>
 - Out of scope  <sub>:65</sub>
 
-### `docs/implementation/RETAIL-ERP.md`  <sub>1,099 lines</sub>
+### `docs/implementation/RETAIL-ERP.md`  <sub>1,108 lines</sub>
 
-- Context  <sub>:15</sub>
-- Part 1 — The topology  <sub>:78</sub>
-- Part 2 — The rulings  <sub>:135</sub>
-- Part 3 — Accounting (the pillar)  <sub>:378</sub>
-- Part 4 — Resilience, supply chain, liquidity and predictive analytics  <sub>:575</sub>
-- Part 5 — The modules  <sub>:755</sub>
-- Part 6 — Replication and the apps  <sub>:801</sub>
-- Part 7 — Roadmap  <sub>:865</sub>
-- Part 8 — The briefs this spawns  <sub>:946</sub>
-- Acceptance  <sub>:1006</sub>
+- Context  <sub>:24</sub>
+- Part 1 — The topology  <sub>:87</sub>
+- Part 2 — The rulings  <sub>:144</sub>
+- Part 3 — Accounting (the pillar)  <sub>:387</sub>
+- Part 4 — Resilience, supply chain, liquidity and predictive analytics  <sub>:584</sub>
+- Part 5 — The modules  <sub>:764</sub>
+- Part 6 — Replication and the apps  <sub>:810</sub>
+- Part 7 — Roadmap  <sub>:874</sub>
+- Part 8 — The briefs this spawns  <sub>:955</sub>
+- Acceptance  <sub>:1015</sub>
+
+### `docs/implementation/RETAIL-VERTICAL-COVERAGE-MATRIX.md`  <sub>172 lines</sub>
+
+- Method  <sub>:44</sub>
+- Scorecard — RETAIL-ERP.md's own architecture, as built today  <sub>:55</sub>
+- Sector-pack breadth — the one place coverage is not high  <sub>:103</sub>
+- What's still really missing, prioritized by "blocks third-party independence"  <sub>:121</sub>
+- Bottom line  <sub>:151</sub>
 
 ### `docs/implementation/SDK-CONTRACT.md`  <sub>226 lines</sub>
 

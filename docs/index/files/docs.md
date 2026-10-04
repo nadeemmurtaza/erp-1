@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 555 tracked files in `docs/*`, by directory.
+All 556 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -558,7 +558,7 @@ All 555 tracked files in `docs/*`, by directory.
 | `06g-generate-workforce-shifts-jml.md` | doc | 42 |  |
 | `06h-harden-workforce-shifts-jml.md` | doc | 35 |  |
 
-### `docs/implementation` (11)
+### `docs/implementation` (12)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -570,7 +570,8 @@ All 555 tracked files in `docs/*`, by directory.
 | `MULTI-SECTOR.md` | doc | 854 |  |
 | `NEWAX AI Engineering Master Protocol` | file | — |  |
 | `README.md` | doc | 701 |  |
-| `RETAIL-ERP.md` | doc | 1099 |  |
+| `RETAIL-ERP.md` | doc | 1108 |  |
+| `RETAIL-VERTICAL-COVERAGE-MATRIX.md` | doc | 172 |  |
 | `SDK-CONTRACT.md` | doc | 226 |  |
 | `WO-22-lens-workflow-results.md` | doc | 539 |  |
 

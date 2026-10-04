@@ -498,6 +498,16 @@
   // ---------- Zoom ----------
   function glassFit() { return Math.min(1, (window.innerWidth - 40) / 1400); }
 
+  function fitGlassText() {
+    var glass = $('zoom-glass'), text = $('zoom-clip-text');
+    var w = glass.clientWidth, h = glass.clientHeight;
+    if (!w || !h) return;
+    text.setAttribute('x', round3(w / 2));
+    text.setAttribute('y', round3(h * 0.64));
+    text.setAttribute('font-size', round3(h * 0.72));
+    text.setAttribute('textLength', round3(w * 0.94));
+  }
+
   function updateZoom() {
     var sec = $('zoom');
     var pin = sec.querySelector('.zoom-pin');
@@ -609,14 +619,14 @@
     $('need-picker').setAttribute('aria-expanded', 'false');
   }
 
-  function openPopover(popId, pickerId) {
+  function openPopover(popId, pickerId, neededSpace) {
     var pop = $(popId), picker = $(pickerId);
     var wasOpen = !pop.hidden;
     closePopovers();
     if (wasOpen) return;
     var r = picker.getBoundingClientRect();
     var below = window.innerHeight - r.bottom, above = r.top;
-    pop.classList.toggle('up', below < 420 && above > below);
+    pop.classList.toggle('up', below < neededSpace && above > below);
     pop.hidden = false;
     picker.setAttribute('aria-expanded', 'true');
   }
@@ -627,8 +637,8 @@
     renderCalendar();
     renderDateLabel();
 
-    $('date-picker').addEventListener('click', function () { openPopover('calendar-pop', 'date-picker'); });
-    $('need-picker').addEventListener('click', function () { openPopover('need-pop', 'need-picker'); });
+    $('date-picker').addEventListener('click', function () { openPopover('calendar-pop', 'date-picker', 450); });
+    $('need-picker').addEventListener('click', function () { openPopover('need-pop', 'need-picker', 60 + NEED_OPTS.length * 46); });
     $('cal-prev').addEventListener('click', function () { calCM--; if (calCM < 0) { calCM = 11; calCY--; } renderCalendar(); });
     $('cal-next').addEventListener('click', function () { calCM++; if (calCM > 11) { calCM = 0; calCY++; } renderCalendar(); });
     $('cal-today').addEventListener('click', function () {
@@ -784,7 +794,9 @@
     });
     $('film-play').setAttribute('data-cursor', 'Play');
 
+    fitGlassText();
     window.addEventListener('resize', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', fitGlassText, { passive: true });
     window.addEventListener('scroll', scheduleUpdate, { passive: true });
 
     if (state.reduced) {

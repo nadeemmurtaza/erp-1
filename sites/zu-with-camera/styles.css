@@ -390,6 +390,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .book-submit-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
 .book-alt { font-size: 14px; }
 .book-sent { padding: 44px; border-radius: 6px; background: var(--green); color: var(--paper); display: flex; flex-direction: column; gap: 12px; }
+.book-sent[hidden] { display: none; }
 .book-sent .disp { font-size: 64px; }
 
 /* ---------- Footer ---------- */

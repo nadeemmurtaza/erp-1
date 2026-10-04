@@ -477,8 +477,8 @@ All 226 tracked files in `repository root files`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `index.html` | html | — |  |
-| `script.js` | script | 803 | ---------- Config / placeholders ---------- |
-| `styles.css` | stylesheet | 508 |  |
+| `script.js` | script | 815 | ---------- Config / placeholders ---------- |
+| `styles.css` | stylesheet | 509 |  |
 | `wrangler.jsonc` | jsonc | — |  |
 
 ### `sites/zu-with-camera/images` (8)

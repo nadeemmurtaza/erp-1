@@ -4,7 +4,7 @@
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
     "files": 2805,
-    "lines": 431661,
+    "lines": 431674,
     "routes": 881,
     "controllers": 162,
     "models": 315,
@@ -1366,8 +1366,8 @@
   "areas": {
     "root": {
       "files": 226,
-      "lines": 17498,
-      "bytes": 1549870,
+      "lines": 17511,
+      "bytes": 1550391,
       "label": "repository root files"
     },
     "infra": {
@@ -104836,7 +104836,7 @@
       "area": "root",
       "kind": "html",
       "lines": 0,
-      "bytes": 14349,
+      "bytes": 14313,
       "doc": "",
       "symbols": []
     },
@@ -104844,8 +104844,8 @@
       "path": "sites/zu-with-camera/script.js",
       "area": "root",
       "kind": "script",
-      "lines": 803,
-      "bytes": 32654,
+      "lines": 815,
+      "bytes": 33173,
       "doc": "---------- Config / placeholders ----------",
       "symbols": []
     },
@@ -104853,8 +104853,8 @@
       "path": "sites/zu-with-camera/styles.css",
       "area": "root",
       "kind": "stylesheet",
-      "lines": 508,
-      "bytes": 27022,
+      "lines": 509,
+      "bytes": 27060,
       "doc": "",
       "symbols": []
     },

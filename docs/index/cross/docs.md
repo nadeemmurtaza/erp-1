@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**591** markdown documents. These explain **why**; this index only says **where**.
+**593** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -3056,7 +3056,7 @@ _no second-level headings_
 - WO-7.9 — Mobile parity  <sub>:216</sub>
 - Phase 7 exit criteria  <sub>:225</sub>
 
-### `docs/implementation/DECISIONS.md`  <sub>131 lines</sub>
+### `docs/implementation/DECISIONS.md`  <sub>132 lines</sub>
 
 - How to read this  <sub>:13</sub>
 
@@ -3405,6 +3405,10 @@ _no second-level headings_
 _no second-level headings_
 
 ### `docs/implementation/decisions/ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md`  <sub>88 lines</sub>
+
+_no second-level headings_
+
+### `docs/implementation/decisions/ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md`  <sub>302 lines</sub>
 
 _no second-level headings_
 
@@ -4708,6 +4712,11 @@ _no second-level headings_
 - WO-6.7 — RTO  <sub>:300</sub>
 - WO-6.8 — Screens  <sub>:315</sub>
 - Phase 6 exit criteria  <sub>:325</sub>
+
+### `docs/implementation/supply-chain-operations/README.md`  <sub>43 lines</sub>
+
+- Read in this order  <sub>:17</sub>
+- Words that must not blur  <sub>:31</sub>
 
 ### `docs/implementation/tasks-notifications-support/148-external-customer-support-portal.md`  <sub>224 lines</sub>
 

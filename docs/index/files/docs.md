@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 556 tracked files in `docs/*`, by directory.
+All 558 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -563,7 +563,7 @@ All 556 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `00-HOUSE-RULES.md` | doc | 496 |  |
-| `DECISIONS.md` | doc | 131 |  |
+| `DECISIONS.md` | doc | 132 |  |
 | `ENTERPRISE-SCALE.md` | doc | 278 |  |
 | `GAP-ANALYSIS-ERP-FEATURE-COMPARISON.md` | doc | 177 |  |
 | `GAP-ANALYSIS-ODOO-APPS.md` | doc | 164 |  |
@@ -748,7 +748,7 @@ All 556 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `07-customer-portal.md` | doc | 233 |  |
 
-### `docs/implementation/decisions` (89)
+### `docs/implementation/decisions` (90)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
@@ -839,6 +839,7 @@ All 556 tracked files in `docs/*`, by directory.
 | `ADR-085-housing-society-pack-a-plot-is-a-unique-asset-registry-with-one.md` | doc | 55 |  |
 | `ADR-086-launchpad-apps-a-static-presentation-only-first-party-manifest-with.md` | doc | 70 |  |
 | `ADR-087-partner-fact-exchange-send-data-and-let-the-receiver-build-its-own-documents.md` | doc | 88 |  |
+| `ADR-088-supply-chain-operations-eight-core-capability-modules-node-tier-is-not-site-function.md` | doc | 302 |  |
 | `unnumbered-adopt-a-shared-cross-tenant-hosting-tier-via-shared-infrastructure.md` | doc | 80 |  |
 | `unnumbered-doc-22-s-leave-schema-is-struck-in-favour-of-payroll-s-wo-19-3.md` | doc | 54 |  |
 
@@ -1017,6 +1018,12 @@ All 556 tracked files in `docs/*`, by directory.
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
 | `06-shipping-fulfilment-returns.md` | doc | 335 |  |
+
+### `docs/implementation/supply-chain-operations` (1)
+
+| File | Kind | Lines | Purpose |
+|---|---|---|---|
+| `README.md` | doc | 43 |  |
 
 ### `docs/implementation/tasks-notifications-support` (6)
 

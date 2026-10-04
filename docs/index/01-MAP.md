@@ -34,7 +34,7 @@ packages/*    TypeScript                   brand, money, permissions, POS core
 |---|---|---|---|
 | `apps/api` | 1,216 | 163,112 | NestJS API — modules, core platform, Prisma schema and migrations |
 | `apps/web` | 545 | 97,582 | Next.js — admin console and customer storefront in one app |
-| `docs` | 556 | 97,209 | documents of record — implementation plans, house rules, brand |
+| `docs` | 558 | 97,555 | documents of record — implementation plans, house rules, brand |
 | `(root)` | 37 | 23,355 | workspace manifests, docker compose/stack files, env templates |
 | `apps/platform` | 165 | 11,843 |  |
 | `scripts` | 29 | 11,434 | repository checks and generators (lint gates, this index) |

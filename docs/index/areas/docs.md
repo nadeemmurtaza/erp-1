@@ -3,7 +3,7 @@
 
 # docs/* — the documents of record
 
-556 files · 97,209 lines
+558 files · 97,555 lines
 
 
 The documents of record. These explain **why**; this index only says **where**.
@@ -84,7 +84,7 @@ has a bug.
 | `docs/erp-lenses/treasury-cash-reconciliation` | 3 | 237 | doc |
 | `docs/erp-lenses/warehouse-logistics-fleet` | 3 | 248 | doc |
 | `docs/erp-lenses/workforce-shifts-jml` | 3 | 246 | doc |
-| `docs/implementation` | 12 | 4,846 | doc, file |
+| `docs/implementation` | 12 | 4,847 | doc, file |
 | `docs/implementation/access-control-identity` | 9 | 2,588 | doc |
 | `docs/implementation/admin-platform` | 6 | 2,797 | doc |
 | `docs/implementation/ai-layer` | 6 | 975 | doc |
@@ -97,7 +97,7 @@ has a bug.
 | `docs/implementation/composable-resilience-platform` | 16 | 6,914 | doc |
 | `docs/implementation/content-marketing-search` | 1 | 160 | doc |
 | `docs/implementation/customer-portal-loyalty` | 1 | 233 | doc |
-| `docs/implementation/decisions` | 89 | 12,063 | doc |
+| `docs/implementation/decisions` | 90 | 12,365 | doc |
 | `docs/implementation/finance-accounting` | 10 | 2,325 | doc |
 | `docs/implementation/hospitality-qr-nfc` | 8 | 935 | doc |
 | `docs/implementation/housing-society` | 12 | 1,190 | doc |
@@ -111,6 +111,7 @@ has a bug.
 | `docs/implementation/promotions-giftcards` | 1 | 347 | doc |
 | `docs/implementation/resilience-scalability` | 13 | 2,926 | doc |
 | `docs/implementation/shipping-fulfilment-returns` | 1 | 335 | doc |
+| `docs/implementation/supply-chain-operations` | 1 | 43 | doc |
 | `docs/implementation/tasks-notifications-support` | 6 | 2,996 | doc |
 | `docs/implementation/tax-compliance` | 4 | 495 | doc |
 | `docs/security` | 1 | 59 | doc |

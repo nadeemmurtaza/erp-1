@@ -1367,7 +1367,7 @@
     "root": {
       "files": 226,
       "lines": 17498,
-      "bytes": 1549879,
+      "bytes": 1549870,
       "label": "repository root files"
     },
     "infra": {
@@ -104863,7 +104863,7 @@
       "area": "root",
       "kind": "jsonc",
       "lines": 0,
-      "bytes": 148,
+      "bytes": 139,
       "doc": "",
       "symbols": []
     },

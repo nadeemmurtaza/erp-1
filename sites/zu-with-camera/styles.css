@@ -270,11 +270,13 @@ button, [role="button"], .intro, .btn-solid, .btn-ghost, .btn-wa, .btn-outline, 
 
 /* ---------- Services ---------- */
 
-.services-section { padding: 40px 36px 96px; max-width: 1360px; margin: 0 auto; }
+.services-section { padding: 40px 36px 0; max-width: 1360px; margin: 0 auto; }
 .services-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 48px; }
 .services-head h2 { font-size: clamp(56px, 7vw, 120px); }
 .services-sub { margin: 0; max-width: 32ch; font-size: 17px; line-height: 1.5; }
-.cards { display: flex; flex-direction: column; gap: 140px; }
+/* gap = scroll between cards; also how long the finished stack holds before leaving as one block */
+.cards { display: flex; flex-direction: column; gap: var(--stack-gap); --stack-gap: 96px; }
+.cards-end { height: 0; }
 .card {
   position: sticky; border-radius: 6px; overflow: hidden; display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); min-height: 460px;
@@ -508,10 +510,10 @@ body.reduced-motion .about-letter { transform: none; transition: none; }
   .quote { font-size: 34px; line-height: 1.1; }
   .words-foot { gap: 16px; margin-top: 20px; }
 
-  .services-section { padding: 24px 16px 64px; }
+  .services-section { padding: 24px 16px 0; }
   .services-head { margin-bottom: 24px; }
   .services-sub { display: none; }
-  .cards { gap: 90px; }
+  .cards { --stack-gap: 64px; }
   .card { grid-template-columns: 1fr; min-height: 0; }
   .card-0 { top: 70px; }
   .card-1 { top: 84px; }

@@ -442,7 +442,7 @@
     films: { top: 0, h: 0, pinH: 0 },
     zoom: { top: 0, h: 0, pinH: 0 },
     words: { top: 0, h: 0 }, services: { top: 0, h: 0 }, about: { top: 0 }, book: { top: 0 },
-    card: { top: 0, h0: 1, h1: 1, gap: 0, st0: 0, st1: 0, st2: 0 },
+    card: { top: 0, h: [1, 1, 1], m: [0, 0, 0], st: [0, 0, 0] },
     marks: []
   };
 
@@ -475,6 +475,19 @@
     setMinHeight(zoom, zoomPinH + zoomRun);
     stripViewport.classList.toggle('is-static', !mobile && over <= 0);
 
+    // Services stack: the margins are chosen so every card docks at its own step, rests together
+    // for a beat, and then all three leave at the same scroll position as one block.
+    var cardsEl = document.querySelector('.cards');
+    var cardEls = [$('card-0'), $('card-1'), $('card-2')];
+    var stack = {
+      h: cardEls.map(function (el) { return el.offsetHeight; }),
+      st: cardEls.map(function (el) { return parseFloat(getComputedStyle(el).top) || 0; }),
+      gap: parseFloat(getComputedStyle(cardsEl).getPropertyValue('--stack-gap')) || 0
+    };
+    var dock = Math.max.apply(null, stack.h.map(function (h, i) { return stack.st[i] + h; }));
+    stack.m = stack.h.map(function (h, i) { return Math.round(dock - stack.st[i] - h); });
+    cardEls.forEach(function (el, i) { setStyle(el, 'marginBottom', stack.m[i] + 'px'); });
+
     var y0 = window.pageYOffset || 0;
     var topOf = function (el) { return el.getBoundingClientRect().top + y0; };
 
@@ -492,15 +505,7 @@
     M.about.top = topOf($('about'));
     M.book.top = topOf($('book'));
 
-    var cardsEl = document.querySelector('.cards');
-    var c0 = $('card-0'), c1 = $('card-1'), c2 = $('card-2');
-    M.card = {
-      top: topOf(cardsEl), h0: c0.offsetHeight, h1: c1.offsetHeight,
-      gap: parseFloat(getComputedStyle(cardsEl).rowGap) || 0,
-      st0: parseFloat(getComputedStyle(c0).top) || 0,
-      st1: parseFloat(getComputedStyle(c1).top) || 0,
-      st2: parseFloat(getComputedStyle(c2).top) || 0
-    };
+    M.card = { top: topOf(cardsEl), h: stack.h, m: stack.m, st: stack.st, gap: stack.gap };
 
     frameEls.forEach(function (fe) { fe.cx = fe.wrap.offsetLeft + fe.wrap.offsetWidth / 2; });
 
@@ -604,9 +609,10 @@
   function renderCards() {
     if (state.reduced) return;
     var c = M.card;
-    var l1 = c.top + c.h0 + c.gap, l2 = l1 + c.h1 + c.gap;
-    var t1 = Math.max(l1 - sy, c.st1), t2 = Math.max(l2 - sy, c.st2);
-    var p0 = cl01(1 - (t1 - c.st0) / c.h0), p1 = cl01(1 - (t2 - c.st1) / c.h1);
+    var l1 = c.top + c.h[0] + c.m[0] + c.gap, l2 = l1 + c.h[1] + c.m[1] + c.gap;
+    var d1 = Math.max(l1 - sy, c.st[1]), d2 = Math.max(l2 - sy, c.st[2]);
+    var p0 = cl01((c.h[0] - (d1 - c.st[0])) / (c.h[0] - (c.st[1] - c.st[0])));
+    var p1 = cl01((c.h[1] - (d2 - c.st[1])) / (c.h[1] - (c.st[2] - c.st[1])));
     var c0 = $('card-0'), c1 = $('card-1');
     setStyle(c0, 'transform', 'scale(' + (1 - 0.05 * p0).toFixed(3) + ')');
     setVar(c0, '--dim', (0.25 * p0).toFixed(3));

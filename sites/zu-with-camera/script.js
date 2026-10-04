@@ -3,7 +3,7 @@
 
   // ---------- Config / placeholders ----------
   // Fill these in before launch.
-  var WHATSAPP_NUMBER = ''; // e.g. '92300xxxxxxx' (country code, no +, no spaces)
+  var WHATSAPP_NUMBER = '923709861100';
   var CONTACT_EMAIL = '[EMAIL]';
 
   var IMG = {

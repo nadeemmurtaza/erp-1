@@ -1367,7 +1367,7 @@
     "root": {
       "files": 226,
       "lines": 17512,
-      "bytes": 1550448,
+      "bytes": 1550405,
       "label": "repository root files"
     },
     "infra": {
@@ -104845,7 +104845,7 @@
       "area": "root",
       "kind": "script",
       "lines": 815,
-      "bytes": 33173,
+      "bytes": 33130,
       "doc": "---------- Config / placeholders ----------",
       "symbols": []
     },

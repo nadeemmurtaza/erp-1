@@ -3,7 +3,7 @@
 
 # repository root files
 
-226 files · 17,512 lines
+229 files · 17,512 lines
 
 
 Workspace manifests, Docker compose and stack files, environment templates.
@@ -34,7 +34,7 @@ Workspace manifests, Docker compose and stack files, environment templates.
 | `apps/platform/prisma` | 13 | 1,947 | prisma schema, migration, toml |
 | `apps/platform/src` | 144 | 9,730 | nest module, service, config, module |
 | `apps/platform/test` | 1 | 11 | module |
-| `sites/zu-with-camera` | 4 | 1,325 | html, script, stylesheet, jsonc |
+| `sites/zu-with-camera` | 7 | 1,325 | asset, html, script, stylesheet |
 | `sites/zu-with-camera/images` | 8 | 0 | jpg |
 
 

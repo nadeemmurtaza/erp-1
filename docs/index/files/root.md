@@ -3,7 +3,7 @@
 
 # Files — root
 
-All 226 tracked files in `repository root files`, by directory.
+All 229 tracked files in `repository root files`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -472,10 +472,13 @@ All 226 tracked files in `repository root files`, by directory.
 |---|---|---|---|
 | `setup-env.ts` | module | 11 |  |
 
-### `sites/zu-with-camera` (4)
+### `sites/zu-with-camera` (7)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `apple-touch-icon.png` | asset | — |  |
+| `favicon-32.png` | asset | — |  |
+| `favicon.svg` | asset | — |  |
 | `index.html` | html | — |  |
 | `script.js` | script | 815 | ---------- Config / placeholders ---------- |
 | `styles.css` | stylesheet | 510 |  |

@@ -3,7 +3,7 @@
 
 # Repository index
 
-A generated, multi-level map of **2,805 files / 431,675 lines**, so that finding something costs a lookup instead of a search.
+A generated, multi-level map of **2,808 files / 431,675 lines**, so that finding something costs a lookup instead of a search.
 
 
 ## Read this first, grep second
@@ -61,7 +61,7 @@ single fact — the page is the right tool when you need the shape of something.
 | “Which doc explains WHY?” | [cross/docs.md](cross/docs.md) | ~54.4k | every document of record, with its outline |
 | “What is in this one module?” | [modules/](modules) | — | one page per API feature module (65) |
 | “What does this file export?” | [symbols/](symbols) | — | every exported symbol in the repo, with line numbers |
-| “I need a machine-readable form.” | [index.json](index.json) | ~714.5k | the whole index as JSON — grep or jq it |
+| “I need a machine-readable form.” | [index.json](index.json) | ~714.7k | the whole index as JSON — grep or jq it |
 
 
 ## The levels
@@ -126,7 +126,7 @@ Claude Code additionally runs `.claude/hooks/session-start.sh`, which prints
 | packages/* | 116 | 13,653 | [packages](areas/packages.md) |
 | docs/* | 555 | 97,028 | [docs](areas/docs.md) |
 | scripts, CI, deployment and container configuration | 64 | 33,175 | [infra](areas/infra.md) |
-| repository root files | 226 | 17,512 | [root](areas/root.md) |
+| repository root files | 229 | 17,512 | [root](areas/root.md) |
 
 Every tracked file is accounted for: see
 [`cross/files.md`](cross/files.md) for the complete

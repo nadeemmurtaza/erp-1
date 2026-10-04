@@ -279,14 +279,14 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 
 /* ---------- About ---------- */
 
-.about-section { padding: 40px 36px 140px; max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 56px; align-items: end; }
-.about-title { font-size: clamp(64px, 9vw, 150px); }
-.about-line { display: block; overflow: hidden; }
+.about-section { padding: 40px 36px 140px; max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px; }
+.about-title { font-size: clamp(56px, 7.5vw, 128px); }
+.about-line { display: block; overflow: hidden; white-space: nowrap; }
 .about-accent { color: var(--accent); }
 .about-word { display: inline-block; white-space: nowrap; margin-right: .22em; }
 .about-letter { display: inline-block; transform: translateY(105%); transition: transform 900ms var(--e-enter); }
 .about-title.in .about-letter { transform: none; }
-.about-body { display: flex; flex-direction: column; gap: 22px; opacity: 0; transform: translateY(32px); transition: opacity var(--d-content) var(--e-enter), transform var(--d-content) var(--e-enter); }
+.about-body { max-width: 640px; display: flex; flex-direction: column; gap: 22px; opacity: 0; transform: translateY(32px); transition: opacity var(--d-content) var(--e-enter), transform var(--d-content) var(--e-enter); }
 .about-body.in { opacity: 1; transform: none; }
 .about-copy { margin: 0; font-size: 20px; line-height: 1.55; }
 .about-actions { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -500,7 +500,7 @@ body.reduced-motion .about-letter { transform: none; transition: none; }
   .zoom-pin { height: auto; min-height: 0; max-height: none; position: static; aspect-ratio: 9 / 16; }
   .zoom-cta { left: 16px; right: 16px; bottom: 40px; transform: none; }
 
-  .about-title { font-size: 66px; }
+  .about-title { font-size: clamp(26px, 8.5vw, 36px); }
 
   .footer-mark { font-size: 140px; }
 

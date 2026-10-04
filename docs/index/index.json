@@ -3,8 +3,8 @@
   "generatedBy": "scripts/build-index.mjs",
   "note": "Generated. Do not edit. Regenerate with `pnpm index`.",
   "totals": {
-    "files": 2796,
-    "lines": 430877,
+    "files": 2797,
+    "lines": 431480,
     "routes": 881,
     "controllers": 162,
     "models": 315,
@@ -1401,9 +1401,9 @@
       "label": "apps/web — Next.js admin console and customer storefront"
     },
     "docs": {
-      "files": 558,
-      "lines": 97555,
-      "bytes": 6000646,
+      "files": 559,
+      "lines": 98158,
+      "bytes": 6040248,
       "label": "docs/* — the documents of record"
     },
     "packages": {
@@ -100960,6 +100960,15 @@
       "kind": "doc",
       "lines": 335,
       "bytes": 13392,
+      "doc": "",
+      "symbols": []
+    },
+    {
+      "path": "docs/implementation/supply-chain-operations/236-supply-chain-operations-architecture.md",
+      "area": "docs",
+      "kind": "doc",
+      "lines": 603,
+      "bytes": 39602,
       "doc": "",
       "symbols": []
     },

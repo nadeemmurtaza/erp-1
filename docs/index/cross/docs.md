@@ -3,7 +3,7 @@
 
 # Documents of record
 
-**593** markdown documents. These explain **why**; this index only says **where**.
+**594** markdown documents. These explain **why**; this index only says **where**.
 
 
 ## Precedence
@@ -4712,6 +4712,23 @@ _no second-level headings_
 - WO-6.7 — RTO  <sub>:300</sub>
 - WO-6.8 — Screens  <sub>:315</sub>
 - Phase 6 exit criteria  <sub>:325</sub>
+
+### `docs/implementation/supply-chain-operations/236-supply-chain-operations-architecture.md`  <sub>603 lines</sub>
+
+- 1. Objective and the four profiles  <sub>:13</sub>
+- 2. Existing state (verified in code, 2026-10-04)  <sub>:35</sub>
+- 3. Node topology: DCs and plants, and the proposed rulings R27–R30  <sub>:58</sub>
+- 4. Packaging: eight capability modules, no new pack  <sub>:155</sub>
+- 5. EDI: its own module behind a gateway  <sub>:223</sub>
+- 6. How the modules talk  <sub>:265</sub>
+- 7. Profiles as `MODULES` presets  <sub>:322</sub>
+- 8. Documents this changes (proposed amendments, not made in this work)  <sub>:347</sub>
+- 9. Open decisions for the owner  <sub>:362</sub>
+- 10. Needs verification — never invented in this repository  <sub>:448</sub>
+- 11. The five pillars  <sub>:485</sub>
+- 12. Roadmap — tranches  <sub>:495</sub>
+- 13. Program acceptance (architecture-level; each brief has its own)  <sub>:568</sub>
+- 14. Out of scope (named and sequenced, not silently skipped)  <sub>:584</sub>
 
 ### `docs/implementation/supply-chain-operations/README.md`  <sub>43 lines</sub>
 

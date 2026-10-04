@@ -3,7 +3,7 @@
 
 # Files — docs
 
-All 558 tracked files in `docs/*`, by directory.
+All 559 tracked files in `docs/*`, by directory.
 
 
 `Lines` is blank for binary assets. Headings are exact paths — find on one to jump.
@@ -1019,10 +1019,11 @@ All 558 tracked files in `docs/*`, by directory.
 |---|---|---|---|
 | `06-shipping-fulfilment-returns.md` | doc | 335 |  |
 
-### `docs/implementation/supply-chain-operations` (1)
+### `docs/implementation/supply-chain-operations` (2)
 
 | File | Kind | Lines | Purpose |
 |---|---|---|---|
+| `236-supply-chain-operations-architecture.md` | doc | 603 |  |
 | `README.md` | doc | 43 |  |
 
 ### `docs/implementation/tasks-notifications-support` (6)
